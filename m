@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FFF66026C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 15:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F399466029D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 15:54:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpR172H2tz3cd6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 01:43:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpRF86J4Bz3cYd
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 01:54:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JVjey7Ck;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WBY5psrR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JVjey7Ck;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WBY5psrR;
 	dkim-atps=neutral
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpR061FXzz3c3L
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 01:43:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpRCw636Hz3bZn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 01:53:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673016182; x=1704552182;
+  t=1673016803; x=1704552803;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=TyJWu/+eGClDzD1+iU1ZgdKWxW8yIFyBy+nQyH7yZCg=;
-  b=JVjey7Ck3zl+erPZrOzjhVSNmqiTp/WFAZeKXmFPbXjaAm7NF1VTj1BR
-   tiWiDxVVSWWZphBS3w/PhzVhSlJXEWUBUCyLNe6ZT7jNlqTapaF04IUkN
-   MN4I7tTL33JJBznHPZD5zpIFHeqs2ovSgOxMZg9WY6Vs7A7+CMe7YvAl3
-   yhCcQfzcRf756gfaN70vHDv4xaBTyxdZFcnzNKm+uojWOzVpFRcLyViHo
-   o78nUd5iL0VPIFp8nrrZjD5OFiDycglr28UIxnMABQFiSpxnnRRw/WRgo
-   KnO5rZ//6dTY970Z1g+wESBa2BjXxQVl64IbR0mu1H/OdShDuVkMRW0DB
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10582"; a="322557844"
+  bh=vyHebipBCsJLKrGU5b5l34K7OULWv4BUI9FsLXkSXmI=;
+  b=WBY5psrRk0G8NjuxkL8PX88PenEVWj8tLCik5DlMAbdRUyP7A7mazGM/
+   yJtk2Ub+i15upUxLLfFM7SNoS4mVO+wjummc67BrOtx1a+EO+hAAoYooE
+   FQFFJiQrEqAaD4NlfN+2a3wygp68pGMbpBjsWsHUDHLDRRjFHxRNG4WmC
+   efmsDgBPcR0rEr3+z48BXB1jsC7AR6SWLr+kj2pw+YBJLNuCHpTC/Nyaq
+   AvT35/f3UsVn/9F6M7ZmiHux6iG8FqKlnhGChwgGLgNBkNixKe3KabnDe
+   8R6WP2pBr5dOIjhpbnLsksB/Eu4j2S55OBWx1Scp4fCvevhlMwOpOwf49
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10582"; a="384790575"
 X-IronPort-AV: E=Sophos;i="5.96,305,1665471600"; 
-   d="scan'208";a="322557844"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2023 06:42:54 -0800
+   d="scan'208";a="384790575"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2023 06:52:55 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10582"; a="657906992"
+X-IronPort-AV: E=McAfee;i="6500,9779,10582"; a="649337449"
 X-IronPort-AV: E=Sophos;i="5.96,305,1665471600"; 
-   d="scan'208";a="657906992"
+   d="scan'208";a="649337449"
 Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 06 Jan 2023 06:42:48 -0800
+  by orsmga007.jf.intel.com with ESMTP; 06 Jan 2023 06:52:48 -0800
 Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1pDnvj-0003Vo-0E;
-	Fri, 06 Jan 2023 14:42:47 +0000
-Date: Fri, 6 Jan 2023 22:42:23 +0800
+	id 1pDo5P-0003WY-1x;
+	Fri, 06 Jan 2023 14:52:47 +0000
+Date: Fri, 6 Jan 2023 22:52:37 +0800
 From: kernel test robot <lkp@intel.com>
 To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
 	Rob Herring <robh+dt@kernel.org>,
@@ -65,10 +65,10 @@ To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
 	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>
 Subject: Re: [PATCH 02/10] soc: fsl: qe: Add support for TSA
-Message-ID: <202301062218.5i4c4yE6-lkp@intel.com>
+Message-ID: <202301062220.Fk1at5M4-lkp@intel.com>
 References: <20230106132951.392271-3-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="xaKD9xMkRCkBNE71"
+Content-Type: multipart/mixed; boundary="edUkIdyGHxF1GTMM"
 Content-Disposition: inline
 In-Reply-To: <20230106132951.392271-3-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,7 +87,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---xaKD9xMkRCkBNE71
+--edUkIdyGHxF1GTMM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -105,8 +105,8 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Herve-Codina/dt-bindings-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 patch link:    https://lore.kernel.org/r/20230106132951.392271-3-herve.codina%40bootlin.com
 patch subject: [PATCH 02/10] soc: fsl: qe: Add support for TSA
-config: m68k-allmodconfig
-compiler: m68k-linux-gcc (GCC) 12.1.0
+config: alpha-allmodconfig
+compiler: alpha-linux-gcc (GCC) 12.1.0
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
@@ -116,8 +116,8 @@ reproduce (this is a W=1 build):
         git checkout 2f330c694ec5018a16972be5314997b4da85385a
         # save the config file
         mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/soc/fsl/qe/
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash drivers/soc/fsl/qe/
 
 If you fix the issue, kindly add following tag where applicable
 | Reported-by: kernel test robot <lkp@intel.com>
@@ -125,161 +125,25 @@ If you fix the issue, kindly add following tag where applicable
 All errors (new ones prefixed by >>):
 
    drivers/soc/fsl/qe/tsa.c: In function 'tsa_connect':
->> drivers/soc/fsl/qe/tsa.c:149:9: error: implicit declaration of function 'clrsetbits_be32' [-Werror=implicit-function-declaration]
+   drivers/soc/fsl/qe/tsa.c:149:9: error: implicit declaration of function 'clrsetbits_be32' [-Werror=implicit-function-declaration]
      149 |         clrsetbits_be32(tsa->si_regs + TSA_SICR, clear, set);
          |         ^~~~~~~~~~~~~~~
    drivers/soc/fsl/qe/tsa.c: In function 'tsa_add_entry':
->> drivers/soc/fsl/qe/tsa.c:288:17: error: implicit declaration of function 'clrbits32' [-Werror=implicit-function-declaration]
+   drivers/soc/fsl/qe/tsa.c:288:17: error: implicit declaration of function 'clrbits32' [-Werror=implicit-function-declaration]
      288 |                 clrbits32(area->last_entry, TSA_SIRAM_ENTRY_LAST);
          |                 ^~~~~~~~~
+>> drivers/soc/fsl/qe/tsa.c:304:17: error: implicit declaration of function 'out_be32' [-Werror=implicit-function-declaration]
+     304 |                 out_be32(addr, val);
+         |                 ^~~~~~~~
+   drivers/soc/fsl/qe/tsa.c: In function 'tsa_probe':
+>> drivers/soc/fsl/qe/tsa.c:667:9: error: implicit declaration of function 'out_8' [-Werror=implicit-function-declaration]
+     667 |         out_8(tsa->si_regs + TSA_SIGMR, val);
+         |         ^~~~~
    cc1: some warnings being treated as errors
 
 
-vim +/clrsetbits_be32 +149 drivers/soc/fsl/qe/tsa.c
+vim +/out_be32 +304 drivers/soc/fsl/qe/tsa.c
 
-   125	
-   126	int tsa_connect(struct tsa *tsa, unsigned int cell_index)
-   127	{
-   128		u32 clear;
-   129		u32 set;
-   130	
-   131		switch (cell_index) {
-   132		case FSL_CPM_TSA_SCC2:
-   133			clear = TSA_SICR_SCC2(TSA_SICR_SCC_MASK);
-   134			set = TSA_SICR_SCC2(TSA_SICR_SCC_SCX_TSA);
-   135			break;
-   136		case FSL_CPM_TSA_SCC3:
-   137			clear = TSA_SICR_SCC3(TSA_SICR_SCC_MASK);
-   138			set = TSA_SICR_SCC3(TSA_SICR_SCC_SCX_TSA);
-   139			break;
-   140		case FSL_CPM_TSA_SCC4:
-   141			clear = TSA_SICR_SCC4(TSA_SICR_SCC_MASK);
-   142			set = TSA_SICR_SCC4(TSA_SICR_SCC_SCX_TSA);
-   143			break;
-   144		default:
-   145			dev_err(tsa->dev, "Unsupported cell-index %u\n", cell_index);
-   146			return -EINVAL;
-   147		}
-   148	
- > 149		clrsetbits_be32(tsa->si_regs + TSA_SICR, clear, set);
-   150		return 0;
-   151	}
-   152	EXPORT_SYMBOL(tsa_connect);
-   153	
-   154	int tsa_disconnect(struct tsa *tsa, unsigned int cell_index)
-   155	{
-   156		u32 clear;
-   157	
-   158		switch (cell_index) {
-   159		case 2:
-   160			clear = TSA_SICR_SCC2(TSA_SICR_SCC_MASK);
-   161			break;
-   162		case 3:
-   163			clear = TSA_SICR_SCC3(TSA_SICR_SCC_MASK);
-   164			break;
-   165		case 4:
-   166			clear = TSA_SICR_SCC4(TSA_SICR_SCC_MASK);
-   167			break;
-   168		default:
-   169			dev_err(tsa->dev, "Unsupported cell-index %u\n", cell_index);
-   170			return -EINVAL;
-   171		}
-   172	
-   173		clrsetbits_be32(tsa->si_regs + TSA_SICR, clear, 0);
-   174		return 0;
-   175	}
-   176	EXPORT_SYMBOL(tsa_disconnect);
-   177	
-   178	int tsa_get_info(struct tsa *tsa, unsigned int cell_id, struct tsa_cell_info *info)
-   179	{
-   180		if (cell_id >= FSL_CPM_TSA_NBCELL)
-   181			return -EINVAL;
-   182	
-   183		memcpy(info, &tsa->cell_infos[cell_id], sizeof(*info));
-   184		return 0;
-   185	}
-   186	EXPORT_SYMBOL(tsa_get_info);
-   187	
-   188	static void tsa_init_entries_area(struct tsa *tsa, struct tsa_entries_area *area,
-   189					  u32 tdms, u32 tdm_id, bool is_rx)
-   190	{
-   191		resource_size_t quarter;
-   192		resource_size_t half;
-   193	
-   194		quarter = tsa->si_ram_sz/4;
-   195		half = tsa->si_ram_sz/2;
-   196	
-   197		if (tdms == BIT(TSA_TDMA)) {
-   198			/* Only TDMA */
-   199			if (is_rx) {
-   200				/* First half of si_ram */
-   201				area->entries_start = tsa->si_ram;
-   202				area->entries_next = area->entries_start + half;
-   203				area->last_entry = NULL;
-   204			} else {
-   205				/* Second half of si_ram */
-   206				area->entries_start = tsa->si_ram + half;
-   207				area->entries_next = area->entries_start + half;
-   208				area->last_entry = NULL;
-   209			}
-   210		} else {
-   211			/* Only TDMB or both TDMs */
-   212			if (tdm_id == TSA_TDMA) {
-   213				if (is_rx) {
-   214					/* First half of first half of si_ram */
-   215					area->entries_start = tsa->si_ram;
-   216					area->entries_next = area->entries_start + quarter;
-   217					area->last_entry = NULL;
-   218				} else {
-   219					/* First half of second half of si_ram */
-   220					area->entries_start = tsa->si_ram + (2 * quarter);
-   221					area->entries_next = area->entries_start + quarter;
-   222					area->last_entry = NULL;
-   223				}
-   224			} else {
-   225				if (is_rx) {
-   226					/* Second half of first half of si_ram */
-   227					area->entries_start = tsa->si_ram + quarter;
-   228					area->entries_next = area->entries_start + quarter;
-   229					area->last_entry = NULL;
-   230				} else {
-   231					/* Second half of second half of si_ram */
-   232					area->entries_start = tsa->si_ram + (3 * quarter);
-   233					area->entries_next = area->entries_start + quarter;
-   234					area->last_entry = NULL;
-   235				}
-   236			}
-   237		}
-   238	}
-   239	
-   240	static const char *tsa_cell_id2name(struct tsa *tsa, u32 cell_id)
-   241	{
-   242		switch (cell_id) {
-   243		case FSL_CPM_TSA_NU:	return "Not used";
-   244		case FSL_CPM_TSA_SCC2:	return "SCC2";
-   245		case FSL_CPM_TSA_SCC3:	return "SCC3";
-   246		case FSL_CPM_TSA_SCC4:	return "SCC4";
-   247		case FSL_CPM_TSA_SMC1:	return "SMC1";
-   248		case FSL_CPM_TSA_SMC2:	return "SMC2";
-   249		default:
-   250			break;
-   251		}
-   252		return NULL;
-   253	}
-   254	
-   255	static u32 tsa_cell_id2csel(struct tsa *tsa, u32 cell_id)
-   256	{
-   257		switch (cell_id) {
-   258		case FSL_CPM_TSA_SCC2:	return TSA_SIRAM_ENTRY_CSEL_SCC2;
-   259		case FSL_CPM_TSA_SCC3:	return TSA_SIRAM_ENTRY_CSEL_SCC3;
-   260		case FSL_CPM_TSA_SCC4:	return TSA_SIRAM_ENTRY_CSEL_SCC4;
-   261		case FSL_CPM_TSA_SMC1:	return TSA_SIRAM_ENTRY_CSEL_SMC1;
-   262		case FSL_CPM_TSA_SMC2:	return TSA_SIRAM_ENTRY_CSEL_SMC2;
-   263		default:
-   264			break;
-   265		}
-   266		return TSA_SIRAM_ENTRY_CSEL_NU;
-   267	}
    268	
    269	static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
    270				 u32 count, u32 cell_id, u32 flags)
@@ -300,7 +164,7 @@ vim +/clrsetbits_be32 +149 drivers/soc/fsl/qe/tsa.c
    285	
    286		if (area->last_entry) {
    287			/* Clear last flag */
- > 288			clrbits32(area->last_entry, TSA_SIRAM_ENTRY_LAST);
+   288			clrbits32(area->last_entry, TSA_SIRAM_ENTRY_LAST);
    289		}
    290	
    291		left = count;
@@ -316,7 +180,7 @@ vim +/clrsetbits_be32 +149 drivers/soc/fsl/qe/tsa.c
    301			}
    302			val |= TSA_SIRAM_ENTRY_CNT(cnt - 1);
    303	
-   304			out_be32(addr, val);
+ > 304			out_be32(addr, val);
    305			addr += 4;
    306			left -= cnt;
    307		}
@@ -329,15 +193,15 @@ vim +/clrsetbits_be32 +149 drivers/soc/fsl/qe/tsa.c
 0-DAY CI Kernel Test Service
 https://github.com/intel/lkp-tests
 
---xaKD9xMkRCkBNE71
+--edUkIdyGHxF1GTMM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: attachment; filename=config
 
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/m68k 6.2.0-rc1 Kernel Configuration
+# Linux/alpha 6.2.0-rc1 Kernel Configuration
 #
-CONFIG_CC_VERSION_TEXT="m68k-linux-gcc (GCC) 12.1.0"
+CONFIG_CC_VERSION_TEXT="alpha-linux-gcc (GCC) 12.1.0"
 CONFIG_CC_IS_GCC=y
 CONFIG_GCC_VERSION=120100
 CONFIG_CLANG_VERSION=0
@@ -355,7 +219,6 @@ CONFIG_IRQ_WORK=y
 #
 # General setup
 #
-CONFIG_BROKEN_ON_SMP=y
 CONFIG_INIT_ENV_ARG_LIMIT=32
 CONFIG_COMPILE_TEST=y
 # CONFIG_WERROR is not set
@@ -371,11 +234,15 @@ CONFIG_WATCH_QUEUE=y
 CONFIG_CROSS_MEMORY_ATTACH=y
 CONFIG_USELIB=y
 CONFIG_AUDIT=y
+CONFIG_HAVE_ARCH_AUDITSYSCALL=y
+CONFIG_AUDITSYSCALL=y
 
 #
 # IRQ subsystem
 #
+CONFIG_GENERIC_IRQ_PROBE=y
 CONFIG_GENERIC_IRQ_SHOW=y
+CONFIG_AUTO_IRQ_AFFINITY=y
 CONFIG_GENERIC_IRQ_INJECTION=y
 CONFIG_GENERIC_IRQ_CHIP=y
 CONFIG_IRQ_DOMAIN=y
@@ -387,8 +254,9 @@ CONFIG_GENERIC_IRQ_DEBUGFS=y
 # end of IRQ subsystem
 
 CONFIG_GENERIC_CLOCKEVENTS=y
-CONFIG_LEGACY_TIMER_TICK=y
 CONFIG_TIME_KUNIT_TEST=m
+CONFIG_CONTEXT_TRACKING=y
+CONFIG_CONTEXT_TRACKING_IDLE=y
 
 #
 # Timers subsystem
@@ -433,10 +301,10 @@ CONFIG_CPU_ISOLATION=y
 #
 # RCU Subsystem
 #
-CONFIG_TINY_RCU=y
+CONFIG_TREE_RCU=y
 CONFIG_RCU_EXPERT=y
 CONFIG_SRCU=y
-CONFIG_TINY_SRCU=y
+CONFIG_TREE_SRCU=y
 CONFIG_TASKS_RCU_GENERIC=y
 CONFIG_FORCE_TASKS_RCU=y
 CONFIG_TASKS_RCU=y
@@ -444,8 +312,14 @@ CONFIG_FORCE_TASKS_RUDE_RCU=y
 CONFIG_TASKS_RUDE_RCU=y
 CONFIG_FORCE_TASKS_TRACE_RCU=y
 CONFIG_TASKS_TRACE_RCU=y
+CONFIG_RCU_STALL_COMMON=y
 CONFIG_RCU_NEED_SEGCBLIST=y
+CONFIG_RCU_FANOUT=64
+CONFIG_RCU_FANOUT_LEAF=16
+CONFIG_RCU_NOCB_CPU=y
+CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y
 CONFIG_TASKS_TRACE_RCU_READ_MB=y
+CONFIG_RCU_LAZY=y
 # end of RCU Subsystem
 
 CONFIG_BUILD_BIN2C=y
@@ -453,6 +327,7 @@ CONFIG_IKCONFIG=m
 CONFIG_IKCONFIG_PROC=y
 CONFIG_IKHEADERS=m
 CONFIG_LOG_BUF_SHIFT=17
+CONFIG_LOG_CPU_MAX_BUF_SHIFT=12
 CONFIG_PRINTK_SAFE_LOG_BUF_SHIFT=13
 CONFIG_PRINTK_INDEX=y
 
@@ -461,6 +336,7 @@ CONFIG_PRINTK_INDEX=y
 #
 # end of Scheduler features
 
+CONFIG_CC_HAS_INT128=y
 CONFIG_CC_IMPLICIT_FALLTHROUGH="-Wimplicit-fallthrough=5"
 CONFIG_GCC12_NO_ARRAY_BOUNDS=y
 CONFIG_CC_NO_ARRAY_BOUNDS=y
@@ -478,8 +354,11 @@ CONFIG_RT_GROUP_SCHED=y
 CONFIG_CGROUP_PIDS=y
 CONFIG_CGROUP_RDMA=y
 CONFIG_CGROUP_FREEZER=y
+CONFIG_CPUSETS=y
+CONFIG_PROC_PID_CPUSET=y
 CONFIG_CGROUP_DEVICE=y
 CONFIG_CGROUP_CPUACCT=y
+CONFIG_CGROUP_PERF=y
 CONFIG_CGROUP_BPF=y
 CONFIG_CGROUP_MISC=y
 CONFIG_CGROUP_DEBUG=y
@@ -511,9 +390,8 @@ CONFIG_INITRAMFS_PRESERVE_MTIME=y
 CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
 # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
 CONFIG_SYSCTL=y
-CONFIG_HAVE_UID16=y
+CONFIG_HAVE_PCSPKR_PLATFORM=y
 CONFIG_EXPERT=y
-CONFIG_UID16=y
 CONFIG_MULTIUSER=y
 CONFIG_SGETMASK_SYSCALL=y
 CONFIG_SYSFS_SYSCALL=y
@@ -522,6 +400,7 @@ CONFIG_POSIX_TIMERS=y
 CONFIG_PRINTK=y
 CONFIG_BUG=y
 CONFIG_ELF_CORE=y
+CONFIG_PCSPKR_PLATFORM=y
 CONFIG_BASE_FULL=y
 CONFIG_FUTEX=y
 CONFIG_FUTEX_PI=y
@@ -540,141 +419,113 @@ CONFIG_KALLSYMS_ALL=y
 CONFIG_KALLSYMS_BASE_RELATIVE=y
 CONFIG_KCMP=y
 CONFIG_EMBEDDED=y
+CONFIG_HAVE_PERF_EVENTS=y
+CONFIG_PERF_USE_VMALLOC=y
 CONFIG_PC104=y
 
 #
 # Kernel Performance Events And Counters
 #
+CONFIG_PERF_EVENTS=y
+CONFIG_DEBUG_PERF_USE_VMALLOC=y
 # end of Kernel Performance Events And Counters
 
 CONFIG_SYSTEM_DATA_VERIFICATION=y
 CONFIG_PROFILING=y
 # end of General setup
 
-CONFIG_M68K=y
-CONFIG_CPU_BIG_ENDIAN=y
-CONFIG_GENERIC_HWEIGHT=y
-CONFIG_GENERIC_CALIBRATE_DELAY=y
-CONFIG_TIME_LOW_RES=y
-CONFIG_NO_IOPORT_MAP=y
-CONFIG_HZ=100
-CONFIG_PGTABLE_LEVELS=3
+CONFIG_ALPHA=y
+CONFIG_64BIT=y
 CONFIG_MMU=y
-CONFIG_MMU_MOTOROLA=y
-CONFIG_KEXEC=y
-CONFIG_BOOTINFO_PROC=y
+CONFIG_GENERIC_CALIBRATE_DELAY=y
+CONFIG_GENERIC_ISA_DMA=y
+CONFIG_PGTABLE_LEVELS=3
+CONFIG_AUDIT_ARCH=y
 
 #
-# Platform setup
+# System setup
 #
-
-#
-# Processor Type
-#
-CONFIG_M68KCLASSIC=y
-# CONFIG_COLDFIRE is not set
-CONFIG_M68020=y
-CONFIG_M68030=y
-CONFIG_M68040=y
-CONFIG_M68060=y
-
-#
-# Processor Specific Options
-#
-CONFIG_M68KFPU_EMU=y
-CONFIG_M68KFPU_EMU_EXTRAPREC=y
-CONFIG_M68KFPU_EMU_ONLY=y
-CONFIG_ADVANCED=y
-CONFIG_RMW_INSNS=y
-CONFIG_SINGLE_MEMORY_CHUNK=y
-CONFIG_060_WRITETHROUGH=y
-CONFIG_M68K_L2_CACHE=y
-CONFIG_CPU_HAS_ADDRESS_SPACES=y
-CONFIG_FPU=y
-
-#
-# Machine Types
-#
-CONFIG_AMIGA=y
-CONFIG_ATARI=y
-CONFIG_ATARI_KBD_CORE=y
-CONFIG_MAC=y
-CONFIG_APOLLO=y
-CONFIG_VME=y
-CONFIG_MVME147=y
-CONFIG_MVME16x=y
-CONFIG_BVME6000=y
-CONFIG_HP300=y
-CONFIG_SUN3X=y
-CONFIG_Q40=y
-CONFIG_VIRT=y
-
-#
-# Bus Support
-#
-CONFIG_DIO=y
-CONFIG_NUBUS=y
-CONFIG_ZORRO=y
-CONFIG_AMIGA_PCMCIA=y
+CONFIG_ALPHA_GENERIC=y
+# CONFIG_ALPHA_ALCOR is not set
+# CONFIG_ALPHA_XL is not set
+# CONFIG_ALPHA_BOOK1 is not set
+# CONFIG_ALPHA_AVANTI_CH is not set
+# CONFIG_ALPHA_CABRIOLET is not set
+# CONFIG_ALPHA_DP264 is not set
+# CONFIG_ALPHA_EB164 is not set
+# CONFIG_ALPHA_EB64P_CH is not set
+# CONFIG_ALPHA_EB66 is not set
+# CONFIG_ALPHA_EB66P is not set
+# CONFIG_ALPHA_EIGER is not set
+# CONFIG_ALPHA_JENSEN is not set
+# CONFIG_ALPHA_LX164 is not set
+# CONFIG_ALPHA_LYNX is not set
+# CONFIG_ALPHA_MARVEL is not set
+# CONFIG_ALPHA_MIATA is not set
+# CONFIG_ALPHA_MIKASA is not set
+# CONFIG_ALPHA_NAUTILUS is not set
+# CONFIG_ALPHA_NONAME_CH is not set
+# CONFIG_ALPHA_NORITAKE is not set
+# CONFIG_ALPHA_PC164 is not set
+# CONFIG_ALPHA_P2K is not set
+# CONFIG_ALPHA_RAWHIDE is not set
+# CONFIG_ALPHA_RUFFIAN is not set
+# CONFIG_ALPHA_RX164 is not set
+# CONFIG_ALPHA_SX164 is not set
+# CONFIG_ALPHA_SABLE is not set
+# CONFIG_ALPHA_SHARK is not set
+# CONFIG_ALPHA_TAKARA is not set
+# CONFIG_ALPHA_TITAN is not set
+# CONFIG_ALPHA_WILDFIRE is not set
 CONFIG_ISA=y
-CONFIG_ATARI_ROM_ISA=y
-CONFIG_ZORRO_NAMES=y
-# end of Platform setup
+CONFIG_ISA_DMA_API=y
+CONFIG_GENERIC_HWEIGHT=y
+CONFIG_ALPHA_BROKEN_IRQ_MASK=y
+CONFIG_VGA_HOSE=y
+CONFIG_ARCH_MAY_HAVE_PC_FDC=y
+CONFIG_SMP=y
+CONFIG_NR_CPUS=32
+CONFIG_ARCH_SPARSEMEM_ENABLE=y
+CONFIG_ALPHA_WTINT=y
+CONFIG_VERBOSE_MCHECK=y
+CONFIG_VERBOSE_MCHECK_ON=1
+# CONFIG_HZ_32 is not set
+# CONFIG_HZ_64 is not set
+# CONFIG_HZ_128 is not set
+# CONFIG_HZ_256 is not set
+CONFIG_HZ_1024=y
+# CONFIG_HZ_1200 is not set
+CONFIG_HZ=1024
+CONFIG_SRM_ENV=m
+# end of System setup
 
-#
-# Kernel Features
-#
-# end of Kernel Features
-
-#
-# Platform devices
-#
-CONFIG_HEARTBEAT=y
-CONFIG_PROC_HARDWARE=y
-CONFIG_NATFEAT=y
-CONFIG_NFBLOCK=m
-CONFIG_NFCON=m
-CONFIG_NFETH=m
-CONFIG_ATARI_ETHERNAT=y
-CONFIG_ATARI_ETHERNEC=y
-# end of Platform devices
-
-#
-# Character devices
-#
-CONFIG_ATARI_DSP56K=m
-CONFIG_AMIGA_BUILTIN_SERIAL=m
-CONFIG_HPDCA=m
-CONFIG_HPAPCI=m
-# end of Character devices
+CONFIG_DUMMY_CONSOLE=y
 
 #
 # General architecture-dependent options
 #
 CONFIG_CRASH_CORE=y
-CONFIG_KEXEC_CORE=y
-CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS=y
-CONFIG_ARCH_32BIT_OFF_T=y
+CONFIG_HAVE_64BIT_ALIGNED_ACCESS=y
+CONFIG_GENERIC_SMP_IDLE_THREAD=y
+CONFIG_ARCH_32BIT_USTAT_F_TINODE=y
 CONFIG_HAVE_ASM_MODVERSIONS=y
 CONFIG_MMU_GATHER_NO_RANGE=y
 CONFIG_MMU_GATHER_MERGE_VMAS=y
 CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
 CONFIG_ARCH_WANT_IPC_PARSE_VERSION=y
 CONFIG_LTO_NONE=y
+CONFIG_HAVE_VIRT_CPU_ACCOUNTING_GEN=y
 CONFIG_HAVE_MOD_ARCH_SPECIFIC=y
 CONFIG_MODULES_USE_ELF_RELA=y
-CONFIG_MODULES_USE_ELF_REL=y
-CONFIG_ALTERNATE_USER_ADDRESS_SPACE=y
 CONFIG_PAGE_SIZE_LESS_THAN_64KB=y
 CONFIG_PAGE_SIZE_LESS_THAN_256KB=y
-CONFIG_HAVE_ARCH_NVRAM_OPS=y
 CONFIG_ISA_BUS_API=y
-CONFIG_OLD_SIGSUSPEND3=y
-CONFIG_OLD_SIGACTION=y
+CONFIG_ODD_RT_SIGACTION=y
+CONFIG_OLD_SIGSUSPEND=y
 CONFIG_COMPAT_32BIT_TIME=y
 CONFIG_ARCH_NO_PREEMPT=y
+CONFIG_CPU_NO_EFFICIENT_FFS=y
 CONFIG_LOCK_EVENT_COUNTS=y
-CONFIG_HAVE_ARCH_PFN_VALID=y
 
 #
 # GCOV-based kernel profiling
@@ -711,6 +562,7 @@ CONFIG_MODULE_COMPRESS_NONE=y
 # CONFIG_MODULE_COMPRESS_ZSTD is not set
 CONFIG_MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS=y
 CONFIG_MODPROBE_PATH="/sbin/modprobe"
+CONFIG_MODULES_TREE_LOOKUP=y
 CONFIG_BLOCK=y
 CONFIG_BLOCK_LEGACY_AUTOLOAD=y
 CONFIG_BLK_RQ_ALLOC_TIME=y
@@ -767,8 +619,8 @@ CONFIG_SYSV68_PARTITION=y
 CONFIG_CMDLINE_PARTITION=y
 # end of Partition Types
 
+CONFIG_BLK_MQ_PCI=y
 CONFIG_BLK_MQ_VIRTIO=y
-CONFIG_BLK_MQ_RDMA=y
 CONFIG_BLOCK_HOLDER_DEPRECATED=y
 CONFIG_BLK_MQ_STACKING=y
 
@@ -782,6 +634,7 @@ CONFIG_BFQ_GROUP_IOSCHED=y
 CONFIG_BFQ_CGROUP_DEBUG=y
 # end of IO Schedulers
 
+CONFIG_PADATA=y
 CONFIG_ASN1=y
 CONFIG_UNINLINE_SPIN_UNLOCK=y
 CONFIG_FREEZER=y
@@ -793,11 +646,6 @@ CONFIG_BINFMT_ELF=y
 CONFIG_ELFCORE=y
 CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
 CONFIG_BINFMT_SCRIPT=m
-CONFIG_ARCH_HAS_BINFMT_FLAT=y
-CONFIG_BINFMT_FLAT=y
-CONFIG_BINFMT_FLAT_ARGVP_ENVP_ON_STACK=y
-CONFIG_BINFMT_FLAT_OLD=y
-CONFIG_BINFMT_ZFLAT=y
 CONFIG_BINFMT_MISC=m
 CONFIG_COREDUMP=y
 # end of Executable file formats
@@ -837,7 +685,8 @@ CONFIG_SLAB_MERGE_DEFAULT=y
 
 CONFIG_SHUFFLE_PAGE_ALLOCATOR=y
 CONFIG_COMPAT_BRK=y
-CONFIG_FLATMEM=y
+CONFIG_SPARSEMEM=y
+CONFIG_SPARSEMEM_EXTREME=y
 CONFIG_MEMORY_ISOLATION=y
 CONFIG_SPLIT_PTLOCK_CPUS=4
 CONFIG_MEMORY_BALLOON=y
@@ -847,21 +696,22 @@ CONFIG_COMPACT_UNEVICTABLE_DEFAULT=1
 CONFIG_PAGE_REPORTING=y
 CONFIG_MIGRATION=y
 CONFIG_CONTIG_ALLOC=y
+CONFIG_PHYS_ADDR_T_64BIT=y
 CONFIG_MMU_NOTIFIER=y
 CONFIG_KSM=y
 CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
-CONFIG_NEED_PER_CPU_KM=y
 CONFIG_FRONTSWAP=y
 CONFIG_CMA=y
 CONFIG_CMA_DEBUG=y
 CONFIG_CMA_DEBUGFS=y
 CONFIG_CMA_SYSFS=y
 CONFIG_CMA_AREAS=7
+CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
 CONFIG_PAGE_IDLE_FLAG=y
 CONFIG_IDLE_PAGE_TRACKING=y
-CONFIG_ARCH_HAS_CURRENT_STACK_POINTER=y
 CONFIG_ZONE_DMA=y
 CONFIG_HMM_MIRROR=y
+CONFIG_GET_FREE_REGION=y
 CONFIG_VM_EVENT_COUNTERS=y
 CONFIG_PERCPU_STATS=y
 CONFIG_GUP_TEST=y
@@ -916,8 +766,6 @@ CONFIG_XFRM_IPCOMP=m
 CONFIG_NET_KEY=m
 CONFIG_NET_KEY_MIGRATE=y
 CONFIG_XFRM_ESPINTCP=y
-CONFIG_SMC=m
-CONFIG_SMC_DIAG=m
 CONFIG_XDP_SOCKETS=y
 CONFIG_XDP_SOCKETS_DIAG=m
 CONFIG_INET=y
@@ -1399,11 +1247,9 @@ CONFIG_SCTP_COOKIE_HMAC_MD5=y
 CONFIG_SCTP_COOKIE_HMAC_SHA1=y
 CONFIG_INET_SCTP_DIAG=m
 CONFIG_RDS=m
-CONFIG_RDS_RDMA=m
 CONFIG_RDS_TCP=m
 CONFIG_RDS_DEBUG=y
 CONFIG_TIPC=m
-CONFIG_TIPC_MEDIA_IB=y
 CONFIG_TIPC_MEDIA_UDP=y
 CONFIG_TIPC_CRYPTO=y
 CONFIG_TIPC_DIAG=m
@@ -1622,13 +1468,17 @@ CONFIG_QRTR_MHI=m
 CONFIG_NET_NCSI=y
 CONFIG_NCSI_OEM_CMD_GET_MAC=y
 CONFIG_NCSI_OEM_CMD_KEEP_PHY=y
+CONFIG_PCPU_DEV_REFCNT=y
+CONFIG_RPS=y
+CONFIG_RFS_ACCEL=y
 CONFIG_SOCK_RX_QUEUE_MAPPING=y
-CONFIG_HWBM=y
+CONFIG_XPS=y
 CONFIG_CGROUP_NET_PRIO=y
 CONFIG_CGROUP_NET_CLASSID=y
 CONFIG_NET_RX_BUSY_POLL=y
 CONFIG_BQL=y
 CONFIG_BPF_STREAM_PARSER=y
+CONFIG_NET_FLOW_LIMIT=y
 
 #
 # Network testing
@@ -1653,10 +1503,12 @@ CONFIG_ROSE=m
 CONFIG_MKISS=m
 CONFIG_6PACK=m
 CONFIG_BPQETHER=m
+CONFIG_SCC=m
+CONFIG_SCC_DELAY=y
+CONFIG_SCC_TRXECHO=y
 CONFIG_BAYCOM_SER_FDX=m
 CONFIG_BAYCOM_SER_HDX=m
 CONFIG_BAYCOM_PAR=m
-CONFIG_BAYCOM_EPP=m
 CONFIG_YAM=m
 # end of AX.25 network device drivers
 
@@ -1715,6 +1567,7 @@ CONFIG_BT_HCIUART_QCA=y
 CONFIG_BT_HCIUART_AG6XX=y
 CONFIG_BT_HCIUART_MRVL=y
 CONFIG_BT_HCIBCM203X=m
+CONFIG_BT_HCIBCM4377=m
 CONFIG_BT_HCIBPA10X=m
 CONFIG_BT_HCIBFUSB=m
 CONFIG_BT_HCIDTL1=m
@@ -1801,7 +1654,6 @@ CONFIG_RFKILL_GPIO=m
 CONFIG_NET_9P=m
 CONFIG_NET_9P_FD=m
 CONFIG_NET_9P_VIRTIO=m
-CONFIG_NET_9P_RDMA=m
 CONFIG_NET_9P_DEBUG=y
 CONFIG_CAIF=m
 CONFIG_CAIF_DEBUG=y
@@ -1872,17 +1724,215 @@ CONFIG_NETDEV_ADDR_LIST_TEST=m
 #
 # Device Drivers
 #
+CONFIG_HAVE_EISA=y
+CONFIG_EISA=y
+CONFIG_EISA_PCI_EISA=y
+CONFIG_EISA_VIRTUAL_ROOT=y
+CONFIG_EISA_NAMES=y
+CONFIG_HAVE_PCI=y
+CONFIG_FORCE_PCI=y
+CONFIG_PCI=y
+CONFIG_PCI_DOMAINS=y
+CONFIG_PCI_SYSCALL=y
+CONFIG_PCIEPORTBUS=y
+CONFIG_HOTPLUG_PCI_PCIE=y
+CONFIG_PCIEAER=y
+CONFIG_PCIEAER_INJECT=m
+CONFIG_PCIE_ECRC=y
+CONFIG_PCIEASPM=y
+CONFIG_PCIEASPM_DEFAULT=y
+# CONFIG_PCIEASPM_POWERSAVE is not set
+# CONFIG_PCIEASPM_POWER_SUPERSAVE is not set
+# CONFIG_PCIEASPM_PERFORMANCE is not set
+CONFIG_PCIE_DPC=y
+CONFIG_PCIE_PTM=y
+CONFIG_PCI_MSI=y
+CONFIG_PCI_QUIRKS=y
+CONFIG_PCI_DEBUG=y
+CONFIG_PCI_REALLOC_ENABLE_AUTO=y
+CONFIG_PCI_STUB=m
+CONFIG_PCI_PF_STUB=m
+CONFIG_PCI_ATS=y
+CONFIG_PCI_DOE=y
+CONFIG_PCI_ECAM=y
+CONFIG_PCI_BRIDGE_EMUL=y
+CONFIG_PCI_IOV=y
+CONFIG_PCI_PRI=y
+CONFIG_PCI_PASID=y
+# CONFIG_PCIE_BUS_TUNE_OFF is not set
+CONFIG_PCIE_BUS_DEFAULT=y
+# CONFIG_PCIE_BUS_SAFE is not set
+# CONFIG_PCIE_BUS_PERFORMANCE is not set
+# CONFIG_PCIE_BUS_PEER2PEER is not set
+CONFIG_VGA_ARB=y
+CONFIG_VGA_ARB_MAX_GPUS=16
+CONFIG_HOTPLUG_PCI=y
+CONFIG_HOTPLUG_PCI_CPCI=y
+CONFIG_HOTPLUG_PCI_SHPC=y
+
+#
+# PCI controller drivers
+#
+CONFIG_PCI_AARDVARK=m
+CONFIG_PCIE_XILINX_NWL=y
+CONFIG_PCI_FTPCI100=y
+CONFIG_PCI_TEGRA=y
+CONFIG_PCIE_RCAR_HOST=y
+CONFIG_PCIE_RCAR_EP=y
+CONFIG_PCI_HOST_COMMON=y
+CONFIG_PCI_HOST_GENERIC=m
+CONFIG_PCIE_XILINX=y
+CONFIG_PCIE_XILINX_CPM=y
+CONFIG_PCI_XGENE=y
+CONFIG_PCI_XGENE_MSI=y
+CONFIG_PCI_V3_SEMI=y
+CONFIG_PCI_VERSATILE=y
+CONFIG_PCIE_ALTERA=m
+CONFIG_PCIE_ALTERA_MSI=m
+CONFIG_PCI_HOST_THUNDER_PEM=y
+CONFIG_PCI_HOST_THUNDER_ECAM=y
+CONFIG_PCIE_ROCKCHIP=y
+CONFIG_PCIE_ROCKCHIP_HOST=m
+CONFIG_PCIE_ROCKCHIP_EP=y
+CONFIG_PCIE_MEDIATEK=m
+CONFIG_PCIE_MEDIATEK_GEN3=m
+CONFIG_PCIE_BRCMSTB=m
+CONFIG_PCI_LOONGSON=y
+CONFIG_PCIE_MICROCHIP_HOST=y
+CONFIG_PCIE_APPLE_MSI_DOORBELL_ADDR=0xfffff000
+CONFIG_PCIE_APPLE=m
+CONFIG_PCIE_MT7621=m
+
+#
+# DesignWare PCI Core Support
+#
+CONFIG_PCIE_DW=y
+CONFIG_PCIE_DW_HOST=y
+CONFIG_PCIE_DW_EP=y
+CONFIG_PCI_DRA7XX=m
+CONFIG_PCI_DRA7XX_HOST=m
+CONFIG_PCI_DRA7XX_EP=m
+CONFIG_PCIE_DW_PLAT=y
+CONFIG_PCIE_DW_PLAT_HOST=y
+CONFIG_PCIE_DW_PLAT_EP=y
+CONFIG_PCI_EXYNOS=m
+CONFIG_PCI_IMX6=y
+CONFIG_PCIE_SPEAR13XX=y
+CONFIG_PCI_KEYSTONE=y
+CONFIG_PCI_KEYSTONE_HOST=y
+CONFIG_PCI_KEYSTONE_EP=y
+CONFIG_PCI_LAYERSCAPE=y
+CONFIG_PCI_LAYERSCAPE_EP=y
+CONFIG_PCI_HISI=y
+CONFIG_PCIE_QCOM=y
+CONFIG_PCIE_QCOM_EP=m
+CONFIG_PCIE_ARMADA_8K=y
+CONFIG_PCIE_ARTPEC6=y
+CONFIG_PCIE_ARTPEC6_HOST=y
+CONFIG_PCIE_ARTPEC6_EP=y
+CONFIG_PCIE_ROCKCHIP_DW_HOST=y
+CONFIG_PCIE_INTEL_GW=y
+CONFIG_PCIE_KEEMBAY=y
+CONFIG_PCIE_KEEMBAY_HOST=y
+CONFIG_PCIE_KEEMBAY_EP=y
+CONFIG_PCIE_KIRIN=m
+CONFIG_PCIE_HISI_STB=y
+CONFIG_PCI_MESON=m
+CONFIG_PCIE_TEGRA194=m
+CONFIG_PCIE_TEGRA194_HOST=m
+CONFIG_PCIE_TEGRA194_EP=m
+CONFIG_PCIE_VISCONTI_HOST=y
+CONFIG_PCIE_UNIPHIER=y
+CONFIG_PCIE_UNIPHIER_EP=y
+CONFIG_PCIE_AL=y
+CONFIG_PCIE_FU740=y
+# end of DesignWare PCI Core Support
+
+#
+# Mobiveil PCIe Core Support
+#
+CONFIG_PCIE_MOBIVEIL=y
+CONFIG_PCIE_MOBIVEIL_HOST=y
+CONFIG_PCIE_MOBIVEIL_PLAT=y
+CONFIG_PCIE_LAYERSCAPE_GEN4=y
+# end of Mobiveil PCIe Core Support
+
+#
+# Cadence PCIe controllers support
+#
+CONFIG_PCIE_CADENCE=y
+CONFIG_PCIE_CADENCE_HOST=y
+CONFIG_PCIE_CADENCE_EP=y
+CONFIG_PCIE_CADENCE_PLAT=y
+CONFIG_PCIE_CADENCE_PLAT_HOST=y
+CONFIG_PCIE_CADENCE_PLAT_EP=y
+CONFIG_PCI_J721E=y
+CONFIG_PCI_J721E_HOST=y
+CONFIG_PCI_J721E_EP=y
+# end of Cadence PCIe controllers support
+# end of PCI controller drivers
+
+#
+# PCI Endpoint
+#
+CONFIG_PCI_ENDPOINT=y
+CONFIG_PCI_ENDPOINT_CONFIGFS=y
+CONFIG_PCI_EPF_TEST=m
+CONFIG_PCI_EPF_NTB=m
+CONFIG_PCI_EPF_VNTB=m
+# end of PCI Endpoint
+
+#
+# PCI switch controller drivers
+#
+CONFIG_PCI_SW_SWITCHTEC=m
+# end of PCI switch controller drivers
+
+CONFIG_CXL_BUS=m
+CONFIG_CXL_PCI=m
+CONFIG_CXL_MEM_RAW_COMMANDS=y
+CONFIG_CXL_PMEM=m
+CONFIG_CXL_MEM=m
+CONFIG_CXL_PORT=m
+CONFIG_CXL_REGION=y
+CONFIG_CXL_REGION_INVALIDATION_TEST=y
 CONFIG_PCCARD=m
 CONFIG_PCMCIA=m
 CONFIG_PCMCIA_LOAD_CIS=y
+CONFIG_CARDBUS=y
 
 #
 # PC-card bridges
 #
+CONFIG_YENTA=m
+CONFIG_YENTA_O2=y
+CONFIG_YENTA_RICOH=y
+CONFIG_YENTA_TI=y
+CONFIG_YENTA_ENE_TUNE=y
+CONFIG_YENTA_TOSHIBA=y
+CONFIG_PD6729=m
+CONFIG_I82092=m
 CONFIG_I82365=m
 CONFIG_TCIC=m
 CONFIG_PCMCIA_PROBE=y
 CONFIG_PCCARD_NONSTATIC=y
+CONFIG_RAPIDIO=m
+CONFIG_RAPIDIO_TSI721=m
+CONFIG_RAPIDIO_DISC_TIMEOUT=30
+CONFIG_RAPIDIO_ENABLE_RX_TX_PORTS=y
+CONFIG_RAPIDIO_DMA_ENGINE=y
+CONFIG_RAPIDIO_DEBUG=y
+CONFIG_RAPIDIO_ENUM_BASIC=m
+CONFIG_RAPIDIO_CHMAN=m
+CONFIG_RAPIDIO_MPORT_CDEV=m
+
+#
+# RapidIO Switch drivers
+#
+CONFIG_RAPIDIO_CPS_XX=m
+CONFIG_RAPIDIO_CPS_GEN2=m
+CONFIG_RAPIDIO_RXS_GEN3=m
+# end of RapidIO Switch drivers
 
 #
 # Generic Driver Options
@@ -1918,7 +1968,7 @@ CONFIG_DEBUG_DRIVER=y
 CONFIG_DEBUG_DEVRES=y
 CONFIG_DEBUG_TEST_DRIVER_REMOVE=y
 CONFIG_TEST_ASYNC_DRIVER_PROBE=m
-CONFIG_GENERIC_CPU_DEVICES=y
+CONFIG_GENERIC_CPU_VULNERABILITIES=y
 CONFIG_SOC_BUS=y
 CONFIG_REGMAP=y
 CONFIG_REGMAP_AC97=m
@@ -1945,11 +1995,11 @@ CONFIG_ARM_INTEGRATOR_LM=y
 CONFIG_BT1_APB=y
 CONFIG_BT1_AXI=y
 CONFIG_MOXTET=m
-CONFIG_HISILICON_LPC=y
 CONFIG_INTEL_IXP4XX_EB=y
 CONFIG_QCOM_EBI2=y
 CONFIG_MHI_BUS=m
 CONFIG_MHI_BUS_DEBUG=y
+CONFIG_MHI_BUS_PCI_GENERIC=m
 CONFIG_MHI_BUS_EP=m
 # end of Bus devices
 
@@ -1978,7 +2028,7 @@ CONFIG_ARM_SCPI_PROTOCOL=m
 CONFIG_ARM_SCPI_POWER_DOMAIN=m
 CONFIG_FIRMWARE_MEMMAP=y
 CONFIG_MTK_ADSP_IPC=m
-CONFIG_QCOM_SCM=m
+CONFIG_QCOM_SCM=y
 CONFIG_QCOM_SCM_DOWNLOAD_MODE_DEFAULT=y
 CONFIG_TURRIS_MOX_RWTM=m
 CONFIG_BCM47XX_NVRAM=y
@@ -2102,14 +2152,19 @@ CONFIG_MTD_PHYSMAP_GPIO_ADDR=y
 CONFIG_MTD_SC520CDP=m
 CONFIG_MTD_NETSC520=m
 CONFIG_MTD_TS5500=m
+CONFIG_MTD_PCI=m
 CONFIG_MTD_PCMCIA=m
 CONFIG_MTD_PCMCIA_ANONYMOUS=y
+CONFIG_MTD_INTEL_VR_NOR=m
 CONFIG_MTD_PLATRAM=m
 # end of Mapping drivers for chip access
 
 #
 # Self-contained MTD device drivers
 #
+CONFIG_MTD_PMC551=m
+CONFIG_MTD_PMC551_BUGFIX=y
+CONFIG_MTD_PMC551_DEBUG=y
 CONFIG_MTD_DATAFLASH=m
 CONFIG_MTD_DATAFLASH_WRITE_VERIFY=y
 CONFIG_MTD_DATAFLASH_OTP=y
@@ -2148,12 +2203,14 @@ CONFIG_MTD_RAW_NAND=m
 # Raw/parallel NAND flash controllers
 #
 CONFIG_MTD_NAND_DENALI=m
+CONFIG_MTD_NAND_DENALI_PCI=m
 CONFIG_MTD_NAND_DENALI_DT=m
 CONFIG_MTD_NAND_AMS_DELTA=m
 CONFIG_MTD_NAND_OMAP2=m
 CONFIG_MTD_NAND_OMAP_BCH=y
 CONFIG_MTD_NAND_OMAP_BCH_BUILD=m
 CONFIG_MTD_NAND_SHARPSL=m
+CONFIG_MTD_NAND_CAFE=m
 CONFIG_MTD_NAND_ATMEL=m
 CONFIG_MTD_NAND_MARVELL=m
 CONFIG_MTD_NAND_SLC_LPC32XX=m
@@ -2197,7 +2254,9 @@ CONFIG_MTD_NAND_RENESAS=m
 #
 # Misc
 #
+CONFIG_MTD_SM_COMMON=m
 CONFIG_MTD_NAND_NANDSIM=m
+CONFIG_MTD_NAND_RICOH=m
 CONFIG_MTD_NAND_DISKONCHIP=m
 CONFIG_MTD_NAND_DISKONCHIP_PROBE_ADVANCED=y
 CONFIG_MTD_NAND_DISKONCHIP_PROBE_ADDRESS=0
@@ -2255,12 +2314,10 @@ CONFIG_OF_OVERLAY=y
 CONFIG_ARCH_MIGHT_HAVE_PC_PARPORT=y
 CONFIG_PARPORT=m
 CONFIG_PARPORT_PC=m
+CONFIG_PARPORT_SERIAL=m
 CONFIG_PARPORT_PC_FIFO=y
 CONFIG_PARPORT_PC_SUPERIO=y
 CONFIG_PARPORT_PC_PCMCIA=m
-CONFIG_PARPORT_AMIGA=m
-CONFIG_PARPORT_MFC3=m
-CONFIG_PARPORT_ATARI=m
 CONFIG_PARPORT_AX88796=m
 CONFIG_PARPORT_1284=y
 CONFIG_PARPORT_NOT_PC=y
@@ -2274,10 +2331,8 @@ CONFIG_ISAPNP=y
 CONFIG_BLK_DEV=y
 CONFIG_BLK_DEV_NULL_BLK=m
 CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION=y
-CONFIG_AMIGA_FLOPPY=m
-CONFIG_ATARI_FLOPPY=m
-CONFIG_BLK_DEV_SWIM=m
-CONFIG_AMIGA_Z2RAM=m
+CONFIG_BLK_DEV_FD=m
+CONFIG_BLK_DEV_FD_RAWCMD=y
 CONFIG_CDROM=m
 CONFIG_PARIDE=m
 
@@ -2295,7 +2350,6 @@ CONFIG_PARIDE_PG=m
 #
 CONFIG_PARIDE_ATEN=m
 CONFIG_PARIDE_BPCK=m
-CONFIG_PARIDE_BPCK6=m
 CONFIG_PARIDE_COMM=m
 CONFIG_PARIDE_DSTR=m
 CONFIG_PARIDE_FIT2=m
@@ -2309,6 +2363,7 @@ CONFIG_PARIDE_KBIC=m
 CONFIG_PARIDE_KTTI=m
 CONFIG_PARIDE_ON20=m
 CONFIG_PARIDE_ON26=m
+CONFIG_BLK_DEV_PCIESSD_MTIP32XX=m
 CONFIG_ZRAM=m
 CONFIG_ZRAM_DEF_COMP_LZORLE=y
 # CONFIG_ZRAM_DEF_COMP_ZSTD is not set
@@ -2332,20 +2387,17 @@ CONFIG_ATA_OVER_ETH=m
 CONFIG_VIRTIO_BLK=m
 CONFIG_BLK_DEV_RBD=m
 CONFIG_BLK_DEV_UBLK=m
-CONFIG_BLK_DEV_RNBD=y
-CONFIG_BLK_DEV_RNBD_CLIENT=m
-CONFIG_BLK_DEV_RNBD_SERVER=m
 
 #
 # NVME Support
 #
 CONFIG_NVME_COMMON=m
 CONFIG_NVME_CORE=m
+CONFIG_BLK_DEV_NVME=m
 CONFIG_NVME_MULTIPATH=y
 CONFIG_NVME_VERBOSE_ERRORS=y
 CONFIG_NVME_HWMON=y
 CONFIG_NVME_FABRICS=m
-CONFIG_NVME_RDMA=m
 CONFIG_NVME_FC=m
 CONFIG_NVME_TCP=m
 CONFIG_NVME_AUTH=y
@@ -2353,7 +2405,6 @@ CONFIG_NVME_APPLE=m
 CONFIG_NVME_TARGET=m
 CONFIG_NVME_TARGET_PASSTHRU=y
 CONFIG_NVME_TARGET_LOOP=m
-CONFIG_NVME_TARGET_RDMA=m
 CONFIG_NVME_TARGET_FC=m
 CONFIG_NVME_TARGET_FCLOOP=m
 CONFIG_NVME_TARGET_TCP=m
@@ -2368,6 +2419,9 @@ CONFIG_AD525X_DPOT=m
 CONFIG_AD525X_DPOT_I2C=m
 CONFIG_AD525X_DPOT_SPI=m
 CONFIG_DUMMY_IRQ=m
+CONFIG_PHANTOM=m
+CONFIG_TIFM_CORE=m
+CONFIG_TIFM_7XX1=m
 CONFIG_ICS932S401=m
 CONFIG_ATMEL_SSC=m
 CONFIG_ENCLOSURE_SERVICES=m
@@ -2375,6 +2429,7 @@ CONFIG_SMPRO_ERRMON=m
 CONFIG_SMPRO_MISC=m
 CONFIG_GEHC_ACHC=m
 CONFIG_HI6421V600_IRQ=m
+CONFIG_HP_ILO=m
 CONFIG_QCOM_COINCELL=m
 CONFIG_QCOM_FASTRPC=m
 CONFIG_APDS9802ALS=m
@@ -2385,8 +2440,11 @@ CONFIG_SENSORS_BH1770=m
 CONFIG_SENSORS_APDS990X=m
 CONFIG_HMC6352=m
 CONFIG_DS1682=m
+CONFIG_PCH_PHUB=m
 CONFIG_LATTICE_ECP3_CONFIG=m
 CONFIG_SRAM=y
+CONFIG_DW_XDATA_PCIE=m
+CONFIG_PCI_ENDPOINT_TEST=m
 CONFIG_XILINX_SDFEC=m
 CONFIG_MISC_RTSX=m
 CONFIG_HISI_HIKEY_USB=m
@@ -2407,6 +2465,10 @@ CONFIG_EEPROM_IDT_89HPESX=m
 CONFIG_EEPROM_EE1004=m
 # end of EEPROM support
 
+CONFIG_CB710_CORE=m
+CONFIG_CB710_DEBUG=y
+CONFIG_CB710_DEBUG_ASSUMPTIONS=y
+
 #
 # Texas Instruments shared transport line discipline
 #
@@ -2420,11 +2482,20 @@ CONFIG_SENSORS_LIS3_I2C=m
 # Altera FPGA firmware download module (requires I2C)
 #
 CONFIG_ALTERA_STAPL=m
+CONFIG_GENWQE=m
+CONFIG_GENWQE_PLATFORM_ERROR_RECOVERY=0
 CONFIG_ECHO=m
+CONFIG_BCM_VK=m
+CONFIG_BCM_VK_TTY=y
+CONFIG_MISC_ALCOR_PCI=m
+CONFIG_MISC_RTSX_PCI=m
 CONFIG_MISC_RTSX_USB=m
+CONFIG_HABANA_AI=m
 CONFIG_UACCE=m
 CONFIG_PVPANIC=y
 CONFIG_PVPANIC_MMIO=m
+CONFIG_PVPANIC_PCI=m
+CONFIG_GP_PCI1XXXX=m
 # end of Misc devices
 
 #
@@ -2435,7 +2506,6 @@ CONFIG_RAID_ATTRS=m
 CONFIG_SCSI_COMMON=m
 CONFIG_SCSI=m
 CONFIG_SCSI_DMA=y
-CONFIG_SCSI_ESP_PIO=y
 CONFIG_SCSI_NETLINK=y
 CONFIG_SCSI_PROC_FS=y
 
@@ -2469,32 +2539,104 @@ CONFIG_SCSI_SRP_ATTRS=m
 CONFIG_SCSI_LOWLEVEL=y
 CONFIG_ISCSI_TCP=m
 CONFIG_ISCSI_BOOT_SYSFS=m
+CONFIG_SCSI_CXGB3_ISCSI=m
+CONFIG_SCSI_CXGB4_ISCSI=m
+CONFIG_SCSI_BNX2_ISCSI=m
+CONFIG_SCSI_BNX2X_FCOE=m
+CONFIG_BE2ISCSI=m
+CONFIG_BLK_DEV_3W_XXXX_RAID=m
+CONFIG_SCSI_HPSA=m
+CONFIG_SCSI_3W_9XXX=m
+CONFIG_SCSI_3W_SAS=m
+CONFIG_SCSI_ACARD=m
 CONFIG_SCSI_AHA152X=m
+CONFIG_SCSI_AHA1542=m
+CONFIG_SCSI_AHA1740=m
+CONFIG_SCSI_AACRAID=m
+CONFIG_SCSI_AIC7XXX=m
+CONFIG_AIC7XXX_CMDS_PER_DEVICE=32
+CONFIG_AIC7XXX_RESET_DELAY_MS=5000
+CONFIG_AIC7XXX_DEBUG_ENABLE=y
+CONFIG_AIC7XXX_DEBUG_MASK=0
+CONFIG_AIC7XXX_REG_PRETTY_PRINT=y
+CONFIG_SCSI_AIC79XX=m
+CONFIG_AIC79XX_CMDS_PER_DEVICE=32
+CONFIG_AIC79XX_RESET_DELAY_MS=5000
+CONFIG_AIC79XX_DEBUG_ENABLE=y
+CONFIG_AIC79XX_DEBUG_MASK=0
+CONFIG_AIC79XX_REG_PRETTY_PRINT=y
+CONFIG_SCSI_AIC94XX=m
+CONFIG_AIC94XX_DEBUG=y
 CONFIG_SCSI_HISI_SAS=m
 CONFIG_SCSI_HISI_SAS_DEBUGFS_DEFAULT_ENABLE=y
+CONFIG_SCSI_MVSAS=m
+CONFIG_SCSI_MVSAS_DEBUG=y
+CONFIG_SCSI_MVSAS_TASKLET=y
+CONFIG_SCSI_MVUMI=m
+CONFIG_SCSI_ADVANSYS=m
+CONFIG_SCSI_ARCMSR=m
+CONFIG_SCSI_ESAS2R=m
+CONFIG_MEGARAID_NEWGEN=y
+CONFIG_MEGARAID_MM=m
+CONFIG_MEGARAID_MAILBOX=m
+CONFIG_MEGARAID_LEGACY=m
+CONFIG_MEGARAID_SAS=m
+CONFIG_SCSI_MPT3SAS=m
+CONFIG_SCSI_MPT2SAS_MAX_SGE=128
+CONFIG_SCSI_MPT3SAS_MAX_SGE=128
+CONFIG_SCSI_MPT2SAS=m
+CONFIG_SCSI_MPI3MR=m
+CONFIG_SCSI_SMARTPQI=m
+CONFIG_SCSI_HPTIOP=m
+CONFIG_SCSI_BUSLOGIC=m
+CONFIG_SCSI_FLASHPOINT=y
+CONFIG_SCSI_MYRB=m
+CONFIG_SCSI_MYRS=m
 CONFIG_LIBFC=m
 CONFIG_LIBFCOE=m
+CONFIG_FCOE=m
+CONFIG_SCSI_SNIC=m
+CONFIG_SCSI_SNIC_DEBUG_FS=y
+CONFIG_SCSI_DMX3191D=m
 CONFIG_SCSI_FDOMAIN=m
+CONFIG_SCSI_FDOMAIN_PCI=m
 CONFIG_SCSI_FDOMAIN_ISA=m
+CONFIG_SCSI_GENERIC_NCR5380=m
+CONFIG_SCSI_IPS=m
+CONFIG_SCSI_INITIO=m
+CONFIG_SCSI_INIA100=m
 CONFIG_SCSI_PPA=m
 CONFIG_SCSI_IMM=m
 CONFIG_SCSI_IZIP_EPP16=y
 CONFIG_SCSI_IZIP_SLOW_CTR=y
-CONFIG_53C700_BE_BUS=y
+CONFIG_SCSI_STEX=m
+CONFIG_SCSI_SYM53C8XX_2=m
+CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=1
+CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS=16
+CONFIG_SCSI_SYM53C8XX_MAX_TAGS=64
+CONFIG_SCSI_SYM53C8XX_MMIO=y
+CONFIG_SCSI_IPR=m
+CONFIG_SCSI_IPR_TRACE=y
+CONFIG_SCSI_IPR_DUMP=y
 CONFIG_SCSI_QLOGIC_FAS=m
+CONFIG_SCSI_QLOGIC_1280=m
+CONFIG_SCSI_QLA_FC=m
+CONFIG_TCM_QLA2XXX=m
+CONFIG_TCM_QLA2XXX_DEBUG=y
+CONFIG_SCSI_QLA_ISCSI=m
+CONFIG_QEDI=m
+CONFIG_QEDF=m
+CONFIG_SCSI_EFCT=m
+CONFIG_SCSI_SIM710=m
+CONFIG_SCSI_DC395x=m
+CONFIG_SCSI_AM53C974=m
+CONFIG_SCSI_WD719X=m
 CONFIG_SCSI_DEBUG=m
-CONFIG_A3000_SCSI=m
-CONFIG_A2091_SCSI=m
-CONFIG_GVP11_SCSI=m
-CONFIG_SCSI_A4000T=m
-CONFIG_SCSI_ZORRO7XX=m
-CONFIG_SCSI_ZORRO_ESP=m
-CONFIG_ATARI_SCSI=m
-CONFIG_MAC_SCSI=m
-CONFIG_SCSI_MAC_ESP=m
-CONFIG_MVME16x_SCSI=m
-CONFIG_BVME6000_SCSI=m
+CONFIG_SCSI_PMCRAID=m
+CONFIG_SCSI_PM8001=m
+CONFIG_SCSI_BFA_FC=m
 CONFIG_SCSI_VIRTIO=m
+CONFIG_SCSI_CHELSIO_FCOE=m
 CONFIG_SCSI_LOWLEVEL_PCMCIA=y
 CONFIG_PCMCIA_AHA152X=m
 CONFIG_PCMCIA_FDOMAIN=m
@@ -2508,7 +2650,6 @@ CONFIG_SCSI_DH_EMC=m
 CONFIG_SCSI_DH_ALUA=m
 # end of SCSI device support
 
-CONFIG_HAVE_PATA_PLATFORM=y
 CONFIG_ATA=m
 CONFIG_SATA_HOST=y
 CONFIG_PATA_TIMINGS=y
@@ -2519,6 +2660,8 @@ CONFIG_SATA_PMP=y
 #
 # Controllers with non-SFF native interface
 #
+CONFIG_SATA_AHCI=m
+CONFIG_SATA_MOBILE_LPM_POLICY=0
 CONFIG_SATA_AHCI_PLATFORM=m
 CONFIG_AHCI_BRCM=m
 CONFIG_AHCI_DA850=m
@@ -2536,48 +2679,104 @@ CONFIG_AHCI_QORIQ=m
 CONFIG_SATA_FSL=m
 CONFIG_SATA_GEMINI=m
 CONFIG_SATA_AHCI_SEATTLE=m
+CONFIG_SATA_INIC162X=m
+CONFIG_SATA_ACARD_AHCI=m
+CONFIG_SATA_SIL24=m
 CONFIG_ATA_SFF=y
 
 #
 # SFF controllers with custom DMA interface
 #
+CONFIG_PDC_ADMA=m
+CONFIG_SATA_QSTOR=m
+CONFIG_SATA_SX4=m
 CONFIG_ATA_BMDMA=y
 
 #
 # SATA SFF controllers with BMDMA
 #
+CONFIG_ATA_PIIX=m
 CONFIG_SATA_DWC=m
 CONFIG_SATA_DWC_OLD_DMA=y
 CONFIG_SATA_HIGHBANK=m
 CONFIG_SATA_MV=m
+CONFIG_SATA_NV=m
+CONFIG_SATA_PROMISE=m
 CONFIG_SATA_RCAR=m
+CONFIG_SATA_SIL=m
+CONFIG_SATA_SIS=m
+CONFIG_SATA_SVW=m
+CONFIG_SATA_ULI=m
+CONFIG_SATA_VIA=m
+CONFIG_SATA_VITESSE=m
 
 #
 # PATA SFF controllers with BMDMA
 #
+CONFIG_PATA_ALI=m
+CONFIG_PATA_AMD=m
 CONFIG_PATA_ARASAN_CF=m
+CONFIG_PATA_ARTOP=m
+CONFIG_PATA_ATIIXP=m
+CONFIG_PATA_ATP867X=m
+CONFIG_PATA_CMD64X=m
+CONFIG_PATA_CS5520=m
+CONFIG_PATA_CS5530=m
+CONFIG_PATA_CS5536=m
+CONFIG_PATA_CYPRESS=m
+CONFIG_PATA_EFAR=m
 CONFIG_PATA_FTIDE010=m
+CONFIG_PATA_HPT366=m
+CONFIG_PATA_HPT37X=m
+CONFIG_PATA_HPT3X2N=m
+CONFIG_PATA_HPT3X3=m
+CONFIG_PATA_HPT3X3_DMA=y
 CONFIG_PATA_IMX=m
+CONFIG_PATA_IT8213=m
+CONFIG_PATA_IT821X=m
+CONFIG_PATA_JMICRON=m
+CONFIG_PATA_MARVELL=m
+CONFIG_PATA_NETCELL=m
+CONFIG_PATA_NINJA32=m
+CONFIG_PATA_NS87415=m
+CONFIG_PATA_OLDPIIX=m
+CONFIG_PATA_OPTIDMA=m
+CONFIG_PATA_PDC2027X=m
+CONFIG_PATA_PDC_OLD=m
+CONFIG_PATA_RADISYS=m
+CONFIG_PATA_RDC=m
+CONFIG_PATA_SC1200=m
+CONFIG_PATA_SCH=m
+CONFIG_PATA_SERVERWORKS=m
+CONFIG_PATA_SIL680=m
+CONFIG_PATA_SIS=m
+CONFIG_PATA_TOSHIBA=m
+CONFIG_PATA_TRIFLEX=m
+CONFIG_PATA_VIA=m
 CONFIG_PATA_PXA=m
+CONFIG_PATA_WINBOND=m
 
 #
 # PIO-only SFF controllers
 #
-CONFIG_PATA_FALCON=m
-CONFIG_PATA_GAYLE=m
-CONFIG_PATA_BUDDHA=m
+CONFIG_PATA_CMD640_PCI=m
 CONFIG_PATA_ISAPNP=m
 CONFIG_PATA_IXP4XX_CF=m
+CONFIG_PATA_MPIIX=m
+CONFIG_PATA_NS87410=m
+CONFIG_PATA_OPTI=m
 CONFIG_PATA_PCMCIA=m
 CONFIG_PATA_PLATFORM=m
 CONFIG_PATA_OF_PLATFORM=m
 CONFIG_PATA_QDI=m
+CONFIG_PATA_RZ1000=m
 CONFIG_PATA_SAMSUNG_CF=m
 CONFIG_PATA_WINBOND_VLB=m
 
 #
 # Generic fallback / legacy drivers
 #
+CONFIG_ATA_GENERIC=m
 CONFIG_PATA_LEGACY=m
 CONFIG_MD=y
 CONFIG_BLK_DEV_MD=m
@@ -2640,25 +2839,27 @@ CONFIG_TCM_USER2=m
 CONFIG_LOOPBACK_TARGET=m
 CONFIG_TCM_FC=m
 CONFIG_ISCSI_TARGET=m
+CONFIG_ISCSI_TARGET_CXGB4=m
 CONFIG_SBP_TARGET=m
+CONFIG_FUSION=y
+CONFIG_FUSION_SPI=m
+CONFIG_FUSION_FC=m
+CONFIG_FUSION_SAS=m
+CONFIG_FUSION_MAX_SGE=128
+CONFIG_FUSION_CTL=m
+CONFIG_FUSION_LAN=m
+CONFIG_FUSION_LOGGING=y
 
 #
 # IEEE 1394 (FireWire) support
 #
 CONFIG_FIREWIRE=m
+CONFIG_FIREWIRE_OHCI=m
 CONFIG_FIREWIRE_SBP2=m
 CONFIG_FIREWIRE_NET=m
+CONFIG_FIREWIRE_NOSY=m
 # end of IEEE 1394 (FireWire) support
 
-CONFIG_MACINTOSH_DRIVERS=y
-CONFIG_ADB=y
-CONFIG_ADB_MACII=y
-CONFIG_ADB_IOP=y
-CONFIG_ADB_CUDA=y
-CONFIG_ADB_PMU=y
-CONFIG_ADB_PMU_EVENT=y
-CONFIG_INPUT_ADBHID=y
-CONFIG_MAC_EMUMOUSEBTN=m
 CONFIG_NETDEVICES=y
 CONFIG_MII=m
 CONFIG_NET_CORE=y
@@ -2667,6 +2868,7 @@ CONFIG_DUMMY=m
 CONFIG_WIREGUARD=m
 CONFIG_WIREGUARD_DEBUG=y
 CONFIG_EQUALIZER=m
+CONFIG_NET_FC=y
 CONFIG_IFB=m
 CONFIG_NET_TEAM=m
 CONFIG_NET_TEAM_MODE_BROADCAST=m
@@ -2689,6 +2891,10 @@ CONFIG_NETCONSOLE=m
 CONFIG_NETCONSOLE_DYNAMIC=y
 CONFIG_NETPOLL=y
 CONFIG_NET_POLL_CONTROLLER=y
+CONFIG_NTB_NETDEV=m
+CONFIG_RIONET=m
+CONFIG_RIONET_TX_SIZE=128
+CONFIG_RIONET_RX_SIZE=128
 CONFIG_TUN=m
 CONFIG_TAP=m
 CONFIG_TUN_VNET_CROSS_LE=y
@@ -2698,6 +2904,7 @@ CONFIG_NLMON=m
 CONFIG_NET_VRF=m
 CONFIG_VSOCKMON=m
 CONFIG_MHI_NET=m
+CONFIG_SUNGEM_PHY=m
 CONFIG_ARCNET=m
 CONFIG_ARCNET_1201=m
 CONFIG_ARCNET_1051=m
@@ -2708,10 +2915,39 @@ CONFIG_ARCNET_COM90xxIO=m
 CONFIG_ARCNET_RIM_I=m
 CONFIG_ARCNET_COM20020=m
 CONFIG_ARCNET_COM20020_ISA=m
+CONFIG_ARCNET_COM20020_PCI=m
 CONFIG_ARCNET_COM20020_CS=m
 CONFIG_ATM_DRIVERS=y
 CONFIG_ATM_DUMMY=m
 CONFIG_ATM_TCP=m
+CONFIG_ATM_LANAI=m
+CONFIG_ATM_ENI=m
+CONFIG_ATM_ENI_DEBUG=y
+CONFIG_ATM_ENI_TUNE_BURST=y
+CONFIG_ATM_ENI_BURST_TX_16W=y
+CONFIG_ATM_ENI_BURST_TX_8W=y
+CONFIG_ATM_ENI_BURST_TX_4W=y
+CONFIG_ATM_ENI_BURST_TX_2W=y
+CONFIG_ATM_ENI_BURST_RX_16W=y
+CONFIG_ATM_ENI_BURST_RX_8W=y
+CONFIG_ATM_ENI_BURST_RX_4W=y
+CONFIG_ATM_ENI_BURST_RX_2W=y
+CONFIG_ATM_NICSTAR=m
+CONFIG_ATM_NICSTAR_USE_SUNI=y
+CONFIG_ATM_NICSTAR_USE_IDT77105=y
+CONFIG_ATM_IDT77252=m
+CONFIG_ATM_IDT77252_DEBUG=y
+CONFIG_ATM_IDT77252_RCV_ALL=y
+CONFIG_ATM_IDT77252_USE_SUNI=y
+CONFIG_ATM_IA=m
+CONFIG_ATM_IA_DEBUG=y
+CONFIG_ATM_FORE200E=m
+CONFIG_ATM_FORE200E_USE_TASKLET=y
+CONFIG_ATM_FORE200E_TX_RETRY=16
+CONFIG_ATM_FORE200E_DEBUG=0
+CONFIG_ATM_HE=m
+CONFIG_ATM_HE_USE_SUNI=y
+CONFIG_ATM_SOLOS=m
 CONFIG_CAIF_DRIVERS=y
 CONFIG_CAIF_TTY=m
 CONFIG_CAIF_VIRTIO=m
@@ -2737,6 +2973,7 @@ CONFIG_NET_DSA_MICROCHIP_KSZ_SPI=m
 CONFIG_NET_DSA_MICROCHIP_KSZ8863_SMI=m
 CONFIG_NET_DSA_MV88E6XXX=m
 CONFIG_NET_DSA_MV88E6XXX_PTP=y
+CONFIG_NET_DSA_MSCC_FELIX=m
 CONFIG_NET_DSA_MSCC_SEVILLE=m
 CONFIG_NET_DSA_AR9331=m
 CONFIG_NET_DSA_QCA8K=m
@@ -2764,28 +3001,36 @@ CONFIG_ETHERNET=y
 CONFIG_MDIO=m
 CONFIG_NET_VENDOR_3COM=y
 CONFIG_EL3=m
+CONFIG_3C515=m
 CONFIG_PCMCIA_3C574=m
 CONFIG_PCMCIA_3C589=m
+CONFIG_VORTEX=m
+CONFIG_TYPHOON=m
 CONFIG_NET_VENDOR_ACTIONS=y
 CONFIG_OWL_EMAC=m
+CONFIG_NET_VENDOR_ADAPTEC=y
+CONFIG_ADAPTEC_STARFIRE=m
+CONFIG_NET_VENDOR_AGERE=y
+CONFIG_ET131X=m
 CONFIG_NET_VENDOR_ALACRITECH=y
+CONFIG_SLICOSS=m
+CONFIG_NET_VENDOR_ALTEON=y
+CONFIG_ACENIC=m
+CONFIG_ACENIC_OMIT_TIGON_I=y
 CONFIG_ALTERA_TSE=m
 CONFIG_NET_VENDOR_AMAZON=y
+CONFIG_ENA_ETHERNET=m
 CONFIG_NET_VENDOR_AMD=y
-CONFIG_A2065=m
-CONFIG_ARIADNE=m
-CONFIG_ATARILANCE=m
-CONFIG_HPLANCE=m
-CONFIG_MVME147_NET=m
+CONFIG_AMD8111_ETH=m
+CONFIG_LANCE=m
+CONFIG_PCNET32=m
 CONFIG_PCMCIA_NMCLAN=m
-CONFIG_SUN3LANCE=m
 CONFIG_AMD_XGBE=m
 CONFIG_AMD_XGBE_DCB=y
 CONFIG_NET_XGENE=m
 CONFIG_NET_XGENE_V2=m
-CONFIG_NET_VENDOR_APPLE=y
-CONFIG_MACMACE=m
 CONFIG_NET_VENDOR_AQUANTIA=y
+CONFIG_AQTION=m
 CONFIG_NET_VENDOR_ARC=y
 CONFIG_ARC_EMAC_CORE=m
 CONFIG_ARC_EMAC=m
@@ -2793,24 +3038,67 @@ CONFIG_EMAC_ROCKCHIP=m
 CONFIG_NET_VENDOR_ASIX=y
 CONFIG_SPI_AX88796C=m
 CONFIG_SPI_AX88796C_COMPRESSION=y
+CONFIG_NET_VENDOR_ATHEROS=y
+CONFIG_ATL2=m
+CONFIG_ATL1=m
+CONFIG_ATL1E=m
+CONFIG_ATL1C=m
+CONFIG_ALX=m
+CONFIG_CX_ECAT=m
 CONFIG_NET_VENDOR_BROADCOM=y
 CONFIG_B44=m
+CONFIG_B44_PCI_AUTOSELECT=y
+CONFIG_B44_PCICORE_AUTOSELECT=y
+CONFIG_B44_PCI=y
 CONFIG_BCM4908_ENET=m
 CONFIG_BCMGENET=m
+CONFIG_BNX2=m
+CONFIG_CNIC=m
+CONFIG_TIGON3=m
+CONFIG_TIGON3_HWMON=y
+CONFIG_BNX2X=m
+CONFIG_BNX2X_SRIOV=y
 CONFIG_BGMAC=m
 CONFIG_BGMAC_BCMA=m
 CONFIG_BGMAC_PLATFORM=m
 CONFIG_SYSTEMPORT=m
+CONFIG_BNXT=m
+CONFIG_BNXT_SRIOV=y
+CONFIG_BNXT_FLOWER_OFFLOAD=y
+CONFIG_BNXT_DCB=y
+CONFIG_BNXT_HWMON=y
 CONFIG_NET_VENDOR_CADENCE=y
 CONFIG_MACB=m
 CONFIG_MACB_USE_HWSTAMP=y
+CONFIG_MACB_PCI=m
 CONFIG_NET_CALXEDA_XGMAC=m
 CONFIG_NET_VENDOR_CAVIUM=y
+CONFIG_THUNDER_NIC_PF=m
+CONFIG_THUNDER_NIC_VF=m
+CONFIG_THUNDER_NIC_BGX=m
+CONFIG_THUNDER_NIC_RGX=m
+CONFIG_CAVIUM_PTP=m
+CONFIG_LIQUIDIO=m
+CONFIG_LIQUIDIO_VF=m
+CONFIG_NET_VENDOR_CHELSIO=y
+CONFIG_CHELSIO_T1=m
+CONFIG_CHELSIO_T1_1G=y
+CONFIG_CHELSIO_T3=m
+CONFIG_CHELSIO_T4=m
+CONFIG_CHELSIO_T4_DCB=y
+CONFIG_CHELSIO_T4_FCOE=y
+CONFIG_CHELSIO_T4VF=m
+CONFIG_CHELSIO_LIB=m
+CONFIG_CHELSIO_INLINE_CRYPTO=y
+CONFIG_CRYPTO_DEV_CHELSIO_TLS=m
+CONFIG_CHELSIO_IPSEC_INLINE=m
+CONFIG_CHELSIO_TLS_DEVICE=m
 CONFIG_NET_VENDOR_CIRRUS=y
 CONFIG_CS89x0=m
 CONFIG_CS89x0_PLATFORM=m
 CONFIG_EP93XX_ETH=m
-CONFIG_MAC89x0=m
+CONFIG_NET_VENDOR_CISCO=y
+CONFIG_ENIC=m
 CONFIG_NET_VENDOR_CORTINA=y
 CONFIG_GEMINI_ETHERNET=m
 CONFIG_NET_VENDOR_DAVICOM=y
@@ -2818,14 +3106,36 @@ CONFIG_DM9000=m
 CONFIG_DM9000_FORCE_SIMPLE_PHY_POLL=y
 CONFIG_DM9051=m
 CONFIG_DNET=m
+CONFIG_NET_VENDOR_DEC=y
+CONFIG_NET_TULIP=y
+CONFIG_DE2104X=m
+CONFIG_DE2104X_DSL=0
+CONFIG_TULIP=m
+CONFIG_TULIP_MWI=y
+CONFIG_TULIP_MMIO=y
+CONFIG_TULIP_NAPI=y
+CONFIG_TULIP_NAPI_HW_MITIGATION=y
+CONFIG_WINBOND_840=m
+CONFIG_DM9102=m
+CONFIG_ULI526X=m
+CONFIG_PCMCIA_XIRCOM=m
+CONFIG_NET_VENDOR_DLINK=y
+CONFIG_DL2K=m
+CONFIG_SUNDANCE=m
+CONFIG_SUNDANCE_MMIO=y
+CONFIG_NET_VENDOR_EMULEX=y
+CONFIG_BE2NET=m
+CONFIG_BE2NET_HWMON=y
+CONFIG_BE2NET_BE2=y
+CONFIG_BE2NET_BE3=y
+CONFIG_BE2NET_LANCER=y
+CONFIG_BE2NET_SKYHAWK=y
 CONFIG_NET_VENDOR_ENGLEDER=y
 CONFIG_TSNEP=m
 CONFIG_TSNEP_SELFTESTS=y
 CONFIG_NET_VENDOR_EZCHIP=y
 CONFIG_EZCHIP_NPS_MANAGEMENT_ENET=m
 CONFIG_NET_VENDOR_FARADAY=y
-CONFIG_FTMAC100=m
-CONFIG_FTGMAC100=m
 CONFIG_NET_VENDOR_FREESCALE=y
 CONFIG_FEC=m
 CONFIG_FSL_FMAN=m
@@ -2833,10 +3143,17 @@ CONFIG_FSL_PQ_MDIO=m
 CONFIG_FSL_XGMAC_MDIO=m
 CONFIG_GIANFAR=m
 CONFIG_FSL_DPAA2_SWITCH=m
+CONFIG_FSL_ENETC=m
+CONFIG_FSL_ENETC_VF=m
 CONFIG_FSL_ENETC_IERB=m
+CONFIG_FSL_ENETC_MDIO=m
+CONFIG_FSL_ENETC_PTP_CLOCK=m
+CONFIG_FSL_ENETC_QOS=y
 CONFIG_NET_VENDOR_FUJITSU=y
 CONFIG_PCMCIA_FMVJ18X=m
 CONFIG_NET_VENDOR_FUNGIBLE=y
+CONFIG_FUN_CORE=m
+CONFIG_FUN_ETH=m
 CONFIG_NET_VENDOR_GOOGLE=y
 CONFIG_NET_VENDOR_HISILICON=y
 CONFIG_HIX5HD2_GMAC=m
@@ -2847,12 +3164,40 @@ CONFIG_HNS_MDIO=m
 CONFIG_HNS=m
 CONFIG_HNS_DSAF=m
 CONFIG_HNS_ENET=m
+CONFIG_HNS3=m
+CONFIG_HNS3_HCLGE=m
+CONFIG_HNS3_DCB=y
+CONFIG_HNS3_HCLGEVF=m
+CONFIG_HNS3_ENET=m
 CONFIG_NET_VENDOR_HUAWEI=y
 CONFIG_NET_VENDOR_I825XX=y
-CONFIG_BVME6000_NET=m
-CONFIG_MVME16x_NET=m
 CONFIG_NET_VENDOR_INTEL=y
+CONFIG_E100=m
+CONFIG_E1000=m
+CONFIG_E1000E=m
+CONFIG_IGB=m
+CONFIG_IGB_HWMON=y
+CONFIG_IGBVF=m
+CONFIG_IXGB=m
+CONFIG_IXGBE=m
+CONFIG_IXGBE_HWMON=y
+CONFIG_IXGBE_DCB=y
+CONFIG_IXGBE_IPSEC=y
+CONFIG_IXGBEVF=m
+CONFIG_IXGBEVF_IPSEC=y
+CONFIG_I40E=m
+CONFIG_I40E_DCB=y
+CONFIG_IAVF=m
+CONFIG_I40EVF=m
+CONFIG_ICE=m
+CONFIG_ICE_SWITCHDEV=y
+CONFIG_FM10K=m
+CONFIG_IGC=m
 CONFIG_NET_VENDOR_WANGXUN=y
+CONFIG_LIBWX=m
+CONFIG_NGBE=m
+CONFIG_TXGBE=m
+CONFIG_JME=m
 CONFIG_KORINA=m
 CONFIG_NET_VENDOR_ADI=y
 CONFIG_ADIN1110=m
@@ -2861,22 +3206,59 @@ CONFIG_LITEX_LITEETH=m
 CONFIG_NET_VENDOR_MARVELL=y
 CONFIG_MV643XX_ETH=m
 CONFIG_MVMDIO=m
-CONFIG_MVNETA_BM_ENABLE=m
 CONFIG_MVNETA=m
-CONFIG_MVNETA_BM=m
 CONFIG_MVPP2=m
 CONFIG_MVPP2_PTP=y
 CONFIG_PXA168_ETH=m
+CONFIG_SKGE=m
+CONFIG_SKGE_DEBUG=y
+CONFIG_SKGE_GENESIS=y
+CONFIG_SKY2=m
+CONFIG_SKY2_DEBUG=y
+CONFIG_OCTEONTX2_MBOX=m
+CONFIG_OCTEONTX2_AF=m
+CONFIG_NDC_DIS_DYNAMIC_CACHING=y
+CONFIG_OCTEONTX2_PF=m
+CONFIG_OCTEONTX2_VF=m
+CONFIG_OCTEON_EP=m
 CONFIG_PRESTERA=m
+CONFIG_PRESTERA_PCI=m
 CONFIG_NET_VENDOR_MEDIATEK=y
 CONFIG_NET_MEDIATEK_SOC_WED=y
 CONFIG_NET_MEDIATEK_SOC=m
 CONFIG_NET_MEDIATEK_STAR_EMAC=m
 CONFIG_NET_VENDOR_MELLANOX=y
+CONFIG_MLX4_EN=m
+CONFIG_MLX4_EN_DCB=y
+CONFIG_MLX4_CORE=m
+CONFIG_MLX4_DEBUG=y
+CONFIG_MLX4_CORE_GEN2=y
+CONFIG_MLX5_CORE=m
+CONFIG_MLX5_FPGA=y
+CONFIG_MLX5_CORE_EN=y
+CONFIG_MLX5_EN_ARFS=y
+CONFIG_MLX5_EN_RXNFC=y
+CONFIG_MLX5_MPFS=y
+CONFIG_MLX5_ESWITCH=y
+CONFIG_MLX5_BRIDGE=y
+CONFIG_MLX5_CLS_ACT=y
+CONFIG_MLX5_TC_CT=y
+CONFIG_MLX5_TC_SAMPLE=y
+CONFIG_MLX5_CORE_EN_DCB=y
+CONFIG_MLX5_CORE_IPOIB=y
+CONFIG_MLX5_EN_MACSEC=y
+CONFIG_MLX5_EN_IPSEC=y
+CONFIG_MLX5_EN_TLS=y
+CONFIG_MLX5_SW_STEERING=y
+CONFIG_MLX5_SF=y
+CONFIG_MLX5_SF_MANAGER=y
 CONFIG_MLXSW_CORE=m
 CONFIG_MLXSW_CORE_HWMON=y
 CONFIG_MLXSW_CORE_THERMAL=y
+CONFIG_MLXSW_PCI=m
 CONFIG_MLXSW_I2C=m
+CONFIG_MLXSW_SPECTRUM=m
+CONFIG_MLXSW_SPECTRUM_DCB=y
 CONFIG_MLXSW_MINIMAL=m
 CONFIG_MLXFW=m
 CONFIG_MLXBF_GIGE=m
@@ -2884,10 +3266,12 @@ CONFIG_NET_VENDOR_MICREL=y
 CONFIG_KS8842=m
 CONFIG_KS8851=m
 CONFIG_KS8851_MLL=m
+CONFIG_KSZ884X_PCI=m
 CONFIG_NET_VENDOR_MICROCHIP=y
 CONFIG_ENC28J60=m
 CONFIG_ENC28J60_WRITEVERIFY=y
 CONFIG_ENCX24J600=m
+CONFIG_LAN743X=m
 CONFIG_LAN966X_SWITCH=m
 CONFIG_SPARX5_SWITCH=m
 CONFIG_SPARX5_DCB=y
@@ -2896,47 +3280,107 @@ CONFIG_NET_VENDOR_MICROSEMI=y
 CONFIG_MSCC_OCELOT_SWITCH_LIB=m
 CONFIG_MSCC_OCELOT_SWITCH=m
 CONFIG_NET_VENDOR_MICROSOFT=y
+CONFIG_NET_VENDOR_MYRI=y
+CONFIG_MYRI10GE=m
 CONFIG_NET_VENDOR_NI=y
 CONFIG_NI_XGE_MANAGEMENT_ENET=m
 CONFIG_NET_VENDOR_NATSEMI=y
-CONFIG_MACSONIC=m
+CONFIG_NATSEMI=m
+CONFIG_NS83820=m
+CONFIG_NET_VENDOR_NETERION=y
+CONFIG_S2IO=m
 CONFIG_NET_VENDOR_NETRONOME=y
+CONFIG_NFP=m
+CONFIG_NFP_APP_FLOWER=y
+CONFIG_NFP_APP_ABM_NIC=y
+CONFIG_NFP_NET_IPSEC=y
+CONFIG_NFP_DEBUG=y
 CONFIG_NET_VENDOR_8390=y
 CONFIG_PCMCIA_AXNET=m
 CONFIG_AX88796=m
 CONFIG_AX88796_93CX6=y
-CONFIG_XSURF100=m
-CONFIG_HYDRA=m
-CONFIG_MAC8390=m
 CONFIG_NE2000=m
-CONFIG_APNE=m
+CONFIG_NE2K_PCI=m
 CONFIG_PCMCIA_PCNET=m
 CONFIG_ULTRA=m
 CONFIG_WD80x3=m
-CONFIG_ZORRO8390=m
+CONFIG_NET_VENDOR_NVIDIA=y
+CONFIG_FORCEDETH=m
 CONFIG_LPC_ENET=m
+CONFIG_NET_VENDOR_OKI=y
+CONFIG_PCH_GBE=m
 CONFIG_ETHOC=m
+CONFIG_NET_VENDOR_PACKET_ENGINES=y
+CONFIG_HAMACHI=m
+CONFIG_YELLOWFIN=m
 CONFIG_NET_VENDOR_PENSANDO=y
+CONFIG_IONIC=m
+CONFIG_NET_VENDOR_QLOGIC=y
+CONFIG_QLA3XXX=m
+CONFIG_QLCNIC=m
+CONFIG_QLCNIC_SRIOV=y
+CONFIG_QLCNIC_DCB=y
+CONFIG_QLCNIC_HWMON=y
+CONFIG_NETXEN_NIC=m
+CONFIG_QED=m
+CONFIG_QED_LL2=y
+CONFIG_QED_SRIOV=y
+CONFIG_QEDE=m
+CONFIG_QED_ISCSI=y
+CONFIG_QED_FCOE=y
+CONFIG_QED_OOO=y
+CONFIG_NET_VENDOR_BROCADE=y
+CONFIG_BNA=m
 CONFIG_NET_VENDOR_QUALCOMM=y
 CONFIG_QCA7000=m
 CONFIG_QCA7000_SPI=m
 CONFIG_QCA7000_UART=m
 CONFIG_QCOM_EMAC=m
 CONFIG_RMNET=m
+CONFIG_NET_VENDOR_RDC=y
+CONFIG_R6040=m
+CONFIG_NET_VENDOR_REALTEK=y
+CONFIG_8139CP=m
+CONFIG_8139TOO=m
+CONFIG_8139TOO_PIO=y
+CONFIG_8139TOO_TUNE_TWISTER=y
+CONFIG_8139TOO_8129=y
+CONFIG_8139_OLD_RX_RESET=y
+CONFIG_R8169=m
 CONFIG_NET_VENDOR_RENESAS=y
 CONFIG_SH_ETH=m
 CONFIG_RAVB=m
 CONFIG_RENESAS_ETHER_SWITCH=m
 CONFIG_NET_VENDOR_ROCKER=y
+CONFIG_ROCKER=m
 CONFIG_NET_VENDOR_SAMSUNG=y
 CONFIG_SXGBE_ETH=m
 CONFIG_NET_VENDOR_SEEQ=y
+CONFIG_NET_VENDOR_SILAN=y
+CONFIG_SC92031=m
+CONFIG_NET_VENDOR_SIS=y
+CONFIG_SIS900=m
+CONFIG_SIS190=m
 CONFIG_NET_VENDOR_SOLARFLARE=y
+CONFIG_SFC=m
+CONFIG_SFC_MTD=y
+CONFIG_SFC_MCDI_MON=y
+CONFIG_SFC_SRIOV=y
+CONFIG_SFC_MCDI_LOGGING=y
+CONFIG_SFC_FALCON=m
+CONFIG_SFC_FALCON_MTD=y
+CONFIG_SFC_SIENA=m
+CONFIG_SFC_SIENA_MTD=y
+CONFIG_SFC_SIENA_MCDI_MON=y
+CONFIG_SFC_SIENA_SRIOV=y
+CONFIG_SFC_SIENA_MCDI_LOGGING=y
 CONFIG_NET_VENDOR_SMSC=y
 CONFIG_SMC9194=m
 CONFIG_SMC91X=m
 CONFIG_PCMCIA_SMC91C92=m
+CONFIG_EPIC100=m
 CONFIG_SMSC911X=m
+CONFIG_SMSC9420=m
 CONFIG_NET_VENDOR_SOCIONEXT=y
 CONFIG_SNI_AVE=m
 CONFIG_SNI_NETSEC=m
@@ -2964,10 +3408,28 @@ CONFIG_DWMAC_IMX8=m
 CONFIG_DWMAC_INTEL_PLAT=m
 CONFIG_DWMAC_TEGRA=m
 CONFIG_DWMAC_VISCONTI=m
+CONFIG_DWMAC_LOONGSON=m
+CONFIG_STMMAC_PCI=m
+CONFIG_NET_VENDOR_SUN=y
+CONFIG_HAPPYMEAL=m
+CONFIG_SUNGEM=m
+CONFIG_CASSINI=m
+CONFIG_NIU=m
 CONFIG_NET_VENDOR_SUNPLUS=y
 CONFIG_SP7021_EMAC=m
 CONFIG_NET_VENDOR_SYNOPSYS=y
 CONFIG_DWC_XLGMAC=m
+CONFIG_DWC_XLGMAC_PCI=m
+CONFIG_NET_VENDOR_TEHUTI=y
+CONFIG_TEHUTI=m
+CONFIG_NET_VENDOR_TI=y
+CONFIG_TI_DAVINCI_EMAC=m
+CONFIG_TI_DAVINCI_MDIO=m
+CONFIG_TI_CPSW_PHY_SEL=y
+CONFIG_TI_CPSW=m
+CONFIG_TI_CPSW_SWITCHDEV=m
+CONFIG_TI_CPTS=m
+CONFIG_TLAN=m
 CONFIG_NET_VENDOR_VERTEXCOM=y
 CONFIG_MSE102X=m
 CONFIG_NET_VENDOR_VIA=y
@@ -2987,6 +3449,12 @@ CONFIG_XILINX_AXI_EMAC=m
 CONFIG_XILINX_LL_TEMAC=m
 CONFIG_NET_VENDOR_XIRCOM=y
 CONFIG_PCMCIA_XIRC2PS=m
+CONFIG_FDDI=m
+CONFIG_DEFXX=m
+CONFIG_SKFP=m
+CONFIG_HIPPI=y
+CONFIG_ROADRUNNER=m
+CONFIG_ROADRUNNER_LARGE_RINGS=y
 CONFIG_QCOM_IPA=m
 CONFIG_NET_SB1000=m
 CONFIG_PHYLINK=m
@@ -3063,24 +3531,37 @@ CONFIG_CAN_AT91=m
 CONFIG_CAN_CAN327=m
 CONFIG_CAN_FLEXCAN=m
 CONFIG_CAN_GRCAN=m
+CONFIG_CAN_JANZ_ICAN3=m
+CONFIG_CAN_KVASER_PCIEFD=m
 CONFIG_CAN_SLCAN=m
 CONFIG_CAN_SUN4I=m
 CONFIG_CAN_XILINXCAN=m
 CONFIG_CAN_C_CAN=m
 CONFIG_CAN_C_CAN_PLATFORM=m
+CONFIG_CAN_C_CAN_PCI=m
 CONFIG_CAN_CC770=m
 CONFIG_CAN_CC770_ISA=m
 CONFIG_CAN_CC770_PLATFORM=m
 CONFIG_CAN_CTUCANFD=m
+CONFIG_CAN_CTUCANFD_PCI=m
 CONFIG_CAN_CTUCANFD_PLATFORM=m
 CONFIG_CAN_IFI_CANFD=m
 CONFIG_CAN_M_CAN=m
+CONFIG_CAN_M_CAN_PCI=m
 CONFIG_CAN_M_CAN_PLATFORM=m
 CONFIG_CAN_M_CAN_TCAN4X5X=m
+CONFIG_CAN_PEAK_PCIEFD=m
 CONFIG_CAN_RCAR=m
 CONFIG_CAN_RCAR_CANFD=m
 CONFIG_CAN_SJA1000=m
+CONFIG_CAN_EMS_PCI=m
 CONFIG_CAN_EMS_PCMCIA=m
+CONFIG_CAN_F81601=m
+CONFIG_CAN_KVASER_PCI=m
+CONFIG_CAN_PEAK_PCI=m
+CONFIG_CAN_PEAK_PCIEC=y
+CONFIG_CAN_PEAK_PCMCIA=m
+CONFIG_CAN_PLX_PCI=m
 CONFIG_CAN_SJA1000_ISA=m
 CONFIG_CAN_SJA1000_PLATFORM=m
 CONFIG_CAN_TSCAN1=m
@@ -3140,6 +3621,7 @@ CONFIG_MDIO_MOXART=m
 CONFIG_MDIO_OCTEON=m
 CONFIG_MDIO_IPQ4019=m
 CONFIG_MDIO_IPQ8064=m
+CONFIG_MDIO_THUNDER=m
 
 #
 # MDIO Multiplexers
@@ -3231,17 +3713,23 @@ CONFIG_USB_NET_AQC111=m
 CONFIG_USB_RTL8153_ECM=m
 CONFIG_WLAN=y
 CONFIG_WLAN_VENDOR_ADMTEK=y
+CONFIG_ADM8211=m
 CONFIG_ATH_COMMON=m
 CONFIG_WLAN_VENDOR_ATH=y
 CONFIG_ATH_DEBUG=y
 CONFIG_ATH_REG_DYNAMIC_USER_REG_HINTS=y
 CONFIG_ATH_REG_DYNAMIC_USER_CERT_TESTING=y
+CONFIG_ATH5K=m
+CONFIG_ATH5K_DEBUG=y
+CONFIG_ATH5K_PCI=y
+CONFIG_ATH5K_TEST_CHANNELS=y
 CONFIG_ATH9K_HW=m
 CONFIG_ATH9K_COMMON=m
 CONFIG_ATH9K_COMMON_DEBUG=y
 CONFIG_ATH9K_DFS_DEBUGFS=y
 CONFIG_ATH9K_BTCOEX_SUPPORT=y
 CONFIG_ATH9K=m
+CONFIG_ATH9K_PCI=y
 CONFIG_ATH9K_AHB=y
 CONFIG_ATH9K_DEBUGFS=y
 CONFIG_ATH9K_STATION_STATISTICS=y
@@ -3251,6 +3739,7 @@ CONFIG_ATH9K_DYNACK=y
 CONFIG_ATH9K_RFKILL=y
 CONFIG_ATH9K_CHANNEL_CONTEXT=y
 CONFIG_ATH9K_PCOEM=y
+CONFIG_ATH9K_PCI_NO_EEPROM=m
 CONFIG_ATH9K_HTC=m
 CONFIG_ATH9K_HTC_DEBUGFS=y
 CONFIG_ATH9K_HWRNG=y
@@ -3266,8 +3755,13 @@ CONFIG_ATH6KL_USB=m
 CONFIG_ATH6KL_DEBUG=y
 CONFIG_ATH6KL_REGDOMAIN=y
 CONFIG_AR5523=m
+CONFIG_WIL6210=m
+CONFIG_WIL6210_ISR_COR=y
+CONFIG_WIL6210_DEBUGFS=y
 CONFIG_ATH10K=m
 CONFIG_ATH10K_CE=y
+CONFIG_ATH10K_PCI=m
+CONFIG_ATH10K_AHB=y
 CONFIG_ATH10K_SDIO=m
 CONFIG_ATH10K_USB=m
 CONFIG_ATH10K_SNOC=m
@@ -3279,11 +3773,13 @@ CONFIG_WCN36XX=m
 CONFIG_WCN36XX_DEBUGFS=y
 CONFIG_ATH11K=m
 CONFIG_ATH11K_AHB=m
+CONFIG_ATH11K_PCI=m
 CONFIG_ATH11K_DEBUG=y
 CONFIG_ATH11K_DEBUGFS=y
 CONFIG_ATH11K_SPECTRAL=y
 CONFIG_WLAN_VENDOR_ATMEL=y
 CONFIG_ATMEL=m
+CONFIG_PCI_ATMEL=m
 CONFIG_PCMCIA_ATMEL=m
 CONFIG_AT76C50X_USB=m
 CONFIG_WLAN_VENDOR_BROADCOM=y
@@ -3293,6 +3789,8 @@ CONFIG_B43_SSB=y
 CONFIG_B43_BUSES_BCMA_AND_SSB=y
 # CONFIG_B43_BUSES_BCMA is not set
 # CONFIG_B43_BUSES_SSB is not set
+CONFIG_B43_PCI_AUTOSELECT=y
+CONFIG_B43_PCICORE_AUTOSELECT=y
 CONFIG_B43_SDIO=y
 CONFIG_B43_BCMA_PIO=y
 CONFIG_B43_PIO=y
@@ -3304,6 +3802,8 @@ CONFIG_B43_LEDS=y
 CONFIG_B43_HWRNG=y
 CONFIG_B43_DEBUG=y
 CONFIG_B43LEGACY=m
+CONFIG_B43LEGACY_PCI_AUTOSELECT=y
+CONFIG_B43LEGACY_PCICORE_AUTOSELECT=y
 CONFIG_B43LEGACY_LEDS=y
 CONFIG_B43LEGACY_HWRNG=y
 CONFIG_B43LEGACY_DEBUG=y
@@ -3317,30 +3817,78 @@ CONFIG_BRCMSMAC=m
 CONFIG_BRCMSMAC_LEDS=y
 CONFIG_BRCMFMAC=m
 CONFIG_BRCMFMAC_PROTO_BCDC=y
+CONFIG_BRCMFMAC_PROTO_MSGBUF=y
 CONFIG_BRCMFMAC_SDIO=y
 CONFIG_BRCMFMAC_USB=y
+CONFIG_BRCMFMAC_PCIE=y
 CONFIG_BRCM_TRACING=y
 CONFIG_BRCMDBG=y
 CONFIG_WLAN_VENDOR_CISCO=y
+CONFIG_AIRO=m
 CONFIG_AIRO_CS=m
 CONFIG_WLAN_VENDOR_INTEL=y
+CONFIG_IPW2100=m
+CONFIG_IPW2100_MONITOR=y
+CONFIG_IPW2100_DEBUG=y
+CONFIG_IPW2200=m
+CONFIG_IPW2200_MONITOR=y
+CONFIG_IPW2200_RADIOTAP=y
+CONFIG_IPW2200_PROMISCUOUS=y
+CONFIG_IPW2200_QOS=y
+CONFIG_IPW2200_DEBUG=y
+CONFIG_LIBIPW=m
+CONFIG_LIBIPW_DEBUG=y
+CONFIG_IWLEGACY=m
+CONFIG_IWL4965=m
+CONFIG_IWL3945=m
+
+#
+# iwl3945 / iwl4965 Debugging Options
+#
+CONFIG_IWLEGACY_DEBUG=y
+CONFIG_IWLEGACY_DEBUGFS=y
+# end of iwl3945 / iwl4965 Debugging Options
+
+CONFIG_IWLWIFI=m
+CONFIG_IWLWIFI_LEDS=y
+CONFIG_IWLDVM=m
+CONFIG_IWLMVM=m
+CONFIG_IWLWIFI_OPMODE_MODULAR=y
+
+#
+# Debugging Options
+#
+CONFIG_IWLWIFI_DEBUG=y
+CONFIG_IWLWIFI_DEBUGFS=y
+# end of Debugging Options
+
 CONFIG_WLAN_VENDOR_INTERSIL=y
 CONFIG_HOSTAP=m
 CONFIG_HOSTAP_FIRMWARE=y
 CONFIG_HOSTAP_FIRMWARE_NVRAM=y
+CONFIG_HOSTAP_PLX=m
+CONFIG_HOSTAP_PCI=m
 CONFIG_HOSTAP_CS=m
 CONFIG_HERMES=m
 CONFIG_HERMES_PRISM=y
 CONFIG_HERMES_CACHE_FW_ON_INIT=y
+CONFIG_PLX_HERMES=m
+CONFIG_TMD_HERMES=m
+CONFIG_NORTEL_HERMES=m
+CONFIG_PCI_HERMES=m
+CONFIG_PCMCIA_HERMES=m
+CONFIG_PCMCIA_SPECTRUM=m
 CONFIG_ORINOCO_USB=m
 CONFIG_P54_COMMON=m
 CONFIG_P54_USB=m
+CONFIG_P54_PCI=m
 CONFIG_P54_SPI=m
 CONFIG_P54_SPI_DEFAULT_EEPROM=y
 CONFIG_P54_LEDS=y
 CONFIG_WLAN_VENDOR_MARVELL=y
 CONFIG_LIBERTAS=m
 CONFIG_LIBERTAS_USB=m
+CONFIG_LIBERTAS_CS=m
 CONFIG_LIBERTAS_SDIO=m
 CONFIG_LIBERTAS_SPI=m
 CONFIG_LIBERTAS_DEBUG=y
@@ -3350,7 +3898,9 @@ CONFIG_LIBERTAS_THINFIRM_DEBUG=y
 CONFIG_LIBERTAS_THINFIRM_USB=m
 CONFIG_MWIFIEX=m
 CONFIG_MWIFIEX_SDIO=m
+CONFIG_MWIFIEX_PCIE=m
 CONFIG_MWIFIEX_USB=m
+CONFIG_MWL8K=m
 CONFIG_WLAN_VENDOR_MEDIATEK=y
 CONFIG_MT7601U=m
 CONFIG_MT76_CORE=m
@@ -3362,15 +3912,24 @@ CONFIG_MT76x02_USB=m
 CONFIG_MT76_CONNAC_LIB=m
 CONFIG_MT76x0_COMMON=m
 CONFIG_MT76x0U=m
+CONFIG_MT76x0E=m
 CONFIG_MT76x2_COMMON=m
+CONFIG_MT76x2E=m
 CONFIG_MT76x2U=m
+CONFIG_MT7603E=m
 CONFIG_MT7615_COMMON=m
+CONFIG_MT7615E=m
+CONFIG_MT7622_WMAC=y
 CONFIG_MT7663_USB_SDIO_COMMON=m
 CONFIG_MT7663U=m
 CONFIG_MT7663S=m
+CONFIG_MT7915E=m
+CONFIG_MT7986_WMAC=y
 CONFIG_MT7921_COMMON=m
+CONFIG_MT7921E=m
 CONFIG_MT7921S=m
 CONFIG_MT7921U=m
+CONFIG_MT7996E=m
 CONFIG_WLAN_VENDOR_MICROCHIP=y
 CONFIG_WILC1000=m
 CONFIG_WILC1000_SDIO=m
@@ -3380,6 +3939,14 @@ CONFIG_WLAN_VENDOR_PURELIFI=y
 CONFIG_PLFXLC=m
 CONFIG_WLAN_VENDOR_RALINK=y
 CONFIG_RT2X00=m
+CONFIG_RT2400PCI=m
+CONFIG_RT2500PCI=m
+CONFIG_RT61PCI=m
+CONFIG_RT2800PCI=m
+CONFIG_RT2800PCI_RT33XX=y
+CONFIG_RT2800PCI_RT35XX=y
+CONFIG_RT2800PCI_RT53XX=y
+CONFIG_RT2800PCI_RT3290=y
 CONFIG_RT2500USB=m
 CONFIG_RT73USB=m
 CONFIG_RT2800USB=m
@@ -3390,6 +3957,9 @@ CONFIG_RT2800USB_RT53XX=y
 CONFIG_RT2800USB_RT55XX=y
 CONFIG_RT2800USB_UNKNOWN=y
 CONFIG_RT2800_LIB=m
+CONFIG_RT2800_LIB_MMIO=m
+CONFIG_RT2X00_LIB_MMIO=m
+CONFIG_RT2X00_LIB_PCI=m
 CONFIG_RT2X00_LIB_USB=m
 CONFIG_RT2X00_LIB=m
 CONFIG_RT2X00_LIB_FIRMWARE=y
@@ -3398,30 +3968,58 @@ CONFIG_RT2X00_LIB_LEDS=y
 CONFIG_RT2X00_LIB_DEBUGFS=y
 CONFIG_RT2X00_DEBUG=y
 CONFIG_WLAN_VENDOR_REALTEK=y
+CONFIG_RTL8180=m
 CONFIG_RTL8187=m
 CONFIG_RTL8187_LEDS=y
 CONFIG_RTL_CARDS=m
+CONFIG_RTL8192CE=m
+CONFIG_RTL8192SE=m
+CONFIG_RTL8192DE=m
+CONFIG_RTL8723AE=m
+CONFIG_RTL8723BE=m
+CONFIG_RTL8188EE=m
+CONFIG_RTL8192EE=m
+CONFIG_RTL8821AE=m
 CONFIG_RTL8192CU=m
 CONFIG_RTLWIFI=m
+CONFIG_RTLWIFI_PCI=m
 CONFIG_RTLWIFI_USB=m
 CONFIG_RTLWIFI_DEBUG=y
 CONFIG_RTL8192C_COMMON=m
+CONFIG_RTL8723_COMMON=m
+CONFIG_RTLBTCOEXIST=m
 CONFIG_RTL8XXXU=m
 CONFIG_RTL8XXXU_UNTESTED=y
 CONFIG_RTW88=m
 CONFIG_RTW88_CORE=m
+CONFIG_RTW88_PCI=m
 CONFIG_RTW88_USB=m
 CONFIG_RTW88_8822B=m
 CONFIG_RTW88_8822C=m
 CONFIG_RTW88_8723D=m
 CONFIG_RTW88_8821C=m
+CONFIG_RTW88_8822BE=m
 CONFIG_RTW88_8822BU=m
+CONFIG_RTW88_8822CE=m
 CONFIG_RTW88_8822CU=m
+CONFIG_RTW88_8723DE=m
 CONFIG_RTW88_8723DU=m
+CONFIG_RTW88_8821CE=m
 CONFIG_RTW88_8821CU=m
 CONFIG_RTW88_DEBUG=y
 CONFIG_RTW88_DEBUGFS=y
 CONFIG_RTW89=m
+CONFIG_RTW89_CORE=m
+CONFIG_RTW89_PCI=m
+CONFIG_RTW89_8852A=m
+CONFIG_RTW89_8852B=m
+CONFIG_RTW89_8852C=m
+CONFIG_RTW89_8852AE=m
+CONFIG_RTW89_8852BE=m
+CONFIG_RTW89_8852CE=m
+CONFIG_RTW89_DEBUG=y
+CONFIG_RTW89_DEBUGMSG=y
+CONFIG_RTW89_DEBUGFS=y
 CONFIG_WLAN_VENDOR_RSI=y
 CONFIG_RSI_91X=m
 CONFIG_RSI_DEBUGFS=y
@@ -3448,6 +4046,8 @@ CONFIG_USB_ZD1201=m
 CONFIG_ZD1211RW=m
 CONFIG_ZD1211RW_DEBUG=y
 CONFIG_WLAN_VENDOR_QUANTENNA=y
+CONFIG_QTNFMAC=m
+CONFIG_QTNFMAC_PCIE=m
 CONFIG_PCMCIA_RAYCS=m
 CONFIG_PCMCIA_WL3501=m
 CONFIG_MAC80211_HWSIM=m
@@ -3461,8 +4061,12 @@ CONFIG_HDLC_CISCO=m
 CONFIG_HDLC_FR=m
 CONFIG_HDLC_PPP=m
 CONFIG_HDLC_X25=m
+CONFIG_PCI200SYN=m
+CONFIG_WANXL=m
+CONFIG_PC300TOO=m
 CONFIG_N2=m
 CONFIG_C101=m
+CONFIG_FARSYNC=m
 CONFIG_FSL_UCC_HDLC=m
 CONFIG_SLIC_DS26522=m
 CONFIG_LAPBETHER=m
@@ -3488,8 +4092,12 @@ CONFIG_MHI_WWAN_CTRL=m
 CONFIG_MHI_WWAN_MBIM=m
 CONFIG_QCOM_BAM_DMUX=m
 CONFIG_RPMSG_WWAN_CTRL=m
+CONFIG_IOSM=m
+CONFIG_MTK_T7XX=m
 # end of Wireless WAN
 
+CONFIG_VMXNET3=m
+CONFIG_USB4_NET=m
 CONFIG_NETDEVSIM=m
 CONFIG_NET_FAILOVER=m
 CONFIG_NETDEV_LEGACY_INIT=y
@@ -3504,7 +4112,17 @@ CONFIG_MISDN_L1OIP=m
 #
 # mISDN hardware drivers
 #
+CONFIG_MISDN_HFCPCI=m
+CONFIG_MISDN_HFCMULTI=m
 CONFIG_MISDN_HFCUSB=m
+CONFIG_MISDN_AVMFRITZ=m
+CONFIG_MISDN_SPEEDFAX=m
+CONFIG_MISDN_INFINEON=m
+CONFIG_MISDN_W6692=m
+CONFIG_MISDN_NETJET=m
+CONFIG_MISDN_HDLC=m
+CONFIG_MISDN_IPAC=m
+CONFIG_MISDN_ISAR=m
 
 #
 # Input device support
@@ -3534,8 +4152,6 @@ CONFIG_INPUT_KEYBOARD=y
 CONFIG_KEYBOARD_ADC=m
 CONFIG_KEYBOARD_ADP5588=m
 CONFIG_KEYBOARD_ADP5589=m
-CONFIG_KEYBOARD_AMIGA=m
-CONFIG_KEYBOARD_ATARI=m
 CONFIG_KEYBOARD_ATKBD=m
 CONFIG_KEYBOARD_QT1050=m
 CONFIG_KEYBOARD_QT1070=m
@@ -3549,8 +4165,6 @@ CONFIG_KEYBOARD_GPIO_POLLED=m
 CONFIG_KEYBOARD_TCA6416=m
 CONFIG_KEYBOARD_TCA8418=m
 CONFIG_KEYBOARD_MATRIX=m
-CONFIG_KEYBOARD_HIL_OLD=m
-CONFIG_KEYBOARD_HIL=m
 CONFIG_KEYBOARD_LM8323=m
 CONFIG_KEYBOARD_LM8333=m
 CONFIG_KEYBOARD_LPC32XX=m
@@ -3611,8 +4225,6 @@ CONFIG_MOUSE_INPORT=m
 CONFIG_MOUSE_ATIXL=y
 CONFIG_MOUSE_LOGIBM=m
 CONFIG_MOUSE_PC110PAD=m
-CONFIG_MOUSE_AMIGA=m
-CONFIG_MOUSE_ATARI=m
 CONFIG_MOUSE_VSXXXAA=m
 CONFIG_MOUSE_GPIO=m
 CONFIG_MOUSE_SYNAPTICS_I2C=m
@@ -3643,7 +4255,6 @@ CONFIG_JOYSTICK_ZHENHUA=m
 CONFIG_JOYSTICK_DB9=m
 CONFIG_JOYSTICK_GAMECON=m
 CONFIG_JOYSTICK_TURBOGRAFX=m
-CONFIG_JOYSTICK_AMIGA=m
 CONFIG_JOYSTICK_AS5011=m
 CONFIG_JOYSTICK_JOYDUMP=m
 CONFIG_JOYSTICK_XPAD=m
@@ -3794,10 +4405,10 @@ CONFIG_INPUT_ATC260X_ONKEY=m
 CONFIG_INPUT_ATMEL_CAPTOUCH=m
 CONFIG_INPUT_BMA150=m
 CONFIG_INPUT_E3X0_BUTTON=m
+CONFIG_INPUT_PCSPKR=m
 CONFIG_INPUT_PM8941_PWRKEY=m
 CONFIG_INPUT_PM8XXX_VIBRATOR=m
 CONFIG_INPUT_PMIC8XXX_PWRKEY=m
-CONFIG_INPUT_M68K_BEEP=m
 CONFIG_INPUT_MAX77650_ONKEY=m
 CONFIG_INPUT_MAX77693_HAPTIC=m
 CONFIG_INPUT_MC13783_PWRBUTTON=m
@@ -3818,7 +4429,6 @@ CONFIG_INPUT_TPS65218_PWRBUTTON=m
 CONFIG_INPUT_TPS65219_PWRBUTTON=m
 CONFIG_INPUT_AXP20X_PEK=m
 CONFIG_INPUT_UINPUT=m
-CONFIG_HP_SDC_RTC=m
 CONFIG_INPUT_PCF50633_PMU=m
 CONFIG_INPUT_PCF8574=m
 CONFIG_INPUT_PWM_BEEPER=m
@@ -3840,6 +4450,7 @@ CONFIG_INPUT_IQS626A=m
 CONFIG_INPUT_IQS7222=m
 CONFIG_INPUT_CMA3000=m
 CONFIG_INPUT_CMA3000_I2C=m
+CONFIG_INPUT_IDEAPAD_SLIDEBAR=m
 CONFIG_INPUT_DRV260X_HAPTICS=m
 CONFIG_INPUT_DRV2665_HAPTICS=m
 CONFIG_INPUT_DRV2667_HAPTICS=m
@@ -3866,11 +4477,11 @@ CONFIG_RMI4_F55=y
 # Hardware I/O ports
 #
 CONFIG_SERIO=m
+CONFIG_ARCH_MIGHT_HAVE_PC_SERIO=y
+CONFIG_SERIO_I8042=m
 CONFIG_SERIO_SERPORT=m
-CONFIG_SERIO_Q40KBD=m
 CONFIG_SERIO_PARKBD=m
-CONFIG_HP_SDC=m
-CONFIG_HIL_MLC=m
+CONFIG_SERIO_PCIPS2=m
 CONFIG_SERIO_LIBPS2=m
 CONFIG_SERIO_RAW=m
 CONFIG_SERIO_ALTERA_PS2=m
@@ -3884,6 +4495,8 @@ CONFIG_USERIO=m
 CONFIG_GAMEPORT=m
 CONFIG_GAMEPORT_NS558=m
 CONFIG_GAMEPORT_L4=m
+CONFIG_GAMEPORT_EMU10K1=m
+CONFIG_GAMEPORT_FM801=m
 # end of Hardware I/O ports
 # end of Input device support
 
@@ -3912,7 +4525,8 @@ CONFIG_SERIAL_8250_PNP=y
 CONFIG_SERIAL_8250_16550A_VARIANTS=y
 CONFIG_SERIAL_8250_FINTEK=y
 CONFIG_SERIAL_8250_DMA=y
-CONFIG_SERIAL_8250_HP300=m
+CONFIG_SERIAL_8250_PCI=m
+CONFIG_SERIAL_8250_EXAR=m
 CONFIG_SERIAL_8250_CS=m
 CONFIG_SERIAL_8250_MEN_MCB=m
 CONFIG_SERIAL_8250_NR_UARTS=4
@@ -3939,6 +4553,9 @@ CONFIG_SERIAL_8250_LPC18XX=m
 CONFIG_SERIAL_8250_MT6577=m
 CONFIG_SERIAL_8250_UNIPHIER=m
 CONFIG_SERIAL_8250_INGENIC=m
+CONFIG_SERIAL_8250_LPSS=m
+CONFIG_SERIAL_8250_MID=m
+CONFIG_SERIAL_8250_PERICOM=m
 CONFIG_SERIAL_8250_PXA=m
 CONFIG_SERIAL_8250_TEGRA=m
 CONFIG_SERIAL_8250_BCM7271=m
@@ -3974,8 +4591,8 @@ CONFIG_SERIAL_SH_SCI_DMA=y
 CONFIG_SERIAL_HS_LPC32XX=m
 CONFIG_SERIAL_CORE=y
 CONFIG_SERIAL_CORE_CONSOLE=y
-CONFIG_SERIAL_PMACZILOG=m
-CONFIG_SERIAL_PMACZILOG_TTYS=y
+CONFIG_SERIAL_ICOM=m
+CONFIG_SERIAL_JSM=m
 CONFIG_SERIAL_MSM=m
 CONFIG_SERIAL_QCOM_GENI=m
 CONFIG_SERIAL_QCOM_GENI_CONSOLE=y
@@ -3996,12 +4613,15 @@ CONFIG_SERIAL_ALTERA_JTAGUART=m
 CONFIG_SERIAL_ALTERA_UART=m
 CONFIG_SERIAL_ALTERA_UART_MAXPORTS=4
 CONFIG_SERIAL_ALTERA_UART_BAUDRATE=115200
+CONFIG_SERIAL_PCH_UART=m
 CONFIG_SERIAL_MXS_AUART=m
 CONFIG_SERIAL_XILINX_PS_UART=m
 CONFIG_SERIAL_MPS2_UART_CONSOLE=y
 CONFIG_SERIAL_MPS2_UART=y
 CONFIG_SERIAL_ARC=m
 CONFIG_SERIAL_ARC_NR_PORTS=1
+CONFIG_SERIAL_RP2=m
+CONFIG_SERIAL_RP2_NR_UARTS=32
 CONFIG_SERIAL_FSL_LPUART=m
 CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
 CONFIG_SERIAL_FSL_LINFLEXUART=m
@@ -4026,10 +4646,12 @@ CONFIG_SERIAL_SUNPLUS_CONSOLE=y
 CONFIG_SERIAL_MCTRL_GPIO=y
 CONFIG_SERIAL_NONSTANDARD=y
 CONFIG_MOXA_INTELLIO=m
+CONFIG_MOXA_SMARTIO=m
+CONFIG_SYNCLINK_GT=m
 CONFIG_N_HDLC=m
-CONFIG_GOLDFISH_TTY=y
-CONFIG_GOLDFISH_TTY_EARLY_CONSOLE=y
+CONFIG_GOLDFISH_TTY=m
 CONFIG_N_GSM=m
+CONFIG_NOZOMI=m
 CONFIG_NULL_TTY=m
 CONFIG_HVC_DRIVER=y
 CONFIG_RPMSG_TTY=m
@@ -4079,7 +4701,9 @@ CONFIG_HW_RANDOM_NPCM=m
 CONFIG_HW_RANDOM_KEYSTONE=m
 CONFIG_HW_RANDOM_CCTRNG=m
 CONFIG_HW_RANDOM_XIPHERA=m
+CONFIG_HW_RANDOM_CN10K=m
 CONFIG_DTLK=m
+CONFIG_APPLICOM=m
 
 #
 # PCMCIA character devices
@@ -4092,7 +4716,6 @@ CONFIG_IPWIRELESS=m
 # end of PCMCIA character devices
 
 CONFIG_DEVMEM=y
-CONFIG_NVRAM=m
 CONFIG_DEVPORT=y
 CONFIG_TCG_TPM=y
 CONFIG_TCG_TIS_CORE=m
@@ -4105,6 +4728,7 @@ CONFIG_TCG_TIS_I2C_CR50=m
 CONFIG_TCG_TIS_I2C_ATMEL=m
 CONFIG_TCG_TIS_I2C_INFINEON=m
 CONFIG_TCG_TIS_I2C_NUVOTON=m
+CONFIG_TCG_ATMEL=m
 CONFIG_TCG_INFINEON=m
 CONFIG_TCG_VTPM_PROXY=m
 CONFIG_TCG_TIS_ST33ZP24=m
@@ -4112,6 +4736,7 @@ CONFIG_TCG_TIS_ST33ZP24_I2C=m
 CONFIG_TCG_TIS_ST33ZP24_SPI=m
 CONFIG_XILLYBUS_CLASS=m
 CONFIG_XILLYBUS=m
+CONFIG_XILLYBUS_PCIE=m
 CONFIG_XILLYBUS_OF=m
 CONFIG_XILLYUSB=m
 # end of Character devices
@@ -4143,13 +4768,32 @@ CONFIG_I2C_MUX_MLXCPLD=m
 CONFIG_I2C_HELPER_AUTO=y
 CONFIG_I2C_SMBUS=m
 CONFIG_I2C_ALGOBIT=m
-CONFIG_I2C_ALGOPCF=m
 CONFIG_I2C_ALGOPCA=m
 
 #
 # I2C Hardware Bus support
 #
+
+#
+# PC SMBus host controller drivers
+#
+CONFIG_I2C_CCGX_UCSI=m
+CONFIG_I2C_ALI1535=m
+CONFIG_I2C_ALI1563=m
+CONFIG_I2C_ALI15X3=m
+CONFIG_I2C_AMD756=m
+CONFIG_I2C_AMD8111=m
 CONFIG_I2C_HIX5HD2=m
+CONFIG_I2C_I801=m
+CONFIG_I2C_ISCH=m
+CONFIG_I2C_PIIX4=m
+CONFIG_I2C_NFORCE2=m
+CONFIG_I2C_NVIDIA_GPU=m
+CONFIG_I2C_SIS5595=m
+CONFIG_I2C_SIS630=m
+CONFIG_I2C_SIS96X=m
+CONFIG_I2C_VIA=m
+CONFIG_I2C_VIAPRO=m
 
 #
 # I2C system bus drivers (mostly embedded / system-on-chip)
@@ -4169,7 +4813,9 @@ CONFIG_I2C_DAVINCI=m
 CONFIG_I2C_DESIGNWARE_CORE=m
 CONFIG_I2C_DESIGNWARE_SLAVE=y
 CONFIG_I2C_DESIGNWARE_PLATFORM=m
+CONFIG_I2C_DESIGNWARE_PCI=m
 CONFIG_I2C_DIGICOLOR=m
+CONFIG_I2C_EG20T=m
 CONFIG_I2C_EMEV2=m
 CONFIG_I2C_EXYNOS5=m
 CONFIG_I2C_GPIO=m
@@ -4212,12 +4858,12 @@ CONFIG_I2C_STM32F4=m
 CONFIG_I2C_STM32F7=m
 CONFIG_I2C_SUN6I_P2WI=m
 CONFIG_I2C_SYNQUACER=m
-CONFIG_I2C_TEGRA=m
 CONFIG_I2C_TEGRA_BPMP=m
 CONFIG_I2C_UNIPHIER=m
 CONFIG_I2C_UNIPHIER_F=m
 CONFIG_I2C_VERSATILE=m
 CONFIG_I2C_WMT=m
+CONFIG_I2C_THUNDERX=m
 CONFIG_I2C_XILINX=m
 CONFIG_I2C_XLP9XX=m
 CONFIG_I2C_RCAR=m
@@ -4229,6 +4875,7 @@ CONFIG_I2C_DIOLAN_U2C=m
 CONFIG_I2C_DLN2=m
 CONFIG_I2C_CP2615=m
 CONFIG_I2C_PARPORT=m
+CONFIG_I2C_PCI1XXXX=m
 CONFIG_I2C_ROBOTFUZZ_OSIF=m
 CONFIG_I2C_TAOS_EVM=m
 CONFIG_I2C_TINY_USB=m
@@ -4237,7 +4884,6 @@ CONFIG_I2C_VIPERBOARD=m
 #
 # Other I2C/SMBus bus drivers
 #
-CONFIG_I2C_ICY=m
 CONFIG_I2C_MLXCPLD=m
 CONFIG_I2C_PCA_ISA=m
 CONFIG_I2C_CROS_EC_TUNNEL=m
@@ -4255,9 +4901,6 @@ CONFIG_I2C_DEBUG_BUS=y
 # end of I2C support
 
 CONFIG_I3C=m
-CONFIG_CDNS_I3C_MASTER=m
-CONFIG_DW_I3C_MASTER=m
-CONFIG_SVC_I3C_MASTER=m
 CONFIG_MIPI_I3C_HCI=m
 CONFIG_SPI=y
 CONFIG_SPI_DEBUG=y
@@ -4291,6 +4934,7 @@ CONFIG_SPI_CADENCE_XSPI=m
 CONFIG_SPI_CLPS711X=m
 CONFIG_SPI_DESIGNWARE=m
 CONFIG_SPI_DW_DMA=y
+CONFIG_SPI_DW_PCI=m
 CONFIG_SPI_DW_MMIO=m
 CONFIG_SPI_DW_BT1=m
 CONFIG_SPI_DW_BT1_DIRMAP=y
@@ -4308,6 +4952,7 @@ CONFIG_SPI_IMG_SPFI=m
 CONFIG_SPI_IMX=m
 CONFIG_SPI_INGENIC=m
 CONFIG_SPI_INTEL=m
+CONFIG_SPI_INTEL_PCI=m
 CONFIG_SPI_INTEL_PLATFORM=m
 CONFIG_SPI_JCORE=m
 CONFIG_SPI_LM70_LLP=m
@@ -4332,9 +4977,11 @@ CONFIG_SPI_OMAP24XX=m
 CONFIG_SPI_TI_QSPI=m
 CONFIG_SPI_OMAP_100K=m
 CONFIG_SPI_ORION=m
+CONFIG_SPI_PCI1XXXX=m
 CONFIG_SPI_PIC32=m
 CONFIG_SPI_PIC32_SQI=m
 CONFIG_SPI_PXA2XX=m
+CONFIG_SPI_PXA2XX_PCI=m
 CONFIG_SPI_ROCKCHIP=m
 CONFIG_SPI_ROCKCHIP_SFC=m
 CONFIG_SPI_RPCIF=m
@@ -4363,6 +5010,8 @@ CONFIG_SPI_TEGRA210_QUAD=m
 CONFIG_SPI_TEGRA114=m
 CONFIG_SPI_TEGRA20_SFLASH=m
 CONFIG_SPI_TEGRA20_SLINK=m
+CONFIG_SPI_THUNDERX=m
+CONFIG_SPI_TOPCLIFF_PCH=m
 CONFIG_SPI_UNIPHIER=m
 CONFIG_SPI_XCOMM=m
 CONFIG_SPI_XILINX=m
@@ -4426,8 +5075,10 @@ CONFIG_PTP_1588_CLOCK_DTE=m
 CONFIG_PTP_1588_CLOCK_QORIQ=m
 CONFIG_DP83640_PHY=m
 CONFIG_PTP_1588_CLOCK_INES=m
+CONFIG_PTP_1588_CLOCK_PCH=m
 CONFIG_PTP_1588_CLOCK_IDT82P33=m
 CONFIG_PTP_1588_CLOCK_IDTCM=m
+CONFIG_PTP_1588_CLOCK_OCP=m
 # end of PTP clock support
 
 CONFIG_PINCTRL=y
@@ -4687,6 +5338,7 @@ CONFIG_GPIO_CDEV_V1=y
 CONFIG_GPIO_GENERIC=y
 CONFIG_GPIO_REGMAP=y
 CONFIG_GPIO_MAX730X=m
+CONFIG_GPIO_IDIO_16=m
 
 #
 # Memory mapped GPIO drivers
@@ -4705,6 +5357,7 @@ CONFIG_GPIO_CLPS711X=m
 CONFIG_GPIO_DWAPB=m
 CONFIG_GPIO_EIC_SPRD=m
 CONFIG_GPIO_EM=m
+CONFIG_GPIO_EXAR=m
 CONFIG_GPIO_FTGPIO010=y
 CONFIG_GPIO_GENERIC_PLATFORM=m
 CONFIG_GPIO_GRGPIO=m
@@ -4736,8 +5389,10 @@ CONFIG_GPIO_SYSCON=m
 CONFIG_GPIO_TEGRA=m
 CONFIG_GPIO_TEGRA186=m
 CONFIG_GPIO_TS4800=m
+CONFIG_GPIO_THUNDERX=m
 CONFIG_GPIO_UNIPHIER=m
 CONFIG_GPIO_VISCONTI=m
+CONFIG_GPIO_VX855=m
 CONFIG_GPIO_WCD934X=m
 CONFIG_GPIO_XGENE_SB=m
 CONFIG_GPIO_XILINX=m
@@ -4768,6 +5423,7 @@ CONFIG_GPIO_ARIZONA=m
 CONFIG_GPIO_BD9571MWV=m
 CONFIG_GPIO_DA9052=m
 CONFIG_GPIO_DLN2=m
+CONFIG_GPIO_JANZ_TTL=m
 CONFIG_GPIO_KEMPLD=m
 CONFIG_GPIO_LP3943=m
 CONFIG_GPIO_LP873X=m
@@ -4776,13 +5432,28 @@ CONFIG_GPIO_MADERA=m
 CONFIG_GPIO_MAX77650=m
 CONFIG_GPIO_SL28CPLD=m
 CONFIG_GPIO_STMPE=y
+CONFIG_GPIO_TIMBERDALE=y
 CONFIG_GPIO_TPS65086=m
 CONFIG_GPIO_TPS65218=m
 CONFIG_GPIO_TPS65912=m
+CONFIG_GPIO_TQMX86=m
 CONFIG_GPIO_UCB1400=m
 CONFIG_GPIO_WM831X=m
 CONFIG_GPIO_WM8994=m
 # end of MFD GPIO expanders
+
+#
+# PCI GPIO expanders
+#
+CONFIG_GPIO_AMD8111=m
+CONFIG_GPIO_MLXBF=m
+CONFIG_GPIO_MLXBF2=m
+CONFIG_GPIO_ML_IOH=m
+CONFIG_GPIO_PCH=m
+CONFIG_GPIO_PCI_IDIO_16=m
+CONFIG_GPIO_PCIE_IDIO_24=m
+CONFIG_GPIO_RDC321X=m
+# end of PCI GPIO expanders
 
 #
 # SPI GPIO expanders
@@ -4818,6 +5489,7 @@ CONFIG_W1_CON=y
 #
 # 1-wire Bus Masters
 #
+CONFIG_W1_MASTER_MATROX=m
 CONFIG_W1_MASTER_DS2490=m
 CONFIG_W1_MASTER_DS2482=m
 CONFIG_W1_MASTER_MXC=m
@@ -4859,6 +5531,7 @@ CONFIG_POWER_RESET_GPIO=y
 CONFIG_POWER_RESET_GPIO_RESTART=y
 CONFIG_POWER_RESET_LINKSTATION=m
 CONFIG_POWER_RESET_OCELOT_RESET=y
+CONFIG_POWER_RESET_PIIX4_POWEROFF=m
 CONFIG_POWER_RESET_LTC2952=y
 CONFIG_POWER_RESET_MT6323=y
 CONFIG_POWER_RESET_REGULATOR=y
@@ -4992,6 +5665,7 @@ CONFIG_SENSORS_DRIVETEMP=m
 CONFIG_SENSORS_DS620=m
 CONFIG_SENSORS_DS1621=m
 CONFIG_SENSORS_DA9052_ADC=m
+CONFIG_SENSORS_I5K_AMB=m
 CONFIG_SENSORS_SPARX5=m
 CONFIG_SENSORS_F71805F=m
 CONFIG_SENSORS_F71882FG=m
@@ -5144,6 +5818,7 @@ CONFIG_SENSORS_SHT21=m
 CONFIG_SENSORS_SHT3x=m
 CONFIG_SENSORS_SHT4x=m
 CONFIG_SENSORS_SHTC1=m
+CONFIG_SENSORS_SIS5595=m
 CONFIG_SENSORS_SY7636A=m
 CONFIG_SENSORS_DME1737=m
 CONFIG_SENSORS_EMC1403=m
@@ -5175,7 +5850,9 @@ CONFIG_SENSORS_TMP401=m
 CONFIG_SENSORS_TMP421=m
 CONFIG_SENSORS_TMP464=m
 CONFIG_SENSORS_TMP513=m
+CONFIG_SENSORS_VIA686A=m
 CONFIG_SENSORS_VT1211=m
+CONFIG_SENSORS_VT8231=m
 CONFIG_SENSORS_W83773G=m
 CONFIG_SENSORS_W83781D=m
 CONFIG_SENSORS_W83791D=m
@@ -5366,8 +6043,11 @@ CONFIG_VISCONTI_WATCHDOG=m
 CONFIG_MSC313E_WATCHDOG=m
 CONFIG_APPLE_WATCHDOG=m
 CONFIG_SUNPLUS_WATCHDOG=m
+CONFIG_ALIM7101_WDT=m
 CONFIG_SC520_WDT=m
+CONFIG_I6300ESB_WDT=m
 CONFIG_KEMPLD_WDT=m
+CONFIG_RDC321X_WDT=m
 CONFIG_BCM47XX_WDT=m
 CONFIG_BCM2835_WDT=m
 CONFIG_BCM_KONA_WDT=m
@@ -5386,6 +6066,12 @@ CONFIG_MIXCOMWD=m
 CONFIG_WDT=m
 
 #
+# PCI-based Watchdog Cards
+#
+CONFIG_PCIPCWATCHDOG=m
+CONFIG_WDTPCI=m
+
+#
 # USB-based Watchdog Cards
 #
 CONFIG_USBPCWATCHDOG=m
@@ -5393,16 +6079,24 @@ CONFIG_SSB_POSSIBLE=y
 CONFIG_SSB=m
 CONFIG_SSB_SPROM=y
 CONFIG_SSB_BLOCKIO=y
+CONFIG_SSB_PCIHOST_POSSIBLE=y
+CONFIG_SSB_PCIHOST=y
+CONFIG_SSB_B43_PCI_BRIDGE=y
 CONFIG_SSB_PCMCIAHOST_POSSIBLE=y
 CONFIG_SSB_PCMCIAHOST=y
 CONFIG_SSB_SDIOHOST_POSSIBLE=y
 CONFIG_SSB_SDIOHOST=y
 CONFIG_SSB_HOST_SOC=y
+CONFIG_SSB_DRIVER_PCICORE_POSSIBLE=y
+CONFIG_SSB_DRIVER_PCICORE=y
 CONFIG_SSB_DRIVER_GPIO=y
 CONFIG_BCMA_POSSIBLE=y
 CONFIG_BCMA=m
 CONFIG_BCMA_BLOCKIO=y
+CONFIG_BCMA_HOST_PCI_POSSIBLE=y
+CONFIG_BCMA_HOST_PCI=y
 CONFIG_BCMA_HOST_SOC=y
+CONFIG_BCMA_DRIVER_PCI=y
 CONFIG_BCMA_DRIVER_MIPS=y
 CONFIG_BCMA_PFLASH=y
 CONFIG_BCMA_SFLASH=y
@@ -5455,7 +6149,10 @@ CONFIG_MFD_HI6421_PMIC=m
 CONFIG_MFD_HI6421_SPMI=m
 CONFIG_MFD_HI655X_PMIC=m
 CONFIG_HTC_PASIC3=m
+CONFIG_LPC_ICH=m
+CONFIG_LPC_SCH=m
 CONFIG_MFD_IQS62X=m
+CONFIG_MFD_JANZ_CMODIO=m
 CONFIG_MFD_KEMPLD=m
 CONFIG_MFD_88PM800=m
 CONFIG_MFD_88PM805=m
@@ -5482,6 +6179,7 @@ CONFIG_UCB1400_CORE=m
 CONFIG_MFD_PM8XXX=m
 CONFIG_MFD_SPMI_PMIC=m
 CONFIG_MFD_SY7636A=m
+CONFIG_MFD_RDC321X=m
 CONFIG_MFD_RT4831=m
 CONFIG_MFD_RT5033=m
 CONFIG_MFD_RT5120=m
@@ -5523,7 +6221,9 @@ CONFIG_MFD_TPS65912_I2C=m
 CONFIG_MFD_TPS65912_SPI=m
 CONFIG_MFD_WL1273_CORE=m
 CONFIG_MFD_LM3533=m
+CONFIG_MFD_TIMBERDALE=m
 CONFIG_MFD_TQMX86=m
+CONFIG_MFD_VX855=m
 CONFIG_MFD_ARIZONA=m
 CONFIG_MFD_ARIZONA_I2C=m
 CONFIG_MFD_ARIZONA_SPI=m
@@ -5808,6 +6508,7 @@ CONFIG_V4L2_FLASH_LED_CLASS=m
 CONFIG_V4L2_FWNODE=m
 CONFIG_V4L2_ASYNC=m
 CONFIG_VIDEOBUF_GEN=m
+CONFIG_VIDEOBUF_DMA_SG=m
 CONFIG_VIDEOBUF_VMALLOC=m
 CONFIG_VIDEOBUF_DMA_CONTIG=m
 # end of Video4Linux options
@@ -5979,6 +6680,8 @@ CONFIG_DVB_USB_UMT_010=m
 CONFIG_DVB_USB_VP702X=m
 CONFIG_DVB_USB_VP7045=m
 CONFIG_SMS_USB_DRV=m
+CONFIG_DVB_TTUSB_BUDGET=m
+CONFIG_DVB_TTUSB_DEC=m
 
 #
 # Webcam, TV (analog/digital) USB devices
@@ -5995,7 +6698,70 @@ CONFIG_VIDEO_EM28XX_RC=m
 CONFIG_USB_AIRSPY=m
 CONFIG_USB_HACKRF=m
 CONFIG_USB_MSI2500=m
+CONFIG_MEDIA_PCI_SUPPORT=y
+
+#
+# Media capture support
+#
+CONFIG_VIDEO_SOLO6X10=m
+CONFIG_STA2X11_VIP=m
+CONFIG_VIDEO_TW5864=m
+CONFIG_VIDEO_TW68=m
+CONFIG_VIDEO_TW686X=m
+
+#
+# Media capture/analog TV support
+#
+CONFIG_VIDEO_DT3155=m
+CONFIG_VIDEO_IVTV=m
+CONFIG_VIDEO_IVTV_ALSA=m
+CONFIG_VIDEO_FB_IVTV=m
+
+#
+# Media capture/analog/hybrid TV support
+#
+CONFIG_VIDEO_BT848=m
+CONFIG_DVB_BT8XX=m
+CONFIG_VIDEO_COBALT=m
+CONFIG_VIDEO_CX18=m
+CONFIG_VIDEO_CX18_ALSA=m
+CONFIG_VIDEO_CX23885=m
+CONFIG_MEDIA_ALTERA_CI=m
+CONFIG_VIDEO_CX25821=m
+CONFIG_VIDEO_CX25821_ALSA=m
+CONFIG_VIDEO_CX88=m
+CONFIG_VIDEO_CX88_ALSA=m
+CONFIG_VIDEO_CX88_BLACKBIRD=m
+CONFIG_VIDEO_CX88_DVB=m
+CONFIG_VIDEO_CX88_ENABLE_VP3054=y
+CONFIG_VIDEO_CX88_VP3054=m
+CONFIG_VIDEO_CX88_MPEG=m
+CONFIG_VIDEO_SAA7134=m
+CONFIG_VIDEO_SAA7134_ALSA=m
+CONFIG_VIDEO_SAA7134_RC=y
+CONFIG_VIDEO_SAA7134_DVB=m
+CONFIG_VIDEO_SAA7134_GO7007=m
+CONFIG_VIDEO_SAA7164=m
+
+#
+# Media digital TV PCI Adapters
+#
+CONFIG_DVB_B2C2_FLEXCOP_PCI=m
+CONFIG_DVB_B2C2_FLEXCOP_PCI_DEBUG=y
+CONFIG_DVB_DDBRIDGE=m
+CONFIG_DVB_DDBRIDGE_MSIENABLE=y
+CONFIG_DVB_DM1105=m
+CONFIG_MANTIS_CORE=m
+CONFIG_DVB_MANTIS=m
+CONFIG_DVB_HOPPER=m
+CONFIG_DVB_NETUP_UNIDVB=m
+CONFIG_DVB_NGENE=m
+CONFIG_DVB_PLUTO2=m
+CONFIG_DVB_PT1=m
+CONFIG_DVB_PT3=m
+CONFIG_DVB_SMIPCIE=m
 CONFIG_RADIO_ADAPTERS=m
+CONFIG_RADIO_MAXIRADIO=m
 CONFIG_RADIO_SAA7706H=m
 CONFIG_RADIO_SHARK=m
 CONFIG_RADIO_SHARK2=m
@@ -6004,6 +6770,7 @@ CONFIG_RADIO_SI476X=m
 CONFIG_RADIO_TEA575X=m
 CONFIG_RADIO_TEA5764=m
 CONFIG_RADIO_TEF6862=m
+CONFIG_RADIO_TIMBERDALE=m
 CONFIG_RADIO_WL1273=m
 CONFIG_USB_DSBR=m
 CONFIG_USB_KEENE=m
@@ -6022,6 +6789,7 @@ CONFIG_RADIO_AZTECH=m
 CONFIG_RADIO_CADET=m
 CONFIG_RADIO_GEMTEK=m
 CONFIG_RADIO_ISA=m
+CONFIG_RADIO_MIROPCM20=m
 CONFIG_RADIO_RTRACK=m
 CONFIG_RADIO_RTRACK2=m
 CONFIG_RADIO_SF16FMI=m
@@ -6083,6 +6851,7 @@ CONFIG_VIDEO_PXA27x=m
 #
 # Marvell media platform drivers
 #
+CONFIG_VIDEO_CAFE_CCIC=m
 CONFIG_VIDEO_MMP_CAMERA=m
 
 #
@@ -6211,6 +6980,7 @@ CONFIG_VIDEO_HANTRO_SUNXI=y
 #
 # VIA media platform drivers
 #
+CONFIG_VIDEO_VIA_CAMERA=m
 
 #
 # Xilinx media platform drivers
@@ -6262,6 +7032,7 @@ CONFIG_VIDEOBUF2_MEMOPS=m
 CONFIG_VIDEOBUF2_DMA_CONTIG=m
 CONFIG_VIDEOBUF2_VMALLOC=m
 CONFIG_VIDEOBUF2_DMA_SG=m
+CONFIG_VIDEOBUF2_DVB=m
 # end of Media drivers
 
 #
@@ -6703,6 +7474,8 @@ CONFIG_DVB_DUMMY_FE=m
 #
 CONFIG_APERTURE_HELPERS=y
 CONFIG_VIDEO_NOMODESET=y
+CONFIG_AGP=m
+CONFIG_AGP_ALPHA_CORE=m
 CONFIG_IMX_IPUV3_CORE=m
 CONFIG_DRM=m
 CONFIG_DRM_MIPI_DBI=m
@@ -6720,7 +7493,10 @@ CONFIG_DRM_DISPLAY_HDCP_HELPER=y
 CONFIG_DRM_DISPLAY_HDMI_HELPER=y
 CONFIG_DRM_DP_AUX_CHARDEV=y
 CONFIG_DRM_DP_CEC=y
+CONFIG_DRM_TTM=m
 CONFIG_DRM_BUDDY=m
+CONFIG_DRM_VRAM_HELPER=m
+CONFIG_DRM_TTM_HELPER=m
 CONFIG_DRM_GEM_DMA_HELPER=m
 CONFIG_DRM_GEM_SHMEM_HELPER=m
 CONFIG_DRM_SCHED=m
@@ -6743,6 +7519,34 @@ CONFIG_DRM_MALI_DISPLAY=m
 CONFIG_DRM_KOMEDA=m
 # end of ARM devices
 
+CONFIG_DRM_RADEON=m
+CONFIG_DRM_RADEON_USERPTR=y
+CONFIG_DRM_AMDGPU=m
+CONFIG_DRM_AMDGPU_SI=y
+CONFIG_DRM_AMDGPU_CIK=y
+CONFIG_DRM_AMDGPU_USERPTR=y
+
+#
+# ACP (Audio CoProcessor) Configuration
+#
+CONFIG_DRM_AMD_ACP=y
+# end of ACP (Audio CoProcessor) Configuration
+
+#
+# Display Engine Configuration
+#
+CONFIG_DRM_AMD_DC=y
+CONFIG_DRM_AMD_DC_HDCP=y
+CONFIG_DRM_AMD_DC_SI=y
+# end of Display Engine Configuration
+
+CONFIG_DRM_NOUVEAU=m
+CONFIG_NOUVEAU_LEGACY_CTX_SUPPORT=y
+CONFIG_NOUVEAU_DEBUG=5
+CONFIG_NOUVEAU_DEBUG_DEFAULT=3
+CONFIG_NOUVEAU_DEBUG_MMU=y
+CONFIG_NOUVEAU_DEBUG_PUSH=y
+CONFIG_DRM_NOUVEAU_BACKLIGHT=y
 CONFIG_DRM_KMB_DISPLAY=m
 CONFIG_DRM_VGEM=m
 CONFIG_DRM_VKMS=m
@@ -6787,6 +7591,8 @@ CONFIG_ROCKCHIP_LVDS=y
 CONFIG_ROCKCHIP_RGB=y
 CONFIG_ROCKCHIP_RK3066_HDMI=y
 CONFIG_DRM_UDL=m
+CONFIG_DRM_AST=m
+CONFIG_DRM_MGAG200=m
 CONFIG_DRM_RCAR_DW_HDMI=m
 CONFIG_DRM_RCAR_USE_LVDS=y
 CONFIG_DRM_RCAR_USE_MIPI_DSI=y
@@ -6799,6 +7605,7 @@ CONFIG_DRM_SUN6I_DSI=m
 CONFIG_DRM_SUN8I_DW_HDMI=m
 CONFIG_DRM_SUN8I_MIXER=m
 CONFIG_DRM_SUN8I_TCON_TOP=m
+CONFIG_DRM_QXL=m
 CONFIG_DRM_VIRTIO_GPU=m
 CONFIG_DRM_MSM=m
 CONFIG_DRM_MSM_GPU_STATE=y
@@ -6968,11 +7775,14 @@ CONFIG_DRM_INGENIC_IPU=y
 CONFIG_DRM_V3D=m
 CONFIG_DRM_ETNAVIV=m
 CONFIG_DRM_ETNAVIV_THERMAL=y
+CONFIG_DRM_HISI_HIBMC=m
 CONFIG_DRM_LOGICVC=m
 CONFIG_DRM_MXS=y
 CONFIG_DRM_MXSFB=m
 CONFIG_DRM_IMX_LCDIF=m
 CONFIG_DRM_ARCPGU=m
+CONFIG_DRM_BOCHS=m
+CONFIG_DRM_CIRRUS_QEMU=m
 CONFIG_DRM_GM12U320=m
 CONFIG_DRM_OFDRM=m
 CONFIG_DRM_PANEL_MIPI_DBI=m
@@ -6989,6 +7799,7 @@ CONFIG_TINYDRM_ST7735R=m
 CONFIG_DRM_PL111=m
 CONFIG_DRM_TVE200=m
 CONFIG_DRM_LIMA=m
+CONFIG_DRM_PANFROST=m
 CONFIG_DRM_ASPEED_GFX=m
 CONFIG_DRM_MCDE=m
 CONFIG_DRM_TIDSS=m
@@ -6999,6 +7810,12 @@ CONFIG_DRM_SSD130X_I2C=m
 CONFIG_DRM_SSD130X_SPI=m
 CONFIG_DRM_SPRD=m
 CONFIG_DRM_LEGACY=y
+CONFIG_DRM_TDFX=m
+CONFIG_DRM_R128=m
+CONFIG_DRM_MGA=m
+CONFIG_DRM_SIS=m
+CONFIG_DRM_VIA=m
+CONFIG_DRM_SAVAGE=m
 CONFIG_DRM_EXPORT_FOR_TESTS=y
 CONFIG_DRM_PANEL_ORIENTATION_QUIRKS=m
 CONFIG_DRM_LIB_RANDOM=y
@@ -7010,6 +7827,7 @@ CONFIG_FB_CMDLINE=y
 CONFIG_FB_NOTIFY=y
 CONFIG_FB=m
 CONFIG_FIRMWARE_EDID=y
+CONFIG_FB_DDC=m
 CONFIG_FB_CFB_FILLRECT=m
 CONFIG_FB_CFB_COPYAREA=m
 CONFIG_FB_CFB_IMAGEBLIT=m
@@ -7023,6 +7841,7 @@ CONFIG_FB_BOTH_ENDIAN=y
 # CONFIG_FB_LITTLE_ENDIAN is not set
 CONFIG_FB_SYS_FOPS=m
 CONFIG_FB_DEFERRED_IO=y
+CONFIG_FB_SVGALIB=m
 CONFIG_FB_BACKLIGHT=m
 CONFIG_FB_MODE_HELPERS=y
 CONFIG_FB_TILEBLITTING=y
@@ -7031,21 +7850,69 @@ CONFIG_FB_TILEBLITTING=y
 # Frame buffer hardware drivers
 #
 CONFIG_FB_CIRRUS=m
+CONFIG_FB_PM2=m
+CONFIG_FB_PM2_FIFO_DISCONNECT=y
 CONFIG_FB_CLPS711X=m
 CONFIG_FB_IMX=m
-CONFIG_FB_AMIGA=m
-CONFIG_FB_AMIGA_OCS=y
-CONFIG_FB_AMIGA_ECS=y
-CONFIG_FB_AMIGA_AGA=y
+CONFIG_FB_CYBER2000=m
+CONFIG_FB_CYBER2000_DDC=y
 CONFIG_FB_ARC=m
+CONFIG_FB_TGA=m
 CONFIG_FB_UVESA=m
 CONFIG_FB_PVR2=m
 CONFIG_FB_OPENCORES=m
 CONFIG_FB_S1D13XXX=m
 CONFIG_FB_ATMEL=m
+CONFIG_FB_NVIDIA=m
+CONFIG_FB_NVIDIA_I2C=y
+CONFIG_FB_NVIDIA_DEBUG=y
+CONFIG_FB_NVIDIA_BACKLIGHT=y
+CONFIG_FB_RIVA=m
+CONFIG_FB_RIVA_I2C=y
+CONFIG_FB_RIVA_DEBUG=y
+CONFIG_FB_RIVA_BACKLIGHT=y
+CONFIG_FB_I740=m
+CONFIG_FB_MATROX=m
+CONFIG_FB_MATROX_MILLENIUM=y
+CONFIG_FB_MATROX_MYSTIQUE=y
+CONFIG_FB_MATROX_G=y
+CONFIG_FB_MATROX_I2C=m
+CONFIG_FB_MATROX_MAVEN=m
+CONFIG_FB_RADEON=m
+CONFIG_FB_RADEON_I2C=y
+CONFIG_FB_RADEON_BACKLIGHT=y
+CONFIG_FB_RADEON_DEBUG=y
+CONFIG_FB_ATY128=m
+CONFIG_FB_ATY128_BACKLIGHT=y
 CONFIG_FB_ATY=m
+CONFIG_FB_ATY_CT=y
+CONFIG_FB_ATY_GENERIC_LCD=y
 CONFIG_FB_ATY_GX=y
 CONFIG_FB_ATY_BACKLIGHT=y
+CONFIG_FB_S3=m
+CONFIG_FB_S3_DDC=y
+CONFIG_FB_SAVAGE=m
+CONFIG_FB_SAVAGE_I2C=y
+CONFIG_FB_SAVAGE_ACCEL=y
+CONFIG_FB_SIS=m
+CONFIG_FB_SIS_300=y
+CONFIG_FB_SIS_315=y
+CONFIG_FB_VIA=m
+CONFIG_FB_VIA_DIRECT_PROCFS=y
+CONFIG_FB_VIA_X_COMPATIBILITY=y
+CONFIG_FB_NEOMAGIC=m
+CONFIG_FB_KYRO=m
+CONFIG_FB_3DFX=m
+CONFIG_FB_3DFX_ACCEL=y
+CONFIG_FB_3DFX_I2C=y
+CONFIG_FB_VOODOO1=m
+CONFIG_FB_VT8623=m
+CONFIG_FB_TRIDENT=m
+CONFIG_FB_ARK=m
+CONFIG_FB_PM3=m
+CONFIG_FB_CARMINE=m
+CONFIG_FB_CARMINE_DRAM_EVAL=y
+# CONFIG_CARMINE_DRAM_CUSTOM is not set
 CONFIG_FB_PXA168=m
 CONFIG_FB_W100=m
 CONFIG_FB_SH_MOBILE_LCDC=m
@@ -7061,9 +7928,13 @@ CONFIG_FB_GOLDFISH=m
 CONFIG_FB_DA8XX=m
 CONFIG_FB_VIRTUAL=m
 CONFIG_FB_METRONOME=m
+CONFIG_FB_MB862XX=m
+CONFIG_FB_MB862XX_PCI_GDC=y
+CONFIG_FB_MB862XX_I2C=y
 CONFIG_FB_BROADSHEET=m
 CONFIG_FB_SIMPLE=m
 CONFIG_FB_SSD1307=m
+CONFIG_FB_SM712=m
 CONFIG_FB_OMAP2=m
 CONFIG_FB_OMAP2_DEBUG_SUPPORT=y
 CONFIG_FB_OMAP2_NUM_FBS=3
@@ -7145,13 +8016,15 @@ CONFIG_BACKLIGHT_RAVE_SP=m
 CONFIG_BACKLIGHT_LED=m
 # end of Backlight & LCD device support
 
+CONFIG_VGASTATE=m
 CONFIG_VIDEOMODE_HELPERS=y
 CONFIG_HDMI=y
 
 #
 # Console display driver support
 #
-CONFIG_DUMMY_CONSOLE=y
+CONFIG_VGA_CONSOLE=y
+CONFIG_MDA_CONSOLE=m
 CONFIG_DUMMY_CONSOLE_COLUMNS=80
 CONFIG_DUMMY_CONSOLE_ROWS=25
 CONFIG_FRAMEBUFFER_CONSOLE=y
@@ -7164,17 +8037,13 @@ CONFIG_LOGO=y
 CONFIG_LOGO_LINUX_MONO=y
 CONFIG_LOGO_LINUX_VGA16=y
 CONFIG_LOGO_LINUX_CLUT224=y
-CONFIG_LOGO_MAC_CLUT224=y
+CONFIG_LOGO_DEC_CLUT224=y
 # end of Graphics support
 
 CONFIG_DRM_ACCEL=y
 CONFIG_SOUND=m
 CONFIG_SOUND_OSS_CORE=y
 CONFIG_SOUND_OSS_CORE_PRECLAIM=y
-CONFIG_DMASOUND_ATARI=m
-CONFIG_DMASOUND_PAULA=m
-CONFIG_DMASOUND_Q40=m
-CONFIG_DMASOUND=m
 CONFIG_SND=m
 CONFIG_SND_TIMER=m
 CONFIG_SND_PCM=m
@@ -7214,8 +8083,13 @@ CONFIG_SND_SEQUENCER_OSS=m
 CONFIG_SND_SEQ_HRTIMER_DEFAULT=y
 CONFIG_SND_SEQ_MIDI_EVENT=m
 CONFIG_SND_SEQ_MIDI=m
+CONFIG_SND_SEQ_MIDI_EMUL=m
 CONFIG_SND_SEQ_VIRMIDI=m
 CONFIG_SND_MPU401_UART=m
+CONFIG_SND_OPL3_LIB=m
+CONFIG_SND_OPL4_LIB=m
+CONFIG_SND_OPL3_LIB_SEQ=m
+CONFIG_SND_OPL4_LIB_SEQ=m
 CONFIG_SND_VX_LIB=m
 CONFIG_SND_AC97_CODEC=m
 CONFIG_SND_DRIVERS=y
@@ -7230,12 +8104,124 @@ CONFIG_SND_MPU401=m
 CONFIG_SND_PORTMAN2X4=m
 CONFIG_SND_AC97_POWER_SAVE=y
 CONFIG_SND_AC97_POWER_SAVE_DEFAULT=0
+CONFIG_SND_WSS_LIB=m
+CONFIG_SND_SB_COMMON=m
+CONFIG_SND_SB8_DSP=m
+CONFIG_SND_SB16_DSP=m
+CONFIG_SND_ISA=y
+CONFIG_SND_ADLIB=m
+CONFIG_SND_AD1816A=m
+CONFIG_SND_AD1848=m
+CONFIG_SND_ALS100=m
+CONFIG_SND_AZT1605=m
+CONFIG_SND_AZT2316=m
+CONFIG_SND_AZT2320=m
+CONFIG_SND_CMI8328=m
+CONFIG_SND_CMI8330=m
+CONFIG_SND_CS4231=m
+CONFIG_SND_CS4236=m
+CONFIG_SND_ES1688=m
+CONFIG_SND_ES18XX=m
+CONFIG_SND_SC6000=m
+CONFIG_SND_GUSCLASSIC=m
+CONFIG_SND_GUSEXTREME=m
+CONFIG_SND_GUSMAX=m
+CONFIG_SND_INTERWAVE=m
+CONFIG_SND_INTERWAVE_STB=m
+CONFIG_SND_JAZZ16=m
+CONFIG_SND_OPL3SA2=m
+CONFIG_SND_OPTI92X_AD1848=m
+CONFIG_SND_OPTI92X_CS4231=m
+CONFIG_SND_OPTI93X=m
+CONFIG_SND_MIRO=m
+CONFIG_SND_SB8=m
+CONFIG_SND_SB16=m
+CONFIG_SND_SBAWE=m
+CONFIG_SND_SBAWE_SEQ=m
+CONFIG_SND_SB16_CSP=y
+CONFIG_SND_SSCAPE=m
+CONFIG_SND_WAVEFRONT=m
+CONFIG_SND_PCI=y
+CONFIG_SND_AD1889=m
+CONFIG_SND_ALS300=m
+CONFIG_SND_ALS4000=m
+CONFIG_SND_ALI5451=m
+CONFIG_SND_ATIIXP=m
+CONFIG_SND_ATIIXP_MODEM=m
+CONFIG_SND_AU8810=m
+CONFIG_SND_AU8820=m
+CONFIG_SND_AU8830=m
+CONFIG_SND_AW2=m
+CONFIG_SND_AZT3328=m
+CONFIG_SND_BT87X=m
+CONFIG_SND_BT87X_OVERCLOCK=y
+CONFIG_SND_CA0106=m
+CONFIG_SND_CMIPCI=m
+CONFIG_SND_OXYGEN_LIB=m
+CONFIG_SND_OXYGEN=m
+CONFIG_SND_CS4281=m
+CONFIG_SND_CS46XX=m
+CONFIG_SND_CS46XX_NEW_DSP=y
+CONFIG_SND_CS5530=m
+CONFIG_SND_CS5535AUDIO=m
+CONFIG_SND_CTXFI=m
+CONFIG_SND_DARLA20=m
+CONFIG_SND_GINA20=m
+CONFIG_SND_LAYLA20=m
+CONFIG_SND_DARLA24=m
+CONFIG_SND_GINA24=m
+CONFIG_SND_LAYLA24=m
+CONFIG_SND_MONA=m
+CONFIG_SND_MIA=m
+CONFIG_SND_ECHO3G=m
+CONFIG_SND_INDIGO=m
+CONFIG_SND_INDIGOIO=m
+CONFIG_SND_INDIGODJ=m
+CONFIG_SND_INDIGOIOX=m
+CONFIG_SND_INDIGODJX=m
+CONFIG_SND_EMU10K1=m
+CONFIG_SND_EMU10K1_SEQ=m
+CONFIG_SND_EMU10K1X=m
+CONFIG_SND_ENS1370=m
+CONFIG_SND_ENS1371=m
+CONFIG_SND_ES1938=m
+CONFIG_SND_ES1968=m
+CONFIG_SND_ES1968_INPUT=y
+CONFIG_SND_ES1968_RADIO=y
+CONFIG_SND_FM801=m
+CONFIG_SND_FM801_TEA575X_BOOL=y
+CONFIG_SND_HDSP=m
+CONFIG_SND_HDSPM=m
+CONFIG_SND_ICE1712=m
+CONFIG_SND_ICE1724=m
+CONFIG_SND_INTEL8X0=m
+CONFIG_SND_INTEL8X0M=m
+CONFIG_SND_KORG1212=m
+CONFIG_SND_LOLA=m
+CONFIG_SND_LX6464ES=m
+CONFIG_SND_MAESTRO3=m
+CONFIG_SND_MAESTRO3_INPUT=y
+CONFIG_SND_MIXART=m
+CONFIG_SND_NM256=m
+CONFIG_SND_PCXHR=m
+CONFIG_SND_RIPTIDE=m
+CONFIG_SND_RME32=m
+CONFIG_SND_RME96=m
+CONFIG_SND_RME9652=m
+CONFIG_SND_SONICVIBES=m
+CONFIG_SND_TRIDENT=m
+CONFIG_SND_VIA82XX=m
+CONFIG_SND_VIA82XX_MODEM=m
+CONFIG_SND_VIRTUOSO=m
+CONFIG_SND_VX222=m
+CONFIG_SND_YMFPCI=m
 
 #
 # HD-Audio
 #
 CONFIG_SND_HDA=m
 CONFIG_SND_HDA_GENERIC_LEDS=y
+CONFIG_SND_HDA_INTEL=m
 CONFIG_SND_HDA_HWDEP=y
 CONFIG_SND_HDA_RECONFIG=y
 CONFIG_SND_HDA_INPUT_BEEP=y
@@ -7255,10 +8241,12 @@ CONFIG_SND_HDA_CODEC_CA0132_DSP=y
 CONFIG_SND_HDA_CODEC_CMEDIA=m
 CONFIG_SND_HDA_CODEC_SI3054=m
 CONFIG_SND_HDA_GENERIC=m
+CONFIG_SND_HDA_INTEL_HDMI_SILENT_STREAM=y
 # end of HD-Audio
 
 CONFIG_SND_HDA_CORE=m
 CONFIG_SND_HDA_DSP_LOADER=y
+CONFIG_SND_HDA_COMPONENT=y
 CONFIG_SND_HDA_EXT_CORE=m
 CONFIG_SND_HDA_PREALLOC_SIZE=64
 CONFIG_SND_INTEL_DSP_CONFIG=m
@@ -7270,6 +8258,7 @@ CONFIG_SND_USB=y
 CONFIG_SND_USB_AUDIO=m
 CONFIG_SND_USB_AUDIO_USE_MEDIA_CONTROLLER=y
 CONFIG_SND_USB_UA101=m
+CONFIG_SND_USB_USX2Y=m
 CONFIG_SND_USB_CAIAQ=m
 CONFIG_SND_USB_CAIAQ_INPUT=y
 CONFIG_SND_USB_US122L=m
@@ -7386,6 +8375,31 @@ CONFIG_SND_SOC_IMG_PISTACHIO_INTERNAL_DAC=m
 CONFIG_SND_SOC_INTEL_SST_TOPLEVEL=y
 CONFIG_SND_SOC_ACPI_INTEL_MATCH=m
 CONFIG_SND_SOC_INTEL_KEEMBAY=m
+CONFIG_SND_SOC_INTEL_AVS=m
+
+#
+# Intel AVS Machine drivers
+#
+
+#
+# Available DSP configurations
+#
+CONFIG_SND_SOC_INTEL_AVS_MACH_DA7219=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_DMIC=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_HDAUDIO=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_I2S_TEST=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_MAX98927=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_MAX98357A=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_MAX98373=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_NAU8825=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_PROBE=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_RT274=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_RT286=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_RT298=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_RT5682=m
+CONFIG_SND_SOC_INTEL_AVS_MACH_SSM4567=m
+# end of Intel AVS Machine drivers
+
 CONFIG_SND_SOC_INTEL_MACH=y
 CONFIG_SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES=y
 CONFIG_SND_SOC_INTEL_BDW_RT5650_MACH=m
@@ -7503,11 +8517,14 @@ CONFIG_SND_SOC_RZ=m
 # end of SoC Audio support for Renesas SoCs
 
 CONFIG_SND_SOC_SOF_TOPLEVEL=y
+CONFIG_SND_SOC_SOF_PCI_DEV=m
+CONFIG_SND_SOC_SOF_PCI=m
 CONFIG_SND_SOC_SOF_ACPI=m
 CONFIG_SND_SOC_SOF_ACPI_DEV=m
 CONFIG_SND_SOC_SOF_OF=m
 CONFIG_SND_SOC_SOF_OF_DEV=m
 CONFIG_SND_SOC_SOF_COMPRESS=y
+CONFIG_SND_SOC_SOF_DEBUG_PROBES=m
 CONFIG_SND_SOC_SOF_CLIENT=m
 CONFIG_SND_SOC_SOF_DEVELOPER_SUPPORT=y
 CONFIG_SND_SOC_SOF_FORCE_PROBE_WORKQUEUE=y
@@ -7528,7 +8545,11 @@ CONFIG_SND_SOC_SOF_DEBUG_RETAIN_DSP_CONTEXT=y
 CONFIG_SND_SOC_SOF=m
 CONFIG_SND_SOC_SOF_PROBE_WORK_QUEUE=y
 CONFIG_SND_SOC_SOF_IPC3=y
+CONFIG_SND_SOC_SOF_INTEL_IPC4=y
 CONFIG_SND_SOC_SOF_AMD_TOPLEVEL=m
+CONFIG_SND_SOC_SOF_AMD_COMMON=m
+CONFIG_SND_SOC_SOF_AMD_RENOIR=m
+CONFIG_SND_SOC_SOF_AMD_REMBRANDT=m
 CONFIG_SND_SOC_SOF_IMX_TOPLEVEL=y
 CONFIG_SND_SOC_SOF_IMX_COMMON=m
 CONFIG_SND_SOC_SOF_IMX8=m
@@ -7540,6 +8561,30 @@ CONFIG_SND_SOC_SOF_INTEL_ATOM_HIFI_EP=m
 CONFIG_SND_SOC_SOF_INTEL_COMMON=m
 CONFIG_SND_SOC_SOF_BAYTRAIL=m
 CONFIG_SND_SOC_SOF_BROADWELL=m
+CONFIG_SND_SOC_SOF_MERRIFIELD=m
+CONFIG_SND_SOC_SOF_INTEL_SKL=m
+CONFIG_SND_SOC_SOF_SKYLAKE=m
+CONFIG_SND_SOC_SOF_KABYLAKE=m
+CONFIG_SND_SOC_SOF_INTEL_APL=m
+CONFIG_SND_SOC_SOF_APOLLOLAKE=m
+CONFIG_SND_SOC_SOF_GEMINILAKE=m
+CONFIG_SND_SOC_SOF_INTEL_CNL=m
+CONFIG_SND_SOC_SOF_CANNONLAKE=m
+CONFIG_SND_SOC_SOF_COFFEELAKE=m
+CONFIG_SND_SOC_SOF_COMETLAKE=m
+CONFIG_SND_SOC_SOF_INTEL_ICL=m
+CONFIG_SND_SOC_SOF_ICELAKE=m
+CONFIG_SND_SOC_SOF_JASPERLAKE=m
+CONFIG_SND_SOC_SOF_INTEL_TGL=m
+CONFIG_SND_SOC_SOF_TIGERLAKE=m
+CONFIG_SND_SOC_SOF_ELKHARTLAKE=m
+CONFIG_SND_SOC_SOF_ALDERLAKE=m
+CONFIG_SND_SOC_SOF_INTEL_MTL=m
+CONFIG_SND_SOC_SOF_METEORLAKE=m
+CONFIG_SND_SOC_SOF_HDA_COMMON=m
+CONFIG_SND_SOC_SOF_HDA_LINK_BASELINE=m
+CONFIG_SND_SOC_SOF_HDA_PROBES=m
+CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE_LINK_BASELINE=m
 CONFIG_SND_SOC_SOF_MTK_TOPLEVEL=y
 CONFIG_SND_SOC_SOF_MTK_COMMON=m
 CONFIG_SND_SOC_SOF_MT8186=m
@@ -8007,6 +9052,7 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
 CONFIG_SND_AUDIO_GRAPH_CARD2=m
 CONFIG_SND_AUDIO_GRAPH_CARD2_CUSTOM_SAMPLE=m
 CONFIG_SND_TEST_COMPONENT=m
+CONFIG_SND_SYNTH_EMUX=m
 CONFIG_SND_VIRTIO=m
 CONFIG_AC97_BUS=m
 
@@ -8174,6 +9220,17 @@ CONFIG_I2C_HID_OF_GOODIX=m
 # end of I2C HID support
 
 CONFIG_I2C_HID_CORE=m
+
+#
+# Intel ISH HID support
+#
+# end of Intel ISH HID support
+
+#
+# AMD SFH HID Support
+#
+CONFIG_AMD_SFH_HID=m
+# end of AMD SFH HID Support
 # end of HID support
 
 CONFIG_USB_OHCI_LITTLE_ENDIAN=y
@@ -8184,6 +9241,7 @@ CONFIG_USB_ULPI_BUS=m
 CONFIG_USB_CONN_GPIO=m
 CONFIG_USB_ARCH_HAS_HCD=y
 CONFIG_USB=m
+CONFIG_USB_PCI=y
 CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
 
 #
@@ -8204,6 +9262,7 @@ CONFIG_USB_MON=m
 CONFIG_USB_C67X00_HCD=m
 CONFIG_USB_XHCI_HCD=m
 CONFIG_USB_XHCI_DBGCAP=y
+CONFIG_USB_XHCI_PCI=m
 CONFIG_USB_XHCI_PCI_RENESAS=m
 CONFIG_USB_XHCI_PLATFORM=m
 CONFIG_USB_XHCI_HISTB=m
@@ -8215,6 +9274,7 @@ CONFIG_USB_BRCMSTB=m
 CONFIG_USB_EHCI_HCD=m
 CONFIG_USB_EHCI_ROOT_HUB_TT=y
 CONFIG_USB_EHCI_TT_NEWSCHED=y
+CONFIG_USB_EHCI_PCI=m
 CONFIG_USB_EHCI_FSL=m
 CONFIG_USB_EHCI_HCD_NPCM7XX=m
 CONFIG_USB_EHCI_HCD_OMAP=m
@@ -8239,11 +9299,13 @@ CONFIG_USB_OHCI_HCD_LPC32XX=m
 CONFIG_USB_OHCI_HCD_AT91=m
 CONFIG_USB_OHCI_HCD_OMAP3=m
 CONFIG_USB_OHCI_HCD_DAVINCI=m
+CONFIG_USB_OHCI_HCD_PCI=m
 CONFIG_USB_OHCI_HCD_SSB=y
 CONFIG_USB_OHCI_SH=y
 CONFIG_USB_OHCI_EXYNOS=m
 CONFIG_USB_CNS3XXX_OHCI=y
 CONFIG_USB_OHCI_HCD_PLATFORM=m
+CONFIG_USB_UHCI_HCD=m
 CONFIG_USB_U132_HCD=m
 CONFIG_USB_SL811_HCD=m
 CONFIG_USB_SL811_HCD_ISO=y
@@ -8347,6 +9409,7 @@ CONFIG_USB_DWC3_DUAL_ROLE=y
 #
 CONFIG_USB_DWC3_OMAP=m
 CONFIG_USB_DWC3_EXYNOS=m
+CONFIG_USB_DWC3_HAPS=m
 CONFIG_USB_DWC3_KEYSTONE=m
 CONFIG_USB_DWC3_MESON_G12A=m
 CONFIG_USB_DWC3_OF_SIMPLE=m
@@ -8363,6 +9426,7 @@ CONFIG_USB_DWC2=m
 #
 # CONFIG_USB_DWC2_PERIPHERAL is not set
 CONFIG_USB_DWC2_DUAL_ROLE=y
+CONFIG_USB_DWC2_PCI=m
 CONFIG_USB_DWC2_DEBUG=y
 CONFIG_USB_DWC2_VERBOSE=y
 CONFIG_USB_DWC2_TRACK_MISSED_SOFS=y
@@ -8370,6 +9434,7 @@ CONFIG_USB_DWC2_DEBUG_PERIODIC=y
 CONFIG_USB_CHIPIDEA=m
 CONFIG_USB_CHIPIDEA_UDC=y
 CONFIG_USB_CHIPIDEA_HOST=y
+CONFIG_USB_CHIPIDEA_PCI=m
 CONFIG_USB_CHIPIDEA_MSM=m
 CONFIG_USB_CHIPIDEA_IMX=m
 CONFIG_USB_CHIPIDEA_GENERIC=m
@@ -8510,7 +9575,6 @@ CONFIG_U_SERIAL_CONSOLE=y
 # USB Peripheral Controller
 #
 CONFIG_USB_LPC32XX=m
-CONFIG_USB_FUSB300=m
 CONFIG_USB_GR_UDC=m
 CONFIG_USB_R8A66597=m
 CONFIG_USB_RENESAS_USBHS_UDC=m
@@ -8522,8 +9586,12 @@ CONFIG_USB_SNP_CORE=m
 CONFIG_USB_SNP_UDC_PLAT=m
 CONFIG_USB_M66592=m
 CONFIG_USB_BDC_UDC=m
+CONFIG_USB_AMD5536UDC=m
 CONFIG_USB_NET2272=m
 CONFIG_USB_NET2272_DMA=y
+CONFIG_USB_NET2280=m
+CONFIG_USB_GOKU=m
+CONFIG_USB_EG20T=m
 CONFIG_USB_GADGET_XILINX=m
 CONFIG_USB_MAX3420_UDC=m
 CONFIG_USB_ASPEED_UDC=m
@@ -8620,6 +9688,9 @@ CONFIG_TYPEC_MT6360=m
 CONFIG_TYPEC_TCPCI_MT6370=m
 CONFIG_TYPEC_TCPCI_MAXIM=m
 CONFIG_TYPEC_FUSB302=m
+CONFIG_TYPEC_UCSI=m
+CONFIG_UCSI_CCG=m
+CONFIG_UCSI_STM32G0=m
 CONFIG_TYPEC_TPS6598X=m
 CONFIG_TYPEC_ANX7411=m
 CONFIG_TYPEC_RT1719=m
@@ -8660,6 +9731,8 @@ CONFIG_MMC_DEBUG=y
 CONFIG_MMC_SUNPLUS=m
 CONFIG_MMC_SDHCI=m
 CONFIG_MMC_SDHCI_IO_ACCESSORS=y
+CONFIG_MMC_SDHCI_PCI=m
+CONFIG_MMC_RICOH_MMC=y
 CONFIG_MMC_SDHCI_PLTFM=m
 CONFIG_MMC_SDHCI_OF_ARASAN=m
 CONFIG_MMC_SDHCI_OF_ASPEED=m
@@ -8688,13 +9761,17 @@ CONFIG_MMC_MESON_MX_SDIO=m
 CONFIG_MMC_MOXART=m
 CONFIG_MMC_SDHCI_ST=m
 CONFIG_MMC_OMAP_HS=m
+CONFIG_MMC_WBSD=m
+CONFIG_MMC_ALCOR=m
 CONFIG_MMC_SDHCI_MSM=m
+CONFIG_MMC_TIFM_SD=m
 CONFIG_MMC_DAVINCI=m
 CONFIG_MMC_SPI=m
 CONFIG_MMC_S3C=m
 CONFIG_MMC_S3C_HW_SDIO_IRQ=y
 CONFIG_MMC_S3C_PIO=y
 # CONFIG_MMC_S3C_DMA is not set
+CONFIG_MMC_SDRICOH_CS=m
 CONFIG_MMC_SDHCI_SPRD=m
 CONFIG_MMC_TMIO_CORE=m
 CONFIG_MMC_TMIO=m
@@ -8702,20 +9779,26 @@ CONFIG_MMC_SDHI=m
 CONFIG_MMC_SDHI_SYS_DMAC=m
 CONFIG_MMC_SDHI_INTERNAL_DMAC=m
 CONFIG_MMC_UNIPHIER=m
+CONFIG_MMC_CB710=m
+CONFIG_MMC_VIA_SDMMC=m
+CONFIG_MMC_CAVIUM_THUNDERX=m
 CONFIG_MMC_DW=m
 CONFIG_MMC_DW_PLTFM=m
 CONFIG_MMC_DW_BLUEFIELD=m
 CONFIG_MMC_DW_EXYNOS=m
 CONFIG_MMC_DW_HI3798CV200=m
 CONFIG_MMC_DW_K3=m
+CONFIG_MMC_DW_PCI=m
 CONFIG_MMC_SH_MMCIF=m
 CONFIG_MMC_VUB300=m
 CONFIG_MMC_USHC=m
 CONFIG_MMC_USDHI6ROL0=m
+CONFIG_MMC_REALTEK_PCI=m
 CONFIG_MMC_REALTEK_USB=m
 CONFIG_MMC_SUNXI=m
 CONFIG_MMC_CQHCI=m
 CONFIG_MMC_HSQ=m
+CONFIG_MMC_TOSHIBA_PCI=m
 CONFIG_MMC_BCM2835=m
 CONFIG_MMC_MTK=m
 CONFIG_MMC_SDHCI_BRCMSTB=m
@@ -8731,6 +9814,8 @@ CONFIG_SCSI_UFS_CRYPTO=y
 CONFIG_SCSI_UFS_HPB=y
 CONFIG_SCSI_UFS_FAULT_INJECTION=y
 CONFIG_SCSI_UFS_HWMON=y
+CONFIG_SCSI_UFSHCD_PCI=m
+CONFIG_SCSI_UFS_DWC_TC_PCI=m
 CONFIG_SCSI_UFSHCD_PLATFORM=m
 CONFIG_SCSI_UFS_CDNS_PLATFORM=m
 CONFIG_SCSI_UFS_DWC_TC_PLATFORM=m
@@ -8751,6 +9836,10 @@ CONFIG_MS_BLOCK=m
 #
 # MemoryStick Host Controller Drivers
 #
+CONFIG_MEMSTICK_TIFM_MS=m
+CONFIG_MEMSTICK_JMICRON_38X=m
+CONFIG_MEMSTICK_R592=m
+CONFIG_MEMSTICK_REALTEK_PCI=m
 CONFIG_MEMSTICK_REALTEK_USB=m
 CONFIG_NEW_LEDS=y
 CONFIG_LEDS_CLASS=m
@@ -8903,27 +9992,8 @@ CONFIG_SPEAKUP_SYNTH_TXPRT=m
 CONFIG_SPEAKUP_SYNTH_DUMMY=m
 # end of Speakup console speech
 
-CONFIG_INFINIBAND=m
-CONFIG_INFINIBAND_USER_MAD=m
-CONFIG_INFINIBAND_USER_ACCESS=m
-CONFIG_INFINIBAND_USER_MEM=y
-CONFIG_INFINIBAND_ON_DEMAND_PAGING=y
-CONFIG_INFINIBAND_ADDR_TRANS=y
-CONFIG_INFINIBAND_ADDR_TRANS_CONFIGFS=y
-CONFIG_INFINIBAND_VIRT_DMA=y
-CONFIG_RDMA_SIW=m
-CONFIG_INFINIBAND_IPOIB=m
-CONFIG_INFINIBAND_IPOIB_CM=y
-CONFIG_INFINIBAND_IPOIB_DEBUG=y
-CONFIG_INFINIBAND_IPOIB_DEBUG_DATA=y
-CONFIG_INFINIBAND_SRP=m
-CONFIG_INFINIBAND_SRPT=m
-CONFIG_INFINIBAND_ISER=m
-CONFIG_INFINIBAND_ISERT=m
-CONFIG_INFINIBAND_RTRS=m
-CONFIG_INFINIBAND_RTRS_CLIENT=m
-CONFIG_INFINIBAND_RTRS_SERVER=m
 CONFIG_RTC_LIB=y
+CONFIG_RTC_MC146818_LIB=y
 CONFIG_RTC_CLASS=y
 CONFIG_RTC_HCTOSYS=y
 CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
@@ -9019,6 +10089,7 @@ CONFIG_RTC_DRV_RX6110=m
 #
 # Platform RTC drivers
 #
+CONFIG_RTC_DRV_ALPHA=y
 CONFIG_RTC_DRV_DS1286=m
 CONFIG_RTC_DRV_DS1511=m
 CONFIG_RTC_DRV_DS1553=m
@@ -9098,7 +10169,7 @@ CONFIG_RTC_DRV_TI_K3=m
 # HID Sensor RTC drivers
 #
 CONFIG_RTC_DRV_HID_SENSOR_TIME=m
-CONFIG_RTC_DRV_GOLDFISH=y
+CONFIG_RTC_DRV_GOLDFISH=m
 CONFIG_RTC_DRV_MSC313=m
 CONFIG_DMADEVICES=y
 CONFIG_DMADEVICES_DEBUG=y
@@ -9121,6 +10192,7 @@ CONFIG_DMA_SUN6I=m
 CONFIG_DW_AXI_DMAC=m
 CONFIG_EP93XX_DMA=y
 CONFIG_FSL_EDMA=m
+CONFIG_HISI_DMA=m
 CONFIG_IMG_MDC_DMA=m
 CONFIG_INTEL_IDMA64=m
 CONFIG_K3_DMA=m
@@ -9132,11 +10204,14 @@ CONFIG_MMP_TDMA=m
 CONFIG_MV_XOR=y
 CONFIG_MXS_DMA=y
 CONFIG_NBPFAXI_DMA=m
+CONFIG_PCH_DMA=m
+CONFIG_PLX_DMA=m
 CONFIG_STM32_DMA=y
 CONFIG_STM32_DMAMUX=y
 CONFIG_STM32_MDMA=y
 CONFIG_SPRD_DMA=m
 CONFIG_S3C24XX_DMAC=y
+CONFIG_TEGRA186_GPC_DMA=m
 CONFIG_TEGRA20_APB_DMA=m
 CONFIG_TEGRA210_ADMA=m
 CONFIG_TIMB_DMA=m
@@ -9148,12 +10223,15 @@ CONFIG_XILINX_ZYNQMP_DPDMA=m
 CONFIG_MTK_HSDMA=m
 CONFIG_MTK_CQDMA=m
 CONFIG_MTK_UART_APDMA=m
-CONFIG_QCOM_ADM=m
 CONFIG_QCOM_HIDMA_MGMT=m
 CONFIG_QCOM_HIDMA=m
 CONFIG_DW_DMAC_CORE=m
 CONFIG_DW_DMAC=m
 CONFIG_RZN1_DMAMUX=m
+CONFIG_DW_DMAC_PCI=m
+CONFIG_DW_EDMA=m
+CONFIG_DW_EDMA_PCIE=m
+CONFIG_HSU_DMA=m
 CONFIG_SF_PDMA=m
 CONFIG_RENESAS_DMA=y
 CONFIG_SH_DMAE_BASE=y
@@ -9208,14 +10286,25 @@ CONFIG_PANEL_BOOT_MESSAGE=""
 CONFIG_CHARLCD_BL_FLASH=y
 CONFIG_PANEL=m
 CONFIG_UIO=m
+CONFIG_UIO_CIF=m
 CONFIG_UIO_PDRV_GENIRQ=m
 CONFIG_UIO_DMEM_GENIRQ=m
+CONFIG_UIO_AEC=m
+CONFIG_UIO_SERCOS3=m
+CONFIG_UIO_PCI_GENERIC=m
+CONFIG_UIO_NETX=m
 CONFIG_UIO_PRUSS=m
+CONFIG_UIO_MF624=m
 CONFIG_UIO_DFL=m
 CONFIG_VFIO=m
 CONFIG_VFIO_CONTAINER=y
 CONFIG_VFIO_NOIOMMU=y
 CONFIG_VFIO_VIRQFD=y
+CONFIG_VFIO_PCI_CORE=m
+CONFIG_VFIO_PCI_MMAP=y
+CONFIG_VFIO_PCI_INTX=y
+CONFIG_VFIO_PCI=m
+CONFIG_MLX5_VFIO_PCI=m
 CONFIG_VFIO_PLATFORM=m
 CONFIG_VFIO_AMBA=m
 CONFIG_VFIO_PLATFORM_CALXEDAXGMAC_RESET=m
@@ -9226,11 +10315,16 @@ CONFIG_IRQ_BYPASS_MANAGER=m
 CONFIG_VIRT_DRIVERS=y
 CONFIG_VIRTIO_ANCHOR=y
 CONFIG_VIRTIO=y
+CONFIG_VIRTIO_PCI_LIB=m
+CONFIG_VIRTIO_PCI_LIB_LEGACY=m
 CONFIG_VIRTIO_MENU=y
+CONFIG_VIRTIO_PCI=m
+CONFIG_VIRTIO_PCI_LEGACY=y
 CONFIG_VIRTIO_VDPA=m
+CONFIG_VIRTIO_PMEM=m
 CONFIG_VIRTIO_BALLOON=m
 CONFIG_VIRTIO_INPUT=m
-CONFIG_VIRTIO_MMIO=y
+CONFIG_VIRTIO_MMIO=m
 CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
 CONFIG_VIRTIO_DMA_SHARED_BUFFER=m
 CONFIG_VDPA=m
@@ -9238,6 +10332,10 @@ CONFIG_VDPA_SIM=m
 CONFIG_VDPA_SIM_NET=m
 CONFIG_VDPA_SIM_BLOCK=m
 CONFIG_VDPA_USER=m
+CONFIG_IFCVF=m
+CONFIG_MLX5_VDPA=y
+CONFIG_MLX5_VDPA_NET=m
+CONFIG_VP_VDPA=m
 CONFIG_VHOST_IOTLB=m
 CONFIG_VHOST_RING=m
 CONFIG_VHOST=m
@@ -9310,6 +10408,63 @@ CONFIG_COMEDI_PCMMIO=m
 CONFIG_COMEDI_PCMUIO=m
 CONFIG_COMEDI_MULTIQ3=m
 CONFIG_COMEDI_S526=m
+CONFIG_COMEDI_PCI_DRIVERS=m
+CONFIG_COMEDI_8255_PCI=m
+CONFIG_COMEDI_ADDI_WATCHDOG=m
+CONFIG_COMEDI_ADDI_APCI_1032=m
+CONFIG_COMEDI_ADDI_APCI_1500=m
+CONFIG_COMEDI_ADDI_APCI_1516=m
+CONFIG_COMEDI_ADDI_APCI_1564=m
+CONFIG_COMEDI_ADDI_APCI_16XX=m
+CONFIG_COMEDI_ADDI_APCI_2032=m
+CONFIG_COMEDI_ADDI_APCI_2200=m
+CONFIG_COMEDI_ADDI_APCI_3120=m
+CONFIG_COMEDI_ADDI_APCI_3501=m
+CONFIG_COMEDI_ADDI_APCI_3XXX=m
+CONFIG_COMEDI_ADL_PCI6208=m
+CONFIG_COMEDI_ADL_PCI7X3X=m
+CONFIG_COMEDI_ADL_PCI8164=m
+CONFIG_COMEDI_ADL_PCI9111=m
+CONFIG_COMEDI_ADL_PCI9118=m
+CONFIG_COMEDI_ADV_PCI1710=m
+CONFIG_COMEDI_ADV_PCI1720=m
+CONFIG_COMEDI_ADV_PCI1723=m
+CONFIG_COMEDI_ADV_PCI1724=m
+CONFIG_COMEDI_ADV_PCI1760=m
+CONFIG_COMEDI_ADV_PCI_DIO=m
+CONFIG_COMEDI_AMPLC_DIO200_PCI=m
+CONFIG_COMEDI_AMPLC_PC236_PCI=m
+CONFIG_COMEDI_AMPLC_PC263_PCI=m
+CONFIG_COMEDI_AMPLC_PCI224=m
+CONFIG_COMEDI_AMPLC_PCI230=m
+CONFIG_COMEDI_CONTEC_PCI_DIO=m
+CONFIG_COMEDI_DAS08_PCI=m
+CONFIG_COMEDI_DT3000=m
+CONFIG_COMEDI_DYNA_PCI10XX=m
+CONFIG_COMEDI_GSC_HPDI=m
+CONFIG_COMEDI_MF6X4=m
+CONFIG_COMEDI_ICP_MULTI=m
+CONFIG_COMEDI_DAQBOARD2000=m
+CONFIG_COMEDI_JR3_PCI=m
+CONFIG_COMEDI_KE_COUNTER=m
+CONFIG_COMEDI_CB_PCIDAS64=m
+CONFIG_COMEDI_CB_PCIDAS=m
+CONFIG_COMEDI_CB_PCIDDA=m
+CONFIG_COMEDI_CB_PCIMDAS=m
+CONFIG_COMEDI_CB_PCIMDDA=m
+CONFIG_COMEDI_ME4000=m
+CONFIG_COMEDI_ME_DAQ=m
+CONFIG_COMEDI_NI_6527=m
+CONFIG_COMEDI_NI_65XX=m
+CONFIG_COMEDI_NI_660X=m
+CONFIG_COMEDI_NI_670X=m
+CONFIG_COMEDI_NI_LABPC_PCI=m
+CONFIG_COMEDI_NI_PCIDIO=m
+CONFIG_COMEDI_NI_PCIMIO=m
+CONFIG_COMEDI_RTD520=m
+CONFIG_COMEDI_S626=m
+CONFIG_COMEDI_MITE=m
+CONFIG_COMEDI_NI_TIOCMD=m
 CONFIG_COMEDI_PCMCIA_DRIVERS=m
 CONFIG_COMEDI_CB_DAS16_CS=m
 CONFIG_COMEDI_DAS08_CS=m
@@ -9332,7 +10487,9 @@ CONFIG_COMEDI_KCOMEDILIB=m
 CONFIG_COMEDI_AMPLC_DIO200=m
 CONFIG_COMEDI_AMPLC_PC236=m
 CONFIG_COMEDI_DAS08=m
+CONFIG_COMEDI_ISADMA=m
 CONFIG_COMEDI_NI_LABPC=m
+CONFIG_COMEDI_NI_LABPC_ISADMA=m
 CONFIG_COMEDI_NI_TIO=m
 CONFIG_COMEDI_NI_ROUTING=m
 CONFIG_COMEDI_TESTS=m
@@ -9340,14 +10497,18 @@ CONFIG_COMEDI_TESTS_EXAMPLE=m
 CONFIG_COMEDI_TESTS_NI_ROUTES=m
 CONFIG_STAGING=y
 CONFIG_PRISM2_USB=m
+CONFIG_RTL8192U=m
 CONFIG_RTLLIB=m
 CONFIG_RTLLIB_CRYPTO_CCMP=m
 CONFIG_RTLLIB_CRYPTO_TKIP=m
 CONFIG_RTLLIB_CRYPTO_WEP=m
+CONFIG_RTL8192E=m
 CONFIG_RTL8723BS=m
 CONFIG_R8712U=m
 CONFIG_R8188EU=m
+CONFIG_RTS5208=m
 CONFIG_OCTEON_ETHERNET=m
+CONFIG_VT6655=m
 CONFIG_VT6656=m
 
 #
@@ -9403,6 +10564,7 @@ CONFIG_AD2S1210=m
 # end of Resolver to digital converters
 # end of IIO staging drivers
 
+CONFIG_FB_SM750=m
 CONFIG_USB_EMXX=m
 CONFIG_STAGING_MEDIA=y
 CONFIG_VIDEO_IMX_MEDIA=m
@@ -9430,6 +10592,20 @@ CONFIG_VIDEO_ATMEL_XISC=m
 CONFIG_VIDEO_ATMEL_ISC_BASE=m
 CONFIG_VIDEO_CPIA2=m
 CONFIG_VIDEO_VIU=m
+CONFIG_VIDEO_SAA7146=m
+CONFIG_VIDEO_SAA7146_VV=m
+CONFIG_DVB_AV7110_IR=y
+CONFIG_DVB_AV7110=m
+CONFIG_DVB_AV7110_OSD=y
+CONFIG_DVB_BUDGET_PATCH=m
+CONFIG_DVB_SP8870=m
+CONFIG_VIDEO_HEXIUM_GEMINI=m
+CONFIG_VIDEO_HEXIUM_ORION=m
+CONFIG_VIDEO_MXB=m
+CONFIG_DVB_BUDGET_CORE=m
+CONFIG_DVB_BUDGET=m
+CONFIG_DVB_BUDGET_CI=m
+CONFIG_DVB_BUDGET_AV=m
 CONFIG_VIDEO_STKWEBCAM=m
 CONFIG_VIDEO_TM6000=m
 CONFIG_VIDEO_TM6000_ALSA=m
@@ -9510,6 +10686,19 @@ CONFIG_FIELDBUS_DEV=m
 CONFIG_HMS_ANYBUSS_BUS=m
 CONFIG_ARCX_ANYBUS_CONTROLLER=m
 CONFIG_HMS_PROFINET=m
+CONFIG_QLGE=m
+CONFIG_VME_BUS=y
+
+#
+# VME Bridge Drivers
+#
+CONFIG_VME_TSI148=m
+CONFIG_VME_FAKE=m
+
+#
+# VME Device Drivers
+#
+CONFIG_VME_USER=m
 CONFIG_GOLDFISH=y
 CONFIG_GOLDFISH_PIPE=m
 CONFIG_CHROME_PLATFORMS=y
@@ -9989,6 +11178,8 @@ CONFIG_HSEM_U8500=m
 #
 CONFIG_TIMER_OF=y
 CONFIG_TIMER_PROBE=y
+CONFIG_I8253_LOCK=y
+CONFIG_CLKBLD_I8253=y
 CONFIG_CLKSRC_MMIO=y
 CONFIG_BCM2835_TIMER=y
 CONFIG_BCM_KONA_TIMER=y
@@ -10068,8 +11259,11 @@ CONFIG_IOMMU_SUPPORT=y
 # Generic IOMMU Pagetable Support
 #
 CONFIG_IOMMU_IO_PGTABLE=y
+CONFIG_IOMMU_IO_PGTABLE_LPAE=y
+CONFIG_IOMMU_IO_PGTABLE_LPAE_SELFTEST=y
 CONFIG_IOMMU_IO_PGTABLE_ARMV7S=y
 CONFIG_IOMMU_IO_PGTABLE_ARMV7S_SELFTEST=y
+CONFIG_IOMMU_IO_PGTABLE_DART=y
 # end of Generic IOMMU Pagetable Support
 
 CONFIG_IOMMU_DEBUGFS=y
@@ -10083,9 +11277,16 @@ CONFIG_OMAP_IOMMU=y
 CONFIG_OMAP_IOMMU_DEBUG=y
 CONFIG_ROCKCHIP_IOMMU=y
 CONFIG_SUN50I_IOMMU=y
+CONFIG_EXYNOS_IOMMU=y
+CONFIG_EXYNOS_IOMMU_DEBUG=y
+CONFIG_IPMMU_VMSA=y
+CONFIG_APPLE_DART=m
+CONFIG_ARM_SMMU=m
+CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT=y
 CONFIG_S390_CCW_IOMMU=y
 CONFIG_S390_AP_IOMMU=y
 CONFIG_MTK_IOMMU=m
+CONFIG_QCOM_IOMMU=y
 CONFIG_SPRD_IOMMU=m
 
 #
@@ -10700,6 +11901,7 @@ CONFIG_IIO_SIMPLE_DUMMY_BUFFER=y
 #
 # Filters
 #
+CONFIG_ADMV8818=m
 # end of Filters
 
 #
@@ -10719,6 +11921,7 @@ CONFIG_ADF4350=m
 CONFIG_ADF4371=m
 CONFIG_ADF4377=m
 CONFIG_ADMV1013=m
+CONFIG_ADMV1014=m
 CONFIG_ADMV4420=m
 CONFIG_ADRF6780=m
 # end of Phase-Locked Loop (PLL) frequency synthesizers
@@ -11035,6 +12238,16 @@ CONFIG_MAX31856=m
 CONFIG_MAX31865=m
 # end of Temperature sensors
 
+CONFIG_NTB=m
+CONFIG_NTB_MSI=y
+CONFIG_NTB_IDT=m
+CONFIG_NTB_EPF=m
+CONFIG_NTB_SWITCHTEC=m
+CONFIG_NTB_PINGPONG=m
+CONFIG_NTB_TOOL=m
+CONFIG_NTB_PERF=m
+CONFIG_NTB_MSI_TEST=m
+CONFIG_NTB_TRANSPORT=m
 CONFIG_PWM=y
 CONFIG_PWM_SYSFS=y
 CONFIG_PWM_DEBUG=y
@@ -11049,6 +12262,7 @@ CONFIG_PWM_BRCMSTB=m
 CONFIG_PWM_CLK=m
 CONFIG_PWM_CLPS711X=m
 CONFIG_PWM_CROS_EC=m
+CONFIG_PWM_DWC=m
 CONFIG_PWM_EP93XX=m
 CONFIG_PWM_FSL_FTM=m
 CONFIG_PWM_HIBVT=m
@@ -11064,6 +12278,7 @@ CONFIG_PWM_LP3943=m
 CONFIG_PWM_LPC18XX_SCT=m
 CONFIG_PWM_LPC32XX=m
 CONFIG_PWM_LPSS=m
+CONFIG_PWM_LPSS_PCI=m
 CONFIG_PWM_LPSS_PLATFORM=m
 CONFIG_PWM_MESON=m
 CONFIG_PWM_MTK_DISP=m
@@ -11122,6 +12337,7 @@ CONFIG_SUNPLUS_SP7021_INTC=y
 # end of IRQ chip support
 
 CONFIG_IPACK_BUS=m
+CONFIG_BOARD_TPCI200=m
 CONFIG_SERIAL_IPOCTAL=m
 CONFIG_RESET_CONTROLLER=y
 CONFIG_RESET_A10SR=m
@@ -11293,6 +12509,7 @@ CONFIG_PHY_J721E_WIZ=m
 CONFIG_OMAP_CONTROL_PHY=m
 CONFIG_TI_PIPE3=m
 CONFIG_PHY_TUSB1210=m
+CONFIG_PHY_TI_GMII_SEL=m
 CONFIG_PHY_INTEL_KEEMBAY_EMMC=m
 CONFIG_PHY_INTEL_KEEMBAY_USB=m
 CONFIG_PHY_INTEL_LGM_COMBO=y
@@ -11305,8 +12522,30 @@ CONFIG_POWERCAP=y
 CONFIG_ARM_SCMI_POWERCAP=m
 CONFIG_DTPM=y
 CONFIG_MCB=m
+CONFIG_MCB_PCI=m
 CONFIG_MCB_LPC=m
+
+#
+# Performance monitor support
+#
+CONFIG_ARM_CCN=m
+CONFIG_ARM_CMN=m
+CONFIG_ARM_SMMU_V3_PMU=m
+CONFIG_FSL_IMX8_DDR_PMU=m
+CONFIG_XGENE_PMU=y
+CONFIG_ARM_DMC620_PMU=m
+CONFIG_MARVELL_CN10K_TAD_PMU=m
+CONFIG_ALIBABA_UNCORE_DRW_PMU=m
+CONFIG_HNS3_PMU=m
+CONFIG_MARVELL_CN10K_DDR_PMU=m
+CONFIG_MESON_DDR_PMU=m
+# end of Performance monitor support
+
 CONFIG_RAS=y
+CONFIG_USB4=m
+CONFIG_USB4_DEBUGFS_WRITE=y
+CONFIG_USB4_DEBUGFS_MARGINING=y
+CONFIG_USB4_DMA_TEST=m
 
 #
 # Android
@@ -11317,6 +12556,14 @@ CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
 CONFIG_ANDROID_BINDER_IPC_SELFTEST=y
 # end of Android
 
+CONFIG_LIBNVDIMM=m
+CONFIG_BLK_DEV_PMEM=m
+CONFIG_ND_CLAIM=y
+CONFIG_ND_BTT=m
+CONFIG_BTT=y
+CONFIG_OF_PMEM=m
+CONFIG_NVDIMM_KEYS=y
+CONFIG_NVDIMM_SECURITY_TEST=y
 CONFIG_DAX=m
 CONFIG_NVMEM=y
 CONFIG_NVMEM_SYSFS=y
@@ -11360,11 +12607,13 @@ CONFIG_STM_DUMMY=m
 CONFIG_STM_SOURCE_CONSOLE=m
 CONFIG_STM_SOURCE_HEARTBEAT=m
 CONFIG_INTEL_TH=m
+CONFIG_INTEL_TH_PCI=m
 CONFIG_INTEL_TH_GTH=m
 CONFIG_INTEL_TH_STH=m
 CONFIG_INTEL_TH_MSU=m
 CONFIG_INTEL_TH_PTI=m
 CONFIG_INTEL_TH_DEBUG=y
+CONFIG_HISI_PTT=m
 # end of HW tracing support
 
 CONFIG_FPGA=m
@@ -11373,6 +12622,7 @@ CONFIG_FPGA_MGR_SOCFPGA_A10=m
 CONFIG_ALTERA_PR_IP_CORE=m
 CONFIG_ALTERA_PR_IP_CORE_PLAT=m
 CONFIG_FPGA_MGR_ALTERA_PS_SPI=m
+CONFIG_FPGA_MGR_ALTERA_CVP=m
 CONFIG_FPGA_MGR_ZYNQ_FPGA=m
 CONFIG_FPGA_MGR_XILINX_SPI=m
 CONFIG_FPGA_MGR_ICE40_SPI=m
@@ -11383,8 +12633,13 @@ CONFIG_XILINX_PR_DECOUPLER=m
 CONFIG_FPGA_REGION=m
 CONFIG_OF_FPGA_REGION=m
 CONFIG_FPGA_DFL=m
+CONFIG_FPGA_DFL_FME=m
+CONFIG_FPGA_DFL_FME_MGR=m
+CONFIG_FPGA_DFL_FME_BRIDGE=m
+CONFIG_FPGA_DFL_FME_REGION=m
 CONFIG_FPGA_DFL_AFU=m
 CONFIG_FPGA_DFL_NIOS_INTEL_PAC_N3000=m
+CONFIG_FPGA_DFL_PCI=m
 CONFIG_FPGA_MGR_ZYNQMP_FPGA=m
 CONFIG_FPGA_MGR_VERSAL_FPGA=m
 CONFIG_FPGA_M10_BMC_SEC_UPDATE=m
@@ -11435,6 +12690,7 @@ CONFIG_STM32_LPTIMER_CNT=m
 CONFIG_TI_EQEP=m
 CONFIG_FTM_QUADDEC=m
 CONFIG_MICROCHIP_TCB_CAPTURE=m
+CONFIG_INTEL_QEP=m
 CONFIG_TI_ECAP_CAPTURE=m
 CONFIG_MOST=m
 CONFIG_MOST_USB_HDM=m
@@ -11550,6 +12806,7 @@ CONFIG_OVERLAY_FS=m
 CONFIG_OVERLAY_FS_REDIRECT_DIR=y
 CONFIG_OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW=y
 CONFIG_OVERLAY_FS_INDEX=y
+CONFIG_OVERLAY_FS_XINO_AUTO=y
 CONFIG_OVERLAY_FS_METACOPY=y
 
 #
@@ -11591,6 +12848,7 @@ CONFIG_NTFS_FS=m
 CONFIG_NTFS_DEBUG=y
 CONFIG_NTFS_RW=y
 CONFIG_NTFS3_FS=m
+CONFIG_NTFS3_64BIT_CLUSTER=y
 CONFIG_NTFS3_LZX_XPRESS=y
 CONFIG_NTFS3_FS_POSIX_ACL=y
 # end of DOS/FAT/EXFAT/NT Filesystems
@@ -11608,8 +12866,9 @@ CONFIG_SYSFS=y
 CONFIG_TMPFS=y
 CONFIG_TMPFS_POSIX_ACL=y
 CONFIG_TMPFS_XATTR=y
+CONFIG_TMPFS_INODE64=y
 CONFIG_MEMFD_CREATE=y
-CONFIG_CONFIGFS_FS=m
+CONFIG_CONFIGFS_FS=y
 # end of Pseudo filesystems
 
 CONFIG_MISC_FILESYSTEMS=y
@@ -11673,7 +12932,6 @@ CONFIG_SQUASHFS_EMBEDDED=y
 CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
 CONFIG_VXFS_FS=m
 CONFIG_MINIX_FS=m
-CONFIG_MINIX_FS_BIG_ENDIAN_16BIT_INDEXED=y
 CONFIG_OMFS_FS=m
 CONFIG_HPFS_FS=m
 CONFIG_QNX4FS_FS=m
@@ -11766,7 +13024,6 @@ CONFIG_SUNRPC_SWAP=y
 CONFIG_RPCSEC_GSS_KRB5=m
 CONFIG_SUNRPC_DISABLE_INSECURE_ENCTYPES=y
 CONFIG_SUNRPC_DEBUG=y
-CONFIG_SUNRPC_XPRT_RDMA=m
 CONFIG_CEPH_FS=m
 CONFIG_CEPH_FSCACHE=y
 CONFIG_CEPH_FS_POSIX_ACL=y
@@ -11782,10 +13039,8 @@ CONFIG_CIFS_DEBUG2=y
 CONFIG_CIFS_DEBUG_DUMP_KEYS=y
 CONFIG_CIFS_DFS_UPCALL=y
 CONFIG_CIFS_SWN_UPCALL=y
-CONFIG_CIFS_SMB_DIRECT=y
 CONFIG_CIFS_FSCACHE=y
 CONFIG_SMB_SERVER=m
-CONFIG_SMB_SERVER_SMBDIRECT=y
 CONFIG_SMB_SERVER_CHECK_CAP_NET_ADMIN=y
 CONFIG_SMB_SERVER_KERBEROS5=y
 CONFIG_SMBFS_COMMON=m
@@ -11875,7 +13130,6 @@ CONFIG_SECURITY=y
 CONFIG_SECURITY_WRITABLE_HOOKS=y
 CONFIG_SECURITYFS=y
 CONFIG_SECURITY_NETWORK=y
-CONFIG_SECURITY_INFINIBAND=y
 CONFIG_SECURITY_NETWORK_XFRM=y
 CONFIG_SECURITY_PATH=y
 CONFIG_LSM_MMAP_MIN_ADDR=65536
@@ -12027,6 +13281,7 @@ CONFIG_CRYPTO_USER=m
 CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
 CONFIG_CRYPTO_NULL=m
 CONFIG_CRYPTO_NULL2=y
+CONFIG_CRYPTO_PCRYPT=m
 CONFIG_CRYPTO_CRYPTD=m
 CONFIG_CRYPTO_AUTHENC=m
 CONFIG_CRYPTO_TEST=m
@@ -12189,6 +13444,22 @@ CONFIG_CRYPTO_DEV_ATMEL_SHA=m
 CONFIG_CRYPTO_DEV_ATMEL_I2C=m
 CONFIG_CRYPTO_DEV_ATMEL_ECC=m
 CONFIG_CRYPTO_DEV_ATMEL_SHA204A=m
+CONFIG_CRYPTO_DEV_QAT=m
+CONFIG_CRYPTO_DEV_QAT_DH895xCC=m
+CONFIG_CRYPTO_DEV_QAT_C3XXX=m
+CONFIG_CRYPTO_DEV_QAT_C62X=m
+CONFIG_CRYPTO_DEV_QAT_4XXX=m
+CONFIG_CRYPTO_DEV_QAT_DH895xCCVF=m
+CONFIG_CRYPTO_DEV_QAT_C3XXXVF=m
+CONFIG_CRYPTO_DEV_QAT_C62XVF=m
+CONFIG_CRYPTO_DEV_CPT=m
+CONFIG_CAVIUM_CPT=m
+CONFIG_CRYPTO_DEV_NITROX=m
+CONFIG_CRYPTO_DEV_NITROX_CNN55XX=m
+CONFIG_CRYPTO_DEV_MARVELL=m
+CONFIG_CRYPTO_DEV_OCTEONTX_CPT=m
+CONFIG_CRYPTO_DEV_OCTEONTX2_CPT=m
+CONFIG_CRYPTO_DEV_CAVIUM_ZIP=m
 CONFIG_CRYPTO_DEV_QCE=m
 CONFIG_CRYPTO_DEV_QCE_SKCIPHER=y
 CONFIG_CRYPTO_DEV_QCE_SHA=y
@@ -12202,6 +13473,7 @@ CONFIG_CRYPTO_DEV_QCOM_RNG=m
 CONFIG_CRYPTO_DEV_IMGTEC_HASH=m
 CONFIG_CRYPTO_DEV_ZYNQMP_AES=m
 CONFIG_CRYPTO_DEV_ZYNQMP_SHA3=m
+CONFIG_CRYPTO_DEV_CHELSIO=m
 CONFIG_CRYPTO_DEV_VIRTIO=m
 CONFIG_CRYPTO_DEV_SAFEXCEL=m
 CONFIG_CRYPTO_DEV_CCREE=m
@@ -12263,8 +13535,8 @@ CONFIG_CORDIC=m
 CONFIG_PRIME_NUMBERS=m
 CONFIG_RATIONAL=y
 CONFIG_GENERIC_PCI_IOMAP=y
-CONFIG_GENERIC_IOMAP=y
 CONFIG_STMP_DEVICE=y
+CONFIG_ARCH_USE_CMPXCHG_LOCKREF=y
 
 #
 # Crypto library routines
@@ -12302,9 +13574,8 @@ CONFIG_CRC64=m
 CONFIG_CRC4=m
 CONFIG_CRC7=m
 CONFIG_LIBCRC32C=m
-CONFIG_CRC8=m
+CONFIG_CRC8=y
 CONFIG_XXHASH=y
-CONFIG_AUDIT_GENERIC=y
 CONFIG_RANDOM32_SELFTEST=y
 CONFIG_842_COMPRESS=m
 CONFIG_842_DECOMPRESS=m
@@ -12352,25 +13623,24 @@ CONFIG_INTERVAL_TREE_SPAN_ITER=y
 CONFIG_XARRAY_MULTI=y
 CONFIG_ASSOCIATIVE_ARRAY=y
 CONFIG_HAS_IOMEM=y
+CONFIG_HAS_IOPORT_MAP=y
 CONFIG_HAS_DMA=y
 CONFIG_DMA_OPS=y
+CONFIG_NEED_SG_DMA_LENGTH=y
 CONFIG_NEED_DMA_MAP_STATE=y
+CONFIG_ARCH_DMA_ADDR_T_64BIT=y
 CONFIG_DMA_DECLARE_COHERENT=y
-CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE=y
-CONFIG_ARCH_HAS_DMA_PREP_COHERENT=y
-CONFIG_DMA_NONCOHERENT_MMAP=y
-CONFIG_DMA_COHERENT_POOL=y
-CONFIG_DMA_DIRECT_REMAP=y
 CONFIG_DMA_API_DEBUG=y
 CONFIG_DMA_API_DEBUG_SG=y
 CONFIG_DMA_MAP_BENCHMARK=y
 CONFIG_SGL_ALLOC=y
 CONFIG_CHECK_SIGNATURE=y
+CONFIG_CPUMASK_OFFSTACK=y
+CONFIG_CPU_RMAP=y
 CONFIG_DQL=y
 CONFIG_GLOB=y
 CONFIG_GLOB_SELFTEST=m
 CONFIG_NLATTR=y
-CONFIG_GENERIC_ATOMIC64=y
 CONFIG_LRU_CACHE=m
 CONFIG_CLZ_TAB=y
 CONFIG_IRQ_POLL=y
@@ -12396,11 +13666,14 @@ CONFIG_FONT_TER16x32=y
 CONFIG_FONT_6x8=y
 CONFIG_SG_SPLIT=y
 CONFIG_SG_POOL=y
+CONFIG_ARCH_NO_SG_CHAIN=y
+CONFIG_MEMREGION=y
 CONFIG_SBITMAP=y
 CONFIG_PARMAN=m
 CONFIG_OBJAGG=m
 # end of Library routines
 
+CONFIG_PLDMFW=y
 CONFIG_ASN1_ENCODER=m
 CONFIG_POLYNOMIAL=m
 
@@ -12421,7 +13694,6 @@ CONFIG_BOOT_PRINTK_DELAY=y
 CONFIG_DYNAMIC_DEBUG=y
 CONFIG_DYNAMIC_DEBUG_CORE=y
 CONFIG_SYMBOLIC_ERRNAME=y
-CONFIG_DEBUG_BUGVERBOSE=y
 # end of printk and dmesg options
 
 CONFIG_DEBUG_KERNEL=y
@@ -12435,13 +13707,12 @@ CONFIG_DEBUG_INFO_NONE=y
 # CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT is not set
 # CONFIG_DEBUG_INFO_DWARF4 is not set
 # CONFIG_DEBUG_INFO_DWARF5 is not set
-CONFIG_FRAME_WARN=1024
+CONFIG_FRAME_WARN=2048
 CONFIG_STRIP_ASM_SYMS=y
 CONFIG_READABLE_ASM=y
 CONFIG_HEADERS_INSTALL=y
 CONFIG_DEBUG_SECTION_MISMATCH=y
 CONFIG_SECTION_MISMATCH_WARN_ONLY=y
-CONFIG_FRAME_POINTER=y
 CONFIG_VMLINUX_MAP=y
 CONFIG_DEBUG_FORCE_WEAK_PER_CPU=y
 # end of Compile-time checks and compiler options
@@ -12500,6 +13771,7 @@ CONFIG_DEBUG_VM_MAPLE_TREE=y
 CONFIG_DEBUG_VM_RB=y
 CONFIG_DEBUG_VM_PGFLAGS=y
 CONFIG_DEBUG_MEMORY_INIT=y
+CONFIG_DEBUG_PER_CPU_MAPS=y
 CONFIG_CC_HAS_WORKING_NOSANITIZE_ADDRESS=y
 # end of Memory Debugging
 
@@ -12542,13 +13814,13 @@ CONFIG_DEBUG_LOCKING_API_SELFTESTS=y
 CONFIG_LOCK_TORTURE_TEST=m
 CONFIG_WW_MUTEX_SELFTEST=m
 CONFIG_SCF_TORTURE_TEST=m
+CONFIG_CSD_LOCK_WAIT_DEBUG=y
 # end of Lock Debugging (spinlocks, mutexes, etc...)
 
 CONFIG_DEBUG_IRQFLAGS=y
 CONFIG_WARN_ALL_UNSEEDED_RANDOM=y
 CONFIG_DEBUG_KOBJECT=y
 CONFIG_DEBUG_KOBJECT_RELEASE=y
-CONFIG_HAVE_DEBUG_BUGVERBOSE=y
 
 #
 # Debug kernel data structures
@@ -12570,6 +13842,8 @@ CONFIG_TORTURE_TEST=m
 CONFIG_RCU_SCALE_TEST=m
 CONFIG_RCU_TORTURE_TEST=m
 CONFIG_RCU_REF_SCALE_TEST=m
+CONFIG_RCU_CPU_STALL_TIMEOUT=21
+CONFIG_RCU_EXP_CPU_STALL_TIMEOUT=0
 CONFIG_RCU_TRACE=y
 CONFIG_RCU_EQS_DEBUG=y
 # end of RCU Debugging
@@ -12580,12 +13854,12 @@ CONFIG_TRACE_CLOCK=y
 # CONFIG_STRICT_DEVMEM is not set
 
 #
-# m68k Debugging
+# alpha Debugging
 #
-CONFIG_BOOTPARAM=y
-CONFIG_BOOTPARAM_STRING="console=ttyS0,19200"
 CONFIG_EARLY_PRINTK=y
-# end of m68k Debugging
+CONFIG_ALPHA_LEGACY_START_ADDRESS=y
+CONFIG_MATHEMU=y
+# end of alpha Debugging
 
 #
 # Kernel Testing and Coverage
@@ -12669,8 +13943,6 @@ CONFIG_TEST_MEMCAT_P=m
 CONFIG_TEST_OBJAGG=m
 CONFIG_TEST_MEMINIT=m
 CONFIG_TEST_FREE_PAGES=m
-CONFIG_ARCH_USE_MEMTEST=y
-CONFIG_MEMTEST=y
 # end of Kernel Testing and Coverage
 
 #
@@ -12682,4 +13954,4 @@ CONFIG_WARN_MISSING_DOCUMENTS=y
 CONFIG_WARN_ABI_ERRORS=y
 # end of Kernel hacking
 
---xaKD9xMkRCkBNE71--
+--edUkIdyGHxF1GTMM--
