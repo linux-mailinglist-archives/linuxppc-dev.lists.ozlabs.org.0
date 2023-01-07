@@ -2,50 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8F5660BEB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 03:25:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B869660DBA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 11:22:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpkZd5Sy2z3cdg
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 13:25:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Npx9F2zXDz3cB1
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 21:22:41 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q/e2Knuz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q/e2Knuz;
+	dkim-atps=neutral
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpkZ5662Sz3bZx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 13:25:01 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pDytD-001M0C-Hf; Sat, 07 Jan 2023 03:24:55 +0100
-Received: from p57bd9807.dip0.t-ipconnect.de ([87.189.152.7] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pDytD-002QBV-7n; Sat, 07 Jan 2023 03:24:55 +0100
-Message-ID: <2a0071c6-20cf-42f2-f708-60c273fdb316@physik.fu-berlin.de>
-Date: Sat, 7 Jan 2023 03:24:54 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Npx8F3mZXz306n
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 21:21:48 +1100 (AEDT)
+Received: by mail-wm1-x332.google.com with SMTP id l26so2641472wme.5
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Jan 2023 02:21:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bwZ6DNVnfIB+W/mkRCm0E3L/QObg6wnuFzYCkYmf6wI=;
+        b=Q/e2KnuzjAKgdUkzAT7lO6QdIpWGQHJT8Xf7hjGBNvxWtNbdy66cKdafcqqs+seXr7
+         P52Rjc6hF503T23rooeXa43iLYeK9CtJcLxd2pfuzYuMyFtw2pP6JXT4noaTFK3rvPO1
+         GnWFjCDBLgxAz5sqVfiIknbgcozxG3Oa3vXcmSr0OvcWUgScoW1SkhE0P0HLGO3OKVGV
+         yDP/SG+EaYDUnPp4FcyQPyqTpG2OJS5cn1SegSDHMCRmuup2N2Ufmq2OHxUZ8YEPLXxj
+         oHQjy6+o/xzVA4qOJnU24VpAPGC3jO2NCAq2LQKAgQfyd7tfVj4gxH0OVr7fx9VSUuft
+         /7xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bwZ6DNVnfIB+W/mkRCm0E3L/QObg6wnuFzYCkYmf6wI=;
+        b=kqUULCsQ9oeyAEVy+A4/7lBNLogAtG6hbJLChcttm5TDuqDKiqobjyZewirvQgKVLQ
+         dXBe3sA2xO8HYrkJ9bwbUQ6qWPO9Phe44EqiK9U6zBQ8teg4Q53+1qw7zNJTkjvTUQxI
+         52YmdKhf8Jx2Mzsju93GmCx8RD+xyhi7a4njHn7O43jkgaWlHPkzCeWO9Zr3dUyIYuVp
+         53Uty0Ux0a0eDw9Gonbu8hBt5x0w2dcwhrek1kteDJIaOS3ksEOJr5FoTiD1AsUS7wvT
+         qMcNl05xLUCwagqYIMFmynDBlEHYaxFpZpdAAJKWqmgt/q1Kw5OJ4dtXwtgXgQsIgjnq
+         e+4A==
+X-Gm-Message-State: AFqh2krHaYxEGa7qHLECY/T4uxrPgqxd5urtdjga1FbdE12saUPO3mvn
+	Qp3bBqNZOgzCC6hkslBux1Y=
+X-Google-Smtp-Source: AMrXdXvgj7WJXgL/O/krYz60H4JU969uB0AKG+nlWVdeOrcW5xNqfH+0SfSwFQ+JYOrTORDecb7Z5Q==
+X-Received: by 2002:a1c:4c12:0:b0:3c6:e63e:89a6 with SMTP id z18-20020a1c4c12000000b003c6e63e89a6mr41596718wmf.2.1673086901829;
+        Sat, 07 Jan 2023 02:21:41 -0800 (PST)
+Received: from gmail.com (1F2EF507.nat.pool.telekom.hu. [31.46.245.7])
+        by smtp.gmail.com with ESMTPSA id j1-20020a05600c1c0100b003cfaae07f68sm10255499wms.17.2023.01.07.02.21.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Jan 2023 02:21:41 -0800 (PST)
+Date: Sat, 7 Jan 2023 11:21:39 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [PATCH] objtool: continue if find_insn() fails in
+ decode_instructions()
+Message-ID: <Y7lHsw4diDgVc9ip@gmail.com>
+References: <20221208072813.25799-1-sv@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH net-next 0/7] Remove three Sun net drivers
-Content-Language: en-US
-To: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
- netdev@vger.kernel.org
-References: <20230106220020.1820147-1-anirudh.venkataramanan@intel.com>
- <800d35d9-4ced-052e-aebe-683f431356ae@physik.fu-berlin.de>
- <50dfdff7-81c7-ab40-a6c5-e5e73959b780@intel.com>
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <50dfdff7-81c7-ab40-a6c5-e5e73959b780@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.152.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221208072813.25799-1-sv@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,57 +79,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leon Romanovsky <leon@kernel.org>, linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org
+Cc: sfr@canb.auug.org.au, peterz@infradead.org, chenzhongjin@huawei.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, npiggin@gmail.com, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/7/23 03:04, Anirudh Venkataramanan wrote:
-> On 1/6/2023 5:36 PM, John Paul Adrian Glaubitz wrote:
->> Hello!
->>
->> On 1/6/23 23:00, Anirudh Venkataramanan wrote:
->>> This series removes the Sun Cassini, LDOM vswitch and sunvnet drivers.
->>
->> This would affect a large number of Linux on SPARC users. Please don't!
+
+* Sathvika Vasireddy <sv@linux.ibm.com> wrote:
+
+> Currently, decode_instructions() is failing if it is not able to find
+> instruction, and this is happening since commit dbcdbdfdf137b4
+> ("objtool: Rework instruction -> symbol mapping") because it is
+> expecting instruction for STT_NOTYPE symbols.
 > 
-> Thanks for chiming in. Does your statement above apply to all 3 drivers?
-
-Yes!
-
->> We're still maintaining an active sparc64 port for Debian, see [1]. So
->> does Gentoo [2].
->>
->>> In a recent patch series that touched these drivers [1], it was suggested
->>> that these drivers should be removed completely. git logs suggest that
->>> there hasn't been any significant feature addition, improvement or fixes
->>> to user-visible bugs in a while. A web search didn't indicate any recent
->>> discussions or any evidence that there are users out there who care about
->>> these drivers.
->>
->> Well, these drivers just work and I don't see why there should be regular
->> discussions about them or changes.
+> Due to this, the following objtool warnings are seen:
+>  [1] arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+>  [2] arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+>  [3] arch/powerpc/kernel/head_64.o: warning: objtool: end_first_256B(): can't find starting instruction
 > 
-> That's fair, but lack of discussion can also be signs of disuse, and that's
-> really the hunch I was following up on. Given what you and Karl have said,
-> I agree that we shouldn't remove these drivers. I'll stop pursuing this unless
-> there are new arguments to the contrary.
+> The warnings are thrown because find_insn() is failing for symbols that
+> are at the end of the file, or at the end of the section. Given how
+> STT_NOTYPE symbols are currently handled in decode_instructions(),
+> continue if the instruction is not found, instead of throwing warning
+> and returning.
+> 
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 
-It's a common problem in my opinion on the LKML that many kernel developers assume
-that users of certain drivers and kernel subsystems are present and active on the
-kernel mailing lists to be able to raise their voices in these discussions.
+The SOB chain doesn't look valid: is Naveen N. Rao, the first SOB line, the 
+author of the patch? If yes then a matching From: line is needed.
 
-If you want to find out whether some parts of the kernel are actively being used,
-it's better to ask on distribution mailing lists because it's way more likely
-to find any users there.
+Or if two people developed the patch, then Co-developed-by should be used:
 
-I try to be present on as many kernel mailing lists as I can to be able to answer
-these questions, but sometimes there is just too much traffic for me to handle.
+        Co-developed-by: First Co-Author <first@coauthor.example.org>
+        Signed-off-by: First Co-Author <first@coauthor.example.org>
+        Co-developed-by: Second Co-Author <second@coauthor.example.org>
+        Signed-off-by: Second Co-Author <second@coauthor.example.org>
 
-Adrian
+[ In this SOB sequence "Second Co-Author" is the one who submits the patch. ]
 
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+[ Please only use Co-developed-by if actual lines of code were written by 
+  the co-author that created copyrightable material - it's not a courtesy 
+  tag. Reviewed-by/Acked-by/Tested-by can be used to credit non-code 
+  contributions. ]
 
+Thanks,
+
+	Ingo
