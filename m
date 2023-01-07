@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D834C6612C6
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 01:56:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267986612CA
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 01:59:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NqJYY4rGWz306n
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 11:56:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NqJcd0HBMz3fF3
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 11:59:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sqHpySDJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lztt/Lr8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+sam.ravnborg.org@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=devnull+sam.ravnborg.org@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sqHpySDJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lztt/Lr8;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nq7vQ003Gz3c6C
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jan 2023 05:26:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nq7vQ3dW8z3c6y
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jan 2023 05:26:26 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 404AB60BA6;
-	Sat,  7 Jan 2023 18:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2B12AC433F1;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 15368B8068A;
+	Sat,  7 Jan 2023 18:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A387C43392;
 	Sat,  7 Jan 2023 18:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1673115981;
-	bh=depPTI0dNs82ApYntY0i9Fl7bNR8n2arzj755GfE+VQ=;
+	bh=VwfafFJh85RTWNScBOqwx3qqZPO0h3ATlgYbyDEPC5c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sqHpySDJ4n/IvhYXU+F523jhEHOhqF8OXLnJ1KVhBjw6MsYmVPxBA3GWpI4ZTxX/h
-	 3slaQf4N6FlYYLCMGS6SsHKcFqFm2iQN6yl0+uJ0YJrczFqN/mJdF6Xpq/esTZCiF8
-	 /sJ/XpUSZd5AX2SxI6Ae+AQPJjAmMwG3QEWFxkFxd5BmKij53BVTIXuPVdZLX4Z3M2
-	 ukQRhfuPmhzgFXr511aG/5FcFew0Dd8pkJ+bNkzge2sroS+TIULToXWF9DxidfQpx4
-	 5p04DVFnIXze6NSUxgCCWL97ZOwFRn+IYK5XEcKC2E+qEuU582m5EMDmpiU0XLowFI
-	 M+hlRGyJmclow==
+	b=Lztt/Lr87i5c5lExc8vdn4aZe8aWtC6RKTHYiRttCMz90bu5Ax1mdzomVNCwu7drn
+	 xP3k487BFOopcNf1kfC30z86+ItuByGgcoHCb2mp/e+aHZ/C4KGO2DKAagrjLVrj9a
+	 hqzJwM4QvyNOsOR8eRQg61WHXI+uu7fiI6j46dhoNBPK6y7NMLSh9Mflp7fsElyopH
+	 8tz4fBs4Ful6Dq4060z9n3U52FvXMkwKKi4MswVznK4MRtlX82iio03yHbYOYO8PQa
+	 CqXPOymgAQYQdhEOHtKShOvXYXFoR4EVvg5oDqUVdVaXNiBuVM9LXgy0iHpuTSvdJA
+	 Bc5YWuZUj1BOQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A75C63797;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27032C46467;
 	Sat,  7 Jan 2023 18:26:21 +0000 (UTC)
 From:  Sam Ravnborg via B4 Submission Endpoint <devnull+sam.ravnborg.org@kernel.org>
-Date: Sat, 07 Jan 2023 19:26:16 +0100
-Subject:  [PATCH 02/15] video: fbdev: atyfb: Introduce backlight_get_brightness()
+Date: Sat, 07 Jan 2023 19:26:17 +0100
+Subject:  [PATCH 03/15] video: fbdev: nvidia: Introduce backlight_get_brightness()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id:  <20230107-sam-video-backlight-drop-fb_blank-v1-2-1bd9bafb351f@ravnborg.org>
+Message-Id:  <20230107-sam-video-backlight-drop-fb_blank-v1-3-1bd9bafb351f@ravnborg.org>
 References:  <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
 In-Reply-To:  <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
 To: Nicolas Ferre <nicolas.ferre@microchip.com>, Helge Deller <deller@gmx.de>,
@@ -61,11 +61,11 @@ To: Nicolas Ferre <nicolas.ferre@microchip.com>, Helge Deller <deller@gmx.de>,
  Lee Jones <lee@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>,
  Jingoo Han <jingoohan1@gmail.com>
 X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1673115978; l=1311;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1673115978; l=1193;
  i=sam@ravnborg.org; s=20230107; h=from:subject:message-id;
- bh=/QbAHY615CfNfGpaP64/mhOeeFjzqofmnLkwjP8TdRk=; =?utf-8?q?b=3DpeFAXztHf+aX?=
- =?utf-8?q?nZ041+ByYlSGJcH0uIKJtmc9ze5LMo7+ev8qRdSy4KAZF/gFoJO2KCg5E2PIfxSr?=
- qiX2RHJjC5aAXbbBDBuJbQRpdONkZhL0a8wWkB85MFUIRjBShkmE
+ bh=RQWprkm6DY1nK1XlfLALnIqlG+B5HpXX5nbpp2tYP5w=; =?utf-8?q?b=3D6PTpxwIiFZKL?=
+ =?utf-8?q?U7iAjk5SURSyOARWGJhvy9t+pxCYjyWSnVB5zn7lmv5isPTykC0kqbBVYgHfNrQN?=
+ OZnhe0MqCfAtmCpuzISqqz7yPrFGies9O1YR3IhYNqqN2c2yJA35
 X-Developer-Key: i=sam@ravnborg.org; a=ed25519;
  pk=R0+pqV7BRYOAeOIGkyOrSNke7arx5y3LkEuNi37YEyU=
 X-Endpoint-Received:  by B4 Submission Endpoint for sam@ravnborg.org/20230107 with auth_id=22
@@ -83,7 +83,7 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Reply-To: sam@ravnborg.org
-Cc: linux-fbdev@vger.kernel.org, Stephen Kitt <steve@sk2.org>, Arnd Bergmann <arnd@arndb.de>, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>, Jani Nikula <jani.nikula@intel.com>, Sam Ravnborg <sam@ravnborg.org>, linux-staging@lists.linux.dev, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, Jason Yan <yanaijie@huawei.com>, Souptick Joarder <jrdr.linux@gmail.com>, Daniel Vetter <daniel.vetter@ffwll.ch>, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-fbdev@vger.kernel.org, Stephen Kitt <steve@sk2.org>, Sam Ravnborg <sam@ravnborg.org>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -93,37 +93,35 @@ Introduce backlight_get_brightness() to simplify logic
 and avoid direct access to backlight properties.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Souptick Joarder <jrdr.linux@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Jason Yan <yanaijie@huawei.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Antonino Daplas <adaplas@gmail.com>
+Cc: linux-fbdev@vger.kernel.org
 ---
- drivers/video/fbdev/aty/atyfb_base.c | 8 +-------
+ drivers/video/fbdev/nvidia/nv_backlight.c | 8 +-------
  1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index 0ccf5d401ecb..ca361e215904 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -2219,13 +2219,7 @@ static int aty_bl_update_status(struct backlight_device *bd)
+diff --git a/drivers/video/fbdev/nvidia/nv_backlight.c b/drivers/video/fbdev/nvidia/nv_backlight.c
+index 2ce53529f636..503a7a683855 100644
+--- a/drivers/video/fbdev/nvidia/nv_backlight.c
++++ b/drivers/video/fbdev/nvidia/nv_backlight.c
+@@ -49,17 +49,11 @@ static int nvidia_bl_update_status(struct backlight_device *bd)
  {
- 	struct atyfb_par *par = bl_get_data(bd);
- 	unsigned int reg = aty_ld_lcd(LCD_MISC_CNTL, par);
+ 	struct nvidia_par *par = bl_get_data(bd);
+ 	u32 tmp_pcrt, tmp_pmc, fpcontrol;
 -	int level;
--
++	int level = backlight_get_brightness(bd);
+ 
+ 	if (!par->FlatPanel)
+ 		return 0;
+ 
 -	if (bd->props.power != FB_BLANK_UNBLANK ||
 -	    bd->props.fb_blank != FB_BLANK_UNBLANK)
 -		level = 0;
 -	else
 -		level = bd->props.brightness;
-+	int level = backlight_get_brightness(bd);
- 
- 	reg |= (BLMOD_EN | BIASMOD_EN);
- 	if (level > 0) {
+-
+ 	tmp_pmc = NV_RD32(par->PMC, 0x10F0) & 0x0000FFFF;
+ 	tmp_pcrt = NV_RD32(par->PCRTC0, 0x081C) & 0xFFFFFFFC;
+ 	fpcontrol = NV_RD32(par->PRAMDAC, 0x0848) & 0xCFFFFFCC;
 
 -- 
 2.34.1
