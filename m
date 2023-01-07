@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B869660DBA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 11:22:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CFF660E34
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 12:05:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Npx9F2zXDz3cB1
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 21:22:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Npy6x2kHtz3c94
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 22:05:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q/e2Knuz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BzPTx+OD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q/e2Knuz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BzPTx+OD;
 	dkim-atps=neutral
 Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Npx8F3mZXz306n
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 21:21:48 +1100 (AEDT)
-Received: by mail-wm1-x332.google.com with SMTP id l26so2641472wme.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Jan 2023 02:21:48 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Npy6218Qkz306n
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 22:04:56 +1100 (AEDT)
+Received: by mail-wm1-x332.google.com with SMTP id m8-20020a05600c3b0800b003d96f801c48so5256169wms.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Jan 2023 03:04:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bwZ6DNVnfIB+W/mkRCm0E3L/QObg6wnuFzYCkYmf6wI=;
-        b=Q/e2KnuzjAKgdUkzAT7lO6QdIpWGQHJT8Xf7hjGBNvxWtNbdy66cKdafcqqs+seXr7
-         P52Rjc6hF503T23rooeXa43iLYeK9CtJcLxd2pfuzYuMyFtw2pP6JXT4noaTFK3rvPO1
-         GnWFjCDBLgxAz5sqVfiIknbgcozxG3Oa3vXcmSr0OvcWUgScoW1SkhE0P0HLGO3OKVGV
-         yDP/SG+EaYDUnPp4FcyQPyqTpG2OJS5cn1SegSDHMCRmuup2N2Ufmq2OHxUZ8YEPLXxj
-         oHQjy6+o/xzVA4qOJnU24VpAPGC3jO2NCAq2LQKAgQfyd7tfVj4gxH0OVr7fx9VSUuft
-         /7xA==
+        bh=jV2yBF+mbkDE0BvyOwe05ARE6EO7XhtOfB/KJLMsfFA=;
+        b=BzPTx+ODS2RwGu5d9Av3CGI6XJ0NbmKP1pStUzg0M0m6+VF6wu2vf0tqTwK0k6q0qV
+         Fbx7Y4Wluy9p+k8PZjL3FOoLufHJHxtq2K/BaarEwd/dPtd/DgO4uDiDqLUXCcfzSy4g
+         Wd0wz4xfpZYGbxR/O6enZWRjIhs25ZrrKgwvTGouDcupcbkSfLeRveiApotbcr4XMgph
+         w/4+08uhP/RwKAozhcyw6lYPvScMk8zL6fmWwbkyxQOkT9WdSUz8lze9ta3Mlh7zLg9k
+         cM2v76pe7iQT/2ZR+EkGweLVXlhhfTIoWJwjo2u32vXfi3qjeDrWte72tROnSs3wxhtS
+         1Wwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bwZ6DNVnfIB+W/mkRCm0E3L/QObg6wnuFzYCkYmf6wI=;
-        b=kqUULCsQ9oeyAEVy+A4/7lBNLogAtG6hbJLChcttm5TDuqDKiqobjyZewirvQgKVLQ
-         dXBe3sA2xO8HYrkJ9bwbUQ6qWPO9Phe44EqiK9U6zBQ8teg4Q53+1qw7zNJTkjvTUQxI
-         52YmdKhf8Jx2Mzsju93GmCx8RD+xyhi7a4njHn7O43jkgaWlHPkzCeWO9Zr3dUyIYuVp
-         53Uty0Ux0a0eDw9Gonbu8hBt5x0w2dcwhrek1kteDJIaOS3ksEOJr5FoTiD1AsUS7wvT
-         qMcNl05xLUCwagqYIMFmynDBlEHYaxFpZpdAAJKWqmgt/q1Kw5OJ4dtXwtgXgQsIgjnq
-         e+4A==
-X-Gm-Message-State: AFqh2krHaYxEGa7qHLECY/T4uxrPgqxd5urtdjga1FbdE12saUPO3mvn
-	Qp3bBqNZOgzCC6hkslBux1Y=
-X-Google-Smtp-Source: AMrXdXvgj7WJXgL/O/krYz60H4JU969uB0AKG+nlWVdeOrcW5xNqfH+0SfSwFQ+JYOrTORDecb7Z5Q==
-X-Received: by 2002:a1c:4c12:0:b0:3c6:e63e:89a6 with SMTP id z18-20020a1c4c12000000b003c6e63e89a6mr41596718wmf.2.1673086901829;
-        Sat, 07 Jan 2023 02:21:41 -0800 (PST)
+        bh=jV2yBF+mbkDE0BvyOwe05ARE6EO7XhtOfB/KJLMsfFA=;
+        b=U0WbpU5tv0bXlGGp9XiqBrB/dRQPEu5dB76SNzAazIpirGB7EDTk3qxdc4b8khRJrN
+         Rx+o0Xq6B8gUSos/NTxd+r8r2gF1q6srZi+OSUzrlOLVffaapuHoofnMgZeaoI61WUTo
+         dE6kZvXUJ1ofmSJQw1hO/TkykF+pXXFCSr2a4JBTBcq17h/iw2HGXqosKCYAUi5uojbT
+         8tvmDHRX5XBt61/SGr2OUAjlgKjsxp0o7VnTLfvhdOaY4L+zVuYA9Qnl13ctcgWKfjsr
+         Xb/zlY3iIiVZoNmJcViMbBwMPLg06aUWx8dOUV3y4WGjQb60f4ZXY4Eqj56zuXlDz4yc
+         IhBA==
+X-Gm-Message-State: AFqh2kqmeWFdO6iZ/MUrgScTCINXDWXekOFuXsrNrZM8tVV6OXGXl6hK
+	Yrw63EohTKMlALZDaGPopRw=
+X-Google-Smtp-Source: AMrXdXuUafS1AFxogNrZXZJj6k6oC1QjVGeJmfZCRFdf2sgwNHMbrVBUD4+y7GGme2gWJhcqxBhA0A==
+X-Received: by 2002:a05:600c:601e:b0:3c6:e61e:ae71 with SMTP id az30-20020a05600c601e00b003c6e61eae71mr50341357wmb.1.1673089493118;
+        Sat, 07 Jan 2023 03:04:53 -0800 (PST)
 Received: from gmail.com (1F2EF507.nat.pool.telekom.hu. [31.46.245.7])
-        by smtp.gmail.com with ESMTPSA id j1-20020a05600c1c0100b003cfaae07f68sm10255499wms.17.2023.01.07.02.21.40
+        by smtp.gmail.com with ESMTPSA id o9-20020a05600c510900b003c6f8d30e40sm10657278wms.31.2023.01.07.03.04.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Jan 2023 02:21:41 -0800 (PST)
-Date: Sat, 7 Jan 2023 11:21:39 +0100
+        Sat, 07 Jan 2023 03:04:50 -0800 (PST)
+Date: Sat, 7 Jan 2023 12:04:47 +0100
 From: Ingo Molnar <mingo@kernel.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [PATCH] objtool: continue if find_insn() fails in
- decode_instructions()
-Message-ID: <Y7lHsw4diDgVc9ip@gmail.com>
-References: <20221208072813.25799-1-sv@linux.ibm.com>
+To: Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [PATCH v3 3/8] sched, smp: Trace IPIs sent via
+ send_call_function_single_ipi()
+Message-ID: <Y7lRz7oCaAmAhoqS@gmail.com>
+References: <20221202155817.2102944-1-vschneid@redhat.com>
+ <20221202155817.2102944-4-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221208072813.25799-1-sv@linux.ibm.com>
+In-Reply-To: <20221202155817.2102944-4-vschneid@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,48 +80,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, peterz@infradead.org, chenzhongjin@huawei.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, npiggin@gmail.com, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.i
+ nfradead.org, linux-parisc@vger.kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-* Sathvika Vasireddy <sv@linux.ibm.com> wrote:
+* Valentin Schneider <vschneid@redhat.com> wrote:
 
-> Currently, decode_instructions() is failing if it is not able to find
-> instruction, and this is happening since commit dbcdbdfdf137b4
-> ("objtool: Rework instruction -> symbol mapping") because it is
-> expecting instruction for STT_NOTYPE symbols.
+> send_call_function_single_ipi() is the thing that sends IPIs at the bottom
+> of smp_call_function*() via either generic_exec_single() or
+> smp_call_function_many_cond(). Give it an IPI-related tracepoint.
 > 
-> Due to this, the following objtool warnings are seen:
->  [1] arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
->  [2] arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
->  [3] arch/powerpc/kernel/head_64.o: warning: objtool: end_first_256B(): can't find starting instruction
+> Note that this ends up tracing any IPI sent via __smp_call_single_queue(),
+> which covers __ttwu_queue_wakelist() and irq_work_queue_on() "for free".
 > 
-> The warnings are thrown because find_insn() is failing for symbols that
-> are at the end of the file, or at the end of the section. Given how
-> STT_NOTYPE symbols are currently handled in decode_instructions(),
-> continue if the instruction is not found, instead of throwing warning
-> and returning.
-> 
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-The SOB chain doesn't look valid: is Naveen N. Rao, the first SOB line, the 
-author of the patch? If yes then a matching From: line is needed.
+Acked-by: Ingo Molnar <mingo@kernel.org>
 
-Or if two people developed the patch, then Co-developed-by should be used:
+Patch series logistics:
 
-        Co-developed-by: First Co-Author <first@coauthor.example.org>
-        Signed-off-by: First Co-Author <first@coauthor.example.org>
-        Co-developed-by: Second Co-Author <second@coauthor.example.org>
-        Signed-off-by: Second Co-Author <second@coauthor.example.org>
+ - No objections from the scheduler side, this feature looks pretty useful.
 
-[ In this SOB sequence "Second Co-Author" is the one who submits the patch. ]
+ - Certain patches are incomplete, others are noted as being merged 
+   separately, so I presume you'll send an updated/completed series 
+   eventually?
 
-[ Please only use Co-developed-by if actual lines of code were written by 
-  the co-author that created copyrightable material - it's not a courtesy 
-  tag. Reviewed-by/Acked-by/Tested-by can be used to credit non-code 
-  contributions. ]
+ - We can merge this via the scheduler tree I suspect, as most callbacks 
+   affected relate to tip:sched/core and tmp:smp/core - but if you have 
+   some other preferred tree that's fine too.
 
 Thanks,
 
