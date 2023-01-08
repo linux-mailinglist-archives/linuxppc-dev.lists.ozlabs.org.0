@@ -1,53 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CC9661891
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 20:37:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25542661948
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 21:26:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NqnQg1JsBz3cfm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 06:37:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NqpWQ73Jsz3c73
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 07:26:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa2 header.b=a3Tr/5TH;
+	dkim=fail reason="signature verification failed" header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed2 header.b=kycKAXjH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sk2.org (client-ip=178.33.253.54; helo=7.mo584.mail-out.ovh.net; envelope-from=steve@sk2.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 229 seconds by postgrey-1.36 at boromir; Mon, 09 Jan 2023 06:36:47 AEDT
-Received: from 7.mo584.mail-out.ovh.net (7.mo584.mail-out.ovh.net [178.33.253.54])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ravnborg.org (client-ip=2a02:2350:5:404::1; helo=mailrelay5-1.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa2 header.b=a3Tr/5TH;
+	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed2 header.b=kycKAXjH;
+	dkim-atps=neutral
+Received: from mailrelay5-1.pub.mailoutpod2-cph3.one.com (mailrelay5-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:404::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NqnQ72SkJz2ylk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 06:36:46 +1100 (AEDT)
-Received: from director7.ghost.mail-out.ovh.net (unknown [10.109.156.39])
-	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 6FE8823D9B
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jan 2023 19:36:42 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-wl7j5 (unknown [10.109.138.190])
-	by director7.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 18A311FED9;
-	Sun,  8 Jan 2023 19:36:39 +0000 (UTC)
-Received: from sk2.org ([37.59.142.106])
-	by ghost-submission-6684bf9d7b-wl7j5 with ESMTPSA
-	id Tf9QAUcbu2N19wAAid5/uw
-	(envelope-from <steve@sk2.org>); Sun, 08 Jan 2023 19:36:39 +0000
-Authentication-Results: garm.ovh; auth=pass (GARM-106R0064db9debf-ab59-4406-8e3b-2900436b4735,
-                    5128B599F7D401446F64D4771BE19AB2B9CD7A8B) smtp.auth=steve@sk2.org
-X-OVh-ClientIp: 82.65.25.201
-Date: Sun, 8 Jan 2023 20:36:37 +0100
-From: Stephen Kitt <steve@sk2.org>
-To: Sam Ravnborg via B4 Submission Endpoint
- <devnull+sam.ravnborg.org@kernel.org>
-Subject: Re: [PATCH 11/15] powerpc: via-pmu-backlight: Introduce
- backlight_get_brightness()
-Message-ID: <20230108203637.0eb346fb@heffalump.sk2.org>
-In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-11-1bd9bafb351f@ravnborg.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NqpVR5C86z3bPL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 07:25:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=9OaC5fUVjOcmXpBQANWBWYj1FAjD2dw4nLoh5knK1rQ=;
+	b=a3Tr/5THw9+sAm+Z+Gy/e4LPnpKQjtoLtN8tz6vefonrvI2Pg0DkrGp7CRZv9nUmr2A1eqptG9QOW
+	 1f/HZoXSd3iAonj5rqD6hm8MfIqs+HGA74YZTEWBqQ8zPgFaXkRXZXdnxCyMaH5GiAqtxqK9Df6AX9
+	 3m+LbJKf5IvUctgd9+rBTMF5HCdyq41ptarJEFEIxZnSoPgNbm9JF71Uqwz6qa4eukWv6jkTxzMAYs
+	 0ekB9siEZdEjgGlQRCnZjJI9Gm+DPZrbVZFfhiiBbLrw2rGTdikvsqCerKtoliTSrMwPUfeZ8oSV+u
+	 SlL0aFFxR/YyVglkXoExkwRnS6zazdA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=9OaC5fUVjOcmXpBQANWBWYj1FAjD2dw4nLoh5knK1rQ=;
+	b=kycKAXjH4J9Dm+t0vV22ddvwFXvBpt2IbPP9ed4AbUh/FX4raML677FAsMHuNHPU0gcasnEY0VNwR
+	 z0AhnIABQ==
+X-HalOne-ID: 6e82c542-8f92-11ed-a2f5-7703b0afff57
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay5 (Halon) with ESMTPSA
+	id 6e82c542-8f92-11ed-a2f5-7703b0afff57;
+	Sun, 08 Jan 2023 20:24:21 +0000 (UTC)
+Date: Sun, 8 Jan 2023 21:24:20 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Stephen Kitt <steve@sk2.org>
+Subject: Re: [PATCH 01/15] video: fbdev: atmel_lcdfb: Rework backlight
+ handling
+Message-ID: <Y7smdFs2xgJwwVQO@ravnborg.org>
 References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
-	<20230107-sam-video-backlight-drop-fb_blank-v1-11-1bd9bafb351f@ravnborg.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org>
+ <553AE999-CAF1-4E59-9F3F-68591ED192DE@sk2.org>
+ <Y7nb2q6SDota/rTU@ravnborg.org>
+ <366FC0B8-21E2-4642-A5A5-CF4B6AB046B0@sk2.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/uukmOXDDn4g_OXGHTWj0dxU";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Ovh-Tracer-Id: 1966384190180525702
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeeggddufedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgesghdtreerredtvdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepfeffgefhgfeuueeffeejieefieefgfefffethfdtudegvdejueelhffhfeegjeeinecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoshhtvghvvgesshhkvddrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdpoffvtefjohhsthepmhhoheekgedpmhhouggvpehsmhhtphhouhht
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <366FC0B8-21E2-4642-A5A5-CF4B6AB046B0@sk2.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,78 +72,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-omap@vger.kernel.org, Antonino Daplas <adaplas@gmail.com>, Robin van der Gracht <robin@protonic.nl>, Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>, linux-staging@lists.linux.dev, Nicolas Ferre <nicolas.ferre@microchip.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jingoo Han <jingoohan1@gmail.com>, Paul Mackerras <paulus@samba.org>, linux-fbdev@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, sam@ravnborg.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org
+Cc: Jingoo Han <jingoohan1@gmail.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Lee Jones <lee@kernel.org>, Antonino Daplas <adaplas@gmail.com>, linux-omap@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, linux-staging@lists.linux.dev, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Ludovic Desroches <ludovic.desroches@microchip.com>, Paul Mackerras <paulus@samba.org>, Robin van der Gracht <robin@protonic.nl>, Miguel Ojeda <ojeda@kernel.org>, Sam Ravnborg via B4 Submission Endpoint <devnull+sam.ravnborg.org@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org, Nicolas Ferre <nicolas.ferre@microchip.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/uukmOXDDn4g_OXGHTWj0dxU
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Stephen.
 
-On Sat, 07 Jan 2023 19:26:25 +0100, Sam Ravnborg via B4 Submission Endpoint
-<devnull+sam.ravnborg.org@kernel.org> wrote:
+ 
+> Here are my pending patches from last June on lore:
+> 
 
-> From: Sam Ravnborg <sam@ravnborg.org>
->=20
-> Introduce backlight_get_brightness() to simplify logic
-> and avoid direct access to backlight properties.
->=20
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> ---
->  drivers/macintosh/via-pmu-backlight.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->=20
-> diff --git a/drivers/macintosh/via-pmu-backlight.c
-> b/drivers/macintosh/via-pmu-backlight.c index 2194016122d2..c2d87e7fa85b
-> 100644 --- a/drivers/macintosh/via-pmu-backlight.c
-> +++ b/drivers/macintosh/via-pmu-backlight.c
-> @@ -71,12 +71,7 @@ static int pmu_backlight_get_level_brightness(int leve=
-l)
->  static int __pmu_backlight_update_status(struct backlight_device *bd)
->  {
->  	struct adb_request req;
-> -	int level =3D bd->props.brightness;
-> -
-> -
-> -	if (bd->props.power !=3D FB_BLANK_UNBLANK ||
-> -	    bd->props.fb_blank !=3D FB_BLANK_UNBLANK)
-> -		level =3D 0;
-> +	int level =3D backlight_get_brightness(bd);
-> =20
->  	if (level > 0) {
->  		int pmulevel =3D pmu_backlight_get_level_brightness(level);
->=20
-> --=20
-> 2.34.1
+All patches are handled I think except this:
+> * https://lore.kernel.org/lkml/20220608205623.2106113-1-steve@sk2.org/
 
-This one is already in 6.2-rc1, it went in via powerpc/next.
+Can I ask you to drop the assignment that is not needed, and resend with
+the collected acks/r-b.
 
-Regards,
+With this, then all fbdev patches are handled.
 
-Stephen
-
---Sig_/uukmOXDDn4g_OXGHTWj0dxU
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmO7G0UACgkQgNMC9Yht
-g5xMrQ/+PwvgQ0CHCn8HmbOrtCc6qRRFkBMOMZAVkGha3M3hYGioht4oHn4GrnMy
-TjIR7v3/JOkUdOLbjB/64to5DRhpRA1ViZ5+rzli6mJQi4D/vcf83SUedofbYnjy
-L/qOMiT/c73cpoldhKsOkvgATQSLfTQfddDthcS09XVmldfqgxqcEtSrnJ6cJ3QT
-eguOeI9WR/MqVNXT8y+NYlQttBWVAk0xoZQJgQcFBt5pS41b8Eql9n7A7+Zn5cxs
-fZLnmt9N2ul1oWFIc75dwcd803z/huqueMI/lnZ/ClSPuO2Cyvy75j9MOeWdOqBt
-iFQFUSATbNJS+WqXZQ2Tgxdz2f84jqDheSB3znCijKJuRZT9Z8JyncQKElbaqayB
-bTUIOcxFQUjQzSj01lRLrvV8R+xoZwSjJzL+DDev9FKbqXrS6lPVh2ZjGveJWvXy
-5ERsDt/BScQ0LqR2e7UjXh3md0NGHBts8eQM+sLGSeHp6R8CyxP6et3GdGJrQdBF
-BfDGcN/PbNufCzTxuVMEEYXkNDqxTtvz/V+rNJJS9KkeEYp8rp4kQIbC00TXDIDQ
-ZekvV+TKZ4JkqEX+z44qRw+kI0mza8D9FUCx8mxh20WU1JVRtr1IGc8zyl8Y1wu1
-0vLNwdTdxVfj8Z7NnIvcI8RxxcwZVT/XoIXauX9N3/iintzk5G8=
-=ImCK
------END PGP SIGNATURE-----
-
---Sig_/uukmOXDDn4g_OXGHTWj0dxU--
+	Sam
