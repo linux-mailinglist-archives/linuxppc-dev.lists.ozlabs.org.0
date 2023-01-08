@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F50661613
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 16:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F5C661619
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jan 2023 16:17:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nqgct17SZz3cBp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 02:15:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nqgfm6MRzz3c7v
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 02:17:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=B17dgkv1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=tpTCz4ws;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=B17dgkv1;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=tpTCz4ws;
 	dkim-atps=neutral
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nqgbx6rLJz2xvL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 02:14:53 +1100 (AEDT)
-Received: by mail-wm1-x334.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso4691349wms.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Jan 2023 07:14:53 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nqgdq66MPz3c6H
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 02:16:30 +1100 (AEDT)
+Received: by mail-wr1-x430.google.com with SMTP id bn26so5827990wrb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Jan 2023 07:16:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Kum/h3WoydN+pm7yzyrAbYktEmQZxXZIgzMlKqIfzRs=;
-        b=B17dgkv12M5xpcm41prkaN1pTZSj1sIvPdyYkNeyGu+fVlfcN/UNBd5Vfr+PCgtrrR
-         uUyGKa5hIjxm6nWEFQflNI8Z/T0BePImhtKOOfq0ha7YhJVOacTw7oCFowQx3vvsBCC8
-         Jo09Ga6boCwekrTRdjCBRLlPPmVUa0epePP9gvYMzROlxMU+gUA4d+xJGRzCVE4ndqDL
-         dSpwiyEnbx9uwnCHMIiOBrJI1YuNqedHnVuzroaYBVPuvGhAMh26mXwwgcC1yaxghFqu
-         B4V9ZbTaoq2T1ov47NvIJB9QQDKVH8rJCoBQwxFxCjOqBsdav6y1Bnr7APW0nkjfg99T
-         vIQg==
+        bh=BXw9KAygztT5jDGimnXGtcc/RXt5y1LZ6kVLW6bynMM=;
+        b=tpTCz4ws4jY+X1l3CQZUYaPGZa/EpzKs+yq2hYz6I47CqYW66cl+bAfI4BbsrWfmGs
+         wtQgtBjyGmpB2lgMW0B1jgg3XLN9/ToR1pRqizZcEcj14V864ktX4fOpZODMiqs4QVlE
+         89UDXaMWkCdVIeWxrbTMXsbvD5Hi55UcJXWyAUya0Ad5cGzzO9UkgL3JPCRYHinRUwoJ
+         MuLaN18LU1Pm+aAZQDXbiTxX4s7eb9ALHtsSAS30swbfEvafY2NlTrmy/rpV5N+6dMDq
+         pRGu/DUepZ8mhJShTxyIljbBeZfAscuPDkR3GYSyzWUEZdDqbobrRMhAg6jYvjyFBa/M
+         98kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kum/h3WoydN+pm7yzyrAbYktEmQZxXZIgzMlKqIfzRs=;
-        b=jkY1HwNppOOKzL7b7QQxl11T2quLy4xQRn0mLy+stb8RDjGuC38mlmhFQ39EF02YD7
-         8GbtKAliJzsxclhKwC3P35r/Un+MgSDwq2FFS1X5bJFijICou+rm7nJ3HqrbX3ztjn3f
-         hNNHuX/onvXHK/kDWRKnXj1Ww9glWd2ivc+GlgT2pfY9vq6yyPNRVwE0vC55Itd9x1Ez
-         ObKPiC1FsZYsJHx0tE/1JIAxR8PReqqNKw6d3aMUCslgCxasqTQpBdcd8RqK/9Ajg9I/
-         2E+wLKjy/ogHj0pPcATvxOOyuc6iyKS2e1zs6aJEn/Lo9kkCHEdti/hHtYa7LWLsJ8Mx
-         XD5Q==
-X-Gm-Message-State: AFqh2krjNLt74O6d6hrFXN6C4Rz0khMxY1nQclHT+gWn7Z9WUwOtKzqY
-	fTjfxZzamTnh2saqGExxm2sDJg==
-X-Google-Smtp-Source: AMrXdXsEQW0bDV9OZcom7tmbUrlLwDsgiDLU21uXmHqGTahcowbhAAYwsT+7Wijlz/86kxWzzUwtZg==
-X-Received: by 2002:a05:600c:22c4:b0:3cf:8ed7:712d with SMTP id 4-20020a05600c22c400b003cf8ed7712dmr48239469wmg.14.1673190889730;
-        Sun, 08 Jan 2023 07:14:49 -0800 (PST)
+        bh=BXw9KAygztT5jDGimnXGtcc/RXt5y1LZ6kVLW6bynMM=;
+        b=s2yT4r3dCBVDxEhQuQicV80INff+PcL5NwsZbI9v2/nQJ7Qg9Yw8YqMwRXdbGw50PL
+         FuYL2wFxBhIHT2BpTOb5TqrQ8P8JhjWswZubKy7fZZSjiYy3iTs9U2HpExZPLw6cUcxo
+         hKuD0khhuHBdP/mhuIbtmRxhpGm1ongvOKWPF8oUZNupEsXSGOu9f80D5OC8wdMfQO1E
+         Dka8laVQKJMRJjRVTQosalCRo0hXopySl7Zq+je0IKYYMHosjX7sMT9/s6tA26zAsRSg
+         M4Tgh9kz2us8+9TsE7ridP8+bdAXSHX9T9PyPLIQYFpa+WTfNavG3DvuGjvdhGVvmifz
+         RaKQ==
+X-Gm-Message-State: AFqh2kpaxa6vGp21BE0IE5xqD/+nbyNhizqMfogfmI9GwC/HaeuY66d1
+	MyU/cxl7hkLi8nJzVHXQpl8WNg==
+X-Google-Smtp-Source: AMrXdXviZdBmClnb6Toply9D3tNh+sz2JLSNoU9T04Iga71AMgdwS3TaY1guKipjbFqDnRnrIwrRUA==
+X-Received: by 2002:a5d:5e81:0:b0:244:e704:df2c with SMTP id ck1-20020a5d5e81000000b00244e704df2cmr44150318wrb.57.1673190986931;
+        Sun, 08 Jan 2023 07:16:26 -0800 (PST)
 Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id i5-20020a5d55c5000000b002a6f329203esm6356517wrw.61.2023.01.08.07.14.48
+        by smtp.gmail.com with ESMTPSA id w4-20020a5d4b44000000b002366dd0e030sm6261986wrs.68.2023.01.08.07.16.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Jan 2023 07:14:49 -0800 (PST)
-Message-ID: <76077f5f-fbda-800b-b8d8-6a3f6600f4d1@linaro.org>
-Date: Sun, 8 Jan 2023 16:14:47 +0100
+        Sun, 08 Jan 2023 07:16:26 -0800 (PST)
+Message-ID: <c393e532-d466-366b-a390-65de47c58b6a@linaro.org>
+Date: Sun, 8 Jan 2023 16:16:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
-Subject: Re: [PATCH v2 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
- controller
+Subject: Re: [PATCH v2 08/10] dt-bindings: sound: Add support for QMC audio
 Content-Language: en-US
 To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
  Rob Herring <robh+dt@kernel.org>,
@@ -76,9 +75,9 @@ To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
  Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
  Nicolin Chen <nicoleotsuka@gmail.com>
 References: <20230106163746.439717-1-herve.codina@bootlin.com>
- <20230106163746.439717-6-herve.codina@bootlin.com>
+ <20230106163746.439717-9-herve.codina@bootlin.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230106163746.439717-6-herve.codina@bootlin.com>
+In-Reply-To: <20230106163746.439717-9-herve.codina@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -97,98 +96,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 06/01/2023 17:37, Herve Codina wrote:
-> Add support for the QMC (QUICC Multichannel Controller)
-> available in some PowerQUICC SoC such as MPC885 or MPC866.
+> The QMC (QUICC mutichannel controller) is a controller
+> present in some PowerQUICC SoC such as MPC885.
+> The QMC audio is an ASoC component that uses the QMC
+> controller to transfer the audio data.
 > 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 167 ++++++++++++++++++
->  1 file changed, 167 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+>  .../bindings/sound/fsl,qmc-audio.yaml         | 110 ++++++++++++++++++
+>  1 file changed, 110 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml b/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
 > new file mode 100644
-> index 000000000000..caf71f3a3f3f
+> index 000000000000..b3774be36c19
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
-> @@ -0,0 +1,167 @@
+> +++ b/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+> @@ -0,0 +1,110 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
+> +$id: http://devicetree.org/schemas/sound/fsl,qmc-audio.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
+> +title: QMC audio
 > +
 > +maintainers:
 > +  - Herve Codina <herve.codina@bootlin.com>
 > +
 > +description: |
-> +  The QMC (QUICC Multichannel Controller) emulates up to 64 channels within
-> +  one serial controller using the same TDM physical interface routed from
-> +  TSA.
+> +  The QMC audio is an ASoC component which uses QMC (QUICC Multichannel
+> +  Controller) channels to transfer the audio data.
+> +  It provides as many DAI as the number of QMC channel used.
 > +
 > +properties:
 > +  compatible:
 > +    items:
-> +      - enum:
-> +          - fsl,mpc885-scc-qmc
-> +          - fsl,mpc866-scc-qmc
-> +      - const: fsl,cpm1-scc-qmc
-> +
-> +  reg:
-> +    items:
-> +      - description: SCC (Serial communication controller) register base
-> +      - description: SCC parameter ram base
-> +      - description: Dual port ram base
-> +
-> +  reg-names:
-> +    items:
-> +      - const: scc_regs
-> +      - const: scc_pram
-> +      - const: dpram
-> +
-> +  interrupts:
-> +    description: SCC interrupt line in the CPM interrupt controller
 
-Missing constraints.
+Drop items.
 
-> +
-> +  fsl,cpm-command:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Cf. soc/fsl/cpm_qe/cpm.txt
-
-Missing description.
-
-> +
-> +  tsa:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: phandle to the TSA
-
-Missing vendor prefix. Does not look like a generic property.
-
-> +
-> +  tsa-cell-id:
-> +    enum: [1, 2, 3]
-> +    description: |
-> +      TSA cell ID (dt-bindings/soc/fsl-tsa.h defines these values)
-> +       - 1: SCC2
-> +       - 2: SCC3
-> +       - 3: SCC4
+> +      - const: fsl,qmc-audio
 > +
 > +  '#address-cells':
 > +    const: 1
-> +
 > +  '#size-cells':
 > +    const: 0
-> +
-> +  '#chan-cells':
+> +  '#sound-dai-cells':
 > +    const: 1
 > +
 > +patternProperties:
-> +  "^channel@([0-9]|[1-5][0-9]|6[0-3])$":
+> +  "^dai@([0-9]|[1-5][0-9]|6[0-3])$":
 > +    description:
-> +      A channel managed by this controller
+> +      A DAI managed by this controller
 > +    type: object
 > +
 > +    properties:
@@ -196,93 +155,49 @@ Missing vendor prefix. Does not look like a generic property.
 > +        minimum: 0
 > +        maximum: 63
 > +        description:
-> +          The channel number
+> +          The DAI number
 > +
-> +      fsl,mode:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        enum: [transparent, hdlc]
-> +        default: transparent
-> +        description: Operational mode
-
-And what do they mean?
-
-> +
-> +      fsl,reverse-data:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          The bit order as seen on the channels is reversed,
-> +          transmitting/receiving the MSB of each octet first.
-> +          This flag is used only in 'transparent' mode.
-> +
-> +      tx-ts-mask:
+> +      qmc-chan:
 
 Missing vendor prefix.
 
-> +        $ref: /schemas/types.yaml#/definitions/uint64
-> +        description:
-> +          Channel assigned Tx time-slots within the Tx time-slots routed
-> +          by the TSA to this cell.
-> +
-> +      rx-ts-mask:
-> +        $ref: /schemas/types.yaml#/definitions/uint64
-> +        description:
-> +          Channel assigned Rx time-slots within the Rx time-slots routed
-> +          by the TSA to this cell.
+> +        $ref: /schemas/types.yaml#/definitions/phandle-array
+
+Why this is not a phandle?
+
+> +        description: phandle to the QMC channel> +        maxItems: 1
 > +
 > +    required:
 > +      - reg
-> +      - tx-ts-mask
-> +      - rx-ts-mask
+> +      - qmc-chan
 > +
 > +required:
 > +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - interrupts
-> +  - tsa
-> +  - tsa-cell-id
 > +  - '#address-cells'
 > +  - '#size-cells'
-> +  - '#chan-cells'
+> +  - '#sound-dai-cells'
 > +
 > +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/soc/fsl-tsa.h>
-> +
-> +    scc_qmc@a60 {
+> +    qmc_audio: qmc_audio {
 
-No underscores in node names.
+Same problem as in previous patch.
 
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +        compatible = "fsl,mpc885-scc-qmc", "fsl,cpm1-scc-qmc";
-> +        reg = <0xa60 0x20>,
-> +              <0x3f00 0xc0>,
-> +              <0x2000 0x1000>;
-> +        reg-names = "scc_regs", "scc_pram", "dpram";
-> +        interrupts = <27>;
-> +        interrupt-parent = <&CPM_PIC>;
-> +        fsl,cpm-command = <0xc0>;
-> +
+> +        compatible = "fsl,qmc-audio";
 > +        #address-cells = <1>;
 > +        #size-cells = <0>;
-> +        #chan-cells = <1>;
-> +
-> +        tsa = <&tsa>;
-> +        tsa-cell-id = <FSL_CPM_TSA_SCC4>;
-> +
-> +        channel@16 {
-> +            /* Ch16 : First 4 even TS from all routed from TSA */
+> +        #sound-dai-cells = <1>;
+> +        dai@16 {
 > +            reg = <16>;
-> +            fsl,mode = "transparent";
-> +            fsl,reverse-data;
-> +            tx-ts-mask = <0x00000000 0x000000AA>;
-> +            rx-ts-mask = <0x00000000 0x000000AA>;
-
-Keep case consistent. lower-case hex.
+> +            qmc-chan = <&scc_qmc 16>;
+> +        };
+> +        dai@17 {
+> +            reg = <17>;
+> +            qmc-chan = <&scc_qmc 17>;
+> +        };
+> +    };
 
 Best regards,
 Krzysztof
