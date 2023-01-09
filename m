@@ -1,73 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA3866224E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 11:02:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AD9662482
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 12:45:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nr8cQ309kz3cDF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 21:01:58 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HANDvxVU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrBvq4jmHz3cgt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 22:45:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HANDvxVU;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=inai.de (client-ip=2a01:4f8:10b:45d8::f5; helo=a3.inai.de; envelope-from=jengelh@inai.de; receiver=<UNKNOWN>)
+X-Greylist: delayed 444 seconds by postgrey-1.36 at boromir; Mon, 09 Jan 2023 19:22:12 AEDT
+Received: from a3.inai.de (a3.inai.de [IPv6:2a01:4f8:10b:45d8::f5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nr8bP2XGFz30Jy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 21:01:05 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 30060B80D5B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 10:01:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D1E34C433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 10:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673258459;
-	bh=BA+hOmAXK0bu8FIi9qI7gTqpHOLoySsvvXsdHKRskNo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=HANDvxVUwu/keaiX5S4Y6itwy4qbM2xrU5GmJcuiI/vk+LTNMqIDsvoZkWT6ayg4M
-	 PJR27xmdFnkncyxFdIoA8GfvdGNVIi5IxJe/fmyQjZ8hNPJTqITV2+y/jkZW8kdLdX
-	 AdyoEicE6JeNe0UZ+Segp1alG31EUxzNmVDOlyAJXhG9NwB5x0nSEwaBWNwdU6oDnk
-	 JfuHLY4nqizz059hQgy9vrHvmStjCs7v/74D3udzbtyZNpQRHrh3q60JR/NhmILkuc
-	 zbhbxbatDLfqcGK8/qSZcHc6YHKk1Q7MFisD+sIQRG9SWl6cJL7wzw1fQDyBjXcUQJ
-	 H5XkcLXz9Iosg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id BA3FEC43143; Mon,  9 Jan 2023 10:00:59 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216095] sysfs: cannot create duplicate filename
- '/devices/platform/of-display'
-Date: Mon, 09 Jan 2023 10:00:59 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: msuchanek@suse.de
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-216095-206035-lJKmrs8LLb@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216095-206035@https.bugzilla.kernel.org/>
-References: <bug-216095-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nr6PJ3z36z2yJT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 19:22:12 +1100 (AEDT)
+Received: by a3.inai.de (Postfix, from userid 25121)
+	id 1BED758957AAE; Mon,  9 Jan 2023 09:14:34 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by a3.inai.de (Postfix) with ESMTP id 5306160BC6B00;
+	Mon,  9 Jan 2023 09:14:34 +0100 (CET)
+Date: Mon, 9 Jan 2023 09:14:34 +0100 (CET)
+From: Jan Engelhardt <jengelh@inai.de>
+To: Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH net-next] Remove DECnet support from kernel
+In-Reply-To: <07786498-2209-3af0-8d68-c34427049947@kernel.org>
+Message-ID: <po9s7-9snp-9so3-n6r5-qs217ss1633o@vanv.qr>
+References: <20220818004357.375695-1-stephen@networkplumber.org> <07786498-2209-3af0-8d68-c34427049947@kernel.org>
+User-Agent: Alpine 2.25 (LSU 592 2021-09-18)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Mailman-Approved-At: Mon, 09 Jan 2023 22:45:00 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,26 +44,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "open list:NETFILTER" <netfilter-devel@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Jeff Layton <jlayton@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, "open list:MIPS" <linux-mips@vger.kernel.org>, Wang Qing <wangqing@vivo.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, Eric Dumazet <edumazet@google.com>, Nathan Fontenot <nathan.fontenot@amd.com>, Suma Hegde <suma.hegde@amd.com>, Paolo Abeni <pabeni@redhat.com>, Neeraj Upadhyay <quic_neeraju@quicinc.com>, Menglong Dong <imagedong@tencent.com>, Florian Fainelli <f.fainelli@gmail.com>, Xin Long <lucien.xin@gmail.com>, Chen Yu <yu.c.chen@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Xie Yongji <xieyongji@bytedance.com>, "open list:NETFILTER" <coreteam@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Borislav Petkov <bp@suse.de>
+ , Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Pablo Neira Ayuso <pablo@netfilter.org>, Stefano Garzarella <sgarzare@redhat.com>, Petr Machata <petrm@nvidia.com>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Yu Zhe <yuzhe@nfschina.com>, William Breathitt Gray <vilhelm.gray@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Hans de Goede <hdegoede@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Shakeel Butt <shakeelb@google.com>, Muchun Song <songmuchun@bytedance.com>, Alexandre Ghiti <alexandre.ghiti@canonical.com>, Yuwei Wang <wangyuweihx@gmail.com>, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Akhmat Karakotov <hmukos@yandex-team.ru>, "Martin K. Petersen" <martin.petersen@oracle.com>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Florian Westphal <fw@strlen.de>, open list <
+ linux-kernel@vger.kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, Chuck Lever <chuck.lever@oracle.com>, Arnd Bergmann <arnd@arndb.de>, Antoine Tenart <atenart@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216095
 
---- Comment #12 from Michal Such=C3=A1nek (msuchanek@suse.de) ---
-Thanks for the DT dumps.
+On Monday 2023-01-09 08:04, Jiri Slaby wrote:
+> On 18. 08. 22, 2:43, Stephen Hemminger wrote:
+>> DECnet is an obsolete network protocol
+>
+> this breaks userspace. Some projects include linux/dn.h:
+>
+>  https://codesearch.debian.net/search?q=include.*linux%2Fdn.h&literal=0
+>
+> I found Trinity fails to build:
+> net/proto-decnet.c:5:10: fatal error: linux/dn.h: No such file or directory
+>     5 | #include <linux/dn.h>
+>
+> Should we provide the above as empty files?
 
-So you really do have two outputs but the problem is likely different:
+Not a good idea. There may be configure tests / code that merely checks for
+dn.h existence without checking for specific contents/defines. If you provide
+empty files, this would fail to build:
 
-The hardware-specific driver gets initialized earlier, and then the offb/of=
-drm
-driver cannot get the resources for the framebuffer because the native driv=
-er
-is already using them.
+#include "config.h"
+#ifdef HAVE_LINUX_DN_H
+#	include <linux/dn.h>
+#endif
+int main() {
+#ifdef HAVE_LINUX_DN_H
+	socket(AF_DECNET, 0, DNPROTO_NSP); // or whatever
+#else
+	...
+#endif
+}
 
-That should be fine but the message it prints is not exactly clear.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+So, with my distro hat on, outright removing header files feels like the
+slightly lesser of two evils. Given the task to port $arbitrary software
+between operating systems, absent header files is something more or less
+"regularly" encountered, so one could argue we are "trained" to deal with it.
+But missing individual defines is a much deeper dive into the APIs and
+software to patch it out.
