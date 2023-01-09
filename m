@@ -2,63 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B241F662B31
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 17:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5871662BC5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 17:54:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrKD04Pdhz3cD8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 03:29:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrKls57Cyz3cDs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 03:54:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa2 header.b=EOIf6mOn;
-	dkim=fail reason="signature verification failed" header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed2 header.b=6W6KcsOY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mZKdUV+Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ravnborg.org (client-ip=2a02:2350:5:404::1; helo=mailrelay5-1.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::429; helo=mail-wr1-x429.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa2 header.b=EOIf6mOn;
-	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed2 header.b=6W6KcsOY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mZKdUV+Q;
 	dkim-atps=neutral
-Received: from mailrelay5-1.pub.mailoutpod2-cph3.one.com (mailrelay5-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:404::1])
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrKBz3zdLz2x9T
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 03:28:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrKky3GPsz3bT4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 03:53:12 +1100 (AEDT)
+Received: by mail-wr1-x429.google.com with SMTP id az7so8844740wrb.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 08:53:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=rsa2;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=dTBh2Be6Q1A/kCwcp9I8OjPATYhgdC0pFQ07Wxod3+Y=;
-	b=EOIf6mOnKkwHLtxJfgBg+c8bPYu10/CKQBjGac1w8zAfMoPxooFOFujSC2ijxczH4uOtY0Bvbr2DB
-	 dOfgp/+5vh+TdYJ9/gS2dW0oSa9EK9kwH08Gq6W7zHk+zYtXjrMB5o85CSGzKR/qu4SxRHIkB3YjhJ
-	 nK33nuOn8mS58pgxZ/8KZOujIXPLA8gEzLXSCWI63CwTYgbSjeYf3V9Aez9KhtnTgwWvhq865DJmyl
-	 OegDyOeMmkzrZLPHNHiOW8GLRLIFT2s4E6jlU9Z8KUTOcuTJzwVr7O4P+N+b3pvZOFVL9/CY1/0CS7
-	 UyPxebBNy3HMfqddcSX+d0Qa+M9j2aQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=ed2;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=dTBh2Be6Q1A/kCwcp9I8OjPATYhgdC0pFQ07Wxod3+Y=;
-	b=6W6KcsOY9JYk9b8jg6LJ3hg3GFrer/Pt34tm0RAXXpZTaoIrXrRW9qNshWIWd8BH9aKUo8XvraB9r
-	 XpoLe/SAQ==
-X-HalOne-ID: 8af36721-903a-11ed-b86b-7703b0afff57
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-	by mailrelay5 (Halon) with ESMTPSA
-	id 8af36721-903a-11ed-b86b-7703b0afff57;
-	Mon, 09 Jan 2023 16:27:45 +0000 (UTC)
-Date: Mon, 9 Jan 2023 17:27:44 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Daniel Thompson <daniel.thompson@linaro.org>
-Subject: Re: [PATCH 15/15] backlight: backlight: Drop the deprecated fb_blank
- property
-Message-ID: <Y7xAgHgg0sfh32Ga@ravnborg.org>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-15-1bd9bafb351f@ravnborg.org>
- <Y7v1OxdowGdxgvUj@aspen.lan>
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I6M2f+5hl6ycxEpjBTo7pStxA/gUi5ADO0lMaKR9JFY=;
+        b=mZKdUV+QJVvlJnUlNUoT/kQoNbhSpp8TKFDoQbtzA9ccRgsHV1ngpLYb+wD3q5+qZI
+         xdkaS/XCfHHymFPKkFxH55jQh13D+9YuCtBsLlRcFut0+UeE6MZg6MkPf+nsZM7x3EYG
+         7HPnbDHTVZ3GNtS7maefT3yS7dDK02BGF/HUwkhM5UYokRVLzn53LGx3ruNNSMvPEqry
+         kfOPqTD5VgBnnV9ZjKTkyTot51lduB7tUvTh4ZSeiU3r1eVROkloGQDmm+uCRDJE5dsk
+         XjqqXsahAqBRoeV9juBgLUiOMGnHu/riQCeclPMP3eJd3DUG6gX4xGoJsAV2A5j2Gnh+
+         r5wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I6M2f+5hl6ycxEpjBTo7pStxA/gUi5ADO0lMaKR9JFY=;
+        b=Hr9Ag0I3WLtvQWHjrXR8OJjsHonNloLruYU+sFKDCWgbnASagfbpi8ZNQ9CBQzWmZw
+         bPqKeNr3bKAJfl34VFsYPkbf3Z5cu3CNfC6nLrm1iXuDgxtth7p9xP4NgCUrj7Ef/bNc
+         Gagb47ZKXtqE8EgqoS05wXyVT2+GMzKorCKjIU32tvkIFdcfMOyKDF9Bz3uukRX3+9gV
+         0N3nCPsSRNylcvF2BPofGxwzuWJb3K42nAmPnPwpfXeZtuFoKnY155gCvFOjIa9uVwrR
+         8W8X7v2bLt48gCrs8rc7uZfNv/34SQ5KG3yn569JuFWSJdWyqT2AgmAW4s3SBwk/SAzn
+         rfvQ==
+X-Gm-Message-State: AFqh2kpNyxI3DZm52Iz/3T6atycHANqKvk5x3XJkzerHUpBxbrpPNagQ
+	aJbmR8WB3WQscvqWqCb7wIY=
+X-Google-Smtp-Source: AMrXdXsJJiszUF3JuTTX8Nmf8vVy4QgNmyu5UjoEDDbrHTlDop789Gmv81KRUfztvkaV2pEktbZHlA==
+X-Received: by 2002:adf:e3d2:0:b0:299:51c8:5297 with SMTP id k18-20020adfe3d2000000b0029951c85297mr17551617wrm.66.1673283189102;
+        Mon, 09 Jan 2023 08:53:09 -0800 (PST)
+Received: from gmail.com ([31.46.247.25])
+        by smtp.gmail.com with ESMTPSA id bp28-20020a5d5a9c000000b00273cd321a1bsm9058068wrb.107.2023.01.09.08.53.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jan 2023 08:53:08 -0800 (PST)
+Date: Mon, 9 Jan 2023 17:53:04 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [PATCH] objtool: continue if find_insn() fails in
+ decode_instructions()
+Message-ID: <Y7xGas4FAHFUtEJE@gmail.com>
+References: <20221208072813.25799-1-sv@linux.ibm.com>
+ <Y7lHsw4diDgVc9ip@gmail.com>
+ <623307fe-a29a-c691-b07b-4d2168d4bdcc@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Y7v1OxdowGdxgvUj@aspen.lan>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <623307fe-a29a-c691-b07b-4d2168d4bdcc@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,39 +82,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-staging@lists.linux.dev, Stephen Kitt <steve@sk2.org>, Antonino Daplas <adaplas@gmail.com>, Robin van der Gracht <robin@protonic.nl>, Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>, Paul Mackerras <paulus@samba.org>, linux-fbdev@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org
+Cc: sfr@canb.auug.org.au, peterz@infradead.org, chenzhongjin@huawei.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, npiggin@gmail.com, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Daniel.
 
-On Mon, Jan 09, 2023 at 11:06:35AM +0000, Daniel Thompson wrote:
-> On Sat, Jan 07, 2023 at 07:26:29PM +0100, Sam Ravnborg via B4 Submission Endpoint wrote:
-> > From: Sam Ravnborg <sam@ravnborg.org>
-> >
-> > With all users gone remove the deprecated fb_blank member in
-> > backlight_properties.
-> >
-> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > Cc: Lee Jones <lee@kernel.org>
-> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > Cc: Jingoo Han <jingoohan1@gmail.com>
+* Sathvika Vasireddy <sv@linux.ibm.com> wrote:
+
+> Hi Ingo, Happy New Year!
+
+Happy New Year to you too! :-)
+
+> On 07/01/23 15:51, Ingo Molnar wrote:
+> > * Sathvika Vasireddy <sv@linux.ibm.com> wrote:
+> > 
+> > > Currently, decode_instructions() is failing if it is not able to find
+> > > instruction, and this is happening since commit dbcdbdfdf137b4
+> > > ("objtool: Rework instruction -> symbol mapping") because it is
+> > > expecting instruction for STT_NOTYPE symbols.
+> > > 
+> > > Due to this, the following objtool warnings are seen:
+> > >   [1] arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+> > >   [2] arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+> > >   [3] arch/powerpc/kernel/head_64.o: warning: objtool: end_first_256B(): can't find starting instruction
+> > > 
+> > > The warnings are thrown because find_insn() is failing for symbols that
+> > > are at the end of the file, or at the end of the section. Given how
+> > > STT_NOTYPE symbols are currently handled in decode_instructions(),
+> > > continue if the instruction is not found, instead of throwing warning
+> > > and returning.
+> > > 
+> > > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> > > Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> > The SOB chain doesn't look valid: is Naveen N. Rao, the first SOB line, the
+> > author of the patch? If yes then a matching From: line is needed.
+> > 
+> > Or if two people developed the patch, then Co-developed-by should be used:
+> > 
+> >          Co-developed-by: First Co-Author <first@coauthor.example.org>
+> >          Signed-off-by: First Co-Author <first@coauthor.example.org>
+> >          Co-developed-by: Second Co-Author <second@coauthor.example.org>
+> >          Signed-off-by: Second Co-Author <second@coauthor.example.org>
+> > 
+> > [ In this SOB sequence "Second Co-Author" is the one who submits the patch. ]
+> > 
+> > [ Please only use Co-developed-by if actual lines of code were written by
+> >    the co-author that created copyrightable material - it's not a courtesy
+> >    tag. Reviewed-by/Acked-by/Tested-by can be used to credit non-code
+> >    contributions. ]
+> Thank you for the clarification, and for bringing these points to my
+> attention. I'll keep these things in mind. In this case, since both Naveen
+> N. Rao and I developed the patch, the below tags
+> are applicable.
 > 
+>         Co-developed-by: First Co-Author <first@coauthor.example.org>
+>         Signed-off-by: First Co-Author <first@coauthor.example.org>
+>         Co-developed-by: Second Co-Author <second@coauthor.example.org>
+>         Signed-off-by: Second Co-Author <second@coauthor.example.org>
+
+... while filling in your real names & email addresses I suppose. ;-)
+
 > 
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-Thanks for the follow-up on all the backlight related patches.
-
+> However, I would be dropping this particular patch, since I think Nick's
+> patch [1] is better to fix the objtool issue.
 > 
-> 
-> PS Please don't treat this like a maintainer Acked-by: and merge it
->    (Lee's not on holiday so work with Lee to figure out the merge
->    strategy ;-) ).
-Nope, I am aware that the usual pattern here and wait for Lee to show
-up.
-For this patch there is a bug as I need to update a comment.
-I will fix this when I resend after all the patches in flight has
-landed. So likely after the next merge window,
+> [1] - https://lore.kernel.org/linuxppc-dev/20221220101323.3119939-1-npiggin@gmail.com/
 
-	Sam
+Ok, I'll pick up Nick's fix, with these tags added for the PowerPC 
+regression aspect and your review:
 
+  Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+  Reported-by: Sathvika Vasireddy <sv@linux.ibm.com>
+  Acked-by: Sathvika Vasireddy <sv@linux.ibm.com>
+
+To document & credit the efforts of your patch.
+
+Thanks,
+
+	Ingo
