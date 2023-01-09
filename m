@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58631663229
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 22:03:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B148866322A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 22:04:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrRJ214SPz3fRh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 08:03:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrRK24LNSz3fKR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 08:04:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=lU92C8Jc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GGWOlVFN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=37x68ywykdaiuwtgpdiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=37368ywykdaqwyvirfksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=lU92C8Jc;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GGWOlVFN;
 	dkim-atps=neutral
 Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrR4w0fbZz3cFl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 07:54:07 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 11-20020a25050b000000b007b7968a6423so10315501ybf.13
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 12:54:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrR4y1PSjz3cJB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 07:54:10 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id w9-20020a05690210c900b007b20e8d0c99so10268835ybu.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 12:54:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S7Z9LsPdf1X6x51hAUi2Nm1VlEONIlFgbEepvCuHuj0=;
-        b=lU92C8Jcfmul8qFoqZuzCOb83nRDo2DOHABHtbUeff7KpjabsQdodVMIjgjNegm4Ui
-         gxUyuAPRcETsiRyXJ5mliOj6g1oYM6B1qnPvTAT1LA3dK82Ds4hQfkrM9RtYlbde0cbx
-         i9uLWTSQCuYKj1fxgTqem2OIhsK37AMmmELynCklGF8pD//eviNoFDjhffy4KqRRdQJC
-         MSzyVPeVUGI3nBlo70SJ15d8SfW3UoSbvzQXr0uydmfUdXg4Fl9jpjR3RSUiLlvME5Kv
-         Z62tI5fReQIg+DMNczYR66QAZbTIG8pGdwhVnCRBmPZaWsdfRkDIb3vX4UMeFSba2+4A
-         TcUg==
+        bh=VKcEnbcUm4yNPmJ0/UBWAk4YOoOktsWvie1GPNgM1C8=;
+        b=GGWOlVFNZmpsv4EqX6fJ0IzU46mRQdwbpB1woCBvprw4wrB1Px0W3aw0R3eA4F/+xV
+         kXuBRDFymMvypEzFr/D4iD7og2WAH2DpqMoKxtl2yVGo8HrvBlCIzI0TYQCav4I1owI5
+         QhJAem5dniKSevuuTKEF0EwC81wZP9AQ1hwH/aOaMvCSNfv3FcYZaW7nXgrr4EsyFNJE
+         AJznojM8o2oQLC4YAgQdb7K64EDnrtRV2QjiyePckmOOYm4vpeviEyBwwk5GM5l0mBi5
+         NKaa6vy3INpTQuuxZ0BRwKOg99o3TKTitzAEr6jS2DiN0O+IImG4Tiab8jZ8nkO0QP6Q
+         MsPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S7Z9LsPdf1X6x51hAUi2Nm1VlEONIlFgbEepvCuHuj0=;
-        b=q7ojBptqXM8KK4kJcIGK/vAfm9FL3hnpRPj1Q6H434gn3CppX0MSm97xWakl3XItPJ
-         i+ob8vcnu4AocRIH/cy4KghCEWyYoHr9DiZJkHAfKCoxCaKD21dFz5QIEkjw1aAAoRVj
-         p0OSzzZIAzQrpS0b2QdNblDySuV4KlWRxTFl9VUngCLabfHHsAHABPwvqnrdGkxWGvTH
-         6QWK6recauegG/+Ine9iEnR2oEu+mCSTXe/YZWYIAmB9Uu2VgZWOR7UIqjGdxfst9PWc
-         p+Z2L8bB0cu2tBXg6zxrlaJkW7e2w40FyfjEPShIlI0Klw+vlYVaP2YaTovmIPWUfMi2
-         ClBQ==
-X-Gm-Message-State: AFqh2kqxq+PgElJo2zVLFxV7DGG4cG5mflAwTFh8y+R21EdpvnX3QCo2
-	ZMh0iNPxpbmfDk+hbQ4166/2b8VBmfM=
-X-Google-Smtp-Source: AMrXdXt5VtatAvHvgu6DDkpLTQLv6tox4QHYgsFVwcGGt6mUkf2zF94ad2ULjvwhvY9gJJrtYWAmbQIwTHs=
+        bh=VKcEnbcUm4yNPmJ0/UBWAk4YOoOktsWvie1GPNgM1C8=;
+        b=Z1UsUi9QvdnT8N3YnRF0LMxGKskwvdpvpwPrJwIT3jDIx4nnLeLnuUejexsGZEHZpN
+         gWPULepGmCi9mMdrYLR8+dlWmtZ+K+VtuHUMSd4FOHlXbc8767LrNOR7ColfVP+Svax2
+         3GeUsj/E0JVXSPCvsvwC+hIjyBJJFpO1NMTPUtOTRDgN33fRdRojszcDJTfM9BGEfxkH
+         tD7+F/PwMUG1WpWen3RMrz8M59Rid5/iELoDvcCSt9axOTutU71uy5/GYizrRg/Fy/Xq
+         lgzzXwlNmp2DS/BTz8264dUsxK/uMp67Fx2rl1W2YINp/koGKRhCzvXTLO/+6DuU4mBz
+         pLvg==
+X-Gm-Message-State: AFqh2kpfsfI5SjzmhLLPpbDhBoYKGiCHBX/CTZNiKqeEouFNWrHxj3tw
+	Q2Ei2mk9NA/w8IFMEE/cWu0YopDBdUI=
+X-Google-Smtp-Source: AMrXdXuuklmw1U5OSS04yToFIKYXQnoMsaTWu76HfgvyMhLNzfJxTKm5wgWz/6XkfwWL03n+CBAO8y2WRQ4=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:9393:6f7a:d410:55ca])
- (user=surenb job=sendgmr) by 2002:a81:4fd0:0:b0:468:5f78:265a with SMTP id
- d199-20020a814fd0000000b004685f78265amr1632391ywb.87.1673297645909; Mon, 09
- Jan 2023 12:54:05 -0800 (PST)
-Date: Mon,  9 Jan 2023 12:53:05 -0800
+ (user=surenb job=sendgmr) by 2002:a0d:d48a:0:b0:46a:f5ee:a2fe with SMTP id
+ w132-20020a0dd48a000000b0046af5eea2femr1229443ywd.207.1673297647974; Mon, 09
+ Jan 2023 12:54:07 -0800 (PST)
+Date: Mon,  9 Jan 2023 12:53:06 -0800
 In-Reply-To: <20230109205336.3665937-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230109205336.3665937-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
-Message-ID: <20230109205336.3665937-11-surenb@google.com>
-Subject: [PATCH 10/41] mm: move mmap_lock assert function definitions
+Message-ID: <20230109205336.3665937-12-surenb@google.com>
+Subject: [PATCH 11/41] mm: export dump_mm()
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,56 +79,29 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move mmap_lock assert function definitions up so that they can be used
-by other mmap_lock routines.
+mmap_assert_write_locked() will be used in the next patch to ensure
+vma write lock is taken only under mmap_lock exclusive lock. Because
+mmap_assert_write_locked() uses dump_mm() and there are cases when
+vma write lock is taken from inside a module, it's necessary to export
+dump_mm() function.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mmap_lock.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ mm/debug.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 96e113e23d04..e49ba91bb1f0 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -60,6 +60,18 @@ static inline void __mmap_lock_trace_released(struct mm_struct *mm, bool write)
- 
- #endif /* CONFIG_TRACING */
- 
-+static inline void mmap_assert_locked(struct mm_struct *mm)
-+{
-+	lockdep_assert_held(&mm->mmap_lock);
-+	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
-+}
-+
-+static inline void mmap_assert_write_locked(struct mm_struct *mm)
-+{
-+	lockdep_assert_held_write(&mm->mmap_lock);
-+	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
-+}
-+
- static inline void mmap_init_lock(struct mm_struct *mm)
- {
- 	init_rwsem(&mm->mmap_lock);
-@@ -150,18 +162,6 @@ static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
- 	up_read_non_owner(&mm->mmap_lock);
+diff --git a/mm/debug.c b/mm/debug.c
+index 7f8e5f744e42..b6e9e53469d1 100644
+--- a/mm/debug.c
++++ b/mm/debug.c
+@@ -215,6 +215,7 @@ void dump_mm(const struct mm_struct *mm)
+ 		mm->def_flags, &mm->def_flags
+ 	);
  }
++EXPORT_SYMBOL(dump_mm);
  
--static inline void mmap_assert_locked(struct mm_struct *mm)
--{
--	lockdep_assert_held(&mm->mmap_lock);
--	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
--}
--
--static inline void mmap_assert_write_locked(struct mm_struct *mm)
--{
--	lockdep_assert_held_write(&mm->mmap_lock);
--	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
--}
--
- static inline int mmap_lock_is_contended(struct mm_struct *mm)
- {
- 	return rwsem_is_contended(&mm->mmap_lock);
+ static bool page_init_poisoning __read_mostly = true;
+ 
 -- 
 2.39.0
 
