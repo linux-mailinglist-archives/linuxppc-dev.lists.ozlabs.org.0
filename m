@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619CB6623BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 12:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CE06623C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 12:05:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrB001Sz9z3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 22:04:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrB1l1rHjz3cJB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 22:05:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oGr26Y/f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JfOf7Ybc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::429; helo=mail-wr1-x429.google.com; envelope-from=daniel.thompson@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::431; helo=mail-wr1-x431.google.com; envelope-from=daniel.thompson@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oGr26Y/f;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JfOf7Ybc;
 	dkim-atps=neutral
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nr9z15nGKz3bXQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 22:03:07 +1100 (AEDT)
-Received: by mail-wr1-x429.google.com with SMTP id z5so6685702wrt.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 03:03:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrB0n2tXSz2xJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 22:04:41 +1100 (AEDT)
+Received: by mail-wr1-x431.google.com with SMTP id h16so7732185wrz.12
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 03:04:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zefo0+cIWrVM5FFfr0NEPPr+QlP+S4JK9M0A8dYdzso=;
-        b=oGr26Y/fiwHYFqrJohN/Z+dunayrmT0xuC0ParAo9r2mbdlha7JmZ5TehQNI7/mIWp
-         hWSaPL393d7ahA2QrXLa47EcjFnu5YT3Jb1N9fthnTAQrjCxXX5POnD6hWqlfRrvA5rI
-         D/zve+wX42+oAgMs/sBQZoe1LdpaOjZRMLxj9/pt72r0tOe0R/+AjRzibKCDbZ/OAUkz
-         Q0BxMJI//BsazsVVwnI2dgwGh987r5dh+ydGEkKrBjeM7d2rKYJ1AA6ZN5E5Avw5UebQ
-         EnTIpNqs1kyVGp6yaaqvQXZQzoIn0NGA/pp6hh/yoW71e/0duhXVOBRms7rLUxGdJdLd
-         s8Mw==
+        bh=F1o1h0/8Z9CTd9JzV9HYcBGjMEGQHN88SqgrqMI3CKE=;
+        b=JfOf7Ybc+GU1nn8y1UcCvxhLZxdJnTmM6yTssoaGD6iHkSp9kw+vB/gkiSd9BYh1Ev
+         0QFxzWP/4tG540eJGRXWjtCmZaqkjyjagRDq8bBhASM3grdf91bjsYv4KgV91OB6++4s
+         YsO8YvQsF+0XVZ29S/f//4CfrmOe9Sy50FKX3juIAKrtyF082yVw33n51qKs/qdi7yYI
+         5jeqjXKki1UkPiZnTc5D0T6QLRHn9xrUgbQ09ydGm4qnjFUmkdixeoByKFU5eYtKy7FR
+         6A31HILTPPT2+/z7YlxLdMYcewFPN71b3Dgv09t0GfYu7LRrYZNWfX48SDylX3W4GzdP
+         ASMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zefo0+cIWrVM5FFfr0NEPPr+QlP+S4JK9M0A8dYdzso=;
-        b=Ft1/I05oKvLBEyinMc+L8afIoF+YO/KdOQPVt5YfN6uZ4hQdxHxUpto09qnSF43nyX
-         1ENy/5He8V7ZP6xJ1fex/c5WVTpeI6VG6pPNugcI7AzwNynM9Djtn5oIO2OOa/rYO/4v
-         0vhiUlwb9CuBA2I4kCU/2NL/SLZaoCFonafFO2S2kGk1Kkn6OcVhduZbW1A0OAI3HLS9
-         PEQKW7MyYNxedErfGr/UhEjIrqOz64LMskqgHGEf9C6ideHV6h0xT9wO6NeZadnSBep0
-         fTuesY2BrzFiyXeB5VP1qHP/L/J5HgkBF9ZN73KBol6D6TbT8W6aiPSA41C7j7evl+8O
-         v9pg==
-X-Gm-Message-State: AFqh2kreF5THwjtikk1n7CzJ4oXOT7JXIVufgCQmXw2M4vFZ4xDCxegK
-	qzl986Qsmx2xw8ARiyZ0btintQ==
-X-Google-Smtp-Source: AMrXdXuJ229PsMqnsutJQhmCnDx582UTxhRGjYEWDOJCs8UDfbNlBoANEOulxPZfAp5vzNYgBBmlzA==
-X-Received: by 2002:a5d:56cb:0:b0:28d:66c4:3102 with SMTP id m11-20020a5d56cb000000b0028d66c43102mr23679733wrw.12.1673262182985;
-        Mon, 09 Jan 2023 03:03:02 -0800 (PST)
+        bh=F1o1h0/8Z9CTd9JzV9HYcBGjMEGQHN88SqgrqMI3CKE=;
+        b=VyNfzZDKNTQkIE2aRIdgrQU+FALnhvP/YXn4QwfwHBOfTuIZylDTyfJ3JN+bxyr3Zz
+         L3Ru67+ZR+fV+Mt4zKyyFuL9Fseyii1XOKXs8zGOjwpRW3XAMIkRQ9IEUNqvQeUsCNEy
+         M53a5oc4VIlx1jGQwzHMjTjGw9qaNCzHUDn3o8BYsNXqm/5W3g+k0Dk17WDdg4NjIgy7
+         gaDzkpp/oaI4CBJOuhrqS9u9zwTrxSGwwCQPG9nKzn5DlRbFdMRQQ2nSzddHRoaH/G9x
+         KyK7qzCOw3T8jJJGisQWxFIBYtpB9QvRLnLYBdZEY/hYopxqNx7iUTg45CYdCDopnYyN
+         dc4g==
+X-Gm-Message-State: AFqh2kptkZrD2J9xQQIFCHCjH59M71bdR7pr3IG0v+kEFZXva+C9KKZ3
+	2Qq0LRkYaEaIOV0F1FCH533Q4A==
+X-Google-Smtp-Source: AMrXdXt0sWws9FC7FmSd3zSlUGnJeOxvVL6lisTvf8bQ3vSNu8uoGcg+vPo7j6+ZFs9pmgtUvQuw9w==
+X-Received: by 2002:adf:d846:0:b0:29f:4e42:33c5 with SMTP id k6-20020adfd846000000b0029f4e4233c5mr14183491wrl.55.1673262277116;
+        Mon, 09 Jan 2023 03:04:37 -0800 (PST)
 Received: from aspen.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id o14-20020a5d58ce000000b002879c013b8asm8250053wrf.42.2023.01.09.03.03.01
+        by smtp.gmail.com with ESMTPSA id z6-20020a5d6546000000b002bc371a08adsm2060413wrv.101.2023.01.09.03.04.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jan 2023 03:03:02 -0800 (PST)
-Date: Mon, 9 Jan 2023 11:02:59 +0000
+        Mon, 09 Jan 2023 03:04:36 -0800 (PST)
+Date: Mon, 9 Jan 2023 11:04:34 +0000
 From: Daniel Thompson <daniel.thompson@linaro.org>
 To: sam@ravnborg.org
-Subject: Re: [PATCH 13/15] backlight: omap1: Use backlight helpers
-Message-ID: <Y7v0Yw3kg9E8j5Bu@aspen.lan>
+Subject: Re: [PATCH 14/15] backlight: tosa: Use backlight helper
+Message-ID: <Y7v0wiBHXy7lH6tz@aspen.lan>
 References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-13-1bd9bafb351f@ravnborg.org>
+ <20230107-sam-video-backlight-drop-fb_blank-v1-14-1bd9bafb351f@ravnborg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-13-1bd9bafb351f@ravnborg.org>
+In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-14-1bd9bafb351f@ravnborg.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,26 +82,18 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-staging@lists.linux
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 07, 2023 at 07:26:27PM +0100, Sam Ravnborg via B4 Submission Endpoint wrote:
-> From: Sam Ravnborg <sam@ravnborg.org>
+On Sat, Jan 07, 2023 at 07:26:28PM +0100, Sam Ravnborg via B4 Submission Endpoint wrote:
+> From: Stephen Kitt <steve@sk2.org>
 >
-> Rework backlight handling to avoid access to the deprecated
-> backlight_properties.fb_blank member.
+> Instead of retrieving the backlight brightness in struct
+> backlight_properties manually, and then checking whether the backlight
+> should be on at all, use backlight_get_brightness() which does all
+> this and insulates this from future changes.
 >
-> The rework includes removal of get_brightness() operation,
-> because there was no read back from HW so no use for it.
->
+> Signed-off-by: Stephen Kitt <steve@sk2.org>
 > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
 
-This rework will result in additional calls to omapbl_send_enable()
-during updates so, if anyone who cares about omap1, is filtering LKML
-then a Tested-by: would be nice.
-
-However, I doubt the additional calls will do any harm so even with
-that absent:
+Just for completeness...
 Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
 
