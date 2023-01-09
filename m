@@ -1,95 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61226626B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 14:18:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EAF662A23
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 16:36:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrDzC5RBgz3cFl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 00:18:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=duEZJVq5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrJ2x2LtMz3f9n
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 02:36:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=duEZJVq5;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=danny.cz (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=<UNKNOWN>)
+X-Greylist: delayed 411 seconds by postgrey-1.36 at boromir; Tue, 10 Jan 2023 02:36:28 AEDT
+Received: from redcrew.org (redcrew.org [37.157.195.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrDxb5Qknz3cFH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 00:17:07 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 309CLPpx016700;
-	Mon, 9 Jan 2023 13:17:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=oSa+UgGc1KQSMwPpS7EqWPgmIC25JQUHhMfRTmQ76ro=;
- b=duEZJVq5VdwkUhsUJTf/xDnNUT07oj9uSr1FTEg96VpGZGAGQmbJJR67PpZLTbPbrkQm
- oCXwtTpWi/0fX+t7CH4BQ0uNnuQgNeARcDvOwWGlkECjfK3vqbz6q+Wiqa1b7WeTjm+B
- Hhi45sRqwmrAoBdtoH7qcWhkXCeDcRCk/Ie+ZC7OYwCyPc++IBIK4C+j1EkcLchivi54
- IKTa02zI5bEV3y1oY2Wz9gEzUMuEHIh5RWYmO5UhZsMF0Ikmp88GamzwJxrsbL/xtoBI
- Elvwc6uZfJJt5J/TUjybx/MCBNUcMMiEnkumCSzjAucuHSKSVUxGkMKgMBktspo9DZEN 0w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3myj6je3u2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Jan 2023 13:16:59 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 309CC6tq004630;
-	Mon, 9 Jan 2023 13:16:59 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3myj6je3su-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Jan 2023 13:16:59 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3098Hcdx013339;
-	Mon, 9 Jan 2023 13:16:56 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3my00fk0dm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Jan 2023 13:16:56 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 309DGq4D22282886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Jan 2023 13:16:52 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AAF6620040;
-	Mon,  9 Jan 2023 13:16:52 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 491CD2004D;
-	Mon,  9 Jan 2023 13:16:50 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.36.39])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  9 Jan 2023 13:16:50 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH 2/2] perf test bpf: Skip test if kernel-debuginfo is not
- present
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <Y7bIk77mdE4j8Jyi@kernel.org>
-Date: Mon, 9 Jan 2023 18:46:49 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F1FC1E7D-8E6C-42E6-9293-E7E69D0DF542@linux.vnet.ibm.com>
-References: <20230105121742.92249-1-atrajeev@linux.vnet.ibm.com>
- <20230105121742.92249-2-atrajeev@linux.vnet.ibm.com>
- <Y7bIk77mdE4j8Jyi@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IeRmQUM0bYtezXT9kVa7RFgG5q0jXE8o
-X-Proofpoint-GUID: xYSSXg8LLAo7HEie9VcZ_V1yjn4b1r_R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-09_06,2023-01-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 phishscore=0 adultscore=0 mlxscore=0
- suspectscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301090094
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrJ2N56Wlz2yJv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 02:36:28 +1100 (AEDT)
+Received: from server.danny.cz (85-71-161-19.rce.o2.cz [85.71.161.19])
+	by redcrew.org (Postfix) with ESMTP id 5F8191223;
+	Mon,  9 Jan 2023 16:29:30 +0100 (CET)
+Received: from talos.danny.cz (unknown [IPv6:2001:470:5c11:160:47df:83f6:718e:218])
+	by server.danny.cz (Postfix) with SMTP id B9792DA003;
+	Mon,  9 Jan 2023 16:29:30 +0100 (CET)
+Date: Mon, 9 Jan 2023 16:29:30 +0100
+From: Dan =?UTF-8?B?SG9yw6Fr?= <dan@danny.cz>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [Skiboot] [PATCH 1/3] core/device: Add function to return child
+ node using name and length
+Message-Id: <20230109162930.13958ea565052acf4021feb8@danny.cz>
+In-Reply-To: <90C3BC56-B51A-4FD7-8949-900E24EF34E8@linux.vnet.ibm.com>
+References: <20230102151954.aae52c099e02ef3c4f22fd4e@danny.cz>
+	<246510aa-76f6-f030-d89a-78ac45aef30c@linux.ibm.com>
+	<90C3BC56-B51A-4FD7-8949-900E24EF34E8@linux.vnet.ibm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; powerpc64le-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,125 +47,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, skiboot@lists.ozlabs.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Athira,
+
+On Thu, 5 Jan 2023 12:41:33 +0530
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
+
+> 
+> 
+> > On 05-Jan-2023, at 12:35 PM, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+> > 
+> > 
+> > On Mon,  2 Jan 2023 08:45:22 +0530
+> > Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
+> > 
+> >> Add a function dt_find_by_name_len() that returns the child node if
+> >> it matches the first "n" characters of a given name, otherwise NULL.
+> >> This is helpful for cases with node name like: "name@addr". In
+> >> scenarios where nodes are added with "name@addr" format and if the
+> >> value of "addr" is not known, that node can't be matched with node
+> >> name or addr. Hence matching with substring as node name will return
+> >> the expected result. Patch adds dt_find_by_name_len() function
+> >> and testcase for the same in core/test/run-device.c
+> > 
+> > wouldn't it be better to automatically compare the name up to the "@"
+> > character in the node name when searching for the match instead of
+> > having to hard-code the lengths? I think it should be good enough for
+> > the use case described above.
+> > 
+> > something like
+> > ...
+> > pos = strchr(child->name, '@')
+> > if (!strncmp(child->name, name, pos - child->name))
+> >  ...
+> > 
+> > 
+> > 		Dan
+> 
+> Hi Dan,
+> 
+> Thanks for checking the patch.
+> 
+> Comparing upto "@" while searching for the match will restrict the string search only for patterns with "@".
+> By having dt_find_by_name_len which uses length, will be useful for generic substring search for different patterns.
+> So prefered to use length instead of hardcoding character.
+> 
+> Please let us know your thoughts.
+
+I understand the presented solution is a pretty generic one, but I think
+the question is whether the added complexity brings the benefits
+compared to the simpler "separator char" solution.
+
+And thinking even more about the generic "length" approach, it might
+bring some false positive hits. Imagine nodes abc@1, abcd@2 and you are
+looking for "abc". A search for (abc,3) will match also the "abcd"
+one. And if the search string will always contain the "@" character,
+then specifying the length is not required. And I believe the length
+parameter might be totally redundant, because it can be derived from
+the search string and the new function would be like
+"dt_find_by_name_substr()".
 
 
-> On 05-Jan-2023, at 6:24 PM, Arnaldo Carvalho de Melo <acme@kernel.org> =
-wrote:
->=20
-> Em Thu, Jan 05, 2023 at 05:47:42PM +0530, Athira Rajeev escreveu:
->> Perf BPF filter test fails in environment where "kernel-debuginfo"
->> is not installed.
->=20
-> I'll apply this to perf/core, for the next merge window, as its more =
-an
-> improvement than a fix, i.e. we know why it fails, we're just =
-improving
-> the user reporting to make that clear at first sight.
->=20
-> - Arnaldo
+	With regards,
 
-Hi Arnaldo,
+		Dan
 
-Sure, Thanks for checking
-
-Athira
->=20
->> Test failure logs:
->> <<>>
->> 42: BPF filter                            :
->> 42.1: Basic BPF filtering                 : Ok
->> 42.2: BPF pinning                         : Ok
->> 42.3: BPF prologue generation             : FAILED!
->> <<>>
->>=20
->> Enabling verbose option provided debug logs, which says debuginfo
->> needs to be installed. Snippet of verbose logs:
->>=20
->> <<>>
->> 42.3: BPF prologue generation                                       :
->> --- start ---
->> test child forked, pid 28218
->> <<>>
->> Rebuild with CONFIG_DEBUG_INFO=3Dy, or install an appropriate =
-debuginfo
->> package.
->> bpf_probe: failed to convert perf probe events
->> Failed to add events selected by BPF
->> test child finished with -1
->> ---- end ----
->> BPF filter subtest 3: FAILED!
->> <<>>
->>=20
->> Here subtest, "BPF prologue generation" failed and
->> logs shows debuginfo is needed. After installing
->> kernel-debuginfo package, testcase passes.
->>=20
->> Subtest "BPF prologue generation" failed because, the "do_test"
->> function returns "TEST_FAIL" without checking the error type
->> returned by "parse_events_load_bpf_obj" function.
->> Function parse_events_load_bpf_obj can also return error of type
->> "-ENODATA" incase kernel-debuginfo package is not installed. Fix this
->> by adding check for -ENODATA error.
->>=20
->> Test result after the patch changes:
->>=20
->> Test failure logs:
->> <<>>
->> 42: BPF filter                 :
->> 42.1: Basic BPF filtering      : Ok
->> 42.2: BPF pinning              : Ok
->> 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
->> installed or environment missing BPF support)
->>=20
->> Fixes: ba1fae431e74 ("perf test: Add 'perf test BPF'")
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> Note: This is dependent on patch 1:
->> tools/perf: Update the exit error codes in function
->> try_to_find_probe_trace_event
->>=20
->> tools/perf/tests/bpf.c | 6 +++++-
->> 1 file changed, 5 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
->> index 17c023823713..6a4235a9cf57 100644
->> --- a/tools/perf/tests/bpf.c
->> +++ b/tools/perf/tests/bpf.c
->> @@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int =
-(*func)(void),
->>=20
->> 	err =3D parse_events_load_bpf_obj(&parse_state, =
-&parse_state.list, obj, NULL);
->> 	parse_events_error__exit(&parse_error);
->> +	if (err =3D=3D -ENODATA) {
->> +		pr_debug("Failed to add events selected by BPF, =
-debuginfo package not installed\n");
->> +		return TEST_SKIP;
->> +	}
->> 	if (err || list_empty(&parse_state.list)) {
->> 		pr_debug("Failed to add events selected by BPF\n");
->> 		return TEST_FAIL;
->> @@ -368,7 +372,7 @@ static struct test_case bpf_tests[] =3D {
->> 			"clang isn't installed or environment missing =
-BPF support"),
->> #ifdef HAVE_BPF_PROLOGUE
->> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
->> -			"clang isn't installed or environment missing =
-BPF support"),
->> +			"clang/debuginfo isn't installed or environment =
-missing BPF support"),
->> #else
->> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, =
-"not compiled in"),
->> #endif
->> --=20
->> 2.31.1
->=20
-> --=20
->=20
-> - Arnaldo
-
+> Thanks
+> Athira
+> 
+> > 
+> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> >> ---
+> >> core/device.c          | 20 ++++++++++++++++++++
+> >> core/test/run-device.c | 11 +++++++++++
+> >> include/device.h       |  4 ++++
+> >> 3 files changed, 35 insertions(+)
+> >> diff --git a/core/device.c b/core/device.c
+> >> index 2de37c74..72c54e85 100644
+> >> --- a/core/device.c
+> >> +++ b/core/device.c
+> >> @@ -395,6 +395,26 @@ struct dt_node *dt_find_by_name(struct dt_node *root, const char *name)
+> >> }
+> >>  +struct dt_node *dt_find_by_name_len(struct dt_node *root,
+> >> +					const char *name, int len)
+> >> +{
+> >> +	struct dt_node *child, *match;
+> >> +
+> >> +	if (len <= 0)
+> >> +		return NULL;
+> >> +
+> >> +	list_for_each(&root->children, child, list) {
+> >> +		if (!strncmp(child->name, name, len))
+> >> +			return child;
+> >> +
+> >> +		match = dt_find_by_name_len(child, name, len);
+> >> +		if (match)
+> >> +			return match;
+> >> +	}
+> >> +
+> >> +	return NULL;
+> >> +}
+> >> +
+> >> struct dt_node *dt_new_check(struct dt_node *parent, const char *name)
+> >> {
+> >> 	struct dt_node *node = dt_find_by_name(parent, name);
+> >> diff --git a/core/test/run-device.c b/core/test/run-device.c
+> >> index 4a12382b..8c552103 100644
+> >> --- a/core/test/run-device.c
+> >> +++ b/core/test/run-device.c
+> >> @@ -466,6 +466,17 @@ int main(void)
+> >> 	new_prop_ph = dt_prop_get_u32(ut2, "something");
+> >> 	assert(!(new_prop_ph == ev1_ph));
+> >> 	dt_free(subtree);
+> >> +
+> >> +	/* Test dt_find_by_name_len */
+> >> +	root = dt_new_root("");
+> >> +	addr1 = dt_new_addr(root, "node", 0x1);
+> >> +	addr2 = dt_new_addr(root, "node0_1", 0x2);
+> >> +	assert(dt_find_by_name(root, "node@1") == addr1);
+> >> +	assert(dt_find_by_name(root, "node0_1@2") == addr2);
+> >> +	assert(dt_find_by_name_len(root, "node@", 5) == addr1);
+> >> +	assert(dt_find_by_name_len(root, "node0_1@", 8) == addr2);
+> >> +	dt_free(root);
+> >> +
+> >> 	return 0;
+> >> }
+> >> diff --git a/include/device.h b/include/device.h
+> >> index 93fb90ff..f5e0fb79 100644
+> >> --- a/include/device.h
+> >> +++ b/include/device.h
+> >> @@ -184,6 +184,10 @@ struct dt_node *dt_find_by_path(struct dt_node *root, const char *path);
+> >> /* Find a child node by name */
+> >> struct dt_node *dt_find_by_name(struct dt_node *root, const char *name);
+> >> +/* Find a child node by name and len */
+> >> +struct dt_node *dt_find_by_name_len(struct dt_node *root,
+> >> +                                        const char *name, int len);
+> >> +
+> >> /* Find a node by phandle */
+> >> struct dt_node *dt_find_by_phandle(struct dt_node *root, u32 phandle);
+> >> -- 
+> >> 2.27.0
+> >> _______________________________________________
+> >> Skiboot mailing list
+> >> Skiboot@lists.ozlabs.org
+> >> https://lists.ozlabs.org/listinfo/skiboot
+> > _______________________________________________
+> > Skiboot mailing list
+> > Skiboot@lists.ozlabs.org
+> > https://lists.ozlabs.org/listinfo/skiboot
+> 
