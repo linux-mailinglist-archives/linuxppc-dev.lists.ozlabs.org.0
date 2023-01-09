@@ -1,53 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486B5661F07
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 08:13:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB6D661EFB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 08:05:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nr4sW1mfXz3c9K
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 18:13:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nr4hJ3C30z3cdj
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 18:05:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sk2.org (client-ip=178.33.251.80; helo=2.mo576.mail-out.ovh.net; envelope-from=steve@sk2.org; receiver=<UNKNOWN>)
-Received: from 2.mo576.mail-out.ovh.net (2.mo576.mail-out.ovh.net [178.33.251.80])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.46; helo=mail-wr1-f46.google.com; envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nr4ry0NQTz2xmy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 18:12:32 +1100 (AEDT)
-Received: from director10.ghost.mail-out.ovh.net (unknown [10.109.146.76])
-	by mo576.mail-out.ovh.net (Postfix) with ESMTP id 0E41422A2D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 07:04:17 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-vcj6j (unknown [10.110.208.152])
-	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 114F81FE0E;
-	Mon,  9 Jan 2023 07:04:15 +0000 (UTC)
-Received: from sk2.org ([37.59.142.97])
-	by ghost-submission-6684bf9d7b-vcj6j with ESMTPSA
-	id VL7nAW+8u2NFIg8AanWh3Q
-	(envelope-from <steve@sk2.org>); Mon, 09 Jan 2023 07:04:15 +0000
-Authentication-Results: garm.ovh; auth=pass (GARM-97G002b1d9a515-bcd6-46a5-9747-d99bfac79232,
-                    796317D5D98EA53ED2B7ABF3FE0FDD27B7A2AA3D) smtp.auth=steve@sk2.org
-X-OVh-ClientIp: 82.65.25.201
-Date: Mon, 9 Jan 2023 08:04:08 +0100
-From: Stephen Kitt <steve@sk2.org>
-To: Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH 09/15] staging: fbtft: fb_ssd1351.c: Introduce
- backlight_is_blank()
-Message-ID: <20230109080408.318b9188@heffalump.sk2.org>
-In-Reply-To: <Y7sntztwrNqw41+i@ravnborg.org>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
-	<20230107-sam-video-backlight-drop-fb_blank-v1-9-1bd9bafb351f@ravnborg.org>
-	<20230108202817.7890f85c@heffalump.sk2.org>
-	<Y7sntztwrNqw41+i@ravnborg.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nr4gj3D7Zz304m
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jan 2023 18:04:31 +1100 (AEDT)
+Received: by mail-wr1-f46.google.com with SMTP id r2so7158110wrv.7
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Jan 2023 23:04:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wYsLuw/5810Zy5eTIZ7iJqDyeo47uMIQ6w06dFLUs+Q=;
+        b=eO4wkqkEVGn6M+FhX+4BkLbvdPePRzkdiSXjnFM6s23GBODqCGGyvTe4ELVFVCpeD9
+         0wGG5yd8952J02XddtU53ZLUeWE0YoKK5p+Wy0x8K9JnlcFzZxIpUU0IPyHd2nEbtlJQ
+         kovDWp7lu8Jfx1ep2S61/3amCSzjpJSN2f8n5qLETsIlvJDMyVqDkJc3qPXJ56tvZIpd
+         yHUXin2L22JN9J2RdYp4QaoZSRO1uTBSbcw+RD2WJFXry3xL8IPRsByFH4ipYBmFxZ8j
+         X26aiFQ+viPAaaLCI9hQuHTlMANlcp57361hnqxMhOB7xfkEj6eHt+svWFYEf8u9uwb+
+         O97g==
+X-Gm-Message-State: AFqh2kqlFgqQ+eVpnZO9HsboexlfynIh2xbL0XQbBmAYZqEQ0fKHeZEH
+	Wb4Xbk6Rv9n+drDwr67FsyY=
+X-Google-Smtp-Source: AMrXdXsEyHJGnZLB96JH3rcVegZBjOFlVPnyGgXG2g9g13hBlhCt3SpTnjtaAmK/XwGxmzdpSoCmAQ==
+X-Received: by 2002:a05:6000:38d:b0:2b5:90e:cfa5 with SMTP id u13-20020a056000038d00b002b5090ecfa5mr10255103wrf.29.1673247866783;
+        Sun, 08 Jan 2023 23:04:26 -0800 (PST)
+Received: from [192.168.1.49] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id f3-20020adfdb43000000b00236883f2f5csm7846356wrj.94.2023.01.08.23.04.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Jan 2023 23:04:26 -0800 (PST)
+Message-ID: <07786498-2209-3af0-8d68-c34427049947@kernel.org>
+Date: Mon, 9 Jan 2023 08:04:23 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/k5LKo+Vu6bf_gN1b.VvwaPq";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Ovh-Tracer-Id: 13578634353109337734
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeehgddutdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgesghdtreerredtvdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepfeffgefhgfeuueeffeejieefieefgfefffethfdtudegvdejueelhffhfeegjeeinecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehsthgvvhgvsehskhdvrdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdfovfetjfhoshhtpehmohehjeeipdhmohguvgepshhmthhpohhuth
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH net-next] Remove DECnet support from kernel
+Content-Language: en-US
+To: Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org
+References: <20220818004357.375695-1-stephen@networkplumber.org>
+From: Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20220818004357.375695-1-stephen@networkplumber.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,114 +63,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Antonino Daplas <adaplas@gmail.com>, Jingoo Han <jingoohan1@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, linux-staging@lists.linux.dev, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, Paul Mackerras <paulus@samba.org>, Lee Jones <lee@kernel.org>, Robin van der Gracht <robin@protonic.nl>, Miguel Ojeda <ojeda@kernel.org>, Sam Ravnborg via B4 Submission Endpoint <devnull+sam.ravnborg.org@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org, Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Jeff Layton <jlayton@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, "open list:MIPS" <linux-mips@vger.kernel.org>, Wang Qing <wangqing@vivo.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, Eric Dumazet <edumazet@google.com>, Nathan Fontenot <nathan.fontenot@amd.com>, Suma Hegde <suma.hegde@amd.com>, Paolo Abeni <pabeni@redhat.com>, Neeraj Upadhyay <quic_neeraju@quicinc.com>, Menglong Dong <imagedong@tencent.com>, Florian Fainelli <f.fainelli@gmail.com>, Xin Long <lucien.xin@gmail.com>, Chen Yu <yu.c.chen@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Xie Yongji <xieyongji@bytedance.com>, "open list:NETFILTER" <coreteam@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Borislav Petkov <bp@suse.de>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Pabl
+ o Neira Ayuso <pablo@netfilter.org>, Stefano Garzarella <sgarzare@redhat.com>, Petr Machata <petrm@nvidia.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Yu Zhe <yuzhe@nfschina.com>, William Breathitt Gray <vilhelm.gray@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Hans de Goede <hdegoede@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Shakeel Butt <shakeelb@google.com>, Muchun Song <songmuchun@bytedance.com>, Alexandre Ghiti <alexandre.ghiti@canonical.com>, Yuwei Wang <wangyuweihx@gmail.com>, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Akhmat Karakotov <hmukos@yandex-team.ru>, "Martin K. Petersen" <martin.petersen@oracle.com>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, David Ahern <dsahern@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Florian Westphal <fw@strlen.de>, open list <linux-kernel@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Chuck Lev
+ er <chuck.lever@oracle.com>, Arnd Bergmann <arnd@arndb.de>, "open list:NETFILTER" <netfilter-devel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>, Antoine Tenart <atenart@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/k5LKo+Vu6bf_gN1b.VvwaPq
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 18. 08. 22, 2:43, Stephen Hemminger wrote:
+> DECnet is an obsolete network protocol that receives more attention
+> from kernel janitors than users. It belongs in computer protocol
+> history museum not in Linux kernel.
+> 
+> It has been "Orphaned" in kernel since 2010. The iproute2 support
+> for DECnet was dropped in 5.0 release. The documentation link on
+> Sourceforge says it is abandoned there as well.
+> 
+> Leave the UAPI alone to keep userspace programs compiling.
+> This means that there is still an empty neighbour table
+> for AF_DECNET.
+> 
+> The table of /proc/sys/net entries was updated to match
+> current directories and reformatted to be alphabetical.
+> 
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> Acked-by: David Ahern <dsahern@kernel.org>
 
-Hi Sam,
+...
+>   include/uapi/linux/dn.h                       |  149 -
+>   include/uapi/linux/netfilter_decnet.h         |   72 -
 
-On Sun, 8 Jan 2023 21:29:43 +0100, Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Sun, Jan 08, 2023 at 08:28:17PM +0100, Stephen Kitt wrote:
-> > On Sat, 07 Jan 2023 19:26:23 +0100, Sam Ravnborg via B4 Submission
-> > Endpoint <devnull+sam.ravnborg.org@kernel.org> wrote:
-> >  =20
-> > > From: Sam Ravnborg <sam@ravnborg.org>
-> > >=20
-> > > Avoiding direct access to backlight_properties.props.
-> > >=20
-> > > Access to the deprecated props.fb_blank replaced by
-> > > backlight_is_blank(). Access to props.power is dropped - it was only
-> > > used for debug.
-> > >=20
-> > > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > > Cc: Stephen Kitt <steve@sk2.org>
-> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Cc: linux-fbdev@vger.kernel.org
-> > > ---
-> > >  drivers/staging/fbtft/fb_ssd1351.c | 9 +++------
-> > >  1 file changed, 3 insertions(+), 6 deletions(-)
-> > >=20
-> > > diff --git a/drivers/staging/fbtft/fb_ssd1351.c
-> > > b/drivers/staging/fbtft/fb_ssd1351.c index b8d55aa8c5c7..995fbd2f3dc6
-> > > 100644 --- a/drivers/staging/fbtft/fb_ssd1351.c
-> > > +++ b/drivers/staging/fbtft/fb_ssd1351.c
-> > > @@ -190,15 +190,12 @@ static struct fbtft_display display =3D {
-> > >  static int update_onboard_backlight(struct backlight_device *bd)
-> > >  {
-> > >  	struct fbtft_par *par =3D bl_get_data(bd);
-> > > -	bool on;
-> > > +	bool blank =3D backlight_is_blank(bd);
-> > > =20
-> > > -	fbtft_par_dbg(DEBUG_BACKLIGHT, par,
-> > > -		      "%s: power=3D%d, fb_blank=3D%d\n",
-> > > -		      __func__, bd->props.power, bd->props.fb_blank);
-> > > +	fbtft_par_dbg(DEBUG_BACKLIGHT, par, "%s: blank=3D%d\n", __func__,
-> > > blank);=20
-> > > -	on =3D !backlight_is_blank(bd);
-> > >  	/* Onboard backlight connected to GPIO0 on SSD1351, GPIO1
-> > > unused */
-> > > -	write_reg(par, 0xB5, on ? 0x03 : 0x02);
-> > > +	write_reg(par, 0xB5, !blank ? 0x03 : 0x02);
-> > > =20
-> > >  	return 0;
-> > >  }
-> > >=20
-> > > --=20
-> > > 2.34.1 =20
-> >=20
-> > For debugging purposes here, would there be any point in logging
-> > props.state? As in
-> >=20
-> >         fbtft_par_dbg(DEBUG_BACKLIGHT, par,
-> > -                     "%s: power=3D%d, fb_blank=3D%d\n",
-> > -                     __func__, bd->props.power, bd->props.fb_blank);
-> > +                     "%s: power=3D%d, state=3D%u\n",
-> > +                     __func__, bd->props.power, bd->props.state); =20
->=20
-> Thanks for the suggestion - and the reviews!
->=20
-> I was tempted to just remove the debugging.
-> If we require debugging, then this could be added in the backlight core,
-> thus everyone would benefit from it.
->=20
-> The solution above avoid any direct use of backlight_properties
-> which I consider a layer violation outside the backlight core.
-> (We cannot avoid it today with the current interface - but we can
-> minimize it).
+Hi,
 
-Ah yes, ideally backlight_properties should be viewed as an opaque structur=
-e,
-that makes sense.
+this breaks userspace. Some projects include linux/dn.h:
 
-Regards,
+   https://codesearch.debian.net/search?q=include.*linux%2Fdn.h&literal=0
 
-Stephen
 
---Sig_/k5LKo+Vu6bf_gN1b.VvwaPq
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+I found Trinity fails to build:
+  net/proto-decnet.c:5:10: fatal error: linux/dn.h: No such file or 
+directory
+      5 | #include <linux/dn.h>
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmO7vGgACgkQgNMC9Yht
-g5xpKw/+N/+V4N4YMTYfpGMKaFq+uDIg1giIEl9CWezI5BHkqwm7JGWbaeS23efZ
-UHblHcZJZHTVQEXdJB8WMyhR9dHbEuati13IWacBs5OpBnvdL9kp2cTyBaChErEO
-hMbeCaJVRmBEedoCVyGWPYp13KeX6CuYTqR/7/gTroZIK68bnTuwuIaeQlpgVXqL
-Lue5OQUM2VezQCOLTiHUTspj82Bd1bTPfZfm/W8HKNzC6L2wSIzLuVRMphomjnek
-Yb+lLKK45q++yxbI/5M1k8cXB626ooPXfFB8BSZlQVSjcye2Nxd4heB7EKD9bMTe
-9qS7EjKDjbjm1l/7M542TEIL8zelZ9kaFqTom6JpeIS6iQIlb9XQP0jq/QWXv+9T
-w7aCVB/ImS08kMVlW+uhCLmJudvc5Ro1XBnHMi+KvETzmr8j2kWBvw8WDtgxq76c
-/PgbkkZWE2Htehso+egiPYRTT+0QRX1EPk9SpyFgaQV9YwZupBlCwxh2uhlbCweV
-Ff/w5ZGTTZe/n1ZlgPPkAZWhPQotPFgkOzZpEACy2EOI5VIF7luIbXnPUyKvIEsE
-W85vEaPzGZNqcZw3WW0a1CqgEVUFxJg29oTuC4KKM6BfNe+4hFCJ0EzShLmo+DHk
-fXp1T3rFtAWKgcTEjK4vwxpSEZJPfQDx+JR5GESW204w2Accxiw=
-=aVeb
------END PGP SIGNATURE-----
 
---Sig_/k5LKo+Vu6bf_gN1b.VvwaPq--
+Should we provide the above as empty files?
+
+thanks,
+-- 
+js
+suse labs
+
