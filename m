@@ -1,76 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5871662BC5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 17:54:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E762B662C83
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jan 2023 18:19:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrKls57Cyz3cDs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 03:54:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mZKdUV+Q;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrLKR5qrgz3chJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 04:19:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::429; helo=mail-wr1-x429.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mZKdUV+Q;
-	dkim-atps=neutral
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrKky3GPsz3bT4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 03:53:12 +1100 (AEDT)
-Received: by mail-wr1-x429.google.com with SMTP id az7so8844740wrb.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jan 2023 08:53:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I6M2f+5hl6ycxEpjBTo7pStxA/gUi5ADO0lMaKR9JFY=;
-        b=mZKdUV+QJVvlJnUlNUoT/kQoNbhSpp8TKFDoQbtzA9ccRgsHV1ngpLYb+wD3q5+qZI
-         xdkaS/XCfHHymFPKkFxH55jQh13D+9YuCtBsLlRcFut0+UeE6MZg6MkPf+nsZM7x3EYG
-         7HPnbDHTVZ3GNtS7maefT3yS7dDK02BGF/HUwkhM5UYokRVLzn53LGx3ruNNSMvPEqry
-         kfOPqTD5VgBnnV9ZjKTkyTot51lduB7tUvTh4ZSeiU3r1eVROkloGQDmm+uCRDJE5dsk
-         XjqqXsahAqBRoeV9juBgLUiOMGnHu/riQCeclPMP3eJd3DUG6gX4xGoJsAV2A5j2Gnh+
-         r5wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I6M2f+5hl6ycxEpjBTo7pStxA/gUi5ADO0lMaKR9JFY=;
-        b=Hr9Ag0I3WLtvQWHjrXR8OJjsHonNloLruYU+sFKDCWgbnASagfbpi8ZNQ9CBQzWmZw
-         bPqKeNr3bKAJfl34VFsYPkbf3Z5cu3CNfC6nLrm1iXuDgxtth7p9xP4NgCUrj7Ef/bNc
-         Gagb47ZKXtqE8EgqoS05wXyVT2+GMzKorCKjIU32tvkIFdcfMOyKDF9Bz3uukRX3+9gV
-         0N3nCPsSRNylcvF2BPofGxwzuWJb3K42nAmPnPwpfXeZtuFoKnY155gCvFOjIa9uVwrR
-         8W8X7v2bLt48gCrs8rc7uZfNv/34SQ5KG3yn569JuFWSJdWyqT2AgmAW4s3SBwk/SAzn
-         rfvQ==
-X-Gm-Message-State: AFqh2kpNyxI3DZm52Iz/3T6atycHANqKvk5x3XJkzerHUpBxbrpPNagQ
-	aJbmR8WB3WQscvqWqCb7wIY=
-X-Google-Smtp-Source: AMrXdXsJJiszUF3JuTTX8Nmf8vVy4QgNmyu5UjoEDDbrHTlDop789Gmv81KRUfztvkaV2pEktbZHlA==
-X-Received: by 2002:adf:e3d2:0:b0:299:51c8:5297 with SMTP id k18-20020adfe3d2000000b0029951c85297mr17551617wrm.66.1673283189102;
-        Mon, 09 Jan 2023 08:53:09 -0800 (PST)
-Received: from gmail.com ([31.46.247.25])
-        by smtp.gmail.com with ESMTPSA id bp28-20020a5d5a9c000000b00273cd321a1bsm9058068wrb.107.2023.01.09.08.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jan 2023 08:53:08 -0800 (PST)
-Date: Mon, 9 Jan 2023 17:53:04 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [PATCH] objtool: continue if find_insn() fails in
- decode_instructions()
-Message-ID: <Y7xGas4FAHFUtEJE@gmail.com>
-References: <20221208072813.25799-1-sv@linux.ibm.com>
- <Y7lHsw4diDgVc9ip@gmail.com>
- <623307fe-a29a-c691-b07b-4d2168d4bdcc@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrLJw1FhZz3bXr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 04:19:12 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id DD342611CA;
+	Mon,  9 Jan 2023 17:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167BBC433F0;
+	Mon,  9 Jan 2023 17:19:02 +0000 (UTC)
+Date: Mon, 9 Jan 2023 17:19:00 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Barry Song <21cnbao@gmail.com>
+Subject: Re: [PATCH v7 2/2] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+Message-ID: <Y7xMhPTAwcUT4O6b@arm.com>
+References: <20221117082648.47526-1-yangyicong@huawei.com>
+ <20221117082648.47526-3-yangyicong@huawei.com>
+ <Y7cToj5mWd1ZbMyQ@arm.com>
+ <CAGsJ_4yC0i6MYwvosRSrdQ1iT7n88ypmK3aOQJkuusqNKtddtg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <623307fe-a29a-c691-b07b-4d2168d4bdcc@linux.ibm.com>
+In-Reply-To: <CAGsJ_4yC0i6MYwvosRSrdQ1iT7n88ypmK3aOQJkuusqNKtddtg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,81 +47,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, peterz@infradead.org, chenzhongjin@huawei.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, npiggin@gmail.com, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, realmz6@gmail.com, linux-doc@vger.kernel.org, peterz@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, punit.agrawal@bytedance.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, arnd@arndb.de, anshuman.khandual@arm.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, yangyicong@hisilicon.com, linux-arm-kernel@lists.infradead.org, guojian@oppo.com, xhao@linux.alibaba.com, linux-mips@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-* Sathvika Vasireddy <sv@linux.ibm.com> wrote:
-
-> Hi Ingo, Happy New Year!
-
-Happy New Year to you too! :-)
-
-> On 07/01/23 15:51, Ingo Molnar wrote:
-> > * Sathvika Vasireddy <sv@linux.ibm.com> wrote:
-> > 
-> > > Currently, decode_instructions() is failing if it is not able to find
-> > > instruction, and this is happening since commit dbcdbdfdf137b4
-> > > ("objtool: Rework instruction -> symbol mapping") because it is
-> > > expecting instruction for STT_NOTYPE symbols.
-> > > 
-> > > Due to this, the following objtool warnings are seen:
-> > >   [1] arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-> > >   [2] arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-> > >   [3] arch/powerpc/kernel/head_64.o: warning: objtool: end_first_256B(): can't find starting instruction
-> > > 
-> > > The warnings are thrown because find_insn() is failing for symbols that
-> > > are at the end of the file, or at the end of the section. Given how
-> > > STT_NOTYPE symbols are currently handled in decode_instructions(),
-> > > continue if the instruction is not found, instead of throwing warning
-> > > and returning.
-> > > 
-> > > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> > > Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
-> > The SOB chain doesn't look valid: is Naveen N. Rao, the first SOB line, the
-> > author of the patch? If yes then a matching From: line is needed.
-> > 
-> > Or if two people developed the patch, then Co-developed-by should be used:
-> > 
-> >          Co-developed-by: First Co-Author <first@coauthor.example.org>
-> >          Signed-off-by: First Co-Author <first@coauthor.example.org>
-> >          Co-developed-by: Second Co-Author <second@coauthor.example.org>
-> >          Signed-off-by: Second Co-Author <second@coauthor.example.org>
-> > 
-> > [ In this SOB sequence "Second Co-Author" is the one who submits the patch. ]
-> > 
-> > [ Please only use Co-developed-by if actual lines of code were written by
-> >    the co-author that created copyrightable material - it's not a courtesy
-> >    tag. Reviewed-by/Acked-by/Tested-by can be used to credit non-code
-> >    contributions. ]
-> Thank you for the clarification, and for bringing these points to my
-> attention. I'll keep these things in mind. In this case, since both Naveen
-> N. Rao and I developed the patch, the below tags
-> are applicable.
+On Sun, Jan 08, 2023 at 06:48:41PM +0800, Barry Song wrote:
+> On Fri, Jan 6, 2023 at 2:15 AM Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > On Thu, Nov 17, 2022 at 04:26:48PM +0800, Yicong Yang wrote:
+> > > It is tested on 4,8,128 CPU platforms and shows to be beneficial on
+> > > large systems but may not have improvement on small systems like on
+> > > a 4 CPU platform. So make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends
+> > > on CONFIG_EXPERT for this stage and make this disabled on systems
+> > > with less than 8 CPUs. User can modify this threshold according to
+> > > their own platforms by CONFIG_NR_CPUS_FOR_BATCHED_TLB.
+> >
+> > What's the overhead of such batching on systems with 4 or fewer CPUs? If
+> > it isn't noticeable, I'd rather have it always on than some number
+> > chosen on whichever SoC you tested.
 > 
->         Co-developed-by: First Co-Author <first@coauthor.example.org>
->         Signed-off-by: First Co-Author <first@coauthor.example.org>
->         Co-developed-by: Second Co-Author <second@coauthor.example.org>
->         Signed-off-by: Second Co-Author <second@coauthor.example.org>
+> On the one hand, tlb flush is cheap on a small system. so batching tlb flush
+> helps very minorly.
 
-... while filling in your real names & email addresses I suppose. ;-)
+Yes, it probably won't help on small systems but I don't like config
+options choosing the threshold, which may be different from system to
+system even if they have the same number of CPUs. A run-time tunable
+would be a better option.
 
+> On the other hand, since we have batched the tlb flush, new PTEs might be
+> invisible to others before the final broadcast is done and Ack-ed.
+
+The new PTEs could indeed be invisible at the TLB level but not at the
+memory (page table) level since this is done under the PTL IIUC.
+
+> thus, there
+> is a risk someone else might do mprotect or similar things  on those deferred
+> pages which will ask for read-modify-write on those deferred PTEs.
+
+And this should be fine, we have things like the PTL in place for the
+actual memory access to the page table.
+
+> in this
+> case, mm will do an explicit flush by flush_tlb_batched_pending which is
+> not required if tlb flush is not deferred.
+
+I don't fully understand why it's needed, or at least why it would be
+needed on arm64. At the end of an mprotect(), we have the final PTEs in
+place and we just need to issue a TLBI for that range.
+change_pte_range() for example has a tlb_flush_pte_range() if the PTE
+was present and that won't be done lazily. If there are other TLBIs
+pending for the same range, they'll be done later though likely
+unnecessarily but still cheaper than issuing a flush_tlb_mm().
+
+> void flush_tlb_batched_pending(struct mm_struct *mm)
+> {
+>        int batch = atomic_read(&mm->tlb_flush_batched);
+>        int pending = batch & TLB_FLUSH_BATCH_PENDING_MASK;
+>        int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
 > 
-> However, I would be dropping this particular patch, since I think Nick's
-> patch [1] is better to fix the objtool issue.
-> 
-> [1] - https://lore.kernel.org/linuxppc-dev/20221220101323.3119939-1-npiggin@gmail.com/
+>        if (pending != flushed) {
+>                flush_tlb_mm(mm);
+>         /*
+>          * If the new TLB flushing is pending during flushing, leave
+>          * mm->tlb_flush_batched as is, to avoid losing flushing.
+>         */
+>       atomic_cmpxchg(&mm->tlb_flush_batched, batch,
+>            pending | (pending << TLB_FLUSH_BATCH_FLUSHED_SHIFT));
+>      }
+> }
 
-Ok, I'll pick up Nick's fix, with these tags added for the PowerPC 
-regression aspect and your review:
+I guess this works on x86 better as it avoids the IPIs if this flush
+already happened. But on arm64 we already issued the TLBI, we just
+didn't wait for it to complete via a DSB.
 
-  Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-  Reported-by: Sathvika Vasireddy <sv@linux.ibm.com>
-  Acked-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> I believe Anshuman has contributed many points on this in those previous
+> discussions.
 
-To document & credit the efforts of your patch.
+Yeah, I should re-read the old threads.
 
-Thanks,
-
-	Ingo
+-- 
+Catalin
