@@ -1,67 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAD46640D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 13:47:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860166640DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 13:49:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrrFQ2c6Fz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 23:47:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrrHS32LBz3cdx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 23:49:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YmGLr+1/;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nBH+lYDM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=andrzej.hajda@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YmGLr+1/;
-	dkim-atps=neutral
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrrDQ6MlVz3c73
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 23:46:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673354823; x=1704890823;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JjCURNXFRNcYm6qc3FnZISad0UB5+7XjMdbu/B0f1Fo=;
-  b=YmGLr+1/3fR3vFGtTdd1An6wts2zqokvSXmx5W5OU40sRdjfeAx/r7Uq
-   DyyeBxupOtF9MyAIeIFAKkoSMl5tijxTr71MEypUZ5iEBdiUKE0VCnDwI
-   P8qfEH5rWVRQN7vGUo6Rb27yrOu6hIi0bY0+JEeP7/xQ+DL72IeH3dEBo
-   aE/WCUoxdbo4MrZ4tCIQW/8Ci/xi5owYmk32stDtlyprGwilQOiyUtvbl
-   6mjNh4rJZT61f2n/v8/ltmkwTJ25Mv3lVwYbuPMNgvGfet/iaXcmLVKOr
-   SeBhtNJhT9hm2WKcGLYAQ34Ckw9+i+icz/jxsJ49tlP5huDhWcHdOBXhj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="302834346"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="302834346"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 04:46:46 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="689393555"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="689393555"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.8.19]) ([10.213.8.19])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 04:46:39 -0800
-Message-ID: <1bfae3d0-8c0b-ea83-7184-db847a4a969f@intel.com>
-Date: Tue, 10 Jan 2023 13:46:37 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrrFY2Fdtz3f9y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 23:48:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nBH+lYDM;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NrrFW6Q7nz4xwt;
+	Tue, 10 Jan 2023 23:47:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1673354880;
+	bh=seHIFiz300ZoowfxLAP629QCTs9VXMifhahbL0/DywU=;
+	h=From:To:Subject:Date:From;
+	b=nBH+lYDMBlZ8o/ic1M80GAxxb+YGCF2LNjgqgZZ1hYemoynvTu/BePCkHexQ7h7Hx
+	 ukR+f3gTFGhc+K6Tl3H0uae74CJ+qYudliWbdWXI8pmZeZ5pf4+5gC5PdHrKwoQfZh
+	 4FP3y4qrjIuEORzFTskwRmkf+qmLUBdIlPbsuah8uIgmtYEU7CNAPD2hCYXTkjzgAo
+	 vVLLjttRv6y8Xvu2SP1Jmees9EXZcx9IKhBX5v5z3Omo7S3isr/m8uWrse8yNv6HNS
+	 e4N2gIu4k+ZvB3jBXebwKfp9WOXwlVs9Lts1GGZSXrvMvSNdztcO3Rp3RfO/O3H3A0
+	 WHTGt74O/jSLA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 1/2] powerpc/64s/radix: Fix crash with unaligned relocated kernel
+Date: Tue, 10 Jan 2023 23:47:52 +1100
+Message-Id: <20230110124753.1325426-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.1
-Subject: Re: [Intel-gfx] [RFC DO NOT MERGE] treewide: use __xchg in most
- obvious places
-Content-Language: en-US
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <Y7b6/7coJEVlTVxK@phenom.ffwll.local>
- <20230110105306.3973122-1-andrzej.hajda@intel.com>
- <Y71G1tkmUzM4BLxn@smile.fi.intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <Y71G1tkmUzM4BLxn@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,123 +56,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, intel-gfx@lists.freedesktop.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10.01.2023 12:07, Andy Shevchenko wrote:
-> On Tue, Jan 10, 2023 at 11:53:06AM +0100, Andrzej Hajda wrote:
->> This patch tries to show usability of __xchg helper.
->> It is not intended to be merged, but I can convert
->> it to proper patchset if necessary.
->>
->> There are many more places where __xchg can be used.
->> This demo shows the most spectacular cases IMHO:
->> - previous value is returned from function,
->> - temporary variables are in use.
->>
->> As a result readability is much better and diffstat is quite
->> nice, less local vars to look at.
->> In many cases whole body of functions is replaced
->> with __xchg(ptr, val), so as further refactoring the whole
->> function can be removed and __xchg can be called directly.
-> 
-> ...
-> 
->>   arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
->>   				  struct pt_regs *regs)
->>   {
->> -	unsigned long orig_ret_vaddr;
->> -
->> -	orig_ret_vaddr = regs->ARM_lr;
->> -	/* Replace the return addr with trampoline addr */
->> -	regs->ARM_lr = trampoline_vaddr;
->> -	return orig_ret_vaddr;
->> +	return __xchg(&regs->ARM_lr, trampoline_vaddr);
->>   }
-> 
-> If it's not a callback, the entire function can be killed.
-> And this is a good example of the function usage.
-> OTOH, these places might have a side effect (if it's in deep CPU
-> handlers), means we need to do this carefully.
-> 
-> ...
-> 
->>   static inline void *qed_chain_produce(struct qed_chain *p_chain)
->>   {
->> -	void *p_ret = NULL, *p_prod_idx, *p_prod_page_idx;
->> +	void *p_prod_idx, *p_prod_page_idx;
->>   
->>   	if (is_chain_u16(p_chain)) {
->>   		if ((p_chain->u.chain16.prod_idx &
->> @@ -390,11 +391,8 @@ static inline void *qed_chain_produce(struct qed_chain *p_chain)
->>   		p_chain->u.chain32.prod_idx++;
->>   	}
->>   
->> -	p_ret = p_chain->p_prod_elem;
->> -	p_chain->p_prod_elem = (void *)(((u8 *)p_chain->p_prod_elem) +
->> -					p_chain->elem_size);
->> -
->> -	return p_ret;
->> +	return __xchg(&p_chain->p_prod_elem,
->> +		      (void *)(((u8 *)p_chain->p_prod_elem) + p_chain->elem_size));
-> 
-> Wondering if you still need a (void *) casting after the change. Ditto for the
-> rest of similar cases.
+If a relocatable kernel is loaded at an address that is not 2MB aligned
+and told not to relocate to zero, the kernel can crash due to
+mark_rodata_ro() incorrectly changing some read-write data to read-only.
 
-IMHO it is not needed also before the change and IIRC gcc has an 
-extension which allows to drop (u8 *) cast as well [1].
+Scenarios where the misalignment can occur are when the kernel is
+loaded by kdump or using the RELOCATABLE_TEST config option.
 
-[1]: https://gcc.gnu.org/onlinedocs/gcc/Pointer-Arith.html
+Example crash with the kernel loaded at 5MB:
 
-> 
->>   }
-> 
-> ...
-> 
-> Btw, is it done by coccinelle? If no, why not providing the script?
-> 
+  Run /sbin/init as init process
+  BUG: Unable to handle kernel data access on write at 0xc000000000452000
+  Faulting instruction address: 0xc0000000005b6730
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+  CPU: 1 PID: 1 Comm: init Not tainted 6.2.0-rc1-00011-g349188be4841 #166
+  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,git-5b4c5a hv:linux,kvm pSeries
+  NIP:  c0000000005b6730 LR: c000000000ae9ab8 CTR: 0000000000000380
+  REGS: c000000004503250 TRAP: 0300   Not tainted  (6.2.0-rc1-00011-g349188be4841)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 44288480  XER: 00000000
+  CFAR: c0000000005b66ec DAR: c000000000452000 DSISR: 0a000000 IRQMASK: 0
+  ...
+  NIP memset+0x68/0x104
+  LR  zero_user_segments.constprop.0+0xa8/0xf0
+  Call Trace:
+    ext4_mpage_readpages+0x7f8/0x830
+    ext4_readahead+0x48/0x60
+    read_pages+0xb8/0x380
+    page_cache_ra_unbounded+0x19c/0x250
+    filemap_fault+0x58c/0xae0
+    __do_fault+0x60/0x100
+    __handle_mm_fault+0x1230/0x1a40
+    handle_mm_fault+0x120/0x300
+    ___do_page_fault+0x20c/0xa80
+    do_page_fault+0x30/0xc0
+    data_access_common_virt+0x210/0x220
 
-Yes I have used cocci. My cocci skills are far from perfect, so I did 
-not want to share my dirty code, but this is nothing secret:
+This happens because mark_rodata_ro() tries to change permissions on the
+range _stext..__end_rodata, but _stext sits in the middle of the 2MB
+page from 4MB to 6MB:
 
-@r1@
-expression x, v;
-local idexpression p;
-@@
--       p = x;
--       x = v;
--       return p;
-+       return __xchg(&x, v);
+  radix-mmu: Mapped 0x0000000000000000-0x0000000000200000 with 2.00 MiB pages (exec)
+  radix-mmu: Mapped 0x0000000000200000-0x0000000000400000 with 2.00 MiB pages
+  radix-mmu: Mapped 0x0000000000400000-0x0000000002400000 with 2.00 MiB pages (exec)
 
-@depends on r1@
-expression e;
-@@
-         __xchg(
--       &*e,
-+       e,
-         ...)
+The logic that changes the permissions assumes the linear mapping was
+split correctly at boot, so it marks the entire 2MB page read-only. That
+leads to the write fault above.
 
-@depends on r1@
-expression t;
-@@
--       if (t) {
-+       if (t)
-                 return __xchg(...);
--       }
+To fix it, the boot time mapping logic needs to consider that if the
+kernel is running at a non-zero address then _stext is a boundary where
+it must split the mapping.
 
-@depends on r1@
-type t;
-identifier p;
-expression e;
-@@
-(
--       t p;
-|
--       t p = e;
-)
-         ... when != p
+That leads to the mapping being split correctly, allowing the rodata
+permission change to take happen correctly, with no spillover:
 
-Regards
-Andrzej
+  radix-mmu: Mapped 0x0000000000000000-0x0000000000200000 with 2.00 MiB pages (exec)
+  radix-mmu: Mapped 0x0000000000200000-0x0000000000400000 with 2.00 MiB pages
+  radix-mmu: Mapped 0x0000000000400000-0x0000000000500000 with 64.0 KiB pages
+  radix-mmu: Mapped 0x0000000000500000-0x0000000000600000 with 64.0 KiB pages (exec)
+  radix-mmu: Mapped 0x0000000000600000-0x0000000002400000 with 2.00 MiB pages (exec)
+
+If the kernel is loaded at a 2MB aligned address, the mapping continues
+to use 2MB pages as before:
+
+  radix-mmu: Mapped 0x0000000000000000-0x0000000000200000 with 2.00 MiB pages (exec)
+  radix-mmu: Mapped 0x0000000000200000-0x0000000000400000 with 2.00 MiB pages
+  radix-mmu: Mapped 0x0000000000400000-0x0000000002c00000 with 2.00 MiB pages (exec)
+  radix-mmu: Mapped 0x0000000002c00000-0x0000000100000000 with 2.00 MiB pages
+
+Fixes: c55d7b5e6426 ("powerpc: Remove STRICT_KERNEL_RWX incompatibility with RELOCATABLE")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index cac727b01799..5a2384ed1727 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -262,6 +262,17 @@ print_mapping(unsigned long start, unsigned long end, unsigned long size, bool e
+ static unsigned long next_boundary(unsigned long addr, unsigned long end)
+ {
+ #ifdef CONFIG_STRICT_KERNEL_RWX
++	unsigned long stext_phys;
++
++	stext_phys = __pa_symbol(_stext);
++
++	// Relocatable kernel running at non-zero real address
++	if (stext_phys != 0) {
++		// Start of relocated kernel text is a rodata boundary
++		if (addr < stext_phys)
++			return stext_phys;
++	}
++
+ 	if (addr < __pa_symbol(__srwx_boundary))
+ 		return __pa_symbol(__srwx_boundary);
+ #endif
+-- 
+2.39.0
 
