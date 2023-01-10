@@ -2,56 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2CB663672
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 01:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5F26636AE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 02:29:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrXMn1HmFz3cFj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 11:52:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrYB3693gz3cFp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 12:28:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YuCJCYa5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=AF+CTNwF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=mSL813OJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YuCJCYa5;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=AF+CTNwF;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=mSL813OJ;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrXLq10Svz3cC1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 11:51:31 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 78BD5B80883;
-	Tue, 10 Jan 2023 00:51:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB15C433EF;
-	Tue, 10 Jan 2023 00:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673311886;
-	bh=ABP81GQOCO3EpwsNw8BqP4nH2rcps88TFH5KDXoFM1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YuCJCYa5yX2WnkEt64Xi0gObab9ggVLsqfFJnZZ6V4WwBcgtSMvQC17JkHVfe5s+q
-	 +aHeDJd+cZXuFOyu0jaAId/vM7KTF51xl4+LSJsQh7kuJ6+A8mXYjYW9LEyMpOBtKG
-	 uqxRaiYm9Q1GWjtGpY4GLVLr+Wvrw6fgYOLxVDfpi+zB13H24su765Rvkod9CDO1Fe
-	 84DsaabUxvrOnBmQttx8Vx2iVKNBc3Eig/slXsX2up3GFDhVpJjpsXH6DVr/+SuxFr
-	 YreC1QqTojbJevhDwZ9i9V953X4XVpEko0TI0HbIqWHOaaMYVx2P6J43fv9Aapfbcb
-	 8slNVAeXhDWKQ==
-Date: Mon, 9 Jan 2023 17:51:23 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH 06/14] powerpc/vdso: Remove unused '-s' flag from ASFLAGS
-Message-ID: <Y7y2izKLUYr7giKj@dev-arch.thelio-3990X>
-References: <20221228-drop-qunused-arguments-v1-0-658cbc8fc592@kernel.org>
- <20221228-drop-qunused-arguments-v1-6-658cbc8fc592@kernel.org>
- <CAKwvOdknEE7DyUG0s43GNGf27QeMgW2fUTXcCzKLbjH1g318vQ@mail.gmail.com>
- <20230109222337.GM25951@gate.crashing.org>
- <CAKwvOdn3En6kdGBmDF4nFYpMgR0Dx0cgaTH1pPZdEcAJTZWaPg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrY93094sz3bdS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 12:28:06 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.west.internal (Postfix) with ESMTP id 14E6F320025E;
+	Mon,  9 Jan 2023 20:28:02 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 09 Jan 2023 20:28:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1673314081; x=
+	1673400481; bh=zeB8Rjm8Q9ysFSyGBjwVWVghqqA5Z8exrt+ZdLm1v4Y=; b=A
+	F+CTNwF1+397YVLctQ8UFjga/E+HypkOFOFohjDGazzBZo6IktXplX+dStCLuwkJ
+	1Kd37/WpFE7Fg1BgstK13saN1ryE8pZUNF89A3xRzrBubuRY5u3DvOx7F4FBKxMZ
+	zXXJgF8NeHkjw7JrwlYy2lbUeKPGE0SvxzkqNhdu7DeyMGnrYb+91NMZbsbZFZ9M
+	XWp0WTuILTBaVvNpY4ZUG3zkA2tBSKI+J/g79Ye8YPYNYWGzY1D5bU8pqnsanbIz
+	BagjdMbkWdcC7qkc9a7FCAyFLW1DvBh/wyPtFkMnhitPrCp7g+UrGok9Tu9pSlBD
+	TGo2is2u4Sv7Meuoo94IQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1673314081; x=
+	1673400481; bh=zeB8Rjm8Q9ysFSyGBjwVWVghqqA5Z8exrt+ZdLm1v4Y=; b=m
+	SL813OJ+ORX8ZjF+wmA02IBhtdPBLxgwU9KPPRU8IeddBFY74dk5CUxss7t/lQ6F
+	DS+SA5SpPxrZavPEMLALfnXyV5rNetdw/yEXLrp0tAw6HrTYbQSrQg74JIKKlYLE
+	fhcAQr8SIgEWMI9ee75Qlk9Vm0q6Hv42IOnPHKI8uxuAYiGCuRe+S6/NzBy22O3O
+	AZjOJ58y3NKKEbDOjMYj0odYr++SzkicksQzlJ/Fs0jwFvP/ad+2Y5jvhSKXLkl2
+	6H7XK7nvH9PVBdpWA6rP6AbOj1kjBAIsHJYEjq+B4QlAq2WIVbFqHEClK3JtrCng
+	D+WEJtw9uGxh7l3dcQ3eQ==
+X-ME-Sender: <xms:Ib-8Y1HWi2MqOspulEpkfTEKwXpqswdoD_qHkL8WkhKOiwcldfWCjw>
+    <xme:Ib-8Y6UiuR1OTrTZXV7jJThZ7Hb3gLojaIOX0ZlWvHxgS9c3hkC5PFLia6XJ4WPNV
+    stwkfwtBkydCoTnGA>
+X-ME-Received: <xmr:Ib-8Y3JWcPp3fEEf7kvoN8IIzqCuSAE07za3_HoXMw5fq9-WmlvBPMYeKaFS8kA0OE0jK3ptLYyMyqfko2xoQCiHhgs8aRYkzpHTS-V4fUM_bw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrkeejgdefhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhepkffuhf
+    fvveffjghftgfgfgggsehtqhertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
+    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
+    etgfeilefhueefvedvkeehieefjefgfeegheetudekiefguddutdeukeetveelleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
+    esrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:Ib-8Y7GmemFyzfbC4lEY0hQ7juWFKMY8bkgzIHK0VJhzfmJuna3SOQ>
+    <xmx:Ib-8Y7XDaxiIQi1cjWl7_Zj-C_6zp0OGwvxHtNu_i9czjQZr3U0w0g>
+    <xmx:Ib-8Y2OOeRl2vRI7R3EBKDWKWa86JhUsEoDJDx5N0-uWd_3384K_3Q>
+    <xmx:Ib-8Y9JxT4YKDsrBOkZ3Q6vUDyJh6G_Az6xIRJskvyTotX_6gVzq8g>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Jan 2023 20:27:58 -0500 (EST)
+Message-ID: <a2a8d8daac892e2d7eb8cffecfa1a20cdc9b0faa.camel@russell.cc>
+Subject: Re: [PATCH v2 7/7] powerpc/pseries: Implement secvars for dynamic
+ secure boot
+From: Russell Currey <ruscur@russell.cc>
+To: Andrew Donnellan <ajd@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,  linuxppc-dev@lists.ozlabs.org
+Date: Tue, 10 Jan 2023 12:27:55 +1100
+In-Reply-To: <cca49d1e5da01e9ccdee50d710045fd09005459c.camel@linux.ibm.com>
+References: <20221230042014.154483-1-ruscur@russell.cc>
+	 <20221230042014.154483-8-ruscur@russell.cc>
+	 <87zgawgcpa.fsf@mpe.ellerman.id.au>
+	 <b4b23fb8a56fdcfffe28c38ac3f4f89e0c488486.camel@russell.cc>
+	 <cca49d1e5da01e9ccdee50d710045fd09005459c.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdn3En6kdGBmDF4nFYpMgR0Dx0cgaTH1pPZdEcAJTZWaPg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,91 +100,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, linux-kbuild@vger.kernel.org, trix@redhat.com, masahiroy@kernel.org, llvm@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org, nicolas@fjasle.eu
+Cc: nayna@linux.ibm.com, gregkh@linuxfoundation.org, gcwilson@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 09, 2023 at 03:14:33PM -0800, Nick Desaulniers wrote:
-> On Mon, Jan 9, 2023 at 2:29 PM Segher Boessenkool
-> <segher@kernel.crashing.org> wrote:
-> >
-> > Hi!  Happy new year all.
-> 
-> HNY Segher! :)
-> 
-> >
-> > On Mon, Jan 09, 2023 at 01:58:32PM -0800, Nick Desaulniers wrote:
-> > > On Wed, Jan 4, 2023 at 11:55 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> > > >
-> > > > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-> > > > warns that ASFLAGS contains '-s', which is a linking phase option, so it
-> > > > is unused.
-> > > >
-> > > >   clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
-> > > >
-> > > > Looking at the GAS sources, '-s' is only useful when targeting Solaris
-> > > > and it is ignored for the powerpc target so just drop the flag
-> > > > altogether, as it is not needed.
-> > >
-> > > Do you have any more info where you found this?  I don't see -s
-> > > documented as an assembler flag.
-> > > https://sourceware.org/binutils/docs/as/PowerPC_002dOpts.html
-> > > https://sourceware.org/binutils/docs/as/Invoking.html
-> >
-> > It is required by POSIX (for the c99 command, anyway).  It *also* is
-> > required to be supported when producing object files (so when no linking
-> > is done).
-> >
-> > It is a GCC flag, and documented just fine:
-> > https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#index-s
-> >
-> > (Yes, that says it is for linking; but the option is allowed without
-> > error of any kind always).
-> >
-> > (ASFLAGS sounds like it is for assembler commands, but it really is
-> > for compiler commands that just happen to get .S input files).
-> >
-> > > The patch seems fine to me, but what was this ever supposed to be?
-> > > FWICT it predates git history (looking at
-> > > arch/powerpc/kernel/vdso32/Makefile at fc15351d9d63)
-> >
-> > Yeah, good question.  This compiler flag does the moral equivalent of
-> > strip -s (aka --strip-all).  Maybe this was needed at some point, or
-> > the symbol or debug info was just annoying (during bringup or similar)?
-> 
-> Ah right! Ok then, I think we might keep the patch's diff, but update
-> the commit message to mention this is a linker flag that's unused
-> since the compiler is being invoked but not the linker (the compiler
-> is being used as the driver to assemble a single assembler source
-> without linking it; linking is then driven by the linker in a separate
-> make rule).
+On Mon, 2023-01-09 at 16:20 +1100, Andrew Donnellan wrote:
+> On Mon, 2023-01-09 at 14:34 +1100, Russell Currey wrote:
+> >=20
+> > > > +static int plpks_secvar_init(void)
+> > > > +{
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!plpks_is_available(=
+))
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return -ENODEV;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0set_secvar_ops(&plpks_se=
+cvar_ops);
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0set_secvar_config_attrs(=
+config_attrs);
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > > > +}
+> > > > +device_initcall(plpks_secvar_init);
+> > >=20
+> > > That must be a machine_device_initcall(pseries, ...), otherwise
+> > > we
+> > > will
+> > > blow up doing a hcall on powernv in plpks_is_available().
+> >=20
+> > OK, can do.=C2=A0 I don't understand your case of how powernv could hit
+> > this, but I think I to have to move plpks_is_available() into
+> > include/,
+> > so it's going to be even more possible anyway.
+>=20
+> Kernels can be compiled with both pseries and powernv support, in
+> which
+> case plpks_secvar_init() will be called unconditionally even when
+> booting on a powernv machine.
+>=20
+> I can confirm that as it is, booting this on powernv qemu causes a
+> panic.
 
-Yes, sorry, I thought that was clear with the "which is a linking phase
-option" comment in the commit message but clearly not :)
+Of course, I'm not sure why I thought an initcall in a platform that
+wasn't active would magically not run on other platforms.
 
-> Then we might want to revisit that s390 patch, too?
-> https://lore.kernel.org/llvm/20221228-drop-qunused-arguments-v1-9-658cbc8fc592@kernel.org/
+>=20
 
-So for this patch, I have
-
-  When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-  warns:
-
-    clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
-
-  The compiler's '-s' flag is a linking option (it is passed along to the
-  linker directly), which means it does nothing when the linker is not
-  invoked by the compiler. The kernel builds all .o files with either '-c'
-  or '-S', which do not run the linker, so '-s' can be safely dropped from
-  ASFLAGS.
-
-as a new commit message. Is that sufficient for everyone? If so, I'll
-adjust the s390 commit to match, as it is the same exact problem.
-
-Alternatively, if '-s' should actually remain around, we could move it
-to ldflags-y, which is added in patch 7. However, I assume that nobody
-has noticed that it has not been doing its job for a while, so it should
-be safe to remove.
-
-Cheers,
-Nathan
