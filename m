@@ -2,68 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4397664273
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 14:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 789A76643F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 16:03:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nrsj05rxSz3cgT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 00:53:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrvGC2x19z3c7k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 02:03:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VdWP5I1O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CoepT9JQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VdWP5I1O;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CoepT9JQ;
 	dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nrsh40Tghz3bT7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 00:52:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673358756; x=1704894756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Tp8Z9Ay/HrlqQE0qDFK7p4Fost9+vU0ggkXvi/hfbkY=;
-  b=VdWP5I1OAGr428APJyQ1mzTmNoa+YCjshB98QtsxVoAHaZ/wePl12rU1
-   66ovSSUCK/PWNA1JRcbA7SQRmi0Nblk7/GCBG1LljL+MWDWYiwpR0iKmc
-   1bY2d6QTAv3R7SzLmshqbWjwtXVrNQgOjJh738jHgZHYkbRlJbdXhnDNe
-   Tk6pxqxHrDGs6/cLG/LUdc9z2e40XdkuVzSXGiMydph4Q8lpQF7DT+Xe+
-   25MZC/COAQ3SD/S3vbVYGEVP+xFXB29IqdROCiHAs/xGGsISL9Odhjrih
-   aMcVc11ffgX9eBGvWIFG8r2j43hPW8ORKJurmZiAmpPKjI1aV+1ugvDsO
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="387599285"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="387599285"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 05:52:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="830995823"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="830995823"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 10 Jan 2023 05:52:23 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1pFF36-0073E7-37;
-	Tue, 10 Jan 2023 15:52:20 +0200
-Date: Tue, 10 Jan 2023 15:52:20 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: Re: [Intel-gfx] [RFC DO NOT MERGE] treewide: use __xchg in most
- obvious places
-Message-ID: <Y71tlG23t0gH9K1t@smile.fi.intel.com>
-References: <Y7b6/7coJEVlTVxK@phenom.ffwll.local>
- <20230110105306.3973122-1-andrzej.hajda@intel.com>
- <Y71G1tkmUzM4BLxn@smile.fi.intel.com>
- <1bfae3d0-8c0b-ea83-7184-db847a4a969f@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrvFF0LTGz3c79
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 02:02:56 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id C78ECB81698;
+	Tue, 10 Jan 2023 15:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CFAC433EF;
+	Tue, 10 Jan 2023 15:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1673362969;
+	bh=sKgWysTb+sBvYEAqYlhx7Bnltvv0i7EhCIfzFtUqpQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CoepT9JQfZEoRk+MtW+ITnAysDwdWSmN7GF9I2qzH1rU3SEI/ahWHway48lRTQxEJ
+	 8zDm645kDIwo5u0UgwxnIZfYmmiwLC2wbSGGmIiEr/BLtxeqFaqDkKX3DWpEYmti/7
+	 mI8yQ7hLP/rDPYqKVTs82G88op92N7U6t2fMwqO6HZHrp0R0l0L+lXjmry9SkWFFkJ
+	 urlSO5eCEWDWmWWolyG1BKDa0tWenOzPFUgN4JrBuHdCjbR7e4eCctSqjH955+P9h4
+	 ZaW2VxD+J1wkLtqv4FoLY3gwlbgMJ5NCkNKTmVyjswYub9hN9n7C/0jwF0HaL1NuBz
+	 koAtRsViexyBw==
+Date: Tue, 10 Jan 2023 08:02:47 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH 06/14] powerpc/vdso: Remove unused '-s' flag from ASFLAGS
+Message-ID: <Y71+FxR58VjDim5v@dev-arch.thelio-3990X>
+References: <20221228-drop-qunused-arguments-v1-0-658cbc8fc592@kernel.org>
+ <20221228-drop-qunused-arguments-v1-6-658cbc8fc592@kernel.org>
+ <CAKwvOdknEE7DyUG0s43GNGf27QeMgW2fUTXcCzKLbjH1g318vQ@mail.gmail.com>
+ <20230109222337.GM25951@gate.crashing.org>
+ <CAKwvOdn3En6kdGBmDF4nFYpMgR0Dx0cgaTH1pPZdEcAJTZWaPg@mail.gmail.com>
+ <Y7y2izKLUYr7giKj@dev-arch.thelio-3990X>
+ <20230110114523.GP25951@gate.crashing.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1bfae3d0-8c0b-ea83-7184-db847a4a969f@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20230110114523.GP25951@gate.crashing.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,40 +65,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, intel-gfx@lists.freedesktop.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: kernel test robot <lkp@intel.com>, linux-kbuild@vger.kernel.org, trix@redhat.com, masahiroy@kernel.org, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org, nicolas@fjasle.eu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 10, 2023 at 01:46:37PM +0100, Andrzej Hajda wrote:
-> On 10.01.2023 12:07, Andy Shevchenko wrote:
-> > On Tue, Jan 10, 2023 at 11:53:06AM +0100, Andrzej Hajda wrote:
-
-...
-
-> > > +	return __xchg(&p_chain->p_prod_elem,
-> > > +		      (void *)(((u8 *)p_chain->p_prod_elem) + p_chain->elem_size));
+On Tue, Jan 10, 2023 at 05:45:23AM -0600, Segher Boessenkool wrote:
+> On Mon, Jan 09, 2023 at 05:51:23PM -0700, Nathan Chancellor wrote:
+> > So for this patch, I have
 > > 
-> > Wondering if you still need a (void *) casting after the change. Ditto for the
-> > rest of similar cases.
+> >   When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
+> >   warns:
+> > 
+> >     clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
+> > 
+> >   The compiler's '-s' flag is a linking option (it is passed along to the
+> >   linker directly), which means it does nothing when the linker is not
+> >   invoked by the compiler. The kernel builds all .o files with either '-c'
+> >   or '-S', which do not run the linker, so '-s' can be safely dropped from
+> >   ASFLAGS.
+> > 
+> > as a new commit message. Is that sufficient for everyone? If so, I'll
+> > adjust the s390 commit to match, as it is the same exact problem.
 > 
-> IMHO it is not needed also before the change and IIRC gcc has an extension
-> which allows to drop (u8 *) cast as well [1].
+> Almost?  -S doesn't write .o files, it writes a .s file.  To go from an
+> assembler file (.s, or .S if you want to run the C preprocessor on non-C
+> code for some strange reason, the assembler macro facilities are vastly
+> superior) to an object file is just -c as well.
 
-I guess you can drop at least the former one.
+Heh, right, that is what I get for not paying attention and rushing at
+the end of my day :) thanks for being pendantic, I will get that ironed
+out for v2, which I should have out later today or tomorrow, time
+permitting.
 
-> [1]: https://gcc.gnu.org/onlinedocs/gcc/Pointer-Arith.html
-
-...
-
-> > Btw, is it done by coccinelle? If no, why not providing the script?
-> 
-> Yes I have used cocci. My cocci skills are far from perfect, so I did not
-> want to share my dirty code, but this is nothing secret:
-
-Thank you! It's not about secrecy, it's about automation / error proofness.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+Nathan
