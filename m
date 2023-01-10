@@ -2,93 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5F26636AE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 02:29:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6CF6637F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 05:00:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrYB3693gz3cFp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 12:28:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrcY55y2Gz3cKb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 15:00:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=AF+CTNwF;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=mSL813OJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tpvIto04;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=AF+CTNwF;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=mSL813OJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tpvIto04;
 	dkim-atps=neutral
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrY93094sz3bdS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 12:28:06 +1100 (AEDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.west.internal (Postfix) with ESMTP id 14E6F320025E;
-	Mon,  9 Jan 2023 20:28:02 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 09 Jan 2023 20:28:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm1; t=1673314081; x=
-	1673400481; bh=zeB8Rjm8Q9ysFSyGBjwVWVghqqA5Z8exrt+ZdLm1v4Y=; b=A
-	F+CTNwF1+397YVLctQ8UFjga/E+HypkOFOFohjDGazzBZo6IktXplX+dStCLuwkJ
-	1Kd37/WpFE7Fg1BgstK13saN1ryE8pZUNF89A3xRzrBubuRY5u3DvOx7F4FBKxMZ
-	zXXJgF8NeHkjw7JrwlYy2lbUeKPGE0SvxzkqNhdu7DeyMGnrYb+91NMZbsbZFZ9M
-	XWp0WTuILTBaVvNpY4ZUG3zkA2tBSKI+J/g79Ye8YPYNYWGzY1D5bU8pqnsanbIz
-	BagjdMbkWdcC7qkc9a7FCAyFLW1DvBh/wyPtFkMnhitPrCp7g+UrGok9Tu9pSlBD
-	TGo2is2u4Sv7Meuoo94IQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1673314081; x=
-	1673400481; bh=zeB8Rjm8Q9ysFSyGBjwVWVghqqA5Z8exrt+ZdLm1v4Y=; b=m
-	SL813OJ+ORX8ZjF+wmA02IBhtdPBLxgwU9KPPRU8IeddBFY74dk5CUxss7t/lQ6F
-	DS+SA5SpPxrZavPEMLALfnXyV5rNetdw/yEXLrp0tAw6HrTYbQSrQg74JIKKlYLE
-	fhcAQr8SIgEWMI9ee75Qlk9Vm0q6Hv42IOnPHKI8uxuAYiGCuRe+S6/NzBy22O3O
-	AZjOJ58y3NKKEbDOjMYj0odYr++SzkicksQzlJ/Fs0jwFvP/ad+2Y5jvhSKXLkl2
-	6H7XK7nvH9PVBdpWA6rP6AbOj1kjBAIsHJYEjq+B4QlAq2WIVbFqHEClK3JtrCng
-	D+WEJtw9uGxh7l3dcQ3eQ==
-X-ME-Sender: <xms:Ib-8Y1HWi2MqOspulEpkfTEKwXpqswdoD_qHkL8WkhKOiwcldfWCjw>
-    <xme:Ib-8Y6UiuR1OTrTZXV7jJThZ7Hb3gLojaIOX0ZlWvHxgS9c3hkC5PFLia6XJ4WPNV
-    stwkfwtBkydCoTnGA>
-X-ME-Received: <xmr:Ib-8Y3JWcPp3fEEf7kvoN8IIzqCuSAE07za3_HoXMw5fq9-WmlvBPMYeKaFS8kA0OE0jK3ptLYyMyqfko2xoQCiHhgs8aRYkzpHTS-V4fUM_bw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrkeejgdefhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhepkffuhf
-    fvveffjghftgfgfgggsehtqhertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
-    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
-    etgfeilefhueefvedvkeehieefjefgfeegheetudekiefguddutdeukeetveelleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
-    esrhhushhsvghllhdrtggt
-X-ME-Proxy: <xmx:Ib-8Y7GmemFyzfbC4lEY0hQ7juWFKMY8bkgzIHK0VJhzfmJuna3SOQ>
-    <xmx:Ib-8Y7XDaxiIQi1cjWl7_Zj-C_6zp0OGwvxHtNu_i9czjQZr3U0w0g>
-    <xmx:Ib-8Y2OOeRl2vRI7R3EBKDWKWa86JhUsEoDJDx5N0-uWd_3384K_3Q>
-    <xmx:Ib-8Y9JxT4YKDsrBOkZ3Q6vUDyJh6G_Az6xIRJskvyTotX_6gVzq8g>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Jan 2023 20:27:58 -0500 (EST)
-Message-ID: <a2a8d8daac892e2d7eb8cffecfa1a20cdc9b0faa.camel@russell.cc>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrcX50804z3c95
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 14:59:48 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30A1o7X5030908;
+	Tue, 10 Jan 2023 03:59:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=kV4pwHfhxRss3vSFOMQ0J/7ZFiqSYgg3xccuRzc2rmc=;
+ b=tpvIto04HtjWtAWX6uKxaeuhpYgNbFlFjiDuu9KxR+aKXcM84tHJNZwbqAAe0J3BWlQS
+ B5brLfr7qDG//CN6higQmzmgoICMDjYfaAKIOkFDsJ8ZGaBLf+yyNdSihsiaDZHGyseG
+ uRuNr8u11T9uWrQx4LJJp1R/5WADCooaTxc+F4GawiNK8bO4Cl5DVoFR5udkNAzqC6QC
+ zd7q/BHZLvQMmXqV2cj4pJJSzuMBV3D7uJNY5SLFRoVjunlucCiW/HmbNgmvOYcDCyWA
+ xIWE37iRc644jZykPaGcEpbp7roLZAB+K1NlP8paI8eUqCj0sSIPRFqNB3nmDxprDPyk CA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n0ryaa9b7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Jan 2023 03:59:39 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 309KWZrM013339;
+	Tue, 10 Jan 2023 03:59:37 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3my00fm31x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Jan 2023 03:59:36 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30A3xYjt14287614
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Jan 2023 03:59:34 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 69B6E2004B;
+	Tue, 10 Jan 2023 03:59:34 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7064E20040;
+	Tue, 10 Jan 2023 03:59:33 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Jan 2023 03:59:33 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3B48E60213;
+	Tue, 10 Jan 2023 14:59:27 +1100 (AEDT)
+Message-ID: <5710fa2a1763fe82ca6ae95a1d3b4cc80be410f7.camel@linux.ibm.com>
 Subject: Re: [PATCH v2 7/7] powerpc/pseries: Implement secvars for dynamic
  secure boot
-From: Russell Currey <ruscur@russell.cc>
-To: Andrew Donnellan <ajd@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>,  linuxppc-dev@lists.ozlabs.org
-Date: Tue, 10 Jan 2023 12:27:55 +1100
-In-Reply-To: <cca49d1e5da01e9ccdee50d710045fd09005459c.camel@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Russell Currey
+ <ruscur@russell.cc>,
+        linuxppc-dev@lists.ozlabs.org
+Date: Tue, 10 Jan 2023 14:59:26 +1100
+In-Reply-To: <87zgawgcpa.fsf@mpe.ellerman.id.au>
 References: <20221230042014.154483-1-ruscur@russell.cc>
 	 <20221230042014.154483-8-ruscur@russell.cc>
 	 <87zgawgcpa.fsf@mpe.ellerman.id.au>
-	 <b4b23fb8a56fdcfffe28c38ac3f4f89e0c488486.camel@russell.cc>
-	 <cca49d1e5da01e9ccdee50d710045fd09005459c.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: SxBlcy8mlxwd56EVhafbuV8UVLKLpQLW
+X-Proofpoint-GUID: SxBlcy8mlxwd56EVhafbuV8UVLKLpQLW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-09_16,2023-01-09_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=915 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301100020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,44 +104,77 @@ Cc: nayna@linux.ibm.com, gregkh@linuxfoundation.org, gcwilson@linux.ibm.com, lin
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2023-01-09 at 16:20 +1100, Andrew Donnellan wrote:
-> On Mon, 2023-01-09 at 14:34 +1100, Russell Currey wrote:
-> >=20
-> > > > +static int plpks_secvar_init(void)
-> > > > +{
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!plpks_is_available(=
-))
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return -ENODEV;
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0set_secvar_ops(&plpks_se=
-cvar_ops);
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0set_secvar_config_attrs(=
-config_attrs);
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > > > +}
-> > > > +device_initcall(plpks_secvar_init);
-> > >=20
-> > > That must be a machine_device_initcall(pseries, ...), otherwise
-> > > we
-> > > will
-> > > blow up doing a hcall on powernv in plpks_is_available().
-> >=20
-> > OK, can do.=C2=A0 I don't understand your case of how powernv could hit
-> > this, but I think I to have to move plpks_is_available() into
-> > include/,
-> > so it's going to be even more possible anyway.
+On Fri, 2023-01-06 at 21:49 +1100, Michael Ellerman wrote:
 >=20
-> Kernels can be compiled with both pseries and powernv support, in
-> which
-> case plpks_secvar_init() will be called unconditionally even when
-> booting on a powernv machine.
+> > +static int plpks_get_variable(const char *key, uint64_t key_len,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 u8 *data, uint64_t *data_size)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct plpks_var var =3D {0}=
+;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u16 ucs2_namelen;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 *ucs2_name;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int rc =3D 0;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ucs2_namelen =3D get_ucs2nam=
+e(key, &ucs2_name);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!ucs2_namelen)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return -ENOMEM;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0var.name =3D ucs2_name;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0var.namelen =3D ucs2_namelen=
+;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0var.os =3D PLPKS_VAR_LINUX;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rc =3D plpks_read_os_var(&va=
+r);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto err;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*data_size =3D var.datalen +=
+ sizeof(var.policy);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0// We can be called with dat=
+a =3D NULL to just get the object
+> > size.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (data) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0memcpy(data, &var.policy, sizeof(var.policy));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0memcpy(data + sizeof(var.policy), var.data,
+> > var.datalen);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
 >=20
-> I can confirm that as it is, booting this on powernv qemu causes a
-> panic.
-
-Of course, I'm not sure why I thought an initcall in a platform that
-wasn't active would magically not run on other platforms.
-
+> There's a lot of allocation and copying going on. The secvar-sysfs.c
+> data_read() has kzalloc'ed data, but only after already doing the
+> hcall
+> to get the size. Then plpks_read_os_var() does an allocation for the
+> hcall and then another allocation of the exact data size. Then
+> data_read()
+> does another copy into the sysfs supplied buffer.
 >=20
+> So to read a single variable we do the hcall twice, and allocate/copy
+> the content of the variable 4 times?
+>=20
+> =C2=A0- Hypervisor into "output" in plpks_read_var().
+> =C2=A0- "output" into "var->data" in plpks_read_var().
+> =C2=A0- "var.data" into "data" in plpks_get_variable().
+> =C2=A0- "data" into "buf" in data_read().
+>=20
+> As long as maxobjsize is < PAGE_SIZE I think we could do the hcall
+> directly into "buf". Maybe we want to avoid writing into "buf"
+> directly
+> in case the hcall fails or something, but the other 3 copies seem
+> unnecessary.
 
+In the general case, I don't like passing buffer pointers straight from
+parameters into hcalls, since the address has to be in the linear map,
+and that's a detail I'd rather hide from callers. But otherwise, yes I
+think we can probably shift to having the caller allocate the buffers.
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
