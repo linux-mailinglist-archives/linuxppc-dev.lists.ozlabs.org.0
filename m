@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E18663E69
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 11:40:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C54663D84
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 11:07:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NrnQk4Hnyz3cdp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 21:40:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrmhM4LxNz3cdf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 21:07:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FjX/cF0Z;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=217.74.38.119; helo=mail.astralinux.ru; envelope-from=eesina@astralinux.ru; receiver=<UNKNOWN>)
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FjX/cF0Z;
+	dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nrj0j3C0Pz3c79
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 18:21:23 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.astralinux.ru (Postfix) with ESMTP id 986351863A9E;
-	Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id NQPKK78CKEwH; Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.astralinux.ru (Postfix) with ESMTP id 204B01863E33;
-	Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id MWA1XFwlqi4T; Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
-Received: from rbta-msk-vsrv-mail01.astralinux.ru (localhost [127.0.0.1])
-	by mail.astralinux.ru (Postfix) with ESMTP id A21311863A9E;
-	Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
-Date: Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
-From: =?utf-8?B?0JXQutCw0YLQtdGA0LjQvdCwINCV0YHQuNC90LA=?= <eesina@astralinux.ru>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Zhao Qiang <qiang.zhao@nxp.com>
-Message-ID: <1596946964.348463848.1673335276356.JavaMail.zimbra@astralinux.ru>
-In-Reply-To: <1b6326fa-69b3-0ef0-2927-60f6fbd6ce28@csgroup.eu>
-References: <20221223143225.23153-1-eesina@astralinux.ru> <1b6326fa-69b3-0ef0-2927-60f6fbd6ce28@csgroup.eu>
-Subject: Re: [PATCH] net-wan: Add check for NULL for utdm in ucc_hdlc_probe
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrmgL0lGbz3c8x
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 21:06:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=hkg2NF58mMfnZ01WouKNjrkGZFARgMHBNH8c8RZ8560=; b=FjX/cF0ZLjVsiUhRGuhCw+3beY
+	f0DwVktOUL0eaknOsBwXXT0aDE3UgkqujtLuPX5ypS5WE1el3QsrKHP0UuHdJmKwy6DFzghQS5Vns
+	8037eO26AezKY0KJYFrQ3GjZJADAZwYmbUXGdjSh2cokJyzB8UY3S5l3AL2J4sQD2XI7cEC6ajw6x
+	MWGIIh5HJwS79xaE0APWyLr2MRx5gbJF6CaY5aMIkmDXlr4GE5mTgGLQQYNfINN/OhvWZVRiJ+G68
+	XyNVkERdwsSGnHHkf9xRLpx5WTxyHY8DUZFMl5S13pg8affJ5m7P0/r6VZmXXwU1V6D11Xi1Bfmrn
+	8u3iG+8g==;
+Received: from [2601:1c2:d80:3110::a2e7]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pFBWA-006Gjw-Gr; Tue, 10 Jan 2023 10:06:06 +0000
+Message-ID: <a0e325d2-a9c5-ffca-b2d6-5eea60f9ad3b@infradead.org>
+Date: Tue, 10 Jan 2023 02:06:05 -0800
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="=_6c7fd5d1-372a-4043-93cb-aabb5b11055b"
-X-Originating-IP: [10.177.177.35]
-X-Mailer: Zimbra 9.0.0_GA_4258 (ZimbraXWebClient - yandexbrowser22 (Linux)/9.0.0_GA_4258)
-Thread-Topic: net-wan: Add check for NULL for utdm in ucc_hdlc_probe
-Thread-Index: AQHZFxzZzxDc+uM14kSkvyuO7aEPOq6WVamAf1NcbTo=
-X-Mailman-Approved-At: Tue, 10 Jan 2023 21:40:19 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: usb.c:undefined reference to `qe_immr'
+Content-Language: en-US
+To: kernel test robot <lkp@intel.com>, Masahiro Yamada <masahiroy@kernel.org>
+References: <202301101500.pillNv6R-lkp@intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <202301101500.pillNv6R-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,132 +59,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvc-project@linuxtesting.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_6c7fd5d1-372a-4043-93cb-aabb5b11055b
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
- =20
-=C2=A0=20
-=C2=A0 =20
-  =20
-
------Original Message-----
-
-From: Christophe <christophe.leroy@csgroup.eu>
-To: Ekaterina <eesina@astralinux.ru>; Zhao <qiang.zhao@nxp.com>
-Cc: lvc-project <lvc-project@linuxtesting.org>; netdev <netdev@vger.kernel.=
-org>; linux-kernel <linux-kernel@vger.kernel.org>; Eric <edumazet@google.co=
-m>; Jakub <kuba@kernel.org>; Paolo <pabeni@redhat.com>; linuxppc-dev <linux=
-ppc-dev@lists.ozlabs.org>; David <davem@davemloft.net>
-Date: Monday, 9 January 2023 6:49 PM MSK
-Subject: Re: [PATCH] net-wan: Add check for NULL for utdm in ucc_hdlc_probe
+[adding Cc's]
 
 
+On 1/9/23 23:59, kernel test robot wrote:
+> Hi Masahiro,
+> 
+> FYI, the error/warning still remains.
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   5a41237ad1d4b62008f93163af1d9b1da90729d8
+> commit: 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b kbuild: link symbol CRCs at final link, removing CONFIG_MODULE_REL_CRCS
+> date:   8 months ago
+> config: powerpc-randconfig-r026-20230110
+> compiler: powerpc-linux-gcc (GCC) 12.1.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>         git fetch --no-tags linus master
+>         git checkout 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+> 
+> If you fix the issue, kindly add following tag where applicable
+> | Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    powerpc-linux-ld: powerpc-linux-ld: DWARF error: could not find abbrev number 74
+>    drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+>>> usb.c:(.text+0x1e): undefined reference to `qe_immr'
+>>> powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+>>> powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+>>> powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+>    powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+> 
 
-Le 23/12/2022 =C3=A0 15:32, Ekaterina Esina a =C3=A9crit=C2=A0:=20
-> [Vous ne recevez pas souvent de courriers de eesina@astralinux.ru. D=C3=
-=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
-erIdentification ]=20
->=20
-> If uhdlc_priv_tsa !=3D 1 then utdm is not initialized.=20
-> And if ret !=3D NULL then goto undo_uhdlc_init, where utdm is dereference=
-d.=20
-> Same if dev =3D=3D NULL.=20
->=20
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.=20
->=20
-> Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>=20
-> ---=20
-> drivers/net/wan/fsl_ucc_hdlc.c | 4 +++-=20
-> 1 file changed, 3 insertions(+), 1 deletion(-)=20
->=20
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdl=
-c.c=20
-> index 22edea6ca4b8..2ddb0f71e648 100644=20
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c=20
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c=20
-> @@ -1243,7 +1243,9 @@ static int ucc_hdlc_probe(struct platform_device *p=
-dev)=20
-> free_dev:=20
-> free_netdev(dev);=20
-> undo_uhdlc_init:=20
-> - iounmap(utdm->siram);=20
-> + if (utdm !=3D NULL) {=20
-> + iounmap(utdm->siram);=20
-> + }=20
+.config extract:
 
-If utdm being NULL is a problem here, isn't it also a problem in the=20
-iounmap below ?=20
+#
+# NXP/Freescale QorIQ SoC drivers
+#
+# CONFIG_QUICC_ENGINE is not set
+CONFIG_QE_USB=y
 
 
-> unmap_si_regs:=20
-> iounmap(utdm->si_regs);=20
-> free_utdm:=20
-> --=20
-> 2.30.2=20
-> Yes, below the check is also needed. I guess I should send a new patch wi=
-th both checks Best wishes, Ekaterina Esina   =20
+This is caused by (drivers/soc/fsl/qe/Kconfig):
 
---=_6c7fd5d1-372a-4043-93cb-aabb5b11055b
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+config QE_USB
+	bool
+	default y if USB_FSL_QE
+	help
+	  QE USB Controller support
 
-<html><body><div style=3D"font-size: 12pt; font-family: arial, helvetica, s=
-ans-serif; color: rgb(0, 0, 0);"><div style=3D"font-size: 12pt; font-family=
-: 'arial' , 'helvetica' , sans-serif; color: #000000;">
-<div style=3D"font-size: 12pt; font-family: 'arial' , 'helvetica' , sans-se=
-rif; color: #000000;">
-<div>&nbsp;</div>
-<div>&nbsp;</div>
-<div id=3D"signature-content-no-signature"></div>
-<div>
+which does not depend on QUICC_ENGINE, where the latter build provides
+the missing symbols.
 
-<div id=3D"OLK_SRC_BODY_SECTION">
-<div id=3D"OLK_SRC_BODY_SECTION">
-<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
-ing-left: 1em;"><hr id=3D"MESSAGE_DATA_MARKER"><strong>From: </strong>Chris=
-tophe &lt;christophe.leroy@csgroup.eu&gt;<br><strong>To: </strong>Ekaterina=
- &lt;eesina@astralinux.ru&gt;; Zhao &lt;qiang.zhao@nxp.com&gt;<br><strong>C=
-c: </strong>lvc-project &lt;lvc-project@linuxtesting.org&gt;; netdev &lt;ne=
-tdev@vger.kernel.org&gt;; linux-kernel &lt;linux-kernel@vger.kernel.org&gt;=
-; Eric &lt;edumazet@google.com&gt;; Jakub &lt;kuba@kernel.org&gt;; Paolo &l=
-t;pabeni@redhat.com&gt;; linuxppc-dev &lt;linuxppc-dev@lists.ozlabs.org&gt;=
-; David &lt;davem@davemloft.net&gt;<br><strong>Date: </strong>Monday, 9 Jan=
-uary 2023 6:49 PM MSK<br><strong>Subject: </strong>Re: [PATCH] net-wan: Add=
- check for NULL for utdm in ucc_hdlc_probe<br><br><br><br>Le 23/12/2022 =C3=
-=A0 15:32, Ekaterina Esina a =C3=A9crit&nbsp;: <br>&gt; [Vous ne recevez pa=
-s souvent de courriers de eesina@astralinux.ru. D=C3=A9couvrez pourquoi cec=
-i est important =C3=A0 https://aka.ms/LearnAboutSenderIdentification ] <br>=
-&gt; <br>&gt; If uhdlc_priv_tsa !=3D 1 then utdm is not initialized. <br>&g=
-t; And if ret !=3D NULL then goto undo_uhdlc_init, where utdm is dereferenc=
-ed. <br>&gt; Same if dev =3D=3D NULL. <br>&gt; <br>&gt; Found by Linux Veri=
-fication Center (linuxtesting.org) with SVACE. <br>&gt; <br>&gt; Signed-off=
--by: Ekaterina Esina &lt;eesina@astralinux.ru&gt; <br>&gt; --- <br>&gt; dri=
-vers/net/wan/fsl_ucc_hdlc.c | 4 +++- <br>&gt; 1 file changed, 3 insertions(=
-+), 1 deletion(-) <br>&gt; <br>&gt; diff --git a/drivers/net/wan/fsl_ucc_hd=
-lc.c b/drivers/net/wan/fsl_ucc_hdlc.c <br>&gt; index 22edea6ca4b8..2ddb0f71=
-e648 100644 <br>&gt; --- a/drivers/net/wan/fsl_ucc_hdlc.c <br>&gt; +++ b/dr=
-ivers/net/wan/fsl_ucc_hdlc.c <br>&gt; @@ -1243,7 +1243,9 @@ static int ucc_=
-hdlc_probe(struct platform_device *pdev) <br>&gt; free_dev: <br>&gt; free_n=
-etdev(dev); <br>&gt; undo_uhdlc_init: <br>&gt; - iounmap(utdm-&gt;siram); <=
-br>&gt; + if (utdm !=3D NULL) { <br>&gt; + iounmap(utdm-&gt;siram); <br>&gt=
-; + } <br><br>If utdm being NULL is a problem here, isn't it also a problem=
- in the <br>iounmap below ? <br><br><br>&gt; unmap_si_regs: <br>&gt; iounma=
-p(utdm-&gt;si_regs); <br>&gt; free_utdm: <br>&gt; -- <br>&gt; 2.30.2 <br>&g=
-t;</blockquote>
-<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
-ing-left: 1em;">Yes, below the check is also needed. I guess I should send =
-a new patch with both checks</blockquote>
-<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
-ing-left: 1em;">Best wishes,</blockquote>
-<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
-ing-left: 1em;">Ekaterina Esina</blockquote>
-</div>
-</div></div>
-</div>
-</div></div></body></html>
---=_6c7fd5d1-372a-4043-93cb-aabb5b11055b--
+drivers/usb/gadget/udc/Kconfig:
+
+config USB_FSL_QE
+	tristate "Freescale QE/CPM USB Device Controller"
+	depends on FSL_SOC && (QUICC_ENGINE || CPM)
+	depends on !64BIT || BROKEN
+
+CPM is set but QUICC_ENGINE is not set (by CONFIG_PPC_EP88XC=y).
+
+
+I don't know of a good fix for this build error.
+
+-- 
+~Randy
