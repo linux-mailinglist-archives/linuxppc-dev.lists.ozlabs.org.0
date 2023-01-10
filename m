@@ -1,161 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09F5664692
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 17:52:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674606646FE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 18:06:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nrxgw4mdBz3f9p
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 03:52:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nry0G2RJgz3cfP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 04:06:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=On8GoTsq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eJ4MxecW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=anirudh.venkataramanan@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2e; helo=mail-yb1-xb2e.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=On8GoTsq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eJ4MxecW;
 	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nrxfx24dHz2x9d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 03:51:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673369513; x=1704905513;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=9/10tpWO4XHgRk/3bVa4GfsOrwejWtMWSVcnxB+f0LI=;
-  b=On8GoTsqiidykp2VHjtoifeUwxBr4RSKP+DVzZIqjl4Guq7qwkxJR3dE
-   +olK8iNbppF5jJL6JumlX2oKUwRzy8s6dceWsso59DypGbDbjahVLoBdI
-   WQwdxWtNdvwLNPVSEYC4mHQLgyvsBt3UetC83T+flxoTcQkh2Pm1n0kby
-   hHMU8Uaeg+gsY2mQIzQgikS4o6czcaDzb8NkpxxwzFAedjgHel9Ssm7rk
-   6HRbw9T3bHqQHnJHNrQy0KLqUlbwE5uo3+sNDVpqGMjs2LG61hUbDVFFH
-   iL3cZ5oEx+alpZOpLcpNM3lwNSk8z27sSwCrZ+VRQTwfS3wgAKxNU/5Dj
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="321898377"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="321898377"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 08:51:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="902435300"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="902435300"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmsmga006.fm.intel.com with ESMTP; 10 Jan 2023 08:51:40 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Tue, 10 Jan 2023 08:51:39 -0800
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Tue, 10 Jan 2023 08:51:39 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Tue, 10 Jan 2023 08:51:39 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.174)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Tue, 10 Jan 2023 08:51:38 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Sk4deuk1/FjqqTaWGE4HWEfLVGwODv/tgdzx0azxj4rifyJgZsw8eszzCAa4C835G64DImVoSt2U9sl+nq0M08zYfbFTac6e0AbICkqhnzfqEyparmPWKmiZMQYC3qLd7UaCzwL2gfhDmecKhrhzJVCDyU2HnGERKjA+a73HcTurCwCXB5XovOZVP3fEVVjbX2XPheDh6Fzhm7c3sAkWPpztWCoaPCrteI/IJL6Ougxsj5JGb8BUNuQCyZWUKMr4+H+bi0WjrBGZC5e7y1oP3She3pfx7iHAg+fOeHSMMG9+EnxeE542EJ6q8yBwczi6CON1EFKdkaL5vHfzduHtnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bVazBTJwsKYyVVYpaefKUuf2hmc2xCF1wYDvBrro/Hk=;
- b=W6VvdVR+fqwomgLJRmHJpuH1Qm9H/HEZQCI6OkcBtOnrpMG1z2hicPLAhm4J/hPi371X/BquvXfzK1A8wdonV5//A5eB1ChQ6Hfepu6ei2CMMzbfosQRawpTbRt/+JDnPfxcgN4yQr62W86kae8Azv+LxfPQAhylbDDf21qb6PmRED1GfFXX7nYaIZ2lYkMIu13pSEYYz5wAIoE8d1szVKSkOnZaawaa2pNf1nGKcSOUcptWqZHsSg4KutielQVEaMGrlkrBpcFvHNF7A5+LLo3Gdws10k5+cvcU7FpkgDfhfKgy4YOCda7bo3etnrjA6GYeWn1MrX7cIH/LKNgMQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW3PR11MB4764.namprd11.prod.outlook.com (2603:10b6:303:5a::16)
- by BN9PR11MB5385.namprd11.prod.outlook.com (2603:10b6:408:11a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.18; Tue, 10 Jan
- 2023 16:51:37 +0000
-Received: from MW3PR11MB4764.namprd11.prod.outlook.com
- ([fe80::c1e:cae6:7636:43b8]) by MW3PR11MB4764.namprd11.prod.outlook.com
- ([fe80::c1e:cae6:7636:43b8%2]) with mapi id 15.20.5986.018; Tue, 10 Jan 2023
- 16:51:37 +0000
-Message-ID: <28077568-075d-b0a5-2be6-b2d7f5e4557c@intel.com>
-Date: Tue, 10 Jan 2023 08:51:34 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH net-next 2/7] PCI: Remove PCI IDs used by the Sun Cassini
- driver
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>
-References: <20230110152606.GA1504608@bhelgaas>
-From: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
-In-Reply-To: <20230110152606.GA1504608@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR20CA0036.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::49) To MW3PR11MB4764.namprd11.prod.outlook.com
- (2603:10b6:303:5a::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NrxzG0p6Tz3c95
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 04:06:00 +1100 (AEDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id 16so12476185ybc.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 09:06:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=b0ebvj0yGvXXeuBEbC7H27uQsOOqIKGQ1DiQx+VawTo=;
+        b=eJ4MxecWysL64FkNsQ0teVeuLg2ZK7aEzYg5KedUsCXB6sI2SzntwwC4ze4GApLoyP
+         jau+Xs3Oly2qtiu8qT3bTpKBncLVwCj38FZweARc8N2KR7ApZOcqzRRsSdlBLuANbfzk
+         4erm+VGWwPa/tSgSfKm+rdTaC5WlhZVIa5OnOGdYu+SwGr9h5u4OuIsSkh2YaBqqOEKW
+         IMFlQdaNmRs6vODjAQm4ADFZf7UGD0JrF5iYzJcbpl+P+V2e/rbnUBVmteLbkba/DtCp
+         xY8uFj/7EZrt0wFBrJ5503evMmAtt/O7XX+ZQ0fPMXYg5xieczuQz2flhlhKOYcZxU3w
+         x5iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b0ebvj0yGvXXeuBEbC7H27uQsOOqIKGQ1DiQx+VawTo=;
+        b=f/LVhY4RTKVG4xIHTGDT3p2TQtTXpgMKQtIIIL0UmQCKvxvqEBP7zj/QS6QFhq4ZCB
+         6VLux1KS8ESsBFGmL7qFBGUjLgNUwNzODHI7hGG9mvm7SKhqsmnO5DXVpsAzlPf74B6j
+         nyYnucYT/UjrMph+mM3kdLco7q8By5gRmB6d3+Wm231s+DnxgMuixxzz0bvOFq3s/09k
+         K+j89YPErCGAbRti9CQGo+rxiWCSe1J2CwLU5JwMtnbUx6CjUC9zg9OaeJ0pPvTrmxGb
+         XxXk5DHT8lj5AxKs7uayZs5QjxlbCuBil2NXOqWEpS/lwO6fy8FUuu/Cf68XcIRSqf2D
+         FW7g==
+X-Gm-Message-State: AFqh2kqblp/nnQ03y7ACSTNf3m1jXk5bVPcEhpll8IolopxwE0k2wTQV
+	NUkfDIWCWTqsdYtQhuJufM1aOrbXkk6SwlWbjAQjUg==
+X-Google-Smtp-Source: AMrXdXteeMA/N8yZFFOz1nT36N36BXsrmCxCaBU92iN32Cb30nOfOuY8OZOFV9G9dScLLy0dukOmnG8ECA5EheppOd0=
+X-Received: by 2002:a25:b78f:0:b0:77a:e0bd:6b35 with SMTP id
+ n15-20020a25b78f000000b0077ae0bd6b35mr5840314ybh.316.1673370356949; Tue, 10
+ Jan 2023 09:05:56 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR11MB4764:EE_|BN9PR11MB5385:EE_
-X-MS-Office365-Filtering-Correlation-Id: 720f124e-6eee-42a4-ccf6-08daf32af037
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SznPthfhR9wtkndxHB53pzOGMdkaZcqtweGCrsu2gEB6t7GT0OuRagnlSe/zvHogFquSyNcMapmgTm1eZtmNL1tfY+6Po6gdybw0rY2Km3/365PEy6GfHwOanBqJaJ3Uo5xmSBx6Vx6sJYcx+V1+XtKeb2gGgP2f4i9fJCAVXVnuYYAfzI7q4RnlHleDZBlxRY3USYwA67Mi8MZ+CdjY/1xbr3+6OYXQ0hI5oi7RU7MKYrPLWOQwu9MGd115TEDFLniPZzdOZU28O+kFVbk4e4FpFrq8mr63BHubvUogR7eBKDmJ3tRtE2PlhyuzUigIdVZSb8tVz2R+SJYgZ5lhXPhrk0oV/YlFioh1YfKfts8HPz4cN3h8oLj5+XhOx8kWyTizWEBHrRry5uaZZaJMUdZbibPcrFHFuzaIGpcSYybOY9knIb6Tc9Cwa+jb8Fkc3IVQpSY+l0rQ+fE4B7F3FS6WchGUMgeRb2z2jlo0OVDkwUsCkVcEyXpUWPaQ0STFGQYRF/KCuLWBCgK9Ta9hiDwj0PHeN+tZ+6238IuSgj7wyFkWF8ckZLcFdZgIbfL9G9eyyw0eMztR/VODohuqWqN9CA+Ebk567cG321WW3bO43sRe17tFTbv52bNoKAen11+ZYwN3suWqz/tZv56nfvLzhduWAqEmiz2TYWahVCDrO+9RcscvLZ+8vEF4u2QWD1YzhcPOfDTOJBXTZOA0NF8wWpEDAo/yICP0GV++efQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW3PR11MB4764.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(346002)(366004)(39860400002)(396003)(376002)(136003)(451199015)(8936002)(2906002)(5660300002)(41300700001)(4326008)(316002)(6916009)(8676002)(66556008)(66476007)(66946007)(44832011)(26005)(6512007)(2616005)(38100700002)(31686004)(86362001)(186003)(83380400001)(31696002)(36756003)(53546011)(478600001)(82960400001)(6506007)(6486002)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dzA1MWIxS1V4Q3dBVDZqSGpGb0V4WWRvNzVQUWJ3S0JIekNmdnh3OVBIZ2dz?=
- =?utf-8?B?MWtzZW0xdHdKSnJyV2xaUXltbGJ4WWI1cThYb1F1bGpsdzNMVjVHM3ozbXBi?=
- =?utf-8?B?RnVaUWJaSy9sS2FGeEVCOUZmWTU0ZUhULzV4aVNwa3lPMFB6b1MwdEtDdWE1?=
- =?utf-8?B?NjFpWWZrWWdxK3BuTS9Db25oZ0xiYi9pMG5sU3h5ZjBxMHkxaTNjc0J0d283?=
- =?utf-8?B?S0ZZSGhnV3NLR3ZadnZ5dFJNSHcvSHQrTUdXS25hWlZiRkhPd1pUeGxRcW5U?=
- =?utf-8?B?UWJGaTVkclAwQ1ltZ2ZKTVRjRkoxQVpVTFB6MVNFWXRLZzBKR28xWlFUbk15?=
- =?utf-8?B?cXNWKzNrRXI2bDgwUHllc3dQanhtbWNiTjNYUzNxUDN4bjNvWnA4aVJVVk9D?=
- =?utf-8?B?a0xtcEVjZWd0ZzdBMERIR3dvY0Zocm1MSUNkcHZsT1Nxdzd3TGZycDBmWUVn?=
- =?utf-8?B?c3lUejVZeWhBK3ppRGg0YkNtWFlYSE4zb1dtTE94YXFHcnNUSCtKN0dvME5u?=
- =?utf-8?B?aHdtbHJvd0laUnh0RHVQOG5DbEx0b2drUzBmY3prQXg3N2FHRVBYd3BhQkpw?=
- =?utf-8?B?bHlPVG5zZWRKdUhKbVYwZXU3NU9Sb2d2a2tyUG94cElEOVhZdUNjSTJMa3NF?=
- =?utf-8?B?TTdnVno2bmJWVHZZRVZ5ejk0aXpnbmI4ZFFGbUpVOHdVV3ppTWVCNWR3ekNE?=
- =?utf-8?B?cnhxbk42WVNOVFVwYkFRQzk2Q3lJd2lteG5tUWVta1VlOFVkdi8wdzUvaFUr?=
- =?utf-8?B?NE0xQUJYWjNkTG05MS9DK3JTc2I3RjZqbXkvNGgrSnBPYWd3QS9GZ3kxamlp?=
- =?utf-8?B?YlhtV2Q4TnNwUGZiQ3QxOUg5SlcyR0xyWFBaQUJVL3c1bkpPVnRGQlRzUHV4?=
- =?utf-8?B?L0ZkTFU2UTNVMXlNSnkrSldKT0I2NFZuTEVPcktiU0doeU1ub0YrSnJXMW9E?=
- =?utf-8?B?TytuZnczZEx4RXFyVnlVYmJaRnRubXhyR3V0a1pMc0hGOElUM1pINmZFWlMz?=
- =?utf-8?B?OFQwSE9MTXdjcUwrZ3hMUXd6ckxjbVNqRDNOUjI4K3RhQVEzWXhCR0NFZ0xN?=
- =?utf-8?B?ZGFTS2l1d3lrNVBUeGt4d2JHWEdQN2daLzByd0VibWZ2WXJheWNkOCtNNEJV?=
- =?utf-8?B?WW9saWNRWjVQM1M1RGxMYmM2Z3JZYzhqSGUyU09aSTZ1KzBxdEZ3ajRJQTZp?=
- =?utf-8?B?bFJIcXEvNEdhU2xYdmpIa04yWUtaMVZEK3dJeHV5emZ2aU5XcGtvd0lvRU8r?=
- =?utf-8?B?ekEwVUNwMXQzdE1pT0NuaHVvK2RJTk5pSEcxZHhJTFRrWFBNZzBMV2REQUN2?=
- =?utf-8?B?THBFd3Z5RVJvendXMkdqaU1jc1VEZE44bDNTKzM5SEUvZ2Y0ejhlVVk4R2J5?=
- =?utf-8?B?NXRRMXlPMDI1SlhkTVhySk8vWERrQWlPM0I0Ly81MTRNVVU5V0NmSTlxSDdq?=
- =?utf-8?B?R29RZHZJVFBlMFdKVDV5OUsvcVlJRUpZdlNYUEZ5aEtmQ0hCZ1M3a1o3YXYr?=
- =?utf-8?B?dWVnVG82Z2ZwSm85SUVWTHpGR1IyaldhWS9YK0ZGVmQxOE53TzZxcmpLSFlR?=
- =?utf-8?B?ZFNMeFd5Z0dWekIrNTlMb0hFT014M1J6STJMbkwyYTFzODJiM0dDTUM1SEQy?=
- =?utf-8?B?ZnpXdlNmdlVsZHQ5UXAxdE9xZmJNZUhyNCs3cW9TdHIwOW5jbnpXSVFaVVRx?=
- =?utf-8?B?dElSb3FvN2RKMjBjTXlnNTlCSzI4OHRhbkhjQnNOclIrNkhod2p2N0djeXRI?=
- =?utf-8?B?MmFxY2FIeVIzcGZ5ZkM5YnlkcWFzajZkT2JjOFBYVEUrR3pjYUtIK3pMenI3?=
- =?utf-8?B?TVBTNGR0QzZFYWxDQ1Q0OGFRbVVNNjRoVHRPejFXeG1LRDFYeHYxS3NrVVV5?=
- =?utf-8?B?YTVFcHlsaUxEWEgyU3krcVNoVmM2cS9KdjJWNnJpY1diK1dFS2pNb3dsQ0RH?=
- =?utf-8?B?VERDSUNQbndUN2VpUUh6V2E4LzNORmdCRExSZXdqVjBTbk96dzFMNDJRVkty?=
- =?utf-8?B?VS9ZVk02bnZsRnF0bEw0QmUzdWkzWnB4amp0Z2pzL3JJci9aWmg2TlVxbzRx?=
- =?utf-8?B?ZXBobjZmcS81dmg4STk1Qnk4RmlaQi9la2oxUnBlK0RxTm9Na1JnK1pHbE1w?=
- =?utf-8?B?bi9iaGF4TVhrUU1EcE5WWnlrVGQ2YTJWZnJrc3FqSUUxVk5WdytEYmZUYWNt?=
- =?utf-8?Q?Pz+dQarA/eYvweLluwqkfHg=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 720f124e-6eee-42a4-ccf6-08daf32af037
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4764.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2023 16:51:37.2273
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K4l/kXw2M8r6ywAvsFRdHej14Xr0/hDIrk9Vap3j0nS+/oPe1ijq4BteTQ9R/oBafS3K1eXwrnfup3V6D4rX3dvHZAcxTx5Fe0o1CLRgv8Eao/s46ewBdDscSkNcvehv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5385
-X-OriginatorOrg: intel.com
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-42-surenb@google.com>
+ <5874fea2-fc3b-5e5d-50ac-e413a11819a5@suse.cz>
+In-Reply-To: <5874fea2-fc3b-5e5d-50ac-e413a11819a5@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 10 Jan 2023 09:05:45 -0800
+Message-ID: <CAJuCfpEdcVEmtEsJi9j-JLqtUaG95K1tv3DRhzWreicGcWaSew@mail.gmail.com>
+Subject: Re: [PATCH 41/41] mm: replace rw_semaphore with atomic_t in vma_lock
+To: Vlastimil Babka <vbabka@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -167,44 +74,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leon
- Romanovsky <leon@kernel.org>, netdev@vger.kernel.org, linux-mips@vger.kernel.org, linux-pci@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, linux-arm-kernel@lists.infradead.org, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.n
+ et
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/10/2023 7:26 AM, Bjorn Helgaas wrote:
-> On Fri, Jan 06, 2023 at 02:00:15PM -0800, Anirudh Venkataramanan wrote:
->> The previous patch removed the Cassini driver (drivers/net/ethernet/sun).
->> With this, PCI_DEVICE_ID_NS_SATURN and PCI_DEVICE_ID_SUN_CASSINI are
->> unused. Remove them.
->>
->> Cc: Leon Romanovsky <leon@kernel.org>
->> Signed-off-by: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
->> ---
->>   include/linux/pci_ids.h | 2 --
->>   1 file changed, 2 deletions(-)
->>
->> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
->> index b362d90..eca2340 100644
->> --- a/include/linux/pci_ids.h
->> +++ b/include/linux/pci_ids.h
->> @@ -433,7 +433,6 @@
->>   #define PCI_DEVICE_ID_NS_CS5535_AUDIO	0x002e
->>   #define PCI_DEVICE_ID_NS_CS5535_USB	0x002f
->>   #define PCI_DEVICE_ID_NS_GX_VIDEO	0x0030
->> -#define PCI_DEVICE_ID_NS_SATURN		0x0035
->>   #define PCI_DEVICE_ID_NS_SCx200_BRIDGE	0x0500
->>   #define PCI_DEVICE_ID_NS_SCx200_SMI	0x0501
->>   #define PCI_DEVICE_ID_NS_SCx200_IDE	0x0502
->> @@ -1047,7 +1046,6 @@
->>   #define PCI_DEVICE_ID_SUN_SABRE		0xa000
->>   #define PCI_DEVICE_ID_SUN_HUMMINGBIRD	0xa001
->>   #define PCI_DEVICE_ID_SUN_TOMATILLO	0xa801
->> -#define PCI_DEVICE_ID_SUN_CASSINI	0xabba
-> 
-> I don't think there's value in removing these definitions.  I would
-> just leave them alone.
+On Tue, Jan 10, 2023 at 12:04 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+>
+> On 1/9/23 21:53, Suren Baghdasaryan wrote:
+> > rw_semaphore is a sizable structure of 40 bytes and consumes
+> > considerable space for each vm_area_struct. However vma_lock has
+> > two important specifics which can be used to replace rw_semaphore
+> > with a simpler structure:
+> > 1. Readers never wait. They try to take the vma_lock and fall back to
+> > mmap_lock if that fails.
+> > 2. Only one writer at a time will ever try to write-lock a vma_lock
+> > because writers first take mmap_lock in write mode.
+> > Because of these requirements, full rw_semaphore functionality is not
+> > needed and we can replace rw_semaphore with an atomic variable.
+> > When a reader takes read lock, it increments the atomic unless the
+> > value is negative. If that fails read-locking is aborted and mmap_lock
+> > is used instead.
+> > When writer takes write lock, it resets atomic value to -1 if the
+> > current value is 0 (no readers). Since all writers take mmap_lock in
+> > write mode first, there can be only one writer at a time. If there
+> > are readers, writer will place itself into a wait queue using new
+> > mm_struct.vma_writer_wait waitqueue head. The last reader to release
+> > the vma_lock will signal the writer to wake up.
+> > vm_lock_seq is also moved into vma_lock and along with atomic_t they
+> > are nicely packed and consume 8 bytes, bringing the overhead from
+> > vma_lock from 44 to 16 bytes:
+> >
+> >     slabinfo before the changes:
+> >      <name>            ... <objsize> <objperslab> <pagesperslab> : ...
+> >     vm_area_struct    ...    152   53    2 : ...
+> >
+> >     slabinfo with vma_lock:
+> >      <name>            ... <objsize> <objperslab> <pagesperslab> : ...
+> >     rw_semaphore      ...      8  512    1 : ...
+>
+> I guess the cache is called vma_lock, not rw_semaphore?
 
-This whole series was NACK'd so this patch isn't getting applied.
+Yes, sorry. Copy/paste error when combining the results. The numbers
+though look correct, so I did not screw up that part :)
 
-Ani
+>
+> >     vm_area_struct    ...    160   51    2 : ...
+> >
+> > Assuming 40000 vm_area_structs, memory consumption would be:
+> > baseline: 6040kB
+> > vma_lock (vm_area_structs+vma_lock): 6280kB+316kB=6596kB
+> > Total increase: 556kB
+> >
+> > atomic_t might overflow if there are many competing readers, therefore
+> > vma_read_trylock() implements an overflow check and if that occurs it
+> > restors the previous value and exits with a failure to lock.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>
+> This patch is indeed an interesting addition indeed, but I can't help but
+> think it obsoletes the previous one :) We allocate an extra 8 bytes slab
+> object for the lock, and the pointer to it is also 8 bytes, and requires an
+> indirection. The vma_lock cache is not cacheline aligned (otherwise it would
+> be a major waste), so we have potential false sharing with up to 7 other
+> vma_lock's.
+
+True, I thought long and hard about combining the last two patches but
+decided to keep them separate to document the intent. The previous
+patch splits the lock for performance reasons and this one is focused
+on memory consumption. I'm open to changing this if it's confusing.
+
+> I'd expect if the vma_lock was placed with the relatively cold fields of
+> vm_area_struct, it shouldn't cause much cache ping pong when working with
+> that vma. Even if we don't cache align the vma to save memory (would be 192
+> bytes instead of 160 when aligned) and place the vma_lock and the cold
+> fields at the end of the vma, it may be false sharing the cacheline with the
+> next vma in the slab.
+
+I would love to combine the vma_lock with vm_area_struct and I spent
+several days trying different combinations to achieve decent
+performance. My best achieved result was when I placed the vm_lock
+into the third cache line at offset 192 and allocated vm_area_structs
+from cache-aligned slab (horrible memory waste with each vma consuming
+256 bytes). Even then I see regression in pft-threads test on a NUMA
+machine (where cache-bouncing problem is most pronounced):
+
+This is the result with split vma locks (current version). The higher
+number the better:
+
+BASE                                PVL
+Hmean     faults/sec-1    469201.7282 (   0.00%)   464453.3976 *  -1.01%*
+Hmean     faults/sec-4   1754465.6221 (   0.00%)  1660688.0452 *  -5.35%*
+Hmean     faults/sec-7   2808141.6711 (   0.00%)  2688910.6458 *  -4.25%*
+Hmean     faults/sec-12  3750307.7553 (   0.00%)  3863490.2057 *   3.02%*
+Hmean     faults/sec-21  4145672.4677 (   0.00%)  3904532.7241 *  -5.82%*
+Hmean     faults/sec-30  3775722.5726 (   0.00%)  3923225.3734 *   3.91%*
+Hmean     faults/sec-48  4152563.5864 (   0.00%)  4783720.6811 *  15.20%*
+Hmean     faults/sec-56  4163868.7111 (   0.00%)  4851473.7241 *  16.51%*
+
+Here are results with the vma locks integrated into cache-aligned
+vm_area_struct:
+
+BASE               PVM_MERGED
+Hmean     faults/sec-1    469201.7282 (   0.00%)   465268.1274 *  -0.84%*
+Hmean     faults/sec-4   1754465.6221 (   0.00%)  1658538.0217 *  -5.47%*
+Hmean     faults/sec-7   2808141.6711 (   0.00%)  2645016.1598 *  -5.81%*
+Hmean     faults/sec-12  3750307.7553 (   0.00%)  3664676.6956 *  -2.28%*
+Hmean     faults/sec-21  4145672.4677 (   0.00%)  3722203.7950 * -10.21%*
+Hmean     faults/sec-30  3775722.5726 (   0.00%)  3821025.6963 *   1.20%*
+Hmean     faults/sec-48  4152563.5864 (   0.00%)  4561016.1604 *   9.84%*
+Hmean     faults/sec-56  4163868.7111 (   0.00%)  4528123.3737 *   8.75%*
+
+These two compare with the same baseline test results, I just
+separated the result into two to have readable email formatting.
+It's also hard to find 56 bytes worth of fields in vm_area_struct
+which are not used during page faults. So, in the end I decided to
+keep vma_locks separate to preserve performance. If you have an idea
+on how we can combine vm_area_struct fields in a better way, I would
+love to try it out.
+
+> But that's a single vma, not up to 7, so it shouldn't be worse?
+
+Yes, I expected that too but mmtests show very small improvement when
+I cache-align vma_locks slab. My spf_test does show about 10%
+regression due to vma_lock cache-line bouncing, however considering
+that it also shows 90% improvement over baseline, losing 10% of that
+improvement to save 56 bytes per vma sounds like a good deal.
+I think the lack of considerable regression here is due to vma_locks
+being used only 2 times in the pagefault path - when we take it and
+when we release it, while vm_aa_struct fields are used much more
+heavily. So, invalidating vma_lock cache-line does not hit us as hard
+as invalidating a part of vm_area_struct.
+
+Looking forward to suggestions and thanks for the review, Vlastimil!
+
+
+
+
+>
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
