@@ -2,97 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D1A663B96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 09:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E18663E69
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 11:40:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nrktn6DtFz3f9y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 19:46:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cKETTAOy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NrnQk4Hnyz3cdp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jan 2023 21:40:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cKETTAOy;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=217.74.38.119; helo=mail.astralinux.ru; envelope-from=eesina@astralinux.ru; receiver=<UNKNOWN>)
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nrkrz4TPhz3cDs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 19:44:51 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30A8gAPX007099;
-	Tue, 10 Jan 2023 08:44:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=bPbVLnrZeHjCvgCyG+9ZQ+MmOB41TCBedqDoORx88c8=;
- b=cKETTAOyvt9K1taRwRf2EAht24kLfEqOmWXTB2V1N9wnmnQHUTN2IvHuHPvSnWLk2Byc
- TZOQ6JXgVWqd26KQpowMnfS/f2Hnajuk4PISqatpz6bv2nZgMg/mY+Vq0CB1LHuDaxV2
- b44T6INTdDl/TjGhouARGn8Nrlse8wadhOiDPuBmcIN2o0a5z+ASfNv/LLmApPAFK3tG
- cirRJYiPDUAAd70d2MyMkEhMp0Q2jYsRxW02OLukZfG/7gwmTS8JN8YauqRVneiYGBZj
- o9GHOKlCcIkNe0HLkHOhq2kx7LAhFxnCgLF+fbd3hRppbfonVG8KqcffIU/sntOHzqUj eQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n14qx01gw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Jan 2023 08:44:24 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30A8iDtF012748;
-	Tue, 10 Jan 2023 08:44:24 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n14qx01fk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Jan 2023 08:44:23 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 309Nedo1022493;
-	Tue, 10 Jan 2023 08:44:21 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3my0c6u735-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Jan 2023 08:44:21 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30A8iIPl16580940
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Jan 2023 08:44:19 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CDDF12004F;
-	Tue, 10 Jan 2023 08:44:18 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7492420040;
-	Tue, 10 Jan 2023 08:44:18 +0000 (GMT)
-Received: from localhost (unknown [9.124.31.92])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Jan 2023 08:44:18 +0000 (GMT)
-Date: Tue, 10 Jan 2023 14:14:17 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v1 06/10] powerpc/bpf: Perform complete extra passes to
- update addresses
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman
-	<mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: 	<fa025537f584599c0271fc129c5cf4f57fbe7505.1669881248.git.christophe.leroy@csgroup.eu>
-	<c13ebeb4d5d169bda6d1d60ccaa6cc956308308d.1669881248.git.christophe.leroy@csgroup.eu>
-	<1670926819.9nqhz2fj7v.naveen@linux.ibm.com>
-	<57406145-4199-00f7-8593-da2f498116f1@csgroup.eu>
-In-Reply-To: <57406145-4199-00f7-8593-da2f498116f1@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nrj0j3C0Pz3c79
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 18:21:23 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 986351863A9E;
+	Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id NQPKK78CKEwH; Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 204B01863E33;
+	Tue, 10 Jan 2023 10:21:17 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id MWA1XFwlqi4T; Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
+Received: from rbta-msk-vsrv-mail01.astralinux.ru (localhost [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id A21311863A9E;
+	Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
+Date: Tue, 10 Jan 2023 10:21:16 +0300 (MSK)
+From: =?utf-8?B?0JXQutCw0YLQtdGA0LjQvdCwINCV0YHQuNC90LA=?= <eesina@astralinux.ru>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Zhao Qiang <qiang.zhao@nxp.com>
+Message-ID: <1596946964.348463848.1673335276356.JavaMail.zimbra@astralinux.ru>
+In-Reply-To: <1b6326fa-69b3-0ef0-2927-60f6fbd6ce28@csgroup.eu>
+References: <20221223143225.23153-1-eesina@astralinux.ru> <1b6326fa-69b3-0ef0-2927-60f6fbd6ce28@csgroup.eu>
+Subject: Re: [PATCH] net-wan: Add check for NULL for utdm in ucc_hdlc_probe
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1673339740.lyeaje9o3l.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5GlDzDdghBRO1dRuKdtsYrLZ3eZ64pI1
-X-Proofpoint-GUID: ubhntUnEakEvEpFPP0ZiK6Y0MHgLRnX9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-10_02,2023-01-09_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 mlxlogscore=999 impostorscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301100051
+Content-Type: multipart/alternative; 
+	boundary="=_6c7fd5d1-372a-4043-93cb-aabb5b11055b"
+X-Originating-IP: [10.177.177.35]
+X-Mailer: Zimbra 9.0.0_GA_4258 (ZimbraXWebClient - yandexbrowser22 (Linux)/9.0.0_GA_4258)
+Thread-Topic: net-wan: Add check for NULL for utdm in ucc_hdlc_probe
+Thread-Index: AQHZFxzZzxDc+uM14kSkvyuO7aEPOq6WVamAf1NcbTo=
+X-Mailman-Approved-At: Tue, 10 Jan 2023 21:40:19 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,119 +59,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, =?iso-8859-1?q?Yonghong=0A?= Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: lvc-project@linuxtesting.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
+--=_6c7fd5d1-372a-4043-93cb-aabb5b11055b
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+ =20
+=C2=A0=20
+=C2=A0 =20
+  =20
+
+-----Original Message-----
+
+From: Christophe <christophe.leroy@csgroup.eu>
+To: Ekaterina <eesina@astralinux.ru>; Zhao <qiang.zhao@nxp.com>
+Cc: lvc-project <lvc-project@linuxtesting.org>; netdev <netdev@vger.kernel.=
+org>; linux-kernel <linux-kernel@vger.kernel.org>; Eric <edumazet@google.co=
+m>; Jakub <kuba@kernel.org>; Paolo <pabeni@redhat.com>; linuxppc-dev <linux=
+ppc-dev@lists.ozlabs.org>; David <davem@davemloft.net>
+Date: Monday, 9 January 2023 6:49 PM MSK
+Subject: Re: [PATCH] net-wan: Add check for NULL for utdm in ucc_hdlc_probe
+
+
+
+Le 23/12/2022 =C3=A0 15:32, Ekaterina Esina a =C3=A9crit=C2=A0:=20
+> [Vous ne recevez pas souvent de courriers de eesina@astralinux.ru. D=C3=
+=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
+erIdentification ]=20
 >=20
+> If uhdlc_priv_tsa !=3D 1 then utdm is not initialized.=20
+> And if ret !=3D NULL then goto undo_uhdlc_init, where utdm is dereference=
+d.=20
+> Same if dev =3D=3D NULL.=20
 >=20
-> Le 13/12/2022 =C3=A0 11:23, Naveen N. Rao a =C3=A9crit=C2=A0:
->> Christophe Leroy wrote:
->>> BPF core calls the jit compiler again for an extra pass in order
->>> to properly set subprog addresses.
->>>
->>> Unlike other architectures, powerpc only updates the addresses
->>> during that extra pass. It means that holes must have been left
->>> in the code in order to enable the maximum possible instruction
->>> size.
->>>
->>> In order avoid waste of space, and waste of CPU time on powerpc
->>> processors on which the NOP instruction is not 0-cycle, perform
->>> two real additional passes.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>> =C2=A0arch/powerpc/net/bpf_jit_comp.c | 85 ----------------------------=
------
->>> =C2=A01 file changed, 85 deletions(-)
->>>
->>> diff --git a/arch/powerpc/net/bpf_jit_comp.c=20
->>> b/arch/powerpc/net/bpf_jit_comp.c
->>> index 43e634126514..8833bf23f5aa 100644
->>> --- a/arch/powerpc/net/bpf_jit_comp.c
->>> +++ b/arch/powerpc/net/bpf_jit_comp.c
->>> @@ -23,74 +23,6 @@ static void bpf_jit_fill_ill_insns(void *area,=20
->>> unsigned int size)
->>> =C2=A0=C2=A0=C2=A0=C2=A0 memset32(area, BREAKPOINT_INSTRUCTION, size / =
-4);
->>> =C2=A0}
->>>
->>> -/* Fix updated addresses (for subprog calls, ldimm64, et al) during=20
->>> extra pass */
->>> -static int bpf_jit_fixup_addresses(struct bpf_prog *fp, u32 *image,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct codegen_context *ctx, u32 *a=
-ddrs)
->>> -{
->>> -=C2=A0=C2=A0=C2=A0 const struct bpf_insn *insn =3D fp->insnsi;
->>> -=C2=A0=C2=A0=C2=A0 bool func_addr_fixed;
->>> -=C2=A0=C2=A0=C2=A0 u64 func_addr;
->>> -=C2=A0=C2=A0=C2=A0 u32 tmp_idx;
->>> -=C2=A0=C2=A0=C2=A0 int i, j, ret;
->>> -
->>> -=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < fp->len; i++) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * During the extra pa=
-ss, only the branch target addresses for
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the subprog calls n=
-eed to be fixed. All other instructions
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * can left untouched.
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The JITed image len=
-gth does not change because we already
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * ensure that the JIT=
-ed instruction sequence for these calls
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * are of fixed length=
- by padding them with NOPs.
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (insn[i].code =3D=3D (BP=
-F_JMP | BPF_CALL) &&
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ins=
-n[i].src_reg =3D=3D BPF_PSEUDO_CALL) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
- =3D bpf_jit_get_func_addr(fp, &insn[i], true,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 &func_addr,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 &func_addr_fixed);
->>=20
->> I don't see you updating calls to bpf_jit_get_func_addr() in=20
->> bpf_jit_build_body() to set extra_pass to true. Afaics, that's required=20
->> to get the correct address to be branched to for subprogs.
->>=20
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.=20
 >=20
-> I don't understand what you mean.
+> Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>=20
+> ---=20
+> drivers/net/wan/fsl_ucc_hdlc.c | 4 +++-=20
+> 1 file changed, 3 insertions(+), 1 deletion(-)=20
+>=20
+> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdl=
+c.c=20
+> index 22edea6ca4b8..2ddb0f71e648 100644=20
+> --- a/drivers/net/wan/fsl_ucc_hdlc.c=20
+> +++ b/drivers/net/wan/fsl_ucc_hdlc.c=20
+> @@ -1243,7 +1243,9 @@ static int ucc_hdlc_probe(struct platform_device *p=
+dev)=20
+> free_dev:=20
+> free_netdev(dev);=20
+> undo_uhdlc_init:=20
+> - iounmap(utdm->siram);=20
+> + if (utdm !=3D NULL) {=20
+> + iounmap(utdm->siram);=20
+> + }=20
 
-I am referring to the third parameter we pass to=20
-bpf_jit_get_func_addr().
-
-In bpf_jit_build_body(), we do:
-
-		case BPF_JMP | BPF_CALL:
-			ctx->seen |=3D SEEN_FUNC;
-
-			ret =3D bpf_jit_get_func_addr(fp, &insn[i], false,
-						    &func_addr, &func_addr_fixed);
-
-
-The third parameter (extra_pass) to bpf_jit_get_func_addr() is set to=20
-false. In bpf_jit_get_func_addr(), we have:
-
-	*func_addr_fixed =3D insn->src_reg !=3D BPF_PSEUDO_CALL;
-	if (!*func_addr_fixed) {
-		/* Place-holder address till the last pass has collected
-		 * all addresses for JITed subprograms in which case we
-		 * can pick them up from prog->aux.
-		 */
-		if (!extra_pass)
-			addr =3D NULL;
-
-Before this patch series, in bpf_jit_fixup_addresses(), we were calling=20
-bpf_jit_get_func_addr() with the third parameter set to true.
+If utdm being NULL is a problem here, isn't it also a problem in the=20
+iounmap below ?=20
 
 
-- Naveen
+> unmap_si_regs:=20
+> iounmap(utdm->si_regs);=20
+> free_utdm:=20
+> --=20
+> 2.30.2=20
+> Yes, below the check is also needed. I guess I should send a new patch wi=
+th both checks Best wishes, Ekaterina Esina   =20
 
+--=_6c7fd5d1-372a-4043-93cb-aabb5b11055b
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><body><div style=3D"font-size: 12pt; font-family: arial, helvetica, s=
+ans-serif; color: rgb(0, 0, 0);"><div style=3D"font-size: 12pt; font-family=
+: 'arial' , 'helvetica' , sans-serif; color: #000000;">
+<div style=3D"font-size: 12pt; font-family: 'arial' , 'helvetica' , sans-se=
+rif; color: #000000;">
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div id=3D"signature-content-no-signature"></div>
+<div>
+
+<div id=3D"OLK_SRC_BODY_SECTION">
+<div id=3D"OLK_SRC_BODY_SECTION">
+<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
+ing-left: 1em;"><hr id=3D"MESSAGE_DATA_MARKER"><strong>From: </strong>Chris=
+tophe &lt;christophe.leroy@csgroup.eu&gt;<br><strong>To: </strong>Ekaterina=
+ &lt;eesina@astralinux.ru&gt;; Zhao &lt;qiang.zhao@nxp.com&gt;<br><strong>C=
+c: </strong>lvc-project &lt;lvc-project@linuxtesting.org&gt;; netdev &lt;ne=
+tdev@vger.kernel.org&gt;; linux-kernel &lt;linux-kernel@vger.kernel.org&gt;=
+; Eric &lt;edumazet@google.com&gt;; Jakub &lt;kuba@kernel.org&gt;; Paolo &l=
+t;pabeni@redhat.com&gt;; linuxppc-dev &lt;linuxppc-dev@lists.ozlabs.org&gt;=
+; David &lt;davem@davemloft.net&gt;<br><strong>Date: </strong>Monday, 9 Jan=
+uary 2023 6:49 PM MSK<br><strong>Subject: </strong>Re: [PATCH] net-wan: Add=
+ check for NULL for utdm in ucc_hdlc_probe<br><br><br><br>Le 23/12/2022 =C3=
+=A0 15:32, Ekaterina Esina a =C3=A9crit&nbsp;: <br>&gt; [Vous ne recevez pa=
+s souvent de courriers de eesina@astralinux.ru. D=C3=A9couvrez pourquoi cec=
+i est important =C3=A0 https://aka.ms/LearnAboutSenderIdentification ] <br>=
+&gt; <br>&gt; If uhdlc_priv_tsa !=3D 1 then utdm is not initialized. <br>&g=
+t; And if ret !=3D NULL then goto undo_uhdlc_init, where utdm is dereferenc=
+ed. <br>&gt; Same if dev =3D=3D NULL. <br>&gt; <br>&gt; Found by Linux Veri=
+fication Center (linuxtesting.org) with SVACE. <br>&gt; <br>&gt; Signed-off=
+-by: Ekaterina Esina &lt;eesina@astralinux.ru&gt; <br>&gt; --- <br>&gt; dri=
+vers/net/wan/fsl_ucc_hdlc.c | 4 +++- <br>&gt; 1 file changed, 3 insertions(=
++), 1 deletion(-) <br>&gt; <br>&gt; diff --git a/drivers/net/wan/fsl_ucc_hd=
+lc.c b/drivers/net/wan/fsl_ucc_hdlc.c <br>&gt; index 22edea6ca4b8..2ddb0f71=
+e648 100644 <br>&gt; --- a/drivers/net/wan/fsl_ucc_hdlc.c <br>&gt; +++ b/dr=
+ivers/net/wan/fsl_ucc_hdlc.c <br>&gt; @@ -1243,7 +1243,9 @@ static int ucc_=
+hdlc_probe(struct platform_device *pdev) <br>&gt; free_dev: <br>&gt; free_n=
+etdev(dev); <br>&gt; undo_uhdlc_init: <br>&gt; - iounmap(utdm-&gt;siram); <=
+br>&gt; + if (utdm !=3D NULL) { <br>&gt; + iounmap(utdm-&gt;siram); <br>&gt=
+; + } <br><br>If utdm being NULL is a problem here, isn't it also a problem=
+ in the <br>iounmap below ? <br><br><br>&gt; unmap_si_regs: <br>&gt; iounma=
+p(utdm-&gt;si_regs); <br>&gt; free_utdm: <br>&gt; -- <br>&gt; 2.30.2 <br>&g=
+t;</blockquote>
+<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
+ing-left: 1em;">Yes, below the check is also needed. I guess I should send =
+a new patch with both checks</blockquote>
+<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
+ing-left: 1em;">Best wishes,</blockquote>
+<blockquote style=3D"margin: 0 0 0 0.8em; border-left: 1px #ccc solid; padd=
+ing-left: 1em;">Ekaterina Esina</blockquote>
+</div>
+</div></div>
+</div>
+</div></div></body></html>
+--=_6c7fd5d1-372a-4043-93cb-aabb5b11055b--
