@@ -2,75 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD40665836
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 10:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D510665859
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 10:57:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsNMn6lGPz3cFB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 20:55:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsNQp393tz3f9t
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 20:57:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ez55A3lc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NzYr9WZv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ez55A3lc;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NzYr9WZv;
 	dkim-atps=neutral
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsNLv2zCyz3bWw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 20:54:30 +1100 (AEDT)
-Received: by mail-wm1-x32b.google.com with SMTP id z8-20020a05600c220800b003d33b0bda11so2305730wml.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 01:54:30 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsNPr07dXz2y32
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 20:57:03 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id m3so10708664wmq.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 01:57:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mFXFErf1cq+teYIb8hlzraGgrqjKGOqEZ+fy0lNXo3c=;
-        b=Ez55A3lcqCOOEpQ5a4MBkBx/2zChunM795At0TWV11V9WbBJ3DNkEB+66S9HGrtTvn
-         ZDrwYqwzDgMm/GUyX2mzE2EyNcXUbISgQIhYJEFkNsxa/WJWRcmrCKKbqV3CK84/r0Hx
-         gQf3ozUakFu5DN1h0mhXmm1aXmV2UdIPGbHqRzOGvUihTrEa/8iNTkAkHvzMJhamqLTm
-         QEJD46zYp2AUnJ8M0wB+YLQ0S8c8KCU/HRIw8my1jcP70fUUhlXfPYdDdPu4vClkcdjb
-         i8UhuaFbVL7Wq8WsQORBLS3P0UyAc+JZsDHoSzAQqympHQwKCHd983BEMxllkefRdkgp
-         ruvg==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rZrK9lXyFzrE/eivw3OcCooHt4NoTEPjrW6/dIApfWI=;
+        b=NzYr9WZvB0yPX9hmesMv0hgjDwjPXJutQ420ENuuA9rzr/TQWrsMDcym9eYFiFgdGI
+         naPSBbWitrpZKZCx0vELymwzFkMspdu+Dlsap6Mxeh5+O0zR+tMzz+1bmNzADbvSiYxH
+         dNr97ZXrfPxm8W0qoh0JM1wDMcbDddc8uOAMflrjpxZ5LlenxI4MCjd0zOoGjJLCLcjq
+         YFgE2RKtVeBT+dwfGwj5KDpEGeTsHfb0zSTv6aulHloiytjxY0CVuM/aodJXMm6Wp129
+         mlYgw97MwPSwerW/Ty1mMGlZd3O2cqPqsp7bvEqIqKMh6NmWkV15o7ZAluVXGyOKhaTR
+         +sqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mFXFErf1cq+teYIb8hlzraGgrqjKGOqEZ+fy0lNXo3c=;
-        b=Ju2f2p+2AVr4a1B/689X4Wk8yy3vOr3Hs3lLzllcp990IRDMUNiH7iZi3xKQ0dg1Cz
-         zdricqF3d6AtcA2vZHHU1Kk+xepzDXtnYvmNNcs3ogMCOeXviBC7fqlE1CuPDQ8xzJV6
-         kiUivM7dUgO9wz1G93RpqseKnt2wWtwibDAdSrg15pvnAEM7LHA0DiPDrEiTI8pNy/DB
-         xVSLofzV/HDr7Wsp8Nhe24JIUR4hQY+533DVkPWrfCfEcbPGX5LNcrKADatKzCurmosO
-         lSEb0xDSnpigLhqe00/szNlkNXtbvrFvkU7qHjtjQMBLZOrrTj0LFVfZ/TUV4yLQLz6L
-         B/QA==
-X-Gm-Message-State: AFqh2kryBrsjIv1FDoBa6/ARaJy+UwEbZ+meSJtr9G4wgavyw/46Rw8T
-	4CbE3JFc5wmBB5dUR2OaEhQ=
-X-Google-Smtp-Source: AMrXdXs4Bilzbryqesa6Iq2CcbBPhULbeIu/iOoHs0IaVyp+PUdwh0hB46bGVPQijouO6TJpzE7mXw==
-X-Received: by 2002:a05:600c:229a:b0:3d9:ec70:befc with SMTP id 26-20020a05600c229a00b003d9ec70befcmr9365764wmf.13.1673430866212;
-        Wed, 11 Jan 2023 01:54:26 -0800 (PST)
-Received: from gmail.com (1F2EF2EB.nat.pool.telekom.hu. [31.46.242.235])
-        by smtp.gmail.com with ESMTPSA id f19-20020a1c6a13000000b003d9fb04f658sm4077431wmc.4.2023.01.11.01.54.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jan 2023 01:54:25 -0800 (PST)
-Date: Wed, 11 Jan 2023 10:54:21 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 08/41] mm: introduce CONFIG_PER_VMA_LOCK
-Message-ID: <Y76HTfIeEt8ZOIH3@gmail.com>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-9-surenb@google.com>
- <20230111001331.cxdeh52vvta6ok2p@offworld>
- <CAJuCfpEv--awCY0=R3h5Fez8x74U1EZCzNkq4_7deCYqej5sSA@mail.gmail.com>
- <Y75x5fGPcJ63pBIp@dhcp22.suse.cz>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rZrK9lXyFzrE/eivw3OcCooHt4NoTEPjrW6/dIApfWI=;
+        b=wCvI8m/17BkCIBMvKrJ6Se3WwvLatitfeaMkmWNZ6kCpVw0cv5L0lOZGA/jw9KLL9j
+         rBbr44cIT2ZNowAJl8in4PklxjtaqiXmATH+FV0Amso8UxD2ilZ3BGxGFNybdAludAN6
+         WC4twr/KW7hlRSycRCT9dIWCObaSn+3n9LK+rCujmIBX1nl2ld9wCrJ9D6aA+DjAuFjA
+         kHvFB/9jbDCteitWJCeXlIPrtbBd8Sa9Ed7b5v8OSbPCZOnKNkKMs/imkSu6hEJHUl1C
+         ej3p26wYFPxv2Zpdu+csvC/AAegqEzp7bnwbgPeQ1xCas2lll1zDN+tkESByVGxct6Eq
+         SGBQ==
+X-Gm-Message-State: AFqh2kp9agEtRAShcyASHQMUPQWw1omqpZMFvhR9WSWGJOHHqUsWC3vP
+	/2e6CdsPZ8UVL8+3WCMOSIhd8g==
+X-Google-Smtp-Source: AMrXdXtnjRK0dM2PKFvDPnK0ZNqW9OOfaNRQsXHtWzxpQraFJ2OLkK1Td920Jou43ys0vpMsTSfiYA==
+X-Received: by 2002:a05:600c:4e46:b0:3d2:3761:b717 with SMTP id e6-20020a05600c4e4600b003d23761b717mr52118078wmq.37.1673431019418;
+        Wed, 11 Jan 2023 01:56:59 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id s23-20020a1cf217000000b003d1e3b1624dsm22268979wmc.2.2023.01.11.01.56.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jan 2023 01:56:59 -0800 (PST)
+Message-ID: <c1b07878-4cbc-bb79-3635-03f15df8a658@linaro.org>
+Date: Wed, 11 Jan 2023 10:56:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y75x5fGPcJ63pBIp@dhcp22.suse.cz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v2 01/10] dt-bindings: soc: fsl: cpm_qe: Add TSA
+ controller
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>
+References: <20230106163746.439717-1-herve.codina@bootlin.com>
+ <20230106163746.439717-2-herve.codina@bootlin.com>
+ <427e0775-c576-e293-f590-b9840b936884@linaro.org>
+ <20230110090445.2dc61b51@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230110090445.2dc61b51@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,54 +85,337 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorm
- an@techsingularity.net
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-* Michal Hocko <mhocko@suse.com> wrote:
-
-> On Tue 10-01-23 16:44:42, Suren Baghdasaryan wrote:
-> > On Tue, Jan 10, 2023 at 4:39 PM Davidlohr Bueso <dave@stgolabs.net> wrote:
-> > >
-> > > On Mon, 09 Jan 2023, Suren Baghdasaryan wrote:
-> > >
-> > > >This configuration variable will be used to build the support for VMA
-> > > >locking during page fault handling.
-> > > >
-> > > >This is enabled by default on supported architectures with SMP and MMU
-> > > >set.
-> > > >
-> > > >The architecture support is needed since the page fault handler is called
-> > > >from the architecture's page faulting code which needs modifications to
-> > > >handle faults under VMA lock.
-> > >
-> > > I don't think that per-vma locking should be something that is user-configurable.
-> > > It should just be depdendant on the arch. So maybe just remove CONFIG_PER_VMA_LOCK?
-> > 
-> > Thanks for the suggestion! I would be happy to make that change if
-> > there are no objections. I think the only pushback might have been the
-> > vma size increase but with the latest optimization in the last patch
-> > maybe that's less of an issue?
+On 10/01/2023 09:04, Herve Codina wrote:
+> Hi Krzysztof,
 > 
-> Has vma size ever been a real problem? Sure there might be a lot of those 
-> but your patch increases it by rwsem (without the last patch) which is 
-> something like 40B on top of 136B vma so we are talking about 400B in 
-> total which even with wild mapcount limits shouldn't really be 
-> prohibitive. With a default map count limit we are talking about 2M 
-> increase at most (per address space).
+> On Sun, 8 Jan 2023 16:10:38 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
-> Or are you aware of any specific usecases where vma size is a real 
-> problem?
+> [...]
+> 
+>>> +  '#size-cells':
+>>> +    const: 0
+>>> +
+>>> +patternProperties:
+>>> +  "^tdm@[0-1]$":  
+>>
+>> Use consistent quotes - either ' or "
+> 
+> Ok, I will change on v3.
+> I will also change them on the other bindings present in the
+> series.
+> 
+>>
+>>> +    description:
+>>> +      The TDM managed by this controller
+>>> +    type: object
+>>> +
+>>> +    properties:
+>>> +      reg:
+>>> +        minimum: 0
+>>> +        maximum: 1
+>>> +        description:
+>>> +          The TDM number for this TDM, 0 for TDMa and 1 for TDMb
+>>> +
+>>> +      fsl,common-rxtx-pins:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description:
+>>> +          Use common pins for both transmit and receive  
+>>
+>> What are the "common" pins? Without this property device is using
+>> uncommon pins? This does not make sense...
+> 
+> Common in the "shared" sense.
+> The hardware can use dedicated pins for Tx clock, Tx sync,
+> Rx clock and Rx sync or use only 2 pins, Tx/Rx clock and
+> Rx/Rx sync.
+> 
+> Without the property, we use the 4 pins and with the property,
+> we use 2 pins.
 
-40 bytes for the rwsem, plus the patch also adds a 32-bit sequence counter:
+Just use this as description.
 
-  + int vm_lock_seq;
-  + struct rw_semaphore lock;
+> 
+>>
+>>> +
+>>> +      clocks: true
+>>> +      clock-names: true  
+>>
+>> Both need constraints.
+> 
+> The constraints are present later in the file as the number
+> of clocks depends on the 'fsl,common-rxtx-pins' property.
 
-So it's +44 bytes.
+OK, but still top level properties need widest constraints.
 
-Thanks,
+> 
+> I will remove these two lines in the v3 series as they are
+> not needed. 'clocks' and 'clock-names' are handled in the
+> conditional part.
 
-	Ingo
+No, top level properties must contain them.
+
+> 
+>>
+> [...]
+>>> +
+>>> +      fsl,rx-frame-sync-delay:
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>> +        enum: [0, 1, 2, 3]
+>>> +        default: 0
+>>> +        description: |
+>>> +          Receive frame sync delay.  
+>>
+>> Delay in what units?
+> 
+> The unit is a number of bits.
+> I will rename to fsl,rx-frame-sync-delay-bits and change the description
+> to 'Receive frame sync delay in number of bits'
+> 
+> I will do also the same for fsl,tx-frame-sync-delay property.
+
+OK
+
+> 
+>>
+>>> +          Indicates the delay between the Rx sync and the first bit of the
+>>> +          Rx frame. 0 for no bit delay. 1, 2 or 3 for 1, 2 or 3 bits delay.
+>>> +
+>>> +      fsl,tx-frame-sync-delay:
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>> +        enum: [0, 1, 2, 3]
+>>> +        default: 0
+>>> +        description: |
+>>> +          Transmit frame sync delay.
+>>> +          Indicates the delay between the Tx sync and the first bit of the
+>>> +          Tx frame. 0 for no bit delay. 1, 2 or 3 for 1, 2 or 3 bits delay.
+>>> +
+>>> +      fsl,clock-falling-edge:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description: |
+>>> +          Data is sent on falling edge of the clock (and received on the
+>>> +          rising edge).
+>>> +          If 'clock-falling-edge' is not present, data is sent on the
+>>> +          rising edge (and received on the falling edge).
+>>> +
+>>> +      fsl,fsync-rising-edge:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description:
+>>> +          Frame sync pulses are sampled with the rising edge of the channel
+>>> +          clock. If 'fsync-rising-edge' is not present, pulses are sample
+>>> +          with e falling edge.
+>>> +
+>>> +      fsl,double-speed-clock:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description:
+>>> +          The channel clock is twice the data rate.
+>>> +
+>>> +      fsl,grant-mode:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description:
+>>> +          Grant mode enabled.  
+>>
+>> This we know from property name. You need to describe what it is and
+>> what it does.
+> 
+> Instead of describing it, I will simply remove the property (I should
+> have done already).
+> I cannot test the 'grant mode' enabled with my hardware and so
+> I prefer keeping it disabled.
+> This property, if needed, could be add later setting it optional
+> with default to 'disabled'.
+> 
+>>
+>>> +
+>>> +      tx_ts_routes:  
+>>
+>> No underscores, missing vendor prefix.
+> 
+> Indeed, will be change to fsl,tx-ts-routes (idem for rx_ts_routes).
+> 
+>>
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+>>> +        description: |
+>>> +          A list of tupple that indicates the Tx time-slots routes.
+>>> +            tx_ts_routes =
+>>> +               < 2 0 0>, /* The first 2 time slots are not used */
+>>> +               < 3 1 0>, /* The next 3 ones are route to SCC2 */
+>>> +               < 4 0 0>, /* The next 4 ones are not used */
+>>> +               < 2 2 0>; /* The nest 2 ones are route to SCC3 */
+>>> +        items:
+>>> +          items:
+>>> +            - description:
+>>> +                The number of time-slots
+>>> +              minimum: 1
+>>> +              maximum: 64
+>>> +            - description: |
+>>> +                The source serial interface (dt-bindings/soc/fsl-tsa.h
+>>> +                defines these values)
+>>> +                 - 0: No destination
+>>> +                 - 1: SCC2
+>>> +                 - 2: SCC3
+>>> +                 - 3: SCC4
+>>> +                 - 4: SMC1
+>>> +                 - 5: SMC2
+>>> +              enum: [0, 1, 2, 3, 4, 5]
+>>> +            - description:
+>>> +                The route flags (reserved)  
+>>
+>> Why part of binding is reserved?
+> 
+> The 'reserved' part will be removed in v3.
+> Same for the rx route table.
+> 
+>>
+>>> +              const: 0
+>>> +        minItems: 1
+>>> +        maxItems: 64
+>>> +
+>>> +      rx_ts_routes:
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+>>> +        description: |
+>>> +          A list of tupple that indicates the Rx time-slots routes.
+>>> +            tx_ts_routes =
+>>> +               < 2 0 0>, /* The first 2 time slots are not used */
+>>> +               < 3 1 0>, /* The next 3 ones are route from SCC2 */
+>>> +               < 4 0 0>, /* The next 4 ones are not used */
+>>> +               < 2 2 0>; /* The nest 2 ones are route from SCC3 */
+>>> +        items:
+>>> +          items:
+>>> +            - description:
+>>> +                The number of time-slots
+>>> +              minimum: 1
+>>> +              maximum: 64
+>>> +            - description: |
+>>> +                The destination serial interface (dt-bindings/soc/fsl-tsa.h
+>>> +                defines these values)
+>>> +                 - 0: No destination
+>>> +                 - 1: SCC2
+>>> +                 - 2: SCC3
+>>> +                 - 3: SCC4
+>>> +                 - 4: SMC1
+>>> +                 - 5: SMC2
+>>> +              enum: [0, 1, 2, 3, 4, 5]
+>>> +            - description:
+>>> +                The route flags (reserved)
+>>> +              const: 0
+>>> +        minItems: 1
+>>> +        maxItems: 64
+>>> +
+>>> +    allOf:
+>>> +      - if:
+>>> +          properties:
+>>> +            fsl,common-rxtx-pins:
+>>> +              type: 'null'  
+>>
+>> What is this exactly? If check for property present, it's wrong. Should
+>> be test if it is in required.
+> 
+> Yes, it was a check for the property presence.
+> 
+> If we not use the 'fsl,common-rxtx-pins', we need 4 clocks.
+> If we use the 'fsl,common-rxtx-pins', we need 2 clocks (Rx part and Tx
+> part use the same CLK and SYNC clocks).
+
+https://elixir.bootlin.com/linux/v6.2-rc3/source/Documentation/devicetree/bindings/net/qcom,ipa.yaml#L174
+
+> 
+> How can I describe this ?
+> Is the check for the property presence incorrect ?
+> 
+> Should I always describe 4 clocks even if only 2 are used ?
+> 
+
+>>
+>>> +        then:
+>>> +          properties:
+>>> +            clocks:
+>>> +              items:
+>>> +                - description: External clock connected to L1RSYNC pin
+>>> +                - description: External clock connected to L1RCLK pin
+>>> +                - description: External clock connected to L1TSYNC pin
+>>> +                - description: External clock connected to L1TCLK pin
+>>> +            clock-names:
+>>> +              items:
+>>> +                - const: l1rsync
+>>> +                - const: l1rclk
+>>> +                - const: l1tsync
+>>> +                - const: l1tclk
+>>> +        else:
+>>> +          properties:
+>>> +            clocks:
+>>> +              items:
+>>> +                - description: External clock connected to L1RSYNC pin
+>>> +                - description: External clock connected to L1RCLK pin
+>>> +            clock-names:
+>>> +              items:
+>>> +                - const: l1rsync
+>>> +                - const: l1rclk
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +      - clocks
+>>> +      - clock-names
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - reg
+>>> +  - reg-names
+>>> +  - '#address-cells'
+>>> +  - '#size-cells'
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    #include <dt-bindings/soc/fsl-tsa.h>
+>>> +
+>>> +    tsa@ae0 {
+>>> +        compatible = "fsl,mpc885-tsa", "fsl,cpm1-tsa";
+>>> +        reg = <0xae0 0x10>,
+>>> +              <0xc00 0x200>;
+>>> +        reg-names = "si_regs", "si_ram";
+>>> +
+>>> +        #address-cells = <1>;
+>>> +        #size-cells = <0>;
+>>> +
+>>> +        tdm@0 {
+>>> +            /* TDMa */
+>>> +            reg = <0>;
+>>> +
+>>> +            clocks = <&clk_l1rsynca>, <&clk_l1rclka>;
+>>> +            clock-names = "l1rsync", "l1rclk";
+>>> +
+>>> +            fsl,common-rxtx-pins;
+>>> +            fsl,fsync-rising-edge;
+>>> +
+>>> +            tx_ts_routes = < 2 0 0>,                 /* TS 0..1 */
+>>> +                           < 24 FSL_CPM_TSA_SCC4 0>, /* TS 2..25 */
+>>> +                           < 1 0 0>,                 /* TS 26 */
+>>> +                           < 5 FSL_CPM_TSA_SCC3 0>;  /* TS 27..31 */
+>>> +
+>>> +            rx_ts_routes = < 2 0 0>,                 /* TS 0..1 */
+>>> +                           < 24 FSL_CPM_TSA_SCC4 0>, /* 2..25 */
+>>> +                           < 1 0 0>,                 /* TS 26 */
+>>> +                           < 5 FSL_CPM_TSA_SCC3 0>;  /* TS 27..31 */
+>>> +        };
+>>> +    };
+>>> diff --git a/include/dt-bindings/soc/fsl-tsa.h b/include/dt-bindings/soc/fsl-tsa.h
+>>> new file mode 100644
+>>> index 000000000000..9d09468694a2
+>>> --- /dev/null
+>>> +++ b/include/dt-bindings/soc/fsl-tsa.h  
+>>
+>> Filename should match binding filename.
+> 
+> Right, I will rename to fsl,tsa.h
+
+If your binding was fsl,tsa.yaml.
+
+Best regards,
+Krzysztof
+
