@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7AC665EC6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 16:07:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8332A665F0B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 16:26:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsWJT1t7kz3c4x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 02:07:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsWkT2NMVz3cf0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 02:26:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J2zebCAM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2JdBpA+L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J2zebCAM;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2JdBpA+L;
 	dkim-atps=neutral
-X-Greylist: delayed 111605 seconds by postgrey-1.36 at boromir; Thu, 12 Jan 2023 02:07:04 AEDT
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsWHX6lbZz2xGq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 02:07:02 +1100 (AEDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7925C1C000B;
-	Wed, 11 Jan 2023 15:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1673449616;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=96p48KGQVOszGpiIUB1uMQHTSrU1mw+PEt8uGhIXaOc=;
-	b=J2zebCAM0gphMWejuOqgoceHr5MqD34OCvw5uIQ+F8xbwSyORqkjh5JN2WScz1Txu5rTA2
-	oWG0oqjsC4TfW2W6iI9azZabaMlxD4UwGsCtIMgaxUsBAVf+S4BhZxNsfF++6qyd88P51j
-	jTN0lxAM9hMeQ2T1yXZ3dCMevMQX/c69W2vPSEc81hUm2hBKXfojWt/aKd1iw4OGl0mv14
-	6jyJY34VcHSqHG5PWqLJhCiaVS7KwdXzjRRNsRc7oZvowk1q7ZqmkvjRCtumbZwDyt60IY
-	gVVVVQjYQyaYgKeiyyyZhzYFLYpjrQTPE5pNH2V3X3c+rY/pgSOvtO7fye2REA==
-Date: Wed, 11 Jan 2023 16:06:51 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 02/10] soc: fsl: qe: Add support for TSA
-Message-ID: <20230111160651.24538b35@bootlin.com>
-In-Reply-To: <7a36f02b-1ba1-b509-4aa0-c5c37a3cb3ef@csgroup.eu>
-References: <20230106163746.439717-1-herve.codina@bootlin.com>
-	<20230106163746.439717-3-herve.codina@bootlin.com>
-	<7a36f02b-1ba1-b509-4aa0-c5c37a3cb3ef@csgroup.eu>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsWjZ411Nz2xT9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 02:26:09 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 231E561D68;
+	Wed, 11 Jan 2023 15:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090C5C433EF;
+	Wed, 11 Jan 2023 15:26:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1673450766;
+	bh=U2f1tKBJYlfCEhxdorOo/7D7jHkArttEmitpGOp2Svk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2JdBpA+LJYDToIW/T9oIkaa9WSBMHcR4IoKgqdUF1upb4E9cDXTvK8C62GPzc0HfY
+	 gQcrMsyJFyBFo/c56qrujWaLIL8fcladaOAVrL04f1NbeZrTpn9salym/F6dY56jxG
+	 wVYd8v/wQaeKtWH57V2D397lY0l7rybUL325lLBY=
+Date: Wed, 11 Jan 2023 16:26:04 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 01/16] of: device: make of_device_uevent_modalias()
+ take a const device *
+Message-ID: <Y77VDGvHGu8gDIga@kroah.com>
+References: <20230111113018.459199-1-gregkh@linuxfoundation.org>
+ <20230111113018.459199-2-gregkh@linuxfoundation.org>
+ <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,57 +59,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Fabio Estevam <festevam@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Liang He <windhl@126.com>, Zou Wei <zou_wei@huawei.com>, Samuel Holland <samuel@sholland.org>, Frank Rowand <frowand.list@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Corentin Labbe <clabbe@baylibre.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Lyude Paul <lyude@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, Nicholas Piggin <npiggin@gmail.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Wed, Jan 11, 2023 at 08:54:04AM -0600, Rob Herring wrote:
+> On Wed, Jan 11, 2023 at 5:30 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > of_device_uevent_modalias() does not modify the device pointer passed to
+> > it, so mark it constant.  In order to properly do this, a number of
+> > busses need to have a modalias function added as they were attempting to
+> > just point to of_device_uevent_modalias instead of their bus-specific
+> > modalias function.  This is fine except if the prototype for a bus and
+> > device type modalias function diverges and then problems could happen.  To
+> > prevent all of that, just wrap the call to of_device_uevent_modalias()
+> > directly for each bus and device type individually.
+> 
+> Why not just put the wrapper function in the DT code instead of making
+> 4 copies of it?
 
-On Wed, 11 Jan 2023 13:47:23 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+I could, if you think that it would be better there instead of in each
+individual bus (like all of the other bus callbacks).  This way each bus
+"owns" their implementation :)
 
-> Le 06/01/2023 =C3=A0 17:37, Herve Codina a =C3=A9crit=C2=A0:
-> > The TSA (Time Slot Assigner) is available in some
-> > PowerQUICC SoC such as the MPC885 or MPC866.
-> >=20
-> > Its purpose is to route some TDM time-slots to other
-> > internal serial controllers. =20
->=20
-> Is the subject correct ? As far as I understand this patch adds support=20
-> for the TSA on the CPM (exactly on CPM1), not on the QE.
+thanks,
 
-Yes exactly, it is a CPM1 support (kind of previous version of QE).
-
-Do you think that fixing the subject is enough or do I need also
-to create a new directory drivers/soc/fsl/cpm/ and move these drivers
-(TSA and QMC) in this new directory.
-
-The alternative could be to leave this driver in drivers/soc/qe/ and
-rename it to cpm-tsa.c.
-
-For information, we have some plan to have this driver working
-with QE (not done yet).
-
->=20
-> By the way, there are already some embryo for handling TSA on QE in=20
-> drivers/soc/fsl/qe/qe-tdm.c
-
-Yes but this can be seen as an extension only used by=20
-drivers/net/wan/fsl_ucc_hdlc.c and it supports QE only.
-
-Not sure that qe-tdm.c will fit well if several other
-drivers instances use it.
-
->=20
-> >=20
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com> =20
->=20
-> Christophe
-
-Thanks for the review,
-Herv=C3=A9
-
---=20
-Herv=C3=A9 Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+greg k-h
