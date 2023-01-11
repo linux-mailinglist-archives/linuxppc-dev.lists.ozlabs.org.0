@@ -1,56 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47FB665884
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 11:04:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E68665BE6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 13:58:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsNZk3jNgz3fCq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 21:04:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsSRC4B0Qz3cf4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 23:58:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=frrZ8y7c;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 66 seconds by postgrey-1.36 at boromir; Wed, 11 Jan 2023 21:04:16 AEDT
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=frrZ8y7c;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsNZ85jTrz3bXv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 21:04:16 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-234-ZV2WA3EvMAe4cAYuGqE3Sg-1; Wed, 11 Jan 2023 10:03:01 +0000
-X-MC-Unique: ZV2WA3EvMAe4cAYuGqE3Sg-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Wed, 11 Jan
- 2023 10:02:57 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Wed, 11 Jan 2023 10:02:57 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Ingo Molnar' <mingo@kernel.org>, Michal Hocko <mhocko@suse.com>
-Subject: RE: [PATCH 08/41] mm: introduce CONFIG_PER_VMA_LOCK
-Thread-Topic: [PATCH 08/41] mm: introduce CONFIG_PER_VMA_LOCK
-Thread-Index: AQHZJaLQcQ36PXeL+0+vNNlIqTvBHa6Y+0jQ
-Date: Wed, 11 Jan 2023 10:02:57 +0000
-Message-ID: <6be809f5554a4faaa22c287ba4224bd0@AcuMS.aculab.com>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-9-surenb@google.com>
- <20230111001331.cxdeh52vvta6ok2p@offworld>
- <CAJuCfpEv--awCY0=R3h5Fez8x74U1EZCzNkq4_7deCYqej5sSA@mail.gmail.com>
- <Y75x5fGPcJ63pBIp@dhcp22.suse.cz> <Y76HTfIeEt8ZOIH3@gmail.com>
-In-Reply-To: <Y76HTfIeEt8ZOIH3@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsFsY48Stz3bZn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 16:02:09 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30B3hhrB030575;
+	Wed, 11 Jan 2023 05:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : message-id :
+ content-type : subject : date : in-reply-to : cc : to : references :
+ mime-version; s=pp1; bh=p4xjEF6SuIEAwvoV0HFce3JRnroK51LIG4kFM95hF8k=;
+ b=frrZ8y7c+1LuDqXJlJnCMhG+PguUQt3ZZZuyNcXTtaIpCEtLxF7AOAvkAImxe+R2sEpG
+ KSt3dmCd4/+XStUO0w6L/YDrNftESQjlfticcNYjiwVRaY9TTjPVFY9ZOn+bGFAzPVVY
+ iiuXH2OOjnzZkVPyzklZCabqutEu86U6FzhrLI0pY7dBAyk2dfDnKpno+0Yyxyshhy/u
+ 3Qr//vanPgcWwnoffZ7Stu7rWYjk/qFsCM1ZVkH4US8ELw/dAINIy6GVoN/FCyb6CbHl
+ 0FYx4YyXXEu8HQrp409mu1o59SRZRw4D346GEEJXPh5UcRcbf8S9Rmluop2zke8JzAL/ YA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n1nf29a14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Jan 2023 05:02:00 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30B1bXCI017912;
+	Wed, 11 Jan 2023 05:01:58 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3n1km684yc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Jan 2023 05:01:58 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30B51tFl39453054
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Jan 2023 05:01:55 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CCA0720049;
+	Wed, 11 Jan 2023 05:01:55 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A3C420040;
+	Wed, 11 Jan 2023 05:01:55 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.16])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Jan 2023 05:01:55 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Message-Id: <82AE3E29-7DE5-4DC1-AC8C-B08D3C322DCD@linux.ibm.com>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_EDEEE55F-97D4-4518-9DA3-2D75EBCA27F8"
+Subject: Re: [PATCH 2/2] powerpc/64s/radix: Fix RWX mapping with relocated
+ kernel
+Date: Wed, 11 Jan 2023 10:31:44 +0530
+In-Reply-To: <20230110124753.1325426-2-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20230110124753.1325426-1-mpe@ellerman.id.au>
+ <20230110124753.1325426-2-mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GS2eJqJsUvELrxqMQhHTE0moAQlvF6wE
+X-Proofpoint-GUID: GS2eJqJsUvELrxqMQhHTE0moAQlvF6wE
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-11_01,2023-01-10_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=818 lowpriorityscore=0 phishscore=0
+ impostorscore=0 clxscore=1011 priorityscore=1501 bulkscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301110034
+X-Mailman-Approved-At: Wed, 11 Jan 2023 23:57:44 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,77 +93,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "michel@lespinasse.org" <michel@lespinasse.org>, "joelaf@google.com" <joelaf@google.com>, "songliubraving@fb.com" <songliubraving@fb.com>, "leewalsh@google.com" <leewalsh@google.com>, "david@redhat.com" <david@redhat.com>, "peterz@infradead.org" <peterz@infradead.org>, "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterx@redhat.com" <peterx@redhat.com>, "dhowells@redhat.com" <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "edumazet@google.com" <edumazet@google.com>, "jglisse@google.com" <jglisse@google.com>, "punit.agrawal@bytedance.com" <punit.agrawal@bytedance.com>, "arjunroy@google.com" <arjunroy@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "hughd@google.com" <hughd@google.com>, "willy@infradead.org" <willy@infradead.org>, "gurua@google.com" <gurua@google.com>, "laurent.dufour@fr.ibm.com" <laurent.dufour@fr.ibm.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "rientjes@google.com" <rientjes@google.com>, "axelrasmussen
- @google.com" <axelrasmussen@google.com>, "kernel-team@android.com" <kernel-team@android.com>, "soheil@google.com" <soheil@google.com>, "minchan@google.com" <minchan@google.com>, "jannh@google.com" <jannh@google.com>, "liam.howlett@oracle.com" <liam.howlett@oracle.com>, "shakeelb@google.com" <shakeelb@google.com>, "luto@kernel.org" <luto@kernel.org>, "gthelen@google.com" <gthelen@google.com>, "ldufour@linux.ibm.com" <ldufour@linux.ibm.com>, Suren
- Baghdasaryan <surenb@google.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "posk@google.com" <posk@google.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>, "peterjung1337@gmail.com" <peterjung1337@gmail.com>, "mgorm an@techsingularity.net" <mgorman@techsingularity.net>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "hughlynch@google.com" <hughlynch@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "tatashin@google.com" <tatashin@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ingo Molnar
-> Sent: 11 January 2023 09:54
->=20
-> * Michal Hocko <mhocko@suse.com> wrote:
->=20
-> > On Tue 10-01-23 16:44:42, Suren Baghdasaryan wrote:
-> > > On Tue, Jan 10, 2023 at 4:39 PM Davidlohr Bueso <dave@stgolabs.net> w=
-rote:
-> > > >
-> > > > On Mon, 09 Jan 2023, Suren Baghdasaryan wrote:
-> > > >
-> > > > >This configuration variable will be used to build the support for =
-VMA
-> > > > >locking during page fault handling.
-> > > > >
-> > > > >This is enabled by default on supported architectures with SMP and=
- MMU
-> > > > >set.
-> > > > >
-> > > > >The architecture support is needed since the page fault handler is=
- called
-> > > > >from the architecture's page faulting code which needs modificatio=
-ns to
-> > > > >handle faults under VMA lock.
-> > > >
-> > > > I don't think that per-vma locking should be something that is user=
--configurable.
-> > > > It should just be depdendant on the arch. So maybe just remove CONF=
-IG_PER_VMA_LOCK?
-> > >
-> > > Thanks for the suggestion! I would be happy to make that change if
-> > > there are no objections. I think the only pushback might have been th=
-e
-> > > vma size increase but with the latest optimization in the last patch
-> > > maybe that's less of an issue?
-> >
-> > Has vma size ever been a real problem? Sure there might be a lot of tho=
-se
-> > but your patch increases it by rwsem (without the last patch) which is
-> > something like 40B on top of 136B vma so we are talking about 400B in
-> > total which even with wild mapcount limits shouldn't really be
-> > prohibitive. With a default map count limit we are talking about 2M
-> > increase at most (per address space).
-> >
-> > Or are you aware of any specific usecases where vma size is a real
-> > problem?
->=20
-> 40 bytes for the rwsem, plus the patch also adds a 32-bit sequence counte=
-r:
->=20
->   + int vm_lock_seq;
->   + struct rw_semaphore lock;
->=20
-> So it's +44 bytes.
 
-Depend in whether vm_lock_seq goes into a padding hole or not
-it will be 40 or 48 bytes.
+--Apple-Mail=_EDEEE55F-97D4-4518-9DA3-2D75EBCA27F8
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 
-But if these structures are allocated individually (not an array)
-then it depends on how may items kmalloc() fits into a page (or 2,4).
 
-=09David
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+> On 10-Jan-2023, at 6:17 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>=20
+> If a relocatable kernel is loaded at a non-zero address and told not to
+> relocate to zero (kdump or RELOCATABLE_TEST), the mapping of the
+> interrupt code at zero is left with RWX permissions.
+>=20
+> That is a security weakness, and leads to a warning at boot if
+> CONFIG_DEBUG_WX is enabled:
+>=20
+>  powerpc/mm: Found insecure W+X mapping at address 00000000056435bc/0xc00=
+0000000000000
+>  WARNING: CPU: 1 PID: 1 at arch/powerpc/mm/ptdump/ptdump.c:193 note_page+=
+0x484/0x4c0
+>  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc1-00001-g8ae8e98aea82-=
+dirty #175
+>  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf0=
+00005 of:SLOF,git-dd0dca hv:linux,kvm pSeries
+>  NIP:  c0000000004a1c34 LR: c0000000004a1c30 CTR: 0000000000000000
+>  REGS: c000000003503770 TRAP: 0700   Not tainted  (6.2.0-rc1-00001-g8ae8e=
+98aea82-dirty)
+>  MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24000220  XER: 00=
+000000
+>  CFAR: c000000000545a58 IRQMASK: 0
+>  ...
+>  NIP note_page+0x484/0x4c0
+>  LR  note_page+0x480/0x4c0
+>  Call Trace:
+>    note_page+0x480/0x4c0 (unreliable)
+>    ptdump_pmd_entry+0xc8/0x100
+>    walk_pgd_range+0x618/0xab0
+>    walk_page_range_novma+0x74/0xc0
+>    ptdump_walk_pgd+0x98/0x170
+>    ptdump_check_wx+0x94/0x100
+>    mark_rodata_ro+0x30/0x70
+>    kernel_init+0x78/0x1a0
+>    ret_from_kernel_thread+0x5c/0x64
+>=20
+> The fix has two parts. Firstly the pages from zero up to the end of
+> interrupts need to be marked read-only, so that they are left with R-X
+> permissions. Secondly the mapping logic needs to be taught to ensure
+> there is a page boundary at the end of the interrupt region, so that the
+> permission change only applies to the interrupt text, and not the region
+> following it.
+>=20
+> Fixes: c55d7b5e6426 ("powerpc: Remove STRICT_KERNEL_RWX incompatibility w=
+ith RELOCATABLE")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+
+Thanks Michael. This fixes the problem reported earlier
+
+https://lore.kernel.org/linuxppc-dev/48206911-FD3D-401A-A69D-1A79403E79E2@l=
+inux.ibm.com/
+
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+
+- Sachin=
+
+--Apple-Mail=_EDEEE55F-97D4-4518-9DA3-2D75EBCA27F8
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=us-ascii
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dus-ascii"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: =
+after-white-space;"><br><div><br><blockquote type=3D"cite"><div>On =
+10-Jan-2023, at 6:17 PM, Michael Ellerman &lt;mpe@ellerman.id.au&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div><div>If a =
+relocatable kernel is loaded at a non-zero address and told not =
+to<br>relocate to zero (kdump or RELOCATABLE_TEST), the mapping of =
+the<br>interrupt code at zero is left with RWX permissions.<br><br>That =
+is a security weakness, and leads to a warning at boot =
+if<br>CONFIG_DEBUG_WX is enabled:<br><br> &nbsp;powerpc/mm: Found =
+insecure W+X mapping at address 00000000056435bc/0xc000000000000000<br> =
+&nbsp;WARNING: CPU: 1 PID: 1 at arch/powerpc/mm/ptdump/ptdump.c:193 =
+note_page+0x484/0x4c0<br> &nbsp;CPU: 1 PID: 1 Comm: swapper/0 Not =
+tainted 6.2.0-rc1-00001-g8ae8e98aea82-dirty #175<br> &nbsp;Hardware =
+name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 =
+of:SLOF,git-dd0dca hv:linux,kvm pSeries<br> &nbsp;NIP: =
+&nbsp;c0000000004a1c34 LR: c0000000004a1c30 CTR: 0000000000000000<br> =
+&nbsp;REGS: c000000003503770 TRAP: 0700 &nbsp;&nbsp;Not tainted =
+&nbsp;(6.2.0-rc1-00001-g8ae8e98aea82-dirty)<br> &nbsp;MSR: =
+&nbsp;8000000002029033 &lt;SF,VEC,EE,ME,IR,DR,RI,LE&gt; &nbsp;CR: =
+24000220 &nbsp;XER: 00000000<br> &nbsp;CFAR: c000000000545a58 IRQMASK: =
+0<br> &nbsp;...<br> &nbsp;NIP note_page+0x484/0x4c0<br> &nbsp;LR =
+&nbsp;note_page+0x480/0x4c0<br> &nbsp;Call Trace:<br> =
+&nbsp;&nbsp;&nbsp;note_page+0x480/0x4c0 (unreliable)<br> =
+&nbsp;&nbsp;&nbsp;ptdump_pmd_entry+0xc8/0x100<br> =
+&nbsp;&nbsp;&nbsp;walk_pgd_range+0x618/0xab0<br> =
+&nbsp;&nbsp;&nbsp;walk_page_range_novma+0x74/0xc0<br> =
+&nbsp;&nbsp;&nbsp;ptdump_walk_pgd+0x98/0x170<br> =
+&nbsp;&nbsp;&nbsp;ptdump_check_wx+0x94/0x100<br> =
+&nbsp;&nbsp;&nbsp;mark_rodata_ro+0x30/0x70<br> =
+&nbsp;&nbsp;&nbsp;kernel_init+0x78/0x1a0<br> =
+&nbsp;&nbsp;&nbsp;ret_from_kernel_thread+0x5c/0x64<br><br>The fix has =
+two parts. Firstly the pages from zero up to the end of<br>interrupts =
+need to be marked read-only, so that they are left with =
+R-X<br>permissions. Secondly the mapping logic needs to be taught to =
+ensure<br>there is a page boundary at the end of the interrupt region, =
+so that the<br>permission change only applies to the interrupt text, and =
+not the region<br>following it.<br><br>Fixes: c55d7b5e6426 ("powerpc: =
+Remove STRICT_KERNEL_RWX incompatibility with =
+RELOCATABLE")<br>Signed-off-by: Michael Ellerman =
+&lt;mpe@ellerman.id.au&gt;<br>---<br></div></div></blockquote><div><br></d=
+iv>Thanks Michael. This fixes the problem reported =
+earlier</div><div><br></div><div>https://lore.kernel.org/linuxppc-dev/4820=
+6911-FD3D-401A-A69D-1A79403E79E2@linux.ibm.com/</div><div><br></div><div>R=
+eported-by: Sachin Sant =
+&lt;sachinp@linux.ibm.com&gt;</div><div>Tested-by:&nbsp;<span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">Sachin Sant =
+&lt;</span>sachinp@linux.ibm.com<span style=3D"caret-color: rgb(0, 0, =
+0); color: rgb(0, 0, 0);">&gt;</span></div><div><br></div><div><font =
+color=3D"#000000"><span style=3D"caret-color: rgb(0, 0, 0);">- =
+Sachin</span></font></div></body></html>=
+
+--Apple-Mail=_EDEEE55F-97D4-4518-9DA3-2D75EBCA27F8--
 
