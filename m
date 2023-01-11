@@ -1,80 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90EA6665CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 22:47:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2886665D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 22:47:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nsh8y3nbvz3cfH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 08:46:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NshB02kHgz3bWj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 08:47:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=piJ6AR/7;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Y5B4BSaT;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=i/TqBNK9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12c; helo=mail-lf1-x12c.google.com; envelope-from=dmitry.baryshkov@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=piJ6AR/7;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Y5B4BSaT;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=i/TqBNK9;
 	dkim-atps=neutral
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir; Thu, 12 Jan 2023 03:12:59 AEDT
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsWq94xdsz3bXL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 02:31:00 +1100 (AEDT)
-Received: by mail-lf1-x12c.google.com with SMTP id g13so24089211lfv.7
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 07:31:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsXlb5Hkzz2x9L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 03:12:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Qbu6KqoFVUP3hpnWPUahg6+pfccNp1XMgcyJhxL3sHQ=;
-        b=piJ6AR/7mwIv5ssf0bPeGI/y1HfticwRpnHpKDxpJJOmyFI9+Fcte6qtWkH0I2fOxf
-         xTYmiVIlFySN2KbqHCXqxzBIxc6/2nlxu2+ixkY3fDhe2OFDyngzekiuLGrNcgW/Xsu1
-         xqJdTvSzEIrHX7Hx9YvafGHvvBa4vY2qsZ3b1McEzW5tmaA8Nw9+yNGHiBd8I4QF/H0L
-         PLkaIsFKD8tt7+XUYZ4Z0Jp/RHCbQ3m0OkeG8mkPs1ENMKkoMw8SGGYL4Yuyp+dMY28h
-         Jcy4hVLz8OdUGwq9wRNwLttaNd4at+MPk+3V1lPBjbBePveIBaxuDRkGijEMOSgYcWva
-         gHzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qbu6KqoFVUP3hpnWPUahg6+pfccNp1XMgcyJhxL3sHQ=;
-        b=kGns3GrLn5z3ewSoAZfaXbo5E6nDL73HAL+30w67GzVCI61KtdfUVglB0hzDttB9MI
-         A3n2L2XmobXy6CTwZGjKLItGwly+xA3iFueoD4pJbIwYK0AcsMfLZIQl1iDuVMiqqOiT
-         K79ZSp/mbIwxhjg7yjy8M+FBOS2IAZYkL7rwBO2dqmDCaJUJPpSboA3D0PfCPS2ehG7X
-         wH6k8OUdFEexhjrOyFahvzXJjFtQ4jBgb+DjqxpDWWSbrffLCBjRG/QMvPHYGdk+A49M
-         vdv+t8tTbKin7PAdTUZ9PGvhC+hvyaJ2WFzVSkgGyeEAhFa3WChc/ZTiDa+uPpNmvwrK
-         DHQw==
-X-Gm-Message-State: AFqh2korwt+y75PdNTwvI30f1gqttJGyLH13Gpzt+qXBBFz5sc5lVGjZ
-	3Lrc30TXYXE96VT8i2TymyyRTA==
-X-Google-Smtp-Source: AMrXdXsJsrNv/JojgqdyGM2htDPuCMqWkk3bmrHNobr84SP2C7Wa10a79dDgSHhARO48zeWm2i9u1A==
-X-Received: by 2002:ac2:495b:0:b0:4b5:6755:4226 with SMTP id o27-20020ac2495b000000b004b567554226mr19619019lfi.55.1673451054761;
-        Wed, 11 Jan 2023 07:30:54 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id v23-20020ac258f7000000b004cb00bf6724sm2779947lfo.143.2023.01.11.07.30.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jan 2023 07:30:54 -0800 (PST)
-Message-ID: <88faa612-e7a0-24b8-aba8-4a42919402ec@linaro.org>
-Date: Wed, 11 Jan 2023 17:30:53 +0200
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1673453580; x=1704989580;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=c9cpAyHWzxXjJFF8d9KlzwQ1StQxFYBmw6tvDxixwNc=;
+  b=Y5B4BSaTnoHjZRelN26IJRfOlFKAQX2zgImfPi56UfMHgZnz23T6LQO9
+   5isZz9JtFDm9koU+Iu5sIdPKDw69vMXnf5Oo/jfCxcph6q3GjfcS8gIFp
+   rOUxZbbXmVKQU+M3uIOp8XllAnQ5U5//9mch6/KE3TEKBozzMS1l3i6na
+   CEnzQaeaG+ddEPUwrXLnntAUfW1yvIhlbozjQNDbL/x7qzqmT65/5w+fo
+   EyL/4Y5tUeJdKSRV2TD6pyGFPQ1tVO37xOrpbO8LhH/RUwOeNqsxst7UY
+   7U5eZbaZPFGR/oz9bea/Zcn45x8BXRWy9GB62TO/xHsOu9The8GMLApgU
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.96,317,1665439200"; 
+   d="scan'208";a="28363764"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 11 Jan 2023 17:11:48 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Wed, 11 Jan 2023 17:11:48 +0100
+X-PGP-Universal: processed;
+	by tq-pgp-pr1.tq-net.de on Wed, 11 Jan 2023 17:11:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1673453508; x=1704989508;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=c9cpAyHWzxXjJFF8d9KlzwQ1StQxFYBmw6tvDxixwNc=;
+  b=i/TqBNK9qdyc3cvLiA0cZxg4/yFPkYSOhUQU3zGK/47xLCmIOfSUdwdI
+   f8AsrNbC49D2ylz/YnlMEsEhQHtVVo92beEvxz52cXu6dD+tP+I09iayT
+   cp77FohBCEGfNnsc72JrbnlsGNrmwJibOKgarO14H1tF/+khJMfylS6ig
+   jrRiOwhIIi46yiTgNd33/a/p7MQzq3QgUK40zcUk7ilsUfvqoIcMpyLZk
+   JRI72sYAtQysxkV4fHEayQ/p2y36iTAQqpXHZMEz+FM39+qRulobUyVNl
+   YKMSF2gNw5qwg32T9Uzkm0+XPYQ9zDQdP7YYOsK2pLI8xQlVUKQ/WdsJJ
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.96,317,1665439200"; 
+   d="scan'208";a="28363763"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 11 Jan 2023 17:11:48 +0100
+Received: from steina-w.tq-net.de (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 9A204280056;
+	Wed, 11 Jan 2023 17:11:47 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH 1/1] ASoC: fsl_sai: Use dev_err_probe
+Date: Wed, 11 Jan 2023 17:11:44 +0100
+Message-Id: <20230111161144.3275546-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 01/16] of: device: make of_device_uevent_modalias()
- take a const device *
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh+dt@kernel.org>
-References: <20230111113018.459199-1-gregkh@linuxfoundation.org>
- <20230111113018.459199-2-gregkh@linuxfoundation.org>
- <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
- <Y77VDGvHGu8gDIga@kroah.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <Y77VDGvHGu8gDIga@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Thu, 12 Jan 2023 08:46:12 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,38 +95,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Liang He <windhl@126.com>, Zou Wei <zou_wei@huawei.com>, Samuel Holland <samuel@sholland.org>, Frank Rowand <frowand.list@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Corentin Labbe <clabbe@baylibre.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Lyude Paul <lyude@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, Nicholas Piggin <npiggin@gmail.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/01/2023 17:26, Greg Kroah-Hartman wrote:
-> On Wed, Jan 11, 2023 at 08:54:04AM -0600, Rob Herring wrote:
->> On Wed, Jan 11, 2023 at 5:30 AM Greg Kroah-Hartman
->> <gregkh@linuxfoundation.org> wrote:
->>>
->>> of_device_uevent_modalias() does not modify the device pointer passed to
->>> it, so mark it constant.  In order to properly do this, a number of
->>> busses need to have a modalias function added as they were attempting to
->>> just point to of_device_uevent_modalias instead of their bus-specific
->>> modalias function.  This is fine except if the prototype for a bus and
->>> device type modalias function diverges and then problems could happen.  To
->>> prevent all of that, just wrap the call to of_device_uevent_modalias()
->>> directly for each bus and device type individually.
->>
->> Why not just put the wrapper function in the DT code instead of making
->> 4 copies of it?
-> 
-> I could, if you think that it would be better there instead of in each
-> individual bus (like all of the other bus callbacks).  This way each bus
-> "owns" their implementation :)
+This helps figuring out why the device probe is deferred, e.g. missing
+FSL_EDMA driver.
 
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Old:
+root@ls1021:~# cat /sys/kernel/debug/devices_deferred 
+sound   fsl-asoc-card: snd_soc_register_card failed: -517
+2b50000.sai
 
+New:
+root@ls1021:~# cat /sys/kernel/debug/devices_deferred 
+sound   fsl-asoc-card: snd_soc_register_card failed: -517
+2b50000.sai     fsl-sai: Registering PCM dmaengine failed
 
-I'd vote for the generic wrapper instead of 4 similar wrapper. In the 
-end, if of_device_uevent_modalias (or the bus callback) interface 
-changes again for whatever reasons, there will be just a single place to 
-fix rather than fixing 4 (or more) bus drivers.
+ sound/soc/fsl/fsl_sai.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 1c9be8a5dcb13..2a38e2bdf9893 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1458,14 +1458,17 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 	if (sai->soc_data->use_imx_pcm) {
+ 		ret = imx_pcm_dma_init(pdev);
+ 		if (ret) {
++			dev_err_probe(dev, ret, "PCM DMA init failed\n");
+ 			if (!IS_ENABLED(CONFIG_SND_SOC_IMX_PCM_DMA))
+ 				dev_err(dev, "Error: You must enable the imx-pcm-dma support!\n");
+ 			goto err_pm_get_sync;
+ 		}
+ 	} else {
+ 		ret = devm_snd_dmaengine_pcm_register(dev, NULL, 0);
+-		if (ret)
++		if (ret) {
++			dev_err_probe(dev, ret, "Registering PCM dmaengine failed\n");
+ 			goto err_pm_get_sync;
++		}
+ 	}
+ 
+ 	ret = devm_snd_soc_register_component(dev, &fsl_component,
 -- 
-With best wishes
-Dmitry
+2.34.1
 
