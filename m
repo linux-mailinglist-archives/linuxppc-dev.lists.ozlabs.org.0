@@ -1,81 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991C0665084
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 01:45:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41F466528E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 04:58:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ns89k3GFFz3c7S
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 11:45:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsDS85xb9z3cdL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 14:58:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=rccchTxY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=adJ2g5KX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1133; helo=mail-yw1-x1133.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=rccchTxY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=adJ2g5KX;
 	dkim-atps=neutral
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ns88q4G8Mz2ynD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 11:44:58 +1100 (AEDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-4d13cb4bbffso55808007b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 16:44:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xtvZkDMfjdpj7QHOsKas/y5TjQNGWMzi4v+NaAfxc/M=;
-        b=rccchTxYrSIKNuMMA04XAuTcSJ82eK2GdC2ENpgcicB00sj0WcV6jGWsPM7Vj88mPb
-         QlM6SlS+l5D5N1ROSmPhwdv9eKvOxbnACcaMUmUMyG/hgdcTpc/m2/U7zUEjMHWKmRnJ
-         iLnc+bUB3YARfZVoEVFAUqxXlhi7zPYNt5sxx3Yiv65exEivUjNJfGC6OO/litDhtM1s
-         h6F5QPgDgXCz4P3MtLZPSCkFhTucZbdO/UV56ccQ8XpnKs4GidmWckh3zxyqlNmd7nzX
-         e8wZVJSxeBkQJKlInwlBAfcaPDtsJFiO+j4iCugO/eypq/qyTfw7kmDZjkQ90McLsnQj
-         Cghg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xtvZkDMfjdpj7QHOsKas/y5TjQNGWMzi4v+NaAfxc/M=;
-        b=GDttbZOK0YWR1fHyb/PlvNYNwv+g0h/zuPS0JLqV7ClvVxR2N/yprk2jtJhqdmtGy8
-         nZK5BSsrJGR/KRWa0GzHTjGO1NAi8lCsGtEpBUZPRaSFInRDwHKgK9sXy/n4HYwT8kdH
-         XJahjle8BJkjvZQYuOU8k6FWq45Ijsw1vYtNaO4Y2oId5NLIPsK8Ptly6ZV8FyTjYRFU
-         jZZ5Zh4xzecW8sENtjC+hF1FqD2DpWk78NN/Ut4q94hXt3yjRXyjvgk5oejTP2ut8NvB
-         hy4ET1mXuV9VmjYX02GZfWdOzfqO9B3shj5G0zhvx1PiBSbJoSICDPYtL6uWH3p5/mrb
-         UdOA==
-X-Gm-Message-State: AFqh2kpGGH6nBnGNVCRsLypMntUOwrYJLoftpoWCwaXOx4yzK8dRvQsm
-	z0z6sUb4gop40WhgLPXDbPAyDBfFhLv0ZaRK+by91Q==
-X-Google-Smtp-Source: AMrXdXvPXLbnMiGgkk5CiK3fMZDgBpCfW92tb2P0dpshIrb2n4DxdFF46+Kabz2Cd6j2GosIoYiHxTRK+05ofT24Es8=
-X-Received: by 2002:a0d:c2c5:0:b0:433:f1c0:3f1c with SMTP id
- e188-20020a0dc2c5000000b00433f1c03f1cmr1613574ywd.438.1673397893628; Tue, 10
- Jan 2023 16:44:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-9-surenb@google.com>
- <20230111001331.cxdeh52vvta6ok2p@offworld>
-In-Reply-To: <20230111001331.cxdeh52vvta6ok2p@offworld>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 10 Jan 2023 16:44:42 -0800
-Message-ID: <CAJuCfpEv--awCY0=R3h5Fez8x74U1EZCzNkq4_7deCYqej5sSA@mail.gmail.com>
-Subject: Re: [PATCH 08/41] mm: introduce CONFIG_PER_VMA_LOCK
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, michel@lespinasse.org, 
-	jglisse@google.com, mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org, 
-	mgorman@techsingularity.net, willy@infradead.org, liam.howlett@oracle.com, 
-	peterz@infradead.org, ldufour@linux.ibm.com, laurent.dufour@fr.ibm.com, 
-	paulmck@kernel.org, luto@kernel.org, songliubraving@fb.com, peterx@redhat.com, 
-	david@redhat.com, dhowells@redhat.com, hughd@google.com, 
-	bigeasy@linutronix.de, kent.overstreet@linux.dev, punit.agrawal@bytedance.com, 
-	lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com, 
-	axelrasmussen@google.com, joelaf@google.com, minchan@google.com, 
-	jannh@google.com, shakeelb@google.com, tatashin@google.com, 
-	edumazet@google.com, gthelen@google.com, gurua@google.com, 
-	arjunroy@google.com, soheil@google.com, hughlynch@google.com, 
-	leewalsh@google.com, posk@google.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kernel-team@android.com
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsDR86ZQjz3bWT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 14:57:39 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30B1io9h010091;
+	Wed, 11 Jan 2023 03:57:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=idbF1CtURypA8wpbO/rYe2ZrEBUBsALsIfTFTeVbM2U=;
+ b=adJ2g5KXsFFhQo3/i/HS68oEWDYNlgoaM+7y/ZipWoTOyPgjGpcVsNlOTRM6krWXYI95
+ P35sBiwDs5mw2OpXk6yVKFIsEuRzgs/MwNczZnK35XTlCRUkBbybNHAxjg/xXGMqyeWM
+ 2VsnYrm8hJDAG/8WRUnUmGvm8oTqbVy4OZDMR0tt5kYNQZ5L3jOhbAwAEtAgX+rKmxiB
+ +/IB3HYaDJp/YWCIm4vV/p2nK8yl0QTiWJuVjZrAZf8+CNOSBDhAZ7g2nC4P/tlg0kjI
+ uhcQT/o4skFXB5qmv/Q/U4FSsc+Ta8JlPE3wh/d4hCi9MPUMfPbACC084cT5iiVvZODe ZQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n1kqma1yr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Jan 2023 03:57:32 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30B1RMfX030858;
+	Wed, 11 Jan 2023 03:57:29 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n1kf7g54n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Jan 2023 03:57:29 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30B3vR8T47055232
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Jan 2023 03:57:27 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D19220049;
+	Wed, 11 Jan 2023 03:57:27 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A1E7E20040;
+	Wed, 11 Jan 2023 03:57:26 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Jan 2023 03:57:26 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 06FF0600D2;
+	Wed, 11 Jan 2023 14:57:23 +1100 (AEDT)
+Message-ID: <d7b4942dcb62056703eff0e07e23acbd152a10f6.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 7/7] powerpc/pseries: Implement secvars for dynamic
+ secure boot
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Russell Currey
+ <ruscur@russell.cc>,
+        linuxppc-dev@lists.ozlabs.org
+Date: Wed, 11 Jan 2023 14:57:22 +1100
+In-Reply-To: <87zgawgcpa.fsf@mpe.ellerman.id.au>
+References: <20221230042014.154483-1-ruscur@russell.cc>
+	 <20221230042014.154483-8-ruscur@russell.cc>
+	 <87zgawgcpa.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: my4_Recuo3xIFCqlqFviuBT4xa2dVIcE
+X-Proofpoint-GUID: my4_Recuo3xIFCqlqFviuBT4xa2dVIcE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-10_10,2023-01-10_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=534 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ clxscore=1015 lowpriorityscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301110025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,35 +100,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nayna@linux.ibm.com, gregkh@linuxfoundation.org, gcwilson@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 10, 2023 at 4:39 PM Davidlohr Bueso <dave@stgolabs.net> wrote:
->
-> On Mon, 09 Jan 2023, Suren Baghdasaryan wrote:
->
-> >This configuration variable will be used to build the support for VMA
-> >locking during page fault handling.
-> >
-> >This is enabled by default on supported architectures with SMP and MMU
-> >set.
-> >
-> >The architecture support is needed since the page fault handler is called
-> >from the architecture's page faulting code which needs modifications to
-> >handle faults under VMA lock.
->
-> I don't think that per-vma locking should be something that is user-configurable.
-> It should just be depdendant on the arch. So maybe just remove CONFIG_PER_VMA_LOCK?
+On Fri, 2023-01-06 at 21:49 +1100, Michael Ellerman wrote:
+>=20
+> > diff --git a/arch/powerpc/platforms/pseries/Kconfig
+> > b/arch/powerpc/platforms/pseries/Kconfig
+> > index a3b4d99567cb..94e08c405d50 100644
+> > --- a/arch/powerpc/platforms/pseries/Kconfig
+> > +++ b/arch/powerpc/platforms/pseries/Kconfig
+> > @@ -162,6 +162,19 @@ config PSERIES_PLPKS
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If unsure, selec=
+t N.
+> > =C2=A0
+> > +config PSERIES_PLPKS_SECVAR
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on PSERIES_PLPKS
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on PPC_SECURE_BOOT
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bool "Support for the PLPKS =
+secvar interface"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PowerVM can support d=
+ynamic secure boot with user-defined
+> > keys
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 through the PLPKS. Ke=
+ystore objects used in dynamic
+> > secure boot
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 can be exposed to the=
+ kernel and userspace through the
+> > powerpc
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 secvar infrastructure=
+. Select this to enable the PLPKS
+> > backend
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for secvars for use i=
+n pseries dynamic secure boot.
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If unsure, select N.
+>=20
+> I don't think we need that config option at all, or if we do it
+> should
+> not be user selectable and just enabled automatically by
+> PSERIES_PLPKS.
 
-Thanks for the suggestion! I would be happy to make that change if
-there are no objections. I think the only pushback might have been the
-vma size increase but with the latest optimization in the last patch
-maybe that's less of an issue?
+I actually think we should get rid of both PSERIES_PLPKS_SECVAR and
+PSERIES_PLPKS, and just use PPC_SECURE_BOOT / PPC_SECVAR_SYSFS.
 
->
-> Thanks,
-> Davidlohr
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
