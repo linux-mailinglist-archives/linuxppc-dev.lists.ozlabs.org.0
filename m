@@ -1,72 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4D2665413
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 06:57:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A75665542
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 08:40:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsH5713LYz3fCS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 16:57:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsKND0lHBz3f9x
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 18:40:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RrSr59lP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.43; helo=mail-wm1-f43.google.com; envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsH4Z2LkSz2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 16:56:45 +1100 (AEDT)
-Received: by mail-wm1-f43.google.com with SMTP id o15so10336664wmr.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jan 2023 21:56:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nRJzXWIcLGfsAx1uj7LxnnT+lT00vnfCm0VUVZlOxf4=;
-        b=mfDfM5BMCJK6GNviotzX8ym8i9XR9PchaEsG2t2bgoOun7dcvcB3XGorJE4N18hcng
-         Avyq1F5xG27a0GI9TF0rLXFlA+N6PXwcq8Fp8kL07nSLm1gT+PiJQmlqhnAPg9jkq70S
-         Tlawlk/UVbJGSARhtxNsYkAt9k1sNDxodluoXdyYv/xA2VD6sCtfWe1swg3NvcEb0f7Y
-         wRRDfuGYBGB8kMqvHkd8AcOUmHf52k5hOll4SK1pVXm8AFH9aV74NKzmGa+/khOVQlUB
-         btCpzwnUse+oq/lzUpviI6JB4aoCeg4KXg9HIE/lcIz7lvWhqN6TBJmOduTNkh7k0F3K
-         N0rA==
-X-Gm-Message-State: AFqh2kpk2eY3i/yRFgWJnT63V3XSHWCBDdX/ffPS34gWhf11UQX12NGe
-	/F6fqJjDHv0kQzUHatwfHng=
-X-Google-Smtp-Source: AMrXdXuGMiv2BcYICZBUe09GCtW4hRfxWXShZC6GeIunbbzMLdfIj5QG6N/iKwiH0FjjphNqa2+B0A==
-X-Received: by 2002:a05:600c:22d4:b0:3cf:82b9:2fe6 with SMTP id 20-20020a05600c22d400b003cf82b92fe6mr61119232wmg.8.1673416601718;
-        Tue, 10 Jan 2023 21:56:41 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:49? ([2a0b:e7c0:0:107::aaaa:49])
-        by smtp.gmail.com with ESMTPSA id az28-20020a05600c601c00b003cf57329221sm21419506wmb.14.2023.01.10.21.56.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jan 2023 21:56:41 -0800 (PST)
-Message-ID: <c10bf347-9f53-bcaf-acc2-d3dd6baa0efb@kernel.org>
-Date: Wed, 11 Jan 2023 06:56:38 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsKMH3k9jz3bhW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 18:39:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RrSr59lP;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NsKMB5Gm2z4wgq;
+	Wed, 11 Jan 2023 18:39:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1673422777;
+	bh=PUC4l7Fl/CYIwqAtVD801/4BMGg7ktBI9zLEQEpluMA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RrSr59lPcKMMbBRFNah0TBy4jWHYK+OAp0ldEdZrhxHrj9fqUi3YjxqVs8D2LmUPZ
+	 C6XvY25KTWziL2MY964rkXsMaCYC0kaLRdyO1ZPcRvasepS55tvcLTH3YMOvALoulu
+	 njFE0TxSKQ/Yq1k2cZc7muh3oBebitI+efc8CxqPF++EiY76ZWDD69qZFL7IBjmCwN
+	 CwF7c3tGuapY1S1rI/jXx8RZ+U7qRUP/CjKxu2qCOyibxWoyS26RyVxE8Q2tj9dsKM
+	 4Zinmz9uTmH9JmUv4S1Ibp5MicKUwxm98ice6UaD2qrIMfx4LVxR86SSpOhUf9fXQb
+	 /8QMIDCGPUvVQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>,
+ Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: usb.c:undefined reference to `qe_immr'
+In-Reply-To: <a0e325d2-a9c5-ffca-b2d6-5eea60f9ad3b@infradead.org>
+References: <202301101500.pillNv6R-lkp@intel.com>
+ <a0e325d2-a9c5-ffca-b2d6-5eea60f9ad3b@infradead.org>
+Date: Wed, 11 Jan 2023 18:39:30 +1100
+Message-ID: <87lem9h64t.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 11/13] tty/serial: Call ->dtr_rts() parameter active
- consistently
-Content-Language: en-US
-To: =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-serial@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Johan Hovold <johan@kernel.org>,
- =?UTF-8?Q?Samuel_Iglesias_Gons=c3=a1lvez?= <siglesias@igalia.com>,
- Rodolfo Giometti <giometti@enneenne.com>, Arnd Bergmann <arnd@arndb.de>,
- Ulf Hansson <ulf.hansson@linaro.org>, David Lin <dtwlin@gmail.com>,
- Alex Elder <elder@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-usb@vger.kernel.org
-References: <20230110120226.14972-1-ilpo.jarvinen@linux.intel.com>
- <20230110120226.14972-12-ilpo.jarvinen@linux.intel.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230110120226.14972-12-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,20 +59,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10. 01. 23, 13:02, Ilpo Järvinen wrote:
-> Convert various parameter names for ->dtr_rts() and related functions
-> from onoff, on, and raise to active.
+Randy Dunlap <rdunlap@infradead.org> writes:
+> [adding Cc's]
+>
+>
+> On 1/9/23 23:59, kernel test robot wrote:
+>> Hi Masahiro,
+>> 
+>> FYI, the error/warning still remains.
+>> 
+>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>> head:   5a41237ad1d4b62008f93163af1d9b1da90729d8
+>> commit: 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b kbuild: link symbol CRCs at final link, removing CONFIG_MODULE_REL_CRCS
+>> date:   8 months ago
+>> config: powerpc-randconfig-r026-20230110
+>> compiler: powerpc-linux-gcc (GCC) 12.1.0
+>> reproduce (this is a W=1 build):
+>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>>         chmod +x ~/bin/make.cross
+>>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>>         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>>         git fetch --no-tags linus master
+>>         git checkout 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>>         # save the config file
+>>         mkdir build_dir && cp config build_dir/.config
+>>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+>>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+>> 
+>> If you fix the issue, kindly add following tag where applicable
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> 
+>> All errors (new ones prefixed by >>):
+>> 
+>>    powerpc-linux-ld: powerpc-linux-ld: DWARF error: could not find abbrev number 74
+>>    drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+>>>> usb.c:(.text+0x1e): undefined reference to `qe_immr'
+>>>> powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+>>>> powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+>>>> powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+>>    powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+>> 
+>
+> .config extract:
+>
+> #
+> # NXP/Freescale QorIQ SoC drivers
+> #
+> # CONFIG_QUICC_ENGINE is not set
+> CONFIG_QE_USB=y
+>
+>
+> This is caused by (drivers/soc/fsl/qe/Kconfig):
+>
+> config QE_USB
+> 	bool
+> 	default y if USB_FSL_QE
+> 	help
+> 	  QE USB Controller support
+>
+> which does not depend on QUICC_ENGINE, where the latter build provides
+> the missing symbols.
 
-Much better.
+So QE_USB should depend on QUICC_ENGINE no?
 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-
--- 
-js
-suse labs
-
+cheers
