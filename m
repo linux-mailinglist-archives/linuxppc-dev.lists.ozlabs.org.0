@@ -2,58 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818B2666105
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 17:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6ED66615A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 18:05:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsYhk2g3Gz3cgV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 03:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsYwV3WNMz3cfS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 04:05:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NZ2n4T9W;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=mNAGtaf8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=johan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NZ2n4T9W;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=mNAGtaf8;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsYgr0mhpz3c65
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 03:54:47 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id BF9D3B81C87;
-	Wed, 11 Jan 2023 16:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC4BC433D2;
-	Wed, 11 Jan 2023 16:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673456082;
-	bh=mXESQehV0wt8kRi6/+LpO/EWbusEEZr0NKPtbWhQXkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NZ2n4T9WAfM31GVkMr0U+OYQ1Le0CO4szDFcbo43kBez/1J9qnZ9YKq8esW75ezAZ
-	 8JfUAS86yxHZ9RhJ0V0pNmj/VY/ORz9S6fCeFssGIrcuF1Xfq9yUTkn3I4Is0Wx2Mc
-	 NFzsNx9oyDWOwe61DNPL38/EqDVkfCeFJN2jUfno83iUYhu70LDJ+1tw4eGExWbpbY
-	 EOSUDeG+tMj/l65lE9dJr/seo+5C+OIm0cRJdutUZSTltGuxSufv6PYLoSM27KZI6v
-	 4KVn8oRKJo1GTkXYra54pA1zq+/IHJ9a5qCkOem0Z3aiYG9t9YXNKYj154cUDU8BE7
-	 E8CK13X7gSsBA==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-	(envelope-from <johan@kernel.org>)
-	id 1pFeN6-0003YU-Rv; Wed, 11 Jan 2023 17:54:41 +0100
-Date: Wed, 11 Jan 2023 17:54:40 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH v3 11/13] tty/serial: Call ->dtr_rts() parameter active
- consistently
-Message-ID: <Y77p0P9YaCwPArxv@hovoldconsulting.com>
-References: <20230111142331.34518-1-ilpo.jarvinen@linux.intel.com>
- <20230111142331.34518-12-ilpo.jarvinen@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsYvY2JF4z2yHT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 04:04:56 +1100 (AEDT)
+Received: by mail-yb1-xb31.google.com with SMTP id p188so15688074yba.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 09:04:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LTJYmIxK7HXmivC0K3EGms7i6vie+YSU0ogRPhLAOWY=;
+        b=mNAGtaf8jUOcbLC2GpY2IoOKVHZsaeSbuTMqB0BfbfYLRyVOF36Ix55jRi6VXABc2C
+         TxHjeefcMzNJWY/YYv6W5ahFqaQmr9lvf1jGIqiEx8ySeybJFbSXh7kyg0REyOpFJ3nH
+         qgVT4D8lYYrgosLusEdUk6v9fL81IeduQoDY1CoEHY7D6fZ1FTpu9HfIbpxV9/ZgBpjb
+         lhCOVJRxYZXXqUPheviOgPqcc0ccJ7ZE+SCJKJc9myn5grFAs5xj6zbeWKyRGyMjbouQ
+         FlOSd3pY+1imiSyJ1udW76G4nfJkk9sYWezx9f2BI+FYnk36Etq0x095sJRpXZCAhe9E
+         wTIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LTJYmIxK7HXmivC0K3EGms7i6vie+YSU0ogRPhLAOWY=;
+        b=LO7CON9mK2+t5qGi38pbCJWGgqWwEm5uip5pP7QrkwgckKy326YJ2ONOuaPm2XrZr9
+         d4D8BQmmvsCpDVs9+ZAOGPeIHodWbmWRznvJs0KziGiyKeW4QK2D459fZVSrSqBVHSZg
+         c2062OJC/BgtSTmZzpt56pxOUF+X2tuB7KJP45yWwjZego8ehi5mAJkkP25SjbK7j2Li
+         iBtui3enkqwFVCWaJCXTgrBqNRJDF4wKDwb1vwwJfwb8mdpib8Ogr2J1ax/ZpsXJPamK
+         YkwHIIm4B1Bb8UCBDKjjKT0MvcsHWkx3qYupyt1acIm4q79/yK5HYeUTj+ByhM2WD80D
+         cnoQ==
+X-Gm-Message-State: AFqh2kpvRMDRQeY/y+soIcMnx/mrBHs1u4P14pTlGB7t3Tx7icfMhKM+
+	NywFI2Bd7d5ad/rDEvBTIuq+p5G6jJdeKpt+BpMZIg==
+X-Google-Smtp-Source: AMrXdXuT2tWUr2Hd/aaxX3TJlatyg89hpnEY3Qn0fpRBzhAdGcwVITlGCP7wKe7gcAbYlKYD+1hcbSYSMwXYBplkZ8k=
+X-Received: by 2002:a25:1388:0:b0:7b8:6d00:ef23 with SMTP id
+ 130-20020a251388000000b007b86d00ef23mr2129455ybt.119.1673456692551; Wed, 11
+ Jan 2023 09:04:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230111142331.34518-12-ilpo.jarvinen@linux.intel.com>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-9-surenb@google.com>
+ <20230111001331.cxdeh52vvta6ok2p@offworld> <CAJuCfpEv--awCY0=R3h5Fez8x74U1EZCzNkq4_7deCYqej5sSA@mail.gmail.com>
+ <Y75x5fGPcJ63pBIp@dhcp22.suse.cz> <Y76HTfIeEt8ZOIH3@gmail.com>
+ <6be809f5554a4faaa22c287ba4224bd0@AcuMS.aculab.com> <CAJuCfpH_VZq99=vGQGJ+evVg5wMPKGsjyawgHnOeoKhtEiAi6w@mail.gmail.com>
+ <Y77ndimzUsVZwjTk@dhcp22.suse.cz>
+In-Reply-To: <Y77ndimzUsVZwjTk@dhcp22.suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 11 Jan 2023 09:04:41 -0800
+Message-ID: <CAJuCfpEEiFNAgb6TNwibUyTJ1J3b-rEGCSw63TiK6FSA=HCdtw@mail.gmail.com>
+Subject: Re: [PATCH 08/41] mm: introduce CONFIG_PER_VMA_LOCK
+To: Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,69 +77,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Rodolfo Giometti <giometti@enneenne.com>, Alex Elder <elder@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Iglesias =?utf-8?Q?Gons=C3=A1lvez?= <siglesias@igalia.com>, linux-staging@lists.linux.dev, linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, David Lin <dtwlin@gmail.com>, greybus-dev@lists.linaro.org, linux-usb@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>, linux-serial@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org
+Cc: "michel@lespinasse.org" <michel@lespinasse.org>, "joelaf@google.com" <joelaf@google.com>, "songliubraving@fb.com" <songliubraving@fb.com>, "leewalsh@google.com" <leewalsh@google.com>, "david@redhat.com" <david@redhat.com>, "peterz@infradead.org" <peterz@infradead.org>, "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterx@redhat.com" <peterx@redhat.com>, "dhowells@redhat.com" <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "edumazet@google.com" <edumazet@google.com>, "jglisse@google.com" <jglisse@google.com>, "punit.agrawal@bytedance.com" <punit.agrawal@bytedance.com>, "arjunroy@google.com" <arjunroy@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "hughd@google.com" <hughd@google.com>, "willy@infradead.org" <willy@infradead.org>, Ingo Molnar <mingo@kernel.org>, "gurua@google.com" <gurua@google.com>, "laurent.dufour@fr.ibm.com" <laurent.dufour@fr.ibm.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "rientjes@google.com" <rien
+ tjes@google.com>, "axelrasmussen@google.com" <axelrasmussen@google.com>, "kernel-team@android.com" <kernel-team@android.com>, "soheil@google.com" <soheil@google.com>, "minchan@google.com" <minchan@google.com>, "jannh@google.com" <jannh@google.com>, "liam.howlett@oracle.com" <liam.howlett@oracle.com>, "shakeelb@google.com" <shakeelb@google.com>, "luto@kernel.org" <luto@kernel.org>, "gthelen@google.com" <gthelen@google.com>, "ldufour@linux.ibm.com" <ldufour@linux.ibm.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "posk@google.com" <posk@google.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>, "peterjung1337@gmail.com" <peterjung1337@gmail.com>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "hughlynch@google.com" <hughlynch@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, David Laight <David.Laight@aculab.com>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "t
+ atashin@google.com" <tatashin@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 11, 2023 at 04:23:29PM +0200, Ilpo Järvinen wrote:
-> Convert various parameter names for ->dtr_rts() and related functions
-> from onoff, on, and raise to active.
-> 
-> Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> ---
->  drivers/char/pcmcia/synclink_cs.c | 6 +++---
->  drivers/mmc/core/sdio_uart.c      | 6 +++---
->  drivers/staging/greybus/uart.c    | 4 ++--
->  drivers/tty/amiserial.c           | 4 ++--
->  drivers/tty/hvc/hvc_console.h     | 2 +-
->  drivers/tty/hvc/hvc_iucv.c        | 6 +++---
->  drivers/tty/mxser.c               | 4 ++--
->  drivers/tty/n_gsm.c               | 4 ++--
->  drivers/tty/serial/serial_core.c  | 8 ++++----
->  drivers/tty/synclink_gt.c         | 4 ++--
->  include/linux/tty_port.h          | 4 ++--
->  include/linux/usb/serial.h        | 2 +-
->  12 files changed, 27 insertions(+), 27 deletions(-)
+On Wed, Jan 11, 2023 at 8:44 AM Michal Hocko <mhocko@suse.com> wrote:
+>
+> On Wed 11-01-23 08:28:49, Suren Baghdasaryan wrote:
+> [...]
+> > Anyhow. Sounds like the overhead of the current design is small enough
+> > to remove CONFIG_PER_VMA_LOCK and let it depend only on architecture
+> > support?
+>
+> Yes. Further optimizations can be done on top. Let's not over optimize
+> at this stage.
 
-> diff --git a/include/linux/tty_port.h b/include/linux/tty_port.h
-> index c44e489de0ff..edf685a24f7c 100644
-> --- a/include/linux/tty_port.h
-> +++ b/include/linux/tty_port.h
-> @@ -16,7 +16,7 @@ struct tty_struct;
->  /**
->   * struct tty_port_operations -- operations on tty_port
->   * @carrier_raised: return true if the carrier is raised on @port
-> - * @dtr_rts: raise the DTR line if @raise is true, otherwise lower DTR
-> + * @dtr_rts: raise the DTR line if @active is true, otherwise lower DTR
->   * @shutdown: called when the last close completes or a hangup finishes IFF the
->   *	port was initialized. Do not use to free resources. Turn off the device
->   *	only. Called under the port mutex to serialize against @activate and
-> @@ -32,7 +32,7 @@ struct tty_struct;
->   */
->  struct tty_port_operations {
->  	bool (*carrier_raised)(struct tty_port *port);
-> -	void (*dtr_rts)(struct tty_port *port, bool raise);
-> +	void (*dtr_rts)(struct tty_port *port, bool active);
->  	void (*shutdown)(struct tty_port *port);
->  	int (*activate)(struct tty_port *port, struct tty_struct *tty);
->  	void (*destruct)(struct tty_port *port);
-> diff --git a/include/linux/usb/serial.h b/include/linux/usb/serial.h
-> index bad343c5e8a7..33afd9f3ebbe 100644
-> --- a/include/linux/usb/serial.h
-> +++ b/include/linux/usb/serial.h
-> @@ -292,7 +292,7 @@ struct usb_serial_driver {
->  			struct serial_icounter_struct *icount);
->  	/* Called by the tty layer for port level work. There may or may not
->  	   be an attached tty at this point */
-> -	void (*dtr_rts)(struct usb_serial_port *port, bool on);
-> +	void (*dtr_rts)(struct usb_serial_port *port, bool active);
+Sure, I won't optimize any further.
+Just to expand on your question. Original design would be problematic
+for embedded systems like Android. It notoriously has a high number of
+VMAs due to anonymous VMAs being named, which prevents them from
+merging. 2M per process increase would raise questions, therefore I
+felt the need for optimizing the memory overhead which is done in the
+last patch.
+Thanks for the feedback!
 
-This is not a tty_port callback so this change does not belong in this
-patch.
-
->  	bool (*carrier_raised)(struct usb_serial_port *port);
->  	/* Called by the usb serial hooks to allow the user to rework the
->  	   termios state */
-
-Johan
+> --
+> Michal Hocko
+> SUSE Labs
