@@ -1,62 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB3E665E81
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 15:55:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A196665EB5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 16:05:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsW1r18yBz3cFH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 01:55:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsWF90yd7z3ch2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 02:05:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KPh/G+50;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O3lzztQC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KPh/G+50;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O3lzztQC;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsW0t59QYz2ynD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 01:54:22 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B599F61D52
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 14:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6260AC433A4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 14:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673448857;
-	bh=5991q1wXtvebgUykJ5NYVRTE1uZrMxXzr1nAKepdlS8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KPh/G+50T7UA6MM56f8kwkC7JRGti8dM8QkU7Fxa5slwTvHjNEgCot25mpm4QZ7BP
-	 ZBiebJftwP7lOO7l+7g9JUlFg7H37CsriodR+cmKmP3WA8anAwD0dF+LYaaRDO26p1
-	 OnLNrFsdAaguSc26UyRsKv6n5rvjOdI9h/kQDs7+Tkw5bjqa5w+wpiwhCnOP90YEUe
-	 FkKBJ74jTS+659FEb3pPjJ1FoRZki0Njj420eOTO+i2/E/Q+ID9LNtC2t/d0NzBOBx
-	 LU9qQQBY30RDoh7gKDyBIh6Ske1YYN3CZHHhjPZA0B0j59JTFQKeNyNZvgh4yzCXPO
-	 D6vi0GpD34NYg==
-Received: by mail-vk1-f180.google.com with SMTP id t2so7313785vkk.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jan 2023 06:54:17 -0800 (PST)
-X-Gm-Message-State: AFqh2kookWbBx4li62nyIMbJdsR7paaXelNLiXHdVkPrPDkJ2YMZASC8
-	IHf5d5Miar3k6hABLsZZL8YZo1nk5yx2P/VelA==
-X-Google-Smtp-Source: AMrXdXuLjGWkrJgzvCsRL34zMGz/o9XODdn1icG/0kwllXKQUYcQoLyaKOC+UHWHVBhznJfC3GM3r3lDlYFHXzS35BM=
-X-Received: by 2002:a1f:1e50:0:b0:3c1:1c3b:c4d9 with SMTP id
- e77-20020a1f1e50000000b003c11c3bc4d9mr9659628vke.19.1673448856184; Wed, 11
- Jan 2023 06:54:16 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsWDD28qJz3bXL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 02:04:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673449452; x=1704985452;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=EzS1rB5u3ceqYsklUrERUyt8ti7VxoUVVF6gIp+8zZU=;
+  b=O3lzztQCvSfVCNDnaivSp77Z19NW1gmudkJmqyQGwYiNZjSfPTUjHuZV
+   SYa9KG72PU8ChRXYyKjtCS9tnc4fNt2IxkCgMulS0bOkTnUPjg3Wabrqr
+   XeZSaNi7Z3rce12Q0DK2ejRMQY6tGFRHEvzNZDBxuzkPoHXb1oKi8rHD7
+   +AKEDH9Gqgw5AoL4flDeN1CSPJQwh9MVTEjkHpw/vmRYvYe2e8R4HBHX3
+   CCmyKQgSYxo1ULY2toUXj0iSFFCHdhFLhkEXY2VEXFybxs8SAHYUZNDzp
+   fdh/pnW24snP3HAyeIDpY+C4Tlh5o+MbKO1hDqwomOphxP53rfLo+DjQl
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="387898206"
+X-IronPort-AV: E=Sophos;i="5.96,317,1665471600"; 
+   d="scan'208";a="387898206"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 07:03:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="720752962"
+X-IronPort-AV: E=Sophos;i="5.96,317,1665471600"; 
+   d="scan'208";a="720752962"
+Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 11 Jan 2023 07:03:39 -0800
+Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pFcde-0009G0-16;
+	Wed, 11 Jan 2023 15:03:38 +0000
+Date: Wed, 11 Jan 2023 23:03:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 55f63ce760d3914cff221c193f1032537af141f5
+Message-ID: <63becfc1.NNwewcbyHSRu8FLU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20230111113018.459199-1-gregkh@linuxfoundation.org> <20230111113018.459199-2-gregkh@linuxfoundation.org>
-In-Reply-To: <20230111113018.459199-2-gregkh@linuxfoundation.org>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Wed, 11 Jan 2023 08:54:04 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
-Message-ID: <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
-Subject: Re: [PATCH v2 01/16] of: device: make of_device_uevent_modalias()
- take a const device *
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,23 +70,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Liang He <windhl@126.com>, Zou Wei <zou_wei@huawei.com>, Samuel Holland <samuel@sholland.org>, Frank Rowand <frowand.list@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Corentin Labbe <clabbe@baylibre.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Lyude Paul <lyude@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, Nicholas Piggin <npiggin@gmail.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 11, 2023 at 5:30 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> of_device_uevent_modalias() does not modify the device pointer passed to
-> it, so mark it constant.  In order to properly do this, a number of
-> busses need to have a modalias function added as they were attempting to
-> just point to of_device_uevent_modalias instead of their bus-specific
-> modalias function.  This is fine except if the prototype for a bus and
-> device type modalias function diverges and then problems could happen.  To
-> prevent all of that, just wrap the call to of_device_uevent_modalias()
-> directly for each bus and device type individually.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 55f63ce760d3914cff221c193f1032537af141f5  Automatic merge of 'master' into merge (2023-01-09 11:31)
 
-Why not just put the wrapper function in the DT code instead of making
-4 copies of it?
+elapsed time: 1518m
 
-Rob
+configs tested: 60
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+x86_64                            allnoconfig
+powerpc                           allnoconfig
+x86_64                              defconfig
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+m68k                             allmodconfig
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+arc                              allyesconfig
+x86_64                               rhel-8.3
+alpha                            allyesconfig
+m68k                             allyesconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                           allyesconfig
+i386                                defconfig
+arc                  randconfig-r043-20230110
+s390                 randconfig-r044-20230110
+x86_64                        randconfig-a013
+riscv                randconfig-r042-20230110
+x86_64                        randconfig-a011
+arm                                 defconfig
+x86_64                        randconfig-a002
+x86_64                        randconfig-a015
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+arm64                            allyesconfig
+arm                              allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+sh                               allmodconfig
+mips                             allyesconfig
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+s390                                defconfig
+powerpc                          allmodconfig
+s390                             allyesconfig
+i386                             allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+ia64                             allmodconfig
+
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+hexagon              randconfig-r041-20230110
+arm                  randconfig-r046-20230110
+x86_64                        randconfig-a014
+hexagon              randconfig-r045-20230110
+x86_64                        randconfig-a012
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a016
+x86_64                        randconfig-a003
+i386                          randconfig-a015
+x86_64                          rhel-8.3-rust
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
