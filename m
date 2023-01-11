@@ -2,115 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344EB66601C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 17:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11564665FF1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jan 2023 17:03:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NsXnF0jbjz3cfg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 03:14:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NsXXH0084z3cdb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 03:03:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=MgHokpDI;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T1ZN/6U7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=stgolabs.net (client-ip=23.83.212.18; helo=bisque.elm.relay.mailchannels.net; envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=MgHokpDI;
-	dkim-atps=neutral
-Received: from bisque.elm.relay.mailchannels.net (bisque.elm.relay.mailchannels.net [23.83.212.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsXmH4fDvz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 03:13:33 +1100 (AEDT)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 7FC96881032;
-	Wed, 11 Jan 2023 16:13:29 +0000 (UTC)
-Received: from pdx1-sub0-mail-a240.dreamhost.com (unknown [127.0.0.6])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id BBDBE880899;
-	Wed, 11 Jan 2023 16:13:27 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1673453608; a=rsa-sha256;
-	cv=none;
-	b=kBt8CodQDMxAaJCJ9NkjMnsMHYrzssuMjtELc8yv22zwenwf+6kU3J7TvMY1y+cBd2WUy7
-	h4m5WUCVqLN5lE176ZhbHkrlKaQGoNJ0hv5z70ilWehI6lEVwPk+3y4z4ezJ9ErjqBdgDm
-	yQ8gfZJ08NogfWw+v/e3+YYkGc8kqFNxslFxVeP1nQNaEaj/DE9pz2EmKqxwhelOM7NWpU
-	c17pYNAQx1+pXL6SUucpK7n1oCpmJVs9B58wUGnBOqEw7fwZEXD60u+OZqmPpBrEfGpJlu
-	WzBdKs768TdId/v64LwIKfy+PyseSOcoGGRpPuJ5NytC/ExLpJF5WMD4Jb5YBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1673453608;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KqIdSfYPmousuY+i1hAYcNEcFaIbxrAIfRrrhY59IL8=;
-	b=luH8dHpwgxUE+PsIhm23bxBHudBJcBtkq2X3xfr03x1FSwr2Zf+JFpIliyQWFlQb/g9xYf
-	t8Z+2vPvgF+GK7JW3Aw6pPdw31Lv7RHpj152RMr1Ovz/GW/8iwwVmGjUxaBI0/ojUQdUyd
-	LGMXUYpd8a+73BAaqD2l5NBJYJDwz+7OOMnPLbIQFrJIFFByH93GtTJdLCIq0MbeYVD0aA
-	dU8ioi09wDuQPFwSciZevdL8D7SInxxvKE0mHxWO1LOx0Rn2CKJSDZyb1u9qfBMdph2BeW
-	YdWuAwGxPwHiGYXGIDNBiVch7rZ8SVMWeiIkSUmDeILv0VqtefzrbJykKe9wzg==
-ARC-Authentication-Results: i=1;
-	rspamd-7cf955c847-cfcxj;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Eyes-Abaft: 22751edb54470cba_1673453609106_2379691172
-X-MC-Loop-Signature: 1673453609106:2687867213
-X-MC-Ingress-Time: 1673453609106
-Received: from pdx1-sub0-mail-a240.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.107.134.75 (trex/6.7.1);
-	Wed, 11 Jan 2023 16:13:29 +0000
-Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a240.dreamhost.com (Postfix) with ESMTPSA id 4NsXm31ljkz2L;
-	Wed, 11 Jan 2023 08:13:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1673453607;
-	bh=KqIdSfYPmousuY+i1hAYcNEcFaIbxrAIfRrrhY59IL8=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=MgHokpDIPaFmfSbcnF0EHEFEvg0EoFiKyrM7Sz7SHRg0Jdy9hMryQ5+V4NEnQX+Oj
-	 PNhCzQrfq4+IaNp6XAKB6Fp/Hrjkr29MKyhqR1hm91ne+tr33nCDYpRWnB8paCpmwN
-	 a3Rj8zxogdkLlSB6kgz1P68UXMlRpsKKTqBZfA98LL8YPwnW/RCO3OyH/1qdecIVu8
-	 S46cPS7yT0U9Bo6BbMAdBLjgmoCZgMlIoBGSddz7fKiUwOFcg4g0MH+rGLgNttS6ap
-	 ZW+pYHxNXpPl/O+Xzu9dLdHce/4Jz/A6W+V2lOPYE8w8uU+cfT4j1V3NVfQRvoGRP/
-	 J0ftdyQQJWHgw==
-Date: Wed, 11 Jan 2023 07:47:26 -0800
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 13/41] mm: introduce vma->vm_flags modifier functions
-Message-ID: <20230111154726.stadwtzicabwh5u5@offworld>
-Mail-Followup-To: Suren Baghdasaryan <surenb@google.com>,
-	akpm@linux-foundation.org, michel@lespinasse.org,
-	jglisse@google.com, mhocko@suse.com, vbabka@suse.cz,
-	hannes@cmpxchg.org, mgorman@techsingularity.net,
-	willy@infradead.org, liam.howlett@oracle.com, peterz@infradead.org,
-	ldufour@linux.ibm.com, laurent.dufour@fr.ibm.com,
-	paulmck@kernel.org, luto@kernel.org, songliubraving@fb.com,
-	peterx@redhat.com, david@redhat.com, dhowells@redhat.com,
-	hughd@google.com, bigeasy@linutronix.de, kent.overstreet@linux.dev,
-	punit.agrawal@bytedance.com, lstoakes@gmail.com,
-	peterjung1337@gmail.com, rientjes@google.com,
-	axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
-	jannh@google.com, shakeelb@google.com, tatashin@google.com,
-	edumazet@google.com, gthelen@google.com, gurua@google.com,
-	arjunroy@google.com, soheil@google.com, hughlynch@google.com,
-	leewalsh@google.com, posk@google.com, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@android.com
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-14-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NsXWD088Nz2xJR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 03:02:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=yspqmV8n8uMxBrXLAo4qukTZST08VUL+ZwdMf7CyN3U=; b=T1ZN/6U7jNW9xGgPClMK03QJwy
+	uyjiqhJ8YwgiJ6Eiz0EJ5C/w4I3ofNgkkacNSzJtrwNhjDg3urx1sJyBHEZsQRigWHcWmw9WK6BQC
+	1pm0Sgn2yHvdXz9PGAZ9vpGeV5XmBi2UCOihMZxWBXNXDzl6K/PHjwrfH9i92XsT+KNBfKwWHGxvI
+	cDzRk98KLWz7TfGLdf7wVm3phZkwXvCWFa6K2IxNlHf0SPNEgByZoK2ydJxplaCJH6rqSwmWoXX+t
+	UzHq6NquaYLhmbCS9svpbsiOYe6KZ6gqWHvrfO3Je81q/g+ytGz177g9/sqlqBc4jYYPMYkIcEs3b
+	MXBXXIGg==;
+Received: from [2601:1c2:d80:3110:e65e:37ff:febd:ee53]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pFdXw-00C5iF-IT; Wed, 11 Jan 2023 16:01:48 +0000
+Message-ID: <5d8e3316-54bb-40c4-a8a4-dd1b10d1e1a6@infradead.org>
+Date: Wed, 11 Jan 2023 08:01:47 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230109205336.3665937-14-surenb@google.com>
-User-Agent: NeoMutt/20220429
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: usb.c:undefined reference to `qe_immr'
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, kernel test robot <lkp@intel.com>,
+ Masahiro Yamada <masahiroy@kernel.org>
+References: <202301101500.pillNv6R-lkp@intel.com>
+ <a0e325d2-a9c5-ffca-b2d6-5eea60f9ad3b@infradead.org>
+ <87lem9h64t.fsf@mpe.ellerman.id.au>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <87lem9h64t.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,19 +59,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 09 Jan 2023, Suren Baghdasaryan wrote:
 
->To keep vma locking correctness when vm_flags are modified, add modifier
->functions to be used whenever flags are updated.
 
-How about moving this patch and the ones that follow out of this series,
-into a preliminary patchset? It would reduce the amount of noise in the
-per-vma lock changes, which would then only be adding the needed
-vma_write_lock()ing.
+On 1/10/23 23:39, Michael Ellerman wrote:
+> Randy Dunlap <rdunlap@infradead.org> writes:
+>> [adding Cc's]
+>>
+>>
+>> On 1/9/23 23:59, kernel test robot wrote:
+>>> Hi Masahiro,
+>>>
+>>> FYI, the error/warning still remains.
+>>>
+>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>>> head:   5a41237ad1d4b62008f93163af1d9b1da90729d8
+>>> commit: 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b kbuild: link symbol CRCs at final link, removing CONFIG_MODULE_REL_CRCS
+>>> date:   8 months ago
+>>> config: powerpc-randconfig-r026-20230110
+>>> compiler: powerpc-linux-gcc (GCC) 12.1.0
+>>> reproduce (this is a W=1 build):
+>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>>>         chmod +x ~/bin/make.cross
+>>>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>>>         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>>>         git fetch --no-tags linus master
+>>>         git checkout 7b4537199a4a8480b8c3ba37a2d44765ce76cd9b
+>>>         # save the config file
+>>>         mkdir build_dir && cp config build_dir/.config
+>>>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+>>>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+>>>
+>>> If you fix the issue, kindly add following tag where applicable
+>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>    powerpc-linux-ld: powerpc-linux-ld: DWARF error: could not find abbrev number 74
+>>>    drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+>>>>> usb.c:(.text+0x1e): undefined reference to `qe_immr'
+>>>>> powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+>>>>> powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+>>>>> powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+>>>    powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+>>>
+>>
+>> .config extract:
+>>
+>> #
+>> # NXP/Freescale QorIQ SoC drivers
+>> #
+>> # CONFIG_QUICC_ENGINE is not set
+>> CONFIG_QE_USB=y
+>>
+>>
+>> This is caused by (drivers/soc/fsl/qe/Kconfig):
+>>
+>> config QE_USB
+>> 	bool
+>> 	default y if USB_FSL_QE
+>> 	help
+>> 	  QE USB Controller support
+>>
+>> which does not depend on QUICC_ENGINE, where the latter build provides
+>> the missing symbols.
+> 
+> So QE_USB should depend on QUICC_ENGINE no?
 
-Thanks,
-Davidlohr
+Yes, that would make sense, but I don't know enough about the
+hardware. I.e., could CONFIG_PPC_EP88XC have QE_USB without having
+a full QUICC_ENGINE?
+
+thanks.
+
+-- 
+~Randy
