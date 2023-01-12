@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDC2667938
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 16:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FED66794B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 16:31:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nt7k45lGDz3fDL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 02:28:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nt7n571Plz3fDF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 02:31:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=0PJqU0bp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=DQo+zpBo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=walle.cc (client-ip=159.69.201.130; helo=mail.3ffe.de; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=0PJqU0bp;
+	dkim=pass (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=DQo+zpBo;
 	dkim-atps=neutral
 Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nt7c66L4xz3c7M;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nt7c66dRZz3cFP;
 	Fri, 13 Jan 2023 02:23:34 +1100 (AEDT)
 Received: from mwalle01.sab.local (unknown [213.135.10.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.3ffe.de (Postfix) with ESMTPSA id C96DD15E8;
-	Thu, 12 Jan 2023 16:15:24 +0100 (CET)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 465221690;
+	Thu, 12 Jan 2023 16:15:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
 	t=1673536525;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nh59coj550doZXKUioyBaJXnHjL7eqqxkdyADzKG0aw=;
-	b=0PJqU0bpJyUWyXm+SQSGiXNKZ9/LdYWX4cRQNkbqH1J4qqJSPWjumCvh8aqI+OzDwYyXMc
-	buhluiqJESGW4pmr0bKQzF+OPMsYKo+NOdVOg1nDPaY2JBuiq7jIv2M/qlO6uQ0KVXhRTW
-	pVYedVbZBwkSgdL2mEyP6QgF30yZYJMLkspl+lksS3LZT7JxwVl/agdJWk5tgfQY+RiQzY
-	4tCDnZkHvhEQmytDQj2YB/59IBbqjirwac+SFzVMcDFEbvy43drC2Ox3UB+o0HJ66ae1tV
-	h6VkNjDTFS0n6JS6LUz5upzcF6riFGAShqaBM05hG1rp8dtA2rTlI3Z2dDJeog==
+	bh=va3eUaZnHCKlQplAwN4w5XiSMq1VSmnSgM2dhGILW2o=;
+	b=DQo+zpBotQ2t/EbMh9EwCQFrWeNxSObgLR2Aj66zj7Y5QWFbcoPO+2wfXmrgfzJ03vIm7v
+	Tr6LlfT/JR1d89sTPgeA9NFXQWptTt64vUiRBt9RE1JSwqAWAaf5AuFL19L79/nH54D3/J
+	y1Vn10Wj3G1pCWS6IyPidtuk8kKpOpOZm0RSBUXGuQQDrNskjsuGQHRYsT7BJ62eSRB12i
+	z0Y1o1Y5CLboAv0SLBJB8Qyde/orRDhxQP9U0RGBjhKigSi76/VeCXI/wVPVVMZUeX/ofl
+	HfWx0KXdNS4Rne9HeO1h0C1ehT1vt6KYK5/lGWSAkAc3H9g6YgCY2R4jSAISyQ==
 From: Michael Walle <michael@walle.cc>
-Date: Thu, 12 Jan 2023 16:15:09 +0100
-Subject: [PATCH net-next 03/10] net: mdio: mux-bcm-iproc: Separate C22 and C45
- transactions
+Date: Thu, 12 Jan 2023 16:15:10 +0100
+Subject:  [PATCH net-next 04/10] net: mdio: aspeed: Separate C22 and C45 transactions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id:  <20230112-net-next-c45-seperation-part-2-v1-3-5eeaae931526@walle.cc>
+Message-Id:  <20230112-net-next-c45-seperation-part-2-v1-4-5eeaae931526@walle.cc>
 References:  <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
 In-Reply-To:  <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
 To: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -88,122 +87,104 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Andrew Lunn <andrew@lunn.ch>
 
-The MDIO mux broadcom iproc can perform both C22 and C45 transfers.
-Create separate functions for each and register the C45 versions using
-the new API calls.
+The aspeed MDIO bus driver can perform both C22 and C45 transfers.
+Modify the existing C45 functions to take the devad as a parameter,
+and remove the wrappers so there are individual C22 and C45 functions. Add
+the C45 functions to the new API calls.
 
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Michael Walle <michael@walle.cc>
 ---
-Apparently, in the c45 case, the reg value including the MII_ADDR_C45
-bit is written to the hardware. Looks weird, that a "random" software
-bit is written to a register. Florian is that correct? Also, with this
-patch this flag isn't set anymore.
----
- drivers/net/mdio/mdio-mux-bcm-iproc.c | 54 ++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 11 deletions(-)
+ drivers/net/mdio/mdio-aspeed.c | 47 +++++++++++-------------------------------
+ 1 file changed, 12 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-mux-bcm-iproc.c b/drivers/net/mdio/mdio-mux-bcm-iproc.c
-index 014c0baedbd2..956d54846b62 100644
---- a/drivers/net/mdio/mdio-mux-bcm-iproc.c
-+++ b/drivers/net/mdio/mdio-mux-bcm-iproc.c
-@@ -98,7 +98,7 @@ static int iproc_mdio_wait_for_idle(void __iomem *base, bool result)
-  * Return value: Successful Read operation returns read reg values and write
-  *      operation returns 0. Failure operation returns negative error code.
-  */
--static int start_miim_ops(void __iomem *base,
-+static int start_miim_ops(void __iomem *base, bool c45,
- 			  u16 phyid, u32 reg, u16 val, u32 op)
- {
- 	u32 param;
-@@ -112,7 +112,7 @@ static int start_miim_ops(void __iomem *base,
- 	param = readl(base + MDIO_PARAM_OFFSET);
- 	param |= phyid << MDIO_PARAM_PHY_ID;
- 	param |= val << MDIO_PARAM_PHY_DATA;
--	if (reg & MII_ADDR_C45)
-+	if (c45)
- 		param |= BIT(MDIO_PARAM_C45_SEL);
- 
- 	writel(param, base + MDIO_PARAM_OFFSET);
-@@ -131,28 +131,58 @@ static int start_miim_ops(void __iomem *base,
- 	return ret;
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index 944d005d2bd1..2f4bbda5e56c 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -104,61 +104,36 @@ static int aspeed_mdio_write_c22(struct mii_bus *bus, int addr, int regnum,
+ 			      addr, regnum, val);
  }
  
--static int iproc_mdiomux_read(struct mii_bus *bus, int phyid, int reg)
-+static int iproc_mdiomux_read_c22(struct mii_bus *bus, int phyid, int reg)
+-static int aspeed_mdio_read_c45(struct mii_bus *bus, int addr, int regnum)
++static int aspeed_mdio_read_c45(struct mii_bus *bus, int addr, int devad,
++				int regnum)
  {
- 	struct iproc_mdiomux_desc *md = bus->priv;
- 	int ret;
+-	u8 c45_dev = (regnum >> 16) & 0x1F;
+-	u16 c45_addr = regnum & 0xFFFF;
+ 	int rc;
  
--	ret = start_miim_ops(md->base, phyid, reg, 0, MDIO_CTRL_READ_OP);
-+	ret = start_miim_ops(md->base, false, phyid, reg, 0, MDIO_CTRL_READ_OP);
- 	if (ret < 0)
--		dev_err(&bus->dev, "mdiomux read operation failed!!!");
-+		dev_err(&bus->dev, "mdiomux c22 read operation failed!!!");
+ 	rc = aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C45, MDIO_C45_OP_ADDR,
+-			    addr, c45_dev, c45_addr);
++			    addr, devad, regnum);
+ 	if (rc < 0)
+ 		return rc;
  
- 	return ret;
+ 	rc = aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C45, MDIO_C45_OP_READ,
+-			    addr, c45_dev, 0);
++			    addr, devad, 0);
+ 	if (rc < 0)
+ 		return rc;
+ 
+ 	return aspeed_mdio_get_data(bus);
  }
  
--static int iproc_mdiomux_write(struct mii_bus *bus,
--			       int phyid, int reg, u16 val)
-+static int iproc_mdiomux_read_c45(struct mii_bus *bus, int phyid, int devad,
-+				  int reg)
-+{
-+	struct iproc_mdiomux_desc *md = bus->priv;
-+	int ret;
-+
-+	ret = start_miim_ops(md->base, true, phyid, reg | devad << 16, 0,
-+			     MDIO_CTRL_READ_OP);
-+	if (ret < 0)
-+		dev_err(&bus->dev, "mdiomux read c45 operation failed!!!");
-+
-+	return ret;
-+}
-+
-+static int iproc_mdiomux_write_c22(struct mii_bus *bus,
-+				   int phyid, int reg, u16 val)
-+{
-+	struct iproc_mdiomux_desc *md = bus->priv;
-+	int ret;
-+
-+	/* Write val at reg offset */
-+	ret = start_miim_ops(md->base, false, phyid, reg, val,
-+			     MDIO_CTRL_WRITE_OP);
-+	if (ret < 0)
-+		dev_err(&bus->dev, "mdiomux write c22 operation failed!!!");
-+
-+	return ret;
-+}
-+
-+static int iproc_mdiomux_write_c45(struct mii_bus *bus,
-+				   int phyid, int devad, int reg, u16 val)
+-static int aspeed_mdio_write_c45(struct mii_bus *bus, int addr, int regnum,
+-				 u16 val)
++static int aspeed_mdio_write_c45(struct mii_bus *bus, int addr, int devad,
++				 int regnum, u16 val)
  {
- 	struct iproc_mdiomux_desc *md = bus->priv;
- 	int ret;
+-	u8 c45_dev = (regnum >> 16) & 0x1F;
+-	u16 c45_addr = regnum & 0xFFFF;
+ 	int rc;
  
- 	/* Write val at reg offset */
--	ret = start_miim_ops(md->base, phyid, reg, val, MDIO_CTRL_WRITE_OP);
-+	ret = start_miim_ops(md->base, true, phyid, reg | devad << 16, val,
-+			     MDIO_CTRL_WRITE_OP);
- 	if (ret < 0)
--		dev_err(&bus->dev, "mdiomux write operation failed!!!");
-+		dev_err(&bus->dev, "mdiomux write c45 operation failed!!!");
+ 	rc = aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C45, MDIO_C45_OP_ADDR,
+-			    addr, c45_dev, c45_addr);
++			    addr, devad, regnum);
+ 	if (rc < 0)
+ 		return rc;
  
- 	return ret;
+ 	return aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C45, MDIO_C45_OP_WRITE,
+-			      addr, c45_dev, val);
+-}
+-
+-static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
+-{
+-	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d\n", __func__, addr,
+-		regnum);
+-
+-	if (regnum & MII_ADDR_C45)
+-		return aspeed_mdio_read_c45(bus, addr, regnum);
+-
+-	return aspeed_mdio_read_c22(bus, addr, regnum);
+-}
+-
+-static int aspeed_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
+-{
+-	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d, val: 0x%x\n",
+-		__func__, addr, regnum, val);
+-
+-	if (regnum & MII_ADDR_C45)
+-		return aspeed_mdio_write_c45(bus, addr, regnum, val);
+-
+-	return aspeed_mdio_write_c22(bus, addr, regnum, val);
++			      addr, devad, val);
  }
-@@ -223,8 +253,10 @@ static int mdio_mux_iproc_probe(struct platform_device *pdev)
- 	bus->name = "iProc MDIO mux bus";
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-%d", pdev->name, pdev->id);
+ 
+ static int aspeed_mdio_probe(struct platform_device *pdev)
+@@ -185,8 +160,10 @@ static int aspeed_mdio_probe(struct platform_device *pdev)
+ 	bus->name = DRV_NAME;
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s%d", pdev->name, pdev->id);
  	bus->parent = &pdev->dev;
--	bus->read = iproc_mdiomux_read;
--	bus->write = iproc_mdiomux_write;
-+	bus->read = iproc_mdiomux_read_c22;
-+	bus->write = iproc_mdiomux_write_c22;
-+	bus->read_c45 = iproc_mdiomux_read_c45;
-+	bus->write_c45 = iproc_mdiomux_write_c45;
+-	bus->read = aspeed_mdio_read;
+-	bus->write = aspeed_mdio_write;
++	bus->read = aspeed_mdio_read_c22;
++	bus->write = aspeed_mdio_write_c22;
++	bus->read_c45 = aspeed_mdio_read_c45;
++	bus->write_c45 = aspeed_mdio_write_c45;
+ 	bus->probe_capabilities = MDIOBUS_C22_C45;
  
- 	bus->phy_mask = ~0;
- 	bus->dev.of_node = pdev->dev.of_node;
+ 	rc = of_mdiobus_register(bus, pdev->dev.of_node);
 
 -- 
 2.30.2
