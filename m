@@ -1,58 +1,120 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60C96684D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:01:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AE9667F90
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 20:46:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtH5v4rJsz3fK9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:01:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtFR11ky4z3fCQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 06:46:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tvBa36On;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=kS7KmJoS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.6.76; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tvBa36On;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=kS7KmJoS;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2076.outbound.protection.outlook.com [40.107.6.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFj23yH6z3cH1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To;
-	bh=el0CIt1mM51BvZPcHKbhuF9lp1fNYUjgpLSAPy3Ccmg=; b=tvBa36On1tgPpOho7ahgpRDeA7
-	VD3Q9HQ4f3Ej4oPbH9YxtMDqs5HyC7lkDZn5vZGB8d3WSo7Z1P9FBFIVms0pz6CgWqRMwrRb15Bsd
-	lcLK8h29qqcDlNe6qJc92nfUkYJF7ntrSRabmmAT0/kBKe4lowjWasVtTUzitfMJgum2PFTCW7aib
-	lFuw51y9ho3hcp236ghfxyTUTs/4QMwB9E3vY+71ARt47IMDlRnGyVA8rTrEzFDXZ7wxABkQRw7/I
-	LNpFhK1ipzOKKwI7x97Ns9z0W+cf/xTT0i7yl5EA14WEDj8/hFqG3cHumvt8KUylgEvg9o+NcZc6z
-	iBVAM65A==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pG3hc-005Oen-Qk; Thu, 12 Jan 2023 19:57:32 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AD27A303443;
-	Thu, 12 Jan 2023 20:57:13 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 24C2C2CCF62B5; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
-Message-ID: <20230112195541.171918174@infradead.org>
-User-Agent: quilt/0.66
-Date: Thu, 12 Jan 2023 20:43:44 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: peterz@infradead.org
-Subject: [PATCH v3 30/51] cpuidle,xenpv: Make more PARAVIRT_XXL noinstr clean
-References: <20230112194314.845371875@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFQ10X89z3c8C
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:45:12 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OGSwHeIQgrwVZkR9qCmcEaTAqQJYp3nu2F47k28l8TJ4iCYHFneB1qvzCUYxA4BWFeRhwUXDbhji+KibgfAIx92/8sTAew8Ef+zlajWTaYyPmqBuV2h84GW09KcmYrx1k4BuVsHcdN47pOdqbzyfunc4+n88xtsV1ZIthMfByiSKHUuq4+IkLAgHVm+ANJbncOqNQtY9T5bNc7Dnv5Feq0etMB5ROCse4DgoUHhWvrk1t4U17jJsSSqz8ljHS5vDkOyBA1Nq83LorILADkbphQtSbYFu28LOgNjhTFzkvwZT2TRCK6FCFJsofZgy+tceHbv0HVPSNrdwnZpiNDP52g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UZs+qLQ89f9ta00E6LEKYIRUiigae6BTpvlyNy98H9M=;
+ b=L2i2pOKFkvxvjKXsnyegFgkycIhXZ4YxY1qSLtVKbza4gh1D0mJXuqovIzSJx6d6FPjvT5orVMLaCA7n/E9mEcM6lXDkCb2Z7nAm2QC8UACw8bSvrZvpc0Fvp9GxL28EeOsbddnB0hjFnrQrbrO11p0ZMQasbj1IX3lie5Ho7tJGAoDT6wyQE+oJCWSpzZ60EY6g9ryu71+4iTBwe1TM2OLe1wwDV92n8TyEgAEMaaW310gbO5N/xVIddFOVrBnqBaslfu+hDwGSwBQmJ9p10f0PsRfE3w00dY66qFTgC5hTv3iMLl879ZTsMLfgA2cdDHqUmZG/N/wCkAGy+rfxyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UZs+qLQ89f9ta00E6LEKYIRUiigae6BTpvlyNy98H9M=;
+ b=kS7KmJoScX653sHXktpbYJWcoprAa2avtsdk74uqIuFIBXUD2GcobXGXDorqzOFKxqc7Hs6XL5RmhhLr6WjJ3ds0xs+F6OdffUZeGs/S662UQyAkF1HPm65d/OJdg40gbQdYYVfft7nXzKPN5KDDnSI4cBAwXW7Gnlv9zgVVa3E=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by AM9PR04MB8178.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Thu, 12 Jan
+ 2023 19:44:52 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.5986.018; Thu, 12 Jan 2023
+ 19:44:52 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/1] PCI: layerscape: Add the workaround for A-010305
+Date: Thu, 12 Jan 2023 14:44:33 -0500
+Message-Id: <20230112194433.1514149-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0194.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::19) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Mailman-Approved-At: Fri, 13 Jan 2023 07:59:45 +1100
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|AM9PR04MB8178:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3c4e41c-a885-42d4-f97d-08daf4d578ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	hP2gGYIfxD3x0626rWxJM0lKiup7lL6mS340dFtRw78REjJRaQ/v6Gx5sYYzw5eM3P8yOlPuXUv5LxIs5cs1gcD5o/+F/+wJE6aMfhnThFcd0o5dOQeu2u3YJ0Li2xMxgzAy3PxfGDVxZO2Yi3u7Mhh1HLAzh0IEed3ZD3ng39C1KNUnCfpJxkOH8/ssQUGn4NLJZjR9pEMo21vpLBgG78p2N7PXrcWtY7G4EUhXEsc1ekL9sewca8BAcmLdJ++MDUNtNIg6F/lYZaLK8lv4KD5oN0WpBZplJSzEBqBCUfOhmh9is6K0AtQN8D10blS5eNLipq3UuxNbVC31bafIzoFZt7DFdxI+zECbzt4cH7GveWDoHBZT3JdbSL+iKTmlCvkbneoHoL+uI73C/OC66eliABSfmmSV7rajT5Pk8yyxwR7cBhIMzFHnXEWL+2Ot3Y7RzHLwPA8aqyD7QMA3ZIKI05rplNuYo7/8n4T68cb3oWMD0Uiqv49Nt89Ip5lWr/zMLRi5AHfIN/jDAIpvNYL8d1BhkQJdzHIkWna25cObaAx18gl26n550xeGd9/leWPuzXhgbhBU9C92EiXAgd9EuQPVjMH0rFOeZusYG6v9VhaqDP+S8BYVDifgco14rX5V5Nagv4oViTc3C8mBL9AMOkKibHhfj8HWAI1LuhcLjrYWmQY6t1Z/JaDNKd01gAHvAnnqavfUq4kwVMLeT00DojaAL7TSFX4K20vIkSo=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(366004)(346002)(39860400002)(136003)(396003)(451199015)(478600001)(6486002)(921005)(41300700001)(6512007)(38100700002)(38350700002)(1076003)(86362001)(316002)(110136005)(2616005)(26005)(66556008)(66946007)(186003)(66476007)(52116002)(4326008)(36756003)(5660300002)(6506007)(2906002)(6666004)(8676002)(8936002)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?NhSm8xDiITMU+K3EmKP4ytu0Q0w3DLh/fQ/cdaviN9WzfzOw46XmA4rFfM2c?=
+ =?us-ascii?Q?tum1X19egOz3Mv9Gk3QGrYpPSDVvO/a5O7p7bmgOWcx97BfnjcDlFkZvGh18?=
+ =?us-ascii?Q?fstv+yn99ckKjb9sCUpV1UazlrSjGucAJc0CesCfc3BSnRSTDVL7frxZzRUS?=
+ =?us-ascii?Q?4IpBvkr0tO4xLeTYHRHQz9EQoDsPuyKt9PTe/NRnULWjzlMWG4pJAGgzY7rW?=
+ =?us-ascii?Q?eHHY2p2H7HX833EVHvXkCGFEjeMYdc2nYuqTkZkZOAD53y7rvOoohQS2uBtW?=
+ =?us-ascii?Q?j9FOTz5FgqJvNgou0aoTb11Po1dnIMlzz+F42UoMFIIrwMKo7uTI4bn2DlfE?=
+ =?us-ascii?Q?alIugKkzw5Lj8atuBM9EulM91zw9THLiqNDxf+gyNMeqbeZFXO9thNBBQgle?=
+ =?us-ascii?Q?DjpE13dNlyBvLM3H5w6pFtvuZSY1djYkpu+8saKHVv43s6xgyR932v0rpTsH?=
+ =?us-ascii?Q?5O4TqWSopuDiT5Y3SxAobMCAbsD6GgRiF3/oTS1k8ouP+YCqXNcdHfBcGutl?=
+ =?us-ascii?Q?mnDS4C9GPL9VF3CDVUW5axG6MO4KeddT3GGLW/1m7pfoU91ZH0R9HMxc4uqP?=
+ =?us-ascii?Q?rOhiVz8PnVpG6yjjtnarMj/ZgJVYx6YsJFi/ZkgYLg9DyPTrcBTfQTDO5GT9?=
+ =?us-ascii?Q?Ns3MZnJa/vawi0gmiaWTyfXIXHcnqMguvfznNpLpcceXEN1liMHrjrXrBeM5?=
+ =?us-ascii?Q?xJ59LHTn1JpobxqlQ6/fxXxk5k1mX/MTIk64k/Vm/STkT6RSCz2OctOjVAWA?=
+ =?us-ascii?Q?enDYDKB0tP1+m4kRnqnYnMQLAWMQWCyEoZKCtYZBO5SwYLQqD6FXf61Y1VKD?=
+ =?us-ascii?Q?DXDxnYXyJabVI7eeo0Pq/ouvswEDvkYD5BfrgnDNVyr6yeP3a/iryyUjD0PF?=
+ =?us-ascii?Q?lq08LrPSMJ+YHeNB2Lq5lxlGpfE3NIAqDCunavxpJsSUu4I4RxCVKSb0d3Ru?=
+ =?us-ascii?Q?XO4Yo0L60qdnaclp/issm4AavN8mrCI+D+NnEnb1b78nmiHgiQUR8ZcNmxjh?=
+ =?us-ascii?Q?vmbs9sPggZ1h0L2MtiUe1Nx4Is2dL8xmMBA5SeWWbtMoBmk66PcWS7swnLHB?=
+ =?us-ascii?Q?5EpmXjKL+wI+gTQ1gvqZl/Wk4YOtpM05cOw7nxlLdiuBHKOGhATPgTTuCFNb?=
+ =?us-ascii?Q?rex2DuRILktz7cjTkGRyjJ0J7OJOZoCfC6W273LonhdAE76hjwsnWXTF0aEb?=
+ =?us-ascii?Q?gfYFTlhflGA3cAokUb/AkBO/Wao//Kz85HMh5azPi3+2j075+S8uPA5a+p5H?=
+ =?us-ascii?Q?J6Dy45rNpsjNqQaRSre03bobUuKB1z+6dq4pHdn4jKoFI+20T3J4oD0uHIjK?=
+ =?us-ascii?Q?W2ECuDDhcKbwaGoohkJrK+Yr9sxKb4pZYbTWLV6FlgGSbDjPg8hhf5p+blEn?=
+ =?us-ascii?Q?MqKfJRAaAnvZRn9P4fy/tjik6wmlL5QOD2iLVgtiFbcW32RBzQWMdXqazvom?=
+ =?us-ascii?Q?iPhD7HNvzh1YYxxZvmr5ZwnLo2RVVjl7EQxr+2RN3krr9QKKJ9hYg1OUZ/dl?=
+ =?us-ascii?Q?TV5o9ynN78AosZRWxoQBQfey8XS7j3gUyKGxQuT+0u2cZ0QFJovcDbvcgQ13?=
+ =?us-ascii?Q?9dI5VtZ4VfmnTqmN7mq3/EDmbcGXUneR+nV6yD4u?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3c4e41c-a885-42d4-f97d-08daf4d578ee
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2023 19:44:52.2989
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CsXuPaBV094uHJ8NY8hL/EMfuJxaBhZEY62H2S5wAfdxJ2KGpG7mXa9ZoZkZNoqM1x3CUru67iiKMAqHLe4ssA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8178
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,151 +126,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linu
- x-foundation.org>, linux-trace-kernel@vger.kernel.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, Ulf Hansson <ulf.hansson@linaro.org>, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, l
- inux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.ed
- u, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmlinux.o: warning: objtool: acpi_idle_enter_s2idle+0xde: call to wbinvd() leaves .noinstr.text section
-vmlinux.o: warning: objtool: default_idle+0x4: call to arch_safe_halt() leaves .noinstr.text section
-vmlinux.o: warning: objtool: xen_safe_halt+0xa: call to HYPERVISOR_sched_op.constprop.0() leaves .noinstr.text section
+From: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+When a link down or hot reset event occurs, the PCI Express EP
+controller's Link Capabilities Register should retain the values of
+the Maximum Link Width and Supported Link Speed configured by RCW.
+
+Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/x86/include/asm/paravirt.h      |    6 ++++--
- arch/x86/include/asm/special_insns.h |    4 ++--
- arch/x86/include/asm/xen/hypercall.h |    2 +-
- arch/x86/kernel/paravirt.c           |   14 ++++++++++++--
- arch/x86/xen/enlighten_pv.c          |    2 +-
- arch/x86/xen/irq.c                   |    2 +-
- 6 files changed, 21 insertions(+), 9 deletions(-)
+ .../pci/controller/dwc/pci-layerscape-ep.c    | 112 +++++++++++++++++-
+ 1 file changed, 111 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -168,7 +168,7 @@ static inline void __write_cr4(unsigned
- 	PVOP_VCALL1(cpu.write_cr4, x);
- }
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index ed5cfc9408d9..1b884854c18e 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -18,6 +18,22 @@
  
--static inline void arch_safe_halt(void)
-+static __always_inline void arch_safe_halt(void)
- {
- 	PVOP_VCALL0(irq.safe_halt);
- }
-@@ -178,7 +178,9 @@ static inline void halt(void)
- 	PVOP_VCALL0(irq.halt);
- }
+ #include "pcie-designware.h"
  
--static inline void wbinvd(void)
-+extern noinstr void pv_native_wbinvd(void);
++#define PCIE_LINK_CAP			0x7C	/* PCIe Link Capabilities*/
++#define MAX_LINK_SP_MASK		0x0F
++#define MAX_LINK_W_MASK			0x3F
++#define MAX_LINK_W_SHIFT		4
 +
-+static __always_inline void wbinvd(void)
- {
- 	PVOP_ALT_VCALL0(cpu.wbinvd, "wbinvd", ALT_NOT(X86_FEATURE_XENPV));
- }
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -115,7 +115,7 @@ static inline void wrpkru(u32 pkru)
- }
- #endif
++/* PEX PFa PCIE pme and message interrupt registers*/
++#define PEX_PF0_PME_MES_DR             0xC0020
++#define PEX_PF0_PME_MES_DR_LUD         (1 << 7)
++#define PEX_PF0_PME_MES_DR_LDD         (1 << 9)
++#define PEX_PF0_PME_MES_DR_HRD         (1 << 10)
++
++#define PEX_PF0_PME_MES_IER            0xC0028
++#define PEX_PF0_PME_MES_IER_LUDIE      (1 << 7)
++#define PEX_PF0_PME_MES_IER_LDDIE      (1 << 9)
++#define PEX_PF0_PME_MES_IER_HRDIE      (1 << 10)
++
+ #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
  
--static inline void native_wbinvd(void)
-+static __always_inline void native_wbinvd(void)
- {
- 	asm volatile("wbinvd": : :"memory");
- }
-@@ -179,7 +179,7 @@ static inline void __write_cr4(unsigned
- 	native_write_cr4(x);
- }
+ struct ls_pcie_ep_drvdata {
+@@ -30,8 +46,90 @@ struct ls_pcie_ep {
+ 	struct dw_pcie			*pci;
+ 	struct pci_epc_features		*ls_epc;
+ 	const struct ls_pcie_ep_drvdata *drvdata;
++	u8				max_speed;
++	u8				max_width;
++	bool				big_endian;
++	int				irq;
+ };
  
--static inline void wbinvd(void)
-+static __always_inline void wbinvd(void)
- {
- 	native_wbinvd();
- }
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -382,7 +382,7 @@ MULTI_stack_switch(struct multicall_entr
- }
- #endif
- 
--static inline int
-+static __always_inline int
- HYPERVISOR_sched_op(int cmd, void *arg)
- {
- 	return _hypercall2(int, sched_op, cmd, arg);
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -233,6 +233,11 @@ static noinstr void pv_native_set_debugr
- 	native_set_debugreg(regno, val);
- }
- 
-+noinstr void pv_native_wbinvd(void)
++static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
 +{
-+	native_wbinvd();
++	struct dw_pcie *pci = pcie->pci;
++
++	if (pcie->big_endian)
++		return ioread32be(pci->dbi_base + offset);
++	else
++		return ioread32(pci->dbi_base + offset);
 +}
 +
- static noinstr void pv_native_irq_enable(void)
- {
- 	native_irq_enable();
-@@ -242,6 +247,11 @@ static noinstr void pv_native_irq_disabl
- {
- 	native_irq_disable();
- }
-+
-+static noinstr void pv_native_safe_halt(void)
++static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset,
++			  u32 value)
 +{
-+	native_safe_halt();
++	struct dw_pcie *pci = pcie->pci;
++
++	if (pcie->big_endian)
++		iowrite32be(value, pci->dbi_base + offset);
++	else
++		iowrite32(value, pci->dbi_base + offset);
 +}
- #endif
++
++static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
++{
++	struct ls_pcie_ep *pcie = (struct ls_pcie_ep *)dev_id;
++	struct dw_pcie *pci = pcie->pci;
++	u32 val;
++
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
++	if (!val)
++		return IRQ_NONE;
++
++	if (val & PEX_PF0_PME_MES_DR_LUD)
++		dev_info(pci->dev, "Detect the link up state !\n");
++	else if (val & PEX_PF0_PME_MES_DR_LDD)
++		dev_info(pci->dev, "Detect the link down state !\n");
++	else if (val & PEX_PF0_PME_MES_DR_HRD)
++		dev_info(pci->dev, "Detect the hot reset state !\n");
++
++	dw_pcie_dbi_ro_wr_en(pci);
++	dw_pcie_writew_dbi(pci, PCIE_LINK_CAP,
++			   (pcie->max_width << MAX_LINK_W_SHIFT) |
++			   pcie->max_speed);
++	dw_pcie_dbi_ro_wr_dis(pci);
++
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
++
++	return IRQ_HANDLED;
++}
++
++static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
++				     struct platform_device *pdev)
++{
++	u32 val;
++	int ret;
++
++	pcie->irq = platform_get_irq_byname(pdev, "pme");
++	if (pcie->irq < 0) {
++		dev_err(&pdev->dev, "Can't get 'pme' irq.\n");
++		return pcie->irq;
++	}
++
++	ret = devm_request_irq(&pdev->dev, pcie->irq,
++			       ls_pcie_ep_event_handler, IRQF_SHARED,
++			       pdev->name, pcie);
++	if (ret) {
++		dev_err(&pdev->dev, "Can't register PCIe IRQ.\n");
++		return ret;
++	}
++
++	/* Enable interrupts */
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
++	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
++		PEX_PF0_PME_MES_IER_LUDIE;
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
++
++	return 0;
++}
++
+ static const struct pci_epc_features*
+ ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+ {
+@@ -125,6 +223,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	struct ls_pcie_ep *pcie;
+ 	struct pci_epc_features *ls_epc;
+ 	struct resource *dbi_base;
++	int ret;
  
- enum paravirt_lazy_mode paravirt_get_lazy_mode(void)
-@@ -273,7 +283,7 @@ struct paravirt_patch_template pv_ops =
- 	.cpu.read_cr0		= native_read_cr0,
- 	.cpu.write_cr0		= native_write_cr0,
- 	.cpu.write_cr4		= native_write_cr4,
--	.cpu.wbinvd		= native_wbinvd,
-+	.cpu.wbinvd		= pv_native_wbinvd,
- 	.cpu.read_msr		= native_read_msr,
- 	.cpu.write_msr		= native_write_msr,
- 	.cpu.read_msr_safe	= native_read_msr_safe,
-@@ -307,7 +317,7 @@ struct paravirt_patch_template pv_ops =
- 	.irq.save_fl		= __PV_IS_CALLEE_SAVE(native_save_fl),
- 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(pv_native_irq_disable),
- 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(pv_native_irq_enable),
--	.irq.safe_halt		= native_safe_halt,
-+	.irq.safe_halt		= pv_native_safe_halt,
- 	.irq.halt		= native_halt,
- #endif /* CONFIG_PARAVIRT_XXL */
+ 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+ 	if (!pcie)
+@@ -155,9 +254,20 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
  
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1019,7 +1019,7 @@ static const typeof(pv_ops) xen_cpu_ops
+ 	pci->ep.ops = &ls_pcie_ep_ops;
  
- 		.write_cr4 = xen_write_cr4,
++	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
++
++	pcie->max_speed = dw_pcie_readw_dbi(pci, PCIE_LINK_CAP) &
++			  MAX_LINK_SP_MASK;
++	pcie->max_width = (dw_pcie_readw_dbi(pci, PCIE_LINK_CAP) >>
++			  MAX_LINK_W_SHIFT) & MAX_LINK_W_MASK;
++
+ 	platform_set_drvdata(pdev, pcie);
  
--		.wbinvd = native_wbinvd,
-+		.wbinvd = pv_native_wbinvd,
- 
- 		.read_msr = xen_read_msr,
- 		.write_msr = xen_write_msr,
---- a/arch/x86/xen/irq.c
-+++ b/arch/x86/xen/irq.c
-@@ -24,7 +24,7 @@ noinstr void xen_force_evtchn_callback(v
- 	(void)HYPERVISOR_xen_version(0, NULL);
+-	return dw_pcie_ep_init(&pci->ep);
++	ret = dw_pcie_ep_init(&pci->ep);
++	if (ret)
++		return  ret;
++
++	return  ls_pcie_ep_interrupt_init(pcie, pdev);
  }
  
--static void xen_safe_halt(void)
-+static noinstr void xen_safe_halt(void)
- {
- 	/* Blocking includes an implicit local_irq_enable(). */
- 	if (HYPERVISOR_sched_op(SCHEDOP_block, NULL) != 0)
-
+ static struct platform_driver ls_pcie_ep_driver = {
+-- 
+2.34.1
 
