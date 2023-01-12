@@ -1,57 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C26666759
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 01:02:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14A6666786
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 01:16:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nsl9G0D15z3cBh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 11:02:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NslTY2X7zz3ch5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 11:16:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sxkg91jN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wa53QQgH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=2u5t=5j=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sxkg91jN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wa53QQgH;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nsl8J5893z3bT5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 11:01:36 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 43B936129D;
-	Thu, 12 Jan 2023 00:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA52CC433D2;
-	Thu, 12 Jan 2023 00:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673481692;
-	bh=gp3ixmSzBGJy8uTYxS5ADZZFIL2F1SvM+d/vmQgSrEU=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=sxkg91jNJBJYH7USijDsMpk3B7Rh+pgZSq9kVREeqMKTlsIraCQc2xugar4BcIY30
-	 15TqShLgLOsylkvcbhLbEEJwOcyf5HWdcJDQ98MpdAb2iHVzT3VnL7QQN8I6kGoENx
-	 4q4cAn1LtVbSg7wtPN53/Nh1vkJIHkv/3GxRmrt4X9ISye/UhBm+6tPDO5SrSmj1f3
-	 HxWA1nht/9YSii1cMJY2yU0gamKhpuNX4A9PJDk2XEvyJ8pWnG+iHFn1X4pAIk4GIj
-	 rB0wg+LRmAMlFp/jZocqp/R42AFuuzFxU1xtYyiYY1NpsBi3yBRg/jX0fJZZzTNDMk
-	 zUmgANE3Zsj4g==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 5C4965C0AF8; Wed, 11 Jan 2023 16:01:32 -0800 (PST)
-Date: Wed, 11 Jan 2023 16:01:32 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NslSZ3ZVcz3c7C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 11:15:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673482542; x=1705018542;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Lo3OJHUUMGk/isec4GeZUlqnR8Kl4adv9OYQoEUdC4I=;
+  b=Wa53QQgHJmt/aR0sSYZSEvKCSMk1qDRH8oRR2x8ek3TV72uGl1TkDmF0
+   a6oC6aBgUdJL+wB/k936xn6EfGPZO34OO6FPX8Ze7FS/+51uaStCaMvgV
+   mS/ITZFrKn/GjrAXY32HBZDGJZj32qaixU5SgqYVAXKZSGL6uhMAevjVP
+   uk4D4RHfVllrb6YfivvAfXydJvHFiUeqH8EL8qHtkUtWqwmGicB61dIY6
+   4TvpNcI0ecL3OZk/Bc9Psudlgvzb9xKdGrf+Td067QsB/sn5FJYdj86Y1
+   dgf4qGFSmTtw9gaXpzRYaAsZxKy79eQtB2ZyoN1g4fESvAjbb8c838Fhu
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="311393993"
+X-IronPort-AV: E=Sophos;i="5.96,318,1665471600"; 
+   d="scan'208";a="311393993"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 16:15:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="831492113"
+X-IronPort-AV: E=Sophos;i="5.96,318,1665471600"; 
+   d="scan'208";a="831492113"
+Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 11 Jan 2023 16:15:30 -0800
+Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pFlFi-0009dm-0P;
+	Thu, 12 Jan 2023 00:15:30 +0000
+Date: Thu, 12 Jan 2023 08:15:24 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH rcu 04/27] arch/powerpc/kvm: Remove "select SRCU"
-Message-ID: <20230112000132.GC4028633@paulmck-ThinkPad-P17-Gen-1>
-References: <20230105003759.GA1769545@paulmck-ThinkPad-P17-Gen-1>
- <20230105003813.1770367-4-paulmck@kernel.org>
- <87h6wwhbtb.fsf@mpe.ellerman.id.au>
+Subject: [powerpc:fixes] BUILD SUCCESS
+ 76d588dddc459fefa1da96e0a081a397c5c8e216
+Message-ID: <63bf511c.Ud+CxZR+F8zWra2K%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h6wwhbtb.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +70,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: kernel-team@meta.com, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, rcu@vger.kernel.org, rostedt@goodmis.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 12, 2023 at 10:49:04AM +1100, Michael Ellerman wrote:
-> "Paul E. McKenney" <paulmck@kernel.org> writes:
-> > Now that the SRCU Kconfig option is unconditionally selected, there is
-> > no longer any point in selecting it.  Therefore, remove the "select SRCU"
-> > Kconfig statements.
-> >
-> > Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Nicholas Piggin <npiggin@gmail.com>
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: <linuxppc-dev@lists.ozlabs.org>
-> > ---
-> >  arch/powerpc/kvm/Kconfig | 1 -
-> >  1 file changed, 1 deletion(-)
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+branch HEAD: 76d588dddc459fefa1da96e0a081a397c5c8e216  powerpc/imc-pmu: Fix use of mutex in IRQs disabled section
 
-Thank you!  I will apply on the next rebase.
+elapsed time: 724m
 
-							Thanx, Paul
+configs tested: 94
+configs skipped: 100
 
-> cheers
-> 
-> > diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-> > index a9f57dad6d916..902611954200d 100644
-> > --- a/arch/powerpc/kvm/Kconfig
-> > +++ b/arch/powerpc/kvm/Kconfig
-> > @@ -22,7 +22,6 @@ config KVM
-> >  	select PREEMPT_NOTIFIERS
-> >  	select HAVE_KVM_EVENTFD
-> >  	select HAVE_KVM_VCPU_ASYNC_IOCTL
-> > -	select SRCU
-> >  	select KVM_VFIO
-> >  	select IRQ_BYPASS_MANAGER
-> >  	select HAVE_KVM_IRQ_BYPASS
-> > -- 
-> > 2.31.1.189.g2e36527f23
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+x86_64                            allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+um                           x86_64_defconfig
+um                             i386_defconfig
+s390                       zfcpdump_defconfig
+arm                         lubbock_defconfig
+powerpc                     redwood_defconfig
+sh                          rsk7203_defconfig
+sh                            hp6xx_defconfig
+riscv                randconfig-r042-20230110
+s390                 randconfig-r044-20230110
+arc                  randconfig-r043-20230110
+ia64                             allmodconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+alpha                               defconfig
+s390                             allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+mips                     decstation_defconfig
+mips                           ci20_defconfig
+powerpc                      pcm030_defconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arm                          gemini_defconfig
+powerpc                     tqm8548_defconfig
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+microblaze                      mmu_defconfig
+arm                           tegra_defconfig
+loongarch                 loongson3_defconfig
+parisc                           allyesconfig
+powerpc                      pasemi_defconfig
+mips                       bmips_be_defconfig
+xtensa                         virt_defconfig
+arc                        nsim_700_defconfig
+nios2                               defconfig
+mips                         rt305x_defconfig
+arc                        vdk_hs38_defconfig
+sh                   sh7770_generic_defconfig
+loongarch                           defconfig
+m68k                         amcore_defconfig
+arm                        multi_v7_defconfig
+sh                              ul2_defconfig
+m68k                             alldefconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                    klondike_defconfig
+nios2                            allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                          rhel-8.3-rust
+powerpc                      chrp32_defconfig
+powerpc                        fsp2_defconfig
+arm                         shannon_defconfig
+arm                  randconfig-r046-20230110
+hexagon              randconfig-r041-20230110
+hexagon              randconfig-r045-20230110
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
