@@ -1,69 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934F7667048
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 11:55:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A34667919
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 16:24:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nt1fm3PxFz3fCJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 21:55:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nt7d13gSsz3fDH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 02:24:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h8QjrQBs;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=u49FS3Dk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=walle.cc (client-ip=159.69.201.130; helo=mail.3ffe.de; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h8QjrQBs;
+	dkim=pass (2048-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2022082101 header.b=u49FS3Dk;
 	dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nt1dp3gRrz3c2W
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 21:54:37 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id s67so12512247pgs.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 02:54:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9iP7sVq72owAsCaLRDRWrJyz/2SPBWD/zqMuimFV62c=;
-        b=h8QjrQBsSmb5hvUQB05p02td/5Hg9ajyH+4BzoOFHUlA//3317l/BmN1NVnFFREt/Q
-         IBYThpMg+IFwrC4k7nTg5+oHLhLnG7NWH4EfINdh0wCpVwi+EWhzzbUxyqqVnH5XgRAy
-         UDz7mdbINvdPV0+IEgLpKHOnHs4kxEcfvbTkSfo/xaa/+8RKt+sfHaLbql7OwzTlqlSY
-         1RAUC0PSqIYTE50N+hAI5Zyba16DrbbbiEXHglsRzXAeysPUkAmTrkQX8NCVbXfwLKv1
-         kBbUv1DyAVVGaWc77h3uChMcshP9p4ahu+mbOvxU+WRnaWoS5bG4cSnkZrHTntF1YxZN
-         Qbhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9iP7sVq72owAsCaLRDRWrJyz/2SPBWD/zqMuimFV62c=;
-        b=idZvYOZzWX/Ffac9TdsM/4SLgbH5v/IUxZ/LpohPoq/l9Se6cw1T1HWwEt0PPEAcbP
-         TAKqJdGAjVbMQZYVyMKsBLM9Zryfij8tBzQmpaKS24t6Q0Hp7wasd0K4SdS9QhPkBGLV
-         te7W2fZy8wJX0cQGcn45xSZP5yGrubQ6S3iVLRX3ART7OEGc36asNaWshEHkLElTEKwU
-         0bzZrbIGaSgfqRFBOumaDTlabJUZZY+3gJ1t3R7zMK/tD/V1bHj7K6etik40qIajhJny
-         XXun2cJVthfi4lXyvTQ7Lz2iulBYielNYCiRBUDiGbYhx1ZS6SzvjthjPZAk2O6gdscb
-         UPKg==
-X-Gm-Message-State: AFqh2kp1/wfuJaJD4a7GALqAkFdjb8SgN3vsAvJXUPY3Jcun7JOC6EBg
-	/mKJ58kHpFZschrT5i7yUHo=
-X-Google-Smtp-Source: AMrXdXuJYr7IANlERZdu5+nkMfo07TmOuFv1Pk8yIXbtU+EySoO4KIlu2FFiHnWNzz1MkZdOyvkThg==
-X-Received: by 2002:a62:5f43:0:b0:576:dc40:6db9 with SMTP id t64-20020a625f43000000b00576dc406db9mr70336312pfb.13.1673520874465;
-        Thu, 12 Jan 2023 02:54:34 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-88-198.tpgi.com.au. [193.116.88.198])
-        by smtp.gmail.com with ESMTPSA id g26-20020aa796ba000000b005891c98e1aasm7070970pfk.119.2023.01.12.02.54.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 02:54:33 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] kallsyms: Fix scheduling with interrupts disabled in self-test
-Date: Thu, 12 Jan 2023 20:54:26 +1000
-Message-Id: <20230112105426.1037325-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nt7c35Hxbz3c90;
+	Fri, 13 Jan 2023 02:23:31 +1100 (AEDT)
+Received: from mwalle01.sab.local (unknown [213.135.10.150])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 17DAF1243;
+	Thu, 12 Jan 2023 16:15:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+	t=1673536523;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Z7B4pND5e+QR5QtoQ7I5oChkxQuHHA20+0hEeYmGTgM=;
+	b=u49FS3Dk9qDfluXiGp9TkmisU6Qu5EvwZeqGdovxab6dVxup2BRDNMldkVcrzwCEAfpQAO
+	ZqMoR10rIPYiZXZgHEfpSBuByb641u4TLay6c3YIfCdpyyraN3BAKHkEcEFVIkadRUCeaH
+	NhRHm0VW+4rqcCspn5gc2CDfsZ3V9+V77PoUo5/EbEgb2mqudJB6j2SVDvbwlriGHsQVNE
+	g+ewd5Nm+se/6Xbqu+vFAXV0+H4iY4LjVWzQ14ymHNqNk0p3sf4brIiS32qqEmA3kq2MDu
+	6wV/2+U3EUaZghtv6GX3t0E72N3yCT7u78d3h0OeNauAyUvteuYApMHhmZ3Iug==
+From: Michael Walle <michael@walle.cc>
+Subject: [PATCH net-next 00/10] net: mdio: Continue separating C22 and C45
+Date: Thu, 12 Jan 2023 16:15:07 +0100
+Message-Id:  <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPsjwGMC/zWNwQrCMBBEf6Xs2YVuTLX4K+Jhk25tDsawG6RQ+
+ u+mgoc5PIZ5s4GJJjG4dRuofJKld25Apw7iwvkpmKbG4Hp37okcZqkta8XoBzQpolzbBgtrRYcU
+ xjkE8v4yXqFJAptgUM5xOTQvtip6FEVlTuvv+Q5/KTz2/QtSEQk5kwAAAA==
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+ Sean Wang <sean.wang@mediatek.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Li Yang <leoyang.li@nxp.com>
+X-Mailer: b4 0.11.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,87 +81,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Erhard F ." <erhard_f@mailbox.org>, Nicholas Piggin <npiggin@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, kernel test robot <oliver.sang@intel.com>, Zhen Lei <thunder.leizhen@huawei.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-aspeed@lists.ozlabs.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Michael Walle <michael@walle.cc>, linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kallsyms_on_each* may schedule so must not be called with interrupts
-disabled. The iteration function could disable interrupts, but this
-also changes lookup_symbol() to match the change to the other timing
-code.
+I've picked this older series from Andrew up and rebased it onto
+the latest net-next.
 
-Reported-by: Erhard F. <erhard_f@mailbox.org>
-Link: https://lore.kernel.org/all/bug-216902-206035@https.bugzilla.kernel.org%2F/
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Link: https://lore.kernel.org/oe-lkp/202212251728.8d0872ff-oliver.sang@intel.com
-Fixes: 30f3bb09778d ("kallsyms: Add self-test facility")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+This is the second patch set in the series which separates the C22
+and C45 MDIO bus transactions at the API level to the MDIO bus drivers.
+
+Signed-off-by: Michael Walle <michael@walle.cc>
+
+￼
+
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Ray Jui <rjui@broadcom.com>
+To: Scott Branden <sbranden@broadcom.com>
+To: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+To: Joel Stanley <joel@jms.id.au>
+To: Andrew Jeffery <andrew@aj.id.au>
+To: Felix Fietkau <nbd@nbd.name>
+To: John Crispin <john@phrozen.org>
+To: Sean Wang <sean.wang@mediatek.com>
+To: Mark Lee <Mark-MC.Lee@mediatek.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Matthias Brugger <matthias.bgg@gmail.com>
+To: Bryan Whitehead <bryan.whitehead@microchip.com>
+To: UNGLinuxDriver@microchip.com
+To: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Jose Abreu <joabreu@synopsys.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Florian Fainelli <f.fainelli@gmail.com>
+To: Li Yang <leoyang.li@nxp.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-aspeed@lists.ozlabs.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Michael Walle <michael@walle.cc>
+
 ---
- kernel/kallsyms_selftest.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+Andrew Lunn (10):
+      net: mdio: cavium: Separate C22 and C45 transactions
+      net: mdio: i2c: Separate C22 and C45 transactions
+      net: mdio: mux-bcm-iproc: Separate C22 and C45 transactions
+      net: mdio: aspeed: Separate C22 and C45 transactions
+      net: mdio: ipq4019: Separate C22 and C45 transactions
+      net: ethernet: mtk_eth_soc: Separate C22 and C45 transactions
+      net: lan743x: Separate C22 and C45 transactions
+      net: stmmac: Separate C22 and C45 transactions for xgmac2
+      net: stmmac: Separate C22 and C45 transactions for xgmac
+      enetc: Separate C22 and C45 transactions
 
-diff --git a/kernel/kallsyms_selftest.c b/kernel/kallsyms_selftest.c
-index f35d9cc1aab1..bfbc12da3326 100644
---- a/kernel/kallsyms_selftest.c
-+++ b/kernel/kallsyms_selftest.c
-@@ -157,14 +157,11 @@ static void test_kallsyms_compression_ratio(void)
- static int lookup_name(void *data, const char *name, struct module *mod, unsigned long addr)
- {
- 	u64 t0, t1, t;
--	unsigned long flags;
- 	struct test_stat *stat = (struct test_stat *)data;
- 
--	local_irq_save(flags);
--	t0 = sched_clock();
-+	t0 = ktime_get_ns();
- 	(void)kallsyms_lookup_name(name);
--	t1 = sched_clock();
--	local_irq_restore(flags);
-+	t1 = ktime_get_ns();
- 
- 	t = t1 - t0;
- 	if (t < stat->min)
-@@ -234,18 +231,15 @@ static int find_symbol(void *data, const char *name, struct module *mod, unsigne
- static void test_perf_kallsyms_on_each_symbol(void)
- {
- 	u64 t0, t1;
--	unsigned long flags;
- 	struct test_stat stat;
- 
- 	memset(&stat, 0, sizeof(stat));
- 	stat.max = INT_MAX;
- 	stat.name = stub_name;
- 	stat.perf = 1;
--	local_irq_save(flags);
--	t0 = sched_clock();
-+	t0 = ktime_get_ns();
- 	kallsyms_on_each_symbol(find_symbol, &stat);
--	t1 = sched_clock();
--	local_irq_restore(flags);
-+	t1 = ktime_get_ns();
- 	pr_info("kallsyms_on_each_symbol() traverse all: %lld ns\n", t1 - t0);
- }
- 
-@@ -270,17 +264,14 @@ static int match_symbol(void *data, unsigned long addr)
- static void test_perf_kallsyms_on_each_match_symbol(void)
- {
- 	u64 t0, t1;
--	unsigned long flags;
- 	struct test_stat stat;
- 
- 	memset(&stat, 0, sizeof(stat));
- 	stat.max = INT_MAX;
- 	stat.name = stub_name;
--	local_irq_save(flags);
--	t0 = sched_clock();
-+	t0 = ktime_get_ns();
- 	kallsyms_on_each_match_symbol(match_symbol, stat.name, &stat);
--	t1 = sched_clock();
--	local_irq_restore(flags);
-+	t1 = ktime_get_ns();
- 	pr_info("kallsyms_on_each_match_symbol() traverse all: %lld ns\n", t1 - t0);
- }
- 
+ drivers/net/dsa/ocelot/felix_vsc9959.c             |   6 +-
+ drivers/net/ethernet/freescale/enetc/enetc_mdio.c  | 119 ++++++--
+ .../net/ethernet/freescale/enetc/enetc_pci_mdio.c  |   6 +-
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c    |  12 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c        | 178 +++++++----
+ drivers/net/ethernet/microchip/lan743x_main.c      | 106 ++++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c  | 331 ++++++++++++++-------
+ drivers/net/mdio/mdio-aspeed.c                     |  47 +--
+ drivers/net/mdio/mdio-cavium.c                     | 111 +++++--
+ drivers/net/mdio/mdio-cavium.h                     |   9 +-
+ drivers/net/mdio/mdio-i2c.c                        |  32 +-
+ drivers/net/mdio/mdio-ipq4019.c                    | 154 ++++++----
+ drivers/net/mdio/mdio-mux-bcm-iproc.c              |  54 +++-
+ drivers/net/mdio/mdio-octeon.c                     |   6 +-
+ drivers/net/mdio/mdio-thunder.c                    |   6 +-
+ include/linux/fsl/enetc_mdio.h                     |  21 +-
+ 16 files changed, 766 insertions(+), 432 deletions(-)
+---
+base-commit: 0a093b2893c711d82622a9ab27da4f1172821336
+change-id: 20230112-net-next-c45-seperation-part-2-1b8fbb144687
+
+Best regards,
 -- 
-2.37.2
-
+Michael Walle <michael@walle.cc>
