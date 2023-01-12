@@ -1,55 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3485C6685C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:46:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7EF6685DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:49:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtJ680df8z3gQc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:46:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtJ9P43HRz3gXy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:49:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ew9S6ssy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CLGQjrQB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sboyd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e2e; helo=mail-vs1-xe2e.google.com; envelope-from=f.fainelli@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ew9S6ssy;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CLGQjrQB;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtGNP2chcz3c88
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 07:28:53 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9D4D4B82014;
-	Thu, 12 Jan 2023 20:28:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08847C433EF;
-	Thu, 12 Jan 2023 20:28:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673555327;
-	bh=ZbPNLkIUkQwHXCbvQoI2XLaF4ww/POIlS320Sa4a75I=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=Ew9S6ssyQxA/qOEa20QKNGKB4XNqKcj4gZvqGJH+zAG+P+Etqd7vw/znf/4NWIiTQ
-	 Bk5xIf0TF8vpJTdsWmpqMzyz2u9CW3n58vVXYINgKQ8Ys9ny0OlUoy7YWJiSRsWGNl
-	 RTVY7ppda94AJFEtcKo4HqFchiKjjT19SH8zBk8fjiY0YWgeKj83yZBlXudb2eSa64
-	 q4IvtFH0u1VXC5cZIoMU1HyoWnUF84ag01Ib966jn6Jq4C3CU5IEq54tzZpHoOhssE
-	 fZa0d21POZJLgjX5QB2TV2LFJLbEPppv5c9Y86RzgOUX6eeUDwPcIKdJkOiovDkAI3
-	 X6K2ZCEAo7m+Q==
-Message-ID: <cd75c97ac883283fb0764f5862a6377f.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtHNr39K5z3fN4;
+	Fri, 13 Jan 2023 08:14:19 +1100 (AEDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id i188so20347406vsi.8;
+        Thu, 12 Jan 2023 13:14:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9G8E/pbF0yCVEwppEfeZ3APRR94ekY7sl663Hc09EMo=;
+        b=CLGQjrQB/cXT4ivLFkBZ2uFfRzV2B4EuZw/fwRZDs/OamGqTfErZRyoEF5zSftNssA
+         aXo/J943u3z52xiiyn9ozbhsyoQruIu2fecHP/z+SDB5JICNMpxq0KcptZnYMIhrShBM
+         YfC96q6zTGqcqq9hX2DPYulrMchhsuMtmAzxE/31s8E9O7Mmo6W9CLXhI76inUfSWyDe
+         +cHCugoc13oZ7d5vWOFEfSgOP8LUmFvg/dNuqBbCgACKDXztYEDpxaveJOoNssA3MPUw
+         vfhD6ahNx593rmXHQEFQIlfxRB/Tly17byXrAoAyTruXS4oWhtjl0KJfWf3LFxNyESR/
+         QMaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9G8E/pbF0yCVEwppEfeZ3APRR94ekY7sl663Hc09EMo=;
+        b=xldH3DA7DrdztDDTAkJvGSzWOfta4gVE0zT3SWsaUM9rLYmsL2GcaXDKh7A8j2b1q1
+         ezJXyrIHpGFSHudZR1hS89uFOMuAduZ/zZygIY3/iHMta+lJ0gIYBBKPbj0Lb9tArk2z
+         QuLvv6suJvsQJaJGTQ+9zfDISW3MVTBT8gBD/s3rT0mvnGLRXB+GspYiSrG/hrHlOkRN
+         jM2J7RYl4KOn6u7rURrW48YG6xYZw6mShF/X4uQnZvvfG8mbFVPkRBU9sd0iRl5bBQPW
+         iAq+cMoPD3V/9UXDLbqzkr0HYwzoxG2QXkeqNglwpRyDmC/SYLHyO5x43XcqjSq8px2Z
+         etqA==
+X-Gm-Message-State: AFqh2kr6UrQkWJQxhI2Nc1UEVqaW5aflgxFkZDDeF4rJi5b9kIOilX9t
+	MwO2eEFoRvk9h88yDYgANAI=
+X-Google-Smtp-Source: AMrXdXvqOpDKUMfAeRKnyAEn0jSg0Xdln+Y3NUo/FVdyWNh9GqqApDbAMshix//ZhSV0K8IXOyErgA==
+X-Received: by 2002:a05:6102:32d3:b0:3d1:657e:39ff with SMTP id o19-20020a05610232d300b003d1657e39ffmr335281vss.30.1673558054609;
+        Thu, 12 Jan 2023 13:14:14 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id u15-20020a37ab0f000000b006f9c2be0b4bsm11202593qke.135.2023.01.12.13.13.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jan 2023 13:14:14 -0800 (PST)
+Message-ID: <2fd5c783-94f1-1896-c6b9-431a754aec14@gmail.com>
+Date: Thu, 12 Jan 2023 13:13:51 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230112195541.844982902@infradead.org>
-References: <20230112194314.845371875@infradead.org> <20230112195541.844982902@infradead.org>
-Subject: Re: [PATCH v3 41/51] cpuidle,clk: Remove trace_.*_rcuidle()
-From: Stephen Boyd <sboyd@kernel.org>
-To: peterz@infradead.org
-Date: Thu, 12 Jan 2023 12:28:44 -0800
-User-Agent: alot/0.10
-X-Mailman-Approved-At: Fri, 13 Jan 2023 07:59:45 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH net-next 03/10] net: mdio: mux-bcm-iproc: Separate C22 and
+ C45 transactions
+Content-Language: en-US
+To: Michael Walle <michael@walle.cc>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@aj.id.au>, Felix Fietkau <nbd@nbd.name>,
+ John Crispin <john@phrozen.org>, Sean Wang <sean.wang@mediatek.com>,
+ Mark Lee <Mark-MC.Lee@mediatek.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Bryan Whitehead <bryan.whitehead@microchip.com>,
+ UNGLinuxDriver@microchip.com, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Li Yang <leoyang.li@nxp.com>
+References: <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
+ <20230112-net-next-c45-seperation-part-2-v1-3-5eeaae931526@walle.cc>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230112-net-next-c45-seperation-part-2-v1-3-5eeaae931526@walle.cc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,81 +102,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org,
-	catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com,
-	bsegall@google.com, guoren@kernel.org, pavel@ucw.cz,
-	agordeev@linux.ibm.com, srivatsa@csail.mit.edu,
-	linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	vincent.guittot@linaro.org, chenhuacai@kernel.org,
-	linux-acpi@vger.kernel.org, mingo@redhat.com, geert@linux-m68k.org,
-	linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com,
-	mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com,
-	linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de,
-	linux-omap@vger.kernel.org, dietmar.eggemann@arm.com,
-	andreyknvl@gmail.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org,
-	tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	linux-trace-kernel@vger.kernel.org, mark.rutland@arm.com,
-	linux-ia64@vger.kernel.org, alim.akhtar@samsung.com,
-	dave.hansen@linux.intel.com,
-	virtualization@lists.linux-foundation.org,
-	James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com,
-	thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com,
-	linux-s390@vger.kernel.org, vschneid@redhat.com,
-	john.ogness@linutronix.de, ysato@users.sourceforge.jp,
-	linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl,
-	daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org,
-	frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org,
-	kernel@pengutronix.de, gor@linux.ibm.com,
-	linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev,
-	shorne@gmail.com, chris@zankel.net, dinguyen@kernel.org,
-	com@lists.ozlabs.org, Ulf Hansson <ulf.hansson@linaro.org>,
-	alexander.shishkin@linux.intel.com, lpieralisi@kernel.org,
-	atishp@atishpatra.org, linux@rasmusvillemoes.dk,
-	kasan-dev@googlegroups.com, borntraeger@linux.ibm,
-	festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@kernel.org,
-	linux-csky@vger.kernel.org, pv-drivers@vmware.com,
-	linux-snps-arc@lists.infradead.org, mgorman@suse.de,
-	jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-	ulli.kroll@googlemail.com, linux-clk@vger.kernel.org,
-	rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com,
-	tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
-	konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com,
-	sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net,
-	dalias@libc.org, tony@atomide.com, amakhalov@vmware.com,
-	linux-mm@kvack.org, glider@google.com, hpa@zytor.com,
-	sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com,
-	anton.ivanov@cambridgegreys.com, jonas@southpole.se,
-	yury.norov@gmail.com, richard@nod.at, x86@kernel.org,
-	linux@armlinux.org.uk, agross@kernel.org, mhiramat@kernel.org,
-	aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com,
-	richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi,
-	openrisc@lists.librecores.org, acme@kernel.org,
-	paul.walmsley@sifive.com, linux-tegra@vger.kernel.org,
-	namhyung@kernel.org, andriy.shevchenko@linux.intel.com,
-	jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com,
-	monstr@monstr.eu, bristot@redhat.com, andersson@kernel.org,
-	linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org,
-	palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de,
-	johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org,
-	deller@gmx.de
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-aspeed@lists.ozlabs.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quoting Peter Zijlstra (2023-01-12 11:43:55)
-> OMAP was the one and only user.
->=20
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Tested-by: Tony Lindgren <tony@atomide.com>
-> Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+On 1/12/23 07:15, Michael Walle wrote:
+> From: Andrew Lunn <andrew@lunn.ch>
+> 
+> The MDIO mux broadcom iproc can perform both C22 and C45 transfers.
+> Create separate functions for each and register the C45 versions using
+> the new API calls.
+> 
+> Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Michael Walle <michael@walle.cc>
 > ---
+> Apparently, in the c45 case, the reg value including the MII_ADDR_C45
+> bit is written to the hardware. Looks weird, that a "random" software
+> bit is written to a register. Florian is that correct? Also, with this
+> patch this flag isn't set anymore.
 
-Acked-by: Stephen Boyd <sboyd@kernel.org>
+We should be masking the MII_ADDR_C45 bit because the MDIO_ADDR_OFFSET 
+only defines bits 0 through 20 as being read/write and bits above being 
+read-only. In practice, this is probably not making any difference or harm.
+-- 
+Florian
+
