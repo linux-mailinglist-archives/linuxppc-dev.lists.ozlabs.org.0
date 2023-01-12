@@ -2,119 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F39A667F6A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 20:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBB46684E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:02:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtFFV2hL7z3ch6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 06:37:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtH6v5VJVz3ch4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:02:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=c98oOyEe;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=sUhXWkR9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.8.45; helo=eur04-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=c98oOyEe;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=sUhXWkR9;
 	dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2045.outbound.protection.outlook.com [40.107.8.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFDY5glKz3bZn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:37:01 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N17MZumrWOW+PtPgO+iq09mhwe/LxWJveRLu6DS2nztLADJuE2pGY/KfVTuFvsW5hBJzqhJ3a2uWz1o3HALokDR8Zwm+gnPPFUERkYV4zgo7DonNHVMb+iay6K7eFqqYKKvNgByy1gWj5qnrq6hCO4wmZ0HcHC4/MXNdolO9mBqA0D7MFUYP6kxkG5CJNI4ojhuyKb2SQi5KzY0AmKlyBi6EB+gdWf/bjXZ/qGeykC65Dbku/18VNthC9bA0ffpYYqIAngvNvkZJQYzX1+WZnaR/eGLXtRrsHS7CYOESqA72vY+SoT87iX2ujWmtfzNDhOw36/9s1iAOPzdR24onig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iF5Hq1QwjgGRvLo5zqovqtlNmE4N1a1EZdHK6vBNKsU=;
- b=kg/GmVjWpedKlmF2jl2zE8dqLkRLbhMkWcdFr54YlHNvB7vDFOSUoY0ALT0DKPxKKXniW+kaWQWcp7U05ZHs0bjmb4Rs3xwJMeFj+TaRsCETGaYk/KDHwVQkMyFm2knd/S1jZ46ZZwhl/TFV5Nu8MCSS+ooLMH/rY4pT9UIu16yhZ7yoDG5VDfGNdJ7MhLc7dZMdgKuXHyr79TUzgj/mnJEVMF178zfMFTeUKNZgdN+KTp283uGDvT6R2feUiKzN7h/R02EdRAWyYAQwxMCI+GTaIipwT60kmJ92D9o8UxFvGRviI24i0ddWpqpOthGZQqt1Pz1adkru2poPsOQ3mQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iF5Hq1QwjgGRvLo5zqovqtlNmE4N1a1EZdHK6vBNKsU=;
- b=c98oOyEeuZFA3e//HSZUILnbwGSQqsO3v+2L1JCZVYvro+Zw30McPwNSGyRXWi6raTrXSnB3rN03gCchLi36OzZPIlMrs7lFVo0krtRl2JSbIEDzFWe2f7RJgdWqmb0w3lzSt1wQAqHaHChXlSZDviWpycsjhC1Im16qt5PddRY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AM9PR04MB8178.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Thu, 12 Jan
- 2023 19:36:42 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.5986.018; Thu, 12 Jan 2023
- 19:36:41 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
-Date: Thu, 12 Jan 2023 14:36:21 -0500
-Message-Id: <20230112193621.1513505-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR04CA0027.namprd04.prod.outlook.com
- (2603:10b6:a03:40::40) To HE1PR0401MB2331.eurprd04.prod.outlook.com
- (2603:10a6:3:24::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFj23m52z3cBX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
+	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To;
+	bh=2yvU/+KlibzuaJax7jV4X0So1xAo1cwX7MytP6HDPxE=; b=sUhXWkR989HxDuMz0IgNt58RkK
+	nqTN5ZbI/duQQhxiZIzMawumh/twojZHHcaDqklE1ZF5s9tPOmCTfdy15HjBg8WXgPVucBjQvW43I
+	QASwgw9LJ/VCj67WQV8Kbc/Lcf7g3wIR57WUJTSoSCSVZinq9B6HixK86IFvy4TlcucW6OHR2E3Ei
+	tIHujO7fCf/vd7x/FNnvOJuOoXwmDT/3a+HM+YQFyYM+KFp4K7hYwgSSHbdVvWDfVyJkmrNJb8/L7
+	PjCgd3meHxowC0uYDYr89IC++ERZO4mhecEGYeyICb5FH0IsLoWD/gnKtstWsY8OMoYFxQfEP1FB/
+	ssGUXlaA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pG3hb-005Oef-UL; Thu, 12 Jan 2023 19:57:32 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9301630343B;
+	Thu, 12 Jan 2023 20:57:13 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+	id 194442CCF62AF; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
+Message-ID: <20230112195540.988741683@infradead.org>
+User-Agent: quilt/0.66
+Date: Thu, 12 Jan 2023 20:43:41 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: peterz@infradead.org
+Subject: [PATCH v3 27/51] cpuidle,sched: Remove annotations from TIF_{POLLING_NRFLAG,NEED_RESCHED}
+References: <20230112194314.845371875@infradead.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|AM9PR04MB8178:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf440f79-6de3-4aaa-85f1-08daf4d45487
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	uIz/fH5g9ibwnYbidrAoTgdF2WhgwrojJ2fiUMQbfKg52xwoj7BsyYOLbrfJelyTISaPbjTnzf9puVc1r/a5ZyJv1GgaC/GlTG8khl0R/BudbH4aJ7K02Jp9we5GklvWUUJyCSHRbvTh9STheAdd1/qzLE8HKkAO3rHAovTz4ZMz8DcVCoZC7+PXUvSZ8b+WJofNnhpiZzM4D1aIARxPH3w8oG1EcSqSBAfdqRbG7LnRaqqIOF0Co2bJ95R4OnPo5Ag8xxtPZlqqWtdv7RqIjFZJasRH/9F/bRolL5y148MK8moM5drHI1/ccf/ZTHw1XQAQ4YuwDIRNUlOaVh31dkp8K+jClFkO8rtJm2tcd6AdiWtA10SCCQQk5Rpo0jH/qpEs6InAiXKQzVRdYjuQ8EXjj/0Y8GNVuu5YpPLtFpwKsksE2gg5jtex0jqRirwNqpdY6qQcPV9cgL1Mv2KHXy5NfnDRaMk7bNwTowUgUu3eikqXU9xjHlvrSNlT7lDoEYohgMUiz2pR6TLQ+sjxBBLLJ+JZ1cslgYu9GlyQlXcIUeMx5S5BPBdxRzRbDahM57OilGvrPvAiU0nqCh+OeyDTZWVbyQauQcQNXeJ1hhFUiIk7Hl1V8A1o/cig+APlyxGybaR+8lPRYlesCUMKX+AMjyT1gw6MOr6S/HFs96B/oy62royFr/b6ZJ9f1m6Q2zRthqp3ASgDIUHyx9bwn+fJj21JOp2b3XzTHo9IjAI=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(366004)(346002)(39860400002)(136003)(396003)(451199015)(478600001)(6486002)(921005)(41300700001)(6512007)(38100700002)(38350700002)(1076003)(86362001)(316002)(110136005)(2616005)(26005)(66556008)(66946007)(186003)(66476007)(52116002)(4326008)(36756003)(5660300002)(6506007)(2906002)(6666004)(8676002)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?0UA//skogdyZVwk1HpTDGR+Gh6ti9LxcnuVrUCAJSNHdKNiivArbJqXilIai?=
- =?us-ascii?Q?isYayVYTRgRsEbqNf/GdtSrK2bjg5yD8sFHGCjEpGDogi3N7p25eGcIF3ELG?=
- =?us-ascii?Q?mOq3WkARWQLgldkE3yjtQfpiMH9XjPfUjbj6GQ+6OYQ0kwfMam5gxIboOrWz?=
- =?us-ascii?Q?ipuJ5/EfDy+icGKUG9iD/p2RqPpQWKcTwEkbzUH9bh8rlMdGYKqEeQ9dA9fH?=
- =?us-ascii?Q?QnItWd7Q9KSgeeydBYmoVnGiI26gfgZdt6AyAEOpTiWwC6iGB9tN4sPFOLFZ?=
- =?us-ascii?Q?6mTD0HAmyy0yblwbq2VJT3ZFCT55ST1NGyUwNOgU8rvww6CVxV8+NrmUpcev?=
- =?us-ascii?Q?1hKd0VsQ+WoGY9ijjWCEPrUtQkNw4eexeYhCFYFw/MS/y0EElatrW1L2E5Wf?=
- =?us-ascii?Q?6KWJ6WQ/h1G4z1LTs3+UnPuwmQbD4JzyZzZjqYdpvdkjxGv4UcEIsonrIrVF?=
- =?us-ascii?Q?q6XpIT+26716nwpDjM9B3lXT2mKP/G4y3458s963JAxaIIzi0R6YJ2pYUFxB?=
- =?us-ascii?Q?PkPeSlviE4JuU3qXuJYs/I1rJoaQkgN+weVEtLHaGz8QgYrWKdPzC4pw3LYy?=
- =?us-ascii?Q?L/B5JiYGGLACWKBMjCN6oKdOFxnJWH3CMPLcR2kRcY3Vgo7nncb5eqt6Ixs3?=
- =?us-ascii?Q?p0UwWu30QZ4Q4aqpfNZM6tsz+0GJwr89IOXV1SLcWBF7x8cViamEVItEGrG/?=
- =?us-ascii?Q?kSvMgFm3BeVB4RNQVn1ntVH2cl5se9+QzUTHGhBBZxgQli+TxOnKQGVtWbTE?=
- =?us-ascii?Q?8LSu+19RAgQC8cig8i1ke5zyV7+rEqUqCox18Gsjn/1x+9aqx6E6fLbCq+B2?=
- =?us-ascii?Q?/ZSdjm1jjaBNqET8Ha+zAvqMIu5U/Z98wYYOJV1YrTuqbMGtqjhY1hZDGh1J?=
- =?us-ascii?Q?Si239TvHILbX8LZPjceUX8k2Hu4jGaQzY9SO2bZRu3v14jpD6zL7xqfJd8bj?=
- =?us-ascii?Q?JZmFhu6rDg2z+INnpu9OehHN31WSyqlNJJou1aDdYaybdHg0UboLHZElAKz8?=
- =?us-ascii?Q?4MApPp71zTbG03nknCSZImUoRJ3vr+CQvRjSo/ZB2eOt+J6EqZyZgKsdgpm4?=
- =?us-ascii?Q?R1vX4NlD6BYBBI+Za75HEo5eYRoR0ULsedAYUrNAPoPBKbvyLYn1GFxy0tfv?=
- =?us-ascii?Q?kn3wA7pytYoGnFm04uN/56GgAQqoVnYPF4edMkS6qbOxlF4T9E/4KKGBGOta?=
- =?us-ascii?Q?ZJ8AoIyXxnteeZSwp8Xu531CXgVPiSP3cibLtJtlxNgLA5rkk4vV7jRPom6I?=
- =?us-ascii?Q?irKguYZtZOwK/qP5vHpjGOVVxb48j9LhmiI91kFiI273K23Imegud3pmbpsk?=
- =?us-ascii?Q?EKENLgiqi67pLafTEHoKq1nKA+bobH8ss3TWAB7PmTCHmw2LMqQ4CqO+5IGh?=
- =?us-ascii?Q?8bOTjMfhmmUyXEN1lNXmaxatC6WO3nMppSGlnozM20mbedBtDFFTmW7ZV9bs?=
- =?us-ascii?Q?jTJD5gkxCCWUpgo0bcTQS5yPCYMsYVMDLErIc/lY/kg0FdfhTLJEhhgQ6+Bm?=
- =?us-ascii?Q?zRpXWpR505HpQe33KUko3xXOoKpURL9su2LgQi8peJHwVAw+0eHTNvKsbsUo?=
- =?us-ascii?Q?jsT2C3f9Yn50sUGnF1cuEsCZNagc+2J+ZqeKD7Xc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf440f79-6de3-4aaa-85f1-08daf4d45487
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2023 19:36:41.8396
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LTEQ83cLxE5XM7f5pRmeXdONwuVegZOcBMMlU9p+4uHGdV+RxXFARWy38xjWdhyK39LL9i46Rb4ku9Ff3/JR+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8178
+Content-Type: text/plain; charset=UTF-8
+X-Mailman-Approved-At: Fri, 13 Jan 2023 07:59:45 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,36 +64,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev
+Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linu
+ x-foundation.org>, linux-trace-kernel@vger.kernel.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, Ulf Hansson <ulf.hansson@linaro.org>, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, l
+ inux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.ed
+ u, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Guanhua Gao <guanhua.gao@nxp.com>
+vmlinux.o: warning: objtool: mwait_idle+0x5: call to current_set_polling_and_test() leaves .noinstr.text section
+vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xc5: call to current_set_polling_and_test() leaves .noinstr.text section
+vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle+0xbc: call to current_set_polling_and_test() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0xea: call to current_set_polling_and_test() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_s2idle+0xb4: call to current_set_polling_and_test() leaves .noinstr.text section
 
-Set DMA mask and coherent DMA mask to enable 64-bit addressing.
+vmlinux.o: warning: objtool: intel_idle+0xa6: call to current_clr_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0xbf: call to current_clr_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_s2idle+0xa1: call to current_clr_polling() leaves .noinstr.text section
 
-Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+vmlinux.o: warning: objtool: mwait_idle+0xe: call to __current_set_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xc5: call to __current_set_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle+0xbc: call to __current_set_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0xea: call to __current_set_polling() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_s2idle+0xb4: call to __current_set_polling() leaves .noinstr.text section
+
+vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_s2idle+0x73: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0x91: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle+0x78: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: acpi_safe_halt+0xf: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/pci/controller/dwc/pci-layerscape-ep.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/sched/idle.h  |   40 ++++++++++++++++++++++++++++++----------
+ include/linux/thread_info.h |   18 +++++++++++++++++-
+ 2 files changed, 47 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index 1b884854c18e..c19e7ec58b05 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -261,6 +261,10 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	pcie->max_width = (dw_pcie_readw_dbi(pci, PCIE_LINK_CAP) >>
- 			  MAX_LINK_W_SHIFT) & MAX_LINK_W_MASK;
+--- a/include/linux/sched/idle.h
++++ b/include/linux/sched/idle.h
+@@ -23,12 +23,37 @@ static inline void wake_up_if_idle(int c
+  */
+ #ifdef TIF_POLLING_NRFLAG
  
-+	/* set 64-bit DMA mask and coherent DMA mask */
-+	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
-+		dev_warn(dev, "Failed to set 64-bit DMA mask.\n");
+-static inline void __current_set_polling(void)
++#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H
 +
- 	platform_set_drvdata(pdev, pcie);
++static __always_inline void __current_set_polling(void)
+ {
+-	set_thread_flag(TIF_POLLING_NRFLAG);
++	arch_set_bit(TIF_POLLING_NRFLAG,
++		     (unsigned long *)(&current_thread_info()->flags));
+ }
  
- 	ret = dw_pcie_ep_init(&pci->ep);
--- 
-2.34.1
+-static inline bool __must_check current_set_polling_and_test(void)
++static __always_inline void __current_clr_polling(void)
++{
++	arch_clear_bit(TIF_POLLING_NRFLAG,
++		       (unsigned long *)(&current_thread_info()->flags));
++}
++
++#else
++
++static __always_inline void __current_set_polling(void)
++{
++	set_bit(TIF_POLLING_NRFLAG,
++		(unsigned long *)(&current_thread_info()->flags));
++}
++
++static __always_inline void __current_clr_polling(void)
++{
++	clear_bit(TIF_POLLING_NRFLAG,
++		  (unsigned long *)(&current_thread_info()->flags));
++}
++
++#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H */
++
++static __always_inline bool __must_check current_set_polling_and_test(void)
+ {
+ 	__current_set_polling();
+ 
+@@ -41,12 +66,7 @@ static inline bool __must_check current_
+ 	return unlikely(tif_need_resched());
+ }
+ 
+-static inline void __current_clr_polling(void)
+-{
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
+-}
+-
+-static inline bool __must_check current_clr_polling_and_test(void)
++static __always_inline bool __must_check current_clr_polling_and_test(void)
+ {
+ 	__current_clr_polling();
+ 
+@@ -73,7 +93,7 @@ static inline bool __must_check current_
+ }
+ #endif
+ 
+-static inline void current_clr_polling(void)
++static __always_inline void current_clr_polling(void)
+ {
+ 	__current_clr_polling();
+ 
+--- a/include/linux/thread_info.h
++++ b/include/linux/thread_info.h
+@@ -177,7 +177,23 @@ static __always_inline unsigned long rea
+ 	clear_ti_thread_flag(task_thread_info(t), TIF_##fl)
+ #endif /* !CONFIG_GENERIC_ENTRY */
+ 
+-#define tif_need_resched() test_thread_flag(TIF_NEED_RESCHED)
++#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
++
++static __always_inline bool tif_need_resched(void)
++{
++	return arch_test_bit(TIF_NEED_RESCHED,
++			     (unsigned long *)(&current_thread_info()->flags));
++}
++
++#else
++
++static __always_inline bool tif_need_resched(void)
++{
++	return test_bit(TIF_NEED_RESCHED,
++			(unsigned long *)(&current_thread_info()->flags));
++}
++
++#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
+ 
+ #ifndef CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES
+ static inline int arch_within_stack_frames(const void * const stack,
+
 
