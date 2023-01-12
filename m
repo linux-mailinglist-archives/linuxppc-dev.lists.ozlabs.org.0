@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAE7668519
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3883668522
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:13:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtHKx6RcWz3ffm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtHMy4GNJz3fjR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:13:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tOV0YOj5;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UFhO8sQy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tOV0YOj5;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UFhO8sQy;
 	dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFj43XQ1z3cdG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFj53FS9z3cBX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:17 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=TpAs8eQceCyyKKtR//95dieD+m+uPCJ6EEXd6r5ehjs=; b=tOV0YOj5iNDK/m47VBWfA6Ru4x
-	bmj0NeQaiaQs0AKpJs0p/FhjCO7xciTK0nJuh8IuzQGajotJsiy0W+x0AVXUaoNLZnZiKFIJAoHmj
-	BUEedwDc02yQZ8ZXdXHY1sc/922UDzqaZjq3c0CNpaERUTU6w4xWrYhr0/MiJvV0yldLmkp8K2I/g
-	S6ObVx4NF7YshbqwRQkug5niXhh7Men/EndtRRY9U+mGWG1XpgKDjfmIdwaWQ286ma4cOjAXN0+WW
-	DLMrjCJbdT3gRxDJNEIJWJVda+cZllU4MucGSA+Yl53ZmDet+O4b9B1wWrxl82vveg8EofoDzBF31
-	ZgLYxuNA==;
+	bh=ljNIHChdlymEt0s4DtY+Ji5/5ZFr1jFKrzucPLjcAFA=; b=UFhO8sQycbOykP9WLmHLr8syH1
+	9tKpgf+RH4+2oIWu+p1NsZyG1ZQUQEWQKyB7rZeJqKLqT/EpPMTLJSHpi/eniYQI6kNhYX80bC7rp
+	v4DYtLIywV5PM3hyi+6d9VreCBIfyUq0bOE4EJwgP1PAPqwc5ULRKbQuNPzHKcYXFJ+bhA18Sk3BK
+	0SHi+ZzW5d72kp/7epWf2U0Zao67mw1W6KZFzu9PuzdtQCB/RZo73P/7KFSV/9Z+EgMtlu14sgzCt
+	LY3p+teRO7dsISyeJIOJS/fTB2tiC6ZycPsflBP3cBseh7aef5nb+O7jgwPbkvWsd95ol/bFuNb6B
+	77LSYyRg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pG3ht-005P68-BV; Thu, 12 Jan 2023 19:57:49 +0000
+	id 1pG3hu-005P6M-DU; Thu, 12 Jan 2023 19:57:50 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 266FB303475;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 2E2C5303477;
 	Thu, 12 Jan 2023 20:57:14 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 6405E2CD066D8; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
-Message-ID: <20230112195542.089981974@infradead.org>
+	id 68B912CD066DC; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
+Message-ID: <20230112195542.151174682@infradead.org>
 User-Agent: quilt/0.66
-Date: Thu, 12 Jan 2023 20:43:59 +0100
+Date: Thu, 12 Jan 2023 20:44:00 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH v3 45/51] sched: Always inline __this_cpu_preempt_check()
+Subject: [PATCH v3 46/51] arm64,riscv,perf: Remove RCU_NONIDLE() usage
 References: <20230112194314.845371875@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -71,17 +71,8 @@ Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, raf
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmlinux.o: warning: objtool: in_entry_stack+0x9: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: default_do_nmi+0x10: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: fpu_idle_fpregs+0x41: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: kvm_read_and_reset_apf_flags+0x1: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: lockdep_hardirqs_on+0xb0: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: lockdep_hardirqs_off+0xae: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: irqentry_nmi_enter+0x69: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: irqentry_nmi_exit+0x32: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0x9: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: acpi_idle_enter+0x43: call to __this_cpu_preempt_check() leaves .noinstr.text section
-vmlinux.o: warning: objtool: acpi_idle_enter_s2idle+0x45: call to __this_cpu_preempt_check() leaves .noinstr.text section
+The PM notifiers should no longer be ran with RCU disabled (per the
+previous patches), as such this hack is no longer required either.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
@@ -89,19 +80,48 @@ Acked-by: Frederic Weisbecker <frederic@kernel.org>
 Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- include/linux/percpu-defs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/perf/arm_pmu.c       |   11 +----------
+ drivers/perf/riscv_pmu_sbi.c |    8 +-------
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
---- a/include/linux/percpu-defs.h
-+++ b/include/linux/percpu-defs.h
-@@ -310,7 +310,7 @@ extern void __bad_size_call_parameter(vo
- #ifdef CONFIG_DEBUG_PREEMPT
- extern void __this_cpu_preempt_check(const char *op);
- #else
--static inline void __this_cpu_preempt_check(const char *op) { }
-+static __always_inline void __this_cpu_preempt_check(const char *op) { }
- #endif
- 
- #define __pcpu_size_call_return(stem, variable)				\
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -762,17 +762,8 @@ static void cpu_pm_pmu_setup(struct arm_
+ 		case CPU_PM_ENTER_FAILED:
+ 			 /*
+ 			  * Restore and enable the counter.
+-			  * armpmu_start() indirectly calls
+-			  *
+-			  * perf_event_update_userpage()
+-			  *
+-			  * that requires RCU read locking to be functional,
+-			  * wrap the call within RCU_NONIDLE to make the
+-			  * RCU subsystem aware this cpu is not idle from
+-			  * an RCU perspective for the armpmu_start() call
+-			  * duration.
+ 			  */
+-			RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
++			armpmu_start(event, PERF_EF_RELOAD);
+ 			break;
+ 		default:
+ 			break;
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -747,14 +747,8 @@ static int riscv_pm_pmu_notify(struct no
+ 		case CPU_PM_ENTER_FAILED:
+ 			/*
+ 			 * Restore and enable the counter.
+-			 *
+-			 * Requires RCU read locking to be functional,
+-			 * wrap the call within RCU_NONIDLE to make the
+-			 * RCU subsystem aware this cpu is not idle from
+-			 * an RCU perspective for the riscv_pmu_start() call
+-			 * duration.
+ 			 */
+-			RCU_NONIDLE(riscv_pmu_start(event, PERF_EF_RELOAD));
++			riscv_pmu_start(event, PERF_EF_RELOAD);
+ 			break;
+ 		default:
+ 			break;
 
 
