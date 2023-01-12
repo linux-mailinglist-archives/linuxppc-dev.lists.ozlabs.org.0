@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB0866857C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:34:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C74668575
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:32:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtHr40jVpz3g3P
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:34:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtHp41dQGz3fpm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:32:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=KkymT6fn;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WVuIFhrj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,36 @@ Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFjN2m4Mz3fBZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFjK2jTxz3fBM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=VEFTHHrPJN8MUcU5Q+nJT8cn7XDeQYtM8FLMMPm5jQc=; b=KkymT6fnEbdrqizXmWSH2cuOVn
-	jQjLDtcvao8QQM1CDAK23eOtDc3kGN8afBk6jSjfUisCkP/gFLTRKyHuWxXNN647u5J77e9UXxs4t
-	Nxxuk35lQLxa93CmttzHSiwgU7o+eq1l/NDUJPW0u/204PTmRFYkZtbGrRnibXXVYKxBvO5GiUx5C
-	Ls/TdpMiBxMJCS6bvNyUYXqq4XdSVNVmiIEQu6E5gXUs4CphL1YhVZIEKwPAIa9s2+nPr/nrqytbH
-	mC8VuqJNuDqfhjqJCiCzJnptubyVuLBm6bAA/aC0BGih+Kw2mq2OB93VPKPrJHR/xS9q1LgFbp1c/
-	ElutY9cQ==;
+	bh=US/ew+5Vik6jGnrGGiz1QKoghqD4+Lgz+zGR8hxwH/s=; b=WVuIFhrj78QG37MwfM8cwsGLW2
+	6RIQ2dKuiBYGWybloHLp61YaKj0cdn/+fLnH2q0WBRmwtWG3yFLWrnccqDo7As6Ov+J9nISGa2R5A
+	xzyVRpltpBTMUkFNRLUgPKwxWYfzryyd1cFJPVVp4kqW5FroibddKersX+5xp1NAN0mX2n/IX8uo5
+	u3jIptEd8I2RoyVn4KMqbm+bH70AJzyzt5X9Z33H0C0Ne5yJWRvX5w2XDeRGpi6wP1+0NwsgdfANb
+	Qs0TXnigQ3IWTW5HruR9gzoAZACuq68YDeONfYzScB1OF3/BKUWdpvZ2B5iPfLpEFiGMDiOvz9iPi
+	Ew4yKZpQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pG3hH-0045pC-1j;
-	Thu, 12 Jan 2023 19:57:38 +0000
+	id 1pG3hH-0045pK-38;
+	Thu, 12 Jan 2023 19:57:14 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A0F25303440;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B61D2303449;
 	Thu, 12 Jan 2023 20:57:13 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 20F0F2CCF62B3; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
-Message-ID: <20230112195541.111485720@infradead.org>
+	id 2953C2CCF62B7; Thu, 12 Jan 2023 20:57:08 +0100 (CET)
+Message-ID: <20230112195541.233779815@infradead.org>
 User-Agent: quilt/0.66
-Date: Thu, 12 Jan 2023 20:43:43 +0100
+Date: Thu, 12 Jan 2023 20:43:45 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH v3 29/51] cpuidle,tdx: Make tdx noinstr clean
+Subject: [PATCH v3 31/51] cpuidle,nospec: Make noinstr clean
 References: <20230112194314.845371875@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -69,9 +69,11 @@ Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, raf
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmlinux.o: warning: objtool: __halt+0x2c: call to hcall_func.constprop.0() leaves .noinstr.text section
-vmlinux.o: warning: objtool: __halt+0x3f: call to __tdx_hypercall() leaves .noinstr.text section
-vmlinux.o: warning: objtool: __tdx_hypercall+0x66: call to __tdx_hypercall_failed() leaves .noinstr.text section
+vmlinux.o: warning: objtool: mwait_idle+0x47: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
+vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xa2: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle+0x91: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_s2idle+0x8c: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0xaa: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
@@ -79,53 +81,19 @@ Acked-by: Frederic Weisbecker <frederic@kernel.org>
 Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- arch/x86/boot/compressed/vmlinux.lds.S |    1 +
- arch/x86/coco/tdx/tdcall.S             |    2 ++
- arch/x86/coco/tdx/tdx.c                |    5 +++--
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/nospec-branch.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -34,6 +34,7 @@ SECTIONS
- 		_text = .; 	/* Text */
- 		*(.text)
- 		*(.text.*)
-+		*(.noinstr.text)
- 		_etext = . ;
- 	}
- 	.rodata : {
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -31,6 +31,8 @@
- 					  TDX_R12 | TDX_R13 | \
- 					  TDX_R14 | TDX_R15 )
- 
-+.section .noinstr.text, "ax"
-+
- /*
-  * __tdx_module_call()  - Used by TDX guests to request services from
-  * the TDX module (does not include VMM services) using TDCALL instruction.
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -53,8 +53,9 @@ static inline u64 _tdx_hypercall(u64 fn,
- }
- 
- /* Called from __tdx_hypercall() for unrecoverable failure */
--void __tdx_hypercall_failed(void)
-+noinstr void __tdx_hypercall_failed(void)
- {
-+	instrumentation_begin();
- 	panic("TDVMCALL failed. TDX module bug?");
- }
- 
-@@ -64,7 +65,7 @@ void __tdx_hypercall_failed(void)
-  * Reusing the KVM EXIT_REASON macros makes it easier to connect the host and
-  * guest sides of these calls.
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -310,7 +310,7 @@ static __always_inline void mds_user_cle
+  *
+  * Clear CPU buffers if the corresponding static key is enabled
   */
--static u64 hcall_func(u64 exit_reason)
-+static __always_inline u64 hcall_func(u64 exit_reason)
+-static inline void mds_idle_clear_cpu_buffers(void)
++static __always_inline void mds_idle_clear_cpu_buffers(void)
  {
- 	return exit_reason;
- }
+ 	if (static_branch_likely(&mds_idle_clear))
+ 		mds_clear_cpu_buffers();
 
 
