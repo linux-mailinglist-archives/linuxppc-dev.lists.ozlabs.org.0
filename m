@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDA8667E18
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 19:24:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14656667E1E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 19:25:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtCd44nYZz3fBh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 05:24:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtCfK6Ydsz3fBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 05:25:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t6GRHU5n;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ias47fpd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t6GRHU5n;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ias47fpd;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtCc95mKgz30gk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 05:23:53 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 35F08B81FBD;
-	Thu, 12 Jan 2023 18:23:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2664C433EF;
-	Thu, 12 Jan 2023 18:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673547829;
-	bh=Ay2RHNSirNXT1GRYS649GDJxRxbYFyfkrxZhR76Dcdc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=t6GRHU5n/jOOlQVw5AFv3Vy11HGk01Af1l9tE4nx9BqMXZ+cT1RXa74QtWz4jAx6Q
-	 xYiHTKDWPMBJCF2GOOzwEwsWjDSxYs3Rc8+CVOHIt53NAAgM+tXG3LdV3MtPCR46cu
-	 +qw7+PID8uRVIdpVfl7V4KLjTVOwdocGNkZCaA1cWoIipmKACW0QMhrJ9mi7vxP+Lb
-	 u1P2+accYtP0VlTWq8Ct7k3m1P43iVrwSNdmdf+lUM5gFVFBMj6DMHv84y9FZ7bV9O
-	 NdSgrh2jC20ftj6e4dA8aZ3TLXcHe2Yd3bhxrtb4PwiV3Zt5Oja7HVGASJW3S3kZgq
-	 g6ptCYbczlG8w==
-Date: Thu, 12 Jan 2023 12:23:48 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH V1] PCI/AER: Configure ECRC only AER is native
-Message-ID: <20230112182348.GA1777363@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtCdP3kR6z30gk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 05:24:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qP5Y2eUFT5kgzAIkCgX2pt1Occzxryjhe5CUsEAITVc=; b=ias47fpdwEIOZ53RC1IvMwWSaK
+	QguCsnNLqb9UTnaJreclpAKZIA+R9v6ugogJTyWksoDcBDy60VwsL2YXgr3TvPvQp9XZzeDuU0Vig
+	Wnl4vp382Xu+wYWz2LyUhLPBd6s4hyv6U7+z4DHuhvHzIdJrwH3SSyCu/v/1n/13vq12Yb7jYb31V
+	qbtr7au2kIKzt2bBDb7hqnVhNKdI2QnfwOYznIXsF8R0lZsV2xixybxvacBQ+zZjYYY9zfPYUFU0x
+	oO98Ucyi8ffYqcPfrXsG/m6qvpfncKCX/B+QF2X22yYlYaLQsDh8JlEki+qvX40RkYShtL7yxmkD8
+	7HW3qrXA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pG2Fn-00GINn-7e; Thu, 12 Jan 2023 18:24:43 +0000
+Date: Thu, 12 Jan 2023 10:24:43 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Nicholas Piggin <npiggin@gmail.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+	Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH] kallsyms: Fix scheduling with interrupts disabled in
+ self-test
+Message-ID: <Y8BQaw5tVzDjZ9Sz@bombadil.infradead.org>
+References: <20230112105426.1037325-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <880c4d3c-86d2-082c-bb58-8212adc67ff3@linux.intel.com>
+In-Reply-To: <20230112105426.1037325-1-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,88 +60,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: treding@nvidia.com, mmaddireddy@nvidia.com, kthota@nvidia.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, jonathanh@nvidia.com, vsethi@nvidia.com, oohall@gmail.com, bhelgaas@google.com, Vidya Sagar <vidyas@nvidia.com>, linuxppc-dev@lists.ozlabs.org, sagar.tv@gmail.com
+Cc: "Erhard F ." <erhard_f@mailbox.org>, kernel test robot <oliver.sang@intel.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Zhen Lei <thunder.leizhen@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 11, 2023 at 03:27:51PM -0800, Sathyanarayanan Kuppuswamy wrote:
-> On 1/11/23 3:10 PM, Bjorn Helgaas wrote:
-> > On Wed, Jan 11, 2023 at 01:42:21PM -0800, Sathyanarayanan Kuppuswamy wrote:
-> >> On 1/11/23 12:31 PM, Vidya Sagar wrote:
-> >>> As the ECRC configuration bits are part of AER registers, configure
-> >>> ECRC only if AER is natively owned by the kernel.
-> >>
-> >> ecrc command line option takes "bios/on/off" as possible options. It
-> >> does not clarify whether "on/off" choices can only be used if AER is
-> >> owned by OS or it can override the ownership of ECRC configuration 
-> >> similar to pcie_ports=native option. Maybe that needs to be clarified.
-> > 
-> > Good point, what do you think of an update like this:
-> > 
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index 6cfa6e3996cf..f7b40a439194 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -4296,7 +4296,9 @@
-> >  				specified, e.g., 12@pci:8086:9c22:103c:198f
-> >  				for 4096-byte alignment.
-> >  		ecrc=		Enable/disable PCIe ECRC (transaction layer
-> > -				end-to-end CRC checking).
-> > +				end-to-end CRC checking).  Only effective
-> > +				if OS has native AER control (either granted by
-> > +				ACPI _OSC or forced via "pcie_ports=native").
-> >  				bios: Use BIOS/firmware settings. This is the
-> >  				the default.
-> >  				off: Turn ECRC off
+On Thu, Jan 12, 2023 at 08:54:26PM +1000, Nicholas Piggin wrote:
+> kallsyms_on_each* may schedule so must not be called with interrupts
+> disabled. The iteration function could disable interrupts, but this
+> also changes lookup_symbol() to match the change to the other timing
+> code.
 > 
-> Looks fine. But do we even need "bios" option? Since it is the default
-> value, I am not sure why we need to list that as an option again. IMO
-> this could be removed.
+> Reported-by: Erhard F. <erhard_f@mailbox.org>
+> Link: https://lore.kernel.org/all/bug-216902-206035@https.bugzilla.kernel.org%2F/
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Link: https://lore.kernel.org/oe-lkp/202212251728.8d0872ff-oliver.sang@intel.com
+> Fixes: 30f3bb09778d ("kallsyms: Add self-test facility")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
 
-I agree, it seems pointless.
+Thanks Nicholas!
 
-> > I don't know whether the "ecrc=" parameter is really needed.  If we
-> > were adding it today, I would ask "why not enable ECRC wherever it is
-> > supported?"  If there are devices where it's broken, we could always
-> > add quirks to disable it on a case-by-case basis.
+Petr had just suggested removing this aspect of the selftests, the performance
+test as its specific to the config, it doesn't run many times to get an
+average and odd things on a system can create different metrics. Zhen Lei
+had given up on fixing it and has a patch to instead remove this part of
+the selftest.
+
+I still find value in keeping it, but Petr, would like your opinion on
+this fix, if we were to keep it.
+
+  Luis
+
+>  kernel/kallsyms_selftest.c | 21 ++++++---------------
+>  1 file changed, 6 insertions(+), 15 deletions(-)
 > 
-> Checking the original patch which added it, it looks like the intention
-> is to give option to boost performance over integrity.
+> diff --git a/kernel/kallsyms_selftest.c b/kernel/kallsyms_selftest.c
+> index f35d9cc1aab1..bfbc12da3326 100644
+> --- a/kernel/kallsyms_selftest.c
+> +++ b/kernel/kallsyms_selftest.c
+> @@ -157,14 +157,11 @@ static void test_kallsyms_compression_ratio(void)
+>  static int lookup_name(void *data, const char *name, struct module *mod, unsigned long addr)
+>  {
+>  	u64 t0, t1, t;
+> -	unsigned long flags;
+>  	struct test_stat *stat = (struct test_stat *)data;
+>  
+> -	local_irq_save(flags);
+> -	t0 = sched_clock();
+> +	t0 = ktime_get_ns();
+>  	(void)kallsyms_lookup_name(name);
+> -	t1 = sched_clock();
+> -	local_irq_restore(flags);
+> +	t1 = ktime_get_ns();
+>  
+>  	t = t1 - t0;
+>  	if (t < stat->min)
+> @@ -234,18 +231,15 @@ static int find_symbol(void *data, const char *name, struct module *mod, unsigne
+>  static void test_perf_kallsyms_on_each_symbol(void)
+>  {
+>  	u64 t0, t1;
+> -	unsigned long flags;
+>  	struct test_stat stat;
+>  
+>  	memset(&stat, 0, sizeof(stat));
+>  	stat.max = INT_MAX;
+>  	stat.name = stub_name;
+>  	stat.perf = 1;
+> -	local_irq_save(flags);
+> -	t0 = sched_clock();
+> +	t0 = ktime_get_ns();
+>  	kallsyms_on_each_symbol(find_symbol, &stat);
+> -	t1 = sched_clock();
+> -	local_irq_restore(flags);
+> +	t1 = ktime_get_ns();
+>  	pr_info("kallsyms_on_each_symbol() traverse all: %lld ns\n", t1 - t0);
+>  }
+>  
+> @@ -270,17 +264,14 @@ static int match_symbol(void *data, unsigned long addr)
+>  static void test_perf_kallsyms_on_each_match_symbol(void)
+>  {
+>  	u64 t0, t1;
+> -	unsigned long flags;
+>  	struct test_stat stat;
+>  
+>  	memset(&stat, 0, sizeof(stat));
+>  	stat.max = INT_MAX;
+>  	stat.name = stub_name;
+> -	local_irq_save(flags);
+> -	t0 = sched_clock();
+> +	t0 = ktime_get_ns();
+>  	kallsyms_on_each_match_symbol(match_symbol, stat.name, &stat);
+> -	t1 = sched_clock();
+> -	local_irq_restore(flags);
+> +	t1 = ktime_get_ns();
+>  	pr_info("kallsyms_on_each_match_symbol() traverse all: %lld ns\n", t1 - t0);
+>  }
+>  
+> -- 
+> 2.37.2
 > 
-> commit 43c16408842b0eeb367c23a6fa540ce69f99e347
-> Author: Andrew Patterson <andrew.patterson@hp.com>
-> Date:   Wed Apr 22 16:52:09 2009 -0600
-> 
->     PCI: Add support for turning PCIe ECRC on or off
->     
->     Adds support for PCI Express transaction layer end-to-end CRC checking
->     (ECRC).  This patch will enable/disable ECRC checking by setting/clearing
->     the ECRC Check Enable and/or ECRC Generation Enable bits for devices that
->     support ECRC.
->     
->     The ECRC setting is controlled by the "pci=ecrc=<policy>" command-line
->     option. If this option is not set or is set to 'bios", the enable and
->     generation bits are left in whatever state that firmware/BIOS set them to.
->     The "off" setting turns them off, and the "on" option turns them on (if the
->     device supports it).
->     
->     Turning ECRC on or off can be a data integrity versus performance
->     tradeoff.  In theory, turning it on will catch more data errors, turning
->     it off means possibly better performance since CRC does not need to be
->     calculated by the PCIe hardware and packet sizes are reduced.
-
-Ah, right, and I think I was even part of the conversation when this
-was added :)
-
-I'm not sure I would make the same choice today, though.  IMHO it's
-kind of hard to defend choosing performance over data integrity.
-
-If a platform really wants to sacrifice integrity for performance, it
-could retain control of AER, and after Vidya's patch, Linux will leave
-the ECRC configuration alone.
-
-Straw-man: If Linux owns AER and ECRC is supported, enable ECRC by
-default.  Retain "ecrc=off" to turn it off, but drop a note in dmesg
-and taint the kernel.
-
-Bjorn
