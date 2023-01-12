@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C5D6685AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:41:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A8066850C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 22:07:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtJ050BJJz3gXT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:41:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtHDw17KBz3fWL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:07:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=MCFGk/zf;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XY7SfD4J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=MCFGk/zf;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XY7SfD4J;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFjY1g7kz3cfD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtFj241PQz3cKM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 06:58:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=tPOdw9LFGiPCDTfwXmDjC03yH+Atd2yWpwgqK4SP6Bs=; b=MCFGk/zfAQ1MOxe655CfrxSndB
-	KMsj8OM47QEIEF+dE7LPbkmxg/PQAts31gFJ5Xz3no3m62IuisxdrSXrLN8SYgr1mtDIwtR8p1Foy
-	vgMnbz7h6ch5F50b53yunuqk9MFEuX5uEMORRcRhTqQRFnQzXIgNjlWLrzQ8IyZodgjiEI5j/hfm2
-	jtsLGmSu2xYww6Em1c+Sd7XPqSMSM0BgTy1Y9iUSaQMsmpIltEMs2Z+FvPcdV8LPGTs0uCR8XY70j
-	Jdml4OVol/2E06Nb6eijodGglka4wn0K9TaSFCWA1YgF/306McxeUsk6Jgniwje3STV7G1K2gesSb
-	SZObcOlw==;
+	bh=zetob5Egrh+4xSqY+h3U8eHRaaU6Xv/VYHG/8LvUn9U=; b=XY7SfD4JzAJJbveELIvdat/cbW
+	E+yFFn4aNWAgBawJ26SoENVk9HjgjCyHK9vtm0DJHnuC5VDdB61ndo4h4/i7Q5MSw1rkqiTic4+xR
+	3Y4D5MUptZ7ITQwdJ+rd2ao7vl1gTwOWK6Sx7WR4lsMotsDZ0CjhwtIvhpsU+NDMSFoT0g5aNyvGa
+	iMi4QJBO85DnX+Mw7tQFfzfNeRIKSpTPmFw5CM4c/Zo+olx5lzudeaiJOWa1G7jKsVRtgbLWqFUp2
+	QH+tfhDjHvNHMqws27xY0eX//Ypm8qtyiO7rXUI4Q4fOaQ8sTUtjWWcBaaRXjx9gG6YdwAkHM+oGP
+	31LcvOtQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pG3hB-0045nq-0A;
-	Thu, 12 Jan 2023 19:57:05 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pG3hW-005OcC-5Z; Thu, 12 Jan 2023 19:57:26 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5F208300F30;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9F135302D60;
 	Thu, 12 Jan 2023 20:57:11 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 9180D2CCF0C22; Thu, 12 Jan 2023 20:57:07 +0100 (CET)
-Message-ID: <20230112195539.453613251@infradead.org>
+	id 956222CCF1F48; Thu, 12 Jan 2023 20:57:07 +0100 (CET)
+Message-ID: <20230112195539.515253662@infradead.org>
 User-Agent: quilt/0.66
-Date: Thu, 12 Jan 2023 20:43:16 +0100
+Date: Thu, 12 Jan 2023 20:43:17 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH v3 02/51] x86/idle: Replace x86_idle with a static_call
+Subject: [PATCH v3 03/51] cpuidle/poll: Ensure IRQ state is invariant
 References: <20230112194314.845371875@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -72,119 +71,39 @@ Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, raf
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Typical boot time setup; no need to suffer an indirect call for that.
+cpuidle_state::enter() methods should be IRQ invariant.
+
+Additionally make sure to use raw_local_irq_*() methods since this
+cpuidle callback will be called with RCU already disabled.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- arch/x86/kernel/process.c |   50 +++++++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 22 deletions(-)
+ drivers/cpuidle/poll_state.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -24,6 +24,7 @@
- #include <linux/cpuidle.h>
- #include <linux/acpi.h>
- #include <linux/elf-randomize.h>
-+#include <linux/static_call.h>
- #include <trace/events/power.h>
- #include <linux/hw_breakpoint.h>
- #include <asm/cpu.h>
-@@ -692,7 +693,23 @@ void __switch_to_xtra(struct task_struct
- unsigned long boot_option_idle_override = IDLE_NO_OVERRIDE;
- EXPORT_SYMBOL(boot_option_idle_override);
+--- a/drivers/cpuidle/poll_state.c
++++ b/drivers/cpuidle/poll_state.c
+@@ -17,7 +17,7 @@ static int __cpuidle poll_idle(struct cp
  
--static void (*x86_idle)(void);
-+/*
-+ * We use this if we don't have any better idle routine..
-+ */
-+void __cpuidle default_idle(void)
-+{
-+	raw_safe_halt();
-+}
-+#if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
-+EXPORT_SYMBOL(default_idle);
-+#endif
+ 	dev->poll_time_limit = false;
+ 
+-	local_irq_enable();
++	raw_local_irq_enable();
+ 	if (!current_set_polling_and_test()) {
+ 		unsigned int loop_count = 0;
+ 		u64 limit;
+@@ -36,6 +36,8 @@ static int __cpuidle poll_idle(struct cp
+ 			}
+ 		}
+ 	}
++	raw_local_irq_disable();
 +
-+DEFINE_STATIC_CALL_NULL(x86_idle, default_idle);
-+
-+static bool x86_idle_set(void)
-+{
-+	return !!static_call_query(x86_idle);
-+}
+ 	current_clr_polling();
  
- #ifndef CONFIG_SMP
- static inline void play_dead(void)
-@@ -715,28 +732,17 @@ void arch_cpu_idle_dead(void)
- /*
-  * Called from the generic idle code.
-  */
--void arch_cpu_idle(void)
--{
--	x86_idle();
--}
--
--/*
-- * We use this if we don't have any better idle routine..
-- */
--void __cpuidle default_idle(void)
-+void __cpuidle arch_cpu_idle(void)
- {
--	raw_safe_halt();
-+	static_call(x86_idle)();
- }
--#if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
--EXPORT_SYMBOL(default_idle);
--#endif
- 
- #ifdef CONFIG_XEN
- bool xen_set_default_idle(void)
- {
--	bool ret = !!x86_idle;
-+	bool ret = x86_idle_set();
- 
--	x86_idle = default_idle;
-+	static_call_update(x86_idle, default_idle);
- 
- 	return ret;
- }
-@@ -859,20 +865,20 @@ void select_idle_routine(const struct cp
- 	if (boot_option_idle_override == IDLE_POLL && smp_num_siblings > 1)
- 		pr_warn_once("WARNING: polling idle and HT enabled, performance may degrade\n");
- #endif
--	if (x86_idle || boot_option_idle_override == IDLE_POLL)
-+	if (x86_idle_set() || boot_option_idle_override == IDLE_POLL)
- 		return;
- 
- 	if (boot_cpu_has_bug(X86_BUG_AMD_E400)) {
- 		pr_info("using AMD E400 aware idle routine\n");
--		x86_idle = amd_e400_idle;
-+		static_call_update(x86_idle, amd_e400_idle);
- 	} else if (prefer_mwait_c1_over_halt(c)) {
- 		pr_info("using mwait in idle threads\n");
--		x86_idle = mwait_idle;
-+		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		x86_idle = tdx_safe_halt;
-+		static_call_update(x86_idle, tdx_safe_halt);
- 	} else
--		x86_idle = default_idle;
-+		static_call_update(x86_idle, default_idle);
- }
- 
- void amd_e400_c1e_apic_setup(void)
-@@ -925,7 +931,7 @@ static int __init idle_setup(char *str)
- 		 * To continue to load the CPU idle driver, don't touch
- 		 * the boot_option_idle_override.
- 		 */
--		x86_idle = default_idle;
-+		static_call_update(x86_idle, default_idle);
- 		boot_option_idle_override = IDLE_HALT;
- 	} else if (!strcmp(str, "nomwait")) {
- 		/*
+ 	return index;
 
 
