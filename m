@@ -1,64 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14A6666786
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 01:16:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132406668F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 03:39:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NslTY2X7zz3ch5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 11:16:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NspfD03Wfz3cfg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jan 2023 13:39:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wa53QQgH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=c/Ozj0IZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wa53QQgH;
-	dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NslSZ3ZVcz3c7C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 11:15:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673482542; x=1705018542;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Lo3OJHUUMGk/isec4GeZUlqnR8Kl4adv9OYQoEUdC4I=;
-  b=Wa53QQgHJmt/aR0sSYZSEvKCSMk1qDRH8oRR2x8ek3TV72uGl1TkDmF0
-   a6oC6aBgUdJL+wB/k936xn6EfGPZO34OO6FPX8Ze7FS/+51uaStCaMvgV
-   mS/ITZFrKn/GjrAXY32HBZDGJZj32qaixU5SgqYVAXKZSGL6uhMAevjVP
-   uk4D4RHfVllrb6YfivvAfXydJvHFiUeqH8EL8qHtkUtWqwmGicB61dIY6
-   4TvpNcI0ecL3OZk/Bc9Psudlgvzb9xKdGrf+Td067QsB/sn5FJYdj86Y1
-   dgf4qGFSmTtw9gaXpzRYaAsZxKy79eQtB2ZyoN1g4fESvAjbb8c838Fhu
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="311393993"
-X-IronPort-AV: E=Sophos;i="5.96,318,1665471600"; 
-   d="scan'208";a="311393993"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 16:15:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="831492113"
-X-IronPort-AV: E=Sophos;i="5.96,318,1665471600"; 
-   d="scan'208";a="831492113"
-Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 11 Jan 2023 16:15:30 -0800
-Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pFlFi-0009dm-0P;
-	Thu, 12 Jan 2023 00:15:30 +0000
-Date: Thu, 12 Jan 2023 08:15:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes] BUILD SUCCESS
- 76d588dddc459fefa1da96e0a081a397c5c8e216
-Message-ID: <63bf511c.Ud+CxZR+F8zWra2K%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NspdJ5ZSzz2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 13:38:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=c/Ozj0IZ;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NspdG61sHz4xFv;
+	Thu, 12 Jan 2023 13:38:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1673491107;
+	bh=nm6w04Au7n497R4ecMdAQNI4Dz9S7d+Jr3+l4CTYGHY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c/Ozj0IZu4RmLHAKZJ8gbuAuw4+K2l+Ov+FgSH1xy+t0jU6bc294RGKx0WgJ58IsM
+	 6WGKSsL6Gtdh7wcQe5dWl9bWVPANITHWfz6xsnmj6oAr0/p+bjmfrZtxo4uMZTwQnF
+	 0KCjs23OVfdciXZVVg1Qapv2aAWVxWXOmrCj4BiBRz5CcenOH+Ck/VT9TK6p1BRWM3
+	 ufomQA8JNWDDytKWhgvIrCGrPZ/vNJsItk181bAyGTiGkmnRanRxhemRc+8TilirHf
+	 cb61xkbdCkJAfXuX4yFxSHdCWR/k7mGjdyQ5tqPD0pWVvcI3TkwsfPtivEKRpTPi4q
+	 41uK6coKFpXdA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/secvar: Use u64 in secvar_operations
+Date: Thu, 12 Jan 2023 13:38:19 +1100
+Message-Id: <20230112023819.1692452-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,119 +56,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
-branch HEAD: 76d588dddc459fefa1da96e0a081a397c5c8e216  powerpc/imc-pmu: Fix use of mutex in IRQs disabled section
+There's no reason for secvar_operations to use uint64_t vs the more
+common kernel type u64.
 
-elapsed time: 724m
+The types are compatible, but they require different printk format
+strings which can lead to confusion.
 
-configs tested: 94
-configs skipped: 100
+Change all the secvar related routines to use u64.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/secvar.h                | 9 +++------
+ arch/powerpc/kernel/secvar-sysfs.c               | 8 ++++----
+ arch/powerpc/platforms/powernv/opal-secvar.c     | 9 +++------
+ security/integrity/platform_certs/load_powerpc.c | 4 ++--
+ 4 files changed, 12 insertions(+), 18 deletions(-)
 
-gcc tested configs:
-x86_64                            allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                           rhel-8.3-bpf
-x86_64                         rhel-8.3-kunit
-um                           x86_64_defconfig
-um                             i386_defconfig
-s390                       zfcpdump_defconfig
-arm                         lubbock_defconfig
-powerpc                     redwood_defconfig
-sh                          rsk7203_defconfig
-sh                            hp6xx_defconfig
-riscv                randconfig-r042-20230110
-s390                 randconfig-r044-20230110
-arc                  randconfig-r043-20230110
-ia64                             allmodconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-mips                     decstation_defconfig
-mips                           ci20_defconfig
-powerpc                      pcm030_defconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-arm                          gemini_defconfig
-powerpc                     tqm8548_defconfig
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-microblaze                      mmu_defconfig
-arm                           tegra_defconfig
-loongarch                 loongson3_defconfig
-parisc                           allyesconfig
-powerpc                      pasemi_defconfig
-mips                       bmips_be_defconfig
-xtensa                         virt_defconfig
-arc                        nsim_700_defconfig
-nios2                               defconfig
-mips                         rt305x_defconfig
-arc                        vdk_hs38_defconfig
-sh                   sh7770_generic_defconfig
-loongarch                           defconfig
-m68k                         amcore_defconfig
-arm                        multi_v7_defconfig
-sh                              ul2_defconfig
-m68k                             alldefconfig
-powerpc                 mpc85xx_cds_defconfig
-powerpc                    klondike_defconfig
-nios2                            allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-
-clang tested configs:
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-x86_64                          rhel-8.3-rust
-powerpc                      chrp32_defconfig
-powerpc                        fsp2_defconfig
-arm                         shannon_defconfig
-arm                  randconfig-r046-20230110
-hexagon              randconfig-r041-20230110
-hexagon              randconfig-r045-20230110
-
+diff --git a/arch/powerpc/include/asm/secvar.h b/arch/powerpc/include/asm/secvar.h
+index 4cc35b58b986..07ba36f868a7 100644
+--- a/arch/powerpc/include/asm/secvar.h
++++ b/arch/powerpc/include/asm/secvar.h
+@@ -14,12 +14,9 @@
+ extern const struct secvar_operations *secvar_ops;
+ 
+ struct secvar_operations {
+-	int (*get)(const char *key, uint64_t key_len, u8 *data,
+-		   uint64_t *data_size);
+-	int (*get_next)(const char *key, uint64_t *key_len,
+-			uint64_t keybufsize);
+-	int (*set)(const char *key, uint64_t key_len, u8 *data,
+-		   uint64_t data_size);
++	int (*get)(const char *key, u64 key_len, u8 *data, u64 *data_size);
++	int (*get_next)(const char *key, u64 *key_len, u64 keybufsize);
++	int (*set)(const char *key, u64 key_len, u8 *data, u64 data_size);
+ };
+ 
+ #ifdef CONFIG_PPC_SECURE_BOOT
+diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
+index 1ee4640a2641..001cdbcdb9d2 100644
+--- a/arch/powerpc/kernel/secvar-sysfs.c
++++ b/arch/powerpc/kernel/secvar-sysfs.c
+@@ -47,7 +47,7 @@ static ssize_t format_show(struct kobject *kobj, struct kobj_attribute *attr,
+ static ssize_t size_show(struct kobject *kobj, struct kobj_attribute *attr,
+ 			 char *buf)
+ {
+-	uint64_t dsize;
++	u64 dsize;
+ 	int rc;
+ 
+ 	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
+@@ -64,8 +64,8 @@ static ssize_t data_read(struct file *filep, struct kobject *kobj,
+ 			 struct bin_attribute *attr, char *buf, loff_t off,
+ 			 size_t count)
+ {
+-	uint64_t dsize;
+ 	char *data;
++	u64 dsize;
+ 	int rc;
+ 
+ 	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
+@@ -166,9 +166,9 @@ static int update_kobj_size(void)
+ 
+ static int secvar_sysfs_load(void)
+ {
+-	char *name;
+-	uint64_t namesize = 0;
+ 	struct kobject *kobj;
++	u64 namesize = 0;
++	char *name;
+ 	int rc;
+ 
+ 	name = kzalloc(NAME_MAX_SIZE, GFP_KERNEL);
+diff --git a/arch/powerpc/platforms/powernv/opal-secvar.c b/arch/powerpc/platforms/powernv/opal-secvar.c
+index 14133e120bdd..ef89861569e0 100644
+--- a/arch/powerpc/platforms/powernv/opal-secvar.c
++++ b/arch/powerpc/platforms/powernv/opal-secvar.c
+@@ -54,8 +54,7 @@ static int opal_status_to_err(int rc)
+ 	return err;
+ }
+ 
+-static int opal_get_variable(const char *key, uint64_t ksize,
+-			     u8 *data, uint64_t *dsize)
++static int opal_get_variable(const char *key, u64 ksize, u8 *data, u64 *dsize)
+ {
+ 	int rc;
+ 
+@@ -71,8 +70,7 @@ static int opal_get_variable(const char *key, uint64_t ksize,
+ 	return opal_status_to_err(rc);
+ }
+ 
+-static int opal_get_next_variable(const char *key, uint64_t *keylen,
+-				  uint64_t keybufsize)
++static int opal_get_next_variable(const char *key, u64 *keylen, u64 keybufsize)
+ {
+ 	int rc;
+ 
+@@ -88,8 +86,7 @@ static int opal_get_next_variable(const char *key, uint64_t *keylen,
+ 	return opal_status_to_err(rc);
+ }
+ 
+-static int opal_set_variable(const char *key, uint64_t ksize, u8 *data,
+-			     uint64_t dsize)
++static int opal_set_variable(const char *key, u64 ksize, u8 *data, u64 dsize)
+ {
+ 	int rc;
+ 
+diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
+index a2900cb85357..1e4f80a4e71c 100644
+--- a/security/integrity/platform_certs/load_powerpc.c
++++ b/security/integrity/platform_certs/load_powerpc.c
+@@ -18,7 +18,7 @@
+ /*
+  * Get a certificate list blob from the named secure variable.
+  */
+-static __init void *get_cert_list(u8 *key, unsigned long keylen, uint64_t *size)
++static __init void *get_cert_list(u8 *key, unsigned long keylen, u64 *size)
+ {
+ 	int rc;
+ 	void *db;
+@@ -51,7 +51,7 @@ static __init void *get_cert_list(u8 *key, unsigned long keylen, uint64_t *size)
+ static int __init load_powerpc_certs(void)
+ {
+ 	void *db = NULL, *dbx = NULL;
+-	uint64_t dbsize = 0, dbxsize = 0;
++	u64 dbsize = 0, dbxsize = 0;
+ 	int rc = 0;
+ 	struct device_node *node;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.39.0
+
