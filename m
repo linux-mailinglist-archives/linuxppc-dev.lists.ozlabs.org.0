@@ -2,74 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2A9668AB8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 05:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C1E668B95
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 06:37:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtSm50yvSz3fB9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 15:16:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtVYP3psLz3cgm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 16:37:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=QW41cnyn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QqJsZWNJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::833; helo=mail-qt1-x833.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=QW41cnyn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QqJsZWNJ;
 	dkim-atps=neutral
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtSl66FJDz3c6w
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 15:15:45 +1100 (AEDT)
-Received: by mail-qt1-x833.google.com with SMTP id k11so1071827qth.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 20:15:44 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtVXN6S1Gz3cD9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 16:36:34 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id p24so22384186plw.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 21:36:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wt3jnzhUF3EcxhYr3T4hnm8uRCL7X//ykE1nGacQiX8=;
-        b=QW41cnynBWFCcbN2np1bR6tedxbtO3eX5SbrPn1/lU9d4aaXmlahkT2WbS3tM/if0A
-         VzpLPqX9WvAnwx7NbuqRmOaO9xqYz/nx1EGX61d8Bj2VG4zI+F4YccXnLtgT3U3a9uMK
-         ML5XR8tAKhK45vk0ghApza55rwDgnktIGJWc8=
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t6+pSwox7nvOrX3DcFjVuwZuoLpU/mTInToIx9lpnOk=;
+        b=QqJsZWNJ2uhmkCsES7RSyK/45OPE6gk0Ti9FTuENRviNFRQOxZ3CGCAiq6Z2fpIrE7
+         DZh65cqk9G1w/Ah7bP+K0q56LCJVZCBzXEk19rws00zlG9C/sMVsmnATblfeMg9OiBz8
+         PVf/ubSpG1MWXytZwcpTWDPWRfcDzRemhHuaheMQROx+JJC/7je4SpHIuvEEksnQOt+5
+         yGWSLNLC6DVzvw+jkoU1QL7K+1OKrDyt0UeHuv7k46Nr81wzogaxWKJZssNpjtHX6YS2
+         G34XyM2uQBuaE+BR/6KJB70UBMqSoqHaGCGaAUoMBZyi6J/CLTtkdvunkmb/XVBJJPki
+         7GWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wt3jnzhUF3EcxhYr3T4hnm8uRCL7X//ykE1nGacQiX8=;
-        b=gobc83SPFo3I96Tf3mPMo4M9KyWoqyUJ+jP4v9/rcJ9HAJjG449/mv2CWZKMo2uC+H
-         4ymiUwoxl2A+isipWHZq9NMGlGD+Q8wF9GNiLKEiHGfmIDGsKsmYhsvo1dCoKj5KjL5K
-         sBAd/EVP3Dd+59intaL1bqJs7C44yRwXEgDiqYjTwSvVeaheOqBvazoqSg2zYFcIgboQ
-         6R8AgzBFrrBQWfWht9doyz5QWXcuKmDSJzKAU1eKdjdzdi/ZeVSRsTJ7Y8hhTHTnr2Gs
-         2rawhnFua2b2aGQETmQ39fq6baKr/psgHVS4ozKgc5pwCW1d7BF1RIcyX4AON12OV5P6
-         WnQQ==
-X-Gm-Message-State: AFqh2kpuJEwzv0/5Z/vHj1S/SW4dCnp3V/OPWMoVi4U3COisKOwHTUS8
-	OBM/QwPkf0a0Y+KFdEcuPNViCBPj7d6HK7k1Ex4=
-X-Google-Smtp-Source: AMrXdXtfFBxcYXxP/yVbhSLyNXvid7EPIiiFszwgKhMLSS/DcJZDY00VkB/OTuVu/niPpqTNWc/AAA==
-X-Received: by 2002:a05:622a:2592:b0:3a5:ff6e:d425 with SMTP id cj18-20020a05622a259200b003a5ff6ed425mr117752610qtb.4.1673583340046;
-        Thu, 12 Jan 2023 20:15:40 -0800 (PST)
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
-        by smtp.gmail.com with ESMTPSA id bk14-20020a05620a1a0e00b006ce580c2663sm12022327qkb.35.2023.01.12.20.15.38
-        for <linuxppc-dev@lists.ozlabs.org>
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=t6+pSwox7nvOrX3DcFjVuwZuoLpU/mTInToIx9lpnOk=;
+        b=4InT5ss7sb0aqruiLr4sdueaMu4qJ1Kvyj8x0siNbe87xftqbEnKK0WYMi1ud+hpux
+         61t3MzwPio4aIov54xVQo4ZlRRPgsCfJDAgSF1BAhKp6LU27+XT18rzk0EkMo0FvNqSb
+         dvk3erKYj1Wd3W5kbEJ9tfu8VXlFfGXfPZR40EfuqlRkoiXePjrGuT81FMaVDxFKDg+K
+         weJAox9rF5SoGZcozbkmrWvYLxbKukPx+PSJShfn+QsCMVcyeNiUT4kdS9CtS9/A5FAQ
+         RVlFDL/gWOrYaw5aMOIw2TFMgb3BiVRSbsMEbMi0eI7n5blU9EShvwECsojZRHhR+uB3
+         u85Q==
+X-Gm-Message-State: AFqh2krcXf2G2sfQWhD9Mvst2OtVOynrlokgEmKOqxC9UtPrxeTjcmrj
+	6G1P68OG+lies5H22l5X/e0=
+X-Google-Smtp-Source: AMrXdXsAusqKnG3jBsLdJrhaGyX+g1MJ5aJKfF+C/Ql9K9ixqRt11Dq+YZPlY+Crg24/8/AWo1EUOg==
+X-Received: by 2002:a17:902:8d95:b0:192:8d17:78e0 with SMTP id v21-20020a1709028d9500b001928d1778e0mr56046828plo.42.1673588191816;
+        Thu, 12 Jan 2023 21:36:31 -0800 (PST)
+Received: from localhost (193-116-88-198.tpgi.com.au. [193.116.88.198])
+        by smtp.gmail.com with ESMTPSA id f17-20020a170902f39100b00194706d3f25sm360376ple.144.2023.01.12.21.36.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jan 2023 20:15:38 -0800 (PST)
-Received: by mail-qk1-f179.google.com with SMTP id pe2so10305896qkn.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 20:15:38 -0800 (PST)
-X-Received: by 2002:a05:620a:674:b0:6ff:a7de:ce22 with SMTP id
- a20-20020a05620a067400b006ffa7dece22mr4281758qkh.72.1673583338361; Thu, 12
- Jan 2023 20:15:38 -0800 (PST)
-MIME-Version: 1.0
-References: <CAGudoHHx0Nqg6DE70zAVA75eV-HXfWyhVMWZ-aSeOofkA_=WdA@mail.gmail.com>
- <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com> <CPQQLU1ISBIJ.2SHU1BOMNO7TY@bobo>
-In-Reply-To: <CPQQLU1ISBIJ.2SHU1BOMNO7TY@bobo>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 12 Jan 2023 22:15:22 -0600
-X-Gmail-Original-Message-ID: <CAHk-=wiRm+Z613bHt2d=N1yWJAiDiQVXkh0dN8z02yA_JS-rew@mail.gmail.com>
-Message-ID: <CAHk-=wiRm+Z613bHt2d=N1yWJAiDiQVXkh0dN8z02yA_JS-rew@mail.gmail.com>
+        Thu, 12 Jan 2023 21:36:31 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Jan 2023 15:36:10 +1000
+Message-Id: <CPQTHRRWI40R.5SDS94D8EFFA@bobo>
 Subject: Re: lockref scalability on x86-64 vs cpu_relax
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.13.0
+References: <CAGudoHHx0Nqg6DE70zAVA75eV-HXfWyhVMWZ-aSeOofkA_=WdA@mail.gmail.com> <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com> <CPQQLU1ISBIJ.2SHU1BOMNO7TY@bobo> <CAHk-=wiRm+Z613bHt2d=N1yWJAiDiQVXkh0dN8z02yA_JS-rew@mail.gmail.com>
+In-Reply-To: <CAHk-=wiRm+Z613bHt2d=N1yWJAiDiQVXkh0dN8z02yA_JS-rew@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,21 +83,29 @@ Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 12, 2023 at 9:20 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+On Fri Jan 13, 2023 at 2:15 PM AEST, Linus Torvalds wrote:
+> On Thu, Jan 12, 2023 at 9:20 PM Nicholas Piggin <npiggin@gmail.com> wrote=
+:
+> >
+> > Actually what we'd really want is an arch specific implementation of
+> > lockref.
 >
-> Actually what we'd really want is an arch specific implementation of
-> lockref.
+> The problem is mainly that then you need to generate the asm versions
+> of all those different CMPXCHG_LOOP()  variants.
+>
+> They are all fairly simple, though, and it woudln't be hard to make
+> the current lib/lockref.c just be the generic fallback if you don't
+> have an arch-specific one.
 
-The problem is mainly that then you need to generate the asm versions
-of all those different CMPXCHG_LOOP()  variants.
+Yeah, it doesn't look too onerous so it's probably worth seeing what
+the code and some numbers look like here.
 
-They are all fairly simple, though, and it woudln't be hard to make
-the current lib/lockref.c just be the generic fallback if you don't
-have an arch-specific one.
+> And even if you do have the arch-specific LL/SC version, you'd still
+> want the generic fallback for the case where a spinlock isn't a single
+> word any more (which happens when the spinlock debugging options are
+> on).
 
-And even if you do have the arch-specific LL/SC version, you'd still
-want the generic fallback for the case where a spinlock isn't a single
-word any more (which happens when the spinlock debugging options are
-on).
+You're right, good point.
 
-            Linus
+Thanks,
+Nick
