@@ -2,58 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312DB66940F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 11:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE7A66945B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 11:39:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ntcx902nPz3fDZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 21:25:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtdFG607Kz3fBM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 21:38:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oHlQZGuI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XJXZKssK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oHlQZGuI;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XJXZKssK;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ntcw95fPqz3cFD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 21:24:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=43nvZBmwF6Qr7XsH1Yo0nO4bX86Vu4LJvgWe0kE/8zg=; b=oHlQZGuI+g1+745A8mnKSGv0Ip
-	ArshDCSE9wETafPSA1owBRlBpYnq7N63PUC2bOIlNWCfzOcvg0baIddP9aWaqirXFy++TQxH6O55d
-	6Ht7LAqrr9nfXLFRKCENIm2kB+U2INdOVCnod3dPJE1kgx7YCVu9BA1fpFAowI2d7nJU8WslTyIMn
-	M5iGi3KUooTTakfSADotxIBNQ4JuVmDVdcohxLmYwXtuVupgup5E1Q0jfVADtwBZSwhOC6aHhMFij
-	iVxfEAWRRf4m/fxKAAwH6mQegB+PpPs3VziQCzLcYwGhtn3/vplyg93tOLR7qP8wxF8frSpjDtM4c
-	i9tMbXiA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pGHEA-006068-0t; Fri, 13 Jan 2023 10:24:03 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 75F8E300094;
-	Fri, 13 Jan 2023 11:23:45 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5006D20B16472; Fri, 13 Jan 2023 11:23:45 +0100 (CET)
-Date: Fri, 13 Jan 2023 11:23:45 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: lockref scalability on x86-64 vs cpu_relax
-Message-ID: <Y8ExMQaevecjWjg5@hirez.programming.kicks-ass.net>
-References: <CAGudoHHx0Nqg6DE70zAVA75eV-HXfWyhVMWZ-aSeOofkA_=WdA@mail.gmail.com>
- <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtdDN73djz3c69
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 21:38:10 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPA id DDFD6FF808;
+	Fri, 13 Jan 2023 10:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1673606286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QZrDoPTVMtt/nPtGEUH/c16zuug+TjuwVzIICNji49Q=;
+	b=XJXZKssKn38Y38w5k0cQ+2NB8kxVenn82zuQYsDnBMaugApThAvX4ZBttyXqHgKmE97kVM
+	LTJDipEWXjkLpVqy51JIgbI0hhC6PE/xk0RCf1JdBk/1I4L6mO7Z8FiPdiaIhy7yX1s8yJ
+	Eq2HEVuhfhjb99kTJfsuK7ZZfhv91mTBYC1ELi//OM8me7vazndBlNM13ejvYJINg/k7+X
+	lYRZ53VYA7FQ0eAgFn+vQ/TuqHuAABBNWp15KaXV7LdquooG55Xj8CH4uqzQRrPBDhFZLq
+	xNxIEsoXz/RkytUY28IMJQUVz0200qxVGbxgY24tYsxidcTxMlfJ/nZ2xCZimQ==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: [PATCH v3 00/10] Add the PowerQUICC audio support using the QMC
+Date: Fri, 13 Jan 2023 11:37:49 +0100
+Message-Id: <20230113103759.327698-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +69,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, tony.luck@intel.com, viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org, Jan Glauber <jan.glauber@gmail.com>, Will Deacon <will@kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 12, 2023 at 06:13:16PM -0600, Linus Torvalds wrote:
-> On Thu, Jan 12, 2023 at 5:36 PM Mateusz Guzik <mjguzik@gmail.com> wrote:
-> >
-> > To my understanding on said architecture failed cmpxchg still grants you
-> > exclusive access to the cacheline, making immediate retry preferable
-> > when trying to inc/dec unless a certain value is found.
-> 
-> I actually suspect that is _always_ the case - this is not like a
-> contended spinlock where we want to pause because we're waiting for
-> the value to change and become unlocked, this cmpxchg loop is likely
-> always better off just retrying with the new value.
-> 
-> That said, the "likely always better off" is purely about performance.
-> 
-> So I have this suspicion that the reason Tony added the cpu_relax()
-> was simply not about performance, but about other issues, like
-> fairness in SMT situations.
-> 
-> That said, evern from a fairness perspective the cpu_relax() sounds a
-> bit odd and unlikely - we're literally yielding when we lost a race,
-> so it hurts the _loser_, not the winner, and thus might make fairness
-> worse too.
+Hi,
 
-I've been writing cmpxchg loops that have strict termination conditions
-without cpu_relax() in them for a while now.
+This series adds support for audio using the QMC controller
+available in some Freescale PowerQUICC SoCs.
 
-For example, the x86 atomic_fetch_and() implementation looks like so:
+This series contains three parts in order to show the different
+blocks hierarchy and their usage in this support.
 
-static __always_inline int arch_atomic_fetch_and(int i, atomic_t *v)
-{
-	int val = arch_atomic_read(v);
+The first one is related to TSA (Time Slot Assigner).
+The TSA handles the data present at the pin level (TDM with up
+to 64 time slots) and dispatchs them to one or more serial
+controller (SCC).
 
-	do { } while (!arch_atomic_try_cmpxchg(v, &val, val & i));
+The second is related to QMC (QUICC Multichannel Controller).
+The QMC handles the data at the serial controller (SCC) level
+and splits again the data to creates some virtual channels.
 
-	return val;
-}
+The last one is related to the audio component (QMC audio).
+It is the glue between the QMC controller and the ASoC
+component. It handles one or more QMC virtual channels and
+creates one DAI per QMC virtual channels handled.
 
-And I did that because of the exact same argument you had above, it
-needs to do the op anyway, waiting between failed attempts will only
-increase the chance it will fail again.
+Compared to the v2 series, this v3 series mainly:
+  - adds modification in the DT bindings,
+  - uses generic io{read,write}be{16,32} for registers
+    accesses instead of the specific PowerPC ones.
+  - updates some commit subjects and logs (CPM1 SoCs supports).
+
+Best regards,
+Herve Codina
+
+Changes v2 -> v3
+  - All bindings
+    Rename fsl-tsa.h to fsl,tsa.h
+    Add missing vendor prefix
+    Various fixes (quotes, node names, upper/lower case)
+
+  - patches 1 and 2 (TSA binding specific)
+    Remove 'reserved' values in the routing tables
+    Remove fsl,grant-mode
+    Add a better description for 'fsl,common-rxtx-pins'
+    Fix clocks/clocks-name handling against fsl,common-rxtx-pins
+    Add information related to the delays unit
+    Removed FSL_CPM_TSA_NBCELL
+    Fix license in binding header file fsl,tsa.h
+
+  - patches 5 and 6 (QMC binding specific)
+    Remove fsl,cpm-command property
+    Add interrupt property constraint
+
+  - patches 8 and 9 (QMC audio binding specific)
+    Remove 'items' in compatible property definition
+    Add missing 'dai-common.yaml' reference
+    Fix the qmc_chan phandle definition
+
+  - patch 2 and 6
+    Use io{read,write}be{32,16}
+    Change commit subjects and logs
+
+  - patch 4
+    Add 'Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+Changes v1 -> v2:
+  - patch 2 and 6
+    Fix kernel test robot errors
+
+  - other patches
+    No changes
+
+Herve Codina (10):
+  dt-bindings: soc: fsl: cpm_qe: Add TSA controller
+  soc: fsl: cpm1: Add support for TSA
+  MAINTAINERS: add the Freescale TSA controller entry
+  powerpc/8xx: Use a larger CPM1 command check mask
+  dt-bindings: soc: fsl: cpm_qe: Add QMC controller
+  soc: fsl: cmp1: Add support for QMC
+  MAINTAINERS: add the Freescale QMC controller entry
+  dt-bindings: sound: Add support for QMC audio
+  ASoC: fsl: Add support for QMC audio
+  MAINTAINERS: add the Freescale QMC audio entry
+
+ .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      |  164 ++
+ .../bindings/soc/fsl/cpm_qe/fsl,tsa.yaml      |  260 +++
+ .../bindings/sound/fsl,qmc-audio.yaml         |  117 ++
+ MAINTAINERS                                   |   25 +
+ arch/powerpc/platforms/8xx/cpm1.c             |    2 +-
+ drivers/soc/fsl/qe/Kconfig                    |   23 +
+ drivers/soc/fsl/qe/Makefile                   |    2 +
+ drivers/soc/fsl/qe/qmc.c                      | 1531 +++++++++++++++++
+ drivers/soc/fsl/qe/tsa.c                      |  810 +++++++++
+ drivers/soc/fsl/qe/tsa.h                      |   43 +
+ include/dt-bindings/soc/fsl,tsa.h             |   13 +
+ include/soc/fsl/qe/qmc.h                      |   71 +
+ sound/soc/fsl/Kconfig                         |    9 +
+ sound/soc/fsl/Makefile                        |    2 +
+ sound/soc/fsl/fsl_qmc_audio.c                 |  732 ++++++++
+ 15 files changed, 3803 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,tsa.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+ create mode 100644 drivers/soc/fsl/qe/qmc.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.h
+ create mode 100644 include/dt-bindings/soc/fsl,tsa.h
+ create mode 100644 include/soc/fsl/qe/qmc.h
+ create mode 100644 sound/soc/fsl/fsl_qmc_audio.c
+
+-- 
+2.38.1
+
