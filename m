@@ -1,62 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A94668FB9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 08:56:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3511466916E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 09:45:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NtYfD3vv8z3cD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 18:56:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NtZkP1064z3fB4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jan 2023 19:45:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f61ARbFw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=kbN54ZF8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f61ARbFw;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=kbN54ZF8;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtZjR55Kwz3c92
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 19:44:40 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 55A695FEF1;
+	Fri, 13 Jan 2023 08:44:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1673599476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t+Dhoicyzz2oSGw52Ch3AcQ9AMccyEhYs3mWOWg6nDQ=;
+	b=kbN54ZF8hfI37eBqJvuqMwtgiFgB6MgRjswFus9R2GLCGrN7a/vICdUHtJjgDzGorIFsrQ
+	leuiZDg/hguwIPALzLC+aYn19fNRBrxgE1HAf8fubfQ4HeItUae9gsTxoxK1UoyWuUe40X
+	8BDKFZqjyc97z4LSmiGUuyzYRO2Kpag=
+Received: from suse.cz (unknown [10.100.201.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NtYdD1250z3c61
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 18:56:00 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5015B621EF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 07:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31206C43398
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jan 2023 07:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673596555;
-	bh=k+JG6cQhINTeraKycNX3AkA5hLXrGXirTSDubaW7RNA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f61ARbFwfAK87XLX3bLLADXyMKwh/q9KK7NSFMIdjboOltYG7sbrBsrHM8gsQcq8d
-	 LuU8CeF7rfmQjvQQRK8g+CHrznSyDxa4gL2K0JJHzlWBX/N/IXeQFaIizRFty9e60O
-	 dRCMsXyj6AVGFD+t2S7qofJYHOIXryBp95fB2eXYtnyUpfrtvy+kY5k3yvk+yRTU/r
-	 +hpyg0V5p38xu4kBs0ccBCsu7ZNAT/wJoY1bpKy/Op89Vm9RIOda20LGNkIgO5NAx4
-	 hRFg2xUWCL+NKqgf0ZUrZWp63Evo4RxeDzuJEMKbl6+g4WubbvNuP8iFaO1Z0TbLZc
-	 QDuXydqasubaA==
-Received: by mail-lj1-f175.google.com with SMTP id y19so394838ljq.7
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jan 2023 23:55:55 -0800 (PST)
-X-Gm-Message-State: AFqh2krlelhPCsCfiPcUFA8IIEdZWrsFv64o82EpPBZq2XvfLFzMoOLo
-	P6I8xxtUVVHgeHTkVf755BZ5A+ucQck2Ty6bdYU=
-X-Google-Smtp-Source: AMrXdXvPBDKnkGS46Fnum+sBY6tUC4r2g2BIXBTSIujXdCK7arMiBySaB6Urx5uBQUaWUUyEymbKDknr+1U3RdEBQGg=
-X-Received: by 2002:a2e:a901:0:b0:27f:ef88:3ecb with SMTP id
- j1-20020a2ea901000000b0027fef883ecbmr1881053ljq.189.1673596553124; Thu, 12
- Jan 2023 23:55:53 -0800 (PST)
+	by relay2.suse.de (Postfix) with ESMTPS id 25A122C141;
+	Fri, 13 Jan 2023 08:44:36 +0000 (UTC)
+Date: Fri, 13 Jan 2023 09:44:35 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: [PATCH] kallsyms: Fix scheduling with interrupts disabled in
+ self-test
+Message-ID: <Y8EZ8+MgMqzu4/7H@alley>
+References: <20230112105426.1037325-1-npiggin@gmail.com>
+ <Y8BQaw5tVzDjZ9Sz@bombadil.infradead.org>
 MIME-Version: 1.0
-References: <CAGudoHHx0Nqg6DE70zAVA75eV-HXfWyhVMWZ-aSeOofkA_=WdA@mail.gmail.com>
- <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com> <SJ1PR11MB6083368BCA43E5B0D2822FD3FCC29@SJ1PR11MB6083.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB6083368BCA43E5B0D2822FD3FCC29@SJ1PR11MB6083.namprd11.prod.outlook.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 13 Jan 2023 08:55:41 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
-Message-ID: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
-Subject: ia64 removal (was: Re: lockref scalability on x86-64 vs cpu_relax)
-To: "Luck, Tony" <tony.luck@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8BQaw5tVzDjZ9Sz@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,35 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Jan Glauber <jan.glauber@gmail.com>, "Torvalds, Linus" <torvalds@linux-foundation.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: "Erhard F ." <erhard_f@mailbox.org>, Jiri Kosina <jikos@kernel.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, kernel test robot <oliver.sang@intel.com>, Zhen Lei <thunder.leizhen@huawei.com>, Miroslav Benes <mbenes@suse.cz>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 13 Jan 2023 at 01:31, Luck, Tony <tony.luck@intel.com> wrote:
->
-> > Yeah, if it was ia64-only, it's a non-issue these days. It's dead and
-> > in pure maintenance mode from a kernel perspective (if even that).
->
-> There's not much "simultaneous" in the SMT on ia64. One thread in a
-> spin loop will hog the core until the h/w switches to the other thread some
-> number of cycles (hundreds, thousands? I really can remember). So I
-> was pretty generous with dropping cpu_relax() into any kind of spin loop.
->
-> Is it time yet for:
->
-> $ git rm -r arch/ia64
->
+On Thu 2023-01-12 10:24:43, Luis Chamberlain wrote:
+> On Thu, Jan 12, 2023 at 08:54:26PM +1000, Nicholas Piggin wrote:
+> > kallsyms_on_each* may schedule so must not be called with interrupts
+> > disabled. The iteration function could disable interrupts, but this
+> > also changes lookup_symbol() to match the change to the other timing
+> > code.
+> > 
+> > Reported-by: Erhard F. <erhard_f@mailbox.org>
+> > Link: https://lore.kernel.org/all/bug-216902-206035@https.bugzilla.kernel.org%2F/
+> > Reported-by: kernel test robot <oliver.sang@intel.com>
+> > Link: https://lore.kernel.org/oe-lkp/202212251728.8d0872ff-oliver.sang@intel.com
+> > Fixes: 30f3bb09778d ("kallsyms: Add self-test facility")
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> 
+> Thanks Nicholas!
+> 
+> Petr had just suggested removing this aspect of the selftests, the performance
+> test as its specific to the config, it doesn't run many times to get an
+> average and odd things on a system can create different metrics. Zhen Lei
+> had given up on fixing it and has a patch to instead remove this part of
+> the selftest.
+> 
+> I still find value in keeping it, but Petr, would like your opinion on
+> this fix, if we were to keep it.
 
-Hi Tony,
+I am fine with this fix.
 
-Can I take that as an ack on [0]? The EFI subsystem has evolved
-substantially over the years, and there is really no way to do any
-IA64 testing beyond build testing, so from that perspective, dropping
-it entirely would be welcomed.
+It increases a risk of possible inaccuracy of the measured time.
+It would count also time spent on unrelated interrupts and eventual
+rescheduling.
 
-Thanks,
-Ard.
+Anyway, it is safe at least. I was against the previous attempts to
+fix this problem because they might have caused problems for
+the rest of the system.
 
-
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=remove-ia64
+Best Regards,
+Petr
