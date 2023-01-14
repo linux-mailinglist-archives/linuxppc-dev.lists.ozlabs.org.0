@@ -1,56 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26AC66A982
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Jan 2023 06:51:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E24D66AB2D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Jan 2023 12:25:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nv6ps4dC1z3fBH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Jan 2023 16:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NvGDv32pzz3fFT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Jan 2023 22:25:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PbzAb7Fu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oidpd6NU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22c; helo=mail-lj1-x22c.google.com; envelope-from=sedat.dilek@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PbzAb7Fu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oidpd6NU;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nv6np1Mg0z3c91;
-	Sat, 14 Jan 2023 16:50:22 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4DEE960B45;
-	Sat, 14 Jan 2023 05:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 99D12C433EF;
-	Sat, 14 Jan 2023 05:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673675418;
-	bh=ngfQjwFKmCSeocAW86AdE9in/ESlzA2f+NOfkGPnaOg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=PbzAb7FuLH7rstaaHzkqO/TKJ0jhzX5/WVGU1Atan9l2+aId0YIBwQBc6HEWGIdOx
-	 NpBUiimoP/3W4GeYmgQWkIyK0QxD26i1VH8jDscuPlEWm/rxaumM/fnWM8Us8rXkdc
-	 xVnwryq7I1nXtFLtPG4iU0vHUeQs6adLDniT54mEpUIdDbaTldpzW/tSZCCv49Latq
-	 ASQ9j+AGIg2kynwAdJes0zFQh1cxh1mZpE8rDdsFr7ssJaPfEAj30VnTs0y0CgEV7e
-	 g99L+fsWom9cv4n4jn7ebEEiBWKp8bDx58WvX+T4uizSBRsOOFIll46WgLTttVOLUn
-	 Um0jMC9DtZRtQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 75D05E21EE0;
-	Sat, 14 Jan 2023 05:50:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NvGCx2MCxz308w
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jan 2023 22:25:00 +1100 (AEDT)
+Received: by mail-lj1-x22c.google.com with SMTP id g14so24939389ljh.10
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jan 2023 03:25:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=92D3na9XjC2tldOP8eaUtjmrOr8geOvULba7RpkEF88=;
+        b=oidpd6NUevEcdWU5GrYwYjY0qsOZxddfFi5dyyzNnJ2Wgr8bLbb6jFeXbexF5bVlBD
+         PXpzRt0GCF3SKbrBAt6JcOgnQyJS9Gr0og+Dq+e9RHjuhJfbI2s2ALH/mtBrvyZW1LTS
+         Bv4KqI5LtMUaD17F2xefn4AkiYi6n3yX4JjXnaeZ8bd7U3+2ZBr1TcTguii17qBWOduq
+         wgQDH6irGJNASX2cY3h8oOec1dD9pes6xRuyBDYvCRqxqDqzZEeeGYYp3oXDH4iI/8/x
+         BTBtmkQpNaDg/wgSuNZgaLvHpGsqW+tW35fA9t3r/86JnTcc87pd3hEVPt/mRBX2UBdv
+         bZuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=92D3na9XjC2tldOP8eaUtjmrOr8geOvULba7RpkEF88=;
+        b=D5gulbQmkRlCf8POKIVQFwybvMB3SC7KPTgzeccmZp6L3tT4uMmMhgwnJ2OA3M2nFc
+         Y6VCcQljMZ3gu2IsLXLXTNbnpQL4YqCMd9ZhOZ3aeN+SistdJd+F49LfbSSU43umUIrB
+         RcZ9Ob2iiQpcnKNg6YPq9bDrwQ0RLO4iOWEO9GCOCf0WmeXo2b22TU75sWrK8Dc5I6lx
+         7MB9d+Eff5OZD3hR2oK9erGxhHWOLmuGVUAWnhy6TcHLT8Y92WNIr4K2E7+p/WT0Xra/
+         Tlgh8vPoxyeC6EQE/TkDCyAEgeZ/LEzpl4dmSv3i6nRvLwDWUxiKcjF/vldq+qa97uKJ
+         FR+Q==
+X-Gm-Message-State: AFqh2koGZZXCvU7DBW2UsAnjhohQuB5Qz+rXOTq+gG3kfim+EuLOv4L3
+	uAQeEI8a3DseymrCDWY07MaVxLMtGC6DHrTmJ/0=
+X-Google-Smtp-Source: AMrXdXuXj5p/ZuIpLf8gZ0GX/uM1VbdJtfoIXhmfKLwfHsiq2B3mV92A8IuI5WlG+MIrW6qcUOUw1/TEF4ro/BOWkZM=
+X-Received: by 2002:a2e:8e3b:0:b0:280:4f2:700a with SMTP id
+ r27-20020a2e8e3b000000b0028004f2700amr3108966ljk.364.1673695492487; Sat, 14
+ Jan 2023 03:24:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/10] net: mdio: Continue separating C22 and C45
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <167367541847.15756.1816103460556617097.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Jan 2023 05:50:18 +0000
-References: <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
-In-Reply-To: <20230112-net-next-c45-seperation-part-2-v1-0-5eeaae931526@walle.cc>
-To: Michael Walle <michael@walle.cc>
+References: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
+ <db6937a1-e817-2d7b-0062-9aff012bb3e8@physik.fu-berlin.de> <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com>
+In-Reply-To: <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com>
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Sat, 14 Jan 2023 12:24:13 +0100
+Message-ID: <CA+icZUXEz7ZxmkV5bw5O2ORjF4bwDXBMyj3Wk_HST98gMPt97g@mail.gmail.com>
+Subject: Re: ia64 removal (was: Re: lockref scalability on x86-64 vs cpu_relax)
+To: Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,51 +74,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@lunn.ch, alexandre.belloni@bootlin.com, linux-aspeed@lists.ozlabs.org, vladimir.oltean@nxp.com, alexandre.torgue@foss.st.com, edumazet@google.com, leoyang.li@nxp.com, linux-stm32@st-md-mailman.stormreply.com, f.fainelli@gmail.com, linux@armlinux.org.uk, joabreu@synopsys.com, bcm-kernel-feedback-list@broadcom.com, joel@jms.id.au, kuba@kernel.org, pabeni@redhat.com, lorenzo@kernel.org, Mark-MC.Lee@mediatek.com, rjui@broadcom.com, sean.wang@mediatek.com, claudiu.manoil@nxp.com, linux-mediatek@lists.infradead.org, john@phrozen.org, matthias.bgg@gmail.com, peppe.cavallaro@st.com, linux-arm-kernel@lists.infradead.org, sbranden@broadcom.com, andrew@aj.id.au, bryan.whitehead@microchip.com, linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, mcoquelin.stm32@gmail.com, netdev@vger.kernel.org, hkallweit1@gmail.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, nbd@nbd.name
+Reply-To: sedat.dilek@gmail.com
+Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Luck, Tony" <tony.luck@intel.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Jan Glauber <jan.glauber@gmail.com>, "Torvalds, Linus" <torvalds@linux-foundation.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+On Sat, Jan 14, 2023 at 12:43 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Fri, 13 Jan 2023 at 22:06, John Paul Adrian Glaubitz
+> <glaubitz@physik.fu-berlin.de> wrote:
+> >
+> > Hello Ard!
+> >
+> > > Can I take that as an ack on [0]? The EFI subsystem has evolved
+> > > substantially over the years, and there is really no way to do any
+> > > IA64 testing beyond build testing, so from that perspective, dropping
+> > > it entirely would be welcomed.
+> >
+> > ia64 is regularly tested in Debian and Gentoo [1][2].
+> >
+> > Debian's ia64 porterbox yttrium runs a recent kernel without issues:
+> >
+> > root@yttrium:~# uname -a
+> > Linux yttrium 5.19.0-2-mckinley #1 SMP Debian 5.19.11-1 (2022-09-24) ia64 GNU/Linux
+> > root@yttrium:~#
+> >
+> > root@yttrium:~# journalctl -b|head -n10
+> > Nov 14 14:46:10 yttrium kernel: Linux version 5.19.0-2-mckinley (debian-kernel@lists.debian.org) (gcc-11 (Debian 11.3.0-6) 11.3.0, GNU ld (GNU Binutils for Debian) 2.39) #1 SMP Debian 5.19.11-1 (2022-09-24)
+> > Nov 14 14:46:10 yttrium kernel: efi: EFI v2.10 by HP
+> > Nov 14 14:46:10 yttrium kernel: efi: SALsystab=0xdfdd63a18 ESI=0xdfdd63f18 ACPI 2.0=0x3d3c4014 HCDP=0xdffff8798 SMBIOS=0x3d368000
+> > Nov 14 14:46:10 yttrium kernel: PCDP: v3 at 0xdffff8798
+> > Nov 14 14:46:10 yttrium kernel: earlycon: uart8250 at I/O port 0x4000 (options '115200n8')
+> > Nov 14 14:46:10 yttrium kernel: printk: bootconsole [uart8250] enabled
+> > Nov 14 14:46:10 yttrium kernel: ACPI: Early table checksum verification disabled
+> > Nov 14 14:46:10 yttrium kernel: ACPI: RSDP 0x000000003D3C4014 000024 (v02 HP    )
+> > Nov 14 14:46:10 yttrium kernel: ACPI: XSDT 0x000000003D3C4580 000124 (v01 HP     RX2800-2 00000001      01000013)
+> > Nov 14 14:46:10 yttrium kernel: ACPI: FACP 0x000000003D3BE000 0000F4 (v03 HP     RX2800-2 00000001 HP   00000001)
+> > root@yttrium:~#
+> >
+> > Same applies to the buildds:
+> >
+> > root@lifshitz:~# uname -a
+> > Linux lifshitz 6.0.0-4-mckinley #1 SMP Debian 6.0.8-1 (2022-11-11) ia64 GNU/Linux
+> > root@lifshitz:~#
+> >
+> > root@lenz:~# uname -a
+> > Linux lenz 6.0.0-4-mckinley #1 SMP Debian 6.0.8-1 (2022-11-11) ia64 GNU/Linux
+> > root@lenz:~#
+> >
+> > EFI works fine as well using the latest version of GRUB2.
+> >
+> > Thanks,
+> > Adrian
+> >
+> > > [1] https://cdimage.debian.org/cdimage/ports/snapshots/
+> > > [2] https://mirror.yandex.ru/gentoo-distfiles//releases/ia64/autobuilds/
+>
+> Thanks for reporting back. I (mis)read the debian ports page [3],
+> which mentions Debian 7 as the highest Debian version that supports
+> IA64, and so I assumed that support had been dropped from Debian.
+>
+> However, if only a handful of people want to keep this port alive for
+> reasons of nostalgia, it is obviously obsolete, and we should ask
+> ourselves whether it is reasonable to expect Linux contributors to
+> keep spending time on this.
+>
+> Does the Debian ia64 port have any users? Or is the system that builds
+> the packages the only one that consumes them?
+>
+>
+> [3] https://www.debian.org/ports/ia64/
 
-This series was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+I have no IA64 hardware or be a user of it or have any strong feelings
+to keep this arch in the Linux-kernel.
 
-On Thu, 12 Jan 2023 16:15:07 +0100 you wrote:
-> I've picked this older series from Andrew up and rebased it onto
-> the latest net-next.
-> 
-> This is the second patch set in the series which separates the C22
-> and C45 MDIO bus transactions at the API level to the MDIO bus drivers.
-> 
-> Signed-off-by: Michael Walle <michael@walle.cc>
-> 
-> [...]
+But I am a Debianist (Debian/unstable AMD64 user).
 
-Here is the summary with links:
-  - [net-next,01/10] net: mdio: cavium: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/93641ecbaa1f
-  - [net-next,02/10] net: mdio: i2c: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/87e3bee0f247
-  - [net-next,03/10] net: mdio: mux-bcm-iproc: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/d544a25930a7
-  - [net-next,04/10] net: mdio: aspeed: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/c3c497eb8b24
-  - [net-next,05/10] net: mdio: ipq4019: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/c58e39942adf
-  - [net-next,06/10] net: ethernet: mtk_eth_soc: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/900888374e73
-  - [net-next,07/10] net: lan743x: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/3d90c03cb416
-  - [net-next,08/10] net: stmmac: Separate C22 and C45 transactions for xgmac2
-    https://git.kernel.org/netdev/net-next/c/5b0a447efff5
-  - [net-next,09/10] net: stmmac: Separate C22 and C45 transactions for xgmac
-    https://git.kernel.org/netdev/net-next/c/3c7826d0b106
-  - [net-next,10/10] enetc: Separate C22 and C45 transactions
-    https://git.kernel.org/netdev/net-next/c/80e87442e69b
+Best is to ask the Debian release-team or (if there exist) maintainers
+or responsibles for the IA64 port - which is an ***unofficial*** port.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+What I found... on <cdimage.debian.org>:
 
+https://cdimage.debian.org/cdimage/ > Ports
 
+https://cdimage.debian.org/cdimage/ports/current/
+
+https://cdimage.debian.org/cdimage/ports/current-debian-installer/ia64/debian-installer-images_20211020_ia64.tar.gz
+^^ Last modified: 2021-10-20 22:52
+
+https://cdimage.debian.org/cdimage/ports/current/debian-11.0.0-ia64-NETINST-1.iso
+^^ Last modofied: 2022-03-28 14:18
+
+With a net-install image you should be able to setup and explore the
+IA64 Debian cosmos.
+
+Example #1: binutils packages
+
+Checking available binutils package for Debian/unstable IA64 (version:
+2.39.90.20230110-1):
+
+https://packages.debian.org/sid/binutils <--- Clearly states IA64 as
+"unofficial port"
+https://packages.debian.org/sid/ia64/binutils/filelist
+
+Example #2: linux-image packages
+
+Cannot say what this means...
+
+https://packages.debian.org/search?arch=amd64&keywords=linux-image
+(AMD64 - matches)
+
+https://packages.debian.org/search?arch=ia64&keywords=linux-image
+(IA64 - no matches)
+
+https://packages.debian.org/search?arch=ia64&keywords=linux (IA64 -
+matches - but no linux-image which ships normally a bootable
+Linux-kernel)
+
+As stated I have no expertise in Debian whatever release for IA64 arch.
+
+Hope that helps.
+
+-Sedat-
