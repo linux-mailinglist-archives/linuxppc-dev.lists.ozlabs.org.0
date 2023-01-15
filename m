@@ -1,57 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D3E66AE2C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Jan 2023 22:23:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3672566AEE6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jan 2023 01:28:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NvWVx5RSLz3fCd
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jan 2023 08:23:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nvbc00ZBBz3fBV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jan 2023 11:28:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=hjE2/s2u;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cEsfEytJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=hjE2/s2u;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cEsfEytJ;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NvWTx3BYVz2xB5
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jan 2023 08:22:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NvbZy1Pj2z3bZk
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jan 2023 11:27:35 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=mqxDHmIXjVqhP3WLJe5qBtSK7Sgj26Sq5u701NmDRT4=; b=hjE2/s2u2plBiNcc95t9J1LDtu
-	mOVQhCNyUZev7uvpWjI5kXb3Tnze49ll5VaM+XLZZdi0qKx7UEJT4XXOdxR61teQWTcXi9+mOIMYP
-	2Bw48RSzTelmbcXvxBDX0a8WnZQbksZk19wXPyEPtzSSVSalv6OtxmU85FpIqxJrH/hZdcDlEuJHr
-	eYMbUUh2gnp/IK56pBpaPIKEd0a8OTZ/vpAqjVUITzChGlhG132TJOr6/MYKOvqC/YDtI13lpxh2d
-	x9QPaotwyKSD3ledao2u7gprjGu/J/2AZB8uHTPwYLNb8M76S8q0h7dnqV3lI5xLoOx84+UkG0l0j
-	hhG/KYUQ==;
-Received: from [146.74.94.74] (helo=[10.21.74.101])
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pGnyv-004rae-2x;
-	Sat, 14 Jan 2023 21:22:30 +0000
-Message-ID: <284aed88-dc26-d74a-cf7a-f5875ba058eb@infradead.org>
-Date: Sat, 14 Jan 2023 13:22:33 -0800
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2C00BT3n+YbTKiQeV33HXBf4b40S5kmIf4Iwv6fNwSI=; b=cEsfEytJF+y/mCwOWmsbB5zBf+
+	QmCBVBptSk+O6m0cm4cfLPa5ShHQSCMlrhNHumJB6bgibUH/o/5BHwuE0K18BcHt3G3hO27KYlczD
+	D3tPQMZa079DW8BpDz/T2NRRZgVn7hmL+VOJ732+Zl/dW5s9uHubN0DRj6fmOcRY8RG+LvRUyTvt9
+	4/dYbVnu4AV9tYYPjerktwM/aFjoNl/PwWYVY3go6ass1frXujjw7g/4x4DBVwg4E+ek8E0wL59VN
+	f/gulWhYFDavCFogA4T8Y13KaVGrW3FngLR+qH64YlPfqnAl3YPcrqODSv79K+0UFd0ZIvFhpwLz/
+	qPDkfI6Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pGqrh-007QIv-F1; Sun, 15 Jan 2023 00:27:13 +0000
+Date: Sun, 15 Jan 2023 00:27:13 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Sedat Dilek <sedat.dilek@gmail.com>
+Subject: Re: ia64 removal (was: Re: lockref scalability on x86-64 vs
+ cpu_relax)
+Message-ID: <Y8NIYSMqAk7BhSv5@casper.infradead.org>
+References: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
+ <db6937a1-e817-2d7b-0062-9aff012bb3e8@physik.fu-berlin.de>
+ <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com>
+ <CA+icZUXEz7ZxmkV5bw5O2ORjF4bwDXBMyj3Wk_HST98gMPt97g@mail.gmail.com>
+ <CA+icZUUhY7-F5Bpw-jxofhw4nMP3nzyfpt9huzeSWwUguguNsA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2 1/2] powerpc/ps3: Change updateboltedpp panic to info
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1672767868.git.geoff@infradead.org>
- <2df879d982809c05b0dfade57942fe03dbe9e7de.1672767868.git.geoff@infradead.org>
- <25cc9a51-2311-d7d3-3451-08725e6384cd@csgroup.eu>
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <25cc9a51-2311-d7d3-3451-08725e6384cd@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+icZUUhY7-F5Bpw-jxofhw4nMP3nzyfpt9huzeSWwUguguNsA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,47 +60,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Luck, Tony" <tony.luck@intel.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Jan Glauber <jan.glauber@gmail.com>, "Torvalds, Linus" <torvalds@linux-foundation.org>, Ard Biesheuvel <ardb@kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On 1/9/23 09:41, Christophe Leroy wrote:
+On Sat, Jan 14, 2023 at 12:28:30PM +0100, Sedat Dilek wrote:
+> [ ... ]
 > 
+> > Best is to ask the Debian release-team or (if there exist) maintainers
+> > or responsibles for the IA64 port - which is an ***unofficial*** port.
+> >
 > 
-> Le 03/01/2023 à 18:51, Geoff Levand a écrit :
->> Commit fdacae8a84024474afff234bdd1dbe19ad597a10 (powerpc: Activate
->> CONFIG_STRICT_KERNEL_RWX by default) causes ps3_hpte_updateboltedpp()
->> to be called.  Change the panic statment in ps3_hpte_updateboltedpp()
->> to a pr_info statement so that bootup can continue.
+> Here we go:
 > 
-> But if I understand correctly, it means that CONFIG_STRICT_KERNEL_RWX 
-> won't work then.
+> https://lists.debian.org/debian-ia64/
 > 
-> So, shouldn't we keep the panic and forbid CONFIG_STRICT_KERNEL_RWX on PS3 ?
+> Posting address: debian-ia64@lists.debian.org
+> 
+> Found via <https://lists.debian.org/completeindex.html>
 
-mmu_hash_ops.updateboltedpp returns void, so I can't return an error code to
-indicate the feature is not supported.
+More useful perhaps is to look at https://popcon.debian.org/
 
-I could do something like this in arch/powerpc/Kconfig:
-
--       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
-+       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !PPC_PS3 && !HIBERNATION
-
-But then the ppc64_defconfig would be built without STRICT_KERNEL_RWX.
-
-I could do this in ps3_defconfig:
-
-+# CONFIG_STRICT_KERNEL_RWX is not set
-+# CONFIG_STRICT_MODULE_RWX is not set
-
-But I don't like that way because it seems too easy for users to not add those
-into a custom kernel config, and then they need to figure out what to do after
-their kernel panics on startup.
-
-What other 'clean' way is there?
-
--Geoff
-
-
+There are three machines reporting popcon results.  It's dead.
