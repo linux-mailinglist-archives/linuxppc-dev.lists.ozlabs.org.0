@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D473166C106
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 15:07:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F12C66C130
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 15:08:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwYk45FVrz3fBn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 01:07:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwYm566Jbz3fHm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 01:08:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B0sWkBJa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IS9lBtbo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B0sWkBJa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IS9lBtbo;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwYg14zX4z3fB8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 01:04:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwYgZ0WPpz3fFW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 01:04:58 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EAB8B60FCB;
-	Mon, 16 Jan 2023 14:04:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8129C433EF;
-	Mon, 16 Jan 2023 14:04:26 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5523C60FCA;
+	Mon, 16 Jan 2023 14:04:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C9CC433EF;
+	Mon, 16 Jan 2023 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673877867;
-	bh=bBu648UyLViE+JOpdfE6UY5PG5TLk/lebaHg36/uIMA=;
+	s=k20201202; t=1673877896;
+	bh=2j/js0pNM1GdvECwCJouwIBHFbiZ9Fu23Z3yINYPgFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0sWkBJaJk0zjn7X4k52/uifqKDkPIFhtFhEO3KnC/8M96DiCVTo852FOEANDSKJd
-	 ebxb2pBkoQtSi4an5sAGWXqD92MxQ2PZr+xDoIGRwU+LAdsYoCjK5ZnK2jQeHnELlp
-	 uH/RCkmmjPb4zsPnwPaYQTJmifJMwTwLQhT/q1TGzaD3QkUiCfXfe2+lE7lBriC7ly
-	 miQoqJ8J59VnpsGeBeB8bL37EwL550knZdxGhGbw7u6CdhL74XmOIUTvCd8uPWNJ00
-	 jy1qe4TDlvVq/DcDN5X6EhcXojeWVwP2j6zzqBCiat229ESBsCzSWK141csy6mF25s
-	 V3zDBT7/Mkfyw==
+	b=IS9lBtboW4psUJ92z8HzyBHWf0E7EZaImTKRLHgnKr91gCycaHpi+Bo0bHLAur+Qx
+	 CBnvil1xaXe9mjdeAXQ+rjjCQdRZTxq1oGQCUy482CpRL7L0oKhjpb3A+WYczUMtXy
+	 Uo3woLhjPm8xv1mc8Lt9+biVBRZkoivoBWQ6EOxIj/DBhO1DCmhy08ej5UgmfemO0E
+	 jUZ8MYKDJfrmF4fyh/yIJh1w4w3GhNGV62j1FY9eig0tSgYwCQIA4SG+SNEF1mjJ13
+	 gWUiAQQNcMcsuWtJE8PQkI+4hLLOIPdnApI28kZGAk1uoZQvc3Sm3caeTcbIrL7MR2
+	 w11oROnGVUSzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 15/24] ASoC: fsl-asoc-card: Fix naming of AC'97 CODEC widgets
-Date: Mon, 16 Jan 2023 09:03:50 -0500
-Message-Id: <20230116140359.115716-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 04/17] ASoC: fsl_micfil: Correct the number of steps on SX controls
+Date: Mon, 16 Jan 2023 09:04:35 -0500
+Message-Id: <20230116140448.116034-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230116140359.115716-1-sashal@kernel.org>
-References: <20230116140359.115716-1-sashal@kernel.org>
+In-Reply-To: <20230116140448.116034-1-sashal@kernel.org>
+References: <20230116140448.116034-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,44 +62,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, Mark Brown <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mark Brown <broonie@kernel.org>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit 242fc66ae6e1e2b8519daacc7590a73cd0e8a6e4 ]
+[ Upstream commit cdfa92eb90f5770b26a79824ef213ebdbbd988b1 ]
 
-The fsl-asoc-card AC'97 support currently tries to route to Playback and
-Capture widgets provided by the AC'97 CODEC. This doesn't work since the
-generic AC'97 driver registers with an "AC97" at the front of the stream
-and hence widget names, update to reflect reality. It's not clear to me
-if or how this ever worked.
+The parameter "max" of SOC_SINGLE_SX_TLV() means the number of steps
+rather than maximum value. This patch corrects the minimum value to -8
+and the number of steps to 15.
 
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20230106-asoc-udoo-probe-v1-2-a5d7469d4f67@kernel.org
+Link: https://lore.kernel.org/r/20230104025754.3019235-1-chancel.liu@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 978496c2fc09..5000d779aade 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -120,8 +120,8 @@ static const struct snd_soc_dapm_route audio_map[] = {
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 6c794605e33c..97f83c63e765 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -87,21 +87,21 @@ static DECLARE_TLV_DB_SCALE(gain_tlv, 0, 100, 0);
  
- static const struct snd_soc_dapm_route audio_map_ac97[] = {
- 	/* 1st half -- Normal DAPM routes */
--	{"Playback",  NULL, "CPU AC97 Playback"},
--	{"CPU AC97 Capture",  NULL, "Capture"},
-+	{"AC97 Playback",  NULL, "CPU AC97 Playback"},
-+	{"CPU AC97 Capture",  NULL, "AC97 Capture"},
- 	/* 2nd half -- ASRC DAPM routes */
- 	{"CPU AC97 Playback",  NULL, "ASRC-Playback"},
- 	{"ASRC-Capture",  NULL, "CPU AC97 Capture"},
+ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+ 	SOC_SINGLE_SX_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(0), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(0), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(1), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(1), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH2 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(2), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(2), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH3 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(3), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(3), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH4 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(4), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(4), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH5 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(5), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(5), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH6 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(6), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(6), 0x8, 0xF, gain_tlv),
+ 	SOC_SINGLE_SX_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
+-			  MICFIL_OUTGAIN_CHX_SHIFT(7), 0xF, 0x7, gain_tlv),
++			  MICFIL_OUTGAIN_CHX_SHIFT(7), 0x8, 0xF, gain_tlv),
+ 	SOC_ENUM_EXT("MICFIL Quality Select",
+ 		     fsl_micfil_quality_enum,
+ 		     snd_soc_get_enum_double, snd_soc_put_enum_double),
 -- 
 2.35.1
 
