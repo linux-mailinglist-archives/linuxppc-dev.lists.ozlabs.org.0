@@ -2,76 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645AB66CA30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 18:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C8166CFDD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 21:09:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwdZ72mngz3cfW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 04:00:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwjm15LQYz3cGk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 07:09:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bbWXX/J2;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oUEJmkN2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::f2c; helo=mail-qv1-xf2c.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bbWXX/J2;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oUEJmkN2;
 	dkim-atps=neutral
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwdY91CX1z3bTB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 03:59:39 +1100 (AEDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id q10so19827302qvt.10
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 08:59:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KjSZzRBMAdo4mybRNiLTxM/648Q8PCOSrlXM8wfEg/Y=;
-        b=bbWXX/J2n8gGWFtUKJ79/dybMp54eeRhJ8ySSIK9ik1Ce0uUusco6vLIjhKxkkmNR2
-         k1+hK2DvdvTiwjmrwaSfpBBiEZCkBvHNFSblOid49EHhugPTMqxH1LznEPX7jA+7DZC6
-         emQgnqb2QmJAnhgv5aqvzEUPOTkyNDkQF4oR0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KjSZzRBMAdo4mybRNiLTxM/648Q8PCOSrlXM8wfEg/Y=;
-        b=ST+dDkEzZlNC4V7smYD1dyS3VfM/5jzLVtrIwZMoFFP9xUyLJu3LgwTWRZ4LDYyADS
-         yfbKvxzfaq3RlORxbB+GBui2QXX9NcbXKnWro+avmR2OBZ6e2x70yi3Uo0d2o7i20k9f
-         +RjT2rnp1BVSvi794FOvdfvEs3o+KlrrxPNWzUk6SXPVFIB1HRQIZr0rvMiBuaQrM606
-         +L3HfASQa7pQOHz3JY9tujrIF1ZG3mb0UswjUDV9vY4ofgar/lZ4hc3l2WyxhP9sFiM3
-         +HTHLdJS/YyUJ+RGTXJUMroKemueU5PTqstCjXnUta4JB8b0QQrXNZwjFGc9pcyqoE64
-         77zQ==
-X-Gm-Message-State: AFqh2kpIj91bhSLNPF2yIKoovCVa2u12jkBd50A3mimoi/eO9ygoOTOK
-	9r/zOkWy7iNdSjoKKU7Fi4979IXQNdPQ54cn
-X-Google-Smtp-Source: AMrXdXtRT+tymD6xrNKuEU2YSozo+SAi/R9vIRn3YhhGOtUwQjBu9j5NoFodyrTKbUGq/5zRowRztg==
-X-Received: by 2002:a0c:e58a:0:b0:534:226b:fb7f with SMTP id t10-20020a0ce58a000000b00534226bfb7fmr355835qvm.33.1673888373662;
-        Mon, 16 Jan 2023 08:59:33 -0800 (PST)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com. [209.85.219.41])
-        by smtp.gmail.com with ESMTPSA id y4-20020a05620a44c400b007069375e0f4sm242716qkp.122.2023.01.16.08.59.32
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jan 2023 08:59:32 -0800 (PST)
-Received: by mail-qv1-f41.google.com with SMTP id g10so14344834qvo.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 08:59:32 -0800 (PST)
-X-Received: by 2002:a05:6214:5d11:b0:531:7593:f551 with SMTP id
- me17-20020a0562145d1100b005317593f551mr11158qvb.89.1673888372051; Mon, 16 Jan
- 2023 08:59:32 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nwjl23CTtz3c4c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 07:08:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=yFVciWdIzPstN0lMoVeAI5kAz1ktvsyoitwNKrcy8UI=; b=oUEJmkN2crgBTChY6Y4acT11fR
+	84TFgO+yf2GwMCh4C2ZC/vRRPrDNgG5XsLlNVmBqQlTH37XKt468ACMHJMnYz+7kX+WX8WKo3jOWW
+	t13/mq2wp0mlK0GHoljrIPeA/j7RCr5YtvPyV4qnHR/wXejP0cQItVUEV84SDtXIUWySwS4oLGhNS
+	YxJt58MR+g0WlrDP3ZJjP/u5tCzzKbtcNvw5gRqZEYD32ucm5RL3aEjtfGQd8SsR1WXhuZT+zpo89
+	HxIYEmATYpXoO4jZnTTAHHs8lngtofk6H9wnw4ISdPGzTJEmgSYkHvWkqkNRMjcjIX0ZikOKFfBy5
+	Mc0yfW3w==;
+Received: from [76.243.124.25] (helo=[192.168.5.123])
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pHVmM-0092GP-Gi; Mon, 16 Jan 2023 20:08:26 +0000
+Message-ID: <a449698b-93f5-0742-77fe-5699544eab5c@infradead.org>
+Date: Mon, 16 Jan 2023 12:08:09 -0800
 MIME-Version: 1.0
-References: <CAGudoHHx0Nqg6DE70zAVA75eV-HXfWyhVMWZ-aSeOofkA_=WdA@mail.gmail.com>
- <CAHk-=wjthxgrLEvgZBUwd35e_mk=dCWKMUEURC6YsX5nWom8kQ@mail.gmail.com>
- <CPQQLU1ISBIJ.2SHU1BOMNO7TY@bobo> <CAHk-=wiRm+Z613bHt2d=N1yWJAiDiQVXkh0dN8z02yA_JS-rew@mail.gmail.com>
- <1966767.1673878095@warthog.procyon.org.uk>
-In-Reply-To: <1966767.1673878095@warthog.procyon.org.uk>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 16 Jan 2023 08:59:16 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whjFwzEq0u04=n=t7-kNJdX0HkAOjAMjmLXDDycJ+j9yQ@mail.gmail.com>
-Message-ID: <CAHk-=whjFwzEq0u04=n=t7-kNJdX0HkAOjAMjmLXDDycJ+j9yQ@mail.gmail.com>
-Subject: Re: Memory transaction instructions
-To: David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2 1/2] powerpc/ps3: Change updateboltedpp panic to info
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <cover.1672767868.git.geoff@infradead.org>
+ <2df879d982809c05b0dfade57942fe03dbe9e7de.1672767868.git.geoff@infradead.org>
+ <25cc9a51-2311-d7d3-3451-08725e6384cd@csgroup.eu>
+ <284aed88-dc26-d74a-cf7a-f5875ba058eb@infradead.org>
+ <87mt6j9wcf.fsf@mpe.ellerman.id.au>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <87mt6j9wcf.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,114 +64,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Nicholas Piggin <npiggin@gmail.com>, tony.luck@intel.com, viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org, Jan Glauber <jan.glauber@gmail.com>, Will Deacon <will@kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 16, 2023 at 6:08 AM David Howells <dhowells@redhat.com> wrote:
->
-> I'm not sure how relevant it is to the topic, but I seem to remember you
-> having a go at implementing spinlocks with x86_64 memory transaction
-> instructions a while back.  Do you have any thoughts on whether these
-> instructions are ever likely to become something we can use?
+Hi,
 
-Nope.
+On 1/15/23 16:06, Michael Ellerman wrote:
+> Geoff Levand <geoff@infradead.org> writes:
+>> On 1/9/23 09:41, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 03/01/2023 à 18:51, Geoff Levand a écrit :
+>>>> Commit fdacae8a84024474afff234bdd1dbe19ad597a10 (powerpc: Activate
+>>>> CONFIG_STRICT_KERNEL_RWX by default) causes ps3_hpte_updateboltedpp()
+>>>> to be called.  Change the panic statment in ps3_hpte_updateboltedpp()
+>>>> to a pr_info statement so that bootup can continue.
+>>>
+>>> But if I understand correctly, it means that CONFIG_STRICT_KERNEL_RWX 
+>>> won't work then.
+>>>
+>>> So, shouldn't we keep the panic and forbid CONFIG_STRICT_KERNEL_RWX on PS3 ?
+>>
+>> mmu_hash_ops.updateboltedpp returns void, so I can't return an error code to
+>> indicate the feature is not supported.
+> 
+> We could change that in the medium term.
+> 
+>> I could do something like this in arch/powerpc/Kconfig:
+>>
+>> -       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
+>> +       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !PPC_PS3 && !HIBERNATION
+>>
+>> But then the ppc64_defconfig would be built without STRICT_KERNEL_RWX.
+> 
+> Yeah that would be a pity.
+> 
+> We could do the above and disable PS3 in ppc64_defconfig, allowing
+> ppc64_defconfig to still have STRICT_KERNEL_RWX.
 
-Not only are they buggy, the actual cost of them was prohibitive too.
+I really want to keep PS3 included in ppc64_defconfig.  Not that I expect
+anyone to boot a ppc64_defconfig kernel on PS3, but that is one of the
+'standard' configs that is built by some automated builders, and generally by
+anyone doing changes to the powerpc arch, and I want to keep getting those
+build tests for PS3.
 
-The only implementation I ever did was what then became 'lockref' (so
-this was about a decade ago), and using transactional memory was
-actually quite noticeably *slower* than just using a spinlock in the
-common cases (particularly the uncontended case - which is actually
-the common one by far, despite some benchmarks).
+> I assume actual PS3 users would use a ps3_defconfig anyway right?
 
-And while the argument could be that transactional memory has improved
-in the last decade (narrator: "It hasn't"), the problem is actually
-quite fundamental.
+Yeah, a derivative of it.  They are most likely are using 'Jailbreak' firmware
+that allows them to run Linux in the gameos partition.
 
-The whole "best case scenario" for transactional memory concept is
-literally optimized and designed for the rare circumstance - the case
-where you have contention, but where the locking part is basically an
-idempotent operation (so "lock+unlock" ends up undoing each other and
-can use shared cachelines rather than bouncing the cacheline).
+> Relatedly are there any actual PS3 users left? ;)
 
-And contention pretty much happens in one situation, and one situation
-only: in a combination of (a) bad locking and (b) benchmarks.
+It seems there are more users now than a few years ago.  I think they buy PS5s
+to play the latest games, and use their old console to mess around with Linux.
+I generally get a private inquiry every 3 or 4 weeks.  Usually asking how to
+update their kernel, or how to install a modern distro.
 
-And for the kernel, where we don't have bad locking, and where we
-actually use fine-grained locks that are _near_ the data that we are
-locking (the lockref of the dcache is obviously one example of that,
-but the skbuff queue you mention is almost certainly exactly the same
-situation): the lock is right by the data that the lock protects, and
-the "shared lock cacheline" model simply does not work. You'll bounce
-the data, and most likely you'll also touch the same lock cacheline
-too.
+>> What other 'clean' way is there?
+> 
+> If we want to have a multi-platform kernel image that can boot on PS3
+> and other platforms, and have strict kernel RWX, then we need some
+> runtime logic to deal with that.
+> 
+> I'd rather not do that though, because it adds complexity to deal with a
+> pretty obscure corner case, and I suspect no one really boots a
+> ppc64_defconfig on actual PS3 hardware these days.
+> 
+> So my preference is we disable PS3 in ppc64_defconfig, and make PS3
+> incompatible with STRICT_KERNEL_RWX.
 
-I was quite excited about transactional memory, but have (obviously)
-come to the conclusion that it was one of those "looks good in theory,
-but is just garbage in reality".
+As mentioned, I'd really like to keep PS3 included in ppc64_defconfig.  My
+original patch that basically just ignores the call to
+mmu_hash_ops.updateboltedpp allows that, and I haven't experienced any problems
+with it yet.
 
-So this isn't an "the x86 implementation was bad" issue. This is a
-"transactional memory is a bad idea" situation. It complicates the
-most important part of the core CPU (the memory pipeline) enormously,
-and it doesn't actually really work.
+My preference would be to keep PS3 in ppc64_defconfig, and either apply my
+original patch, or I keep that patch in my ps3-linux repo on kernel.org. Then,
+if we end up adding runtime support for RWX I then fixup PS3 to use that.
 
-Now, with that "transactional memory is garbage" in mind, let me just
-mention that there are obviously other circumstances:
+-Geoff
 
- (a) horrendously bad locking
 
-If you have a single centralized lock, and you really have serious
-contention on it in real life all the time (and not just under
-microbenchmarks), and the data that gets touched is spread out all
-over, and you simply cannot fix the locking, then all those
-theoretical advantages of transactional memory can actually come into
-play.
-
-But again: even then, there's an absolutely huge cost to the memory
-pipeline.  So that advantage really doesn't come free. Nobody has ever
-gotten transactional memory to actually work well in real life. Not
-Intel, not IBM with powerpc HTM.
-
-That should tell you something. The hw complexity cost is very very real.
-
-But Intel actually had some loads where TSX helped. I think it was SAP
-HANA, and I really think that what you should take away from that is
-that SAP HANA locking is likely horrible garbage inside. But maybe I'm
-biased, and maybe SAP HANA is lovely, and maybe it just happened to
-work really well for TSX. I've never actually looked at that load, but
-if I were a betting man...
-
- (b) very *limited* transactions are probably a great idea
-
-LL/SC is arguably a form of "transactional memory", just with a single
-word. Now, I think atomics are generally usually better than LL/SC
-when it really is just a single word (because most of the time,
-"single word" also means "simple semantics", and while CMPXCHG loops
-aren't lovely when the semantics are a bit more complex, it's actually
-nice and portable and works at a higher level than assembler sequences
-and as such is actually a *lot* better than LL/SC in practice).
-
-But a "N-word LL/SC with forward progress guarantees" would be
-objectively stronger than atomics, and would allow for doing low-level
-data structures in ways that atomics don't. Doubly linked lists
-together with a lock check would argue for "N" being ~5 memory
-operations. So I do believe in potentially *limited* memory
-transactions, when they can be made limited enough that you have
-
- (1) forward progress guarantees with no "separate fallback on
-contention" garbage
-
- (2) can keep the hw implementation simple enough with just a store
-buffer and an (architecturally) very limited number of cacheline
-accesses that you can actually order in HW so that you don't have ABBA
-situations.
-
-But the generic kind of transactional memory that Intel tried with TSX
-(and IBM with HTM) is pure garbage, and almost certainly always will
-be.
-
-And all of the above is obviously just my opinionated input on it. But
-I just happen to be right.
-
-                Linus
