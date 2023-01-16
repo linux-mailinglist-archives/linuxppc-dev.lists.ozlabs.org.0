@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241BD66BA8F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 10:38:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9997766BAA6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 10:40:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwRld0bhlz3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 20:38:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwRph3NjRz3cDF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 20:40:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
@@ -14,22 +14,22 @@ Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwRl56Wd1z3c66
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 20:37:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwRp80743z30Bp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 20:40:15 +1100 (AEDT)
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.95)
           with esmtps (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pHLvi-000QzZ-WB; Mon, 16 Jan 2023 10:37:27 +0100
+          id 1pHLyF-000S2H-AG; Mon, 16 Jan 2023 10:40:03 +0100
 Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
           by inpost2.zedat.fu-berlin.de (Exim 4.95)
           with esmtpsa (TLS1.3)
           tls TLS_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pHLvi-000aks-Mt; Mon, 16 Jan 2023 10:37:26 +0100
-Message-ID: <094a8bcc-33eb-5443-77b3-4e81e0c2d5bf@physik.fu-berlin.de>
-Date: Mon, 16 Jan 2023 10:37:24 +0100
+          id 1pHLyF-000bFE-3j; Mon, 16 Jan 2023 10:40:03 +0100
+Message-ID: <daa95b08-a942-519e-6dfc-a66b7bbddd82@physik.fu-berlin.de>
+Date: Mon, 16 Jan 2023 10:40:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
@@ -41,8 +41,9 @@ References: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
  <db6937a1-e817-2d7b-0062-9aff012bb3e8@physik.fu-berlin.de>
  <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com>
  <CA+icZUXEz7ZxmkV5bw5O2ORjF4bwDXBMyj3Wk_HST98gMPt97g@mail.gmail.com>
+ <CA+icZUUhY7-F5Bpw-jxofhw4nMP3nzyfpt9huzeSWwUguguNsA@mail.gmail.com>
 From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <CA+icZUXEz7ZxmkV5bw5O2ORjF4bwDXBMyj3Wk_HST98gMPt97g@mail.gmail.com>
+In-Reply-To: <CA+icZUUhY7-F5Bpw-jxofhw4nMP3nzyfpt9huzeSWwUguguNsA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
@@ -62,44 +63,24 @@ Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/14/23 12:24, Sedat Dilek wrote:
-> Example #1: binutils packages
+On 1/14/23 12:28, Sedat Dilek wrote:
+> [ ... ]
 > 
-> Checking available binutils package for Debian/unstable IA64 (version:
-> 2.39.90.20230110-1):
+>> Best is to ask the Debian release-team or (if there exist) maintainers
+>> or responsibles for the IA64 port - which is an ***unofficial*** port.
+>>
 > 
-> https://packages.debian.org/sid/binutils <--- Clearly states IA64 as
-> "unofficial port"
-
-And?
-
-> https://packages.debian.org/sid/ia64/binutils/filelist
+> Here we go:
 > 
-> Example #2: linux-image packages
+> https://lists.debian.org/debian-ia64/
 > 
-> Cannot say what this means...
+> Posting address: debian-ia64@lists.debian.org
 > 
-> https://packages.debian.org/search?arch=amd64&keywords=linux-image
-> (AMD64 - matches)
-> 
-> https://packages.debian.org/search?arch=ia64&keywords=linux-image
-> (IA64 - no matches)
-> 
-> https://packages.debian.org/search?arch=ia64&keywords=linux (IA64 -
-> matches - but no linux-image which ships normally a bootable
-> Linux-kernel)
+> Found via <https://lists.debian.org/completeindex.html>
 
-No, the package is called "linux-image-$ARCH-$FLAVOR". There is no "linux-image"
-package for amd64 either. Does that prove amd64 is dead?
+And the wiki lists Jason Duerstock, Jessica Clarke and me as maintainers:
 
-What you are looking for can be found here:
-
-> http://ftp.ports.debian.org/debian-ports/pool-ia64/main/l/linux/
-
-> As stated I have no expertise in Debian whatever release for IA64 arch.
-
-Well, maybe let me answer the questions then since I am maintaining the port
-in Debian.
+> https://wiki.debian.org/Ports/ia64
 
 Adrian
 
