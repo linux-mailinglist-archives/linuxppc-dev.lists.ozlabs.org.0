@@ -2,62 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFC166BB4B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 11:10:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAB066BD03
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 12:40:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwSTW2JTNz3cg0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 21:10:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwVSV08XRz3cgv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 22:40:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lBW89nC3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IKaS1mls;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lBW89nC3;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IKaS1mls;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwSSb5BGkz3c4f
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 21:10:07 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0747460EA3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 10:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD01C4339E
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 10:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673863802;
-	bh=WvUKV+LJJqo7bAhYclYeSMFCwFldg4KmpbXOAYz8QWo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lBW89nC335bSKVJufIQTqJ90AU9ql4YIY+Ppj9Gwj3YZEZSp/xPavFF4GGeXyd/RM
-	 ck+8dh37dVIL5J4En4mxnCR7gJ2/yLSWAw5XQL6Tio402pzpwhcUl2xxtaAcy+onfI
-	 khZWWGjbhZH02MiydW/l6V+jcb9luEFu91HBnU5hZ9l03DTfChxEV2A2l7XQUEPwj5
-	 sacnw3pUmG3judnxU2OuyQmJIRBoL2P99WngbmQZhO74uE8DECcUSTMU4XfohH3JWL
-	 ZycQrhEjsc2fkoPrqUaa/9INUPpD864zkw6zIK3XZ3z1ac1S0JDT1oAp4i2N4V+7xA
-	 zAnFJeSynL+lQ==
-Received: by mail-lj1-f170.google.com with SMTP id a37so3601249ljq.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 02:10:02 -0800 (PST)
-X-Gm-Message-State: AFqh2kpUEhw2uYuYwvrIkU8A3tx5S+ptOVUiLkltXBrUiFGqBCMjTnYY
-	wVB2tlC5KmHncwcPfX+CqYFbWAGcku2KDGqxQRk=
-X-Google-Smtp-Source: AMrXdXuci9MgC4Yqkq9KkHHd04QolyddrXOjxcSpOm/4blocNC+0ii0paVfsFlAG2o8dCizIgUWfTcSThbA29z7ap4s=
-X-Received: by 2002:a2e:96ce:0:b0:283:33fa:ee22 with SMTP id
- d14-20020a2e96ce000000b0028333faee22mr1349344ljj.415.1673863800637; Mon, 16
- Jan 2023 02:10:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwTvT55D4z3c3w
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 22:15:00 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id jn22so29972720plb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 03:15:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=H/j+1WOB2+poIU0zjjNXAinFoRjK1wRjx3d+XHMefVA=;
+        b=IKaS1mlsXdKP2qLzqb0Dyj556UOX3zeMPhPIirCQcTt3qQS2nyTrw1H+PTDeBL8zuV
+         HM5hqzwdA1j2S+Owv380uXh4elme5UhoOwMxL5rwB6SEfOxqFisy3kf5PXKswLa2DQwZ
+         ZbSg85c+dciT9fX+W0S917eX6PiPq8JsRiD7hiEgNGE0uDyd/QyqjwINAVDHmul8StHU
+         g7sLEfykA1+gfNGZH3mWj1DPNJa/IpRkv5amvYAt97kyPizVZeEvRvSNKrRlkvJJAMDV
+         n1yK9QwW5Xy/Z8sceRkhjoRr36n6xdiEOnqDkWDzss1yFAf2tXJokS2p8uBJx8DvUK4b
+         8mUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H/j+1WOB2+poIU0zjjNXAinFoRjK1wRjx3d+XHMefVA=;
+        b=IbJ+54OQIWf0AOH1FRxhd5nPXPvcB/SIi6BhKfoPGwzismlqhMaY4nlFWkNARu0UN5
+         7uLqdwG7C0gcyxne3Ysu4fVbZZgns9RX77uBCfxzkaXy8D/ile9y0mK6PzRxrpwN5IFP
+         7zO0DhTzRU3QONEZBtjJF1MWq2lv48ABxFew3/2QdeB/hF3A0KX832KUZTdQgLqt8my9
+         CMu66CxMgn4jKjisA8MM16C911efx6niyp7rioju05KlmH1OVL4R1AeXN6tohAxUokVX
+         AOLR0RXLWEtREd6aX04U+yuB3oKVXkaN6Otmd6dI2GsgLWxnc/Khc4VuI4tHuNSI/hJ2
+         7FvQ==
+X-Gm-Message-State: AFqh2kreToupTsNInmypKDf900Ik9xIdEmfYDhoVjgm1WGFhW9+9QOgH
+	MK0QLckWfbiWnUk7nb48yIY=
+X-Google-Smtp-Source: AMrXdXuQRd6wOjQtljWK07qYLraoNulCoayDZNQpKT3xAcTulISKZqIOzMvtWPVA3/M2jPRTkeVMbA==
+X-Received: by 2002:a05:6a20:5489:b0:b0:b870:54e1 with SMTP id i9-20020a056a20548900b000b0b87054e1mr140691094pzk.12.1673867695716;
+        Mon, 16 Jan 2023 03:14:55 -0800 (PST)
+Received: from localhost ([2400:8902::f03c:93ff:fe27:642a])
+        by smtp.gmail.com with ESMTPSA id 3-20020a621503000000b00581c741f95csm16176892pfv.46.2023.01.16.03.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jan 2023 03:14:54 -0800 (PST)
+Date: Mon, 16 Jan 2023 11:14:38 +0000
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 41/41] mm: replace rw_semaphore with atomic_t in vma_lock
+Message-ID: <Y8UxnqPCTLbbD+2F@localhost>
+References: <20230109205336.3665937-1-surenb@google.com>
+ <20230109205336.3665937-42-surenb@google.com>
 MIME-Version: 1.0
-References: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
- <db6937a1-e817-2d7b-0062-9aff012bb3e8@physik.fu-berlin.de>
- <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com> <9f91942e-f4bf-e38c-2bb9-b32941b6d5f1@physik.fu-berlin.de>
-In-Reply-To: <9f91942e-f4bf-e38c-2bb9-b32941b6d5f1@physik.fu-berlin.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 16 Jan 2023 11:09:49 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH1SjPrPWyQbsYUHhVfgWH_p-sf-mhbeKMQn-QyOjBRng@mail.gmail.com>
-Message-ID: <CAMj1kXH1SjPrPWyQbsYUHhVfgWH_p-sf-mhbeKMQn-QyOjBRng@mail.gmail.com>
-Subject: Re: ia64 removal (was: Re: lockref scalability on x86-64 vs cpu_relax)
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230109205336.3665937-42-surenb@google.com>
+X-Mailman-Approved-At: Mon, 16 Jan 2023 22:39:24 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,73 +79,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Will Deacon <will@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Luck, Tony" <tony.luck@intel.com>, Catalin Marinas <catalin.marinas@arm.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Jan Glauber <jan.glauber@gmail.com>, "Torvalds, Linus" <torvalds@linux-foundation.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@t
+ echsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 16 Jan 2023 at 10:33, John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
->
-> Hi Ard!
->
-> On 1/14/23 00:25, Ard Biesheuvel wrote:
-> > Thanks for reporting back. I (mis)read the debian ports page [3],
-> > which mentions Debian 7 as the highest Debian version that supports
-> > IA64, and so I assumed that support had been dropped from Debian.
->
-> This page talks about officially supported ports. Debian Ports is an
-> unofficial spin maintained by a number of Debian Developers and external
-> developers that are volunteering to maintain these ports.
->
-> > However, if only a handful of people want to keep this port alive for
-> > reasons of nostalgia, it is obviously obsolete, and we should ask
-> > ourselves whether it is reasonable to expect Linux contributors to
-> > keep spending time on this.
->
-> You could say this about a lot of hardware, can't you?
->
+On Mon, Jan 09, 2023 at 12:53:36PM -0800, Suren Baghdasaryan wrote:
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index d40bf8a5e19e..294dd44b2198 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -627,12 +627,16 @@ static inline void vma_write_lock(struct vm_area_struct *vma)
+>  	 * mm->mm_lock_seq can't be concurrently modified.
+>  	 */
+>  	mm_lock_seq = READ_ONCE(vma->vm_mm->mm_lock_seq);
+> -	if (vma->vm_lock_seq == mm_lock_seq)
+> +	if (vma->vm_lock->lock_seq == mm_lock_seq)
+>  		return;
+>  
+> -	down_write(&vma->vm_lock->lock);
+> -	vma->vm_lock_seq = mm_lock_seq;
+> -	up_write(&vma->vm_lock->lock);
+> +	if (atomic_cmpxchg(&vma->vm_lock->count, 0, -1))
+> +		wait_event(vma->vm_mm->vma_writer_wait,
+> +			   atomic_cmpxchg(&vma->vm_lock->count, 0, -1) == 0);
+> +	vma->vm_lock->lock_seq = mm_lock_seq;
+> +	/* Write barrier to ensure lock_seq change is visible before count */
+> +	smp_wmb();
+> +	atomic_set(&vma->vm_lock->count, 0);
+>  }
+>  
+>  /*
+> @@ -643,20 +647,28 @@ static inline void vma_write_lock(struct vm_area_struct *vma)
+>  static inline bool vma_read_trylock(struct vm_area_struct *vma)
+>  {
+>  	/* Check before locking. A race might cause false locked result. */
+> -	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
+> +	if (vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
+>  		return false;
+>  
+> -	if (unlikely(down_read_trylock(&vma->vm_lock->lock) == 0))
+> +	if (unlikely(!atomic_inc_unless_negative(&vma->vm_lock->count)))
+>  		return false;
+>  
+> +	/* If atomic_t overflows, restore and fail to lock. */
+> +	if (unlikely(atomic_read(&vma->vm_lock->count) < 0)) {
+> +		if (atomic_dec_and_test(&vma->vm_lock->count))
+> +			wake_up(&vma->vm_mm->vma_writer_wait);
+> +		return false;
+> +	}
+> +
+>  	/*
+>  	 * Overflow might produce false locked result.
+>  	 * False unlocked result is impossible because we modify and check
+>  	 * vma->vm_lock_seq under vma->vm_lock protection and mm->mm_lock_seq
+>  	 * modification invalidates all existing locks.
+>  	 */
+> -	if (unlikely(vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
+> -		up_read(&vma->vm_lock->lock);
+> +	if (unlikely(vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
+> +		if (atomic_dec_and_test(&vma->vm_lock->count))
+> +			wake_up(&vma->vm_mm->vma_writer_wait);
+>  		return false;
+>  	}
 
-Uhm, yes. Linux contributor effort is a scarce resource, and spending
-it on architectures that nobody actually uses, such as alpha or ia64,
-means it is not spent on things that are useful to more people.
+With this change readers can cause writers to starve.
+What about checking waitqueue_active() before or after increasing
+vma->vm_lock->count?
 
-I really do sympathize with the enthusiast/hobbyist PoV - I am also an
-engineer that likes to tinker. So 'use' can be defined liberally here,
-and cover running the latest Linux on ancient hardware just for
-entertainment.
-
-However, the question is not how you or I choose to spend (or waste)
-their time. The question is whether it is reasonable *as a community*
-to insist that everyone who contributes a cross-architecture change
-also has to ensure that obsolete architectures such as i64 or alpha
-are not left behind.
-
-The original thread is an interesting example here - removing a
-cpu_relax() in cmpxchg() that was only there because of IA64's clunky
-SMT implementation. Perhaps this means that IA64 performance is going
-to regress substantially for some workloads? Should anyone care?
-Should we test such changes first? And how should we do that if there
-is no maintainer and nobody has access to the hardware?
-
-The other example is EFI, which i maintain. Should I require from
-contributors that they build and boot test EFI changes on ia64 if I
-myself don't even have access to the hardware? It is good to know that
-things don't seem to be broken today, but if it is going to fall over,
-it may take a while before anybody notices. What happens then?
-
-> > Does the Debian ia64 port have any users? Or is the system that builds
-> > the packages the only one that consumes them?
->
-> There is the popcon statistics. However, that is opt-on and the numbers are
-> not really trustworthy. We are getting feedback from time to time from people
-> using it.
->
-> Is there any problem with the ia64 port at the moment that would justify removal?
->
-
-I would argue that we should mark it obsolete at the very least, so
-that it is crystal clear that regressing IA64 (either knowingly or
-unknowingly) by a generic or cross-architecture change is not a
-showstopper, even at build time. Then, if someone has the skill set
-and the time on their hands, as well as access to actual hardware,
-they can keep it alive if they want to.
+--
+Thanks,
+Hyeonggon
