@@ -1,36 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C51766D11A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 22:52:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7DB66D137
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 23:01:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwm306tl2z3fDN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 08:52:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwmFW32gSz3cf6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 09:01:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=nNjvKSs3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 367 seconds by postgrey-1.36 at boromir; Tue, 17 Jan 2023 04:06:08 AEDT
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwdhc5gz5z2ym7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 04:06:07 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30C411570;
-	Mon, 16 Jan 2023 09:00:09 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.35.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B0403F67D;
-	Mon, 16 Jan 2023 08:59:10 -0800 (PST)
-Date: Mon, 16 Jan 2023 16:59:04 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
-Message-ID: <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230112194314.845371875@infradead.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=nNjvKSs3;
+	dkim-atps=neutral
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwmDZ6Yzhz30hl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 09:00:45 +1100 (AEDT)
+Received: by mail-wm1-x32b.google.com with SMTP id c10-20020a05600c0a4a00b003db0636ff84so257641wmq.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 14:00:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oNMgnRdxl8cID5dDHZQku0mVCQNWegrqxUVZnzdGN40=;
+        b=nNjvKSs3qKm3edSQucxlO+wqSAIaJBfNi6p974ivDyPbkfD8OZ+5nykh/KI0CjaL99
+         ZME9P3rbqBe0w3vVscfSjuxMyr70jJgpfmAb9KdvkqTBrhUJpNL2cFmoXHQI09/3ffcM
+         xKfMXfQeDGJ4VdSW+sRGlMmleWKNJbFBK+paWE5FucznXbSlp5PlaBiPepVgcOTH922c
+         cVPaNj1quO1FKiniINuBvFIxBAGIN+Vq/X1KVn1VV0Z1/GQLknPUfX1Nwh5Jktp9HNn+
+         Ons3PhsSm8KvF2oldYDiQH7KIOCmjmqySkSMRka3oebj7c1qn15LBRSqZwsT5eI+eGss
+         nlAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oNMgnRdxl8cID5dDHZQku0mVCQNWegrqxUVZnzdGN40=;
+        b=C2UPwcEGorHl1P74uUPVSzpyK9cl2aGRFxQt46utjMQ3OWv7XT1Wm58vyPrMzMAodi
+         gC2gfvDqH37RKC17wX1Sfm9fQEAa50ewJ0Wf0HHZdSA5IG+aCAs12jfebTrCAiWC+yup
+         mbN1jIQWOpReUbN5EcmvUYKd+Dm7kwTR5mB+MHMnLOMF215YH01LgZ8F7Wc91kTPpuvP
+         KdxvMjoFIVss9e+Tew3pe7RYmeOIVDDaqFcgsVUwDbtIZscx4/JQH5CcLmIenFtjFTSF
+         12iwzeurartR72kpLV7GHTPqOxaahQIW9OHzCdhE3+DmqoFjz6KBClwdsZmdMpwOSByR
+         LR4g==
+X-Gm-Message-State: AFqh2koT+Bf+ARtFeoxbnifUjdY13m2074UMh3gKZEWiSkwT1YBcENJt
+	qWSjTLbupV93xfCurwf64VWNLFY8qmld3DlQ/OwICg==
+X-Google-Smtp-Source: AMrXdXsHuIgBy5BIQSMKTjuF57zvRXqW6FJhSaYVpJ46vp68UspRzwYrRXRofjTIHrEnHoSLw6D3Ivsy7ftSB8M1BWQ=
+X-Received: by 2002:a05:600c:1c9a:b0:3d9:ee45:8a9e with SMTP id
+ k26-20020a05600c1c9a00b003d9ee458a9emr45362wms.174.1673906438517; Mon, 16 Jan
+ 2023 14:00:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230112194314.845371875@infradead.org>
-X-Mailman-Approved-At: Tue, 17 Jan 2023 08:52:03 +1100
+References: <20220921170839.21927-1-atrajeev@linux.vnet.ibm.com>
+ <Yyy0W6CnPk7BkkCU@kernel.org> <444a5a64-7bc6-d5fd-2880-611c5cbca587@intel.com>
+ <3EE5CFF3-51BC-444E-8FEF-2AC219E809F6@linux.vnet.ibm.com> <41461A8A-74F7-4938-9E8D-9F275114E906@linux.vnet.ibm.com>
+ <CAP-5=fXWCYQSpp92L64+7Piu0sfEq+RsigNLUowgCjsT218jow@mail.gmail.com> <5CAD9B57-1788-4C7E-9658-7634A49D8BF0@linux.vnet.ibm.com>
+In-Reply-To: <5CAD9B57-1788-4C7E-9658-7634A49D8BF0@linux.vnet.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Mon, 16 Jan 2023 14:00:26 -0800
+Message-ID: <CAP-5=fXS+8Wg8+Qrob+7fb5Y6FeBQphzd=Y0a1eh6xNwc-SfYA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] tools/perf/tests: Fix string substitutions in build
+ id test
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,106 +79,233 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.
- org, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@k
- ernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, ope
- nrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
+Cc: maddy@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 12, 2023 at 08:43:14PM +0100, Peter Zijlstra wrote:
-> Hi All!
+On Mon, Jan 16, 2023 at 4:00 AM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+>
+>
+> > On 16-Jan-2023, at 11:47 AM, Ian Rogers <irogers@google.com> wrote:
+> >
+> > On Sun, Jan 15, 2023 at 9:03 PM Athira Rajeev
+> > <atrajeev@linux.vnet.ibm.com> wrote:
+> >>
+> >>
+> >>
+> >>> On 28-Sep-2022, at 10:24 AM, Athira Rajeev <atrajeev@linux.vnet.ibm.c=
+om> wrote:
+> >>>
+> >>> Hi All,
+> >>>
+> >>> Looking for what direction we can take here.
+> >>> Do we want to change all tests in tools/perf/tests/shell except test_=
+intel_pt.sh to use "bash" or go with
+> >>> the approach in the patch ? Please share your comments
+> >>>
+> >>> Thanks
+> >>> Athira
+> >>>
+> >>
+> >> Hi All,
+> >>
+> >> Looking for what direction we can take here.
+> >> Do we want to change all tests in tools/perf/tests/shell except test_i=
+ntel_pt.sh to use "bash" or go with
+> >> the approach in the patch ? Please share your comments
+> >>
+> >> Thanks
+> >> Athira
+> >
+>
+> Thanks Ian for the response.
+>
+> > I think some of what the patch is doing is good, some of it the
+>
+> Ian, can I take this as an ack for the patch so that Arnaldo can pick thi=
+s in acme git ?
 
-Hi Peter,
-
-> The (hopefully) final respin of cpuidle vs rcu cleanup patches. Barring any
-> objections I'll be queueing these patches in tip/sched/core in the next few
-> days.
-
-I'm sorry to have to bear some bad news on that front. :(
-
-I just had a go at testing this on a Juno dev board, using your queue.git
-sched/idle branch and defconfig + CONFIG_PROVE_LOCKING=y +
-CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
-
-With that I consistently see RCU at boot time (log below).
-
-| =============================
-| WARNING: suspicious RCU usage
-| 6.2.0-rc3-00051-gced9b6eecb31 #1 Not tainted
-| -----------------------------
-| include/trace/events/ipi.h:19 suspicious rcu_dereference_check() usage!
-| 
-| other info that might help us debug this:
-| 
-| 
-| rcu_scheduler_active = 2, debug_locks = 1
-| RCU used illegally from extended quiescent state!
-| no locks held by swapper/0/0.
-| 
-| stack backtrace:
-| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.2.0-rc3-00051-gced9b6eecb31 #1
-| Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II May 16 2021
-| Call trace:
-|  dump_backtrace.part.0+0xe4/0xf0
-|  show_stack+0x18/0x30
-|  dump_stack_lvl+0x98/0xd4
-|  dump_stack+0x18/0x34
-|  lockdep_rcu_suspicious+0xf8/0x10c
-|  trace_ipi_raise+0x1a8/0x1b0
-|  arch_irq_work_raise+0x4c/0x70
-|  __irq_work_queue_local+0x48/0x80
-|  irq_work_queue+0x50/0x80
-|  __wake_up_klogd.part.0+0x98/0xe0
-|  defer_console_output+0x20/0x30
-|  vprintk+0x98/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  trace_lock_acquire+0x174/0x180
-|  lock_acquire+0x3c/0x8c
-|  _raw_spin_lock_irqsave+0x70/0x150
-|  down_trylock+0x18/0x50
-|  __down_trylock_console_sem+0x3c/0xd0
-|  console_trylock+0x28/0x90
-|  vprintk_emit+0x11c/0x354
-|  vprintk_default+0x38/0x4c
-|  vprintk+0xd4/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  printk_sprint+0x238/0x240
-|  vprintk_store+0x32c/0x4b0
-|  vprintk_emit+0x104/0x354
-|  vprintk_default+0x38/0x4c
-|  vprintk+0xd4/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  trace_irq_disable+0x1ac/0x1b0
-|  trace_hardirqs_off+0xe8/0x110
-|  cpu_suspend+0x4c/0xfc
-|  psci_cpu_suspend_enter+0x58/0x6c
-|  psci_enter_idle_state+0x70/0x170
-|  cpuidle_enter_state+0xc4/0x464
-|  cpuidle_enter+0x38/0x50
-|  do_idle+0x230/0x2c0
-|  cpu_startup_entry+0x24/0x30
-|  rest_init+0x110/0x190
-|  arch_post_acpi_subsys_init+0x0/0x18
-|  start_kernel+0x6f8/0x738
-|  __primary_switched+0xbc/0xc4
-
-IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
-is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
-local_daif_*() helpers poke lockdep and tracing, hence the call to
-trace_hardirqs_off() and the RCU usage.
-
-I think we need RCU to be watching all the way down to cpu_suspend(), and it's
-cpu_suspend() that should actually enter/exit idle context. That and we need to
-make cpu_suspend() and the low-level PSCI invocation noinstr.
-
-I'm not sure whether 32-bit will have a similar issue or not.
-
-I'm surprised no-one else who has tested has seen this; I suspect people
-haven't enabled lockdep and friends. :/
+Acked-by: Ian Rogers <irogers@google.com>
 
 Thanks,
-Mark. 
+Ian
+
+> > readability becomes a little harder by not being bash. I'm agnostic as
+> > to which approach to take for the fix.
+>
+> May be we can take this as separate mail thread to get everyone=E2=80=99s=
+ opinion on changing all tests in "tools/perf/tests/shell" except test_inte=
+l_pt.sh to use =E2=80=9Cbash" ?
+>
+> >
+> > An aside, I noticed that we do run some tests at build time:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/tree/lib=
+/Makefile?h=3Dperf/core#n390
+> > So perhaps we can have a shellcheck build option, defaulted off but
+> > enabled as part of Arnaldo's regular test scripts. The shellcheck
+> > build option would run shellcheck to make sure that there weren't
+> > errors in the shell code, which it is far too easy to introduce.
+>
+> Sure, that is a good option to have. I will check on having =E2=80=9Cshel=
+lcheck" as a build option.
+>
+> Thanks
+> Athira
+>
+> >
+> > Thanks,
+> > Ian
+> >
+> >>>> On 23-Sep-2022, at 11:54 AM, Adrian Hunter <adrian.hunter@intel.com>=
+ wrote:
+> >>>>
+> >>>> On 22/09/22 22:15, Arnaldo Carvalho de Melo wrote:
+> >>>>> Em Wed, Sep 21, 2022 at 10:38:38PM +0530, Athira Rajeev escreveu:
+> >>>>>> The perf test named =E2=80=9Cbuild id cache operations=E2=80=9D sk=
+ips with below
+> >>>>>> error on some distros:
+> >>>>>
+> >>>>> I wonder if we shouldn't instead state that bash is needed?
+> >>>>>
+> >>>>> =E2=AC=A2[acme@toolbox perf-urgent]$ head -1 tools/perf/tests/shell=
+/*.sh | grep ^#
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/bash
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/bash
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/bash
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/bash
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> #!/bin/sh
+> >>>>> =E2=AC=A2[acme@toolbox perf-urgent]$
+> >>>>>
+> >>>>> Opinions?
+> >>>>>
+> >>>>
+> >>>> Please don't change tools/perf/tests/shell/test_intel_pt.sh
+> >>>>
+> >>>> I started using shellcheck on that with the "perf test:
+> >>>> test_intel_pt.sh: Add per-thread test" patch set that I sent.
+> >>>>
+> >>>> FYI, if you use shellcheck on buildid.sh, it shows up issues even
+> >>>> after changing to bash:
+> >>>>
+> >>>> *** Before ***
+> >>>>
+> >>>> $ shellcheck -S warning tools/perf/tests/shell/buildid.sh
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 69:
+> >>>>      link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
+> >>>>                                     ^-------^ SC2039: In POSIX sh, s=
+tring indexing is undefined.
+> >>>>                                               ^-----^ SC2039: In POS=
+IX sh, string indexing is undefined.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 77:
+> >>>>      file=3D${build_id_dir}/.build-id/${id:0:2}/`readlink ${link}`/e=
+lf
+> >>>>                                     ^-------^ SC2039: In POSIX sh, s=
+tring indexing is undefined.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 123:
+> >>>>      echo "running: perf record $@"
+> >>>>                                 ^-- SC2145: Argument mixes string an=
+d array. Use * or separate argument.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 124:
+> >>>>      ${perf} record --buildid-all -o ${data} $@ &> ${log}
+> >>>>                                              ^-- SC2068: Double quot=
+e array expansions to avoid re-splitting elements.
+> >>>>                                                 ^-------^ SC2039: In=
+ POSIX sh, &> is undefined.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 126:
+> >>>>              echo "failed: record $@"
+> >>>>                                   ^-- SC2145: Argument mixes string =
+and array. Use * or separate argument.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 131:
+> >>>>      check ${@: -1}
+> >>>>            ^------^ SC2068: Double quote array expansions to avoid r=
+e-splitting elements.
+> >>>>            ^------^ SC2039: In POSIX sh, string indexing is undefine=
+d.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 158:
+> >>>> exit ${err}
+> >>>>   ^----^ SC2154: err is referenced but not assigned.
+> >>>>
+> >>>> For more information:
+> >>>> https://www.shellcheck.net/wiki/SC2068 -- Double quote array expansi=
+ons to ...
+> >>>> https://www.shellcheck.net/wiki/SC2145 -- Argument mixes string and =
+array. ...
+> >>>> https://www.shellcheck.net/wiki/SC2039 -- In POSIX sh, &> is undefin=
+ed.
+> >>>>
+> >>>> *** After ***
+> >>>>
+> >>>> $ shellcheck -S warning tools/perf/tests/shell/buildid.sh
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 123:
+> >>>>      echo "running: perf record $@"
+> >>>>                                 ^-- SC2145: Argument mixes string an=
+d array. Use * or separate argument.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 124:
+> >>>>      ${perf} record --buildid-all -o ${data} $@ &> ${log}
+> >>>>                                              ^-- SC2068: Double quot=
+e array expansions to avoid re-splitting elements.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 126:
+> >>>>              echo "failed: record $@"
+> >>>>                                   ^-- SC2145: Argument mixes string =
+and array. Use * or separate argument.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 131:
+> >>>>      check ${@: -1}
+> >>>>            ^------^ SC2068: Double quote array expansions to avoid r=
+e-splitting elements.
+> >>>>
+> >>>>
+> >>>> In tools/perf/tests/shell/buildid.sh line 158:
+> >>>> exit ${err}
+> >>>>   ^----^ SC2154: err is referenced but not assigned.
+> >>>>
+> >>>> For more information:
+> >>>> https://www.shellcheck.net/wiki/SC2068 -- Double quote array expansi=
+ons to ...
+> >>>> https://www.shellcheck.net/wiki/SC2145 -- Argument mixes string and =
+array. ...
+> >>>> https://www.shellcheck.net/wiki/SC2154 -- err is referenced but not =
+assigned.
+>
