@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B36866C150
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 15:09:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72E466C15B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 15:10:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwYnF6xzLz3cdH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 01:09:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwYpF69Kzz3fKp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 01:10:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fGzgMjuF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UgzpANXD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fGzgMjuF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UgzpANXD;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwYgp3Lzzz3fGR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 01:05:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwYgq2Lmlz3cB7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 01:05:11 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 27807B80E93;
-	Mon, 16 Jan 2023 14:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F20C433EF;
-	Mon, 16 Jan 2023 14:05:06 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 66D2460FCB;
+	Mon, 16 Jan 2023 14:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90DAC4339B;
+	Mon, 16 Jan 2023 14:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673877907;
-	bh=DCSrrGAse90G6h94EX2MDyzi+FCDSLXmwn6dRsG2W1M=;
+	s=k20201202; t=1673877908;
+	bh=cTrglWi26ElH+kTwQbdDMsigaHiKqPI18XV0P8k1iuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGzgMjuFn1ynAeLSXDm6KhaSC19ujhE9DUJdvSPKTbubFMt3IWfIi+grVsnJL2aaF
-	 k0yYQtum/wI2dlV4dPSFNT18nbiWHGN7O+ViemfwQIx5GXjZmQnuRLpHo+9O9F6Zgq
-	 LxaliByl5JlTynS41plP1eJyiMOVReYB2PsFZ7Y0wdpYmWgIQ1Nc4mSOClnADj0bIP
-	 zl8SlxHARfCvsTLGUtVC8KgkMY7TcyYto/ywVmEDfA5d1YOcenF8VywG9CgJxsVhoH
-	 jd64KVWQ4PRo2bIAgtpvysjDzKW95siv13rIF+pqSnzp5mGoi/rVUQA3jn6FKMbeUA
-	 blUfhWm1QjRPg==
+	b=UgzpANXDZccccVbpoCWco2x2MjeHAdzV3cQJkFg/aUkrxF9gkYNrPrUWeR8/oXnPU
+	 EIVj5KyY3n41Zt+fKA/sH7jHEl3GB3yzK7j1m25SDKKddfm2nww16Sq7GP0buU6GPz
+	 1QbTQNVJfkyndORaO9G5ZjOw9/uDKfdE4VdA1ZHoaBC/HQeaLn9q99fdCcCeniUGL3
+	 Iu36hFe89s+YniLlbQcVe+Dg5JtbR05oUgJCaJ6ESB4L+I0zhbFZSpXiBK6Ex1VGPg
+	 xLtHJe5lYTw5xCUiJsWEUcZJLrKhSa4aapVc5M4coYcb0AGK8pKfyNgUT7PBhWQM77
+	 OGzvlUayhS6nA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 09/17] ASoC: fsl_ssi: Rename AC'97 streams to avoid collisions with AC'97 CODEC
-Date: Mon, 16 Jan 2023 09:04:40 -0500
-Message-Id: <20230116140448.116034-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 10/17] ASoC: fsl-asoc-card: Fix naming of AC'97 CODEC widgets
+Date: Mon, 16 Jan 2023 09:04:41 -0500
+Message-Id: <20230116140448.116034-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230116140448.116034-1-sashal@kernel.org>
 References: <20230116140448.116034-1-sashal@kernel.org>
@@ -68,65 +68,38 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 8c6a42b5b0ed6f96624f56954e93eeae107440a6 ]
+[ Upstream commit 242fc66ae6e1e2b8519daacc7590a73cd0e8a6e4 ]
 
-The SSI driver calls the AC'97 playback and transmit streams "AC97 Playback"
-and "AC97 Capture" respectively. This is the same name used by the generic
-AC'97 CODEC driver in ASoC, creating confusion for the Freescale ASoC card
-when it attempts to use these widgets in routing. Add a "CPU" in the name
-like the regular DAIs registered by the driver to disambiguate.
+The fsl-asoc-card AC'97 support currently tries to route to Playback and
+Capture widgets provided by the AC'97 CODEC. This doesn't work since the
+generic AC'97 driver registers with an "AC97" at the front of the stream
+and hence widget names, update to reflect reality. It's not clear to me
+if or how this ever worked.
 
 Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20230106-asoc-udoo-probe-v1-1-a5d7469d4f67@kernel.org
+Link: https://lore.kernel.org/r/20230106-asoc-udoo-probe-v1-2-a5d7469d4f67@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 8 ++++----
- sound/soc/fsl/fsl_ssi.c       | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/fsl/fsl-asoc-card.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 7cd14d6b9436..8c976fde44f0 100644
+index 8c976fde44f0..9a756d0a6032 100644
 --- a/sound/soc/fsl/fsl-asoc-card.c
 +++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -117,11 +117,11 @@ static const struct snd_soc_dapm_route audio_map[] = {
+@@ -117,8 +117,8 @@ static const struct snd_soc_dapm_route audio_map[] = {
  
  static const struct snd_soc_dapm_route audio_map_ac97[] = {
  	/* 1st half -- Normal DAPM routes */
--	{"Playback",  NULL, "AC97 Playback"},
--	{"AC97 Capture",  NULL, "Capture"},
-+	{"Playback",  NULL, "CPU AC97 Playback"},
-+	{"CPU AC97 Capture",  NULL, "Capture"},
+-	{"Playback",  NULL, "CPU AC97 Playback"},
+-	{"CPU AC97 Capture",  NULL, "Capture"},
++	{"AC97 Playback",  NULL, "CPU AC97 Playback"},
++	{"CPU AC97 Capture",  NULL, "AC97 Capture"},
  	/* 2nd half -- ASRC DAPM routes */
--	{"AC97 Playback",  NULL, "ASRC-Playback"},
--	{"ASRC-Capture",  NULL, "AC97 Capture"},
-+	{"CPU AC97 Playback",  NULL, "ASRC-Playback"},
-+	{"ASRC-Capture",  NULL, "CPU AC97 Capture"},
- };
- 
- static const struct snd_soc_dapm_route audio_map_tx[] = {
-diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
-index 1d774c876c52..94229ce1a30e 100644
---- a/sound/soc/fsl/fsl_ssi.c
-+++ b/sound/soc/fsl/fsl_ssi.c
-@@ -1161,14 +1161,14 @@ static struct snd_soc_dai_driver fsl_ssi_ac97_dai = {
- 	.symmetric_channels = 1,
- 	.probe = fsl_ssi_dai_probe,
- 	.playback = {
--		.stream_name = "AC97 Playback",
-+		.stream_name = "CPU AC97 Playback",
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_8000_48000,
- 		.formats = SNDRV_PCM_FMTBIT_S16 | SNDRV_PCM_FMTBIT_S20,
- 	},
- 	.capture = {
--		.stream_name = "AC97 Capture",
-+		.stream_name = "CPU AC97 Capture",
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_48000,
+ 	{"CPU AC97 Playback",  NULL, "ASRC-Playback"},
+ 	{"ASRC-Capture",  NULL, "CPU AC97 Capture"},
 -- 
 2.35.1
 
