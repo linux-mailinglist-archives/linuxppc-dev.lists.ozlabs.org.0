@@ -2,58 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4E766BB1E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 11:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFC166BB4B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 11:10:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwSGX34T1z3cMR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 21:01:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwSTW2JTNz3cg0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 21:10:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lBW89nC3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.169; helo=mail-qt1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lBW89nC3;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwSFx18ZYz3bWC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 21:00:51 +1100 (AEDT)
-Received: by mail-qt1-f169.google.com with SMTP id j9so1449590qtv.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 02:00:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZcfbiaOtd0rIUu3J0LzMQ7r+7EcuQP5IsDRStK58JTY=;
-        b=Yl64LWZaMd/tC0JfpT+kknzMtkpmiC/UqpvxtmAJGAJu9ujQ0K1ke6wYBd3FokbbjV
-         ub3Riu7KzfXijMrz1CmlVzA/n6lZYBEh19m0OCOxRgPqdVenPO3Skcv74Gn4BRilrrLO
-         43q0onHqRbyy1vIQPmTMtweRw+Tei2QfkallIFonv5137nFfj60MkCI1zlb6LSPICm3p
-         JNNzqhY9g0kgQapFasQqf7LmIiOr93TYY+oSIdON8kC7VxZ61JSjbesvdS48NQH2GyA5
-         okXJjNjSPWUvPtEmR70usBlez9pfKWteJr0PQp59aNSAv0MvaCVJNalnqPm2I049XkDD
-         uuQQ==
-X-Gm-Message-State: AFqh2koFxGxMuBAVtOOeIMplf9GXtV5XpPnKOsicyP8/Cr504bo7hwtX
-	iUYA6lMWbkGJKFFeL+CqfYyeq32d7Sq5FA==
-X-Google-Smtp-Source: AMrXdXvoT0cOMoRYe7CxcHkpRI8EOux32x0nvaKXJ4oS7mz+MXN4l7IX+/5igJmloHZsS8s/A5zWPQ==
-X-Received: by 2002:ac8:7490:0:b0:3ab:65aa:a873 with SMTP id v16-20020ac87490000000b003ab65aaa873mr124891965qtq.24.1673863247692;
-        Mon, 16 Jan 2023 02:00:47 -0800 (PST)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id h10-20020a05620a284a00b006feea093006sm17954927qkp.124.2023.01.16.02.00.46
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jan 2023 02:00:46 -0800 (PST)
-Received: by mail-yb1-f181.google.com with SMTP id 9so12203855ybn.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 02:00:46 -0800 (PST)
-X-Received: by 2002:a25:46c6:0:b0:7b8:a0b8:f7ec with SMTP id
- t189-20020a2546c6000000b007b8a0b8f7ecmr4703291yba.36.1673863245804; Mon, 16
- Jan 2023 02:00:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwSSb5BGkz3c4f
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 21:10:07 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0747460EA3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 10:10:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD01C4339E
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 10:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1673863802;
+	bh=WvUKV+LJJqo7bAhYclYeSMFCwFldg4KmpbXOAYz8QWo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lBW89nC335bSKVJufIQTqJ90AU9ql4YIY+Ppj9Gwj3YZEZSp/xPavFF4GGeXyd/RM
+	 ck+8dh37dVIL5J4En4mxnCR7gJ2/yLSWAw5XQL6Tio402pzpwhcUl2xxtaAcy+onfI
+	 khZWWGjbhZH02MiydW/l6V+jcb9luEFu91HBnU5hZ9l03DTfChxEV2A2l7XQUEPwj5
+	 sacnw3pUmG3judnxU2OuyQmJIRBoL2P99WngbmQZhO74uE8DECcUSTMU4XfohH3JWL
+	 ZycQrhEjsc2fkoPrqUaa/9INUPpD864zkw6zIK3XZ3z1ac1S0JDT1oAp4i2N4V+7xA
+	 zAnFJeSynL+lQ==
+Received: by mail-lj1-f170.google.com with SMTP id a37so3601249ljq.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jan 2023 02:10:02 -0800 (PST)
+X-Gm-Message-State: AFqh2kpUEhw2uYuYwvrIkU8A3tx5S+ptOVUiLkltXBrUiFGqBCMjTnYY
+	wVB2tlC5KmHncwcPfX+CqYFbWAGcku2KDGqxQRk=
+X-Google-Smtp-Source: AMrXdXuci9MgC4Yqkq9KkHHd04QolyddrXOjxcSpOm/4blocNC+0ii0paVfsFlAG2o8dCizIgUWfTcSThbA29z7ap4s=
+X-Received: by 2002:a2e:96ce:0:b0:283:33fa:ee22 with SMTP id
+ d14-20020a2e96ce000000b0028333faee22mr1349344ljj.415.1673863800637; Mon, 16
+ Jan 2023 02:10:00 -0800 (PST)
 MIME-Version: 1.0
-References: <Y7P9IcR7/jgYWMcq@osiris> <20230105095426.2163354-1-andrzej.hajda@intel.com>
-In-Reply-To: <20230105095426.2163354-1-andrzej.hajda@intel.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 16 Jan 2023 11:00:33 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUhPjya8zWMxEN8U8pjf4M2u_+HOfxQ2NP1XOcX9EpAKg@mail.gmail.com>
-Message-ID: <CAMuHMdUhPjya8zWMxEN8U8pjf4M2u_+HOfxQ2NP1XOcX9EpAKg@mail.gmail.com>
-Subject: Re: [PATCH v4] arch: rename all internal names __xchg to __arch_xchg
-To: Andrzej Hajda <andrzej.hajda@intel.com>
+References: <CAMj1kXEqbMEcrKYzz2-huLPMnotPoxFY8adyH=Xb4Ex8o98x-w@mail.gmail.com>
+ <db6937a1-e817-2d7b-0062-9aff012bb3e8@physik.fu-berlin.de>
+ <CAMj1kXEtTuaNFiKWn3cJngR0J2vr0G07HR6+5PBodtr1b7vNxg@mail.gmail.com> <9f91942e-f4bf-e38c-2bb9-b32941b6d5f1@physik.fu-berlin.de>
+In-Reply-To: <9f91942e-f4bf-e38c-2bb9-b32941b6d5f1@physik.fu-berlin.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 16 Jan 2023 11:09:49 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXH1SjPrPWyQbsYUHhVfgWH_p-sf-mhbeKMQn-QyOjBRng@mail.gmail.com>
+Message-ID: <CAMj1kXH1SjPrPWyQbsYUHhVfgWH_p-sf-mhbeKMQn-QyOjBRng@mail.gmail.com>
+Subject: Re: ia64 removal (was: Re: lockref scalability on x86-64 vs cpu_relax)
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,31 +69,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, Will Deacon <will@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Luck, Tony" <tony.luck@intel.com>, Catalin Marinas <catalin.marinas@arm.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Jan Glauber <jan.glauber@gmail.com>, "Torvalds, Linus" <torvalds@linux-foundation.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 5, 2023 at 10:54 AM Andrzej Hajda <andrzej.hajda@intel.com> wrote:
-> __xchg will be used for non-atomic xchg macro.
+On Mon, 16 Jan 2023 at 10:33, John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
 >
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v2: squashed all arch patches into one
-> v3: fixed alpha/xchg_local, thx to lkp@intel.com
-> v4: adjusted indentation (Heiko)
+> Hi Ard!
+>
+> On 1/14/23 00:25, Ard Biesheuvel wrote:
+> > Thanks for reporting back. I (mis)read the debian ports page [3],
+> > which mentions Debian 7 as the highest Debian version that supports
+> > IA64, and so I assumed that support had been dropped from Debian.
+>
+> This page talks about officially supported ports. Debian Ports is an
+> unofficial spin maintained by a number of Debian Developers and external
+> developers that are volunteering to maintain these ports.
+>
+> > However, if only a handful of people want to keep this port alive for
+> > reasons of nostalgia, it is obviously obsolete, and we should ask
+> > ourselves whether it is reasonable to expect Linux contributors to
+> > keep spending time on this.
+>
+> You could say this about a lot of hardware, can't you?
+>
 
->  arch/m68k/include/asm/cmpxchg.h      |  6 +++---
+Uhm, yes. Linux contributor effort is a scarce resource, and spending
+it on architectures that nobody actually uses, such as alpha or ia64,
+means it is not spent on things that are useful to more people.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> [m68k]
+I really do sympathize with the enthusiast/hobbyist PoV - I am also an
+engineer that likes to tinker. So 'use' can be defined liberally here,
+and cover running the latest Linux on ancient hardware just for
+entertainment.
 
-Gr{oetje,eeting}s,
+However, the question is not how you or I choose to spend (or waste)
+their time. The question is whether it is reasonable *as a community*
+to insist that everyone who contributes a cross-architecture change
+also has to ensure that obsolete architectures such as i64 or alpha
+are not left behind.
 
-                        Geert
+The original thread is an interesting example here - removing a
+cpu_relax() in cmpxchg() that was only there because of IA64's clunky
+SMT implementation. Perhaps this means that IA64 performance is going
+to regress substantially for some workloads? Should anyone care?
+Should we test such changes first? And how should we do that if there
+is no maintainer and nobody has access to the hardware?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+The other example is EFI, which i maintain. Should I require from
+contributors that they build and boot test EFI changes on ia64 if I
+myself don't even have access to the hardware? It is good to know that
+things don't seem to be broken today, but if it is going to fall over,
+it may take a while before anybody notices. What happens then?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> > Does the Debian ia64 port have any users? Or is the system that builds
+> > the packages the only one that consumes them?
+>
+> There is the popcon statistics. However, that is opt-on and the numbers are
+> not really trustworthy. We are getting feedback from time to time from people
+> using it.
+>
+> Is there any problem with the ia64 port at the moment that would justify removal?
+>
+
+I would argue that we should mark it obsolete at the very least, so
+that it is crystal clear that regressing IA64 (either knowingly or
+unknowingly) by a generic or cross-architecture change is not a
+showstopper, even at build time. Then, if someone has the skill set
+and the time on their hands, as well as access to actual hardware,
+they can keep it alive if they want to.
