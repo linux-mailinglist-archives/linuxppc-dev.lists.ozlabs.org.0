@@ -2,57 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C8166CFDD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 21:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C51766D11A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jan 2023 22:52:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwjm15LQYz3cGk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 07:09:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oUEJmkN2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwm306tl2z3fDN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 08:52:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oUEJmkN2;
-	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nwjl23CTtz3c4c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 07:08:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=yFVciWdIzPstN0lMoVeAI5kAz1ktvsyoitwNKrcy8UI=; b=oUEJmkN2crgBTChY6Y4acT11fR
-	84TFgO+yf2GwMCh4C2ZC/vRRPrDNgG5XsLlNVmBqQlTH37XKt468ACMHJMnYz+7kX+WX8WKo3jOWW
-	t13/mq2wp0mlK0GHoljrIPeA/j7RCr5YtvPyV4qnHR/wXejP0cQItVUEV84SDtXIUWySwS4oLGhNS
-	YxJt58MR+g0WlrDP3ZJjP/u5tCzzKbtcNvw5gRqZEYD32ucm5RL3aEjtfGQd8SsR1WXhuZT+zpo89
-	HxIYEmATYpXoO4jZnTTAHHs8lngtofk6H9wnw4ISdPGzTJEmgSYkHvWkqkNRMjcjIX0ZikOKFfBy5
-	Mc0yfW3w==;
-Received: from [76.243.124.25] (helo=[192.168.5.123])
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pHVmM-0092GP-Gi; Mon, 16 Jan 2023 20:08:26 +0000
-Message-ID: <a449698b-93f5-0742-77fe-5699544eab5c@infradead.org>
-Date: Mon, 16 Jan 2023 12:08:09 -0800
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 367 seconds by postgrey-1.36 at boromir; Tue, 17 Jan 2023 04:06:08 AEDT
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwdhc5gz5z2ym7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 04:06:07 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30C411570;
+	Mon, 16 Jan 2023 09:00:09 -0800 (PST)
+Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.35.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B0403F67D;
+	Mon, 16 Jan 2023 08:59:10 -0800 (PST)
+Date: Mon, 16 Jan 2023 16:59:04 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
+Message-ID: <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
+References: <20230112194314.845371875@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2 1/2] powerpc/ps3: Change updateboltedpp panic to info
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <cover.1672767868.git.geoff@infradead.org>
- <2df879d982809c05b0dfade57942fe03dbe9e7de.1672767868.git.geoff@infradead.org>
- <25cc9a51-2311-d7d3-3451-08725e6384cd@csgroup.eu>
- <284aed88-dc26-d74a-cf7a-f5875ba058eb@infradead.org>
- <87mt6j9wcf.fsf@mpe.ellerman.id.au>
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <87mt6j9wcf.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230112194314.845371875@infradead.org>
+X-Mailman-Approved-At: Tue, 17 Jan 2023 08:52:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,85 +42,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.
+ org, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@k
+ ernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, ope
+ nrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Thu, Jan 12, 2023 at 08:43:14PM +0100, Peter Zijlstra wrote:
+> Hi All!
 
-On 1/15/23 16:06, Michael Ellerman wrote:
-> Geoff Levand <geoff@infradead.org> writes:
->> On 1/9/23 09:41, Christophe Leroy wrote:
->>>
->>>
->>> Le 03/01/2023 à 18:51, Geoff Levand a écrit :
->>>> Commit fdacae8a84024474afff234bdd1dbe19ad597a10 (powerpc: Activate
->>>> CONFIG_STRICT_KERNEL_RWX by default) causes ps3_hpte_updateboltedpp()
->>>> to be called.  Change the panic statment in ps3_hpte_updateboltedpp()
->>>> to a pr_info statement so that bootup can continue.
->>>
->>> But if I understand correctly, it means that CONFIG_STRICT_KERNEL_RWX 
->>> won't work then.
->>>
->>> So, shouldn't we keep the panic and forbid CONFIG_STRICT_KERNEL_RWX on PS3 ?
->>
->> mmu_hash_ops.updateboltedpp returns void, so I can't return an error code to
->> indicate the feature is not supported.
-> 
-> We could change that in the medium term.
-> 
->> I could do something like this in arch/powerpc/Kconfig:
->>
->> -       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
->> +       select ARCH_HAS_STRICT_KERNEL_RWX       if (PPC_BOOK3S || PPC_8xx || 40x) && !PPC_PS3 && !HIBERNATION
->>
->> But then the ppc64_defconfig would be built without STRICT_KERNEL_RWX.
-> 
-> Yeah that would be a pity.
-> 
-> We could do the above and disable PS3 in ppc64_defconfig, allowing
-> ppc64_defconfig to still have STRICT_KERNEL_RWX.
+Hi Peter,
 
-I really want to keep PS3 included in ppc64_defconfig.  Not that I expect
-anyone to boot a ppc64_defconfig kernel on PS3, but that is one of the
-'standard' configs that is built by some automated builders, and generally by
-anyone doing changes to the powerpc arch, and I want to keep getting those
-build tests for PS3.
+> The (hopefully) final respin of cpuidle vs rcu cleanup patches. Barring any
+> objections I'll be queueing these patches in tip/sched/core in the next few
+> days.
 
-> I assume actual PS3 users would use a ps3_defconfig anyway right?
+I'm sorry to have to bear some bad news on that front. :(
 
-Yeah, a derivative of it.  They are most likely are using 'Jailbreak' firmware
-that allows them to run Linux in the gameos partition.
+I just had a go at testing this on a Juno dev board, using your queue.git
+sched/idle branch and defconfig + CONFIG_PROVE_LOCKING=y +
+CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
 
-> Relatedly are there any actual PS3 users left? ;)
+With that I consistently see RCU at boot time (log below).
 
-It seems there are more users now than a few years ago.  I think they buy PS5s
-to play the latest games, and use their old console to mess around with Linux.
-I generally get a private inquiry every 3 or 4 weeks.  Usually asking how to
-update their kernel, or how to install a modern distro.
+| =============================
+| WARNING: suspicious RCU usage
+| 6.2.0-rc3-00051-gced9b6eecb31 #1 Not tainted
+| -----------------------------
+| include/trace/events/ipi.h:19 suspicious rcu_dereference_check() usage!
+| 
+| other info that might help us debug this:
+| 
+| 
+| rcu_scheduler_active = 2, debug_locks = 1
+| RCU used illegally from extended quiescent state!
+| no locks held by swapper/0/0.
+| 
+| stack backtrace:
+| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.2.0-rc3-00051-gced9b6eecb31 #1
+| Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II May 16 2021
+| Call trace:
+|  dump_backtrace.part.0+0xe4/0xf0
+|  show_stack+0x18/0x30
+|  dump_stack_lvl+0x98/0xd4
+|  dump_stack+0x18/0x34
+|  lockdep_rcu_suspicious+0xf8/0x10c
+|  trace_ipi_raise+0x1a8/0x1b0
+|  arch_irq_work_raise+0x4c/0x70
+|  __irq_work_queue_local+0x48/0x80
+|  irq_work_queue+0x50/0x80
+|  __wake_up_klogd.part.0+0x98/0xe0
+|  defer_console_output+0x20/0x30
+|  vprintk+0x98/0xf0
+|  _printk+0x5c/0x84
+|  lockdep_rcu_suspicious+0x34/0x10c
+|  trace_lock_acquire+0x174/0x180
+|  lock_acquire+0x3c/0x8c
+|  _raw_spin_lock_irqsave+0x70/0x150
+|  down_trylock+0x18/0x50
+|  __down_trylock_console_sem+0x3c/0xd0
+|  console_trylock+0x28/0x90
+|  vprintk_emit+0x11c/0x354
+|  vprintk_default+0x38/0x4c
+|  vprintk+0xd4/0xf0
+|  _printk+0x5c/0x84
+|  lockdep_rcu_suspicious+0x34/0x10c
+|  printk_sprint+0x238/0x240
+|  vprintk_store+0x32c/0x4b0
+|  vprintk_emit+0x104/0x354
+|  vprintk_default+0x38/0x4c
+|  vprintk+0xd4/0xf0
+|  _printk+0x5c/0x84
+|  lockdep_rcu_suspicious+0x34/0x10c
+|  trace_irq_disable+0x1ac/0x1b0
+|  trace_hardirqs_off+0xe8/0x110
+|  cpu_suspend+0x4c/0xfc
+|  psci_cpu_suspend_enter+0x58/0x6c
+|  psci_enter_idle_state+0x70/0x170
+|  cpuidle_enter_state+0xc4/0x464
+|  cpuidle_enter+0x38/0x50
+|  do_idle+0x230/0x2c0
+|  cpu_startup_entry+0x24/0x30
+|  rest_init+0x110/0x190
+|  arch_post_acpi_subsys_init+0x0/0x18
+|  start_kernel+0x6f8/0x738
+|  __primary_switched+0xbc/0xc4
 
->> What other 'clean' way is there?
-> 
-> If we want to have a multi-platform kernel image that can boot on PS3
-> and other platforms, and have strict kernel RWX, then we need some
-> runtime logic to deal with that.
-> 
-> I'd rather not do that though, because it adds complexity to deal with a
-> pretty obscure corner case, and I suspect no one really boots a
-> ppc64_defconfig on actual PS3 hardware these days.
-> 
-> So my preference is we disable PS3 in ppc64_defconfig, and make PS3
-> incompatible with STRICT_KERNEL_RWX.
+IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
+is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
+local_daif_*() helpers poke lockdep and tracing, hence the call to
+trace_hardirqs_off() and the RCU usage.
 
-As mentioned, I'd really like to keep PS3 included in ppc64_defconfig.  My
-original patch that basically just ignores the call to
-mmu_hash_ops.updateboltedpp allows that, and I haven't experienced any problems
-with it yet.
+I think we need RCU to be watching all the way down to cpu_suspend(), and it's
+cpu_suspend() that should actually enter/exit idle context. That and we need to
+make cpu_suspend() and the low-level PSCI invocation noinstr.
 
-My preference would be to keep PS3 in ppc64_defconfig, and either apply my
-original patch, or I keep that patch in my ps3-linux repo on kernel.org. Then,
-if we end up adding runtime support for RWX I then fixup PS3 to use that.
+I'm not sure whether 32-bit will have a similar issue or not.
 
--Geoff
+I'm surprised no-one else who has tested has seen this; I suspect people
+haven't enabled lockdep and friends. :/
 
-
+Thanks,
+Mark. 
