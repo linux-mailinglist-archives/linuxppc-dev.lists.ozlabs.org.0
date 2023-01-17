@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9376C66E548
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 18:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7915D66E58F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 19:04:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxGgx3Vcvz3fC3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 04:52:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxGxR2jFdz3cgV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 05:04:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vmoY6QJ9;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oWZjCNrI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Mooewx5N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=jannh@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vmoY6QJ9;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oWZjCNrI;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Mooewx5N;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxGfy2cyjz2ynD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 04:51:54 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 4B4041FDFA;
-	Tue, 17 Jan 2023 17:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1673977907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ui+DpA4uYzbJrZtpkX4ynzy8LeaDmV2iXupOmboLrA=;
-	b=vmoY6QJ9eEJqQyMmOf6QfAgloGfXzzJ/zwfK9lwtdzGuCRh5YpXsohAeclcaU3Eyxcxjew
-	TdydqJxTei+gzIoGP6DAIkAwkySplX/BluY/tfNekcg7k5Mu/GjSnX8i5sljTX0u9JC4Yx
-	L7Wel8eQMiG9xfucQS61iHADszTqMQk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1673977907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ui+DpA4uYzbJrZtpkX4ynzy8LeaDmV2iXupOmboLrA=;
-	b=oWZjCNrIKeYjG/fPpuDiypVh9VLb3/HXaWVq5m7En7pReUgVBCoeqN6FlnL22/eLfxrTeY
-	nDjvu1Vz2/XrZbAQ==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id CF0B62C141;
-	Tue, 17 Jan 2023 17:51:45 +0000 (UTC)
-Date: Tue, 17 Jan 2023 18:51:44 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH] modpost: support arbitrary symbol length in modversion
-Message-ID: <20230117175144.GI16547@kitsune.suse.cz>
-References: <20230111161155.1349375-1-gary@garyguo.net>
- <20230112214059.o4vq474c47edjup6@ldmartin-desk2>
- <20230113181841.4d378a24.gary@garyguo.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxGwT6bTBz3cdB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 05:03:36 +1100 (AEDT)
+Received: by mail-il1-x132.google.com with SMTP id i1so12279345ilu.8
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 10:03:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2LfIzIDKNfdwhzRI4wk4tbto15PFLzQqPn6IM74K1Nc=;
+        b=Mooewx5NuvmBi8G3lPeDVvjeMhDwam4J3V5WoYrMGEaACQq8r01FTJwg9r5gNAqKHv
+         BcT+clyjtziDoHfDoZgf8mXwiyxjshQK9AVHMyb/QWVVp32ww9ingtrVqod0LDfOJImz
+         Y0TwcaekYYsJ//YdVBtdZXByqq9WLLeZf19Z8v3wfd8Qhfwfau1IdSR4Tc4e6jr2szha
+         MfdiYZLdlOAFeQe7T4M3d15TPoEEp9r20dwRTcjDofABHxa96XnhDW06/jzXCIqYK82c
+         D9cdjVUUN6zid8FXGy9WF8BxgN6Gta9IfDG+F3FYzRS4GL6vM308WQjFQsyY7d5ObtDP
+         aykg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2LfIzIDKNfdwhzRI4wk4tbto15PFLzQqPn6IM74K1Nc=;
+        b=JZZDd7tSJTYw/trfjT2rjrGA78kMx/adnD/eI1GeWYcPzYlc9ahqjwk8aqtcfiTblU
+         zMSxHSXfI8mApJ5E4/6XAerrvWy1UyTRoeMsd2c0jdeIo+cxTQpDzkMOnBONDm4/sKZk
+         ErhefI8A8lidOCuaQoKS7R68kfCAkE3JQX+bd8Glnyw3wYozIKHQFNngcDNkbJwjsXgE
+         tewFas+LjU0HiEBLnQMCdYbSSB8+rMS5g/fXUPU65Uh/38hzkh+4TNS5/dQtyINRasyQ
+         j2//8dR5+TqJw7wwT2iy2SP3glN+rNAzTJJ4XHc7UeaYWvc2I+Ojn/kKmR+WSvDqpZOU
+         wB1g==
+X-Gm-Message-State: AFqh2kqKKjp0AtIsmLctVRuI7ejpndW5XOtW5Ths/nrHaCBYAkd91KUb
+	R/7Y2K48dXvZv7LO5PTEksFtS5pFZp1ZwYw+rfFFDA==
+X-Google-Smtp-Source: AMrXdXuYG9pfhe3BEDdAxOrlJ5FMm60eG9MzyrHap4mGomMoh4ycHHb4WuecCt1NKPItKhuNPMbigXyQKtN6iEbWTIk=
+X-Received: by 2002:a92:a043:0:b0:30b:f4af:87bd with SMTP id
+ b3-20020a92a043000000b0030bf4af87bdmr425702ilm.254.1673978611685; Tue, 17 Jan
+ 2023 10:03:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230113181841.4d378a24.gary@garyguo.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-13-surenb@google.com>
+In-Reply-To: <20230109205336.3665937-13-surenb@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 17 Jan 2023 19:02:55 +0100
+Message-ID: <CAG48ez0RhQ6=W01brLUXDXqQxz2M1FEMNqd2OvL+LhcJQY=NqA@mail.gmail.com>
+Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
+ control it
+To: Suren Baghdasaryan <surenb@google.com>, peterz@infradead.org, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,56 +75,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, Masahiro Yamada <masahiroy@kernel.org>, Guo Zhengkui <guozhengkui@vivo.com>, Wedson Almeida Filho <wedsonaf@google.com>, Joel Stanley <joel@jms.id.au>, Alex Gaynor <alex.gaynor@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Kees Cook <keescook@chromium.org>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, Lucas De Marchi <lucas.demarchi@intel.com>, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Luis Chamberlain <mcgrof@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, gurua@google.com, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
++locking maintainers
 
-On Fri, Jan 13, 2023 at 06:18:41PM +0000, Gary Guo wrote:
-> On Thu, 12 Jan 2023 14:40:59 -0700
-> Lucas De Marchi <lucas.demarchi@intel.com> wrote:
-> 
-> > On Wed, Jan 11, 2023 at 04:11:51PM +0000, Gary Guo wrote:
-> > >
-> > > struct modversion_info {
-> > >-	unsigned long crc;
-> > >-	char name[MODULE_NAME_LEN];
-> > >+	/* Offset of the next modversion entry in relation to this one. */
-> > >+	u32 next;
-> > >+	u32 crc;
-> > >+	char name[0];  
-> > 
-> > although not really exported as uapi, this will break userspace as this is
-> > used in the  elf file generated for the modules. I think
-> > this change must be made in a backward compatible way and kmod updated
-> > to deal with the variable name length:
-> > 
-> > kmod $ git grep "\[64"
-> > libkmod/libkmod-elf.c:  char name[64 - sizeof(uint32_t)];
-> > libkmod/libkmod-elf.c:  char name[64 - sizeof(uint64_t)];
-> > 
-> > in kmod we have both 32 and 64 because a 64-bit kmod can read both 32
-> > and 64 bit module, and vice versa.
-> > 
-> 
-> Hi Lucas,
-> 
-> Thanks for the information.
-> 
-> The change can't be "truly" backward compatible, in a sense that
-> regardless of the new format we choose, kmod would not be able to decode
-> symbols longer than "64 - sizeof(long)" bytes. So the list it retrieves
-> is going to be incomplete, isn't it?
-> 
-> What kind of backward compatibility should be expected? It could be:
-> * short symbols can still be found by old versions of kmod, but not
->   long symbols;
+On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> Introduce a per-VMA rw_semaphore to be used during page fault handling
+> instead of mmap_lock. Because there are cases when multiple VMAs need
+> to be exclusively locked during VMA tree modifications, instead of the
+> usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
+> exclusively and setting vma->lock_seq to the current mm->lock_seq. When
+> mmap_write_lock holder is done with all modifications and drops mmap_lock,
+> it will increment mm->lock_seq, effectively unlocking all VMAs marked as
+> locked.
+[...]
+> +static inline void vma_read_unlock(struct vm_area_struct *vma)
+> +{
+> +       up_read(&vma->lock);
+> +}
 
-That sounds good. Not everyone is using rust, and with this option
-people who do will need to upgrade tooling, and people who don't care
-don't need to do anything.
+One thing that might be gnarly here is that I think you might not be
+allowed to use up_read() to fully release ownership of an object -
+from what I remember, I think that up_read() (unlike something like
+spin_unlock()) can access the lock object after it's already been
+acquired by someone else. So if you want to protect against concurrent
+deletion, this might have to be something like:
 
-Thanks
+rcu_read_lock(); /* keeps vma alive */
+up_read(&vma->lock);
+rcu_read_unlock();
 
-Michal
+But I'm not entirely sure about that, the locking folks might know better.
+
+Also, it might not matter given that the rw_semaphore part is removed
+in the current patch 41/41 anyway...
