@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAFE66E743
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 20:52:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D0966E768
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 21:06:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxKL45K6cz3fCQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 06:52:28 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oK5gCq5x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxKfd2Ycrz3fFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 07:06:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::129; helo=mail-il1-x129.google.com; envelope-from=jannh@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oK5gCq5x;
-	dkim-atps=neutral
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.173; helo=mail-yw1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxKKB23MHz3cFH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 06:51:40 +1100 (AEDT)
-Received: by mail-il1-x129.google.com with SMTP id u8so15921014ilq.13
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 11:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OSFcPHbwPU7VuQqTvb7CRygx4qEQJSCX4opQ3eOpE/E=;
-        b=oK5gCq5xbP6niBRqF/QRL7Bq2gVthVqJQbspwhXXQ7OnRSHWI5AiE5QK1LTqtcMGRn
-         HeyRbfCQAKtC4T3gzbb8Wzg7491gbqjvpVBGSplHQdv+8mbaq/6L7WWL28izPBjIqoix
-         RcZwdqu/IkMGD9/tcQk+epsczoRPYFq75Ly73PSeVqekeXO1isqgk/+r+nTbDSVMXuGR
-         7D+jZPUfzbSoBt77De0gD6WjMDA5N64/6EgjY16694eHJ1oNyDGZlC2jU7fD9KrrnhM9
-         KHzaaaT+da49MDKCEZDrLz7ulbS8/gmsAhEEGJNDyRrKINMsAmuavctzqCV6f7UGaTFS
-         kFGg==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxKf11XtWz30gk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 07:06:15 +1100 (AEDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-4d19b2686a9so310892197b3.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 12:06:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OSFcPHbwPU7VuQqTvb7CRygx4qEQJSCX4opQ3eOpE/E=;
-        b=DlQ0/OUo3+ep/e3TjMA2xTXg4E5cN5MsK3wE2sJgZUFp9zaaPOylIs8KQP215FHt5Q
-         CLwDjjztxsYWxWxRd+bSIE9IEArUnHV8UjXaZXaHhtlrUJMnd+lsn6BHM88gO5URU8jm
-         YfyNNXhs4gIwkOCFaUDIrs5wNvVXNZG7LF6sjjgw4rrOtAiTzKXXQLALGTf2GGT355VK
-         I/Idv1bx/jNFSKLsdfDZG/beEVzzBRp8xiXhyzBzjYnyI9CHMxZOPih45Bp+sIx69skN
-         BV4BjCIl6B/WUBO28dkLkUo8xoDCvetXzcSJgVQcfvr0PmaczbYdD/AxyuaJQPNRzYYQ
-         uztQ==
-X-Gm-Message-State: AFqh2kplOg/HE+z6/AlT9CKBxvljck5Iiq/lzIKlnuGENUHYYNmOmj2Y
-	TMb/LE8puHZvyOQKlO77NDYxO6i8Q1vbGM4fU7RkUQ==
-X-Google-Smtp-Source: AMrXdXtN2czWy7s7z6riYeL+TaWTkUjkEXdbo5Qe/e5v9zxAXm+Abj+Br8dn7RO1A0aNN2qhpP5AND12ti3Cn4146c8=
-X-Received: by 2002:a92:c5c6:0:b0:30c:877:db26 with SMTP id
- s6-20020a92c5c6000000b0030c0877db26mr453316ilt.101.1673985097438; Tue, 17 Jan
- 2023 11:51:37 -0800 (PST)
+        bh=3xoeiV+nYOsKZ3P5r1QIbmJ251MgYmk7NsIx6imHg00=;
+        b=zCx9PTsCBLVNCzqSgbyqNUzOpmEaBr8GhhtLx3UnOTPiTVXBh2iSYPSf+JP9lVPsDX
+         PyWYnyzcBa4deK6DaS0MtFrPYnwJarxjhY95avnqlMTfXIl+Nl7RyR1UbYcOt07w3ovD
+         8wo8optfQEUrvOjd9uqJiRxGOsIGT6t3DDHUFXmdoSf1TytLAUY2ySg401Up3jsV1cND
+         7Z8UN4Ac/l5UcJn4j84TODiC4UN5QaIqAWxreBUTD5GByKHlsdEfu0VoCWbt8bwcQm/A
+         NQLNd2LMYhmjh8AsPnGRq1IMtYf3bTwXxI9s0Q9GS3H9tKycHSOzxfnZKZz5mWIS1C6m
+         oH9g==
+X-Gm-Message-State: AFqh2kpyk+06Y7SrUMLz3hcZZ5xIL7FEMDRHCrz/21CD8ujfqRA4jqLD
+	2oCJ1OS1uS9ZaZuFfJyVVqy8lyxBV9H8Lg==
+X-Google-Smtp-Source: AMrXdXuLMX3ABJs23lR3Gq8hXXay7H7X1vbzCeHbCCgo4osxOwqS+7z/UsCz20vdq7CFR8irM0jB2g==
+X-Received: by 2002:a81:1111:0:b0:489:af5a:dc1a with SMTP id 17-20020a811111000000b00489af5adc1amr3955563ywr.40.1673985971761;
+        Tue, 17 Jan 2023 12:06:11 -0800 (PST)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id bl24-20020a05620a1a9800b007059c5929b8sm5091985qkb.21.2023.01.17.12.06.10
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jan 2023 12:06:11 -0800 (PST)
+Received: by mail-yb1-f182.google.com with SMTP id 188so35472579ybi.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 12:06:10 -0800 (PST)
+X-Received: by 2002:a25:9012:0:b0:7b8:a0b8:f7ec with SMTP id
+ s18-20020a259012000000b007b8a0b8f7ecmr700718ybl.36.1673985970579; Tue, 17 Jan
+ 2023 12:06:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-33-surenb@google.com>
-In-Reply-To: <20230109205336.3665937-33-surenb@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Jan 2023 20:51:01 +0100
-Message-ID: <CAG48ez0Z-wnBLzCNDHgTviV0Ws+s4grX-sFRZ-43dxhJg+GzfA@mail.gmail.com>
-Subject: Re: [PATCH 32/41] mm: prevent userfaults to be handled under per-vma lock
-To: Suren Baghdasaryan <surenb@google.com>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org> <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+ <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
+ <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com> <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
+In-Reply-To: <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 17 Jan 2023 21:05:58 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
+Message-ID: <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
+Subject: Re: Calculating array sizes in C - was: Re: Build regressions/improvements
+ in v6.2-rc1
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,44 +72,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 9, 2023 at 9:55 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> Due to the possibility of handle_userfault dropping mmap_lock, avoid fault
-> handling under VMA lock and retry holding mmap_lock. This can be handled
-> more gracefully in the future.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> ---
->  mm/memory.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 20806bc8b4eb..12508f4d845a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5273,6 +5273,13 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->         if (!vma->anon_vma)
->                 goto inval;
->
-> +       /*
-> +        * Due to the possibility of userfault handler dropping mmap_lock, avoid
-> +        * it for now and fall back to page fault handling under mmap_lock.
-> +        */
-> +       if (userfaultfd_armed(vma))
-> +               goto inval;
+Hi Adrian,
 
-This looks racy wrt concurrent userfaultfd_register(). I think you'll
-want to do the userfaultfd_armed(vma) check _after_ locking the VMA,
-and ensure that the userfaultfd code write-locks the VMA before
-changing the __VM_UFFD_FLAGS in vma->vm_flags.
+On Tue, Jan 17, 2023 at 6:06 PM John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
+> On 1/17/23 18:01, Geert Uytterhoeven wrote:
+> > The issue is that some of the parameters are not arrays, but
+> > NULL. E.g.:
+> >
+> > arch/sh/kernel/cpu/sh2/setup-sh7619.c:static
+> > DECLARE_INTC_DESC(intc_desc, "sh7619", vectors, NULL,
+> > arch/sh/kernel/cpu/sh2/setup-sh7619.c-                   NULL,
+> > prio_registers, NULL);
+>
+> Isn't this supposed to be caught by this check:
+>
+>         a, __same_type(a, NULL)
+>
+> ?
 
->         if (!vma_read_trylock(vma))
->                 goto inval;
->
-> --
-> 2.39.0
->
+Yeah, but gcc thinks it is smarter than us...
+Probably it drops the test, assuming UB cannot happen.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
