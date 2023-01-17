@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4792266E861
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 22:26:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9B266E8AB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 22:42:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxMQN1T4nz3fRC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 08:26:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxMnK37gbz3bZn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 08:42:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxCfN2gZ5z3c9N
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 02:36:09 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94F4F12FC;
-	Tue, 17 Jan 2023 07:36:16 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.31.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACA663F67D;
-	Tue, 17 Jan 2023 07:35:17 -0800 (PST)
-Date: Tue, 17 Jan 2023 15:35:10 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
-Message-ID: <Y8bALvyrPpdg++/J@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230112194314.845371875@infradead.org>
- <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
- <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
- <Y8afpbHtDOqAHq9M@FVFF77S0Q05N.cambridge.arm.com>
- <20230117142140.g423hxisv7djudof@bogus>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.13; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+X-Greylist: delayed 5405 seconds by postgrey-1.36 at boromir; Wed, 18 Jan 2023 08:42:14 AEDT
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxMmk6nSLz2xCj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 08:42:12 +1100 (AEDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+	by smtp.orange.fr with ESMTPA
+	id HsC1pqrhhBIxsHsC1p8tQz; Tue, 17 Jan 2023 21:04:29 +0100
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 17 Jan 2023 21:04:29 +0100
+X-ME-IP: 86.243.2.178
+Message-ID: <463d23fe-8fac-408c-febc-6714df59beaf@wanadoo.fr>
+Date: Tue, 17 Jan 2023 21:04:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117142140.g423hxisv7djudof@bogus>
-X-Mailman-Approved-At: Wed, 18 Jan 2023 08:24:25 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH linux-next] powerpc/cell/axon_msi: Use
+ dma_zalloc_coherent()
+Content-Language: fr
+To: ye.xingchen@zte.com.cn, arnd@arndb.de
+References: <202301171706300144532@zte.com.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <202301171706300144532@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,75 +46,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.
- org, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.ke
- rnel.org, tony@atomide.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, monstr@monstr.eu, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, linux-alpha@vger.kernel.org, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, Peter Zijlstra <peterz@infradead.org>, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunal
- ahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, pv-drivers@vmware.com, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 17, 2023 at 02:21:40PM +0000, Sudeep Holla wrote:
-> On Tue, Jan 17, 2023 at 01:16:21PM +0000, Mark Rutland wrote:
-> > On Tue, Jan 17, 2023 at 11:26:29AM +0100, Peter Zijlstra wrote:
-> > > On Mon, Jan 16, 2023 at 04:59:04PM +0000, Mark Rutland wrote:
-> > > 
-> > > > I'm sorry to have to bear some bad news on that front. :(
-> > > 
-> > > Moo, something had to give..
-> > > 
-> > > 
-> > > > IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
-> > > > is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
-> > > > local_daif_*() helpers poke lockdep and tracing, hence the call to
-> > > > trace_hardirqs_off() and the RCU usage.
-> > > 
-> > > Right, strictly speaking not needed at this point, IRQs should have been
-> > > traced off a long time ago.
-> > 
-> > True, but there are some other calls around here that *might* end up invoking
-> > RCU stuff (e.g. the MTE code).
-> > 
-> > That all needs a noinstr cleanup too, which I'll sort out as a follow-up.
-> > 
-> > > > I think we need RCU to be watching all the way down to cpu_suspend(), and it's
-> > > > cpu_suspend() that should actually enter/exit idle context. That and we need to
-> > > > make cpu_suspend() and the low-level PSCI invocation noinstr.
-> > > > 
-> > > > I'm not sure whether 32-bit will have a similar issue or not.
-> > > 
-> > > I'm not seeing 32bit or Risc-V have similar issues here, but who knows,
-> > > maybe I missed somsething.
-> > 
-> > I reckon if they do, the core changes here give us the infrastructure to fix
-> > them if/when we get reports.
-> > 
-> > > In any case, the below ought to cure the ARM64 case and remove that last
-> > > known RCU_NONIDLE() user as a bonus.
-> > 
-> > The below works for me testing on a Juno R1 board with PSCI, using defconfig +
-> > CONFIG_PROVE_LOCKING=y + CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
-> > I'm not sure how to test the LPI / FFH part, but it looks good to me.
-> > 
-> > FWIW:
-> > 
-> > Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-> > Tested-by: Mark Rutland <mark.rutland@arm.com>
-> > 
-> > Sudeep, would you be able to give the LPI/FFH side a spin with the kconfig
-> > options above?
-> > 
+Le 17/01/2023 à 10:06, ye.xingchen@zte.com.cn a écrit :
+> From: ye xingchen <ye.xingchen@zte.com.cn>
 > 
-> Not sure if I have messed up something in my mail setup, but I did reply
-> earlier.
+> Instead of using dma_alloc_coherent() and memset() directly use
+> dma_zalloc_coherent().
+> 
 
-Sorry, that was my bad; I had been drafting my reply for a while and forgot to
-re-check prior to sending.
+Hi,
 
-> I did test both DT/cpuidle-psci driver and  ACPI/LPI+FFH driver
-> with the fix Peter sent. I was seeing same splat as you in both DT and
-> ACPI boot which the patch fixed it. I used the same config as described by
-> you above.
+dma_zalloc_coherent() has been removed at the very beginning of 2019 in 
+commit dfd32cad146e.
 
-Perfect; thanks!
+It is not existing since v5.0-rc2.
 
-Mark.
+\o/
+
+CJ
+
+
+> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+> ---
+>   arch/powerpc/platforms/cell/axon_msi.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
+> index 0c11aad896c7..8a4c522c8e67 100644
+> --- a/arch/powerpc/platforms/cell/axon_msi.c
+> +++ b/arch/powerpc/platforms/cell/axon_msi.c
+> @@ -358,8 +358,8 @@ static int axon_msi_probe(struct platform_device *device)
+>   		goto out_free_msic;
+>   	}
+> 
+> -	msic->fifo_virt = dma_alloc_coherent(&device->dev, MSIC_FIFO_SIZE_BYTES,
+> -					     &msic->fifo_phys, GFP_KERNEL);
+> +	msic->fifo_virt = dma_zalloc_coherent(&device->dev, MSIC_FIFO_SIZE_BYTES,
+> +					      &msic->fifo_phys, GFP_KERNEL);
+>   	if (!msic->fifo_virt) {
+>   		printk(KERN_ERR "axon_msi: couldn't allocate fifo for %pOF\n",
+>   		       dn);
+> @@ -372,7 +372,6 @@ static int axon_msi_probe(struct platform_device *device)
+>   		       dn);
+>   		goto out_free_fifo;
+>   	}
+> -	memset(msic->fifo_virt, 0xff, MSIC_FIFO_SIZE_BYTES);
+> 
+>   	/* We rely on being able to stash a virq in a u16, so limit irqs to < 65536 */
+>   	msic->irq_domain = irq_domain_add_nomap(dn, 65536, &msic_host_ops, msic);
+
