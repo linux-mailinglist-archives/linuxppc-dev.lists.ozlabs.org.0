@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930D166E2F5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 17:00:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C149966E3E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 17:43:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxDB91B52z3cfm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 03:00:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxF875CSxz3fCg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 03:43:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62; helo=www62.your-server.de; envelope-from=daniel@iogearbox.net; receiver=<UNKNOWN>)
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxD9b2Dtvz2xB5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 02:59:45 +1100 (AEDT)
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1pHoN1-0007ZP-51; Tue, 17 Jan 2023 16:59:31 +0100
-Received: from [85.1.206.226] (helo=linux.home)
-	by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1pHoN0-0009Hp-CC; Tue, 17 Jan 2023 16:59:30 +0100
-Subject: Re: [bpf-next v2] bpf: drop deprecated bpf_jit_enable == 2
-To: Tonghao Zhang <tong@infragraf.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20230105030614.26842-1-tong@infragraf.org>
- <ea7673e1-40ec-18be-af89-5f4fd0f71742@csgroup.eu>
- <71c83f39-f85f-d990-95b7-ab6068839e6c@iogearbox.net>
- <5836b464-290e-203f-00f2-fc6632c9f570@csgroup.eu>
- <147A796D-12C0-482F-B48A-16E67120622B@infragraf.org>
- <0b46b813-05f2-5083-9f2e-82d72970dae2@csgroup.eu>
- <4380D454-3ED0-43F4-9A79-102BB0E3577A@infragraf.org>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <d91bbb9e-484b-d43d-e62d-0474ff21cf91@iogearbox.net>
-Date: Tue, 17 Jan 2023 16:59:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxF7X4mYSz2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 03:43:02 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pHp2k-001f9B-4y; Tue, 17 Jan 2023 17:42:38 +0100
+Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pHp2j-002q0C-UX; Tue, 17 Jan 2023 17:42:38 +0100
+Message-ID: <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
+Date: Tue, 17 Jan 2023 17:42:37 +0100
 MIME-Version: 1.0
-In-Reply-To: <4380D454-3ED0-43F4-9A79-102BB0E3577A@infragraf.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Calculating array sizes in C - was: Re: Build
+ regressions/improvements in v6.2-rc1
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.7/26784/Tue Jan 17 09:29:12 2023)
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.148.100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,122 +59,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KP Singh <kpsingh@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hou Tao <houtao1@huawei.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, Yonghong Song <yhs@fb.com>, "linux-arm-kernel@lists.infradead.or" <linux-arm-kernel@lists.infradead.or>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Alexei Starovoitov <ast@kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Hao Luo <haoluo@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>
+Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/17/23 3:22 PM, Tonghao Zhang wrote:
-> 
-> 
->> On Jan 17, 2023, at 3:30 PM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 17/01/2023 à 06:30, Tonghao Zhang a écrit :
->>>
->>>
->>>> On Jan 9, 2023, at 4:15 PM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>>>
->>>>
->>>>
->>>> Le 06/01/2023 à 16:37, Daniel Borkmann a écrit :
->>>>> On 1/5/23 6:53 PM, Christophe Leroy wrote:
->>>>>> Le 05/01/2023 à 04:06, tong@infragraf.org a écrit :
->>>>>>> From: Tonghao Zhang <tong@infragraf.org>
->>>>>>>
->>>>>>> The x86_64 can't dump the valid insn in this way. A test BPF prog
->>>>>>> which include subprog:
->>>>>>>
->>>>>>> $ llvm-objdump -d subprog.o
->>>>>>> Disassembly of section .text:
->>>>>>> 0000000000000000 <subprog>:
->>>>>>>           0:       18 01 00 00 73 75 62 70 00 00 00 00 72 6f 67 00 r1
->>>>>>> = 29114459903653235 ll
->>>>>>>           2:       7b 1a f8 ff 00 00 00 00 *(u64 *)(r10 - 8) = r1
->>>>>>>           3:       bf a1 00 00 00 00 00 00 r1 = r10
->>>>>>>           4:       07 01 00 00 f8 ff ff ff r1 += -8
->>>>>>>           5:       b7 02 00 00 08 00 00 00 r2 = 8
->>>>>>>           6:       85 00 00 00 06 00 00 00 call 6
->>>>>>>           7:       95 00 00 00 00 00 00 00 exit
->>>>>>> Disassembly of section raw_tp/sys_enter:
->>>>>>> 0000000000000000 <entry>:
->>>>>>>           0:       85 10 00 00 ff ff ff ff call -1
->>>>>>>           1:       b7 00 00 00 00 00 00 00 r0 = 0
->>>>>>>           2:       95 00 00 00 00 00 00 00 exit
->>>>>>>
->>>>>>> kernel print message:
->>>>>>> [  580.775387] flen=8 proglen=51 pass=3 image=ffffffffa000c20c
->>>>>>> from=kprobe-load pid=1643
->>>>>>> [  580.777236] JIT code: 00000000: cc cc cc cc cc cc cc cc cc cc cc
->>>>>>> cc cc cc cc cc
->>>>>>> [  580.779037] JIT code: 00000010: cc cc cc cc cc cc cc cc cc cc cc
->>>>>>> cc cc cc cc cc
->>>>>>> [  580.780767] JIT code: 00000020: cc cc cc cc cc cc cc cc cc cc cc
->>>>>>> cc cc cc cc cc
->>>>>>> [  580.782568] JIT code: 00000030: cc cc cc
->>>>>>>
->>>>>>> $ bpf_jit_disasm
->>>>>>> 51 bytes emitted from JIT compiler (pass:3, flen:8)
->>>>>>> ffffffffa000c20c + <x>:
->>>>>>>       0:   int3
->>>>>>>       1:   int3
->>>>>>>       2:   int3
->>>>>>>       3:   int3
->>>>>>>       4:   int3
->>>>>>>       5:   int3
->>>>>>>       ...
->>>>>>>
->>>>>>> Until bpf_jit_binary_pack_finalize is invoked, we copy rw_header to
->>>>>>> header
->>>>>>> and then image/insn is valid. BTW, we can use the "bpftool prog dump"
->>>>>>> JITed instructions.
->>>>>>
->>>>>> NACK.
->>>>>>
->>>>>> Because the feature is buggy on x86_64, you remove it for all
->>>>>> architectures ?
->>>>>>
->>>>>> On powerpc bpf_jit_enable == 2 works and is very usefull.
->>>>>>
->>>>>> Last time I tried to use bpftool on powerpc/32 it didn't work. I don't
->>>>>> remember the details, I think it was an issue with endianess. Maybe it
->>>>>> is fixed now, but it needs to be verified.
->>>>>>
->>>>>> So please, before removing a working and usefull feature, make sure
->>>>>> there is an alternative available to it for all architectures in all
->>>>>> configurations.
->>>>>>
->>>>>> Also, I don't think bpftool is usable to dump kernel BPF selftests.
->>>>>> That's vital when a selftest fails if you want to have a chance to
->>>>>> understand why it fails.
->>>>>
->>>>> If this is actively used by JIT developers and considered useful, I'd be
->>>>> ok to leave it for the time being. Overall goal is to reach feature parity
->>>>> among (at least major arch) JITs and not just have most functionality only
->>>>> available on x86-64 JIT. Could you however check what is not working with
->>>>> bpftool on powerpc/32? Perhaps it's not too much effort to just fix it,
->>>>> but details would be useful otherwise 'it didn't work' is too fuzzy.
->>>>
->>>> Sure I will try to test bpftool again in the coming days.
->>>>
->>>> Previous discussion about that subject is here:
->>>> https://patchwork.kernel.org/project/linux-riscv/patch/20210415093250.3391257-1-Jianlin.Lv@arm.com/#24176847=
->>> Hi Christophe
->>> Any progress? We discuss to deprecate the bpf_jit_enable == 2 in 2021, but bpftool can not run on powerpc.
->>> Now can we fix this issue?
->>
->> Hi Tong,
->>
->> I have started to look at it but I don't have any fruitfull feedback yet.
->>
->> In the meantime, were you able to confirm that bpftool can also be used
->> to dump jitted tests from test_bpf.ko module on x86_64 ? In that can you
->> tell me how to proceed ?
-> Now I do not test, but we can dump the insn after bpf_prog_select_runtime in test_bpf.ko. bpf_map_get_info_by_fd can copy the insn to userspace, but we can
-> dump them in test_bpf.ko in the same way.
+Hi Geert!
 
-Issue is that these progs are not consumable from userspace (and therefore not bpftool).
-it's just simple bpf_prog_alloc + copy of test insns + bpf_prog_select_runtime() to test
-JITs (see generate_filter()). Some of them could be converted over to test_verifier, but
-not all might actually pass verifier, iirc. Don't think it's a good idea to allow exposing
-them via fd tbh.
+On 1/6/23 16:17, Geert Uytterhoeven wrote:
+>> I'm not seeing this one, but I am getting this one instead:
+>>
+>> In file included from ./arch/sh/include/asm/hw_irq.h:6,
+>>                    from ./include/linux/irq.h:596,
+>>                    from ./include/asm-generic/hardirq.h:17,
+>>                    from ./arch/sh/include/asm/hardirq.h:9,
+>>                    from ./include/linux/hardirq.h:11,
+>>                    from ./include/linux/interrupt.h:11,
+>>                    from ./include/linux/serial_core.h:13,
+>>                    from ./include/linux/serial_sci.h:6,
+>>                    from arch/sh/kernel/cpu/sh2/setup-sh7619.c:11:
+>> ./include/linux/sh_intc.h:100:63: error: division 'sizeof (void *) / sizeof (void)' does not compute the number of array elements [-Werror=sizeof-pointer-div]
+>>     100 | #define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/sizeof(*a)
+>>         |                                                               ^
+>> ./include/linux/sh_intc.h:105:31: note: in expansion of macro '_INTC_ARRAY'
+>>     105 |         _INTC_ARRAY(vectors), _INTC_ARRAY(groups),      \
+>>         |                               ^~~~~~~~~~~
+> 
+> The easiest fix for the latter is to disable CONFIG_WERROR.
+> Unfortunately I don't know a simple solution to get rid of the warning.
+
+I did some research and it seems that what the macro _INT_ARRAY() does with "sizeof(a)/sizeof(*a)"
+is a commonly used way to calculate array sizes and the kernel has even its own macro for that
+called ARRAY_SIZE() which Linus asks people to use here [1].
+
+So, I replaced _INTC_ARRAY() with ARRAY_SIZE() (see below), however the kernel's own ARRAY_SIZE()
+macro triggers the same compiler warning. I'm CC'ing Michael Karcher who has more knowledge on
+writing proper C code than me and maybe an idea how to fix this warning.
+
+Thanks,
+Adrian
+
+> [1] https://lkml.org/lkml/2015/9/3/428
+
+diff --git a/include/linux/sh_intc.h b/include/linux/sh_intc.h
+index c255273b0281..07a187686a84 100644
+--- a/include/linux/sh_intc.h
++++ b/include/linux/sh_intc.h
+@@ -97,14 +97,12 @@ struct intc_hw_desc {
+         unsigned int nr_subgroups;
+  };
+  
+-#define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/sizeof(*a)
+-
+  #define INTC_HW_DESC(vectors, groups, mask_regs,       \
+                      prio_regs, sense_regs, ack_regs)   \
+  {                                                      \
+-       _INTC_ARRAY(vectors), _INTC_ARRAY(groups),      \
+-       _INTC_ARRAY(mask_regs), _INTC_ARRAY(prio_regs), \
+-       _INTC_ARRAY(sense_regs), _INTC_ARRAY(ack_regs), \
++       ARRAY_SIZE(vectors), ARRAY_SIZE(groups),        \
++       ARRAY_SIZE(mask_regs), ARRAY_SIZE(prio_regs),   \
++       ARRAY_SIZE(sense_regs), ARRAY_SIZE(ack_regs),   \
+  }
+  
+  struct intc_desc {
+
+-- 
+  .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
