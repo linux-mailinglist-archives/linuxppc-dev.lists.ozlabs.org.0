@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F0266D527
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 04:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6341166D546
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 05:16:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nwvy06tTcz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 14:48:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwwYY1Pz5z3cDD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 15:16:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=cEF0eu2L;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=V1SsFbxr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=V1SsFbxr;
+	dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nwvx50kTMz3bNg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 14:47:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=cEF0eu2L;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Nwvx00xGvz4xG5;
-	Tue, 17 Jan 2023 14:47:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1673927268;
-	bh=pdT0tLO8GhTYnyOobd7AHS4rLZhzpys/XxIhDrVwTQE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=cEF0eu2Lw5aegSx7hGanxUhFFwulU0oLGRKzDX7StCDPirx2Abu/ytDSH084deiY7
-	 0z/FDrubl8A/sJMWjvQUUlgCAdTrcAzoOKiE8PY3dHCZLToxTdMAOkXNvsVi3kQYa2
-	 Z7+lGjW01f/8Kvfy3lOv3AQhHhxO6Qxb4iO8z1JGBtr2g6azOGXgZOqgseK6bzFVqP
-	 CV/C27yiGepyyLOvIuMHs/EhD+MgBM/DYHhse/55OFeSJ38FLztC92pSOp6zCGXTFL
-	 RF435i6MR6FINTJcMmn8kgsbx8nHJId1zOfw44IdKlanWq8Jd9SDDPrScs/UJrJBLz
-	 6WmWN7eIklSfg==
-Date: Tue, 17 Jan 2023 14:47:47 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Herbert Xu <herbert@gondor.apana.org.au>, Linux Crypto List
- <linux-crypto@vger.kernel.org>
-Subject: linux-next: build failure after merge of the crypto tree
-Message-ID: <20230117144747.37115c52@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwwXc2njgz30RT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 15:15:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=eeaHVXVVYLUZhPJsx3SPIZ13iIAgts/Qp1qngWaTzqA=; b=V1SsFbxr+Ofyz74nBDy89AeApK
+	ITCGUjTbUYk0t0GnfGJvQhOi9bTVMlDqqYPb8ZKyHGX5VKrdGajG/0IrlkT3xwVNJVJSs4MpOHcw4
+	1o3BcV8OuH63EI4/DaISzfONMgNKgWqv43cR4icParaJPBeZsXbFhtI/hZ9hVPY5QBmJ4kPQOQo9+
+	/yrPBQTtijA7/1rRlDK6Douvko5c/dkV2Ky2jYh5sVdhTSuHkgq0S24m5GoQcx34KzJOkOg50L8SH
+	+o+lKJ45URFR4xZn3YUppCurr5mmiHlhfZGl6DFTS8eI4elQrX2C4k5DVWe8JUmKi0dPAYw1xpnER
+	vA/RBWKA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pHdMg-009MFh-CK; Tue, 17 Jan 2023 04:14:26 +0000
+Date: Tue, 17 Jan 2023 04:14:26 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Subject: Re: [PATCH 41/41] mm: replace rw_semaphore with atomic_t in vma_lock
+Message-ID: <Y8YgomKF189vmgLz@casper.infradead.org>
+References: <20230109205336.3665937-1-surenb@google.com>
+ <20230109205336.3665937-42-surenb@google.com>
+ <Y8UxnqPCTLbbD+2F@localhost>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/U3=+W9+taE+jWVag5qZssFt";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8UxnqPCTLbbD+2F@localhost>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,77 +57,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Danny Tsen <dtsen@linux.ibm.com>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@go
+ ogle.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/U3=+W9+taE+jWVag5qZssFt
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jan 16, 2023 at 11:14:38AM +0000, Hyeonggon Yoo wrote:
+> > @@ -643,20 +647,28 @@ static inline void vma_write_lock(struct vm_area_struct *vma)
+> >  static inline bool vma_read_trylock(struct vm_area_struct *vma)
+> >  {
+> >  	/* Check before locking. A race might cause false locked result. */
+> > -	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
+> > +	if (vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
+> >  		return false;
+> >  
+> > -	if (unlikely(down_read_trylock(&vma->vm_lock->lock) == 0))
+> > +	if (unlikely(!atomic_inc_unless_negative(&vma->vm_lock->count)))
+> >  		return false;
+> >  
+> > +	/* If atomic_t overflows, restore and fail to lock. */
+> > +	if (unlikely(atomic_read(&vma->vm_lock->count) < 0)) {
+> > +		if (atomic_dec_and_test(&vma->vm_lock->count))
+> > +			wake_up(&vma->vm_mm->vma_writer_wait);
+> > +		return false;
+> > +	}
+> > +
+> >  	/*
+> >  	 * Overflow might produce false locked result.
+> >  	 * False unlocked result is impossible because we modify and check
+> >  	 * vma->vm_lock_seq under vma->vm_lock protection and mm->mm_lock_seq
+> >  	 * modification invalidates all existing locks.
+> >  	 */
+> > -	if (unlikely(vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
+> > -		up_read(&vma->vm_lock->lock);
+> > +	if (unlikely(vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
+> > +		if (atomic_dec_and_test(&vma->vm_lock->count))
+> > +			wake_up(&vma->vm_mm->vma_writer_wait);
+> >  		return false;
+> >  	}
+> 
+> With this change readers can cause writers to starve.
+> What about checking waitqueue_active() before or after increasing
+> vma->vm_lock->count?
 
-Hi all,
-
-After merging the crypto tree, today's linux-next build (powerpc
-pseries_le_defconfig) failed like this:
-
-arch/powerpc/crypto/p10_aes_gcm.o: warning: objtool: .text+0x884: unannotat=
-ed intra-function call
-arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0=
-x44: unannotated intra-function call
-ld: arch/powerpc/crypto/p10_aes_gcm.o: ABI version 1 is not compatible with=
- ABI version 2 output
-ld: failed to merge target specific data of file arch/powerpc/crypto/p10_ae=
-s_gcm.o
-
-Caused by commit
-
-  ca68a96c37eb ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched impl=
-ementation")
-
-I have applied the following hack for today.
-
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Tue, 17 Jan 2023 14:41:10 +1100
-Subject: [PATCH] crypto: p10-aes-gcm - only ABIv1 code has been implemented
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/powerpc/crypto/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index db7d99383993..36928ad14a6b 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -97,6 +97,7 @@ config CRYPTO_AES_PPC_SPE
- config CRYPTO_P10_AES_GCM
- 	tristate "Stitched AES/GCM acceleration support on P10+ CPU (PPC)"
- 	depends on PPC64
-+	depends on PPC64_ELF_ABI_V1
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
- 	select CRYPTO_AEAD
---=20
-2.35.1
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/U3=+W9+taE+jWVag5qZssFt
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPGGmMACgkQAVBC80lX
-0GzXFQf+IuQ0OoBK3RJPXB4MBEqFCXGFIsjgycvkBpeMhsPwrlTGzgd+Gk2oNnjn
-1VSGXyhT+Qy0mk5iSu7ZHteVWK2oM88re9zAzQoo0FkkNhBDi+6PITfoEjeqAifA
-OmVS1AOcz7XOuIVwGs5JosHJ3UGv8kvWiWjJaI6u1WYqpZF2gRfsNu2SnylW4Xs6
-8PMa66m4u9QaV3E8lav7d11I0gA88FIk2EE27vbIBboh0pvYY9j/VsEJ09YjplXX
-m2EjXwo54fIsP8/6Kunp4cOyd8DKJzwP3RundKYzZDPp5P8UBX9ems5nY7TyfstD
-HKhHguDvaYEwFPhNxs1u7LZUIcjpsg==
-=rAi6
------END PGP SIGNATURE-----
-
---Sig_/U3=+W9+taE+jWVag5qZssFt--
+I don't understand how readers can starve a writer.  Readers do
+atomic_inc_unless_negative() so a writer can always force readers
+to fail.
