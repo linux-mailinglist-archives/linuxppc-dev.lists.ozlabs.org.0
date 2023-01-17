@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C866E468
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 18:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D7E66E473
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 18:08:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxFfs1B86z3fDg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 04:06:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxFhg4TQMz3cK6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 04:08:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TE9R2Hc+;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TE9R2Hc+;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxFfK1crmz3cDT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 04:06:17 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pHpPU-001nMn-Ss; Tue, 17 Jan 2023 18:06:08 +0100
-Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pHpPT-002tRa-PS; Tue, 17 Jan 2023 18:06:08 +0100
-Message-ID: <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
-Date: Tue, 17 Jan 2023 18:06:07 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxFgl4frjz3bh6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 04:07:31 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9B44B61265
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 17:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 01A74C433EF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 17:07:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1673975248;
+	bh=DFODLr/1STrAa70m2Q17rW4ggYSxkbPai/8k1sSJzB8=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=TE9R2Hc+hD+dxtRing6689+e5qA8tv7APgUHUrzNuA/wk9Dta1FKxlsAnb1mq2bPy
+	 FCs7AGFz0oHHuVJtCRn0p55BU4NDf1TN9a9sxBc5TpBDj9nYQEkySt+bG2+MPSRiqM
+	 CfOAvD9j+jBUlGSDxawkF1R/C178wnHqNB2jZUOw2b7UjUI8So9+iBQNtTIkyKnMbH
+	 PDpi06L0w37zZB7BsnwGovrRyF6oVgGXtkidZq5vnyqUKS4qk8UiOMmv2h5Ad5j4gu
+	 pCXbnjH+qRaU/z5s1WXD9c/A+za73H68LEHlmHUwdRrWlBotmkMFA3j03NpQYJvI2N
+	 qQ3glcltwZJkA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id DB07CC43143; Tue, 17 Jan 2023 17:07:27 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216095] sysfs: cannot create duplicate filename
+ '/devices/platform/of-display'
+Date: Tue, 17 Jan 2023 17:07:27 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: msuchanek@suse.de
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-216095-206035-oNd4Wlu8Oi@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216095-206035@https.bugzilla.kernel.org/>
+References: <bug-216095-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.148.100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,32 +79,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216095
 
-On 1/17/23 18:01, Geert Uytterhoeven wrote:
-> The issue is that some of the parameters are not arrays, but
-> NULL. E.g.:
-> 
-> arch/sh/kernel/cpu/sh2/setup-sh7619.c:static
-> DECLARE_INTC_DESC(intc_desc, "sh7619", vectors, NULL,
-> arch/sh/kernel/cpu/sh2/setup-sh7619.c-                   NULL,
-> prio_registers, NULL);
+--- Comment #15 from Michal Such=C3=A1nek (msuchanek@suse.de) ---
+You do have two outputs defined in the device tree:
 
-Isn't this supposed to be caught by this check:
+/pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_A@0
+/pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1
 
-	a, __same_type(a, NULL)
+If they correspond to a physical outputs is another question. After all if =
+one
+of the outputs exists only on some card models it would never detect a
+connected screen on the cards on which the output does not physically exist=
+ and
+everything will work just fine.
 
-?
+Here is a patch that aims to resolve the problem
+https://lore.kernel.org/lkml/20230117165804.18036-1-msuchanek@suse.de/
 
-Adrian
+--=20
+You may reply to this email to add a comment.
 
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
