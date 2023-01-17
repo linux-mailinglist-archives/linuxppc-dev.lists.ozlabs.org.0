@@ -2,50 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6341166D546
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 05:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C37066D56E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 05:44:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NwwYY1Pz5z3cDD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 15:16:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NwxB10Jgfz3cBk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 15:44:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=V1SsFbxr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rvDfVQk7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=V1SsFbxr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rvDfVQk7;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwwXc2njgz30RT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 15:15:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eeaHVXVVYLUZhPJsx3SPIZ13iIAgts/Qp1qngWaTzqA=; b=V1SsFbxr+Ofyz74nBDy89AeApK
-	ITCGUjTbUYk0t0GnfGJvQhOi9bTVMlDqqYPb8ZKyHGX5VKrdGajG/0IrlkT3xwVNJVJSs4MpOHcw4
-	1o3BcV8OuH63EI4/DaISzfONMgNKgWqv43cR4icParaJPBeZsXbFhtI/hZ9hVPY5QBmJ4kPQOQo9+
-	/yrPBQTtijA7/1rRlDK6Douvko5c/dkV2Ky2jYh5sVdhTSuHkgq0S24m5GoQcx34KzJOkOg50L8SH
-	+o+lKJ45URFR4xZn3YUppCurr5mmiHlhfZGl6DFTS8eI4elQrX2C4k5DVWe8JUmKi0dPAYw1xpnER
-	vA/RBWKA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pHdMg-009MFh-CK; Tue, 17 Jan 2023 04:14:26 +0000
-Date: Tue, 17 Jan 2023 04:14:26 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Subject: Re: [PATCH 41/41] mm: replace rw_semaphore with atomic_t in vma_lock
-Message-ID: <Y8YgomKF189vmgLz@casper.infradead.org>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-42-surenb@google.com>
- <Y8UxnqPCTLbbD+2F@localhost>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8UxnqPCTLbbD+2F@localhost>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NwwmD6XB6z3bWT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 15:25:16 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 4844EB81060;
+	Tue, 17 Jan 2023 04:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0701C433EF;
+	Tue, 17 Jan 2023 04:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1673929510;
+	bh=LKPfAbcdavLMCpifQk05Aqw+1tD2xg5qsuB6VorVVnI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rvDfVQk7Tsas4+LZFK04iCV/SqfYXmqYXLFi42JOngYW1dOP0QSo6CLiBkpjYosKx
+	 nKUcD4fx6Lu1RT5hJ5yblHd47Jqpvv59kmEAKtriWUWkTZ7hmC4Za3q3BgpEtr891G
+	 Uhe5azCk4FahsTTDCEc3lE2+MzsUQWKU5CAcTO6IYBsGKCz8NivYw+lk7qeBhykDxt
+	 x23XNA0A5LxituWhIHyg6sCe7NTSUKsY2ON6C3g6I/nFT8i/VEH7jmIvKLWoo8AYZN
+	 JlOlRfIFLAGKs5+FVWy9q/WwqqbuzK/Mvbqfsgyxm4gYqDdXx2B1Vx+ckQBMj8vEfk
+	 ICBnmkeUNpdwg==
+Date: Tue, 17 Jan 2023 13:24:46 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v3 35/51] trace,hardirq: No moar _rcuidle() tracing
+Message-Id: <20230117132446.02ec12e4c10718de27790900@kernel.org>
+In-Reply-To: <20230112195541.477416709@infradead.org>
+References: <20230112194314.845371875@infradead.org>
+	<20230112195541.477416709@infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 17 Jan 2023 15:43:23 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,49 +62,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@go
- ogle.com, mgorman@techsingularity.net
+Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, nsekhar@ti.com, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, linux-samsung-soc@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.
+ org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, alim.akhtar@samsung.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, will@kernel.org, brgl@bgdev.pl, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, festevam@gmail.com, boris.ostrovsky
+ @oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, konrad.dybcio@linaro.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, linux-mm@kvack.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, mhiramat@kernel.org, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristians
+ son@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, andersson@kernel.org, linux-mips@vger.kernel.org, krzysztof.kozlowski@linaro.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org, deller@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 16, 2023 at 11:14:38AM +0000, Hyeonggon Yoo wrote:
-> > @@ -643,20 +647,28 @@ static inline void vma_write_lock(struct vm_area_struct *vma)
-> >  static inline bool vma_read_trylock(struct vm_area_struct *vma)
-> >  {
-> >  	/* Check before locking. A race might cause false locked result. */
-> > -	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
-> > +	if (vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
-> >  		return false;
-> >  
-> > -	if (unlikely(down_read_trylock(&vma->vm_lock->lock) == 0))
-> > +	if (unlikely(!atomic_inc_unless_negative(&vma->vm_lock->count)))
-> >  		return false;
-> >  
-> > +	/* If atomic_t overflows, restore and fail to lock. */
-> > +	if (unlikely(atomic_read(&vma->vm_lock->count) < 0)) {
-> > +		if (atomic_dec_and_test(&vma->vm_lock->count))
-> > +			wake_up(&vma->vm_mm->vma_writer_wait);
-> > +		return false;
-> > +	}
-> > +
-> >  	/*
-> >  	 * Overflow might produce false locked result.
-> >  	 * False unlocked result is impossible because we modify and check
-> >  	 * vma->vm_lock_seq under vma->vm_lock protection and mm->mm_lock_seq
-> >  	 * modification invalidates all existing locks.
-> >  	 */
-> > -	if (unlikely(vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
-> > -		up_read(&vma->vm_lock->lock);
-> > +	if (unlikely(vma->vm_lock->lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
-> > +		if (atomic_dec_and_test(&vma->vm_lock->count))
-> > +			wake_up(&vma->vm_mm->vma_writer_wait);
-> >  		return false;
-> >  	}
-> 
-> With this change readers can cause writers to starve.
-> What about checking waitqueue_active() before or after increasing
-> vma->vm_lock->count?
+Hi Peter,
 
-I don't understand how readers can starve a writer.  Readers do
-atomic_inc_unless_negative() so a writer can always force readers
-to fail.
+On Thu, 12 Jan 2023 20:43:49 +0100
+Peter Zijlstra <peterz@infradead.org> wrote:
+
+> Robot reported that trace_hardirqs_{on,off}() tickle the forbidden
+> _rcuidle() tracepoint through local_irq_{en,dis}able().
+> 
+> For 'sane' configs, these calls will only happen with RCU enabled and
+> as such can use the regular tracepoint. This also means it's possible
+> to trace them from NMI context again.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+The code looks good to me. I just have a question about comment.
+
+> ---
+>  kernel/trace/trace_preemptirq.c |   21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> --- a/kernel/trace/trace_preemptirq.c
+> +++ b/kernel/trace/trace_preemptirq.c
+> @@ -20,6 +20,15 @@
+>  static DEFINE_PER_CPU(int, tracing_irq_cpu);
+>  
+>  /*
+> + * ...
+
+Is this intended? Wouldn't you leave any comment here?
+
+Thank you,
+
+> + */
+> +#ifdef CONFIG_ARCH_WANTS_NO_INSTR
+> +#define trace(point)	trace_##point
+> +#else
+> +#define trace(point)	if (!in_nmi()) trace_##point##_rcuidle
+> +#endif
+> +
+> +/*
+>   * Like trace_hardirqs_on() but without the lockdep invocation. This is
+>   * used in the low level entry code where the ordering vs. RCU is important
+>   * and lockdep uses a staged approach which splits the lockdep hardirq
+> @@ -28,8 +37,7 @@ static DEFINE_PER_CPU(int, tracing_irq_c
+>  void trace_hardirqs_on_prepare(void)
+>  {
+>  	if (this_cpu_read(tracing_irq_cpu)) {
+> -		if (!in_nmi())
+> -			trace_irq_enable(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_enable)(CALLER_ADDR0, CALLER_ADDR1);
+>  		tracer_hardirqs_on(CALLER_ADDR0, CALLER_ADDR1);
+>  		this_cpu_write(tracing_irq_cpu, 0);
+>  	}
+> @@ -40,8 +48,7 @@ NOKPROBE_SYMBOL(trace_hardirqs_on_prepar
+>  void trace_hardirqs_on(void)
+>  {
+>  	if (this_cpu_read(tracing_irq_cpu)) {
+> -		if (!in_nmi())
+> -			trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_enable)(CALLER_ADDR0, CALLER_ADDR1);
+>  		tracer_hardirqs_on(CALLER_ADDR0, CALLER_ADDR1);
+>  		this_cpu_write(tracing_irq_cpu, 0);
+>  	}
+> @@ -63,8 +70,7 @@ void trace_hardirqs_off_finish(void)
+>  	if (!this_cpu_read(tracing_irq_cpu)) {
+>  		this_cpu_write(tracing_irq_cpu, 1);
+>  		tracer_hardirqs_off(CALLER_ADDR0, CALLER_ADDR1);
+> -		if (!in_nmi())
+> -			trace_irq_disable(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_disable)(CALLER_ADDR0, CALLER_ADDR1);
+>  	}
+>  
+>  }
+> @@ -78,8 +84,7 @@ void trace_hardirqs_off(void)
+>  	if (!this_cpu_read(tracing_irq_cpu)) {
+>  		this_cpu_write(tracing_irq_cpu, 1);
+>  		tracer_hardirqs_off(CALLER_ADDR0, CALLER_ADDR1);
+> -		if (!in_nmi())
+> -			trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_disable)(CALLER_ADDR0, CALLER_ADDR1);
+>  	}
+>  }
+>  EXPORT_SYMBOL(trace_hardirqs_off);
+> 
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
