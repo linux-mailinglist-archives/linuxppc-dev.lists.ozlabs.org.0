@@ -1,63 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BC666E1A8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 16:07:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A027966E1B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jan 2023 16:10:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxC1j67k4z3cf5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 02:07:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxC463Bchz3cdJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 02:09:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=cu4sHORQ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=TGjBsFbb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=cu4sHORQ;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=TGjBsFbb;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxC0p1rmMz3c99
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 02:07:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxC3B6wlwz3bbX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 02:09:10 +1100 (AEDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 471FF387B0;
-	Tue, 17 Jan 2023 15:07:02 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4D0CF21AA6;
+	Tue, 17 Jan 2023 15:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1673968022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1673968143; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6V2VZScsK1ZinrFEkqeTShIOGmI+xaJW7bwy0e3iVQY=;
-	b=cu4sHORQXjae9Ocu+lNNPo3B8A8fwUGA+VendakuJSRO/eyKhJlFGYg7kizcQyieCvMQKz
-	38OljQbTlXpq9rWbtxC5hv0r+dOHwobThPzg7YhhnfcZpM/ZKBHfejYRDWJkMH48o3cKue
-	jQuECbg6F9zy5e35mX4Zd4yCM0dwbvQ=
+	bh=GbRWdJrQA5rsGsQ15mZxy3lCZu74wCpPmVNydKoLMQ0=;
+	b=TGjBsFbbafNCK59Ka/VR2n3p3wpABbf1jdsLyLdBJ3nwlM81bSVbkGWncSt2v0Z7QlPHV+
+	u2cV4TXTMNYj/wu/K7fGSFWcsGtrQGAVpnh9L+yTbsUCjJmx2u9rCmnO1NQn20Q+zSniqu
+	+i9vScb+qAT6y46Eo/yiLU6fB6xX9bo=
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1396B1390C;
-	Tue, 17 Jan 2023 15:07:02 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 249E21390C;
+	Tue, 17 Jan 2023 15:09:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id V/U+BJa5xmNuQAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Tue, 17 Jan 2023 15:07:02 +0000
-Date: Tue, 17 Jan 2023 16:07:01 +0100
+	id TMVsCA+6xmNhQQAAMHmgww
+	(envelope-from <mhocko@suse.com>); Tue, 17 Jan 2023 15:09:03 +0000
+Date: Tue, 17 Jan 2023 16:09:02 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
- control it
-Message-ID: <Y8a5lRr+qNVwau5G@dhcp22.suse.cz>
+Subject: Re: [PATCH 13/41] mm: introduce vma->vm_flags modifier functions
+Message-ID: <Y8a6DhA6o3jcZaM3@dhcp22.suse.cz>
 References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-13-surenb@google.com>
+ <20230109205336.3665937-14-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230109205336.3665937-13-surenb@google.com>
+In-Reply-To: <20230109205336.3665937-14-surenb@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,29 +73,71 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@go
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 09-01-23 12:53:07, Suren Baghdasaryan wrote:
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5986817f393c..c026d75108b3 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -474,6 +474,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
->  		 */
->  		*new = data_race(*orig);
->  		INIT_LIST_HEAD(&new->anon_vma_chain);
-> +		vma_init_lock(new);
->  		dup_anon_vma_name(orig, new);
->  	}
->  	return new;
-> @@ -1145,6 +1146,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->  	seqcount_init(&mm->write_protect_seq);
->  	mmap_init_lock(mm);
->  	INIT_LIST_HEAD(&mm->mmlist);
-> +#ifdef CONFIG_PER_VMA_LOCK
-> +	WRITE_ONCE(mm->mm_lock_seq, 0);
-> +#endif
+On Mon 09-01-23 12:53:08, Suren Baghdasaryan wrote:
+> To keep vma locking correctness when vm_flags are modified, add modifier
+> functions to be used whenever flags are updated.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  include/linux/mm.h       | 38 ++++++++++++++++++++++++++++++++++++++
+>  include/linux/mm_types.h |  8 +++++++-
+>  2 files changed, 45 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index ec2c4c227d51..35cf0a6cbcc2 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -702,6 +702,44 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+>  	vma_init_lock(vma);
+>  }
+>  
+> +/* Use when VMA is not part of the VMA tree and needs no locking */
+> +static inline
+> +void init_vm_flags(struct vm_area_struct *vma, unsigned long flags)
+> +{
+> +	WRITE_ONCE(vma->vm_flags, flags);
+> +}
 
-The mm shouldn't be visible so why WRITE_ONCE?
+Why do we need WRITE_ONCE here? Isn't vma invisible during its
+initialization?
 
+> +
+> +/* Use when VMA is part of the VMA tree and needs appropriate locking */
+> +static inline
+> +void reset_vm_flags(struct vm_area_struct *vma, unsigned long flags)
+> +{
+> +	vma_write_lock(vma);
+> +	init_vm_flags(vma, flags);
+> +}
+> +
+> +static inline
+> +void set_vm_flags(struct vm_area_struct *vma, unsigned long flags)
+> +{
+> +	vma_write_lock(vma);
+> +	vma->vm_flags |= flags;
+> +}
+> +
+> +static inline
+> +void clear_vm_flags(struct vm_area_struct *vma, unsigned long flags)
+> +{
+> +	vma_write_lock(vma);
+> +	vma->vm_flags &= ~flags;
+> +}
+> +
+> +static inline
+> +void mod_vm_flags(struct vm_area_struct *vma,
+> +		  unsigned long set, unsigned long clear)
+> +{
+> +	vma_write_lock(vma);
+> +	vma->vm_flags |= set;
+> +	vma->vm_flags &= ~clear;
+> +}
+> +
+
+This is rather unusual pattern. There is no note about locking involved
+in the naming and also why is the locking part of this interface in the
+first place? I can see reason for access functions to actually check for
+lock asserts.
 -- 
 Michal Hocko
 SUSE Labs
