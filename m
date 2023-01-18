@@ -2,83 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEA467134B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 06:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 300B667138C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 07:07:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxZYK1f7tz303H
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:48:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxZzB73DKz3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 17:07:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KedlfqYg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ATO5EJCg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=namhyung@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KedlfqYg;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ATO5EJCg;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxZV12ly7z2yPY;
-	Wed, 18 Jan 2023 16:45:13 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I3mAiB028762;
-	Wed, 18 Jan 2023 05:45:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=b7l3hsAfQ1j0pnXYoDU9lxu/pXDVNBWfHNOHBzw55Rg=;
- b=KedlfqYg7eGUxHc53vIP+XpjSwbaZAOIHdA+OhDRupsM7Z22PoJ2bJXefiZgVFI0QjGg
- xoQhBm3PycWQvRP8eKokEvRgXpaThs4bqAmC9oNGDylgUaqUpShjkCkCl7Cy8KW9UqCD
- iAGKT8bFwgc+2U8ear3E74egsKawnf6bUIgaG/281sQGizTWireGaKaX96C9AAK/op0l
- x/TPFk8hrBd3t7nHivUl0GRdbWOhckiwdJVzP3uQNRo1owYi/Lqovc9C8g/O+eFQNCtB
- hYMvASTm/suKa/QaokIZZXzf22aQFcQvRsgY5WJ1AQC04OIQaqrQN1CMUdEq6xUxgs5k hg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n696d9yqq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Jan 2023 05:45:06 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30HLOPve023789;
-	Wed, 18 Jan 2023 05:45:05 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16mss2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Jan 2023 05:45:04 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30I5j1Yk24052456
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Jan 2023 05:45:01 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 512B42004B;
-	Wed, 18 Jan 2023 05:45:01 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B5DC20040;
-	Wed, 18 Jan 2023 05:44:59 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.55.224])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Jan 2023 05:44:59 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: skiboot@lists.ozlabs.org, dan@danny.cz, mpe@ellerman.id.au,
-        maddy@linux.ibm.com
-Subject: [PATCH V2 3/3] skiboot: Update IMC PMU node names for power10
-Date: Wed, 18 Jan 2023 11:14:52 +0530
-Message-Id: <20230118054452.27242-3-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230118054452.27242-1-atrajeev@linux.vnet.ibm.com>
-References: <20230118054452.27242-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxZyC4W2Fz3bNr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 17:06:09 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id 20so8549603plo.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jan 2023 22:06:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kAqivUnaLGSiiUVP/9yUUwDL5c/NOTjH6M1nhFWggWg=;
+        b=ATO5EJCg/oM9Opfk75b9Fk6ftnjKeXw3k6lZVQhZ1oTDVpjgjxnHDrOni75BCwiHAi
+         PkskBMxjj5cDFpulLJwmhq0gSt8UdeM/zaEyZ1VQZ2kDdZkBbTru6NCU5Y9JOY3EPXis
+         YaupmNpHs+OQD7gEzvRQozc0VQTIRPEM6d8HdSSEuiSV6RWEITTvCvm5XZcWw3uSzTpL
+         t9uhO5iBH5f4qHXWYAGhR2NRnEcEpp38sRhdD9M/HMUVSvczlJqD0SQ00J2wY6vce4PM
+         qgksN48Yv/gCXuLPPOmt+vv5OtSablQeA/dm5orZr9KoQZDhXqh4zi8+YoaZNj2xne8s
+         Rwzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kAqivUnaLGSiiUVP/9yUUwDL5c/NOTjH6M1nhFWggWg=;
+        b=fN1VIkojJGiPYWr2X/cHrteDIZWEPjK0qGCecg5uitc8XoPXmZs+fX6XXfiFobMiAz
+         Aby2wWvFyy7ypgbIsT/AIEpktxN68afdabHMd0F64W+yh28jXrXAMBzMu8zmilKyD/09
+         qjyF2FZn1xiXuW6VzYBF6ju2/GkUu04E0ytJiutOK+iCxJEMls94fZ85/iQbxoyXOaV0
+         NAElffSNXHIBzxWqGGIENGrU5aqfKqo9nlUJqKKvMuPiekFgOZvAuLPEEW0Old8+RT6s
+         dMd6RNxTBVHPUe8ANNNHgv/zoS3r7oHkdIi4L2IimkMJI2RglBpysrR9M2fDHbeYqIzo
+         RQ8Q==
+X-Gm-Message-State: AFqh2koebsHl8VUjx7dv+cx+vndwPGphwVwhjtJRsFpx2QJDklRiZ0d1
+	CpG41lnvrq32ddz4gaLItko=
+X-Google-Smtp-Source: AMrXdXuLcA5Fr9OPRMgSqMNtCxpYmMLVmGIznpjSZGyayTkEHoUGVJDo9jXhwyuNNtJIjKw7giJAxA==
+X-Received: by 2002:a05:6a20:d2cd:b0:b5:c751:78bb with SMTP id ir13-20020a056a20d2cd00b000b5c75178bbmr6346664pzb.6.1674021966593;
+        Tue, 17 Jan 2023 22:06:06 -0800 (PST)
+Received: from balhae.hsd1.ca.comcast.net ([2601:647:6780:ff0:3749:9eb3:dfb5:f449])
+        by smtp.gmail.com with ESMTPSA id b126-20020a62cf84000000b00574e84ed847sm10990180pfg.24.2023.01.17.22.06.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jan 2023 22:06:06 -0800 (PST)
+From: Namhyung Kim <namhyung@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 4/8] perf/core: Add perf_sample_save_brstack() helper
+Date: Tue, 17 Jan 2023 22:05:55 -0800
+Message-Id: <20230118060559.615653-5-namhyung@kernel.org>
+X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
+In-Reply-To: <20230118060559.615653-1-namhyung@kernel.org>
+References: <20230118060559.615653-1-namhyung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Wo44wQp_VfCi_IFZ8ElGnRyfEvZQth2C
-X-Proofpoint-ORIG-GUID: Wo44wQp_VfCi_IFZ8ElGnRyfEvZQth2C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-18_01,2023-01-17_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0
- phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2301180047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,268 +79,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, x86@kernel.org, LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Song Liu <song@kernel.org>, Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The nest IMC (In Memory Collection) Performance Monitoring
-Unit(PMU) node names are saved as "struct nest_pmus_struct"
-in the "hw/imc.c" IMC code. Not all the IMC PMUs listed in
-the device tree may be available. Nest IMC PMU names along with
-their bit values is represented in imc availability vector.
-This struct is used to remove the unavailable nodes by checking
-this vector.
+When it saves the branch stack to the perf sample data, it needs to
+update the sample flags and the dynamic size.  To make sure this,
+add the perf_sample_save_brstack() helper and convert all call sites.
 
-For power10, the imc_chip_avl_vector ie, imc availability vector
-( which is a part of the IMC control block structure ), has
-change in mapping of units and bit positions. Hence rename the
-existing nest_pmus array to nest_pmus_p9 and add entry for power10
-as nest_pmus_p10.
-
-Also the avl_vector has another change in bit positions 11:34. These
-bit positions tells the availability of Xlink/Alink/CAPI. There
-are total 8 links and three bit field combination says which link
-is available. Patch implements all these change to handle
-nest_pmus_p10.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 ---
-Changelog:
-v1 -> v2:
-- Addressed review comment from Dan to update
-  the utility funtion to search and compare
-  upto "@". Renamed it as dt_find_by_name_substr.
+ arch/powerpc/perf/core-book3s.c |  3 +-
+ arch/x86/events/amd/core.c      |  6 +--
+ arch/x86/events/intel/core.c    |  6 +--
+ arch/x86/events/intel/ds.c      |  9 ++---
+ include/linux/perf_event.h      | 66 ++++++++++++++++++++-------------
+ kernel/events/core.c            | 16 +++-----
+ 6 files changed, 53 insertions(+), 53 deletions(-)
 
- hw/imc.c | 195 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 185 insertions(+), 10 deletions(-)
-
-diff --git a/hw/imc.c b/hw/imc.c
-index 805e6cc1..20bc51b4 100644
---- a/hw/imc.c
-+++ b/hw/imc.c
-@@ -49,7 +49,7 @@ static unsigned int *htm_scom_index;
-  * imc_chip_avl_vector(in struct imc_chip_cb, look at include/imc.h).
-  * nest_pmus[] is an array containing all the possible nest IMC PMU node names.
-  */
--static char const *nest_pmus[] = {
-+static char const *nest_pmus_p9[] = {
- 	"powerbus0@",
- 	"mcs0@",
- 	"mcs1@",
-@@ -104,6 +104,67 @@ static char const *nest_pmus[] = {
- 	/* reserved bits : 51 - 63 */
- };
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index bf318dd9b709..8c1f7def596e 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2313,8 +2313,7 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 			struct cpu_hw_events *cpuhw;
+ 			cpuhw = this_cpu_ptr(&cpu_hw_events);
+ 			power_pmu_bhrb_read(event, cpuhw);
+-			data.br_stack = &cpuhw->bhrb_stack;
+-			data.sample_flags |= PERF_SAMPLE_BRANCH_STACK;
++			perf_sample_save_brstack(&data, event, &cpuhw->bhrb_stack);
+ 		}
  
-+static char const *nest_pmus_p10[] = {
-+	"pb@",
-+	"mcs0@",
-+	"mcs1@",
-+	"mcs2@",
-+	"mcs3@",
-+	"mcs4@",
-+	"mcs5@",
-+	"mcs6@",
-+	"mcs7@",
-+	"pec0@",
-+	"pec1@",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"phb0@",
-+	"phb1@",
-+	"phb2@",
-+	"phb3@",
-+	"phb4@",
-+	"phb5@",
-+	"ocmb0@",
-+	"ocmb1@",
-+	"ocmb2@",
-+	"ocmb3@",
-+	"ocmb4@",
-+	"ocmb5@",
-+	"ocmb6@",
-+	"ocmb7@",
-+	"ocmb8@",
-+	"ocmb9@",
-+	"ocmb10@",
-+	"ocmb11@",
-+	"ocmb12@",
-+	"ocmb13@",
-+	"ocmb14@",
-+	"ocmb15@",
-+	"nx@",
-+};
-+
- /*
-  * Due to Nest HW/OCC restriction, microcode will not support individual unit
-  * events for these nest units mcs0, mcs1 ... mcs7 in the accumulation mode.
-@@ -371,7 +432,7 @@ static void disable_unavailable_units(struct dt_node *dev)
- 	uint64_t avl_vec;
- 	struct imc_chip_cb *cb;
- 	struct dt_node *target;
--	int i;
-+	int i, j;
- 	bool disable_all_nests = false;
- 	struct proc_chip *chip;
+ 		if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index d6f3703e4119..463f3eb8bbd7 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -928,10 +928,8 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 		if (!x86_perf_event_set_period(event))
+ 			continue;
  
-@@ -409,14 +470,128 @@ static void disable_unavailable_units(struct dt_node *dev)
- 			avl_vec = (0xffULL) << 56;
+-		if (has_branch_stack(event)) {
+-			data.br_stack = &cpuc->lbr_stack;
+-			data.sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+-		}
++		if (has_branch_stack(event))
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 29d2d0411caf..14f0a746257d 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3036,10 +3036,8 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 
+ 		perf_sample_data_init(&data, 0, event->hw.last_period);
+ 
+-		if (has_branch_stack(event)) {
+-			data.br_stack = &cpuc->lbr_stack;
+-			data.sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+-		}
++		if (has_branch_stack(event))
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 158cf845fc80..07c8a2cdc3ee 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1720,10 +1720,8 @@ static void setup_pebs_fixed_sample_data(struct perf_event *event,
+ 		data->sample_flags |= PERF_SAMPLE_TIME;
  	}
  
--	for (i = 0; i < ARRAY_SIZE(nest_pmus); i++) {
--		if (!(PPC_BITMASK(i, i) & avl_vec)) {
--			/* Check if the device node exists */
--			target = dt_find_by_name_substr(dev, nest_pmus[i]);
--			if (!target)
--				continue;
--			/* Remove the device node */
--			dt_free(target);
-+	if (proc_gen == proc_gen_p9) {
-+		for (i = 0; i < ARRAY_SIZE(nest_pmus_p9); i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p9[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+	} else if (proc_gen == proc_gen_p10) {
-+		int val;
-+		char al[8], xl[8], otl[8], phb[8];
-+		for (i = 0; i < 11; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+
-+		for (i = 35; i < 41; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists for phb */
-+				for (j = 0; j < 3; j++) {
-+					snprintf(phb, sizeof(phb), "phb%d_%d@", (i-35), j);
-+					target = dt_find_by_name_substr(dev, phb);
-+					if (!target)
-+						continue;
-+					/* Remove the device node */
-+					dt_free(target);
-+				}
-+			}
-+		}
-+
-+		for (i = 41; i < 58; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+
-+		for (i=0; i<8; i++) {
-+			val = ((avl_vec & (0x7ULL << (29 + (3 * i)))) >> (29 + (3 * i)));
-+			switch (val) {
-+			case 0x5: //xlink configured and functional
-+
-+				snprintf(al, sizeof(al), "alink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl, sizeof(otl),"otl%1d_0@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				break;
-+			case 0x6: //alink configured and functional
-+
-+				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_0@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+
-+			case 0x7: //CAPI configured and functional
-+				snprintf(al,sizeof(al),"alink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+			default:
-+				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(al,sizeof(al),"alink%1d@",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_0@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+			}
+-	if (has_branch_stack(event)) {
+-		data->br_stack = &cpuc->lbr_stack;
+-		data->sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+-	}
++	if (has_branch_stack(event))
++		perf_sample_save_brstack(data, event, &cpuc->lbr_stack);
+ }
+ 
+ static void adaptive_pebs_save_regs(struct pt_regs *regs,
+@@ -1883,8 +1881,7 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
+ 
+ 		if (has_branch_stack(event)) {
+ 			intel_pmu_store_pebs_lbrs(lbr);
+-			data->br_stack = &cpuc->lbr_stack;
+-			data->sample_flags |= PERF_SAMPLE_BRANCH_STACK;
++			perf_sample_save_brstack(data, event, &cpuc->lbr_stack);
  		}
  	}
  
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 569dfac5887f..7db0e9cc2682 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1102,6 +1102,31 @@ extern u64 perf_event_read_value(struct perf_event *event,
+ 
+ extern struct perf_callchain_entry *perf_callchain(struct perf_event *event, struct pt_regs *regs);
+ 
++static inline bool branch_sample_no_flags(const struct perf_event *event)
++{
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_FLAGS;
++}
++
++static inline bool branch_sample_no_cycles(const struct perf_event *event)
++{
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_CYCLES;
++}
++
++static inline bool branch_sample_type(const struct perf_event *event)
++{
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_TYPE_SAVE;
++}
++
++static inline bool branch_sample_hw_index(const struct perf_event *event)
++{
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX;
++}
++
++static inline bool branch_sample_priv(const struct perf_event *event)
++{
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_PRIV_SAVE;
++}
++
+ 
+ struct perf_sample_data {
+ 	/*
+@@ -1210,6 +1235,21 @@ static inline void perf_sample_save_raw_data(struct perf_sample_data *data,
+ 	data->sample_flags |= PERF_SAMPLE_RAW;
+ }
+ 
++static inline void perf_sample_save_brstack(struct perf_sample_data *data,
++					    struct perf_event *event,
++					    struct perf_branch_stack *brs)
++{
++	int size = sizeof(u64); /* nr */
++
++	if (branch_sample_hw_index(event))
++		size += sizeof(u64);
++	size += brs->nr * sizeof(struct perf_branch_entry);
++
++	data->br_stack = brs;
++	data->dyn_size += size;
++	data->sample_flags |= PERF_SAMPLE_BRANCH_STACK;
++}
++
+ /*
+  * Clear all bitfields in the perf_branch_entry.
+  * The to and from fields are not cleared because they are
+@@ -1827,30 +1867,4 @@ static inline void perf_lopwr_cb(bool mode)
+ }
+ #endif
+ 
+-#ifdef CONFIG_PERF_EVENTS
+-static inline bool branch_sample_no_flags(const struct perf_event *event)
+-{
+-	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_FLAGS;
+-}
+-
+-static inline bool branch_sample_no_cycles(const struct perf_event *event)
+-{
+-	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_CYCLES;
+-}
+-
+-static inline bool branch_sample_type(const struct perf_event *event)
+-{
+-	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_TYPE_SAVE;
+-}
+-
+-static inline bool branch_sample_hw_index(const struct perf_event *event)
+-{
+-	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX;
+-}
+-
+-static inline bool branch_sample_priv(const struct perf_event *event)
+-{
+-	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_PRIV_SAVE;
+-}
+-#endif /* CONFIG_PERF_EVENTS */
+ #endif /* _LINUX_PERF_EVENT_H */
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 133894ae5e30..0218b6ffaf36 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7317,7 +7317,7 @@ void perf_output_sample(struct perf_output_handle *handle,
+ 	}
+ 
+ 	if (sample_type & PERF_SAMPLE_BRANCH_STACK) {
+-		if (data->sample_flags & PERF_SAMPLE_BRANCH_STACK) {
++		if (data->br_stack) {
+ 			size_t size;
+ 
+ 			size = data->br_stack->nr
+@@ -7594,16 +7594,10 @@ void perf_prepare_sample(struct perf_event_header *header,
+ 		data->sample_flags |= PERF_SAMPLE_RAW;
+ 	}
+ 
+-	if (sample_type & PERF_SAMPLE_BRANCH_STACK) {
+-		int size = sizeof(u64); /* nr */
+-		if (data->sample_flags & PERF_SAMPLE_BRANCH_STACK) {
+-			if (branch_sample_hw_index(event))
+-				size += sizeof(u64);
+-
+-			size += data->br_stack->nr
+-			      * sizeof(struct perf_branch_entry);
+-		}
+-		data->dyn_size += size;
++	if (filtered_sample_type & PERF_SAMPLE_BRANCH_STACK) {
++		data->br_stack = NULL;
++		data->dyn_size += sizeof(u64);
++		data->sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+ 	}
+ 
+ 	if (sample_type & (PERF_SAMPLE_REGS_USER | PERF_SAMPLE_STACK_USER))
 -- 
-2.27.0
+2.39.0.314.g84b9a713c41-goog
 
