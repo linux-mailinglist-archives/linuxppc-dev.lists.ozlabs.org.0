@@ -2,62 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD4267292E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 21:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14D3672A7A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 22:29:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nxxwm2p8Zz3fDK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 07:21:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxzRM4bMdz3fD0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 08:29:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NSz4Cw/o;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Xdd6unAy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=der1=5p=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NSz4Cw/o;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Xdd6unAy;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxxvs1gXlz3c6l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 07:20:25 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxzQN6Zhkz303H
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 08:28:27 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8FEA361A1E;
-	Wed, 18 Jan 2023 20:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25FEC433D2;
-	Wed, 18 Jan 2023 20:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674073221;
-	bh=LkDAI9qvKi0MAfsYbidawt8PxsElByOP+Pkz5GpU4hs=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=NSz4Cw/oXByK796oD3DytxHbEDXkhaciBuZCZt45dNnN2s0gmq78/PdAZYCRdE4OX
-	 gz3dDxoeuz+mKBLy2IgkAJzI+1iylam0JeecbKRS240Cf0ullxO+c5nmor/Gr5F/2J
-	 AwkG7qLuD7L71ncK3oGIUzOw2zE0s8dM/AYkWz+TxySO8nRHHCn4ks4FvNEXWGz3Ke
-	 CgbmmOlqZ+36yexqUqvhLyyj8u4HB/KHsj1pK62QWITX6NQM0KOXlOvkBMJjzlZhyh
-	 GfW49aeeMbUgY7ivyRdrvk4iT+2EsREynM2gVCKjqYcjsU3lveJY5nkdSQlBpQRhny
-	 p/yJPNrHzo9tg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 8482B5C0920; Wed, 18 Jan 2023 12:20:20 -0800 (PST)
-Date: Wed, 18 Jan 2023 12:20:20 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B7D965C362;
+	Wed, 18 Jan 2023 21:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1674077301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SCl7LjVH2TZ3UTWu0doBlI+1Q+CKxwaOwngsxyrwCmg=;
+	b=Xdd6unAyJsHjLOy7+DmPRhcVdPMQb2LzuHEe4SAD6unAzkIb7zwG/mfbKlTagLOkn/XMH5
+	CjMQWydbF5lSHXu+I10M/SseaMjytZ6NOYdOEs9QWHQDhGLwaMJ+RpS+4str3zcAc/Prjh
+	0nJ+g+di7iE4y2oMzyVtuUfo9Dxo2x0=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 87D73139D2;
+	Wed, 18 Jan 2023 21:28:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id Z0atIHVkyGMaOAAAMHmgww
+	(envelope-from <mhocko@suse.com>); Wed, 18 Jan 2023 21:28:21 +0000
+Date: Wed, 18 Jan 2023 22:28:20 +0100
+From: Michal Hocko <mhocko@suse.com>
 To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
- vm_area_free
-Message-ID: <20230118202020.GJ2948950@paulmck-ThinkPad-P17-Gen-1>
+Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
+ control it
+Message-ID: <Y8hkdBYTXHf23huE@dhcp22.suse.cz>
 References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-40-surenb@google.com>
- <Y8bFdB47JT/luMld@dhcp22.suse.cz>
- <CAJuCfpHVYW5aBVmT0vwn+j=m=Jo2KhSTzgVtxSEusUZJdzetUA@mail.gmail.com>
- <Y8fApgKJaTs9nrPO@dhcp22.suse.cz>
- <CAJuCfpERMyQc96Z5Qn9RFK0UD7fNugZE4DujFs4xqFWM8T6EqA@mail.gmail.com>
- <20230118183447.GG2948950@paulmck-ThinkPad-P17-Gen-1>
- <CAJuCfpHZuKq45FL1gs+=rx5s2AOaZ9TPC1bdAWjYzfkrOABTOw@mail.gmail.com>
+ <20230109205336.3665937-13-surenb@google.com>
+ <CAG48ez0RhQ6=W01brLUXDXqQxz2M1FEMNqd2OvL+LhcJQY=NqA@mail.gmail.com>
+ <Y8fl8lqS4QHZO1gV@dhcp22.suse.cz>
+ <CAG48ez0dCo6KHPJrjAra=2Hm9aTm_3ERwCN3j64p3T82xNWScg@mail.gmail.com>
+ <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
+ <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJuCfpHZuKq45FL1gs+=rx5s2AOaZ9TPC1bdAWjYzfkrOABTOw@mail.gmail.com>
+In-Reply-To: <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,101 +74,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsi
- ngularity.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, Will Deacon <will@kernel.org>, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, Jann Horn <jannh@google.com>, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
+  akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 18, 2023 at 11:01:08AM -0800, Suren Baghdasaryan wrote:
-> On Wed, Jan 18, 2023 at 10:34 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+On Wed 18-01-23 09:36:44, Suren Baghdasaryan wrote:
+> On Wed, Jan 18, 2023 at 7:11 AM 'Michal Hocko' via kernel-team
+> <kernel-team@android.com> wrote:
 > >
-> > On Wed, Jan 18, 2023 at 10:04:39AM -0800, Suren Baghdasaryan wrote:
-> > > On Wed, Jan 18, 2023 at 1:49 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > >
-> > > > On Tue 17-01-23 17:19:46, Suren Baghdasaryan wrote:
-> > > > > On Tue, Jan 17, 2023 at 7:57 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > > > >
-> > > > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
-> > > > > > > call_rcu() can take a long time when callback offloading is enabled.
-> > > > > > > Its use in the vm_area_free can cause regressions in the exit path when
-> > > > > > > multiple VMAs are being freed.
-> > > > > >
-> > > > > > What kind of regressions.
-> > > > > >
-> > > > > > > To minimize that impact, place VMAs into
-> > > > > > > a list and free them in groups using one call_rcu() call per group.
-> > > > > >
-> > > > > > Please add some data to justify this additional complexity.
+> > On Wed 18-01-23 14:23:32, Jann Horn wrote:
+> > > On Wed, Jan 18, 2023 at 1:28 PM Michal Hocko <mhocko@suse.com> wrote:
+> > > > On Tue 17-01-23 19:02:55, Jann Horn wrote:
+> > > > > +locking maintainers
 > > > > >
-> > > > > Sorry, should have done that in the first place. A 4.3% regression was
-> > > > > noticed when running execl test from unixbench suite. spawn test also
-> > > > > showed 1.6% regression. Profiling revealed that vma freeing was taking
-> > > > > longer due to call_rcu() which is slow when RCU callback offloading is
-> > > > > enabled.
+> > > > > On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > > > > Introduce a per-VMA rw_semaphore to be used during page fault handling
+> > > > > > instead of mmap_lock. Because there are cases when multiple VMAs need
+> > > > > > to be exclusively locked during VMA tree modifications, instead of the
+> > > > > > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
+> > > > > > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
+> > > > > > mmap_write_lock holder is done with all modifications and drops mmap_lock,
+> > > > > > it will increment mm->lock_seq, effectively unlocking all VMAs marked as
+> > > > > > locked.
+> > > > > [...]
+> > > > > > +static inline void vma_read_unlock(struct vm_area_struct *vma)
+> > > > > > +{
+> > > > > > +       up_read(&vma->lock);
+> > > > > > +}
+> > > > >
+> > > > > One thing that might be gnarly here is that I think you might not be
+> > > > > allowed to use up_read() to fully release ownership of an object -
+> > > > > from what I remember, I think that up_read() (unlike something like
+> > > > > spin_unlock()) can access the lock object after it's already been
+> > > > > acquired by someone else.
 > > > >
-> > > > Could you be more specific? vma freeing is async with the RCU so how
-> > > > come this has resulted in a regression? Is there any heavy
-> > > > rcu_synchronize in the exec path? That would be an interesting
-> > > > information.
+> > > > Yes, I think you are right. From a look into the code it seems that
+> > > > the UAF is quite unlikely as there is a ton of work to be done between
+> > > > vma_write_lock used to prepare vma for removal and actual removal.
+> > > > That doesn't make it less of a problem though.
+> > > >
+> > > > > So if you want to protect against concurrent
+> > > > > deletion, this might have to be something like:
+> > > > >
+> > > > > rcu_read_lock(); /* keeps vma alive */
+> > > > > up_read(&vma->lock);
+> > > > > rcu_read_unlock();
+> > > > >
+> > > > > But I'm not entirely sure about that, the locking folks might know better.
+> > > >
+> > > > I am not a locking expert but to me it looks like this should work
+> > > > because the final cleanup would have to happen rcu_read_unlock.
+> > > >
+> > > > Thanks, I have completely missed this aspect of the locking when looking
+> > > > into the code.
+> > > >
+> > > > Btw. looking at this again I have fully realized how hard it is actually
+> > > > to see that vm_area_free is guaranteed to sync up with ongoing readers.
+> > > > vma manipulation functions like __adjust_vma make my head spin. Would it
+> > > > make more sense to have a rcu style synchronization point in
+> > > > vm_area_free directly before call_rcu? This would add an overhead of
+> > > > uncontended down_write of course.
 > > >
-> > > No, there is no heavy rcu_synchronize() or any other additional
-> > > synchronous load in the exit path. It's the call_rcu() which can block
-> > > the caller if CONFIG_RCU_NOCB_CPU is enabled and there are lots of
-> > > other call_rcu()'s going on in parallel. Note that call_rcu() calls
-> > > rcu_nocb_try_bypass() if CONFIG_RCU_NOCB_CPU is enabled and profiling
-> > > revealed that this function was taking multiple ms (don't recall the
-> > > actual number, sorry). Paul's explanation implied that this happens
-> > > due to contention on the locks taken in this function. For more
-> > > in-depth details I'll have to ask Paul for help :) This code is quite
-> > > complex and I don't know all the details of RCU implementation.
+> > > Something along those lines might be a good idea, but I think that
+> > > rather than synchronizing the removal, it should maybe be something
+> > > that splats (and bails out?) if it detects pending readers. If we get
+> > > to vm_area_free() on a VMA that has pending readers, we might already
+> > > be in a lot of trouble because the concurrent readers might have been
+> > > traversing page tables while we were tearing them down or fun stuff
+> > > like that.
+> > >
+> > > I think maybe Suren was already talking about something like that in
+> > > another part of this patch series but I don't remember...
 > >
-> > There are a couple of possibilities here.
-> >
-> > First, if I am remembering correctly, the time between the call_rcu()
-> > and invocation of the corresponding callback was taking multiple seconds,
-> > but that was because the kernel was built with CONFIG_LAZY_RCU=y in
-> > order to save power by batching RCU work over multiple call_rcu()
-> > invocations.  If this is causing a problem for a given call site, the
-> > shiny new call_rcu_hurry() can be used instead.  Doing this gets back
-> > to the old-school non-laziness, but can of course consume more power.
+> > This http://lkml.kernel.org/r/20230109205336.3665937-27-surenb@google.com?
 > 
-> That would not be the case because CONFIG_LAZY_RCU was not an option
-> at the time I was profiling this issue.
-> Laxy RCU would be a great option to replace this patch but
-> unfortunately it's not the default behavior, so I would still have to
-> implement this batching in case lazy RCU is not enabled.
-> 
-> > Second, there is a much shorter one-jiffy delay between the call_rcu()
-> > and the invocation of the corresponding callback in kernels built with
-> > either CONFIG_NO_HZ_FULL=y (but only on CPUs mentioned in the nohz_full
-> > or rcu_nocbs kernel boot parameters) or CONFIG_RCU_NOCB_CPU=y (but only
-> > on CPUs mentioned in the rcu_nocbs kernel boot parameters).  The purpose
-> > of this delay is to avoid lock contention, and so this delay is incurred
-> > only on CPUs that are queuing callbacks at a rate exceeding 16K/second.
-> > This is reduced to a per-jiffy limit, so on a HZ=1000 system, a CPU
-> > invoking call_rcu() at least 16 times within a given jiffy will incur
-> > the added delay.  The reason for this delay is the use of a separate
-> > ->nocb_bypass list.  As Suren says, this bypass list is used to reduce
-> > lock contention on the main ->cblist.  This is not needed in old-school
-> > kernels built without either CONFIG_NO_HZ_FULL=y or CONFIG_RCU_NOCB_CPU=y
-> > (including most datacenter kernels) because in that case the callbacks
-> > enqueued by call_rcu() are touched only by the corresponding CPU, so
-> > that there is no need for locks.
-> 
-> I believe this is the reason in my profiled case.
-> 
-> >
-> > Third, if you are instead seeing multiple milliseconds of CPU consumed by
-> > call_rcu() in the common case (for example, without the aid of interrupts,
-> > NMIs, or SMIs), please do let me know.  That sounds to me like a bug.
-> 
-> I don't think I've seen such a case.
+> Yes, I spent a lot of time ensuring that __adjust_vma locks the right
+> VMAs and that VMAs are freed or isolated under VMA write lock
+> protection to exclude any readers. If the VM_BUG_ON_VMA in the patch
+> Michal mentioned gets hit then it's a bug in my design and I'll have
+> to fix it. But please, let's not add synchronize_rcu() in the
+> vm_area_free().
 
-Whew!!!  ;-)
+Just to clarify. I didn't suggest to add synchronize_rcu into
+vm_area_free. What I really meant was synchronize_rcu like primitive to
+effectivelly synchronize with any potential pending read locker (so
+something like vma_write_lock (or whatever it is called). The point is
+that vma freeing is an event all readers should be notified about.
+This can be done explicitly for each and every vma before vm_area_free
+is called but this is just hard to review and easy to break over time.
+See my point?
 
-> Thanks for clarifications, Paul!
-
-No problem!
-
-							Thanx, Paul
+-- 
+Michal Hocko
+SUSE Labs
