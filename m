@@ -1,72 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6596715D4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 09:05:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C9267166B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 09:45:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxdcH1sLDz3fMf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 19:05:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxfTZ5GMtz3c3N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 19:45:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WcdwzEYp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NdAaTsAz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WcdwzEYp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NdAaTsAz;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxdVN3ls8z3cgm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 19:00:44 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id z1-20020a17090a66c100b00226f05b9595so1396962pjl.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 00:00:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cadyF8CD/E3oK1yfSJSphX1/cZjS+kj7x9tW6+ar6sc=;
-        b=WcdwzEYpRynxGJWgQlKjA9zr5Ugl+tLrV/aeoKmaEyWm5I+eofmuFjC8v+O5CZJC8w
-         tOZB+tAJR4+wiFQ1iaQWMCDXko5KxSau59i0CeKJSVmyvX/0i6O5Zr39SstJW0Z3rE1B
-         Fyu5ijjz/jR31RZrsNZLyh0clWoOshZNgMIiETyrsUXvb3eq/iyNx1mkClYVLAY7+64k
-         zYOIM7lzO4YVQSlFFkESwH80wBohrcEE2EqtboWnWa9tbyNk7GkZ4n+1ZHeUM7FQ71rU
-         UAR97RL8R4zHQ490YhXWXkQbBJPh185TldI1Fz1/+yE5zazmCzPESNz0kF9nXmNoebc3
-         uPoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cadyF8CD/E3oK1yfSJSphX1/cZjS+kj7x9tW6+ar6sc=;
-        b=qWcfZ3597hWjkq6k7DW5q7e7K20JI+wJ7fy2eAtaT1+f1wEPMxzE0oy04Mj5bgB8Ym
-         Scrauz5t8w2Xa1dqpr6SgS8fZpXuvhfmXZtFF4P3OTtOf8O15dkJEYS/WhIzdrastX+J
-         wf/5X3ZSuKXacwmYBqE0wHVM3Dzh7iBVTzg5uw+Z00PEa12FS/fEKaQFXv7Dd3GNze20
-         /5F93jAty7Ox3barm2NNL/XSwREzKiUxl4KqIhzwE/kp0I7EYSbA6LaUF5OUsym8t9gF
-         JwYUOytjgvcGkmN6LKy8wXZmonK5ZTNw+MnCkDdkLN9Zn21gsh7YykKr4zbJPxK9r67F
-         kp0w==
-X-Gm-Message-State: AFqh2kowic7WTU5M7sAAC+GVzH/uZPa3687SeKp29nqD2HmaDge5+CaV
-	OAZTmqxQVHGjqjIH/m1cDT0=
-X-Google-Smtp-Source: AMrXdXvru18rhSMREurCixBPKsRCor9uxoV61Ex5rHoJVQ7gmSRE7YHzcemWD4ARplQOcaVlqvp+VQ==
-X-Received: by 2002:a17:90a:3fca:b0:227:161a:6318 with SMTP id u10-20020a17090a3fca00b00227161a6318mr6162197pjm.47.1674028842208;
-        Wed, 18 Jan 2023 00:00:42 -0800 (PST)
-Received: from bobo.ibm.com (193-116-102-45.tpgi.com.au. [193.116.102.45])
-        by smtp.gmail.com with ESMTPSA id y2-20020a17090a16c200b002272616d3e1sm738462pje.40.2023.01.18.00.00.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 00:00:41 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v6 5/5] powerpc/64s/radix: combine final TLB flush and lazy tlb mm shootdown IPIs
-Date: Wed, 18 Jan 2023 18:00:11 +1000
-Message-Id: <20230118080011.2258375-6-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230118080011.2258375-1-npiggin@gmail.com>
-References: <20230118080011.2258375-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxfSb20KKz3c1p
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 19:44:14 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I7ps12027497;
+	Wed, 18 Jan 2023 08:44:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=eNrikyelN4WZouIDC0wvtOj0G/iRNAO8GtqvXj8AdDk=;
+ b=NdAaTsAz9yVtGuxRedZdSru684VAwYWAqLh370bmsV2US+3SCVBwaAThETHfNj+TdMNn
+ dEmjr8KeTJRCDkb80RUu806RAgmDJM7ZPlBYI3YbAZ369b95tCJ4xp4B2336kntUGWBb
+ oivfmmcp+aJH/OuwcOK82seE0E8tKYqY5VzwqQt/YN9CxGR5mepZ4egxJwOmfuWG4xxf
+ JYCs+q4Xtr91NG30Bfk5dc7H2iHesZT0obLG2OqewCe34eTDPcL4shTGOx8433Wj/Wff
+ I9sh8gJb55BQNG4p2DYpU6cVcu1rWP7zr3tCXi1hn3MZ2ISo59sXyvTQXa+h1yPVqlsz jA== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6a2m4hkg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 08:44:05 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30HM8lNZ004700;
+	Wed, 18 Jan 2023 08:44:03 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16n00n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 08:44:03 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30I8i1oS22151856
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Jan 2023 08:44:01 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F06F82004B;
+	Wed, 18 Jan 2023 08:44:00 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B2782004E;
+	Wed, 18 Jan 2023 08:43:59 +0000 (GMT)
+Received: from [9.43.56.135] (unknown [9.43.56.135])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Jan 2023 08:43:59 +0000 (GMT)
+Message-ID: <6fd4c038-4c13-b495-dc7b-7d8cfa7d41e4@linux.ibm.com>
+Date: Wed, 18 Jan 2023 14:13:58 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: crypto: p10-aes-gcm - Add asm markings necessary for kernel code
+Content-Language: en-US
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+References: <20230117144747.37115c52@canb.auug.org.au>
+ <Y8ZNoBSX5P0ieJ3t@gondor.apana.org.au>
+ <20230118140444.25353e67@canb.auug.org.au>
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+In-Reply-To: <20230118140444.25353e67@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VNEjVrvbKitKxcjJgX5qoyOAnxQ5kTvI
+X-Proofpoint-ORIG-GUID: VNEjVrvbKitKxcjJgX5qoyOAnxQ5kTvI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-18_03,2023-01-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ bulkscore=0 phishscore=0 clxscore=1011 spamscore=0 malwarescore=0
+ mlxlogscore=999 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301180073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,76 +95,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>, Andy Lutomirski <luto@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Danny Tsen <dtsen@linux.ibm.com>, Linux Crypto List <linux-crypto@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-** Not for merge **
+Hi Stephen,
 
-CONFIG_MMU_LAZY_TLB_SHOOTDOWN that requires IPIs to clear the "lazy tlb"
-references to an mm that is being freed. With the radix MMU, the final
-userspace exit TLB flush can be performed with IPIs, and those IPIs can
-also clear lazy tlb mm references, which mostly eliminates the final
-IPIs required by MMU_LAZY_TLB_SHOOTDOWN.
+On 18/01/23 08:34, Stephen Rothwell wrote:
+> Hi Herbert,
+>
+> On Tue, 17 Jan 2023 15:26:24 +0800 Herbert Xu <herbert@gondor.apana.org.au> wrote:
+>> On Tue, Jan 17, 2023 at 02:47:47PM +1100, Stephen Rothwell wrote:
+>>> Hi all,
+>>>
+>>> After merging the crypto tree, today's linux-next build (powerpc
+>>> pseries_le_defconfig) failed like this:
+>>>
+>>> arch/powerpc/crypto/p10_aes_gcm.o: warning: objtool: .text+0x884: unannotated intra-function call
+>>> arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0x44: unannotated intra-function call
+>>> ld: arch/powerpc/crypto/p10_aes_gcm.o: ABI version 1 is not compatible with ABI version 2 output
+>>> ld: failed to merge target specific data of file arch/powerpc/crypto/p10_aes_gcm.o
+>>>
+>>> Caused by commit
+>>>
+>>>    ca68a96c37eb ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+>>>
+>>> I have applied the following hack for today.
+>> Thanks Stephen, I'm going to update the previous fix as follows:
+> I still get:
+>
+> arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0x44: unannotated intra-function call
+>
+> from the powerpc pseries_le_defconfig build (which is otherwise ok).
 
-This does mean the final TLB flush is not done with TLBIE, which can be
-faster than IPI+TLBIEL, but we would have to do those IPIs for lazy
-shootdown so using TLBIEL should be a win.
+Warnings [1], [2], and [3] are seen with pseries_le_defconfig.
 
-The final cpumask test and possible IPIs are still needed to clean up
-some rare race cases. We could prevent those entirely (e.g., prevent new
-lazy tlb mm references if userspace has gone away, or move the final
-TLB flush later), but I'd have to see actual numbers that matter before
-adding any more complexity for it. I can't imagine it would ever be
-worthwhile.
+[1] - arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0x44: unannotated intra-function call
+[2] - arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: .text+0x2448: unannotated intra-function call
+[3] - arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: .text+0x2d68: unannotated intra-function call
 
-This takes lazy tlb mm shootdown IPI interrupts from 314 to 3 on a 144
-CPU system doing a kernel compile. It also takes care of the one
-potential problem workload which is a short-lived process with multiple
-CPU-bound threads that want to be spread to other CPUs, because the mm
-exit happens after the process is back to single-threaded.
+Given that there are no calls to _mcount, one way to address this warning, is by skipping objtool from running on arch/powerpc/crypto/aesp8-ppc.o file.
+The below diff works for me.
 
----
- arch/powerpc/mm/book3s64/radix_tlb.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 282359ab525b..f34b78cb4c7d 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -1303,7 +1303,31 @@ void radix__tlb_flush(struct mmu_gather *tlb)
- 	 * See the comment for radix in arch_exit_mmap().
- 	 */
- 	if (tlb->fullmm || tlb->need_flush_all) {
--		__flush_all_mm(mm, true);
-+		if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_SHOOTDOWN)) {
-+			/*
-+			 * Shootdown based lazy tlb mm refcounting means we
-+			 * have to IPI everyone in the mm_cpumask anyway soon
-+			 * when the mm goes away, so might as well do it as
-+			 * part of the final flush now.
-+			 *
-+			 * If lazy shootdown was improved to reduce IPIs (e.g.,
-+			 * by batching), then it may end up being better to use
-+			 * tlbies here instead.
-+			 */
-+			smp_mb(); /* see radix__flush_tlb_mm */
-+			exit_flush_lazy_tlbs(mm);
-+			_tlbiel_pid(mm->context.id, RIC_FLUSH_ALL);
+=====
+diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
+index 5b8252013abd..d00664c8d761 100644
+--- a/arch/powerpc/crypto/Makefile
++++ b/arch/powerpc/crypto/Makefile
+@@ -31,3 +31,5 @@ targets += aesp8-ppc.S ghashp8-ppc.S
+  
+  $(obj)/aesp8-ppc.S $(obj)/ghashp8-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
+         $(call if_changed,perl)
 +
-+			/*
-+			 * It should not be possible to have coprocessors still
-+			 * attached here.
-+			 */
-+			if (WARN_ON_ONCE(atomic_read(&mm->context.copros) > 0))
-+				__flush_all_mm(mm, true);
-+		} else {
-+			__flush_all_mm(mm, true);
-+		}
++OBJECT_FILES_NON_STANDARD_aesp8-ppc.o := y
+=====
+
+
+The other way to fix these warnings is by using ANNOTATE_INTRA_FUNCTION_CALL macro to indicate that the branch target is valid. And, by annotating symbols with SYM_FUNC_START_LOCAL and SYM_FUNC_END macros.
+The below diff works for me:
+
+=====
+diff --git a/arch/powerpc/crypto/aesp8-ppc.pl b/arch/powerpc/crypto/aesp8-ppc.pl
+index cdbcf6e13efc..355e0036869a 100644
+--- a/arch/powerpc/crypto/aesp8-ppc.pl
++++ b/arch/powerpc/crypto/aesp8-ppc.pl
+@@ -80,6 +80,9 @@
+  # POWER8[le]   3.96/0.72       0.74    1.1
+  # POWER8[be]   3.75/0.65       0.66    1.0
+  
++print "#include <linux/objtool.h>\n";
++print "#include <linux/linkage.h>\n";
 +
- 	} else if ( (psize = radix_get_mmu_psize(page_size)) == -1) {
- 		if (!tlb->freed_tables)
- 			radix__flush_tlb_mm(mm);
--- 
-2.37.2
+  $flavour = shift;
+  
+  if ($flavour =~ /64/) {
+@@ -185,7 +188,8 @@ Lset_encrypt_key:
+         lis             r0,0xfff0
+         mfspr           $vrsave,256
+         mtspr           256,r0
+-
++
++       ANNOTATE_INTRA_FUNCTION_CALL
+         bl              Lconsts
+         mtlr            r11
+  
+@@ -3039,7 +3043,7 @@ Lxts_enc6x_ret:
+         .long           0
+  
+  .align 5
+-_aesp8_xts_enc5x:
++SYM_FUNC_START_LOCAL(_aesp8_xts_enc5x)
+         vcipher         $out0,$out0,v24
+         vcipher         $out1,$out1,v24
+         vcipher         $out2,$out2,v24
+@@ -3121,6 +3125,7 @@ _aesp8_xts_enc5x:
+         blr
+          .long          0
+          .byte          0,12,0x14,0,0,0,0,0
++SYM_FUNC_END(_aesp8_xts_enc5x)
+  
+  .align 5
+  _aesp8_xts_decrypt6x:
+@@ -3727,7 +3732,7 @@ Lxts_dec6x_ret:
+         .long           0
+  
+  .align 5
+-_aesp8_xts_dec5x:
++SYM_FUNC_START_LOCAL(_aesp8_xts_dec5x)
+         vncipher        $out0,$out0,v24
+         vncipher        $out1,$out1,v24
+         vncipher        $out2,$out2,v24
+@@ -3809,6 +3814,7 @@ _aesp8_xts_dec5x:
+         blr
+          .long          0
+          .byte          0,12,0x14,0,0,0,0,0
++SYM_FUNC_END(_aesp8_xts_dec5x)
+  ___
+  }}     }}}
+
+=====
+
+
+Thanks,
+Sathvika
 
