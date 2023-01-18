@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC857672517
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A11D672539
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:41:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxtJD4gKgz3fB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:37:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxtNg1h4Mz3fBm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:41:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TdGBbEjT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ka6nVunr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1132; helo=mail-yw1-x1132.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TdGBbEjT;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ka6nVunr;
 	dkim-atps=neutral
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxtHJ4G0kz2yg5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:36:59 +1100 (AEDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-4a263c4ddbaso479109787b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:36:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxtMm4FNjz3bPD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:40:52 +1100 (AEDT)
+Received: by mail-yb1-xb35.google.com with SMTP id 188so39011326ybi.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:40:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7FB5EOY5hb7iPFiUX3NpId4y3troCBBuKL10fDCZ/VE=;
-        b=TdGBbEjT3c8FkCFMbizsOKUqjInchQaYeYbuYCI45A0Of4q0DsrHxcxoNeSqgTTSo/
-         1FC/lWARbpCLzdl/khoXTHfPlPOxXqsvpRF41br3KEPdLvUAbIeVyq41RkfEXu7OhDaB
-         r3V01Bf0NKaliWQ6Qu4RzuXpj1m35e7+6+JPuB6zmgeDSlv8CAWRm1JjKPnbtCO+RDpx
-         DzqUdpRuBR858L/xC0UnyaG6/ry+MRD6Lz3DVVcRbf7BUAFTrksTEHadWN6zivUozpGI
-         bsQd/3/X6dn1SwD3uVh48zwzhCCmEHpGXkuRfqSZIpkJ2RL7bUzz3De0szbAzoTNvN2x
-         4CgQ==
+        bh=O+c3praop+F4hgZx9fYsgBqwRZyACPImTP4EJ0i5h+4=;
+        b=Ka6nVunrhz4AtVb4ez9bPbZMrA+BT0HLYjQWV2A83Am/7vZHMnwaJyxrzb3BG1Ge4V
+         jClzWXorirsqV3khCBOP4ggO2Tn0WG07oU9lIclP9VHGeoB6qrpZtnGhe7bo/ttx6zDC
+         TMjP/ThYyG7YcvLasV/vCtOVTAZsP1RDT6VNGtA88feNmFKy0+OV9yXL+HJ0AxWhqfSt
+         pSmnW0q7C+E7rigeF6haineNjehNr7CNxIMAgv0g5lIonW0kqwLOFL/u5eriUgrmlkcF
+         2HtNHfIc9raNIqPYMX6fhNH4Ttqpzmn1gyvx4VhRfWtC7xh2fn/uQa3Wc5QgHD/pyLWB
+         Ygag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7FB5EOY5hb7iPFiUX3NpId4y3troCBBuKL10fDCZ/VE=;
-        b=djAsBEBfRCSz2RBcN0Tr5/Q4ZkXzRuwS2lALy9JY7NbW0xudty4783lSWMKUo/V9rs
-         qYYx7zf7sblPo67r8b1E/aBSCtyppNn6NCllwPVYG/QP8YBPJnhq9QYRIyMVzTw1GHMI
-         4Y8YpzwWUo1HmHOXNbUQB6BcaelZ5L5/+VDUvkWPiTQcXGns1qrOa8kXp2MaCenqApRC
-         HMFviz+B5iBQOfgo53ko/83D+KOvYMSagDV+b9xkAbz21WoZGmFO7WqbaNM2oVIvmNZj
-         QVEHZsiBpzKyk3UOWYVmmMMKmyE2gxHgx7bk2hAkGdJkHi+bB3faKknC8c6qohkddwAu
-         OSZQ==
-X-Gm-Message-State: AFqh2kq4XiAqCyNwVXvmsdWLBfCSnhzNRo2DkrI7Xre+Omli9d+kLgM3
-	v6D5tS8s2JGVrb4AamBORVbTzpP6UTV22l9jKHlafw==
-X-Google-Smtp-Source: AMrXdXvGlQnqWtohEVY0K40X0Qaw7x+bFnBfbHiuNEi6ba/kM3CM/pTJjhlNp36i/YWBo1WjmgiXo2A0zCb3+hfB0F0=
-X-Received: by 2002:a81:6d8d:0:b0:490:89c3:21b0 with SMTP id
- i135-20020a816d8d000000b0049089c321b0mr1021671ywc.132.1674063416448; Wed, 18
- Jan 2023 09:36:56 -0800 (PST)
+        bh=O+c3praop+F4hgZx9fYsgBqwRZyACPImTP4EJ0i5h+4=;
+        b=dKmc5tKpVzkzgo7efBl813faT9YAnHyro+p2YhchANYqbamHaW1trCuGMJOB3svP+B
+         /pPPyBwn1rsK4aK1hgRSxRSWJ/AB5Z77/Kna0c/s1PGZiivzeajGhTsy9oUU3oDB6tuk
+         J0aHJmDpyaPW7rsL5CqbGvK9KPHX9Asx5iXht2wGZRPJfrnt+O+HzbJrjW0k+FJMFD5G
+         Xxf+KV40ZLP3ldwX0c+D9wjijz/K+Sv8GZf0WyExRH+nLPr9z9UWeM1hezmVidwDqJL4
+         L/MLACIM6yNoR9WRM89NNk2tW6Misa9/nVF2e4ggL9FBdnsIq3Op/YJsCk9HcwBf9cyR
+         XyuQ==
+X-Gm-Message-State: AFqh2krCBh74EZuOM+V2G+ttEykZsKwM2e7KJB1oFVpK/PIITLs5NjGm
+	CUdBtdcyKwfpcyBcszY+0bpLV/uYMO7Z6ovthev7pw==
+X-Google-Smtp-Source: AMrXdXs1k5W3HoVGCiUVOI7jTqOyluR9eRrHzCwGnTn1al/nkArE3wLdMkVcHMHmAcyunh8GSfVeJdebmQPCKJ8WsTw=
+X-Received: by 2002:a05:6902:685:b0:7e9:646d:2da3 with SMTP id
+ i5-20020a056902068500b007e9646d2da3mr1102592ybt.340.1674063648863; Wed, 18
+ Jan 2023 09:40:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-13-surenb@google.com>
- <CAG48ez0RhQ6=W01brLUXDXqQxz2M1FEMNqd2OvL+LhcJQY=NqA@mail.gmail.com>
- <Y8fl8lqS4QHZO1gV@dhcp22.suse.cz> <CAG48ez0dCo6KHPJrjAra=2Hm9aTm_3ERwCN3j64p3T82xNWScg@mail.gmail.com>
- <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
-In-Reply-To: <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-28-surenb@google.com>
+ <CAG48ez3EAai=1ghnCMF6xcgUebQRm-u2xhwcpYsfP9=r=oVXig@mail.gmail.com>
+In-Reply-To: <CAG48ez3EAai=1ghnCMF6xcgUebQRm-u2xhwcpYsfP9=r=oVXig@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 18 Jan 2023 09:36:44 -0800
-Message-ID: <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
-Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
- control it
-To: Michal Hocko <mhocko@suse.com>
+Date: Wed, 18 Jan 2023 09:40:37 -0800
+Message-ID: <CAJuCfpETt1NHOhOzkP+pgUnNLNRq3LRRyadsc20pW+cCDLuyPg@mail.gmail.com>
+Subject: Re: [PATCH 27/41] mm/mmap: prevent pagefault handler from racing with
+ mmu_notifier registration
+To: Jann Horn <jannh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,99 +75,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, Will Deacon <will@kernel.org>, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, Jann Horn <jannh@google.com>, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
-  akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 18, 2023 at 7:11 AM 'Michal Hocko' via kernel-team
-<kernel-team@android.com> wrote:
+On Wed, Jan 18, 2023 at 4:51 AM Jann Horn <jannh@google.com> wrote:
 >
-> On Wed 18-01-23 14:23:32, Jann Horn wrote:
-> > On Wed, Jan 18, 2023 at 1:28 PM Michal Hocko <mhocko@suse.com> wrote:
-> > > On Tue 17-01-23 19:02:55, Jann Horn wrote:
-> > > > +locking maintainers
-> > > >
-> > > > On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> > > > > Introduce a per-VMA rw_semaphore to be used during page fault handling
-> > > > > instead of mmap_lock. Because there are cases when multiple VMAs need
-> > > > > to be exclusively locked during VMA tree modifications, instead of the
-> > > > > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
-> > > > > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
-> > > > > mmap_write_lock holder is done with all modifications and drops mmap_lock,
-> > > > > it will increment mm->lock_seq, effectively unlocking all VMAs marked as
-> > > > > locked.
-> > > > [...]
-> > > > > +static inline void vma_read_unlock(struct vm_area_struct *vma)
-> > > > > +{
-> > > > > +       up_read(&vma->lock);
-> > > > > +}
-> > > >
-> > > > One thing that might be gnarly here is that I think you might not be
-> > > > allowed to use up_read() to fully release ownership of an object -
-> > > > from what I remember, I think that up_read() (unlike something like
-> > > > spin_unlock()) can access the lock object after it's already been
-> > > > acquired by someone else.
-> > >
-> > > Yes, I think you are right. From a look into the code it seems that
-> > > the UAF is quite unlikely as there is a ton of work to be done between
-> > > vma_write_lock used to prepare vma for removal and actual removal.
-> > > That doesn't make it less of a problem though.
-> > >
-> > > > So if you want to protect against concurrent
-> > > > deletion, this might have to be something like:
-> > > >
-> > > > rcu_read_lock(); /* keeps vma alive */
-> > > > up_read(&vma->lock);
-> > > > rcu_read_unlock();
-> > > >
-> > > > But I'm not entirely sure about that, the locking folks might know better.
-> > >
-> > > I am not a locking expert but to me it looks like this should work
-> > > because the final cleanup would have to happen rcu_read_unlock.
-> > >
-> > > Thanks, I have completely missed this aspect of the locking when looking
-> > > into the code.
-> > >
-> > > Btw. looking at this again I have fully realized how hard it is actually
-> > > to see that vm_area_free is guaranteed to sync up with ongoing readers.
-> > > vma manipulation functions like __adjust_vma make my head spin. Would it
-> > > make more sense to have a rcu style synchronization point in
-> > > vm_area_free directly before call_rcu? This would add an overhead of
-> > > uncontended down_write of course.
+> On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> > Page fault handlers might need to fire MMU notifications while a new
+> > notifier is being registered. Modify mm_take_all_locks to write-lock all
+> > VMAs and prevent this race with fault handlers that would hold VMA locks.
+> > VMAs are locked before i_mmap_rwsem and anon_vma to keep the same
+> > locking order as in page fault handlers.
 > >
-> > Something along those lines might be a good idea, but I think that
-> > rather than synchronizing the removal, it should maybe be something
-> > that splats (and bails out?) if it detects pending readers. If we get
-> > to vm_area_free() on a VMA that has pending readers, we might already
-> > be in a lot of trouble because the concurrent readers might have been
-> > traversing page tables while we were tearing them down or fun stuff
-> > like that.
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  mm/mmap.c | 3 +++
+> >  1 file changed, 3 insertions(+)
 > >
-> > I think maybe Suren was already talking about something like that in
-> > another part of this patch series but I don't remember...
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 30c7d1c5206e..a256deca0bc0 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -3566,6 +3566,7 @@ static void vm_lock_mapping(struct mm_struct *mm, struct address_space *mapping)
+> >   * of mm/rmap.c:
+> >   *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem for
+> >   *     hugetlb mapping);
+> > + *   - all vmas marked locked
 >
-> This http://lkml.kernel.org/r/20230109205336.3665937-27-surenb@google.com?
+> The existing comment above says that this is an *ordered* listing of
+> which locks are taken.
+>
+> >   *   - all i_mmap_rwsem locks;
+> >   *   - all anon_vma->rwseml
+> >   *
+> > @@ -3591,6 +3592,7 @@ int mm_take_all_locks(struct mm_struct *mm)
+> >         mas_for_each(&mas, vma, ULONG_MAX) {
+> >                 if (signal_pending(current))
+> >                         goto out_unlock;
+> > +               vma_write_lock(vma);
+> >                 if (vma->vm_file && vma->vm_file->f_mapping &&
+> >                                 is_vm_hugetlb_page(vma))
+> >                         vm_lock_mapping(mm, vma->vm_file->f_mapping);
+>
+> Note that multiple VMAs can have the same ->f_mapping, so with this,
+> the lock ordering between VMA locks and the mapping locks of hugetlb
+> VMAs is mixed: If you have two adjacent hugetlb VMAs with the same
+> ->f_mapping, then the following operations happen:
+>
+> 1. lock VMA 1
+> 2. lock mapping of VMAs 1 and 2
+> 3. lock VMA 2
+> 4. [second vm_lock_mapping() is a no-op]
+>
+> So for VMA 1, we ended up taking the VMA lock first, but for VMA 2, we
+> took the mapping lock first.
+>
+> The existing code has one loop per lock type to ensure that the locks
+> really are taken in the specified order, even when some of the locks
+> are associated with multiple VMAs.
+>
+> If we don't care about the ordering between these two, maybe that's
+> fine and you just have to adjust the comment; but it would be clearer
+> to add a separate loop for the VMA locks.
 
-Yes, I spent a lot of time ensuring that __adjust_vma locks the right
-VMAs and that VMAs are freed or isolated under VMA write lock
-protection to exclude any readers. If the VM_BUG_ON_VMA in the patch
-Michal mentioned gets hit then it's a bug in my design and I'll have
-to fix it. But please, let's not add synchronize_rcu() in the
-vm_area_free(). That will slow down any path that frees a VMA,
-especially the exit path which might be freeing thousands of them. I
-had an SPF version with synchronize_rcu() in the vm_area_free() and
-phone vendors started yelling at me the very next day. call_rcu() with
-CONFIG_RCU_NOCB_CPU (which Android uses for power saving purposes) is
-already bad enough to show up in the benchmarks and that's why I had
-to add call_rcu() batching in
-https://lore.kernel.org/all/20230109205336.3665937-40-surenb@google.com.
+Oh, thanks for pointing out this detail. A separate loop is definitely
+needed here. Will do that in the next respin.
 
 >
-> --
-> Michal Hocko
-> SUSE Labs
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+> > @@ -3677,6 +3679,7 @@ void mm_drop_all_locks(struct mm_struct *mm)
+> >                 if (vma->vm_file && vma->vm_file->f_mapping)
+> >                         vm_unlock_mapping(vma->vm_file->f_mapping);
+> >         }
+> > +       vma_write_unlock_mm(mm);
+> >
+> >         mutex_unlock(&mm_all_locks_mutex);
+> >  }
+> > --
+> > 2.39.0
+> >
