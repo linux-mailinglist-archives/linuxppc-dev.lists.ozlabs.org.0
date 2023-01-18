@@ -1,84 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F7067134A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 06:47:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEA467134B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 06:48:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxZX60k6Pz3fDW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:47:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxZYK1f7tz303H
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:48:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=naljAFFm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KedlfqYg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=naljAFFm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KedlfqYg;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxZV04wKFz2yPY;
-	Wed, 18 Jan 2023 16:45:12 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I5g7kh022696;
-	Wed, 18 Jan 2023 05:45:05 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxZV12ly7z2yPY;
+	Wed, 18 Jan 2023 16:45:13 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I3mAiB028762;
+	Wed, 18 Jan 2023 05:45:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=Ha+KUmv4kzoRspnEOyMEiNh+Vq5271Y9trmRev8ERPA=;
- b=naljAFFm3J1xvvxDq/g3pU7BVEFFLIgzmzkO0yPwS0YFbX3RbUseRS+noIXSRrvRrCRe
- rGGmOFMReR4TIgOkFJgqpLRmRA9kE8vfQMv55vncqePrbkDTVqpwIzlDc/gS+Q4b830x
- 4sDOoeVg/5q70kzXBwZG7ujGBhFGxX5nICjPVBjTomJO849IE8JVzDk8T4i4FnqVSS38
- lvtsaM9pxruydQ3WXw4Wh7cRSxLg7+Hh/4kiNifJbySuEwFvf1sqYgKiF3I4joIJpQJb
- cjxx5kReRPukQCy9gaD5ZzneQzodL8C4yX4T3lPoT12+rrLqmLs6hY3LwH5nfXteHJCc xw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6aup01bk-1
+ bh=b7l3hsAfQ1j0pnXYoDU9lxu/pXDVNBWfHNOHBzw55Rg=;
+ b=KedlfqYg7eGUxHc53vIP+XpjSwbaZAOIHdA+OhDRupsM7Z22PoJ2bJXefiZgVFI0QjGg
+ xoQhBm3PycWQvRP8eKokEvRgXpaThs4bqAmC9oNGDylgUaqUpShjkCkCl7Cy8KW9UqCD
+ iAGKT8bFwgc+2U8ear3E74egsKawnf6bUIgaG/281sQGizTWireGaKaX96C9AAK/op0l
+ x/TPFk8hrBd3t7nHivUl0GRdbWOhckiwdJVzP3uQNRo1owYi/Lqovc9C8g/O+eFQNCtB
+ hYMvASTm/suKa/QaokIZZXzf22aQFcQvRsgY5WJ1AQC04OIQaqrQN1CMUdEq6xUxgs5k hg== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n696d9yqq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Jan 2023 05:45:05 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30HD6s0d002145;
-	Wed, 18 Jan 2023 05:45:03 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3n3m16kg19-1
+	Wed, 18 Jan 2023 05:45:06 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30HLOPve023789;
+	Wed, 18 Jan 2023 05:45:05 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16mss2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Jan 2023 05:45:02 +0000
+	Wed, 18 Jan 2023 05:45:04 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30I5ixkf22675906
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30I5j1Yk24052456
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Jan 2023 05:44:59 GMT
+	Wed, 18 Jan 2023 05:45:01 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1557220043;
+	by IMSVA (Postfix) with ESMTP id 512B42004B;
+	Wed, 18 Jan 2023 05:45:01 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B5DC20040;
 	Wed, 18 Jan 2023 05:44:59 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2672A20040;
-	Wed, 18 Jan 2023 05:44:57 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.55.224])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Jan 2023 05:44:56 +0000 (GMT)
+	Wed, 18 Jan 2023 05:44:59 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: skiboot@lists.ozlabs.org, dan@danny.cz, mpe@ellerman.id.au,
         maddy@linux.ibm.com
-Subject: [PATCH V2 2/3] skiboot: Update IMC code to use dt_find_by_name_substr for checking dt nodes
-Date: Wed, 18 Jan 2023 11:14:51 +0530
-Message-Id: <20230118054452.27242-2-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V2 3/3] skiboot: Update IMC PMU node names for power10
+Date: Wed, 18 Jan 2023 11:14:52 +0530
+Message-Id: <20230118054452.27242-3-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230118054452.27242-1-atrajeev@linux.vnet.ibm.com>
 References: <20230118054452.27242-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o9xACjxfPBgoMbw3pcu5AY4aRfKhtznQ
-X-Proofpoint-ORIG-GUID: o9xACjxfPBgoMbw3pcu5AY4aRfKhtznQ
+X-Proofpoint-GUID: Wo44wQp_VfCi_IFZ8ElGnRyfEvZQth2C
+X-Proofpoint-ORIG-GUID: Wo44wQp_VfCi_IFZ8ElGnRyfEvZQth2C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-18_01,2023-01-17_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=999 suspectscore=0
- adultscore=0 priorityscore=1501 phishscore=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301180047
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2301180047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,18 +95,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 The nest IMC (In Memory Collection) Performance Monitoring
-Unit(PMU) node names are saved in nest_pmus[] array in the
-"hw/imc.c" IMC code. Not all the IMC PMUs listed in the device
-tree may be available. Nest IMC PMU names along with their
-bit values is represented in imc availability vector.
-The nest_pmus[] array is used to remove the unavailable nodes
-by checking this vector.
+Unit(PMU) node names are saved as "struct nest_pmus_struct"
+in the "hw/imc.c" IMC code. Not all the IMC PMUs listed in
+the device tree may be available. Nest IMC PMU names along with
+their bit values is represented in imc availability vector.
+This struct is used to remove the unavailable nodes by checking
+this vector.
 
-To check node availability, code was using "dt_find_by_substr".
-But since the node names have format like: "name@offset",
-dt_find_by_name doesn't return the expected result. Fix this
-by using dt_find_by_name_substr. Also, update the char array
-to use correct node names with suffix "@"
+For power10, the imc_chip_avl_vector ie, imc availability vector
+( which is a part of the IMC control block structure ), has
+change in mapping of units and bit positions. Hence rename the
+existing nest_pmus array to nest_pmus_p9 and add entry for power10
+as nest_pmus_p10.
+
+Also the avl_vector has another change in bit positions 11:34. These
+bit positions tells the availability of Xlink/Alink/CAPI. There
+are total 8 links and three bit field combination says which link
+is available. Patch implements all these change to handle
+nest_pmus_p10.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
@@ -115,72 +121,29 @@ v1 -> v2:
 - Addressed review comment from Dan to update
   the utility funtion to search and compare
   upto "@". Renamed it as dt_find_by_name_substr.
-  Hence used existing nest_pmus char array to
-  update node names with "@" suffix
 
- hw/imc.c | 104 +++++++++++++++++++++++++++----------------------------
- 1 file changed, 52 insertions(+), 52 deletions(-)
+ hw/imc.c | 195 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 185 insertions(+), 10 deletions(-)
 
 diff --git a/hw/imc.c b/hw/imc.c
-index 97e0809f..805e6cc1 100644
+index 805e6cc1..20bc51b4 100644
 --- a/hw/imc.c
 +++ b/hw/imc.c
-@@ -50,57 +50,57 @@ static unsigned int *htm_scom_index;
+@@ -49,7 +49,7 @@ static unsigned int *htm_scom_index;
+  * imc_chip_avl_vector(in struct imc_chip_cb, look at include/imc.h).
   * nest_pmus[] is an array containing all the possible nest IMC PMU node names.
   */
- static char const *nest_pmus[] = {
--	"powerbus0",
--	"mcs0",
--	"mcs1",
--	"mcs2",
--	"mcs3",
--	"mcs4",
--	"mcs5",
--	"mcs6",
--	"mcs7",
--	"mba0",
--	"mba1",
--	"mba2",
--	"mba3",
--	"mba4",
--	"mba5",
--	"mba6",
--	"mba7",
--	"cen0",
--	"cen1",
--	"cen2",
--	"cen3",
--	"cen4",
--	"cen5",
--	"cen6",
--	"cen7",
--	"xlink0",
--	"xlink1",
--	"xlink2",
--	"mcd0",
--	"mcd1",
--	"phb0",
--	"phb1",
--	"phb2",
--	"phb3",
--	"phb4",
--	"phb5",
--	"nx",
--	"capp0",
--	"capp1",
--	"vas",
--	"int",
--	"alink0",
--	"alink1",
--	"alink2",
--	"alink3",
--	"nvlink0",
--	"nvlink1",
--	"nvlink2",
--	"nvlink3",
--	"nvlink4",
--	"nvlink5",
-+	"powerbus0@",
+-static char const *nest_pmus[] = {
++static char const *nest_pmus_p9[] = {
+ 	"powerbus0@",
+ 	"mcs0@",
+ 	"mcs1@",
+@@ -104,6 +104,67 @@ static char const *nest_pmus[] = {
+ 	/* reserved bits : 51 - 63 */
+ };
+ 
++static char const *nest_pmus_p10[] = {
++	"pb@",
 +	"mcs0@",
 +	"mcs1@",
 +	"mcs2@",
@@ -189,60 +152,206 @@ index 97e0809f..805e6cc1 100644
 +	"mcs5@",
 +	"mcs6@",
 +	"mcs7@",
-+	"mba0@",
-+	"mba1@",
-+	"mba2@",
-+	"mba3@",
-+	"mba4@",
-+	"mba5@",
-+	"mba6@",
-+	"mba7@",
-+	"centaur0@",
-+	"centaur1@",
-+	"centaur2@",
-+	"centaur3@",
-+	"centaur4@",
-+	"centaur5@",
-+	"centaur6@",
-+	"centaur7@",
-+	"xlink0@",
-+	"xlink1@",
-+	"xlink2@",
-+	"mcd0@",
-+	"mcd1@",
++	"pec0@",
++	"pec1@",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
++	"NA",
 +	"phb0@",
 +	"phb1@",
 +	"phb2@",
 +	"phb3@",
 +	"phb4@",
 +	"phb5@",
++	"ocmb0@",
++	"ocmb1@",
++	"ocmb2@",
++	"ocmb3@",
++	"ocmb4@",
++	"ocmb5@",
++	"ocmb6@",
++	"ocmb7@",
++	"ocmb8@",
++	"ocmb9@",
++	"ocmb10@",
++	"ocmb11@",
++	"ocmb12@",
++	"ocmb13@",
++	"ocmb14@",
++	"ocmb15@",
 +	"nx@",
-+	"capp0@",
-+	"capp1@",
-+	"vas@",
-+	"int@",
-+	"alink0@",
-+	"alink1@",
-+	"alink2@",
-+	"alink3@",
-+	"nvlink0@",
-+	"nvlink1@",
-+	"nvlink2@",
-+	"nvlink3@",
-+	"nvlink4@",
-+	"nvlink5@",
- 	/* reserved bits : 51 - 63 */
- };
++};
++
+ /*
+  * Due to Nest HW/OCC restriction, microcode will not support individual unit
+  * events for these nest units mcs0, mcs1 ... mcs7 in the accumulation mode.
+@@ -371,7 +432,7 @@ static void disable_unavailable_units(struct dt_node *dev)
+ 	uint64_t avl_vec;
+ 	struct imc_chip_cb *cb;
+ 	struct dt_node *target;
+-	int i;
++	int i, j;
+ 	bool disable_all_nests = false;
+ 	struct proc_chip *chip;
  
-@@ -412,7 +412,7 @@ static void disable_unavailable_units(struct dt_node *dev)
- 	for (i = 0; i < ARRAY_SIZE(nest_pmus); i++) {
- 		if (!(PPC_BITMASK(i, i) & avl_vec)) {
- 			/* Check if the device node exists */
--			target = dt_find_by_name(dev, nest_pmus[i]);
-+			target = dt_find_by_name_substr(dev, nest_pmus[i]);
- 			if (!target)
- 				continue;
- 			/* Remove the device node */
+@@ -409,14 +470,128 @@ static void disable_unavailable_units(struct dt_node *dev)
+ 			avl_vec = (0xffULL) << 56;
+ 	}
+ 
+-	for (i = 0; i < ARRAY_SIZE(nest_pmus); i++) {
+-		if (!(PPC_BITMASK(i, i) & avl_vec)) {
+-			/* Check if the device node exists */
+-			target = dt_find_by_name_substr(dev, nest_pmus[i]);
+-			if (!target)
+-				continue;
+-			/* Remove the device node */
+-			dt_free(target);
++	if (proc_gen == proc_gen_p9) {
++		for (i = 0; i < ARRAY_SIZE(nest_pmus_p9); i++) {
++			if (!(PPC_BITMASK(i, i) & avl_vec)) {
++				/* Check if the device node exists */
++				target = dt_find_by_name_substr(dev, nest_pmus_p9[i]);
++				if (!target)
++					continue;
++				/* Remove the device node */
++				dt_free(target);
++			}
++		}
++	} else if (proc_gen == proc_gen_p10) {
++		int val;
++		char al[8], xl[8], otl[8], phb[8];
++		for (i = 0; i < 11; i++) {
++			if (!(PPC_BITMASK(i, i) & avl_vec)) {
++				/* Check if the device node exists */
++				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
++				if (!target)
++					continue;
++				/* Remove the device node */
++				dt_free(target);
++			}
++		}
++
++		for (i = 35; i < 41; i++) {
++			if (!(PPC_BITMASK(i, i) & avl_vec)) {
++				/* Check if the device node exists for phb */
++				for (j = 0; j < 3; j++) {
++					snprintf(phb, sizeof(phb), "phb%d_%d@", (i-35), j);
++					target = dt_find_by_name_substr(dev, phb);
++					if (!target)
++						continue;
++					/* Remove the device node */
++					dt_free(target);
++				}
++			}
++		}
++
++		for (i = 41; i < 58; i++) {
++			if (!(PPC_BITMASK(i, i) & avl_vec)) {
++				/* Check if the device node exists */
++				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
++				if (!target)
++					continue;
++				/* Remove the device node */
++				dt_free(target);
++			}
++		}
++
++		for (i=0; i<8; i++) {
++			val = ((avl_vec & (0x7ULL << (29 + (3 * i)))) >> (29 + (3 * i)));
++			switch (val) {
++			case 0x5: //xlink configured and functional
++
++				snprintf(al, sizeof(al), "alink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, al);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl, sizeof(otl),"otl%1d_0@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++
++				break;
++			case 0x6: //alink configured and functional
++
++				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, xl);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl,sizeof(otl),"otl%1d_0@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++				break;
++
++			case 0x7: //CAPI configured and functional
++				snprintf(al,sizeof(al),"alink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, al);
++				if (target)
++					dt_free(target);
++
++				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, xl);
++				if (target)
++					dt_free(target);
++				break;
++			default:
++				snprintf(xl,sizeof(xl),"xlink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, xl);
++				if (target)
++					dt_free(target);
++
++				snprintf(al,sizeof(al),"alink%1d@",(7-i));
++				target = dt_find_by_name_substr(dev, al);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl,sizeof(otl),"otl%1d_0@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++
++				snprintf(otl,sizeof(otl),"otl%1d_1@",(7-i));
++				target = dt_find_by_name_substr(dev, otl);
++				if (target)
++					dt_free(target);
++				break;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.27.0
 
