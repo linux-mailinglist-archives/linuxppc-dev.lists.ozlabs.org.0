@@ -2,67 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C018671C92
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 13:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49919671CFA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 14:07:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxlyQ6Stcz3fCr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 23:51:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxmJQ4fl2z3cGR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 00:07:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=DhsG3zM8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KUkYvJvX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d29; helo=mail-io1-xd29.google.com; envelope-from=jannh@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=DhsG3zM8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KUkYvJvX;
 	dkim-atps=neutral
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxlxW6L00z3c4x
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 23:51:10 +1100 (AEDT)
-Received: by mail-io1-xd29.google.com with SMTP id q130so3394653iod.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 04:51:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7Rqiin9Kbad8ru/LcIchuAOUvYmmUjlYJik2JJBLXA=;
-        b=DhsG3zM8wnA8HofZfhQ4706XMhy790XGUqogcXCqHX85Tk8zZYxt5jMYu+eLJpJd0W
-         WeZPMkDrbovMJNBWiALe2hNQO8RzVtnNL439Lg2lNDDkCN2JbO2/orikCzbM4nXJ7Ric
-         pxfkouKT613poEWiZM0/S3Q0O76EFSePCk6Wx7nVSwD2fTxP6JpqrPF+F0bbjgoXhdSo
-         JRONC1h0hiGS5i3GPDsY5q0sJr2GonkT+Yc4S8N+6WB4gZtHvq+jv8OZ5eQyCbLl1GpR
-         opC+QyjARoxP8394hD2OHnWQsI8rTlz89//+DOWhBL6cmnhWRNKu2nd1HuPty+PyYUI0
-         rVjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K7Rqiin9Kbad8ru/LcIchuAOUvYmmUjlYJik2JJBLXA=;
-        b=0M3m0h7l9Z0x6FB6Qkbq9AC0JU8x/oPqPUukUqWOb7CxULGbz38LE2fkN487u/NikG
-         8kVV8L4aekxM1ci12nC4PSKtzZSfdQrgLZhYEwqwY0LngAt0uVQUP0v54Mdb73u/3vmt
-         7BrmhKN1DEo3Lq9ZlwPp+MdcOSBCfapfSsa+CphWLaWmfouupvqRfMOoGmbN4Buuoo3G
-         wFopk4lNmRzc3iKd+i+rZYyzR/nOPlU0UbPhOp9P71yM55aM04LpLxt3kmLHETK4HzfD
-         LgOTdUaAqAmVqJgB7Lj6MSRS4GxReEKdpwWRv4epevmPGdLRlCdspig4/H0oh57/1uCP
-         GDjg==
-X-Gm-Message-State: AFqh2kqlMEOz1qgqZVuSJCKhywQmddeiYv0UyT+nL05M3w6f0C59ZWUW
-	g1Hd9olOPCJPBgjAdXc044IFCtc3BQsj9Q2tL6iw7Q==
-X-Google-Smtp-Source: AMrXdXubEhuDA02ILCkh7B1Dp3y4Bt1fmHskBAwMDp3qrJV2IDmWe32RqObGG2ZP8z4nawtc1f2Tp/05rwFtfOAFxMY=
-X-Received: by 2002:a02:c884:0:b0:39e:9d33:a47 with SMTP id
- m4-20020a02c884000000b0039e9d330a47mr496380jao.58.1674046267428; Wed, 18 Jan
- 2023 04:51:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxmHR2QWNz3c8t
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 00:06:43 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30IAi0rW026699;
+	Wed, 18 Jan 2023 13:06:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=11F5W4kgtyrTauFVB8uYzAjdtt8KXsuDnaKPia2vpWo=;
+ b=KUkYvJvX2A2pgM6goO+xyYhpvQi/4jQhFk53HCLb4HwOVUtooWKsws6iay4hMHy2Zy3V
+ zuqL0Oq19URHDcaPDUUhEHzpQgJcpkiSb4elUWkUv5rmyJlvFuGXbVAhQFXfEmW6Hbqc
+ ng5CNe7bm9+YcWL4qZe2Bk+u6jctE2vFS9AJ48fGF73TdSiIflZ1j3HoBaP9h8jM23HX
+ Ia8ZaVcs8jU0PcJqx1KVTEA/LRZMUdDKamjEuoCmu3cGOICf5M7Dl/cKLkDFv+uX/cB5
+ ryq2tPH8bqkiiEVKnl+M68hpRToXcuB9bXQXUTy+vmvyeIyga8Qo2G61A6JfKYNh+5im eg== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6f91u3p1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 13:06:39 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30ICGGVG009728;
+	Wed, 18 Jan 2023 13:06:38 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3n3m17w5yd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 13:06:38 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30ID6btP61145550
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Jan 2023 13:06:37 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1921758055;
+	Wed, 18 Jan 2023 13:06:37 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E35785803F;
+	Wed, 18 Jan 2023 13:06:35 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Jan 2023 13:06:35 +0000 (GMT)
+Message-ID: <3389cf1c-e0ab-0b41-f3fc-bfe8c4054510@linux.ibm.com>
+Date: Wed, 18 Jan 2023 08:06:34 -0500
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-28-surenb@google.com>
-In-Reply-To: <20230109205336.3665937-28-surenb@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 18 Jan 2023 13:50:31 +0100
-Message-ID: <CAG48ez3EAai=1ghnCMF6xcgUebQRm-u2xhwcpYsfP9=r=oVXig@mail.gmail.com>
-Subject: Re: [PATCH 27/41] mm/mmap: prevent pagefault handler from racing with
- mmu_notifier registration
-To: Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v3 22/24] powerpc/pseries: Implement secvars for dynamic
+ secure boot
+Content-Language: en-US
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-integrity@vger.kernel.org
+References: <20230118061049.1006141-1-ajd@linux.ibm.com>
+ <20230118061049.1006141-23-ajd@linux.ibm.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230118061049.1006141-23-ajd@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 2SW6o4YXcougiWxelxHtZ_h_v2uFSdOg
+X-Proofpoint-ORIG-GUID: 2SW6o4YXcougiWxelxHtZ_h_v2uFSdOg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-18_05,2023-01-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ adultscore=0 clxscore=1011 impostorscore=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301180113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,76 +95,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: gjoyce@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, sudhakar@linux.ibm.com, bgray@linux.ibm.com, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> Page fault handlers might need to fire MMU notifications while a new
-> notifier is being registered. Modify mm_take_all_locks to write-lock all
-> VMAs and prevent this race with fault handlers that would hold VMA locks.
-> VMAs are locked before i_mmap_rwsem and anon_vma to keep the same
-> locking order as in page fault handlers.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  mm/mmap.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 30c7d1c5206e..a256deca0bc0 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -3566,6 +3566,7 @@ static void vm_lock_mapping(struct mm_struct *mm, struct address_space *mapping)
->   * of mm/rmap.c:
->   *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem for
->   *     hugetlb mapping);
-> + *   - all vmas marked locked
 
-The existing comment above says that this is an *ordered* listing of
-which locks are taken.
 
->   *   - all i_mmap_rwsem locks;
->   *   - all anon_vma->rwseml
->   *
-> @@ -3591,6 +3592,7 @@ int mm_take_all_locks(struct mm_struct *mm)
->         mas_for_each(&mas, vma, ULONG_MAX) {
->                 if (signal_pending(current))
->                         goto out_unlock;
-> +               vma_write_lock(vma);
->                 if (vma->vm_file && vma->vm_file->f_mapping &&
->                                 is_vm_hugetlb_page(vma))
->                         vm_lock_mapping(mm, vma->vm_file->f_mapping);
+On 1/18/23 01:10, Andrew Donnellan wrote:
 
-Note that multiple VMAs can have the same ->f_mapping, so with this,
-the lock ordering between VMA locks and the mapping locks of hugetlb
-VMAs is mixed: If you have two adjacent hugetlb VMAs with the same
-->f_mapping, then the following operations happen:
+> +
+> +// PLPKS dynamic secure boot doesn't give us a format string in the same way OPAL does.
+> +// Instead, report the format using the SB_VERSION variable in the keystore.
+> +static ssize_t plpks_secvar_format(char *buf)
 
-1. lock VMA 1
-2. lock mapping of VMAs 1 and 2
-3. lock VMA 2
-4. [second vm_lock_mapping() is a no-op]
+Ideally there would be a size_t accompanying this buffer...
 
-So for VMA 1, we ended up taking the VMA lock first, but for VMA 2, we
-took the mapping lock first.
+> +{
+> +	struct plpks_var var = {0};
+> +	ssize_t ret;
+> +
+> +	var.component = NULL;
+> +	// Only the signed variables have null bytes in their names, this one doesn't
+> +	var.name = "SB_VERSION";
+> +	var.namelen = 10;
+> +	var.datalen = 1;
+> +	var.data = kzalloc(1, GFP_KERNEL);
 
-The existing code has one loop per lock type to ensure that the locks
-really are taken in the specified order, even when some of the locks
-are associated with multiple VMAs.
+NULL pointer check?
 
-If we don't care about the ordering between these two, maybe that's
-fine and you just have to adjust the comment; but it would be clearer
-to add a separate loop for the VMA locks.
-
-> @@ -3677,6 +3679,7 @@ void mm_drop_all_locks(struct mm_struct *mm)
->                 if (vma->vm_file && vma->vm_file->f_mapping)
->                         vm_unlock_mapping(vma->vm_file->f_mapping);
->         }
-> +       vma_write_unlock_mm(mm);
->
->         mutex_unlock(&mm_all_locks_mutex);
->  }
-> --
-> 2.39.0
->
+> +
+> +	// Unlike the other vars, SB_VERSION is owned by firmware instead of the OS
+> +	ret = plpks_read_fw_var(&var);
+> +	if (ret) {
+> +		if (ret == -ENOENT) {
+> +			ret = snprintf(buf, SECVAR_MAX_FORMAT_LEN, "ibm,plpks-sb-unknown");
+> +		} else {
+> +			pr_err("Error %ld reading SB_VERSION from firmware\n", ret);
+> +			ret = -EIO;
+> +		}
+> +		goto err;
+> +	}
+> +
+> +	// This string is made up by us - the hypervisor doesn't provide us
+> +	// with a format string in the way that OPAL firmware does. Hypervisor
+> +	// defines SB_VERSION as a "1 byte unsigned integer value".
+> +	ret = snprintf(buf, SECVAR_MAX_FORMAT_LEN, "ibm,plpks-sb-v%hhu", var.data[0]);
+> +
+> +err:
+> +	kfree(var.data);
+> +	return ret;
+> +}
+> +
