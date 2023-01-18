@@ -1,58 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1986727CB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 20:04:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7286727DB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 20:07:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxwDg6lRvz3fGD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 06:04:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxwHT51yRz3fPY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 06:07:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ejwY3+LK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.41; helo=mail-ot1-f41.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ejwY3+LK;
+	dkim-atps=neutral
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxw6g5ckZz3fC0;
-	Thu, 19 Jan 2023 05:59:39 +1100 (AEDT)
-Received: by mail-ot1-f41.google.com with SMTP id f88-20020a9d03e1000000b00684c4041ff1so10494422otf.8;
-        Wed, 18 Jan 2023 10:59:39 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxw8j29JCz3fJX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 06:01:24 +1100 (AEDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-4e9adf3673aso145331347b3.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 11:01:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8DSKYHJgJYKJvmPul/jqy2wXXzLUlUgLi7Tkf9YlXU=;
+        b=ejwY3+LKtxm5x3E+GJzfTUchB7m+L1YRon9Aa8Q50Ti4tQZzVZ6M7ddAXR8QuYX2/+
+         QbFt7G90bRjsGKuh+F1lDNIo0H7p5+Ztjzb+JsV1kzQB8MPN72CITN8khcfMdZzVCClr
+         0rfR86j8uR9XfP3lcG3CmwEZq8gGCNYy4GMw9BXNuo+B0XfUKFLgpaKByDGEKF5m5ob0
+         nAirCQpTYQiGnADXyL4rHN55X+6T7+KDx4Lknv/dk8Nf1obhK0VCQYfoZive5NaouN9J
+         rWZ8CpiuCsm5NmaCNzdlzyweXpQ+VQ7Pr9lxoMOtqkqySGFLw02OuYspEMabUBJR88+S
+         njvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l/w7cp6YVGNbkVTPnnS6fPAfMJMQm9O9TtAZyHYNnBw=;
-        b=OjBR6AFSj1uy7Z/DGrPE6viH5XtIcZ/uCr0bTlU1UBRPWp1+a5HJNTLs+kfcGyaEZp
-         Ikz2kPgiqqffgqx+YfAjvfB5ZV1lsG9Lvq9EYnBznTyjCDYO5NsyHpnrpBaul+zdmiFw
-         ZLrfE69Lk6hjxaUiWBvDUS0djz4g1kIKruBYMTuY6bsbpU8Gv51Qy/8bswgEb9k1ixms
-         vQwRCC0XSUjv8hKecEO6xS7Sefqp4o8m5intdQA3PbfgL7NoalnIlydC0L7SbbbpyU5A
-         OA8I1zbn2xdfrtDySOEfARmHfXxVWVCXd3Cl231KQkogBqeEXgbNC8RA2Y5mUiZ8I0/G
-         +6Mw==
-X-Gm-Message-State: AFqh2kp4d0UX3owgDxQvnWkyjrWxby6xpi6eqkWuzWsSRR1sOmURGY11
-	cMcnEy3ClE6q7PkyzDAwSQ==
-X-Google-Smtp-Source: AMrXdXte0bYZFLFpbx1SB+TuluJMNIGkayFObGKl8ktRZeTlQi80dYuVH04jQYvzqTsrgPgipC8SMg==
-X-Received: by 2002:a9d:196:0:b0:66e:c736:ef9a with SMTP id e22-20020a9d0196000000b0066ec736ef9amr3720906ote.1.1674068377180;
-        Wed, 18 Jan 2023 10:59:37 -0800 (PST)
-Received: from robh_at_kernel.org ([4.31.143.193])
-        by smtp.gmail.com with ESMTPSA id e18-20020a9d6e12000000b00684c5211c58sm10143809otr.60.2023.01.18.10.59.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 10:59:36 -0800 (PST)
-Received: (nullmailer pid 629752 invoked by uid 1000);
-	Wed, 18 Jan 2023 18:59:29 -0000
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 18 Jan 2023 12:59:26 -0600
-Subject: [PATCH v2 4/5] dt-bindings: usb: Convert Marvell Orion EHCI to DT
- schema
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z8DSKYHJgJYKJvmPul/jqy2wXXzLUlUgLi7Tkf9YlXU=;
+        b=PHGrc/YBf3jZbvkDOuVDLnEq0laB9R8MN6wAKIYYFMFa2QuVWBiHOu+vOWDto5G4xP
+         0Yc2JsC6lz5OqX1E+6UHDfeDandBYxdKgoYKyCS+y9v4VfPS4wa4fxyZVKnR3PPo0XO7
+         QAf6v7pxL6rKvmtRt/qeO5qXTqVUnZxdLUCrZe8rDOgNLyZ/YTQ4SKF7oYRFOkpptZiw
+         KtsSID8AjEs7D4SRcTuqvW5B5n2XtNsyJjYAUYPl3bgib6ddaRA5F8U9YTlcPsHdXCEv
+         D6UykyLttxkMZTpVBIRCAsUrTfmZ8erya5zl3/A+E7BieW1Q20MRQQgDrCY+agXqxhIZ
+         +zzQ==
+X-Gm-Message-State: AFqh2kp6O1P6O9LV9hs4eS6I+pF414A8znAfYl4Ro0IeVZXmOKJBE2V3
+	wXA8xyRFf3/q0P2ck3MDWjqgrM2T5HGs0RG9AbxaIw==
+X-Google-Smtp-Source: AMrXdXubzcxtFjj0yWcsl/wowi8G0fcdGwos3LuYoWDDm/OjCNfgTh+Wjt7geFYZ2EGxVPVcRjYpoDeL03CkmRv1g5o=
+X-Received: by 2002:a81:6d8d:0:b0:490:89c3:21b0 with SMTP id
+ i135-20020a816d8d000000b0049089c321b0mr1053073ywc.132.1674068480621; Wed, 18
+ Jan 2023 11:01:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230110-dt-usb-v2-4-926bc1260e51@kernel.org>
-References: <20230110-dt-usb-v2-0-926bc1260e51@kernel.org>
-In-Reply-To: <20230110-dt-usb-v2-0-926bc1260e51@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Lee Jones <lee@kernel.org>
-X-Mailer: b4 0.12-dev
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-40-surenb@google.com>
+ <Y8bFdB47JT/luMld@dhcp22.suse.cz> <CAJuCfpHVYW5aBVmT0vwn+j=m=Jo2KhSTzgVtxSEusUZJdzetUA@mail.gmail.com>
+ <Y8fApgKJaTs9nrPO@dhcp22.suse.cz> <CAJuCfpERMyQc96Z5Qn9RFK0UD7fNugZE4DujFs4xqFWM8T6EqA@mail.gmail.com>
+ <20230118183447.GG2948950@paulmck-ThinkPad-P17-Gen-1>
+In-Reply-To: <20230118183447.GG2948950@paulmck-ThinkPad-P17-Gen-1>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 18 Jan 2023 11:01:08 -0800
+Message-ID: <CAJuCfpHZuKq45FL1gs+=rx5s2AOaZ9TPC1bdAWjYzfkrOABTOw@mail.gmail.com>
+Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
+To: paulmck@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,61 +76,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsi
+ ngularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Marvell Orion EHCI binding is just some compatible strings, so add it
-to the generic-ehci.yaml schema.
+On Wed, Jan 18, 2023 at 10:34 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+>
+> On Wed, Jan 18, 2023 at 10:04:39AM -0800, Suren Baghdasaryan wrote:
+> > On Wed, Jan 18, 2023 at 1:49 AM Michal Hocko <mhocko@suse.com> wrote:
+> > >
+> > > On Tue 17-01-23 17:19:46, Suren Baghdasaryan wrote:
+> > > > On Tue, Jan 17, 2023 at 7:57 AM Michal Hocko <mhocko@suse.com> wrote:
+> > > > >
+> > > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
+> > > > > > call_rcu() can take a long time when callback offloading is enabled.
+> > > > > > Its use in the vm_area_free can cause regressions in the exit path when
+> > > > > > multiple VMAs are being freed.
+> > > > >
+> > > > > What kind of regressions.
+> > > > >
+> > > > > > To minimize that impact, place VMAs into
+> > > > > > a list and free them in groups using one call_rcu() call per group.
+> > > > >
+> > > > > Please add some data to justify this additional complexity.
+> > > >
+> > > > Sorry, should have done that in the first place. A 4.3% regression was
+> > > > noticed when running execl test from unixbench suite. spawn test also
+> > > > showed 1.6% regression. Profiling revealed that vma freeing was taking
+> > > > longer due to call_rcu() which is slow when RCU callback offloading is
+> > > > enabled.
+> > >
+> > > Could you be more specific? vma freeing is async with the RCU so how
+> > > come this has resulted in a regression? Is there any heavy
+> > > rcu_synchronize in the exec path? That would be an interesting
+> > > information.
+> >
+> > No, there is no heavy rcu_synchronize() or any other additional
+> > synchronous load in the exit path. It's the call_rcu() which can block
+> > the caller if CONFIG_RCU_NOCB_CPU is enabled and there are lots of
+> > other call_rcu()'s going on in parallel. Note that call_rcu() calls
+> > rcu_nocb_try_bypass() if CONFIG_RCU_NOCB_CPU is enabled and profiling
+> > revealed that this function was taking multiple ms (don't recall the
+> > actual number, sorry). Paul's explanation implied that this happens
+> > due to contention on the locks taken in this function. For more
+> > in-depth details I'll have to ask Paul for help :) This code is quite
+> > complex and I don't know all the details of RCU implementation.
+>
+> There are a couple of possibilities here.
+>
+> First, if I am remembering correctly, the time between the call_rcu()
+> and invocation of the corresponding callback was taking multiple seconds,
+> but that was because the kernel was built with CONFIG_LAZY_RCU=y in
+> order to save power by batching RCU work over multiple call_rcu()
+> invocations.  If this is causing a problem for a given call site, the
+> shiny new call_rcu_hurry() can be used instead.  Doing this gets back
+> to the old-school non-laziness, but can of course consume more power.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- .../devicetree/bindings/usb/ehci-orion.txt         | 22 ----------------------
- .../devicetree/bindings/usb/generic-ehci.yaml      |  2 ++
- 2 files changed, 2 insertions(+), 22 deletions(-)
+That would not be the case because CONFIG_LAZY_RCU was not an option
+at the time I was profiling this issue.
+Laxy RCU would be a great option to replace this patch but
+unfortunately it's not the default behavior, so I would still have to
+implement this batching in case lazy RCU is not enabled.
 
-diff --git a/Documentation/devicetree/bindings/usb/ehci-orion.txt b/Documentation/devicetree/bindings/usb/ehci-orion.txt
-deleted file mode 100644
-index 2855bae79fda..000000000000
---- a/Documentation/devicetree/bindings/usb/ehci-orion.txt
-+++ /dev/null
-@@ -1,22 +0,0 @@
--* EHCI controller, Orion Marvell variants
--
--Required properties:
--- compatible: must be one of the following
--	"marvell,orion-ehci"
--	"marvell,armada-3700-ehci"
--- reg: physical base address of the controller and length of memory mapped
--  region.
--- interrupts: The EHCI interrupt
--
--Optional properties:
--- clocks: reference to the clock
--- phys: reference to the USB PHY
--- phy-names: name of the USB PHY, should be "usb"
--
--Example:
--
--	ehci@50000 {
--		compatible = "marvell,orion-ehci";
--		reg = <0x50000 0x1000>;
--		interrupts = <19>;
--	};
-diff --git a/Documentation/devicetree/bindings/usb/generic-ehci.yaml b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-index 2d382ae424da..ebbb01b39a92 100644
---- a/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-+++ b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-@@ -74,6 +74,8 @@ properties:
-           - const: usb-ehci
-       - enum:
-           - generic-ehci
-+          - marvell,armada-3700-ehci
-+          - marvell,orion-ehci
-           - ti,ehci-omap
-           - usb-ehci
- 
+>
+> Second, there is a much shorter one-jiffy delay between the call_rcu()
+> and the invocation of the corresponding callback in kernels built with
+> either CONFIG_NO_HZ_FULL=y (but only on CPUs mentioned in the nohz_full
+> or rcu_nocbs kernel boot parameters) or CONFIG_RCU_NOCB_CPU=y (but only
+> on CPUs mentioned in the rcu_nocbs kernel boot parameters).  The purpose
+> of this delay is to avoid lock contention, and so this delay is incurred
+> only on CPUs that are queuing callbacks at a rate exceeding 16K/second.
+> This is reduced to a per-jiffy limit, so on a HZ=1000 system, a CPU
+> invoking call_rcu() at least 16 times within a given jiffy will incur
+> the added delay.  The reason for this delay is the use of a separate
+> ->nocb_bypass list.  As Suren says, this bypass list is used to reduce
+> lock contention on the main ->cblist.  This is not needed in old-school
+> kernels built without either CONFIG_NO_HZ_FULL=y or CONFIG_RCU_NOCB_CPU=y
+> (including most datacenter kernels) because in that case the callbacks
+> enqueued by call_rcu() are touched only by the corresponding CPU, so
+> that there is no need for locks.
 
--- 
-2.39.0
+I believe this is the reason in my profiled case.
 
+>
+> Third, if you are instead seeing multiple milliseconds of CPU consumed by
+> call_rcu() in the common case (for example, without the aid of interrupts,
+> NMIs, or SMIs), please do let me know.  That sounds to me like a bug.
+
+I don't think I've seen such a case.
+Thanks for clarifications, Paul!
+
+>
+> Or have I lost track of some other slow case?
+>
+>                                                         Thanx, Paul
