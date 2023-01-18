@@ -1,68 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14D3672A7A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 22:29:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0101672A8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 22:34:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxzRM4bMdz3fD0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 08:29:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxzXr5pTrz3fDs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 08:34:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Xdd6unAy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RAx0+izB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Xdd6unAy;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RAx0+izB;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxzQN6Zhkz303H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 08:28:27 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B7D965C362;
-	Wed, 18 Jan 2023 21:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1674077301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SCl7LjVH2TZ3UTWu0doBlI+1Q+CKxwaOwngsxyrwCmg=;
-	b=Xdd6unAyJsHjLOy7+DmPRhcVdPMQb2LzuHEe4SAD6unAzkIb7zwG/mfbKlTagLOkn/XMH5
-	CjMQWydbF5lSHXu+I10M/SseaMjytZ6NOYdOEs9QWHQDhGLwaMJ+RpS+4str3zcAc/Prjh
-	0nJ+g+di7iE4y2oMzyVtuUfo9Dxo2x0=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 87D73139D2;
-	Wed, 18 Jan 2023 21:28:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id Z0atIHVkyGMaOAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Wed, 18 Jan 2023 21:28:21 +0000
-Date: Wed, 18 Jan 2023 22:28:20 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
- control it
-Message-ID: <Y8hkdBYTXHf23huE@dhcp22.suse.cz>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-13-surenb@google.com>
- <CAG48ez0RhQ6=W01brLUXDXqQxz2M1FEMNqd2OvL+LhcJQY=NqA@mail.gmail.com>
- <Y8fl8lqS4QHZO1gV@dhcp22.suse.cz>
- <CAG48ez0dCo6KHPJrjAra=2Hm9aTm_3ERwCN3j64p3T82xNWScg@mail.gmail.com>
- <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
- <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxzWv2szkz2ypJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 08:33:14 +1100 (AEDT)
+Received: by mail-yb1-xb35.google.com with SMTP id c124so93153ybb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 13:33:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rP4CDQ2rpOjfvUbagwjxVJ0xf2zruAnQYoFEPU2Sx3k=;
+        b=RAx0+izBCRm2tPZzHrzNMeV6yl1INYuQtaInBJs+HEtFcs9ehbV3S57t4xI2FGTk+o
+         Nm9+7LQuQzUFxnOvZC8XTpJcvBMXvxHgbvLSMwDNq6KfnZedW5E1uac49w7t6LTr2JyH
+         za5erQrgnDyQhV4bXkLC5t7GA3lhS35zYsHEzZ6hD7VQ4zGiiG8DMoreMn8dGQSWx8tN
+         LZwhO7xQgIjmuygrUt/h3Fz7Q19IjE0pPjnWpyUU+o0RAeR0mlrSp9HDF5JXpKsyPDiV
+         /YVKORU/Rlqff/8XrR965fSIgplok91JlbkLjIlq7fqhvwA/DSwWlGpreXn6844JvC7p
+         5KdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rP4CDQ2rpOjfvUbagwjxVJ0xf2zruAnQYoFEPU2Sx3k=;
+        b=7aCmm/iSNWcekKFYmsh+xZg7bf6hQzvGx6IjetKFAOPihQT9sGvQ5XoRzqASZ2fi2Q
+         A7jTZkvSN7xf81NXFKEE5t8d3NR3tb17c8LI3KNTVjM6XeDbx2rNCFlWe5uXqykh/GsR
+         XHlJfWSGXFAQWxJvPkR98kkCwhCLcbyV8DeiRO50tXLb/dDOt7h9W3nZ0emnSeAYIpdl
+         TjIyLNk4oSkGVAkulPBaS+Qc8CQ1DLkOam+WHLGeJO47b5UYOMsCNktGDt2fAJoYTm9Q
+         2j/MaDqCQ/hb0drmN4Y6/73q2H2PWMikz7iN1BkvojZQEUwyN1fLaxYZKFuvBXH15hV9
+         NyQA==
+X-Gm-Message-State: AFqh2krPrUZFHpYgPz054CtwXDDXXYmeb46M4CmY1voRNNgnoUNbs6Ab
+	G/HQWkSThnSxQqNxaOLYPHmD7wBuOCa6wFki3OiHvg==
+X-Google-Smtp-Source: AMrXdXts0kmfZrhZ7FxbKkRKglCXXMtc+rHyBRTuF6TCj2lVfRNxrsSD1Xcm2xLH+Hr72eVJepI/lUb8MxAVQx4Rs4E=
+X-Received: by 2002:a05:6902:11cd:b0:7d6:c4f6:b4ea with SMTP id
+ n13-20020a05690211cd00b007d6c4f6b4eamr901759ybu.59.1674077591451; Wed, 18 Jan
+ 2023 13:33:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-29-surenb@google.com>
+ <Y8bDAVC/aiL9tCyz@dhcp22.suse.cz> <CAJuCfpHRRsUMNHp2H3UiB4EZbe9CXTVcAC+oOR1dscENjp1Jbw@mail.gmail.com>
+ <Y8ddI7vcKw8oecsr@casper.infradead.org>
+In-Reply-To: <Y8ddI7vcKw8oecsr@casper.infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 18 Jan 2023 13:33:00 -0800
+Message-ID: <CAJuCfpGOmTO_HbCLZ1CytAGpbNgqe5PF2Q-G83T32H9hnmzGgA@mail.gmail.com>
+Subject: Re: [PATCH 28/41] mm: introduce lock_vma_under_rcu to be used from
+ arch-specific code
+To: Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,97 +76,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, Will Deacon <will@kernel.org>, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, Jann Horn <jannh@google.com>, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
-  akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsin
+ gularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 18-01-23 09:36:44, Suren Baghdasaryan wrote:
-> On Wed, Jan 18, 2023 at 7:11 AM 'Michal Hocko' via kernel-team
-> <kernel-team@android.com> wrote:
-> >
-> > On Wed 18-01-23 14:23:32, Jann Horn wrote:
-> > > On Wed, Jan 18, 2023 at 1:28 PM Michal Hocko <mhocko@suse.com> wrote:
-> > > > On Tue 17-01-23 19:02:55, Jann Horn wrote:
-> > > > > +locking maintainers
-> > > > >
-> > > > > On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> > > > > > Introduce a per-VMA rw_semaphore to be used during page fault handling
-> > > > > > instead of mmap_lock. Because there are cases when multiple VMAs need
-> > > > > > to be exclusively locked during VMA tree modifications, instead of the
-> > > > > > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
-> > > > > > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
-> > > > > > mmap_write_lock holder is done with all modifications and drops mmap_lock,
-> > > > > > it will increment mm->lock_seq, effectively unlocking all VMAs marked as
-> > > > > > locked.
-> > > > > [...]
-> > > > > > +static inline void vma_read_unlock(struct vm_area_struct *vma)
-> > > > > > +{
-> > > > > > +       up_read(&vma->lock);
-> > > > > > +}
-> > > > >
-> > > > > One thing that might be gnarly here is that I think you might not be
-> > > > > allowed to use up_read() to fully release ownership of an object -
-> > > > > from what I remember, I think that up_read() (unlike something like
-> > > > > spin_unlock()) can access the lock object after it's already been
-> > > > > acquired by someone else.
-> > > >
-> > > > Yes, I think you are right. From a look into the code it seems that
-> > > > the UAF is quite unlikely as there is a ton of work to be done between
-> > > > vma_write_lock used to prepare vma for removal and actual removal.
-> > > > That doesn't make it less of a problem though.
-> > > >
-> > > > > So if you want to protect against concurrent
-> > > > > deletion, this might have to be something like:
-> > > > >
-> > > > > rcu_read_lock(); /* keeps vma alive */
-> > > > > up_read(&vma->lock);
-> > > > > rcu_read_unlock();
-> > > > >
-> > > > > But I'm not entirely sure about that, the locking folks might know better.
-> > > >
-> > > > I am not a locking expert but to me it looks like this should work
-> > > > because the final cleanup would have to happen rcu_read_unlock.
-> > > >
-> > > > Thanks, I have completely missed this aspect of the locking when looking
-> > > > into the code.
-> > > >
-> > > > Btw. looking at this again I have fully realized how hard it is actually
-> > > > to see that vm_area_free is guaranteed to sync up with ongoing readers.
-> > > > vma manipulation functions like __adjust_vma make my head spin. Would it
-> > > > make more sense to have a rcu style synchronization point in
-> > > > vm_area_free directly before call_rcu? This would add an overhead of
-> > > > uncontended down_write of course.
+On Tue, Jan 17, 2023 at 6:44 PM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Tue, Jan 17, 2023 at 05:06:57PM -0800, Suren Baghdasaryan wrote:
+> > On Tue, Jan 17, 2023 at 7:47 AM Michal Hocko <mhocko@suse.com> wrote:
 > > >
-> > > Something along those lines might be a good idea, but I think that
-> > > rather than synchronizing the removal, it should maybe be something
-> > > that splats (and bails out?) if it detects pending readers. If we get
-> > > to vm_area_free() on a VMA that has pending readers, we might already
-> > > be in a lot of trouble because the concurrent readers might have been
-> > > traversing page tables while we were tearing them down or fun stuff
-> > > like that.
+> > > On Mon 09-01-23 12:53:23, Suren Baghdasaryan wrote:
+> > > > Introduce lock_vma_under_rcu function to lookup and lock a VMA during
+> > > > page fault handling. When VMA is not found, can't be locked or changes
+> > > > after being locked, the function returns NULL. The lookup is performed
+> > > > under RCU protection to prevent the found VMA from being destroyed before
+> > > > the VMA lock is acquired. VMA lock statistics are updated according to
+> > > > the results.
+> > > > For now only anonymous VMAs can be searched this way. In other cases the
+> > > > function returns NULL.
 > > >
-> > > I think maybe Suren was already talking about something like that in
-> > > another part of this patch series but I don't remember...
+> > > Could you describe why only anonymous vmas are handled at this stage and
+> > > what (roughly) has to be done to support other vmas? lock_vma_under_rcu
+> > > doesn't seem to have any anonymous vma specific requirements AFAICS.
 > >
-> > This http://lkml.kernel.org/r/20230109205336.3665937-27-surenb@google.com?
-> 
-> Yes, I spent a lot of time ensuring that __adjust_vma locks the right
-> VMAs and that VMAs are freed or isolated under VMA write lock
-> protection to exclude any readers. If the VM_BUG_ON_VMA in the patch
-> Michal mentioned gets hit then it's a bug in my design and I'll have
-> to fix it. But please, let's not add synchronize_rcu() in the
-> vm_area_free().
+> > TBH I haven't spent too much time looking into file-backed page faults
+> > yet but a couple of tasks I can think of are:
+> > - Ensure that all vma->vm_ops->fault() handlers do not rely on
+> > mmap_lock being read-locked;
+>
+> I think this way lies madness.  There are just too many device drivers
+> that implement ->fault.  My plan is to call the ->map_pages() method
+> under RCU without even read-locking the VMA.  If that doesn't satisfy
+> the fault, then drop all the way back to taking the mmap_sem for read
+> before calling into ->fault.
 
-Just to clarify. I didn't suggest to add synchronize_rcu into
-vm_area_free. What I really meant was synchronize_rcu like primitive to
-effectivelly synchronize with any potential pending read locker (so
-something like vma_write_lock (or whatever it is called). The point is
-that vma freeing is an event all readers should be notified about.
-This can be done explicitly for each and every vma before vm_area_free
-is called but this is just hard to review and easy to break over time.
-See my point?
+Sounds reasonable to me but I guess the devil is in the details...
 
--- 
-Michal Hocko
-SUSE Labs
+>
