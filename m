@@ -1,75 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073796724FA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:31:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC857672517
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:37:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nxt9447G2z3fGC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:31:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxtJD4gKgz3fB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:37:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=KHKCIU14;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TdGBbEjT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::e2b; helo=mail-vs1-xe2b.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1132; helo=mail-yw1-x1132.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=KHKCIU14;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TdGBbEjT;
 	dkim-atps=neutral
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxt8630tTz3fB0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:30:45 +1100 (AEDT)
-Received: by mail-vs1-xe2b.google.com with SMTP id t10so25914208vsr.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:30:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxtHJ4G0kz2yg5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:36:59 +1100 (AEDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-4a263c4ddbaso479109787b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:36:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
+        d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=45VTI8G2wI4nS2eH3K9pAMjugnugZ8TVFHXhCaZ9BN4=;
-        b=KHKCIU14OK3pQZodreyf7cATu0CnBQ6Qp/eyFOrDD7AtFbqgOhemxuzdFJljGaeQVx
-         fFRqwtRDmL31BGjxA2umkxBS2bzIUxJXG7wccQXsOU1uKFkErI9PWKf3gKBRSCN1cRFu
-         fZ7h59H1HqHCAQh4z6y/0HqZ7cCPYHBKbh2DM=
+        bh=7FB5EOY5hb7iPFiUX3NpId4y3troCBBuKL10fDCZ/VE=;
+        b=TdGBbEjT3c8FkCFMbizsOKUqjInchQaYeYbuYCI45A0Of4q0DsrHxcxoNeSqgTTSo/
+         1FC/lWARbpCLzdl/khoXTHfPlPOxXqsvpRF41br3KEPdLvUAbIeVyq41RkfEXu7OhDaB
+         r3V01Bf0NKaliWQ6Qu4RzuXpj1m35e7+6+JPuB6zmgeDSlv8CAWRm1JjKPnbtCO+RDpx
+         DzqUdpRuBR858L/xC0UnyaG6/ry+MRD6Lz3DVVcRbf7BUAFTrksTEHadWN6zivUozpGI
+         bsQd/3/X6dn1SwD3uVh48zwzhCCmEHpGXkuRfqSZIpkJ2RL7bUzz3De0szbAzoTNvN2x
+         4CgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=45VTI8G2wI4nS2eH3K9pAMjugnugZ8TVFHXhCaZ9BN4=;
-        b=BuEb2yw0BKNxh6uZm7HoM2TiJCx5A3KcTf450Udm6xVcqh71EIt17xvl9QcIzFKbXF
-         hwkLnvpkkT19ySvRixd7kYmVqKe8e1I+0By3NTw41NQtiT9SVxs/J0TU1yNiFP+qCciz
-         P23RoyRNEdh9dkSj4LbX2HBqg0uaxsGvelUGkHkjq3OX1THBqgSwn/ORvRjUfeudJ3Kj
-         mkP5PaugPIfNuoNpU6Y7x8A0f78165GdgRcizpjU6cSkNsJsna6ubRTDvphYIS2L51Qm
-         yUFxB/ZhArG6JQe+7TsRfs+jkVTlxrF6lSnpix9b9jj7EOTZbiBo+3vy1Jqt1O8/NI1J
-         4YwQ==
-X-Gm-Message-State: AFqh2kpqor91IHaFbosydUIp3j3DyVR1i5Q4FLo7tC+UrB+w6s3JXD87
-	AfL0FeNpdSGSn/W05h//tBJJRUAwGPDtTY44
-X-Google-Smtp-Source: AMrXdXvtWCxycqFIrRfcpJ7mEKD7xqWmEeebFIykYnylQapBP8xlN/TtkEwJHnkTTbDukoXEBXcJGw==
-X-Received: by 2002:a05:6102:e93:b0:3d0:fad4:867e with SMTP id l19-20020a0561020e9300b003d0fad4867emr5839199vst.23.1674063039599;
-        Wed, 18 Jan 2023 09:30:39 -0800 (PST)
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com. [209.85.222.178])
-        by smtp.gmail.com with ESMTPSA id t2-20020a37ea02000000b006fb9bbb071fsm22554021qkj.29.2023.01.18.09.30.39
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 09:30:39 -0800 (PST)
-Received: by mail-qk1-f178.google.com with SMTP id l1so18338366qkg.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:30:39 -0800 (PST)
-X-Received: by 2002:ae9:efd8:0:b0:706:e593:2598 with SMTP id
- d207-20020ae9efd8000000b00706e5932598mr50927qkg.216.1674063038833; Wed, 18
- Jan 2023 09:30:38 -0800 (PST)
+        bh=7FB5EOY5hb7iPFiUX3NpId4y3troCBBuKL10fDCZ/VE=;
+        b=djAsBEBfRCSz2RBcN0Tr5/Q4ZkXzRuwS2lALy9JY7NbW0xudty4783lSWMKUo/V9rs
+         qYYx7zf7sblPo67r8b1E/aBSCtyppNn6NCllwPVYG/QP8YBPJnhq9QYRIyMVzTw1GHMI
+         4Y8YpzwWUo1HmHOXNbUQB6BcaelZ5L5/+VDUvkWPiTQcXGns1qrOa8kXp2MaCenqApRC
+         HMFviz+B5iBQOfgo53ko/83D+KOvYMSagDV+b9xkAbz21WoZGmFO7WqbaNM2oVIvmNZj
+         QVEHZsiBpzKyk3UOWYVmmMMKmyE2gxHgx7bk2hAkGdJkHi+bB3faKknC8c6qohkddwAu
+         OSZQ==
+X-Gm-Message-State: AFqh2kq4XiAqCyNwVXvmsdWLBfCSnhzNRo2DkrI7Xre+Omli9d+kLgM3
+	v6D5tS8s2JGVrb4AamBORVbTzpP6UTV22l9jKHlafw==
+X-Google-Smtp-Source: AMrXdXvGlQnqWtohEVY0K40X0Qaw7x+bFnBfbHiuNEi6ba/kM3CM/pTJjhlNp36i/YWBo1WjmgiXo2A0zCb3+hfB0F0=
+X-Received: by 2002:a81:6d8d:0:b0:490:89c3:21b0 with SMTP id
+ i135-20020a816d8d000000b0049089c321b0mr1021671ywc.132.1674063416448; Wed, 18
+ Jan 2023 09:36:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20230118080011.2258375-1-npiggin@gmail.com> <20230118080011.2258375-5-npiggin@gmail.com>
-In-Reply-To: <20230118080011.2258375-5-npiggin@gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 18 Jan 2023 09:30:22 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiLaY7K6N4VF=wgS+AVsFi298fMA3Tx6rzbbP7xT+1Dqg@mail.gmail.com>
-Message-ID: <CAHk-=wiLaY7K6N4VF=wgS+AVsFi298fMA3Tx6rzbbP7xT+1Dqg@mail.gmail.com>
-Subject: Re: [PATCH v6 4/5] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
-To: Nicholas Piggin <npiggin@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-13-surenb@google.com>
+ <CAG48ez0RhQ6=W01brLUXDXqQxz2M1FEMNqd2OvL+LhcJQY=NqA@mail.gmail.com>
+ <Y8fl8lqS4QHZO1gV@dhcp22.suse.cz> <CAG48ez0dCo6KHPJrjAra=2Hm9aTm_3ERwCN3j64p3T82xNWScg@mail.gmail.com>
+ <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
+In-Reply-To: <Y8gMISwBLVNLhsAq@dhcp22.suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 18 Jan 2023 09:36:44 -0800
+Message-ID: <CAJuCfpGGU9TpL62EzwUCjsUy0frmR33Nyk5BQiN=AiQUkiq7yg@mail.gmail.com>
+Subject: Re: [PATCH 12/41] mm: add per-VMA lock and helper functions to
+ control it
+To: Michal Hocko <mhocko@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,55 +77,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, Will Deacon <will@kernel.org>, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, Jann Horn <jannh@google.com>, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
+  akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Adding a few more x86 and arm64 maintainers - while linux-arch is
-the right mailing list, I'm not convinced people actually follow it
-all that closely ]
-
-On Wed, Jan 18, 2023 at 12:00 AM Nicholas Piggin <npiggin@gmail.com> wrote:
+On Wed, Jan 18, 2023 at 7:11 AM 'Michal Hocko' via kernel-team
+<kernel-team@android.com> wrote:
 >
-> On a 16-socket 192-core POWER8 system, a context switching benchmark
-> with as many software threads as CPUs (so each switch will go in and
-> out of idle), upstream can achieve a rate of about 1 million context
-> switches per second, due to contention on the mm refcount.
+> On Wed 18-01-23 14:23:32, Jann Horn wrote:
+> > On Wed, Jan 18, 2023 at 1:28 PM Michal Hocko <mhocko@suse.com> wrote:
+> > > On Tue 17-01-23 19:02:55, Jann Horn wrote:
+> > > > +locking maintainers
+> > > >
+> > > > On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > > > Introduce a per-VMA rw_semaphore to be used during page fault handling
+> > > > > instead of mmap_lock. Because there are cases when multiple VMAs need
+> > > > > to be exclusively locked during VMA tree modifications, instead of the
+> > > > > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
+> > > > > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
+> > > > > mmap_write_lock holder is done with all modifications and drops mmap_lock,
+> > > > > it will increment mm->lock_seq, effectively unlocking all VMAs marked as
+> > > > > locked.
+> > > > [...]
+> > > > > +static inline void vma_read_unlock(struct vm_area_struct *vma)
+> > > > > +{
+> > > > > +       up_read(&vma->lock);
+> > > > > +}
+> > > >
+> > > > One thing that might be gnarly here is that I think you might not be
+> > > > allowed to use up_read() to fully release ownership of an object -
+> > > > from what I remember, I think that up_read() (unlike something like
+> > > > spin_unlock()) can access the lock object after it's already been
+> > > > acquired by someone else.
+> > >
+> > > Yes, I think you are right. From a look into the code it seems that
+> > > the UAF is quite unlikely as there is a ton of work to be done between
+> > > vma_write_lock used to prepare vma for removal and actual removal.
+> > > That doesn't make it less of a problem though.
+> > >
+> > > > So if you want to protect against concurrent
+> > > > deletion, this might have to be something like:
+> > > >
+> > > > rcu_read_lock(); /* keeps vma alive */
+> > > > up_read(&vma->lock);
+> > > > rcu_read_unlock();
+> > > >
+> > > > But I'm not entirely sure about that, the locking folks might know better.
+> > >
+> > > I am not a locking expert but to me it looks like this should work
+> > > because the final cleanup would have to happen rcu_read_unlock.
+> > >
+> > > Thanks, I have completely missed this aspect of the locking when looking
+> > > into the code.
+> > >
+> > > Btw. looking at this again I have fully realized how hard it is actually
+> > > to see that vm_area_free is guaranteed to sync up with ongoing readers.
+> > > vma manipulation functions like __adjust_vma make my head spin. Would it
+> > > make more sense to have a rcu style synchronization point in
+> > > vm_area_free directly before call_rcu? This would add an overhead of
+> > > uncontended down_write of course.
+> >
+> > Something along those lines might be a good idea, but I think that
+> > rather than synchronizing the removal, it should maybe be something
+> > that splats (and bails out?) if it detects pending readers. If we get
+> > to vm_area_free() on a VMA that has pending readers, we might already
+> > be in a lot of trouble because the concurrent readers might have been
+> > traversing page tables while we were tearing them down or fun stuff
+> > like that.
+> >
+> > I think maybe Suren was already talking about something like that in
+> > another part of this patch series but I don't remember...
 >
-> 64s meets the prerequisites for CONFIG_MMU_LAZY_TLB_SHOOTDOWN, so enable
-> the option. This increases the above benchmark to 118 million context
-> switches per second.
+> This http://lkml.kernel.org/r/20230109205336.3665937-27-surenb@google.com?
 
-Well, the 1M -> 118M change does seem like a good reason for this series.
+Yes, I spent a lot of time ensuring that __adjust_vma locks the right
+VMAs and that VMAs are freed or isolated under VMA write lock
+protection to exclude any readers. If the VM_BUG_ON_VMA in the patch
+Michal mentioned gets hit then it's a bug in my design and I'll have
+to fix it. But please, let's not add synchronize_rcu() in the
+vm_area_free(). That will slow down any path that frees a VMA,
+especially the exit path which might be freeing thousands of them. I
+had an SPF version with synchronize_rcu() in the vm_area_free() and
+phone vendors started yelling at me the very next day. call_rcu() with
+CONFIG_RCU_NOCB_CPU (which Android uses for power saving purposes) is
+already bad enough to show up in the benchmarks and that's why I had
+to add call_rcu() batching in
+https://lore.kernel.org/all/20230109205336.3665937-40-surenb@google.com.
 
-The patches certainly don't look offensive to me, so Ack as far as I'm
-concerned, but honestly, it's been some time since I've personally
-been active on the idle and lazy TLB code, so that ack is probably
-largely worthless.
-
-If anything, my main reaction to this all is to wonder whether the
-config option is a good idea - maybe we could do this unconditionally,
-and make the source code (and logic) simpler to follow when you don't
-have to worry about the CONFIG_MMU_LAZY_TLB_REFCOUNT option.
-
-I wouldn't be surprised to hear that x86 can have the same issue where
-the mm_struct refcount is a bigger issue than the possibility of an
-extra TLB shootdown at the final exit time.
-
-But having the config options as a way to switch people over gradually
-(and perhaps then removing it later) doesn't sound wrong to me either.
-
-And I personally find the argument in patch 3/5 fairly convincing:
-
-  Shootdown IPIs cost could be an issue, but they have not been observed
-  to be a serious problem with this scheme, because short-lived processes
-  tend not to migrate CPUs much, therefore they don't get much chance to
-  leave lazy tlb mm references on remote CPUs.
-
-Andy? PeterZ? Catalin?
-
-Nick - it might be good to link to the actual benchmark, and let
-people who have access to big machines perhaps just try it out on
-non-powerpc platforms...
-
-                   Linus
+>
+> --
+> Michal Hocko
+> SUSE Labs
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
