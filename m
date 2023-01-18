@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467B567114D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 03:46:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC18671179
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 04:05:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxVWY0dGkz3c8t
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 13:46:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxVxr4vZBz3c7k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 14:05:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=LgtkpNzs;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=rxpofKDt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=LgtkpNzs;
-	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxVVZ6M1Gz3bfK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 13:45:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MGpdnLSCsy4iJTcYeMqTf0hkShjXgJaZl556rybxYcc=; b=LgtkpNzsFyaJdmFoM4zFTvjFAt
-	Ao0YdH63TZt9RuzJ6Jp2atj9NKcViphPYwdS+B9R56VTZ6LdgTBITlFfMh6TzB/XcRGNXjsOOtgu6
-	aIPuxzOdZSS0yVjg747/T0PwNU+0/508fiqbDMy2yO/t7mf0IfznrHag7q8RjS5XJVA4VMfqYuwl0
-	ulHk6RyXVZHBP8284w9PmU5Ys9jP5MaL1tYqADfmpXKvKQXHiR+iAXVdGRcYnzrfwH8PupJzp9apk
-	+hGZy6biK6xGQhULog6BkfaGpEdf2xnt5Y/7Oy5OU1xCO7Ns1R6g+Y5KfUc2AdfpOCbogT6bTwOeC
-	bnYjNyHg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pHyRY-00AHX7-0B; Wed, 18 Jan 2023 02:44:52 +0000
-Date: Wed, 18 Jan 2023 02:44:51 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 28/41] mm: introduce lock_vma_under_rcu to be used from
- arch-specific code
-Message-ID: <Y8ddI7vcKw8oecsr@casper.infradead.org>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-29-surenb@google.com>
- <Y8bDAVC/aiL9tCyz@dhcp22.suse.cz>
- <CAJuCfpHRRsUMNHp2H3UiB4EZbe9CXTVcAC+oOR1dscENjp1Jbw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxVwx2T5Vz3c6l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 14:04:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=rxpofKDt;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NxVwt4lM1z4wgq;
+	Wed, 18 Jan 2023 14:04:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1674011087;
+	bh=M3BcInVBdGIb/eB5yTCtLvBO8sYnUT7vEAWHpGvU/p8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rxpofKDtHQGO3VvuGcfmLroaX6kR+MQdUAci0CxVCxv2W9IhvCgSmZt3wSyLQmRNg
+	 A8FVyjsDa7yc7mx/6AZqzOAwvxzpqCxaY6S3M2YpIobT0NzyCFfRCq+q/RS0mLTbzM
+	 4o4lxrV44qlzjG6XudBb2iqgF0CGxRTOnNIbAxXh7OuyKYYw2vtLKUpijZjbd6VDde
+	 vA8ol94I8/pG9Rw/gZdfzq+86VIPOLOsDdKbWtJlPWb3OhWFucOVlqyhh6pJR5DeWa
+	 ENcrhYql/DiGenJsUvPgwYvHsb+zV6u3vk/pvt5Y/P0IhQkZr3MXoDlxXG8zPzZdZ9
+	 yfJw0tlxL6cBA==
+Date: Wed, 18 Jan 2023 14:04:44 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: crypto: p10-aes-gcm - Add asm markings necessary for kernel
+ code
+Message-ID: <20230118140444.25353e67@canb.auug.org.au>
+In-Reply-To: <Y8ZNoBSX5P0ieJ3t@gondor.apana.org.au>
+References: <20230117144747.37115c52@canb.auug.org.au>
+	<Y8ZNoBSX5P0ieJ3t@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpHRRsUMNHp2H3UiB4EZbe9CXTVcAC+oOR1dscENjp1Jbw@mail.gmail.com>
+Content-Type: multipart/signed; boundary="Sig_/d5q8/40ndh9awWN2bgWdQ/3";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,36 +60,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsin
- gularity.net
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Danny Tsen <dtsen@linux.ibm.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Crypto List <linux-crypto@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 17, 2023 at 05:06:57PM -0800, Suren Baghdasaryan wrote:
-> On Tue, Jan 17, 2023 at 7:47 AM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> > On Mon 09-01-23 12:53:23, Suren Baghdasaryan wrote:
-> > > Introduce lock_vma_under_rcu function to lookup and lock a VMA during
-> > > page fault handling. When VMA is not found, can't be locked or changes
-> > > after being locked, the function returns NULL. The lookup is performed
-> > > under RCU protection to prevent the found VMA from being destroyed before
-> > > the VMA lock is acquired. VMA lock statistics are updated according to
-> > > the results.
-> > > For now only anonymous VMAs can be searched this way. In other cases the
-> > > function returns NULL.
-> >
-> > Could you describe why only anonymous vmas are handled at this stage and
-> > what (roughly) has to be done to support other vmas? lock_vma_under_rcu
-> > doesn't seem to have any anonymous vma specific requirements AFAICS.
-> 
-> TBH I haven't spent too much time looking into file-backed page faults
-> yet but a couple of tasks I can think of are:
-> - Ensure that all vma->vm_ops->fault() handlers do not rely on
-> mmap_lock being read-locked;
+--Sig_/d5q8/40ndh9awWN2bgWdQ/3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I think this way lies madness.  There are just too many device drivers
-that implement ->fault.  My plan is to call the ->map_pages() method
-under RCU without even read-locking the VMA.  If that doesn't satisfy
-the fault, then drop all the way back to taking the mmap_sem for read
-before calling into ->fault.
+Hi Herbert,
 
+On Tue, 17 Jan 2023 15:26:24 +0800 Herbert Xu <herbert@gondor.apana.org.au>=
+ wrote:
+>
+> On Tue, Jan 17, 2023 at 02:47:47PM +1100, Stephen Rothwell wrote:
+> > Hi all,
+> >=20
+> > After merging the crypto tree, today's linux-next build (powerpc
+> > pseries_le_defconfig) failed like this:
+> >=20
+> > arch/powerpc/crypto/p10_aes_gcm.o: warning: objtool: .text+0x884: unann=
+otated intra-function call
+> > arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_k=
+ey+0x44: unannotated intra-function call
+> > ld: arch/powerpc/crypto/p10_aes_gcm.o: ABI version 1 is not compatible =
+with ABI version 2 output
+> > ld: failed to merge target specific data of file arch/powerpc/crypto/p1=
+0_aes_gcm.o
+> >=20
+> > Caused by commit
+> >=20
+> >   ca68a96c37eb ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched =
+implementation")
+> >=20
+> > I have applied the following hack for today. =20
+>=20
+> Thanks Stephen, I'm going to update the previous fix as follows:
+
+I still get:
+
+arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0=
+x44: unannotated intra-function call
+
+from the powerpc pseries_le_defconfig build (which is otherwise ok).
+
+Now I also get (from a powerpc allyesconfig build):
+
+tmp/cc8g6b4E.s: Assembler messages:
+tmp/cc8g6b4E.s: Error: .size expression for gcm_init_p8 does not evaluate t=
+o a constant
+tmp/cc8g6b4E.s: Error: .size expression for .gcm_init_p8 does not evaluate =
+to a constant
+tmp/cc8g6b4E.s: Error: .size expression for gcm_init_htable does not evalua=
+te to a constant
+tmp/cc8g6b4E.s: Error: .size expression for .gcm_init_htable does not evalu=
+ate to a constant
+tmp/cc8g6b4E.s: Error: .size expression for gcm_gmult_p8 does not evaluate =
+to a constant
+tmp/cc8g6b4E.s: Error: .size expression for .gcm_gmult_p8 does not evaluate=
+ to a constant
+tmp/cc8g6b4E.s: Error: .size expression for gcm_ghash_p8 does not evaluate =
+to a constant
+tmp/cc8g6b4E.s: Error: .size expression for .gcm_ghash_p8 does not evaluate=
+ to a constant
+make[4]: *** [next/scripts/Makefile.build:374: arch/powerpc/crypto/ghashp8-=
+ppc.o] Error 1
+tmp/ccNrBtc1.s: Assembler messages:
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_set_encrypt_key does not=
+ evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_set_encrypt_key does no=
+t evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_set_decrypt_key does not=
+ evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_set_decrypt_key does no=
+t evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_encrypt does not evaluat=
+e to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_encrypt does not evalua=
+te to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_decrypt does not evaluat=
+e to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_decrypt does not evalua=
+te to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_cbc_encrypt does not eva=
+luate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_cbc_encrypt does not ev=
+aluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_ctr32_encrypt_blocks doe=
+s not evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_ctr32_encrypt_blocks do=
+es not evaluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_xts_encrypt does not eva=
+luate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_xts_encrypt does not ev=
+aluate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for aes_p8_xts_decrypt does not eva=
+luate to a constant
+tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_xts_decrypt does not ev=
+aluate to a constant
+make[4]: *** [next/scripts/Makefile.build:374: arch/powerpc/crypto/aesp8-pp=
+c.o] Error 1
+make[4]: Target 'arch/powerpc/crypto/' not remade because of errors.
+
+$ grep gcm_init_p8 arch/powerpc/crypto/ghashp8-ppc.s
+.align 2 ; .type gcm_init_p8,@function; .globl gcm_init_p8; gcm_init_p8:
+.size gcm_init_p8,.-.gcm_init_p8
+.size .gcm_init_p8,.-.gcm_init_p8
+
+I have just marked CRYPTO_P10_AES_GCM as BROKEN for today.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/d5q8/40ndh9awWN2bgWdQ/3
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPHYcwACgkQAVBC80lX
+0GziiAf/a7dQVij/7kJX36npVT5mYMIuyE334Zgbza3Gmd4KG//ah30gYZvin/7L
+tfdBgix0zKknGuSJATGs3vVxJUM5CahLwTYyN7XXO1JKuSTZ38Mo7aKMb7GA6leU
+4vhULq53kfckA4A7b49buAzXZVY/0uWM4csvbtto6Fp8oC6MHoBtpgm/7JHFFiUj
+WNir3nwi3J2OCu1emMBfF1Vna38FT+nZWU5z8nklS7oojuEm+JW26A3KRgjIdg5R
+oiU7IiOT0qYKd8WQfap74qkLaGxAd1ZIGIdMvpUks3iS3p9K/HiGXc8nKqRVXhyd
+hkIMeiBJVIAD9XEsx47ucLaP0acAPA==
+=wJm4
+-----END PGP SIGNATURE-----
+
+--Sig_/d5q8/40ndh9awWN2bgWdQ/3--
