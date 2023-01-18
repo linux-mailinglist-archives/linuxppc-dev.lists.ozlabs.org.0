@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34121672205
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771A867220D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:50:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nxqvb0cWGz3fDS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:49:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nxqwb2djqz3fN2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:50:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kUt88PFk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LbsikhVg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=andrzej.hajda@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kUt88PFk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LbsikhVg;
 	dkim-atps=neutral
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxqpm2p90z3fBW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 02:45:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nxqps44kyz3fCD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 02:45:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674056736; x=1705592736;
+  t=1674056741; x=1705592741;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=r4W7l/3g2FF9m+Bbn+8NEkNQ+AUW9MsI1xwl1GBeVcA=;
-  b=kUt88PFkfsOJ3giMyl1qJ69QOXxX8r8xqbhHBG5+LCcHDLHdA1Az/UOB
-   OvGB8c9tJVQzXLI7norMldebbnRo5829I91RzWm300IXr84AtYmTc/xO1
-   pSLfeZlYoWnxeep//m3gNvJoZs5IYdC0jbCVX8o/SVFlWvaDCJJzSidk8
-   GhYQ6QUGV462c3a6pB1c/UUGAA+KxURlkN4cjm5yEyrSWRiM88mZ4Mt5w
-   xUu4skEXgxpVlD+QQPaegoo/0C3TyRkS4Ob164OvzgbA4tTm1u+LI1J69
-   +ScGwodxNqwOoamfhhoD+KlrCT9cEoeJHbQfvXngPNDSfalV8zekXpPYB
+  bh=6s3fA2jhqnAHgwbfGrKCZDIy07cNkborYz0vvTXb80k=;
+  b=LbsikhVgJ+c11P7JXsJkhdslgrUQqtpj3Mr8ZKL6WWkGD7uTW03wNjv+
+   +yANOcvRAjaCw7u3t7tn+TEo6oyFd25GSmxo3ACQrhieMYiEnJdje2i1F
+   l+7NkbtxjAIctUlv5s1A2pUkBHu3754/AaHl4l1JhBubYFFpoSvuvj0c7
+   F9X4/JFLDTKxSsB9IY33W11emxXlYu+0jPYJuVOKr5AIreJxINgTAZpG+
+   o/Jui0QRa8cn7XwOsPghFwyQW9JQh2qoDIYW5ZbRibzBqiG00MQCq8MGA
+   lJ20tCGg19DzoL2mpjbefQDBEYykkNIIRCi0kpz5WjQ8QzyuxqSf8jWm+
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="322701362"
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="322701422"
 X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="322701362"
+   d="scan'208";a="322701422"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:45:35 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="661759365"
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:45:40 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="661759384"
 X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="661759365"
+   d="scan'208";a="661759384"
 Received: from lab-ah.igk.intel.com ([10.102.42.211])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:45:30 -0800
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:45:35 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 To: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ To: linux-alpha@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	intel-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH v5 5/7] io_uring: use __xchg if possible
-Date: Wed, 18 Jan 2023 16:44:48 +0100
-Message-Id: <20230118154450.73842-5-andrzej.hajda@intel.com>
+Subject: [PATCH v5 6/7] qed: use __xchg if possible
+Date: Wed, 18 Jan 2023 16:44:49 +0100
+Message-Id: <20230118154450.73842-6-andrzej.hajda@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230118154450.73842-1-andrzej.hajda@intel.com>
 References: <20230118153529.57695-1-andrzej.hajda@intel.com>
@@ -93,66 +93,67 @@ Recently introduced helper simplifies the code.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- io_uring/io_uring.c | 7 ++-----
- io_uring/slist.h    | 6 ++----
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ include/linux/qed/qed_chain.h | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 2ac1cd8d23ea62..2b46a692d69022 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -54,6 +54,7 @@
- #include <linux/fdtable.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
+diff --git a/include/linux/qed/qed_chain.h b/include/linux/qed/qed_chain.h
+index a84063492c71ae..6355d558cf01b2 100644
+--- a/include/linux/qed/qed_chain.h
++++ b/include/linux/qed/qed_chain.h
+@@ -11,6 +11,7 @@
+ #include <asm/byteorder.h>
+ #include <linux/kernel.h>
+ #include <linux/list.h>
 +#include <linux/non-atomic/xchg.h>
- #include <linux/percpu.h>
+ #include <linux/sizes.h>
  #include <linux/slab.h>
- #include <linux/bvec.h>
-@@ -1095,8 +1096,6 @@ static void __io_req_find_next_prep(struct io_kiocb *req)
- 
- static inline struct io_kiocb *io_req_find_next(struct io_kiocb *req)
+ #include <linux/qed/common_hsi.h>
+@@ -368,7 +369,7 @@ static inline void qed_chain_return_produced(struct qed_chain *p_chain)
+  */
+ static inline void *qed_chain_produce(struct qed_chain *p_chain)
  {
--	struct io_kiocb *nxt;
+-	void *p_ret = NULL, *p_prod_idx, *p_prod_page_idx;
++	void *p_prod_idx, *p_prod_page_idx;
+ 
+ 	if (is_chain_u16(p_chain)) {
+ 		if ((p_chain->u.chain16.prod_idx &
+@@ -390,11 +391,8 @@ static inline void *qed_chain_produce(struct qed_chain *p_chain)
+ 		p_chain->u.chain32.prod_idx++;
+ 	}
+ 
+-	p_ret = p_chain->p_prod_elem;
+-	p_chain->p_prod_elem = (void *)(((u8 *)p_chain->p_prod_elem) +
+-					p_chain->elem_size);
 -
- 	/*
- 	 * If LINK is set, we have dependent requests in this chain. If we
- 	 * didn't fail this request, queue the first one up, moving any other
-@@ -1105,9 +1104,7 @@ static inline struct io_kiocb *io_req_find_next(struct io_kiocb *req)
- 	 */
- 	if (unlikely(req->flags & IO_DISARM_MASK))
- 		__io_req_find_next_prep(req);
--	nxt = req->link;
--	req->link = NULL;
--	return nxt;
-+	return __xchg(&req->link, NULL);
+-	return p_ret;
++	return __xchg(&p_chain->p_prod_elem,
++		      (u8 *)p_chain->p_prod_elem + p_chain->elem_size);
  }
  
- static void ctx_flush_and_put(struct io_ring_ctx *ctx, bool *locked)
-diff --git a/io_uring/slist.h b/io_uring/slist.h
-index f27601fa46607b..d3a743a1adc626 100644
---- a/io_uring/slist.h
-+++ b/io_uring/slist.h
-@@ -2,6 +2,7 @@
- #define INTERNAL_IO_SLIST_H
- 
- #include <linux/io_uring_types.h>
-+#include <linux/non-atomic/xchg.h>
- 
- #define wq_list_for_each(pos, prv, head)			\
- 	for (pos = (head)->first, prv = NULL; pos; prv = pos, pos = (pos)->next)
-@@ -121,10 +122,7 @@ static inline void wq_list_del(struct io_wq_work_list *list,
- static inline
- struct io_wq_work_node *wq_stack_extract(struct io_wq_work_node *stack)
+ /**
+@@ -439,7 +437,7 @@ static inline void qed_chain_recycle_consumed(struct qed_chain *p_chain)
+  */
+ static inline void *qed_chain_consume(struct qed_chain *p_chain)
  {
--	struct io_wq_work_node *node = stack->next;
+-	void *p_ret = NULL, *p_cons_idx, *p_cons_page_idx;
++	void *p_cons_idx, *p_cons_page_idx;
+ 
+ 	if (is_chain_u16(p_chain)) {
+ 		if ((p_chain->u.chain16.cons_idx &
+@@ -461,11 +459,8 @@ static inline void *qed_chain_consume(struct qed_chain *p_chain)
+ 		p_chain->u.chain32.cons_idx++;
+ 	}
+ 
+-	p_ret = p_chain->p_cons_elem;
+-	p_chain->p_cons_elem = (void *)(((u8 *)p_chain->p_cons_elem) +
+-					p_chain->elem_size);
 -
--	stack->next = node->next;
--	return node;
-+	return __xchg(&stack->next, stack->next->next);
+-	return p_ret;
++	return __xchg(&p_chain->p_cons_elem,
++		      (u8 *)p_chain->p_cons_elem + p_chain->elem_size);
  }
  
- static inline struct io_wq_work *wq_next_work(struct io_wq_work *work)
+ /**
 -- 
 2.34.1
 
