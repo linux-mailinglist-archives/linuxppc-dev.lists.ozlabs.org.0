@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC18671179
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 04:05:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD37671349
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 06:46:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxVxr4vZBz3c7k
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 14:05:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxZVv0w38z3fBP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 16:45:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=rxpofKDt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FRvjhkC1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxVwx2T5Vz3c6l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 14:04:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=rxpofKDt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FRvjhkC1;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NxVwt4lM1z4wgq;
-	Wed, 18 Jan 2023 14:04:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1674011087;
-	bh=M3BcInVBdGIb/eB5yTCtLvBO8sYnUT7vEAWHpGvU/p8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rxpofKDtHQGO3VvuGcfmLroaX6kR+MQdUAci0CxVCxv2W9IhvCgSmZt3wSyLQmRNg
-	 A8FVyjsDa7yc7mx/6AZqzOAwvxzpqCxaY6S3M2YpIobT0NzyCFfRCq+q/RS0mLTbzM
-	 4o4lxrV44qlzjG6XudBb2iqgF0CGxRTOnNIbAxXh7OuyKYYw2vtLKUpijZjbd6VDde
-	 vA8ol94I8/pG9Rw/gZdfzq+86VIPOLOsDdKbWtJlPWb3OhWFucOVlqyhh6pJR5DeWa
-	 ENcrhYql/DiGenJsUvPgwYvHsb+zV6u3vk/pvt5Y/P0IhQkZr3MXoDlxXG8zPzZdZ9
-	 yfJw0tlxL6cBA==
-Date: Wed, 18 Jan 2023 14:04:44 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: crypto: p10-aes-gcm - Add asm markings necessary for kernel
- code
-Message-ID: <20230118140444.25353e67@canb.auug.org.au>
-In-Reply-To: <Y8ZNoBSX5P0ieJ3t@gondor.apana.org.au>
-References: <20230117144747.37115c52@canb.auug.org.au>
-	<Y8ZNoBSX5P0ieJ3t@gondor.apana.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxZTy6CmPz2yPY;
+	Wed, 18 Jan 2023 16:45:10 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I3XHVV014166;
+	Wed, 18 Jan 2023 05:45:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=lzo+vFKUeyPZzJ8AQgo34q5Xnrq9SDrHgAysCEk8+IU=;
+ b=FRvjhkC12vd835SGOVOm5DPcDENQv0S/HNBX3C9GQSQgypF7o5CNl3T/lwUCsUw3mEFE
+ GeJD2JuuXjYjN54cbxCGrwf03oruugQiai2KXfgtfuDcRHObgY4GgXFQVspxKK7RTlVp
+ jKE+TcQn/J8RjJSmdvnMvqlzjCHIPUm7R++5X5qyy0cDJ63zLW/kLlXG2WmSD2gMTN15
+ OY9Yd+mQ/EDAtpfbNTSa5MdmlNlo3bFidzau5tJHTyKbtavEpTFMWTlZBb6iwXCEF7/i
+ giNLykn7znns/C6koahUNmJwhFwp3YATZOQ3o8wsQFqq+qSDeNzPWZg4QX0PZ1NNb7B3 ew== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n68yca6mx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 05:45:02 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30HBVtGq027441;
+	Wed, 18 Jan 2023 05:45:00 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3n3knfbghk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jan 2023 05:45:00 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30I5iuxG45023730
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Jan 2023 05:44:56 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C265820043;
+	Wed, 18 Jan 2023 05:44:56 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1C1220040;
+	Wed, 18 Jan 2023 05:44:54 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.55.224])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Jan 2023 05:44:54 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: skiboot@lists.ozlabs.org, dan@danny.cz, mpe@ellerman.id.au,
+        maddy@linux.ibm.com
+Subject: [PATCH V2 1/3] core/device: Add function to return child node using name at substring "@"
+Date: Wed, 18 Jan 2023 11:14:50 +0530
+Message-Id: <20230118054452.27242-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/d5q8/40ndh9awWN2bgWdQ/3";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bUXzWAFa-x77dfO_s6HBXFnSXfU83s8Q
+X-Proofpoint-ORIG-GUID: bUXzWAFa-x77dfO_s6HBXFnSXfU83s8Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-18_01,2023-01-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2301180047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,133 +87,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Danny Tsen <dtsen@linux.ibm.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Crypto List <linux-crypto@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: kjain@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/d5q8/40ndh9awWN2bgWdQ/3
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Add a function dt_find_by_name_substr() that returns the child node if
+it matches till first occurence at "@" of a given name, otherwise NULL.
+This is helpful for cases with node name like: "name@addr". In
+scenarios where nodes are added with "name@addr" format and if the
+value of "addr" is not known, that node can't be matched with node
+name or addr. Hence matching with substring as node name will return
+the expected result. Patch adds dt_find_by_name_substr() function
+and testcase for the same in core/test/run-device.c
 
-Hi Herbert,
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+Changelog:
+v1 -> v2:
+- Addressed review comment from Dan to update
+  the utility funtion to search and compare
+  upto "@". Renamed it as dt_find_by_name_substr.
+  
+ core/device.c          | 18 ++++++++++++++++++
+ core/test/run-device.c | 11 +++++++++++
+ include/device.h       |  3 +++
+ 3 files changed, 32 insertions(+)
 
-On Tue, 17 Jan 2023 15:26:24 +0800 Herbert Xu <herbert@gondor.apana.org.au>=
- wrote:
->
-> On Tue, Jan 17, 2023 at 02:47:47PM +1100, Stephen Rothwell wrote:
-> > Hi all,
-> >=20
-> > After merging the crypto tree, today's linux-next build (powerpc
-> > pseries_le_defconfig) failed like this:
-> >=20
-> > arch/powerpc/crypto/p10_aes_gcm.o: warning: objtool: .text+0x884: unann=
-otated intra-function call
-> > arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_k=
-ey+0x44: unannotated intra-function call
-> > ld: arch/powerpc/crypto/p10_aes_gcm.o: ABI version 1 is not compatible =
-with ABI version 2 output
-> > ld: failed to merge target specific data of file arch/powerpc/crypto/p1=
-0_aes_gcm.o
-> >=20
-> > Caused by commit
-> >=20
-> >   ca68a96c37eb ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched =
-implementation")
-> >=20
-> > I have applied the following hack for today. =20
->=20
-> Thanks Stephen, I'm going to update the previous fix as follows:
+diff --git a/core/device.c b/core/device.c
+index 2de37c74..df3a5775 100644
+--- a/core/device.c
++++ b/core/device.c
+@@ -395,6 +395,24 @@ struct dt_node *dt_find_by_name(struct dt_node *root, const char *name)
+ }
+ 
+ 
++struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name)
++{
++	struct dt_node *child, *match;
++	char *pos;
++
++	list_for_each(&root->children, child, list) {
++		pos = strchr(child->name, '@');
++		if (!strncmp(child->name, name, pos - child->name))
++			return child;
++
++		match = dt_find_by_name_substr(child, name);
++		if (match)
++			return match;
++	}
++
++	return NULL;
++}
++
+ struct dt_node *dt_new_check(struct dt_node *parent, const char *name)
+ {
+ 	struct dt_node *node = dt_find_by_name(parent, name);
+diff --git a/core/test/run-device.c b/core/test/run-device.c
+index 4a12382b..0e463e58 100644
+--- a/core/test/run-device.c
++++ b/core/test/run-device.c
+@@ -466,6 +466,17 @@ int main(void)
+ 	new_prop_ph = dt_prop_get_u32(ut2, "something");
+ 	assert(!(new_prop_ph == ev1_ph));
+ 	dt_free(subtree);
++
++	/* Test dt_find_by_name_substr */
++	root = dt_new_root("");
++	addr1 = dt_new_addr(root, "node", 0x1);
++	addr2 = dt_new_addr(root, "node0_1", 0x2);
++	assert(dt_find_by_name(root, "node@1") == addr1);
++	assert(dt_find_by_name(root, "node0_1@2") == addr2);
++	assert(dt_find_by_name_substr(root, "node@1") == addr1);
++	assert(dt_find_by_name_substr(root, "node0_1@2") == addr2);
++	dt_free(root);
++
+ 	return 0;
+ }
+ 
+diff --git a/include/device.h b/include/device.h
+index 93fb90ff..b6a1a813 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -184,6 +184,9 @@ struct dt_node *dt_find_by_path(struct dt_node *root, const char *path);
+ /* Find a child node by name */
+ struct dt_node *dt_find_by_name(struct dt_node *root, const char *name);
+ 
++/* Find a child node by name and substring */
++struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name);
++
+ /* Find a node by phandle */
+ struct dt_node *dt_find_by_phandle(struct dt_node *root, u32 phandle);
+ 
+-- 
+2.27.0
 
-I still get:
-
-arch/powerpc/crypto/aesp8-ppc.o: warning: objtool: aes_p8_set_encrypt_key+0=
-x44: unannotated intra-function call
-
-from the powerpc pseries_le_defconfig build (which is otherwise ok).
-
-Now I also get (from a powerpc allyesconfig build):
-
-tmp/cc8g6b4E.s: Assembler messages:
-tmp/cc8g6b4E.s: Error: .size expression for gcm_init_p8 does not evaluate t=
-o a constant
-tmp/cc8g6b4E.s: Error: .size expression for .gcm_init_p8 does not evaluate =
-to a constant
-tmp/cc8g6b4E.s: Error: .size expression for gcm_init_htable does not evalua=
-te to a constant
-tmp/cc8g6b4E.s: Error: .size expression for .gcm_init_htable does not evalu=
-ate to a constant
-tmp/cc8g6b4E.s: Error: .size expression for gcm_gmult_p8 does not evaluate =
-to a constant
-tmp/cc8g6b4E.s: Error: .size expression for .gcm_gmult_p8 does not evaluate=
- to a constant
-tmp/cc8g6b4E.s: Error: .size expression for gcm_ghash_p8 does not evaluate =
-to a constant
-tmp/cc8g6b4E.s: Error: .size expression for .gcm_ghash_p8 does not evaluate=
- to a constant
-make[4]: *** [next/scripts/Makefile.build:374: arch/powerpc/crypto/ghashp8-=
-ppc.o] Error 1
-tmp/ccNrBtc1.s: Assembler messages:
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_set_encrypt_key does not=
- evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_set_encrypt_key does no=
-t evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_set_decrypt_key does not=
- evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_set_decrypt_key does no=
-t evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_encrypt does not evaluat=
-e to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_encrypt does not evalua=
-te to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_decrypt does not evaluat=
-e to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_decrypt does not evalua=
-te to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_cbc_encrypt does not eva=
-luate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_cbc_encrypt does not ev=
-aluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_ctr32_encrypt_blocks doe=
-s not evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_ctr32_encrypt_blocks do=
-es not evaluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_xts_encrypt does not eva=
-luate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_xts_encrypt does not ev=
-aluate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for aes_p8_xts_decrypt does not eva=
-luate to a constant
-tmp/ccNrBtc1.s: Error: .size expression for .aes_p8_xts_decrypt does not ev=
-aluate to a constant
-make[4]: *** [next/scripts/Makefile.build:374: arch/powerpc/crypto/aesp8-pp=
-c.o] Error 1
-make[4]: Target 'arch/powerpc/crypto/' not remade because of errors.
-
-$ grep gcm_init_p8 arch/powerpc/crypto/ghashp8-ppc.s
-.align 2 ; .type gcm_init_p8,@function; .globl gcm_init_p8; gcm_init_p8:
-.size gcm_init_p8,.-.gcm_init_p8
-.size .gcm_init_p8,.-.gcm_init_p8
-
-I have just marked CRYPTO_P10_AES_GCM as BROKEN for today.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/d5q8/40ndh9awWN2bgWdQ/3
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPHYcwACgkQAVBC80lX
-0GziiAf/a7dQVij/7kJX36npVT5mYMIuyE334Zgbza3Gmd4KG//ah30gYZvin/7L
-tfdBgix0zKknGuSJATGs3vVxJUM5CahLwTYyN7XXO1JKuSTZ38Mo7aKMb7GA6leU
-4vhULq53kfckA4A7b49buAzXZVY/0uWM4csvbtto6Fp8oC6MHoBtpgm/7JHFFiUj
-WNir3nwi3J2OCu1emMBfF1Vna38FT+nZWU5z8nklS7oojuEm+JW26A3KRgjIdg5R
-oiU7IiOT0qYKd8WQfap74qkLaGxAd1ZIGIdMvpUks3iS3p9K/HiGXc8nKqRVXhyd
-hkIMeiBJVIAD9XEsx47ucLaP0acAPA==
-=wJm4
------END PGP SIGNATURE-----
-
---Sig_/d5q8/40ndh9awWN2bgWdQ/3--
