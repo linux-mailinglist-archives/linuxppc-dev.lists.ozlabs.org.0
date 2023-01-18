@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A11D672539
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:41:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE43A67253B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jan 2023 18:42:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NxtNg1h4Mz3fBm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:41:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NxtPr4zq2z3fCj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:42:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ka6nVunr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ea4CJI0T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b36; helo=mail-yb1-xb36.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ka6nVunr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ea4CJI0T;
 	dkim-atps=neutral
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxtMm4FNjz3bPD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:40:52 +1100 (AEDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 188so39011326ybi.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:40:52 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NxtNy2FfXz3bXP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:41:54 +1100 (AEDT)
+Received: by mail-yb1-xb36.google.com with SMTP id o75so39073136yba.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 09:41:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+c3praop+F4hgZx9fYsgBqwRZyACPImTP4EJ0i5h+4=;
-        b=Ka6nVunrhz4AtVb4ez9bPbZMrA+BT0HLYjQWV2A83Am/7vZHMnwaJyxrzb3BG1Ge4V
-         jClzWXorirsqV3khCBOP4ggO2Tn0WG07oU9lIclP9VHGeoB6qrpZtnGhe7bo/ttx6zDC
-         TMjP/ThYyG7YcvLasV/vCtOVTAZsP1RDT6VNGtA88feNmFKy0+OV9yXL+HJ0AxWhqfSt
-         pSmnW0q7C+E7rigeF6haineNjehNr7CNxIMAgv0g5lIonW0kqwLOFL/u5eriUgrmlkcF
-         2HtNHfIc9raNIqPYMX6fhNH4Ttqpzmn1gyvx4VhRfWtC7xh2fn/uQa3Wc5QgHD/pyLWB
-         Ygag==
+        bh=1ggn1Gn4xsGfWkGoz3fdeEx12ls41kiX+Bcgea51Xy0=;
+        b=Ea4CJI0TSp0VpR3KYCvzeCipTBJjBVuqbyf4rfd+Jv1neOPo9p/t/BduqEOInn0y3C
+         ofgrWDbDQgEP2g8l1MvXXGn/QX4fbJhNvQffDX/t+trziL1O5MKSR5kfDMjyLWGQG3EA
+         vJQ1epz0AZ7pySAVPAR4XXXKslbRKDY9rkCVemC3yTtudRIBFHB5aYgnxkMTfX+a315y
+         +MCEhYZQkWH78CcxuVrSGlmVx3JBTtYjrsCR/65yYqhEc8iYg6n/Mrymr9pNuAmPcW8Y
+         0VNTZ6B+ZwgCycamWGYsxLS5X/qCdfxOOX3rFQTg4BAZq6XeZYwYYTJPt8RKmXpMgxru
+         ZHYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O+c3praop+F4hgZx9fYsgBqwRZyACPImTP4EJ0i5h+4=;
-        b=dKmc5tKpVzkzgo7efBl813faT9YAnHyro+p2YhchANYqbamHaW1trCuGMJOB3svP+B
-         /pPPyBwn1rsK4aK1hgRSxRSWJ/AB5Z77/Kna0c/s1PGZiivzeajGhTsy9oUU3oDB6tuk
-         J0aHJmDpyaPW7rsL5CqbGvK9KPHX9Asx5iXht2wGZRPJfrnt+O+HzbJrjW0k+FJMFD5G
-         Xxf+KV40ZLP3ldwX0c+D9wjijz/K+Sv8GZf0WyExRH+nLPr9z9UWeM1hezmVidwDqJL4
-         L/MLACIM6yNoR9WRM89NNk2tW6Misa9/nVF2e4ggL9FBdnsIq3Op/YJsCk9HcwBf9cyR
-         XyuQ==
-X-Gm-Message-State: AFqh2krCBh74EZuOM+V2G+ttEykZsKwM2e7KJB1oFVpK/PIITLs5NjGm
-	CUdBtdcyKwfpcyBcszY+0bpLV/uYMO7Z6ovthev7pw==
-X-Google-Smtp-Source: AMrXdXs1k5W3HoVGCiUVOI7jTqOyluR9eRrHzCwGnTn1al/nkArE3wLdMkVcHMHmAcyunh8GSfVeJdebmQPCKJ8WsTw=
-X-Received: by 2002:a05:6902:685:b0:7e9:646d:2da3 with SMTP id
- i5-20020a056902068500b007e9646d2da3mr1102592ybt.340.1674063648863; Wed, 18
- Jan 2023 09:40:48 -0800 (PST)
+        bh=1ggn1Gn4xsGfWkGoz3fdeEx12ls41kiX+Bcgea51Xy0=;
+        b=tSuINnt1KfJtQwsn8ASh1WDSqZ1PkwyT+2vYIrtBLc4JEBlWR5EcyMhQARXTE69O/c
+         V0jOhMGPYKRgFm2aUEkpySLw+lU/bK20lLggujkKK01zwevvkjMEfRX1U0h+ZWRCbqkI
+         brUlWKzVVsV0RzvZKp3Mt/WrYntA7K6Bi7jF+BVoDCiDw+W7v/moICAsiQXbdH7rzM3O
+         gKnJxnJr4H4iH7ue9+jraGZ8WE6KEsL0LIOl21BXwjckg+FK/QajgE/y71x5SttvqskH
+         dEfLg/yaRpHLUZjf20J4e3+4vZX/L2QpKbsSY+f+7Ra7NlIWYIZyTIsqVEAfnlCXIwes
+         a9lw==
+X-Gm-Message-State: AFqh2kq4u7DBpqFUylUrAJ6MGAtn8jhGUmxw1ZrhW/XvyGcSvvzw5WBa
+	152Cju3grz3juCrKaNhFmbuoyGIvGKmDPkLZOKg0hw==
+X-Google-Smtp-Source: AMrXdXumY8p2sU8BkGgo7Lctu1jBI5wsBXEgb6BSMszQ1CFMqwRFSLoQ/TGhweY0s84T2kXVvFhuWQ3VSTGzwjugGTw=
+X-Received: by 2002:a25:9801:0:b0:7d5:b884:3617 with SMTP id
+ a1-20020a259801000000b007d5b8843617mr745969ybo.380.1674063711547; Wed, 18 Jan
+ 2023 09:41:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-28-surenb@google.com>
- <CAG48ez3EAai=1ghnCMF6xcgUebQRm-u2xhwcpYsfP9=r=oVXig@mail.gmail.com>
-In-Reply-To: <CAG48ez3EAai=1ghnCMF6xcgUebQRm-u2xhwcpYsfP9=r=oVXig@mail.gmail.com>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-19-surenb@google.com>
+ <Y8a9+ywh65fmuKvv@dhcp22.suse.cz> <CAG48ez2Adwqs8Vvm3YUKwpx8qzV1wWtnUdWVo1UphjzADjMZQQ@mail.gmail.com>
+ <Y8e+efbJ4rw9goF0@dhcp22.suse.cz>
+In-Reply-To: <Y8e+efbJ4rw9goF0@dhcp22.suse.cz>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 18 Jan 2023 09:40:37 -0800
-Message-ID: <CAJuCfpETt1NHOhOzkP+pgUnNLNRq3LRRyadsc20pW+cCDLuyPg@mail.gmail.com>
-Subject: Re: [PATCH 27/41] mm/mmap: prevent pagefault handler from racing with
- mmu_notifier registration
-To: Jann Horn <jannh@google.com>
+Date: Wed, 18 Jan 2023 09:41:38 -0800
+Message-ID: <CAJuCfpHbMJV3Mo3tkFU4zbDWSTOBoMpBVJZ4-NePGF_Yv+VUGg@mail.gmail.com>
+Subject: Re: [PATCH 18/41] mm/khugepaged: write-lock VMA while collapsing a
+ huge page
+To: Michal Hocko <mhocko@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,82 +76,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, Jann Horn <jannh@google.com>, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsi
+ ngularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 18, 2023 at 4:51 AM Jann Horn <jannh@google.com> wrote:
+On Wed, Jan 18, 2023 at 1:40 AM Michal Hocko <mhocko@suse.com> wrote:
 >
-> On Mon, Jan 9, 2023 at 9:54 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> > Page fault handlers might need to fire MMU notifications while a new
-> > notifier is being registered. Modify mm_take_all_locks to write-lock all
-> > VMAs and prevent this race with fault handlers that would hold VMA locks.
-> > VMAs are locked before i_mmap_rwsem and anon_vma to keep the same
-> > locking order as in page fault handlers.
+> On Tue 17-01-23 21:28:06, Jann Horn wrote:
+> > On Tue, Jan 17, 2023 at 4:25 PM Michal Hocko <mhocko@suse.com> wrote:
+> > > On Mon 09-01-23 12:53:13, Suren Baghdasaryan wrote:
+> > > > Protect VMA from concurrent page fault handler while collapsing a huge
+> > > > page. Page fault handler needs a stable PMD to use PTL and relies on
+> > > > per-VMA lock to prevent concurrent PMD changes. pmdp_collapse_flush(),
+> > > > set_huge_pmd() and collapse_and_free_pmd() can modify a PMD, which will
+> > > > not be detected by a page fault handler without proper locking.
+> > >
+> > > I am struggling with this changelog. Maybe because my recollection of
+> > > the THP collapsing subtleties is weak. But aren't you just trying to say
+> > > that the current #PF handling and THP collapsing need to be mutually
+> > > exclusive currently so in order to keep that assumption you have mark
+> > > the vma write locked?
+> > >
+> > > Also it is not really clear to me how that handles other vmas which can
+> > > share the same thp?
 > >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  mm/mmap.c | 3 +++
-> >  1 file changed, 3 insertions(+)
+> > It's not about the hugepage itself, it's about how the THP collapse
+> > operation frees page tables.
 > >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 30c7d1c5206e..a256deca0bc0 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -3566,6 +3566,7 @@ static void vm_lock_mapping(struct mm_struct *mm, struct address_space *mapping)
-> >   * of mm/rmap.c:
-> >   *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem for
-> >   *     hugetlb mapping);
-> > + *   - all vmas marked locked
+> > Before this series, page tables can be walked under any one of the
+> > mmap lock, the mapping lock, and the anon_vma lock; so when khugepaged
+> > unlinks and frees page tables, it must ensure that all of those either
+> > are locked or don't exist. This series adds a fourth lock under which
+> > page tables can be traversed, and so khugepaged must also lock out that one.
+> >
+> > There is a codepath in khugepaged that iterates through all mappings
+> > of a file to zap page tables (retract_page_tables()), which locks each
+> > visited mm with mmap_write_trylock() and now also does
+> > vma_write_lock().
 >
-> The existing comment above says that this is an *ordered* listing of
-> which locks are taken.
->
-> >   *   - all i_mmap_rwsem locks;
-> >   *   - all anon_vma->rwseml
-> >   *
-> > @@ -3591,6 +3592,7 @@ int mm_take_all_locks(struct mm_struct *mm)
-> >         mas_for_each(&mas, vma, ULONG_MAX) {
-> >                 if (signal_pending(current))
-> >                         goto out_unlock;
-> > +               vma_write_lock(vma);
-> >                 if (vma->vm_file && vma->vm_file->f_mapping &&
-> >                                 is_vm_hugetlb_page(vma))
-> >                         vm_lock_mapping(mm, vma->vm_file->f_mapping);
->
-> Note that multiple VMAs can have the same ->f_mapping, so with this,
-> the lock ordering between VMA locks and the mapping locks of hugetlb
-> VMAs is mixed: If you have two adjacent hugetlb VMAs with the same
-> ->f_mapping, then the following operations happen:
->
-> 1. lock VMA 1
-> 2. lock mapping of VMAs 1 and 2
-> 3. lock VMA 2
-> 4. [second vm_lock_mapping() is a no-op]
->
-> So for VMA 1, we ended up taking the VMA lock first, but for VMA 2, we
-> took the mapping lock first.
->
-> The existing code has one loop per lock type to ensure that the locks
-> really are taken in the specified order, even when some of the locks
-> are associated with multiple VMAs.
->
-> If we don't care about the ordering between these two, maybe that's
-> fine and you just have to adjust the comment; but it would be clearer
-> to add a separate loop for the VMA locks.
+> OK, I see. This would be a great addendum to the changelog.
 
-Oh, thanks for pointing out this detail. A separate loop is definitely
-needed here. Will do that in the next respin.
+I'll add Jann's description in the changelog. Thanks Jann!
 
 >
-> > @@ -3677,6 +3679,7 @@ void mm_drop_all_locks(struct mm_struct *mm)
-> >                 if (vma->vm_file && vma->vm_file->f_mapping)
-> >                         vm_unlock_mapping(vma->vm_file->f_mapping);
-> >         }
-> > +       vma_write_unlock_mm(mm);
-> >
-> >         mutex_unlock(&mm_all_locks_mutex);
-> >  }
-> > --
-> > 2.39.0
-> >
+> > I think one aspect of this patch that might cause trouble later on, if
+> > support for non-anonymous VMAs is added, is that retract_page_tables()
+> > now does vma_write_lock() while holding the mapping lock; the page
+> > fault handling path would probably take the locks the other way
+> > around, leading to a deadlock? So the vma_write_lock() in
+> > retract_page_tables() might have to become a trylock later on.
+>
+> This, right?
+> #PF                     retract_page_tables
+> vma_read_lock
+>                         i_mmap_lock_write
+> i_mmap_lock_read
+>                         vma_write_lock
+>
+>
+> I might be missing something but I have only found huge_pmd_share to be
+> called from the #PF path. That one should be safe as it cannot be a
+> target for THP. Not that it would matter much because such a dependency
+> chain would be really subtle.
+> --
+> Michal Hocko
+> SUSE Labs
