@@ -1,61 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20746738CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 13:39:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6CF6738FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 13:53:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyMdZ6QPnz3fFr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 23:39:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyMxK0fXyz3fGC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 23:53:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XGeV7Z8+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uHFXZnGw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XGeV7Z8+;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uHFXZnGw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyMcc02pGz3bTk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 23:38:39 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyMwM3ZNfz3bXP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 23:52:18 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 49BB060DED
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF60C433F1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674131914;
-	bh=VYU+ZLbsscCnRTpOffTpwW7cmorX4mMTsMM0/YbvjHk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XGeV7Z8+d1J/lCrCOg19J+OaEL2oTYhuMHwRhkSIAFAY2wFaLeHOweyWh3CRd1MF8
-	 0dA9VigNRUwx38diYpUNOVSXMS3dSdMMEsvZhZp6v0PjGFlMN7/SOohOKlNJN87IuK
-	 goOhoZqvavrRFcwjrYk+aDYO90ARjn+kcCGLdfdkKo7GOVM5Nezs7MpsjH705DlTVT
-	 Qrmsz1Zh81iH6JOuZeRQzheW79AvVHZjx9YAzfqjBeFcqeMYU8PsXuKzA8ZzEYVNDz
-	 q0kD4cm7JXhcKqifQ1umRtXqyBOsNIGD/hb7JcedLBbSIdlh2qxQY2Vhd1yGgtnstU
-	 hW2+JMzmax+MQ==
-Received: by mail-oi1-f180.google.com with SMTP id s124so1575877oif.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:38:34 -0800 (PST)
-X-Gm-Message-State: AFqh2kpk1NB90Fpv2MwxoBqlPUdbanwHsSURElb07tPfVBztIs5uX/Um
-	pfwoP/lRS9i8KQZaA+D+7DBHktpmP9JdB5JXfJA=
-X-Google-Smtp-Source: AMrXdXvAkFeKnGe++M9UmwSC8ZBzWfR+eZuxwnJYUTDXA682kW1EYPVmzK8HAnvopQTClHkMMsH97xcN0bqmCNS2irw=
-X-Received: by 2002:a05:6808:1786:b0:35e:7c55:b015 with SMTP id
- bg6-20020a056808178600b0035e7c55b015mr662251oib.287.1674131913358; Thu, 19
- Jan 2023 04:38:33 -0800 (PST)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 144CD5CDCC;
+	Thu, 19 Jan 2023 12:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1674132735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WjnBtS+tWF2y+b/Ndk23xVEsnNoyBzklntYtG4WzfME=;
+	b=uHFXZnGwRsIQkOAXvNc5r12Q8Zjx2e1IZnmxixDECtV/in4b7NwxXomeAGlDi6OtCDRXDa
+	dtvKDLvhExTrXALBacIHpSO15pgEQvgikygHOliJ8ytuR2BXMAU/cs4QzXNA9SPokcCXHP
+	iYzdodWW/Wcksac0HQ4vT5akJUfYwkQ=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DD37F139ED;
+	Thu, 19 Jan 2023 12:52:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id v22dNf48yWPMbAAAMHmgww
+	(envelope-from <mhocko@suse.com>); Thu, 19 Jan 2023 12:52:14 +0000
+Date: Thu, 19 Jan 2023 13:52:14 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
+ vm_area_free
+Message-ID: <Y8k8/vPGXBvyHLJE@dhcp22.suse.cz>
+References: <20230109205336.3665937-1-surenb@google.com>
+ <20230109205336.3665937-40-surenb@google.com>
+ <Y8bFdB47JT/luMld@dhcp22.suse.cz>
+ <CAJuCfpHVYW5aBVmT0vwn+j=m=Jo2KhSTzgVtxSEusUZJdzetUA@mail.gmail.com>
+ <Y8fApgKJaTs9nrPO@dhcp22.suse.cz>
+ <CAJuCfpERMyQc96Z5Qn9RFK0UD7fNugZE4DujFs4xqFWM8T6EqA@mail.gmail.com>
+ <20230118183447.GG2948950@paulmck-ThinkPad-P17-Gen-1>
+ <CAJuCfpHZuKq45FL1gs+=rx5s2AOaZ9TPC1bdAWjYzfkrOABTOw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230119082250.151485-1-masahiroy@kernel.org> <CACPK8XeGsWN+2L57=dfQWOTSo8df7_qrxhwvV4Ho0rkhV=0vSw@mail.gmail.com>
-In-Reply-To: <CACPK8XeGsWN+2L57=dfQWOTSo8df7_qrxhwvV4Ho0rkhV=0vSw@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 19 Jan 2023 21:37:57 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQWtDHOs=K+qznt5U1WiDv86tChkj4zOer4wtVRB974OA@mail.gmail.com>
-Message-ID: <CAK7LNAQWtDHOs=K+qznt5U1WiDv86tChkj4zOer4wtVRB974OA@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: remove checks for binutils older than 2.25
-To: Joel Stanley <joel@jms.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpHZuKq45FL1gs+=rx5s2AOaZ9TPC1bdAWjYzfkrOABTOw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,137 +75,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.ne
+ t
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 19, 2023 at 9:12 PM Joel Stanley <joel@jms.id.au> wrote:
->
-> On Thu, 19 Jan 2023 at 08:24, Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Wed 18-01-23 11:01:08, Suren Baghdasaryan wrote:
+> On Wed, Jan 18, 2023 at 10:34 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+[...]
+> > There are a couple of possibilities here.
 > >
-> > Commit e4412739472b ("Documentation: raise minimum supported version of
-> > binutils to 2.25") allows us to remove the checks for old binutils.
+> > First, if I am remembering correctly, the time between the call_rcu()
+> > and invocation of the corresponding callback was taking multiple seconds,
+> > but that was because the kernel was built with CONFIG_LAZY_RCU=y in
+> > order to save power by batching RCU work over multiple call_rcu()
+> > invocations.  If this is causing a problem for a given call site, the
+> > shiny new call_rcu_hurry() can be used instead.  Doing this gets back
+> > to the old-school non-laziness, but can of course consume more power.
+> 
+> That would not be the case because CONFIG_LAZY_RCU was not an option
+> at the time I was profiling this issue.
+> Laxy RCU would be a great option to replace this patch but
+> unfortunately it's not the default behavior, so I would still have to
+> implement this batching in case lazy RCU is not enabled.
+> 
 > >
-> > There is no more user for ld-ifversion. Remove it as well.
->
-> ppc kernels fail to link with 2.27 under some configurations:
->
->  https://github.com/linuxppc/issues/issues/388
->
-> We may want to use ld-ifversion to exclude that version.
-
-
-
-
-For LLD, CONFIG option is directly checked.
-
-
-masahiro@zoe:~/ref/linux(master)$ git grep  CONFIG_LLD_VERSION
-Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 130000),y)
-arch/riscv/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 150000),y)
-arch/x86/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 130000),y)
-scripts/Kbuild.include:# Usage: $(call test-lt, $(CONFIG_LLD_VERSION), 150000)
-
-
-
-
-
-
-
-
-
-
-
+> > Second, there is a much shorter one-jiffy delay between the call_rcu()
+> > and the invocation of the corresponding callback in kernels built with
+> > either CONFIG_NO_HZ_FULL=y (but only on CPUs mentioned in the nohz_full
+> > or rcu_nocbs kernel boot parameters) or CONFIG_RCU_NOCB_CPU=y (but only
+> > on CPUs mentioned in the rcu_nocbs kernel boot parameters).  The purpose
+> > of this delay is to avoid lock contention, and so this delay is incurred
+> > only on CPUs that are queuing callbacks at a rate exceeding 16K/second.
+> > This is reduced to a per-jiffy limit, so on a HZ=1000 system, a CPU
+> > invoking call_rcu() at least 16 times within a given jiffy will incur
+> > the added delay.  The reason for this delay is the use of a separate
+> > ->nocb_bypass list.  As Suren says, this bypass list is used to reduce
+> > lock contention on the main ->cblist.  This is not needed in old-school
+> > kernels built without either CONFIG_NO_HZ_FULL=y or CONFIG_RCU_NOCB_CPU=y
+> > (including most datacenter kernels) because in that case the callbacks
+> > enqueued by call_rcu() are touched only by the corresponding CPU, so
+> > that there is no need for locks.
+> 
+> I believe this is the reason in my profiled case.
+> 
 > >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > ---
-> >
-> >  arch/powerpc/Makefile     | 22 +---------------------
-> >  arch/powerpc/lib/Makefile |  2 +-
-> >  scripts/Makefile.compiler |  4 ----
-> >  3 files changed, 2 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> > index dc4cbf0a5ca9..3d265b16c0ae 100644
-> > --- a/arch/powerpc/Makefile
-> > +++ b/arch/powerpc/Makefile
-> > @@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) += 64
-> >  machine-$(CONFIG_CPU_LITTLE_ENDIAN) += le
-> >  UTS_MACHINE := $(subst $(space),,$(machine-y))
-> >
-> > -# XXX This needs to be before we override LD below
-> > -ifdef CONFIG_PPC32
-> > -KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
-> > -else
-> > -ifeq ($(call ld-ifversion, -ge, 22500, y),y)
-> > +ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
-> >  # Have the linker provide sfpr if possible.
-> >  # There is a corresponding test in arch/powerpc/lib/Makefile
-> >  KBUILD_LDFLAGS_MODULE += --save-restore-funcs
-> >  else
-> >  KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
-> >  endif
-> > -endif
-> >
-> >  ifdef CONFIG_CPU_LITTLE_ENDIAN
-> >  KBUILD_CFLAGS  += -mlittle-endian
-> > @@ -389,8 +384,6 @@ vdso_prepare: prepare0
-> >                 $(build)=arch/powerpc/kernel/vdso include/generated/vdso64-offsets.h)
-> >  endif
-> >
-> > -archprepare: checkbin
-> > -
-> >  archheaders:
-> >         $(Q)$(MAKE) $(build)=arch/powerpc/kernel/syscalls all
-> >
-> > @@ -405,16 +398,3 @@ else
-> >         $(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
-> >  endif
-> >  endif
-> > -
-> > -PHONY += checkbin
-> > -# Check toolchain versions:
-> > -# - gcc-4.6 is the minimum kernel-wide version so nothing required.
-> > -checkbin:
-> > -       @if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
-> > -               "x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
-> > -               echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
-> > -               echo 'in some circumstances.' ; \
-> > -               echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
-> > -               echo -n '*** Please use a different binutils version.' ; \
-> > -               false ; \
-> > -       fi
-> > diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-> > index 4de71cbf6e8e..c53618c34b70 100644
-> > --- a/arch/powerpc/lib/Makefile
-> > +++ b/arch/powerpc/lib/Makefile
-> > @@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)        += error-inject.o
-> >  # 64-bit linker creates .sfpr on demand for final link (vmlinux),
-> >  # so it is only needed for modules, and only for older linkers which
-> >  # do not support --save-restore-funcs
-> > -ifeq ($(call ld-ifversion, -lt, 22500, y),y)
-> > +ifndef CONFIG_LD_IS_BFD
-> >  extra-$(CONFIG_PPC64)  += crtsavres.o
-> >  endif
-> >
-> > diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-> > index 3d8adfd34af1..ad07a4efc253 100644
-> > --- a/scripts/Makefile.compiler
-> > +++ b/scripts/Makefile.compiler
-> > @@ -72,7 +72,3 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
-> >  # ld-option
-> >  # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
-> >  ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
-> > -
-> > -# ld-ifversion
-> > -# Usage:  $(call ld-ifversion, -ge, 22252, y)
-> > -ld-ifversion = $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && echo $(3) || echo $(4))
-> > --
-> > 2.34.1
-> >
+> > Third, if you are instead seeing multiple milliseconds of CPU consumed by
+> > call_rcu() in the common case (for example, without the aid of interrupts,
+> > NMIs, or SMIs), please do let me know.  That sounds to me like a bug.
+> 
+> I don't think I've seen such a case.
+> Thanks for clarifications, Paul!
 
-
-
+Thanks for the explanation Paul. I have to say this has caught me as a
+surprise. There are just not enough details about the benchmark to
+understand what is going on but I find it rather surprising that
+call_rcu can induce a higher overhead than the actual kmem_cache_free
+which is the callback. My naive understanding has been that call_rcu is
+really fast way to defer the execution to the RCU safe context to do the
+final cleanup.
 -- 
-Best Regards
-Masahiro Yamada
+Michal Hocko
+SUSE Labs
