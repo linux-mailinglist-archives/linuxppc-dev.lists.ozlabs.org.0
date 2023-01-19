@@ -1,75 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2784672F18
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 03:40:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D09672F63
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 04:05:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny6LY5m5yz3fDT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 13:40:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny6vY0JcKz3fDy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 14:05:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aQA9Ge1G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bhWSFtHF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aQA9Ge1G;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bhWSFtHF;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny6KZ6zq5z3c83;
-	Thu, 19 Jan 2023 13:39:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674095987; x=1705631987;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0Hdifom+vjmj8bVA7OGmDBcPanpOSGWzyc6nuzaLKLM=;
-  b=aQA9Ge1GIMRT822vS90L7t94NYzAzHJhKEwAKsPvPBeesIMiaQt7qwKY
-   wscbJZJzef+2PVIWz9mXk5kGAhriTou5SM2BDoSI8PnCVwC1RovMZVlmj
-   1ZTfDfSNyj7K+FPZt1Dx/vlHO6hDRD18j0yRrk8D/O8lE0Zp42BihF4Tj
-   +eWf0nXxxin08hCSZTpe9EmGI9xW4oo25hdLEuTvKepoO5CYBlkoYltAh
-   QTqxPBfPQf99RfXHsK/A+LlI18v9f0us0NFzLOn7U9FKE5U6sy80y4Os5
-   I3KkaPT9kjqXa18Ry2lcJRehjQJStORh0N7rFryFoWZuJIUQY335rrkKw
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="327247912"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="327247912"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 18:39:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="609907686"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="609907686"
-Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 18 Jan 2023 18:39:32 -0800
-Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pIKpq-0000yk-0Z;
-	Thu, 19 Jan 2023 02:39:26 +0000
-Date: Thu, 19 Jan 2023 10:39:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rob Herring <robh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>, Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH v2 3/5] dt-bindings: usb: Convert OMAP OHCI/EHCI bindings
- to schema
-Message-ID: <202301191008.G3IXJXb5-lkp@intel.com>
-References: <20230110-dt-usb-v2-3-926bc1260e51@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230110-dt-usb-v2-3-926bc1260e51@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny6tc3KYPz3bXP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 14:04:54 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id b17so1049674pld.7
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 19:04:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c/gHZEBJUqbXfG5JX1H5lnam0IN6TNXNjBZYcdLB8wc=;
+        b=bhWSFtHFWzg3KaP6hdKmTWRc+V9Fox21VYwUq0wTkIBSKY3ClnhvXUqHrGuuAvBhkz
+         WCDVAI3Rzb79DGG3/FspTjpuS3o0BQV8+iwZDwbwkFhojO8Am0TFeO2AS4AJ/1Vpl/bu
+         QOPOLbW6JtRWSdr3FGbSfDZEMf3D6AB4c9WZEho6CHb9N37dU4DdY5qfoaNQJkQZpR9+
+         TZAo0/OD8U9HQka/hBfHIubzNBRsd14gwDKc0p+jI9ZVwweOmb7ZbrHA1AclDU2wwKPH
+         9T1TQWRHh9PyQ0Qm/E2ioM7u0ztci3DrxDuMlwc1oQAKgRjh871aYDRUEITBu2ZxqsDS
+         wMHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=c/gHZEBJUqbXfG5JX1H5lnam0IN6TNXNjBZYcdLB8wc=;
+        b=QnV1f47YEKFXBjK8CRkT6geqkP39mx4UP4Z2iPXcOIHl288dB7/wwcTHk7ICHuKuHa
+         jHSLL3b7oY1laTjgOiDhYumTNajMHip9Uz5jJT8Yj4Mg1Wo4WUPgOZYweeQMlSAAsoyC
+         lMHnB+M0OxzhP4wuEkOaALlfexaZUDQxV8RuAuPFqtXx4tAnxngM1zqCHUZ+Wt0ldvfD
+         bclSmSFJoGUZ4ZkoNIxI9BbRE888bxxfNbErc0U9NUmVlmPNln97621AB6z01XfFXgoL
+         dyNxBnFmEkNxscW5if7chbxUiDgOtXaxIOobldet1eejVyfN7KW4nhQEr+hgHy0Z8A7A
+         XUuA==
+X-Gm-Message-State: AFqh2krAeCAZjDk4OXQGJMu20nOlhZ1NXt7AECu+fjFyYd7JJeEeMqD9
+	VrkGukaR9n5MGj9bFus+Bjw=
+X-Google-Smtp-Source: AMrXdXvH7nWDObatVJJJ0rFrPx7ePH/E+zXu/f0VqlxwbgvnLGgalRPIiDu/+GlHLmvdgYcf9hqo9Q==
+X-Received: by 2002:a17:902:8a8a:b0:194:480d:6afc with SMTP id p10-20020a1709028a8a00b00194480d6afcmr8663252plo.48.1674097491373;
+        Wed, 18 Jan 2023 19:04:51 -0800 (PST)
+Received: from localhost (193-116-102-45.tpgi.com.au. [193.116.102.45])
+        by smtp.gmail.com with ESMTPSA id y20-20020a170902b49400b00194caf3e975sm227479plr.208.2023.01.18.19.04.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 19:04:50 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Jan 2023 13:04:44 +1000
+Message-Id: <CPVU13AC1206.2SHGMTJDZK6H8@bobo>
+Subject: Re: [PATCH v6 4/5] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Andy Lutomirski" <luto@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>
+X-Mailer: aerc 0.13.0
+References: <20230118080011.2258375-1-npiggin@gmail.com>
+ <20230118080011.2258375-5-npiggin@gmail.com>
+ <CAHk-=wiLaY7K6N4VF=wgS+AVsFi298fMA3Tx6rzbbP7xT+1Dqg@mail.gmail.com>
+In-Reply-To: <CAHk-=wiLaY7K6N4VF=wgS+AVsFi298fMA3Tx6rzbbP7xT+1Dqg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,37 +84,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+On Thu Jan 19, 2023 at 3:30 AM AEST, Linus Torvalds wrote:
+> [ Adding a few more x86 and arm64 maintainers - while linux-arch is
+> the right mailing list, I'm not convinced people actually follow it
+> all that closely ]
+>
+> On Wed, Jan 18, 2023 at 12:00 AM Nicholas Piggin <npiggin@gmail.com> wrot=
+e:
+> >
+> > On a 16-socket 192-core POWER8 system, a context switching benchmark
+> > with as many software threads as CPUs (so each switch will go in and
+> > out of idle), upstream can achieve a rate of about 1 million context
+> > switches per second, due to contention on the mm refcount.
+> >
+> > 64s meets the prerequisites for CONFIG_MMU_LAZY_TLB_SHOOTDOWN, so enabl=
+e
+> > the option. This increases the above benchmark to 118 million context
+> > switches per second.
+>
+> Well, the 1M -> 118M change does seem like a good reason for this series.
 
-I love your patch! Perhaps something to improve:
+It was an artificial corner case, mind you. I don't think it's a reason
+to panic and likely smaller systems with faster atomics will care far
+less than our big 2-hop systems.
 
-[auto build test WARNING on 1b929c02afd37871d5afb9d498426f83432e71c2]
+Benchmark is will-it-scale:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/dt-bindings-usb-Remove-obsolete-brcm-bcm3384-usb-txt/20230119-030120
-base:   1b929c02afd37871d5afb9d498426f83432e71c2
-patch link:    https://lore.kernel.org/r/20230110-dt-usb-v2-3-926bc1260e51%40kernel.org
-patch subject: [PATCH v2 3/5] dt-bindings: usb: Convert OMAP OHCI/EHCI bindings to schema
-reproduce:
-        # https://github.com/intel-lab-lkp/linux/commit/e7220b26de1a7fcd192feec481c1a90f7bf5c949
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Rob-Herring/dt-bindings-usb-Remove-obsolete-brcm-bcm3384-usb-txt/20230119-030120
-        git checkout e7220b26de1a7fcd192feec481c1a90f7bf5c949
-        make menuconfig
-        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
-        make htmldocs
+  ./context_switch1_threads -t 768
+  min:2174 max:2690 total:1827952
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
+    33.52%  [k] finish_task_switch
+    27.26%  [k] interrupt_return
+    22.66%  [k] __schedule
+     2.30%  [k] _raw_spin_trylock
 
-All warnings (new ones prefixed by >>):
+  ./context_switch1_threads -t 1536
+  min:103000 max:120100 total:177201906
 
->> Warning: Documentation/devicetree/bindings/mfd/omap-usb-host.txt references a file that doesn't exist: Documentation/devicetree/bindings/usb/ehci-generic.yaml
->> Warning: Documentation/devicetree/bindings/mfd/omap-usb-host.txt references a file that doesn't exist: Documentation/devicetree/bindings/usb/ohci-generic.yaml
+The top case has 1/2 the switching pairs to available CPU, which makes
+them all switch the same mm between real and lazy. Bottom case is
+just switching between user threads so that doesn't hit the lazy
+refcount.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+> The patches certainly don't look offensive to me, so Ack as far as I'm
+> concerned, but honestly, it's been some time since I've personally
+> been active on the idle and lazy TLB code, so that ack is probably
+> largely worthless.
+>
+> If anything, my main reaction to this all is to wonder whether the
+> config option is a good idea - maybe we could do this unconditionally,
+> and make the source code (and logic) simpler to follow when you don't
+> have to worry about the CONFIG_MMU_LAZY_TLB_REFCOUNT option.
+>
+> I wouldn't be surprised to hear that x86 can have the same issue where
+> the mm_struct refcount is a bigger issue than the possibility of an
+> extra TLB shootdown at the final exit time.
+>
+> But having the config options as a way to switch people over gradually
+> (and perhaps then removing it later) doesn't sound wrong to me either.
+
+IMO it's trivial enough that we could carry both, but everything's a
+straw on the camel's back so if we can consolidate it would always be
+preferebale. Let's see how it plays out for a few releases.
+
+> And I personally find the argument in patch 3/5 fairly convincing:
+>
+>   Shootdown IPIs cost could be an issue, but they have not been observed
+>   to be a serious problem with this scheme, because short-lived processes
+>   tend not to migrate CPUs much, therefore they don't get much chance to
+>   leave lazy tlb mm references on remote CPUs.
+>
+> Andy? PeterZ? Catalin?
+>
+> Nick - it might be good to link to the actual benchmark, and let
+> people who have access to big machines perhaps just try it out on
+> non-powerpc platforms...
+
+Yep good point, I'll put it in the changelog. I might submit another
+round to Andrew in a bit with acks and any minor tweaks and minus the
+last patch, assuming no major changes or objections.
+
+Thanks,
+Nick
