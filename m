@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA4C672DCE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:03:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8459E672DD9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:12:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny4BZ4dDxz3c6V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 12:03:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny4NH1vnCz3fCq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 12:11:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AYtPSQ8/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=phIf6/oV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AYtPSQ8/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=phIf6/oV;
 	dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny49g07Mfz3000
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:02:46 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id z4-20020a17090a170400b00226d331390cso297264pjd.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 17:02:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny4MK46n7z30DC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:11:08 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id s13-20020a17090a6e4d00b0022900843652so4334932pjm.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 17:11:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bzC0sU/N12ncEGDzD9fPcibOi5DmMLZMi0fdgF9XEqw=;
-        b=AYtPSQ8/l89DagqqXtQI6yiVXSzsTcUBaQiMk2f1jiZyJ5ELiIGB0pZLTJnp8amdI2
-         E9USP8ckmgFNAtbnEoOYYEmnUi5knwgQiQIsu+XBK87SrVt3G4Z7NEK00vhQjdlc4uAe
-         cUWuQ9+EIWNEUEecO15jMDjh7K8C3W/p/vLOToGoVZwCyALXyYsxihbAnAW9nkojB1jD
-         W4PyN1pMYXFeHmI2ySiO/3SOQnFtrWf3y7kddaOhygH3d8MNWuA//hY+i/Lb0SZ6YloL
-         AS9FQBWer3V6rNXX0e0CrLQATvoZgKgHf3OyQiHAf0umnVjJScE+CMG+PuftHWcDfxSI
-         KSeQ==
+        bh=4a6gTHxnHocG3EOjYSvHjeImOH2TijHK1E3d9yPNEYQ=;
+        b=phIf6/oVhIVYz4XdxQX6EJsCbt+WRAp+joMADi1BqdUXnenACCmvM2II1ts8tHedta
+         IDVO7pOgGIdscv/FK7t7kuYHQP0eeD0MORf/nB+fvdPcBBaDPw/ESCWVqOifC05Tp1JK
+         YU4F2vxmLV+QRAzlMoFVFvG61YOlBVnVR1tcPpzwgMWfdWIgVd/DPGjhQm3XTs1QEgv0
+         S6g5EWoFMlwRDC4ZB8AsZkShd5wRa+xaSEBLvTtbH8HQHfVj5zFrT4JCrddUKED36PDS
+         qvnjAFHJrEybbbXwEvkl3liIBAw/jN1EyGaCxAbn/m/f33Nq3i4s+r0FGjSkykMDrpN4
+         CRyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=bzC0sU/N12ncEGDzD9fPcibOi5DmMLZMi0fdgF9XEqw=;
-        b=0oAWajLQhvd9yPFALMAFUTtG9We36OP1luqI5N71AgOSgjzr68K5zWSps06ciHHyAA
-         ry9VuvJbSHrE/3TJf6p+gjC3NkvHv0qqI1tqyKK/OI5Tj/+tHGpP1MAqSmXhReTt5sgh
-         S4Q4Mf7PRxJiXKUdSDcZAB8GUfkUV+dWTkVTtReQkTA/xRM7kIzGHNKqtbG+cShFXfz3
-         N5ZSOC5vMR/DHvVnS0txqS1g6QqhayiHqRRSBqW91ryM5EXLfl1BheIl7M7WXQVHdmcH
-         fqvgzszhzu4Vf/ruNaqt8dsZQ8guF59goiVTRkg7dacE5lxrigcYWB1UTgmbr9rpJVF5
-         gNGg==
-X-Gm-Message-State: AFqh2krZw8apir/dtUOrQd1i5S/IOneSHMhPO94TN+TFfqHsDxp6raeH
-	E3ohreoOe7Fj40RwLTTQllkZsX/k+fo=
-X-Google-Smtp-Source: AMrXdXt4gseTnAfOPrChP9m2wVf26VWcohagyq74svl8eO9K6vlv12wRtzJHCZkfmem+ShkJYon6sA==
-X-Received: by 2002:a05:6a20:ba87:b0:af:8e92:3eeb with SMTP id fb7-20020a056a20ba8700b000af8e923eebmr9175136pzb.9.1674090163920;
-        Wed, 18 Jan 2023 17:02:43 -0800 (PST)
+        bh=4a6gTHxnHocG3EOjYSvHjeImOH2TijHK1E3d9yPNEYQ=;
+        b=ndF4Kt8g5AQZSwp4zttVfXdJZl3QN9GRbNstNFwpT4sXoVJwBURgmEpT6IJkA6b4vw
+         b6YIRnl+LQncga3Xv9mdO+d+KdUqFRamF4RuNd1vEVvD0WO1tKvSuoZRL4X2QxZmabkg
+         elDQGkxKCwDfrpKaXFJX/NsKaUxhXgYPoLamq+hIFzYG6tpHSgr3/yNkG1twjpisw2bU
+         HpCEm5VhDevkyui7NgjaebcPtCbEA0rxzvEV0ue0f0UsCxafmtCpKBGnqoavf4VsepRd
+         UZSumaCaD+Pd7zrrZmZLRM0JI/6S6GvKSHWKHVIEE/10jcwgN0QS4KijiXg2Q4xdrw5d
+         n6jQ==
+X-Gm-Message-State: AFqh2krtlTlQ/+AnmChioyZpauEcyX6q7KRU2jyH67+XAiS4fkt0+/BL
+	HGfqWzqqfKESOqoZsJVh4mg=
+X-Google-Smtp-Source: AMrXdXuEr0AenQQTGRZxGOq8GuW0YuV9eCnOjJcK3F9GgIwX5FOJ0fljJqUR5ShuuHuaNrrsEqyxgQ==
+X-Received: by 2002:a17:902:e5d2:b0:191:3808:14b0 with SMTP id u18-20020a170902e5d200b00191380814b0mr12887306plf.4.1674090666075;
+        Wed, 18 Jan 2023 17:11:06 -0800 (PST)
 Received: from localhost (193-116-102-45.tpgi.com.au. [193.116.102.45])
-        by smtp.gmail.com with ESMTPSA id e3-20020a63f543000000b004cd2eebc551sm5414418pgk.62.2023.01.18.17.02.39
+        by smtp.gmail.com with ESMTPSA id q13-20020a170902a3cd00b0018911ae9dfasm23675468plb.232.2023.01.18.17.11.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 17:02:43 -0800 (PST)
+        Wed, 18 Jan 2023 17:11:05 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jan 2023 11:02:36 +1000
-Message-Id: <CPVRFKZUFEFE.3IPS9CFR9KPD6@bobo>
-Subject: Re: [PATCH v3 04/24] powerpc/secvar: Handle format string in the
- consumer
+Date: Thu, 19 Jan 2023 11:10:58 +1000
+Message-Id: <CPVRLZNI6WWQ.1AZVH3NCPCOYL@bobo>
+Subject: Re: [PATCH v3 08/24] powerpc/secvar: Allow backend to populate
+ static list of variable names
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Andrew Donnellan" <ajd@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
  <linux-integrity@vger.kernel.org>
 X-Mailer: aerc 0.13.0
 References: <20230118061049.1006141-1-ajd@linux.ibm.com>
- <20230118061049.1006141-5-ajd@linux.ibm.com>
-In-Reply-To: <20230118061049.1006141-5-ajd@linux.ibm.com>
+ <20230118061049.1006141-9-ajd@linux.ibm.com>
+In-Reply-To: <20230118061049.1006141-9-ajd@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,48 +87,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed Jan 18, 2023 at 4:10 PM AEST, Andrew Donnellan wrote:
-> From: Russell Currey <ruscur@russell.cc>
+> Currently, the list of variables is populated by calling
+> secvar_ops->get_next() repeatedly, which is explicitly modelled on the
+> OPAL API (including the keylen parameter).
 >
-> The code that handles the format string in secvar-sysfs.c is entirely
-> OPAL specific, so create a new "format" op in secvar_operations to make
-> the secvar code more generic.  No functional change.
+> For the upcoming PLPKS backend, we have a static list of variable names.
+> It is messy to fit that into get_next(), so instead, let the backend put
+> a NULL-terminated array of variable names into secvar_ops->var_names,
+> which will be used if get_next() is undefined.
 >
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
 >
 > ---
 >
-> v2: Use sysfs_emit() instead of sprintf() (gregkh)
->
-> v3: Enforce format string size limit (ruscur)
+> v3: New patch (ajd/mpe)
 > ---
->  arch/powerpc/include/asm/secvar.h            |  3 +++
->  arch/powerpc/kernel/secvar-sysfs.c           | 23 ++++--------------
->  arch/powerpc/platforms/powernv/opal-secvar.c | 25 ++++++++++++++++++++
->  3 files changed, 33 insertions(+), 18 deletions(-)
+>  arch/powerpc/include/asm/secvar.h  |  4 ++
+>  arch/powerpc/kernel/secvar-sysfs.c | 67 ++++++++++++++++++++----------
+>  2 files changed, 50 insertions(+), 21 deletions(-)
 >
 > diff --git a/arch/powerpc/include/asm/secvar.h b/arch/powerpc/include/asm=
 /secvar.h
-> index 07ba36f868a7..8b6475589120 100644
+> index ebf95386d720..c8bee1834b54 100644
 > --- a/arch/powerpc/include/asm/secvar.h
 > +++ b/arch/powerpc/include/asm/secvar.h
-> @@ -11,12 +11,15 @@
->  #include <linux/types.h>
->  #include <linux/errno.h>
-> =20
-> +#define SECVAR_MAX_FORMAT_LEN	30 // max length of string returned by ->f=
-ormat()
+> @@ -23,6 +23,10 @@ struct secvar_operations {
+>  	ssize_t (*format)(char *buf);
+>  	int (*max_size)(u64 *max_size);
+>  	const struct attribute **config_attrs;
 > +
->  extern const struct secvar_operations *secvar_ops;
-> =20
->  struct secvar_operations {
->  	int (*get)(const char *key, u64 key_len, u8 *data, u64 *data_size);
->  	int (*get_next)(const char *key, u64 *key_len, u64 keybufsize);
->  	int (*set)(const char *key, u64 key_len, u8 *data, u64 data_size);
-> +	ssize_t (*format)(char *buf);
+> +	// NULL-terminated array of fixed variable names
+> +	// Only used if get_next() isn't provided
+> +	const char * const *var_names;
 
-Maybe pass the buf size as an argument here? Which is a bit less error
-prone and more flexible than finding the right #define for it.
+The other way you could go is provide a sysfs_init() ops call here,
+and export the add_var as a library function that backends can use.
 
 Thanks,
 Nick
