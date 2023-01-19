@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8459E672DD9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:12:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE602672DE6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 02:14:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny4NH1vnCz3fCq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 12:11:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny4QZ4W1Lz3fCX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 12:13:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=phIf6/oV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iedPpwf5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=phIf6/oV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iedPpwf5;
 	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny4MK46n7z30DC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:11:08 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id s13-20020a17090a6e4d00b0022900843652so4334932pjm.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 17:11:08 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny4Pg1ksWz2x9L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 12:13:09 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id 20so870272plo.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 17:13:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4a6gTHxnHocG3EOjYSvHjeImOH2TijHK1E3d9yPNEYQ=;
-        b=phIf6/oVhIVYz4XdxQX6EJsCbt+WRAp+joMADi1BqdUXnenACCmvM2II1ts8tHedta
-         IDVO7pOgGIdscv/FK7t7kuYHQP0eeD0MORf/nB+fvdPcBBaDPw/ESCWVqOifC05Tp1JK
-         YU4F2vxmLV+QRAzlMoFVFvG61YOlBVnVR1tcPpzwgMWfdWIgVd/DPGjhQm3XTs1QEgv0
-         S6g5EWoFMlwRDC4ZB8AsZkShd5wRa+xaSEBLvTtbH8HQHfVj5zFrT4JCrddUKED36PDS
-         qvnjAFHJrEybbbXwEvkl3liIBAw/jN1EyGaCxAbn/m/f33Nq3i4s+r0FGjSkykMDrpN4
-         CRyw==
+        bh=trQ8wPDdZRnOhR09mO+bG/KeF7fjbj/nqEQErtarT5c=;
+        b=iedPpwf5nA+2keWvD77tT1QHT2acngdr0fxuAbMcmef4fExDwXZU8yzdvJCxhpT2ym
+         mq2SWTKZN8VkEL1mCgymWRb/aODT6vdXJ2OhQNWKI1eQMQeVnu3gz0WFxHYMFwydsOjx
+         2/W05BJEfDQjIy3JZXoaQCcJhjrfYpJmuh5iFYvhHXr3Z6jgbchYnFCzBsxcCdNTZdeF
+         uB7Dnjl5+7QtYFW8tfqC74mpu8BS5VZCJNZ7LytWzt3Rim3m0WZ1iAd21BhwhZQX3KDt
+         ouzBsmDpWRIvzUVq3beb+KIenmmnAf6jNHWJNN+pMiHLw6aKFM2vJbFS5VRKj2iaFoNL
+         WXSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4a6gTHxnHocG3EOjYSvHjeImOH2TijHK1E3d9yPNEYQ=;
-        b=ndF4Kt8g5AQZSwp4zttVfXdJZl3QN9GRbNstNFwpT4sXoVJwBURgmEpT6IJkA6b4vw
-         b6YIRnl+LQncga3Xv9mdO+d+KdUqFRamF4RuNd1vEVvD0WO1tKvSuoZRL4X2QxZmabkg
-         elDQGkxKCwDfrpKaXFJX/NsKaUxhXgYPoLamq+hIFzYG6tpHSgr3/yNkG1twjpisw2bU
-         HpCEm5VhDevkyui7NgjaebcPtCbEA0rxzvEV0ue0f0UsCxafmtCpKBGnqoavf4VsepRd
-         UZSumaCaD+Pd7zrrZmZLRM0JI/6S6GvKSHWKHVIEE/10jcwgN0QS4KijiXg2Q4xdrw5d
-         n6jQ==
-X-Gm-Message-State: AFqh2krtlTlQ/+AnmChioyZpauEcyX6q7KRU2jyH67+XAiS4fkt0+/BL
-	HGfqWzqqfKESOqoZsJVh4mg=
-X-Google-Smtp-Source: AMrXdXuEr0AenQQTGRZxGOq8GuW0YuV9eCnOjJcK3F9GgIwX5FOJ0fljJqUR5ShuuHuaNrrsEqyxgQ==
-X-Received: by 2002:a17:902:e5d2:b0:191:3808:14b0 with SMTP id u18-20020a170902e5d200b00191380814b0mr12887306plf.4.1674090666075;
-        Wed, 18 Jan 2023 17:11:06 -0800 (PST)
+        bh=trQ8wPDdZRnOhR09mO+bG/KeF7fjbj/nqEQErtarT5c=;
+        b=e6mFDrOWju7BDOjO4LlY1M3dJUwBOuOyZvTILDiotPH/hg0kgwEjUCxioQmLU2xPTd
+         a44NgQbCK7m53CZw/DAE9HrTSSdNXnUuY0pjkdcnRrAYxgJs52E8ohcnDBKbZRIpzOJI
+         MtJWRmBwu/zWZQLU85F04n8BgGFYblQcro/CJi7s5jgujp8TlVo702z9V1ORJA4JdwQa
+         LUTI8vLB7hywUzzaXg8Lpuk21G/bWStUxeHga5mZUGEe69s3pAD7VISatz43mBvSKi1B
+         UQ/CLO3QHQ6j7yhlgY2+fGIu1ZqdKTOJAwfJYNTYfnOuzIIyYuKd4aw4H53WSjCRLiMZ
+         fBQw==
+X-Gm-Message-State: AFqh2krMNOdOVJjb9jYre68ZNTwJ9VoLlQVHlzOrN18oCkN1lJo7qCJz
+	Y/tPImvEW/lAY8F3QVPxSiRL1oW8jS0=
+X-Google-Smtp-Source: AMrXdXsFGIbounHZJ2Dj4H4446MRSLS+KlWWG8txSiLuHDvKJ/U3YrT2y5kFsBYYfzOil7tpMtE/pg==
+X-Received: by 2002:a17:902:a9c5:b0:194:60c3:482f with SMTP id b5-20020a170902a9c500b0019460c3482fmr23642700plr.26.1674090787240;
+        Wed, 18 Jan 2023 17:13:07 -0800 (PST)
 Received: from localhost (193-116-102-45.tpgi.com.au. [193.116.102.45])
-        by smtp.gmail.com with ESMTPSA id q13-20020a170902a3cd00b0018911ae9dfasm23675468plb.232.2023.01.18.17.11.01
+        by smtp.gmail.com with ESMTPSA id y8-20020a17090322c800b00186f0f59c85sm2511649plg.235.2023.01.18.17.13.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 17:11:05 -0800 (PST)
+        Wed, 18 Jan 2023 17:13:06 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jan 2023 11:10:58 +1000
-Message-Id: <CPVRLZNI6WWQ.1AZVH3NCPCOYL@bobo>
-Subject: Re: [PATCH v3 08/24] powerpc/secvar: Allow backend to populate
- static list of variable names
+Date: Thu, 19 Jan 2023 11:12:57 +1000
+Message-Id: <CPVRNHVV9L6U.34DQEC4B6NB51@bobo>
+Subject: Re: [PATCH v3 16/24] powerpc/pseries: Implement signed update for
+ PLPKS objects
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Andrew Donnellan" <ajd@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
  <linux-integrity@vger.kernel.org>
 X-Mailer: aerc 0.13.0
 References: <20230118061049.1006141-1-ajd@linux.ibm.com>
- <20230118061049.1006141-9-ajd@linux.ibm.com>
-In-Reply-To: <20230118061049.1006141-9-ajd@linux.ibm.com>
+ <20230118061049.1006141-17-ajd@linux.ibm.com>
+In-Reply-To: <20230118061049.1006141-17-ajd@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,42 +87,57 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed Jan 18, 2023 at 4:10 PM AEST, Andrew Donnellan wrote:
-> Currently, the list of variables is populated by calling
-> secvar_ops->get_next() repeatedly, which is explicitly modelled on the
-> OPAL API (including the keylen parameter).
+> From: Nayna Jain <nayna@linux.ibm.com>
 >
-> For the upcoming PLPKS backend, we have a static list of variable names.
-> It is messy to fit that into get_next(), so instead, let the backend put
-> a NULL-terminated array of variable names into secvar_ops->var_names,
-> which will be used if get_next() is undefined.
+> The Platform Keystore provides a signed update interface which can be use=
+d
+> to create, replace or append to certain variables in the PKS in a secure
+> fashion, with the hypervisor requiring that the update be signed using th=
+e
+> Platform Key.
 >
+> Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
+> driver to allow signed updates to PKS objects.
+>
+> (The plpks driver doesn't need to do any cryptography or otherwise handle
+> the actual signed variable contents - that will be handled by userspace
+> tooling.)
+>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> [ajd: split patch, add timeout handling and misc cleanups]
+> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 > Signed-off-by: Russell Currey <ruscur@russell.cc>
 >
 > ---
 >
-> v3: New patch (ajd/mpe)
-> ---
->  arch/powerpc/include/asm/secvar.h  |  4 ++
->  arch/powerpc/kernel/secvar-sysfs.c | 67 ++++++++++++++++++++----------
->  2 files changed, 50 insertions(+), 21 deletions(-)
+> v3: Merge plpks fixes and signed update series with secvar series
 >
-> diff --git a/arch/powerpc/include/asm/secvar.h b/arch/powerpc/include/asm=
-/secvar.h
-> index ebf95386d720..c8bee1834b54 100644
-> --- a/arch/powerpc/include/asm/secvar.h
-> +++ b/arch/powerpc/include/asm/secvar.h
-> @@ -23,6 +23,10 @@ struct secvar_operations {
->  	ssize_t (*format)(char *buf);
->  	int (*max_size)(u64 *max_size);
->  	const struct attribute **config_attrs;
-> +
-> +	// NULL-terminated array of fixed variable names
-> +	// Only used if get_next() isn't provided
-> +	const char * const *var_names;
+>     Fix error code handling in plpks_confirm_object_flushed() (ruscur)
+>
+>     Pass plpks_var struct to plpks_signed_update_var() by reference (mpe)
+>
+>     Consistent constant naming scheme (ruscur)
+> ---
+>  arch/powerpc/include/asm/hvcall.h      |  3 +-
+>  arch/powerpc/include/asm/plpks.h       |  5 ++
+>  arch/powerpc/platforms/pseries/plpks.c | 71 ++++++++++++++++++++++++--
+>  3 files changed, 73 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm=
+/hvcall.h
+> index 95fd7f9485d5..33b26c0cb69b 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -336,7 +336,8 @@
+>  #define H_SCM_FLUSH		0x44C
+>  #define H_GET_ENERGY_SCALE_INFO	0x450
+>  #define H_WATCHDOG		0x45C
+> -#define MAX_HCALL_OPCODE	H_WATCHDOG
+> +#define H_PKS_SIGNED_UPDATE	0x454
+> +#define MAX_HCALL_OPCODE	H_PKS_SIGNED_UPDATE
 
-The other way you could go is provide a sysfs_init() ops call here,
-and export the add_var as a library function that backends can use.
+^ Bad rebase.
 
 Thanks,
 Nick
