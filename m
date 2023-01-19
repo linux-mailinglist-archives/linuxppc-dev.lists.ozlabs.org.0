@@ -1,61 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CDA674332
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 20:56:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2FF67442C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 22:19:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyYKB5gxvz3fHV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 06:55:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nyb9h4S5xz3fHf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 08:19:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NXfYK9b7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PXyL1e0H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=mfk3=5q=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NXfYK9b7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PXyL1e0H;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyYJD6pdtz3fDl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 06:55:08 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id EA1D3B82727;
-	Thu, 19 Jan 2023 19:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE89C433EF;
-	Thu, 19 Jan 2023 19:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674158103;
-	bh=EMPBQ4pP3jV2vAFvJnKq8YQhPGbB7BbH0D7DPSSWiE0=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=NXfYK9b7Bf1duGFORs3XSGIs+UMUQmhuwi4YVxvT7G/a3nyhvq5WGGqDvi2Jt4yEC
-	 CYTOZC7SC2s5sbih3/HU7vME2OyQq2gao04lm/woIzKWR9ZAuME5yoiZT76tvEu8hY
-	 KD/2TqtFC+45YbMMbghKuKW2NZDEpeKMkn5IPB9C6zT63HjYC3lvSzCL46WofWmxqR
-	 IbepnruhsHrtTmpmHMTT97T4P70VZLJSmePvbr104ujcjZtUyjrMyTAdUN4QDVPhe4
-	 ZwN+eCEq65ETEcXVtoQ149M5NPDMN14ArNCMZH1F+kzZfsaR/80+AdiIBYkJGMpyEW
-	 WAxZ65/uHOQrQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 18A4D5C1A49; Thu, 19 Jan 2023 11:55:03 -0800 (PST)
-Date: Thu, 19 Jan 2023 11:55:03 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
- vm_area_free
-Message-ID: <20230119195503.GY2948950@paulmck-ThinkPad-P17-Gen-1>
-References: <20230109205336.3665937-1-surenb@google.com>
- <20230109205336.3665937-40-surenb@google.com>
- <Y8k+syJu7elWAjRj@dhcp22.suse.cz>
- <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
- <20230119192002.GX2948950@paulmck-ThinkPad-P17-Gen-1>
- <CAJuCfpEoGCs6JgjiWL1ACS8S8TmwM1x5EF7x8D=M9zqnkyqxBA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpEoGCs6JgjiWL1ACS8S8TmwM1x5EF7x8D=M9zqnkyqxBA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nyb8l0r7Gz3c6q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 08:18:46 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30JJBrw9028405;
+	Thu, 19 Jan 2023 21:18:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=fOmHjl45i/BOeBlFY+5ny3aN3s26Qml7s+k+CJ5/H8k=;
+ b=PXyL1e0HKxKgQ6CCPRCuJVVrKNQSA2AHnZNCkZ4tz/83b8N4eFouwZb+tT5JLv8uQVHK
+ KDhZzkLJy91eNPZQFZFKCsc56vdl01y7IOHqei2f1HSNx4ZZB0sPp+Xqdn+Ydh0Q4BM8
+ q6wXfe09qzKvKBgWl+cjMfHHfxFuq7Ao6y7KsenfWlv4lFAq9gZFExfBKyba9YGeUN22
+ MIfyI4YYtyTPdhy/GDMe3LfieOfpRji6r8yCGZxmLMT4PjD19gOLC+xaNEOb32V7DOL7
+ 55spVAkHNp0LHohaayNSfWXUa80ImaVHixMaTXi941MzbYPw4+9RKfycuETqLOOtn6jw Ag== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7btajthp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 21:18:38 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JIfEq0027310;
+	Thu, 19 Jan 2023 21:18:37 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3n3m186hek-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 21:18:37 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30JLIamb10748592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Jan 2023 21:18:36 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3FF0358057;
+	Thu, 19 Jan 2023 21:18:36 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 15C725805D;
+	Thu, 19 Jan 2023 21:18:34 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.160.28.21])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Jan 2023 21:18:33 +0000 (GMT)
+Message-ID: <a991c60c5c10a37cc0385663705e8b39d8e23c09.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 05/24] powerpc/secvar: Handle max object size in the
+ consumer
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-integrity@vger.kernel.org
+Date: Thu, 19 Jan 2023 15:18:33 -0600
+In-Reply-To: <20230118061049.1006141-6-ajd@linux.ibm.com>
+References: <20230118061049.1006141-1-ajd@linux.ibm.com>
+	 <20230118061049.1006141-6-ajd@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: V-10U9LXaj_bHAbA5CbFq6q2JBh89Jt7
+X-Proofpoint-ORIG-GUID: V-10U9LXaj_bHAbA5CbFq6q2JBh89Jt7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-19_14,2023-01-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ bulkscore=0 mlxscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190176
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,86 +93,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsi
- ngularity.net
+Reply-To: gjoyce@linux.vnet.ibm.com
+Cc: sudhakar@linux.ibm.com, bgray@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, gjoyce@linux.ibm.com, ruscur@russell.cc, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 19, 2023 at 11:47:36AM -0800, Suren Baghdasaryan wrote:
-> On Thu, Jan 19, 2023 at 11:20 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Thu, Jan 19, 2023 at 10:52:03AM -0800, Suren Baghdasaryan wrote:
-> > > On Thu, Jan 19, 2023 at 4:59 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > >
-> > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
-> > > > > call_rcu() can take a long time when callback offloading is enabled.
-> > > > > Its use in the vm_area_free can cause regressions in the exit path when
-> > > > > multiple VMAs are being freed. To minimize that impact, place VMAs into
-> > > > > a list and free them in groups using one call_rcu() call per group.
-> > > >
-> > > > After some more clarification I can understand how call_rcu might not be
-> > > > super happy about thousands of callbacks to be invoked and I do agree
-> > > > that this is not really optimal.
-> > > >
-> > > > On the other hand I do not like this solution much either.
-> > > > VM_AREA_FREE_LIST_MAX is arbitrary and it won't really help all that
-> > > > much with processes with a huge number of vmas either. It would still be
-> > > > in housands of callbacks to be scheduled without a good reason.
-> > > >
-> > > > Instead, are there any other cases than remove_vma that need this
-> > > > batching? We could easily just link all the vmas into linked list and
-> > > > use a single call_rcu instead, no? This would both simplify the
-> > > > implementation, remove the scaling issue as well and we do not have to
-> > > > argue whether VM_AREA_FREE_LIST_MAX should be epsilon or epsilon + 1.
-> > >
-> > > Yes, I agree the solution is not stellar. I wanted something simple
-> > > but this is probably too simple. OTOH keeping all dead vm_area_structs
-> > > on the list without hooking up a shrinker (additional complexity) does
-> > > not sound too appealing either. WDYT about time domain throttling to
-> > > limit draining the list to say once per second like this:
-> > >
-> > > void vm_area_free(struct vm_area_struct *vma)
-> > > {
-> > >        struct mm_struct *mm = vma->vm_mm;
-> > >        bool drain;
-> > >
-> > >        free_anon_vma_name(vma);
-> > >
-> > >        spin_lock(&mm->vma_free_list.lock);
-> > >        list_add(&vma->vm_free_list, &mm->vma_free_list.head);
-> > >        mm->vma_free_list.size++;
-> > > -       drain = mm->vma_free_list.size > VM_AREA_FREE_LIST_MAX;
-> > > +       drain = jiffies > mm->last_drain_tm + HZ;
-> > >
-> > >        spin_unlock(&mm->vma_free_list.lock);
-> > >
-> > > -       if (drain)
-> > > +       if (drain) {
-> > >               drain_free_vmas(mm);
-> > > +             mm->last_drain_tm = jiffies;
-> > > +       }
-> > > }
-> > >
-> > > Ultimately we want to prevent very frequent call_rcu() calls, so
-> > > throttling in the time domain seems appropriate. That's the simplest
-> > > way I can think of to address your concern about a quick spike in VMA
-> > > freeing. It does not place any restriction on the list size and we
-> > > might have excessive dead vm_area_structs if after a large spike there
-> > > are no vm_area_free() calls but I don't know if that's a real problem,
-> > > so not sure we should be addressing it at this time. WDYT?
-> >
-> > Just to double-check, we really did try the very frequent call_rcu()
-> > invocations and we really did see a problem, correct?
+On Wed, 2023-01-18 at 17:10 +1100, Andrew Donnellan wrote:
+> From: Russell Currey <ruscur@russell.cc>
 > 
-> Correct. More specifically with CONFIG_RCU_NOCB_CPU=y we saw
-> regressions when a process exits and all its VMAs get destroyed,
-> causing a flood of call_rcu()'s.
+> Currently the max object size is handled in the core secvar code with
+> an
+> entirely OPAL-specific implementation, so create a new max_size() op
+> and
+> move the existing implementation into the powernv platform.  Should
+> be
+> no functional change.
+> 
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> 
+> ---
+> 
+> v3: Change uint64_t type to u64 (mpe)
+> ---
+>  arch/powerpc/include/asm/secvar.h            |  1 +
+>  arch/powerpc/kernel/secvar-sysfs.c           | 17 +++--------------
+>  arch/powerpc/platforms/powernv/opal-secvar.c | 19
+> +++++++++++++++++++
+>  3 files changed, 23 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/secvar.h
+> b/arch/powerpc/include/asm/secvar.h
+> index 8b6475589120..b2cb9bb7c540 100644
+> --- a/arch/powerpc/include/asm/secvar.h
+> +++ b/arch/powerpc/include/asm/secvar.h
+> @@ -20,6 +20,7 @@ struct secvar_operations {
+>  	int (*get_next)(const char *key, u64 *key_len, u64 keybufsize);
+>  	int (*set)(const char *key, u64 key_len, u8 *data, u64
+> data_size);
+>  	ssize_t (*format)(char *buf);
+> +	int (*max_size)(u64 *max_size);
+>  };
+>  
+>  #ifdef CONFIG_PPC_SECURE_BOOT
+> diff --git a/arch/powerpc/kernel/secvar-sysfs.c
+> b/arch/powerpc/kernel/secvar-sysfs.c
+> index d3858eedd72c..031ef37bca99 100644
+> --- a/arch/powerpc/kernel/secvar-sysfs.c
+> +++ b/arch/powerpc/kernel/secvar-sysfs.c
+> @@ -128,27 +128,16 @@ static struct kobj_type secvar_ktype = {
+>  static int update_kobj_size(void)
+>  {
+>  
+> -	struct device_node *node;
+>  	u64 varsize;
+> -	int rc = 0;
+> +	int rc = secvar_ops->max_size(&varsize);
+>  
+> -	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-
+> backend");
+> -	if (!of_device_is_available(node)) {
+> -		rc = -ENODEV;
+> -		goto out;
+> -	}
+> -
+> -	rc = of_property_read_u64(node, "max-var-size", &varsize);
+>  	if (rc)
+> -		goto out;
+> +		return rc;
+>  
+>  	data_attr.size = varsize;
+>  	update_attr.size = varsize;
+>  
+> -out:
+> -	of_node_put(node);
+> -
+> -	return rc;
+> +	return 0;
+>  }
+>  
+>  static int secvar_sysfs_load(void)
+> diff --git a/arch/powerpc/platforms/powernv/opal-secvar.c
+> b/arch/powerpc/platforms/powernv/opal-secvar.c
+> index 623c6839e66c..c9b9fd3730df 100644
+> --- a/arch/powerpc/platforms/powernv/opal-secvar.c
+> +++ b/arch/powerpc/platforms/powernv/opal-secvar.c
+> @@ -122,11 +122,30 @@ static ssize_t opal_secvar_format(char *buf)
+>  	return rc;
+>  }
+>  
+> +static int opal_secvar_max_size(u64 *max_size)
+> +{
+> +	int rc;
+> +	struct device_node *node;
+> +
+> +	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-
+> backend");
 
-Thank you for the reminder, real problem needs solution.  ;-)
+I assume that node could be NULL and this code relies on
+of_device_is_available() and of_node_put() checking for a NULL node
+pointer? Would it be safer just to return -ENODEV if node is NULL?
 
-							Thanx, Paul
+> +	if (!of_device_is_available(node)) {
+> +		rc = -ENODEV;
+> +		goto out;
+> +	}
+> +
+> +	rc = of_property_read_u64(node, "max-var-size", max_size);
+> +
+> +out:
+> +	of_node_put(node);
+> +	return rc;
+> +}
+> +
+>  static const struct secvar_operations opal_secvar_ops = {
+>  	.get = opal_get_variable,
+>  	.get_next = opal_get_next_variable,
+>  	.set = opal_set_variable,
+>  	.format = opal_secvar_format,
+> +	.max_size = opal_secvar_max_size,
+>  };
+>  
+>  static int opal_secvar_probe(struct platform_device *pdev)
 
-> > Although it is not perfect, call_rcu() is designed to take a fair amount
-> > of abuse.  So if we didn't see a real problem, the frequent call_rcu()
-> > invocations might be a bit simpler.
