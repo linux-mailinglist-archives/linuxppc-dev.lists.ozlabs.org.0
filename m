@@ -2,54 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1596737D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 13:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDB0673801
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 13:13:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyLtS4SPMz3fGc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 23:05:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyM3T2jBDz3fCZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 23:13:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=Qzda+1FK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 122 seconds by postgrey-1.36 at boromir; Thu, 19 Jan 2023 23:05:04 AEDT
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=joel.stan@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=Qzda+1FK;
+	dkim-atps=neutral
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyLsr3gC1z3c6F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 23:05:04 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-287-xAOJsk7xO263fOVjhcvUfw-1; Thu, 19 Jan 2023 12:02:54 +0000
-X-MC-Unique: xAOJsk7xO263fOVjhcvUfw-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 19 Jan
- 2023 12:02:53 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Thu, 19 Jan 2023 12:02:53 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Athira Rajeev' <atrajeev@linux.vnet.ibm.com>, "acme@kernel.org"
-	<acme@kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>
-Subject: RE: [PATCH V2] tools/perf/tests: Fix string substitutions in build id
- test
-Thread-Topic: [PATCH V2] tools/perf/tests: Fix string substitutions in build
- id test
-Thread-Index: AQHZK/ml5s18h1FtXky26yQzQ7zuR66lntwQ
-Date: Thu, 19 Jan 2023 12:02:53 +0000
-Message-ID: <17bd5aca40164637bfbd47da34811a13@AcuMS.aculab.com>
-References: <20230119113054.31742-1-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230119113054.31742-1-atrajeev@linux.vnet.ibm.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyM2V3zSyz3c6R
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 23:12:32 +1100 (AEDT)
+Received: by mail-ej1-x62a.google.com with SMTP id mg12so5141203ejc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 04:12:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qGf+yAWhycXycQ2Yp6dQqCBU9N9hm20/EcONeRGAQM4=;
+        b=Qzda+1FKoXwkc+DVexBSLmX3kpJyS4pGgoxta9rF6HUvlniX9CFQ0NujiyQqHenlwD
+         VWgQzZ4lKzu7DrGLeRPZouPjFt/LNwc3bjWWVXWOJvbFqCT0R4oIuHGbQoMPt7H/hkpc
+         oX88ALAxyi6NQwb9XIy+b195Dkq5Ny4ytnFnU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qGf+yAWhycXycQ2Yp6dQqCBU9N9hm20/EcONeRGAQM4=;
+        b=QhtaiEt+QU4KNU+XZXftf5JPM8MRXyne04grV5vMX3y0yhE1aWzpsD7RHrOrJ1q8FO
+         riy1qy9TqXogPo4tFm93Wxg9bkxckJQqm5jXwxdSCnugbI8A58ijpKAPpZgjBuzh48ZT
+         Ywls+VEv2m5p3v/tCadB4aNT25KXeddFQbcYXWJayo1Vy6GquovRTIV1pPcxyWDnaehc
+         29y6CNFCo15nMwS9N8+DJos8FMVvm+BlHaV4PDfVA7A+x9RKJB8BUE95Y+VA4PJUDRti
+         XjaqrQpvSkvq74YQfgNpkhRfNOG6h1GmksDKFS05xsnK4txLaq3WXsX579Lnknr2Cr4h
+         ZVZg==
+X-Gm-Message-State: AFqh2koRIbI1HoEqix9Up5fZZ1E9sNUSzfXQVOD1+fMZvyZaWN28hFkQ
+	WHV89OsdnR1Oj+42V12Icut3eVk2edQWzsXFuMU=
+X-Google-Smtp-Source: AMrXdXuaaRjSRIZeHJmKIB51qInDkVHFrYZOAFXeUDCJnfTGjJl17j/VxbyTUaODPU5dae5QOWV0oF7MXmTGWBK2s6Q=
+X-Received: by 2002:a17:906:8e18:b0:877:696c:e42c with SMTP id
+ rx24-20020a1709068e1800b00877696ce42cmr249026ejc.651.1674130345698; Thu, 19
+ Jan 2023 04:12:25 -0800 (PST)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20230119082250.151485-1-masahiroy@kernel.org>
+In-Reply-To: <20230119082250.151485-1-masahiroy@kernel.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Thu, 19 Jan 2023 12:12:13 +0000
+Message-ID: <CACPK8XeGsWN+2L57=dfQWOTSo8df7_qrxhwvV4Ho0rkhV=0vSw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: remove checks for binutils older than 2.25
+To: Masahiro Yamada <masahiroy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,27 +70,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "irogers@google.com" <irogers@google.com>, "ak@linux.intel.com" <ak@linux.intel.com>, "rnsastry@linux.ibm.com" <rnsastry@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "james.clark@arm.com" <james.clark@arm.com>, "namhyung@kernel.org" <namhyung@kernel.org>, "disgoel@linux.ibm.com" <disgoel@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogQXRoaXJhIFJhamVldg0KPiBTZW50OiAxOSBKYW51YXJ5IDIwMjMgMTE6MzENCi4uLg0K
-PiBkaWZmIC0tZ2l0IGEvdG9vbHMvcGVyZi90ZXN0cy9zaGVsbC9idWlsZGlkLnNoIGIvdG9vbHMv
-cGVyZi90ZXN0cy9zaGVsbC9idWlsZGlkLnNoDQo+IGluZGV4IGFhZjg1MTEwOGNhMy4uNDNlNDNl
-MTMxYmU3IDEwMDc1NQ0KPiAtLS0gYS90b29scy9wZXJmL3Rlc3RzL3NoZWxsL2J1aWxkaWQuc2gN
-Cj4gKysrIGIvdG9vbHMvcGVyZi90ZXN0cy9zaGVsbC9idWlsZGlkLnNoDQo+IEBAIC02Niw3ICs2
-Niw3IEBAIGNoZWNrKCkNCj4gIAllc2FjDQo+ICAJZWNobyAiYnVpbGQgaWQ6ICR7aWR9Ig0KPiAN
-Cj4gLQlsaW5rPSR7YnVpbGRfaWRfZGlyfS8uYnVpbGQtaWQvJHtpZDowOjJ9LyR7aWQ6Mn0NCj4g
-KwlsaW5rPSR7YnVpbGRfaWRfZGlyfS8uYnVpbGQtaWQvJChlY2hvICR7aWR9fGN1dCAtYyAxLTIp
-LyQoZWNobyAke2lkfXxjdXQgLWMgMy0pDQo+ICAJZWNobyAibGluazogJHtsaW5rfSINCg0KVGhh
-dCBpcyBob3JyaWQsIHdoeSBub3QganVzdCB1c2UgdmFsaWQgc2hlbGwgc3Vic3RpdHV0aW9ucywg
-ZWc6DQoJaWRfZmlsZT0ke2lkIz8/fQ0KCWlkX2Rpcj0ke2lkJSRpZF9maWxlfQ0KCWxpbms9JGJ1
-aWxkX2lkX2Rpci8uYnVpbGQtaWQvJGlkX2Rpci8kaWRfZmlsZQ0KDQouLi4NCj4gLQljaGVjayAk
-e0A6IC0xfQ0KPiArCWNoZWNrICRsYXN0DQoNClNpbmNlIHRoaXMgaXMgdGhlIGVuZCBvZiB0aGUg
-c2hlbGwgZnVuY3Rpb24geW91IGNhbiBhdm9pZCB0aGUgZXZhbA0KYnkgZG9pbmc6DQoJc2hpZnQg
-JCgoJCMgLSAxKSkNCgljaGVjayAkMQ0Kb3IgbWF5YmU6DQoJYXJncz0iJCoiDQoJY2hlY2sgJHth
-cmdzIyMqIH0NCg0KVGhvc2Ugc2hvdWxkIGJlIG9rIGluIGFsbCBwb3NpeCBzaGVsbHMuDQoNCglE
-YXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91
-bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5
-NzM4NiAoV2FsZXMpDQo=
+On Thu, 19 Jan 2023 at 08:24, Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Commit e4412739472b ("Documentation: raise minimum supported version of
+> binutils to 2.25") allows us to remove the checks for old binutils.
+>
+> There is no more user for ld-ifversion. Remove it as well.
 
+ppc kernels fail to link with 2.27 under some configurations:
+
+ https://github.com/linuxppc/issues/issues/388
+
+We may want to use ld-ifversion to exclude that version.
+
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  arch/powerpc/Makefile     | 22 +---------------------
+>  arch/powerpc/lib/Makefile |  2 +-
+>  scripts/Makefile.compiler |  4 ----
+>  3 files changed, 2 insertions(+), 26 deletions(-)
+>
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index dc4cbf0a5ca9..3d265b16c0ae 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) += 64
+>  machine-$(CONFIG_CPU_LITTLE_ENDIAN) += le
+>  UTS_MACHINE := $(subst $(space),,$(machine-y))
+>
+> -# XXX This needs to be before we override LD below
+> -ifdef CONFIG_PPC32
+> -KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+> -else
+> -ifeq ($(call ld-ifversion, -ge, 22500, y),y)
+> +ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+>  # Have the linker provide sfpr if possible.
+>  # There is a corresponding test in arch/powerpc/lib/Makefile
+>  KBUILD_LDFLAGS_MODULE += --save-restore-funcs
+>  else
+>  KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+>  endif
+> -endif
+>
+>  ifdef CONFIG_CPU_LITTLE_ENDIAN
+>  KBUILD_CFLAGS  += -mlittle-endian
+> @@ -389,8 +384,6 @@ vdso_prepare: prepare0
+>                 $(build)=arch/powerpc/kernel/vdso include/generated/vdso64-offsets.h)
+>  endif
+>
+> -archprepare: checkbin
+> -
+>  archheaders:
+>         $(Q)$(MAKE) $(build)=arch/powerpc/kernel/syscalls all
+>
+> @@ -405,16 +398,3 @@ else
+>         $(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
+>  endif
+>  endif
+> -
+> -PHONY += checkbin
+> -# Check toolchain versions:
+> -# - gcc-4.6 is the minimum kernel-wide version so nothing required.
+> -checkbin:
+> -       @if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
+> -               "x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
+> -               echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
+> -               echo 'in some circumstances.' ; \
+> -               echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
+> -               echo -n '*** Please use a different binutils version.' ; \
+> -               false ; \
+> -       fi
+> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+> index 4de71cbf6e8e..c53618c34b70 100644
+> --- a/arch/powerpc/lib/Makefile
+> +++ b/arch/powerpc/lib/Makefile
+> @@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)        += error-inject.o
+>  # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+>  # so it is only needed for modules, and only for older linkers which
+>  # do not support --save-restore-funcs
+> -ifeq ($(call ld-ifversion, -lt, 22500, y),y)
+> +ifndef CONFIG_LD_IS_BFD
+>  extra-$(CONFIG_PPC64)  += crtsavres.o
+>  endif
+>
+> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> index 3d8adfd34af1..ad07a4efc253 100644
+> --- a/scripts/Makefile.compiler
+> +++ b/scripts/Makefile.compiler
+> @@ -72,7 +72,3 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
+>  # ld-option
+>  # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
+>  ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
+> -
+> -# ld-ifversion
+> -# Usage:  $(call ld-ifversion, -ge, 22252, y)
+> -ld-ifversion = $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && echo $(3) || echo $(4))
+> --
+> 2.34.1
+>
