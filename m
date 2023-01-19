@@ -1,72 +1,111 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9E967415E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 19:54:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507B96741A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 19:58:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyWyd47j8z3fHX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 05:54:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyX2l0w3lz3fJ9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 05:58:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=S6oQkRuW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j4FA3kIe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1130; helo=mail-yw1-x1130.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=S6oQkRuW;
-	dkim-atps=neutral
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyWxl4cGNz308w
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 05:54:03 +1100 (AEDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-4d19b2686a9so40574157b3.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 10:54:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Hbmn5N3c+7Gw/65T8JMoIPDAauVRxveWrxDyVKiAmA=;
-        b=S6oQkRuWnpsm0oT4EY6oDOfbr3SfXlxJH7te7SWEg4g+g+QkCCIHJyVvM61rjUg1bK
-         HkfEMCh9wK5lUJodmfbK7ainv+lY3roQVUMfL/HPP08y9A44w50DedT2R8+d8v6OsM78
-         F1TH/xLu7+OsivESTUy5pd8reCLyw5qIvwYjlAer3MZE9HacN6KiXvaYX56dy/vQTL6m
-         sMkWfVw4nCd+YFJpTFuBVoDSt0VVx0yiFR6Ta24SRikrOGCNJ6oWFq04ugwVJaexrHis
-         KMRX04ZxKbH2WCPyNDn4xag8MnSxGtMyIm49/3pOUlsPxEuRxCjxT98j/0u+1IwkNR3v
-         eyrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Hbmn5N3c+7Gw/65T8JMoIPDAauVRxveWrxDyVKiAmA=;
-        b=blZWH8kGsmvvYw1Q3GaCGDkkkjGVDyY/x7NBDmQQvha8TrJRQVtMsyfJMxgssh6Nio
-         lM4Zm3v9e7OjRsDV84cRhdLakGvSDhYlVPVtziAToC7qxErcBv2+whHvT2jc5BtZ7uhy
-         c4CsEMuSThjZTX8cvjPBk8axXtrivrMF5RMtcL/QSDppi6QB9aE5o6+/wGtdDrd2cHVv
-         tfLVZhwbyl1Jx8727YPqypEYTjWYjhGG8/92tk29c56QQEQ6dX0XMe3MTESrsavOfk2q
-         Hqr9rL5bTmOqxhfNHb0E1KTpH7vl5WFSVHLO4daeL9bZEKiYGweeaEb+dyuPQXlrLWoy
-         Gllw==
-X-Gm-Message-State: AFqh2krmaoP04T1V+K8ldM/xHd/CAZoYQ63TUihxauq4OkDPMZFenUdy
-	JG7PUxbiFoRG4mbR3jKnvCusn92YKKcDaoVDSRtcpA==
-X-Google-Smtp-Source: AMrXdXvv2B+4vOLYHk76C7CB+4Wx7e94nPDtbp7xYrGWt3A23raxsvG0sNfvN79p2SmRHXJoa8xn07dPoTTQDNsV7Bk=
-X-Received: by 2002:a81:1d2:0:b0:433:f1c0:3f1c with SMTP id
- 201-20020a8101d2000000b00433f1c03f1cmr1593029ywb.438.1674154439858; Thu, 19
- Jan 2023 10:53:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyX1q4wHVz3fFF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 05:57:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j4FA3kIe;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NyX1q4TrMz4x1D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 05:57:35 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4NyX1q4RH1z4xN4; Fri, 20 Jan 2023 05:57:35 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j4FA3kIe;
+	dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NyX1q1QVvz4x1D
+	for <linuxppc-dev@ozlabs.org>; Fri, 20 Jan 2023 05:57:34 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30JIcucp001352;
+	Thu, 19 Jan 2023 18:57:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=bQ+8ETPMLvG2JhityiSMWZl7T5JiGI7yykBhZXOaFMc=;
+ b=j4FA3kIe9X6HvmrZrhNd75R2JSUCZFPVdxL+FEm0b50+24wZwqhKvwxb/uU2H0Np86p9
+ 8DbgoKzXcRWr7VEVrmTy9GcstaXIWct3372tlsd7AVE1YSMdA8EQC+6Q5TCH1NX2NuRf
+ BO0Jz6LdVHf7mi2sJwC/VNGbS+V+DXroqn2FPIYL2AEthY66cBE46tRdZRzXI9ntgM3z
+ u5IoYbJO0EXjzsgl3v8h03Spc1HrD0nN8D13yo+7yGmNwSQ/LvQvYWZvh1scYlF4U3w3
+ 1I4el9NApP5rbSBE2n2IfPOTMqssBXnISL8MK2xIJ6qzmPoSklfPwUb8HDzbBP3OlRN1 qQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7ah5sfty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 18:57:22 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30JIdC8x002836;
+	Thu, 19 Jan 2023 18:57:22 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7ah5sfth-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 18:57:21 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30J6maFv023698;
+	Thu, 19 Jan 2023 18:57:20 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16q2cy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 18:57:20 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30JIvGbt44106020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Jan 2023 18:57:16 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5E8B320049;
+	Thu, 19 Jan 2023 18:57:16 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B357D20040;
+	Thu, 19 Jan 2023 18:57:15 +0000 (GMT)
+Received: from [9.179.13.66] (unknown [9.179.13.66])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Jan 2023 18:57:15 +0000 (GMT)
+Message-ID: <6d683365-d653-2c47-4a24-a311c62a5eec@linux.ibm.com>
+Date: Thu, 19 Jan 2023 19:57:15 +0100
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-18-surenb@google.com>
- <Y8a734ufLZjPHgtT@dhcp22.suse.cz> <CAJuCfpGoYaF2-z7FCiN4X8gEGD6nAwnQC+=n3tUHuMWZa7zx8Q@mail.gmail.com>
- <Y8e6lm76fIoT0603@dhcp22.suse.cz> <CAJuCfpHtV5xEo97X62uR=LXjK6wQMJXhhV2OxXexTfyudGOptw@mail.gmail.com>
- <Y8hls4MH353ZnlQu@dhcp22.suse.cz> <CAJuCfpF3j5Sx+D5p5QPCHP4jcWZUiYm=FfUNYhc6QyHZQvDgpw@mail.gmail.com>
- <Y8kN3stHeEyAoB+D@dhcp22.suse.cz>
-In-Reply-To: <Y8kN3stHeEyAoB+D@dhcp22.suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 19 Jan 2023 10:53:48 -0800
-Message-ID: <CAJuCfpHXvm7XxivP-E1tm5M=E9y9F1W=avDAiDBSTLBNmTcn4A@mail.gmail.com>
-Subject: Re: [PATCH 17/41] mm/mmap: move VMA locking before
- anon_vma_lock_write call
-To: Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [PATCH v7 3/8] powerpc/crash: update kimage_arch struct
+Content-Language: fr
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        mpe@ellerman.id.au
+References: <20230115150206.431528-1-sourabhjain@linux.ibm.com>
+ <20230115150206.431528-4-sourabhjain@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20230115150206.431528-4-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JU03wccsU9OIqOajbUhLFn-FOgVkvE4j
+X-Proofpoint-GUID: tuH0y54vJLbLJit6awiMIO0WLjBzR0Gj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-19_12,2023-01-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,36 +117,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.ne
- t
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, hbathini@linux.ibm.com, bhe@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 19, 2023 at 1:31 AM Michal Hocko <mhocko@suse.com> wrote:
->
-> On Wed 18-01-23 13:48:13, Suren Baghdasaryan wrote:
-> > On Wed, Jan 18, 2023 at 1:33 PM Michal Hocko <mhocko@suse.com> wrote:
-> [...]
-> > > So it will become:
-> > > Move VMA flag modification (which now implies VMA locking) before
-> > > vma_adjust_trans_huge() to ensure the modifications are done after VMA
-> > > has been locked. Because vma_adjust_trans_huge() modifies the VMA and such
-> > > modifications should be done under VMA write-lock protection.
-> > >
-> > > which is effectivelly saying
-> > > vma_adjust_trans_huge() modifies the VMA and such modifications should
-> > > be done under VMA write-lock protection so move VMA flag modifications
-> > > before so all of them are covered by the same write protection.
-> > >
-> > > right?
-> >
-> > Yes, and the wording in the latter version is simpler to understand
-> > IMO, so I would like to adopt it. Do you agree?
->
-> of course.
+On 15/01/2023 16:02:01, Sourabh Jain wrote:
+> Add a new member "fdt_index" to kimage_arch struct to hold the index of
+> the FDT (Flattened Device Tree) segment in the kexec segment array.
+> 
+> Having direct access to FDT segment will help arch crash hotplug handler
+> to avoid looping kexec segment array to identify the FDT segment index
+> for every FDT update on hotplug events.
+> 
+> The fdt_index is initialized during the kexec load for both kexec_load and
+> kexec_file_load system call.
+> 
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kexec.h  |  7 +++++++
+>  arch/powerpc/kexec/core_64.c      | 27 +++++++++++++++++++++++++++
+>  arch/powerpc/kexec/elf_64.c       |  6 ++++++
+>  arch/powerpc/kexec/file_load_64.c |  5 +++++
+>  4 files changed, 45 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+> index 8090ad7d97d9d..5a322c1737661 100644
+> --- a/arch/powerpc/include/asm/kexec.h
+> +++ b/arch/powerpc/include/asm/kexec.h
+> @@ -103,6 +103,10 @@ void kexec_copy_flush(struct kimage *image);
+>  struct crash_mem;
+>  int update_cpus_node(void *fdt);
+>  int get_crash_memory_ranges(struct crash_mem **mem_ranges);
+> +#if defined(CONFIG_CRASH_HOTPLUG)
+> +int machine_kexec_post_load(struct kimage *image);
+> +#define machine_kexec_post_load machine_kexec_post_load
+> +#endif
+>  #endif
+>  
+>  #if defined(CONFIG_CRASH_DUMP) && defined(CONFIG_PPC_RTAS)
+> @@ -118,6 +122,9 @@ extern const struct kexec_file_ops kexec_elf64_ops;
+>  struct kimage_arch {
+>  	struct crash_mem *exclude_ranges;
+>  
+> +#if defined(CONFIG_CRASH_HOTPLUG)
+> +	int fdt_index;
+> +#endif
+>  	unsigned long backup_start;
+>  	void *backup_buf;
+>  	void *fdt;
+> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+> index 0b292f93a74cc..3d4fe1aa6f761 100644
+> --- a/arch/powerpc/kexec/core_64.c
+> +++ b/arch/powerpc/kexec/core_64.c
+> @@ -77,6 +77,33 @@ int machine_kexec_prepare(struct kimage *image)
+>  	return 0;
+>  }
+>  
+> +#if defined(CONFIG_CRASH_HOTPLUG)
 
-Will update in the next respin. Thanks!
+I think you should add a small function header describing that this
+function is recording the index of the FDT segment for later use.
 
-> --
-> Michal Hocko
-> SUSE Labs
+> +int machine_kexec_post_load(struct kimage *kimage)
+> +{
+> +	int i;
+> +	void *ptr;
+> +	unsigned long mem;
+> +
+> +	/* Mark fdt_index invalid */
+> +	kimage->arch.fdt_index = -1;
+
+Is that really needed?
+This is already done in arch_kexec_kernel_image_probe() called before this
+function, isn't it?
+
+> +
+> +	if (kimage->type != KEXEC_TYPE_CRASH)
+> +		return 0;
+> +
+> +	for (i = 0; i < kimage->nr_segments; i++) {
+> +		mem = kimage->segment[i].mem;
+> +		ptr = __va(mem);
+> +
+> +		if (ptr && fdt_magic(ptr) == FDT_MAGIC) {
+> +			kimage->arch.fdt_index = i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +#endif
+> +
+>  /* Called during kexec sequence with MMU off */
+>  static notrace void copy_segments(unsigned long ind)
+>  {
+> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> index eeb258002d1e0..2a17f171661f1 100644
+> --- a/arch/powerpc/kexec/elf_64.c
+> +++ b/arch/powerpc/kexec/elf_64.c
+> @@ -123,6 +123,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	kbuf.buf_align = PAGE_SIZE;
+>  	kbuf.top_down = true;
+>  	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+> +
+> +#if defined(CONFIG_CRASH_HOTPLUG)
+> +	image->arch.fdt_index = image->nr_segments;
+
+I'm sorry, I'm not familliar with that code, could you explain why
+fdt_index has to be assigned here, and to that value?
+
+> +#endif
+> +	kbuf.memsz = fdt_totalsize(fdt);
+> +
+>  	ret = kexec_add_buffer(&kbuf);
+>  	if (ret)
+>  		goto out_free_fdt;
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 9bc70b4d8eafc..725f74d1b928c 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -1153,6 +1153,11 @@ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+>  		return ret;
+>  	}
+>  
+> +#if defined(CONFIG_CRASH_HOTPLUG)
+> +	/* Mark fdt_index invalid */
+> +	image->arch.fdt_index = -1;
+> +#endif
+> +
+>  	return kexec_image_probe_default(image, buf, buf_len);
+>  }
+>  
+
