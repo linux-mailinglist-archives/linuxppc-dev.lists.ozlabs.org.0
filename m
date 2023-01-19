@@ -2,75 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDAE67301F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 05:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44042673137
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 06:32:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ny8g94Qv4z3fCS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 15:25:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyB9P0Yr3z3fDK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 16:32:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WZDUjfOL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aGu1kj3N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WZDUjfOL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aGu1kj3N;
 	dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ny8fF6Dc5z3c7d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 15:24:19 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id k13so1248816plg.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jan 2023 20:24:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c1J7vuOigOymY1Zk38Z4JeTgNz+j/oREHGhmGUsHx/8=;
-        b=WZDUjfOLPsSuFKt/G39tLSbM/WFTPs7WukHsli7BbMY9RzqZl6rMnrLDVXibgONhry
-         djMp0q12Qm8cDRHYTlSDHiDDtOR2lrDlAybOJVmnJks/ZHqOQL9VXE2eBoJZAahlTbvs
-         rusBqUT/CMizS3EaWLfbxmgu6Po0I2w05ZQAN4eqq3IbKLykiU/5zWkQSbb1p1hYj7TQ
-         La8n5Z+SvnWryMnobOTU3UQV+wCiyvvyK2cdyGBxONGIULOFdREjZVVrqQLCFU1F3lsr
-         n/QHvaimR4CBSjxB7TJuT5hwcRhRaBKXp2zrSJV6m4yE+KnjyNP/AYt80HWDtVt+zOB2
-         fa1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=c1J7vuOigOymY1Zk38Z4JeTgNz+j/oREHGhmGUsHx/8=;
-        b=P15RMF6Y2p01IO8CWjZ3ycHpK3ojI652Ibkzz9syKjf+87pfkiVGv5jKqUw4aVPjg6
-         2RfEfGfxTKOgg+IoLHQwcsy4JIjQ+vB04y1kFp0rUrqnOmUqJ/xrKWZFY+Z1XrhHP/ip
-         R8Aqx2ONyFgoRS9cFGtyi2XuZPc0h18qhBdYx0j8fjIO7jqKCWBHKOwobKldCrP6y5iM
-         opaQACsZivQDaGMmocTC0Cn6Sr1rrXGHNNB/bKarbWlC9h3wV9Ysv1VW7Fr9h+S2qL8H
-         0Ta23B0mnorvYPKEgTs5XLRg5RzxVwFdWjOLfBUjTlsjZ4PUWURviq/2tpYQsEqoR1ST
-         NNsA==
-X-Gm-Message-State: AFqh2kouoPJFvyKgljVXU/JSviNAlw+AVN51MrCT6/qeH6EO9MQlS+CY
-	QNbVMh9Zs6F53x+9khj/AIE=
-X-Google-Smtp-Source: AMrXdXuKZidOPo/a2pzghQNLOHD10FYNqkFh/Sf6FufPl/1jnSobgpJ6H0O40d0XuF6uZUnDLidggw==
-X-Received: by 2002:a05:6a20:7a83:b0:b8:eaee:54cc with SMTP id u3-20020a056a207a8300b000b8eaee54ccmr6174042pzh.54.1674102256049;
-        Wed, 18 Jan 2023 20:24:16 -0800 (PST)
-Received: from localhost (193-116-102-45.tpgi.com.au. [193.116.102.45])
-        by smtp.gmail.com with ESMTPSA id a82-20020a621a55000000b00587c11bc925sm19655163pfa.168.2023.01.18.20.22.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 20:24:15 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jan 2023 14:22:52 +1000
-Message-Id: <CPVVOWQ6SE2S.NQ3R9R77MFKI@bobo>
-Subject: Re: [PATCH v6 3/5] lazy tlb: shoot lazies, non-refcounting lazy tlb
- mm reference handling scheme
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nadav Amit" <nadav.amit@gmail.com>
-X-Mailer: aerc 0.13.0
-References: <20230118080011.2258375-1-npiggin@gmail.com>
- <20230118080011.2258375-4-npiggin@gmail.com>
- <5F3590B8-3F25-4EFB-BE3A-D32AAAC0B2F4@gmail.com>
-In-Reply-To: <5F3590B8-3F25-4EFB-BE3A-D32AAAC0B2F4@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyB8R3kp4z30CT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 16:32:07 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30J30woH014235
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=4Yshp2KAXyhcb1OV9rTr+n+3vLfFkFfWdhZ3CLdLfjU=;
+ b=aGu1kj3NWHdFDPor5oEXLxTAg8TtrZmxkjRUJ5gLFvwDsPT6TSq1KCQGsfMRZLejTpIj
+ JM+uxYQ+OUCqfndytQAG7ybnOBfuHhV1YIvdrxSyK9j8aW9biE/RlkR/ZV69f0udZOxr
+ NASuDd9QEESd0Z0zIio2ZP5/PPPGkcIMLNA58/T9HCCN0eD+kgASV+BUycuD/F1p6/MM
+ HfOEW8WMpZ3GoKkqLig3sVq7nh4OZK2Ezeqq6kRkLYjC1MeRq3UJhasJ4CnrPdb/VB2M
+ bBmlDZ1+iA5AJq1OCc5Lr3hO5uY3FKIteog1ZRke6ERzzff/GJtJDQvi7HcXjaXDFmcn mw== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6fp773qv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:04 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30IE0De1023694
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16p6b8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:02 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30J5W02Q46072260
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:00 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 056D120040
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:00 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E3EB20043
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:31:59 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:31:59 +0000 (GMT)
+Received: from nicholasmvm.. (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C8418600E0;
+	Thu, 19 Jan 2023 16:31:57 +1100 (AEDT)
+From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc: Implement arch_within_stack_frames
+Date: Thu, 19 Jan 2023 05:31:27 +0000
+Message-Id: <20230119053127.17782-1-nicholas@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AiTGPjDhW_-pZkF79yH0rX0owccrNyVP
+X-Proofpoint-ORIG-GUID: AiTGPjDhW_-pZkF79yH0rX0owccrNyVP
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-18_05,2023-01-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=884
+ impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 clxscore=1011 mlxscore=0 malwarescore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,49 +92,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-mm <linux-mm@kvack.org>, Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Jan 19, 2023 at 8:22 AM AEST, Nadav Amit wrote:
->
->
-> > On Jan 18, 2023, at 12:00 AM, Nicholas Piggin <npiggin@gmail.com> wrote=
-:
-> >=20
-> > +static void do_shoot_lazy_tlb(void *arg)
-> > +{
-> > +	struct mm_struct *mm =3D arg;
-> > +
-> > + 	if (current->active_mm =3D=3D mm) {
-> > + 		WARN_ON_ONCE(current->mm);
-> > + 		current->active_mm =3D &init_mm;
-> > + 		switch_mm(mm, &init_mm, current);
-> > + 	}
-> > +}
->
-> I might be out of touch - doesn=E2=80=99t a flush already take place when=
- we free
-> the page-tables, at least on common cases on x86?
->
-> IIUC exit_mmap() would free page-tables, and whenever page-tables are
-> freed, on x86, we do shootdown regardless to whether the target CPU TLB s=
-tate
-> marks is_lazy. Then, flush_tlb_func() should call switch_mm_irqs_off() an=
-d
-> everything should be fine, no?
->
-> [ I understand you care about powerpc, just wondering on the effect on x8=
-6 ]
+Walks the stack when copy_{to,from}_user address is in the stack to
+ensure that the object being copied is entirely within a single stack
+frame.
 
-Now I come to think of it, Rik had done this for x86 a while back.
+Substatially similar to the x86 implementation except using the back
+chain to traverse the stack and identify stack frame boundaries.
 
-https://lore.kernel.org/all/20180728215357.3249-10-riel@surriel.com/
+Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+---
+v2: Rename PARAMETER_SAVE_OFFSET to STACK_FRAME_PARAMS
+    Add definitions of STACK_FRAME_PARAMS for PPC32 and remove dependancy on PPC64
+    Ignore the current stack frame and start with it's parent, similar to x86
 
-I didn't know about it when I wrote this, so I never dug into why it
-didn't get merged. It might have missed the final __mmdrop races but
-I'm not not sure, x86 lazy tlb mode is too complicated to know at a
-glance. I would check with him though.
+v1: https://lore.kernel.org/linuxppc-dev/20221214044252.1910657-1-nicholas@linux.ibm.com/
+---
+ arch/powerpc/Kconfig                   |  1 +
+ arch/powerpc/include/asm/thread_info.h | 36 ++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 
-Thanks,
-Nick
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2ca5418457ed..97ca54773521 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -198,6 +198,7 @@ config PPC
+ 	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
+ 	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
++	select HAVE_ARCH_WITHIN_STACK_FRAMES
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index af58f1ed3952..c5dce5f239c1 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -186,6 +186,42 @@ static inline bool test_thread_local_flags(unsigned int flags)
+ #define is_elf2_task() (0)
+ #endif
+ 
++#if defined(CONFIG_PPC64_ELF_ABI_V1)
++#define STACK_FRAME_PARAMS 48
++#elif defined(CONFIG_PPC64_ELF_ABI_V2)
++#define STACK_FRAME_PARAMS 32
++#elif defined(CONFIG_PPC32)
++#define STACK_FRAME_PARAMS 8
++#endif
++
++/*
++ * Walks up the stack frames to make sure that the specified object is
++ * entirely contained by a single stack frame.
++ *
++ * Returns:
++ *	GOOD_FRAME	if within a frame
++ *	BAD_STACK	if placed across a frame boundary (or outside stack)
++ */
++static inline int arch_within_stack_frames(const void * const stack,
++					   const void * const stackend,
++					   const void *obj, unsigned long len)
++{
++	const void *params;
++	const void *frame;
++
++	params = *(const void * const *)current_stack_pointer + STACK_FRAME_PARAMS;
++	frame = **(const void * const * const *)current_stack_pointer;
++
++	while (stack <= frame && frame < stackend) {
++		if (obj + len <= frame)
++			return obj >= params ? GOOD_FRAME : BAD_STACK;
++		params = frame + STACK_FRAME_PARAMS;
++		frame = *(const void * const *)frame;
++	}
++
++	return BAD_STACK;
++}
++
+ #endif	/* !__ASSEMBLY__ */
+ 
+ #endif /* __KERNEL__ */
+-- 
+2.34.1
+
