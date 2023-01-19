@@ -2,85 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44042673137
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 06:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E51267328D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 08:35:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyB9P0Yr3z3fDK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 16:32:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyDtX2tcCz3fCr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 18:35:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aGu1kj3N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ZPg7krRc;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Uk88ARAj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aGu1kj3N;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ZPg7krRc;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Uk88ARAj;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyB8R3kp4z30CT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 16:32:07 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30J30woH014235
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=4Yshp2KAXyhcb1OV9rTr+n+3vLfFkFfWdhZ3CLdLfjU=;
- b=aGu1kj3NWHdFDPor5oEXLxTAg8TtrZmxkjRUJ5gLFvwDsPT6TSq1KCQGsfMRZLejTpIj
- JM+uxYQ+OUCqfndytQAG7ybnOBfuHhV1YIvdrxSyK9j8aW9biE/RlkR/ZV69f0udZOxr
- NASuDd9QEESd0Z0zIio2ZP5/PPPGkcIMLNA58/T9HCCN0eD+kgASV+BUycuD/F1p6/MM
- HfOEW8WMpZ3GoKkqLig3sVq7nh4OZK2Ezeqq6kRkLYjC1MeRq3UJhasJ4CnrPdb/VB2M
- bBmlDZ1+iA5AJq1OCc5Lr3hO5uY3FKIteog1ZRke6ERzzff/GJtJDQvi7HcXjaXDFmcn mw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6fp773qv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:04 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30IE0De1023694
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:02 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16p6b8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:02 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30J5W02Q46072260
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:00 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 056D120040
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:32:00 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E3EB20043
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:31:59 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 05:31:59 +0000 (GMT)
-Received: from nicholasmvm.. (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyDsb0QRHz3bvZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 18:34:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1674113667; x=1705649667;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=s94IzfBcezUwrrXvkeXbHYzla1KnXTUynqvpSNJ59RI=;
+  b=ZPg7krRccg/FE+GEPGc+CSYdka1Ekk07Px+PQCG0jVm6KFlhWLmdEV4S
+   ULAv+PG6bOsvcafKrg56XCBwXyLKXmVBeYl5nNFl9FThlLK8cjH9AuVs0
+   f/UqL/7gPJUSSxv+DLYenNGCOQ8QSEOzE9n2W/x1fq96+PGTnkM67rhcf
+   rc7Az10AOGhWQPlAc72NIylM3DP/a1HAMeKVVlZ9NyXsiWMdkpoAr42+9
+   GUakXLw75M7U36TM5oz110onqa6xvdc9DDrdTlCqtEnYdFfzyu1T9IEWM
+   SYiH2ijkgqhMhgfJpL+t3dMrkvnmc5akltyjbXSrK7ySPQGSkChYv9lHH
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.97,228,1669071600"; 
+   d="scan'208";a="28520959"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 19 Jan 2023 08:34:20 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Thu, 19 Jan 2023 08:34:20 +0100
+X-PGP-Universal: processed;
+	by tq-pgp-pr1.tq-net.de on Thu, 19 Jan 2023 08:34:20 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1674113660; x=1705649660;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=s94IzfBcezUwrrXvkeXbHYzla1KnXTUynqvpSNJ59RI=;
+  b=Uk88ARAj4LAJjXbqgehHSp08D5NjYOd82SLwdcb7QLhxQf+8l5fULH2w
+   jUlknjpLUxLXfVXgNSyy5NHsb1PYKmH0ePb2/4Gj6EJDVY4rmhWNRvfeo
+   cdNB8BRb0u90yMwcqn9k9UYiTU6IscLDoZiyu93pvDgQWHNc58qN6Cufa
+   /+NMTLS3ZK7xQWxovMebD+2yASNoYNcAYqUHmnsRjnhwRc5iR3yjvslki
+   SF+xxj8HNonlA+sI10ZjcV/rlWx7iaI2UksR2rVC7uX56MqlTdAvTWE5U
+   Aea3vrDVeW1BQW2fLAGgR1dADhYp/qfNMLgIOAW0Gk0vEdbymOdD8PG3g
+   A==;
+X-IronPort-AV: E=Sophos;i="5.97,228,1669071600"; 
+   d="scan'208";a="28520958"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 19 Jan 2023 08:34:19 +0100
+Received: from steina-w.tq-net.de (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C8418600E0;
-	Thu, 19 Jan 2023 16:31:57 +1100 (AEDT)
-From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc: Implement arch_within_stack_frames
-Date: Thu, 19 Jan 2023 05:31:27 +0000
-Message-Id: <20230119053127.17782-1-nicholas@linux.ibm.com>
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 7508A280056;
+	Thu, 19 Jan 2023 08:34:19 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 1/1] ASoC: imx-hdmi: Use dev_err_probe
+Date: Thu, 19 Jan 2023 08:34:16 +0100
+Message-Id: <20230119073416.3064918-1-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AiTGPjDhW_-pZkF79yH0rX0owccrNyVP
-X-Proofpoint-ORIG-GUID: AiTGPjDhW_-pZkF79yH0rX0owccrNyVP
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-18_05,2023-01-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=884
- impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 clxscore=1011 mlxscore=0 malwarescore=0
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301190042
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,88 +95,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, Alexander Stein <alexander.stein@ew.tq-group.com>, NXP Linux Team <linux-imx@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Walks the stack when copy_{to,from}_user address is in the stack to
-ensure that the object being copied is entirely within a single stack
-frame.
+This silences -517 errors and helps figuring out why the device probe
+is deferred.
 
-Substatially similar to the x86 implementation except using the back
-chain to traverse the stack and identify stack frame boundaries.
-
-Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
-v2: Rename PARAMETER_SAVE_OFFSET to STACK_FRAME_PARAMS
-    Add definitions of STACK_FRAME_PARAMS for PPC32 and remove dependancy on PPC64
-    Ignore the current stack frame and start with it's parent, similar to x86
+ sound/soc/fsl/imx-hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v1: https://lore.kernel.org/linuxppc-dev/20221214044252.1910657-1-nicholas@linux.ibm.com/
----
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/include/asm/thread_info.h | 36 ++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2ca5418457ed..97ca54773521 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -198,6 +198,7 @@ config PPC
- 	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
- 	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
- 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
-+	select HAVE_ARCH_WITHIN_STACK_FRAMES
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index af58f1ed3952..c5dce5f239c1 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -186,6 +186,42 @@ static inline bool test_thread_local_flags(unsigned int flags)
- #define is_elf2_task() (0)
- #endif
+diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
+index a780cf5a65ffa..b6cc7e6c2a320 100644
+--- a/sound/soc/fsl/imx-hdmi.c
++++ b/sound/soc/fsl/imx-hdmi.c
+@@ -202,7 +202,7 @@ static int imx_hdmi_probe(struct platform_device *pdev)
+ 	snd_soc_card_set_drvdata(&data->card, data);
+ 	ret = devm_snd_soc_register_card(&pdev->dev, &data->card);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
++		dev_err_probe(&pdev->dev, ret, "snd_soc_register_card failed\n");
+ 		goto fail;
+ 	}
  
-+#if defined(CONFIG_PPC64_ELF_ABI_V1)
-+#define STACK_FRAME_PARAMS 48
-+#elif defined(CONFIG_PPC64_ELF_ABI_V2)
-+#define STACK_FRAME_PARAMS 32
-+#elif defined(CONFIG_PPC32)
-+#define STACK_FRAME_PARAMS 8
-+#endif
-+
-+/*
-+ * Walks up the stack frames to make sure that the specified object is
-+ * entirely contained by a single stack frame.
-+ *
-+ * Returns:
-+ *	GOOD_FRAME	if within a frame
-+ *	BAD_STACK	if placed across a frame boundary (or outside stack)
-+ */
-+static inline int arch_within_stack_frames(const void * const stack,
-+					   const void * const stackend,
-+					   const void *obj, unsigned long len)
-+{
-+	const void *params;
-+	const void *frame;
-+
-+	params = *(const void * const *)current_stack_pointer + STACK_FRAME_PARAMS;
-+	frame = **(const void * const * const *)current_stack_pointer;
-+
-+	while (stack <= frame && frame < stackend) {
-+		if (obj + len <= frame)
-+			return obj >= params ? GOOD_FRAME : BAD_STACK;
-+		params = frame + STACK_FRAME_PARAMS;
-+		frame = *(const void * const *)frame;
-+	}
-+
-+	return BAD_STACK;
-+}
-+
- #endif	/* !__ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
 -- 
 2.34.1
 
