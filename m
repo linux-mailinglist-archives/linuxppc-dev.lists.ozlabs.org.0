@@ -1,69 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04416735A8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 11:36:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 963FB6736E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 12:32:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyJvm3Ckhz3fF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 21:36:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyL7v3TzLz3fCx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 22:32:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fC3fckMC;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hvEphYX/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GjXbyr0l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fC3fckMC;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hvEphYX/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GjXbyr0l;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyJsl5Vc3z3fF1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 21:34:51 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 8B85238002;
-	Thu, 19 Jan 2023 10:34:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1674124488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vYHPclhiQzMVwKCYvpVGD/Ge/1sAj2seFNT67bApWA4=;
-	b=fC3fckMClwX3NNRCLm1z8wmq7HZLuKi7FIkWVJARYfVF0r7NxW3X1p5aCO3f0C0KC7JB5v
-	tp2hJ1D0PimjHSFPbJBQTaqml0SqgqrH6dL5qeyWOntqUAN3YSJO4mboeFfCCwzA1rmTQB
-	JSkZnui+wTJIZzwyVKTg4obkt45OTM4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1674124488;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vYHPclhiQzMVwKCYvpVGD/Ge/1sAj2seFNT67bApWA4=;
-	b=hvEphYX/olY074SeyVLYARyiONJ9mUHoF2F5F1+gmtw+ka3ERQI/il+BpzZ0hRRcFM0om2
-	zabiMC3pgWJiU+Cw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 1C4892C141;
-	Thu, 19 Jan 2023 10:34:47 +0000 (UTC)
-Date: Thu, 19 Jan 2023 11:34:46 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
- disaply code
-Message-ID: <20230119103446.GO16547@kitsune.suse.cz>
-References: <20230119095323.4659-1-msuchanek@suse.de>
- <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyL6v2Gngz3fCL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jan 2023 22:31:18 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30J98TbA008453;
+	Thu, 19 Jan 2023 11:31:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=Da/94z1EIIgc1ICoWUQrExxokPkFGwF0S1kT0Edlip8=;
+ b=GjXbyr0l6OeT92YEcur3MPcxBWmTJHjHYuB4xMcndVmtikWAw0GmwNlYPquMsXGX8bBG
+ 1zShvTMzW3uzIuMzyw1CM/SmCtf8+V2IZT4EJRtCC3sepLkxNdd2Ydd8hWd8mh/gbwmx
+ blldf8ed71/muY3OgOchysPNQC93GR9/noC8tbVm8AWKnxeQ/uBQkP0fS4L5hMBywVDg
+ HF1xKoX7e75TjHEue+6jDIgJA67A6j/YnHIrVKn2+nIAaXyRq7N4GbbiWKbEGINP/aVu
+ fOzwoHWKjOiZ36BjXLBV1LbGtN4r0+L6KugpYqopCh/mHyu2xcHG1ZiWq6Qq9r+vRGH7 yQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6jc01ww5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 11:31:04 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30JBHUpx023169;
+	Thu, 19 Jan 2023 11:31:03 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n6jc01wvf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 11:31:03 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30J1BZLt017966;
+	Thu, 19 Jan 2023 11:31:01 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3n3m16mt7a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 11:31:01 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30JBUwMP22479320
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Jan 2023 11:30:58 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ECFE82004B;
+	Thu, 19 Jan 2023 11:30:57 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6223420040;
+	Thu, 19 Jan 2023 11:30:55 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.12.84])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Jan 2023 11:30:55 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH V2] tools/perf/tests: Fix string substitutions in build id test
+Date: Thu, 19 Jan 2023 17:00:54 +0530
+Message-Id: <20230119113054.31742-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I5TBwOIIn1Zp-lARdvBBRs7AvyxFz6yf
+X-Proofpoint-GUID: f9yN66mW9o1UxOspbNH7lwbw4eEIKvlJ
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-19_09,2023-01-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 spamscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,89 +95,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Frank Rowand <frowand.list@gmail.com>
+Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, james.clark@arm.com, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+The perf test named “build id cache operations” skips with below
+error on some distros:
 
-On Thu, Jan 19, 2023 at 10:24:07AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 19/01/2023 � 10:53, Michal Suchanek a �crit�:
-> > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > breaks build because of wrong argument to snprintf. That certainly
-> > avoids the runtime error but is not the intended outcome.
-> > 
-> > Also use standard device name format of-display.N for all created
-> > devices.
-> > 
-> > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > ---
-> > v2: Update the device name format
-> > ---
-> >   drivers/of/platform.c | 12 ++++++++----
-> >   1 file changed, 8 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > index f2a5d679a324..8c1b1de22036 100644
-> > --- a/drivers/of/platform.c
-> > +++ b/drivers/of/platform.c
-> > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
-> >   	if (IS_ENABLED(CONFIG_PPC)) {
-> >   		struct device_node *boot_display = NULL;
-> >   		struct platform_device *dev;
-> > -		int display_number = 1;
-> > +		int display_number = 0;
-> > +		char buf[14];
-> 
-> Can you declare that in the for block where it is used instead ?
+<<>>
+ 78: build id cache operations                                       :
+test child forked, pid 111101
+WARNING: wine not found. PE binaries will not be run.
+test binaries: /tmp/perf.ex.SHA1.PKz /tmp/perf.ex.MD5.Gt3 ./tests/shell/../pe-file.exe
+DEBUGINFOD_URLS=
+Adding 4abd406f041feb4f10ecde3fc30fd0639e1a91cb /tmp/perf.ex.SHA1.PKz: Ok
+build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
+./tests/shell/buildid.sh: 69: ./tests/shell/buildid.sh: Bad substitution
+test child finished with -2
+build id cache operations: Skip
+<<>>
 
-No, there are two for blocks.
+The test script "tests/shell/buildid.sh" uses some of the
+string substitution ways which are supported in bash, but not in
+"sh" or other shells. Above error on line number 69 that reports
+"Bad substitution" is:
 
-> 
-> > +		char *of_display_format = "of-display.%d";
-> 
-> Should be const ?
+<<>>
+link=${build_id_dir}/.build-id/${id:0:2}/${id:2}
+<<>>
 
-Yes, could be.
+Here the way of getting first two characters from id ie,
+${id:0:2} and similarly expressions like ${id:2} is not
+recognised in "sh". So the line errors and instead of
+hitting failure, the test gets skipped as shown in logs.
+So the syntax issue causes test not to be executed in
+such cases. Similarly usage : "${@: -1}" [ to pick last
+argument passed to a function] in “test_record” doesn’t
+work in all distros.
 
-> 
-> >   		int ret;
-> >   
-> >   		/* Check if we have a MacOS display without a node spec */
-> > @@ -556,7 +558,10 @@ static int __init of_platform_default_populate_init(void)
-> >   			if (!of_get_property(node, "linux,opened", NULL) ||
-> >   			    !of_get_property(node, "linux,boot-display", NULL))
-> >   				continue;
-> > -			dev = of_platform_device_create(node, "of-display", NULL);
-> > +			ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
-> > +			if (ret >= sizeof(buf))
-> > +				continue;
-> 
-> 
-> Can you make buf big enough to avoid that ?
+Fix this by using alternative way with "cut" command
+to pick "n" characters from the string. Also fix the usage
+of “${@: -1}” to work in all cases.
 
-It would be a bit fragile that way.
+Another usage in “test_record” is:
+<<>>
+${perf} record --buildid-all -o ${data} $@ &> ${log}
+<<>>
 
-The buffer would have to theoretically accomodate
-"of-display.-9223372036854775808", and any change to the format requires
-recalculating the length, by hand.
+This causes the perf record to start in background and
+Results in the data file not being created by the time
+"check" function is invoked. Below log shows perf record
+result getting displayed after the call to "check" function.
 
-Of course, the memory would run out way before allocating that many
-devices so it's kind of pointless to try and accomodate all possible
-device numbers.
+<<>>
+running: perf record /tmp/perf.ex.SHA1.EAU
+build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
+link: /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30fd0639e1a91cb
+failed: link /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30fd0639e1a91cb does not exist
+test child finished with -1
+build id cache operations: FAILED!
+root@machine:~/athira/linux/tools/perf# Couldn't synthesize bpf events.
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.010 MB /tmp/perf.data.bFF ]
+<<>>
 
-> 
-> And by the way could it be called something else than 'buf' ?
-> 
-> See exemple here : 
-> https://elixir.bootlin.com/linux/v6.1/source/drivers/fsi/fsi-occ.c#L690
+Fix this by redirecting output instead of using “&” which
+starts the command in background.
 
-Yes, that is quite possible. Nonetheless, just like 'ret' generic
-variable names also work.
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+---
+Changelog:
+- Added Acked-by from Ian.
+- Rebased to tmp.perf/urgent of:
+  git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git
 
-Thanks
+ tools/perf/tests/shell/buildid.sh | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-Michal
+diff --git a/tools/perf/tests/shell/buildid.sh b/tools/perf/tests/shell/buildid.sh
+index aaf851108ca3..43e43e131be7 100755
+--- a/tools/perf/tests/shell/buildid.sh
++++ b/tools/perf/tests/shell/buildid.sh
+@@ -66,7 +66,7 @@ check()
+ 	esac
+ 	echo "build id: ${id}"
+ 
+-	link=${build_id_dir}/.build-id/${id:0:2}/${id:2}
++	link=${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/$(echo ${id}|cut -c 3-)
+ 	echo "link: ${link}"
+ 
+ 	if [ ! -h $link ]; then
+@@ -74,7 +74,7 @@ check()
+ 		exit 1
+ 	fi
+ 
+-	file=${build_id_dir}/.build-id/${id:0:2}/`readlink ${link}`/elf
++	file=${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/`readlink ${link}`/elf
+ 	echo "file: ${file}"
+ 
+ 	# Check for file permission of original file
+@@ -130,20 +130,22 @@ test_record()
+ {
+ 	data=$(mktemp /tmp/perf.data.XXX)
+ 	build_id_dir=$(mktemp -d /tmp/perf.debug.XXX)
+-	log=$(mktemp /tmp/perf.log.XXX)
++	log_out=$(mktemp /tmp/perf.log.out.XXX)
++	log_err=$(mktemp /tmp/perf.log.err.XXX)
+ 	perf="perf --buildid-dir ${build_id_dir}"
++	eval last=\${$#}
+ 
+ 	echo "running: perf record $@"
+-	${perf} record --buildid-all -o ${data} $@ &> ${log}
++	${perf} record --buildid-all -o ${data} $@ 1>${log_out} 2>${log_err}
+ 	if [ $? -ne 0 ]; then
+ 		echo "failed: record $@"
+-		echo "see log: ${log}"
++		echo "see log: ${log_err}"
+ 		exit 1
+ 	fi
+ 
+-	check ${@: -1}
++	check $last
+ 
+-	rm -f ${log}
++	rm -f ${log_out} ${log_err}
+ 	rm -rf ${build_id_dir}
+ 	rm -rf ${data}
+ }
+-- 
+2.31.1
+
