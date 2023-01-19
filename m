@@ -1,70 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72941673A07
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 14:24:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF1A673B59
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jan 2023 15:10:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyNdQ1vk3z3fD8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 00:24:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyPf04Lrrz3fFZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 01:10:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=iI07z7Bl;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WFHyP+E9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T8BNOqLe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=iI07z7Bl;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WFHyP+E9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T8BNOqLe;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyNcR723tz3fD8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 00:23:35 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id EA88E5CE24;
-	Thu, 19 Jan 2023 13:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1674134611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7SU3rQc/6KT2OT+CNuvmsp7JyhHd1jX5deqXc9F/9wA=;
-	b=iI07z7Blumf+H21YP2Mkk2ClWk78WRME3oLbSOOFV/v4BOWBRybqtzAwUEGhtJa98uOp+V
-	gdPNXpxmVXBXQ+lJqBacxUrwGxP0sQSKA2q+UbhEy6kQhDJL5VQBDq6hdOZaDmZKHLkeWV
-	LFyHklh8vHoXmn7OKFGEmVz7u1Zbg64=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1674134611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7SU3rQc/6KT2OT+CNuvmsp7JyhHd1jX5deqXc9F/9wA=;
-	b=WFHyP+E9iU1XvgkR3PtCE6TnVRXhNO8Ezz3UaOX08tobrcUA+H73ECL7O37u4RPh4pZa/l
-	LdACLQbVs6HPquBg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 9AFC82C141;
-	Thu, 19 Jan 2023 13:23:31 +0000 (UTC)
-Date: Thu, 19 Jan 2023 14:23:30 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
- disaply code
-Message-ID: <20230119132330.GP16547@kitsune.suse.cz>
-References: <20230119095323.4659-1-msuchanek@suse.de>
- <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
- <57e026bf-c412-0c47-8956-b565894948e0@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <57e026bf-c412-0c47-8956-b565894948e0@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyPd04bKqz3fCN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 01:09:07 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30JD0vMJ006884;
+	Thu, 19 Jan 2023 14:08:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=sppMmu3rcdk3fJabyJfBy8rWMe8A/8f7uXeqHCO9Zck=;
+ b=T8BNOqLeINIuEKbkZfOFilqSmlaQU7FLu7+xwXAAgGUezVeRHsLb0MHjhtR2UZX2WEYe
+ d/6f51PnGi9XL/zNA/LTTkVjif6VKfESyTn+nQCiy8xjyN5HH6Zrw1/AVw1JbxG5NXc5
+ Dyhwl2WdjG6Qh35DgULNCNvUBTPxIq4RWrOnGLp7c1lYxvVIxifai30Oiua2oRal436E
+ fmklkp4TuLNqDKdJsPJIWGMWoT/OM9e2+HXveXF1sR2ZMXz1Yldt8O/BpXsX+L4BV/lA
+ Zno7vEEv+Wawc8cHTsjkd0xIv+7X/mS5aQBaM4D7ifoTf5nQ7fZP8iSCc4zYRsXlIpfN cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n74bmd2hv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 14:08:51 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30JCof01007639;
+	Thu, 19 Jan 2023 14:08:51 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n74bmd2fv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 14:08:51 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30J60klt006229;
+	Thu, 19 Jan 2023 14:08:48 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3n3knfps8u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jan 2023 14:08:48 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30JE8i9p40894962
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Jan 2023 14:08:44 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C89F320043;
+	Thu, 19 Jan 2023 14:08:44 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 887D120040;
+	Thu, 19 Jan 2023 14:08:42 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.12.84])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 19 Jan 2023 14:08:42 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH V2] tools/perf/tests: Fix string substitutions in build id
+ test
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <17bd5aca40164637bfbd47da34811a13@AcuMS.aculab.com>
+Date: Thu, 19 Jan 2023 19:38:40 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A31FA622-379C-4C44-B67A-5C01844F9076@linux.vnet.ibm.com>
+References: <20230119113054.31742-1-atrajeev@linux.vnet.ibm.com>
+ <17bd5aca40164637bfbd47da34811a13@AcuMS.aculab.com>
+To: David Laight <David.Laight@ACULAB.COM>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3-vJfT7wDlAk_ddynyWGfy2yolRRv92A
+X-Proofpoint-GUID: AJWXG5GcFXL7wiJIab2-MfMZVHEkjvEq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-19_09,2023-01-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxscore=0 suspectscore=0 phishscore=0 clxscore=1011
+ mlxlogscore=999 priorityscore=1501 adultscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,104 +101,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
+Cc: "irogers@google.com" <irogers@google.com>, "ak@linux.intel.com" <ak@linux.intel.com>, "rnsastry@linux.ibm.com" <rnsastry@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "james.clark@arm.com" <james.clark@arm.com>, "jolsa@kernel.org" <jolsa@kernel.org>, "namhyung@kernel.org" <namhyung@kernel.org>, "disgoel@linux.ibm.com" <disgoel@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 19, 2023 at 02:11:13PM +0100, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 19.01.23 um 11:24 schrieb Christophe Leroy:
-> > 
-> > 
-> > Le 19/01/2023 à 10:53, Michal Suchanek a écrit :
-> > > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > breaks build because of wrong argument to snprintf. That certainly
-> > > avoids the runtime error but is not the intended outcome.
-> > > 
-> > > Also use standard device name format of-display.N for all created
-> > > devices.
-> > > 
-> > > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > > ---
-> > > v2: Update the device name format
-> > > ---
-> > >    drivers/of/platform.c | 12 ++++++++----
-> > >    1 file changed, 8 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > index f2a5d679a324..8c1b1de22036 100644
-> > > --- a/drivers/of/platform.c
-> > > +++ b/drivers/of/platform.c
-> > > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
-> > >    	if (IS_ENABLED(CONFIG_PPC)) {
-> > >    		struct device_node *boot_display = NULL;
-> > >    		struct platform_device *dev;
-> > > -		int display_number = 1;
-> > > +		int display_number = 0;
-> > > +		char buf[14];
-> > 
-> > Can you declare that in the for block where it is used instead ?
-> > 
-> > > +		char *of_display_format = "of-display.%d";
-> > 
-> > Should be const ?
-> 
-> That should be static const of_display_format[] = then
-
-Why? It sounds completely fine to have a const pointer to a string
-constatnt.
-
-Thanks
-
-Michal
-
-> 
-> > 
-> > >    		int ret;
-> > >    		/* Check if we have a MacOS display without a node spec */
-> > > @@ -556,7 +558,10 @@ static int __init of_platform_default_populate_init(void)
-> > >    			if (!of_get_property(node, "linux,opened", NULL) ||
-> > >    			    !of_get_property(node, "linux,boot-display", NULL))
-> > >    				continue;
-> > > -			dev = of_platform_device_create(node, "of-display", NULL);
-> > > +			ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
-> > > +			if (ret >= sizeof(buf))
-> > > +				continue;
-> > 
-> > 
-> > Can you make buf big enough to avoid that ?
-> > 
-> > And by the way could it be called something else than 'buf' ?
-> > 
-> > See exemple here :
-> > https://elixir.bootlin.com/linux/v6.1/source/drivers/fsi/fsi-occ.c#L690
-> > 
-> > 
-> > > +			dev = of_platform_device_create(node, buf, NULL);
-> > >    			if (WARN_ON(!dev))
-> > >    				return -ENOMEM;
-> > >    			boot_display = node;
-> > > @@ -564,10 +569,9 @@ static int __init of_platform_default_populate_init(void)
-> > >    		}
-> > >    		for_each_node_by_type(node, "display") {
-> > > -			char *buf[14];
-> > >    			if (!of_get_property(node, "linux,opened", NULL) || node == boot_display)
-> > >    				continue;
-> > > -			ret = snprintf(buf, "of-display-%d", display_number++);
-> > > +			ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
-> > >    			if (ret >= sizeof(buf))
-> > >    				continue;
-> > >    			of_platform_device_create(node, buf, NULL);
-> 
-> -- 
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 Nürnberg, Germany
-> (HRB 36809, AG Nürnberg)
-> Geschäftsführer: Ivo Totev
 
 
+> On 19-Jan-2023, at 5:32 PM, David Laight <David.Laight@ACULAB.COM> =
+wrote:
+>=20
+> From: Athira Rajeev
+>> Sent: 19 January 2023 11:31
+> ...
+>> diff --git a/tools/perf/tests/shell/buildid.sh =
+b/tools/perf/tests/shell/buildid.sh
+>> index aaf851108ca3..43e43e131be7 100755
+>> --- a/tools/perf/tests/shell/buildid.sh
+>> +++ b/tools/perf/tests/shell/buildid.sh
+>> @@ -66,7 +66,7 @@ check()
+>> 	esac
+>> 	echo "build id: ${id}"
+>>=20
+>> -	link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
+>> +	link=3D${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/$(echo =
+${id}|cut -c 3-)
+>> 	echo "link: ${link}"
+>=20
+> That is horrid, why not just use valid shell substitutions, eg:
+> 	id_file=3D${id#??}
+> 	id_dir=3D${id%$id_file}
+> 	link=3D$build_id_dir/.build-id/$id_dir/$id_file
+>=20
+> ...
+>> -	check ${@: -1}
+>> +	check $last
+>=20
+> Since this is the end of the shell function you can avoid the eval
+> by doing:
+> 	shift $(($# - 1))
+> 	check $1
+> or maybe:
+> 	args=3D"$*"
+> 	check ${args##* }
+>=20
+> Those should be ok in all posix shells.
+>=20
+> 	David
+>=20
+Hi David,
+
+Thanks for the review. I will post a V3 addressing these changes.
+
+Athira
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, =
+MK1 1PT, UK
+> Registration No: 1397386 (Wales)
 
