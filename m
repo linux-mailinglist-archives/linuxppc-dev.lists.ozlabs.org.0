@@ -1,90 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998D0675A7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 17:52:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C376675A57
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 17:45:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz5Bh3bzNz3fKD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 03:52:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz52L0jSNz3fK1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 03:44:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Ixlujya0;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WN31tjJO;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=iHm2Eq6/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.15.82; helo=eur01-db5-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Ixlujya0;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WN31tjJO;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=iHm2Eq6/;
 	dkim-atps=neutral
-X-Greylist: delayed 514 seconds by postgrey-1.36 at boromir; Sat, 21 Jan 2023 03:50:52 AEDT
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2082.outbound.protection.outlook.com [40.107.15.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz5985wC4z3fGm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 03:50:52 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id 52D4732009D6;
-	Fri, 20 Jan 2023 11:42:12 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 20 Jan 2023 11:42:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm2; t=1674232931; x=
-	1674319331; bh=jw1dFTHWMbTPBEwBqLzDuqZE83d4cDbrYgrQVPokymE=; b=I
-	xlujya0wwTfcg7T0ltt1vAZXBUi6YP1ORWY270uyIrJRztQ7RbySZ4/UN6Pm3BS9
-	DCvKn/ctohEezybyGX5TtcmXKEOvZ5RUGhgysQwoiJ7W48NbaCuH8sCyRJZ5P/IH
-	0suffZHvWW6naDkULYR6+VCtYxQZh5b0GcyohIv+xu2CimghgaQo4P0+kx3HRKG0
-	5kJukeGsB1m9+T/nwq57DfxUi6wDke/qNkq19H9oUu3vE+rz0l5gGbsTwg9PbP0j
-	+LNxUqEjF1O1MKMVlZAsT7CyNw3A2c+2dC8uqW4yA+hSodr7l8V+cDEZ+rRnzyut
-	GTbq3Vymeb11ARBl0kM+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1674232931; x=
-	1674319331; bh=jw1dFTHWMbTPBEwBqLzDuqZE83d4cDbrYgrQVPokymE=; b=W
-	N31tjJO0T85FTAmeCSRP+eO3+w+yjH/0sNfIs+SPGPNLdE7x28aAbUH5mQh4aA3p
-	RiUK88wlwdq2ZFGriV4XvG8eILpj8BAR8VGJzRM6P7F6Bp0YIe5pNzDtX2Y8DVfv
-	Jz0mcG4NWCGg/mOK8pyGUM/wM8r7BoWnHAmcduv3H1GANIGEvNCcygSTm8jkZLX9
-	nhPPU0VYO6+W2E9iBVuX8Oxa99k2PEjZdpZH/jIr7e1ZuOdblF9PRw878NN5G4Zu
-	EphPuuWvnJ80IMwmPIiJ8jK/XowlDphm10cwZF9eNnMa1GMv6pXI/vB2kVocUVZA
-	Ny9rbV934cuEvIPww6PJQ==
-X-ME-Sender: <xms:YsTKY2mZEDhH6N3SoijCV4KsKDyPrsasvSbqKmSdXQ3ejR_QkKzO7w>
-    <xme:YsTKY93Dp4ucdrXU0SYjvrQzXAWV1xewOSstGszrT7HwHxKHP6dAAZZCJpeZyBXHW
-    V8uuxVcmvAODYVjRhw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudduvddgleegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpefgkeeuleegieeghfduudeltdekfeffjeeuleehleefudettddtgfevueef
-    feeigeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:Y8TKY0pLg12qXpNZ0_kJX3Ht6oXkCuYo7xVsWB1oSzlU43GArvILkw>
-    <xmx:Y8TKY6n2pp9EEmaQC20WdZ_lD1C_43tsaXF4X0mKvabz5-ER_MC5YA>
-    <xmx:Y8TKY02gwinU6prhvny08obDwVyISuzg7W1B1DTqSKCljaEKJwd-Nw>
-    <xmx:Y8TKY1KaI9opBZYIbl0NfxBm8UqscM6m_IRFlfofpiyr78uu5MF1IA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id E896EB60086; Fri, 20 Jan 2023 11:42:10 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-85-gd6d859e0cf-fm-20230116.001-gd6d859e0
-Mime-Version: 1.0
-Message-Id: <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
-In-Reply-To: <20221226123630.6515-1-pali@kernel.org>
-References: <20221226123630.6515-1-pali@kernel.org>
-Date: Fri, 20 Jan 2023 17:41:49 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- "Linus Walleij" <linus.walleij@linaro.org>
-Subject: Re: [PATCH RESEND 0/8] Resend LED patches
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz51K3Y85z3c8m
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 03:44:03 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Scr5fd7eiu2ecT52N/QBLDS5wXrxjvHPUYnksXERLVz4AdCuJ1pMYU784VrCtOR53IYti+0SZsnLdUHdv1Mx0OEMU1Sg80Rkx7he7+WYxPtXxlowXc4LtnWq4BH9SZi6S9lgeGJchqFRq6XAR/0w6nvRll0xJdekBID0iE8bvfLIg0jxxq0qZVgnRV+RrzFnG5y16xoQcsKJechqw2PHtILkujwMuleY2sz87V++H6+ZVTXCR5Xt74bdIh0gKV4fUmM7FXdxhf1n+XUwsOkMFnZS6X0er4EW0zfrQrxHK2a0Hz1HTPMtQj8DApxPBYOo+Od3KXt9Mcvt7XbIyRwv7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3e9A/P3A19zEil+QaDcY6Sgruew8nJlQnQeUcdtGTi0=;
+ b=l9yZOvN0wz68Xjlx14IIPcFrsqY02bHkQE06HnIK16quYLAjT/TjPh8JuyvG8fh+mvwcs5rEkSJ8qsPWl2HyOuhWQQOkYUW50L7JbIklyq1IrWiFTUOMvn+ek6QxUBaN2u6dWB8clWIuN96ldLVyY28ZWzRKV9AMKZHTM9o1fWtSnT8UZO3dI9pSJ9KaqxmbNOl62slOzFclnhJrQjdzgCggp97FEIPhjEs/2sPRsUeqLR/AkUTDBvyUeFNd1H/x+Moz56FqxYpHZYtUry58LjTWf+sYFSyoXrqyfrcdWAFBPQ9OD00A+oqhX9fzHK63apST5hSIx6FRxxTwXBM20Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3e9A/P3A19zEil+QaDcY6Sgruew8nJlQnQeUcdtGTi0=;
+ b=iHm2Eq6/tnMsS7vrrPoQmz2M08dwDtkgIR8EpzERjQjkZIHukEcYeDzswJS+PmICHP6cKKauo59PmASp4LDaRlp60rgj59Trl6BiLgbuieliBhMHLpfSyO5E1SQIHUby11aZs4fdyO552On3To9OtdnkJ0ok5kCZIw5kxFpHyoVSIj1EVr6gw8nhHIZ39F0qi3fOsbF5GJWqw2CfZpt2+Teshl95p58ZD8GBG7owVa+SNz+R7LAnsyoGWViXcrKniM1syN0iS50waU4TOqR3xYY3Q80SupAdZla+KxMJ5vpkj+tNTaCuvt61gaTSFtVWDs1QqDcHpzM8SqVuQFuCIg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
+ by DB9PR03MB7581.eurprd03.prod.outlook.com (2603:10a6:10:2c4::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.24; Fri, 20 Jan
+ 2023 16:43:42 +0000
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::6b03:ac16:24b5:9166]) by DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::6b03:ac16:24b5:9166%2]) with mapi id 15.20.6002.027; Fri, 20 Jan 2023
+ 16:43:41 +0000
+Message-ID: <444e3a17-464f-c487-fedb-9c749c5f599e@seco.com>
+Date: Fri, 20 Jan 2023 11:43:29 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH v9 00/10] phy: Add support for Lynx 10G SerDes
+Content-Language: en-US
+To: Vinod Koul <vkoul@kernel.org>
+References: <20221230000139.2846763-1-sean.anderson@seco.com>
+ <0024c780-ff9c-a9d3-8773-28e6b21bcc43@seco.com> <Y8gkMlqfPZic7reK@matsya>
+ <17e428ae-7789-a1ab-3ccd-90b3b9a088f1@seco.com> <Y8pLjLWjv0nJa+ww@matsya>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <Y8pLjLWjv0nJa+ww@matsya>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR10CA0001.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::6) To DB9PR03MB8847.eurprd03.prod.outlook.com
+ (2603:10a6:10:3dd::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR03MB8847:EE_|DB9PR03MB7581:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ec08bbe-f758-4638-2d44-08dafb057cdf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	CpQ941SeTt42V1l22AOMureB+txBVkq3WnbVAOdVKEhvh0HL4In7D90fwetorqeGnuzH0IgY0rcVS+76+80huUkYtnS36xnMT+UOzNwwUx8MvRVFJCRxyRsTPQnwaStY56PrhBQFVHKx5Jwza1Y9AbYgPWuecnUTJKEuK7P4NKHMqebi79el1fl/o9z8bYbTSt5i4zCrN9gAaPwXZHXLtUX4QHA7Wuq3wEbB4VYykXd/OWUmsX8Id0c4jZc/JSv3v+N97il/YM+m5QODRzIywr6FrLbNyaprd0QM7wxFltef3W0tSgTCEoYuJiWVWSczYS6bRJjPatmAG+hMuwX9ht7HXh19jqOB9gAsLnHvIkQPziQKI5PzTxsqvhQ6DXXMASotve+AEX/Z23XzqBBuQ5vyaZxfZXev9TDJpF3tgRTMvlfy6FbTY8IpmRFDGb5Ayi0Pog5WUh2yBTR5Esl925tRimNZK/n8A4da+1McGMGq3DkPCfgoaPUwAPlvY3J07Nj+uhewvp/2EjBwG9byZb9aRMH/3mgZgYxjj+OzKogtsDs23wBKKhlDK61qVlI4DWUNdbquIGh+A0SMWOpHyerwa6wZZ49sctkXN7mwhgVbeExhhnPgIaGpgJ/0NBomzfJrBwAjQzT21H2kjYKpNgaJfpLdT6Q9hIw/TsQc+1HLWNPMUNGGndfPyBR0R2skroKbv/iBb5MB9HFZ+k9Pol8swsiqTaavDlfg4axBumdfwKwJ/ebuMShg5DGomqZ+WYyA8QmocR7v20/KddV9yw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(396003)(346002)(136003)(39850400004)(376002)(451199015)(31686004)(83380400001)(36756003)(478600001)(52116002)(6486002)(31696002)(86362001)(38100700002)(38350700002)(6506007)(26005)(53546011)(4326008)(44832011)(41300700001)(6916009)(6512007)(2616005)(6666004)(186003)(8676002)(2906002)(54906003)(66946007)(66556008)(66476007)(8936002)(5660300002)(7416002)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?TVVzUEY3TGp5RkhYUnZsZFZhVTNlR2R3UHFUbnFoWGdUcG01OEJzVEVKL1dx?=
+ =?utf-8?B?RmxUZWhyYmNRM1puUkRDdmdiSGZMZGVkemtLYmU0WEYwTnBwNTJ2cXlOSnRD?=
+ =?utf-8?B?OU4yMVkxMnBGSjlSd0xndHlORVkwQU90OE1ZUWdlMkRSVjlyTWJYc0VWSkNU?=
+ =?utf-8?B?d0RzY1FVQm11ZG1XaWFEUnVHRXNWUWZ0cDU4OU9uLzJieHpEa2h6ZXV0cXRk?=
+ =?utf-8?B?ZXZ0VFNhWXBld3BTRTg1V1VtRE1lUE5VaWhTRFd4dk9VR3ZvRWQ1UDVma0hh?=
+ =?utf-8?B?c1p2OG00NUw2VVdGeU9WNzhtOHBzOE50ZU1acmh1WVpxcEhxOHU2Znh5RVRx?=
+ =?utf-8?B?MVJ4WnAybFkxck9yb2FNTW1xVkx5T2svUzNucFdNTllRZDNybCt3cmcvMVdh?=
+ =?utf-8?B?V2sxdnRvdkxJVDdSM2M1V0lrWVYwQk52YlhNbll5WWkrK1AxUlpiTFFEbEFO?=
+ =?utf-8?B?a1hTTHdyb2ppNkJ5ZDNxeS82QzQ1Yk5CZ0dtSlRKVENscHd0cHNjT01XcUFh?=
+ =?utf-8?B?NE5pYmJzT3JjZHhKVEVmTE0vOW5jSTQrS0FqTzN3TlpWUnozREZ5MVJ4K0po?=
+ =?utf-8?B?ZE1LM0RaM2NOS21SWStjNTNTRWJhaGJVQThZNGVvMGwvNkZZRGUwWndVdDNZ?=
+ =?utf-8?B?Y1RjeHBXaTMzNzlFZjNEYTJ0N3d0UWc5QlJCYTg2bDY3TnNsQSszRVE0a2Yv?=
+ =?utf-8?B?UkZsKzBZbElFSnU5RForVkdVMXlzUjJVWFljV2RKMlMzbHVpelhkRDlTZnEz?=
+ =?utf-8?B?bFVyQXFBcm53TWc0d2hPdGNMNVFKZU9tbFRyZzBHK1NMRDBiNVRuNitWVENH?=
+ =?utf-8?B?dmpmakYrUTYrTm1naHllT0FiN2hydHh4MHg2NzRWdmpXRjRsUjVjbzdRR0o1?=
+ =?utf-8?B?d29RVG13a0VkdzBPVXUvd1FTQ0c1RFJtMFRSTTJuUmk4Zmt1akw1cjFnZ3JU?=
+ =?utf-8?B?NG9ma0VPNllYMVNoZGZMRk9FSG5SS3NoL01lS1NXWitBTnBtUFhjOEorcTJn?=
+ =?utf-8?B?cUkyVmNHbDlUYmZaMHdBelpPRUFZelVJOXdqUWk5Z2NhdG4vRkRxYTF5MFJ6?=
+ =?utf-8?B?dGF6VjViVUNNQlhTMGwyeWs5MjRPSXR4eTg5R0FnbmhtMWVFSTAyRk1IdVV1?=
+ =?utf-8?B?YmhieUlPbWgzQWJvbmlTUnNhcGtCbldIaXhTampYWXVzYkpmNTBUKzBocFJo?=
+ =?utf-8?B?T2U3WjRTOTZrVUdUVExwU3ZpYjh6cEJGd01LN1hkNTdSNXRoblR3ak1tMjZx?=
+ =?utf-8?B?b1F2WGRveWVrMVh0aVJuQ21FMkhUQ3JFU2hTM1BiZVRlSCtPbE82Mnd6V2Jx?=
+ =?utf-8?B?UkxrQlB5eVl6Z2c1ejBLRFBxM21jUU5wdGZaVHJMVWhNZHp3dVlDTTRPWGNU?=
+ =?utf-8?B?cjJHTmRJb1BBOXc3SXFYcGU1MGRFWHN3Q0FpcWNuYVBJY1Eva2ZqTWlSMHFp?=
+ =?utf-8?B?ZCtUaVFHUGNWY09VRjl0a2ZXaUt5RTVZbnBWZHNWT2FwYlZrUUs0dlZNV3Nu?=
+ =?utf-8?B?Vnl6ZVFwVjkxNHNaZVRoVmR1ekIrcGRkeS8wTEcyZU43cmZTRytyS1pWL2tM?=
+ =?utf-8?B?b2h4MUQ4U2xjNDF2ai93U3pSRGovdDRKSXpVRU1UR2ZyclZKSDdNOWpqK0xS?=
+ =?utf-8?B?VTJiTUE5YUJCcXltZlRTcjRiNTFBYkhrUWdNYVNtTWNObGtGOEV2RjRxWmdC?=
+ =?utf-8?B?Qy9DeDRodWtQVC96SnRmMnEzcmc4OFdwN1liWkJzeTFZU1RhRWd3SWJRdWdZ?=
+ =?utf-8?B?c1ovOGpFUGxLRktnalIyM05obzFDL3VFUC84V1dybytLRytXSEpHWEp0L013?=
+ =?utf-8?B?M1VSckF1RVZaeEdxcFhCRTNJSTZYVFpIblZYT3k4OHh1WUJZdDlEVEFKLy82?=
+ =?utf-8?B?Ujc4eGMyck9HMExoeG81c3NreHY2MjdFUkhsdE9sSU1qY2NRWEVDS3k4cUpV?=
+ =?utf-8?B?Rkc2TEhLVDFacVkwUHdvNUFLbUdxeXVXL3d0RGIxaklxdjllQm16Uis3cWkz?=
+ =?utf-8?B?OWpSd1l4dGZENENFNDdjQkNuanU4NG9wUmxZZnRsNjdmUmtjaFR2dXEwOEk4?=
+ =?utf-8?B?bFAveUM2b2xFVmdueUZvd0F2d0l2eUZ5a05FOGhNZXFrNE9TRnFoZ2sxSnF1?=
+ =?utf-8?B?WmgrNGRhZ29HUWV6b1QydVJ3NzB6dGpzWjRaMjZuRHAzWG1oNG9uanl3SHlE?=
+ =?utf-8?B?eXc9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ec08bbe-f758-4638-2d44-08dafb057cdf
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR03MB8847.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2023 16:43:41.7255
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pK2++aIYazR2bfIIPmi+rUJ8hOTlfgs2WO+mLfYJSM9cyD07hnEva6hMTRwxtJNHmViQ9kNUKefh1cPn0PhBcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR03MB7581
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,82 +132,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, soc@kernel.org, Pavel Machek <pavel@ucw.cz>, linuxppc-dev@lists.ozlabs.org, linux-leds@vger.kernel.org
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 26, 2022, at 13:36, Pali Roh=C3=A1r wrote:
-> Linus Walleij suggested me to send these patches to SoC tree [1]
-> instead. So I'm doing it.
->
-> This patch series contains LED patches which are on the linux-leds
-> mailing list for a long time without any future movement. Could you
-> please handle them here via SoC tree? Thanks.
->
-> [1] -=20
-> https://lore.kernel.org/linux-leds/CACRpkdad6WDo7rGfa4MW8zz0mLXmcPHo+S=
-EC-yLQnRz_kdrryA@mail.gmail.com/
+On 1/20/23 03:06, Vinod Koul wrote:
+> On 19-01-23, 11:22, Sean Anderson wrote:
+>> On 1/18/23 11:54, Vinod Koul wrote:
+>> > On 17-01-23, 11:46, Sean Anderson wrote:
+>> >> 
+>> >> I noticed that this series is marked "changes requested" on patchwork.
+>> >> However, I have received only automated feedback. I have done my best
+>> >> effort to address feedback I have received on prior revisions. I would
+>> >> appreciate getting another round of review before resending this series.
+>> > 
+>> > Looking at the series, looks like kernel-bot sent some warnings on the
+>> > series so I was expecting an updated series for review
+>> > 
+>> 
+>> Generally, multiple reviewers will comment on a patch, even if another
+>> reviewer finds something which needs to be changed. This is a one-line
+>> fix, so I would appreciate getting more substantial feedback before
+>> respinning. Every time I send a new series I have to rebase and test on
+>> hardware. It's work that I would rather do when there is something to be
+>> gained.
+> 
+> I review to apply, if I can apply, I would typically skip this
+> 
 
-I'm going through the backlog of patches sent to soc@kernel.org
-and came across this series. While I don't mind taking these
-patches through the soc tree in principle, it is important
-that this is only done as an exception, and with all the
-relevant parties on Cc.
+It is much more efficient to conduct reviews in parallel. So e.g. the
+bindings can be reviewed at the same time as the driver, at the same
+time as the device tree changes. This way, I can get a series applied
+after max(N, M, ...) revisions, where I would otherwise need N revisions
+to get the bindings ready, M revisions to get the driver ready, etc.
+But what's happening is that I have to make N + M + ... revisions! I am
+very frustrated by your refusal to review anything until there are no
+other comments, since it unnecessarily extends the process of getting a
+series applied. I have been trying to get this series applied since
+June, with nine revisions, and you have reviewed it *twice*! I think the
+driver is in a good state and is ready to be applied (aside from the one
+known issue), but I have no idea if you agree with that assessment.
 
-In particular, the original series that you got no
-feedback for did not include the arch/powerpc/ changes,
-and I would assume those should go through the powerpc
-tree anyway. We have recently decided to take
-risc-v and loongarch dts changes through the soc
-tree, and I don't mind doing it for powerpc as well
-if the powerpc maintainers prefer that, but this is
-not something we have even discussed so far.
-
-I've added everyone to Cc on this mail, but please
-resend the series once more so everyone has the patches,
-and then we can decide who will pick up what.
-
-    Arnd
-
->
-> Marek Beh=C3=BAn (3):
->   leds: turris-omnia: support HW controlled mode via private trigger
->   leds: turris-omnia: initialize multi-intensity to full
->   leds: turris-omnia: change max brightness from 255 to 1
->
-> Pali Roh=C3=A1r (5):
->   dt-bindings: leds: register-bit-led: Add active-low property
->   leds: syscon: Implement support for active-low property
->   powerpc/85xx: DTS: Add CPLD definitions for P1021RDB Combo Board CPL
->     Design
->   dt-bindings: leds: Add cznic,turris1x-leds.yaml binding
->   leds: Add support for Turris 1.x LEDs
->
->  .../testing/sysfs-class-led-driver-turris1x   |  31 ++
->  .../bindings/leds/cznic,turris1x-leds.yaml    | 118 +++++
->  .../bindings/leds/register-bit-led.yaml       |   5 +
->  arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi    |  92 ++++
->  arch/powerpc/boot/dts/fsl/p1020mbg-pc_32b.dts |   6 +-
->  arch/powerpc/boot/dts/fsl/p1020mbg-pc_36b.dts |   6 +-
->  arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts     |  44 +-
->  arch/powerpc/boot/dts/fsl/p1020utm-pc.dtsi    |  37 ++
->  arch/powerpc/boot/dts/fsl/p1020utm-pc_32b.dts |   4 +-
->  arch/powerpc/boot/dts/fsl/p1020utm-pc_36b.dts |   4 +-
->  arch/powerpc/boot/dts/fsl/p1021rdb-pc.dtsi    |  37 ++
->  arch/powerpc/boot/dts/fsl/p1021rdb-pc_32b.dts |   5 +-
->  arch/powerpc/boot/dts/fsl/p1021rdb-pc_36b.dts |   5 +-
->  arch/powerpc/boot/dts/fsl/p2020rdb-pc.dtsi    |  33 +-
->  drivers/leds/Kconfig                          |  10 +
->  drivers/leds/Makefile                         |   1 +
->  drivers/leds/leds-syscon.c                    |  14 +-
->  drivers/leds/leds-turris-1x.c                 | 474 ++++++++++++++++++
->  drivers/leds/leds-turris-omnia.c              |  46 +-
->  19 files changed, 945 insertions(+), 27 deletions(-)
->  create mode 100644=20
-> Documentation/ABI/testing/sysfs-class-led-driver-turris1x
->  create mode 100644=20
-> Documentation/devicetree/bindings/leds/cznic,turris1x-leds.yaml
->  create mode 100644 drivers/leds/leds-turris-1x.c
->
-> --=20
-> 2.20.1
+--Sean
