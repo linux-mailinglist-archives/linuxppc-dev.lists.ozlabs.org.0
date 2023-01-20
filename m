@@ -1,55 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2C8675AED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:16:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60955675B08
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:18:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz5kW2wtsz3fG7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:16:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz5nQ1bPbz3fJt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:18:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kr62xPGX;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Sr1dLPym;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kr62xPGX;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Sr1dLPym;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz5jX6ljSz3cFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:15:28 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6074E62011;
-	Fri, 20 Jan 2023 17:15:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB65C433D2;
-	Fri, 20 Jan 2023 17:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674234924;
-	bh=ZsNYnowGZyqeCXP2rOS1YvAQ7xngouKtFjdbSVyw/TU=;
-	h=Date:From:To:List-Id:Cc:Subject:References:In-Reply-To:From;
-	b=kr62xPGXLSR9sfgMXRHrcfjhe90gzccyj6btrYEMYzgUp+QKNvLdj24R+B3ZwWH/C
-	 yJwgCn14oHWTI5O+2/i5iCBu1IUUa7SRPn4Meo180eQNjMvkx91nT0q5G3hqUo8aL6
-	 pA/GcxGIp38FYQac0yfGTzZl8awTZ78nWVunprv7iJpfinyDspHn+OIpi4T62EKKLQ
-	 F+/e3IH6sPnaCOO7laJ5+XFcyeAsVwl+4ETHzoczwepS7E/BICLOyJdnvdJN6Smt39
-	 SpsNq4ak52j79sqU489MgQhGtWatZqCi25MES8aCN+BrjFOkHd4zwQ+L4R4jOKnl2B
-	 BVHhxL1pfV/jg==
-Date: Fri, 20 Jan 2023 17:15:17 +0000
-From: Lee Jones <lee@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH RESEND 0/8] Resend LED patches
-Message-ID: <Y8rMJcX0cqThKj2N@google.com>
-References: <20221226123630.6515-1-pali@kernel.org>
- <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz5mV2J9Bz2yw6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:18:01 +1100 (AEDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-4ff1fa82bbbso35470527b3.10
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 09:18:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Npkik/bsBJT0k1KE6YTUYiQllKRxNUJ2F3qqLyW5WrU=;
+        b=Sr1dLPymrIvYBGAmoThyqiqqD5ocsi35buZBFr9hs7vTfAgxiHzqszuY12+CvtOfKu
+         RJozfuGS24MHU6L9FOm9qbs+5eNGaCPaqITAVOLQslx4X+R9mY3nN2LalRXUVDbxy8Qt
+         J0dvh7x5wJbEWiEnHQ0ITZKNuMN2D/TgYFGRPWf+q3EXoZpFDqfnQ+Mkat/aDVHQKqpB
+         cqxocq04+BBfQ0/ds8KL+yA5/1PUe2g+ppo5H30MJafeEtK8f7/S2hO7gwVKY83Duzzu
+         YNYro9pYQlzwKdPyPpEqyu60+5EMY6rQU4naHlm8+dyKKFtmt29OruHUXTQcgMIcHHtZ
+         IoHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Npkik/bsBJT0k1KE6YTUYiQllKRxNUJ2F3qqLyW5WrU=;
+        b=wOawwmj8cc2DW8arPMY3FUV+yuSc3VHKCJICu3XQrbaitdcYJga+wqFJu1ZISrfhKG
+         fsSSyG5XReiXiJZFwJax2iKkFzCe7PjYgk7qjOZ2zqGFmx6D72pE7AdDkQevl+ULH6Bk
+         i+99tpFh9DVxmx4T1nm7bFsNvpmOb8PF5zCsgY+qyR7HJWsGIRszN4kfjsNnA4MakdFW
+         KVEiUDDimPvIOAiFS/YQreqyHjHIkcOa8UcN5E+/1cPrxPiVHvnhNicElGaNvjQM+gym
+         UnGQOW+JHTFGwMTwXEKTgDfxnbwCHg+c9IZyaw1Lpt1iPPLfDweAhieBucBPRZBlLSDF
+         Iajw==
+X-Gm-Message-State: AFqh2kpfuISEGZZ6B/QRfsPIZ5Hpz5JceTgpDH/BhseC3xhkTCfc9KiE
+	QSvdQh0avmubsCpdEPVVp5PjN7zBsdaKJPHnT0bIOw==
+X-Google-Smtp-Source: AMrXdXv6gnQX0OoKozB0/sGre8TJXsUy1C/jK2O3QAelgSf12NvRgViAwg71ot7Dw3BX9FmmaJQOxKyffqTOfBzTcKs=
+X-Received: by 2002:a81:1b8b:0:b0:4ff:774b:7ffb with SMTP id
+ b133-20020a811b8b000000b004ff774b7ffbmr406683ywb.218.1674235078155; Fri, 20
+ Jan 2023 09:17:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
+References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-40-surenb@google.com>
+ <Y8k+syJu7elWAjRj@dhcp22.suse.cz> <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
+ <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz> <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
+ <CAJuCfpF20nuP6Meib9h7NVrJv+wybYS==vZFQXxUW6n-ir9bvQ@mail.gmail.com>
+ <Y8rGJq8LvX2C+Cr7@casper.infradead.org> <20230120170815.yuylbs27r6xcjpq5@revolver>
+In-Reply-To: <20230120170815.yuylbs27r6xcjpq5@revolver>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 20 Jan 2023 09:17:46 -0800
+Message-ID: <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
+Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, akpm@linux-foundation.org, 
+	michel@lespinasse.org, jglisse@google.com, vbabka@suse.cz, hannes@cmpxchg.org, 
+	mgorman@techsingularity.net, dave@stgolabs.net, peterz@infradead.org, 
+	ldufour@linux.ibm.com, laurent.dufour@fr.ibm.com, paulmck@kernel.org, 
+	luto@kernel.org, songliubraving@fb.com, peterx@redhat.com, david@redhat.com, 
+	dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de, 
+	kent.overstreet@linux.dev, punit.agrawal@bytedance.com, lstoakes@gmail.com, 
+	peterjung1337@gmail.com, rientjes@google.com, axelrasmussen@google.com, 
+	joelaf@google.com, minchan@google.com, jannh@google.com, shakeelb@google.com, 
+	tatashin@google.com, edumazet@google.com, gthelen@google.com, 
+	gurua@google.com, arjunroy@google.com, soheil@google.com, 
+	hughlynch@google.com, leewalsh@google.com, posk@google.com, 
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,80 +91,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, soc@kernel.org, Pavel Machek <pavel@ucw.cz>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 Jan 2023, Arnd Bergmann wrote:
-
-> On Mon, Dec 26, 2022, at 13:36, Pali Rohár wrote:
-> > Linus Walleij suggested me to send these patches to SoC tree [1]
-> > instead. So I'm doing it.
+On Fri, Jan 20, 2023 at 9:08 AM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
+>
+> * Matthew Wilcox <willy@infradead.org> [230120 11:50]:
+> > On Fri, Jan 20, 2023 at 08:45:21AM -0800, Suren Baghdasaryan wrote:
+> > > On Fri, Jan 20, 2023 at 8:20 AM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > >
+> > > > On Fri, Jan 20, 2023 at 12:52 AM Michal Hocko <mhocko@suse.com> wrote:
+> > > > >
+> > > > > On Thu 19-01-23 10:52:03, Suren Baghdasaryan wrote:
+> > > > > > On Thu, Jan 19, 2023 at 4:59 AM Michal Hocko <mhocko@suse.com> wrote:
+> > > > > > >
+> > > > > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
+> > > > > > > > call_rcu() can take a long time when callback offloading is enabled.
+> > > > > > > > Its use in the vm_area_free can cause regressions in the exit path when
+> > > > > > > > multiple VMAs are being freed. To minimize that impact, place VMAs into
+> > > > > > > > a list and free them in groups using one call_rcu() call per group.
+> > > > > > >
+> > > > > > > After some more clarification I can understand how call_rcu might not be
+> > > > > > > super happy about thousands of callbacks to be invoked and I do agree
+> > > > > > > that this is not really optimal.
+> > > > > > >
+> > > > > > > On the other hand I do not like this solution much either.
+> > > > > > > VM_AREA_FREE_LIST_MAX is arbitrary and it won't really help all that
+> > > > > > > much with processes with a huge number of vmas either. It would still be
+> > > > > > > in housands of callbacks to be scheduled without a good reason.
+> > > > > > >
+> > > > > > > Instead, are there any other cases than remove_vma that need this
+> > > > > > > batching? We could easily just link all the vmas into linked list and
+> > > > > > > use a single call_rcu instead, no? This would both simplify the
+> > > > > > > implementation, remove the scaling issue as well and we do not have to
+> > > > > > > argue whether VM_AREA_FREE_LIST_MAX should be epsilon or epsilon + 1.
+> > > > > >
+> > > > > > Yes, I agree the solution is not stellar. I wanted something simple
+> > > > > > but this is probably too simple. OTOH keeping all dead vm_area_structs
+> > > > > > on the list without hooking up a shrinker (additional complexity) does
+> > > > > > not sound too appealing either.
+> > > > >
+> > > > > I suspect you have missed my idea. I do not really want to keep the list
+> > > > > around or any shrinker. It is dead simple. Collect all vmas in
+> > > > > remove_vma and then call_rcu the whole list at once after the whole list
+> > > > > (be it from exit_mmap or remove_mt). See?
+> > > >
+> > > > Yes, I understood your idea but keeping dead objects until the process
+> > > > exits even when the system is low on memory (no shrinkers attached)
+> > > > seems too wasteful. If we do this I would advocate for attaching a
+> > > > shrinker.
+> > >
+> > > Maybe even simpler, since we are hit with this VMA freeing flood
+> > > during exit_mmap (when all VMAs are destroyed), we pass a hint to
+> > > vm_area_free to batch the destruction and all other cases call
+> > > call_rcu()? I don't think there will be other cases of VMA destruction
+> > > floods.
 > >
-> > This patch series contains LED patches which are on the linux-leds
-> > mailing list for a long time without any future movement. Could you
-> > please handle them here via SoC tree? Thanks.
-> >
-> > [1] - 
-> > https://lore.kernel.org/linux-leds/CACRpkdad6WDo7rGfa4MW8zz0mLXmcPHo+SEC-yLQnRz_kdrryA@mail.gmail.com/
-> 
-> I'm going through the backlog of patches sent to soc@kernel.org
-> and came across this series. While I don't mind taking these
-> patches through the soc tree in principle, it is important
-> that this is only done as an exception, and with all the
-> relevant parties on Cc.
-> 
-> In particular, the original series that you got no
-> feedback for did not include the arch/powerpc/ changes,
-> and I would assume those should go through the powerpc
-> tree anyway. We have recently decided to take
-> risc-v and loongarch dts changes through the soc
-> tree, and I don't mind doing it for powerpc as well
-> if the powerpc maintainers prefer that, but this is
-> not something we have even discussed so far.
-> 
-> I've added everyone to Cc on this mail, but please
-> resend the series once more so everyone has the patches,
-> and then we can decide who will pick up what.
+> > ... or have two different call_rcu functions; one for munmap() and
+> > one for exit.  It'd be nice to use kmem_cache_free_bulk().
+>
+> Do we even need a call_rcu on exit?  At the point of freeing the VMAs we
+> have set the MMF_OOM_SKIP bit and unmapped the vmas under the read lock.
+> Once we have obtained the write lock again, I think it's safe to say we
+> can just go ahead and free the VMAs directly.
 
-Thanks Arnd (PSB).
+I think that would be still racy if the page fault handler found that
+VMA under read-RCU protection but did not lock it yet (no locks are
+held yet). If it's preempted, the VMA can be freed and destroyed from
+under it without RCU grace period.
 
-> > Marek Behún (3):
-> >   leds: turris-omnia: support HW controlled mode via private trigger
-> >   leds: turris-omnia: initialize multi-intensity to full
-> >   leds: turris-omnia: change max brightness from 255 to 1
-> >
-> > Pali Rohár (5):
-> >   dt-bindings: leds: register-bit-led: Add active-low property
-> >   leds: syscon: Implement support for active-low property
-> >   powerpc/85xx: DTS: Add CPLD definitions for P1021RDB Combo Board CPL
-> >     Design
-> >   dt-bindings: leds: Add cznic,turris1x-leds.yaml binding
-> >   leds: Add support for Turris 1.x LEDs
-> >
-> >  .../testing/sysfs-class-led-driver-turris1x   |  31 ++
-> >  .../bindings/leds/cznic,turris1x-leds.yaml    | 118 +++++
-> >  .../bindings/leds/register-bit-led.yaml       |   5 +
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi    |  92 ++++
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_32b.dts |   6 +-
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_36b.dts |   6 +-
-> >  arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts     |  44 +-
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc.dtsi    |  37 ++
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_32b.dts |   4 +-
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_36b.dts |   4 +-
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc.dtsi    |  37 ++
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_32b.dts |   5 +-
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_36b.dts |   5 +-
-> >  arch/powerpc/boot/dts/fsl/p2020rdb-pc.dtsi    |  33 +-
-
-> >  drivers/leds/Kconfig                          |  10 +
-> >  drivers/leds/Makefile                         |   1 +
-> >  drivers/leds/leds-syscon.c                    |  14 +-
-> >  drivers/leds/leds-turris-1x.c                 | 474 ++++++++++++++++++
-> >  drivers/leds/leds-turris-omnia.c              |  46 +-
-
-If everyone is convinced that applying these drivers is the correct
-thing to do, I'd be happy to (rather) take them via LEDs.
-
--- 
-Lee Jones [李琼斯]
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
