@@ -1,70 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1FD675438
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 13:11:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37246755D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 14:31:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyyzB700Pz3fKd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 23:11:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz0lK4fmYz3fKS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 00:31:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qMaEzy7G;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bBBVAu7f;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=MUoDqsxA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qMaEzy7G;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bBBVAu7f;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=MUoDqsxA;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyyyD5525z3bXr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 23:11:00 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 355095F94B;
-	Fri, 20 Jan 2023 12:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1674216657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uP6HuWs4Kq3jd6tY+JOCJ+EPKnppWkkiTxsD4Mq6eiY=;
-	b=qMaEzy7GI0C2wFVPjItQwsZzRFBmO1CP+fAhAUyYVI2DWnRxwy5BjIzHd9oVpVF3Wfug4y
-	SiGuF/F13zZxZbjsymStbjUj8alsq9eaAFNHT7i2N6mgsMjqVpNHNYNj8z01u7W0kBio2T
-	Ta5br4ghBWubDYgh/+jcjjpuf54l1EM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1674216657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uP6HuWs4Kq3jd6tY+JOCJ+EPKnppWkkiTxsD4Mq6eiY=;
-	b=bBBVAu7fXUhsQyWdSXyxM8fENoFuG/LuY9QEil0Rp3p+EGdnuR/Lr45pvLzKcHb7NUzqdg
-	eAP5vgb7aLOrt3Aw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 07CF42C141;
-	Fri, 20 Jan 2023 12:10:57 +0000 (UTC)
-Date: Fri, 20 Jan 2023 13:10:55 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
- disaply code
-Message-ID: <20230120121055.GU16547@kitsune.suse.cz>
-References: <20230119095323.4659-1-msuchanek@suse.de>
- <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
- <20230119103446.GO16547@kitsune.suse.cz>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nyw0J1dD6z3bcT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 20:57:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5PCjUACeYMR6O3y/YgzV4vR8g0qeDy6mmRm0X3w+etU=; b=MUoDqsxAueB3UC0X9DEpgPbNXn
+	Tj5cnDaYzy266gE7W5G9bVl+xeWuvsanoCSSZvn8aXUXYk/++klaMAsPIpQl1jeuVnTW1saJccdK+
+	DdGoQPEvQqs9mymWjC4y513VtI8Jy4W+Sh477ud61/rXfxZpDUDwY2E2lLspwsfnWFNoW0i7KQ+T+
+	KRbX9/27/fD43hdnpwgYqN4HT+lbr4i/iKyZlqSTJA7tBGTGIRK5/91srIafoGrsXofd4dgMAzNuT
+	W+pAcFw+grziVU17kyiULcfzMkW3d96+ovbjbRfqud5Nl4PuY1aCQOsAbjXg/VqEWhBkxNVtBGAX1
+	enGrU91w==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pIo8U-001qF2-HQ; Fri, 20 Jan 2023 09:56:39 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 97C13300744;
+	Fri, 20 Jan 2023 10:56:35 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 739372133D202; Fri, 20 Jan 2023 10:56:35 +0100 (CET)
+Date: Fri, 20 Jan 2023 10:56:35 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+	mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+	nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
+	linus.walleij@linaro.org, shawnguo@kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+	festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
+	khilman@kernel.org, krzysztof.kozlowski@linaro.org,
+	alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
+	guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+	kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+	monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+	jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+	shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+	deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+	gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com,
+	ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+	richard@nod.at, anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+	amakhalov@vmware.com, pv-drivers@vmware.com,
+	boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+	rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+	gregkh@linuxfoundation.org, mturquette@baylibre.com,
+	sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+	sudeep.holla@arm.com, agross@kernel.org, andersson@kernel.org,
+	konrad.dybcio@linaro.org, anup@brainfault.org,
+	thierry.reding@gmail.com, jonathanh@nvidia.com,
+	jacob.jun.pan@linux.intel.com, atishp@atishpatra.org,
+	Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
+	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+	dennis@kernel.org, tj@kernel.org, cl@linux.com, rostedt@goodmis.org,
+	mhiramat@kernel.org, frederic@kernel.org, paulmck@kernel.org,
+	pmladek@suse.com, senozhatsky@chromium.org,
+	john.ogness@linutronix.de, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+	vschneid@redhat.com, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v3 16/51] cpuidle: Annotate poll_idle()
+Message-ID: <Y8plU/f2WsmGG66H@hirez.programming.kicks-ass.net>
+References: <20230112194314.845371875@infradead.org>
+ <20230112195540.312601331@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230119103446.GO16547@kitsune.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20230112195540.312601331@infradead.org>
+X-Mailman-Approved-At: Sat, 21 Jan 2023 00:30:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,94 +128,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 19, 2023 at 11:34:46AM +0100, Michal Suchánek wrote:
-> Hello,
+On Thu, Jan 12, 2023 at 08:43:30PM +0100, Peter Zijlstra wrote:
+> The __cpuidle functions will become a noinstr class, as such they need
+> explicit annotations.
 > 
-> On Thu, Jan 19, 2023 at 10:24:07AM +0000, Christophe Leroy wrote:
-> > 
-> > 
-> > Le 19/01/2023 à 10:53, Michal Suchanek a écrit :
-> > > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > breaks build because of wrong argument to snprintf. That certainly
-> > > avoids the runtime error but is not the intended outcome.
-> > > 
-> > > Also use standard device name format of-display.N for all created
-> > > devices.
-> > > 
-> > > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > > ---
-> > > v2: Update the device name format
-> > > ---
-> > >   drivers/of/platform.c | 12 ++++++++----
-> > >   1 file changed, 8 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > index f2a5d679a324..8c1b1de22036 100644
-> > > --- a/drivers/of/platform.c
-> > > +++ b/drivers/of/platform.c
-> > > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
-> > >   	if (IS_ENABLED(CONFIG_PPC)) {
-> > >   		struct device_node *boot_display = NULL;
-> > >   		struct platform_device *dev;
-> > > -		int display_number = 1;
-> > > +		int display_number = 0;
-> > > +		char buf[14];
-> > 
-> > Can you declare that in the for block where it is used instead ?
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> Tested-by: Tony Lindgren <tony@atomide.com>
+> Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/cpuidle/poll_state.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> No, there are two for blocks.
-> 
-> > 
-> > > +		char *of_display_format = "of-display.%d";
-> > 
-> > Should be const ?
-> 
-> Yes, could be.
-> 
-> > 
-> > >   		int ret;
-> > >   
-> > >   		/* Check if we have a MacOS display without a node spec */
-> > > @@ -556,7 +558,10 @@ static int __init of_platform_default_populate_init(void)
-> > >   			if (!of_get_property(node, "linux,opened", NULL) ||
-> > >   			    !of_get_property(node, "linux,boot-display", NULL))
-> > >   				continue;
-> > > -			dev = of_platform_device_create(node, "of-display", NULL);
-> > > +			ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
-> > > +			if (ret >= sizeof(buf))
-> > > +				continue;
-> > 
-> > 
-> > Can you make buf big enough to avoid that ?
-> 
-> It would be a bit fragile that way.
-> 
-> The buffer would have to theoretically accomodate
-> "of-display.-9223372036854775808", and any change to the format requires
-> recalculating the length, by hand.
-> 
-> Of course, the memory would run out way before allocating that many
-> devices so it's kind of pointless to try and accomodate all possible
-> device numbers.
-> 
-> > 
-> > And by the way could it be called something else than 'buf' ?
-> > 
-> > See exemple here : 
-> > https://elixir.bootlin.com/linux/v6.1/source/drivers/fsi/fsi-occ.c#L690
-> 
-> Yes, that is quite possible. Nonetheless, just like 'ret' generic
-> variable names also work.
+> --- a/drivers/cpuidle/poll_state.c
+> +++ b/drivers/cpuidle/poll_state.c
+> @@ -13,7 +13,10 @@
+>  static int __cpuidle poll_idle(struct cpuidle_device *dev,
+>  			       struct cpuidle_driver *drv, int index)
+>  {
+> -	u64 time_start = local_clock();
+> +	u64 time_start;
+> +
+> +	instrumentation_begin();
+> +	time_start = local_clock();
+>  
+>  	dev->poll_time_limit = false;
+>  
+> @@ -39,6 +42,7 @@ static int __cpuidle poll_idle(struct cp
+>  	raw_local_irq_disable();
+>  
+>  	current_clr_polling();
+> +	instrumentation_end();
+>  
+>  	return index;
+>  }
 
-And in fact judicious use of short generic variable names is more
-readeable than naming all variables foobar_* as far as I am concerned.
-Of course, YMMV.
+Pff, this patch is garbage. However wrote it didn't have his brain
+engaged :/
 
-Thanks
+Something like the below fixes it, but I still need to build me funny
+configs like ia64 and paravirt to see if I didn't wreck me something...
 
-Michal
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index a78e73da4a74..70c07e11caa6 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -215,7 +215,7 @@ static void __init cyc2ns_init_secondary_cpus(void)
+ /*
+  * Scheduler clock - returns current time in nanosec units.
+  */
+-u64 native_sched_clock(void)
++noinstr u64 native_sched_clock(void)
+ {
+ 	if (static_branch_likely(&__use_tsc)) {
+ 		u64 tsc_now = rdtsc();
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index 500d1720421e..0b00f21cefe3 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -426,7 +426,7 @@ void cpuidle_reflect(struct cpuidle_device *dev, int index)
+  * @dev:   the cpuidle device
+  *
+  */
+-u64 cpuidle_poll_time(struct cpuidle_driver *drv,
++__cpuidle u64 cpuidle_poll_time(struct cpuidle_driver *drv,
+ 		      struct cpuidle_device *dev)
+ {
+ 	int i;
+diff --git a/drivers/cpuidle/poll_state.c b/drivers/cpuidle/poll_state.c
+index d25ec52846e6..bdcfeaecd228 100644
+--- a/drivers/cpuidle/poll_state.c
++++ b/drivers/cpuidle/poll_state.c
+@@ -15,7 +15,6 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+ {
+ 	u64 time_start;
+ 
+-	instrumentation_begin();
+ 	time_start = local_clock();
+ 
+ 	dev->poll_time_limit = false;
+@@ -42,7 +41,6 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+ 	raw_local_irq_disable();
+ 
+ 	current_clr_polling();
+-	instrumentation_end();
+ 
+ 	return index;
+ }
+diff --git a/include/linux/sched/clock.h b/include/linux/sched/clock.h
+index 867d588314e0..7960f0769884 100644
+--- a/include/linux/sched/clock.h
++++ b/include/linux/sched/clock.h
+@@ -45,7 +45,7 @@ static inline u64 cpu_clock(int cpu)
+ 	return sched_clock();
+ }
+ 
+-static inline u64 local_clock(void)
++static __always_inline u64 local_clock(void)
+ {
+ 	return sched_clock();
+ }
+@@ -79,7 +79,7 @@ static inline u64 cpu_clock(int cpu)
+ 	return sched_clock_cpu(cpu);
+ }
+ 
+-static inline u64 local_clock(void)
++static __always_inline u64 local_clock(void)
+ {
+ 	return sched_clock_cpu(raw_smp_processor_id());
+ }
+diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
+index e374c0c923da..6b3b0559e53c 100644
+--- a/kernel/sched/clock.c
++++ b/kernel/sched/clock.c
+@@ -260,7 +260,7 @@ notrace static inline u64 wrap_max(u64 x, u64 y)
+  *  - filter out backward motion
+  *  - use the GTOD tick value to create a window to filter crazy TSC values
+  */
+-notrace static u64 sched_clock_local(struct sched_clock_data *scd)
++noinstr static u64 sched_clock_local(struct sched_clock_data *scd)
+ {
+ 	u64 now, clock, old_clock, min_clock, max_clock, gtod;
+ 	s64 delta;
+@@ -287,7 +287,7 @@ notrace static u64 sched_clock_local(struct sched_clock_data *scd)
+ 	clock = wrap_max(clock, min_clock);
+ 	clock = wrap_min(clock, max_clock);
+ 
+-	if (!try_cmpxchg64(&scd->clock, &old_clock, clock))
++	if (!arch_try_cmpxchg64(&scd->clock, &old_clock, clock))
+ 		goto again;
+ 
+ 	return clock;
+@@ -360,7 +360,7 @@ notrace static u64 sched_clock_remote(struct sched_clock_data *scd)
+  *
+  * See cpu_clock().
+  */
+-notrace u64 sched_clock_cpu(int cpu)
++noinstr u64 sched_clock_cpu(int cpu)
+ {
+ 	struct sched_clock_data *scd;
+ 	u64 clock;
