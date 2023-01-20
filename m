@@ -2,84 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60955675B08
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A338675B0F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:20:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz5nQ1bPbz3fJt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:18:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz5pw2Ywqz3fK0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:20:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Sr1dLPym;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=ta4oy1s1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=l/OkIMIl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Sr1dLPym;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=ta4oy1s1;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=l/OkIMIl;
 	dkim-atps=neutral
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz5mV2J9Bz2yw6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:18:01 +1100 (AEDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-4ff1fa82bbbso35470527b3.10
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 09:18:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Npkik/bsBJT0k1KE6YTUYiQllKRxNUJ2F3qqLyW5WrU=;
-        b=Sr1dLPymrIvYBGAmoThyqiqqD5ocsi35buZBFr9hs7vTfAgxiHzqszuY12+CvtOfKu
-         RJozfuGS24MHU6L9FOm9qbs+5eNGaCPaqITAVOLQslx4X+R9mY3nN2LalRXUVDbxy8Qt
-         J0dvh7x5wJbEWiEnHQ0ITZKNuMN2D/TgYFGRPWf+q3EXoZpFDqfnQ+Mkat/aDVHQKqpB
-         cqxocq04+BBfQ0/ds8KL+yA5/1PUe2g+ppo5H30MJafeEtK8f7/S2hO7gwVKY83Duzzu
-         YNYro9pYQlzwKdPyPpEqyu60+5EMY6rQU4naHlm8+dyKKFtmt29OruHUXTQcgMIcHHtZ
-         IoHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Npkik/bsBJT0k1KE6YTUYiQllKRxNUJ2F3qqLyW5WrU=;
-        b=wOawwmj8cc2DW8arPMY3FUV+yuSc3VHKCJICu3XQrbaitdcYJga+wqFJu1ZISrfhKG
-         fsSSyG5XReiXiJZFwJax2iKkFzCe7PjYgk7qjOZ2zqGFmx6D72pE7AdDkQevl+ULH6Bk
-         i+99tpFh9DVxmx4T1nm7bFsNvpmOb8PF5zCsgY+qyR7HJWsGIRszN4kfjsNnA4MakdFW
-         KVEiUDDimPvIOAiFS/YQreqyHjHIkcOa8UcN5E+/1cPrxPiVHvnhNicElGaNvjQM+gym
-         UnGQOW+JHTFGwMTwXEKTgDfxnbwCHg+c9IZyaw1Lpt1iPPLfDweAhieBucBPRZBlLSDF
-         Iajw==
-X-Gm-Message-State: AFqh2kpfuISEGZZ6B/QRfsPIZ5Hpz5JceTgpDH/BhseC3xhkTCfc9KiE
-	QSvdQh0avmubsCpdEPVVp5PjN7zBsdaKJPHnT0bIOw==
-X-Google-Smtp-Source: AMrXdXv6gnQX0OoKozB0/sGre8TJXsUy1C/jK2O3QAelgSf12NvRgViAwg71ot7Dw3BX9FmmaJQOxKyffqTOfBzTcKs=
-X-Received: by 2002:a81:1b8b:0:b0:4ff:774b:7ffb with SMTP id
- b133-20020a811b8b000000b004ff774b7ffbmr406683ywb.218.1674235078155; Fri, 20
- Jan 2023 09:17:58 -0800 (PST)
-MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-40-surenb@google.com>
- <Y8k+syJu7elWAjRj@dhcp22.suse.cz> <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
- <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz> <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
- <CAJuCfpF20nuP6Meib9h7NVrJv+wybYS==vZFQXxUW6n-ir9bvQ@mail.gmail.com>
- <Y8rGJq8LvX2C+Cr7@casper.infradead.org> <20230120170815.yuylbs27r6xcjpq5@revolver>
-In-Reply-To: <20230120170815.yuylbs27r6xcjpq5@revolver>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 20 Jan 2023 09:17:46 -0800
-Message-ID: <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, akpm@linux-foundation.org, 
-	michel@lespinasse.org, jglisse@google.com, vbabka@suse.cz, hannes@cmpxchg.org, 
-	mgorman@techsingularity.net, dave@stgolabs.net, peterz@infradead.org, 
-	ldufour@linux.ibm.com, laurent.dufour@fr.ibm.com, paulmck@kernel.org, 
-	luto@kernel.org, songliubraving@fb.com, peterx@redhat.com, david@redhat.com, 
-	dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de, 
-	kent.overstreet@linux.dev, punit.agrawal@bytedance.com, lstoakes@gmail.com, 
-	peterjung1337@gmail.com, rientjes@google.com, axelrasmussen@google.com, 
-	joelaf@google.com, minchan@google.com, jannh@google.com, shakeelb@google.com, 
-	tatashin@google.com, edumazet@google.com, gthelen@google.com, 
-	gurua@google.com, arjunroy@google.com, soheil@google.com, 
-	hughlynch@google.com, leewalsh@google.com, posk@google.com, 
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz5p05rB1z2yw6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:19:20 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.west.internal (Postfix) with ESMTP id 7190C3200A5C;
+	Fri, 20 Jan 2023 12:19:17 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 20 Jan 2023 12:19:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to; s=fm2; t=1674235157; x=1674321557; bh=AN63Zk9FUH
+	XtB/1LDWKyjPugYkaPfboH8yCsuuO7QPs=; b=ta4oy1s1AdxLORjET+xauHRdR5
+	NcbGi5cLHSey+FpTmv5ZC193wrgm2ovoDrIuYhzJXXZ+i5vJeQ4SoRHyB5D5KecC
+	iXNUbnN4wzRnjQD6svlrGR+wUvYwpEGj1XRFU+HFOQ12Hb6tTPfdSYMU/skLOmo8
+	w9Xr5VvQq3L5bgx2LNbZvWNgaNyJGfAtFx4+RyOlcvgLX7fLr1tDHcwtXMGOqXed
+	3/TATPBktImtX56gMo7xDgc4nU3KmumzhQd/Elz7DPmbgOYOWhAGJ9joeV4gFi/i
+	aD5MlNtMOIjQvp0yk+7265KbkmfReznpXigOGwvTGcmENPdEli46eemx7fhw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1674235157; x=1674321557; bh=AN63Zk9FUHXtB/1LDWKyjPugYkaP
+	fboH8yCsuuO7QPs=; b=l/OkIMIlYk2aLfnTY+EPhfjYf3kNra1kPmw+smJwoPT2
+	K7Uxj4cdQhaKrOlaRHvPok1/HLjAzDXAJHG46jslpUERDQ51cFxlaWPRnXSekrMO
+	g1T5kI0e6HDJ3iMgHZxQB8X/SzkjhE8Y1J3u5H3qJwgKNnDMmrim2ahfSXkDfTD4
+	BRr3gLLTRZ8GZLPqIDy/SA9UzIDv0WVuhOnWN533RUAbI/juEZzoxij8Og0thReG
+	IZp8bm5GrqAvCBVDZZYbvUtXUwo9dnI8hWotJ/u4gZ4i6ORoGrBUHexzWx7pN55+
+	xvPfmkak4Tl03QIZjujVXwPUYWHrVtntkSYy9SxNlw==
+X-ME-Sender: <xms:FM3KY4_buGub8-rqfTs4N8Yg42GbfDG0sCX2z11pHq1cgiJ7b7zrkg>
+    <xme:FM3KYwsSwqT37FU8sAzoL23BpyyI_2eVteajl26e0cyAa_AO0n0O15V59m6v2pHB-
+    2r-dNOC3XsrnJadUpQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudduvddguddtvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:FM3KY-DoW6b0kGI3nWdnykYIonxorpLHx6qV3SeAZ4G-BGAzLWBYNg>
+    <xmx:FM3KY4fTvpsB_OCYr7UVTStx_ocSeh-5--vi3xmD6KbWRLangTN-TA>
+    <xmx:FM3KY9MeAxGkge2iPLDUQrl6MCt-q0PNhETlDF5gBN7m4h4TTF97jw>
+    <xmx:Fc3KY6wq1Jled5Q_fzzY9NELrs3G2rh8APyCtOgZQEWRLqQ96wZqQA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 0A0C0B60086; Fri, 20 Jan 2023 12:19:15 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-85-gd6d859e0cf-fm-20230116.001-gd6d859e0
+Mime-Version: 1.0
+Message-Id: <67c572e1-20ca-4ed2-9e15-047341bb338b@app.fastmail.com>
+In-Reply-To: <20230120133455.3962413-11-alexander.stein@ew.tq-group.com>
+References: <20230120133455.3962413-1-alexander.stein@ew.tq-group.com>
+ <20230120133455.3962413-11-alexander.stein@ew.tq-group.com>
+Date: Fri, 20 Jan 2023 18:18:54 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alexander Stein" <alexander.stein@ew.tq-group.com>,
+ "Rob Herring" <robh+dt@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+ "Olof Johansson" <olof@lixom.net>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Li Yang" <leoyang.li@nxp.com>, "Russell King" <linux@armlinux.org.uk>,
+ "Marek Vasut" <marex@denx.de>,
+ "Marcel Ziswiler" <marcel.ziswiler@toradex.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <ndesaulniers@google.com>,
+ "Nicolas Schier" <nicolas@fjasle.eu>
+Subject: Re: [PATCH v2 10/10] ARM: add multi_v7_lpae_defconfig
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,76 +105,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, soc@kernel.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 20, 2023 at 9:08 AM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
+On Fri, Jan 20, 2023, at 14:34, Alexander Stein wrote:
+> From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 >
-> * Matthew Wilcox <willy@infradead.org> [230120 11:50]:
-> > On Fri, Jan 20, 2023 at 08:45:21AM -0800, Suren Baghdasaryan wrote:
-> > > On Fri, Jan 20, 2023 at 8:20 AM Suren Baghdasaryan <surenb@google.com> wrote:
-> > > >
-> > > > On Fri, Jan 20, 2023 at 12:52 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > > >
-> > > > > On Thu 19-01-23 10:52:03, Suren Baghdasaryan wrote:
-> > > > > > On Thu, Jan 19, 2023 at 4:59 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > > > > >
-> > > > > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
-> > > > > > > > call_rcu() can take a long time when callback offloading is enabled.
-> > > > > > > > Its use in the vm_area_free can cause regressions in the exit path when
-> > > > > > > > multiple VMAs are being freed. To minimize that impact, place VMAs into
-> > > > > > > > a list and free them in groups using one call_rcu() call per group.
-> > > > > > >
-> > > > > > > After some more clarification I can understand how call_rcu might not be
-> > > > > > > super happy about thousands of callbacks to be invoked and I do agree
-> > > > > > > that this is not really optimal.
-> > > > > > >
-> > > > > > > On the other hand I do not like this solution much either.
-> > > > > > > VM_AREA_FREE_LIST_MAX is arbitrary and it won't really help all that
-> > > > > > > much with processes with a huge number of vmas either. It would still be
-> > > > > > > in housands of callbacks to be scheduled without a good reason.
-> > > > > > >
-> > > > > > > Instead, are there any other cases than remove_vma that need this
-> > > > > > > batching? We could easily just link all the vmas into linked list and
-> > > > > > > use a single call_rcu instead, no? This would both simplify the
-> > > > > > > implementation, remove the scaling issue as well and we do not have to
-> > > > > > > argue whether VM_AREA_FREE_LIST_MAX should be epsilon or epsilon + 1.
-> > > > > >
-> > > > > > Yes, I agree the solution is not stellar. I wanted something simple
-> > > > > > but this is probably too simple. OTOH keeping all dead vm_area_structs
-> > > > > > on the list without hooking up a shrinker (additional complexity) does
-> > > > > > not sound too appealing either.
-> > > > >
-> > > > > I suspect you have missed my idea. I do not really want to keep the list
-> > > > > around or any shrinker. It is dead simple. Collect all vmas in
-> > > > > remove_vma and then call_rcu the whole list at once after the whole list
-> > > > > (be it from exit_mmap or remove_mt). See?
-> > > >
-> > > > Yes, I understood your idea but keeping dead objects until the process
-> > > > exits even when the system is low on memory (no shrinkers attached)
-> > > > seems too wasteful. If we do this I would advocate for attaching a
-> > > > shrinker.
-> > >
-> > > Maybe even simpler, since we are hit with this VMA freeing flood
-> > > during exit_mmap (when all VMAs are destroyed), we pass a hint to
-> > > vm_area_free to batch the destruction and all other cases call
-> > > call_rcu()? I don't think there will be other cases of VMA destruction
-> > > floods.
-> >
-> > ... or have two different call_rcu functions; one for munmap() and
-> > one for exit.  It'd be nice to use kmem_cache_free_bulk().
+> The only missing configuration option preventing us from using
+> multi_v7_defconfig with the Raspberry Pi 4 is ARM_LPAE. It's needed as
+> the PCIe controller found on the SoC depends on 64bit addressing, yet
+> can't be included as not all v7 boards support LPAE.
 >
-> Do we even need a call_rcu on exit?  At the point of freeing the VMAs we
-> have set the MMF_OOM_SKIP bit and unmapped the vmas under the read lock.
-> Once we have obtained the write lock again, I think it's safe to say we
-> can just go ahead and free the VMAs directly.
+> Introduce multi_v7_lpae_defconfig, built off multi_v7_defconfig, which will
+> avoid us having to duplicate and maintain multiple similar configurations.
+>
+> Needless to say the Raspberry Pi 4 is not the only platform that can
+> benefit from this new configuration.
+>
+> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-I think that would be still racy if the page fault handler found that
-VMA under read-RCU protection but did not lock it yet (no locks are
-held yet). If it's preempted, the VMA can be freed and destroyed from
-under it without RCU grace period.
+This is ok in principle, two minor points though:
 
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+> +include $(srctree)/scripts/Makefile.defconf
+> +PHONY += multi_v7_lpae_defconfig
+> +multi_v7_lpae_defconfig:
+> +	$(call merge_into_defconfig,multi_v7_defconfig,lpae)
+> 
+>  define archhelp
+>    echo  '* zImage        - Compressed kernel image (arch/$(ARCH)/boot/zImage)'
+
+The new target does not get listed in 'make help' as far as I can
+tell, can you add it there in the process?
+
+> diff --git a/arch/arm/configs/lpae.config b/arch/arm/configs/lpae.config
+> new file mode 100644
+> index 0000000000000..19bab134e014b
+> --- /dev/null
+> +++ b/arch/arm/configs/lpae.config
+> @@ -0,0 +1 @@
+> +CONFIG_ARM_LPAE=y
+
+My feeling is that we probably want CONFIG_VMSPLIT_2G=y here
+as well, given that a lot of the systems that want LPAE
+will have a lot of memory, and are limited by the amount
+of lowmem even when CONFIG_HIGHMEM is enabled.
+
+Can you make sure that this works on your machine, and
+include this option?
+
+     Arnd
