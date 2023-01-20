@@ -1,88 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357FE674EB0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 08:53:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59975674ECF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 08:58:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NysF26y10z3fXb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:53:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NysMD1Wk5z3fLX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:58:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kK78rxkB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KqfIoJmG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kK78rxkB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KqfIoJmG;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nys1s66fpz3fGv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 18:43:45 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30K6nbwk012329;
-	Fri, 20 Jan 2023 07:43:40 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nys1v0y9mz3fGx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 18:43:46 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30K6U130017292;
+	Fri, 20 Jan 2023 07:43:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=IqqaNkGszMHZvB6PEm1qTf1UDr88EmlgNbzmmdZ7dNA=;
- b=kK78rxkBTyyCoY/fiw4UPuFLQhWpwMK9RrUt5BloGxz07ek/ynXCrZ6WwX9bnIz0ldkm
- AG8hu7gDSJLCCCmh5nK3whEH5jlziqq702wv+oM7cFJwVtRk8IY0l4Pz4PFc30b1dL9/
- nOsoVICkWcAofvSYRU1RgQt/JLTW+Roi8ywv790UnI80ZY2bqxrjeysDhh5MZWFhRcLB
- haj3fGMBlk05RM8oARAb10SDyCOMurzaoq99d0tc1l18nNcNhzS4X5VoqYU35IX8Afas
- a+wLjDKR+5F0xQVfXjEXFZ8AnZrqEy4KAeaiXxTvjcgkIQIus2u/Uw798aYQxpBnkEPA fA== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7p1e92gj-1
+ bh=hP9qjlGVsrBjTqu2sisIkUsIKpm1YIbazfgyAY8cBmo=;
+ b=KqfIoJmGJEmyQsFPaLr9B5I2N5fRuXxzyQmWJlv+dBZU7Ourr/PCPRSq6uiZx3+RkghB
+ 4JNVDxHUZl2NHDyWHJl8UpRYX03Xo9+j6m4vueiNFPBuBVfYVXfu0ZlJbtTa5xwkN4hR
+ IzLt8M3HAI91I5DPyFkaMefcCp3kt7j+AZdtH+rIY70eM4dENgSg7PBTNH6PlVBgaLWO
+ 1b7QySY144vMuSr6eMRRx+vPa0tQM+eGEwhLstGyyo/duCHzSaK/85EFEUFO/FWHg1wM
+ 6Or9cldYAfwe3WBN39tYJ6qF96bC5dbH/CkHvu/uoEbLRWv52aSVMKSw3DGZz8tEul2Z aA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7nr9hed8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 07:43:40 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JAGVtt011562;
-	Fri, 20 Jan 2023 07:43:38 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3n3m16dkgw-1
+	Fri, 20 Jan 2023 07:43:41 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JJXD1R030244;
+	Fri, 20 Jan 2023 07:43:39 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3n3m16njj7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 07:43:38 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30K7hZ2e43581864
+	Fri, 20 Jan 2023 07:43:39 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30K7haQN22217146
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jan 2023 07:43:35 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9BCC20043;
+	Fri, 20 Jan 2023 07:43:36 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 946AC2004D;
+	Fri, 20 Jan 2023 07:43:36 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F76320040;
 	Fri, 20 Jan 2023 07:43:35 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B357820049;
-	Fri, 20 Jan 2023 07:43:34 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Jan 2023 07:43:34 +0000 (GMT)
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Jan 2023 07:43:35 +0000 (GMT)
 Received: from jarvis-ozlabs-ibm-com.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 225536096E;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 28A0360972;
 	Fri, 20 Jan 2023 18:43:30 +1100 (AEDT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v4 14/24] powerpc/pseries: Move PLPKS constants to header file
-Date: Fri, 20 Jan 2023 18:42:56 +1100
-Message-Id: <20230120074306.1326298-15-ajd@linux.ibm.com>
+Subject: [PATCH v4 15/24] powerpc/pseries: Expose PLPKS config values, support additional fields
+Date: Fri, 20 Jan 2023 18:42:57 +1100
+Message-Id: <20230120074306.1326298-16-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230120074306.1326298-1-ajd@linux.ibm.com>
 References: <20230120074306.1326298-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bIhumNl2V8wa4m50eVadyq1LqAnzZIN7
-X-Proofpoint-GUID: bIhumNl2V8wa4m50eVadyq1LqAnzZIN7
+X-Proofpoint-ORIG-GUID: hBWZ4aXL3kv8_pynrOGj2V_wjnwfFTZ4
+X-Proofpoint-GUID: hBWZ4aXL3kv8_pynrOGj2V_wjnwfFTZ4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-20_04,2023-01-19_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
- mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2301200070
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301200070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,246 +98,295 @@ Cc: sudhakar@linux.ibm.com, bgray@linux.ibm.com, erichte@linux.ibm.com, gregkh@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Russell Currey <ruscur@russell.cc>
+From: Nayna Jain <nayna@linux.ibm.com>
 
-Move the constants defined in plpks.c to plpks.h, and standardise their
-naming, so that PLPKS consumers can make use of them later on.
+The plpks driver uses the H_PKS_GET_CONFIG hcall to retrieve configuration
+and status information about the PKS from the hypervisor.
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
+Update _plpks_get_config() to handle some additional fields. Add getter
+functions to allow the PKS configuration information to be accessed from
+other files. Validate that the values we're getting comply with the spec.
+
+While we're here, move the config struct in _plpks_get_config() off the
+stack - it's getting large and we also need to make sure it doesn't cross
+a page boundary.
+
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+[ajd: split patch, extend to support additional v3 API fields, minor fixes]
 Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
 
 ---
 
-v3: New patch
+v3: Merge plpks fixes and signed update series with secvar series
+
+    Refresh config values in plpks_get_usedspace() (ajd)
+
+    Validate the config values being returned comply with spec (ruscur)
+
+    Return maxobjlabelsize as is (ruscur)
+
+    Move plpks.h to include/asm (ruscur)
+
+    Fix checkpatch checks (ruscur)
 ---
- arch/powerpc/include/asm/plpks.h       | 36 +++++++++++++---
- arch/powerpc/platforms/pseries/plpks.c | 57 ++++++++++----------------
- 2 files changed, 53 insertions(+), 40 deletions(-)
+ arch/powerpc/include/asm/plpks.h       |  58 ++++++++++
+ arch/powerpc/platforms/pseries/plpks.c | 149 +++++++++++++++++++++++--
+ 2 files changed, 195 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 8295502ee93b..6466aadd7145 100644
+index 6466aadd7145..7c5f51a9af7c 100644
 --- a/arch/powerpc/include/asm/plpks.h
 +++ b/arch/powerpc/include/asm/plpks.h
-@@ -14,14 +14,40 @@
- #include <linux/types.h>
- #include <linux/list.h>
+@@ -96,6 +96,64 @@ int plpks_read_fw_var(struct plpks_var *var);
+  */
+ int plpks_read_bootloader_var(struct plpks_var *var);
  
--#define OSSECBOOTAUDIT 0x40000000
--#define OSSECBOOTENFORCE 0x20000000
--#define WORLDREADABLE 0x08000000
--#define SIGNEDUPDATE 0x01000000
-+// Object policy flags from supported_policies
-+#define PLPKS_OSSECBOOTAUDIT	PPC_BIT32(1) // OS secure boot must be audit/enforce
-+#define PLPKS_OSSECBOOTENFORCE	PPC_BIT32(2) // OS secure boot must be enforce
-+#define PLPKS_PWSET		PPC_BIT32(3) // No access without password set
-+#define PLPKS_WORLDREADABLE	PPC_BIT32(4) // Readable without authentication
-+#define PLPKS_IMMUTABLE		PPC_BIT32(5) // Once written, object cannot be removed
-+#define PLPKS_TRANSIENT		PPC_BIT32(6) // Object does not persist through reboot
-+#define PLPKS_SIGNEDUPDATE	PPC_BIT32(7) // Object can only be modified by signed updates
-+#define PLPKS_HVPROVISIONED	PPC_BIT32(28) // Hypervisor has provisioned this object
++/**
++ * Returns if PKS is available on this LPAR.
++ */
++bool plpks_is_available(void);
++
++/**
++ * Returns version of the Platform KeyStore.
++ */
++u8 plpks_get_version(void);
++
++/**
++ * Returns hypervisor storage overhead per object, not including the size of
++ * the object or label. Only valid for config version >= 2
++ */
++u16 plpks_get_objoverhead(void);
++
++/**
++ * Returns maximum password size. Must be >= 32 bytes
++ */
++u16 plpks_get_maxpwsize(void);
++
++/**
++ * Returns maximum object size supported by Platform KeyStore.
++ */
++u16 plpks_get_maxobjectsize(void);
++
++/**
++ * Returns maximum object label size supported by Platform KeyStore.
++ */
++u16 plpks_get_maxobjectlabelsize(void);
++
++/**
++ * Returns total size of the configured Platform KeyStore.
++ */
++u32 plpks_get_totalsize(void);
++
++/**
++ * Returns used space from the total size of the Platform KeyStore.
++ */
++u32 plpks_get_usedspace(void);
++
++/**
++ * Returns bitmask of policies supported by the hypervisor.
++ */
++u32 plpks_get_supportedpolicies(void);
++
++/**
++ * Returns maximum byte size of a single object supported by the hypervisor.
++ * Only valid for config version >= 3
++ */
++u32 plpks_get_maxlargeobjectsize(void);
++
++/**
++ * Returns bitmask of signature algorithms supported for signed updates.
++ * Only valid for config version >= 3
++ */
++u64 plpks_get_signedupdatealgorithms(void);
++
+ #endif // CONFIG_PSERIES_PLPKS
  
--#define PLPKS_VAR_LINUX	0x02
-+// Signature algorithm flags from signed_update_algorithms
-+#define PLPKS_ALG_RSA2048	PPC_BIT(0)
-+#define PLPKS_ALG_RSA4096	PPC_BIT(1)
-+
-+// Object label OS metadata flags
-+#define PLPKS_VAR_LINUX		0x02
- #define PLPKS_VAR_COMMON	0x04
- 
-+// Flags for which consumer owns an object is owned by
-+#define PLPKS_FW_OWNER			0x1
-+#define PLPKS_BOOTLOADER_OWNER		0x2
-+#define PLPKS_OS_OWNER			0x3
-+
-+// Flags for label metadata fields
-+#define PLPKS_LABEL_VERSION		0
-+#define PLPKS_MAX_LABEL_ATTR_SIZE	16
-+#define PLPKS_MAX_NAME_SIZE		239
-+#define PLPKS_MAX_DATA_SIZE		4000
-+
-+// Timeouts for PLPKS operations
-+#define PLPKS_MAX_TIMEOUT		5000 // msec
-+#define PLPKS_FLUSH_SLEEP		10 // msec
-+#define PLPKS_FLUSH_SLEEP_RANGE		400
-+
- struct plpks_var {
- 	char *component;
- 	u8 *name;
+ #endif // _ASM_POWERPC_PLPKS_H
 diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 13e6daadb179..91f3f623a2c7 100644
+index 91f3f623a2c7..1189246b03dc 100644
 --- a/arch/powerpc/platforms/pseries/plpks.c
 +++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -20,19 +20,6 @@
- #include <asm/machdep.h>
- #include <asm/plpks.h>
- 
--#define PKS_FW_OWNER	     0x1
--#define PKS_BOOTLOADER_OWNER 0x2
--#define PKS_OS_OWNER	     0x3
--
--#define LABEL_VERSION	    0
--#define MAX_LABEL_ATTR_SIZE 16
--#define MAX_NAME_SIZE	    239
--#define MAX_DATA_SIZE	    4000
--
--#define PKS_FLUSH_MAX_TIMEOUT 5000 //msec
--#define PKS_FLUSH_SLEEP	      10 //msec
--#define PKS_FLUSH_SLEEP_RANGE 400
--
- static u8 *ospassword;
+@@ -24,8 +24,16 @@ static u8 *ospassword;
  static u16 ospasswordlength;
  
-@@ -59,7 +46,7 @@ struct label_attr {
+ // Retrieved with H_PKS_GET_CONFIG
++static u8 version;
++static u16 objoverhead;
+ static u16 maxpwsize;
+ static u16 maxobjsize;
++static s16 maxobjlabelsize;
++static u32 totalsize;
++static u32 usedspace;
++static u32 supportedpolicies;
++static u32 maxlargeobjectsize;
++static u64 signedupdatealgorithms;
  
- struct label {
- 	struct label_attr attr;
--	u8 name[MAX_NAME_SIZE];
-+	u8 name[PLPKS_MAX_NAME_SIZE];
- 	size_t size;
- };
- 
-@@ -122,7 +109,7 @@ static int pseries_status_to_err(int rc)
- static int plpks_gen_password(void)
+ struct plpks_auth {
+ 	u8 version;
+@@ -206,32 +214,149 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
+ static int _plpks_get_config(void)
  {
  	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
--	u8 *password, consumer = PKS_OS_OWNER;
-+	u8 *password, consumer = PLPKS_OS_OWNER;
- 	int rc;
+-	struct {
++	struct config {
+ 		u8 version;
+ 		u8 flags;
+-		__be32 rsvd0;
++		__be16 rsvd0;
++		__be16 objoverhead;
+ 		__be16 maxpwsize;
+ 		__be16 maxobjlabelsize;
+ 		__be16 maxobjsize;
+ 		__be32 totalsize;
+ 		__be32 usedspace;
+ 		__be32 supportedpolicies;
+-		__be64 rsvd1;
+-	} __packed config;
++		__be32 maxlargeobjectsize;
++		__be64 signedupdatealgorithms;
++		u8 rsvd1[476];
++	} __packed * config;
+ 	size_t size;
+-	int rc;
++	int rc = 0;
++
++	size = sizeof(*config);
++
++	// Config struct must not cross a page boundary. So long as the struct
++	// size is a power of 2, this should be fine as alignment is guaranteed
++	config = kzalloc(size, GFP_KERNEL);
++	if (!config) {
++		rc = -ENOMEM;
++		goto err;
++	}
++
++	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(config), size);
++
++	if (rc != H_SUCCESS) {
++		rc = pseries_status_to_err(rc);
++		goto err;
++	}
++
++	version = config->version;
++	objoverhead = be16_to_cpu(config->objoverhead);
++	maxpwsize = be16_to_cpu(config->maxpwsize);
++	maxobjsize = be16_to_cpu(config->maxobjsize);
++	maxobjlabelsize = be16_to_cpu(config->maxobjlabelsize);
++	totalsize = be32_to_cpu(config->totalsize);
++	usedspace = be32_to_cpu(config->usedspace);
++	supportedpolicies = be32_to_cpu(config->supportedpolicies);
++	maxlargeobjectsize = be32_to_cpu(config->maxlargeobjectsize);
++	signedupdatealgorithms = be64_to_cpu(config->signedupdatealgorithms);
++
++	// Validate that the numbers we get back match the requirements of the spec
++	if (maxpwsize < 32) {
++		pr_err("Invalid Max Password Size received from hypervisor (%d < 32)\n", maxpwsize);
++		rc = -EIO;
++		goto err;
++	}
++
++	if (maxobjlabelsize < 255) {
++		pr_err("Invalid Max Object Label Size received from hypervisor (%d < 255)\n",
++		       maxobjlabelsize);
++		rc = -EIO;
++		goto err;
++	}
  
- 	// The password must not cross a page boundary, so we align to the next power of 2
-@@ -159,7 +146,7 @@ static struct plpks_auth *construct_auth(u8 consumer)
- {
- 	struct plpks_auth *auth;
+-	size = sizeof(config);
++	if (totalsize < 4096) {
++		pr_err("Invalid Total Size received from hypervisor (%d < 4096)\n", totalsize);
++		rc = -EIO;
++		goto err;
++	}
++
++	if (version >= 3 && maxlargeobjectsize >= 65536 && maxobjsize != 0xFFFF) {
++		pr_err("Invalid Max Object Size (0x%x != 0xFFFF)\n", maxobjsize);
++		rc = -EIO;
++		goto err;
++	}
++
++err:
++	kfree(config);
++	return rc;
++}
++
++u8 plpks_get_version(void)
++{
++	return version;
++}
  
--	if (consumer > PKS_OS_OWNER)
-+	if (consumer > PLPKS_OS_OWNER)
- 		return ERR_PTR(-EINVAL);
+-	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(&config), size);
++u16 plpks_get_objoverhead(void)
++{
++	return objoverhead;
++}
  
- 	// The auth structure must not cross a page boundary and must be
-@@ -171,7 +158,7 @@ static struct plpks_auth *construct_auth(u8 consumer)
- 	auth->version = 1;
- 	auth->consumer = consumer;
+-	if (rc != H_SUCCESS)
+-		return pseries_status_to_err(rc);
++u16 plpks_get_maxpwsize(void)
++{
++	return maxpwsize;
++}
  
--	if (consumer == PKS_FW_OWNER || consumer == PKS_BOOTLOADER_OWNER)
-+	if (consumer == PLPKS_FW_OWNER || consumer == PLPKS_BOOTLOADER_OWNER)
- 		return auth;
+-	maxpwsize = be16_to_cpu(config.maxpwsize);
+-	maxobjsize = be16_to_cpu(config.maxobjsize);
++u16 plpks_get_maxobjectsize(void)
++{
++	return maxobjsize;
++}
++
++u16 plpks_get_maxobjectlabelsize(void)
++{
++	return maxobjlabelsize;
++}
++
++u32 plpks_get_totalsize(void)
++{
++	return totalsize;
++}
++
++u32 plpks_get_usedspace(void)
++{
++	// Unlike other config values, usedspace regularly changes as objects
++	// are updated, so we need to refresh.
++	int rc = _plpks_get_config();
++	if (rc) {
++		pr_err("Couldn't get config, rc: %d\n", rc);
++		return 0;
++	}
++	return usedspace;
++}
++
++u32 plpks_get_supportedpolicies(void)
++{
++	return supportedpolicies;
++}
++
++u32 plpks_get_maxlargeobjectsize(void)
++{
++	return maxlargeobjectsize;
++}
++
++u64 plpks_get_signedupdatealgorithms(void)
++{
++	return signedupdatealgorithms;
++}
++
++bool plpks_is_available(void)
++{
++	int rc;
++
++	rc = _plpks_get_config();
++	if (rc)
++		return false;
  
- 	memcpy(auth->password, ospassword, ospasswordlength);
-@@ -191,7 +178,7 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- 	struct label *label;
- 	size_t slen;
- 
--	if (!name || namelen > MAX_NAME_SIZE)
-+	if (!name || namelen > PLPKS_MAX_NAME_SIZE)
- 		return ERR_PTR(-EINVAL);
- 
- 	slen = strlen(component);
-@@ -206,9 +193,9 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- 	if (component)
- 		memcpy(&label->attr.prefix, component, slen);
- 
--	label->attr.version = LABEL_VERSION;
-+	label->attr.version = PLPKS_LABEL_VERSION;
- 	label->attr.os = varos;
--	label->attr.length = MAX_LABEL_ATTR_SIZE;
-+	label->attr.length = PLPKS_MAX_LABEL_ATTR_SIZE;
- 	memcpy(&label->name, name, namelen);
- 
- 	label->size = sizeof(struct label_attr) + namelen;
-@@ -274,10 +261,10 @@ static int plpks_confirm_object_flushed(struct label *label,
- 			break;
- 		}
- 
--		usleep_range(PKS_FLUSH_SLEEP,
--			     PKS_FLUSH_SLEEP + PKS_FLUSH_SLEEP_RANGE);
--		timeout = timeout + PKS_FLUSH_SLEEP;
--	} while (timeout < PKS_FLUSH_MAX_TIMEOUT);
-+		usleep_range(PLPKS_FLUSH_SLEEP,
-+			     PLPKS_FLUSH_SLEEP + PLPKS_FLUSH_SLEEP_RANGE);
-+		timeout = timeout + PLPKS_FLUSH_SLEEP;
-+	} while (timeout < PLPKS_MAX_TIMEOUT);
- 
- 	if (timed_out)
- 		return -ETIMEDOUT;
-@@ -293,13 +280,13 @@ int plpks_write_var(struct plpks_var var)
- 	int rc;
- 
- 	if (!var.component || !var.data || var.datalen <= 0 ||
--	    var.namelen > MAX_NAME_SIZE || var.datalen > MAX_DATA_SIZE)
-+	    var.namelen > PLPKS_MAX_NAME_SIZE || var.datalen > PLPKS_MAX_DATA_SIZE)
- 		return -EINVAL;
- 
--	if (var.policy & SIGNEDUPDATE)
-+	if (var.policy & PLPKS_SIGNEDUPDATE)
- 		return -EINVAL;
- 
--	auth = construct_auth(PKS_OS_OWNER);
-+	auth = construct_auth(PLPKS_OS_OWNER);
- 	if (IS_ERR(auth))
- 		return PTR_ERR(auth);
- 
-@@ -331,10 +318,10 @@ int plpks_remove_var(char *component, u8 varos, struct plpks_var_name vname)
- 	struct label *label;
- 	int rc;
- 
--	if (!component || vname.namelen > MAX_NAME_SIZE)
-+	if (!component || vname.namelen > PLPKS_MAX_NAME_SIZE)
- 		return -EINVAL;
- 
--	auth = construct_auth(PKS_OS_OWNER);
-+	auth = construct_auth(PLPKS_OS_OWNER);
- 	if (IS_ERR(auth))
- 		return PTR_ERR(auth);
- 
-@@ -366,14 +353,14 @@ static int plpks_read_var(u8 consumer, struct plpks_var *var)
- 	u8 *output;
- 	int rc;
- 
--	if (var->namelen > MAX_NAME_SIZE)
-+	if (var->namelen > PLPKS_MAX_NAME_SIZE)
- 		return -EINVAL;
- 
- 	auth = construct_auth(consumer);
- 	if (IS_ERR(auth))
- 		return PTR_ERR(auth);
- 
--	if (consumer == PKS_OS_OWNER) {
-+	if (consumer == PLPKS_OS_OWNER) {
- 		label = construct_label(var->component, var->os, var->name,
- 					var->namelen);
- 		if (IS_ERR(label)) {
-@@ -388,7 +375,7 @@ static int plpks_read_var(u8 consumer, struct plpks_var *var)
- 		goto out_free_label;
- 	}
- 
--	if (consumer == PKS_OS_OWNER)
-+	if (consumer == PLPKS_OS_OWNER)
- 		rc = plpar_hcall(H_PKS_READ_OBJECT, retbuf, virt_to_phys(auth),
- 				 virt_to_phys(label), label->size, virt_to_phys(output),
- 				 maxobjsize);
-@@ -428,17 +415,17 @@ static int plpks_read_var(u8 consumer, struct plpks_var *var)
- 
- int plpks_read_os_var(struct plpks_var *var)
- {
--	return plpks_read_var(PKS_OS_OWNER, var);
-+	return plpks_read_var(PLPKS_OS_OWNER, var);
+-	return 0;
++	return true;
  }
  
- int plpks_read_fw_var(struct plpks_var *var)
- {
--	return plpks_read_var(PKS_FW_OWNER, var);
-+	return plpks_read_var(PLPKS_FW_OWNER, var);
- }
- 
- int plpks_read_bootloader_var(struct plpks_var *var)
- {
--	return plpks_read_var(PKS_BOOTLOADER_OWNER, var);
-+	return plpks_read_var(PLPKS_BOOTLOADER_OWNER, var);
- }
- 
- static __init int pseries_plpks_init(void)
+ static int plpks_confirm_object_flushed(struct label *label,
 -- 
 2.39.0
 
