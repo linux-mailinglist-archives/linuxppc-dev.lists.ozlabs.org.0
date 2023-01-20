@@ -2,63 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429FC67538B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 12:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159F76753F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 12:57:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyyLH03m2z3fJr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 22:43:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nyyf36DRrz3fJ2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 22:56:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K1pMFFR3;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qUtBKMDM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K1pMFFR3;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qUtBKMDM;
+	dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyyKk1csrz3c69
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 22:42:48 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-129-4gsduPDlOrGmwEjdKMB1gA-1; Fri, 20 Jan 2023 11:42:44 +0000
-X-MC-Unique: 4gsduPDlOrGmwEjdKMB1gA-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 20 Jan
- 2023 11:42:42 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Fri, 20 Jan 2023 11:42:42 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Segher Boessenkool' <segher@kernel.crashing.org>, Rob Landley
-	<rob@landley.net>
-Subject: RE: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-Thread-Topic: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-Thread-Index: AQHZLL5SlbpKhYJiU02AbZRDtfTmb66nLCYA
-Date: Fri, 20 Jan 2023 11:42:42 +0000
-Message-ID: <931141d03e8748cebad42aff1a508d7f@AcuMS.aculab.com>
-References: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
- <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
- <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
- <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
- <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
- <0f51dac4-836b-0ff2-38c6-5521745c1c88@landley.net>
- <20230120105341.GI25951@gate.crashing.org>
-In-Reply-To: <20230120105341.GI25951@gate.crashing.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nyyd51J7nz3bgv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 22:56:08 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 829995F926;
+	Fri, 20 Jan 2023 11:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1674215765; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SmxlaHwqwEwlYZxNi7TSn7Pn+e4wDn9EcH61dUWGbAI=;
+	b=K1pMFFR3WpN92t04sWzitdshFwaXjucdnBZMKmXk0Jykfe+amcMDHaPql5d+Vlkebpah8Z
+	uKNxp2HVplRkmjdgvdfKia6eYiaEh+EtLnk/onXQqu0MFPYnCJvUt+TNnb9IR0r0CFTNa1
+	sHCbNWz5t8CLvDcCVUAZoKO+83w+Ans=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1674215765;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SmxlaHwqwEwlYZxNi7TSn7Pn+e4wDn9EcH61dUWGbAI=;
+	b=qUtBKMDMoNhxVCuDh8+6xLeM6CnbpSBkkxOH92PjplJ1raxUGMkmxMZ/oz4KJR3gp5tkv1
+	ygWQeS1iczdIQgDg==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 528242C142;
+	Fri, 20 Jan 2023 11:56:05 +0000 (UTC)
+Date: Fri, 20 Jan 2023 12:56:04 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
+ disaply code
+Message-ID: <20230120115604.GT16547@kitsune.suse.cz>
+References: <20230119095323.4659-1-msuchanek@suse.de>
+ <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
+ <57e026bf-c412-0c47-8956-b565894948e0@suse.de>
+ <20230119132330.GP16547@kitsune.suse.cz>
+ <190c1c68-0249-a291-f2ab-45c9a7f716d7@suse.de>
+ <20230120112759.GS16547@kitsune.suse.cz>
+ <c51c25e7-a020-77c2-47b0-1e34b433116a@suse.de>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c51c25e7-a020-77c2-47b0-1e34b433116a@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,51 +80,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, Arnd
- Bergmann <arnd@arndb.de>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "Michael.Karcher" <Michael.Karcher@fu-berlin.de>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Geert
- Uytterhoeven <geert@linux-m68k.org>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, "linux-f2fs-devel@lists.sourceforge.net" <linux-f2fs-devel@lists.sourceforge.net>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>
+Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Segher Boessenkool
-> Sent: 20 January 2023 10:54
-...
-> > > I suggest to file a bug against gcc complaining about a "spurious
-> > > warning", and using "-Werror -Wno-error-sizeof-pointer-div" until gcc=
- is
-> > > adapted to not emit the warning about the pointer division if the res=
-ult
-> > > is not used.
->=20
-> Yeah.  If the first operand of a conditional operator is non-zero, the
-> second operand is not evaluated, and if the first is zero, the third
-> operand is not evaluated.  It is better if we do not warn about
-> something we do not evaluate.  In cases like here where it is clear at
-> compile time which branch is taken, that shouldn't be too hard.
->=20
-> Can someone please file a GCC PR?  With reduced testcase preferably.
+On Fri, Jan 20, 2023 at 12:39:23PM +0100, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 20.01.23 um 12:27 schrieb Michal Suchánek:
+> > Hello,
+> > 
+> > On Thu, Jan 19, 2023 at 04:20:57PM +0100, Thomas Zimmermann wrote:
+> > > Hi
+> > > 
+> > > Am 19.01.23 um 14:23 schrieb Michal Suchánek:
+> > > > On Thu, Jan 19, 2023 at 02:11:13PM +0100, Thomas Zimmermann wrote:
+> > > > > Hi
+> > > > > 
+> > > > > Am 19.01.23 um 11:24 schrieb Christophe Leroy:
+> > > > > > 
+> > > > > > 
+> > > > > > Le 19/01/2023 à 10:53, Michal Suchanek a écrit :
+> > > > > > > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > > > > > > breaks build because of wrong argument to snprintf. That certainly
+> > > > > > > avoids the runtime error but is not the intended outcome.
+> > > > > > > 
+> > > > > > > Also use standard device name format of-display.N for all created
+> > > > > > > devices.
+> > > > > > > 
+> > > > > > > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > > > > > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > > > > > > ---
+> > > > > > > v2: Update the device name format
+> > > > > > > ---
+> > > > > > >      drivers/of/platform.c | 12 ++++++++----
+> > > > > > >      1 file changed, 8 insertions(+), 4 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > > > > > > index f2a5d679a324..8c1b1de22036 100644
+> > > > > > > --- a/drivers/of/platform.c
+> > > > > > > +++ b/drivers/of/platform.c
+> > > > > > > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
+> > > > > > >      	if (IS_ENABLED(CONFIG_PPC)) {
+> > > > > > >      		struct device_node *boot_display = NULL;
+> > > > > > >      		struct platform_device *dev;
+> > > > > > > -		int display_number = 1;
+> > > > > > > +		int display_number = 0;
+> > > > > > > +		char buf[14];
+> > > > > > 
+> > > > > > Can you declare that in the for block where it is used instead ?
+> > > > > > 
+> > > > > > > +		char *of_display_format = "of-display.%d";
+> > > > > > 
+> > > > > > Should be const ?
+> > > > > 
+> > > > > That should be static const of_display_format[] = then
+> > > > 
+> > > > Why? It sounds completely fine to have a const pointer to a string
+> > > > constatnt.
+> > > 
+> > > Generally speaking:
+> > > 
+> > > 'static' because your const pointer is then not a local variable, so it
+> > > takes pressure off the stack. For global variables, you don't want them to
+> > > show up in any linker symbol tables.
+> > 
+> > This sounds a lot like an exemplar case of premature optimization.
+> > A simplistic compiler might do exactly what you say, and allocate a slot
+> > for the variable on the stack the moment the function is entered.
+> > 
+> > However, in real compilers there is no stack pressure from having a
+> > local variable:
+> >   - the compiler can put the variable into a register
+> >   - it can completely omit the variable before and after it's actually
+> >     used which is that specific function call
+> > 
+> > > The string "of-display.%d" is stored as an array in the ELF data section.
+> > > And your char pointer is a reference to that array. For static pointers,
+> > > these indirections take CPU cycles to update when the loader has to relocate
+> > 
+> > Provided that the char pointer ever exists in the compiled code. Its
+> > address is not taken so it does not need to.
+> > 
+> > > sections. If you declare of_display_format[] directly as array, you avoid
+> > > the reference and work directly with the array.
+> > > 
+> > > Of course, this is a kernel module and the string is self-contained within
+> > > the function. So the compiler can probably detect that and optimize the code
+> > > to be like the 'static const []' version. It's still good to follow best
+> > > practices, as someone might copy from this function.
+> > 
+> > If it could not detect it there would be a lot of trouble all around.
+> 
+> The issues definitely exist in userspace code. Kernel modules are simpler,
+> so compiler optimization is easier.
+> 
+> But I'm not really trying to make a technical argument. My point here is
+> that someone might read your code and duplicate the pattern. That's not
+> unreasonable: it's core Linux code, so it can be assumed to be good (or at
+> least not bad). But your current code teaches the reader a bad practices,
+> which should be avoided. It is better to do the correct thing, even if it
+> makes no difference to the compiled code.
 
-It's not a bug.
-All the operands of the conditional operator have to be valid.
-It might be that the optimiser can discard one, but that happens
-much later on.
-Even the operands of choose_expr() have to be valid - but can
-have different types.
+The point I am trying to get across is that besides the original
+objection about missing 'const' this code is not bad. Loading a string
+constant address into a local variable and passing it as function call
+argument is perfectly fine.
 
-I'm not sure what the code is trying to do or why it is failing.
-Was it a fail in userspace - where the option to allow sizeof (void)
-isn't allowed.
+If you get any advantage by the alternate convoluted construct it's
+more likely than anything else a bug in the compiler you are using.
 
-FWIW you can check for a compile-time NULL (or 0) with:
-#define is_null(x) (sizeof *(0 : (void *)(x) ? (int *)0) !=3D 1)
+It may be necessary to work around such bugs in performance-critical
+code but not in driver probing code that runs exactly once during boot.
 
-Although that is a compile-time error for non-NULL unless
-'void *' arithmetic is allowed.
+Thanks
 
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+Michal
