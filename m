@@ -1,87 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B396675412
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 13:04:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1FD675438
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 13:11:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NyypX0Sn3z3fJ0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 23:04:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyyzB700Pz3fKd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 23:11:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WIKk1S3u;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qMaEzy7G;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bBBVAu7f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WIKk1S3u;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qMaEzy7G;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bBBVAu7f;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyyyD5525z3bXr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 23:11:00 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 355095F94B;
+	Fri, 20 Jan 2023 12:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1674216657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uP6HuWs4Kq3jd6tY+JOCJ+EPKnppWkkiTxsD4Mq6eiY=;
+	b=qMaEzy7GI0C2wFVPjItQwsZzRFBmO1CP+fAhAUyYVI2DWnRxwy5BjIzHd9oVpVF3Wfug4y
+	SiGuF/F13zZxZbjsymStbjUj8alsq9eaAFNHT7i2N6mgsMjqVpNHNYNj8z01u7W0kBio2T
+	Ta5br4ghBWubDYgh/+jcjjpuf54l1EM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1674216657;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uP6HuWs4Kq3jd6tY+JOCJ+EPKnppWkkiTxsD4Mq6eiY=;
+	b=bBBVAu7fXUhsQyWdSXyxM8fENoFuG/LuY9QEil0Rp3p+EGdnuR/Lr45pvLzKcHb7NUzqdg
+	eAP5vgb7aLOrt3Aw==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyynX43JYz30Bp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 23:03:28 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30KADeNv026986;
-	Fri, 20 Jan 2023 12:03:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=277uF/FE5ESZB6iNpx1VT4snUa286Q7JqdCIVMjIDOU=;
- b=WIKk1S3uhnXykFIrECfw8cDusrHYKZAp08l8AcL0I1HVfvHPSwZSo3e/CGNoU9ygFksM
- 3nRMyfNQeVUMqPn8miFEqKAoHAtoeqR6TAvz2MbvDpZO1YsgeERrR0pd4AAtH2X8MAel
- k8TkmgjLmK/qp6oFjQO2MDHL3dLD89GVjlvNDT2xZyaKpEkfmV1dq+V+3BK/grW/IEmR
- yqDTNe3ykPz8OzEkCxDN8/hSeqgpO0lRnmhy52qtDRyb4lUAgFk7d6LDQEw85OH9YGlc
- FdA6u97IE9OazljX46iye0I1FBeIWaYljJBL3hnaKkFgOIxfTmbYQqwybF3YwUpvzAPp 3A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7s0wb21d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 12:03:07 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30KC2c7A017979;
-	Fri, 20 Jan 2023 12:03:07 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7s0wb20b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 12:03:07 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JJFE8Q006229;
-	Fri, 20 Jan 2023 12:03:04 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3n3knfqy11-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 12:03:04 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30KC31oN51184026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jan 2023 12:03:01 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F18EB20043;
-	Fri, 20 Jan 2023 12:03:00 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6249220040;
-	Fri, 20 Jan 2023 12:02:58 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.38.22])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Jan 2023 12:02:58 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com
-Subject: [PATCH] tools/perf: Disable perf probe when libtraceevent is missing
-Date: Fri, 20 Jan 2023 17:32:56 +0530
-Message-Id: <20230120120256.34694-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by relay2.suse.de (Postfix) with ESMTPS id 07CF42C141;
+	Fri, 20 Jan 2023 12:10:57 +0000 (UTC)
+Date: Fri, 20 Jan 2023 13:10:55 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
+ disaply code
+Message-ID: <20230120121055.GU16547@kitsune.suse.cz>
+References: <20230119095323.4659-1-msuchanek@suse.de>
+ <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
+ <20230119103446.GO16547@kitsune.suse.cz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LfPM3VVbftXgLznQUoYrVcZefaMaRsxF
-X-Proofpoint-GUID: Pb-hD9L3byWPLHXAQSf6LMM6CsIM0oED
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-20_07,2023-01-20_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- mlxlogscore=999 impostorscore=0 priorityscore=1501 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2301200115
+In-Reply-To: <20230119103446.GO16547@kitsune.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,75 +76,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, james.clark@arm.com, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While parsing the tracepoint events in parse_events_add_tracepoint()
-function, code checks for HAVE_LIBTRACEEVENT support. This is needed
-since libtraceevent is necessary for tracepoint. But while adding
-probe points, check for LIBTRACEEVENT is not done in case of perf probe.
-Hence, in environment with missing libtraceevent-devel, it is
-observed that adding a probe point works even though its not
-supported.
+On Thu, Jan 19, 2023 at 11:34:46AM +0100, Michal Suchánek wrote:
+> Hello,
+> 
+> On Thu, Jan 19, 2023 at 10:24:07AM +0000, Christophe Leroy wrote:
+> > 
+> > 
+> > Le 19/01/2023 à 10:53, Michal Suchanek a écrit :
+> > > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > > breaks build because of wrong argument to snprintf. That certainly
+> > > avoids the runtime error but is not the intended outcome.
+> > > 
+> > > Also use standard device name format of-display.N for all created
+> > > devices.
+> > > 
+> > > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > > ---
+> > > v2: Update the device name format
+> > > ---
+> > >   drivers/of/platform.c | 12 ++++++++----
+> > >   1 file changed, 8 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > > index f2a5d679a324..8c1b1de22036 100644
+> > > --- a/drivers/of/platform.c
+> > > +++ b/drivers/of/platform.c
+> > > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
+> > >   	if (IS_ENABLED(CONFIG_PPC)) {
+> > >   		struct device_node *boot_display = NULL;
+> > >   		struct platform_device *dev;
+> > > -		int display_number = 1;
+> > > +		int display_number = 0;
+> > > +		char buf[14];
+> > 
+> > Can you declare that in the for block where it is used instead ?
+> 
+> No, there are two for blocks.
+> 
+> > 
+> > > +		char *of_display_format = "of-display.%d";
+> > 
+> > Should be const ?
+> 
+> Yes, could be.
+> 
+> > 
+> > >   		int ret;
+> > >   
+> > >   		/* Check if we have a MacOS display without a node spec */
+> > > @@ -556,7 +558,10 @@ static int __init of_platform_default_populate_init(void)
+> > >   			if (!of_get_property(node, "linux,opened", NULL) ||
+> > >   			    !of_get_property(node, "linux,boot-display", NULL))
+> > >   				continue;
+> > > -			dev = of_platform_device_create(node, "of-display", NULL);
+> > > +			ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
+> > > +			if (ret >= sizeof(buf))
+> > > +				continue;
+> > 
+> > 
+> > Can you make buf big enough to avoid that ?
+> 
+> It would be a bit fragile that way.
+> 
+> The buffer would have to theoretically accomodate
+> "of-display.-9223372036854775808", and any change to the format requires
+> recalculating the length, by hand.
+> 
+> Of course, the memory would run out way before allocating that many
+> devices so it's kind of pointless to try and accomodate all possible
+> device numbers.
+> 
+> > 
+> > And by the way could it be called something else than 'buf' ?
+> > 
+> > See exemple here : 
+> > https://elixir.bootlin.com/linux/v6.1/source/drivers/fsi/fsi-occ.c#L690
+> 
+> Yes, that is quite possible. Nonetheless, just like 'ret' generic
+> variable names also work.
 
-Example:
-Adding probe point:
-	./perf probe 'vfs_getname=getname_flags:72 pathname=result->name:string'
-	Added new event:
-	  probe:vfs_getname    (on getname_flags:72 with pathname=result->name:string)
+And in fact judicious use of short generic variable names is more
+readeable than naming all variables foobar_* as far as I am concerned.
+Of course, YMMV.
 
-	You can now use it in all perf tools, such as:
+Thanks
 
-		perf record -e probe:vfs_getname -aR sleep 1
-
-But trying perf record:
-	./perf  record -e probe:vfs_getname -aR sleep 1
-	event syntax error: 'probe:vfs_getname'
-				\___ unsupported tracepoint
-	libtraceevent is necessary for tracepoint support
-	Run 'perf list' for a list of valid events
-
-Fix this by wrapping "builtin-probe" compilation and
-"perf probe" usage under "CONFIG_LIBTRACEEVENT" check.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- tools/perf/Build  | 4 +++-
- tools/perf/perf.c | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/tools/perf/Build b/tools/perf/Build
-index 6dd67e502295..a138a2304929 100644
---- a/tools/perf/Build
-+++ b/tools/perf/Build
-@@ -33,7 +33,9 @@ ifeq ($(CONFIG_LIBTRACEEVENT),y)
-   perf-$(CONFIG_TRACE) += trace/beauty/
- endif
- 
--perf-$(CONFIG_LIBELF) += builtin-probe.o
-+ifeq ($(CONFIG_LIBTRACEEVENT),y)
-+  perf-$(CONFIG_LIBELF) += builtin-probe.o
-+endif
- 
- perf-y += bench/
- perf-y += tests/
-diff --git a/tools/perf/perf.c b/tools/perf/perf.c
-index 82bbe0ca858b..7b0d79284d5a 100644
---- a/tools/perf/perf.c
-+++ b/tools/perf/perf.c
-@@ -80,9 +80,11 @@ static struct cmd_struct commands[] = {
- #ifdef HAVE_LIBTRACEEVENT
- 	{ "sched",	cmd_sched,	0 },
- #endif
-+#ifdef HAVE_LIBTRACEEVENT
- #ifdef HAVE_LIBELF_SUPPORT
- 	{ "probe",	cmd_probe,	0 },
- #endif
-+#endif
- #ifdef HAVE_LIBTRACEEVENT
- 	{ "kmem",	cmd_kmem,	0 },
- 	{ "lock",	cmd_lock,	0 },
--- 
-2.39.0
-
+Michal
