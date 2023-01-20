@@ -1,97 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6457A675618
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 14:45:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B2267572B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 15:29:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz12k1W1Nz3fZd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 00:45:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz22L2mn6z3fH4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 01:29:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DvldTCND;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=BTcLKl2x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMOILfam;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DvldTCND;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=BTcLKl2x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMOILfam;
 	dkim-atps=neutral
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz0qV1Pvgz3fJ4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 00:35:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674221718; x=1705757718;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UK9in/6pk+cr3TnMOT93DY7cqB9Lku8ZTtDleVDrgtc=;
-  b=DvldTCNDYuciafEx2AkeQbRtamAnbP196/wQV4yie8rA3ZYa+bhUyhy7
-   j/OiyqGqDiKK3bzSzkbahui+Xdz0prwRCiXt34+8ivQxA8INT8gLns4FG
-   VwYCx7KREW8euDR8SnXYevww1y3ajGQpIg1VHg2L9s4GPQQFfvY5g7OY6
-   v7b1BSYsKVZYrE6ZgfcJRY0v1fh4Itv5czjJ58Lcc6oZ2H3927MiN819h
-   eiXyuCKFOFWAr0O7O207My33rkSXrIgk9nHhpTI6TfgLmoewLfYZgotmu
-   r0OOm1gz98hzVF2sfCOZk0v7IZxySSK+Jiqyfy0AL9Yt6swE3BwWev9YL
-   A==;
-X-IronPort-AV: E=Sophos;i="5.97,232,1669071600"; 
-   d="scan'208";a="28561593"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 20 Jan 2023 14:35:06 +0100
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Fri, 20 Jan 2023 14:35:06 +0100
-X-PGP-Universal: processed;
-	by tq-pgp-pr1.tq-net.de on Fri, 20 Jan 2023 14:35:06 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674221706; x=1705757706;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UK9in/6pk+cr3TnMOT93DY7cqB9Lku8ZTtDleVDrgtc=;
-  b=BTcLKl2xHZAJI46pdlQpnyUoeXJGB5vvghfy6DvSWczPmnhpvTq3KHhf
-   FS+VA0cCgRPyMOKe22E4juIsD9DEcNnplumKpyZfzoEOAGLeF0qhROIWz
-   FEPSaTzqsoOgPn2Nd8j474AhEQQlbmMiMTNUFFYTrWq23WNAhqKKfHv0d
-   vb2GcNmFrRphU3wxvR8Om5G/paWw6dqAkxdPWQG2WHokE1VgrSSqSax4o
-   kodh/XAZ3vM4XdWAz9ng195o1k50K9OdhiKBCLVcBSqwB4siuy8ivGg0O
-   uehXPJbRCKcMeiCg+4JqN/c/bgQ9x2nIQXw4o11CXD6RIinkZrxJFEkWn
-   A==;
-X-IronPort-AV: E=Sophos;i="5.97,232,1669071600"; 
-   d="scan'208";a="28561592"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 20 Jan 2023 14:35:06 +0100
-Received: from steina-w.tq-net.de (unknown [10.123.53.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz21Q57B5z3fFw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 01:28:58 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 425DC28007F;
-	Fri, 20 Jan 2023 14:35:06 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Olof Johansson <olof@lixom.net>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Marek Vasut <marex@denx.de>,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>
-Subject: [PATCH v2 10/10] ARM: add multi_v7_lpae_defconfig
-Date: Fri, 20 Jan 2023 14:34:55 +0100
-Message-Id: <20230120133455.3962413-11-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230120133455.3962413-1-alexander.stein@ew.tq-group.com>
-References: <20230120133455.3962413-1-alexander.stein@ew.tq-group.com>
+	by ams.source.kernel.org (Postfix) with ESMTPS id D38D9B827E7;
+	Fri, 20 Jan 2023 14:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD60C433D2;
+	Fri, 20 Jan 2023 14:28:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674224933;
+	bh=OHa55FA+V96LUeRkfvA1d2d7Lg7WlahFkXKiyyQE6+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uMOILfamX4L5Z+YLcXrcRxQrsDniIPTT/gW0pEXs0VzZqFiDNOM9fMB2TGn+2wyec
+	 hT5mNf7EDANLFp8Za2YnzICmyG37vpX59QSNCWMFaIjeyFgVYSTcTfyZu/xTBZmY+9
+	 iRSX4n7zRakQdyqpYGtGSxPJ1GjvNprsDz4afvtDzxWsTJH5iNdP6VPGcIk050n5wM
+	 vhcr9Svy8/F0ymI+bcY/lEIUvSsXxDBmOVwiQjJOFYPkmGrT1HyJiNERVkhL8tT4Pr
+	 mGokAqktxYo+/QGYXAVsONrEXxwYO1g83eGs5BL2wvBoc3oVDA2k2UgHacYuxErQbR
+	 0j2ITICf5PX0w==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id 9FCC0405BE; Fri, 20 Jan 2023 11:28:50 -0300 (-03)
+Date: Fri, 20 Jan 2023 11:28:50 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf: Disable perf probe when libtraceevent is
+ missing
+Message-ID: <Y8qlIuDCpkj523xE@kernel.org>
+References: <20230120120256.34694-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230120120256.34694-1-atrajeev@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,56 +63,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Alexander Stein <alexander.stein@ew.tq-group.com>, soc@kernel.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-
-The only missing configuration option preventing us from using
-multi_v7_defconfig with the Raspberry Pi 4 is ARM_LPAE. It's needed as
-the PCIe controller found on the SoC depends on 64bit addressing, yet
-can't be included as not all v7 boards support LPAE.
-
-Introduce multi_v7_lpae_defconfig, built off multi_v7_defconfig, which will
-avoid us having to duplicate and maintain multiple similar configurations.
-
-Needless to say the Raspberry Pi 4 is not the only platform that can
-benefit from this new configuration.
-
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Directly applied from https://lore.kernel.org/linux-arm-kernel/20200203184820.4433-2-nsaenzjulienne@suse.de/T/#m96968dd45c0aaa88e0a7387024b5ac13b002363d
-Although I had to apply manually
-
- arch/arm/Makefile            | 4 ++++
- arch/arm/configs/lpae.config | 1 +
- 2 files changed, 5 insertions(+)
- create mode 100644 arch/arm/configs/lpae.config
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 506dbc72323bc..80d9eaf3dc06a 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -314,6 +314,10 @@ endif
- # My testing targets (bypasses dependencies)
- bp:;	$(Q)$(MAKE) $(build)=$(boot) $(boot)/bootpImage
+Em Fri, Jan 20, 2023 at 05:32:56PM +0530, Athira Rajeev escreveu:
+> While parsing the tracepoint events in parse_events_add_tracepoint()
+> function, code checks for HAVE_LIBTRACEEVENT support. This is needed
+> since libtraceevent is necessary for tracepoint. But while adding
+> probe points, check for LIBTRACEEVENT is not done in case of perf probe.
+> Hence, in environment with missing libtraceevent-devel, it is
+> observed that adding a probe point works even though its not
+> supported.
  
-+include $(srctree)/scripts/Makefile.defconf
-+PHONY += multi_v7_lpae_defconfig
-+multi_v7_lpae_defconfig:
-+	$(call merge_into_defconfig,multi_v7_defconfig,lpae)
+> Example:
+> Adding probe point:
+> 	./perf probe 'vfs_getname=getname_flags:72 pathname=result->name:string'
+> 	Added new event:
+> 	  probe:vfs_getname    (on getname_flags:72 with pathname=result->name:string)
  
- define archhelp
-   echo  '* zImage        - Compressed kernel image (arch/$(ARCH)/boot/zImage)'
-diff --git a/arch/arm/configs/lpae.config b/arch/arm/configs/lpae.config
-new file mode 100644
-index 0000000000000..19bab134e014b
---- /dev/null
-+++ b/arch/arm/configs/lpae.config
-@@ -0,0 +1 @@
-+CONFIG_ARM_LPAE=y
+> 	You can now use it in all perf tools, such as:
+ 
+> 		perf record -e probe:vfs_getname -aR sleep 1
+ 
+> But trying perf record:
+> 	./perf  record -e probe:vfs_getname -aR sleep 1
+> 	event syntax error: 'probe:vfs_getname'
+> 				\___ unsupported tracepoint
+> 	libtraceevent is necessary for tracepoint support
+> 	Run 'perf list' for a list of valid events
+> 
+> Fix this by wrapping "builtin-probe" compilation and
+> "perf probe" usage under "CONFIG_LIBTRACEEVENT" check.
+
+Humm, but 'perf probe' continues to work, as uou demoed above, the
+problem is with the suggestion to use other perf tools that need to
+parse tracefs and without libtraceevent, currently can't do it:
+
+[root@quaco ~]# perf probe 'vfs_getname=getname_flags:72 pathname=result->name:string'
+Added new event:
+  probe:vfs_getname    (on getname_flags:72 with pathname=result->name:string)
+
+You can now use it in all perf tools, such as:
+
+	perf record -e probe:vfs_getname -aR sleep 1
+
+[root@quaco ~]# perf probe -l
+  probe:vfs_getname    (on getname_flags:72@fs/namei.c with pathname)
+[root@quaco ~]# perf trace -e probe:vfs_getname
+perf: 'trace' is not a perf-command. See 'perf --help'.
+[root@quaco ~]# cd /sys/kernel/tracing/events/probe/vfs_getname/
+[root@quaco vfs_getname]# ls
+enable  filter  format  hist  id  trigger
+[root@quaco vfs_getname]# ls -la
+total 0
+drwxr-x---. 2 root root 0 Jan 20 11:18 .
+drwxr-x---. 3 root root 0 Jan 20 11:18 ..
+-rw-r-----. 1 root root 0 Jan 20 11:18 enable
+-rw-r-----. 1 root root 0 Jan 20 11:18 filter
+-r--r-----. 1 root root 0 Jan 20 11:18 format
+-r--r-----. 1 root root 0 Jan 20 11:18 hist
+-r--r-----. 1 root root 0 Jan 20 11:18 id
+-rw-r-----. 1 root root 0 Jan 20 11:18 trigger
+[root@quaco vfs_getname]#
+
+But we can go on from there:
+
+[root@quaco tracing]# pwd
+/sys/kernel/tracing
+[root@quaco tracing]# echo 1 > /sys/kernel/tracing/events/probe/vfs_getname/enable
+[root@quaco tracing]# echo 1 > tracing_on
+[root@quaco tracing]# head trace_pipe
+    systemd-oomd-979     [003] ..... 96369.978971: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service"
+    systemd-oomd-979     [003] ..... 96369.979022: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/memory.current"
+    systemd-oomd-979     [003] ..... 96369.979084: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname=""
+    systemd-oomd-979     [003] ..... 96369.979162: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/memory.min"
+    systemd-oomd-979     [003] ..... 96369.979197: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname=""
+    systemd-oomd-979     [003] ..... 96369.979267: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/memory.low"
+    systemd-oomd-979     [003] ..... 96369.979303: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname=""
+    systemd-oomd-979     [003] ..... 96369.979372: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/memory.swap.current"
+    systemd-oomd-979     [003] ..... 96369.979406: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname=""
+    systemd-oomd-979     [003] ..... 96369.979475: vfs_getname: (getname_flags.part.0+0x6b/0x1c0) pathname="/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/memory.stat"
+[root@quaco tracing]#
+
+So you could instead replace the suggestion from:
+
+"
+       You can now use it in all perf tools, such as:
+
+               perf record -e probe:vfs_getname -aR sleep 1
+"
+
+To:
+
+"
+	perf is not linked with libtraceevent, to use the new probe you
+	can use tracefs:
+
+		cd /sys/kernel/tracing/
+		echo 1 > events/probe/vfs_getname/enable
+		echo 1 > tracing_on
+		cat trace_pipe
+"
+
+wdyt?
+
+- Arnaldo
+ 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/Build  | 4 +++-
+>  tools/perf/perf.c | 2 ++
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/Build b/tools/perf/Build
+> index 6dd67e502295..a138a2304929 100644
+> --- a/tools/perf/Build
+> +++ b/tools/perf/Build
+> @@ -33,7 +33,9 @@ ifeq ($(CONFIG_LIBTRACEEVENT),y)
+>    perf-$(CONFIG_TRACE) += trace/beauty/
+>  endif
+>  
+> -perf-$(CONFIG_LIBELF) += builtin-probe.o
+> +ifeq ($(CONFIG_LIBTRACEEVENT),y)
+> +  perf-$(CONFIG_LIBELF) += builtin-probe.o
+> +endif
+>  
+>  perf-y += bench/
+>  perf-y += tests/
+> diff --git a/tools/perf/perf.c b/tools/perf/perf.c
+> index 82bbe0ca858b..7b0d79284d5a 100644
+> --- a/tools/perf/perf.c
+> +++ b/tools/perf/perf.c
+> @@ -80,9 +80,11 @@ static struct cmd_struct commands[] = {
+>  #ifdef HAVE_LIBTRACEEVENT
+>  	{ "sched",	cmd_sched,	0 },
+>  #endif
+> +#ifdef HAVE_LIBTRACEEVENT
+>  #ifdef HAVE_LIBELF_SUPPORT
+>  	{ "probe",	cmd_probe,	0 },
+>  #endif
+> +#endif
+>  #ifdef HAVE_LIBTRACEEVENT
+>  	{ "kmem",	cmd_kmem,	0 },
+>  	{ "lock",	cmd_lock,	0 },
+> -- 
+> 2.39.0
+
 -- 
-2.34.1
 
+- Arnaldo
