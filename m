@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E07674FBB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 09:49:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406E4674FCD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 09:52:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NytV81y6gz3fLf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 19:49:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NytYL1bhGz3fJ7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 19:52:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NytTX16f2z2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 19:49:19 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pIn53-002oea-Ri; Fri, 20 Jan 2023 09:49:01 +0100
-Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pIn53-000p3c-GA; Fri, 20 Jan 2023 09:49:01 +0100
-Message-ID: <c1d233b9-bc85-dce9-ffa0-eb3170602c6c@physik.fu-berlin.de>
-Date: Fri, 20 Jan 2023 09:49:00 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NytXl5KBFz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 19:52:06 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-313--Lfi9qISPHGbgb-YRNfUNQ-1; Fri, 20 Jan 2023 08:52:01 +0000
+X-MC-Unique: -Lfi9qISPHGbgb-YRNfUNQ-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 20 Jan
+ 2023 08:51:59 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Fri, 20 Jan 2023 08:51:59 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Arnaldo Carvalho de Melo' <acme@kernel.org>
+Subject: RE: [PATCH V3] tools/perf/tests: Fix string substitutions in build id
+ test
+Thread-Topic: [PATCH V3] tools/perf/tests: Fix string substitutions in build
+ id test
+Thread-Index: AQHZLBIrp7uRxIXInkOHsORdTF5RZK6l4s+wgAAT9YCAAQmokA==
+Date: Fri, 20 Jan 2023 08:51:59 +0000
+Message-ID: <8c433a543cda48e5b736312903355918@AcuMS.aculab.com>
+References: <20230119142719.32628-1-atrajeev@linux.vnet.ibm.com>
+ <1a2f988593a4403db2a043ff42886ced@AcuMS.aculab.com>
+ <Y8l3C8LOohZvQOKH@kernel.org>
+In-Reply-To: <Y8l3C8LOohZvQOKH@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-To: "Michael.Karcher" <Michael.Karcher@fu-berlin.de>,
- Geert Uytterhoeven <geert@linux-m68k.org>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
- <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
- <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
- <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
- <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.148.100
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,25 +61,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: "irogers@google.com" <irogers@google.com>, "ak@linux.intel.com" <ak@linux.intel.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "rnsastry@linux.ibm.com" <rnsastry@linux.ibm.com>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, 'Athira Rajeev' <atrajeev@linux.vnet.ibm.com>, "james.clark@arm.com" <james.clark@arm.com>, "jolsa@kernel.org" <jolsa@kernel.org>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "namhyung@kernel.org" <namhyung@kernel.org>, "disgoel@linux.ibm.com" <disgoel@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael!
+From: Arnaldo Carvalho de Melo
+> Sent: 19 January 2023 17:00
+>=20
+> Em Thu, Jan 19, 2023 at 03:49:15PM +0000, David Laight escreveu:
+> > From: Athira Rajeev
+> > > Sent: 19 January 2023 14:27
+> > ...
+> > > The test script "tests/shell/buildid.sh" uses some of the
+> > > string substitution ways which are supported in bash, but not in
+> > > "sh" or other shells. Above error on line number 69 that reports
+> > > "Bad substitution" is:
+> >
+> > Looks better - assuming it works :-)
+>=20
+> :-)
+>=20
+> Can I take this as an:
+>=20
+> Acked-by: David Laight <David.Laight@ACULAB.COM>
 
-On 1/19/23 23:11, Michael.Karcher wrote:
-> I suggest to file a bug against gcc complaining about a "spurious warning",
-> and using "-Werror -Wno-error-sizeof-pointer-div" until gcc is adapted to
-> not emit the warning about the pointer division if the result is not used.
+I'm not sure that is worth anything.
+You can add a Reviewed-by
 
-Could you post a kernel patch for that? I would be happy to test it on my
-SH-7785CLR board. Also, I'm going to file a bug report against GCC.
+=09David
 
-Adrian
-
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
