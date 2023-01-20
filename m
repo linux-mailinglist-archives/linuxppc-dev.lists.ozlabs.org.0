@@ -2,56 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC93675E82
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 21:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CED1C6760D3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 23:58:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz9RP5bfQz3fKr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 07:03:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LTJmUej4;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NzFJv5k6kz3fMs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 09:58:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LTJmUej4;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=mkarcher@zedat.fu-berlin.de; receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz9QT11M2z3fJB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 07:02:41 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4A5776204F;
-	Fri, 20 Jan 2023 20:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE5DC433D2;
-	Fri, 20 Jan 2023 20:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674244957;
-	bh=GlglYW3c/pib3zrqdUBnkb/zVk+CILGBj0OPOTkq6GY=;
-	h=Date:From:To:List-Id:Cc:Subject:References:In-Reply-To:From;
-	b=LTJmUej4vUhNgH4bmLp+HJHIBL426vrn7mh95SQ6zjj7BMqsk6OHb5YRDdev9TCH7
-	 qI5PL494W5x+U4lLYwe9cN5Xd75ff0dUBORA2MybADtOZeEl3xnxQSHz5DhFl0b04m
-	 uFFLqFqdNGynin73OtiDKfz+Xh6wd8S+7TQIHf+2un7mwGh6Mi5Jr5bGfkR6oi6KAi
-	 i2jw5xRX7qTo//kQ8l97WVdGlPa2RiIltsXesioPXwpAZlCmIbh4qKenxTiRTpBhNO
-	 ZaD9gTlm7TwIHOknXl9KnIAHoDq0kozNTDxRdPo09xE7YpcQgFymiJqomXBf19Z1+Z
-	 n+yvdmr2oPE2w==
-Date: Fri, 20 Jan 2023 20:02:30 +0000
-From: Lee Jones <lee@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH RESEND 0/8] Resend LED patches
-Message-ID: <Y8rzVkAC+olX7Kcb@google.com>
-References: <20221226123630.6515-1-pali@kernel.org>
- <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
- <Y8rMJcX0cqThKj2N@google.com>
- <720a7d19-4b7f-4948-b044-c46a539a4b36@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz8hc1ls9z3cFW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 06:29:52 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1pIx54-002uuw-Fd; Fri, 20 Jan 2023 20:29:42 +0100
+Received: from pd9f631ca.dip0.t-ipconnect.de ([217.246.49.202] helo=[192.168.144.87])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <kernel@mkarcher.dialup.fu-berlin.de>)
+          id 1pIx54-002Kos-8o; Fri, 20 Jan 2023 20:29:42 +0100
+Content-Type: multipart/mixed; boundary="------------noR0LwKfcoz0L7zbRzJSPHS4"
+Message-ID: <def16c9b-7bb1-a454-0896-b063a9e85964@fu-berlin.de>
+Date: Fri, 20 Jan 2023 20:29:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <720a7d19-4b7f-4948-b044-c46a539a4b36@app.fastmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: Calculating array sizes in C - was: Re: Build
+ regressions/improvements in v6.2-rc1
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+ <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
+ <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
+ <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
+ <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
+ <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
+ <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
+ <c1d233b9-bc85-dce9-ffa0-eb3170602c6c@physik.fu-berlin.de>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+In-Reply-To: <c1d233b9-bc85-dce9-ffa0-eb3170602c6c@physik.fu-berlin.de>
+X-Original-Sender: kernel@mkarcher.dialup.fu-berlin.de
+X-Originating-IP: 217.246.49.202
+X-ZEDAT-Hint: A
+X-Mailman-Approved-At: Sat, 21 Jan 2023 09:57:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,78 +67,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, soc@kernel.org, Pavel Machek <pavel@ucw.cz>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, linux-leds@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 Jan 2023, Arnd Bergmann wrote:
+This is a multi-part message in MIME format.
+--------------noR0LwKfcoz0L7zbRzJSPHS4
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> On Fri, Jan 20, 2023, at 18:15, Lee Jones wrote:
-> > On Fri, 20 Jan 2023, Arnd Bergmann wrote:
-> 
-> >> > Marek Behún (3):
-> >> >   leds: turris-omnia: support HW controlled mode via private trigger
-> >> >   leds: turris-omnia: initialize multi-intensity to full
-> >> >   leds: turris-omnia: change max brightness from 255 to 1
-> >> >
-> >> > Pali Rohár (5):
-> >> >   dt-bindings: leds: register-bit-led: Add active-low property
-> >> >   leds: syscon: Implement support for active-low property
-> >> >   powerpc/85xx: DTS: Add CPLD definitions for P1021RDB Combo Board CPL
-> >> >     Design
-> >> >   dt-bindings: leds: Add cznic,turris1x-leds.yaml binding
-> >> >   leds: Add support for Turris 1.x LEDs
-> >> >
-> >> >  .../testing/sysfs-class-led-driver-turris1x   |  31 ++
-> >> >  .../bindings/leds/cznic,turris1x-leds.yaml    | 118 +++++
-> >> >  .../bindings/leds/register-bit-led.yaml       |   5 +
-> >> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi    |  92 ++++
-> >> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_32b.dts |   6 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_36b.dts |   6 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts     |  44 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1020utm-pc.dtsi    |  37 ++
-> >> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_32b.dts |   4 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_36b.dts |   4 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc.dtsi    |  37 ++
-> >> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_32b.dts |   5 +-
-> >> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_36b.dts |   5 +-
-> >> >  arch/powerpc/boot/dts/fsl/p2020rdb-pc.dtsi    |  33 +-
-> >
-> >> >  drivers/leds/Kconfig                          |  10 +
-> >> >  drivers/leds/Makefile                         |   1 +
-> >> >  drivers/leds/leds-syscon.c                    |  14 +-
-> >> >  drivers/leds/leds-turris-1x.c                 | 474 ++++++++++++++++++
-> >> >  drivers/leds/leds-turris-omnia.c              |  46 +-
-> >
-> > If everyone is convinced that applying these drivers is the correct
-> > thing to do, I'd be happy to (rather) take them via LEDs.
-> 
-> Ok, thanks. I had not actually looked at the patches until today.
-> They were in the soc tree backlog but appeared to be misplaced
-> there until I read the  0/10 message text.
-> 
-> Looking at it now, I see:
-> 
-> - patches 1 and 2 seem obvious and have been reviewed by
->   others already
-> 
-> - patch 3 is for arch/powerpc and should get merged through
->   there if there are no objections to the binding in patch 4.
-> 
-> - patch 5 is the big driver patch, with a Reviewed-by tag
->   from Marek Behún, who is the author of the last three patches.
->   An earlier version of this patch was sent in June and got
->   a few Acks and detailed feedback from Andy [1], but he's also
->   not on Cc, and I don't know if his comments are all resolved
->   in this version.
-> 
-> - Patches 6, 7 and 8 all seem simple LED subsystem patches,
->   they just need review from you in order to get applied.
->   These are also missing a Signed-off-by from the submitter
->   in addition to the author in order to be applied.
+Hello Adrian,
+> Could you post a kernel patch for that? I would be happy to test it on my
+> SH-7785CLR board. Also, I'm going to file a bug report against GCC.
 
-Very well.  Let's have them resent then please (with past reviewers on
-Cc:) and we'll go from there.
+I filed the bug already. It's 
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108483.
 
--- 
-Lee Jones [李琼斯]
+The diff is attached. It's published as CC0 in case anyone considers 
+this trivial change copyrightable. This patch prevents this one specific 
+warning from being upgraded to "error" even if you configure the kernel 
+to use "-Werror". It still keeps it active as warning, though.
+
+Kind regards,
+   Michael Karcher
+
+--------------noR0LwKfcoz0L7zbRzJSPHS4
+Content-Type: text/plain; charset=UTF-8; name="werror.diff"
+Content-Disposition: attachment; filename="werror.diff"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL01ha2VmaWxlIGIvTWFrZWZpbGUKaW5kZXggZTA5ZmUxMDBlZmIyLi5i
+NGNkMDc1YzZhMTkgMTAwNjQ0Ci0tLSBhL01ha2VmaWxlCisrKyBiL01ha2VmaWxlCkBAIC04
+NzAsNyArODcwLDcgQEAgc3RhY2twLWZsYWdzLSQoQ09ORklHX1NUQUNLUFJPVEVDVE9SX1NU
+Uk9ORykgICAgICA6PSAtZnN0YWNrLXByb3RlY3Rvci1zdHJvbmcKIAogS0JVSUxEX0NGTEFH
+UyArPSAkKHN0YWNrcC1mbGFncy15KQogCi1LQlVJTERfQ1BQRkxBR1MtJChDT05GSUdfV0VS
+Uk9SKSArPSAtV2Vycm9yCitLQlVJTERfQ1BQRkxBR1MtJChDT05GSUdfV0VSUk9SKSArPSAt
+V2Vycm9yIC1Xbm8tZXJyb3I9c2l6ZW9mLXBvaW50ZXItZGl2CiBLQlVJTERfQ1BQRkxBR1Mg
+Kz0gJChLQlVJTERfQ1BQRkxBR1MteSkKIEtCVUlMRF9DRkxBR1MtJChDT05GSUdfQ0NfTk9f
+QVJSQVlfQk9VTkRTKSArPSAtV25vLWFycmF5LWJvdW5kcwogCg==
+
+--------------noR0LwKfcoz0L7zbRzJSPHS4--
