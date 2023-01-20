@@ -1,87 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28537674EDC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 09:03:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 108FC674EC4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 08:57:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NysSV6qDYz3fLB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 19:03:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NysK86RSGz3fND
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:57:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tp4E4kQV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QKTuzhB3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tp4E4kQV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QKTuzhB3;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nys1y6Kbvz3fJC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 18:43:50 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30K7Vhh6002607;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nys1t7364z3fGv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 18:43:46 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30K7JfAb027594;
 	Fri, 20 Jan 2023 07:43:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=zTIV6PRVUVjhP5LqIHw2BlDGgUnAlkowALzDmGJNn38=;
- b=Tp4E4kQVfeBFEhoaXq4TFX1JjbZOpEGiyXOdQRy9gs+wLVPFE9/4YPd40OXLJDyClIVU
- st/Pi9xuOlNyLBiQ/Znu4aMf7CnU2SAfK8YztwzN0/pMKoyxF8GAlKISQNf3F0PEF+AD
- x/jAG8IgZFxqtHE2rWUYnEs/d+8izP98GyGw06RRGXiF4pTH3RkQkxMtredT0ezymqVb
- ElpMDd2THqSGoALx96yx/XmT3jdDytaEYLQ0Iub+cTZ+36wo6zMney7GFLx9oC2od9Lz
- H6vR7/qUjJqZAFKyMRAVRCRWwh4UOGbcYrkoJC7rb5mSd7XKUoikO5FMpLzsz3fq1BRe 6Q== 
+ bh=DkjetBvNyupAHj8KhGylZIP4X9T8JCN3PLJ/4RRN4zc=;
+ b=QKTuzhB3tbIEqykyYDxEhB+WKJyo4pe3wNzAql1+/BIQ3eh/ETnFLc0sCrSg2kSGefe7
+ i1QZ8zvqpFZjH+m59d2BoUsnubCC5RlI43+AF34jLWN6fDyV/JQ9XqLdyfpOJ5pAOR19
+ /kMktxPpSQd8Ku5rcgYe5torIGdoaziBA4d0BwyhlSIJebCKj/drov0jy2ly3ju5H1nv
+ 85Z7LflXYWgAftRFE46FfncRnAf5Vkm0c0Zw67o0NsLRTizSYxoicXVEV1SHesTc+vSK
+ d9GRyrplcRbjrFaRT3E7gtjtDPpJoD0vfIsnjMg4Omjslb8MKxBo26S+A2kv4kZDE/hb DQ== 
 Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7pn5074w-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7pfj8ck8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 20 Jan 2023 07:43:41 +0000
 Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JI6nne017303;
-	Fri, 20 Jan 2023 07:43:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3n3m16dkh0-1
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JLDIIN025743;
+	Fri, 20 Jan 2023 07:43:39 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3n3m16dkgy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jan 2023 07:43:40 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30K7hbEn51577222
+	Fri, 20 Jan 2023 07:43:39 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30K7haXP23855480
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jan 2023 07:43:37 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B55420043;
-	Fri, 20 Jan 2023 07:43:37 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F30920040;
-	Fri, 20 Jan 2023 07:43:37 +0000 (GMT)
+	Fri, 20 Jan 2023 07:43:36 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 988E520043;
+	Fri, 20 Jan 2023 07:43:36 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1D9A220040;
+	Fri, 20 Jan 2023 07:43:36 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Jan 2023 07:43:37 +0000 (GMT)
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Jan 2023 07:43:36 +0000 (GMT)
 Received: from jarvis-ozlabs-ibm-com.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5EC47609BD;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6F235609C3;
 	Fri, 20 Jan 2023 18:43:30 +1100 (AEDT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v4 23/24] integrity/powerpc: Improve error handling & reporting when loading certs
-Date: Fri, 20 Jan 2023 18:43:05 +1100
-Message-Id: <20230120074306.1326298-24-ajd@linux.ibm.com>
+Subject: [PATCH v4 24/24] integrity/powerpc: Support loading keys from pseries secvar
+Date: Fri, 20 Jan 2023 18:43:06 +1100
+Message-Id: <20230120074306.1326298-25-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230120074306.1326298-1-ajd@linux.ibm.com>
 References: <20230120074306.1326298-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bRAPPKGDQav7vgoJpIt36L050mtPuogk
-X-Proofpoint-GUID: bRAPPKGDQav7vgoJpIt36L050mtPuogk
+X-Proofpoint-ORIG-GUID: Qm1zgF_EukHmA95Zx8ly3KCZV9BOTRcV
+X-Proofpoint-GUID: Qm1zgF_EukHmA95Zx8ly3KCZV9BOTRcV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-20_04,2023-01-19_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
- clxscore=1015 spamscore=0 adultscore=0 phishscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2301200070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,12 +100,14 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Russell Currey <ruscur@russell.cc>
 
-A few improvements to load_powerpc.c:
+The secvar object format is only in the device tree under powernv.
+We now have an API call to retrieve it in a generic way, so we should
+use that instead of having to handle the DT here.
 
- - include integrity.h for the pr_fmt()
- - move all error reporting out of get_cert_list()
- - use ERR_PTR() to better preserve error detail
- - don't use pr_err() for missing keys
+Add support for pseries secvar, with the "ibm,plpks-sb-v1" format.
+The object format is expected to be the same, so there shouldn't be any
+functional differences between objects retrieved from powernv and
+pseries.
 
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
@@ -113,79 +115,60 @@ Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
 
 v3: New patch
+
+v4: Pass format buffer size (stefanb, npiggin)
 ---
- .../integrity/platform_certs/load_powerpc.c   | 26 ++++++++++++++-----
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ .../integrity/platform_certs/load_powerpc.c     | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
-index 1e4f80a4e71c..dee51606d5f4 100644
+index dee51606d5f4..d4ce91bf3fec 100644
 --- a/security/integrity/platform_certs/load_powerpc.c
 +++ b/security/integrity/platform_certs/load_powerpc.c
-@@ -14,9 +14,15 @@
+@@ -10,7 +10,6 @@
+ #include <linux/cred.h>
+ #include <linux/err.h>
+ #include <linux/slab.h>
+-#include <linux/of.h>
  #include <asm/secure_boot.h>
  #include <asm/secvar.h>
  #include "keyring_handler.h"
-+#include "../integrity.h"
+@@ -59,16 +58,22 @@ static int __init load_powerpc_certs(void)
+ 	void *db = NULL, *dbx = NULL;
+ 	u64 dbsize = 0, dbxsize = 0;
+ 	int rc = 0;
+-	struct device_node *node;
++	ssize_t len;
++	char buf[32];
  
- /*
-  * Get a certificate list blob from the named secure variable.
-+ *
-+ * Returns:
-+ *  - a pointer to a kmalloc'd buffer containing the cert list on success
-+ *  - NULL if the key does not exist
-+ *  - an ERR_PTR on error
-  */
- static __init void *get_cert_list(u8 *key, unsigned long keylen, u64 *size)
- {
-@@ -25,19 +31,19 @@ static __init void *get_cert_list(u8 *key, unsigned long keylen, u64 *size)
+ 	if (!secvar_ops)
+ 		return -ENODEV;
  
- 	rc = secvar_ops->get(key, keylen, NULL, size);
- 	if (rc) {
--		pr_err("Couldn't get size: %d\n", rc);
--		return NULL;
-+		if (rc == -ENOENT)
-+			return NULL;
-+		return ERR_PTR(rc);
+-	/* The following only applies for the edk2-compat backend. */
+-	node = of_find_compatible_node(NULL, NULL, "ibm,edk2-compat-v1");
+-	if (!node)
++	len = secvar_ops->format(buf, 32);
++	if (len <= 0)
+ 		return -ENODEV;
+ 
++	// Check for known secure boot implementations from OPAL or PLPKS
++	if (strcmp("ibm,edk2-compat-v1", buf) && strcmp("ibm,plpks-sb-v1", buf)) {
++		pr_err("Unsupported secvar implementation \"%s\", not loading certs\n", buf);
++		return -ENODEV;
++	}
++
+ 	/*
+ 	 * Get db, and dbx. They might not exist, so it isn't an error if we
+ 	 * can't get them.
+@@ -103,8 +108,6 @@ static int __init load_powerpc_certs(void)
+ 		kfree(dbx);
  	}
  
- 	db = kmalloc(*size, GFP_KERNEL);
- 	if (!db)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	rc = secvar_ops->get(key, keylen, db, size);
- 	if (rc) {
- 		kfree(db);
--		pr_err("Error reading %s var: %d\n", key, rc);
--		return NULL;
-+		return ERR_PTR(rc);
- 	}
- 
- 	return db;
-@@ -69,7 +75,11 @@ static int __init load_powerpc_certs(void)
- 	 */
- 	db = get_cert_list("db", 3, &dbsize);
- 	if (!db) {
--		pr_err("Couldn't get db list from firmware\n");
-+		pr_info("Couldn't get db list from firmware\n");
-+	} else if (IS_ERR(db)) {
-+		rc = PTR_ERR(db);
-+		pr_err("Error reading db from firmware: %d\n", rc);
-+		return rc;
- 	} else {
- 		rc = parse_efi_signature_list("powerpc:db", db, dbsize,
- 					      get_handler_for_db);
-@@ -81,6 +91,10 @@ static int __init load_powerpc_certs(void)
- 	dbx = get_cert_list("dbx", 4,  &dbxsize);
- 	if (!dbx) {
- 		pr_info("Couldn't get dbx list from firmware\n");
-+	} else if (IS_ERR(dbx)) {
-+		rc = PTR_ERR(dbx);
-+		pr_err("Error reading dbx from firmware: %d\n", rc);
-+		return rc;
- 	} else {
- 		rc = parse_efi_signature_list("powerpc:dbx", dbx, dbxsize,
- 					      get_handler_for_dbx);
+-	of_node_put(node);
+-
+ 	return rc;
+ }
+ late_initcall(load_powerpc_certs);
 -- 
 2.39.0
 
