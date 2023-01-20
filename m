@@ -1,72 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF45A675C09
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:51:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4E1675C26
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:53:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz6Vc3hpRz3fKT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:51:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz6Yn08rSz3fKr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:53:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ANRlWfvx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GjbiRjgq;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JKFUMRfV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1132; helo=mail-yw1-x1132.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ANRlWfvx;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GjbiRjgq;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JKFUMRfV;
 	dkim-atps=neutral
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz6Tj6Yklz3cFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:50:16 +1100 (AEDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-4a263c4ddbaso83859367b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 09:50:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aVyoBoXVncV7XEl3t2voVw28ML7SaYV5Dgtuf6b40FA=;
-        b=ANRlWfvxGTpJVPhZIEDmerA7RYCecNGYC3i5Nr9zZ8q28FPyljMpMTIhlgQZfHFTVP
-         Ee92UzH2d4DuxfxktT1DA3smDF0ji/BkS3gfkTDonTSF7HQup1SefrYmZjTyJW0Bg9tK
-         BJRGr+0GxhGYoL1k3OnQbi/pfLLvgxCoDu8z4/kaWzhjUtNPMmPTcuBjMAYHCLMuH4mY
-         fgKJAXrZ5MsNM0RpCYDGi6IbNIrrwup5btcvBTsiaC5aEA9EihfFW59n9S+gxvYQms2F
-         NRJL4C6RLSnaLwLC/V6yhn1nTzQyRvm8lUqVp3AclCOntYxy8GEUOjQZqRDLkC2dw8ZE
-         UNeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aVyoBoXVncV7XEl3t2voVw28ML7SaYV5Dgtuf6b40FA=;
-        b=IzAXAkaNhv2eoGF+0EonjgWrsJipX4KoDTt100gtl3s+I8OWTH0t1bvf8I63RSxAxc
-         lZCvpDlFwj1f/K+sv73CRWiTmNcXafIS4YzQIj5g0t3UziE9PooO8FfVb2lRNmIsiYf8
-         JwxjkMt9LXVVYY7HMk/01NEmQWxP46VYyjqM1rJ4+9d3K31ItUL+N2VYwl549lNaofBW
-         vtQN0adUG23WMbhcdGcUjFjtd23HL4rvGmwDyNFf0DUD3aC83gVck8xao/7YiLco4MZt
-         2WufotF0qwzcCgQj6cjXYo8pyCUequPoF29/zZYpqNUNFouc44zi1xy7WfV8wwJclKCQ
-         lBaw==
-X-Gm-Message-State: AFqh2krlYXHzoGV+glH1AcfWZxhazNScQsNTukTcXR0qDFKPBG/KkUS5
-	gx6XIjhusc7+X0SSmp3h/qNNDIVpgizBd81qxSy97w==
-X-Google-Smtp-Source: AMrXdXvMiPI/AGYcURx7BpXFo8CgDd1daSskgeMlewm7uoKhNJ8L/DxZm49IfvACqDRKjvLcYNle2ICQOI0LbOIpu2s=
-X-Received: by 2002:a81:6d8d:0:b0:490:89c3:21b0 with SMTP id
- i135-20020a816d8d000000b0049089c321b0mr2028934ywc.132.1674237012869; Fri, 20
- Jan 2023 09:50:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz6Xq2pT1z30Bp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:52:59 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 2C66C33795;
+	Fri, 20 Jan 2023 17:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1674237175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UNyEsjm7hTRHmPW+XmOpTTJAr6gba2jkZnI10liz/yE=;
+	b=GjbiRjgqTWyXCgMsFjtKYs9AvuDkHg49it+0qX0XS2aTMfPj7Mw2LGq4NMAoFYcaj9PVej
+	vMAyYMvPMBYBuZ3p8DCAt5IgRAcn/Lj3Sm6fk2rJ/G7ZgTQRF8kz1VRmIiI7Mso2WhAkiI
+	qH5MslyqTpbp47xkbnG2yy0C43RDIu8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1674237175;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UNyEsjm7hTRHmPW+XmOpTTJAr6gba2jkZnI10liz/yE=;
+	b=JKFUMRfVDlOz7Gei5bw7WnRU5/xBTxCqxl9tiG+nANWfa+RRqPUrsxile+0ykUzlS10JwM
+	oHseEXEeJdaFmKAQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id F157F2C141;
+	Fri, 20 Jan 2023 17:52:54 +0000 (UTC)
+Date: Fri, 20 Jan 2023 18:52:53 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
+ disaply code
+Message-ID: <20230120175253.GW16547@kitsune.suse.cz>
+References: <20230118215045.5551-1-msuchanek@suse.de>
+ <20230119095323.4659-1-msuchanek@suse.de>
+ <CAL_JsqKo+mdjA485KDb1ZauJcbOU-FR1G-Z2sYYNu7+Zn32wSA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230109205336.3665937-1-surenb@google.com> <20230109205336.3665937-40-surenb@google.com>
- <Y8k+syJu7elWAjRj@dhcp22.suse.cz> <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
- <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz> <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
- <CAJuCfpF20nuP6Meib9h7NVrJv+wybYS==vZFQXxUW6n-ir9bvQ@mail.gmail.com>
- <Y8rGJq8LvX2C+Cr7@casper.infradead.org> <20230120170815.yuylbs27r6xcjpq5@revolver>
- <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com> <Y8rQNj5dVyuxRBOf@casper.infradead.org>
-In-Reply-To: <Y8rQNj5dVyuxRBOf@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 20 Jan 2023 09:50:01 -0800
-Message-ID: <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqKo+mdjA485KDb1ZauJcbOU-FR1G-Z2sYYNu7+Zn32wSA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,89 +73,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, Michal Hocko <mhocko@suse.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.
- com, mgorman@techsingularity.net
+Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, open list <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 20, 2023 at 9:32 AM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Fri, Jan 20, 2023 at 09:17:46AM -0800, Suren Baghdasaryan wrote:
-> > On Fri, Jan 20, 2023 at 9:08 AM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
-> > >
-> > > * Matthew Wilcox <willy@infradead.org> [230120 11:50]:
-> > > > On Fri, Jan 20, 2023 at 08:45:21AM -0800, Suren Baghdasaryan wrote:
-> > > > > On Fri, Jan 20, 2023 at 8:20 AM Suren Baghdasaryan <surenb@google.com> wrote:
-> > > > > >
-> > > > > > On Fri, Jan 20, 2023 at 12:52 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > > > > >
-> > > > > > > On Thu 19-01-23 10:52:03, Suren Baghdasaryan wrote:
-> > > > > > > > On Thu, Jan 19, 2023 at 4:59 AM Michal Hocko <mhocko@suse.com> wrote:
-> > > > > > > > >
-> > > > > > > > > On Mon 09-01-23 12:53:34, Suren Baghdasaryan wrote:
-> > > > > > > > > > call_rcu() can take a long time when callback offloading is enabled.
-> > > > > > > > > > Its use in the vm_area_free can cause regressions in the exit path when
-> > > > > > > > > > multiple VMAs are being freed. To minimize that impact, place VMAs into
-> > > > > > > > > > a list and free them in groups using one call_rcu() call per group.
-> > > > > > > > >
-> > > > > > > > > After some more clarification I can understand how call_rcu might not be
-> > > > > > > > > super happy about thousands of callbacks to be invoked and I do agree
-> > > > > > > > > that this is not really optimal.
-> > > > > > > > >
-> > > > > > > > > On the other hand I do not like this solution much either.
-> > > > > > > > > VM_AREA_FREE_LIST_MAX is arbitrary and it won't really help all that
-> > > > > > > > > much with processes with a huge number of vmas either. It would still be
-> > > > > > > > > in housands of callbacks to be scheduled without a good reason.
-> > > > > > > > >
-> > > > > > > > > Instead, are there any other cases than remove_vma that need this
-> > > > > > > > > batching? We could easily just link all the vmas into linked list and
-> > > > > > > > > use a single call_rcu instead, no? This would both simplify the
-> > > > > > > > > implementation, remove the scaling issue as well and we do not have to
-> > > > > > > > > argue whether VM_AREA_FREE_LIST_MAX should be epsilon or epsilon + 1.
-> > > > > > > >
-> > > > > > > > Yes, I agree the solution is not stellar. I wanted something simple
-> > > > > > > > but this is probably too simple. OTOH keeping all dead vm_area_structs
-> > > > > > > > on the list without hooking up a shrinker (additional complexity) does
-> > > > > > > > not sound too appealing either.
-> > > > > > >
-> > > > > > > I suspect you have missed my idea. I do not really want to keep the list
-> > > > > > > around or any shrinker. It is dead simple. Collect all vmas in
-> > > > > > > remove_vma and then call_rcu the whole list at once after the whole list
-> > > > > > > (be it from exit_mmap or remove_mt). See?
-> > > > > >
-> > > > > > Yes, I understood your idea but keeping dead objects until the process
-> > > > > > exits even when the system is low on memory (no shrinkers attached)
-> > > > > > seems too wasteful. If we do this I would advocate for attaching a
-> > > > > > shrinker.
-> > > > >
-> > > > > Maybe even simpler, since we are hit with this VMA freeing flood
-> > > > > during exit_mmap (when all VMAs are destroyed), we pass a hint to
-> > > > > vm_area_free to batch the destruction and all other cases call
-> > > > > call_rcu()? I don't think there will be other cases of VMA destruction
-> > > > > floods.
-> > > >
-> > > > ... or have two different call_rcu functions; one for munmap() and
-> > > > one for exit.  It'd be nice to use kmem_cache_free_bulk().
-> > >
-> > > Do we even need a call_rcu on exit?  At the point of freeing the VMAs we
-> > > have set the MMF_OOM_SKIP bit and unmapped the vmas under the read lock.
-> > > Once we have obtained the write lock again, I think it's safe to say we
-> > > can just go ahead and free the VMAs directly.
+Hello,
+
+On Fri, Jan 20, 2023 at 11:23:39AM -0600, Rob Herring wrote:
+> On Thu, Jan 19, 2023 at 3:53 AM Michal Suchanek <msuchanek@suse.de> wrote:
 > >
-> > I think that would be still racy if the page fault handler found that
-> > VMA under read-RCU protection but did not lock it yet (no locks are
-> > held yet). If it's preempted, the VMA can be freed and destroyed from
-> > under it without RCU grace period.
->
-> The page fault handler (or whatever other reader -- ptrace, proc, etc)
-> should have a refcount on the mm_struct, so we can't be in this path
-> trying to free VMAs.  Right?
+> > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > breaks build because of wrong argument to snprintf. That certainly
+> > avoids the runtime error but is not the intended outcome.
+> >
+> > Also use standard device name format of-display.N for all created
+> > devices.
+> >
+> > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > ---
+> > v2: Update the device name format
+> > ---
+> >  drivers/of/platform.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > index f2a5d679a324..8c1b1de22036 100644
+> > --- a/drivers/of/platform.c
+> > +++ b/drivers/of/platform.c
+> > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
+> >         if (IS_ENABLED(CONFIG_PPC)) {
+> >                 struct device_node *boot_display = NULL;
+> >                 struct platform_device *dev;
+> > -               int display_number = 1;
+> > +               int display_number = 0;
+> > +               char buf[14];
+> > +               char *of_display_format = "of-display.%d";
+> 
+> static const as suggested and can we just move on please...
+Only const, static could be dodgy
 
-Hmm. That sounds right. I checked process_mrelease() as well, which
-operated on mm with only mmgrab()+mmap_read_lock() but it only unmaps
-VMAs without freeing them, so we are still good. Michal, do you agree
-this is ok?
+> >                 int ret;
+> >
+> >                 /* Check if we have a MacOS display without a node spec */
+> > @@ -556,7 +558,10 @@ static int __init of_platform_default_populate_init(void)
+> >                         if (!of_get_property(node, "linux,opened", NULL) ||
+> >                             !of_get_property(node, "linux,boot-display", NULL))
+> >                                 continue;
+> > -                       dev = of_platform_device_create(node, "of-display", NULL);
+> > +                       ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
+> 
+> The boot display is always "of-display.0". Just use the fixed string
+> here. Then we can get rid of the whole debate around static const.
 
-lock_vma_under_rcu() receives mm as a parameter, so I guess it's
-implied that the caller should either mmget() it or operate on
-current->mm, so no need to document this requirement?
+I prefer to use the same format string when the names should be
+consistent. Also it would resurrect the starting from 1 debate.
+
+But if you really want to have two strings I do not care all that much.
+
+> 
+> > +                       if (ret >= sizeof(buf))
+> > +                               continue;
+> 
+> This only happens if display_number becomes too big. Why continue on?
+> The next iteration will fail too.
+
+Yes, there is no need to continue with the loop.
+
+Thanks
+
+Michal
+
+> 
+> > +                       dev = of_platform_device_create(node, buf, NULL);
+> >                         if (WARN_ON(!dev))
+> >                                 return -ENOMEM;
+> >                         boot_display = node;
+> > @@ -564,10 +569,9 @@ static int __init of_platform_default_populate_init(void)
+> >                 }
+> >
+> >                 for_each_node_by_type(node, "display") {
+> > -                       char *buf[14];
+> >                         if (!of_get_property(node, "linux,opened", NULL) || node == boot_display)
+> >                                 continue;
+> > -                       ret = snprintf(buf, "of-display-%d", display_number++);
+> > +                       ret = snprintf(buf, sizeof(buf), of_display_format, display_number++);
+> >                         if (ret >= sizeof(buf))
+> >                                 continue;
+> 
+> Here too in the original change.
+> 
+> >                         of_platform_device_create(node, buf, NULL);
+> > --
+> > 2.35.3
+> >
