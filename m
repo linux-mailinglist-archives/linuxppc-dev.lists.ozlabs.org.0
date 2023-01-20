@@ -1,88 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AB0675BAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:36:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD010675BF8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 18:49:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz6B61GZMz3fKZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:36:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nz6SL4Rrlz3fLN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 04:49:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=a0EizrBV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=CQcLVRre;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=f3twNx4g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=a0EizrBV;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=CQcLVRre;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=f3twNx4g;
 	dkim-atps=neutral
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz69C5GPbz2yxB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:35:58 +1100 (AEDT)
-Received: by mail-wr1-x432.google.com with SMTP id r2so5483473wrv.7
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 09:35:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RtibDBYP4iMtkWCSC6UIrfEqP+79E1l1LSnhYmoZi84=;
-        b=a0EizrBVJ51x9XMo0SmIYGujI1VE9IuQMAZSmgDPW3HPHFB6mYwi9BGrBxpjbkObek
-         itKHvG8slnp/701yTvitXMlHAStQ4lI9mGrzl3SjhF9u0iQrTZxG95kMPUuh8uXghW6r
-         pRu6wigR3XGbq2vfZcGagjR/wpGM9BxewkzOfmmuGjFMBkhB1yQihKjwKg6vXsj5e+Jj
-         irk/A6di6OnFkhm9W+AXN6OnzD4sMdxfpGGGdcxM2C5VTa0JLQ8R/PHNY3GXxGQSrkNo
-         Q8UdRjXv4/n1eEw53K8AUfaTgN69IBSSFcGgAEcicYplX/Rw0A8jpTfAeldp4L9u00Z4
-         eCFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RtibDBYP4iMtkWCSC6UIrfEqP+79E1l1LSnhYmoZi84=;
-        b=NA1Me/EHfZNVIb8sSfBIcvw6P74qsS4Yw5xytA63dDiLJdg6Tk7Ltx/ThSSbcqrA81
-         APYs5AGbR2xHibZl9dl673PYy+UJBJ6CH0Znune1h1cEJDCB1aGGGJNWN+QZIURKPnXF
-         PXgk90O1oWqewTgQ3jASDS3LLCz0oIlAzxAaWqc5VvIlyfumueObo5+iLrR1LwcTqAy/
-         LzCILqs6adJKTfrlk8N8s9vYhn0m5j3PpSzKxvz4jKpluiU1SXrfXmGiAwTcniSXHw2U
-         YHAT+psaqPdC32u0YB/WTuAEpratsUN+PyDBc9ML9QDdZyLupVKg5v0q2Tf3shwOSyxP
-         aXSw==
-X-Gm-Message-State: AFqh2kqgjXp9Y+0IMJx8/4AnWPa6D7qRbe7pgj6tWtnVdxJtJO22z1wJ
-	BHMahRZg0PL8p9QDMeQbAGKK5A==
-X-Google-Smtp-Source: AMrXdXt54pJEA64hU9pqLpjAzfF4EB4BwV1gaYq2BN8kjUL2tMAG73rGdCUL7ncRTIzQmMkHPYLxTw==
-X-Received: by 2002:a5d:4cc8:0:b0:2bd:d779:c1b5 with SMTP id c8-20020a5d4cc8000000b002bdd779c1b5mr22020011wrt.27.1674236151289;
-        Fri, 20 Jan 2023 09:35:51 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id i6-20020adfe486000000b002423dc3b1a9sm35871262wrm.52.2023.01.20.09.35.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jan 2023 09:35:50 -0800 (PST)
-Message-ID: <780f2669-7ef0-1a17-9e04-50eeba4c2cf7@linaro.org>
-Date: Fri, 20 Jan 2023 18:35:44 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH v2 01/10] dt-bindings: arm: fsl: add TQ-Systems LS1021A
- board
-Content-Language: en-US
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
- Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
- Russell King <linux@armlinux.org.uk>, Marek Vasut <marex@denx.de>,
- Marcel Ziswiler <marcel.ziswiler@toradex.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Nicolas Schier <nicolas@fjasle.eu>
-References: <20230120133455.3962413-1-alexander.stein@ew.tq-group.com>
- <20230120133455.3962413-2-alexander.stein@ew.tq-group.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230120133455.3962413-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nz6RR0k7Gz3c8W
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Jan 2023 04:48:17 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.west.internal (Postfix) with ESMTP id A46F43200A47;
+	Fri, 20 Jan 2023 12:48:13 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 20 Jan 2023 12:48:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm2; t=1674236892; x=
+	1674323292; bh=suuEDmGpMK8nFYB774MavCLSlHZ448gfBuVhNRXP7EU=; b=C
+	QcLVRreBsT9rJUB1hoyVgUJ7vWGaM17ha5j9hXxIL5YJmaX14k1LJ4O4SbMkTXy1
+	2EAUuqM8XKqhhvsd2L0aLL8LCrKakXLnOJ4EDxHhkVa6MPdzzhgGAzS1Axale0lx
+	N1IVM8igM6tDyqZOZmxJ0UcEaogD+K5Gtn3M8iTDM6Xrla1DTsc7K+AZSvmdZTPL
+	w5OdBZ4a1MqQlaMaxhUbvAClZJu8DCf+O2DNcIRaFlcAVGz5HXxeqOL7JuTSr2qG
+	PAhUDcC2sN3i2/tW4JwwmiCd6K3AgKYr2tHQy5Sr3ztdwW6Y41NEE6vGiyJR747R
+	1L2RKqasUqUfGfWTOy9Kg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1674236892; x=
+	1674323292; bh=suuEDmGpMK8nFYB774MavCLSlHZ448gfBuVhNRXP7EU=; b=f
+	3twNx4gypSuyC82LNunQU3SUx3JQT35yk8KkrZhMH/pkfinaI/2/nBN3IKe0IUAW
+	alB/7JBcG4PVMFUFBKYXCEObg7LPiNi4aCB/SXsaTj86L3b/Y+lkKJfyVPTVEzpu
+	SzLhTYw+Iutd7v6MfVE1qr+ptyxCAiAZujfyEDDw4hMaffqHqL/spNpyOZlh/09y
+	ZysYzJftXVhYmx+dZt8OqpVhZJeuHFNw6velxglhJeNRfovB6DRoCpEfdT2ZKLlI
+	YAIiEtRbDevfm3mB9XjVABvjPBXeQmn7VcmkQPDpzrn5hVl1Ie3wBCyRA65RuAZu
+	x3PYw5WILmzUoI62CMlLw==
+X-ME-Sender: <xms:29PKYylELihtzgeq-nZ34-6DjL0SIqRD4R_4F30uCg--gV3OElBSIw>
+    <xme:29PKY533sVhqJAiJoOsQ3iGpDdf-STroR5kv74P7GnBB9ZbiMYYcfZ-xOphlALEPa
+    gWEVXBSfU_IiWK0iRs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudduvddguddtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeu
+    feefieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:29PKYwrUWQrbmvHdUIOMnQnqLCxJ4qs4qHotbjlDq5n9mfQJ_dUxqQ>
+    <xmx:29PKY2mw24bxrJtxFLn64x-m-I3rMlad9TkCqttHJDbgr2vk6WDNZw>
+    <xmx:29PKYw03GLe1PEgTMr5ylaXbbr0GTsYQguNOfKBObPa9OmXGcIkO2g>
+    <xmx:3NPKYxLTrWC9SRpdqaGtp_3nNcT-CRaUmTiQ2oKZrQo783C-pCTLtg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id B9E9AB60086; Fri, 20 Jan 2023 12:48:11 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-85-gd6d859e0cf-fm-20230116.001-gd6d859e0
+Mime-Version: 1.0
+Message-Id: <720a7d19-4b7f-4948-b044-c46a539a4b36@app.fastmail.com>
+In-Reply-To: <Y8rMJcX0cqThKj2N@google.com>
+References: <20221226123630.6515-1-pali@kernel.org>
+ <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
+ <Y8rMJcX0cqThKj2N@google.com>
+Date: Fri, 20 Jan 2023 18:47:52 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Lee Jones" <lee@kernel.org>
+Subject: Re: [PATCH RESEND 0/8] Resend LED patches
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,26 +96,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Matthias Schiffer <matthias.schiffer@tq-group.com>, soc@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Linus Walleij <linus.walleij@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, soc@kernel.org, Pavel Machek <pavel@ucw.cz>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/01/2023 14:34, Alexander Stein wrote:
-> From: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> 
-> TQMLS102xA is a SOM family using NXP LS1021A CPU family.
-> MBLS102xA is an evaluation mainboard for this SOM.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Changes in v2:
-> * Improved the description mentioning this is a socketable module
-> 
+On Fri, Jan 20, 2023, at 18:15, Lee Jones wrote:
+> On Fri, 20 Jan 2023, Arnd Bergmann wrote:
 
+>> > Marek Beh=C3=BAn (3):
+>> >   leds: turris-omnia: support HW controlled mode via private trigger
+>> >   leds: turris-omnia: initialize multi-intensity to full
+>> >   leds: turris-omnia: change max brightness from 255 to 1
+>> >
+>> > Pali Roh=C3=A1r (5):
+>> >   dt-bindings: leds: register-bit-led: Add active-low property
+>> >   leds: syscon: Implement support for active-low property
+>> >   powerpc/85xx: DTS: Add CPLD definitions for P1021RDB Combo Board =
+CPL
+>> >     Design
+>> >   dt-bindings: leds: Add cznic,turris1x-leds.yaml binding
+>> >   leds: Add support for Turris 1.x LEDs
+>> >
+>> >  .../testing/sysfs-class-led-driver-turris1x   |  31 ++
+>> >  .../bindings/leds/cznic,turris1x-leds.yaml    | 118 +++++
+>> >  .../bindings/leds/register-bit-led.yaml       |   5 +
+>> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi    |  92 ++++
+>> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_32b.dts |   6 +-
+>> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_36b.dts |   6 +-
+>> >  arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts     |  44 +-
+>> >  arch/powerpc/boot/dts/fsl/p1020utm-pc.dtsi    |  37 ++
+>> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_32b.dts |   4 +-
+>> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_36b.dts |   4 +-
+>> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc.dtsi    |  37 ++
+>> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_32b.dts |   5 +-
+>> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_36b.dts |   5 +-
+>> >  arch/powerpc/boot/dts/fsl/p2020rdb-pc.dtsi    |  33 +-
+>
+>> >  drivers/leds/Kconfig                          |  10 +
+>> >  drivers/leds/Makefile                         |   1 +
+>> >  drivers/leds/leds-syscon.c                    |  14 +-
+>> >  drivers/leds/leds-turris-1x.c                 | 474 ++++++++++++++=
+++++
+>> >  drivers/leds/leds-turris-omnia.c              |  46 +-
+>
+> If everyone is convinced that applying these drivers is the correct
+> thing to do, I'd be happy to (rather) take them via LEDs.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Ok, thanks. I had not actually looked at the patches until today.
+They were in the soc tree backlog but appeared to be misplaced
+there until I read the  0/10 message text.
 
-Best regards,
-Krzysztof
+Looking at it now, I see:
 
+- patches 1 and 2 seem obvious and have been reviewed by
+  others already
+
+- patch 3 is for arch/powerpc and should get merged through
+  there if there are no objections to the binding in patch 4.
+
+- patch 5 is the big driver patch, with a Reviewed-by tag
+  from Marek Beh=C3=BAn, who is the author of the last three patches.
+  An earlier version of this patch was sent in June and got
+  a few Acks and detailed feedback from Andy [1], but he's also
+  not on Cc, and I don't know if his comments are all resolved
+  in this version.
+
+- Patches 6, 7 and 8 all seem simple LED subsystem patches,
+  they just need review from you in order to get applied.
+  These are also missing a Signed-off-by from the submitter
+  in addition to the author in order to be applied.
+ =20
+      Arnd
+
+[1] https://lore.kernel.org/all/CAHp75Vcr6o2rm+T6Tr8sS4VXCLVHtmLPWy-njOK=
+AvO4AcZoW=3DA@mail.gmail.com/
