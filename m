@@ -2,71 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9213B67536A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 12:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46E2675384
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 12:41:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nyy1g3fhzz3fKQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 22:28:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NyyHp4LCfz3fGx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 22:41:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=U7sIyKRP;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R9oRR7WC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sbi9I4f6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=U7sIyKRP;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R9oRR7WC;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nyy0h5bqTz3c6F
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 22:28:04 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 034BC22BE1;
-	Fri, 20 Jan 2023 11:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1674214081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FL/tdXJXqMQYDc5GJ56WI1+Et3SfVNE7p+O/D4lXFGY=;
-	b=U7sIyKRPrN0Wk4A0zaEyPee/9sonuBIpKhkB/C7XIb+CCOi3daMBukCwwtzW2W3PPTsWsV
-	eNM3Nfu0dCWvR44rgjgphj3ZJH3ygH5jFjTREgZltpp9h5wPqcaftPGYEUZwLq4GpQe8YE
-	KB5/DMdx+xLsk/KFt+SBvj3J9gdPo98=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1674214081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FL/tdXJXqMQYDc5GJ56WI1+Et3SfVNE7p+O/D4lXFGY=;
-	b=R9oRR7WCKXP1SJ3CLVG2BBHuVF7p+i3vBh5ls8caJoIgy5QZG4kHDC1DSTm6HPsnxMzvzT
-	4B4c57yzWV7SAlBA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NyyFy1pfTz3fJD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 22:39:34 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sbi9I4f6;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NyyFw2rhjz4xyp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 22:39:32 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4NyyFw2pqDz4xyy; Fri, 20 Jan 2023 22:39:32 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sbi9I4f6;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id B81922C141;
-	Fri, 20 Jan 2023 11:28:00 +0000 (UTC)
-Date: Fri, 20 Jan 2023 12:27:59 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH v2] of: Fix of platform build on powerpc due to bad of
- disaply code
-Message-ID: <20230120112759.GS16547@kitsune.suse.cz>
-References: <20230119095323.4659-1-msuchanek@suse.de>
- <8a9f7ba5-37a4-0927-4ab2-d212f1b098a9@csgroup.eu>
- <57e026bf-c412-0c47-8956-b565894948e0@suse.de>
- <20230119132330.GP16547@kitsune.suse.cz>
- <190c1c68-0249-a291-f2ab-45c9a7f716d7@suse.de>
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NyyFv6rcFz4xyp
+	for <linuxppc-dev@ozlabs.org>; Fri, 20 Jan 2023 22:39:31 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30KB9v8F030681;
+	Fri, 20 Jan 2023 11:39:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : from : to : cc : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=IDtHfVQOttPsAQmpbLkJ6oeyGsd9dVG39eIIRYGOWkc=;
+ b=Sbi9I4f6Wi+zsEGHpsM0XuKaKibXM+9A4n2Vf8/1uNEHMff0swl/d85tI6AWuRISRELz
+ nWzNP4nTExiHiLuhyUlv4hLCgotBL6clcF6dkizcrvKVUe/CVMCh6UzKeUPtbSr5ECqF
+ VFSYH6t1MTsAbNu/swmiTnEfLdHSS/k23W6Hj/xWBADjZ4Vcyfd3vV+WLN9YrCHR5ptC
+ Fte2hug1OreiHUHj7+JzdKjd3TUQJdIB/dCtGMpj4jhEg/bSFIuIg23djd1W50t4248O
+ CfMpDWLcQHIH1mvoXxhVm1d/w7FZojH4qK32ElvfVApeGwbalqsNU2hxm+IeHUVPoA2Q Ew== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7ruqadu1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Jan 2023 11:39:17 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30KBWw9R027278;
+	Fri, 20 Jan 2023 11:39:17 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7ruqadtb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Jan 2023 11:39:17 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JJE53r004659;
+	Fri, 20 Jan 2023 11:39:15 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3n3m16qwmt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Jan 2023 11:39:15 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30KBdBPd40305040
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Jan 2023 11:39:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 848302004B;
+	Fri, 20 Jan 2023 11:39:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E18DE2004F;
+	Fri, 20 Jan 2023 11:39:10 +0000 (GMT)
+Received: from [9.179.22.90] (unknown [9.179.22.90])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Jan 2023 11:39:10 +0000 (GMT)
+Message-ID: <e12d2441-576a-d049-3cd8-523b7c41b15e@linux.ibm.com>
+Date: Fri, 20 Jan 2023 12:39:10 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [PATCH v7 4/8] crash: add phdr for possible CPUs in elfcorehdr
+Content-Language: fr
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        mpe@ellerman.id.au
+References: <20230115150206.431528-1-sourabhjain@linux.ibm.com>
+ <20230115150206.431528-5-sourabhjain@linux.ibm.com>
+ <51fa22e4-efab-a931-fb8f-48180baaac61@linux.ibm.com>
+In-Reply-To: <51fa22e4-efab-a931-fb8f-48180baaac61@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0NINLJq5deG4D4Rxrt2XjjklSu-WKMIc
+X-Proofpoint-GUID: FZ68rYpEkhv0Ar_GOos254J5UBBMNUJL
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <190c1c68-0249-a291-f2ab-45c9a7f716d7@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-20_07,2023-01-20_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1015 spamscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2301200110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,94 +119,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Erhard F." <erhard_f@mailbox.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" <devicetree@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Javier Martinez Canillas <javierm@redhat.com>, open list <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Thu, Jan 19, 2023 at 04:20:57PM +0100, Thomas Zimmermann wrote:
-> Hi
+On 19/01/2023 19:29:52, Laurent Dufour wrote:
+> On 15/01/2023 16:02:02, Sourabh Jain wrote:
+>> On architectures like PowerPC the crash notes are available for all
+>> possible CPUs. So let's populate the elfcorehdr for all possible
+>> CPUs having crash notes to avoid updating elfcorehdr during in-kernel
+>> crash update on CPU hotplug events.
+>>
+>> The similar technique is used in kexec-tool for kexec_load case.
+>>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>  kernel/crash_core.c | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> Am 19.01.23 um 14:23 schrieb Michal Suchánek:
-> > On Thu, Jan 19, 2023 at 02:11:13PM +0100, Thomas Zimmermann wrote:
-> > > Hi
-> > > 
-> > > Am 19.01.23 um 11:24 schrieb Christophe Leroy:
-> > > > 
-> > > > 
-> > > > Le 19/01/2023 à 10:53, Michal Suchanek a écrit :
-> > > > > The commit 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > > > breaks build because of wrong argument to snprintf. That certainly
-> > > > > avoids the runtime error but is not the intended outcome.
-> > > > > 
-> > > > > Also use standard device name format of-display.N for all created
-> > > > > devices.
-> > > > > 
-> > > > > Fixes: 2d681d6a23a1 ("of: Make of framebuffer devices unique")
-> > > > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > > > > ---
-> > > > > v2: Update the device name format
-> > > > > ---
-> > > > >     drivers/of/platform.c | 12 ++++++++----
-> > > > >     1 file changed, 8 insertions(+), 4 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > > > index f2a5d679a324..8c1b1de22036 100644
-> > > > > --- a/drivers/of/platform.c
-> > > > > +++ b/drivers/of/platform.c
-> > > > > @@ -525,7 +525,9 @@ static int __init of_platform_default_populate_init(void)
-> > > > >     	if (IS_ENABLED(CONFIG_PPC)) {
-> > > > >     		struct device_node *boot_display = NULL;
-> > > > >     		struct platform_device *dev;
-> > > > > -		int display_number = 1;
-> > > > > +		int display_number = 0;
-> > > > > +		char buf[14];
-> > > > 
-> > > > Can you declare that in the for block where it is used instead ?
-> > > > 
-> > > > > +		char *of_display_format = "of-display.%d";
-> > > > 
-> > > > Should be const ?
-> > > 
-> > > That should be static const of_display_format[] = then
-> > 
-> > Why? It sounds completely fine to have a const pointer to a string
-> > constatnt.
+> This patch is not applying on ppc/next (53ab112a9508).
 > 
-> Generally speaking:
+> As far as I could see, crash_prepare_elf64_headers() is defined in the file
+> kernel/kexec_file.c and that's not recent, see babac4a84a88 (kexec_file,
+> x86: move re-factored code to generic side, 2018-04-13)
 > 
-> 'static' because your const pointer is then not a local variable, so it
-> takes pressure off the stack. For global variables, you don't want them to
-> show up in any linker symbol tables.
+> Am I missing something?
 
-This sounds a lot like an exemplar case of premature optimization.
-A simplistic compiler might do exactly what you say, and allocate a slot
-for the variable on the stack the moment the function is entered.
+My mistake, sounds that your series is based on top of the Eric's one (not yet upstream):
 
-However, in real compilers there is no stack pressure from having a
-local variable:
- - the compiler can put the variable into a register
- - it can completely omit the variable before and after it's actually
-   used which is that specific function call
+https://lore.kernel.org/lkml/20230118213544.2128-1-eric.devolder@oracle.com/
 
-> The string "of-display.%d" is stored as an array in the ELF data section.
-> And your char pointer is a reference to that array. For static pointers,
-> these indirections take CPU cycles to update when the loader has to relocate
-
-Provided that the char pointer ever exists in the compiled code. Its
-address is not taken so it does not need to.
-
-> sections. If you declare of_display_format[] directly as array, you avoid
-> the reference and work directly with the array.
 > 
-> Of course, this is a kernel module and the string is self-contained within
-> the function. So the compiler can probably detect that and optimize the code
-> to be like the 'static const []' version. It's still good to follow best
-> practices, as someone might copy from this function.
+>>
+>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>> index 910d377ea317e..19f987b3851e8 100644
+>> --- a/kernel/crash_core.c
+>> +++ b/kernel/crash_core.c
+>> @@ -364,8 +364,8 @@ int crash_prepare_elf64_headers(struct kimage *image, struct crash_mem *mem,
+>>  	ehdr->e_ehsize = sizeof(Elf64_Ehdr);
+>>  	ehdr->e_phentsize = sizeof(Elf64_Phdr);
+>>  
+>> -	/* Prepare one phdr of type PT_NOTE for each present CPU */
+>> -	for_each_present_cpu(cpu) {
+>> +	/* Prepare one phdr of type PT_NOTE for possible CPU with crash note. */
+>> +	for_each_possible_cpu(cpu) {
+>>  #ifdef CONFIG_CRASH_HOTPLUG
+>>  		if (IS_ENABLED(CONFIG_HOTPLUG_CPU)) {
+>>  			/* Skip the soon-to-be offlined cpu */
+>> @@ -373,8 +373,11 @@ int crash_prepare_elf64_headers(struct kimage *image, struct crash_mem *mem,
+>>  				continue;
+>>  		}
+>>  #endif
+>> -		phdr->p_type = PT_NOTE;
+>>  		notes_addr = per_cpu_ptr_to_phys(per_cpu_ptr(crash_notes, cpu));
+>> +		if (!notes_addr)
+>> +			continue;
+>> +
+>> +		phdr->p_type = PT_NOTE;
+>>  		phdr->p_offset = phdr->p_paddr = notes_addr;
+>>  		phdr->p_filesz = phdr->p_memsz = sizeof(note_buf_t);
+>>  		(ehdr->e_phnum)++;
+> 
 
-If it could not detect it there would be a lot of trouble all around.
-
-Thanks
-
-Michal
