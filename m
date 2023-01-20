@@ -1,56 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1318C674F1A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 09:08:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E07674FBB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 09:49:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NysZW6lJvz3fNL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 19:08:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eV82duGb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NytV81y6gz3fLf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jan 2023 19:49:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eV82duGb;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NysXN71L2z3fQp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 19:06:44 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 725C161E48;
-	Fri, 20 Jan 2023 08:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04627C4339C;
-	Fri, 20 Jan 2023 08:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674202000;
-	bh=UiIWl1B5LiUi4QWU9j9MLDN5A3wG8pwgCFhO+/VTz5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eV82duGb2iVbYPyf0AeoQN8zV/TSECpo1KwtWHWHyFwc/G0u7ds3bXr4Gf1iaXQeW
-	 Pwwm8fnvJGoBrj/QdnGlrIfCf0QHXJCoN8pdlM5u0+kC5R4gfMB1+gvH+Uf7e5VcxI
-	 PpgA+S2NMZJoKa1IlJ7qHGY9iE/UO87bWRtgDysT3ajO7hI47onHI+5t5tL3a77ewS
-	 utwllDInmkt7v2ObVNXNxYSnf2Rfo8FVFepensvD6wTfqd0CCQbKASP7YMWYcUNvDM
-	 Anh4nz2sI09zSdiT2RBNZKM28fWrmL/ovniHJ40t+r4+UM9To1RXjxRy7uI8IVUUiK
-	 veIQLzwAP4nmA==
-Date: Fri, 20 Jan 2023 13:36:36 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v9 00/10] phy: Add support for Lynx 10G SerDes
-Message-ID: <Y8pLjLWjv0nJa+ww@matsya>
-References: <20221230000139.2846763-1-sean.anderson@seco.com>
- <0024c780-ff9c-a9d3-8773-28e6b21bcc43@seco.com>
- <Y8gkMlqfPZic7reK@matsya>
- <17e428ae-7789-a1ab-3ccd-90b3b9a088f1@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NytTX16f2z2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jan 2023 19:49:19 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pIn53-002oea-Ri; Fri, 20 Jan 2023 09:49:01 +0100
+Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pIn53-000p3c-GA; Fri, 20 Jan 2023 09:49:01 +0100
+Message-ID: <c1d233b9-bc85-dce9-ffa0-eb3170602c6c@physik.fu-berlin.de>
+Date: Fri, 20 Jan 2023 09:49:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17e428ae-7789-a1ab-3ccd-90b3b9a088f1@seco.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: Calculating array sizes in C - was: Re: Build
+ regressions/improvements in v6.2-rc1
+To: "Michael.Karcher" <Michael.Karcher@fu-berlin.de>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+ <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
+ <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
+ <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
+ <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
+ <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
+ <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.148.100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,31 +66,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19-01-23, 11:22, Sean Anderson wrote:
-> On 1/18/23 11:54, Vinod Koul wrote:
-> > On 17-01-23, 11:46, Sean Anderson wrote:
-> >> 
-> >> I noticed that this series is marked "changes requested" on patchwork.
-> >> However, I have received only automated feedback. I have done my best
-> >> effort to address feedback I have received on prior revisions. I would
-> >> appreciate getting another round of review before resending this series.
-> > 
-> > Looking at the series, looks like kernel-bot sent some warnings on the
-> > series so I was expecting an updated series for review
-> > 
-> 
-> Generally, multiple reviewers will comment on a patch, even if another
-> reviewer finds something which needs to be changed. This is a one-line
-> fix, so I would appreciate getting more substantial feedback before
-> respinning. Every time I send a new series I have to rebase and test on
-> hardware. It's work that I would rather do when there is something to be
-> gained.
+Hi Michael!
 
-I review to apply, if I can apply, I would typically skip this
+On 1/19/23 23:11, Michael.Karcher wrote:
+> I suggest to file a bug against gcc complaining about a "spurious warning",
+> and using "-Werror -Wno-error-sizeof-pointer-div" until gcc is adapted to
+> not emit the warning about the pointer division if the result is not used.
+
+Could you post a kernel patch for that? I would be happy to test it on my
+SH-7785CLR board. Also, I'm going to file a bug report against GCC.
+
+Adrian
 
 -- 
-~Vinod
+  .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
