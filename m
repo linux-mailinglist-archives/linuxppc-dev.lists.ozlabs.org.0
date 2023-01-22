@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEE3676996
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Jan 2023 22:27:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01BF676C41
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 12:17:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NzqG337Fwz3fLD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 08:27:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P09gX613Xz3fHD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 22:17:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iKDLgckX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iKDLgckX;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NzqFQ6kTTz3c3m
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 08:27:05 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pJLNr-001fc4-Li; Sat, 21 Jan 2023 22:26:43 +0100
-Received: from dynamic-089-012-154-190.89.12.pool.telefonica.de ([89.12.154.190] helo=[192.168.1.11])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pJLNr-001xPR-F4; Sat, 21 Jan 2023 22:26:43 +0100
-Message-ID: <7c6b114a-38f8-1a0b-8623-d492f9cc2fb9@physik.fu-berlin.de>
-Date: Sat, 21 Jan 2023 22:26:42 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P09fZ3JFXz3bmQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 22:16:38 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 552E560BAA;
+	Sun, 22 Jan 2023 11:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93361C433D2;
+	Sun, 22 Jan 2023 11:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674386194;
+	bh=AunzTGYzeDZG64eMKvwgrxj6opCJIB+kNltC35V7dE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iKDLgckXZPUfcjT9BWm7RPTZAhExTI2CqG9A/UoTHS0VvCjVAXxSja6QaO8f+lpZf
+	 4igd4+XCik/q9UVQ4mXh58mG7izQ0wN0cAf6V9g+6t1UdBUxhUzqS3q27xk2Cwtd6f
+	 rhWmXKs+m8OaCnbxBdcR4IqyCDM9eMTCUZRJdN+Qxkrps3tIm5KGAGagAx7uTNlAic
+	 k/B7WHFt7zjg6mIHXYZo3jqrlEHgVd2UYon6uHLPmjSYjaqAwSgo4ipeNQL6rJUXlQ
+	 RR+Iev3Q2UYXVGN/Us7sWDj6Xqg5++QWta0AYOmOyIMwVPZTLu1tn/Tdew9WFiYylh
+	 HuAjWMj07IS4w==
+Received: by pali.im (Postfix)
+	id A3FFC93D; Sun, 22 Jan 2023 12:16:31 +0100 (CET)
+Date: Sun, 22 Jan 2023 12:16:31 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Scott Wood <oss@buserror.net>, Sinan Akman <sinan@writeme.com>,
+	Martin Kennedy <hurricos@gmail.com>
+Subject: Re: [PATCH v2 0/8] powerpc/85xx: p2020: Create one unified machine
+ description
+Message-ID: <20230122111631.dgw5uwtfjsqack57@pali>
+References: <20221224211425.14983-1-pali@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-Content-Language: en-US
-To: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
- Geert Uytterhoeven <geert@linux-m68k.org>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
- <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
- <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
- <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
- <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
- <c1d233b9-bc85-dce9-ffa0-eb3170602c6c@physik.fu-berlin.de>
- <def16c9b-7bb1-a454-0896-b063a9e85964@fu-berlin.de>
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <def16c9b-7bb1-a454-0896-b063a9e85964@fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 89.12.154.190
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221224211425.14983-1-pali@kernel.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,44 +68,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+Hello! Do you have any comments for this patch series?
 
-On 1/20/23 20:29, Michael Karcher wrote:
-> Hello Adrian,
->> Could you post a kernel patch for that? I would be happy to test it on my
->> SH-7785CLR board. Also, I'm going to file a bug report against GCC.
+On Saturday 24 December 2022 22:14:17 Pali Rohár wrote:
+> This patch series unifies all P2020 boards and machine descriptions into
+> one generic unified P2020 machine description. With this generic machine
+> description, kernel can boot on any P2020-based board with correct DTS
+> file.
 > 
-> I filed the bug already. It's https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108483.
+> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
+> Kernel during booting correctly detects P2020 and prints:
+> [    0.000000] Using Freescale P2020 machine description
 > 
-> The diff is attached. It's published as CC0 in case anyone considers this trivial change copyrightable. This patch prevents this one specific warning from being upgraded to "error" even if you configure the kernel to use "-Werror". It still keeps it active as warning, though.
-
-I used the following variant and it fixes the issue for me:
-
-diff --git a/arch/sh/Makefile b/arch/sh/Makefile
-index 5c8776482530..11b22f7167d2 100644
---- a/arch/sh/Makefile
-+++ b/arch/sh/Makefile
-@@ -167,7 +167,7 @@ drivers-y                   += arch/sh/drivers/
-  cflags-y       += $(foreach d, $(cpuincdir-y), -I $(srctree)/arch/sh/include/$(d)) \
-                    $(foreach d, $(machdir-y), -I $(srctree)/arch/sh/include/$(d))
-  
--KBUILD_CFLAGS          += -pipe $(cflags-y)
-+KBUILD_CFLAGS          += -pipe -Wno-error=sizeof-pointer-div $(cflags-y)
-  KBUILD_CPPFLAGS                += $(cflags-y)
-  KBUILD_AFLAGS          += $(cflags-y)
-
-If you agree, can you post a patch to LKML so we can unbreak the SH build for CONFIG_WERROR?
-
-Thanks,
-Adrian
-
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+> Changes in v2:
+> * Added patch "p2020: Move i8259 code into own function" (separated from the next one)
+> * Renamed CONFIG_P2020 to CONFIG_PPC_P2020
+> * Fixed descriptions
+> 
+> Link to v1: https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@kernel.org/
+> 
+> Pali Rohár (8):
+>   powerpc/85xx: Mark mpc85xx_rdb_pic_init() as static
+>   powerpc/85xx: Mark mpc85xx_ds_pic_init() as static
+>   powerpc/85xx: p2020: Move all P2020 machine descriptions to p2020.c
+>   powerpc/85xx: p2020: Move i8259 code into own function
+>   powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
+>   powerpc/85xx: p2020: Define just one machine description
+>   powerpc/85xx: p2020: Enable boards by new config option
+>     CONFIG_PPC_P2020
+>   powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+> 
+>  arch/powerpc/boot/dts/turris1x.dts        |   2 +-
+>  arch/powerpc/platforms/85xx/Kconfig       |  22 ++-
+>  arch/powerpc/platforms/85xx/Makefile      |   1 +
+>  arch/powerpc/platforms/85xx/mpc85xx_ds.c  |  25 +--
+>  arch/powerpc/platforms/85xx/mpc85xx_rdb.c |  46 +-----
+>  arch/powerpc/platforms/85xx/p2020.c       | 193 ++++++++++++++++++++++
+>  6 files changed, 215 insertions(+), 74 deletions(-)
+>  create mode 100644 arch/powerpc/platforms/85xx/p2020.c
+> 
+> -- 
+> 2.20.1
+> 
