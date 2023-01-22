@@ -2,60 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5F167711C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 18:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5584E67711D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 18:30:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P0Kwh5J72z3bcN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 04:29:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P0Kxj1d06z3cBj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 04:30:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YJTtdODu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L3R3VeuI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YJTtdODu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L3R3VeuI;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0Kvk1ryjz3bVx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 04:28:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0KwV6GLDz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 04:29:14 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 1DC6860B56
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 17:28:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10045C433A8
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 17:28:29 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C152E60C58
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 17:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D01CC43446
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 17:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674408509;
-	bh=438H6CrDOy6nKh2mCbJ0pDw6OZbSMl0pGNH7LBwxmNs=;
+	s=k20201202; t=1674408549;
+	bh=I5pV/HoNpTTtkCpHa3T7LwdnAQwwVwXQ/luDQGSOteE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YJTtdODuXnmQLAYqiZo1TuXUs9fFM7tmNrdN+zytLuzBKnwTN7vco6jsjk6GKGSH6
-	 Ypa+p27bdjJWPsUPwGCQj7/oYQgcIsFTfKhR36J4SoaCy2eTXhiVviHvyawlkSFTzn
-	 s/CHheNH4PayC6hLbA75FO4StMLRA3PY2ko4Oac/mV59PpcBEnOd5FEZfj1QAZp8bK
-	 TkqzLJJ/nkduWYojnT5d9a0wmh3a+L6tOJtxUGni0cylpAIJKVV9cX38sSbR6QPQQ3
-	 +lBBeffUPH7dEDmqNwnD3tycrAdGyhgdBcYDRNBwy1DcchDM2MOAlW0zQdrGtgaIUX
-	 ho3VvP13Ad9+w==
-Received: by mail-oi1-f179.google.com with SMTP id n8so8611184oih.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 09:28:29 -0800 (PST)
-X-Gm-Message-State: AFqh2koro5Jx1gJZW+uJitPUEOHUPb5Ew6nV0kAV5QF4yevYi1BTho3z
-	SlB58X3NTKpLXvgvPjAtmSZeLXDz6FxQvQ0Q8EI=
-X-Google-Smtp-Source: AMrXdXsSHIt9F5C7C393A5+0g/WZ7RA6Q4cJ0fjJFXejj/7jpOG4YOEF2bAx5Kn+Um+Ajm9siFac4fZK1s/pXPNfXUM=
-X-Received: by 2002:aca:acd5:0:b0:364:5d10:7202 with SMTP id
- v204-20020acaacd5000000b003645d107202mr879673oie.194.1674408508135; Sun, 22
- Jan 2023 09:28:28 -0800 (PST)
+	b=L3R3VeuI8b7SphmS83VI3MhZIjgDm6ANfUG/6GLDdAssBf8R7BhAf78erSlDbdCOA
+	 SHR+IgQ6/XkSHZgpJfPyQerUVWvlHhmeN4a9pX9i1iiMGQR1NCtYmJ1cXwTwfhZX7o
+	 nSUmSWPnPqViFik1ksvVU9V1IDz/9d4RBT2fojd5aUL4rHTIN4194hnchaX8aC+BTF
+	 BVqo/UYoMw7a7dCGuw7CuV/Pc986UJI4q+9eT9V3NhMq3b5TVJgU4xKxtdcd/uUXK3
+	 PYu79weFDNfEExeZDTIf8YARqxjWnMGBiR5AM+Sg0Tc3PNXSMv1Gk/Hn9eD63agM4/
+	 o6TOm8IVHvoHg==
+Received: by mail-oi1-f178.google.com with SMTP id n8so8611979oih.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jan 2023 09:29:09 -0800 (PST)
+X-Gm-Message-State: AFqh2krMLNFX9fhXwUe41JlvYXPYSw4qu0SiIp0FM6kjWHTOjZXROeVV
+	SomMwDdJSJNWNWm/W0hTzcG9miqk2H1cVWI2wmA=
+X-Google-Smtp-Source: AMrXdXv8T6XTJrOgPfMqPTdeIlKFiVnKdMrLMQCnsb/JOpLPDdW3j/ypXqu3QgM9nVl1xzM73W2o7XvcmK9sHyhknFM=
+X-Received: by 2002:a05:6808:1786:b0:35e:7c55:b015 with SMTP id
+ bg6-20020a056808178600b0035e7c55b015mr1279449oib.287.1674408548537; Sun, 22
+ Jan 2023 09:29:08 -0800 (PST)
 MIME-Version: 1.0
 References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
- <20221228-drop-qunused-arguments-v2-7-9adbddd20d86@kernel.org>
- <CA+icZUUgq-dnSTRbdynPA8bEWg6SsCE9GYBMF6iViVmo9DfaFA@mail.gmail.com> <Y8BPp905fJciHNa2@dev-arch.thelio-3990X>
-In-Reply-To: <Y8BPp905fJciHNa2@dev-arch.thelio-3990X>
+In-Reply-To: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 23 Jan 2023 02:27:51 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATRetne7hK4xNeEpn7a1=Eaxr42X6nRWohJzWGYiyiPww@mail.gmail.com>
-Message-ID: <CAK7LNATRetne7hK4xNeEpn7a1=Eaxr42X6nRWohJzWGYiyiPww@mail.gmail.com>
-Subject: Re: [PATCH v2 07/14] powerpc/vdso: Improve linker flags
+Date: Mon, 23 Jan 2023 02:28:32 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ-HmyKYAWbF2MHEU1FzBzKOvE2DU7Js6tntszLrtUkDg@mail.gmail.com>
+Message-ID: <CAK7LNAQ-HmyKYAWbF2MHEU1FzBzKOvE2DU7Js6tntszLrtUkDg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] Remove clang's -Qunused-arguments from KBUILD_CPPFLAGS
 To: Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,151 +67,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, Sedat Dilek <sedat.dilek@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: trix@redhat.com, dave.hansen@linux.intel.com, dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org, linux-s390@vger.kernel.org, kernel test robot <lkp@intel.com>, x86@kernel.org, mingo@redhat.com, llvm@lists.linux.dev, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, npiggin@gmail.com, bp@alien8.de, tglx@linutronix.de, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, ndesaulniers@google.com, linux-mips@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 13, 2023 at 3:21 AM Nathan Chancellor <nathan@kernel.org> wrote:
+On Thu, Jan 12, 2023 at 12:05 PM Nathan Chancellor <nathan@kernel.org> wrote:
 >
-> Hi Sedat,
+> Hi all,
 >
-> On Thu, Jan 12, 2023 at 07:02:30PM +0100, Sedat Dilek wrote:
-> > On Thu, Jan 12, 2023 at 4:06 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> > >
-> > > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
-> > > are several warnings in the PowerPC vDSO:
-> > >
-> > >   clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-> > >   clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-> > >   clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
-> > >
-> > >   clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
-> > >   clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
-> > >
-> > > The first group of warnings point out that linker flags were being added
-> > > to all invocations of $(CC), even though they will only be used during
-> > > the final vDSO link. Move those flags to ldflags-y.
-> > >
-> > > The second group of warnings are compiler or assembler flags that will
-> > > be unused during linking. Filter them out from KBUILD_CFLAGS so that
-> > > they are not used during linking.
-> > >
-> > > Additionally, '-z noexecstack' was added directly to the ld_and_check
-> > > rule in commit 1d53c0192b15 ("powerpc/vdso: link with -z noexecstack")
-> > > but now that there is a common ldflags variable, it can be moved there.
-> > >
-> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> > > ---
-> > > Cc: mpe@ellerman.id.au
-> > > Cc: npiggin@gmail.com
-> > > Cc: christophe.leroy@csgroup.eu
-> > > Cc: linuxppc-dev@lists.ozlabs.org
-> > > ---
-> > >  arch/powerpc/kernel/vdso/Makefile | 18 +++++++++++-------
-> > >  1 file changed, 11 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-> > > index 45c0cc5d34b6..4337b3aa9171 100644
-> > > --- a/arch/powerpc/kernel/vdso/Makefile
-> > > +++ b/arch/powerpc/kernel/vdso/Makefile
-> > > @@ -47,13 +47,17 @@ KCOV_INSTRUMENT := n
-> > >  UBSAN_SANITIZE := n
-> > >  KASAN_SANITIZE := n
-> > >
-> > > -ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
-> > > -ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-> > > -
-> > > -CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
-> > > +ccflags-y := -fno-common -fno-builtin
-> > > +ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
-> > > +ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-> > > +# Filter flags that clang will warn are unused for linking
-> > > +ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
-> > > +
-> > > +CC32FLAGS := -m32
-> > > +LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
-> > >  AS32FLAGS := -D__VDSO32__
-> > >
-> > > -CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
-> >
-> > Set CC64FLAGS := -m64 ?
+> Clang can emit a few different warnings when it encounters a flag that it
+> recognizes but does not support internally. These warnings are elevated to
+> errors within {as,cc}-option via -Werror to catch unsupported flags that should
+> not be added to KBUILD_{A,C}FLAGS; see commit c3f0d0bc5b01 ("kbuild, LLVMLinux:
+> Add -Werror to cc-option to support clang").
 >
-> I do not think it is necessary. ldflags-y is filtered from
-> KBUILD_CFLAGS, which should already include '-m64' (search for
-> 'HAS_BIARCH' in arch/powerpc/Makefile). We would have seen a problem
-> with this already if a 32-bit target (powerpc-linux-gnu-) CROSS_COMPILE
-> value since $(c_flags) uses the main kernel's CROSS_COMPILE value.
+> If an unsupported flag is unconditionally to KBUILD_{A,C}FLAGS, all subsequent
+> {as,cc}-option will always fail, preventing supported and even potentially
+> necessary flags from getting adding to the tool flags.
 >
-> > > +LD64FLAGS := -Wl,-soname=linux-vdso64.so.1
-> > >  AS64FLAGS := -D__VDSO64__
-> > >
-> > >  targets += vdso32.lds
-> > > @@ -92,14 +96,14 @@ include/generated/vdso64-offsets.h: $(obj)/vdso64.so.dbg FORCE
-> > >
-> > >  # actual build commands
-> > >  quiet_cmd_vdso32ld_and_check = VDSO32L $@
-> > > -      cmd_vdso32ld_and_check = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-> > > +      cmd_vdso32ld_and_check = $(VDSOCC) $(ldflags-y) $(CC32FLAGS) $(LD32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
-> > >  quiet_cmd_vdso32as = VDSO32A $@
-> > >        cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
-> > >  quiet_cmd_vdso32cc = VDSO32C $@
-> > >        cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
-> > >
-> > >  quiet_cmd_vdso64ld_and_check = VDSO64L $@
-> > > -      cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-> > > +      cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(CC64FLAGS) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
-> >
-> > If no CC64FLAGS := xxx is set, this can go?
+> One would expect these warnings to be visible in the kernel build logs since
+> they are added to KBUILD_{A,C}FLAGS but unfortunately, these warnings are
+> hidden with clang's -Qunused-arguments flag, which is added to KBUILD_CPPFLAGS
+> and used for both compiling and assembling files.
 >
-> Good catch! CC64FLAGS can be removed. Masahiro, I am happy to send a v3
-> when I am back online next week but if you are able to fix it up during
-> application, please feel free to do so (once the PowerPC folks give
-> their Acks of course).
-
-
-
-
-I removed CC64FLAGS locally.
-
-
-
-
-Just two comments.
-
-- Is 7f3d349065d0c643f7f7013fbf9bc9f2c90b675f
-  applicable to powerpc too?
-
-  Maybe, as a follow-up cleanup, use $(LD)
-  and remove -Wl, prefixes.
-
-
-- ldflags-y still pulls $(KBUILD_CFLAGS).
-  Potentially, a new flag addition to KBUILD_CFLAGS
-  may trigger a new -Wunused-command-line-argument warning.
-
-  I hope somebody takes a closer look at which flags
-  are really needed for the linker.
-
-
-
-
-
-
-
-> > >  quiet_cmd_vdso64as = VDSO64A $@
-> > >        cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
-> > >
-> > >
-> > > --
-> > > 2.39.0
-> > >
+> Patches 1-4 address the internal inconsistencies of invoking the assembler
+> within kbuild by using KBUILD_AFLAGS consistently and using '-x
+> assembler-with-cpp' over '-x assembler'. This matches how assembly files are
+> built across the kernel and helps avoid problems in situations where macro
+> definitions or warning flags are present in KBUILD_AFLAGS, which cause
+> instances of -Wunused-command-line-argument when the preprocessor is not called
+> to consume them. There were a couple of places in architecture code where this
+> change would break things so those are fixed first.
 >
-> Thanks for the review, cheers!
-> Nathan
+> Patches 5-12 clean up warnings that will show up when -Qunused-argument is
+> dropped. I hope none of these are controversial.
+>
+> Patch 13 turns two warnings into errors so that the presence of unused flags
+> cannot be easily ignored.
+>
+> Patch 14 drops -Qunused-argument. This is done last so that it can be easily
+> reverted if need be.
+>
+> This series has seen my personal test framework, which tests several different
+> configurations and architectures, with LLVM tip of tree (16.0.0). I have done
+> defconfig, allmodconfig, and allnoconfig builds for arm, arm64, i386, mips,
+> powerpc, riscv, s390, and x86_64 with GCC 12.2.0 as well but I am hoping the
+> rest of the test infrastructure will catch any lurking problems.
+>
+> I would like this series to stay together so that there is no opportunity for
+> breakage so please consider giving acks so that this can be carried via the
+> kbuild tree (and many thanks to the people who have already provided such
+> tags).
+
+
+All applied to linux-kbuild. Thanks.
+
+I left small comments in 07/14.
 
 
 
--- 
+
+
+
+
+
+> ---
+> Changes in v2:
+> - Pick up tags where provided (thank you everyone!)
+> - Patch 6 and 9: Clarify that '-s' is a compiler flag that is only relevant to
+>   the linking phase and remove all mention of the assembler's '-s' flag, as the
+>   assembler is never directly invoked (Nick, Segher)
+> - Patch 7: Move '-z noexecstack' into new ldflags-y variable (Nick)
+> - Patch 8: Reword commit message to explain the problem in a clearer manner
+>   (Nick)
+> - Link to v1: https://lore.kernel.org/r/20221228-drop-qunused-arguments-v1-0-658cbc8fc592@kernel.org
+>
+> ---
+> Nathan Chancellor (12):
+>       MIPS: Always use -Wa,-msoft-float and eliminate GAS_HAS_SET_HARDFLOAT
+>       MIPS: Prefer cc-option for additions to cflags
+>       powerpc: Remove linker flag from KBUILD_AFLAGS
+>       powerpc/vdso: Remove unused '-s' flag from ASFLAGS
+>       powerpc/vdso: Improve linker flags
+>       powerpc/vdso: Remove an unsupported flag from vgettimeofday-32.o with clang
+>       s390/vdso: Drop unused '-s' flag from KBUILD_AFLAGS_64
+>       s390/vdso: Drop '-shared' from KBUILD_CFLAGS_64
+>       s390/purgatory: Remove unused '-MD' and unnecessary '-c' flags
+>       drm/amd/display: Do not add '-mhard-float' to dml_ccflags for clang
+>       kbuild: Turn a couple more of clang's unused option warnings into errors
+>       kbuild: Stop using '-Qunused-arguments' with clang
+>
+> Nick Desaulniers (2):
+>       x86/boot/compressed: prefer cc-option for CFLAGS additions
+>       kbuild: Update assembler calls to use proper flags and language target
+>
+>  Makefile                                    |  1 -
+>  arch/mips/Makefile                          | 13 ++-------
+>  arch/mips/include/asm/asmmacro-32.h         |  4 +--
+>  arch/mips/include/asm/asmmacro.h            | 42 ++++++++++++++---------------
+>  arch/mips/include/asm/fpregdef.h            | 14 ----------
+>  arch/mips/include/asm/mipsregs.h            | 20 +++-----------
+>  arch/mips/kernel/genex.S                    |  2 +-
+>  arch/mips/kernel/r2300_fpu.S                |  4 +--
+>  arch/mips/kernel/r4k_fpu.S                  | 12 ++++-----
+>  arch/mips/kvm/fpu.S                         |  6 ++---
+>  arch/mips/loongson2ef/Platform              |  2 +-
+>  arch/powerpc/Makefile                       |  2 +-
+>  arch/powerpc/kernel/vdso/Makefile           | 25 +++++++++++------
+>  arch/s390/kernel/vdso64/Makefile            |  4 +--
+>  arch/s390/purgatory/Makefile                |  2 +-
+>  arch/x86/boot/compressed/Makefile           |  2 +-
+>  drivers/gpu/drm/amd/display/dc/dml/Makefile |  3 ++-
+>  scripts/Kconfig.include                     |  2 +-
+>  scripts/Makefile.clang                      |  2 ++
+>  scripts/Makefile.compiler                   |  8 +++---
+>  scripts/as-version.sh                       |  2 +-
+>  21 files changed, 74 insertions(+), 98 deletions(-)
+> ---
+> base-commit: 88603b6dc419445847923fcb7fe5080067a30f98
+> change-id: 20221228-drop-qunused-arguments-0c5c7dae54fb
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
+
+
+--
 Best Regards
 Masahiro Yamada
