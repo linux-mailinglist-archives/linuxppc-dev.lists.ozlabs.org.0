@@ -2,49 +2,139 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804916775C9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 08:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A155D6775EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 08:58:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P0hzt32N2z3c8N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 18:48:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P0jD13rdQz3cCN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 18:58:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=bwTty7r5;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=X4ogYoNv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+5f321fda403eaa454d38+7092+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.55; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=bwTty7r5;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=X4ogYoNv;
 	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2055.outbound.protection.outlook.com [40.107.12.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0hys0Pnzz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 18:47:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=bzz7JaksZDKcHo94Mdn5kYAvotNtBXiOtl7bTdgyn8s=; b=bwTty7r5OnHPaCKqAKUl3UjVx7
-	+pkpYjcBDVigQXzRVHqVZrf5dxK0oD28Y8M5BDwqUypSvYFb8EMMD3DAFePOX5D0DE+CDtaPz0GQN
-	grNYFIqMmYBZearBWaCMHLC6gRZgTCCWp2J1o09N54mAPg3RYZaxUolowTmggy2EoeKAfc0qqPkbw
-	ux8mESha8aILcbFpDQ0kqX8KUI12+Na1zSUpuJgpUQcP1v2rezKif9qlMlsvt3nvlbuTTgEAyIf3u
-	8uzt0F3wUoGuQzR9q114Vkgktq5W7lsiu/23T3i0zdMej6l0Ylf+H82Hj1Tc5c05r3wKUQ8Lks/Uo
-	R4ZHjwCg==;
-Received: from [2001:4bb8:19a:27af:cb3f:eabc:1c16:9756] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pJrY2-00GGmS-7s; Mon, 23 Jan 2023 07:47:22 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: jim@jtan.com,
-	geoff@infradead.org
-Subject: [PATCH] ps3vram: remove bio splitting
-Date: Mon, 23 Jan 2023 08:47:18 +0100
-Message-Id: <20230123074718.57951-1-hch@lst.de>
-X-Mailer: git-send-email 2.39.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0jC355TRz30RS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 18:58:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hTXxtZMvTnEP9T8JgPBIokcAHIPtFuoMRG7ZD144aQ0gPJ1mVxG2UJ+XX5vcGwpBKIIw5gMJPKp6yK0h3hovrrh1DvaGmuuG3dpaSEOzbWzj3fhwibzuJcdbe6WCKTx/uBR4uyYz4TxbLPFXGbeFCkZP9bLodlKCOY1+asVcFZ1z8pzmTxl24yxjWcn425EPJBdqlPZO13QHBtjRiBU7V+2DE+sHGV4Cj42XNkCLyKQqi7QYpIN4mxX2bG/ug1xLeIWDx/YuB244VrNf2v3EZi+EPnnOY0aPX7lx6T79Y9e0Xgavz52HWTKlUPpmnv7m6rvXyil2YCDjsFaJ5t0BpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ekrNsPLzuZQ5FDKC6+uBf8nVSZ+nq913ZKr8VI47Z+I=;
+ b=aVCw7Vth5JmyrO3T9HTWR3djA6DzsLO8gupCfYhuhocxSfd4xQnUhJCAx/JkrydzvzE5MxxUhebP9eWjtbl0JSQDg2E2tqzrVONS34mRS/YGFSRVO4v35n1QYC+Gjjz2xTtJZvqyD7VaR+8NZx289md3V5vHn1JmbftInjL9dkX3CQE4iJTTowTNuk+/9pZkUbTaVMiIWBbRARanQgoi32BBNI0zt1vbooW94LnVLAcKtdjT/1A8wt5Uj3DKAYWeku1gzDuAXTuMN7Dc0frRGcVsvklQngyWBxyNkcNuJTFihpC6JEoQa8tzNf3d7IEjrC17LsreHcZH/r439w0FPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ekrNsPLzuZQ5FDKC6+uBf8nVSZ+nq913ZKr8VI47Z+I=;
+ b=X4ogYoNvWcFkh/TrQ9JiSnIz8cTlq2cxWuSDKQ4hO3jL3sQmdKfKAf2qEqvC99XVjkyE7ZW8fhb2w1EOgNehnK2DQMWoCJ5hF43pvd79CIqEOwlezLPcwRnS96e/TJnHnfJ49hNQjPhJlwmLe4YwBzAKZqq3VdrYU216s9Pi2DuK9YaByCjDMv4UJelHSkh+DcQzTHgwb2xZGUynn/V1m3QM5iczFB3OwWII160mVXUd9nXlT88C4WS9B/8mKNXLWKMPZCIVoIaiPpIzZmrUtpEwZOgbi0FpZJD8jIHh0kYQPOTIQypLHAQ7jQJ2cEzMv9gFh3wcMnKtsneRMOV7AQ==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2303.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:13::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.33; Mon, 23 Jan
+ 2023 07:57:46 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097%4]) with mapi id 15.20.6002.033; Mon, 23 Jan 2023
+ 07:57:46 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Quentin Monnet <quentin@isovalent.com>, Tonghao Zhang
+	<tong@infragraf.org>, Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: [bpf-next v2] bpf: drop deprecated bpf_jit_enable == 2
+Thread-Topic: [bpf-next v2] bpf: drop deprecated bpf_jit_enable == 2
+Thread-Index:  AQHZILjtdiBl24vDM0uhRRtlAlrCCa6QG7gAgAFsaoCABDtogIAMZLqAgAAhWICAAES8AIAALWIAgAAB/YCAAARNAIAABCAAgAANJACACOwHgA==
+Date: Mon, 23 Jan 2023 07:57:46 +0000
+Message-ID: <26e09ae3-dc7a-858d-c15c-7c2ff080d36d@csgroup.eu>
+References: <20230105030614.26842-1-tong@infragraf.org>
+ <ea7673e1-40ec-18be-af89-5f4fd0f71742@csgroup.eu>
+ <71c83f39-f85f-d990-95b7-ab6068839e6c@iogearbox.net>
+ <5836b464-290e-203f-00f2-fc6632c9f570@csgroup.eu>
+ <147A796D-12C0-482F-B48A-16E67120622B@infragraf.org>
+ <0b46b813-05f2-5083-9f2e-82d72970dae2@csgroup.eu>
+ <0792068b-9aff-d658-5c7d-086e6d394c6c@csgroup.eu>
+ <C811FC00-CE38-4227-B2E8-4CD8989D8B94@infragraf.org>
+ <4ab9aafe-6436-b90d-5448-f74da22ddddb@csgroup.eu>
+ <376f9737-f9a4-da68-8b7f-26020021613c@isovalent.com>
+ <21b09e52-142d-92f5-4f8b-e4190f89383b@csgroup.eu>
+ <43e6cd9f-ac54-46da-dba9-d535a2a77207@isovalent.com>
+In-Reply-To: <43e6cd9f-ac54-46da-dba9-d535a2a77207@isovalent.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR1P264MB2303:EE_
+x-ms-office365-filtering-correlation-id: 6efdb49a-0d61-49e4-2a95-08dafd1783a9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  GEyMmlccyBp8Rhm+o+byKUL25z2b2tmqc0Bf500goj7i6M8Cwhr0id6/Y9nXC+9T9e2ZM2Md0vl4l/8KCJdCpk0q71oKwMOsawzfm39DQPfGc9mU+xoUwR+NFF6UGubnEpRq/K4KjCDc7ucbuT0KPXjUCfNo35KOKhM3KgNs+B+NpMKCX/NBx6tBMdXpJcT3Ng4LOXlTFY4aEIscsEZH+5fT/AXkJxA03cK4Zsm+B45GmrAsJ/n/BMKXlfPj/tjYBwFqVzDJsUbB7sUJ3eGaRp//D2s3XMNFR0b/RpXow1n7Ti6HMZdtD8aOfi1X4dKEJ8it9lk7Ri0/SQq1lXhWETlL4mGcQQH4Nm7pA8Dj68SywShfZKAbaS39wXZsCToWzo5eDb+RSaT3aRWjAH6YHgmxqH9DpYJAYzOJwb3RdsGR8jGhOBmaFTI9FshTzmdimLeI/DwkZjMuHzkcYoG46aUFc94r449U9mkj6CTdcr5DE44B6GX+0iBL9sH8a/7RiUaBKR7ipKAwOeHuw+Ow01nh6S+1kulEnAMN+QSMw504Qn33gxFaiGhC8YvpSkzRnwns4tSrC+1rIoBUdV2TtddUAVKBcbUGLkNRrN1LZnX4jNKgDjDvG364QtgtEa/4QzaFCBTJhZ4ebxBNDLdW74yENcaudfUkStsizS79iW4083h5vDc3mvR9dvpTeCyMhEldvKWkUcFASDXJxwS4uF245+RGvLYsZfUQdCnTggFTKG2Imwr4LHh5NCytukjiwQe2hztJ3fgevRb5zHn9qg==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(39850400004)(346002)(366004)(376002)(451199015)(122000001)(83380400001)(31696002)(38100700002)(38070700005)(86362001)(2906002)(44832011)(5660300002)(4744005)(41300700001)(7416002)(8936002)(4326008)(8676002)(186003)(6506007)(6512007)(26005)(2616005)(54906003)(66946007)(76116006)(66556008)(66476007)(66446008)(64756008)(316002)(110136005)(91956017)(478600001)(6486002)(71200400001)(31686004)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?T2NTV1poeTMrUFg4R0FVK0JKaDlHYXE0UXZVQUp0WW1xSVdyUDlBcjlKTUZS?=
+ =?utf-8?B?WFgwUlJlMWJ1ejh6blhQSi9IdDgwdlRMWmpaYnFQcGExbFhGcUZGeEdNbElt?=
+ =?utf-8?B?WGNvMGJmK3ppVkJEaUJCRzFQVTdMNnBLcC9qMjRoZjZxeUZSVVlPcHFmdmRN?=
+ =?utf-8?B?bUlaNFVnaTU5NXhxcDlOWkRHeFZ1N2FzZWt3d1NneEU1czZTdmNuWnpaRHF0?=
+ =?utf-8?B?Smh1U3VCWW1wdlRqRWhJQlF0MkcrWEJ4Q3MyZW05RERpUjNBR3ZzWnQrY0lm?=
+ =?utf-8?B?c1dtS0FHaDdTNm81RVpnN3RibjZ3WmVBdVF4bVpzUjgrbklqYVZ5Mm8vSVd5?=
+ =?utf-8?B?eGw1Ymh0UmJPY1dyK3NwbjdkcmNPZzJuVnVzVmx4YzEwU2F6Z2FyK2cwTTFn?=
+ =?utf-8?B?QUdkanpNcDFncW5RaWpPQWpteW96YTFwZDlRNTVPWklzVXRobjJoNFg4Qjdp?=
+ =?utf-8?B?d21YblFkYmdESlQ1Mk5LRjlKQ1Uvc3dBajRmbm1ReDhqS1l1U3huN013bUVU?=
+ =?utf-8?B?OS9VRGhobEEvZnBQdzBsV2RaajlYdHZqVno4MHpzLzFDTHVkNjZJUGI3aE5h?=
+ =?utf-8?B?aW94TE9BRWlMN2l6UitTSVE1a2Iwd1QzaFpjejlhclV5QUdkWUJMd1V2OWtz?=
+ =?utf-8?B?UUFhbnNiR0pvSVdvbzd4blFEWkR6cU1USmt1NHJ6RG1oUmZGQjJNMHZlSkZL?=
+ =?utf-8?B?eC9tMnRLK0xwT1IySXBxSUp0dDRHNDZpM01iNVdiblgvUUdPbTNrdEhRcW1x?=
+ =?utf-8?B?bE8zUUJQR0ZubE4wS2hnVjQwQ0VEVThTY2pXYm9aWk9NeHZ6NWUzRlRuZm5u?=
+ =?utf-8?B?RCs0Y1BDT3IwWU82L3J3OWVXczJHblBvczFJNERWdE5LSkpPTTF5ZnNmb1Vr?=
+ =?utf-8?B?cEg5T09RT2l5VEdOalo1b2pMNm44QnRUMmpnc1FFY3I0dzdrZ0k5d2JXeC91?=
+ =?utf-8?B?Y01UQlpoQk5jcktZRS93S0JrYlhpUEtmNFhSNVduRVN6WnFpb1RJVHJjRStO?=
+ =?utf-8?B?V1liTmZkOVpOVUtwbjlyekhLenozNVBnc3QxTnp2dGJyKzlhaDQ2UFRUSjNs?=
+ =?utf-8?B?U2pZeFEzVjN0Vzl5ZFk1NkZsU0VCM3RPRGt1OGJNMTFFdVViVzZXbHk5aWJJ?=
+ =?utf-8?B?RVdld01Xd3VFY1JEV3BFT1RxZUhoZ1R5L1hYRjNmOUFCb3pQZ2ZqTldRZkpX?=
+ =?utf-8?B?Ym1ab2p3WFd4NTR4T2VGek9yK201S05FUGRxTVVhZGMxQjZvWGxlOXFWT0Iv?=
+ =?utf-8?B?Mk1sRlBzRzFXUXBHRTNJZW9NZFdnTmppSTlVR1FXc1Erdi9LbVBZK0tLQUh3?=
+ =?utf-8?B?cXRodGpNUUNabmEwQVlwMmVYaWtINExlVEZ5RGFpUVBtQllEYVNpdnhaaWhT?=
+ =?utf-8?B?RG1tZHlqVkd4T1VwSE1NUkRldzNjZnJ5YWt6Nk5kZytWdWRZQkVqb2FPendw?=
+ =?utf-8?B?UVgxWFFvUWlURW9ybm04dHQ1M3VQOXRRanVoMm5MM1ZrcStsd01oZEhiNDUv?=
+ =?utf-8?B?djJieExnOFBRTUlKZUpWdjNJbVZpZU1MdFF6KzlkTlpBYno2Zzk1TWZ5WXJh?=
+ =?utf-8?B?cVJ5b2ZRYTUzR2pQT0NqK00yeE56MUJ5RHB6elF4T2Fnd3JIa2pUaXNKSjMw?=
+ =?utf-8?B?czk5eXNvUHFJdXZxU0lTQkR2TUJOSGprQnFIWlBsZVgrdjd0d3BSSnJIZzQx?=
+ =?utf-8?B?ZDRDUWRqblJWaEUvYVl2VUFaMHVXWDdTYzcvbEhUeGx5N1k4UitUSFk3K21N?=
+ =?utf-8?B?cEVhR2xOM0Q0UzQ3SGtLYUdocXhwdVNNTEZuL3RibTJkcnBKMDVPcVBTbVJa?=
+ =?utf-8?B?dVk0S1BCakRwUmR3RUxnL2RQNUJwY1R3alpvVWZaOHcrUEhVN2UxMGNDZXBs?=
+ =?utf-8?B?aVVtRlZ3YkRmL2QzaXExZ3NTdWdXR3VNdy9ZaWY2eTg4Y3pzUFo3QWFSZG9Q?=
+ =?utf-8?B?UWx1RmtsUEduNWZ3RGNkTysxYWVhVjJSSmM5K08vUW5WNnZwc1VSMjJhTFg4?=
+ =?utf-8?B?bk9yaWNxNUVkTnlWM1R1MDl1TnI0a1NDeTdhU0dLUkpiZHJsMjl3MnlZV2VJ?=
+ =?utf-8?B?MXBVQk9yUm50WFZsTCtvK1N5MWRaM1c2OWFjZFQ5OXYzWTM1YSt4SHRGVktN?=
+ =?utf-8?B?WlpIckZ1MHVlRXNZV2EwNjRmSUFsQkdpb2V6NjJBTC96TWIrcHI1cnRrNXA0?=
+ =?utf-8?B?N1E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4D1CF5D57D46D74297A686DF500C2E95@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6efdb49a-0d61-49e4-2a95-08dafd1783a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2023 07:57:46.0854
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CbEAltlgKkMk1DrqT4QQSxLVMX8EaG5btntFbWCx+DH55FHLy6BE0/U7O7bVCoHjRwvU6cDPj9H1vWd+LmZc/PuMg4lfpx+C1a261XfZ734=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2303
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,45 +146,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Hao Luo <haoluo@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Hou Tao <houtao1@huawei.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Yonghong Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ps3vram iterates over the bio one segment, that is page aligned and max
-page sized chunk, a time.  Because of that there is no point in
-calling bio_split_to_limits, or explicitly setting the default limits
-that are only used by bio_split_to_limits.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/block/ps3vram.c | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
-index 574e470b220b09..38d42af01b2535 100644
---- a/drivers/block/ps3vram.c
-+++ b/drivers/block/ps3vram.c
-@@ -586,10 +586,6 @@ static void ps3vram_submit_bio(struct bio *bio)
- 
- 	dev_dbg(&dev->core, "%s\n", __func__);
- 
--	bio = bio_split_to_limits(bio);
--	if (!bio)
--		return;
--
- 	spin_lock_irq(&priv->lock);
- 	busy = !bio_list_empty(&priv->list);
- 	bio_list_add(&priv->list, bio);
-@@ -749,9 +745,6 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
- 	gendisk->private_data = dev;
- 	strscpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
- 	set_capacity(gendisk, priv->size >> 9);
--	blk_queue_max_segments(gendisk->queue, BLK_MAX_SEGMENTS);
--	blk_queue_max_segment_size(gendisk->queue, BLK_MAX_SEGMENT_SIZE);
--	blk_queue_max_hw_sectors(gendisk->queue, BLK_SAFE_MAX_SECTORS);
- 
- 	dev_info(&dev->core, "%s: Using %llu MiB of GPU memory\n",
- 		 gendisk->disk_name, get_capacity(gendisk) >> 11);
--- 
-2.39.0
-
+DQoNCkxlIDE3LzAxLzIwMjMgw6AgMTY6NDIsIFF1ZW50aW4gTW9ubmV0IGEgw6ljcml0wqA6DQo+
+IA0KPiBJbiB0aGUgbWVhbnRpbWUsIHlvdSBjb3VsZCBkaXNhYmxlIHRoZSB1c2Ugb2Ygc2tlbGV0
+b25zIGluIGJwZnRvb2wsIGJ5DQo+IHJlbW92aW5nICJjbGFuZy1icGYtY28tcmUiIGZyb20gRkVB
+VFVSRV9URVNUUyBmcm9tIHRoZSBNYWtlZmlsZS4gWW91DQo+IHNob3VsZCBnZXQgYSBmdW5jdGlv
+bmFsIGJpbmFyeSwgd2hpY2ggd291bGQgb25seSBtaXNzIGEgZmV3IGZlYXR1cmVzDQo+IChuYW1l
+bHksIHByaW50aW5nIHRoZSBwaWRzIG9mIHByb2dyYW1zIGhvbGRpbmcgcmVmZXJlbmNlcyB0byBC
+UEYNCj4gcHJvZ3JhbXMsIGFuZCB0aGUgImJwZnRvb2wgcHJvZyBwcm9maWxlIiBjb21tYW5kKS4N
+Cg0KT2ssIHdpdGggImNsYW5nLWJwZi1jby1yZSIgcmVtb3ZlZCwgYnBmdG9vbCBkb2Vzbid0IGNv
+bXBsYWluLg0KDQpIb3dldmVyLCBkb2VzIGl0IHdvcmsgYXQgYWxsID8NCg0KSSBzdGFydGVkIGEg
+J3RjcGR1bXAnLCBJIGNvbmZpcm1lZCB3aXRoICcgYnBmX2ppdF9lbmFibGUgPT0gMicgdGhhdCBh
+IA0KQlBGIGppdHRlZCBwcm9ncmFtIGlzIGNyZWF0ZWQgYnkgdGNwZHVtcC4NCg0KJ2JwdG9vbCBw
+cm9nIHNob3cnIGFuZCAnYnBmdG9vbCBwcm9nIGxpc3QnIHJldHVybnMgbm8gcmVzdWx0Lg0KDQpD
+aHJpc3RvcGhlDQo=
