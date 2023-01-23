@@ -1,73 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDAD678147
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 17:24:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F61678256
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 17:56:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P0wQm6QBjz3c9r
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 03:24:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P0x8T2Mh3z3cCk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 03:56:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GT9CtnzF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DowRaoZY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GT9CtnzF;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DowRaoZY;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0wPp6qGjz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 03:23:09 +1100 (AEDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id b1so10225816ybn.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 08:23:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fMnbgf/RHQ3ZAFZtL86FFLpdOpXvUOvzb7OmVGfvdng=;
-        b=GT9CtnzFDJgzUI5mydXp8vMCy8KjDM1ZqtBPYM0kcgx0FRmyl+E9TT47+NJLVc9OqG
-         5B3xB6XB0xC505sdjlph/P3bNWUs+gwAY1bJeex4c5AXqMOiJ4kjsB70LJKHU1jq0S1p
-         hpeWHMoy7IOoUmJEKiUYEepireN9i7kkgjXe4rrGmSrAN1Teoju59/CEYvPmeHmEYidF
-         p6NVvwPXwkThYpdM/Zr6S2ip9BawZ0L6I9IbGk4vDo34NVL1snNIbnQPkwhHHAoedn6L
-         IAMXqS1Abqo4chqx/pUJclhMWVSXP4nbkA+vi+eRWwhfst2RSj0RmxvR/EUi0HREO6Zi
-         Qa7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fMnbgf/RHQ3ZAFZtL86FFLpdOpXvUOvzb7OmVGfvdng=;
-        b=Y56u5x0SP9+EU91bqrmjyUbdm6pXyCj3lgPBv1iyR4gHiOmJOqpVjqUojJI31Felkq
-         kAKRv2MO9REUEVYWawP3vc/PNiawrLENmsVyPFDpZEiac/pgwnlbQT/fJqhggbhIb/hE
-         LjmbYMxbMeWyH7xpwLAjjkfU2NsVlMK0Cm5OF5VSsGEI2i0nDKbfJJpKLXoNfcQjNMVw
-         JpfUqmBQgquIdDOPWBUnWeXMzn6pOfNdUWgaUwqgYrjuPMxaDE5dA/U8Czjt2eLbErwy
-         sg3DJi5uT+yGGrrVRHuArEv/f9KKW6iQbAC14wo0dsvIUVcodghIZtq7+Kbd2jcUioDQ
-         SH6w==
-X-Gm-Message-State: AFqh2kp8Sm4GcehnF5IEcJamvf3mLHNas1QDvvfO6GwcGqDKHZy5e153
-	JeixrDxeelzUVd7FUPt/h9NFp2tQ59+dTA/xV1sjtw==
-X-Google-Smtp-Source: AMrXdXtgthJLROeIi9Kdf1aWHb5lhJLB0d8xJETJsdksQhtsxXC8/QdbWj0HkxC0Jssb10n37A0eaFm+06xsm+/I2B0=
-X-Received: by 2002:a5b:cc8:0:b0:7ba:78b1:9fcc with SMTP id
- e8-20020a5b0cc8000000b007ba78b19fccmr2576165ybr.593.1674490984902; Mon, 23
- Jan 2023 08:23:04 -0800 (PST)
-MIME-Version: 1.0
-References: <Y8k+syJu7elWAjRj@dhcp22.suse.cz> <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
- <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz> <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0x7Z5dYlz3bSk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 03:55:53 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DECAD3368D;
+	Mon, 23 Jan 2023 16:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1674492949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8BjJbv2vSf4l0oQI30wY+XiPDmLzLJJ1YmQm5vdgIO4=;
+	b=DowRaoZYF0DeIxE5rrpPUHrdtHLSGouZuBYp1UXXzCpcOsnYuUnw/+EsyLjIUJXwvSbKlv
+	YmdlbigPX1vE/c+7P0tm1DnHn6yH8N43z91lTgOiW5caVgiYg3GB3QJ2S6XxYxClbEtDdK
+	Lzw2UfkJI8FWvmkwi843sWifbhhiVEw=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B6C101357F;
+	Mon, 23 Jan 2023 16:55:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id v0QsLBW8zmPNCQAAMHmgww
+	(envelope-from <mhocko@suse.com>); Mon, 23 Jan 2023 16:55:49 +0000
+Date: Mon, 23 Jan 2023 17:55:49 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
+ vm_area_free
+Message-ID: <Y868Fadajv27QMXh@dhcp22.suse.cz>
+References: <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz>
+ <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
  <CAJuCfpF20nuP6Meib9h7NVrJv+wybYS==vZFQXxUW6n-ir9bvQ@mail.gmail.com>
- <Y8rGJq8LvX2C+Cr7@casper.infradead.org> <20230120170815.yuylbs27r6xcjpq5@revolver>
+ <Y8rGJq8LvX2C+Cr7@casper.infradead.org>
+ <20230120170815.yuylbs27r6xcjpq5@revolver>
  <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
- <Y8rQNj5dVyuxRBOf@casper.infradead.org> <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
+ <Y8rQNj5dVyuxRBOf@casper.infradead.org>
+ <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
  <Y85Z0Ovl68o4cz2j@dhcp22.suse.cz>
-In-Reply-To: <Y85Z0Ovl68o4cz2j@dhcp22.suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Jan 2023 08:22:53 -0800
-Message-ID: <CAJuCfpG86qc4odkpUbzuROb+jThQgXGWjcFXb0e-c2i0wEGg4g@mail.gmail.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
-To: Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+ <CAJuCfpG86qc4odkpUbzuROb+jThQgXGWjcFXb0e-c2i0wEGg4g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpG86qc4odkpUbzuROb+jThQgXGWjcFXb0e-c2i0wEGg4g@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,46 +82,42 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@go
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 23, 2023 at 1:56 AM Michal Hocko <mhocko@suse.com> wrote:
->
-> On Fri 20-01-23 09:50:01, Suren Baghdasaryan wrote:
-> > On Fri, Jan 20, 2023 at 9:32 AM Matthew Wilcox <willy@infradead.org> wrote:
-> [...]
-> > > The page fault handler (or whatever other reader -- ptrace, proc, etc)
-> > > should have a refcount on the mm_struct, so we can't be in this path
-> > > trying to free VMAs.  Right?
+On Mon 23-01-23 08:22:53, Suren Baghdasaryan wrote:
+> On Mon, Jan 23, 2023 at 1:56 AM Michal Hocko <mhocko@suse.com> wrote:
 > >
-> > Hmm. That sounds right. I checked process_mrelease() as well, which
-> > operated on mm with only mmgrab()+mmap_read_lock() but it only unmaps
-> > VMAs without freeing them, so we are still good. Michal, do you agree
-> > this is ok?
->
-> Don't we need RCU procetions for the vma life time assurance? Jann has
-> already shown how rwsem is not safe wrt to unlock and free without RCU.
+> > On Fri 20-01-23 09:50:01, Suren Baghdasaryan wrote:
+> > > On Fri, Jan 20, 2023 at 9:32 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > [...]
+> > > > The page fault handler (or whatever other reader -- ptrace, proc, etc)
+> > > > should have a refcount on the mm_struct, so we can't be in this path
+> > > > trying to free VMAs.  Right?
+> > >
+> > > Hmm. That sounds right. I checked process_mrelease() as well, which
+> > > operated on mm with only mmgrab()+mmap_read_lock() but it only unmaps
+> > > VMAs without freeing them, so we are still good. Michal, do you agree
+> > > this is ok?
+> >
+> > Don't we need RCU procetions for the vma life time assurance? Jann has
+> > already shown how rwsem is not safe wrt to unlock and free without RCU.
+> 
+> Jann's case requires a thread freeing the VMA to be blocked on vma
+> write lock waiting for the vma real lock to be released by a page
+> fault handler. However exit_mmap() means mm->mm_users==0, which in
+> turn suggests that there are no racing page fault handlers and no new
+> page fault handlers will appear. Is that a correct assumption? If so,
+> then races with page fault handlers can't happen while in exit_mmap().
+> Any other path (other than page fault handlers), accesses vma->lock
+> under protection of mmap_lock (for read or write, does not matter).
+> One exception is when we operate on an isolated VMA, then we don't
+> need mmap_lock protection, but exit_mmap() does not deal with isolated
+> VMAs, so out of scope here. exit_mmap() frees vm_area_structs under
+> protection of mmap_lock in write mode, so races with anything other
+> than page fault handler should be safe as they are today.
 
-Jann's case requires a thread freeing the VMA to be blocked on vma
-write lock waiting for the vma real lock to be released by a page
-fault handler. However exit_mmap() means mm->mm_users==0, which in
-turn suggests that there are no racing page fault handlers and no new
-page fault handlers will appear. Is that a correct assumption? If so,
-then races with page fault handlers can't happen while in exit_mmap().
-Any other path (other than page fault handlers), accesses vma->lock
-under protection of mmap_lock (for read or write, does not matter).
-One exception is when we operate on an isolated VMA, then we don't
-need mmap_lock protection, but exit_mmap() does not deal with isolated
-VMAs, so out of scope here. exit_mmap() frees vm_area_structs under
-protection of mmap_lock in write mode, so races with anything other
-than page fault handler should be safe as they are today.
-
-That said, the future possible users of lock_vma_under_rcu() using VMA
-without mmap_lock protection will have to ensure mm's stability while
-they are using the obtained VMA. IOW they should elevate mm's refcount
-and keep it elevated as long as they are using that VMA and not before
-vma->lock is released. I guess it would be a good idea to document
-that requirement in lock_vma_under_rcu() comments if we decide to take
-this route.
-
->
-> --
-> Michal Hocko
-> SUSE Labs
+I do not see you talking about #PF (RCU + vma read lock protected) with
+munmap. It is my understanding that the latter will synchronize over per
+vma lock (along with mmap_lock exclusive locking). But then we are back
+to the lifetime guarantees, or do I miss anything.
+-- 
+Michal Hocko
+SUSE Labs
