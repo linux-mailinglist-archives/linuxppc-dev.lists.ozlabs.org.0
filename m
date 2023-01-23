@@ -1,72 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86C1678746
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 21:10:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD55678748
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 21:11:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P11Rm5twyz3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 07:10:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P11Sn0nPfz3fMQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 07:11:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RyYyVfXd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h52U9TKX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RyYyVfXd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h52U9TKX;
 	dkim-atps=neutral
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P11Q018Fcz3fG6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 07:08:38 +1100 (AEDT)
-Received: by mail-wm1-x32f.google.com with SMTP id q8so9925355wmo.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 12:08:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xx0+AS/R5cTFxTer1KPJhFwelUzEZqlaudVJ4C5UqlM=;
-        b=RyYyVfXdy0EOGXtjgeoYEX0CSfXeDuawJy3LtwRKGEXH7xPRUd7FzH5vM0ZD/5/uNP
-         fWBSe/Vuek0fbxHy7ulBo2tzxgjytQXIhDoKjaRk3SO4pUlWanXPzUwdk9sCfPJMgGQV
-         p18xwdky3Y0ZFWjj2oRsWB1r8iCofsyuM+DRRi3eBUWKYZ0nN2FXeurkdZEHXIwEXyHo
-         0hKaiu62QCi9O+hzr1ZvTjmsOHLWnqe2N/6m1fgfhTobQv9HYlX2hUiV/odvHm54lxez
-         NCc0aIPRkybQcRORZZdU5UX7FU9qwPmbIdE06KG8aUUiUZFG2ePpUffvAsR6tWHeElFT
-         rYKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xx0+AS/R5cTFxTer1KPJhFwelUzEZqlaudVJ4C5UqlM=;
-        b=ACReuMrm/5Q1mute3UEfV6nmr8/FmyTmjgoCAlPbohM5GOpaVi+ZFS6i+evBx4K1qU
-         JzNs7JTMA/POCCoSVT+fm2qzBJqowLV1nynF9sQXRNoFGVWk1p33xLIFrm4bgKC0VErZ
-         i8kcS66Nr6SkP/756NLK2w+u+TBLIBdHgnxM0ZBVs/cRhAVbmxH3pWHOJ6jymXmtX0vE
-         Q7nmEnewQ2vkU9iCAqne/ydwd0LbiA/Sn2ebK3a4C6tWXf1fBvqx+u0OADSUw07wzUm3
-         BlAJ9aFCXOB2zB3QpmBZ63vyt1OplCDTAAkL/PKpL2InRQdV4is0D/U23D0MJVAwqLJL
-         YwNw==
-X-Gm-Message-State: AFqh2kpjft5weINqmu44WPgzeYlNvdj1CylP7gVjjPKYrhhMC2J0IKVT
-	CQiNThBYYRca5uLsuSO8kyLHd3QtZxpTn/lMWB2lPg==
-X-Google-Smtp-Source: AMrXdXsAYItHDpk4yH6h+tdfdbjpmDtWUNcVfzcOaPv8ocdm14en5egjG3x9mr/LGbfmiQJ1437Ba8Qp+R4Oyn+yujs=
-X-Received: by 2002:a05:600c:3412:b0:3d0:a619:c445 with SMTP id
- y18-20020a05600c341200b003d0a619c445mr1027494wmp.17.1674504514768; Mon, 23
- Jan 2023 12:08:34 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P11Qz1v1kz3chJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 07:09:31 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B76FB61027;
+	Mon, 23 Jan 2023 20:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078FDC4339B;
+	Mon, 23 Jan 2023 20:09:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674504566;
+	bh=If0sFz25p6CYDx2nh3Dqk80gAUpAtfBAbUC6NI2O118=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h52U9TKXbtKOhYFOTbEEIPdNQQV1L2z4m7iqqQMV4mfdcE4Dhev4c1g8e0bz2DGoy
+	 5jBM+eM971XkFrC7xKhIuRP5zTwvd4AB/nKHGWDbm+C5+WCyrFSlsrnx00cgoYXPLX
+	 kHlnMv9NMJ1D6LBHZWgQO4gSbIKiXiypggqF4n6lG5qTOPUwzpyu1aT9HK++n6yauh
+	 l4T533cyVVX1HaNvCP7TWrm+1AiUVhubsVWdr1N9TVJDe/RDyjPpZq1c0wRPuRaeJs
+	 eTp41BUSYq/VOPjSEHi11uHCP1yzzSTWRekWn/QLJKiMBjUNchtce5dQaj9GW5ReEF
+	 ACltEd3Lgb3nw==
+Received: by pali.im (Postfix)
+	id 1BFAE7FA; Mon, 23 Jan 2023 21:09:23 +0100 (CET)
+Date: Mon, 23 Jan 2023 21:09:22 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 0/8] powerpc/85xx: p2020: Create one unified machine
+ description
+Message-ID: <20230123200922.scnwgne3dsip24lg@pali>
+References: <20221224211425.14983-1-pali@kernel.org>
+ <20230122111631.dgw5uwtfjsqack57@pali>
+ <22db0b5a-1b7f-a94b-1092-a314d57dedf5@csgroup.eu>
 MIME-Version: 1.0
-References: <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
- <Y85Z0Ovl68o4cz2j@dhcp22.suse.cz> <CAJuCfpG86qc4odkpUbzuROb+jThQgXGWjcFXb0e-c2i0wEGg4g@mail.gmail.com>
- <Y868Fadajv27QMXh@dhcp22.suse.cz> <CAJuCfpGSCHpnZwwVV_922fmMBpFPZL0HAHMABuDzMfuURF2sWg@mail.gmail.com>
- <Y87A2CEKAugfgfHC@dhcp22.suse.cz> <CAJuCfpGJRZATfc8eUurvV5kGkSNkG=vK=sfwJbU72PESOyATSw@mail.gmail.com>
- <Y87QjHH2aDG5XCGv@casper.infradead.org> <Y87djZwQpXazRd00@dhcp22.suse.cz>
- <Y87gY7fhi5OJ35WQ@casper.infradead.org> <Y87nVydD7oF9BGMb@dhcp22.suse.cz>
-In-Reply-To: <Y87nVydD7oF9BGMb@dhcp22.suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Jan 2023 12:08:21 -0800
-Message-ID: <CAJuCfpEz_Qm3BeY5a0O+OBgZTTLSgvkqDE4XieCYyGMMv3Hykw@mail.gmail.com>
-Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in vm_area_free
-To: Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <22db0b5a-1b7f-a94b-1092-a314d57dedf5@csgroup.eu>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,66 +66,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, Matthew Wilcox <willy@infradead.org>, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@g
- oogle.com, mgorman@techsingularity.net
+Cc: Sinan Akman <sinan@writeme.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Scott Wood <oss@buserror.net>, Martin Kennedy <hurricos@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 23, 2023 at 12:00 PM Michal Hocko <mhocko@suse.com> wrote:
->
-> On Mon 23-01-23 19:30:43, Matthew Wilcox wrote:
-> > On Mon, Jan 23, 2023 at 08:18:37PM +0100, Michal Hocko wrote:
-> > > On Mon 23-01-23 18:23:08, Matthew Wilcox wrote:
-> > > > On Mon, Jan 23, 2023 at 09:46:20AM -0800, Suren Baghdasaryan wrote:
-> > > [...]
-> > > > > Yes, batching the vmas into a list and draining it in remove_mt() and
-> > > > > exit_mmap() as you suggested makes sense to me and is quite simple.
-> > > > > Let's do that if nobody has objections.
-> > > >
-> > > > I object.  We *know* nobody has a reference to any of the VMAs because
-> > > > you have to have a refcount on the mm before you can get a reference
-> > > > to a VMA.  If Michal is saying that somebody could do:
-> > > >
-> > > >   mmget(mm);
-> > > >   vma = find_vma(mm);
-> > > >   lock_vma(vma);
-> > > >   mmput(mm);
-> > > >   vma->a = b;
-> > > >   unlock_vma(mm, vma);
-> > > >
-> > > > then that's something we'd catch in review -- you obviously can't use
-> > > > the mm after you've dropped your reference to it.
-> > >
-> > > I am not claiming this is possible now. I do not think we want to have
-> > > something like that in the future either but that is really hard to
-> > > envision. I am claiming that it is subtle and potentially error prone to
-> > > have two different ways of mass vma freeing wrt. locking. Also, don't we
-> > > have a very similar situation during last munmaps?
-> >
-> > We shouldn't have two ways of mass VMA freeing.  Nobody's suggesting that.
-> > There are two cases; there's munmap(), which typically frees a single
-> > VMA (yes, theoretically, you can free hundreds of VMAs with a single
-> > call which spans multiple VMAs, but in practice that doesn't happen),
-> > and there's exit_mmap() which happens on exec() and exit().
->
-> This requires special casing remove_vma for those two different paths
-> (exit_mmap and remove_mt).  If you ask me that sounds like a suboptimal
-> code to even not handle potential large munmap which might very well be
-> a rare thing as you say. But haven't we learned that sooner or later we
-> will find out there is somebody that cares afterall? Anyway, this is not
-> something I care about all that much. It is just weird to special case
-> exit_mmap, if you ask me. Up to Suren to decide which way he wants to
-> go. I just really didn't like the initial implementation of batching
-> based on a completely arbitrary batch limit and lazy freeing.
+On Monday 23 January 2023 14:32:36 Christophe Leroy wrote:
+> Le 22/01/2023 à 12:16, Pali Rohár a écrit :
+> > Hello! Do you have any comments for this patch series?
+> 
+> 
+> I think patches 1 and 2 could be a single patch.
 
-I would prefer to go with the simplest sufficient solution. A
-potential issue with a large munmap might prove to be real but I think
-we know how to easily fix that with batching if the issue ever
-materializes (I'll have a fix ready implementing Michal's suggestion).
-So, I suggest going with Liam's/Matthew's solution and converting to
-Michal's solution if regression shows up anywhere else. Would that be
-acceptable?
+Well, if you want to have them in single patch, it could be easily
+squashed during applying. I thought that it is better to have them
+separated because of different boards, files, etc...:
+https://lore.kernel.org/linuxppc-dev/5bf1f2fc-a1de-d873-7d1b-0058ff8b9aa2@csgroup.eu/
 
-> --
-> Michal Hocko
-> SUSE Labs
+> I'm having hard time understanding how things are built. Patch 3 
+> introduces 273 lines of new code in a file named p2020.c while only 
+> removing 23 lines and 44 lines from mpc85xx_{ds/rdb}.c.
+
+In v1 I generated that patch with git -M, -C and other options which
+detects copy and renames. But I had an impression that it is less readable:
+https://lore.kernel.org/linuxppc-dev/20220819191557.28116-4-pali@kernel.org/
+
+So I tried to describe all changes in commit message and generated that
+patch without copy options (so it is plain patch with add lines).
+
+This patch moves all p2020 boards from mpc85xx_rdb.c and mpc85xx_ds.c
+files into new p2020.c file, and plus it copies all helper functions
+which p2020 boards requires. This patch does not introduce any new code
+or functional change. It should be really plain copy/move.
+
+> Then patches 4, 
+> 5 and 6 exclusively modify p2020.c which was a completely new file added 
+> by patch 3.
+
+In later patches is then that moved/copied code improved and cleaned.
+
+> Why not making it correct from the beginning, that is merge 
+> patches 4, 5 and 6 in patch 3 ?
+
+I wanted to separate logical changes into separate commits. So first
+just moves/copy code (which should be noop) and then do functional
+changes in followup patches. I like this progress because for me it is
+easier for reviewing. Important parts are functional changes, which are
+in separated commits and it is visually separated from boring move/copy
+code changes.
+
+> Or maybe p2020.c is not really new but is a copy of some previously 
+> existing code ? In that case it would be better to make it explicit, for 
+> history.
+
+Yes. Do you have any suggestion how to make it _more_ explicit? I tried
+to explain it in commit message (but I'm not sure if it is enough). And
+when viewing via git show, it is needed to call it with additional -M
+and -C options to see this. git does not do it automatically.
+
+> 
+> Christophe
+> 
+> 
+> > 
+> > On Saturday 24 December 2022 22:14:17 Pali Rohár wrote:
+> >> This patch series unifies all P2020 boards and machine descriptions into
+> >> one generic unified P2020 machine description. With this generic machine
+> >> description, kernel can boot on any P2020-based board with correct DTS
+> >> file.
+> >>
+> >> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
+> >> Kernel during booting correctly detects P2020 and prints:
+> >> [    0.000000] Using Freescale P2020 machine description
+> >>
+> >> Changes in v2:
+> >> * Added patch "p2020: Move i8259 code into own function" (separated from the next one)
+> >> * Renamed CONFIG_P2020 to CONFIG_PPC_P2020
+> >> * Fixed descriptions
+> >>
+> >> Link to v1: https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@kernel.org/
+> >>
+> >> Pali Rohár (8):
+> >>    powerpc/85xx: Mark mpc85xx_rdb_pic_init() as static
+> >>    powerpc/85xx: Mark mpc85xx_ds_pic_init() as static
+> >>    powerpc/85xx: p2020: Move all P2020 machine descriptions to p2020.c
+> >>    powerpc/85xx: p2020: Move i8259 code into own function
+> >>    powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
+> >>    powerpc/85xx: p2020: Define just one machine description
+> >>    powerpc/85xx: p2020: Enable boards by new config option
+> >>      CONFIG_PPC_P2020
+> >>    powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+> >>
+> >>   arch/powerpc/boot/dts/turris1x.dts        |   2 +-
+> >>   arch/powerpc/platforms/85xx/Kconfig       |  22 ++-
+> >>   arch/powerpc/platforms/85xx/Makefile      |   1 +
+> >>   arch/powerpc/platforms/85xx/mpc85xx_ds.c  |  25 +--
+> >>   arch/powerpc/platforms/85xx/mpc85xx_rdb.c |  46 +-----
+> >>   arch/powerpc/platforms/85xx/p2020.c       | 193 ++++++++++++++++++++++
+> >>   6 files changed, 215 insertions(+), 74 deletions(-)
+> >>   create mode 100644 arch/powerpc/platforms/85xx/p2020.c
+> >>
+> >> -- 
+> >> 2.20.1
+> >>
