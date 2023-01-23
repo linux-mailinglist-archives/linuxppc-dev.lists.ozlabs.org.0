@@ -2,78 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7777B67762E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 09:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A141F6777E9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 10:57:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P0jdq2JTcz3cC4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 19:17:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P0lrm3QJXz3c6f
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 20:57:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PbtbFjx/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=FDU+Yu+y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=nadav.amit@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PbtbFjx/;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=FDU+Yu+y;
 	dkim-atps=neutral
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0jct1dnPz2xVn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 19:17:00 +1100 (AEDT)
-Received: by mail-wm1-x332.google.com with SMTP id f19-20020a1c6a13000000b003db0ef4dedcso9967087wmc.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 00:16:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mASwyI0y84zkiwwYs/n5l2nc6iOYa0RADtrERsvZZ/4=;
-        b=PbtbFjx/YiFhnvdSh29MEa6PF9nytW6aCWO3mfmnb/mQIcXmYF78LAsc2CggFv8ULD
-         e4BRWhtMDFcjb48YrV5CwLYYEDCSPpFwiZtDp3EIPeH4ghdvc/kRyAgMJZFsjxPBIoTz
-         +SoqSV1LzOhYpwZP13Fz2w7f8NCsVFjpHxINOB7Fv4jVkf8oPTVcds0QmhBw/FdMKTv3
-         C3YWOZXlKHC0ry7oZ/l4Dn9zEN/mCuHKvr5terRV3WZlPSZGrqDpxLJDEVtSKWbICyJo
-         TUdsnRByRwYR97rhmP9tjgC7v4IL/MFGCM/gxVMcS86Dkk73qsm7esM5DLU3bXjo/yG2
-         nBTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mASwyI0y84zkiwwYs/n5l2nc6iOYa0RADtrERsvZZ/4=;
-        b=5N5t26s0tFWuBKDw13ytnckCNnkZN7EIshMMsYDn4tdWcXEz8d5IX9Hch8AwUCn1Mu
-         lZO5WdCelHyvkzROM7kNSwFPZj2N90qC24SnLtWkIrezAORMmnEr/o4wAMhYvQPBVJuW
-         XbY4w9YozPZHHFQbV8d6SmyqVg77mikWw3SdrGtgmGTxu1P72xW+nrdFrawNvuypcPKV
-         z+UPLaLrenF5I5ixJ9defnZ54d2TBJzEzZAwXGAWtTTvdylQlxJZq/gTjm5HGkYaVMvu
-         GyKPIajV54Ux4k8tKc9fHQvYNWz6UKc6DO9QXbJmPkGALr3nFIf5gQb/+hMoX1Ea0Weo
-         NkRA==
-X-Gm-Message-State: AFqh2kor8rhINkLeglM87szqRiUTkq1swoKfQvpO3CC3BffITxkoGhD8
-	DIN/Kf4hKaGtbdVs+TpYqe0=
-X-Google-Smtp-Source: AMrXdXs78YIwmy6vXp8dUen1lH+gRIzlW9AG1nDQeN2sZijzpWuNRWZPH+x2GWIkurJEuK4QH4aP5A==
-X-Received: by 2002:a05:600c:1c8e:b0:3d9:e5f9:984c with SMTP id k14-20020a05600c1c8e00b003d9e5f9984cmr23361419wms.2.1674461815625;
-        Mon, 23 Jan 2023 00:16:55 -0800 (PST)
-Received: from [192.168.86.94] ([77.137.66.37])
-        by smtp.gmail.com with ESMTPSA id p7-20020a05600c468700b003db0bb81b6asm10522350wmo.1.2023.01.23.00.16.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 00:16:55 -0800 (PST)
-Message-ID: <e8fac6e0-487f-37c3-5be4-19518ffa845e@gmail.com>
-Date: Mon, 23 Jan 2023 10:16:52 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0lqs1MmGz2xHJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 20:56:39 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D19401F461;
+	Mon, 23 Jan 2023 09:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1674467793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=23+bxvlDHhv98+IF5/OMG/D6ucEV8Wbm0GFOsBS724w=;
+	b=FDU+Yu+yXPWSXaQUfLGbcbZhHPwb2qTY1gBoIfGCdb2MThCmusoz5gVarg1ZuhxgoeIHdz
+	RmIhY+0GxEm+RBG/DSo975FXvYL1fOFO37wRXzIf+4R8Z5kAtfhbMIi0k/TOcjSLCGwPBv
+	hGIJyY1EgNMwDPtsogvWoxt9MurAVsQ=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A9002134F5;
+	Mon, 23 Jan 2023 09:56:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id zZHYKNFZzmMjCgAAMHmgww
+	(envelope-from <mhocko@suse.com>); Mon, 23 Jan 2023 09:56:33 +0000
+Date: Mon, 23 Jan 2023 10:56:32 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
+ vm_area_free
+Message-ID: <Y85Z0Ovl68o4cz2j@dhcp22.suse.cz>
+References: <Y8k+syJu7elWAjRj@dhcp22.suse.cz>
+ <CAJuCfpEAL9y70KJ_a=Z_kJpJnNC-ge1aN2ofTupeQ5-FaKh84g@mail.gmail.com>
+ <Y8pWW9Am3mDP53qJ@dhcp22.suse.cz>
+ <CAJuCfpHeuckG8YuNTgdDcNHNzJ3sQExD_f1hwXG_xmS7Z-925g@mail.gmail.com>
+ <CAJuCfpF20nuP6Meib9h7NVrJv+wybYS==vZFQXxUW6n-ir9bvQ@mail.gmail.com>
+ <Y8rGJq8LvX2C+Cr7@casper.infradead.org>
+ <20230120170815.yuylbs27r6xcjpq5@revolver>
+ <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
+ <Y8rQNj5dVyuxRBOf@casper.infradead.org>
+ <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.0
-Subject: Re: [PATCH v6 3/5] lazy tlb: shoot lazies, non-refcounting lazy tlb
- mm reference handling scheme
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20230118080011.2258375-1-npiggin@gmail.com>
- <20230118080011.2258375-4-npiggin@gmail.com>
- <5F3590B8-3F25-4EFB-BE3A-D32AAAC0B2F4@gmail.com>
- <CPVVOWQ6SE2S.NQ3R9R77MFKI@bobo>
-From: Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <CPVVOWQ6SE2S.NQ3R9R77MFKI@bobo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,55 +77,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-mm <linux-mm@kvack.org>, Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, Matthew Wilcox <willy@infradead.org>, gurua@google.com, laurent.dufour@fr.ibm.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@g
+ oogle.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 1/19/23 6:22 AM, Nicholas Piggin wrote:
-> On Thu Jan 19, 2023 at 8:22 AM AEST, Nadav Amit wrote:
->>
->>
->>> On Jan 18, 2023, at 12:00 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>
->>> +static void do_shoot_lazy_tlb(void *arg)
->>> +{
->>> +	struct mm_struct *mm = arg;
->>> +
->>> + 	if (current->active_mm == mm) {
->>> + 		WARN_ON_ONCE(current->mm);
->>> + 		current->active_mm = &init_mm;
->>> + 		switch_mm(mm, &init_mm, current);
->>> + 	}
->>> +}
->>
->> I might be out of touch - doesn’t a flush already take place when we free
->> the page-tables, at least on common cases on x86?
->>
->> IIUC exit_mmap() would free page-tables, and whenever page-tables are
->> freed, on x86, we do shootdown regardless to whether the target CPU TLB state
->> marks is_lazy. Then, flush_tlb_func() should call switch_mm_irqs_off() and
->> everything should be fine, no?
->>
->> [ I understand you care about powerpc, just wondering on the effect on x86 ]
+On Fri 20-01-23 09:50:01, Suren Baghdasaryan wrote:
+> On Fri, Jan 20, 2023 at 9:32 AM Matthew Wilcox <willy@infradead.org> wrote:
+[...]
+> > The page fault handler (or whatever other reader -- ptrace, proc, etc)
+> > should have a refcount on the mm_struct, so we can't be in this path
+> > trying to free VMAs.  Right?
 > 
-> Now I come to think of it, Rik had done this for x86 a while back.
-> 
-> https://lore.kernel.org/all/20180728215357.3249-10-riel@surriel.com/
-> 
-> I didn't know about it when I wrote this, so I never dug into why it
-> didn't get merged. It might have missed the final __mmdrop races but
-> I'm not not sure, x86 lazy tlb mode is too complicated to know at a
-> glance. I would check with him though.
+> Hmm. That sounds right. I checked process_mrelease() as well, which
+> operated on mm with only mmgrab()+mmap_read_lock() but it only unmaps
+> VMAs without freeing them, so we are still good. Michal, do you agree
+> this is ok?
 
-My point was that naturally (i.e., as done today), when exit_mmap() is 
-done, you release the page tables (not just the pages). On x86 it means 
-that you also send shootdown IPI to all the *lazy* CPUs to perform a 
-flush, so they would exit the lazy mode.
+Don't we need RCU procetions for the vma life time assurance? Jann has
+already shown how rwsem is not safe wrt to unlock and free without RCU.
 
-[ this should be true for 99% of the cases, excluding cases where there
-   were not page-tables, for instance ]
-
-So the patch of Rik, I think, does not help in the common cases, 
-although it may perhaps make implicit actions more explicit in the code.
+-- 
+Michal Hocko
+SUSE Labs
