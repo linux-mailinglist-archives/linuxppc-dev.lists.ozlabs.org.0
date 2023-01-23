@@ -2,56 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCE767714C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jan 2023 19:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775A96774D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 06:25:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P0Lfg0ymcz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 05:02:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P0dpP2vlSz3bdV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 16:25:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VY65pI9z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HLFN73iN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0dnN5GHYz3Wtp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 16:24:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VY65pI9z;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HLFN73iN;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4P0dnK3lz3z4xN4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 16:24:05 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4P0dnK3jBWz4y0Q; Mon, 23 Jan 2023 16:24:05 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HLFN73iN;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P0Ldl2xKkz3bXr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 05:01:31 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 7E42FB80B45;
-	Sun, 22 Jan 2023 18:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815A6C433EF;
-	Sun, 22 Jan 2023 18:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674410486;
-	bh=ZGiCjszJqpHiIFSAq3hgbJBEIhIKVjiFIcdUwUi83q0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VY65pI9zOzf5Af1dwN1TzzmPaGvB30Z4TTP8WtMbLii3inEeuMp6dAjuzgzwlB2Li
-	 9fMnwmdNr30j6nmSq7p2aMpqEj9QgzTSG9DB0ozm0W1AbwVRh74tZKfEMf44GZTLxy
-	 haome2sNLyo9B/ReHtRrhmtrA7MkR3cbysu5xLHnPu2q8kFqzpt31hs80Tt1NcyEZl
-	 dqXcaffRhDKKasuXhwiTiAHOOiMPBcj3R1rx9QNFzu6Vv2QEySehex+kOlTHac5VX4
-	 Y/kXjKLBsfTNM25bDohNMupqpAeJ1zuI60nPLEYon0zv8q6G7J5Xlxh0/QUDqHhbGB
-	 pUhxx38MOJE1Q==
-Date: Sun, 22 Jan 2023 11:01:23 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v2 07/14] powerpc/vdso: Improve linker flags
-Message-ID: <Y81588GQh3fNY3fO@dev-arch.thelio-3990X>
-References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
- <20221228-drop-qunused-arguments-v2-7-9adbddd20d86@kernel.org>
- <CA+icZUUgq-dnSTRbdynPA8bEWg6SsCE9GYBMF6iViVmo9DfaFA@mail.gmail.com>
- <Y8BPp905fJciHNa2@dev-arch.thelio-3990X>
- <CAK7LNATRetne7hK4xNeEpn7a1=Eaxr42X6nRWohJzWGYiyiPww@mail.gmail.com>
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4P0dnK1P6qz4xN4
+	for <linuxppc-dev@ozlabs.org>; Mon, 23 Jan 2023 16:24:05 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30N3TTAc029676;
+	Mon, 23 Jan 2023 05:23:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=hVv6HMGZpGkOQB9xjSgTw3//k07HrNdPWREpH531SnY=;
+ b=HLFN73iNqyjR/1WezZ2iAdI/+UO84SGKMLBUYuij8lKWf+ZE4BqiM5kIwv6cJAIi+Jcb
+ SbgqJFXtsbkXfk8X+tDErKmOk/zkgZ/IeEaYARrczLjCndjBf1MEt5WXd2NYfmDfejMT
+ kQgubA8AsRmWiVaaFk2nYhhPjzA+4n3tTuE6Hl1JsGsq3FV1761zndmdFbZrEESbiuLw
+ I4ZVMlnKx1WQ5pKV2ShdCtODeypvMGhWs1c44gKY0R4iJfGqE7GulGUOlBxOFDnCBQMf
+ MUGtFRIXCypjHALxKgv4Fc4JMizxNfPRHN4DGqaYyei18mUULTpayLK76lT+MbzMyg5Y fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n8sxk5wx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Jan 2023 05:23:52 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30N5NqBU021377;
+	Mon, 23 Jan 2023 05:23:52 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n8sxk5wwg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Jan 2023 05:23:52 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30N5FKj6014950;
+	Mon, 23 Jan 2023 05:23:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3n87af9u7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Jan 2023 05:23:47 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30N5Nh9c44827002
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Jan 2023 05:23:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6838820043;
+	Mon, 23 Jan 2023 05:23:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C07E020040;
+	Mon, 23 Jan 2023 05:23:41 +0000 (GMT)
+Received: from [9.43.92.90] (unknown [9.43.92.90])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Jan 2023 05:23:41 +0000 (GMT)
+Message-ID: <822ae84a-00f5-2a7e-75b1-9fca8819c864@linux.ibm.com>
+Date: Mon, 23 Jan 2023 10:53:35 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNATRetne7hK4xNeEpn7a1=Eaxr42X6nRWohJzWGYiyiPww@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v7 3/8] powerpc/crash: update kimage_arch struct
+To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        mpe@ellerman.id.au
+References: <20230115150206.431528-1-sourabhjain@linux.ibm.com>
+ <20230115150206.431528-4-sourabhjain@linux.ibm.com>
+ <6d683365-d653-2c47-4a24-a311c62a5eec@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <6d683365-d653-2c47-4a24-a311c62a5eec@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9nISxjE_K9w6_4i8RQIR4nKbQzd3rZvN
+X-Proofpoint-GUID: clppiJ2VIFVxiB-xUid3WhldJYI0H1FO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-23_02,2023-01-20_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ bulkscore=0 spamscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301230047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,137 +118,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, Sedat Dilek <sedat.dilek@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 23, 2023 at 02:27:51AM +0900, Masahiro Yamada wrote:
-> On Fri, Jan 13, 2023 at 3:21 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > Hi Sedat,
-> >
-> > On Thu, Jan 12, 2023 at 07:02:30PM +0100, Sedat Dilek wrote:
-> > > On Thu, Jan 12, 2023 at 4:06 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> > > >
-> > > > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
-> > > > are several warnings in the PowerPC vDSO:
-> > > >
-> > > >   clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-> > > >   clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-> > > >   clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
-> > > >
-> > > >   clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
-> > > >   clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
-> > > >
-> > > > The first group of warnings point out that linker flags were being added
-> > > > to all invocations of $(CC), even though they will only be used during
-> > > > the final vDSO link. Move those flags to ldflags-y.
-> > > >
-> > > > The second group of warnings are compiler or assembler flags that will
-> > > > be unused during linking. Filter them out from KBUILD_CFLAGS so that
-> > > > they are not used during linking.
-> > > >
-> > > > Additionally, '-z noexecstack' was added directly to the ld_and_check
-> > > > rule in commit 1d53c0192b15 ("powerpc/vdso: link with -z noexecstack")
-> > > > but now that there is a common ldflags variable, it can be moved there.
-> > > >
-> > > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > > > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> > > > ---
-> > > > Cc: mpe@ellerman.id.au
-> > > > Cc: npiggin@gmail.com
-> > > > Cc: christophe.leroy@csgroup.eu
-> > > > Cc: linuxppc-dev@lists.ozlabs.org
-> > > > ---
-> > > >  arch/powerpc/kernel/vdso/Makefile | 18 +++++++++++-------
-> > > >  1 file changed, 11 insertions(+), 7 deletions(-)
-> > > >
-> > > > diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-> > > > index 45c0cc5d34b6..4337b3aa9171 100644
-> > > > --- a/arch/powerpc/kernel/vdso/Makefile
-> > > > +++ b/arch/powerpc/kernel/vdso/Makefile
-> > > > @@ -47,13 +47,17 @@ KCOV_INSTRUMENT := n
-> > > >  UBSAN_SANITIZE := n
-> > > >  KASAN_SANITIZE := n
-> > > >
-> > > > -ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
-> > > > -ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-> > > > -
-> > > > -CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
-> > > > +ccflags-y := -fno-common -fno-builtin
-> > > > +ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
-> > > > +ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-> > > > +# Filter flags that clang will warn are unused for linking
-> > > > +ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
-> > > > +
-> > > > +CC32FLAGS := -m32
-> > > > +LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
-> > > >  AS32FLAGS := -D__VDSO32__
-> > > >
-> > > > -CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
-> > >
-> > > Set CC64FLAGS := -m64 ?
-> >
-> > I do not think it is necessary. ldflags-y is filtered from
-> > KBUILD_CFLAGS, which should already include '-m64' (search for
-> > 'HAS_BIARCH' in arch/powerpc/Makefile). We would have seen a problem
-> > with this already if a 32-bit target (powerpc-linux-gnu-) CROSS_COMPILE
-> > value since $(c_flags) uses the main kernel's CROSS_COMPILE value.
-> >
-> > > > +LD64FLAGS := -Wl,-soname=linux-vdso64.so.1
-> > > >  AS64FLAGS := -D__VDSO64__
-> > > >
-> > > >  targets += vdso32.lds
-> > > > @@ -92,14 +96,14 @@ include/generated/vdso64-offsets.h: $(obj)/vdso64.so.dbg FORCE
-> > > >
-> > > >  # actual build commands
-> > > >  quiet_cmd_vdso32ld_and_check = VDSO32L $@
-> > > > -      cmd_vdso32ld_and_check = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-> > > > +      cmd_vdso32ld_and_check = $(VDSOCC) $(ldflags-y) $(CC32FLAGS) $(LD32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
-> > > >  quiet_cmd_vdso32as = VDSO32A $@
-> > > >        cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
-> > > >  quiet_cmd_vdso32cc = VDSO32C $@
-> > > >        cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
-> > > >
-> > > >  quiet_cmd_vdso64ld_and_check = VDSO64L $@
-> > > > -      cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-> > > > +      cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(CC64FLAGS) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
-> > >
-> > > If no CC64FLAGS := xxx is set, this can go?
-> >
-> > Good catch! CC64FLAGS can be removed. Masahiro, I am happy to send a v3
-> > when I am back online next week but if you are able to fix it up during
-> > application, please feel free to do so (once the PowerPC folks give
-> > their Acks of course).
-> 
-> I removed CC64FLAGS locally.
+Hello Laurent,
 
-Thank you!
+On 20/01/23 00:27, Laurent Dufour wrote:
+> On 15/01/2023 16:02:01, Sourabh Jain wrote:
+>> Add a new member "fdt_index" to kimage_arch struct to hold the index of
+>> the FDT (Flattened Device Tree) segment in the kexec segment array.
+>>
+>> Having direct access to FDT segment will help arch crash hotplug handler
+>> to avoid looping kexec segment array to identify the FDT segment index
+>> for every FDT update on hotplug events.
+>>
+>> The fdt_index is initialized during the kexec load for both kexec_load and
+>> kexec_file_load system call.
+>>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/kexec.h  |  7 +++++++
+>>   arch/powerpc/kexec/core_64.c      | 27 +++++++++++++++++++++++++++
+>>   arch/powerpc/kexec/elf_64.c       |  6 ++++++
+>>   arch/powerpc/kexec/file_load_64.c |  5 +++++
+>>   4 files changed, 45 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+>> index 8090ad7d97d9d..5a322c1737661 100644
+>> --- a/arch/powerpc/include/asm/kexec.h
+>> +++ b/arch/powerpc/include/asm/kexec.h
+>> @@ -103,6 +103,10 @@ void kexec_copy_flush(struct kimage *image);
+>>   struct crash_mem;
+>>   int update_cpus_node(void *fdt);
+>>   int get_crash_memory_ranges(struct crash_mem **mem_ranges);
+>> +#if defined(CONFIG_CRASH_HOTPLUG)
+>> +int machine_kexec_post_load(struct kimage *image);
+>> +#define machine_kexec_post_load machine_kexec_post_load
+>> +#endif
+>>   #endif
+>>   
+>>   #if defined(CONFIG_CRASH_DUMP) && defined(CONFIG_PPC_RTAS)
+>> @@ -118,6 +122,9 @@ extern const struct kexec_file_ops kexec_elf64_ops;
+>>   struct kimage_arch {
+>>   	struct crash_mem *exclude_ranges;
+>>   
+>> +#if defined(CONFIG_CRASH_HOTPLUG)
+>> +	int fdt_index;
+>> +#endif
+>>   	unsigned long backup_start;
+>>   	void *backup_buf;
+>>   	void *fdt;
+>> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+>> index 0b292f93a74cc..3d4fe1aa6f761 100644
+>> --- a/arch/powerpc/kexec/core_64.c
+>> +++ b/arch/powerpc/kexec/core_64.c
+>> @@ -77,6 +77,33 @@ int machine_kexec_prepare(struct kimage *image)
+>>   	return 0;
+>>   }
+>>   
+>> +#if defined(CONFIG_CRASH_HOTPLUG)
+> I think you should add a small function header describing that this
+> function is recording the index of the FDT segment for later use.
 
-> Just two comments.
-> 
-> - Is 7f3d349065d0c643f7f7013fbf9bc9f2c90b675f
->   applicable to powerpc too?
-> 
->   Maybe, as a follow-up cleanup, use $(LD)
->   and remove -Wl, prefixes.
+Yes good to have one,  I will add it in the next version.
 
-Yes, that should be possible to do here as well. Nick attempted it some
-time ago but there was some complications with older tools, so we
-decided to use ld.lld via the compiler in commit 4406b12214f6
-("powerpc/vdso: Link with ld.lld when requested").
+>
+>> +int machine_kexec_post_load(struct kimage *kimage)
+>> +{
+>> +	int i;
+>> +	void *ptr;
+>> +	unsigned long mem;
+>> +
+>> +	/* Mark fdt_index invalid */
+>> +	kimage->arch.fdt_index = -1;
+> Is that really needed?
+> This is already done in arch_kexec_kernel_image_probe() called before this
+> function, isn't it?
 
-> - ldflags-y still pulls $(KBUILD_CFLAGS).
->   Potentially, a new flag addition to KBUILD_CFLAGS
->   may trigger a new -Wunused-command-line-argument warning.
+Oh I didn't realize machine_kexec_post load is called for both
+kexec_load and kexec_file_load system call.
 
-Right, this is certainly possible. Hopefully it will not happen
-frequently enough to be problematic.
+The intention was to initialize fdt_index for both system calls but since
+machine_kexec_post_load is called for both system calls,
+initializing fdt_index in arch_kernel_image_probe function is redundant.
 
->   I hope somebody takes a closer look at which flags
->   are really needed for the linker.
+Thanks for point it out. I will fix this in the next version by only 
+initializing the
+fdtindex in machine_kexec_post_load. With this fdt_index will be 
+initialized
+for both syscalls.
 
-This is definitely not a bad idea.
+>> +
+>> +	if (kimage->type != KEXEC_TYPE_CRASH)
+>> +		return 0;
+>> +
+>> +	for (i = 0; i < kimage->nr_segments; i++) {
+>> +		mem = kimage->segment[i].mem;
+>> +		ptr = __va(mem);
+>> +
+>> +		if (ptr && fdt_magic(ptr) == FDT_MAGIC) {
+>> +			kimage->arch.fdt_index = i;
+>> +			break;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +#endif
+>> +
+>>   /* Called during kexec sequence with MMU off */
+>>   static notrace void copy_segments(unsigned long ind)
+>>   {
+>> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+>> index eeb258002d1e0..2a17f171661f1 100644
+>> --- a/arch/powerpc/kexec/elf_64.c
+>> +++ b/arch/powerpc/kexec/elf_64.c
+>> @@ -123,6 +123,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>>   	kbuf.buf_align = PAGE_SIZE;
+>>   	kbuf.top_down = true;
+>>   	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>> +
+>> +#if defined(CONFIG_CRASH_HOTPLUG)
+>> +	image->arch.fdt_index = image->nr_segments;
+> I'm sorry, I'm not familliar with that code, could you explain why
+> fdt_index has to be assigned here, and to that value?
 
-Cheers,
-Nathan
+Again I didn't realize machine_kexec_post_load is also called for 
+kexec_file_load
+system call too, which makes this assignment redundant.
+
+Now why this value?
+
+The image->nr-segments holds the count of total number of kexec segments and
+when a new segment/buffer is added ( by kexec_add_buffer()) it is 
+incremented by 1. With
+this the index of newly added segment in the kexec segment array will be 
+image->nr_segments - 1.
+
+So instead of adding fdt segment first and then initializing fdt_index 
+as image->nr_segments - 1,
+the fdt_index is initialized with nr_segments before adding the fdt 
+kexec segment/buffer to the
+segment array.
+
+Hope I answered you query.
+
+Thanks for the review.
+
+- Sourabh
+
+
+>
+>> +#endif
+>> +	kbuf.memsz = fdt_totalsize(fdt);
+>> +
+>>   	ret = kexec_add_buffer(&kbuf);
+>>   	if (ret)
+>>   		goto out_free_fdt;
+>> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+>> index 9bc70b4d8eafc..725f74d1b928c 100644
+>> --- a/arch/powerpc/kexec/file_load_64.c
+>> +++ b/arch/powerpc/kexec/file_load_64.c
+>> @@ -1153,6 +1153,11 @@ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+>>   		return ret;
+>>   	}
+>>   
+>> +#if defined(CONFIG_CRASH_HOTPLUG)
+>> +	/* Mark fdt_index invalid */
+>> +	image->arch.fdt_index = -1;
+>> +#endif
+>> +
+>>   	return kexec_image_probe_default(image, buf, buf_len);
+>>   }
+>>   
