@@ -2,58 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5309467861D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 20:19:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31091678665
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jan 2023 20:32:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P10KL1blPz3cHF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 06:19:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P10cH0YFnz3cCW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 06:32:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JUxt9xlr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=EzNI5XQF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JUxt9xlr;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=EzNI5XQF;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P10JN0T2mz2xH6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 06:18:43 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D88981F38D;
-	Mon, 23 Jan 2023 19:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1674501517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwnHNTQFcQb01gBYPKpdSxIYM/5A8BBiqgukBcwCA74=;
-	b=JUxt9xlrd3LgkvlvoFN0EQ4jwlcdyUlX8q9x3WmrxamRn53nUj5FSlg3bsj2ocxy8rD/Q5
-	ISzd1s5PZbyEdgu0lzE9O8aWDcfuIWnMZns0F2ydDQ+Wnv6oShzsLM/2bCSLBg0s/k8TWi
-	quDM2A4Py+U43iRzcRvBJge9zyFfYYY=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AED941357F;
-	Mon, 23 Jan 2023 19:18:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id +SQ7Ko3dzmNFVAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Mon, 23 Jan 2023 19:18:37 +0000
-Date: Mon, 23 Jan 2023 20:18:37 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Matthew Wilcox <willy@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P10bJ1Rs7z2yWN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 06:31:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=m/podwHds7JxQLCbcR8/xZsYC7Zym4+9Li/7t1BsGAU=; b=EzNI5XQFHCKDI4RmxwK5H85qS0
+	6UAEG1u2YhqEZ87tlBlzCqJnVMUhWcWNWEIKOR/n5FWz2FECNBJSBX0T8LiwDOfVkvDYHlmiaPbxA
+	4I/NbsDKV69v/QZwp9chVKa6zvOlWvAcU51xz5THZAKzOW/kh/weKydSwnigbjDrrWctKg42H6QPk
+	b1fzz6huv7hyG/nqC1cXlZD4V7JGafLOwoac5ND3ZEtCCpvvv3o0wmwA1NBTWfWCQfT97un1xUw+c
+	wkk8l8Ds+GtkptnTWKsm5oeLn7+gHZ3CXmNzIXOxvw9rV/pPUz82oqXeKmYZVB9H5pLDaFgnSfOVz
+	eCAQhGqg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pK2Wh-004TK7-Jr; Mon, 23 Jan 2023 19:30:43 +0000
+Date: Mon, 23 Jan 2023 19:30:43 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Michal Hocko <mhocko@suse.com>
 Subject: Re: [PATCH 39/41] kernel/fork: throttle call_rcu() calls in
  vm_area_free
-Message-ID: <Y87djZwQpXazRd00@dhcp22.suse.cz>
-References: <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
- <Y8rQNj5dVyuxRBOf@casper.infradead.org>
+Message-ID: <Y87gY7fhi5OJ35WQ@casper.infradead.org>
+References: <Y8rQNj5dVyuxRBOf@casper.infradead.org>
  <CAJuCfpG3YaExGkzsSSm0tXjMiSoM6rVf0JQgfrWu4UY5gsw=-w@mail.gmail.com>
  <Y85Z0Ovl68o4cz2j@dhcp22.suse.cz>
  <CAJuCfpG86qc4odkpUbzuROb+jThQgXGWjcFXb0e-c2i0wEGg4g@mail.gmail.com>
@@ -62,10 +49,11 @@ References: <CAJuCfpH4o-iCmzdUcYD9bKieJ6-k-MZYLuHFhH+bN9yE07sibw@mail.gmail.com>
  <Y87A2CEKAugfgfHC@dhcp22.suse.cz>
  <CAJuCfpGJRZATfc8eUurvV5kGkSNkG=vK=sfwJbU72PESOyATSw@mail.gmail.com>
  <Y87QjHH2aDG5XCGv@casper.infradead.org>
+ <Y87djZwQpXazRd00@dhcp22.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y87QjHH2aDG5XCGv@casper.infradead.org>
+In-Reply-To: <Y87djZwQpXazRd00@dhcp22.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,33 +70,44 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@go
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 23-01-23 18:23:08, Matthew Wilcox wrote:
-> On Mon, Jan 23, 2023 at 09:46:20AM -0800, Suren Baghdasaryan wrote:
-[...]
-> > Yes, batching the vmas into a list and draining it in remove_mt() and
-> > exit_mmap() as you suggested makes sense to me and is quite simple.
-> > Let's do that if nobody has objections.
+On Mon, Jan 23, 2023 at 08:18:37PM +0100, Michal Hocko wrote:
+> On Mon 23-01-23 18:23:08, Matthew Wilcox wrote:
+> > On Mon, Jan 23, 2023 at 09:46:20AM -0800, Suren Baghdasaryan wrote:
+> [...]
+> > > Yes, batching the vmas into a list and draining it in remove_mt() and
+> > > exit_mmap() as you suggested makes sense to me and is quite simple.
+> > > Let's do that if nobody has objections.
+> > 
+> > I object.  We *know* nobody has a reference to any of the VMAs because
+> > you have to have a refcount on the mm before you can get a reference
+> > to a VMA.  If Michal is saying that somebody could do:
+> > 
+> > 	mmget(mm);
+> > 	vma = find_vma(mm);
+> > 	lock_vma(vma);
+> > 	mmput(mm);
+> > 	vma->a = b;
+> > 	unlock_vma(mm, vma);
+> > 
+> > then that's something we'd catch in review -- you obviously can't use
+> > the mm after you've dropped your reference to it.
 > 
-> I object.  We *know* nobody has a reference to any of the VMAs because
-> you have to have a refcount on the mm before you can get a reference
-> to a VMA.  If Michal is saying that somebody could do:
-> 
-> 	mmget(mm);
-> 	vma = find_vma(mm);
-> 	lock_vma(vma);
-> 	mmput(mm);
-> 	vma->a = b;
-> 	unlock_vma(mm, vma);
-> 
-> then that's something we'd catch in review -- you obviously can't use
-> the mm after you've dropped your reference to it.
+> I am not claiming this is possible now. I do not think we want to have
+> something like that in the future either but that is really hard to
+> envision. I am claiming that it is subtle and potentially error prone to
+> have two different ways of mass vma freeing wrt. locking. Also, don't we
+> have a very similar situation during last munmaps?
 
-I am not claiming this is possible now. I do not think we want to have
-something like that in the future either but that is really hard to
-envision. I am claiming that it is subtle and potentially error prone to
-have two different ways of mass vma freeing wrt. locking. Also, don't we
-have a very similar situation during last munmaps?
+We shouldn't have two ways of mass VMA freeing.  Nobody's suggesting that.
+There are two cases; there's munmap(), which typically frees a single
+VMA (yes, theoretically, you can free hundreds of VMAs with a single
+call which spans multiple VMAs, but in practice that doesn't happen),
+and there's exit_mmap() which happens on exec() and exit().
 
--- 
-Michal Hocko
-SUSE Labs
+For the munmap() case, just RCU-free each one individually.  For the
+exit_mmap() case, there's no need to use RCU because nobody should still
+have a VMA pointer after calling mmdrop() [1]
+
+[1] Sorry, the above example should have been mmgrab()/mmdrop(), not
+mmget()/mmput(); you're not allowed to look at the VMA list with an
+mmget(), you need to have grabbed.
