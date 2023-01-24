@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A881F679646
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 12:11:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9368D679649
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 12:12:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1PRj44QDz3fN1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 22:11:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1PSk2rN3z3cdC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 22:12:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=fXmJqMib;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=SrDH+i65;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=TU/XCxYK;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=eMup3qfn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=fXmJqMib;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=SrDH+i65;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=TU/XCxYK;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=eMup3qfn;
 	dkim-atps=neutral
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1PFM4DDKz3cCD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1PFM5yvhz3cDD
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 22:02:31 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674558151; x=1706094151;
+  t=1674558152; x=1706094152;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=La1SqrmmnmfoRQVaCbL1NtRLcutiM97WpgFEBLZ3rgU=;
-  b=fXmJqMib+X1pzB7f9nT9fw9tymrpwRx0wEffO3Uk7FhVLPaQwjbkUQlO
-   SUXo80B9n6DVtZ4zz2lbzA22SNSuDquK6yCAmFhURWbzUR7Y59Z+TLYPR
-   wrFurDlUWKXN4bdJq5EkLSwG6qYzmBJoUazT5DjV6pKg1IhGxZx/oLtbS
-   qVVWJaBxeI1OIWc2hVCyJA+FyWHH3LXJXqWzn1clqM7h2ua5tCb1unqAB
-   VfCLQKGVTr48zd0qk7udSk8A8HPtSn6dkMqR/O6SKgPhcOetRRUfO4qug
-   VqJ+2BToyw2QyztQ4HXW+jl7BjYJznr9pa9GoNRNIjx1s4vh4ktvIbReR
-   Q==;
+  bh=xz/vRD3dolKFyEebpOql6jJYuQ0Wvwmw1Ox1BdnhLHg=;
+  b=TU/XCxYKv4Zj8dVivIkgdWRevGd1fAwxa5J2ZKSnrRHLqSBe6RIUtPfW
+   xYy3UYAn0aK3jWcmGkdJMrgnkIO19PEI9xmQSBkVoUDtmD2D73HI60480
+   sshd8FR+/FC26U9NWZ/OzX2fBPQWTvC/Sou2fnYTJOK6JKQDCj3LlXUA3
+   PzJHSJe2rvW76jT7vwNKhQbbWwxlxLrTLjaNbwupJd6RaK8PemJtc6pL5
+   bFrOBN2ECVB8HC1oEjuIRSefZaU46B7bKG/OOOcRDcXjWRH+hS4yYT+5I
+   Ce33Qmm10Xxrt6Jnqi9wJ4yt8PIy5HBoxb/hUYKOGvTl+PJPW+zv529+J
+   A==;
 X-IronPort-AV: E=Sophos;i="5.97,242,1669071600"; 
-   d="scan'208";a="28616632"
+   d="scan'208";a="28616635"
 Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 24 Jan 2023 12:02:19 +0100
+  by mx1-pgp.tq-group.com with ESMTP; 24 Jan 2023 12:02:20 +0100
 Received: from mx1.tq-group.com ([192.168.6.7])
   by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Tue, 24 Jan 2023 12:02:19 +0100
+  Tue, 24 Jan 2023 12:02:20 +0100
 X-PGP-Universal: processed;
-	by tq-pgp-pr1.tq-net.de on Tue, 24 Jan 2023 12:02:19 +0100
+	by tq-pgp-pr1.tq-net.de on Tue, 24 Jan 2023 12:02:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674558139; x=1706094139;
+  t=1674558140; x=1706094140;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=La1SqrmmnmfoRQVaCbL1NtRLcutiM97WpgFEBLZ3rgU=;
-  b=SrDH+i65ZKGEcoinX3OOn7YGLK5Cs4JyetgjdvFsRXgA7kblQDB1Firw
-   xV47NcY8tPbHWeA8MKTucXJ8H8ThAxKsZj5nKJzO0bibzTc6ilDJ7ipOg
-   JTGMzKOWp1f7lSGdOHCYDsm8Ad+GEt8mdATMAmjq9rWOyN+aRR7NGlMzW
-   xtNHG8KGyP7JRcK3vFhaTI98UXe6J465KS1S41rkJ0UQi05jD+Tge0aLS
-   wg7gRKMhSWm9nQAUqUQ/kn4LJEOe6yKp977N/6gEMDtA+HT+fYfe8K1Q6
-   iglW2DUeQkxB4/tHCTl4EpJUN1gQMa3B+fVniMXBSo0K4r44nmbF9gnsc
-   w==;
+  bh=xz/vRD3dolKFyEebpOql6jJYuQ0Wvwmw1Ox1BdnhLHg=;
+  b=eMup3qfn4lFtLO7j8ckfrOw8PImobHyBd9qVInP+6ZzxcKCVJ58dqHWo
+   4fy7SAcrHB0aiLY7NIf7chdhBivtGxL5ZnGIsKSr5CFNEfSQCJqXMOzC4
+   BmGU2mEESNDkqVCXaECiiWAkiamjebSWY/RLQjY6paHaACda0VrMAhbvH
+   7NYR+59jk87bYGmBTXuP82kxgSP62HItuvEp+BljBXsQNSv16yHMXg0QH
+   Ib66RmGgg96G8lQbxnILTNoeVvWdOp1vqzqC+w54APXaiMf6ZBsoa9ILu
+   iME9haXJJNrvaT+zNCwgnFeC5nlGdHn8nvPgqzGCkGNorbQrgVoCwbw+B
+   A==;
 X-IronPort-AV: E=Sophos;i="5.97,242,1669071600"; 
-   d="scan'208";a="28616631"
+   d="scan'208";a="28616633"
 Received: from vtuxmail01.tq-net.de ([10.115.0.20])
   by mx1.tq-group.com with ESMTP; 24 Jan 2023 12:02:19 +0100
 Received: from steina-w.tq-net.de (unknown [10.123.53.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 3AE88280075;
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 8AA25280073;
 	Tue, 24 Jan 2023 12:02:19 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh+dt@kernel.org>,
@@ -84,9 +84,9 @@ To: Rob Herring <robh+dt@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nick Desaulniers <ndesaulniers@google.com>,
 	Nicolas Schier <nicolas@fjasle.eu>
-Subject: [PATCH v3 09/10] kbuild: Add config fragment merge functionality
-Date: Tue, 24 Jan 2023 12:02:12 +0100
-Message-Id: <20230124110213.3221264-10-alexander.stein@ew.tq-group.com>
+Subject: [PATCH v3 10/10] ARM: add multi_v7_lpae_defconfig
+Date: Tue, 24 Jan 2023 12:02:13 +0100
+Message-Id: <20230124110213.3221264-11-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230124110213.3221264-1-alexander.stein@ew.tq-group.com>
 References: <20230124110213.3221264-1-alexander.stein@ew.tq-group.com>
@@ -109,66 +109,63 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 
-So far this function was only used locally in powerpc, some other
-architectures might benefit from it. Move it into
-scripts/Makefile.defconf.
+The only missing configuration option preventing us from using
+multi_v7_defconfig with the Raspberry Pi 4 is ARM_LPAE. It's needed as
+the PCIe controller found on the SoC depends on 64bit addressing, yet
+can't be included as not all v7 boards support LPAE.
+
+Introduce multi_v7_lpae_defconfig, built off multi_v7_defconfig, which will
+avoid us having to duplicate and maintain multiple similar configurations.
+
+Needless to say the Raspberry Pi 4 is not the only platform that can
+benefit from this new configuration.
 
 Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
 Changes in v3:
-* Added Arnd's A-b
+* As per Arnd's suggestion add CONFIG_VMSPLIT_2G to lpae.config fragment
+* List multi_v7_lpae_defconfig target in 'make help' as well
 
- arch/powerpc/Makefile    | 12 +-----------
- scripts/Makefile.defconf | 15 +++++++++++++++
- 2 files changed, 16 insertions(+), 11 deletions(-)
- create mode 100644 scripts/Makefile.defconf
+Unfortunately the list of defconfigs is autogenerated, so this new
+(explicit) target doesn't fit into this list. Therefore it's added to
+'archhelp' instead.
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 4fd630efe39d3..6ec5b9f7b7caa 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -253,17 +253,7 @@ PHONY += bootwrapper_install
- bootwrapper_install:
- 	$(Q)$(MAKE) $(build)=$(boot) $(patsubst %,$(boot)/%,$@)
+ arch/arm/Makefile            | 6 ++++++
+ arch/arm/configs/lpae.config | 2 ++
+ 2 files changed, 8 insertions(+)
+ create mode 100644 arch/arm/configs/lpae.config
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index a353b92641f36..485a439e22ca8 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -314,6 +314,10 @@ endif
+ # My testing targets (bypasses dependencies)
+ bp:;	$(Q)$(MAKE) $(build)=$(boot) $(boot)/bootpImage
  
--# Used to create 'merged defconfigs'
--# To use it $(call) it with the first argument as the base defconfig
--# and the second argument as a space separated list of .config files to merge,
--# without the .config suffix.
--define merge_into_defconfig
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-m -O $(objtree) $(srctree)/arch/$(ARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(ARCH)/configs/$(config).config)
--	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
--endef
--
 +include $(srctree)/scripts/Makefile.defconf
- PHONY += pseries_le_defconfig
- pseries_le_defconfig:
- 	$(call merge_into_defconfig,pseries_defconfig,le)
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
++PHONY += multi_v7_lpae_defconfig
++multi_v7_lpae_defconfig:
++	$(call merge_into_defconfig,multi_v7_defconfig,lpae)
+ 
+ define archhelp
+   echo  '* zImage        - Compressed kernel image (arch/$(ARCH)/boot/zImage)'
+@@ -329,4 +333,6 @@ define archhelp
+   echo  '                  (distribution) /sbin/$(INSTALLKERNEL) or'
+   echo  '                  install to $$(INSTALL_PATH) and run lilo'
+   echo  '  vdso_install  - Install unstripped vdso.so to $$(INSTALL_MOD_PATH)/vdso'
++  echo
++  echo  '  multi_v7_lpae_defconfig     - multi_v7_defconfig with CONFIG_ARM_LPAE enabled'
+ endef
+diff --git a/arch/arm/configs/lpae.config b/arch/arm/configs/lpae.config
 new file mode 100644
-index 0000000000000..ab332f7534f51
+index 0000000000000..a6d6f7ab3c01a
 --- /dev/null
-+++ b/scripts/Makefile.defconf
-@@ -0,0 +1,15 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Configuration heplers
-+
-+# Creates 'merged defconfigs'
-+# ---------------------------------------------------------------------------
-+# Usage:
-+#   $(call merge_into_defconfig,base_config,config_fragment1 config_fragment2 ...)
-+#
-+# Input config fragments without '.config' suffix
-+define merge_into_defconfig
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
-+		-m -O $(objtree) $(srctree)/arch/$(ARCH)/configs/$(1) \
-+		$(foreach config,$(2),$(srctree)/arch/$(ARCH)/configs/$(config).config)
-+	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
-+endef
++++ b/arch/arm/configs/lpae.config
+@@ -0,0 +1,2 @@
++CONFIG_ARM_LPAE=y
++CONFIG_VMSPLIT_2G=y
 -- 
 2.34.1
 
