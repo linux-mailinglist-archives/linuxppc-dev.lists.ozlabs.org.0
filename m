@@ -2,86 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9367679DC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 16:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73613679DCD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 16:44:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1WT54xPLz3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 02:43:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1WV62W33z3cFK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 02:43:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eK8PveY1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yf89n9wH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eK8PveY1;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yf89n9wH;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1WSB0TRcz2xY3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 02:42:17 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30OEAC5b000561;
-	Tue, 24 Jan 2023 15:42:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=UgMQEqtjhQF9r/tw/AUOwEcMaeF8fVSZBwtQlYRU3KU=;
- b=eK8PveY12rZbfqkN/oHXPw1HHsPo6QzT+Fxpg7x9IWF8VKBhlWCP9joqAPotmsJeD+fa
- tooaqWRV0rQxK2bR3MU/jSMypZPayHXlPLOa9yfK5FZ5qQRbDIjoQMXEcfV3KhzvFmA/
- e572rSMWCM88botfCetrXz4TlsROB2ChmxsVuKqUkW/gnLfRRr4/JKc+URAiymUZmOkl
- zSYxJ3sUXJuCwwAYLhrqS/COWOXNcmlLCHKJoq3oT2ZqgEeP4Y6baqNS86HULpqlDs3M
- ng2uYYwj+6bcDdwmLwUv1X9HIFuPRYcJhG363aFolBSIwJ4Kw38vjQVyO7NP2Y/YgIi7 CA== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nac201tdq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Jan 2023 15:42:09 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30OFHCpW010684;
-	Tue, 24 Jan 2023 15:42:08 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([9.208.129.118])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3n87p72w6v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Jan 2023 15:42:08 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30OFg6MP3867214
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Jan 2023 15:42:06 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D69B5805D;
-	Tue, 24 Jan 2023 15:42:06 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6918B58058;
-	Tue, 24 Jan 2023 15:42:05 +0000 (GMT)
-Received: from sig-9-65-196-40.ibm.com (unknown [9.65.196.40])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Jan 2023 15:42:05 +0000 (GMT)
-Message-ID: <d8146e42b3d0a6d361035fa49aa2dd2fb7539363.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 23/24] integrity/powerpc: Improve error handling &
- reporting when loading certs
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-integrity@vger.kernel.org
-Date: Tue, 24 Jan 2023 10:42:05 -0500
-In-Reply-To: <20230120074306.1326298-24-ajd@linux.ibm.com>
-References: <20230120074306.1326298-1-ajd@linux.ibm.com>
-	 <20230120074306.1326298-24-ajd@linux.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1WTC3DCBz3cH1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 02:43:10 +1100 (AEDT)
+Received: by mail-wm1-x335.google.com with SMTP id j17so11793140wms.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 07:43:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N/a+6+PTNK+EgdrHpwsWimSpIXxnD79ClgSYevcrnuE=;
+        b=yf89n9wHbV/XnkigjdbRLaTnDYXsvazoQNIyN4X9VfmFm/yRnOxKuD2VSDfh5nnAp6
+         j4iTCxnMuig5YSDyZo8Erw2bTT2twrR2zWWFhJy6JFPsnAcAcdTGVctCKCp9UWLgE4+m
+         3Zi1q2MGqqELl250sQRxjmNJ0u7dcRA6gGRtqvEmswNkmgTPhecSFQp0Il/496oc8U0/
+         YdfTzSMYOXEck4uhxPAIyQRXI+zoKOVzm9a5QSHHp61yj+d8NPyK6ZRiRzTixITkkm6w
+         gciX8E0C3kDc17akCA4xh1Di4UAEoZQsJSGgqIo/e9jYsdup1v6zagNvDeIvivrAfAuw
+         HUuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N/a+6+PTNK+EgdrHpwsWimSpIXxnD79ClgSYevcrnuE=;
+        b=4MQjCed1b6xFqhRpoiKS0ORAz00NQCXcsF+EESpfDI5VdUWsZsmDGl3cg6dYJhF3O8
+         xteB+sP9uqrfUuHISYRgPzaU+J+R96lvodSlvGSq61HKPF4kA9Wfybkgi6Q/DiS7+IBS
+         8V+PSjBZruf9u40JLJgrm9YG80MJLYS3ohOzPosJvQmfr6buI9bWQ3/02paUV7+9o8fN
+         cHUWZdINocFcyeE1VEvGIB4WqaVfVZQUFK/OaIHwObIWWSziodyT64zfBS9AVPftrEZv
+         bVdyfnVEnbGsTycYLrDkyBLi3lqRdGaH4cfx+o6lrwDOHCt5Sc/Y+9q7CWl4w2gC8xC7
+         rO1Q==
+X-Gm-Message-State: AFqh2krwtS2PvLcbfZ4FDzGdIiniDfyQdPnGcA/2FIfdLXQ+E1e6uWrL
+	foxCzz9emBSCcUegnlHIM94zlg==
+X-Google-Smtp-Source: AMrXdXuYOE3dT+VE3oSwdKK67My+x+RmBaEi/JYTrdmPi+C9tVhvtgV7Z5YjOeHbO2Ewx7v3D/2lrg==
+X-Received: by 2002:a05:600c:1d12:b0:3da:ff82:f627 with SMTP id l18-20020a05600c1d1200b003daff82f627mr29438313wms.25.1674574987235;
+        Tue, 24 Jan 2023 07:43:07 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id t16-20020a5d49d0000000b002bfb0c5527esm1611046wrs.109.2023.01.24.07.43.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Jan 2023 07:43:06 -0800 (PST)
+Message-ID: <e34dd560-1fb5-bd27-a659-eec465fe584a@linaro.org>
+Date: Tue, 24 Jan 2023 16:43:05 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v3 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
+ controller
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>
+References: <20230113103759.327698-1-herve.codina@bootlin.com>
+ <20230113103759.327698-6-herve.codina@bootlin.com>
+ <316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
+ <20230124104232.183cc9ff@bootlin.com>
+ <37a95380-ee68-5c3a-3b96-48cc8b525f19@linaro.org>
+ <20230124122347.1a531d0f@bootlin.com>
+ <81f80190-a05c-5d0d-11b2-a80573b86e1c@linaro.org>
+ <20230124151514.58d77765@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230124151514.58d77765@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: M54Hp2sYwHwDaeuybN7342Rgr9MJjL_q
-X-Proofpoint-ORIG-GUID: M54Hp2sYwHwDaeuybN7342Rgr9MJjL_q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-23_12,2023-01-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 priorityscore=1501 spamscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301240141
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,24 +89,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sudhakar@linux.ibm.com, bgray@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, gjoyce@linux.ibm.com, ruscur@russell.cc, joel@jms.id.au, gcwilson@linux.ibm.com
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2023-01-20 at 18:43 +1100, Andrew Donnellan wrote:
-> From: Russell Currey <ruscur@russell.cc>
+On 24/01/2023 15:15, Herve Codina wrote:
+>>> Is that what you were thinking about ?  
+>>
+>> Yes, except again, so third time, why calling this "cell"? Move it to
+>> fsl,tsa.
+>>
 > 
-> A few improvements to load_powerpc.c:
+> Why calling this "cell" ? Just because we reference a "cell" using the TSA
+> cell ID inside TSA and not the TSA itself.
 > 
->  - include integrity.h for the pr_fmt()
->  - move all error reporting out of get_cert_list()
->  - use ERR_PTR() to better preserve error detail
->  - don't use pr_err() for missing keys
+> Maybe the problem is the term "cell" as it is not the DT definition of
+> "cell" but the source/destination of the TSA routing.
 > 
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> TSA can route data from/to some "serial controller".
+> These serial controllers are :
+> - SCC (Serial Communication Controller)
+> - SMC (Serial Management Controller)
+> - UCC (Unified Communication Controller)
+> 
+> Only SCCs are handled here.
+> 
+> Maybe the term "serial" makes more sense which will lead to
+>   fsl,tsa-serial = <&tsa, SCC4>;
 
-Thanks,
+Yes, that's better. Thanks.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Best regards,
+Krzysztof
 
