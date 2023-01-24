@@ -1,83 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73613679DCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 16:44:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A2A679E5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 17:15:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1WV62W33z3cFK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 02:43:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1XBs2gb1z3cGD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 03:15:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yf89n9wH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eKnI31K/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yf89n9wH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eKnI31K/;
 	dkim-atps=neutral
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1WTC3DCBz3cH1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 02:43:10 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id j17so11793140wms.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 07:43:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N/a+6+PTNK+EgdrHpwsWimSpIXxnD79ClgSYevcrnuE=;
-        b=yf89n9wHbV/XnkigjdbRLaTnDYXsvazoQNIyN4X9VfmFm/yRnOxKuD2VSDfh5nnAp6
-         j4iTCxnMuig5YSDyZo8Erw2bTT2twrR2zWWFhJy6JFPsnAcAcdTGVctCKCp9UWLgE4+m
-         3Zi1q2MGqqELl250sQRxjmNJ0u7dcRA6gGRtqvEmswNkmgTPhecSFQp0Il/496oc8U0/
-         YdfTzSMYOXEck4uhxPAIyQRXI+zoKOVzm9a5QSHHp61yj+d8NPyK6ZRiRzTixITkkm6w
-         gciX8E0C3kDc17akCA4xh1Di4UAEoZQsJSGgqIo/e9jYsdup1v6zagNvDeIvivrAfAuw
-         HUuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N/a+6+PTNK+EgdrHpwsWimSpIXxnD79ClgSYevcrnuE=;
-        b=4MQjCed1b6xFqhRpoiKS0ORAz00NQCXcsF+EESpfDI5VdUWsZsmDGl3cg6dYJhF3O8
-         xteB+sP9uqrfUuHISYRgPzaU+J+R96lvodSlvGSq61HKPF4kA9Wfybkgi6Q/DiS7+IBS
-         8V+PSjBZruf9u40JLJgrm9YG80MJLYS3ohOzPosJvQmfr6buI9bWQ3/02paUV7+9o8fN
-         cHUWZdINocFcyeE1VEvGIB4WqaVfVZQUFK/OaIHwObIWWSziodyT64zfBS9AVPftrEZv
-         bVdyfnVEnbGsTycYLrDkyBLi3lqRdGaH4cfx+o6lrwDOHCt5Sc/Y+9q7CWl4w2gC8xC7
-         rO1Q==
-X-Gm-Message-State: AFqh2krwtS2PvLcbfZ4FDzGdIiniDfyQdPnGcA/2FIfdLXQ+E1e6uWrL
-	foxCzz9emBSCcUegnlHIM94zlg==
-X-Google-Smtp-Source: AMrXdXuYOE3dT+VE3oSwdKK67My+x+RmBaEi/JYTrdmPi+C9tVhvtgV7Z5YjOeHbO2Ewx7v3D/2lrg==
-X-Received: by 2002:a05:600c:1d12:b0:3da:ff82:f627 with SMTP id l18-20020a05600c1d1200b003daff82f627mr29438313wms.25.1674574987235;
-        Tue, 24 Jan 2023 07:43:07 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id t16-20020a5d49d0000000b002bfb0c5527esm1611046wrs.109.2023.01.24.07.43.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jan 2023 07:43:06 -0800 (PST)
-Message-ID: <e34dd560-1fb5-bd27-a659-eec465fe584a@linaro.org>
-Date: Tue, 24 Jan 2023 16:43:05 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1X9v3Wwcz3bZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 03:14:59 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id BB535B8128A;
+	Tue, 24 Jan 2023 16:14:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCA3C433D2;
+	Tue, 24 Jan 2023 16:14:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674576894;
+	bh=5DfgSAXJHi/R6zrfkO3Bu4T0XYdp//PH3WS6X+RZU4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eKnI31K/lyFANr15L4/i6SrFwsUap21OIm6uGBh5pAcR7WQ+VJjVC2Mbf07y0wCFs
+	 jfCSjrZ3Bx6hvVfMu7VlArcmofveuikGYffxUA2PGPX/FlXjIpVaKLI+pzZGwW2Ydz
+	 s75oJHVTUwW3I6gjP5j8zoOANyptHi0oQI7Am0IrsaqXQUM3RxaW+8RnJbpz3HeKFX
+	 U899TvOzGWQFUA/27FDOCITZ3Jmx1dxrEv40ZjLfiIdTpzb0cnIQ5sODVjv90Lpeez
+	 paBLfqxM8V9YFB7KBDA0qLLZ4J7aSbHDpleauVFElF8E5Q6JNXKHNUnjEgun3utGkD
+	 3TOzop7uGGDHg==
+Date: Tue, 24 Jan 2023 09:14:52 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v2 07/14] powerpc/vdso: Improve linker flags
+Message-ID: <Y9AD/Mejnv6jp7Np@dev-arch.thelio-3990X>
+References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
+ <20221228-drop-qunused-arguments-v2-7-9adbddd20d86@kernel.org>
+ <20230123150716.GJ25951@gate.crashing.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH v3 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
- controller
-Content-Language: en-US
-To: Herve Codina <herve.codina@bootlin.com>
-References: <20230113103759.327698-1-herve.codina@bootlin.com>
- <20230113103759.327698-6-herve.codina@bootlin.com>
- <316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
- <20230124104232.183cc9ff@bootlin.com>
- <37a95380-ee68-5c3a-3b96-48cc8b525f19@linaro.org>
- <20230124122347.1a531d0f@bootlin.com>
- <81f80190-a05c-5d0d-11b2-a80573b86e1c@linaro.org>
- <20230124151514.58d77765@bootlin.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230124151514.58d77765@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123150716.GJ25951@gate.crashing.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,36 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, trix@redhat.com, masahiroy@kernel.org, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24/01/2023 15:15, Herve Codina wrote:
->>> Is that what you were thinking about ?  
->>
->> Yes, except again, so third time, why calling this "cell"? Move it to
->> fsl,tsa.
->>
+On Mon, Jan 23, 2023 at 09:07:16AM -0600, Segher Boessenkool wrote:
+> Hi!
 > 
-> Why calling this "cell" ? Just because we reference a "cell" using the TSA
-> cell ID inside TSA and not the TSA itself.
+> On Wed, Jan 11, 2023 at 08:05:04PM -0700, Nathan Chancellor wrote:
+> > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
+> > are several warnings in the PowerPC vDSO:
+> > 
+> >   clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+> >   clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+> >   clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
+> > 
+> >   clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
+> >   clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
 > 
-> Maybe the problem is the term "cell" as it is not the DT definition of
-> "cell" but the source/destination of the TSA routing.
+> There is nothing wrong with the warnings, but as usual, -Werror is very
+> counterproductive.
 > 
-> TSA can route data from/to some "serial controller".
-> These serial controllers are :
-> - SCC (Serial Communication Controller)
-> - SMC (Serial Management Controller)
-> - UCC (Unified Communication Controller)
+> > The first group of warnings point out that linker flags were being added
+> > to all invocations of $(CC), even though they will only be used during
+> > the final vDSO link. Move those flags to ldflags-y.
 > 
-> Only SCCs are handled here.
-> 
-> Maybe the term "serial" makes more sense which will lead to
->   fsl,tsa-serial = <&tsa, SCC4>;
+> Which is explicitly allowed, and won't do anything, so nothing harmful
+> either.  It is not a bad idea to avoid this if that is trivial to do,
+> of course.
 
-Yes, that's better. Thanks.
+I think this patch shows that it is trivial to do this, the primary core
+of the diff is only a few lines.
 
-Best regards,
-Krzysztof
+> > The second group of warnings are compiler or assembler flags that will
+> > be unused during linking. Filter them out from KBUILD_CFLAGS so that
+> > they are not used during linking.
+> 
+> And here it is even more obviously fine.  If you need obfuscation like
+> in your patch, it is better not to do this imo.
 
+I do not think this patch really obfuscates anything? The filtering is
+pretty clear to me.
+
+If this is a real objection to the patch, I suppose we could just
+localize '-Qunused-arguments' to this Makefile and be done with it but I
+do not think this change is a bad solution to the problem either.
+
+Cheers,
+Nathan
