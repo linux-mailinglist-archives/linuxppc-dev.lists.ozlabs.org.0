@@ -1,80 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D54679137
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 07:44:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F316679469
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 10:43:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1HWp6xVrz3cMr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 17:44:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1MVN6pCxz3cMR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 20:43:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E/aDkM7K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OBnDzO21;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3ehzpywckdgsraxpnabpxxpun.lxvurwdgyyl-mneurbcb.xiujkb.xap@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E/aDkM7K;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OBnDzO21;
 	dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1HJg0Nwlz3cfG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 17:34:59 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id c2-20020a25a2c2000000b008016611ca77so11347290ybn.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 22:34:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9CQf7qwf816ywxYe0MGvN2DXuLUyDOCX6uxlx6OMLsg=;
-        b=E/aDkM7K/lA4FaRlkpePHCMT3UVODvM17F6GurRPNTGwzR4OIm/m3KHjNuJWMKh8Du
-         shSVKsu9+W4MoZRyUeStedTnW1kfbIwvd15RkKq28atlPKIhjdpYnvGoaDsvUS5yL0+5
-         WM0WNKkEab2aKJpq07OjmYwyxbkFWrmTRvfkMmW9qztdWsDFxsxIVPOIOgZnjPyk9bVE
-         Gjee1xhFG2B18924+GoEvcEEh1mcGkiW1eiaZZNDqwlNxpKKxtqofR6tpSfzTjfzPt92
-         QHNfUKeKHmiH2OkS72MKotSYJydW6zVrQF07xDsX/nn7fEQ+QB/D9IT4iQZJZUyfVIcb
-         mo6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9CQf7qwf816ywxYe0MGvN2DXuLUyDOCX6uxlx6OMLsg=;
-        b=gl4tBRwtAdKnZY2LCX7ccqe4dIByu6w+RYz5Z8OiTyF5wFs89y8kfoHR/3OcAAK4PF
-         MpysftQCnED/OhWx0VfuDKBmok1uP+z8EKWJpoSSAig00r+zBJBep8GG+UPDCgW45RmJ
-         Xv1hSn2V/YO2+tWwlZGC8tLtHNVonDUYkSOSEdhzcfjL2MTNkKWqDc/xE+oiwrl4hkhU
-         Uted792KzLlNrahIyr1wUEo8oMTQhOtJ2s/a+xs4WxdqvvrHZqQwGtIkuVk3J2WW3StB
-         5wAMB1xuC0AgjSPSzA3qyoMkUKJgAotqyQQJDkV4oyyrxkRpWUyltl3IRSukLQ+DlQqO
-         rsmg==
-X-Gm-Message-State: AFqh2kpZtJkQHCD56yUnihi9ovZMaPWy6u0wScWkuGJTKyYihkubaq4H
-	ZeFPCjFaxN0OItqVC40OlirBI83viwrE
-X-Google-Smtp-Source: AMrXdXtzoentlV7UmGLWsQR0SkxQ5u2HBNb4nnRJgT9cvccOfzAGu8MysRvoSaTaE2B0Dti7zL52DJHCOUj3
-X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:460d:1b4a:acb8:ae9a])
- (user=irogers job=sendgmr) by 2002:a25:d4d3:0:b0:7d1:f411:4f5a with SMTP id
- m202-20020a25d4d3000000b007d1f4114f5amr3000373ybf.599.1674542096878; Mon, 23
- Jan 2023 22:34:56 -0800 (PST)
-Date: Mon, 23 Jan 2023 22:33:20 -0800
-In-Reply-To: <20230124063320.668917-1-irogers@google.com>
-Message-Id: <20230124063320.668917-12-irogers@google.com>
-Mime-Version: 1.0
-References: <20230124063320.668917-1-irogers@google.com>
-X-Mailer: git-send-email 2.39.0.246.g2a6d74b583-goog
-Subject: [PATCH v3 11/11] perf jevents: Add model list option
-From: Ian Rogers <irogers@google.com>
-To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
-	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
-	Leo Yan <leo.yan@linaro.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, Kim Phillips <kim.phillips@amd.com>, 
-	Florian Fischer <florian.fischer@muhq.space>, Ravi Bangoria <ravi.bangoria@amd.com>, 
-	Xing Zhengjun <zhengjun.xing@linux.intel.com>, Rob Herring <robh@kernel.org>, 
-	Kang Minchul <tegongkang@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sandipan Das <sandipan.das@amd.com>, Jing Zhang <renyu.zj@linux.alibaba.com>, 
-	linuxppc-dev@lists.ozlabs.org, Kajol Jain <kjain@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1MTT6qDSz30hl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 20:42:51 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 07FEDC0002;
+	Tue, 24 Jan 2023 09:42:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1674553359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ke8PpnBYtq0uoMPZ4KXBhGHV0aGLKGiBTbsb/9DcACw=;
+	b=OBnDzO21zBEolJhYXCoBIAM/TsM6/WMHNuUfk+l6SvClCaKodQeGNH4vJ1Wwuq5Wrj55RA
+	JzemmolOIv0lxhYOdsx4l+ullMmYCXFvO65tMJLAOH11hF5vgXHqADpMiWz08MxIQlf+/N
+	pWsu2/YR1/OsTa2H62xvcTqcDxHDcdrZilgLLuHdPYBUtgS63rLZevV6B7J7JCdE2hzUkL
+	ttPcYFWO7n0IjBDqwUjoHH7ql0gqvNaIWHmMsGWfGClvQhbeN//Y4pG37AK3nnJN5fsIVN
+	eyMitol0Xvxb7ovHzPCRBkcS+RT0koUZbMnVvlggWAy5TkDXedcYHN1E8ebEng==
+Date: Tue, 24 Jan 2023 10:42:32 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
+ controller
+Message-ID: <20230124104232.183cc9ff@bootlin.com>
+In-Reply-To: <316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
+References: <20230113103759.327698-1-herve.codina@bootlin.com>
+	<20230113103759.327698-6-herve.codina@bootlin.com>
+	<316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,64 +62,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Caleb Biggers <caleb.biggers@intel.com>, Stephane Eranian <eranian@google.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This allows the set of generated jevents events and metrics be limited
-to a subset of the model names. Appropriate if trying to minimize the
-binary size where only a set of models are possible. On ARM64 the
---model selects the implementor rather than model.
+Hi Krzysztof,
 
-Signed-off-by: Ian Rogers <irogers@google.com>
----
- tools/perf/pmu-events/Build      | 3 ++-
- tools/perf/pmu-events/jevents.py | 7 +++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+On Tue, 17 Jan 2023 12:31:09 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
-index 15b9e8fdbffa..a14de24ecb69 100644
---- a/tools/perf/pmu-events/Build
-+++ b/tools/perf/pmu-events/Build
-@@ -10,6 +10,7 @@ JEVENTS_PY	=  pmu-events/jevents.py
- ifeq ($(JEVENTS_ARCH),)
- JEVENTS_ARCH=$(SRCARCH)
- endif
-+JEVENTS_MODEL ?= all
- 
- #
- # Locate/process JSON files in pmu-events/arch/
-@@ -23,5 +24,5 @@ $(OUTPUT)pmu-events/pmu-events.c: pmu-events/empty-pmu-events.c
- else
- $(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS_PY) pmu-events/metric.py
- 	$(call rule_mkdir)
--	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) pmu-events/arch $@
-+	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
- endif
-diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
-index 627ee817f57f..764720858950 100755
---- a/tools/perf/pmu-events/jevents.py
-+++ b/tools/perf/pmu-events/jevents.py
-@@ -888,12 +888,19 @@ def main() -> None:
-           action: Callable[[Sequence[str], os.DirEntry], None]) -> None:
-     """Replicate the directory/file walking behavior of C's file tree walk."""
-     for item in os.scandir(path):
-+      if (len(parents) == 0 and item.is_dir() and _args.model != 'all' and
-+          'test' not in item.name and item.name not in _args.model.split(',')):
-+        continue
-       action(parents, item)
-       if item.is_dir():
-         ftw(item.path, parents + [item.name], action)
- 
-   ap = argparse.ArgumentParser()
-   ap.add_argument('arch', help='Architecture name like x86')
-+  ap.add_argument('model', help='''Select a model such as skylake to
-+reduce the code size.  Normally set to "all". For architectures like
-+ARM64 with an implementor/model, this selects the implementor.''',
-+                  default='all')
-   ap.add_argument(
-       'starting_dir',
-       type=dir_path,
--- 
-2.39.0.246.g2a6d74b583-goog
+> On 13/01/2023 11:37, Herve Codina wrote:
+> > Add support for the QMC (QUICC Multichannel Controller)
+> > available in some PowerQUICC SoC such as MPC885 or MPC866.
+> >=20
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+> >  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 164 ++++++++++++++++++
+> >  1 file changed, 164 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fs=
+l,qmc.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.y=
+aml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> > new file mode 100644
+> > index 000000000000..3ec52f1635c8
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> > @@ -0,0 +1,164 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
+> > +
+> > +maintainers:
+> > +  - Herve Codina <herve.codina@bootlin.com>
+> > +
+> > +description: |
+> > +  The QMC (QUICC Multichannel Controller) emulates up to 64 channels w=
+ithin
+> > +  one serial controller using the same TDM physical interface routed f=
+rom
+> > +  TSA.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - enum:
+> > +          - fsl,mpc885-scc-qmc
+> > +          - fsl,mpc866-scc-qmc
+> > +      - const: fsl,cpm1-scc-qmc
+> > +
+> > +  reg:
+> > +    items:
+> > +      - description: SCC (Serial communication controller) register ba=
+se
+> > +      - description: SCC parameter ram base
+> > +      - description: Dual port ram base
+> > +
+> > +  reg-names:
+> > +    items:
+> > +      - const: scc_regs
+> > +      - const: scc_pram
+> > +      - const: dpram
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +    description: SCC interrupt line in the CPM interrupt controller
+> > +
+> > +  fsl,tsa:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: phandle to the TSA
+> > +
+> > +  fsl,tsa-cell-id:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [1, 2, 3]
+> > +    description: |
+> > +      TSA cell ID (dt-bindings/soc/fsl,tsa.h defines these values)
+> > +       - 1: SCC2
+> > +       - 2: SCC3
+> > +       - 3: SCC4 =20
+>=20
+> Is this used as argument to tsa? If so, this should be part of fsl,tsa
+> property, just like we do for all syscon-like phandles.
 
+Yes, indeed.
+I will move 'fsl,tsa' to 'fsl,tsa-cell' with 'fsl,tsa-cell' a phandle/number
+pair (the phandle to TSA node and the TSA cell id to use)
+
+>=20
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+> > +
+> > +  '#chan-cells':
+> > +    const: 1
+> > +
+> > +patternProperties:
+> > +  '^channel@([0-9]|[1-5][0-9]|6[0-3])$':
+> > +    description:
+> > +      A channel managed by this controller
+> > +    type: object
+> > +
+> > +    properties:
+> > +      reg:
+> > +        minimum: 0
+> > +        maximum: 63
+> > +        description:
+> > +          The channel number
+> > +
+> > +      fsl,mode:
+> > +        $ref: /schemas/types.yaml#/definitions/string
+> > +        enum: [transparent, hdlc]
+> > +        default: transparent
+> > +        description: Operational mode =20
+>=20
+> You still need to explain what do transparent and hdlc mean.
+
+Oups, my bad (already mentioned in the previous version review).
+
+Also, I will rename the property to 'fsl,operational-mode' to be
+more precise than just 'fsl,mode'
+
+>=20
+> > + =20
+>=20
+>=20
+> Best regards,
+> Krzysztof
+>=20
+
+Thanks for the review,
+Herv=C3=A9
+
+--=20
+Herv=C3=A9 Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
