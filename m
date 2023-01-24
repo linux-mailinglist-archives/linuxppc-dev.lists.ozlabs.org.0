@@ -1,36 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9CEA679EE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 17:39:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441D5679FF8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 18:18:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1Xjk5KSFz3f9s
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 03:39:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1Yb75rylz3c9m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 04:18:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qkQVmWi7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1Xj848Dbz30NN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 03:38:35 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 30OGUo7N008108;
-	Tue, 24 Jan 2023 10:30:50 -0600
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 30OGUmel008107;
-	Tue, 24 Jan 2023 10:30:48 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 24 Jan 2023 10:30:48 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v2 07/14] powerpc/vdso: Improve linker flags
-Message-ID: <20230124163048.GL25951@gate.crashing.org>
-References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org> <20221228-drop-qunused-arguments-v2-7-9adbddd20d86@kernel.org> <20230123150716.GJ25951@gate.crashing.org> <Y9AD/Mejnv6jp7Np@dev-arch.thelio-3990X>
-Mime-Version: 1.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qkQVmWi7;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1YZD2csgz3bZ4;
+	Wed, 25 Jan 2023 04:17:39 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 1E15EB815FC;
+	Tue, 24 Jan 2023 17:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF2C433EF;
+	Tue, 24 Jan 2023 17:17:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1674580653;
+	bh=LCa2E8/jVUPBhEQJOos1nf13087EgA3kWouqC8M1bd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qkQVmWi77Ps21jD4g32ZeUQVGNomNJ/Xoe7rqHKhJrccQ7NaBHHpf5MRwjcl9V+Ih
+	 8kH3lnhrc8TzmXLDIzeTVAlSaNNBraJI2XdnwXUrk3WAyvLlLszqPZM8FZyt9AtgF0
+	 RZZnQUzPrbpGtO5ZcqQrbLMFe1rMpWjAyQC0ndTA=
+Date: Tue, 24 Jan 2023 18:17:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v3 0/5] dt-bindings: usb: Convert some more simple
+ OHCI/EHCI bindings
+Message-ID: <Y9ASq0VZ6G7Efe7s@kroah.com>
+References: <20230110-dt-usb-v3-0-5af0541fcf8c@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y9AD/Mejnv6jp7Np@dev-arch.thelio-3990X>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <20230110-dt-usb-v3-0-5af0541fcf8c@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,39 +57,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, trix@redhat.com, masahiroy@kernel.org, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linux-usb@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>, Avi Fishman <avifishman70@gmail.com>, openbmc@lists.ozlabs.org, Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, Tali Perry <tali.perry1@gmail.com>, Nancy Yuen <yuenn@google.com>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Patrick Venture <venture@google.com>, linuxppc-dev@lists.ozlabs.org, Benjamin Fair <benjaminfair@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 24, 2023 at 09:14:52AM -0700, Nathan Chancellor wrote:
-> On Mon, Jan 23, 2023 at 09:07:16AM -0600, Segher Boessenkool wrote:
-> > And here it is even more obviously fine.  If you need obfuscation like
-> > in your patch, it is better not to do this imo.
+On Mon, Jan 23, 2023 at 09:05:15PM -0600, Rob Herring wrote:
+> The 'ohci-usb' compatible is another 'generic' compatible for OHCI, but 
+> isn't documented with a schema. Let's add it to generic-ohci.yaml 
+> schema. While looking at this, I found a few other USB host bindings 
+> which are simple enough to use the 'generic' schemas.
 > 
-> I do not think this patch really obfuscates anything? The filtering is
-> pretty clear to me.
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-And not having such filtering is more obvious and more clear.
+Am I supposed to take these in my USB tree?
 
-It doesn't matter much for just this patch of course, but it will make
-the code significantly harder to read (and deal with in other ways) if
-this continues.
+I'm still confused if you all want me to take these types of things or
+not...
 
-> If this is a real objection to the patch, I suppose we could just
-> localize '-Qunused-arguments' to this Makefile and be done with it but I
-> do not think this change is a bad solution to the problem either.
+thanks,
 
-It is a comment about the direction this patch is moving us in.  I don't
-think it is a good idea at all to try to avoid all warnings, and even
-more so it is a bad idea to make objectively worse source code just to
-appease a trigger-happy and questionable warning.
-
-As I said, you can often avoid warnings by writing better code, like
-part of the patch did.  That is a good reaction to warnings.  Making
-worse code to avoid warnings is not a good idea normally.
-
-Just don't use -Werror by default, and don't make other people suffer
-its yoke!
-
-
-Segher
+greg k-h
