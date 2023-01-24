@@ -1,73 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F9C678E49
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 03:36:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD53D678ECF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 04:08:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1B1W2PC7z3c8F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 13:36:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=DljXljeH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1BkQ4Ywdz3fNH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 14:08:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=DljXljeH;
-	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.43; helo=mail-ot1-f43.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1B0Y1MSBz2xxn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 13:35:38 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id e10-20020a17090a630a00b0022bedd66e6dso571654pjj.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 18:35:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yFFdm/8SdflDgDT7EHL5t8PZiOZhtttydMh8UNhprb4=;
-        b=DljXljeHIhfa+59LOJ4hAD3ygoSHfdrZaGVnay69zUOXkdfICsXb4cgMhpwqNnjhCG
-         y9vC1K1TNs5HTGrMEx1Cdz41tV19YBCyRFuHZmFTKWZIWZa8hFZgoW6IroqQfVGp34Do
-         3PAiAhFcA8bXF7E/efxSdwBUE6f/rOMUIqF6Oqe/eJ01aHJbnsIxCIQmeTSSgoaYrvUa
-         gawICKGlxeAO2geNu5dXDu9H6E4XXAveeayTuxr3dTuSlzUaB5Wd5+Jp482gguDAk5lz
-         kidzECHxOj7x93qv4z6iRRdC/EjV9aX6qjrSgw2LBrUul8iAv0kvUy1HLs64r/0VWJF1
-         J7/A==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1Bft6ZCkz3bh6;
+	Tue, 24 Jan 2023 14:05:26 +1100 (AEDT)
+Received: by mail-ot1-f43.google.com with SMTP id f5-20020a9d5f05000000b00684c0c2eb3fso8480488oti.10;
+        Mon, 23 Jan 2023 19:05:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yFFdm/8SdflDgDT7EHL5t8PZiOZhtttydMh8UNhprb4=;
-        b=WFh9tyqTJ2e6++w078GB3koXlj2yWWNFNzgPAWwZm1CGKQwQ59y9H+9BlVOYTRi5Pa
-         Ayy9Mrq4owi/C75edEE8zaf4VAGBR4OeklDC3V+oqYMOUHG6Af2qXXkY6wLvKgUG6ReE
-         D+2jKcnTBcI/u/hCFeygRbt3iv6+RaGsgvFU+nK9/zLSt16+6jcJVYwAGkIpyY1l93pr
-         yvObxbZB3y/WFfAEtCRC2+XhOSM333+OjrGnZagvIwHMQfx41GIiAVkTR2SNGhu4ys/e
-         G/MIOh1+VCDWSL5jr3ypp+b4Mi0lMqNAJ+7DYtg8iLumwVET2WbP4C1psOhMiQwQfzVi
-         //nA==
-X-Gm-Message-State: AFqh2kpIqL0FV+L5I1v4EaWwSKKuX9t9bvFqKwA/SYNpZfqWkuuMBvJz
-	p7TtRwfp6wQhrUgA1ocvjv0V1g==
-X-Google-Smtp-Source: AMrXdXtc20Q7yx6l6YE87GqKscKRmcgi78OC52SesuBzKXuKXRmKb26Xa1weIba0d1gATTGi5V9Jig==
-X-Received: by 2002:a17:902:7041:b0:194:5b98:4342 with SMTP id h1-20020a170902704100b001945b984342mr6614596plt.5.1674527734868;
-        Mon, 23 Jan 2023 18:35:34 -0800 (PST)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id i15-20020a17090332cf00b0019460ac7c6asm376254plr.283.2023.01.23.18.35.34
+        bh=2FJcOTfsjwpdIljEO429tvKoOeEBhTBITWRzGMiqJAg=;
+        b=bcXZsVOfAsHpVxW5S9tMPQsr4TSs7TRxYVzJOfkRIYukVvszG+hgpNN653OoBl9Ym6
+         3gLJdV/UKtXUIQEnXWTPh+xZN+/MD7ziZ7WdEQpUPpwl3TVO3A79jpVS8QHS1XMZ8vB5
+         owGTAL2JAmm/3ehXwx7B7iDeVWU0B4BozVNMazzdTY6Lo9tV5eN5Nu6IVljZXWMchGuw
+         gBFQwJM3r/MqffgsByteZ3QQf8T8zwI1UYwzeRI1v1JmolQrXVPGeteANE/k4AUfZghv
+         dPAyhABRbBdihcJislEVJO4jErhRumP5kSB3PQTunmoanScnDax8ZbpmcaSxC/PrwalU
+         ia9A==
+X-Gm-Message-State: AFqh2krLOrAO3DtARAgRKt7Riybk9RkI9BpzO6y5MODg3fu21rZNb1g+
+	9q8k9ZjgPv9/Fpz9/y4r1w==
+X-Google-Smtp-Source: AMrXdXtk4ESBvi3kPtNVN3s661xo1Y5KZZtfQ+KM3W+ytAIpqKVTTtgkQJaI3xv9A63V8+UpEsWh0A==
+X-Received: by 2002:a9d:624a:0:b0:66d:a5f7:9adc with SMTP id i10-20020a9d624a000000b0066da5f79adcmr16670014otk.2.1674529524022;
+        Mon, 23 Jan 2023 19:05:24 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id s13-20020a05683004cd00b00686543d0f04sm449342otd.21.2023.01.23.19.05.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 18:35:34 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: jim@jtan.com, geoff@infradead.org, Christoph Hellwig <hch@lst.de>
-In-Reply-To: <20230123074718.57951-1-hch@lst.de>
-References: <20230123074718.57951-1-hch@lst.de>
-Subject: Re: [PATCH] ps3vram: remove bio splitting
-Message-Id: <167452773403.209579.6087653213240480442.b4-ty@kernel.dk>
-Date: Mon, 23 Jan 2023 19:35:34 -0700
+        Mon, 23 Jan 2023 19:05:23 -0800 (PST)
+Received: (nullmailer pid 3266340 invoked by uid 1000);
+	Tue, 24 Jan 2023 03:05:20 -0000
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 23 Jan 2023 21:05:15 -0600
+Subject: [PATCH v3 1/5] dt-bindings: usb: Remove obsolete
+ brcm,bcm3384-usb.txt
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.0
+Message-Id: <20230110-dt-usb-v3-1-5af0541fcf8c@kernel.org>
+References: <20230110-dt-usb-v3-0-5af0541fcf8c@kernel.org>
+In-Reply-To: <20230110-dt-usb-v3-0-5af0541fcf8c@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Lee Jones <lee@kernel.org>
+X-Mailer: b4 0.12-dev
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +64,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The "brcm,bcm3384-ohci" and "brcm,bcm3384-ehci" compatibles are already
+documented in generic-ohci.yaml and generic-ehci.yaml, respectively, so
+remove the old txt binding.
 
-On Mon, 23 Jan 2023 08:47:18 +0100, Christoph Hellwig wrote:
-> ps3vram iterates over the bio one segment, that is page aligned and max
-> page sized chunk, a time.  Because of that there is no point in
-> calling bio_split_to_limits, or explicitly setting the default limits
-> that are only used by bio_split_to_limits.
-> 
-> 
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/usb/brcm,bcm3384-usb.txt | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Applied, thanks!
+diff --git a/Documentation/devicetree/bindings/usb/brcm,bcm3384-usb.txt b/Documentation/devicetree/bindings/usb/brcm,bcm3384-usb.txt
+deleted file mode 100644
+index 452c45c7bf29..000000000000
+--- a/Documentation/devicetree/bindings/usb/brcm,bcm3384-usb.txt
++++ /dev/null
+@@ -1,11 +0,0 @@
+-* Broadcom USB controllers
+-
+-Required properties:
+-- compatible: "brcm,bcm3384-ohci", "brcm,bcm3384-ehci"
+-
+-  These currently use the generic-ohci and generic-ehci drivers.  On some
+-  systems, special handling may be needed in the following cases:
+-
+-  - Restoring state after systemwide power save modes
+-  - Sharing PHYs with the USBD (UDC) hardware
+-  - Figuring out which controllers are disabled on ASIC bondout variants
 
-[1/1] ps3vram: remove bio splitting
-      commit: 2192a93eb4ac63eeb37ec5ec5cfa0db92ded5e3c
-
-Best regards,
 -- 
-Jens Axboe
-
-
+2.39.0
 
