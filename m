@@ -1,53 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0AB678DA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 02:42:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8210B678E3D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 03:30:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P18qC4vgrz3bNj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 12:42:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P19tj3zMkz3cCL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 13:30:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Sy5NNZHy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j4Co2CjF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Sy5NNZHy;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j4Co2CjF;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P18pC60cnz2yw6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 12:41:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=1g8rJeVMlQ/HySUMtGPrVNB0AVWPc1UPUlwjLl3cAdM=; b=Sy5NNZHyXuEe14owLQ1OGzg5x3
-	DIxOoJ0QtvWVGGOhiI1vhn8D5oYjnR2YEMwKAxquhpyfx1eLYjMVKYqEoptzL0ju8zDpQdltw/CA1
-	gJ8bZCaZZOliHlpnkxEfk9/BHkYBwgn3NzdInqtZYcfui+aDyuFQjVlIEexo01Vr33id8796heQXM
-	d/O4OPNtgCMRnPOPeKhhDOj/58XeV7JyEfVXAYdKAztN9fsXoxZ0hvLQnqk4e2pWG/6hbkdOxCWAT
-	SCrim9G5GIrLg7EHc6K94AwaHQbrtilouBb+ilRDjUzmrJV0nSteYlSckRKpyFYWOeW2QeixCZMsY
-	t4418MKw==;
-Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pK8JM-004gKO-Tk; Tue, 24 Jan 2023 01:41:21 +0000
-Message-ID: <aed3d64e-1209-0a28-2337-8d40b1a78d6c@infradead.org>
-Date: Mon, 23 Jan 2023 17:41:15 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] ps3vram: remove bio splitting
-To: Christoph Hellwig <hch@lst.de>, jim@jtan.com
-References: <20230123074718.57951-1-hch@lst.de>
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20230123074718.57951-1-hch@lst.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P19sp1MN1z308w
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 13:29:48 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id a184so10271271pfa.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jan 2023 18:29:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6EL33MbyBAeFj7W1ec+AuUrU/yhgkc3rBnt2BlC4w5M=;
+        b=j4Co2CjFtUbQlY3aCX8ZaGPTa3bq/5mD2naMb3jg8EmNIah3y15FrWh/iDBJe8/mav
+         3GWNT5fYif/IJNrSpvSxdRPB9dMBK/9iicboI5JbqCfSgQY0gF4g4daxhY/KxiwUWkma
+         800yWr6LlupKIQRude2UxapBJLr1Oy/TbVhBWjgE9zONONrVzCUlBdkanBr3/c92sf/u
+         zuUZw6bo5UqX35TYTDMPbkee/FuRVqkvyXO3S/HUIrnFYK30bzFbuQVvr0jVsegOh86M
+         qtB235Tds0eSjSpFc+nNCn6URsIfJRxl7yZxH15S1Aqi++IxUOjAItYI/sP8MAZONqVw
+         spGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6EL33MbyBAeFj7W1ec+AuUrU/yhgkc3rBnt2BlC4w5M=;
+        b=XkMWgh2T95RAmJtRzflnGggFzexZu3geP795cHWz5QnjgkrcT2D1pQOX3BCqRofz0s
+         EHI6EyBApqxIAp3FdFQDxyPVatiD6z8GcgRtml5bYE86ua+0Wx3Oqebean+W59iSXj1w
+         KeVkFgOsb5yWNJWFAUt2d+BiNi+NmGRRfLy/YKL16nqtrCos3EHEkvPclqOKvlW2DCvk
+         aKY0kUR/kH6+gcoJ9bn8u83sUZvisehrKZAzy9uksJ/SCyFvLl79zRAvvtErR+vnenkp
+         WdSOFs6uIHjPOIUZBcvQt2jra//ohZD0t+ytRKbFphLwrT61KNm2vjW/5haTQ8Hksbi7
+         igng==
+X-Gm-Message-State: AFqh2krTgdYc0BjeodT9OkZDaeSnurGJ5MFspZfnmd2tb0IBqAJaJK+u
+	9IyRT+7yEwX4DTr9tsjWfnM=
+X-Google-Smtp-Source: AMrXdXsgWBdkF5aJcEXfGt3E1+MiooI3g5UFcMgOiKWWV2GlTsc9rdrcqnSd7HVwvPKPTbVy+5n6nw==
+X-Received: by 2002:aa7:8bdd:0:b0:58d:be65:f781 with SMTP id s29-20020aa78bdd000000b0058dbe65f781mr27427114pfd.5.1674527385193;
+        Mon, 23 Jan 2023 18:29:45 -0800 (PST)
+Received: from localhost (193-116-102-45.tpgi.com.au. [193.116.102.45])
+        by smtp.gmail.com with ESMTPSA id x12-20020aa793ac000000b005898fcb7c2bsm290307pff.170.2023.01.23.18.29.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 18:29:44 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 24 Jan 2023 12:29:38 +1000
+Message-Id: <CQ02EXZ5THB8.4S19LP5ZFUM9@bobo>
+Subject: Re: [PATCH v6 2/5] lazy tlb: allow lazy tlb mm refcounting to be
+ configurable
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nadav Amit" <nadav.amit@gmail.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>
+X-Mailer: aerc 0.13.0
+References: <20230118080011.2258375-1-npiggin@gmail.com>
+ <20230118080011.2258375-3-npiggin@gmail.com>
+ <ee3844c0-b342-edc6-77cf-4cdc78e30a18@gmail.com>
+ <4d26df97-3725-182b-6312-fa5cd8e9f85d@gmail.com>
+In-Reply-To: <4d26df97-3725-182b-6312-fa5cd8e9f85d@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,28 +84,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Andy Lutomirski <luto@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+On Mon Jan 23, 2023 at 6:02 PM AEST, Nadav Amit wrote:
+>
+>
+> On 1/23/23 9:35 AM, Nadav Amit wrote:
+> >> +=C2=A0=C2=A0=C2=A0 if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_REFCOUNT)) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmdrop(mm);
+> >> +=C2=A0=C2=A0=C2=A0 } else {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * mmdrop_lazy_tlb mu=
+st provide a full memory barrier, see the
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * membarrier comment=
+ finish_task_switch which relies on this.
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 smp_mb();
+> >> +=C2=A0=C2=A0=C2=A0 }
+> >> =C2=A0 }
+> >=20
+> > Considering the fact that mmdrop_lazy_tlb() replaced mmdrop() in variou=
+s=20
+> > locations in which smp_mb() was not required, this comment might be=20
+> > confusing. IOW, for the cases in most cases where mmdrop_lazy_tlb()=20
+> > replaced mmdrop(), this comment was irrelevant, and therefore it now=20
+> > becomes confusing.
+> >=20
+> > I am not sure the include the smp_mb() here instead of "open-coding" it=
+=20
+> > helps.
+> I think that I now understand why you do need the smp_mb() here, so=20
+> ignore my comment.
 
-On 1/22/23 23:47, Christoph Hellwig wrote:
-> ps3vram iterates over the bio one segment, that is page aligned and max
-> page sized chunk, a time.  Because of that there is no point in
-> calling bio_split_to_limits, or explicitly setting the default limits
-> that are only used by bio_split_to_limits.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  drivers/block/ps3vram.c | 7 -------
->  1 file changed, 7 deletions(-)
+For the moment it's basically a convenience thing so the caller does not
+have to care what option is configured. Possibly we could weaken it and
+do necessary barriers in callers if we consolidated to one option, but
+I'd have to be convinced it'd be worthwhile, because it would still make
+it deviate from mmdrop(), and we'd probably at least need a release
+barrier to drop the reference.
 
-I tested this patch applied to the ps3-queue branch (v6.2-rc5 based) of my
-kernel.org ps3-linux repo.  I could format the ps3vram device with ext4,
-copy files to it, run fsck, etc.
-
-Thanks for your effort.
-
-Tested-by: Geoff Levand <geoff@infradead.org>
-
+Thanks,
+Nick
