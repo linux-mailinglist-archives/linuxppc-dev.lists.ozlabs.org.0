@@ -2,103 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C53B679D59
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 16:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EC4679D82
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 16:31:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1W3P1p1vz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 02:24:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1WCG1fkdz3cdZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 02:31:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=GpaNXu8p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XZ2VY4nc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=40.92.98.70; helo=jpn01-os0-obe.outbound.protection.outlook.com; envelope-from=set_pte_at@outlook.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::92b; helo=mail-ua1-x92b.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=GpaNXu8p;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XZ2VY4nc;
 	dkim-atps=neutral
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2070.outbound.protection.outlook.com [40.92.98.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1W2P4tKcz2yxB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 02:23:24 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BpqqXl2UHVQ0P4oKRWQutwiLS0aRA19EybNTqqVuMCIiGVJKsKqvq3ZGCYJg5XF4S6ejIZ1zAl00pSbJ0YL1hVZ382+QbkQix5A9J9pF+yA0WIIfCYokLusjMuUKF8H9JD5dBdYlb3KjexczdGR63aO41SiOiby+Tc993hAKM5Un4QzjG/5AaSAAeTDftIIBcyeAxd97hFA26Zm1sl8abZRJS4LVldQKneXeHJq+MenZA6PM4+iUpLqTii6+j9VrpkDDOO+zKG6hBk7KqIgSWhWBsU2PxyXh0hdkUI4inFiCYX31JxEY8Jbgy8ti4iscTHSpK37bivJj0qaeMmZ9ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EBIGsKHEX2bRKOKcbKQhN2AK25vY+z5pF+liKPuE6yQ=;
- b=JM4og65Sz6zJJ79wg2WowP2+LqLpwvIdFjArAIQdHeZNSNrOzNal0DZJB2OG1K4h4khg+N8Ly2lw5T4vv+46biovAfcOOrXhDBYKDAKCe8k70EYX1w5Wtm4D4uSkGi0gkE1nnPGzkmhPXdlL8maz5qm930m8AWa0K/Gj1asftJ7hadV/j7umPnoBCsN/HjzMA0g6wdhwewFTCywHiI+ndo54DDRO61kyQ3YkLF7qttNnD42tu+WD+jKYgn3tJJbwHdZnkk3K3v20uEL8vvLp0sc89ZBwJre+0YZ7afN/OZO0vJSZXDkpgWCYRct5xhM480nCm9ZZGmjY8gLAFNbOeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EBIGsKHEX2bRKOKcbKQhN2AK25vY+z5pF+liKPuE6yQ=;
- b=GpaNXu8puosVI+d5EpvKhd6p1Db8FJaWuZLlQLAN57Bm9Yzh+6ukbei+TVr/whvXb4Wi7dawib42VOhUCO8Uwe9Xmdw4DNE6NpISvqP+4OzdyBeObI01rxGq5+wYw5CU3CKaL/K5iVxxZQpHCNSBS2hU4sVKMgaLzeqKCpqBfon64q6kgDDy5LLiaz4euWRpQE8VoBPeCwUv8Wwr+aF+PRKcSoPhPiCbxg87s/8LCrAm1vVhn0HZJn7T0LR69hk8OkERH1MExNwImAHeBaA/5EH5EC1pyT3arQf+ZiaTSvlVVeGIfa7MfdsUxzb5cLDIgnrQxwdOCZy9/iC4Cm1CdQ==
-Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:152::9)
- by TY3P286MB2753.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:255::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.33; Tue, 24 Jan
- 2023 15:23:04 +0000
-Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ff96:9cb6:e047:c605]) by TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ff96:9cb6:e047:c605%4]) with mapi id 15.20.6002.033; Tue, 24 Jan 2023
- 15:23:04 +0000
-Date: Tue, 24 Jan 2023 23:23:00 +0800
-From: Dawei Li <set_pte_at@outlook.com>
-To: johannes@sipsolutions.net, perex@perex.cz, tiwai@suse.com
-Subject: Re: [PATCH v2] ALSA: aoa: make remove callback of soundbus driver
- void returned
-Message-ID:  <TYCP286MB2323EC6EFF71A5FCE0CC04AFCAC99@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-References: <TYCP286MB23234FED40A3AE6797DEBAB7CAFB9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCP286MB23234FED40A3AE6797DEBAB7CAFB9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-X-TMN: [/c8Epj8+MSnxmSETjww37obnUlRwDpz4]
-X-ClientProxiedBy: SG2PR02CA0128.apcprd02.prod.outlook.com
- (2603:1096:4:188::20) To TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:152::9)
-X-Microsoft-Original-Message-ID: <20230124152300.GB2227@wendao-VirtualBox>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1WBJ2RcXz3bZl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 02:30:13 +1100 (AEDT)
+Received: by mail-ua1-x92b.google.com with SMTP id g12so3830375uae.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 07:30:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UyCfMSVt5YQ93dvQzsfOUKEDIKXZpwg4MvkDLyqNHiA=;
+        b=XZ2VY4ncaYA9BICy27D7vfCt1S+bUXYea16Cc2fJhPUE0OX1kj8HsB47D77IsDONZl
+         U6Cf5/aXnbFjyoJeW1LaVZ0Kw7VnuZvBsCo/9vOQkt8jCc6eTkSOZJaQ35OEDIebTY4e
+         wjfhJgqG6HfeXBAulPceXNd5fs697ZnmJhzHhbgdi8A72RuX/LdvU2wr7GWOWSyJ6p3P
+         vXBUBFY+QVUd9X8Out3vC1ZXZ7XMAtzXt/A5seZeMwxTDUohxC6h/ktDqD4qVtfwcrDA
+         qpxk9+y+gGehYvlG9VMUupGcLXEPj8YK5MYH8uzIwwlrpGSEhJZdRnBGcARX68T3MR2A
+         ys1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UyCfMSVt5YQ93dvQzsfOUKEDIKXZpwg4MvkDLyqNHiA=;
+        b=26JRwHhk1iZcbGnPf9+tydpdSR5w9QT77a2AHEY+dq0i1b6byIzrT7XfzRxNSDM2/e
+         +A7Ba1MxMW+0Y6NRypDt68ZZHPLYwqIyefTjKkc2U5eDl5uMgTydiu5aakY3rkJ4ZFCT
+         LkapyagnP/1YHqtJ/NtmAaWfhOBb1GXJwJ6FtsGrHiGrZDQhZzxo+WoiOvfFFdk2Sflg
+         eCSY3J4adRwT/P0gex0oFZrvKgei8C/5kBkwR2/xdUd50GoxZho7s8uInNjgA07IyVi+
+         aS4FhhxitdkjEN6wEv8v+h0UiIXWvl1FEdpexk5qaL4YNQL6JQ21USKhOqu6QbGHDFEw
+         xP/w==
+X-Gm-Message-State: AFqh2kokh/XTkOONhEw4cFZryhoIPItq3krUThfJZOBIuV8WQzD4NktQ
+	D+UzSbcnxCSsv3sX7qb+iVb9OZSY5/MWKVeioXKSew==
+X-Google-Smtp-Source: AMrXdXuKRuAD41xpguf1eHKBlJO8W4vD7lac7tM28Emygp2ffmu3CfYnqjmwkMJDzMpgKkJSkz2p0bDht+YE9XQTmVE=
+X-Received: by 2002:a9f:3263:0:b0:5d5:d02:8626 with SMTP id
+ y32-20020a9f3263000000b005d50d028626mr3149869uad.115.1674574209956; Tue, 24
+ Jan 2023 07:30:09 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCP286MB2323:EE_|TY3P286MB2753:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73d56bb6-19e2-41e2-e8c9-08dafe1ee35e
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	cwGHSz2flWtKb2W6Zm975ppvM3NMLADJRV560MhzRjXzeswJnBxbL22+yxj4727YiOQsi38jIqClXGOXIwGU2UOdUOqRi2+P7Oz0Fo47oXKzZYFJtqSFLqiktbGz2Vc0UxtH3Vgx8uEgtXAvE5I3PP5+RIaGRhksaUcYSR5C/ampd1m36bKnYeI7E79CqVmV/g4p36Y2/Aws7kHTUhVHVJhQ1Jkf1ZzYH6QDkud5amaW+EvY6cGKMQ8prg3d8NygJFSqJPG8FAWhQAoWFy5UXMB27eqTZVj47NVqGxkwkz87tubywBsnIvGPit3hL9j3Tc/hsl/joc8E0wTIC1A/t9DsgRP9rpY1UXzqQSqoeG3aZLPV4MceCMuiXUNCYfrXApsodEjcNj8zvN8yD4PRpERVQTCXC/34OFDWwLwV1cb6hSg8li6qIUKuMlZOgGlxpLRAiwKCjapPw4so8xGcZ9M0oI1XuAv162BFvk/d5ekqjA5nOzhiz3HvHaHuv7oW6/RNvKVl1Ge4mS7HUI/uulJdg2HXhTCkzp2BgkgI5QEym4UnS4bC3SJTMExe7VVfLjw+gzqoLDxlMqSlVOMm6BPs3TWZU2aehtbaagz40VYXrgahq50iXPnru52W2SkgPzPdLfLrS9Z32h7PCju7ew==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?bfDNX0nQbS9nrpEyWfqFh9U4FLVo1uBP5FtZKfbpteM/dF1TuYX5VSXOHaLy?=
- =?us-ascii?Q?dweCRPi+hQltiS5Gx+Sfn+syApUkt1ZgUcEoAqgA+/MHFq3QmRcP1oi+Ufsw?=
- =?us-ascii?Q?gkvR732YtBAYSVL3XKra7Zmue/siMjYXBiqV8hs0l+aQXoMCdGC3F3iqKjE3?=
- =?us-ascii?Q?jyMnWb71mjI7qXn6flWnpwWfMEWwRzCraB+Ga2aQo34+KFwx91uE5xrM5Rqx?=
- =?us-ascii?Q?/HwkKudcK5b4AMEk1HWzqruq1gmsEefSIXwpkxa/khqYMNruk+vY9SdUn36G?=
- =?us-ascii?Q?KWEmOpsH85TTnmslIVCGP7DcfeV9ASAt7NsKF/5F+kABgHSuoAC9n6sPuDRW?=
- =?us-ascii?Q?48bZvaRzP/kuRP1O2Y3mEHo3yOcy7dIKVLCxTpm6uxkmwnVFuCVr7nw1b/WJ?=
- =?us-ascii?Q?RbR4wj0B3ZtfadA2rnHR32rPdBAc0HA+9Kf/bLeYYyK8NTZ+mv/SiqnxGzRD?=
- =?us-ascii?Q?/wZUFScy85UKJ4oTPLnIYFxIImsejxrKLwgyNJueDHSczCAwihHKyKlbnbBG?=
- =?us-ascii?Q?UQSgQ+BedKq1GnB3IZh2B5ddOLTMraZohenERt8/HGy4HiKbAVE+MeZx94kH?=
- =?us-ascii?Q?plBPaf4ABzDpuPId5ED9pGzqEgTzMBSJwUjz/Fywe8PX+V+BEGtUKVMti95Z?=
- =?us-ascii?Q?jlIdR+RC6XKisbH4SdCJuyB6rR/QychvTctwclorpGND2fY0PZQIfQmA3ZSw?=
- =?us-ascii?Q?1pjA7IVGqyWoATTTAK9uLm4JXMFbvbwVSYpY5zSiY35Z2wp6LbQk8GW3u4VP?=
- =?us-ascii?Q?eWTHBbi+AmucvKjWoZUUR3u17O0lhylUHIp3nQmhk6+iIfGpLpRPpgbpFqBU?=
- =?us-ascii?Q?z2k/oJ3iCs3bPvd3xii2DBiCslkDCybBGkaTjz1s1S3dvd6C/7ZqNmqQLM5K?=
- =?us-ascii?Q?KQ8DJXqW44yzdO2wMZ8pqpIwpV+Pm5m5ld24JER+5jxKH2lJDU7XyZDnsROl?=
- =?us-ascii?Q?4KB1mj1rrDxg8TBF8vhOxg7tlZe4hQjTm4WMDASEva5Vv7yBsdpQjlL5KTRL?=
- =?us-ascii?Q?31BA/Zv76yw7yWgxYFcU2nIQMelLvnw8t3RuMCerSxBDUojXUCi1UIQspDoj?=
- =?us-ascii?Q?Lwxccz1i0mcxs/LGwONMlf3wVA7bKjekvWD/EL3qiJJOUXaSFeV3XxW1yViA?=
- =?us-ascii?Q?aYRkUOCG4DrwxetTDrrArpWdnK9A4tkXs/+c1/WoMN2SfR2JFpgri5GhLaQF?=
- =?us-ascii?Q?4yvrBfPW7VPJX7j9M2ewE7JusvcNB4bvc6fNtU91+o3tzmIJdMGtksSZJRo3?=
- =?us-ascii?Q?6KUzGLoMQLJpnqOxDXPcKTVQP7Vv+gbST7z5lavycw=3D=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73d56bb6-19e2-41e2-e8c9-08dafe1ee35e
-X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2023 15:23:04.6905
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB2753
+References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
+ <CA+G9fYs58vWj705MdaBKomVfHxNJ5ekSTmf53S4=4oVmc43CZg@mail.gmail.com> <Y86xyqe+Rd9wri7I@dev-arch.thelio-3990X>
+In-Reply-To: <Y86xyqe+Rd9wri7I@dev-arch.thelio-3990X>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 24 Jan 2023 20:59:58 +0530
+Message-ID: <CA+G9fYv1cAfGUDmz-+XC-E7aXQdU55D7SW=-WFc_RiUuNgGNsw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] Remove clang's -Qunused-arguments from KBUILD_CPPFLAGS
+To: Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,69 +76,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: trix@redhat.com, dave.hansen@linux.intel.com, dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org, linux-s390@vger.kernel.org, Anders Roxell <anders.roxell@linaro.org>, kernel test robot <lkp@intel.com>, masahiroy@kernel.org, x86@kernel.org, mingo@redhat.com, llvm@lists.linux.dev, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, npiggin@gmail.com, bp@alien8.de, lkft-triage@lists.linaro.org, tglx@linutronix.de, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, ndesaulniers@google.com, linux-mips@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 06, 2023 at 11:17:46PM +0800, Dawei Li wrote:
-> Since commit fc7a6209d571 ("bus: Make remove callback return void")
-> forces bus_type::remove be void-returned, it doesn't make much sense
-> for any bus based driver implementing remove callbalk to return
-> non-void to its caller.
-> 
-> As such, change the remove function for soundbus based drivers to
-> return void.
-> 
-> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
+Hi Nathan,
 
-Gentle ping
+On Mon, 23 Jan 2023 at 21:41, Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> Hi Naresh,
+>
+> On Mon, Jan 23, 2023 at 07:28:10PM +0530, Naresh Kamboju wrote:
+> > FYI,
+> > [ please provide comments, feedback and improvements on build/ ltp smok=
+e tests ]
+> >
+> > LKFT test farm have fetched your patch series [1]
+> > [PATCH v2 00/14] Remove clang's -Qunused-arguments from KBUILD_CPPFLAGS
+> >  [1] https://lore.kernel.org/llvm/20221228-drop-qunused-arguments-v2-0-=
+9adbddd20d86@kernel.org/
+>
+> Thank you a lot for testing this series, it is much appreciated!
+>
+> It looks like this was applied on top of 6.2-rc3 if I am reading your
+> logs right but your mainline testing is recent, 6.2-rc5. I think the
+> errors you are seeing here are just existing mainline regressions that
+> were later fixed.
+>
+> > Following build warnings and errors reported.
+> >
+> > sh:
+> > gcc-11-defconfig =E2=80=94 FAIL
+> > gcc-11-shx3_defconfig =E2=80=94 FAIL
+> > https://qa-reports.linaro.org/~anders.roxell/linux-mainline-patches/bui=
+ld/https___lore_kernel_org_llvm_20221228-drop-qunused-arguments-v2-1-9adbdd=
+d20d86_kernel_org/testrun/14221835/suite/build/tests/
+> >
+> > mainline getting passed.
+> > https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.2-rc5=
+/testrun/14298156/suite/build/test/gcc-11-defconfig/history/
+> > https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.2-rc5=
+/testrun/14298156/suite/build/test/gcc-11-shx3_defconfig/history/
+> >
+> > Build error:
+> > In function 'follow_pmd_mask',
+> >     inlined from 'follow_pud_mask' at /builds/linux/mm/gup.c:735:9,
+> >     inlined from 'follow_p4d_mask' at /builds/linux/mm/gup.c:752:9,
+> >     inlined from 'follow_page_mask' at /builds/linux/mm/gup.c:809:9:
+> > /builds/linux/include/linux/compiler_types.h:358:45: error: call to
+> > '__compiletime_assert_263' declared with attribute error: Unsupported
+> > access size for {READ,WRITE}_ONCE().
+> >   358 |         _compiletime_assert(condition, msg,
+> > __compiletime_assert_, __COUNTER__)
+>
+> I think this was fixed with mainline commit 526970be53d5 ("sh/mm: Fix
+> pmd_t for real"), released in 6.2-rc4. You can see a previous build
+> failing in the same manner:
+>
+> https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.2-rc3-9=
+-g5a41237ad1d4/testrun/14056384/suite/build/tests/
+>
+> > s390:
+> > clang-15-defconfig =E2=80=94 FAIL
+> > https://qa-reports.linaro.org/~anders.roxell/linux-mainline-patches/bui=
+ld/https___lore_kernel_org_llvm_20221228-drop-qunused-arguments-v2-1-9adbdd=
+d20d86_kernel_org/testrun/14221913/suite/build/tests/
+> >
+> > mainline getting passed.
+> > https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.2-rc5=
+/testrun/14300495/suite/build/test/clang-15-defconfig/history/
+> >
+> > Build error:
+> > make --silent --keep-going --jobs=3D8
+> > O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build LLVM_IAS=3D0 ARCH=3Ds3=
+90
+> > CROSS_COMPILE=3Ds390x-linux-gnu- 'HOSTCC=3Dsccache clang' 'CC=3Dsccache
+> > clang'
+> > `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o:
+> > defined in discarded section `.exit.text' of fs/fuse/inode.o
+> > `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o:
+> > defined in discarded section `.exit.text' of fs/fuse/inode.o
+> > `.exit.text' referenced in section `__bug_table' of crypto/algboss.o:
+> > defined in discarded section `.exit.text' of crypto/algboss.o
+> > `.exit.text' referenced in section `__bug_table' of drivers/scsi/sd.o:
+> > defined in discarded section `.exit.text' of drivers/scsi/sd.o
+> > `.exit.text' referenced in section `__jump_table' of drivers/md/md.o:
+> > defined in discarded section `.exit.text' of drivers/md/md.o
+> > `.exit.text' referenced in section `__jump_table' of drivers/md/md.o:
+> > defined in discarded section `.exit.text' of drivers/md/md.o
+> > `.exit.text' referenced in section `.altinstructions' of
+> > drivers/md/md.o: defined in discarded section `.exit.text' of
+> > drivers/md/md.o
+> > `.exit.text' referenced in section `.altinstructions' of
+> > drivers/md/md.o: defined in discarded section `.exit.text' of
+> > drivers/md/md.o
+> > `.exit.text' referenced in section `.altinstructions' of
+> > net/iucv/iucv.o: defined in discarded section `.exit.text' of
+> > net/iucv/iucv.o
+> > `.exit.text' referenced in section `__bug_table' of
+> > drivers/s390/cio/qdio_thinint.o: defined in discarded section
+> > `.exit.text' of drivers/s390/cio/qdio_thinint.o
+> > `.exit.text' referenced in section `__bug_table' of
+> > drivers/s390/net/qeth_l3_main.o: defined in discarded section
+> > `.exit.text' of drivers/s390/net/qeth_l3_main.o
+> > `.exit.text' referenced in section `__bug_table' of
+> > drivers/s390/net/qeth_l3_main.o: defined in discarded section
+> > `.exit.text' of drivers/s390/net/qeth_l3_main.o
+> > s390x-linux-gnu-ld: BFD (GNU Binutils for Debian) 2.35.2 assertion
+> > fail ../../bfd/elf64-s390.c:3349
+> > make[2]: *** [/builds/linux/scripts/Makefile.vmlinux:34: vmlinux] Error=
+ 1
+>
+> This should be fixed with mainline commit a494398bde27 ("s390: define
+> RUNTIME_DISCARD_EXIT to fix link error with GNU ld < 2.36"), released in
+> 6.2-rc4 as well. Same as before, visible in mainline at one point
+> without this series:
+>
+> https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.2-rc3-9=
+-g5a41237ad1d4/testrun/14057142/suite/build/tests/
+>
+> > But,
+> > Build and boot pass on arm64, arm, x86_64 and i386.
+> > Build test performed for mips, parisc, riscv, s390, sh, sparc and
+> > powerpc (known build errors for maple_defconfig and cell_defconfig),
+>
+> Good to hear!
+>
+> Please consider retesting this series on top of 6.2-rc5 or testing the
+> current kbuild tree, which has this series applied in it:
 
-> ---
-> v1 -> v2
-> - Update commit message.
-> - Rebased to latest sound/for-next.
-> 
-> v1
-> - https://lore.kernel.org/all/TYCP286MB2323BBFCE929111043E60D3BCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM/
-> ---
->  sound/aoa/fabrics/layout.c    | 3 +--
->  sound/aoa/soundbus/soundbus.h | 2 +-
->  2 files changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/sound/aoa/fabrics/layout.c b/sound/aoa/fabrics/layout.c
-> index ec4ef18555bc..850dc8c53e9b 100644
-> --- a/sound/aoa/fabrics/layout.c
-> +++ b/sound/aoa/fabrics/layout.c
-> @@ -1094,7 +1094,7 @@ static int aoa_fabric_layout_probe(struct soundbus_dev *sdev)
->  	return -ENODEV;
->  }
->  
-> -static int aoa_fabric_layout_remove(struct soundbus_dev *sdev)
-> +static void aoa_fabric_layout_remove(struct soundbus_dev *sdev)
->  {
->  	struct layout_dev *ldev = dev_get_drvdata(&sdev->ofdev.dev);
->  	int i;
-> @@ -1123,7 +1123,6 @@ static int aoa_fabric_layout_remove(struct soundbus_dev *sdev)
->  	kfree(ldev);
->  	sdev->pcmid = -1;
->  	sdev->pcmname = NULL;
-> -	return 0;
->  }
->  
->  #ifdef CONFIG_PM_SLEEP
-> diff --git a/sound/aoa/soundbus/soundbus.h b/sound/aoa/soundbus/soundbus.h
-> index 3a99c1f1a3ca..db40f9d042b4 100644
-> --- a/sound/aoa/soundbus/soundbus.h
-> +++ b/sound/aoa/soundbus/soundbus.h
-> @@ -185,7 +185,7 @@ struct soundbus_driver {
->  	/* we don't implement any matching at all */
->  
->  	int	(*probe)(struct soundbus_dev* dev);
-> -	int	(*remove)(struct soundbus_dev* dev);
-> +	void	(*remove)(struct soundbus_dev *dev);
->  
->  	int	(*shutdown)(struct soundbus_dev* dev);
->  
-> -- 
-> 2.25.1
-> 
+This is the perfect place to test.
+
+> https://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild.gi=
+t/log/?h=3Dfor-next
+
+Build test pass on arm, arm64, i386, mips, parisc, powerpc, riscv, s390, sh=
+,
+sparc and x86_64.
+Boot and LTP smoke pass on qemu-arm64, qemu-armv7, qemu-i386 and qemu-x86_6=
+4.
+
+  Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+  Tested-by: Anders Roxell <anders.roxell@linaro.org>
+
+Please refer to the following link for details of testing.
+  https://qa-reports.linaro.org/~anders.roxell/linux-mainline-patches/build=
+/linux-kbuild_masahiroy-branch-kbuild-20230124/?failures_only=3Dfalse&resul=
+ts_layout=3Dtable#!#test-results
+
+metadata:
+  git_describe : v6.2-rc5-46-ga778c9dd138b
+  git_repo : https://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linu=
+x-kbuild.git
+  git_sha : a778c9dd138b4f4410779705b444d58ce6f8fc44
+  git_short_log : a778c9dd138b ("builddeb: clean generated package content"=
+)
+
+--
+Linaro LKFT
+https://lkft.linaro.org
+
+>
+> Cheers,
+> Nathan
