@@ -1,97 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9368D679649
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 12:12:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54860679689
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 12:24:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1PSk2rN3z3cdC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 22:12:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1Pl71cx0z3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 22:24:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=TU/XCxYK;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=eMup3qfn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=NFHmt5S1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=TU/XCxYK;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=eMup3qfn;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=NFHmt5S1;
 	dkim-atps=neutral
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1PFM5yvhz3cDD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 22:02:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674558152; x=1706094152;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xz/vRD3dolKFyEebpOql6jJYuQ0Wvwmw1Ox1BdnhLHg=;
-  b=TU/XCxYKv4Zj8dVivIkgdWRevGd1fAwxa5J2ZKSnrRHLqSBe6RIUtPfW
-   xYy3UYAn0aK3jWcmGkdJMrgnkIO19PEI9xmQSBkVoUDtmD2D73HI60480
-   sshd8FR+/FC26U9NWZ/OzX2fBPQWTvC/Sou2fnYTJOK6JKQDCj3LlXUA3
-   PzJHSJe2rvW76jT7vwNKhQbbWwxlxLrTLjaNbwupJd6RaK8PemJtc6pL5
-   bFrOBN2ECVB8HC1oEjuIRSefZaU46B7bKG/OOOcRDcXjWRH+hS4yYT+5I
-   Ce33Qmm10Xxrt6Jnqi9wJ4yt8PIy5HBoxb/hUYKOGvTl+PJPW+zv529+J
-   A==;
-X-IronPort-AV: E=Sophos;i="5.97,242,1669071600"; 
-   d="scan'208";a="28616635"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 24 Jan 2023 12:02:20 +0100
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Tue, 24 Jan 2023 12:02:20 +0100
-X-PGP-Universal: processed;
-	by tq-pgp-pr1.tq-net.de on Tue, 24 Jan 2023 12:02:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1674558140; x=1706094140;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xz/vRD3dolKFyEebpOql6jJYuQ0Wvwmw1Ox1BdnhLHg=;
-  b=eMup3qfn4lFtLO7j8ckfrOw8PImobHyBd9qVInP+6ZzxcKCVJ58dqHWo
-   4fy7SAcrHB0aiLY7NIf7chdhBivtGxL5ZnGIsKSr5CFNEfSQCJqXMOzC4
-   BmGU2mEESNDkqVCXaECiiWAkiamjebSWY/RLQjY6paHaACda0VrMAhbvH
-   7NYR+59jk87bYGmBTXuP82kxgSP62HItuvEp+BljBXsQNSv16yHMXg0QH
-   Ib66RmGgg96G8lQbxnILTNoeVvWdOp1vqzqC+w54APXaiMf6ZBsoa9ILu
-   iME9haXJJNrvaT+zNCwgnFeC5nlGdHn8nvPgqzGCkGNorbQrgVoCwbw+B
-   A==;
-X-IronPort-AV: E=Sophos;i="5.97,242,1669071600"; 
-   d="scan'208";a="28616633"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 24 Jan 2023 12:02:19 +0100
-Received: from steina-w.tq-net.de (unknown [10.123.53.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 8AA25280073;
-	Tue, 24 Jan 2023 12:02:19 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Olof Johansson <olof@lixom.net>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Marek Vasut <marex@denx.de>,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>
-Subject: [PATCH v3 10/10] ARM: add multi_v7_lpae_defconfig
-Date: Tue, 24 Jan 2023 12:02:13 +0100
-Message-Id: <20230124110213.3221264-11-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230124110213.3221264-1-alexander.stein@ew.tq-group.com>
-References: <20230124110213.3221264-1-alexander.stein@ew.tq-group.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1PkB6tmPz3bZl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jan 2023 22:24:00 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id EE1DD40003;
+	Tue, 24 Jan 2023 11:23:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1674559433;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wbYmdWFivLJBG8Pv5/K9k19ry1rzbKQLylHycCbuWNc=;
+	b=NFHmt5S1U+BUZUExL6OMxo6ILWp1xOjzqVQBYDfj00xs/vj7VrSA8WyLsXUrWWzJO2vFgu
+	Cr4mewN/SKd25Vlr4LPbG1RmnyBuql6OvuSKtX7LqGUjOADGdWXtZdqbCqf70llzXc2MgM
+	gh7eqki/cly8NSZheKh/cOaif3gaUwL36fTc/c7tf4VoPbtXcjIlhqFna9u4NYhgiD0nyM
+	LKuhuQx6iBHekcH7quPoCnFbpsrz+VRm0gvzpATBvB8UcNvf1iZ+MMTzHi66V2FDXR1GzD
+	ztM2qnsi+eVF9dkpyWhxPae2i9kmMcC+2PjSxhskT8Ew9B5OqlBkOiUlJlpz/w==
+Date: Tue, 24 Jan 2023 12:23:47 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
+ controller
+Message-ID: <20230124122347.1a531d0f@bootlin.com>
+In-Reply-To: <37a95380-ee68-5c3a-3b96-48cc8b525f19@linaro.org>
+References: <20230113103759.327698-1-herve.codina@bootlin.com>
+	<20230113103759.327698-6-herve.codina@bootlin.com>
+	<316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
+	<20230124104232.183cc9ff@bootlin.com>
+	<37a95380-ee68-5c3a-3b96-48cc8b525f19@linaro.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,69 +64,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Alexander Stein <alexander.stein@ew.tq-group.com>, soc@kernel.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+On Tue, 24 Jan 2023 11:02:52 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-The only missing configuration option preventing us from using
-multi_v7_defconfig with the Raspberry Pi 4 is ARM_LPAE. It's needed as
-the PCIe controller found on the SoC depends on 64bit addressing, yet
-can't be included as not all v7 boards support LPAE.
+> On 24/01/2023 10:42, Herve Codina wrote:
+> > Hi Krzysztof,
+> >=20
+> > On Tue, 17 Jan 2023 12:31:09 +0100
+> > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> >  =20
+> >> On 13/01/2023 11:37, Herve Codina wrote: =20
+> >>> Add support for the QMC (QUICC Multichannel Controller)
+> >>> available in some PowerQUICC SoC such as MPC885 or MPC866.
+> >>>
+> >>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >>> ---
+> >>>  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 164 ++++++++++++++++=
+++
+> >>>  1 file changed, 164 insertions(+)
+> >>>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/=
+fsl,qmc.yaml
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc=
+.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> >>> new file mode 100644
+> >>> index 000000000000..3ec52f1635c8
+> >>> --- /dev/null
+> >>> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> >>> @@ -0,0 +1,164 @@
+> >>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >>> +%YAML 1.2
+> >>> +---
+> >>> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
+> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >>> +
+> >>> +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
+> >>> +
+> >>> +maintainers:
+> >>> +  - Herve Codina <herve.codina@bootlin.com>
+> >>> +
+> >>> +description: |
+> >>> +  The QMC (QUICC Multichannel Controller) emulates up to 64 channels=
+ within
+> >>> +  one serial controller using the same TDM physical interface routed=
+ from
+> >>> +  TSA.
+> >>> +
+> >>> +properties:
+> >>> +  compatible:
+> >>> +    items:
+> >>> +      - enum:
+> >>> +          - fsl,mpc885-scc-qmc
+> >>> +          - fsl,mpc866-scc-qmc
+> >>> +      - const: fsl,cpm1-scc-qmc
+> >>> +
+> >>> +  reg:
+> >>> +    items:
+> >>> +      - description: SCC (Serial communication controller) register =
+base
+> >>> +      - description: SCC parameter ram base
+> >>> +      - description: Dual port ram base
+> >>> +
+> >>> +  reg-names:
+> >>> +    items:
+> >>> +      - const: scc_regs
+> >>> +      - const: scc_pram
+> >>> +      - const: dpram
+> >>> +
+> >>> +  interrupts:
+> >>> +    maxItems: 1
+> >>> +    description: SCC interrupt line in the CPM interrupt controller
+> >>> +
+> >>> +  fsl,tsa:
+> >>> +    $ref: /schemas/types.yaml#/definitions/phandle
+> >>> +    description: phandle to the TSA
+> >>> +
+> >>> +  fsl,tsa-cell-id:
+> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
+> >>> +    enum: [1, 2, 3]
+> >>> +    description: |
+> >>> +      TSA cell ID (dt-bindings/soc/fsl,tsa.h defines these values)
+> >>> +       - 1: SCC2
+> >>> +       - 2: SCC3
+> >>> +       - 3: SCC4   =20
+> >>
+> >> Is this used as argument to tsa? If so, this should be part of fsl,tsa
+> >> property, just like we do for all syscon-like phandles. =20
+> >=20
+> > Yes, indeed.
+> > I will move 'fsl,tsa' to 'fsl,tsa-cell' with 'fsl,tsa-cell' a phandle/n=
+umber
+> > pair (the phandle to TSA node and the TSA cell id to use) =20
+>=20
+> Move to fsl,tsa, not from.
 
-Introduce multi_v7_lpae_defconfig, built off multi_v7_defconfig, which will
-avoid us having to duplicate and maintain multiple similar configurations.
+Well, I plan to remove both fsl,tsa and fsl,tsa-cell-id and use this:
+  fsl,tsa-cell:
+    $ref: /schemas/types.yaml#/definitions/phandle-array
+    items:
+      - items:
+          - description: phandle to TSA node
+          - enum: [1, 2, 3]
+            description: |
+              TSA cell ID (dt-bindings/soc/fsl,tsa.h defines these values)
+               - 1: SCC2
+               - 2: SCC3
+               - 3: SCC4
+    description:
+      Should be a phandle/number pair. The phandle to TSA node and the TSA
+      cell ID to use.
 
-Needless to say the Raspberry Pi 4 is not the only platform that can
-benefit from this new configuration.
+Is that what you were thinking about ?
 
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v3:
-* As per Arnd's suggestion add CONFIG_VMSPLIT_2G to lpae.config fragment
-* List multi_v7_lpae_defconfig target in 'make help' as well
+Best regards,
+Herv=C3=A9
 
-Unfortunately the list of defconfigs is autogenerated, so this new
-(explicit) target doesn't fit into this list. Therefore it's added to
-'archhelp' instead.
 
- arch/arm/Makefile            | 6 ++++++
- arch/arm/configs/lpae.config | 2 ++
- 2 files changed, 8 insertions(+)
- create mode 100644 arch/arm/configs/lpae.config
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index a353b92641f36..485a439e22ca8 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -314,6 +314,10 @@ endif
- # My testing targets (bypasses dependencies)
- bp:;	$(Q)$(MAKE) $(build)=$(boot) $(boot)/bootpImage
- 
-+include $(srctree)/scripts/Makefile.defconf
-+PHONY += multi_v7_lpae_defconfig
-+multi_v7_lpae_defconfig:
-+	$(call merge_into_defconfig,multi_v7_defconfig,lpae)
- 
- define archhelp
-   echo  '* zImage        - Compressed kernel image (arch/$(ARCH)/boot/zImage)'
-@@ -329,4 +333,6 @@ define archhelp
-   echo  '                  (distribution) /sbin/$(INSTALLKERNEL) or'
-   echo  '                  install to $$(INSTALL_PATH) and run lilo'
-   echo  '  vdso_install  - Install unstripped vdso.so to $$(INSTALL_MOD_PATH)/vdso'
-+  echo
-+  echo  '  multi_v7_lpae_defconfig     - multi_v7_defconfig with CONFIG_ARM_LPAE enabled'
- endef
-diff --git a/arch/arm/configs/lpae.config b/arch/arm/configs/lpae.config
-new file mode 100644
-index 0000000000000..a6d6f7ab3c01a
---- /dev/null
-+++ b/arch/arm/configs/lpae.config
-@@ -0,0 +1,2 @@
-+CONFIG_ARM_LPAE=y
-+CONFIG_VMSPLIT_2G=y
--- 
-2.34.1
-
+--=20
+Herv=C3=A9 Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
