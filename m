@@ -2,89 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9054D679B26
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 15:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB406679B55
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jan 2023 15:16:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P1TP12c9Tz3fH4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 01:09:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P1TXz5QBLz3cB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 01:16:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asSijbNc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=l286gH4z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asSijbNc;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=l286gH4z;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1THx55BGz3c7v
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 01:05:01 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30OC6dnS000958;
-	Tue, 24 Jan 2023 14:04:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=UFG0QpGEHiNL5tzvUpHdh4IlPwqKca54ET+B9qTFeFk=;
- b=asSijbNcQ9j5wjRjS3pVsFcbxVxI3tAYkwpdAKEdlNFeYVgh0JZSQubE+RJ22yz4XPqx
- H6FPnwvw0svmEQz82je0CWO1BSPlOSumaJgx4TpQTdszH8BiCjv8oX1BMIxgb97O6LHJ
- 2oumKxfnaiyFJXU3UVuwI0prE6UhCepHaWFTD71oTkI38lyR3Vj1mYMypty6L3eL7nBM
- kP1rKvYhUjY4eklbKY5wdrf1Gjvb/TDcoJugxTE59d/xRs33f3ik6LBj5oNkG2676n8P
- ORmlCUqtJ35Qhh1pF6/zWoaSnOGgb652CohQ7hVh9ga9gJ1KlFoBZ+eZw8gEXWR0fC+j 8g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nacg0pf8s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Jan 2023 14:04:54 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30ODuevw031112;
-	Tue, 24 Jan 2023 14:04:54 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nacg0pf86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Jan 2023 14:04:54 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30OC30G3004898;
-	Tue, 24 Jan 2023 14:04:53 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3n87p7y182-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Jan 2023 14:04:53 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30OE4pn910093172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Jan 2023 14:04:51 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41ABB58065;
-	Tue, 24 Jan 2023 14:04:51 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 253395805D;
-	Tue, 24 Jan 2023 14:04:51 +0000 (GMT)
-Received: from localhost (unknown [9.163.30.189])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Jan 2023 14:04:51 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/4] powerpc/rtas: upgrade internal arch spinlocks
-Date: Tue, 24 Jan 2023 08:04:48 -0600
-Message-Id: <20230124140448.45938-5-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230124140448.45938-1-nathanl@linux.ibm.com>
-References: <20230124140448.45938-1-nathanl@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P1TX11frTz2yNX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 01:15:27 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 42D451BF207;
+	Tue, 24 Jan 2023 14:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1674569720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nIw7NLrNROmQKNYPnuHqk2CqEst9nY4HbXU+KKl/pwM=;
+	b=l286gH4zaStuaORA777qpXwbAcZhj+YncUk7uAzqZWieWArt4tThJzZODVGh3YOrFbJHtU
+	m8cKCADL7W5gTqH9C4sVG9v10R83cBxOoitdOMZmEMoIL3wjgzIRy0QYHkbhsJWb0M0q99
+	DSGZNYvWKavYM1d3HCPODu3BTzKd25pk8CS3NSrusau5hMrD7nXly7YbUmg2k2VKrKmcnT
+	SSI1M6d7PAkbbHtw+r41Jpo+T68ejoqYgqa4ScFyV9VHcOP2NXTAOmbhMvzAeJyPxkVLqr
+	xgz62FwAENgzCQVsiux7WoHiKL3FWptBkgnR5k1Toe7gRkcSgk14Mdyqzkmbsw==
+Date: Tue, 24 Jan 2023 15:15:14 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
+ controller
+Message-ID: <20230124151514.58d77765@bootlin.com>
+In-Reply-To: <81f80190-a05c-5d0d-11b2-a80573b86e1c@linaro.org>
+References: <20230113103759.327698-1-herve.codina@bootlin.com>
+	<20230113103759.327698-6-herve.codina@bootlin.com>
+	<316ddb81-8d13-71dd-3396-412e31cfb880@linaro.org>
+	<20230124104232.183cc9ff@bootlin.com>
+	<37a95380-ee68-5c3a-3b96-48cc8b525f19@linaro.org>
+	<20230124122347.1a531d0f@bootlin.com>
+	<81f80190-a05c-5d0d-11b2-a80573b86e1c@linaro.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: A48ixxc1ZDvk6O0s1w6y6LVRxaEv90_e
-X-Proofpoint-GUID: lzSHW8yjTGKEs567K_hPdNH_Zkjhi4-5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-23_12,2023-01-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=998
- lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301240127
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,175 +66,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, ajd@linux.ibm.com, npiggin@gmail.com
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the time commit f97bb36f705d ("powerpc/rtas: Turn rtas lock into a
-raw spinlock") was written, the spinlock lockup detection code called
-__delay(), which will not make progress if the timebase is not
-advancing. Since the interprocessor timebase synchronization sequence
-for chrp, cell, and some now-unsupported Power models can temporarily
-freeze the timebase through an RTAS function (freeze-time-base), the
-lock that serializes most RTAS calls was converted to arch_spinlock_t
-to prevent kernel hangs in the lockup detection code.
+On Tue, 24 Jan 2023 13:24:48 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-However, commit bc88c10d7e69 ("locking/spinlock/debug: Remove spinlock
-lockup detection code") removed that inconvenient property from the
-lock debug code several years ago. So now it should be safe to
-reintroduce generic locks into the RTAS support code, primarily to
-increase lockdep coverage.
+> On 24/01/2023 12:23, Herve Codina wrote:
+> > On Tue, 24 Jan 2023 11:02:52 +0100
+> > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> >  =20
+> >> On 24/01/2023 10:42, Herve Codina wrote: =20
+> >>> Hi Krzysztof,
+> >>>
+> >>> On Tue, 17 Jan 2023 12:31:09 +0100
+> >>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> >>>    =20
+> >>>> On 13/01/2023 11:37, Herve Codina wrote:   =20
+> >>>>> Add support for the QMC (QUICC Multichannel Controller)
+> >>>>> available in some PowerQUICC SoC such as MPC885 or MPC866.
+> >>>>>
+> >>>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >>>>> ---
+> >>>>>  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 164 ++++++++++++++=
+++++
+> >>>>>  1 file changed, 164 insertions(+)
+> >>>>>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_q=
+e/fsl,qmc.yaml
+> >>>>>
+> >>>>> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,q=
+mc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> >>>>> new file mode 100644
+> >>>>> index 000000000000..3ec52f1635c8
+> >>>>> --- /dev/null
+> >>>>> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> >>>>> @@ -0,0 +1,164 @@
+> >>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >>>>> +%YAML 1.2
+> >>>>> +---
+> >>>>> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
+> >>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >>>>> +
+> >>>>> +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
+> >>>>> +
+> >>>>> +maintainers:
+> >>>>> +  - Herve Codina <herve.codina@bootlin.com>
+> >>>>> +
+> >>>>> +description: |
+> >>>>> +  The QMC (QUICC Multichannel Controller) emulates up to 64 channe=
+ls within
+> >>>>> +  one serial controller using the same TDM physical interface rout=
+ed from
+> >>>>> +  TSA.
+> >>>>> +
+> >>>>> +properties:
+> >>>>> +  compatible:
+> >>>>> +    items:
+> >>>>> +      - enum:
+> >>>>> +          - fsl,mpc885-scc-qmc
+> >>>>> +          - fsl,mpc866-scc-qmc
+> >>>>> +      - const: fsl,cpm1-scc-qmc
+> >>>>> +
+> >>>>> +  reg:
+> >>>>> +    items:
+> >>>>> +      - description: SCC (Serial communication controller) registe=
+r base
+> >>>>> +      - description: SCC parameter ram base
+> >>>>> +      - description: Dual port ram base
+> >>>>> +
+> >>>>> +  reg-names:
+> >>>>> +    items:
+> >>>>> +      - const: scc_regs
+> >>>>> +      - const: scc_pram
+> >>>>> +      - const: dpram
+> >>>>> +
+> >>>>> +  interrupts:
+> >>>>> +    maxItems: 1
+> >>>>> +    description: SCC interrupt line in the CPM interrupt controller
+> >>>>> +
+> >>>>> +  fsl,tsa:
+> >>>>> +    $ref: /schemas/types.yaml#/definitions/phandle
+> >>>>> +    description: phandle to the TSA
+> >>>>> +
+> >>>>> +  fsl,tsa-cell-id:
+> >>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+> >>>>> +    enum: [1, 2, 3]
+> >>>>> +    description: |
+> >>>>> +      TSA cell ID (dt-bindings/soc/fsl,tsa.h defines these values)
+> >>>>> +       - 1: SCC2
+> >>>>> +       - 2: SCC3
+> >>>>> +       - 3: SCC4     =20
+> >>>>
+> >>>> Is this used as argument to tsa? If so, this should be part of fsl,t=
+sa
+> >>>> property, just like we do for all syscon-like phandles.   =20
+> >>>
+> >>> Yes, indeed.
+> >>> I will move 'fsl,tsa' to 'fsl,tsa-cell' with 'fsl,tsa-cell' a phandle=
+/number
+> >>> pair (the phandle to TSA node and the TSA cell id to use)   =20
+> >>
+> >> Move to fsl,tsa, not from. =20
+> >=20
+> > Well, I plan to remove both fsl,tsa and fsl,tsa-cell-id and use this:
+> >   fsl,tsa-cell:
+> >     $ref: /schemas/types.yaml#/definitions/phandle-array
+> >     items:
+> >       - items:
+> >           - description: phandle to TSA node
+> >           - enum: [1, 2, 3]
+> >             description: |
+> >               TSA cell ID (dt-bindings/soc/fsl,tsa.h defines these valu=
+es)
+> >                - 1: SCC2
+> >                - 2: SCC3
+> >                - 3: SCC4
+> >     description:
+> >       Should be a phandle/number pair. The phandle to TSA node and the =
+TSA
+> >       cell ID to use.
+> >=20
+> > Is that what you were thinking about ? =20
+>=20
+> Yes, except again, so third time, why calling this "cell"? Move it to
+> fsl,tsa.
+>=20
 
-Making rtas_lock a spinlock_t would violate lock type nesting rules
-because it can be acquired while holding raw locks, e.g. pci_lock and
-irq_desc->lock. So convert it to raw_spinlock_t. There's no apparent
-reason not to upgrade timebase_lock as well.
+Why calling this "cell" ? Just because we reference a "cell" using the TSA
+cell ID inside TSA and not the TSA itself.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/kernel/rtas.c | 52 ++++++++++----------------------------
- 1 file changed, 14 insertions(+), 38 deletions(-)
+Maybe the problem is the term "cell" as it is not the DT definition of
+"cell" but the source/destination of the TSA routing.
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 0059bb2a8f04..c02edec3c860 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -69,7 +69,7 @@ struct rtas_t rtas;
-  * Exceptions to the RTAS serialization requirement (e.g. stop-self)
-  * must use a separate rtas_args structure.
-  */
--static arch_spinlock_t rtas_lock = __ARCH_SPIN_LOCK_UNLOCKED;
-+static DEFINE_RAW_SPINLOCK(rtas_lock);
- static struct rtas_args rtas_args;
- 
- DEFINE_SPINLOCK(rtas_data_buf_lock);
-@@ -87,28 +87,6 @@ unsigned long rtas_rmo_buf;
- void (*rtas_flash_term_hook)(int);
- EXPORT_SYMBOL_GPL(rtas_flash_term_hook);
- 
--/* RTAS use home made raw locking instead of spin_lock_irqsave
-- * because those can be called from within really nasty contexts
-- * such as having the timebase stopped which would lockup with
-- * normal locks and spinlock debugging enabled
-- */
--static unsigned long lock_rtas(void)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	preempt_disable();
--	arch_spin_lock(&rtas_lock);
--	return flags;
--}
--
--static void unlock_rtas(unsigned long flags)
--{
--	arch_spin_unlock(&rtas_lock);
--	local_irq_restore(flags);
--	preempt_enable();
--}
--
- /*
-  * call_rtas_display_status and call_rtas_display_status_delay
-  * are designed only for very early low-level debugging, which
-@@ -116,14 +94,14 @@ static void unlock_rtas(unsigned long flags)
-  */
- static void call_rtas_display_status(unsigned char c)
- {
--	unsigned long s;
-+	unsigned long flags;
- 
- 	if (!rtas.base)
- 		return;
- 
--	s = lock_rtas();
-+	raw_spin_lock_irqsave(&rtas_lock, flags);
- 	rtas_call_unlocked(&rtas_args, 10, 1, 1, NULL, c);
--	unlock_rtas(s);
-+	raw_spin_unlock_irqrestore(&rtas_lock, flags);
- }
- 
- static void call_rtas_display_status_delay(char c)
-@@ -541,7 +519,7 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- {
- 	va_list list;
- 	int i;
--	unsigned long s;
-+	unsigned long flags;
- 	struct rtas_args *args;
- 	char *buff_copy = NULL;
- 	int ret;
-@@ -564,8 +542,7 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 		return -1;
- 	}
- 
--	s = lock_rtas();
--
-+	raw_spin_lock_irqsave(&rtas_lock, flags);
- 	/* We use the global rtas args buffer */
- 	args = &rtas_args;
- 
-@@ -583,7 +560,7 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 			outputs[i] = be32_to_cpu(args->rets[i + 1]);
- 	ret = (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
- 
--	unlock_rtas(s);
-+	raw_spin_unlock_irqrestore(&rtas_lock, flags);
- 
- 	if (buff_copy) {
- 		log_error(buff_copy, ERR_TYPE_RTAS_LOG, 0);
-@@ -1275,7 +1252,7 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 
- 	buff_copy = get_errorlog_buffer();
- 
--	flags = lock_rtas();
-+	raw_spin_lock_irqsave(&rtas_lock, flags);
- 
- 	rtas_args = args;
- 	do_enter_rtas(__pa(&rtas_args));
-@@ -1286,7 +1263,7 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	if (be32_to_cpu(args.rets[0]) == -1)
- 		errbuf = __fetch_rtas_last_error(buff_copy);
- 
--	unlock_rtas(flags);
-+	raw_spin_unlock_irqrestore(&rtas_lock, flags);
- 
- 	if (buff_copy) {
- 		if (errbuf)
-@@ -1408,19 +1385,18 @@ int __init early_init_dt_scan_rtas(unsigned long node,
- 	return 1;
- }
- 
--static arch_spinlock_t timebase_lock;
-+static DEFINE_RAW_SPINLOCK(timebase_lock);
- static u64 timebase = 0;
- 
- void rtas_give_timebase(void)
- {
- 	unsigned long flags;
- 
--	local_irq_save(flags);
-+	raw_spin_lock_irqsave(&timebase_lock, flags);
- 	hard_irq_disable();
--	arch_spin_lock(&timebase_lock);
- 	rtas_call(rtas_token("freeze-time-base"), 0, 1, NULL);
- 	timebase = get_tb();
--	arch_spin_unlock(&timebase_lock);
-+	raw_spin_unlock(&timebase_lock);
- 
- 	while (timebase)
- 		barrier();
-@@ -1432,8 +1408,8 @@ void rtas_take_timebase(void)
- {
- 	while (!timebase)
- 		barrier();
--	arch_spin_lock(&timebase_lock);
-+	raw_spin_lock(&timebase_lock);
- 	set_tb(timebase >> 32, timebase & 0xffffffff);
- 	timebase = 0;
--	arch_spin_unlock(&timebase_lock);
-+	raw_spin_unlock(&timebase_lock);
- }
--- 
-2.37.1
+TSA can route data from/to some "serial controller".
+These serial controllers are :
+- SCC (Serial Communication Controller)
+- SMC (Serial Management Controller)
+- UCC (Unified Communication Controller)
 
+Only SCCs are handled here.
+
+Maybe the term "serial" makes more sense which will lead to
+  fsl,tsa-serial =3D <&tsa, SCC4>;
+
+Best regards,
+Herv=C3=A9
+
+--=20
+Herv=C3=A9 Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
