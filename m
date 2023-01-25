@@ -2,52 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E291567BF75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 23:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7900B67B9EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jan 2023 19:54:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2HnW5CrHz3fQH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 08:59:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2CgF1G0wz3cf1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 05:54:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uqNynxzu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fU4tHnGm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uqNynxzu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fU4tHnGm;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2CKZ5bYfz3cFw;
-	Thu, 26 Jan 2023 05:38:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=j8xmcwaWWp8ClSuIcWbfPO9W4DI7+K1SIXYR1hupOAY=; b=uqNynxzucz1vO4Sybud/wnfqlG
-	XxsLNOwKfxMMQq2z+2mEwSQepA2Cgl288rz8ppyGnCDD245OrpnK+lLHo83C85yAJqJOOkyy9NCp4
-	qmW1PdDBkKx7H5H7CuTrTaW668Ax6XD7hJfO7woN7MoWAjzhSqQRaCuht1RFhZ03cdOhzx8vskmyo
-	utYjRqoPln+RK+MIFkiqDBv2fEqneNERI4c9/pWDfp7yn00dEjgBzAOu+9ajSFVQvgY4Ml53E7t5d
-	4KvoHjjGbdeWlMlk7Lgwsa8VGdyruWiJYIAak7bpfijYPXdYqIwuOD9Kmo+xWyNX8MhOoxpc82QLY
-	/xONblxA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKkeP-0066hH-0o; Wed, 25 Jan 2023 18:37:37 +0000
-Date: Wed, 25 Jan 2023 18:37:36 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v2 1/6] mm: introduce vma->vm_flags modifier functions
-Message-ID: <Y9F28J9njAtwifuL@casper.infradead.org>
-References: <20230125083851.27759-1-surenb@google.com>
- <20230125083851.27759-2-surenb@google.com>
- <Y9Dx0cPXF2yoLwww@hirez.programming.kicks-ass.net>
- <CAJuCfpEcVCZaCGzc-Wim25eaV5e6YG1YJAAdKwZ6JHViB0z8aw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2CfD3nbWz3bSw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 05:53:24 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DA159B81B95;
+	Wed, 25 Jan 2023 18:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD45C433D2;
+	Wed, 25 Jan 2023 18:53:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674672798;
+	bh=ySiX2eF1vZukYsf5N23nsuVwoa68LgZrCTTePp/8IWc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fU4tHnGmgQLup3dXzJbl2xbW2Tfvm4D5d+ldUDZZ5+7sUDuSYuGQEkYy/1wavT8jd
+	 K1z+uCe27CYGJRjeEO/wKhvJJwQ74mItTJcuv4vx+abTGly8wkEwSuuGcmFtCmoDk/
+	 8aP8xBDMWDDKTPjDeKmY7ddc+Z+izeyNXVhTAYaYRhTc03dRr+snE9U3O4JdMwDJlr
+	 npfDoJ4c0Zym8+1lJWVdxU0ypFyAbssyFddut39m4WOtBpW4/UlsXh2UNao111P2cA
+	 aQ4pkDbaZg4kQhtoxZxMAkHSzyOoMibPkqxzY2Yjj/BQqP8TaxjgiGkFS6K8FX8TOv
+	 ONKAGoynszqrA==
+Date: Wed, 25 Jan 2023 10:53:16 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Song Liu <song@kernel.org>
+Subject: Re: [PATCH 2/2] powerpc/module_64: Fix "expected nop" error on
+ module re-patching
+Message-ID: <20230125185316.ebvxecd7gsvgtudr@treble>
+References: <cover.1674617130.git.jpoimboe@kernel.org>
+ <2f6329ffd9674df6ff57e03edeb2ca54414770ab.1674617130.git.jpoimboe@kernel.org>
+ <CAPhsuW40jEiyp0ogsO6oH_frpFCmiioSHrMOKkwGcZ8_6w5dZA@mail.gmail.com>
+ <20230125164609.wvuarciciyoqa3tb@treble>
+ <CAPhsuW45k8Avx=Zfid1pxaeHAbLGgOcxbN_=DQOb8WdPx7fB+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJuCfpEcVCZaCGzc-Wim25eaV5e6YG1YJAAdKwZ6JHViB0z8aw@mail.gmail.com>
-X-Mailman-Approved-At: Thu, 26 Jan 2023 08:53:08 +1100
+In-Reply-To: <CAPhsuW45k8Avx=Zfid1pxaeHAbLGgOcxbN_=DQOb8WdPx7fB+Q@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,36 +64,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, nvdimm@lists.linux.dev, heiko@sntech.de, leewalsh@google.com, dri-devel@lists.freedesktop.org, perex@perex.cz, jglisse@google.com, arjunroy@google.com, m.szyprowski@samsung.com, linux-arch@vger.kernel.org, qianweili@huawei.com, linux-samsung-soc@vger.kernel.org, aneesh.kumar@linux.ibm.com, chenhuacai@kernel.org, kasan-dev@googlegroups.com, linux-acpi@vger.kernel.org, rientjes@google.com, xen-devel@lists.xenproject.org, devel@lists.orangefs.org, robdclark@gmail.com, minchan@google.com, robert.jarzmik@free.fr, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, npiggin@gmail.com, alex.williamson@redhat.com, viro@zeniv.linux.org.uk, luto@kernel.org, gthelen@google.com, tglx@linutronix.de, ldufour@linux.ibm.com, linux-sgx@vger.kernel.org, martin.petersen@oracle.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linux-medi
- a@vger.kernel.org, freedreno@lists.freedesktop.org, joelaf@google.com, linux-aio@kvack.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, david@redhat.com, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, edumazet@google.com, target-devel@vger.kernel.org, punit.agrawal@bytedance.com, linux-s390@vger.kernel.org, dave@stgolabs.net, deller@gmx.de, hughd@google.com, andrii@kernel.org, patrik.r.jakobsson@gmail.com, linux-stm32@st-md-mailman.stormreply.com, linux-rockchip@lists.infradead.org, linux-graphics-maintainer@vmware.com, kernel-team@android.com, jayalk@intworks.biz, soheil@google.com, selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org, mripard@kernel.org, shakeelb@google.com, haojian.zhuang@gmail.com, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, nico@fluxnic.net, muchun.song@linux.dev, hjc@rock-chips.com, mcoquelin.stm32@gmail.com, tatashin@google.com, mike.kravetz@oracle.com, songliubraving@fb.com, jasowang
- @redhat.com, alsa-devel@alsa-project.org, peterx@redhat.com, linux-tegra@vger.kernel.org, kraxel@redhat.com, will@kernel.org, dmaengine@vger.kernel.org, bhe@redhat.com, miklos@szeredi.hu, linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev, amd-gfx@lists.freedesktop.org, gurua@google.com, dgilbert@interlog.com, xiang@kernel.org, pabeni@redhat.com, jejb@linux.ibm.com, quic_abhinavk@quicinc.com, bp@alien8.de, mchehab@kernel.org, linux-ext4@vger.kernel.org, tomba@kernel.org, hughlynch@google.com, sre@kernel.org, tfiga@chromium.org, linux-xfs@vger.kernel.org, zhangfei.gao@linaro.org, wangzhou1@hisilicon.com, netdev@vger.kernel.org, bpf@vger.kernel.org, linux-erofs@lists.ozlabs.org, davem@davemloft.net, mhocko@suse.com, kvm@vger.kernel.org, mst@redhat.com, Peter Zijlstra <peterz@infradead.org>, bigeasy@linutronix.de, alexandre.torgue@foss.st.com, dhowells@redhat.com, linux-mm@kvack.org, ray.huang@amd.com, adilger.kernel@dilger.ca, kuba@kernel.org, sparclinux@vger.kernel.org, airlie
- d@gmail.com, anton.ivanov@cambridgegreys.com, herbert@gondor.apana.org.au, linux-scsi@vger.kernel.org, richard@nod.at, x86@kernel.org, vkoul@kernel.org, mingo@redhat.com, axelrasmussen@google.com, intel-gfx@lists.freedesktop.org, daniel@ffwll.ch, paulmck@kernel.org, jannh@google.com, chao@kernel.org, maarten.lankhorst@linux.intel.com, liam.howlett@oracle.com, hdegoede@redhat.com, linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com, vbabka@suse.cz, dimitri.sivanich@hpe.com, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, yoshfuji@linux-ipv6.org, linuxppc-dev@lists.ozlabs.org, dsahern@kernel.org, kent.overstreet@linux.dev, kexec@lists.infradead.org, tiwai@suse.com, krzysztof.kozlowski@linaro.org, tzimmermann@suse.de, hannes@cmpxchg.org, dmitry.baryshkov@linaro.org, johannes@sipsolutions.net, mgorman@techsingularity.net, linux-accelerators@lists.ozlabs.org, l.stach@pengutronix.de
+Cc: live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 08:49:50AM -0800, Suren Baghdasaryan wrote:
-> On Wed, Jan 25, 2023 at 1:10 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > +     /*
-> > > +      * Flags, see mm.h.
-> > > +      * WARNING! Do not modify directly.
-> > > +      * Use {init|reset|set|clear|mod}_vm_flags() functions instead.
-> > > +      */
-> > > +     unsigned long vm_flags;
+On Wed, Jan 25, 2023 at 09:36:02AM -0800, Song Liu wrote:
+> On Wed, Jan 25, 2023 at 8:46 AM Josh Poimboeuf <jpoimboe@kernel.org> wrote:
 > >
-> > We have __private and ACCESS_PRIVATE() to help with enforcing this.
+> > On Tue, Jan 24, 2023 at 10:09:56PM -0800, Song Liu wrote:
+> > > > @@ -514,9 +515,18 @@ static int restore_r2(const char *name, u32 *instruction, struct module *me)
+> > > >         if (!instr_is_relative_link_branch(ppc_inst(*prev_insn)))
+> > > >                 return 0;
+> > > >
+> > > > -       if (*instruction != PPC_RAW_NOP()) {
+> > > > +       /*
+> > > > +        * For livepatch, the restore r2 instruction might have already been
+> > > > +        * written previously, if the referenced symbol is in a previously
+> > > > +        * unloaded module which is now being loaded again.  In that case, skip
+> > > > +        * the warning and the instruction write.
+> > > > +        */
+> > > > +       if (insn_val == PPC_INST_LD_TOC)
+> > > > +               return 0;
+> > >
+> > > Do we need "sym->st_shndx == SHN_LIVEPATCH" here?
+> >
+> > My original patch had that check, but I dropped it for simplicity.
+> >
+> > In the non-livepatch case, the condition should never be true, but it
+> > doesn't hurt to check it anyway.
 > 
-> Thanks for pointing this out, Peter! I guess for that I'll need to
-> convert all read accesses and provide get_vm_flags() too? That will
-> cause some additional churt (a quick search shows 801 hits over 248
-> files) but maybe it's worth it? I think Michal suggested that too in
-> another patch. Should I do that while we are at it?
+> While this is the only place we use PPC_INST_LD_TOC, there is another
+> place we use "PPC_RAW_STD(_R2, _R1, R2_STACK_OFFSET)", which
+> is identical to PPC_INST_LD_TOC. So I am not quite sure whether this
+> happens for non-livepatch.
 
-Here's a trick I saw somewhere in the VFS:
+It's not actually identical.  That's the "store r2 to the stack"
+counterpart to the load in PPC_INST_LD_TOC, which loads r2 from the
+stack.
 
-	union {
-		const vm_flags_t vm_flags;
-		vm_flags_t __private __vm_flags;
-	};
+For R_PPC_REL24 relocations, when calling a function which lives outside
+the module, 24 bits isn't enough to encode the relative branch target
+address.  So it has to save r2 (TOC pointer) to the stack, and branch to
+a stub, which then branches to the external function.
 
-Now it can be read by anybody but written only by those using
-ACCESS_PRIVATE.
+When the external function returns execution to the instruction after
+the original branch, that instruction needs to restore the TOC pointer
+from the stack to r2.
+
+The compiler knows this, and emits the instruction after the branch as a
+NOP.  The module code replaces that NOP with a "restore r2 from the
+stack".  That's what restore_r2() does.
+
+Long story short, restore_r2() needs to ensure the instruction after the
+branch restores r2 from the stack.  If that instruction is already
+there, it doesn't need to do anything.
+
+-- 
+Josh
