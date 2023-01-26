@@ -1,68 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2BB67D5F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 21:08:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7460D67D807
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 22:55:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2sGS0bvxz3fG4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 07:08:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2vdh2Fqwz3fGw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 08:55:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=H+6SnUs6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X9lFXjWC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b2e; helo=mail-yb1-xb2e.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=H+6SnUs6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X9lFXjWC;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2sFY3JyLz3cgR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 07:07:42 +1100 (AEDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id u72so3427381ybi.7
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FLvduNoOt8LztTYVpuNMVnPelMmnqyRxqRLyg6HGxcg=;
-        b=H+6SnUs6VnnGPZqMii9E04B2jZbdPO8JEzKwKb/AJ8KxiwwnK2MNII3exjLOSl5gid
-         77VoL20WxdjPiAd6mM/Frt++DnvRBGeYkCnMZxJPaMaSvtgB/RUnrDdxLVgKkeveSvqV
-         LrzyjFLEy9Ju1waaH1L59m7AUNdOGsFP/ugRIHnpl2AenIYyj6LEgFSvN6LFq6cNKlEq
-         E2X18z1uBxOTst1xMvqGuCwKxTd4bVYXZAD93G/mIzNmkdajWluOkGUV1vYYnY3i2Fdw
-         fllbaK801dFQ1i7INkpwSx52GZBr7tIxG6tWtQsCZln8/tPnjiETmnRpLougqogGIAL/
-         B/Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FLvduNoOt8LztTYVpuNMVnPelMmnqyRxqRLyg6HGxcg=;
-        b=LEzKZBtasVsUiiW7nc/hnxZDHN1H2GaWzV7OxDVdHqxYsEG5/1JeRkc0Lp9Df7enh8
-         ySFmWdoBuTlQsP+VrvJPvApR8YpUa5T6cjHGJOg/hQNOnCaMT+ddPwg9PZBZqm90bkMJ
-         TXQxC3s5km/YDrf1AxU6Wt/hwYXWlZO6bMmYZ/wPmHZ85VLQLnKng2/ys6EnnZj20Ntb
-         O6V/bnoZo3O90MVwXiQGuq5o4KGKbKVghjJV5ZY5VL27fuglKTbfaMM3aaY6HqjmwmFf
-         6ndWQszXB6sqXSHYnQ0vhH/kB8bq87mXkTF4rri8qDk7GewCUgMhALjvrSivo6fvoSRS
-         pBwA==
-X-Gm-Message-State: AO0yUKUeCduwFfYIVklnQjxj9Q5QsGq2zeCDSAYKCoo9fWgiKiRAybir
-	PuPD/bGspfe+1gIWQCGzZUsxAPYfmrUCxXnTq8dP2A==
-X-Google-Smtp-Source: AK7set+RXU546bCG2ieA1RNematBemc4AFyAycDDxbMQYNdnjp7iUSmTGAk1mBuk641lDSfvZ/bqCOrkZeydPqsG8fw=
-X-Received: by 2002:a25:f81b:0:b0:80b:821f:b621 with SMTP id
- u27-20020a25f81b000000b0080b821fb621mr881734ybd.24.1674763659341; Thu, 26 Jan
- 2023 12:07:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20221226123630.6515-1-pali@kernel.org> <db008af4-2918-4458-aa68-2392674475c8@app.fastmail.com>
- <Y8rMJcX0cqThKj2N@google.com>
-In-Reply-To: <Y8rMJcX0cqThKj2N@google.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 26 Jan 2023 21:07:27 +0100
-Message-ID: <CACRpkdZrL3Wpk6_Pka_Ye-9C0Ewx5ULZ8pt396kO-e95kqku_A@mail.gmail.com>
-Subject: Re: [PATCH RESEND 0/8] Resend LED patches
-To: Lee Jones <lee@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2vck1CyLz3cdw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 08:54:29 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30QKQraA002317;
+	Thu, 26 Jan 2023 21:54:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=c5Yj0Lou4OU99E2LHhfMdkoedJFMZo3QEVCXowLdAUA=;
+ b=X9lFXjWC/nGxcNUE8bIBAdXX0dz6/3wOrmIuGpLDrjMBndSIYdtJRD20CRMSu6OedULW
+ JygGygMrb/3iyqdkwhSGlBLQSven21Dhj5ul4oAiyc0gkMHTUL59N39EzmPmKoETEGKx
+ kxmbxCP5YRNxEJDp7FeI8h5xtmL+4ZMBbl+4RdyBnGQI6WZto8dc0K8SINI+3e+qpLu9
+ Zo/6pFbyweZzOJEXAtCVe20RevZROJYgIzvzK4w7AVCOMNNr89j2qGa5WOej65jojYLW
+ d2Uk2B44rLzL4DRwg61kPgc7OXMath1fpiuk2wQOdPFNyXwYmAVmgzWXQYUwt74fqRCP jg== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nc0jhhp58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Jan 2023 21:54:21 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30QAj8oo026731;
+	Thu, 26 Jan 2023 21:54:19 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3n87p6euad-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Jan 2023 21:54:19 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30QLsG5X34734514
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Jan 2023 21:54:17 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D89C520043;
+	Thu, 26 Jan 2023 21:54:16 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C67820040;
+	Thu, 26 Jan 2023 21:54:16 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 26 Jan 2023 21:54:16 +0000 (GMT)
+Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8FCF560112;
+	Fri, 27 Jan 2023 08:54:12 +1100 (AEDT)
+Message-ID: <45dba0a78f7f746effd482186c1c5d41670f51b3.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/tlb: Remove BUILD_BUG for book3s/32/tlbflush.h
+ local_flush_tlb_page_psize
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 27 Jan 2023 08:53:44 +1100
+In-Reply-To: <87sffyq22y.fsf@mpe.ellerman.id.au>
+References: <20230124215424.9068-1-bgray@linux.ibm.com>
+	 <87sffyq22y.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UQWUBAqIkjefAZ7FT_-GQeh0apSSKtsi
+X-Proofpoint-GUID: UQWUBAqIkjefAZ7FT_-GQeh0apSSKtsi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-26_09,2023-01-26_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ mlxlogscore=947 mlxscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301260202
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,20 +97,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, soc@kernel.org, Pavel Machek <pavel@ucw.cz>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, linux-leds@vger.kernel.org
+Cc: kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 20, 2023 at 6:15 PM Lee Jones <lee@kernel.org> wrote:
+On Wed, 2023-01-25 at 22:35 +1100, Michael Ellerman wrote:
+> Can't we just fall back to flush_tlb_page(vma, vmaddr)?
+>=20
+> I'd guess those CPUs can't flush based on page size anyway.
+>=20
+> cheers
 
-> If everyone is convinced that applying these drivers is the correct
-> thing to do, I'd be happy to (rather) take them via LEDs.
-
-Oh you are co-maintainer of the LED subsystem since a month!
-
-Sadly this series stalled way before that, so that's why we didn't notice.
-
-By all means, pick it up!
-
-Yours,
-Linus Walleij
+Probably. Do they have a fixed page size? It's not a BUILD_BUG/WARN
+because it _should_ be unimplemented, just that I don't have an idea of
+how that target works.
