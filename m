@@ -2,36 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323AF67D3C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 19:08:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7496567D51D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 20:11:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2pc60x2gz3fKH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 05:08:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2r0G2nmQz3fH3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 06:11:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bqiPNBtP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2pbZ3mcPz3cd4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 05:08:09 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 30QI5rrM030369;
-	Thu, 26 Jan 2023 12:05:53 -0600
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 30QI5qYL030368;
-	Thu, 26 Jan 2023 12:05:52 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Thu, 26 Jan 2023 12:05:52 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: arch/powerpc/kernel/head_85xx.o: warning: objtool: .head.text+0x1a6c: unannotated intra-function call
-Message-ID: <20230126180552.GO25951@gate.crashing.org>
-References: <202301161955.38kK6ksW-lkp@intel.com> <b2273730-f885-7658-7ec4-12fb5bfc515b@linux.ibm.com> <1674631223.9e09lbzzb6.naveen@linux.ibm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1674631223.9e09lbzzb6.naveen@linux.ibm.com>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::429; helo=mail-wr1-x429.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bqiPNBtP;
+	dkim-atps=neutral
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2qzH4wtCz3cgx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 06:10:18 +1100 (AEDT)
+Received: by mail-wr1-x429.google.com with SMTP id bk16so2763058wrb.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:10:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XZVlCpe2YPL2TN3TFT9AqKB26L5YrQ2SxKcA4F5aIVA=;
+        b=bqiPNBtPCGC3Dt5ZQRSVrAtgB5YTmuDiUyV/bySZ3En9FH7ZiSa+3d475afcxorzQL
+         BcBlMbWZDlAEDRT8ehVmM0H18jLP84kk0FLIv0Th5HBB0ttBFsp/BuxMDv0O7yaMozMF
+         u1EioQKIUN1hAO89sTx5webSx+SGSqK0BjKDDCKwf+LEh2Mt9LZT2Ou2rHrOOliSxMQQ
+         8BdQXRmTW/3GxO7FNLYC3jipX4GwYJxCAGpsd/nkLjiI4K5ulSdS9vB+ajB9oebDL2Um
+         7//AfPRGk5idWtx1cFt6Rx2JCbX9hZ4je6PhcI3I+7Tzg6wmnKIK8YZAHi+zpsRa8JdP
+         qOsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XZVlCpe2YPL2TN3TFT9AqKB26L5YrQ2SxKcA4F5aIVA=;
+        b=VCXHXI1wpvO7K3c/+XxEH8k6U3UcQwyJhySv3SH23QOOTP33sGwje/xAkhgxdEYLjJ
+         1MmzCuLQc4UYVRgR9WYcDSdR79c7x0VxhsGVwgU24EbMkIQVfP7jqobZq0dws0iAb66A
+         wGhjt2MVjW+sHq1/8uZSCVFkkw9TyHjXDRMcPflp95jkU9p4Wl+mHzAxU8bS3VJlLFOo
+         zXhhq7hk3KvGgl64qiNwqKjudx+KmxRqrMCw/TmWqf+t+XbNErlM2WSPeOj8zx5sII2u
+         SswTRjt1H0Ygz6XnNJHIXWTmQEb6iMnmziNDyGYYDZdaHevxIvbyAUROQBQVRWYQyIcg
+         Z06g==
+X-Gm-Message-State: AO0yUKX9/vmstfFRRLkjSRcp26BNcZWNWA7YNlkcwiYrXbAjTRrseMJZ
+	rm74AJdxlcVL3a0NaA5EQZk7V1wnbKTZ8cJIKsntpw==
+X-Google-Smtp-Source: AK7set/mmUq2VJuJRVgzRa/6Xnzlcx41hw/h5rvmYu2jYOJyL5sIkbF+l18j3dzlNgKOqoIJLVRMJ/NxowqhDSYUYuY=
+X-Received: by 2002:a5d:5341:0:b0:2bf:b79f:73f0 with SMTP id
+ t1-20020a5d5341000000b002bfb79f73f0mr345146wrv.654.1674760213868; Thu, 26 Jan
+ 2023 11:10:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20230126011854.198243-1-irogers@google.com> <20230126011854.198243-3-irogers@google.com>
+ <e74b8293-5d30-7522-6e5e-a7c7994039c5@oracle.com>
+In-Reply-To: <e74b8293-5d30-7522-6e5e-a7c7994039c5@oracle.com>
+From: Ian Rogers <irogers@google.com>
+Date: Thu, 26 Jan 2023 11:10:01 -0800
+Message-ID: <CAP-5=fUrHqAtP-yRDYi4G4oo-PX-2YF8tyB=BBk2t0iM_U3__g@mail.gmail.com>
+Subject: Re: [PATCH v4 02/12] perf jevents metric: Add ability to rewrite
+ metrics in terms of others
+To: John Garry <john.g.garry@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,49 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Sathvika Vasireddy <sv@linux.ibm.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Kang Minchul <tegongkang@gmail.com>, Sandipan Das <sandipan.das@amd.com>, Peter Zijlstra <peterz@infradead.org>, Perry Taylor <perry.taylor@intel.com>, Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, James Clark <james.clark@arm.com>, Kim Phillips <kim.phillips@amd.com>, Will Deacon <will@kernel.org>, Kan Liang <kan.liang@linux.intel.com>, Rob Herring <robh@kernel.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Xing Zhengjun <zhengjun.xing@linux.intel.com>, Mike Leach <mike.leach@linaro.org>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Caleb Biggers <caleb.biggers@intel.com>, linux-arm-kernel@lists.infradead.org, Ravi Bangoria <ravi.bangoria@amd.com>, Florian Fischer <florian.fischer@muhq.space>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Leo Yan 
+ <leo.yan@linaro.org>, linuxppc-dev@lists.ozlabs.org, Jing Zhang <renyu.zj@linux.alibaba.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+On Thu, Jan 26, 2023 at 7:59 AM John Garry <john.g.garry@oracle.com> wrote:
+>
+> On 26/01/2023 01:18, Ian Rogers wrote:
+> > Add RewriteMetricsInTermsOfOthers that iterates over pairs of names
+> > and expressions trying to replace an expression, within the current
+> > expression, with its name.
+> >
+> > Signed-off-by: Ian Rogers <irogers@google.com>
+>
+> hmmm ... did you test this for many python versions?
+>
+> Maybe this patch causes this error:
+>
+> Traceback (most recent call last):
+>   File "pmu-events/jevents.py", line 7, in <module>
+>     import metric
+>   File "/home/john/acme/tools/perf/pmu-events/metric.py", line 549, in
+> <module>
+>     def RewriteMetricsInTermsOfOthers(metrics: list[Tuple[str, Expression]]
+> TypeError: 'type' object is not subscriptable
+> make[3]: *** [pmu-events/Build:26: pmu-events/pmu-events.c] Error 1
+> make[2]: *** [Makefile.perf:676: pmu-events/pmu-events-in.o] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+>
+> I have python 3.6.15
+>
+> Thanks,
+> John
 
-On Wed, Jan 25, 2023 at 12:57:35PM +0530, Naveen N. Rao wrote:
-> Sathvika Vasireddy wrote:
-> >--- a/arch/powerpc/kvm/booke.c
-> >+++ b/arch/powerpc/kvm/booke.c
-> >@@ -917,7 +917,9 @@ static void kvmppc_fill_pt_regs(struct pt_regs *regs)
-> >         asm("mr %0, 1" : "=r"(r1));
-> >         asm("mflr %0" : "=r"(lr));
-> >         asm("mfmsr %0" : "=r"(msr));
-> >+       asm(".pushsection .discard.intra_function_calls; .long 999f; 
-> >.popsection; 999:");
-> >         asm("bl 1f; 1: mflr %0" : "=r"(ip));
-> 
-> I don't think you can assume that there won't be anything in between two 
-> asm statements.
+Apologies, I have to test python3.6 with docker and so if I think the
+change is small enough.. My error, will spin v5.
 
-It would be a false assumption.  There is nothing that stops the
-compiler from moving, duplicating, or even removing these statements
-(removing only if no outputs from the asm are required of course).
+Thanks,
+Ian
 
-> Does it work if you combine both the above asm 
-> statements into a single one?
-> 
-> Even if that works, I don't think it is good to expand the macro here.  
-> That asm statement looks to be trying to grab the current nip. I don't 
-> know enough about that code, and someone who knows more about KVM may be 
-> able to help, but it looks like we should be able to simply set 'ip' to 
-> the address of kvmppc_fill_pt_regs()?
-
-Such things are much better as actual assembler code (like, a .s file).
-You have to be certain the compiler doesn't transform this in unexpected
-ways, like, copy and move it to all callers for example.  You need the
-mfmsr to remain somewhat in place for example.
-
-A big reason to not want inline asm for things like this is you need so
-very many operands in a single asm that way; it becomes very hard to
-write, esp. if you want it to be correct code as well.  That is a good
-hint there are better way to do this ;-)
-
-
-Segher
+>
