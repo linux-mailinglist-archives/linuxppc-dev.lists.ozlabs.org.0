@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7898267CD45
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 15:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F1B67CDEB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 15:23:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2jJM32NTz3fGQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 01:09:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2jcP4tzqz3fDM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 01:23:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.139.247; helo=outbound-smtp20.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 574 seconds by postgrey-1.36 at boromir; Fri, 27 Jan 2023 01:09:08 AEDT
-Received: from outbound-smtp20.blacknight.com (outbound-smtp20.blacknight.com [46.22.139.247])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=81.17.249.8; helo=outbound-smtp02.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 359 seconds by postgrey-1.36 at boromir; Fri, 27 Jan 2023 01:23:06 AEDT
+Received: from outbound-smtp02.blacknight.com (outbound-smtp02.blacknight.com [81.17.249.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2jHm3jtkz3cQV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 01:09:08 +1100 (AEDT)
-Received: from mail.blacknight.com (pemlinmail06.blacknight.ie [81.17.255.152])
-	by outbound-smtp20.blacknight.com (Postfix) with ESMTPS id D97D01C3D40
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 13:59:30 +0000 (GMT)
-Received: (qmail 19867 invoked from network); 26 Jan 2023 13:59:30 -0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2jbt23qGz3cH1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 01:23:06 +1100 (AEDT)
+Received: from mail.blacknight.com (pemlinmail01.blacknight.ie [81.17.254.10])
+	by outbound-smtp02.blacknight.com (Postfix) with ESMTPS id 946F5BECDC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 14:17:01 +0000 (GMT)
+Received: (qmail 24022 invoked from network); 26 Jan 2023 14:17:01 -0000
 Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 13:59:30 -0000
-Date: Thu, 26 Jan 2023 13:59:28 +0000
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 14:17:00 -0000
+Date: Thu, 26 Jan 2023 14:16:57 +0000
 From: Mel Gorman <mgorman@techsingularity.net>
 To: Suren Baghdasaryan <surenb@google.com>
 Subject: Re: [PATCH v3 3/7] mm: replace VM_LOCKED_CLEAR_MASK with
  VM_LOCKED_MASK
-Message-ID: <20230126135928.rby666sn3bdm3vja@techsingularity.net>
+Message-ID: <20230126141657.2d5uf7jx727uyvi6@techsingularity.net>
 References: <20230125233554.153109-1-surenb@google.com>
  <20230125233554.153109-4-surenb@google.com>
 MIME-Version: 1.0
