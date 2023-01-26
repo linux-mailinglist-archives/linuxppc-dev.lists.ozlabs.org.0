@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215F167C274
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A9467C28D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:46:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NZV0Ql1z3fLt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:35:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NpS0CWDz3fDM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:46:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Tr9UkL55;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=QrUq5ATj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Tr9UkL55;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=QrUq5ATj;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NYZ5X6dz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:34:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NnW12Lwz3bbc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:45:18 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 2694EB819AD;
-	Thu, 26 Jan 2023 01:34:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496BCC433D2;
-	Thu, 26 Jan 2023 01:34:50 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id CC90AB819AD;
+	Thu, 26 Jan 2023 01:45:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32671C433D2;
+	Thu, 26 Jan 2023 01:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1674696891;
-	bh=LpGTjcYf1DlUk7PNdNctpyCzducpqUJJbAKNiV2Q0RE=;
+	s=korg; t=1674697514;
+	bh=7RpoJrPZS6SJcilZwJlgfOcy8VI5bDbkm1rwJIiWgGs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Tr9UkL55WPFPewbf2dotzPIKAx3TUEKfjFLxWUGCD+S5BxsFHlxSuYjj7eTneEzDy
-	 hjItC983VD+8pWeiiEPpB/3tf8qK72AtPNlJOEAoyJ4PFNQKgIFIHrCqjg9SCXe9/M
-	 V9Pk+Y+an8xv+9CG3ZO/wLQU0kLqEOBYfboAzw4o=
-Date: Wed, 25 Jan 2023 17:34:49 -0800
+	b=QrUq5ATjY2oqR+jEAeForg1RvYMYo+bDZxJkpPvGEAQMtF9Wex3AsF6pj45qmjarD
+	 FkXgKw35BmzCytgE7GIRGvCG25LoCH1q8w/sqjuafA+hP0s/EWoOXsqZwbktTsZyRq
+	 n3OCsv9RwqATlbboWAh4Ya/cfUooerJ2jtkrgbTo=
+Date: Wed, 25 Jan 2023 17:45:12 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/7] kernel/fork: convert vma assignment to a memcpy
-Message-Id: <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
-In-Reply-To: <CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
-References: <20230125233554.153109-1-surenb@google.com>
-	<20230125233554.153109-2-surenb@google.com>
-	<20230125162159.a66e5ef05fecb405e85ffec9@linux-foundation.org>
-	<CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH 3/3] mm, arch: add generic implementation of pfn_valid()
+ for FLATMEM
+Message-Id: <20230125174512.ce5aed444cc8b8870825d8c2@linux-foundation.org>
+In-Reply-To: <20230125190757.22555-4-rppt@kernel.org>
+References: <20230125190757.22555-1-rppt@kernel.org>
+	<20230125190757.22555-4-rppt@kernel.org>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,38 +59,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, "Paul E. McKenney" <paulmck@kernel.org>, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com, mgorman
- @techsingularity.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux--csky@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thom
+ as Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 25 Jan 2023 16:50:01 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+On Wed, 25 Jan 2023 21:07:57 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-> On Wed, Jan 25, 2023 at 4:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > On Wed, 25 Jan 2023 15:35:48 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
-> >
-> > > Convert vma assignment in vm_area_dup() to a memcpy() to prevent compiler
-> > > errors when we add a const modifier to vma->vm_flags.
-> > >
-> > > ...
-> > >
-> > > --- a/kernel/fork.c
-> > > +++ b/kernel/fork.c
-> > > @@ -482,7 +482,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
-> > >                * orig->shared.rb may be modified concurrently, but the clone
-> > >                * will be reinitialized.
-> > >                */
-> > > -             *new = data_race(*orig);
-> > > +             memcpy(new, orig, sizeof(*new));
-> >
-> > The data_race() removal is unchangelogged?
+> Every architecture that supports FLATMEM memory model defines its own
+> version of pfn_valid() that essentially compares a pfn to max_mapnr.
 > 
-> True. I'll add a note in the changelog about that. Ideally I would
-> like to preserve it but I could not find a way to do that.
-> 
+> Use mips/powerpc version implemented as static inline as a generic
+> implementation of pfn_valid() and drop its per-architecture definitions
 
-Perhaps Paul can comment?
+arm allnoconfig:
 
-I wonder if KCSAN knows how to detect this race, given that it's now in
-a memcpy.  I assume so.
+./include/asm-generic/memory_model.h:23:19: error: static declaration of 'pfn_valid' follows non-static declaration
+   23 | static inline int pfn_valid(unsigned long pfn)
+      |                   ^~~~~~~~~
+./arch/arm/include/asm/page.h:160:12: note: previous declaration of 'pfn_valid' with type 'int(long unsigned int)'
+  160 | extern int pfn_valid(unsigned long);
+      |            ^~~~~~~~~
+
+
+I thought of doing
+
+--- a/arch/arm/include/asm/page.h~mm-arch-add-generic-implementation-of-pfn_valid-for-flatmem-fix
++++ a/arch/arm/include/asm/page.h
+@@ -156,10 +156,6 @@ extern void copy_page(void *to, const vo
+ 
+ typedef struct page *pgtable_t;
+ 
+-#ifdef CONFIG_HAVE_ARCH_PFN_VALID
+-extern int pfn_valid(unsigned long);
+-#endif
+-
+ #include <asm/memory.h>
+ 
+ #endif /* !__ASSEMBLY__ */
+_
+
+but I'm seeing a pfn_valid declaration in arch/arc/include/asm/page.h
+which might be a problem.
+
+v2, please ;)
