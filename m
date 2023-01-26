@@ -1,40 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDB067D324
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:27:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF98D67D327
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:28:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2nhq1nr8z3fH5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:27:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2njm5J6mz3fGQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:28:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlhONz+Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=81.17.249.41; helo=outbound-smtp21.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
-Received: from outbound-smtp21.blacknight.com (outbound-smtp21.blacknight.com [81.17.249.41])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=tns5=5x=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlhONz+Y;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2nhF2C9hz3bk8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:27:07 +1100 (AEDT)
-Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
-	by outbound-smtp21.blacknight.com (Postfix) with ESMTPS id 060CBCCB31
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 17:27:02 +0000 (GMT)
-Received: (qmail 17492 invoked from network); 26 Jan 2023 17:27:01 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 17:27:01 -0000
-Date: Thu, 26 Jan 2023 17:26:57 +0000
-From: Mel Gorman <mgorman@techsingularity.net>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 4/7] mm: replace vma->vm_flags direct modifications
- with modifier calls
-Message-ID: <20230126172657.bmga5hy74ifsbhun@techsingularity.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2nhh08yzz3fJG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:27:31 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 6C466B81EC1;
+	Thu, 26 Jan 2023 17:27:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1273EC433D2;
+	Thu, 26 Jan 2023 17:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674754047;
+	bh=C9DPduSJN49w2aJL07oo9HEwA59sZ5h+51ZoAP6pWmk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=mlhONz+YVANknW+/iMcnirDtC6dO3xyzjm3nJYRzU0F6DqW7fAAdspeFnq5ApVpqU
+	 Yq2FkJiO4Rua69tMlM7obKQe1TS/ks3E1MaxZDd3l887LTVFRbJ8rvRK50yA8rX+G5
+	 2Zny67+NCrk54BZJVc9bzvkN1FLByAarCaE7ApKq663ecrkaK1jtFWgydyrP/dPKX4
+	 WTnrYtu9O1KzwNfR52+J6AB18LXI7tjZLwpmcaKY9uLDYoSF8mrhXSFOSjs2Qux2us
+	 Oz6TWX6/34uOAePk5LKHlLRPBoNFLhLl7wq+bmJrY1iACaf2t9Tjc26kiTWvRO6NB5
+	 xlmU8DNaGJQyQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id B2AE15C0510; Thu, 26 Jan 2023 09:27:26 -0800 (PST)
+Date: Thu, 26 Jan 2023 09:27:26 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 1/7] kernel/fork: convert vma assignment to a memcpy
+Message-ID: <20230126172726.GA682281@paulmck-ThinkPad-P17-Gen-1>
 References: <20230125233554.153109-1-surenb@google.com>
- <20230125233554.153109-5-surenb@google.com>
- <20230126151015.ru2m26jkhwib6x6u@techsingularity.net>
- <CAJuCfpEzAbpy9rZ5KeZXQsqFTPOGYv6CZQfP9SHqcqFi0s7neg@mail.gmail.com>
+ <20230125233554.153109-2-surenb@google.com>
+ <20230125162159.a66e5ef05fecb405e85ffec9@linux-foundation.org>
+ <CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+ <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJuCfpEzAbpy9rZ5KeZXQsqFTPOGYv6CZQfP9SHqcqFi0s7neg@mail.gmail.com>
+In-Reply-To: <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,73 +65,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: paulmck@kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, elver@go, dave@stgolabs.net, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com
+ , mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 08:10:26AM -0800, Suren Baghdasaryan wrote:
-> On Thu, Jan 26, 2023 at 7:10 AM Mel Gorman <mgorman@techsingularity.net> wrote:
-> >
-> > On Wed, Jan 25, 2023 at 03:35:51PM -0800, Suren Baghdasaryan wrote:
-> > > Replace direct modifications to vma->vm_flags with calls to modifier
-> > > functions to be able to track flag changes and to keep vma locking
-> > > correctness.
+On Wed, Jan 25, 2023 at 05:34:49PM -0800, Andrew Morton wrote:
+> On Wed, 25 Jan 2023 16:50:01 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> 
+> > On Wed, Jan 25, 2023 at 4:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
 > > >
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > Acked-by: Michal Hocko <mhocko@suse.com>
-> >
-> > Acked-by: Mel Gorman <mgorman@techsingularity.net>
-> >
-> > Minor comments that are safe to ignore.
-> >
-> > I think a better name for mod_vm_flags is set_clear_vm_flags to hint that
-> > the first flags are to be set and the second flags are to be cleared.
-> > For this patch, it doesn't matter, but it might avoid accidental swapping
-> > in the future.
-> >
-> > reset_vm_flags might also be better named as reinit_vma_flags (or
-> > vma_flags_reinit). Maybe also encourage the use of [set|clear_mod]_vm_flags
-> > where possible in the comment to track exactly what is changing and
-> > why. Some cases like userfaultfd just want to clear __VM_UFFD_FLAGS but
-> > altering the flow in this patch is inappropriate and error prone. Others
-> > such as the infiniband changes and madvise are a lot more complex.
+> > > On Wed, 25 Jan 2023 15:35:48 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> > >
+> > > > Convert vma assignment in vm_area_dup() to a memcpy() to prevent compiler
+> > > > errors when we add a const modifier to vma->vm_flags.
+> > > >
+> > > > ...
+> > > >
+> > > > --- a/kernel/fork.c
+> > > > +++ b/kernel/fork.c
+> > > > @@ -482,7 +482,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+> > > >                * orig->shared.rb may be modified concurrently, but the clone
+> > > >                * will be reinitialized.
+> > > >                */
+> > > > -             *new = data_race(*orig);
+> > > > +             memcpy(new, orig, sizeof(*new));
+> > >
+> > > The data_race() removal is unchangelogged?
+> > 
+> > True. I'll add a note in the changelog about that. Ideally I would
+> > like to preserve it but I could not find a way to do that.
 > 
-> That's a good point, but I don't want people to use mod_vm_flags() for
-> the cases when the order of set/clear really matters. In such cases
-> set_vm_flags() and clear_vm_flags() should be explicitly used. Maybe
-> to make that clear I should add a comment and rewrite the functions
-> as:
+> Perhaps Paul can comment?
 > 
-> void mod_vm_flags(vma, set, clear) {
->     vma.vm_flags = vma.vm_flags | set & clear;
-> }
-> 
+> I wonder if KCSAN knows how to detect this race, given that it's now in
+> a memcpy.  I assume so.
 
-Offhand, I'm not thinking of a case where that really matters and as they
-are not necessarily ordered, it's raising a read flag so yes, it definitely
-it needs a comment if the ordering matters.
+I ran an experiment memcpy()ing between a static array and an onstack
+array, and KCSAN did not complain.  But maybe I was setting it up wrong.
 
-> In this patchset it's not that obvious but mod_vm_flags() was really
-> introduced in the original per-VMA lock patchset for efficiency to
-> avoid taking extra per-VMA locks. A combo of
-> set_vm_flags()+clear_vm_flags() would try to retake the same per-VMA
-> lock in the second call while mod_vm_flags() takes the lock only once
-> and does both operations.
+This is what I did:
 
-Ok, that seems fair but still needs a comment on why a mod_vm_flags is
-not necessarily equivalent to a set_vm_flags + clear_vm_flags in terms of
-correctness if that is indeed the case.
+	long myid = (long)arg; /* different value for each task */
+	static unsigned long z1[10] = { 0 };
+	unsigned long z2[10];
 
-> Not a huge overhead because we check if the
-> lock is already taken and bail out early but still...
-> So, would the above modification to mod_vm_flags() address your concern?
-> 
+	...
 
-My concerns are entirely with the callers, not the implementation. If
-someone is modifying a call site using mod_vm_flags, they have to read
-through all the preceding logic to ensure the final combination of flags
-is valid.  It's a code maintenance issue, not a correctness issue.
+	memcpy(z1, z2, ARRAY_SIZE(z1) * sizeof(z1[0]));
+	for (zi = 0; zi < ARRAY_SIZE(z1); zi++)
+		z2[zi] += myid;
+	memcpy(z2, z1, ARRAY_SIZE(z1) * sizeof(z1[0]));
 
--- 
-Mel Gorman
-SUSE Labs
+Adding Marco on CC for his thoughts.
+
+						Thanx, Paul
