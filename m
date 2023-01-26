@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B294967D598
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 20:43:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080CA67D599
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 20:44:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2rjT3jltz3fKs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 06:43:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2rkf6Vvpz3fJj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 06:44:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Pfx+wzAh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=m73DxO9j;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3onbsywykdl0vxuhqejrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3otbsywykdl8xzwjsglttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Pfx+wzAh;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=m73DxO9j;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2rbR12grz3fFq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 06:38:10 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id k15-20020a5b0a0f000000b007eba3f8e3baso2943982ybq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:38:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2rbS5Mc3z3fFN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 06:38:12 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id d21-20020a25add5000000b007ff8112e8b8so2964111ybe.17
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:38:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7SychSIO4sUWIo6QruxirbFjx5CbYNnUeHZ00ltQsQk=;
-        b=Pfx+wzAhZ6kKsJzDDedQ8LJwSdqFciZXcllolwp4vBQ+2oIO3zY1GANQzoJfCZWzvE
-         CQPh21a5oWziH93KMEhfcmcYLI66KcWMq+wv9dH36RAXDaWDj3mhxF37O3hO+Nm3j333
-         DQpz5N93q63IgXjq4N824biP5tt/Btbtpk79Xp1oY2XkCbJniy2hm75eubONJlrUyJHz
-         4nhnfw5vwu2MM7c8JHS86kwr5IkxCGiAvk+B0fbplC2co4C0HnFTpw4esf89gAkAXtE3
-         btQ+U4BHBe8XCXeuy8OqZ9E2kM4KncMQmpjGCBcfb2U1tiWjIaGyYCULw+IAQrOfXIUP
-         +Htg==
+        bh=ZiBPU+eDHOqkXMrsDufSC0gz6UzIoIV8gCa/IcOfB+E=;
+        b=m73DxO9jMvetXVPEszi0Jq7mi01vVVgt0BZIvBznYhv6ivS8hm7+23OxZRlC61JcUZ
+         BHwUuqPCw+b5nazQInMzzi3+biojKImVBuXc30nFSw1PLF1kt5V7xEaZCKfimLJL93+9
+         TVAzPsoC/CDsJzMhAqE/M7vA04soveCg9rschI+7VItGY4S7zAYu3W7Gmg5yVd0plpnO
+         wz0yONbTGqZ76kWnjIRpBT4RqBUiZM9/aVjX1vovX5GCHpHkfG3oBQGTqt4kRKcg15yB
+         xy9oqMlpTp7XCjAgCH87WkHAOrFK2I8Q2mUGM8JqhUbfsRh7aHMWsVJQdO5n/1nFv+h0
+         54Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7SychSIO4sUWIo6QruxirbFjx5CbYNnUeHZ00ltQsQk=;
-        b=vvHFFXEU9ShPlJNRfDEhpEHTc+/2vU99x1ySOVZZuR/PSOt534Ua25LvoCeRlYeHPo
-         G5l9hJM2QzS9xiy48bc26mxV9v5oGDEyyB93qo0b4Awpjcn94xgELwv3bmjJ3QTyemVy
-         /lW+5FDldbYJGjEu/sBk9wkwbeyLQ5GVrhKKWSippIMG2jmS5iORfCFIPuAtl6YbJc+m
-         aOTffemU1JbDK9KdDSeIGRxubhemxNKxAwWjqm7jVxD3wJqx3eqcXwoZ/QRfSZQ6mnWL
-         vxsrzEnA53Demc+0h9BvJxV7IrENKTIlTIQn/6GGfHhOyoIftBeBRt1Ypv424PhsQPMF
-         Mgpg==
-X-Gm-Message-State: AFqh2krkxdbAK+CcqGedZQKg34UQ7z2BmmWgdeqkk5HlDhzK+I8XL4Mz
-	JOzWimJZu7cb5756FqhfFnxG4AJZMP0=
-X-Google-Smtp-Source: AMrXdXsXS6jvs2FLo8wLjzpNR7510A/NF2577gEg88y5p+yBM43aas9S20uDvZYfhxK8qIb0YJZmeRS9JA0=
+        bh=ZiBPU+eDHOqkXMrsDufSC0gz6UzIoIV8gCa/IcOfB+E=;
+        b=d8cqknvvGsg5f7GAXQMCm3Z8TgOJ6kfwdvB14MhlWVF2P+HmScJjbWhaggBM3ckP3g
+         xmkCndCyhYVTvGs/EBsbKHkS6PPJDsrrbNpylFccPGGKV0DHFj6bmYHV4Ajc/9ujHo4R
+         +H4Xen9vJn53hQrhRsM7xmTd5LmWiHoyscqNCv0XwdANgEIdq5q18mghbkLgVSO6cRSF
+         6aAU+O6WiJ3Ryr6plERJzkpo2UuwnUZxeTlijstzW5szZJSZrHae8UUgygApNwzKQb27
+         d0Ie6kFD5tSUHuT2r926FFU/4miewTJ6QkNfHG7vNBXJDuapNO4J67S6yCQyuSO6i9El
+         XqRw==
+X-Gm-Message-State: AFqh2kollViGbClhaSW84e3C8wuhiSGes/wGPUYhzZcsA1WbSHF2V6LB
+	OpcQy0Cu+ye5xFyGzUA8PiigkNCHxcE=
+X-Google-Smtp-Source: AMrXdXt20QRkRihGWlEdRJDhT+YO7v3lUpepK3uuj9V92kEGUFyRzloVkr71qHyKbWGH8sK+KSDR5LyhftY=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:d774:88af:bab3:648d])
- (user=surenb job=sendgmr) by 2002:a5b:2ca:0:b0:7d2:d238:42b4 with SMTP id
- h10-20020a5b02ca000000b007d2d23842b4mr3963873ybp.526.1674761888262; Thu, 26
- Jan 2023 11:38:08 -0800 (PST)
-Date: Thu, 26 Jan 2023 11:37:50 -0800
+ (user=surenb job=sendgmr) by 2002:a5b:684:0:b0:804:cc8:dea3 with SMTP id
+ j4-20020a5b0684000000b008040cc8dea3mr2587550ybq.451.1674761890401; Thu, 26
+ Jan 2023 11:38:10 -0800 (PST)
+Date: Thu, 26 Jan 2023 11:37:51 -0800
 In-Reply-To: <20230126193752.297968-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230126193752.297968-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230126193752.297968-6-surenb@google.com>
-Subject: [PATCH v4 5/7] mm: replace vma->vm_flags indirect modification in ksm_madvise
+Message-ID: <20230126193752.297968-7-surenb@google.com>
+Subject: [PATCH v4 6/7] mm: introduce __vm_flags_mod and use it in untrack_pfn
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,72 +79,258 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace indirect modifications to vma->vm_flags with calls to modifier
-functions to be able to track flag changes and to keep vma locking
-correctness.
+There are scenarios when vm_flags can be modified without exclusive
+mmap_lock, such as:
+- after VMA was isolated and mmap_lock was downgraded or dropped
+- in exit_mmap when there are no other mm users and locking is unnecessary
+Introduce __vm_flags_mod to avoid assertions when the caller takes
+responsibility for the required locking.
+Pass a hint to untrack_pfn to conditionally use __vm_flags_mod for
+flags modification to avoid assertion.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 6 +++++-
- arch/s390/mm/gmap.c                | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/memtype.c | 10 +++++++---
+ include/linux/mm.h        | 14 ++++++++++++--
+ include/linux/pgtable.h   |  5 +++--
+ mm/memory.c               | 13 +++++++------
+ mm/memremap.c             |  4 ++--
+ mm/mmap.c                 | 16 ++++++++++------
+ 6 files changed, 41 insertions(+), 21 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 1d67baa5557a..709ebd578394 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -393,6 +393,7 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index 6ca51b1aa5d9..691bf8934b6f 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -1046,7 +1046,7 @@ void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot, pfn_t pfn)
+  * can be for the entire vma (in which case pfn, size are zero).
+  */
+ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+-		 unsigned long size)
++		 unsigned long size, bool mm_wr_locked)
  {
- 	unsigned long gfn = memslot->base_gfn;
- 	unsigned long end, start = gfn_to_hva(kvm, gfn);
-+	unsigned long vm_flags;
- 	int ret = 0;
- 	struct vm_area_struct *vma;
- 	int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
-@@ -409,12 +410,15 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
- 			ret = H_STATE;
- 			break;
- 		}
-+		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
-+		vm_flags = vma->vm_flags;
- 		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
--			  merge_flag, &vma->vm_flags);
-+			  merge_flag, &vm_flags);
- 		if (ret) {
- 			ret = H_STATE;
- 			break;
- 		}
-+		vm_flags_reset(vma, vm_flags);
- 		start = vma->vm_end;
- 	} while (end > vma->vm_end);
- 
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index ab836597419d..5a716bdcba05 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -2587,14 +2587,18 @@ int gmap_mark_unmergeable(void)
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma;
-+	unsigned long vm_flags;
- 	int ret;
- 	VMA_ITERATOR(vmi, mm, 0);
- 
- 	for_each_vma(vmi, vma) {
-+		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
-+		vm_flags = vma->vm_flags;
- 		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
--				  MADV_UNMERGEABLE, &vma->vm_flags);
-+				  MADV_UNMERGEABLE, &vm_flags);
- 		if (ret)
- 			return ret;
-+		vm_flags_reset(vma, vm_flags);
+ 	resource_size_t paddr;
+ 	unsigned long prot;
+@@ -1065,8 +1065,12 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+ 		size = vma->vm_end - vma->vm_start;
  	}
- 	mm->def_flags &= ~VM_MERGEABLE;
- 	return 0;
+ 	free_pfn_range(paddr, size);
+-	if (vma)
+-		vm_flags_clear(vma, VM_PAT);
++	if (vma) {
++		if (mm_wr_locked)
++			vm_flags_clear(vma, VM_PAT);
++		else
++			__vm_flags_mod(vma, 0, VM_PAT);
++	}
+ }
+ 
+ /*
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 3c7fc3ecaece..a00fdeb4492d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -656,6 +656,16 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
+ 	ACCESS_PRIVATE(vma, __vm_flags) &= ~flags;
+ }
+ 
++/*
++ * Use only if VMA is not part of the VMA tree or has no other users and
++ * therefore needs no locking.
++ */
++static inline void __vm_flags_mod(struct vm_area_struct *vma,
++				  vm_flags_t set, vm_flags_t clear)
++{
++	vm_flags_init(vma, (vma->vm_flags | set) & ~clear);
++}
++
+ /*
+  * Use only when the order of set/clear operations is unimportant, otherwise
+  * use vm_flags_{set|clear} explicitly.
+@@ -664,7 +674,7 @@ static inline void vm_flags_mod(struct vm_area_struct *vma,
+ 				vm_flags_t set, vm_flags_t clear)
+ {
+ 	mmap_assert_write_locked(vma->vm_mm);
+-	vm_flags_init(vma, (vma->vm_flags | set) & ~clear);
++	__vm_flags_mod(vma, set, clear);
+ }
+ 
+ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+@@ -2102,7 +2112,7 @@ static inline void zap_vma_pages(struct vm_area_struct *vma)
+ }
+ void unmap_vmas(struct mmu_gather *tlb, struct maple_tree *mt,
+ 		struct vm_area_struct *start_vma, unsigned long start,
+-		unsigned long end);
++		unsigned long end, bool mm_wr_locked);
+ 
+ struct mmu_notifier_range;
+ 
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 5fd45454c073..c63cd44777ec 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1185,7 +1185,8 @@ static inline int track_pfn_copy(struct vm_area_struct *vma)
+  * can be for the entire vma (in which case pfn, size are zero).
+  */
+ static inline void untrack_pfn(struct vm_area_struct *vma,
+-			       unsigned long pfn, unsigned long size)
++			       unsigned long pfn, unsigned long size,
++			       bool mm_wr_locked)
+ {
+ }
+ 
+@@ -1203,7 +1204,7 @@ extern void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
+ 			     pfn_t pfn);
+ extern int track_pfn_copy(struct vm_area_struct *vma);
+ extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+-			unsigned long size);
++			unsigned long size, bool mm_wr_locked);
+ extern void untrack_pfn_moved(struct vm_area_struct *vma);
+ #endif
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index a6316cda0e87..7a04a1130ec1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1613,7 +1613,7 @@ void unmap_page_range(struct mmu_gather *tlb,
+ static void unmap_single_vma(struct mmu_gather *tlb,
+ 		struct vm_area_struct *vma, unsigned long start_addr,
+ 		unsigned long end_addr,
+-		struct zap_details *details)
++		struct zap_details *details, bool mm_wr_locked)
+ {
+ 	unsigned long start = max(vma->vm_start, start_addr);
+ 	unsigned long end;
+@@ -1628,7 +1628,7 @@ static void unmap_single_vma(struct mmu_gather *tlb,
+ 		uprobe_munmap(vma, start, end);
+ 
+ 	if (unlikely(vma->vm_flags & VM_PFNMAP))
+-		untrack_pfn(vma, 0, 0);
++		untrack_pfn(vma, 0, 0, mm_wr_locked);
+ 
+ 	if (start != end) {
+ 		if (unlikely(is_vm_hugetlb_page(vma))) {
+@@ -1675,7 +1675,7 @@ static void unmap_single_vma(struct mmu_gather *tlb,
+  */
+ void unmap_vmas(struct mmu_gather *tlb, struct maple_tree *mt,
+ 		struct vm_area_struct *vma, unsigned long start_addr,
+-		unsigned long end_addr)
++		unsigned long end_addr, bool mm_wr_locked)
+ {
+ 	struct mmu_notifier_range range;
+ 	struct zap_details details = {
+@@ -1689,7 +1689,8 @@ void unmap_vmas(struct mmu_gather *tlb, struct maple_tree *mt,
+ 				start_addr, end_addr);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	do {
+-		unmap_single_vma(tlb, vma, start_addr, end_addr, &details);
++		unmap_single_vma(tlb, vma, start_addr, end_addr, &details,
++				 mm_wr_locked);
+ 	} while ((vma = mas_find(&mas, end_addr - 1)) != NULL);
+ 	mmu_notifier_invalidate_range_end(&range);
+ }
+@@ -1723,7 +1724,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+ 	 * unmap 'address-end' not 'range.start-range.end' as range
+ 	 * could have been expanded for hugetlb pmd sharing.
+ 	 */
+-	unmap_single_vma(&tlb, vma, address, end, details);
++	unmap_single_vma(&tlb, vma, address, end, details, false);
+ 	mmu_notifier_invalidate_range_end(&range);
+ 	tlb_finish_mmu(&tlb);
+ }
+@@ -2492,7 +2493,7 @@ int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+ 
+ 	err = remap_pfn_range_notrack(vma, addr, pfn, size, prot);
+ 	if (err)
+-		untrack_pfn(vma, pfn, PAGE_ALIGN(size));
++		untrack_pfn(vma, pfn, PAGE_ALIGN(size), true);
+ 	return err;
+ }
+ EXPORT_SYMBOL(remap_pfn_range);
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 08cbf54fe037..2f88f43d4a01 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -129,7 +129,7 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
+ 	}
+ 	mem_hotplug_done();
+ 
+-	untrack_pfn(NULL, PHYS_PFN(range->start), range_len(range));
++	untrack_pfn(NULL, PHYS_PFN(range->start), range_len(range), true);
+ 	pgmap_array_delete(range);
+ }
+ 
+@@ -276,7 +276,7 @@ static int pagemap_range(struct dev_pagemap *pgmap, struct mhp_params *params,
+ 	if (!is_private)
+ 		kasan_remove_zero_shadow(__va(range->start), range_len(range));
+ err_kasan:
+-	untrack_pfn(NULL, PHYS_PFN(range->start), range_len(range));
++	untrack_pfn(NULL, PHYS_PFN(range->start), range_len(range), true);
+ err_pfn_remap:
+ 	pgmap_array_delete(range);
+ 	return error;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 3d9b14d5f933..429e42c8fccc 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -78,7 +78,7 @@ core_param(ignore_rlimit_data, ignore_rlimit_data, bool, 0644);
+ static void unmap_region(struct mm_struct *mm, struct maple_tree *mt,
+ 		struct vm_area_struct *vma, struct vm_area_struct *prev,
+ 		struct vm_area_struct *next, unsigned long start,
+-		unsigned long end);
++		unsigned long end, bool mm_wr_locked);
+ 
+ static pgprot_t vm_pgprot_modify(pgprot_t oldprot, unsigned long vm_flags)
+ {
+@@ -2136,14 +2136,14 @@ static inline void remove_mt(struct mm_struct *mm, struct ma_state *mas)
+ static void unmap_region(struct mm_struct *mm, struct maple_tree *mt,
+ 		struct vm_area_struct *vma, struct vm_area_struct *prev,
+ 		struct vm_area_struct *next,
+-		unsigned long start, unsigned long end)
++		unsigned long start, unsigned long end, bool mm_wr_locked)
+ {
+ 	struct mmu_gather tlb;
+ 
+ 	lru_add_drain();
+ 	tlb_gather_mmu(&tlb, mm);
+ 	update_hiwater_rss(mm);
+-	unmap_vmas(&tlb, mt, vma, start, end);
++	unmap_vmas(&tlb, mt, vma, start, end, mm_wr_locked);
+ 	free_pgtables(&tlb, mt, vma, prev ? prev->vm_end : FIRST_USER_ADDRESS,
+ 				 next ? next->vm_start : USER_PGTABLES_CEILING);
+ 	tlb_finish_mmu(&tlb);
+@@ -2391,7 +2391,11 @@ do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 			mmap_write_downgrade(mm);
+ 	}
+ 
+-	unmap_region(mm, &mt_detach, vma, prev, next, start, end);
++	/*
++	 * We can free page tables without write-locking mmap_lock because VMAs
++	 * were isolated before we downgraded mmap_lock.
++	 */
++	unmap_region(mm, &mt_detach, vma, prev, next, start, end, !downgrade);
+ 	/* Statistics and freeing VMAs */
+ 	mas_set(&mas_detach, start);
+ 	remove_mt(mm, &mas_detach);
+@@ -2704,7 +2708,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 
+ 		/* Undo any partial mapping done by a device driver. */
+ 		unmap_region(mm, &mm->mm_mt, vma, prev, next, vma->vm_start,
+-			     vma->vm_end);
++			     vma->vm_end, true);
+ 	}
+ 	if (file && (vm_flags & VM_SHARED))
+ 		mapping_unmap_writable(file->f_mapping);
+@@ -3031,7 +3035,7 @@ void exit_mmap(struct mm_struct *mm)
+ 	tlb_gather_mmu_fullmm(&tlb, mm);
+ 	/* update_hiwater_rss(mm) here? but nobody should be looking */
+ 	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
+-	unmap_vmas(&tlb, &mm->mm_mt, vma, 0, ULONG_MAX);
++	unmap_vmas(&tlb, &mm->mm_mt, vma, 0, ULONG_MAX, false);
+ 	mmap_read_unlock(mm);
+ 
+ 	/*
 -- 
 2.39.1
 
