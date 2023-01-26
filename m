@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D635A67D108
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 17:11:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2642067D10F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 17:12:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2m0v4jclz3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:11:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2m270Grwz3fG5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:12:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=dnxwXMBL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=F4aRNUuV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b30; helo=mail-yb1-xb30.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=dnxwXMBL;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=F4aRNUuV;
 	dkim-atps=neutral
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2m0101wwz2ylk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 03:10:39 +1100 (AEDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 129so2611080ybb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 08:10:39 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2m196f8Zz2yyh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 03:11:41 +1100 (AEDT)
+Received: by mail-yb1-xb30.google.com with SMTP id b1so2527163ybn.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 08:11:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZillkAQcPkfKcuR5z2FouZl025AEUWnaCf8P3oZ7OXA=;
-        b=dnxwXMBLep5R+FehvqPgRhUAguuUtvmXE3Ig6NgptPHYVWIRfyKSvsp5vzKcOhhin8
-         Y8Xtmu+WwcdZSDk6wkPgW7Fvaeq2vIQEHqJcRKjz3HMN0WxNn5YkqCtyW+tukJBK/H6B
-         2a95hltksedzFqojZM11HXR5tDWNzKtsfI34jfOPOy3rYuwkMiq/4uLqkh02F9NnXaON
-         LIzRMI4TVIAYMq5JVOiYS/9h1FSjJ+kkcjInPnFxFs5N3qv5B0l8RSyBNdfLEOEvS+H5
-         zvs/hmgowHhxsRrzAOlo0dJxHNc/nC7Fo/Vb1sNUS2zO713oOq7Jv9SDri/HSNsmK9jD
-         7y3Q==
+        bh=avupiuDAbLM3PyQGhRhg5PpJotruwpJ0ItNruSnPDto=;
+        b=F4aRNUuVVxsDBeXKsHm0/n4bD8ec/RvsWf4QHiaPtWESGWCVcLcyLKe9Jd548b052h
+         QcT6RtpE5UZKWO+YM6n5OvW4ARJ407Bh/66B49pzxrLWo0wLTwvYXksgxlAxJP0ioT2A
+         Ualx0U2WcTfPugYJrqjVJj1hLBW/6lt2d5fTsCBLTpqMFd3n42vfTrLpt86ugZXy5nJt
+         QY7vUCD1iSwt54l8qO7z+mpREsvijxTv+UkGBr5zHsEg/ZvnO6ENLfsmCjldantrjHKi
+         izJKDDdVWgISSoDXUQEPobl6q3z+Qvi6Jzv0Ef01T3mTiN/xvpQhZNzm1GdzaOYEsUKe
+         IgQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZillkAQcPkfKcuR5z2FouZl025AEUWnaCf8P3oZ7OXA=;
-        b=pCnm1W2LOs86/c6aRjLLMPDNe/syotN7uwkJ1MYc3UB+PCiVBFP9JwX22Wecn+ClF+
-         ViLOL7uQFIZZEOYONbGxl9iLStNfdhK9qSdGbyBSUmJ3zZaPxxZ0k98IUbVTNbev5U5C
-         bjJ60ltM33LM5wgM3NfPAifTlBTDvI5yFJ4OcBB+OPVgZPH9ACohnhb4hawAy3A1kMpo
-         9C9zntJ8hsKXijlLSeaoC/p1QEIWikZ52KBcAVe5jmZVAxZo5irQeM5xqh/rJGAsl6rZ
-         S8YAKnmwXb7ZHKvQqs0FHjqhvf3uUSzGmJQY7C/0skDjaFZ7UOHyRnpO3mtxMGQDeeu/
-         UQkA==
-X-Gm-Message-State: AO0yUKUGA1XNqRWhLB5qmWfdWE8JPN2HYgVXiMGYKOvJ0PS+IcOsg07z
-	8zxYntbfaDFsr8iWF0QTwcAyRINdeEq68VDu4fFfQg==
-X-Google-Smtp-Source: AK7set9O1l93hGrWLunCpG3rRqj7icW6f5ntPr5CkFep+bB1YJY+4Iq5pDRLfxFVN6CNNogAmMZ46djgKR1gZe+HLYY=
-X-Received: by 2002:a25:5209:0:b0:80b:5988:2045 with SMTP id
- g9-20020a255209000000b0080b59882045mr1087115ybb.59.1674749437114; Thu, 26 Jan
- 2023 08:10:37 -0800 (PST)
+        bh=avupiuDAbLM3PyQGhRhg5PpJotruwpJ0ItNruSnPDto=;
+        b=B8zyPox5L+YcFYu0c68SYhXUYZH6q4NeKTDdaMxhyf0e9htoI6N0fCWBFCPM62SMQM
+         rxQO6fPJyVdZlNn4fokmvnd4wf5i0/U7D2l5L6YknCCTn9dQCyn+Mrk8Se6rsvcEZVs0
+         zug80MUkzV0G9VO7MfA2N8CgGfWE3hy4NtdN8HHkVC3sj1yocjBJQBiyaslKJgpqcgdF
+         bOzPaGf3OxZ2drNDu3MLZHCAc7icdO6gJrsUG97a2sIvct+HVKJH3CDDlEJLbpUpKZx8
+         NNRmsT+vOCl2Xqo9AkEVobYePm1D5Wxr3R+A3YjtHe2L/kMPFJ+UpVL4FZisNLXqgzib
+         OK5g==
+X-Gm-Message-State: AO0yUKV57t4fTlzWoiGWazej3CKwogsrARNocZYCzxdyosfizY+huMxU
+	T5lcNJrPUgOLBRw8zlTsRx+sXZtGUzsH4XborzMoVA==
+X-Google-Smtp-Source: AK7set9JejgaDEq/8tf/XX17cO+V0P18PwdgAGce26N1rqJGw+gXM9FumIvm5V3c8mJiZHRvPDjFNqGKBCO61IcUfSw=
+X-Received: by 2002:a25:ad02:0:b0:80b:6fd3:84d3 with SMTP id
+ y2-20020a25ad02000000b0080b6fd384d3mr1139572ybi.316.1674749499156; Thu, 26
+ Jan 2023 08:11:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20230125233554.153109-1-surenb@google.com> <20230125233554.153109-5-surenb@google.com>
- <20230126151015.ru2m26jkhwib6x6u@techsingularity.net>
-In-Reply-To: <20230126151015.ru2m26jkhwib6x6u@techsingularity.net>
+References: <20230125233554.153109-1-surenb@google.com> <20230125233554.153109-6-surenb@google.com>
+ <20230126151923.4fu34ytwkpbbnvha@techsingularity.net>
+In-Reply-To: <20230126151923.4fu34ytwkpbbnvha@techsingularity.net>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Jan 2023 08:10:26 -0800
-Message-ID: <CAJuCfpEzAbpy9rZ5KeZXQsqFTPOGYv6CZQfP9SHqcqFi0s7neg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] mm: replace vma->vm_flags direct modifications
- with modifier calls
+Date: Thu, 26 Jan 2023 08:11:28 -0800
+Message-ID: <CAJuCfpGyrxVJf1tuU=YUsjdhfPbPK4Bk4KmTO9OVRKfF-_XeEA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] mm: replace vma->vm_flags indirect modification in ksm_madvise
 To: Mel Gorman <mgorman@techsingularity.net>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,50 +78,88 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 7:10 AM Mel Gorman <mgorman@techsingularity.net> wrote:
+On Thu, Jan 26, 2023 at 7:19 AM Mel Gorman <mgorman@techsingularity.net> wrote:
 >
-> On Wed, Jan 25, 2023 at 03:35:51PM -0800, Suren Baghdasaryan wrote:
-> > Replace direct modifications to vma->vm_flags with calls to modifier
+> On Wed, Jan 25, 2023 at 03:35:52PM -0800, Suren Baghdasaryan wrote:
+> > Replace indirect modifications to vma->vm_flags with calls to modifier
 > > functions to be able to track flag changes and to keep vma locking
 > > correctness.
 > >
 > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > ---
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c | 5 ++++-
+> >  arch/s390/mm/gmap.c                | 5 ++++-
+> >  2 files changed, 8 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > index 1d67baa5557a..325a7a47d348 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > @@ -393,6 +393,7 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+> >  {
+> >       unsigned long gfn = memslot->base_gfn;
+> >       unsigned long end, start = gfn_to_hva(kvm, gfn);
+> > +     unsigned long vm_flags;
+> >       int ret = 0;
+> >       struct vm_area_struct *vma;
+> >       int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
+> > @@ -409,12 +410,14 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+> >                       ret = H_STATE;
+> >                       break;
+> >               }
+> > +             vm_flags = vma->vm_flags;
+> >               ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> > -                       merge_flag, &vma->vm_flags);
+> > +                       merge_flag, &vm_flags);
+> >               if (ret) {
+> >                       ret = H_STATE;
+> >                       break;
+> >               }
+> > +             reset_vm_flags(vma, vm_flags);
+> >               start = vma->vm_end;
+> >       } while (end > vma->vm_end);
+>
+> Add a comment on why the vm_flags are copied in case someone "optimises"
+> this in the future? Something like
+>
+> /* Copy vm_flags to avoid any partial modifications in ksm_madvise. */
+
+Ack.
+
+>
+> >
+> > diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+> > index 3a695b8a1e3c..d5eb47dcdacb 100644
+> > --- a/arch/s390/mm/gmap.c
+> > +++ b/arch/s390/mm/gmap.c
+> > @@ -2587,14 +2587,17 @@ int gmap_mark_unmergeable(void)
+> >  {
+> >       struct mm_struct *mm = current->mm;
+> >       struct vm_area_struct *vma;
+> > +     unsigned long vm_flags;
+> >       int ret;
+> >       VMA_ITERATOR(vmi, mm, 0);
+> >
+> >       for_each_vma(vmi, vma) {
+> > +             vm_flags = vma->vm_flags;
+> >               ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> > -                               MADV_UNMERGEABLE, &vma->vm_flags);
+> > +                               MADV_UNMERGEABLE, &vm_flags);
+> >               if (ret)
+> >                       return ret;
+> > +             reset_vm_flags(vma, vm_flags);
+>
+> Same.
+>
+> Not necessary as such as there are few users of ksm_madvise and I doubt
+> it'll introduce new surprises.
+>
+> With or without the comment;
 >
 > Acked-by: Mel Gorman <mgorman@techsingularity.net>
->
-> Minor comments that are safe to ignore.
->
-> I think a better name for mod_vm_flags is set_clear_vm_flags to hint that
-> the first flags are to be set and the second flags are to be cleared.
-> For this patch, it doesn't matter, but it might avoid accidental swapping
-> in the future.
->
-> reset_vm_flags might also be better named as reinit_vma_flags (or
-> vma_flags_reinit). Maybe also encourage the use of [set|clear_mod]_vm_flags
-> where possible in the comment to track exactly what is changing and
-> why. Some cases like userfaultfd just want to clear __VM_UFFD_FLAGS but
-> altering the flow in this patch is inappropriate and error prone. Others
-> such as the infiniband changes and madvise are a lot more complex.
 
-That's a good point, but I don't want people to use mod_vm_flags() for
-the cases when the order of set/clear really matters. In such cases
-set_vm_flags() and clear_vm_flags() should be explicitly used. Maybe
-to make that clear I should add a comment and rewrite the functions
-as:
-
-void mod_vm_flags(vma, set, clear) {
-    vma.vm_flags = vma.vm_flags | set & clear;
-}
-
-In this patchset it's not that obvious but mod_vm_flags() was really
-introduced in the original per-VMA lock patchset for efficiency to
-avoid taking extra per-VMA locks. A combo of
-set_vm_flags()+clear_vm_flags() would try to retake the same per-VMA
-lock in the second call while mod_vm_flags() takes the lock only once
-and does both operations. Not a huge overhead because we check if the
-lock is already taken and bail out early but still...
-So, would the above modification to mod_vm_flags() address your concern?
+Thanks!
 
 >
 > --
