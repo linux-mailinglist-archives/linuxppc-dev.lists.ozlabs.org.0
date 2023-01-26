@@ -2,36 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5556767CD05
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 14:58:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7898267CD45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 15:09:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2j412DM8z3fDq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:58:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2jJM32NTz3fGQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 01:09:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.136.236; helo=outbound-smtp52.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
-Received: from outbound-smtp52.blacknight.com (outbound-smtp52.blacknight.com [46.22.136.236])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.139.247; helo=outbound-smtp20.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 574 seconds by postgrey-1.36 at boromir; Fri, 27 Jan 2023 01:09:08 AEDT
+Received: from outbound-smtp20.blacknight.com (outbound-smtp20.blacknight.com [46.22.139.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2j3P66DBz3cQV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 00:58:22 +1100 (AEDT)
-Received: from mail.blacknight.com (pemlinmail03.blacknight.ie [81.17.254.16])
-	by outbound-smtp52.blacknight.com (Postfix) with ESMTPS id 1CD24FAC47
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 13:58:18 +0000 (GMT)
-Received: (qmail 23565 invoked from network); 26 Jan 2023 13:58:17 -0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2jHm3jtkz3cQV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 01:09:08 +1100 (AEDT)
+Received: from mail.blacknight.com (pemlinmail06.blacknight.ie [81.17.255.152])
+	by outbound-smtp20.blacknight.com (Postfix) with ESMTPS id D97D01C3D40
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 13:59:30 +0000 (GMT)
+Received: (qmail 19867 invoked from network); 26 Jan 2023 13:59:30 -0000
 Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 13:58:17 -0000
-Date: Thu, 26 Jan 2023 13:58:15 +0000
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 13:59:30 -0000
+Date: Thu, 26 Jan 2023 13:59:28 +0000
 From: Mel Gorman <mgorman@techsingularity.net>
 To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 2/7] mm: introduce vma->vm_flags wrapper functions
-Message-ID: <20230126135815.7hjwrrv77y2en2ku@techsingularity.net>
+Subject: Re: [PATCH v3 3/7] mm: replace VM_LOCKED_CLEAR_MASK with
+ VM_LOCKED_MASK
+Message-ID: <20230126135928.rby666sn3bdm3vja@techsingularity.net>
 References: <20230125233554.153109-1-surenb@google.com>
- <20230125233554.153109-3-surenb@google.com>
+ <20230125233554.153109-4-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20230125233554.153109-3-surenb@google.com>
+In-Reply-To: <20230125233554.153109-4-surenb@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,17 +49,12 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 03:35:49PM -0800, Suren Baghdasaryan wrote:
-> vm_flags are among VMA attributes which affect decisions like VMA merging
-> and splitting. Therefore all vm_flags modifications are performed after
-> taking exclusive mmap_lock to prevent vm_flags updates racing with such
-> operations. Introduce modifier functions for vm_flags to be used whenever
-> flags are updated. This way we can better check and control correct
-> locking behavior during these updates.
+On Wed, Jan 25, 2023 at 03:35:50PM -0800, Suren Baghdasaryan wrote:
+> To simplify the usage of VM_LOCKED_CLEAR_MASK in clear_vm_flags(),
+> replace it with VM_LOCKED_MASK bitmask and convert all users.
 > 
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-
-With or without the suggested rename;
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
 Acked-by: Mel Gorman <mgorman@techsingularity.net>
 
