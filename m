@@ -2,53 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E3D67DC4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DE967DC4F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:33:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P31p73M5Jz3fGf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:33:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P31q71R0cz3fGQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:33:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OyaVsT5e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r54XDevq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OyaVsT5e;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r54XDevq;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2k9g64j6z3fC3;
-	Fri, 27 Jan 2023 01:48:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2kF15X02z2ybK;
+	Fri, 27 Jan 2023 01:51:49 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E1F826183C;
-	Thu, 26 Jan 2023 14:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05241C4339B;
-	Thu, 26 Jan 2023 14:48:14 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4EA0C61756;
+	Thu, 26 Jan 2023 14:51:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3695EC433EF;
+	Thu, 26 Jan 2023 14:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674744532;
-	bh=WNohoknU9nLfbwIXeO77neZ4yMyv64MASZK2UIAfOfc=;
+	s=k20201202; t=1674744706;
+	bh=vTtNm5B4uxkFGkyUcD6bt7bUv740cC5zoLQ3n4iCXig=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OyaVsT5ePzTFS76R1FH5KLxOUgzscan6sLv55lgf+totKkalpj5P4hTJ0CFzpg2nB
-	 FjnAcEI6WBL0tfwF/TTw8b+wwY6a9pfQDEoFaNDhDzv4Bx4E//TKL2HIis05iqFTqA
-	 6cWnwUhcKJagQmydnhE9MWdKN98RZA7QH0/g2op6Qc+WX5kkWc6P8AxP1IQok4d4Iv
-	 rC+rDq5bfpCpp87TX2zmlNbavkxhh4pjEZT5VQ1/5GQQQR5j3P3SiDxYUla0TLmDmY
-	 tHoanGw9DWG+oAt/RnrhsxsQ7gltrsJN75kvWssUX4MOKayClNcjWM9UluK5fqquNs
-	 P9OGQuC06AeFQ==
-Date: Thu, 26 Jan 2023 16:48:04 +0200
+	b=r54XDevqCxaIthjhpV90e/3PReNDit6CxkjYziBMldcr+DpwGPcGH7s0yFhPlYu8B
+	 NohDoJ7KVIUCX5Zs7V0ydKB7t9XQRchAYOCR8XLnEbVPCZ8e7MIHv0UEcp73VODAq8
+	 aFhcsGcrVCc28IZRly/gODnl3cguu4R9trJCc4u2GtQ9ygUwR4IFSGftEKj188geBR
+	 3987kGANtDLWA/GzBI6W69E/F450ClXU14kAngo3y+A1wCivQR2InkOef4HeCwIwVj
+	 QYEspA95Wv7WS3mfCUr9QMGnsDd2HsZvTUBOWl52ZSZiQBqHvpwy1Yy3PsmXixNWVQ
+	 B28KDvwGClVRQ==
+Date: Thu, 26 Jan 2023 16:50:59 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v2 6/6] mm: export dump_mm()
-Message-ID: <Y9KSpNJ4y0GMwkrW@kernel.org>
+Subject: Re: [PATCH v2 1/6] mm: introduce vma->vm_flags modifier functions
+Message-ID: <Y9KTUw/04FmBVplw@kernel.org>
 References: <20230125083851.27759-1-surenb@google.com>
- <20230125083851.27759-7-surenb@google.com>
+ <20230125083851.27759-2-surenb@google.com>
+ <Y9JFFYjfJf9uDijE@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230125083851.27759-7-surenb@google.com>
+In-Reply-To: <Y9JFFYjfJf9uDijE@kernel.org>
 X-Mailman-Approved-At: Fri, 27 Jan 2023 13:32:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,32 +69,42 @@ Cc: michel@lespinasse.org, nvdimm@lists.linux.dev, heiko@sntech.de, leewalsh@goo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 12:38:51AM -0800, Suren Baghdasaryan wrote:
-> mmap_assert_write_locked() is used in vm_flags modifiers. Because
-> mmap_assert_write_locked() uses dump_mm() and vm_flags are sometimes
-> modified from from inside a module, it's necessary to export
-> dump_mm() function.
+On Thu, Jan 26, 2023 at 11:17:09AM +0200, Mike Rapoport wrote:
+> On Wed, Jan 25, 2023 at 12:38:46AM -0800, Suren Baghdasaryan wrote:
+> > vm_flags are among VMA attributes which affect decisions like VMA merging
+> > and splitting. Therefore all vm_flags modifications are performed after
+> > taking exclusive mmap_lock to prevent vm_flags updates racing with such
+> > operations. Introduce modifier functions for vm_flags to be used whenever
+> > flags are updated. This way we can better check and control correct
+> > locking behavior during these updates.
+> > 
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  include/linux/mm.h       | 37 +++++++++++++++++++++++++++++++++++++
+> >  include/linux/mm_types.h |  8 +++++++-
+> >  2 files changed, 44 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index c2f62bdce134..b71f2809caac 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -627,6 +627,43 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+> >  	INIT_LIST_HEAD(&vma->anon_vma_chain);
+> >  }
+> >  
+> > +/* Use when VMA is not part of the VMA tree and needs no locking */
+> > +static inline void init_vm_flags(struct vm_area_struct *vma,
+> > +				 unsigned long flags)
 > 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> I'd suggest to make it vm_flags_init() etc.
 
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Thinking more about it, it will be even clearer to name these vma_flags_xyz()
 
-> ---
->  mm/debug.c | 1 +
->  1 file changed, 1 insertion(+)
+> Except that
 > 
-> diff --git a/mm/debug.c b/mm/debug.c
-> index 9d3d893dc7f4..96d594e16292 100644
-> --- a/mm/debug.c
-> +++ b/mm/debug.c
-> @@ -215,6 +215,7 @@ void dump_mm(const struct mm_struct *mm)
->  		mm->def_flags, &mm->def_flags
->  	);
->  }
-> +EXPORT_SYMBOL(dump_mm);
->  
->  static bool page_init_poisoning __read_mostly = true;
->  
-> -- 
-> 2.39.1
+> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 > 
+
+--
+Sincerely yours,
+Mike.
