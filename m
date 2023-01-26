@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A407967D9F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:49:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D6D67D9F1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:50:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2y913wPFz3fHw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:49:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2yB248jBz3ff7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:50:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gZCa5Oqi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pN++yaxh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=38g7tywckdienwtljwxlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3-q7tywckdigu30sq34s00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gZCa5Oqi;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pN++yaxh;
 	dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xwh3vLKz3fJS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:38:28 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id u186-20020a2560c3000000b007c8e2cf3668so3597234ybb.14
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:38:28 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xwq2nGFz3fKk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:38:35 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-482d3bf0266so37446667b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:38:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wSC7IGbFplNjrd7OktgTvuZJ+ddPP0r726YUt977o3g=;
-        b=gZCa5OqiYz7NyA6wxR3fCZCky6kk8dd2ivPt2CaREtn9Z9XF7e58Rav+cA+K9bCEQN
-         6o/MuJmb4H9idBb7vfMk6bOdgVuHCE0F1qZipjYthhqjcv0pQUDz7YLAwSnEwbtHbdUa
-         Wgxo77095ctlPwQfJX+yHJM0Uan+lqnh/xUw7edMCiC9weIc2kyt+nqBL14pgSN2L2vb
-         SR6CTArsAMMpLftaHCc2QfE0zG4i+0XSSZyQT1M9E5/QyPP+wKGZh3F8G7xJ3tmQPakA
-         Bn6o3nUY8Q2zmRZGMjElSQ0vZRi9PIeDYDzIB/xxyyVnQhkZaUw/lcuFrgqIk2uBkGz2
-         r/Zw==
+        bh=xTYdmI9og0perxBFMnwOyD8JALYBo9fFqhvIGnAB7iw=;
+        b=pN++yaxhHw5hsqtHgPMZeHJr1T+f83UqE4aoFtt5+LAeg4UHQo6kEIwVfN/W5KzpWd
+         NAKHo1zdw7heZJbx1WfqGp1S+SxrOx8iQQEmdAlVDg2VTtwzUZXBX9I4nN6s/ySTc+jr
+         3ZaRTEU2LdtjdBqC28mfYKA3RWWRWiipp0ubURRbSnB2td+dOXW6A6Z1YmXTTTs7lrMt
+         kSSpO1HdzzSc0Io1imdV8ICez2HaQFT3vzJjPfo5xcK7Rc2m+quLXQ9DiPdQKhFDh9i9
+         7D6enP4ZWLDUdi03ANNOdVpbRaEKQA7hGat0dQrO/F54JVVNV8CR5DwopbFxCgwL+Ylt
+         8iEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wSC7IGbFplNjrd7OktgTvuZJ+ddPP0r726YUt977o3g=;
-        b=ylmbsXlo1w6iJFOl07klaJZkaCnYV/RF+1lIK+fOv3cfTzKbkpMp2MesxdfGMRwoNn
-         E8N59zcmAMVRNXDSmpcyAzcl7ambWS7bnXw2alP2iV22ZVnS7ktNIYJHw5TkH1Yo3JC7
-         6AFGTnB6YfxDVI4agF9ia5NA8PCMh68r/fOO90iwIoE09g2DQbgDcODgvMW5bxR8Kl+Z
-         7MgdPZ4cZAr1lOOpIRp/oicOddVPLnFTZxN4+KGenPhmHABAl1fdC/3Pgn8yQhGpPat7
-         gSo2f3UFdDEtEVZEqHfQIbZ+LTs9WhTYILx8TtC12oWVPt4bIrwa9WPPQS5QBq/n5j3e
-         bJMA==
-X-Gm-Message-State: AO0yUKXeQYGVAc6bF4su3rggWO6TwnzSSw2mjbdMsX4d1e5E2Y2ykAA+
-	a7xLI5JBZpOjNOA6oazAQx/uTs7wMLqn
-X-Google-Smtp-Source: AK7set+OUpwXf8Bx1zrRtgOMDopCjgg4Qbg1GA9ZQB3lT9ReFsdmmO2a+c65JJvtRAYo78u7CvJ3tHwlJO8s
+        bh=xTYdmI9og0perxBFMnwOyD8JALYBo9fFqhvIGnAB7iw=;
+        b=bNhfcEyoY5SgO4paOVnv5J7rCYRjHi86+kQDSk/Ku/wR878W+xAZ2JrZNfyJuhWeBm
+         qrxet8nXZs4qMcMBLxBcrPVFzT/umEKLyit5E2tbRBLPQsgLE6SNYig1YobgfLwqb638
+         aYh5areecAJ3QBsRhl+gQRui5NxPkZm7aycrncXxchR3qqwdFQCPWjd1dRkjGB5vjr1u
+         twB3EQbgAJ8OP8JcGdCo8OHtRgMYWBYDRMtTYV1A5f6uVMrILJQyqXDmXSpWecNqXNpz
+         BoKlCTXKPXX0dCOvOtSXcH/xFvFuHB5vT3Xyos+W+iWTxw/AGw6pd9koJS2vQ5gDwNOi
+         kM4A==
+X-Gm-Message-State: AO0yUKUdmH7w9W3ofgxQ6OGV724KORbciL1BEJeou1WRce5pOcO5gD9w
+	TJU3wz9l0GOC4svygi79ZEDEIX/atp0L
+X-Google-Smtp-Source: AK7set8ogChtzu8dxXsUiUpTxkmy4XJKX0fEnPVUFfp8yLVVlaZbFvMbbtXJs9Lil32EN+jbOQsVkSj+abRi
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:b9b8:6de0:39b3:4cf7])
- (user=irogers job=sendgmr) by 2002:a81:b246:0:b0:506:55d9:3a78 with SMTP id
- q67-20020a81b246000000b0050655d93a78mr1019749ywh.339.1674776306506; Thu, 26
- Jan 2023 15:38:26 -0800 (PST)
-Date: Thu, 26 Jan 2023 15:36:42 -0800
+ (user=irogers job=sendgmr) by 2002:a25:ce90:0:b0:80b:6168:a831 with SMTP id
+ x138-20020a25ce90000000b0080b6168a831mr1670207ybe.408.1674776313147; Thu, 26
+ Jan 2023 15:38:33 -0800 (PST)
+Date: Thu, 26 Jan 2023 15:36:43 -0800
 In-Reply-To: <20230126233645.200509-1-irogers@google.com>
-Message-Id: <20230126233645.200509-13-irogers@google.com>
+Message-Id: <20230126233645.200509-14-irogers@google.com>
 Mime-Version: 1.0
 References: <20230126233645.200509-1-irogers@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Subject: [PATCH v5 12/15] perf pmu-events: Fix testing with JEVENTS_ARCH=all
+Subject: [PATCH v5 13/15] perf jevents: Correct bad character encoding
 From: Ian Rogers <irogers@google.com>
 To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
 	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
@@ -90,64 +90,29 @@ Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Cale
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The #slots literal will return NAN when not on ARM64 which causes a
-perf test failure when not on an ARM64 for a JEVENTS_ARCH=all build:
-..
- 10.4: Parsing of PMU event table metrics with fake PMUs             : FAILED!
-..
-Add an is_test boolean so that the failure can be avoided when running
-as a test.
+A character encoding issue added a "3D" character that breaks the
+metrics test.
 
-Fixes: acef233b7ca7 ("perf pmu: Add #slots literal support for arm64")
+Fixes: 40769665b63d ("perf jevents: Parse metrics during conversion")
 ---
- tools/perf/tests/pmu-events.c | 1 +
- tools/perf/util/expr.h        | 1 +
- tools/perf/util/expr.l        | 8 +++++---
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ tools/perf/pmu-events/metric_test.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/pmu-events.c b/tools/perf/tests/pmu-events.c
-index 962c3c0d53ba..accf44b3d968 100644
---- a/tools/perf/tests/pmu-events.c
-+++ b/tools/perf/tests/pmu-events.c
-@@ -950,6 +950,7 @@ static int metric_parse_fake(const char *metric_name, const char *str)
- 		pr_debug("expr__ctx_new failed");
- 		return TEST_FAIL;
- 	}
-+	ctx->sctx.is_test = true;
- 	if (expr__find_ids(str, NULL, ctx) < 0) {
- 		pr_err("expr__find_ids failed\n");
- 		return -1;
-diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
-index 029271540fb0..eaa44b24c555 100644
---- a/tools/perf/util/expr.h
-+++ b/tools/perf/util/expr.h
-@@ -9,6 +9,7 @@ struct expr_scanner_ctx {
- 	char *user_requested_cpu_list;
- 	int runtime;
- 	bool system_wide;
-+	bool is_test;
- };
+diff --git a/tools/perf/pmu-events/metric_test.py b/tools/perf/pmu-events/metric_test.py
+index ced5998bd827..e4c792428277 100644
+--- a/tools/perf/pmu-events/metric_test.py
++++ b/tools/perf/pmu-events/metric_test.py
+@@ -89,8 +89,8 @@ class TestMetricExpressions(unittest.TestCase):
+     after = r'min((a + b if c > 1 else c + d), e + f)'
+     self.assertEqual(ParsePerfJson(before).ToPerfJson(), after)
  
- struct expr_parse_ctx {
-diff --git a/tools/perf/util/expr.l b/tools/perf/util/expr.l
-index 0168a9637330..72ff4f3d6d4b 100644
---- a/tools/perf/util/expr.l
-+++ b/tools/perf/util/expr.l
-@@ -84,9 +84,11 @@ static int literal(yyscan_t scanner, const struct expr_scanner_ctx *sctx)
- 	YYSTYPE *yylval = expr_get_lval(scanner);
+-    before =3D r'a if b else c if d else e'
+-    after =3D r'(a if b else (c if d else e))'
++    before = r'a if b else c if d else e'
++    after = r'(a if b else (c if d else e))'
+     self.assertEqual(ParsePerfJson(before).ToPerfJson(), after)
  
- 	yylval->num = expr__get_literal(expr_get_text(scanner), sctx);
--	if (isnan(yylval->num))
--		return EXPR_ERROR;
--
-+	if (isnan(yylval->num)) {
-+		if (!sctx->is_test)
-+			return EXPR_ERROR;
-+		yylval->num = 1;
-+	}
- 	return LITERAL;
- }
- %}
+   def test_ToPython(self):
 -- 
 2.39.1.456.gfc5497dd1b-goog
 
