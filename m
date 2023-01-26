@@ -1,38 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4AF67CFF7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 16:20:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9A667DC52
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:36:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2ksZ0bQ8z3fJb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 02:20:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P31t84DQ2z3fTV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:36:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=n4O/TPhP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=81.17.249.190; helo=outbound-smtp22.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
-Received: from outbound-smtp22.blacknight.com (outbound-smtp22.blacknight.com [81.17.249.190])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=n4O/TPhP;
+	dkim-atps=neutral
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2ks05G92z3fBb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 02:19:32 +1100 (AEDT)
-Received: from mail.blacknight.com (pemlinmail05.blacknight.ie [81.17.254.26])
-	by outbound-smtp22.blacknight.com (Postfix) with ESMTPS id 8F10414C004
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:19:27 +0000 (GMT)
-Received: (qmail 13604 invoked from network); 26 Jan 2023 15:19:26 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 15:19:26 -0000
-Date: Thu, 26 Jan 2023 15:19:23 +0000
-From: Mel Gorman <mgorman@techsingularity.net>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 5/7] mm: replace vma->vm_flags indirect modification
- in ksm_madvise
-Message-ID: <20230126151923.4fu34ytwkpbbnvha@techsingularity.net>
-References: <20230125233554.153109-1-surenb@google.com>
- <20230125233554.153109-6-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2l3t2lLKz3fBb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 02:28:57 +1100 (AEDT)
+Received: from relay10.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::230])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 21DBBD2DFC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:22:27 +0000 (UTC)
+Received: from booty.fritz.box (unknown [77.244.183.192])
+	(Authenticated sender: luca.ceresoli@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPA id CCC7724000B;
+	Thu, 26 Jan 2023 15:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1674746531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y4XXZUb/eXTVLt3Io7nRJONtjd6MFURYEBCczeziRlI=;
+	b=n4O/TPhP8ss3Yw55rWDZdfKA5BDB3pD/eXKOubNenym/Wz0Z3oFGqXygem7AXQ4QxtQUs0
+	aTFUIxv3UvBbXaXdfjKt/+DxdiIH3m9pjffuOqX3kEawUd0mIoICswgkMt7Cl2V+9f/nlP
+	wZtZJUP9mFhHT8NCsMwnF+uxqasFUWG+4xeiWbYsWAqegNctl6/A3D+q+p+1IifdAbD+ru
+	UjJ9ogApnYQW65IA/tLjadQBDynMEBwsEPvMih4MQzWaAqI8kJqr9zHQN6Oc88cQ1ZyKA8
+	qBD027A6BojfXIfwIovLnoGdIEzq5/ovTr1GPKV7MYxKP8XDojIjVN3rfVcGNQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Pravin B Shelar <pshelar@ovn.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH] scripts/spelling.txt: add "exsits" pattern and fix typo instances
+Date: Thu, 26 Jan 2023 16:22:05 +0100
+Message-Id: <20230126152205.959277-1-luca.ceresoli@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-In-Reply-To: <20230125233554.153109-6-surenb@google.com>
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 27 Jan 2023 13:32:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,86 +67,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: dev@openvswitch.org, alsa-devel@alsa-project.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, Colin Ian King <colin.i.king@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 03:35:52PM -0800, Suren Baghdasaryan wrote:
-> Replace indirect modifications to vma->vm_flags with calls to modifier
-> functions to be able to track flag changes and to keep vma locking
-> correctness.
-> 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c | 5 ++++-
->  arch/s390/mm/gmap.c                | 5 ++++-
->  2 files changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 1d67baa5557a..325a7a47d348 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -393,6 +393,7 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  {
->  	unsigned long gfn = memslot->base_gfn;
->  	unsigned long end, start = gfn_to_hva(kvm, gfn);
-> +	unsigned long vm_flags;
->  	int ret = 0;
->  	struct vm_area_struct *vma;
->  	int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
-> @@ -409,12 +410,14 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  			ret = H_STATE;
->  			break;
->  		}
-> +		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> -			  merge_flag, &vma->vm_flags);
-> +			  merge_flag, &vm_flags);
->  		if (ret) {
->  			ret = H_STATE;
->  			break;
->  		}
-> +		reset_vm_flags(vma, vm_flags);
->  		start = vma->vm_end;
->  	} while (end > vma->vm_end);
+Fix typos and add the following to the scripts/spelling.txt:
 
-Add a comment on why the vm_flags are copied in case someone "optimises"
-this in the future? Something like
+  exsits||exists
 
-/* Copy vm_flags to avoid any partial modifications in ksm_madvise. */
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+ drivers/infiniband/ulp/iser/iscsi_iser.c | 2 +-
+ net/openvswitch/flow_table.c             | 2 +-
+ scripts/spelling.txt                     | 1 +
+ sound/soc/fsl/fsl-asoc-card.c            | 2 +-
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
->  
-> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> index 3a695b8a1e3c..d5eb47dcdacb 100644
-> --- a/arch/s390/mm/gmap.c
-> +++ b/arch/s390/mm/gmap.c
-> @@ -2587,14 +2587,17 @@ int gmap_mark_unmergeable(void)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> +	unsigned long vm_flags;
->  	int ret;
->  	VMA_ITERATOR(vmi, mm, 0);
->  
->  	for_each_vma(vmi, vma) {
-> +		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> -				  MADV_UNMERGEABLE, &vma->vm_flags);
-> +				  MADV_UNMERGEABLE, &vm_flags);
->  		if (ret)
->  			return ret;
-> +		reset_vm_flags(vma, vm_flags);
-
-Same.
-
-Not necessary as such as there are few users of ksm_madvise and I doubt
-it'll introduce new surprises.
-
-With or without the comment;
-
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-
+diff --git a/drivers/infiniband/ulp/iser/iscsi_iser.c b/drivers/infiniband/ulp/iser/iscsi_iser.c
+index 620ae5b2d80d..6b7603765383 100644
+--- a/drivers/infiniband/ulp/iser/iscsi_iser.c
++++ b/drivers/infiniband/ulp/iser/iscsi_iser.c
+@@ -446,7 +446,7 @@ iscsi_iser_conn_create(struct iscsi_cls_session *cls_session,
+  * @is_leading:      indicate if this is the session leading connection (MCS)
+  *
+  * Return: zero on success, $error if iscsi_conn_bind fails and
+- *         -EINVAL in case end-point doesn't exsits anymore or iser connection
++ *         -EINVAL in case end-point doesn't exists anymore or iser connection
+  *         state is not UP (teardown already started).
+  */
+ static int iscsi_iser_conn_bind(struct iscsi_cls_session *cls_session,
+diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.c
+index 0a0e4c283f02..cfac54cbafdf 100644
+--- a/net/openvswitch/flow_table.c
++++ b/net/openvswitch/flow_table.c
+@@ -1012,7 +1012,7 @@ static int flow_mask_insert(struct flow_table *tbl, struct sw_flow *flow,
+ 
+ 	mask = flow_mask_find(tbl, new);
+ 	if (!mask) {
+-		/* Allocate a new mask if none exsits. */
++		/* Allocate a new mask if none exists. */
+ 		mask = mask_alloc();
+ 		if (!mask)
+ 			return -ENOMEM;
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index ded8bcfc0247..0147bd8dc6e2 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -625,6 +625,7 @@ exeuction||execution
+ existance||existence
+ existant||existent
+ exixt||exist
++exsits||exists
+ exlcude||exclude
+ exlcusive||exclusive
+ exmaple||example
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 8d14b5593658..2f25358196ee 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -811,7 +811,7 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	priv->card.num_links = 1;
+ 
+ 	if (asrc_pdev) {
+-		/* DPCM DAI Links only if ASRC exsits */
++		/* DPCM DAI Links only if ASRC exists */
+ 		priv->dai_link[1].cpus->of_node = asrc_np;
+ 		priv->dai_link[1].platforms->of_node = asrc_np;
+ 		priv->dai_link[2].codecs->dai_name = codec_dai_name;
 -- 
-Mel Gorman
-SUSE Labs
+2.34.1
+
