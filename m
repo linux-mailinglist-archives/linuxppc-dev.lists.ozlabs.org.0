@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BBE67D8BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 23:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B703767D98E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:21:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2wmd1YrCz3fJ3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 09:46:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2xXy4m2Nz3fH5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:21:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lXPZDhnK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wfU526Qe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2wlj46WVz3bfk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 09:45:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lXPZDhnK;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wfU526Qe;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P2wlT4JJLz4xP9;
-	Fri, 27 Jan 2023 09:45:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1674773130;
-	bh=XOKb+ncwVNSj6JKEiaBHvEDttpakjMycwDg9zTg++Is=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lXPZDhnKp+sd6gqb53jikb6eOO6odHtdILrgzMgKDSyLuMoDiBgRP+ELHuco2Pk5j
-	 bExTu6/51nR17KrDBvMMVYYRMM2grTktq8Y19ZTAzOGve6zQ0RyaYuxJJU/ccYwlLq
-	 VARaTKbguSWg8orJhovLaoxUEZ/5QmZ4v3DA+YJ3tYKHLpmDuiMv8TMcbVpE+OaslI
-	 cN4ip7nvjhM/ywEx0AI/tTtnUKDaMxc8nsEcWchZvTI/jVdU5mh3Uk7y/gMUlLr/rh
-	 I1ETMQKGU6oSz8J0oiWM1S5u/Qz57DHabOJzXwIqRnptofS40o/hs7F8nK2MOsp1A7
-	 36j8Yufdy8jkw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Subject: Re: [PATCH v4 5/7] mm: replace vma->vm_flags indirect modification
- in ksm_madvise
-In-Reply-To: <20230126193752.297968-6-surenb@google.com>
-References: <20230126193752.297968-1-surenb@google.com>
- <20230126193752.297968-6-surenb@google.com>
-Date: Fri, 27 Jan 2023 09:45:23 +1100
-Message-ID: <87o7qkzzi4.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xX00XFDz3fCT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:20:30 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2EE8EB81ECD;
+	Thu, 26 Jan 2023 23:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A8FC433D2;
+	Thu, 26 Jan 2023 23:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1674775225;
+	bh=2bi/yWCYSEbTwdoD+ZRnucs0IxsKcEa74FkUlbYIl8w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wfU526QeHtT25Dp80XTfipC5chr8bRteULrVAX3GXOkya9cbsZIy8wrbQ6brmYz0F
+	 vDGtdvSGZRQfERjweZU4px5C7Ix57ztsuDbAmmGFSywUjlhFzG0KOqtrvPm17eZhaV
+	 02GCDMBiwBb7OPcfnJtFBFIWpxTHuJ9C+PSjF7U4=
+Date: Thu, 26 Jan 2023 15:20:24 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] kasan: Fix Oops due to missing calls to
+ kasan_arch_is_ready()
+Message-Id: <20230126152024.bfdd25de2ff5107fa7c02986@linux-foundation.org>
+In-Reply-To: <150768c55722311699fdcf8f5379e8256749f47d.1674716617.git.christophe.leroy@csgroup.eu>
+References: <150768c55722311699fdcf8f5379e8256749f47d.1674716617.git.christophe.leroy@csgroup.eu>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,23 +58,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, surenb@google.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com, mgorman@techsingularity.net, rp
- pt@kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Suren Baghdasaryan <surenb@google.com> writes:
-> Replace indirect modifications to vma->vm_flags with calls to modifier
-> functions to be able to track flag changes and to keep vma locking
-> correctness.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Acked-by: Mel Gorman <mgorman@techsingularity.net>
-> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c | 6 +++++-
+On Thu, 26 Jan 2023 08:04:47 +0100 Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> On powerpc64, you can build a kernel with KASAN as soon as you build it
+> with RADIX MMU support. However if the CPU doesn't have RADIX MMU,
+> KASAN isn't enabled at init and the following Oops is encountered.
 
-cheers
+Should we backport to -stable?  If so, can we identify a suitable Fixes: target?
+
+Thanks.
