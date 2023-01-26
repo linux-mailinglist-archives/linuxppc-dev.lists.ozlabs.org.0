@@ -1,70 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBF967D32B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:30:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CB767D336
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:31:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2nlZ3dbNz3fHc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:30:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ilIqDRwk;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2nnf53wsz3fHc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:31:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1129; helo=mail-yw1-x1129.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ilIqDRwk;
-	dkim-atps=neutral
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2nkg3n1qz3fBf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:29:14 +1100 (AEDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-501c3a414acso32788607b3.7
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 09:29:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2gmbLn2mGKjT9Gs0HRiDRhCerJgSSV5gpVvcCzntQ7Y=;
-        b=ilIqDRwk14c77kuNcIb1Za5yA/k9MlZMjOIAG7xgew/iubgJyrG32CmDPzNNMjKVU1
-         0cjAh7/cDiMlBWp7hNnSIwd1PXFNxdlppAGUU7j/d06/fdITUN8na+bPZl4T4FsheJPZ
-         LWsxwR1YcK+FWW2DBQwr6IyKjvLWxbTIMc17+Fd+yndb2sMV2vZnytDbpPDmoBXRB4F7
-         rleLMvYF/2o2GY6lzSau23qOOMOaf7bdkBeK/sWqCfupZvXUJjT0ZY7RKqeTong9fCDN
-         p4I/CcH8n+tGdongz6ryxejse0aGlrrtzoVh6FNqLByFg1N9TkDnjINbfSncpK90ozHN
-         RLPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2gmbLn2mGKjT9Gs0HRiDRhCerJgSSV5gpVvcCzntQ7Y=;
-        b=4cEnCyFBEFPPo+RcFqb/bI1NiAYH4d35ZHFRskHrnq81fPvu5oUX5WnCKWWPFFNgfx
-         iP59mAk9xc93LYCPo7PiwmLxPHZqlkNS2x6Vd/SSqVwUjghlgBicee88BhniPuSrReij
-         lc/mJcCxusaAkpy73ILXtKiVSOEj+uHO7sxMoYGbGva8Cekbi9p+3EKfuR6M6kWEC6wH
-         BhOSeNeAB6o02EniAXsaRjpawSC0KD6V1a6N4yO1AsKDIRPrDCCqBeAgItymVn8P7DIZ
-         E9puhCmlFxzTGfjwW00WxSZjfvmfNIkD+Duri3bFeHQUvQ5LEfzo9CSBngRAOsu2e1cg
-         UKoQ==
-X-Gm-Message-State: AFqh2kqDqPwg5+Bcgz5CWmjnP8ln/G6qknXMMBNSI7vEuMgcmThm+Ms6
-	Pv0dn3JFt3qOEFHWM0f+wDwjYHqlzEmQy//hpaOq3w==
-X-Google-Smtp-Source: AMrXdXs8M6k6K1NpNfukVCVayvEghbuYahYf046uox5fJ76us0EUsA9otKxgNw134ACA+9mbXdAwd6mqx9pXaEYbxgI=
-X-Received: by 2002:a81:1d2:0:b0:433:f1c0:3f1c with SMTP id
- 201-20020a8101d2000000b00433f1c03f1cmr5000022ywb.438.1674754150775; Thu, 26
- Jan 2023 09:29:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2nn25R0Xz3fBf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:31:17 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-76-f12lco4sMJ-UFDGfrgpghw-1; Thu, 26 Jan 2023 17:31:11 +0000
+X-MC-Unique: f12lco4sMJ-UFDGfrgpghw-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.45; Thu, 26 Jan
+ 2023 17:31:09 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.045; Thu, 26 Jan 2023 17:31:09 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Segher Boessenkool' <segher@kernel.crashing.org>, Michael Ellerman
+	<mpe@ellerman.id.au>
+Subject: RE: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
+ structures and buffers
+Thread-Topic: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
+ structures and buffers
+Thread-Index: AQHZMarbHHGSrma/kEeRKp/dNdgk5K6w84Ew
+Date: Thu, 26 Jan 2023 17:31:09 +0000
+Message-ID: <5118edd7f1f445afa1812d2b9b62dd4f@AcuMS.aculab.com>
+References: <20230120074306.1326298-1-ajd@linux.ibm.com>
+ <20230120074306.1326298-3-ajd@linux.ibm.com>
+ <87pmb2pxpa.fsf@mpe.ellerman.id.au>
+ <20230126171925.GN25951@gate.crashing.org>
+In-Reply-To: <20230126171925.GN25951@gate.crashing.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20230125233554.153109-1-surenb@google.com> <20230125233554.153109-5-surenb@google.com>
- <20230126151015.ru2m26jkhwib6x6u@techsingularity.net> <CAJuCfpEzAbpy9rZ5KeZXQsqFTPOGYv6CZQfP9SHqcqFi0s7neg@mail.gmail.com>
- <20230126172657.bmga5hy74ifsbhun@techsingularity.net>
-In-Reply-To: <20230126172657.bmga5hy74ifsbhun@techsingularity.net>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Jan 2023 09:28:59 -0800
-Message-ID: <CAJuCfpGfH9y5NYCBtM=s0uZ5DfRbtLHP=qQHqhahSiUPLEZNgg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] mm: replace vma->vm_flags direct modifications
- with modifier calls
-To: Mel Gorman <mgorman@techsingularity.net>
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,80 +63,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: "sudhakar@linux.ibm.com" <sudhakar@linux.ibm.com>, "bgray@linux.ibm.com" <bgray@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, "erichte@linux.ibm.com" <erichte@linux.ibm.com>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "zohar@linux.ibm.com" <zohar@linux.ibm.com>, "gjoyce@linux.ibm.com" <gjoyce@linux.ibm.com>, "joel@jms.id.au" <joel@jms.id.au>, "ruscur@russell.cc" <ruscur@russell.cc>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "gcwilson@linux.ibm.com" <gcwilson@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 9:27 AM Mel Gorman <mgorman@techsingularity.net> wrote:
->
-> On Thu, Jan 26, 2023 at 08:10:26AM -0800, Suren Baghdasaryan wrote:
-> > On Thu, Jan 26, 2023 at 7:10 AM Mel Gorman <mgorman@techsingularity.net> wrote:
+From: Segher Boessenkool
+> Sent: 26 January 2023 17:19
+>=20
+> On Thu, Jan 26, 2023 at 12:09:53AM +1100, Michael Ellerman wrote:
+> > Andrew Donnellan <ajd@linux.ibm.com> writes:
+> > > A number of structures and buffers passed to PKS hcalls have alignmen=
+t
+> > > requirements, which could on occasion cause problems:
 > > >
-> > > On Wed, Jan 25, 2023 at 03:35:51PM -0800, Suren Baghdasaryan wrote:
-> > > > Replace direct modifications to vma->vm_flags with calls to modifier
-> > > > functions to be able to track flag changes and to keep vma locking
-> > > > correctness.
-> > > >
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > > - Authorisation structures must be 16-byte aligned and must not cross=
+ a
+> > >   page boundary
 > > >
-> > > Acked-by: Mel Gorman <mgorman@techsingularity.net>
+> > > - Label structures must not cross page boundaries
 > > >
-> > > Minor comments that are safe to ignore.
+> > > - Password output buffers must not cross page boundaries
 > > >
-> > > I think a better name for mod_vm_flags is set_clear_vm_flags to hint that
-> > > the first flags are to be set and the second flags are to be cleared.
-> > > For this patch, it doesn't matter, but it might avoid accidental swapping
-> > > in the future.
-> > >
-> > > reset_vm_flags might also be better named as reinit_vma_flags (or
-> > > vma_flags_reinit). Maybe also encourage the use of [set|clear_mod]_vm_flags
-> > > where possible in the comment to track exactly what is changing and
-> > > why. Some cases like userfaultfd just want to clear __VM_UFFD_FLAGS but
-> > > altering the flow in this patch is inappropriate and error prone. Others
-> > > such as the infiniband changes and madvise are a lot more complex.
+> > > Round up the allocations of these structures/buffers to the next powe=
+r of
+> > > 2 to make sure this happens.
 > >
-> > That's a good point, but I don't want people to use mod_vm_flags() for
-> > the cases when the order of set/clear really matters. In such cases
-> > set_vm_flags() and clear_vm_flags() should be explicitly used. Maybe
-> > to make that clear I should add a comment and rewrite the functions
-> > as:
-> >
-> > void mod_vm_flags(vma, set, clear) {
-> >     vma.vm_flags = vma.vm_flags | set & clear;
-> > }
-> >
->
-> Offhand, I'm not thinking of a case where that really matters and as they
-> are not necessarily ordered, it's raising a read flag so yes, it definitely
-> it needs a comment if the ordering matters.
->
-> > In this patchset it's not that obvious but mod_vm_flags() was really
-> > introduced in the original per-VMA lock patchset for efficiency to
-> > avoid taking extra per-VMA locks. A combo of
-> > set_vm_flags()+clear_vm_flags() would try to retake the same per-VMA
-> > lock in the second call while mod_vm_flags() takes the lock only once
-> > and does both operations.
->
-> Ok, that seems fair but still needs a comment on why a mod_vm_flags is
-> not necessarily equivalent to a set_vm_flags + clear_vm_flags in terms of
-> correctness if that is indeed the case.
->
-> > Not a huge overhead because we check if the
-> > lock is already taken and bail out early but still...
-> > So, would the above modification to mod_vm_flags() address your concern?
-> >
->
-> My concerns are entirely with the callers, not the implementation. If
-> someone is modifying a call site using mod_vm_flags, they have to read
-> through all the preceding logic to ensure the final combination of flags
-> is valid.  It's a code maintenance issue, not a correctness issue.
+> > It's not the *next* power of 2, it's the *nearest* power of 2, includin=
+g
+> > the initial value if it's already a power of 2.
+>=20
+> It's not the nearest either, the nearest power of two to 65 is 64.  You
+> could say "but, round up" to which I would say "round?"  :-P
+>=20
+> "Adjust the allocation size to be the smallest power of two greater than
+> or equal to the given size."
+>=20
+> "Pad to a power of two" in shorthand.  "Padded to a power of two if
+> necessary" if you want to emphasise it can be a no-op.
 
-Got it. I'll modify the implementation to make a single assignment and
-will add a comment to use only when order doesn't matter.
-Thanks!
+Changing the size to kzalloc() doesn't help.
+The alignment depends on the allocator and is only required to have
+a relatively small alignment (ARCH_MINALIGN?) regardless of the size.
 
->
-> --
-> Mel Gorman
-> SUSE Labs
+IIRC one of the allocators adds a small header to every item.
+It won't return 16 byte aligned items at all.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
