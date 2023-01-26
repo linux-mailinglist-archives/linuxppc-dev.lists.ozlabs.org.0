@@ -1,62 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5FA67C26A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:32:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215F167C274
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:35:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NVF60Whz3fLN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:32:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NZV0Ql1z3fLt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:35:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KtA+CZIw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Tr9UkL55;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KtA+CZIw;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Tr9UkL55;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NSW416wz3fYV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:30:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NYZ5X6dz2x9J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:34:57 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 46C136172A
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 01:30:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B9FC433A1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 01:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674696632;
-	bh=9Lh0ux9Zjc+mk8Ceh0QCNDAViDCua68lGhmuTig8r+w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KtA+CZIwrH2qb+NoBg9EilsCesGAwuRFzBgPw9ft82cmuEAuuKVJrb4djefWh/u2W
-	 jufWPMY6x55uBlfYyLUyOD3huU90EFEWLQxXmu8n3O7PUFUZH6VgiQYmgNhus/lpsi
-	 cvcTbOWvypkWDeegrFmzYB9R4irpqtIjmK7BK7oZLGC4962oxd66t1P0SdBhwcCwM/
-	 9INhR1YaJq4T1iZpHafFdTkaj4PO9OKt5D6+wuqIQ0q41q3cM3AA39BZL1Lp3pBNHC
-	 yaBl3aOeveTk/3dmmryrxW87A0rs3qj34wzoEqkbjBWltF+hJLu6VJjWrzJEKZ6VdM
-	 armPQIea1APnw==
-Received: by mail-oi1-f169.google.com with SMTP id r132so226990oif.10
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:30:32 -0800 (PST)
-X-Gm-Message-State: AFqh2kpuV2Kx9QMTKVqn013R/u9EFHtC4s/wYkH4+H6ns1mCFsuoTmqT
-	++eUxVVrB0hzB1YC6U/zbXiIFs3LoHmcVtbnXAg=
-X-Google-Smtp-Source: AMrXdXsfvPvL2urzZZqRicG4SfEFSLP9JKSv0AoUExWqN2ZCFertmu8zVDPffGSN+eWZWjZTXnLVCYhlaPJoasY3fXM=
-X-Received: by 2002:a05:6808:1786:b0:35e:7c55:b015 with SMTP id
- bg6-20020a056808178600b0035e7c55b015mr2087600oib.287.1674696631283; Wed, 25
- Jan 2023 17:30:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
- <20221228-drop-qunused-arguments-v2-5-9adbddd20d86@kernel.org> <871qnjqmmq.fsf@mpe.ellerman.id.au>
-In-Reply-To: <871qnjqmmq.fsf@mpe.ellerman.id.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 26 Jan 2023 10:29:54 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR2ASj6bGS6sR5x=cDCDDFW3ZkHRTdsHAY_+JEqojTUNQ@mail.gmail.com>
-Message-ID: <CAK7LNAR2ASj6bGS6sR5x=cDCDDFW3ZkHRTdsHAY_+JEqojTUNQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/14] powerpc: Remove linker flag from KBUILD_AFLAGS
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2694EB819AD;
+	Thu, 26 Jan 2023 01:34:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496BCC433D2;
+	Thu, 26 Jan 2023 01:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1674696891;
+	bh=LpGTjcYf1DlUk7PNdNctpyCzducpqUJJbAKNiV2Q0RE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Tr9UkL55WPFPewbf2dotzPIKAx3TUEKfjFLxWUGCD+S5BxsFHlxSuYjj7eTneEzDy
+	 hjItC983VD+8pWeiiEPpB/3tf8qK72AtPNlJOEAoyJ4PFNQKgIFIHrCqjg9SCXe9/M
+	 V9Pk+Y+an8xv+9CG3ZO/wLQU0kLqEOBYfboAzw4o=
+Date: Wed, 25 Jan 2023 17:34:49 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 1/7] kernel/fork: convert vma assignment to a memcpy
+Message-Id: <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
+In-Reply-To: <CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+References: <20230125233554.153109-1-surenb@google.com>
+	<20230125233554.153109-2-surenb@google.com>
+	<20230125162159.a66e5ef05fecb405e85ffec9@linux-foundation.org>
+	<CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,72 +60,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, "Paul E. McKenney" <paulmck@kernel.org>, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com, mgorman
+ @techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 1:11 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Nathan Chancellor <nathan@kernel.org> writes:
-> > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-> > points out that KBUILD_AFLAGS contains a linker flag, which will be
-> > used:
->
-> Should that say "unused" ?
+On Wed, 25 Jan 2023 16:50:01 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
 
-
-
-Nathan, shall I fix it up locally?
-(it will change the commit hash, though.)
-
-
-
-
-
->
-> >   clang: error: -Wl,-a32: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+> On Wed, Jan 25, 2023 at 4:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
 > >
-> > This was likely supposed to be '-Wa,-a$(BITS)'. However, this change is
-> > unnecessary, as all supported versions of clang and gcc will pass '-a64'
-> > or '-a32' to GNU as based on the value of '-m'; the behavior of the
-> > latest stable release of the oldest supported major version of each
-> > compiler is shown below and each compiler's latest release exhibits the
-> > same behavior (GCC 12.2.0 and Clang 15.0.6).
+> > On Wed, 25 Jan 2023 15:35:48 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
 > >
-> >   $ powerpc64-linux-gcc --version | head -1
-> >   powerpc64-linux-gcc (GCC) 5.5.0
+> > > Convert vma assignment in vm_area_dup() to a memcpy() to prevent compiler
+> > > errors when we add a const modifier to vma->vm_flags.
+> > >
+> > > ...
+> > >
+> > > --- a/kernel/fork.c
+> > > +++ b/kernel/fork.c
+> > > @@ -482,7 +482,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+> > >                * orig->shared.rb may be modified concurrently, but the clone
+> > >                * will be reinitialized.
+> > >                */
+> > > -             *new = data_race(*orig);
+> > > +             memcpy(new, orig, sizeof(*new));
 > >
-> >   $ powerpc64-linux-gcc -m64 -### -x assembler-with-cpp -c -o /dev/null /dev/null &| grep 'as '
-> >   .../as -a64 -mppc64 -many -mbig -o /dev/null /tmp/cctwuBzZ.s
-> >
-> >   $ powerpc64-linux-gcc -m32 -### -x assembler-with-cpp -c -o /dev/null /dev/null &| grep 'as '
-> >   .../as -a32 -mppc -many -mbig -o /dev/null /tmp/ccaZP4mF.sg
-> >
-> >   $ clang --version | head -1
-> >   Ubuntu clang version 11.1.0-++20211011094159+1fdec59bffc1-1~exp1~20211011214622.5
-> >
-> >   $ clang --target=powerpc64-linux-gnu -fno-integrated-as -m64 -### \
-> >     -x assembler-with-cpp -c -o /dev/null /dev/null &| grep gnu-as
-> >    "/usr/bin/powerpc64-linux-gnu-as" "-a64" "-mppc64" "-many" "-o" "/dev/null" "/tmp/null-80267c.s"
-> >
-> >   $ clang --target=powerpc64-linux-gnu -fno-integrated-as -m64 -### \
-> >     -x assembler-with-cpp -c -o /dev/null /dev/null &| grep gnu-as
-> >    "/usr/bin/powerpc64-linux-gnu-as" "-a32" "-mppc" "-many" "-o" "/dev/null" "/tmp/null-ab8f8d.s"
-> >
-> > Remove this flag altogether to avoid future issues.
-> >
-> > Fixes: 1421dc6d4829 ("powerpc/kbuild: Use flags variables rather than overriding LD/CC/AS")
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> > ---
-> > Cc: mpe@ellerman.id.au
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->
-> cheers
+> > The data_race() removal is unchangelogged?
+> 
+> True. I'll add a note in the changelog about that. Ideally I would
+> like to preserve it but I could not find a way to do that.
+> 
 
+Perhaps Paul can comment?
 
-
--- 
-Best Regards
-Masahiro Yamada
+I wonder if KCSAN knows how to detect this race, given that it's now in
+a memcpy.  I assume so.
