@@ -2,61 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA5267C3D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 05:23:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F4267C3D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 05:25:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2SJW66XJz3fDp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 15:23:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2SLG0qKGz3fC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 15:25:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcwaD85R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UwapKS2v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcwaD85R;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UwapKS2v;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2SHX5ZPVz3cgp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:23:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2SKH5dYZz3cgw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:24:35 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 2AEB4B81B9F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 04:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29EEC433EF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 04:22:58 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 552A4B81CCA
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 04:24:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F209EC4339E
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 04:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674706978;
-	bh=wZ7PBz2jqDU4NDuGlZAPATfEy7lDMc9qS1F/oyAFONs=;
+	s=k20201202; t=1674707071;
+	bh=sWbjQTRCxadlbLQUn48rYhAzqa6RuEwbYlxB2uDoP2g=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bcwaD85RmG0IF/8n9eiuYAxS1/mDWuiE7h92nOHq50+2X3uBTrYl2g1flqpKQ3bst
-	 AaVXetWxjY7Ih6cD7DWMGyg3PJ5dI6/7CRmtd2RF5mGCFS0SOVe2OWaQJfJrwjBqK/
-	 /wtAi/zz5L2swU4Tn/VwCik2aMS/Q5yMBdCGbHBj9/MTKtFTKNjkf9Iuh1LpI704gi
-	 XTOyG/5FPcXwzkWkOd54rV6DOwJOcs5ze6GoJGlOaeL+tn9pfbiKvdYMCrnj08Qf4v
-	 6DKALZRd68tzlM8/gJo2SRnlMoaLmCtONLcDbzqz/zhuUxL9xO45ZO7q/58/hFYBnJ
-	 gUiv73BJnCqTg==
-Received: by mail-ot1-f42.google.com with SMTP id f88-20020a9d03e1000000b00684c4041ff1so385819otf.8
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 20:22:58 -0800 (PST)
-X-Gm-Message-State: AFqh2ko4GZnAyqptMvli+dgRwIyGo9JcvYK0AD+bSa0uRxmAjWFl1pt9
-	C4DA5FBIdMerHxg23bbvbww/78bl5n96JwNXM9o=
-X-Google-Smtp-Source: AMrXdXufR6pDOeFuIyPbmDS6WVQNM1DgbYqV35b5aVOlVeaHNoWPRyY/PmXldGSKTEdajVesmoVacTD3KgGFr1aoMXE=
-X-Received: by 2002:a05:6830:2330:b0:670:5fd5:1ea3 with SMTP id
- q16-20020a056830233000b006705fd51ea3mr1950794otg.85.1674706978079; Wed, 25
- Jan 2023 20:22:58 -0800 (PST)
+	b=UwapKS2vrsI7ZOzOY5TofHCbFKrUlciDFa9tN6TEiMdx7KUG8QhImE+8styYe5LrF
+	 KWw8Wbq4InPm/slYsE+49hdnc/i4gxclZXc4yvTxOd524CO4YwmUCz3/xEY6Ez5Yz9
+	 bF5ZVpx3MBxPfsrbclYAQnutqTS7/NRjsQLG+PGAGZknEKCvzQtW5P9tkwMLmFCeAk
+	 oz6RBiq6BWWB8PuxVl0FXiZibxDL8emUgfKohrysRkKx2kht9JibKnbGz9YfRyH2t9
+	 ERC5LJVGox+5KPDx4mvwnp1tguJ9M293x3l2Uzv41Rk1FJMXzIGYF7M1s4rqWAD34g
+	 ASwx/zKw+nvNA==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-142b72a728fso1074117fac.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 20:24:30 -0800 (PST)
+X-Gm-Message-State: AFqh2kozjnqTEhgf/tVRxBNBmKdDcxslWRqKcz010OmBXjWKa0Ueunk0
+	XK9kVh8rGBqHsOhnWalRQFMZYrgX3UhBzl4MKKA=
+X-Google-Smtp-Source: AK7set/PNYPvPP/GjRjIRGJzYjSEmyoUNcXyniROhcp8vnAKH6317MZroWIjsXCLu1JuqdqIc9JD2eMm+ul9pJnsLE8=
+X-Received: by 2002:a05:6870:110f:b0:160:3296:a9b9 with SMTP id
+ 15-20020a056870110f00b001603296a9b9mr850092oaf.287.1674707070213; Wed, 25 Jan
+ 2023 20:24:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20221228-drop-qunused-arguments-v2-0-9adbddd20d86@kernel.org>
- <20221228-drop-qunused-arguments-v2-5-9adbddd20d86@kernel.org>
- <871qnjqmmq.fsf@mpe.ellerman.id.au> <CAK7LNAR2ASj6bGS6sR5x=cDCDDFW3ZkHRTdsHAY_+JEqojTUNQ@mail.gmail.com>
- <Y9HgXE9kmcfmva1C@dev-arch.thelio-3990X>
-In-Reply-To: <Y9HgXE9kmcfmva1C@dev-arch.thelio-3990X>
+References: <20230123-qunused-argument-auto-var-init-v1-1-ec06051f0d87@kernel.org>
+In-Reply-To: <20230123-qunused-argument-auto-var-init-v1-1-ec06051f0d87@kernel.org>
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 26 Jan 2023 13:22:21 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAROfEi7021v+SkDd=uU1hM_vzuGYvDD6OQ0bJ2Tu0yjvA@mail.gmail.com>
-Message-ID: <CAK7LNAROfEi7021v+SkDd=uU1hM_vzuGYvDD6OQ0bJ2Tu0yjvA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/14] powerpc: Remove linker flag from KBUILD_AFLAGS
+Date: Thu, 26 Jan 2023 13:23:53 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAThyrFRH22f8pdKyh0ypgCkEhnF9kUJ3XM3C=B2XGF-9A@mail.gmail.com>
+Message-ID: <CAK7LNAThyrFRH22f8pdKyh0ypgCkEhnF9kUJ3XM3C=B2XGF-9A@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/vdso: Filter clang's auto var init zero enabler
+ when linking
 To: Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -70,43 +68,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, ndesaulniers@google.com, npiggin@gmail.com, trix@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, ndesaulniers@google.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, trix@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 11:07 AM Nathan Chancellor <nathan@kernel.org> wrote:
+On Wed, Jan 25, 2023 at 1:20 AM Nathan Chancellor <nathan@kernel.org> wrote:
 >
-> On Thu, Jan 26, 2023 at 10:29:54AM +0900, Masahiro Yamada wrote:
-> > On Wed, Jan 25, 2023 at 1:11 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> > >
-> > > Nathan Chancellor <nathan@kernel.org> writes:
-> > > > When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-> > > > points out that KBUILD_AFLAGS contains a linker flag, which will be
-> > > > used:
-> > >
-> > > Should that say "unused" ?
-> >
-> >
-> >
-> > Nathan, shall I fix it up locally?
-> > (it will change the commit hash, though.)
+> After commit 7bbf02b875b5 ("kbuild: Stop using '-Qunused-arguments' with
+> clang"), the PowerPC vDSO shows the following error with clang-13 and
+> older when CONFIG_INIT_STACK_ALL_ZERO is enabled:
 >
-> Yes please, if you would not mind. Sorry about that and thank you for
-> spotting it Michael!
+>   clang: error: argument unused during compilation: '-enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang' [-Werror,-Wunused-command-line-argument]
 >
-> Since you have to rebase to fix it, you can include Michael's acks?
+> clang-14 added a change to make sure this flag never triggers
+> -Wunused-command-line-argument, so it is fixed with newer releases. For
+> older releases that the kernel still supports building with, just filter
+> out this flag, as has been done for other flags.
+>
+> Fixes: b174f4c26aa3 ("powerpc/vdso: Improve linker flags")
+> Fixes: 7bbf02b875b5 ("kbuild: Stop using '-Qunused-arguments' with clang")
+> Link: https://github.com/llvm/llvm-project/commit/ca6d5813d17598cd180995fb3bdfca00f364475f
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> This should be the last flag that needs to be filtered (famous last
+> words...) but if any more come up, we should really just explore
+> switching the PowerPC vDSO to linking with $(LD) like every other part
+> of the kernel; for now, I hope this is fine.
 >
 > Cheers,
 > Nathan
 
 
+Applied to linux-kbuild. Thanks.
 
-Done.
+Since I rebased the branch, the tags have been updated
+accordingly.
 
 
 
 
 
+    powerpc/vdso: Filter clang's auto var init zero enabler when linking
+
+    After commit 8d9acfce3332 ("kbuild: Stop using '-Qunused-arguments' with
+    clang"), the PowerPC vDSO shows the following error with clang-13 and
+    older when CONFIG_INIT_STACK_ALL_ZERO is enabled:
+
+      clang: error: argument unused during compilation:
+'-enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang'
+[-Werror,-Wunused-command-line-argument]
+
+    clang-14 added a change to make sure this flag never triggers
+    -Wunused-command-line-argument, so it is fixed with newer releases. For
+    older releases that the kernel still supports building with, just filter
+    out this flag, as has been done for other flags.
+
+    Fixes: f0a42fbab447 ("powerpc/vdso: Improve linker flags")
+    Fixes: 8d9acfce3332 ("kbuild: Stop using '-Qunused-arguments' with clang")
+    Link: https://github.com/llvm/llvm-project/commit/ca6d5813d17598cd180995fb3bdfca00f364475f
+    Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+    Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
 
 
