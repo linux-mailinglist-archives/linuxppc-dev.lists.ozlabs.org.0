@@ -1,64 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1125067D9B0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:37:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392A067D9B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:38:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2xvx6qLCz3fFR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:37:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2xx60VB3z3fDP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:38:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f09RSyrV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b7HSkW9B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3mg7tywckdcknwtljwxlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3oq7tywckddaudasqdesaasxq.oayxuzgjbbo-pqhxuefe.alxmne.ads@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f09RSyrV;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b7HSkW9B;
 	dkim-atps=neutral
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xv20DWmz3c7S
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:37:00 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-4cddba76f55so37639887b3.23
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:37:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xv817TXz3fGG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:37:07 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id t13-20020a056902018d00b0074747131938so3594963ybh.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:from:subject:mime-version
-         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r6injwhONnAcvsjLw2H0Tcbd9Xyh1Q4Op8zz5A06SIQ=;
-        b=f09RSyrVetVchZ4QvPtUU6E08ocu9SFUegDFEAstX9+V1i49NyWNseSfswL06DiqYZ
-         4z+XHvvdlFgZXKP6diE/RuhG7ju0eHcohPjoxQ7HA3BtMEq02rQ9A8VFVGsccwln9lQ0
-         XdjRQjWoG2naSS+788wJdCLRQpGjE5TZ7VhOnbuordNc1HYmGhqQEQfzShMVYGIPu3un
-         Yt/oWBoUb9YN4HrxyRTYPzDVrFNM5cmYj7WlmxWadjIXtryWScL5TD04yYSIRnvpay6u
-         tP/PRb5Bbz/ENJmw8FO3fAq8mb6bNZ48DlM23zzJRhDgts5WflJnsoeCYREA7K9ySLdD
-         3FbQ==
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ExyRpkcDLmvPbAA8QgL36/HbLE4lSe5Woy02Q1CnQZ0=;
+        b=b7HSkW9BPwilG22qgpz9e/XOczfoW9yCKXfLOvRsQ9wBfqrGhxw2TaKrwXSt1PVsdd
+         M84LPosr6r3kuqQWcN/LiSEFmX+TevYFm1LpD7/Li9Wl50Vsaf3LCddQumROgGmGUQQo
+         epcbUYKS1qYwHxdY3eYWhKb5WXtHQlyT4DGWMlEDAMRxU6fx9f/ndV3g1nvwZ0EbCP4u
+         7PWHk+CStL2Y52640ZelIpaMIrqnKYJMMCSRgY4Yf4cjgJ/FlSpmQMgJ2ek0reIkgHqU
+         qVc2P92NXw7JlhdQKxeHJhHhZGm/8MMORkIPhEqswrvqLVXc9MnbKxUzglvGNAe127by
+         LbSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:from:subject:mime-version
-         :message-id:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r6injwhONnAcvsjLw2H0Tcbd9Xyh1Q4Op8zz5A06SIQ=;
-        b=ZIq/bDgQFgi7pLXQCIcpS9DtrKZCDqYbLrPxeB7S9UWYnxwRLY8HSjwFMKAtlUaE0f
-         lUKZlQBkIBBNUllMS9So60nNraPKlAzxOquGCWD5nmKJ7Ep7IBLlm0Wuw7fNFsm/I5s6
-         pcMfJRAb1QjorCoI43ydNqt7gsbqkJrGXIXuANL31vIEzU9VUDPITqzWQ5m7HV5PgXF7
-         FWQ3/VRw63ehS1SE+e1+GwzFjZyPcAl9ekfvb+1DhzwSgDWLi3ns/8XVU0qYwwjvubQv
-         f5NbvsEsJuiueC/rdpzW1lcV9/WK52Z6zFZGt4EP6X87gRmvL8qwsGoD7+tij94iIqvD
-         Ex5A==
-X-Gm-Message-State: AO0yUKUd6A+TFGTVnSx3xn5q9b3OH+0r5SzVOFfVCYumAdEjgN3KNrkc
-	WCQBLuY3omMWEvW+FwtzlJod06ak6Qkg
-X-Google-Smtp-Source: AK7set/7oU0hODtcLNoxFKHHWkJc1FB7dyIz8Mcqfd+Seeri4BbkpvznWB5X1iDILXh3Df6AIdMiKDR+/V+K
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ExyRpkcDLmvPbAA8QgL36/HbLE4lSe5Woy02Q1CnQZ0=;
+        b=0VQ+fUMYJr5vHTB+shHJdGzI1wFCPeic/KY8OR9N/4yLUq2KvaYYALnn9lMlUmj/6a
+         NN5cTeSaUMKy8Qv+DaP0HmTlhofEoSfsdxZhVnwc0XcDeqSvFHXiPHnkM1OfcC74CZp8
+         LwhRZrGQHauCHZCFZ0R50SwSpHn/OKin9rqmkOJxS0hxTm1l5wB//iKH5Ih/Yc3/mOnO
+         V12xaqyoHkEJBXLMIbz04bei8ssfNsiwj7zt064Qgue5IjO7SRPbAi/ta9pHmZMtogxr
+         JhiTXNQMfBZzKxZtbC+uVOUpF05YUh/L3zmbdKZeDv5HBSVuXlNWtlK2SVOJNQHg0+B0
+         WNmg==
+X-Gm-Message-State: AFqh2kpJA8tTfzfOparNZr9KzyNRrzIpnBRBK/RV+1PoaLUcryGNT4a/
+	zDCDB6u6HHVCSBITl2UPVrdPHOO9IE0z
+X-Google-Smtp-Source: AMrXdXuVZJSXhsLBJF4s+rqkvT9ejKCkIXS7lhPHPbiIAmWd7TUMwVa2Yo0mIGWQgyijPi/6uHMwa59GCZY/
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:b9b8:6de0:39b3:4cf7])
- (user=irogers job=sendgmr) by 2002:a81:5204:0:b0:507:86ae:c733 with SMTP id
- g4-20020a815204000000b0050786aec733mr972921ywb.358.1674776218043; Thu, 26 Jan
- 2023 15:36:58 -0800 (PST)
-Date: Thu, 26 Jan 2023 15:36:30 -0800
-Message-Id: <20230126233645.200509-1-irogers@google.com>
+ (user=irogers job=sendgmr) by 2002:a81:ed4:0:b0:4dd:c62f:d65a with SMTP id
+ 203-20020a810ed4000000b004ddc62fd65amr3419482ywo.427.1674776225629; Thu, 26
+ Jan 2023 15:37:05 -0800 (PST)
+Date: Thu, 26 Jan 2023 15:36:31 -0800
+In-Reply-To: <20230126233645.200509-1-irogers@google.com>
+Message-Id: <20230126233645.200509-2-irogers@google.com>
 Mime-Version: 1.0
+References: <20230126233645.200509-1-irogers@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Subject: [PATCH v5 00/15] jevents/pmu-events improvements
+Subject: [PATCH v5 01/15] perf jevents metric: Correct Function equality
 From: Ian Rogers <irogers@google.com>
 To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
 	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
@@ -74,7 +75,6 @@ To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>,
 	Sandipan Das <sandipan.das@amd.com>, Jing Zhang <renyu.zj@linux.alibaba.com>, 
 	linuxppc-dev@lists.ozlabs.org, Kajol Jain <kjain@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,101 +90,30 @@ Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Cale
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add an optimization to jevents using the metric code, rewrite metrics
-in terms of each other in order to minimize size and improve
-readability. For example, on Power8
-other_stall_cpi is rewritten from:
-"PM_CMPLU_STALL / PM_RUN_INST_CMPL - PM_CMPLU_STALL_BRU_CRU / PM_RUN_INST_C=
-MPL - PM_CMPLU_STALL_FXU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_VSU / PM_RUN_I=
-NST_CMPL - PM_CMPLU_STALL_LSU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NTCG_FLUS=
-H / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NO_NTF / PM_RUN_INST_CMPL"
-to:
-"stall_cpi - bru_cru_stall_cpi - fxu_stall_cpi - vsu_stall_cpi - lsu_stall_=
-cpi - ntcg_flush_cpi - no_ntf_stall_cpi"
-Which more closely matches the definition on Power9.
+rhs may not be defined, say for source_count, so add a guard.
 
-A limitation of the substitutions are that they depend on strict
-equality and the shape of the tree. This means that for "a + b + c"
-then a substitution of "a + b" will succeed while "b + c" will fail
-(the LHS for "+ c" is "a + b" not just "b").
+Reviewed-by: Kajol Jain<kjain@linux.ibm.com>
+---
+ tools/perf/pmu-events/metric.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Separate out the events and metrics in the pmu-events tables saving
-14.8% in the table size while making it that metrics no longer need to
-iterate over all events and vice versa. These changes remove evsel's
-direct metric support as the pmu_event no longer has a metric to
-populate it. This is a minor issue as the code wasn't working
-properly, metrics for this are rare and can still be properly ran
-using '-M'.
-
-Add an ability to just build certain models into the jevents generated
-pmu-metrics.c code. This functionality is appropriate for operating
-systems like ChromeOS, that aim to minimize binary size and know all
-the target CPU models.
-
-v5. s/list/List/ in a type annotation to fix Python 3.6 as reported by
-    John Garry <john.g.garry@oracle.com>. Fix a bug in metric_test.py
-    where a bad character was imported. To avoid similar regressions,
-    run metric_test.py before generating pmu-events.c.
-v4. Better support the implementor/model style --model argument for
-    jevents.py. Add #slots test fix. On some patches add reviewed-by
-    John Garry <john.g.garry@oracle.com> and Kajol
-    Jain<kjain@linux.ibm.com>.
-v3. Rebase an incorporate review comments from John Garry
-    <john.g.garry@oracle.com>, in particular breaking apart patch 4
-    into 3 patches. The no jevents breakage and then later fix is
-    avoided in this series too.
-v2. Rebase. Modify the code that skips rewriting a metric with the
-    same name with itself, to make the name check case insensitive.
-
-Ian Rogers (15):
-  perf jevents metric: Correct Function equality
-  perf jevents metric: Add ability to rewrite metrics in terms of others
-  perf jevents: Rewrite metrics in the same file with each other
-  perf pmu-events: Add separate metric from pmu_event
-  perf pmu-events: Separate the metrics from events for no jevents
-  perf pmu-events: Remove now unused event and metric variables
-  perf stat: Remove evsel metric_name/expr
-  perf jevents: Combine table prefix and suffix writing
-  perf pmu-events: Introduce pmu_metrics_table
-  perf jevents: Generate metrics and events as separate tables
-  perf jevents: Add model list option
-  perf pmu-events: Fix testing with JEVENTS_ARCH=3Dall
-  perf jevents: Correct bad character encoding
-  tools build: Add test echo-cmd
-  perf jevents: Run metric_test.py at compile-time
-
- tools/build/Makefile.build               |   1 +
- tools/perf/arch/arm64/util/pmu.c         |  11 +-
- tools/perf/arch/powerpc/util/header.c    |   4 +-
- tools/perf/builtin-list.c                |  20 +-
- tools/perf/builtin-stat.c                |   1 -
- tools/perf/pmu-events/Build              |  16 +-
- tools/perf/pmu-events/empty-pmu-events.c | 108 ++++++-
- tools/perf/pmu-events/jevents.py         | 357 +++++++++++++++++++----
- tools/perf/pmu-events/metric.py          |  79 ++++-
- tools/perf/pmu-events/metric_test.py     |  15 +-
- tools/perf/pmu-events/pmu-events.h       |  26 +-
- tools/perf/tests/expand-cgroup.c         |   4 +-
- tools/perf/tests/parse-metric.c          |   4 +-
- tools/perf/tests/pmu-events.c            |  69 ++---
- tools/perf/util/cgroup.c                 |   1 -
- tools/perf/util/evsel.c                  |   2 -
- tools/perf/util/evsel.h                  |   2 -
- tools/perf/util/expr.h                   |   1 +
- tools/perf/util/expr.l                   |   8 +-
- tools/perf/util/metricgroup.c            | 207 +++++++------
- tools/perf/util/metricgroup.h            |   4 +-
- tools/perf/util/parse-events.c           |   2 -
- tools/perf/util/pmu.c                    |  44 +--
- tools/perf/util/pmu.h                    |  10 +-
- tools/perf/util/print-events.c           |  32 +-
- tools/perf/util/print-events.h           |   3 +-
- tools/perf/util/python.c                 |   7 -
- tools/perf/util/stat-shadow.c            | 112 -------
- tools/perf/util/stat.h                   |   1 -
- 29 files changed, 681 insertions(+), 470 deletions(-)
- mode change 100644 =3D> 100755 tools/perf/pmu-events/metric_test.py
-
---=20
+diff --git a/tools/perf/pmu-events/metric.py b/tools/perf/pmu-events/metric.py
+index 4797ed4fd817..2f2fd220e843 100644
+--- a/tools/perf/pmu-events/metric.py
++++ b/tools/perf/pmu-events/metric.py
+@@ -261,8 +261,10 @@ class Function(Expression):
+ 
+   def Equals(self, other: Expression) -> bool:
+     if isinstance(other, Function):
+-      return self.fn == other.fn and self.lhs.Equals(
+-          other.lhs) and self.rhs.Equals(other.rhs)
++      result = self.fn == other.fn and self.lhs.Equals(other.lhs)
++      if self.rhs:
++        result = result and self.rhs.Equals(other.rhs)
++      return result
+     return False
+ 
+ 
+-- 
 2.39.1.456.gfc5497dd1b-goog
 
