@@ -2,66 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE3F67D9A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1125067D9B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 00:37:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2xs83KcLz3fJ7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:35:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2xvx6qLCz3fFR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:37:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V7pzD6Pv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f09RSyrV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=andreyknvl@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3mg7tywckdcknwtljwxlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V7pzD6Pv;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f09RSyrV;
 	dkim-atps=neutral
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xr96fk7z3fCT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:34:31 +1100 (AEDT)
-Received: by mail-pf1-x42d.google.com with SMTP id n2so2205300pfo.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:34:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2xv20DWmz3c7S
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 10:37:00 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-4cddba76f55so37639887b3.23
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:37:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmlCUBRCPwLvDMyRKhmvFFYyCxvm8e49EMH29s2svEk=;
-        b=V7pzD6PvMlRTA677LV794Nzyy1S2TBgILbVqqW6ty0pWMAGXaCr9JdjcF4So27okbd
-         lVit+lRnXs05quAU4kmV8NadesAnDUqUDnKSSRv8uFKBvl13EWRY/3jwA4NIc4SW7E1/
-         wbN4UZGtuSLt5Tqu2/oDsQQGyxZzgoV3/g+iG6eGqjhkyCfL1dbMzl3YF0C4+06VhNQq
-         5gq77m4p+7PHXo3V7i5gNUiYcoBov8NDX2ksttB2+xDdKxOj68e0hFOm4zscS7mzILyi
-         /u7b+RecsNMfrR7+jZqk/9L6hBllhwQCV4deoye22sdy6UXWaMV3B65O+2zMckYRV+6v
-         WVgQ==
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:from:subject:mime-version
+         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r6injwhONnAcvsjLw2H0Tcbd9Xyh1Q4Op8zz5A06SIQ=;
+        b=f09RSyrVetVchZ4QvPtUU6E08ocu9SFUegDFEAstX9+V1i49NyWNseSfswL06DiqYZ
+         4z+XHvvdlFgZXKP6diE/RuhG7ju0eHcohPjoxQ7HA3BtMEq02rQ9A8VFVGsccwln9lQ0
+         XdjRQjWoG2naSS+788wJdCLRQpGjE5TZ7VhOnbuordNc1HYmGhqQEQfzShMVYGIPu3un
+         Yt/oWBoUb9YN4HrxyRTYPzDVrFNM5cmYj7WlmxWadjIXtryWScL5TD04yYSIRnvpay6u
+         tP/PRb5Bbz/ENJmw8FO3fAq8mb6bNZ48DlM23zzJRhDgts5WflJnsoeCYREA7K9ySLdD
+         3FbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZmlCUBRCPwLvDMyRKhmvFFYyCxvm8e49EMH29s2svEk=;
-        b=Yt5bWkKFSBrdh69jelRMV8lKVButOJMUdbsufxnouS920GwQ5/UZDQl+DGQ/YXGGMy
-         IiwalSaG2F8glgqc4AU3QUbvbuYo5YsQ5hSl60p5i/3psk6EXR/NYcA1P7rECZ+vrc6+
-         SFIZ6aD08dUzDtd3HlsWl8pZswhNtwJrC1E8B1dCjE9CAeDhZtDPv9b//m9oSe+fsADV
-         zWsgGNM5KfbrOSbzBuYEmeI86oGEhHtkroTiHu8YH+edPjOjZqyqK7kAxt/u8enf+ITA
-         46J9bU1nodP2F4iDtBSA4tCoc8z7O8wq94dhFtI3ojPz55PiuEevV0ufbsBsi9BiJsDk
-         e6Pw==
-X-Gm-Message-State: AO0yUKWacpZVk/Jer9JX73BLzxDhK5uL6PAJjeO1A/395d3WJHeNZvEY
-	3qvKIki/PfhAs7wJ64peaSLLJtB7G4QXAQb8P00=
-X-Google-Smtp-Source: AK7set+jurZu+DhTB98Wjvu0Zv3kgBKXskjxfUjFlfo8kCzK0PCeGHCM1YBpxMKkAjD/DohwQdb1WzQR6i+wH7KREwg=
-X-Received: by 2002:a05:6a00:23c2:b0:592:5653:facb with SMTP id
- g2-20020a056a0023c200b005925653facbmr365495pfc.28.1674776067755; Thu, 26 Jan
- 2023 15:34:27 -0800 (PST)
-MIME-Version: 1.0
-References: <150768c55722311699fdcf8f5379e8256749f47d.1674716617.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <150768c55722311699fdcf8f5379e8256749f47d.1674716617.git.christophe.leroy@csgroup.eu>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 27 Jan 2023 00:34:16 +0100
-Message-ID: <CA+fCnZcnwN-FGbteoMwFeHrGoM-5Gv5bs2udvRtzk-MT6s+B9w@mail.gmail.com>
-Subject: Re: [PATCH] kasan: Fix Oops due to missing calls to kasan_arch_is_ready()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+        h=content-transfer-encoding:cc:to:from:subject:mime-version
+         :message-id:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r6injwhONnAcvsjLw2H0Tcbd9Xyh1Q4Op8zz5A06SIQ=;
+        b=ZIq/bDgQFgi7pLXQCIcpS9DtrKZCDqYbLrPxeB7S9UWYnxwRLY8HSjwFMKAtlUaE0f
+         lUKZlQBkIBBNUllMS9So60nNraPKlAzxOquGCWD5nmKJ7Ep7IBLlm0Wuw7fNFsm/I5s6
+         pcMfJRAb1QjorCoI43ydNqt7gsbqkJrGXIXuANL31vIEzU9VUDPITqzWQ5m7HV5PgXF7
+         FWQ3/VRw63ehS1SE+e1+GwzFjZyPcAl9ekfvb+1DhzwSgDWLi3ns/8XVU0qYwwjvubQv
+         f5NbvsEsJuiueC/rdpzW1lcV9/WK52Z6zFZGt4EP6X87gRmvL8qwsGoD7+tij94iIqvD
+         Ex5A==
+X-Gm-Message-State: AO0yUKUd6A+TFGTVnSx3xn5q9b3OH+0r5SzVOFfVCYumAdEjgN3KNrkc
+	WCQBLuY3omMWEvW+FwtzlJod06ak6Qkg
+X-Google-Smtp-Source: AK7set/7oU0hODtcLNoxFKHHWkJc1FB7dyIz8Mcqfd+Seeri4BbkpvznWB5X1iDILXh3Df6AIdMiKDR+/V+K
+X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:b9b8:6de0:39b3:4cf7])
+ (user=irogers job=sendgmr) by 2002:a81:5204:0:b0:507:86ae:c733 with SMTP id
+ g4-20020a815204000000b0050786aec733mr972921ywb.358.1674776218043; Thu, 26 Jan
+ 2023 15:36:58 -0800 (PST)
+Date: Thu, 26 Jan 2023 15:36:30 -0800
+Message-Id: <20230126233645.200509-1-irogers@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
+Subject: [PATCH v5 00/15] jevents/pmu-events improvements
+From: Ian Rogers <irogers@google.com>
+To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
+	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
+	Leo Yan <leo.yan@linaro.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, Kim Phillips <kim.phillips@amd.com>, 
+	Florian Fischer <florian.fischer@muhq.space>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	Xing Zhengjun <zhengjun.xing@linux.intel.com>, Rob Herring <robh@kernel.org>, 
+	Kang Minchul <tegongkang@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sandipan Das <sandipan.das@amd.com>, Jing Zhang <renyu.zj@linux.alibaba.com>, 
+	linuxppc-dev@lists.ozlabs.org, Kajol Jain <kjain@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,89 +86,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>
+Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Caleb Biggers <caleb.biggers@intel.com>, Stephane Eranian <eranian@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 8:08 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
-> On powerpc64, you can build a kernel with KASAN as soon as you build it
-> with RADIX MMU support. However if the CPU doesn't have RADIX MMU,
-> KASAN isn't enabled at init and the following Oops is encountered.
->
->   [    0.000000][    T0] KASAN not enabled as it requires radix!
->
->   [    4.484295][   T26] BUG: Unable to handle kernel data access at 0xc00e000000804a04
->   [    4.485270][   T26] Faulting instruction address: 0xc00000000062ec6c
->   [    4.485748][   T26] Oops: Kernel access of bad area, sig: 11 [#1]
->   [    4.485920][   T26] BE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
->   [    4.486259][   T26] Modules linked in:
->   [    4.486637][   T26] CPU: 0 PID: 26 Comm: kworker/u2:2 Not tainted 6.2.0-rc3-02590-gf8a023b0a805 #249
->   [    4.486907][   T26] Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
->   [    4.487445][   T26] Workqueue: eval_map_wq .tracer_init_tracefs_work_func
->   [    4.488744][   T26] NIP:  c00000000062ec6c LR: c00000000062bb84 CTR: c0000000002ebcd0
->   [    4.488867][   T26] REGS: c0000000049175c0 TRAP: 0380   Not tainted  (6.2.0-rc3-02590-gf8a023b0a805)
->   [    4.489028][   T26] MSR:  8000000002009032 <SF,VEC,EE,ME,IR,DR,RI>  CR: 44002808  XER: 00000000
->   [    4.489584][   T26] CFAR: c00000000062bb80 IRQMASK: 0
->   [    4.489584][   T26] GPR00: c0000000005624d4 c000000004917860 c000000001cfc000 1800000000804a04
->   [    4.489584][   T26] GPR04: c0000000003a2650 0000000000000cc0 c00000000000d3d8 c00000000000d3d8
->   [    4.489584][   T26] GPR08: c0000000049175b0 a80e000000000000 0000000000000000 0000000017d78400
->   [    4.489584][   T26] GPR12: 0000000044002204 c000000003790000 c00000000435003c c0000000043f1c40
->   [    4.489584][   T26] GPR16: c0000000043f1c68 c0000000043501a0 c000000002106138 c0000000043f1c08
->   [    4.489584][   T26] GPR20: c0000000043f1c10 c0000000043f1c20 c000000004146c40 c000000002fdb7f8
->   [    4.489584][   T26] GPR24: c000000002fdb834 c000000003685e00 c000000004025030 c000000003522e90
->   [    4.489584][   T26] GPR28: 0000000000000cc0 c0000000003a2650 c000000004025020 c000000004025020
->   [    4.491201][   T26] NIP [c00000000062ec6c] .kasan_byte_accessible+0xc/0x20
->   [    4.491430][   T26] LR [c00000000062bb84] .__kasan_check_byte+0x24/0x90
->   [    4.491767][   T26] Call Trace:
->   [    4.491941][   T26] [c000000004917860] [c00000000062ae70] .__kasan_kmalloc+0xc0/0x110 (unreliable)
->   [    4.492270][   T26] [c0000000049178f0] [c0000000005624d4] .krealloc+0x54/0x1c0
->   [    4.492453][   T26] [c000000004917990] [c0000000003a2650] .create_trace_option_files+0x280/0x530
->   [    4.492613][   T26] [c000000004917a90] [c000000002050d90] .tracer_init_tracefs_work_func+0x274/0x2c0
->   [    4.492771][   T26] [c000000004917b40] [c0000000001f9948] .process_one_work+0x578/0x9f0
->   [    4.492927][   T26] [c000000004917c30] [c0000000001f9ebc] .worker_thread+0xfc/0x950
->   [    4.493084][   T26] [c000000004917d60] [c00000000020be84] .kthread+0x1a4/0x1b0
->   [    4.493232][   T26] [c000000004917e10] [c00000000000d3d8] .ret_from_kernel_thread+0x58/0x60
->   [    4.495642][   T26] Code: 60000000 7cc802a6 38a00000 4bfffc78 60000000 7cc802a6 38a00001 4bfffc68 60000000 3d20a80e 7863e8c2 792907c6 <7c6348ae> 20630007 78630fe0 68630001
->   [    4.496704][   T26] ---[ end trace 0000000000000000 ]---
->
-> The Oops is due to kasan_byte_accessible() not checking the readiness
-> of KASAN. Add missing call to kasan_arch_is_ready() and bail out when
-> not ready. The same problem is observed with ____kasan_kfree_large()
-> so fix it the same.
->
-> Also, as KASAN is not available and no shadow area is allocated for
-> linear memory mapping, there is no point in allocating shadow mem for
-> vmalloc memory as shown below in /sys/kernel/debug/kernel_page_tables
->
->   ---[ kasan shadow mem start ]---
->   0xc00f000000000000-0xc00f00000006ffff  0x00000000040f0000       448K         r  w       pte  valid  present        dirty  accessed
->   0xc00f000000860000-0xc00f00000086ffff  0x000000000ac10000        64K         r  w       pte  valid  present        dirty  accessed
->   0xc00f3ffffffe0000-0xc00f3fffffffffff  0x0000000004d10000       128K         r  w       pte  valid  present        dirty  accessed
->   ---[ kasan shadow mem end ]---
->
-> So, also verify KASAN readiness before allocating and poisoning
-> shadow mem for VMAs.
+Add an optimization to jevents using the metric code, rewrite metrics
+in terms of each other in order to minimize size and improve
+readability. For example, on Power8
+other_stall_cpi is rewritten from:
+"PM_CMPLU_STALL / PM_RUN_INST_CMPL - PM_CMPLU_STALL_BRU_CRU / PM_RUN_INST_C=
+MPL - PM_CMPLU_STALL_FXU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_VSU / PM_RUN_I=
+NST_CMPL - PM_CMPLU_STALL_LSU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NTCG_FLUS=
+H / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NO_NTF / PM_RUN_INST_CMPL"
+to:
+"stall_cpi - bru_cru_stall_cpi - fxu_stall_cpi - vsu_stall_cpi - lsu_stall_=
+cpi - ntcg_flush_cpi - no_ntf_stall_cpi"
+Which more closely matches the definition on Power9.
 
-Hi Cristophe,
+A limitation of the substitutions are that they depend on strict
+equality and the shape of the tree. This means that for "a + b + c"
+then a substitution of "a + b" will succeed while "b + c" will fail
+(the LHS for "+ c" is "a + b" not just "b").
 
-Would it possible to unify kasan_arch_is_ready with the already
-existing kasan_enabled check?
+Separate out the events and metrics in the pmu-events tables saving
+14.8% in the table size while making it that metrics no longer need to
+iterate over all events and vice versa. These changes remove evsel's
+direct metric support as the pmu_event no longer has a metric to
+populate it. This is a minor issue as the code wasn't working
+properly, metrics for this are rare and can still be properly ran
+using '-M'.
 
-Both functions seem to be serving a similar purpose: for example this
-patch adds kasan_arch_is_ready into __kasan_poison_vmalloc, which is
-called by kasan_poison_vmalloc when kasan_enabled returns true.
+Add an ability to just build certain models into the jevents generated
+pmu-metrics.c code. This functionality is appropriate for operating
+systems like ChromeOS, that aim to minimize binary size and know all
+the target CPU models.
 
-The kasan_enabled is only implemented for HW_TAGS right now, but it
-should be easy enough to make it work other cases by
-kasan_flag_enabled into common.c and adding __wrappers for
-shadow-related functions into include/linux/kasan.h. This way
-architectures won't need to define their own static key and duplicate
-the functionality.
+v5. s/list/List/ in a type annotation to fix Python 3.6 as reported by
+    John Garry <john.g.garry@oracle.com>. Fix a bug in metric_test.py
+    where a bad character was imported. To avoid similar regressions,
+    run metric_test.py before generating pmu-events.c.
+v4. Better support the implementor/model style --model argument for
+    jevents.py. Add #slots test fix. On some patches add reviewed-by
+    John Garry <john.g.garry@oracle.com> and Kajol
+    Jain<kjain@linux.ibm.com>.
+v3. Rebase an incorporate review comments from John Garry
+    <john.g.garry@oracle.com>, in particular breaking apart patch 4
+    into 3 patches. The no jevents breakage and then later fix is
+    avoided in this series too.
+v2. Rebase. Modify the code that skips rewriting a metric with the
+    same name with itself, to make the name check case insensitive.
 
-I don't mind having this patch applied as is, considering that it's a
-fix. However, if the unification that I mentioned is possible, that
-would be a nice improvement.
+Ian Rogers (15):
+  perf jevents metric: Correct Function equality
+  perf jevents metric: Add ability to rewrite metrics in terms of others
+  perf jevents: Rewrite metrics in the same file with each other
+  perf pmu-events: Add separate metric from pmu_event
+  perf pmu-events: Separate the metrics from events for no jevents
+  perf pmu-events: Remove now unused event and metric variables
+  perf stat: Remove evsel metric_name/expr
+  perf jevents: Combine table prefix and suffix writing
+  perf pmu-events: Introduce pmu_metrics_table
+  perf jevents: Generate metrics and events as separate tables
+  perf jevents: Add model list option
+  perf pmu-events: Fix testing with JEVENTS_ARCH=3Dall
+  perf jevents: Correct bad character encoding
+  tools build: Add test echo-cmd
+  perf jevents: Run metric_test.py at compile-time
 
-Thanks!
+ tools/build/Makefile.build               |   1 +
+ tools/perf/arch/arm64/util/pmu.c         |  11 +-
+ tools/perf/arch/powerpc/util/header.c    |   4 +-
+ tools/perf/builtin-list.c                |  20 +-
+ tools/perf/builtin-stat.c                |   1 -
+ tools/perf/pmu-events/Build              |  16 +-
+ tools/perf/pmu-events/empty-pmu-events.c | 108 ++++++-
+ tools/perf/pmu-events/jevents.py         | 357 +++++++++++++++++++----
+ tools/perf/pmu-events/metric.py          |  79 ++++-
+ tools/perf/pmu-events/metric_test.py     |  15 +-
+ tools/perf/pmu-events/pmu-events.h       |  26 +-
+ tools/perf/tests/expand-cgroup.c         |   4 +-
+ tools/perf/tests/parse-metric.c          |   4 +-
+ tools/perf/tests/pmu-events.c            |  69 ++---
+ tools/perf/util/cgroup.c                 |   1 -
+ tools/perf/util/evsel.c                  |   2 -
+ tools/perf/util/evsel.h                  |   2 -
+ tools/perf/util/expr.h                   |   1 +
+ tools/perf/util/expr.l                   |   8 +-
+ tools/perf/util/metricgroup.c            | 207 +++++++------
+ tools/perf/util/metricgroup.h            |   4 +-
+ tools/perf/util/parse-events.c           |   2 -
+ tools/perf/util/pmu.c                    |  44 +--
+ tools/perf/util/pmu.h                    |  10 +-
+ tools/perf/util/print-events.c           |  32 +-
+ tools/perf/util/print-events.h           |   3 +-
+ tools/perf/util/python.c                 |   7 -
+ tools/perf/util/stat-shadow.c            | 112 -------
+ tools/perf/util/stat.h                   |   1 -
+ 29 files changed, 681 insertions(+), 470 deletions(-)
+ mode change 100644 =3D> 100755 tools/perf/pmu-events/metric_test.py
+
+--=20
+2.39.1.456.gfc5497dd1b-goog
+
