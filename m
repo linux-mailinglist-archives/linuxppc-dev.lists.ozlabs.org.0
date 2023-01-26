@@ -1,57 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CB767D336
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:31:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7B967D33E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 18:33:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2nnf53wsz3fHc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:31:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2nqN090Dz3fJK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 04:33:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.139.247; helo=outbound-smtp20.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
+Received: from outbound-smtp20.blacknight.com (outbound-smtp20.blacknight.com [46.22.139.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2nn25R0Xz3fBf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:31:17 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-76-f12lco4sMJ-UFDGfrgpghw-1; Thu, 26 Jan 2023 17:31:11 +0000
-X-MC-Unique: f12lco4sMJ-UFDGfrgpghw-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.45; Thu, 26 Jan
- 2023 17:31:09 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.045; Thu, 26 Jan 2023 17:31:09 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Segher Boessenkool' <segher@kernel.crashing.org>, Michael Ellerman
-	<mpe@ellerman.id.au>
-Subject: RE: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
- structures and buffers
-Thread-Topic: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
- structures and buffers
-Thread-Index: AQHZMarbHHGSrma/kEeRKp/dNdgk5K6w84Ew
-Date: Thu, 26 Jan 2023 17:31:09 +0000
-Message-ID: <5118edd7f1f445afa1812d2b9b62dd4f@AcuMS.aculab.com>
-References: <20230120074306.1326298-1-ajd@linux.ibm.com>
- <20230120074306.1326298-3-ajd@linux.ibm.com>
- <87pmb2pxpa.fsf@mpe.ellerman.id.au>
- <20230126171925.GN25951@gate.crashing.org>
-In-Reply-To: <20230126171925.GN25951@gate.crashing.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2npq4lFxz2yPY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 04:32:51 +1100 (AEDT)
+Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
+	by outbound-smtp20.blacknight.com (Postfix) with ESMTPS id 2D96C1C37A2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 17:32:47 +0000 (GMT)
+Received: (qmail 32726 invoked from network); 26 Jan 2023 17:32:46 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 17:32:46 -0000
+Date: Thu, 26 Jan 2023 17:32:45 +0000
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 6/7] mm: introduce mod_vm_flags_nolock and use it in
+ untrack_pfn
+Message-ID: <20230126173245.cf3jcfw5s2a77s5v@techsingularity.net>
+References: <20230125233554.153109-1-surenb@google.com>
+ <20230125233554.153109-7-surenb@google.com>
+ <20230126154740.j3a3lu4x557c56yi@techsingularity.net>
+ <CAJuCfpHP6hQAWZr2exZEXOzLbMNU_c9qNNc7pa2NYAhYLe=EKQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpHP6hQAWZr2exZEXOzLbMNU_c9qNNc7pa2NYAhYLe=EKQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,55 +46,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sudhakar@linux.ibm.com" <sudhakar@linux.ibm.com>, "bgray@linux.ibm.com" <bgray@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, "erichte@linux.ibm.com" <erichte@linux.ibm.com>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "zohar@linux.ibm.com" <zohar@linux.ibm.com>, "gjoyce@linux.ibm.com" <gjoyce@linux.ibm.com>, "joel@jms.id.au" <joel@jms.id.au>, "ruscur@russell.cc" <ruscur@russell.cc>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "gcwilson@linux.ibm.com" <gcwilson@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Segher Boessenkool
-> Sent: 26 January 2023 17:19
->=20
-> On Thu, Jan 26, 2023 at 12:09:53AM +1100, Michael Ellerman wrote:
-> > Andrew Donnellan <ajd@linux.ibm.com> writes:
-> > > A number of structures and buffers passed to PKS hcalls have alignmen=
-t
-> > > requirements, which could on occasion cause problems:
-> > >
-> > > - Authorisation structures must be 16-byte aligned and must not cross=
- a
-> > >   page boundary
-> > >
-> > > - Label structures must not cross page boundaries
-> > >
-> > > - Password output buffers must not cross page boundaries
-> > >
-> > > Round up the allocations of these structures/buffers to the next powe=
-r of
-> > > 2 to make sure this happens.
+On Thu, Jan 26, 2023 at 08:18:31AM -0800, Suren Baghdasaryan wrote:
+> On Thu, Jan 26, 2023 at 7:47 AM Mel Gorman <mgorman@techsingularity.net> wrote:
 > >
-> > It's not the *next* power of 2, it's the *nearest* power of 2, includin=
-g
-> > the initial value if it's already a power of 2.
->=20
-> It's not the nearest either, the nearest power of two to 65 is 64.  You
-> could say "but, round up" to which I would say "round?"  :-P
->=20
-> "Adjust the allocation size to be the smallest power of two greater than
-> or equal to the given size."
->=20
-> "Pad to a power of two" in shorthand.  "Padded to a power of two if
-> necessary" if you want to emphasise it can be a no-op.
+> > On Wed, Jan 25, 2023 at 03:35:53PM -0800, Suren Baghdasaryan wrote:
+> > > In cases when VMA flags are modified after VMA was isolated and mmap_lock
+> > > was downgraded, flags modifications would result in an assertion because
+> > > mmap write lock is not held.
+> >
+> > Add note that it's also used during exit when the locking of the VMAs
+> > becomes irrelevant (mm users is 0, should be no VMA modifications taking
+> > place other than zap).
+> 
+> Ack.
+> 
+> >
+> > The typical naming pattern when a caller either knows it holds the necessary
+> > lock or knows it does not matter is __mod_vm_flags()
+> 
+> Ok. It sounds less explicit but plenty of examples, so I'm fine with
+> such rename. Will apply in the next version.
+> 
 
-Changing the size to kzalloc() doesn't help.
-The alignment depends on the allocator and is only required to have
-a relatively small alignment (ARCH_MINALIGN?) regardless of the size.
+It might be a personal thing. nolock to me is ambigious because it might
+mean "lock is already held", "no lock is necessary" or "no lock is acquired"
+where as *for me*, calling foo vs __foo *usually* means "direct callers of
+__foo take care of the locking, memory ordering, per-cpu pinning details etc"
+depending on the context. Of course, this convention is not universally true.
 
-IIRC one of the allocators adds a small header to every item.
-It won't return 16 byte aligned items at all.
+> > > Pass a hint to untrack_pfn to conditionally use mod_vm_flags_nolock for
+> > > flags modification and to avoid assertion.
+> > >
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >
+> > Patch itself looks ok. It strays close to being "conditional locking"
+> > though which might attract some complaints.
+> 
+> The description seems to accurately describe what's done here but I'm
+> open to better suggestions.
 
-=09David
+I don't have alternative suggestions but if someone else reads the patch and
+says "this is conditional locking", you can at least claim that someone
+else considered "conditional locking" and didn't think it was a major
+problem in this specific patch.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+-- 
+Mel Gorman
+SUSE Labs
