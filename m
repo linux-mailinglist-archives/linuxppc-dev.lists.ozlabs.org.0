@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AABA67C25F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:30:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5332667C263
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:31:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NS470kFz3fJr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:30:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NTF10Hnz3fZP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:31:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=g5kNYx2i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VxQifR4e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3ynxrywckdhcdmjbzmnbjjbgz.xjhgdipskkx-yzqgdnon.jugvwn.jmb@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3adxrywckdiamvskivwksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=g5kNYx2i;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VxQifR4e;
 	dkim-atps=neutral
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NDy2qdVz3cgp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:20:34 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5065604854eso3777437b3.16
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:20:34 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NF73Dtmz3fG1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:20:43 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id c2-20020a25a2c2000000b008016611ca77so353195ybn.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:20:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYQmk36LwpH1amM5NS/JZnLvaK2yBpvx1p5Vz+enrHo=;
-        b=g5kNYx2i/3N21JTuAlpQ2Fzr0z4yS5BF5bpwKl6uBD9aJAt61CO1Cxf2wOs6Z6Le4j
-         woG9v16pTQyq6MRJ3l0+3Q8SwZomo4kn2dMJ78fwpX9TiUULdeKPKPQMgJLHQXfeSljh
-         Tz8qAv3zT6uOZvOFT6MlpOMURNETaASAXkZOz5R0qIHG4KfR+qUenefEszI6IbhmlxAo
-         DpbMgACRE0CV+GOVDn/CN0GOTKRfvezhoZgYafaFwo4iXRIsRJVYG9QTqaDNxbb/vvIh
-         VahpBNlPSFCRJFvx7tii4AcdZRcpXXE8FeDomLyGIK6NHSUIJ2OeVzRVYe+oWOrxZQw+
-         LZiA==
+        bh=rjltbgFvPXxNxLiYStYE3VCcVG+pja2QaxGJnpw1y/o=;
+        b=VxQifR4eTm/oiq+AtgXObEPg6PbS+FCbU66oTdjhqZ7NOq5U2vhhVAuJG7CJAmTAx4
+         Lt50WFOtTpTs1TQKLM0aOwhl4/O9QSqsZ7GYnbdd8r+IghyCyr7DL5d6c/hl6Au4KTsM
+         ErRsXqJd/YTXEyZLP90smJmcXZ2wm1RhUX1E2uhwba8PGvyRkWiCtQofEvi/IEOSjYLn
+         WrQqm5BZ6+RZ99ZwhgD8m92fCZeLverYJd/5gsKFa6jFKD1Qm01QpjyXwVbdK1wdSPb8
+         QXHTuTatMmpI9W2nK87lMLio5oAZirIt7fZGwV+avak9PsioHMSqNPVCTS6ndtiPIQqP
+         D5Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYQmk36LwpH1amM5NS/JZnLvaK2yBpvx1p5Vz+enrHo=;
-        b=le+gSKH/7FtbaXOcxVUWGeMo/Hp/taVhiOQmj3Nyh7Y9+sMEpLSMIdaVnyZ1mmMi9N
-         OyuBUW9c5Jk8cm/DSC7XCt/ritKcV/S7BXuQ42K/4pjgQRMrx3EX1BCsJiL7qLE6n2p0
-         3FdVXolHbIMnsOgPB2bJaBS8t1tPQQBiXiDUZ4JsU4MG5EA2VHjVGZrrnCUUlwU3ZXts
-         0J+yk6pUAuPsyQDfaMfSJB70DsK+jY+Ddhz3hM6VxcTImGCWNkUY1C16+WeQBB7MUVG0
-         6p/xHpBxlhVrPtV3CO1nkKSjtY4CdP80oiduqunRo38/HxW8t0ftl5zzj/QJN/cb+Mcp
-         spOA==
-X-Gm-Message-State: AFqh2koIrr4nVJx+UEPkZjx56eQR8bN0H0wPxY3NVsWfrEuMIgcbLfpY
-	j1Qm8VRI0M6Yxwl0ey4DPEB1wOkmmiuu
-X-Google-Smtp-Source: AMrXdXtJyXEuVpA/fKT4Gs+OHOHp62Ve2MgKmevUrheQ5iCrugGv01d4Et9NsO/jcVDyYhqORA5ZqbJKTjoZ
+        bh=rjltbgFvPXxNxLiYStYE3VCcVG+pja2QaxGJnpw1y/o=;
+        b=AIzKKwmi2QQKlC2l/bLOQiTOdKyrxm2O0eoq+tDAQomU1NRxtPjy05VUeDPzlUx+fn
+         hC+eHd0tdKyAuBfTHC/237MdFRcFn1JsUYoNKUoic8WTOZWZQEpi6Odf977hVGWb7tla
+         nDWsOpvns4a4YzWkHQxDBx0457fDJ5p19px6XFTudOxpgqFUv7FbGP+8SSrpitDc87Lg
+         vJNe53vGU+rszCddDavbh8IGglHyXYdJiQM2ukJvDti9u0xxei9h5023vfJq/PItlEn6
+         niSDCBbdYKPM803okfJQYnNcq6yEeBJ3c2JQ+Gl3ofyHMjbFlzR0/EDbey6itYF8rfjv
+         844A==
+X-Gm-Message-State: AFqh2kqPhBD40Zw/aROnaANKMAcKo77oD27L2WlVggIYL+a4OtU/Vf5R
+	CmJybVN14niYa0xHw4V05izphXQPEaVh
+X-Google-Smtp-Source: AMrXdXsACLfASuysaOm2/S/UHYpvgci8aYMjvrQ5T1As6a7u+QStn1ktC49JQqivsGHwIDxUs3nwQIls/UA1
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:568d:4d98:b468:b025])
- (user=irogers job=sendgmr) by 2002:a81:5c02:0:b0:4e2:db5a:2c2c with SMTP id
- q2-20020a815c02000000b004e2db5a2c2cmr4504216ywb.202.1674696032312; Wed, 25
- Jan 2023 17:20:32 -0800 (PST)
-Date: Wed, 25 Jan 2023 17:18:53 -0800
+ (user=irogers job=sendgmr) by 2002:a81:ec05:0:b0:4fd:413d:204c with SMTP id
+ j5-20020a81ec05000000b004fd413d204cmr2646561ywm.419.1674696041384; Wed, 25
+ Jan 2023 17:20:41 -0800 (PST)
+Date: Wed, 25 Jan 2023 17:18:54 -0800
 In-Reply-To: <20230126011854.198243-1-irogers@google.com>
-Message-Id: <20230126011854.198243-12-irogers@google.com>
+Message-Id: <20230126011854.198243-13-irogers@google.com>
 Mime-Version: 1.0
 References: <20230126011854.198243-1-irogers@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Subject: [PATCH v4 11/12] perf jevents: Add model list option
+Subject: [PATCH v4 12/12] perf pmu-events: Fix testing with JEVENTS_ARCH=all
 From: Ian Rogers <irogers@google.com>
 To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
 	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
@@ -90,73 +90,65 @@ Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Cale
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This allows the set of generated jevents events and metrics be limited
-to a subset of the model names. Appropriate if trying to minimize the
-binary size where only a set of models are possible.
+The #slots literal will return NAN when not on ARM64 which causes a
+perf test failure when not on an ARM64 for a JEVENTS_ARCH=all build:
+..
+ 10.4: Parsing of PMU event table metrics with fake PMUs             : FAILED!
+..
+Add an is_test boolean so that the failure can be avoided when running
+as a test.
 
+Fixes: acef233b7ca7 ("perf pmu: Add #slots literal support for arm64")
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- tools/perf/pmu-events/Build      |  3 ++-
- tools/perf/pmu-events/jevents.py | 14 ++++++++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ tools/perf/tests/pmu-events.c | 1 +
+ tools/perf/util/expr.h        | 1 +
+ tools/perf/util/expr.l        | 8 +++++---
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
-index 15b9e8fdbffa..a14de24ecb69 100644
---- a/tools/perf/pmu-events/Build
-+++ b/tools/perf/pmu-events/Build
-@@ -10,6 +10,7 @@ JEVENTS_PY	=  pmu-events/jevents.py
- ifeq ($(JEVENTS_ARCH),)
- JEVENTS_ARCH=$(SRCARCH)
- endif
-+JEVENTS_MODEL ?= all
+diff --git a/tools/perf/tests/pmu-events.c b/tools/perf/tests/pmu-events.c
+index 962c3c0d53ba..accf44b3d968 100644
+--- a/tools/perf/tests/pmu-events.c
++++ b/tools/perf/tests/pmu-events.c
+@@ -950,6 +950,7 @@ static int metric_parse_fake(const char *metric_name, const char *str)
+ 		pr_debug("expr__ctx_new failed");
+ 		return TEST_FAIL;
+ 	}
++	ctx->sctx.is_test = true;
+ 	if (expr__find_ids(str, NULL, ctx) < 0) {
+ 		pr_err("expr__find_ids failed\n");
+ 		return -1;
+diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
+index 029271540fb0..eaa44b24c555 100644
+--- a/tools/perf/util/expr.h
++++ b/tools/perf/util/expr.h
+@@ -9,6 +9,7 @@ struct expr_scanner_ctx {
+ 	char *user_requested_cpu_list;
+ 	int runtime;
+ 	bool system_wide;
++	bool is_test;
+ };
  
- #
- # Locate/process JSON files in pmu-events/arch/
-@@ -23,5 +24,5 @@ $(OUTPUT)pmu-events/pmu-events.c: pmu-events/empty-pmu-events.c
- else
- $(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS_PY) pmu-events/metric.py
- 	$(call rule_mkdir)
--	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) pmu-events/arch $@
-+	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
- endif
-diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
-index 627ee817f57f..2bcd07ce609f 100755
---- a/tools/perf/pmu-events/jevents.py
-+++ b/tools/perf/pmu-events/jevents.py
-@@ -599,6 +599,8 @@ const struct pmu_events_map pmu_events_map[] = {
-             else:
-               metric_tblname = 'NULL'
-               metric_size = '0'
-+            if event_size == '0' and metric_size == '0':
-+              continue
-             cpuid = row[0].replace('\\', '\\\\')
-             _args.output_file.write(f"""{{
- \t.arch = "{arch}",
-@@ -888,12 +890,24 @@ def main() -> None:
-           action: Callable[[Sequence[str], os.DirEntry], None]) -> None:
-     """Replicate the directory/file walking behavior of C's file tree walk."""
-     for item in os.scandir(path):
-+      if _args.model != 'all' and item.is_dir():
-+        # Check if the model matches one in _args.model.
-+        if len(parents) == _args.model.split(',')[0].count('/'):
-+          # We're testing the correct directory.
-+          item_path = '/'.join(parents) + ('/' if len(parents) > 0 else '') + item.name
-+          if 'test' not in item_path and item_path not in _args.model.split(','):
-+            continue
-       action(parents, item)
-       if item.is_dir():
-         ftw(item.path, parents + [item.name], action)
+ struct expr_parse_ctx {
+diff --git a/tools/perf/util/expr.l b/tools/perf/util/expr.l
+index 0168a9637330..72ff4f3d6d4b 100644
+--- a/tools/perf/util/expr.l
++++ b/tools/perf/util/expr.l
+@@ -84,9 +84,11 @@ static int literal(yyscan_t scanner, const struct expr_scanner_ctx *sctx)
+ 	YYSTYPE *yylval = expr_get_lval(scanner);
  
-   ap = argparse.ArgumentParser()
-   ap.add_argument('arch', help='Architecture name like x86')
-+  ap.add_argument('model', help='''Select a model such as skylake to
-+reduce the code size.  Normally set to "all". For architectures like
-+ARM64 with an implementor/model, the model must include the implementor
-+such as "arm/cortex-a34".''',
-+                  default='all')
-   ap.add_argument(
-       'starting_dir',
-       type=dir_path,
+ 	yylval->num = expr__get_literal(expr_get_text(scanner), sctx);
+-	if (isnan(yylval->num))
+-		return EXPR_ERROR;
+-
++	if (isnan(yylval->num)) {
++		if (!sctx->is_test)
++			return EXPR_ERROR;
++		yylval->num = 1;
++	}
+ 	return LITERAL;
+ }
+ %}
 -- 
 2.39.1.456.gfc5497dd1b-goog
 
