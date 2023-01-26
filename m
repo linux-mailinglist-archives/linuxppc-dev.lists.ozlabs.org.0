@@ -2,65 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336C367C24A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 065C067C250
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:22:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NGJ0dl5z3fGD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:21:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NHJ6VdMz3fHw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:22:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=rTbDbMoZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pgVAJ11g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3gtxrywckddevebtreftbbtyr.pbzyvahkccp-qriyvfgf.bmynof.bet@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3itxrywckddkdmjbzmnbjjbgz.xjhgdipskkx-yzqgdnon.jugvwn.jmb@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=rTbDbMoZ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pgVAJ11g;
 	dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NCc5tsGz3chL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:19:24 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id x188-20020a2531c5000000b00716de19d76bso318058ybx.19
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:19:24 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NCm4Hssz3fBq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:19:32 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5073cf66299so3732967b3.17
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:19:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=huD0JuZGEuI+QB16/3OseXYdE1VwZ132kWp/N/R3RrQ=;
-        b=rTbDbMoZwX1IxiSAhBMvgsAMkwqnPSsCsT3OJVNe8UCTB/FWTprz5k4uKZp1tDZ7lF
-         duLEgY0/eRTz7UK6fvuf2BUpehJvLT5EfvcQ2ERgEj3mMXfpcN32qGV95ZLPxlFKFat6
-         gxGUbfLV2lIuWvBk42OWCvATH8vWKdZfRGTf9iZ3hReoi9b54Ji6SVJsUsROsBPZ5zfa
-         RUXgztW1PdZ5x/JW7fHO2R8nM3cplbx4cM4jIL2AUR4SpjIBb2l72iodLt9cLTf/ylZy
-         /AZP1zGM0b00OZ6/Dl5o2ximJbHk2eytTwW9w7RdiPgvK1bL0//e3wmE+VpFGOoHfhUZ
-         QlcA==
+        h=content-transfer-encoding:cc:to:from:subject:references
+         :mime-version:message-id:in-reply-to:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WNubpHubQS9oijDNkedGQDFmSM8xq+UbZvj/SDA553c=;
+        b=pgVAJ11gdMFkeQekNhg7CG7ZryLoBS4Ig9z31agnkDHhcFuu1h2UQxELiNMU5/eouW
+         AmDXXHJs33hYQ1Git4k0IBvqj1KGq4W1crRxsSzkXMz4nDinq3C2o9mqZBiSEmHhSbGQ
+         YV6CSMrklfPXAuzDQhCuNxFw8xAEdMRrEB42XBTC2GrZuQUQCUuGDqJv1SrV61u0TuDm
+         atI3pOn21Udq6n5T+hDG/+SA8z3SMnkY9PFKCYOM6YVFPH+lqWH27hp9T3xvj1zpwzxF
+         vkpCOV0nUI6NLe3jLZOfClko+tFd/y+mXGOONM770ARZazBvODooA38YJVFXcxO4qKgF
+         o16Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=huD0JuZGEuI+QB16/3OseXYdE1VwZ132kWp/N/R3RrQ=;
-        b=lZ0eJabth0htbk5EI5MH0PZdcLj6SbN6vMBzj9vBA1HfNQm8U+VylH03WjKfW4zHmj
-         Ey38u0qihycQ6Qng7amabxxN5OlTjgLJebHZcPlMdD1dBG8gbFxtVjGK18vGcMDcpyn+
-         5y3wF6KXLgsyRdOlIxKpP8hhEVFKVMpm4J6Jiu7tjdtZSRzI6vjh0I+/LfYP5ztIY4AV
-         9vQ+JbZYWjKF4GeurnBJeqor01TveWJuzu2nbIt2/sM0FtZ0+Zkttmi39YwwdLWzUS3K
-         3JNPoNeo64ehkYF/pmxUroQ3sat73Qa+gdxzZKxIX8C0BCeF1+twSaAlZU/NMd2qF9ie
-         lT6Q==
-X-Gm-Message-State: AO0yUKVPwZ5lAoSwF/wh8O2Wn0O2rm2jgacaGU0WPtzug6L9rXDaeLxE
-	dLIcIPPuSOCUtGTIMAPk2321k+WkJYhV
-X-Google-Smtp-Source: AK7set9vO1vrQhi595V0ugIEqxSyCu9JqVLPO/3EUj900ZH0P/aY8yQ4pOCJKudRnOJIIVkFi/3xg+JuKtlm
+        h=content-transfer-encoding:cc:to:from:subject:references
+         :mime-version:message-id:in-reply-to:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WNubpHubQS9oijDNkedGQDFmSM8xq+UbZvj/SDA553c=;
+        b=ZmXOMZnLgWdZuKsoEcZcrzYZxyk/mhyR8i5FLzsRwe6V0ZksHJs/InpP1c/v2qePmd
+         Bq951sWenVw1wzEzejeDiaOe1v3LCoAlMoykhkFTTAQsg10nKTq4hrTGKvCoo6bFDV3H
+         Q4koeV9uLxK3lUld6oY7MPov308kQaLE/0Hos9/U8z98AbPZLPj2gmDmGa4n+N5RGaeV
+         5p4Vj2oM3xRaB1hcZv2Hu/xCrzTZlCAfhuKMYmwdm7XKXEr9MoyNl78iIGw49pBL8sNF
+         NOLlmQSgVhRACtaip0bWFT3w0SHwQ82tNgQESmrx3khJz//v5OQ7kLjLD7j525cWaiKN
+         iEyQ==
+X-Gm-Message-State: AO0yUKVAywKzAW2HD1Sr+nCi6iGR/E2gZGHsN4axD9bgKwTCqf/QYdqF
+	ZFUCgtEF+XC51fJ9mdUMSEAOJJpYBSkq
+X-Google-Smtp-Source: AK7set+O3oLnATb/7nfISfjXSs716r/624JlSux3EJyoImU7UQJNO4w7zyM5uiaeIT2G7JdN+7NIe89dmJRI
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:568d:4d98:b468:b025])
- (user=irogers job=sendgmr) by 2002:a25:abee:0:b0:80b:82a1:c2f7 with SMTP id
- v101-20020a25abee000000b0080b82a1c2f7mr841341ybi.391.1674695962350; Wed, 25
- Jan 2023 17:19:22 -0800 (PST)
-Date: Wed, 25 Jan 2023 17:18:44 -0800
+ (user=irogers job=sendgmr) by 2002:a25:e0cd:0:b0:80b:7727:8363 with SMTP id
+ x196-20020a25e0cd000000b0080b77278363mr670452ybg.366.1674695970390; Wed, 25
+ Jan 2023 17:19:30 -0800 (PST)
+Date: Wed, 25 Jan 2023 17:18:45 -0800
 In-Reply-To: <20230126011854.198243-1-irogers@google.com>
-Message-Id: <20230126011854.198243-3-irogers@google.com>
+Message-Id: <20230126011854.198243-4-irogers@google.com>
 Mime-Version: 1.0
 References: <20230126011854.198243-1-irogers@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Subject: [PATCH v4 02/12] perf jevents metric: Add ability to rewrite metrics
- in terms of others
+Subject: [PATCH v4 03/12] perf jevents: Rewrite metrics in the same file with
+ each other
 From: Ian Rogers <irogers@google.com>
 To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
 	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
@@ -76,6 +78,7 @@ To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>,
 	Sandipan Das <sandipan.das@amd.com>, Jing Zhang <renyu.zj@linux.alibaba.com>, 
 	linuxppc-dev@lists.ozlabs.org, Kajol Jain <kjain@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,191 +94,73 @@ Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Cale
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add RewriteMetricsInTermsOfOthers that iterates over pairs of names
-and expressions trying to replace an expression, within the current
-expression, with its name.
+Rewrite metrics within the same file in terms of each other. For example, o=
+n Power8
+other_stall_cpi is rewritten from:
+"PM_CMPLU_STALL / PM_RUN_INST_CMPL - PM_CMPLU_STALL_BRU_CRU / PM_RUN_INST_C=
+MPL - PM_CMPLU_STALL_FXU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_VSU / PM_RUN_I=
+NST_CMPL - PM_CMPLU_STALL_LSU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NTCG_FLUS=
+H / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NO_NTF / PM_RUN_INST_CMPL"
+to:
+"stall_cpi - bru_cru_stall_cpi - fxu_stall_cpi - vsu_stall_cpi - lsu_stall_=
+cpi - ntcg_flush_cpi - no_ntf_stall_cpi"
+Which more closely matches the definition on Power9.
+
+To avoid recomputation decorate the function with a cache.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- tools/perf/pmu-events/metric.py      | 73 +++++++++++++++++++++++++++-
- tools/perf/pmu-events/metric_test.py | 10 ++++
- 2 files changed, 81 insertions(+), 2 deletions(-)
+ tools/perf/pmu-events/jevents.py | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/pmu-events/metric.py b/tools/perf/pmu-events/metric.py
-index 2f2fd220e843..ed13efac7389 100644
---- a/tools/perf/pmu-events/metric.py
-+++ b/tools/perf/pmu-events/metric.py
-@@ -4,7 +4,7 @@ import ast
- import decimal
+diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jeven=
+ts.py
+index 0416b7442171..15a1671740cc 100755
+--- a/tools/perf/pmu-events/jevents.py
++++ b/tools/perf/pmu-events/jevents.py
+@@ -3,6 +3,7 @@
+ """Convert directories of JSON events to C code."""
+ import argparse
+ import csv
++from functools import lru_cache
  import json
- import re
--from typing import Dict, List, Optional, Set, Union
-+from typing import Dict, List, Optional, Set, Tuple, Union
- 
- 
- class Expression:
-@@ -26,6 +26,9 @@ class Expression:
-     """Returns true when two expressions are the same."""
-     raise NotImplementedError()
- 
-+  def Substitute(self, name: str, expression: 'Expression') -> 'Expression':
-+    raise NotImplementedError()
+ import metric
+ import os
+@@ -337,18 +338,28 @@ class JsonEvent:
+     s =3D self.build_c_string()
+     return f'{{ { _bcs.offsets[s] } }}, /* {s} */\n'
+=20
+-
++@lru_cache(maxsize=3DNone)
+ def read_json_events(path: str, topic: str) -> Sequence[JsonEvent]:
+   """Read json events from the specified file."""
+-
+   try:
+-    result =3D json.load(open(path), object_hook=3DJsonEvent)
++    events =3D json.load(open(path), object_hook=3DJsonEvent)
+   except BaseException as err:
+     print(f"Exception processing {path}")
+     raise
+-  for event in result:
++  metrics: list[Tuple[str, metric.Expression]] =3D []
++  for event in events:
+     event.topic =3D topic
+-  return result
++    if event.metric_name and '-' not in event.metric_name:
++      metrics.append((event.metric_name, event.metric_expr))
++  updates =3D metric.RewriteMetricsInTermsOfOthers(metrics)
++  if updates:
++    for event in events:
++      if event.metric_name in updates:
++        # print(f'Updated {event.metric_name} from\n"{event.metric_expr}"\=
+n'
++        #       f'to\n"{updates[event.metric_name]}"')
++        event.metric_expr =3D updates[event.metric_name]
 +
-   def __str__(self) -> str:
-     return self.ToPerfJson()
- 
-@@ -186,6 +189,15 @@ class Operator(Expression):
-           other.lhs) and self.rhs.Equals(other.rhs)
-     return False
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    if self.Equals(expression):
-+      return Event(name)
-+    lhs = self.lhs.Substitute(name, expression)
-+    rhs = None
-+    if self.rhs:
-+      rhs = self.rhs.Substitute(name, expression)
-+    return Operator(self.operator, lhs, rhs)
-+
- 
- class Select(Expression):
-   """Represents a select ternary in the parse tree."""
-@@ -225,6 +237,14 @@ class Select(Expression):
-           other.false_val) and self.true_val.Equals(other.true_val)
-     return False
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    if self.Equals(expression):
-+      return Event(name)
-+    true_val = self.true_val.Substitute(name, expression)
-+    cond = self.cond.Substitute(name, expression)
-+    false_val = self.false_val.Substitute(name, expression)
-+    return Select(true_val, cond, false_val)
-+
- 
- class Function(Expression):
-   """A function in an expression like min, max, d_ratio."""
-@@ -267,6 +287,15 @@ class Function(Expression):
-       return result
-     return False
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    if self.Equals(expression):
-+      return Event(name)
-+    lhs = self.lhs.Substitute(name, expression)
-+    rhs = None
-+    if self.rhs:
-+      rhs = self.rhs.Substitute(name, expression)
-+    return Function(self.fn, lhs, rhs)
-+
- 
- def _FixEscapes(s: str) -> str:
-   s = re.sub(r'([^\\]),', r'\1\\,', s)
-@@ -293,6 +322,9 @@ class Event(Expression):
-   def Equals(self, other: Expression) -> bool:
-     return isinstance(other, Event) and self.name == other.name
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    return self
-+
- 
- class Constant(Expression):
-   """A constant within the expression tree."""
-@@ -317,6 +349,9 @@ class Constant(Expression):
-   def Equals(self, other: Expression) -> bool:
-     return isinstance(other, Constant) and self.value == other.value
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    return self
-+
- 
- class Literal(Expression):
-   """A runtime literal within the expression tree."""
-@@ -336,6 +371,9 @@ class Literal(Expression):
-   def Equals(self, other: Expression) -> bool:
-     return isinstance(other, Literal) and self.value == other.value
- 
-+  def Substitute(self, name: str, expression: Expression) -> Expression:
-+    return self
-+
- 
- def min(lhs: Union[int, float, Expression], rhs: Union[int, float,
-                                                        Expression]) -> Function:
-@@ -461,6 +499,7 @@ class MetricGroup:
- 
- 
- class _RewriteIfExpToSelect(ast.NodeTransformer):
-+  """Transformer to convert if-else nodes to Select expressions."""
- 
-   def visit_IfExp(self, node):
-     # pylint: disable=invalid-name
-@@ -498,7 +537,37 @@ def ParsePerfJson(orig: str) -> Expression:
-   for kw in keywords:
-     py = re.sub(rf'Event\(r"{kw}"\)', kw, py)
- 
--  parsed = ast.parse(py, mode='eval')
-+  try:
-+    parsed = ast.parse(py, mode='eval')
-+  except SyntaxError as e:
-+    raise SyntaxError(f'Parsing expression:\n{orig}') from e
-   _RewriteIfExpToSelect().visit(parsed)
-   parsed = ast.fix_missing_locations(parsed)
-   return _Constify(eval(compile(parsed, orig, 'eval')))
-+
-+
-+def RewriteMetricsInTermsOfOthers(metrics: list[Tuple[str, Expression]]
-+                                  )-> Dict[str, Expression]:
-+  """Shorten metrics by rewriting in terms of others.
-+
-+  Args:
-+    metrics (list): pairs of metric names and their expressions.
-+  Returns:
-+    Dict: mapping from a metric name to a shortened expression.
-+  """
-+  updates: Dict[str, Expression] = dict()
-+  for outer_name, outer_expression in metrics:
-+    updated = outer_expression
-+    while True:
-+      for inner_name, inner_expression in metrics:
-+        if inner_name.lower() == outer_name.lower():
-+          continue
-+        if inner_name in updates:
-+          inner_expression = updates[inner_name]
-+        updated = updated.Substitute(inner_name, inner_expression)
-+      if updated.Equals(outer_expression):
-+        break
-+      if outer_name in updates and updated.Equals(updates[outer_name]):
-+        break
-+      updates[outer_name] = updated
-+  return updates
-diff --git a/tools/perf/pmu-events/metric_test.py b/tools/perf/pmu-events/metric_test.py
-index 15315d0f716c..ced5998bd827 100644
---- a/tools/perf/pmu-events/metric_test.py
-+++ b/tools/perf/pmu-events/metric_test.py
-@@ -2,7 +2,9 @@
- import unittest
- from metric import Constant
- from metric import Event
-+from metric import Expression
- from metric import ParsePerfJson
-+from metric import RewriteMetricsInTermsOfOthers
- 
- 
- class TestMetricExpressions(unittest.TestCase):
-@@ -153,5 +155,13 @@ class TestMetricExpressions(unittest.TestCase):
-     after = '0 * SLOTS'
-     self.assertEqual(ParsePerfJson(before).Simplify().ToPerfJson(), after)
- 
-+  def test_RewriteMetricsInTermsOfOthers(self):
-+    Expression.__eq__ = lambda e1, e2: e1.Equals(e2)
-+    before = [('m1', ParsePerfJson('a + b + c + d')),
-+              ('m2', ParsePerfJson('a + b + c'))]
-+    after = {'m1': ParsePerfJson('m2 + d')}
-+    self.assertEqual(RewriteMetricsInTermsOfOthers(before), after)
-+    Expression.__eq__ = None
-+
- if __name__ == '__main__':
-   unittest.main()
--- 
++  return events
+=20
+ def preprocess_arch_std_files(archpath: str) -> None:
+   """Read in all architecture standard events."""
+--=20
 2.39.1.456.gfc5497dd1b-goog
 
