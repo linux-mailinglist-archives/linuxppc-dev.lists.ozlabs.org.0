@@ -1,58 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1219D67DC51
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 03:35:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC6E67D098
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 16:48:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P31s96kqxz3fL8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:35:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=T4/5HVZH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2lVB5pknz3fD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 02:48:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.230; helo=relay10.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=T4/5HVZH;
-	dkim-atps=neutral
-X-Greylist: delayed 118 seconds by postgrey-1.36 at boromir; Fri, 27 Jan 2023 02:24:24 AEDT
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.136.236; helo=outbound-smtp52.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
+Received: from outbound-smtp52.blacknight.com (outbound-smtp52.blacknight.com [46.22.136.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2kyc20tYz3cH1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 02:24:23 +1100 (AEDT)
-Received: from booty.fritz.box (unknown [77.244.183.192])
-	(Authenticated sender: luca.ceresoli@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPA id F296E24000C;
-	Thu, 26 Jan 2023 15:24:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1674746660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rxsciDeqntpVUYn5FLc+E1Uob0ovb8UfCOdsWZY5uwU=;
-	b=T4/5HVZHxuMKo5KmRiXxx+syO4WcZeO6SScPR0KZgsHpfL+MczFljwh8BDAa0pmVyshuHe
-	IJ1bxcFRQoNIYs+TwFHmKtVae8oqPmNS2noDNR95QdHobXLbdYqyJ6jZDzI8T/3a41JeNz
-	k3gW/nYR1B5QmTiEx34iIP865Qb18W47bpNTKL7l2WHCbIWp0wByjjFtg0td73d9x1KGzF
-	pTawqkzou34elhGXElMrgpLo76xcxjZ6sxvfb9lCvPRUa09EJG5eKh5ajq9oQrqj5IB/Ik
-	ZpDuUhVqRc5VOxnWJhbtOIkrYFz6p4IkOGx922R+dpD2GRVLFxwu/b/4nNAsUg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH] ASoC: fsl-asoc-card: constify fsl_asoc_card_dai
-Date: Thu, 26 Jan 2023 16:24:12 +0100
-Message-Id: <20230126152412.959574-1-luca.ceresoli@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2lTf6CgLz3cgs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 02:47:50 +1100 (AEDT)
+Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
+	by outbound-smtp52.blacknight.com (Postfix) with ESMTPS id A4D51FAC7E
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 15:47:44 +0000 (GMT)
+Received: (qmail 28996 invoked from network); 26 Jan 2023 15:47:44 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 15:47:44 -0000
+Date: Thu, 26 Jan 2023 15:47:40 +0000
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 6/7] mm: introduce mod_vm_flags_nolock and use it in
+ untrack_pfn
+Message-ID: <20230126154740.j3a3lu4x557c56yi@techsingularity.net>
+References: <20230125233554.153109-1-surenb@google.com>
+ <20230125233554.153109-7-surenb@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 27 Jan 2023 13:32:18 +1100
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20230125233554.153109-7-surenb@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,30 +44,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is never modified and can be made const.
+On Wed, Jan 25, 2023 at 03:35:53PM -0800, Suren Baghdasaryan wrote:
+> In cases when VMA flags are modified after VMA was isolated and mmap_lock
+> was downgraded, flags modifications would result in an assertion because
+> mmap write lock is not held.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- sound/soc/fsl/fsl-asoc-card.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Add note that it's also used during exit when the locking of the VMAs
+becomes irrelevant (mm users is 0, should be no VMA modifications taking
+place other than zap).
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 2f25358196ee..00118a75d126 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -297,7 +297,7 @@ SND_SOC_DAILINK_DEFS(hifi_be,
- 	DAILINK_COMP_ARRAY(COMP_EMPTY()),
- 	DAILINK_COMP_ARRAY(COMP_DUMMY()));
- 
--static struct snd_soc_dai_link fsl_asoc_card_dai[] = {
-+static const struct snd_soc_dai_link fsl_asoc_card_dai[] = {
- 	/* Default ASoC DAI Link*/
- 	{
- 		.name = "HiFi",
+The typical naming pattern when a caller either knows it holds the necessary
+lock or knows it does not matter is __mod_vm_flags()
+
+> Introduce mod_vm_flags_nolock to be used in such situation, when VMA is
+> not part of VMA tree and locking it is not required.
+
+Instead of such situations, describe in as "used when the caller takes
+responsibility for the required locking".
+
+> Pass a hint to untrack_pfn to conditionally use mod_vm_flags_nolock for
+> flags modification and to avoid assertion.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+
+Patch itself looks ok. It strays close to being "conditional locking"
+though which might attract some complaints.
+
 -- 
-2.34.1
-
+Mel Gorman
+SUSE Labs
