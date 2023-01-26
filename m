@@ -2,63 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1A567C54F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 09:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5722467C5AC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 09:21:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2Y6Y71S4z3fDx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 19:00:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qTWifsp9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2YZh6gbxz3fFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 19:21:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qTWifsp9;
-	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.50; helo=mail-oa1-f50.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2Y5f1xs7z3cfh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 18:59:48 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 702451FEC1;
-	Thu, 26 Jan 2023 07:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1674719984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8phw8z9lSY7iQJCq6VYkn4UUEHCEZ7ZXKi1c7gTwrM4=;
-	b=qTWifsp9kR6tUF5RbmZkPrFSDZSuoNzYFU4i42xM+2e0bl32CICy762Ehn1A7cN9EuqmJ0
-	AZkmevMfJIwKOy1HC8U/GL4eP9OHTN67Q3TI95rlLJfzptW0842juEEEyO6mRIlygvAJd6
-	Y1BtkkMiEmx1HmgPqlW1Wt0jsVYn2mI=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 42F671358A;
-	Thu, 26 Jan 2023 07:59:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id rFjmD/Ay0mMFJwAAMHmgww
-	(envelope-from <mhocko@suse.com>); Thu, 26 Jan 2023 07:59:44 +0000
-Date: Thu, 26 Jan 2023 08:59:43 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 2/7] mm: introduce vma->vm_flags wrapper functions
-Message-ID: <Y9Iy7zhJsaHCzdF/@dhcp22.suse.cz>
-References: <20230125233554.153109-1-surenb@google.com>
- <20230125233554.153109-3-surenb@google.com>
- <20230125162810.ec222773d13cd26c55991fde@linux-foundation.org>
- <CAJuCfpFWTNpz7LB+931Gc+yYwBq3-y+_doH2WdtjhTGnxLxvig@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2YZ45Cq7z3ch3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 19:20:58 +1100 (AEDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-16332831ed0so1515228fac.10
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 00:20:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iTLUhLqiktW0lQYPPHgLpL0hyET/yRv7DDBqjk/47Fc=;
+        b=SxLAihgBj628Lu1qu3lfQnQVuxccGZmWSStONg8gRz+jih8QKLzFvpjHsWZaSbUsHf
+         KRe+wP3Pky7slBbK8LanXF4+jLxjQH/7YUv/BEgGi2vQ02+cg36jQCTuswRSeWRSE3X9
+         4+DuKOJzBdC/sqS1MiaVZjftAO8gGIs8xoIoAlGtt/AeEVuZI11foOwOFo00cQbhg7eq
+         0xtwEg0kJSzb3gegdYvBOsZyoi6Vr98qan48uPvbBPCwe6laOi8ZR8qGi0flPysnEEGv
+         ayMgP7/y5ZUc+ppl2Nrzm2JaU1MbepN3dGyWy9v5KyAMZPwF3OIpGbSCRWOPMzsCKvD5
+         Znnw==
+X-Gm-Message-State: AO0yUKU4KH17LBacKo04j6TqzzYgo+EyQrtIxeKspKJ+Co/Kz9eollrG
+	aQ6ariE045ZB5njplZfsqq0lUWoBYSA0TQ==
+X-Google-Smtp-Source: AK7set8mXo+ovkMk0aHr8S+aamboFyXdItdKK3foNcVu0zVgVAR/5Z+12ctAmxoeFR7PsPg68M5RaA==
+X-Received: by 2002:a05:6870:a103:b0:163:27c2:9476 with SMTP id m3-20020a056870a10300b0016327c29476mr4546235oae.10.1674721255924;
+        Thu, 26 Jan 2023 00:20:55 -0800 (PST)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com. [209.85.210.45])
+        by smtp.gmail.com with ESMTPSA id a21-20020a056870b15500b0011d02a3fa63sm258509oal.14.2023.01.26.00.20.55
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jan 2023 00:20:55 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id m18-20020a05683026d200b0068661404380so541794otu.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 00:20:55 -0800 (PST)
+X-Received: by 2002:a25:9ac1:0:b0:7b4:6a33:d89f with SMTP id
+ t1-20020a259ac1000000b007b46a33d89fmr2761883ybo.543.1674721245117; Thu, 26
+ Jan 2023 00:20:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpFWTNpz7LB+931Gc+yYwBq3-y+_doH2WdtjhTGnxLxvig@mail.gmail.com>
+References: <20230125190757.22555-1-rppt@kernel.org> <20230125190757.22555-2-rppt@kernel.org>
+In-Reply-To: <20230125190757.22555-2-rppt@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 26 Jan 2023 09:20:33 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUeuPgkWVjpZ=OM4ofnoYyv2nY1_FGo0JUZCFXYX=K2vw@mail.gmail.com>
+Message-ID: <CAMuHMdUeuPgkWVjpZ=OM4ofnoYyv2nY1_FGo0JUZCFXYX=K2vw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] m68k: use asm-generic/memory_model.h for both MMU and !MMU
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,51 +66,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, Andrew Morton <akpm@linux-foundation.org>, tatashin@google.com, mg
- orman@techsingularity.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux--csky@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+ , linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 25-01-23 16:56:17, Suren Baghdasaryan wrote:
-> On Wed, Jan 25, 2023 at 4:28 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > On Wed, 25 Jan 2023 15:35:49 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
-> >
-> > > --- a/include/linux/mm_types.h
-> > > +++ b/include/linux/mm_types.h
-> > > @@ -491,7 +491,15 @@ struct vm_area_struct {
-> > >        * See vmf_insert_mixed_prot() for discussion.
-> > >        */
-> > >       pgprot_t vm_page_prot;
-> > > -     unsigned long vm_flags;         /* Flags, see mm.h. */
-> > > +
-> > > +     /*
-> > > +      * Flags, see mm.h.
-> > > +      * To modify use {init|reset|set|clear|mod}_vm_flags() functions.
-> > > +      */
-> > > +     union {
-> > > +             const vm_flags_t vm_flags;
-> > > +             vm_flags_t __private __vm_flags;
-> > > +     };
-> >
-> > Typically when making a change like this we'll rename the affected
-> > field/variable/function/etc.  This will reliably and deliberately break
-> > unconverted usage sites.
-> >
-> > This const trick will get us partway there, by breaking setters.  But
-> > renaming it will break both setters and getters.
-> 
-> My intent here is to break setters but to allow getters to keep
-> reading vma->vm_flags directly. We could provide get_vm_flags() and
-> convert all getters as well but it would introduce a huge additional
-> churn (800+ hits) with no obvious benefits, I think. Does that clarify
-> the intent of this trick?
+On Wed, Jan 25, 2023 at 8:08 PM Mike Rapoport <rppt@kernel.org> wrote:
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+>
+> The MMU variant uses generic definitions of page_to_pfn() and
+> pfn_to_page(), but !MMU defines them in include/asm/page_no.h for no
+> good reason.
+>
+> Include asm-generic/memory_model.h in the common include/asm/page.h and
+> drop redundant definitions.
+>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-I think that makes sense at this stage. The conversion patch is quite
-large already. Maybe the final renaming could be done on top of
-everything and patch generated by coccinele. The const union is a neat
-trick but a potential lockdep assert is a nice plus as well. I wouldn't
-see it as a top priority though.
--- 
-Michal Hocko
-SUSE Labs
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
