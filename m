@@ -1,59 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD5E67C954
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:00:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B4667CA5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 13:00:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2d694Gykz3ch3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 22:00:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UJ2ydcyF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2fRY21wsz3fFt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 23:00:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=techsingularity.net (client-ip=46.22.136.244; helo=outbound-smtp60.blacknight.com; envelope-from=mgorman@techsingularity.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 452 seconds by postgrey-1.36 at boromir; Thu, 26 Jan 2023 23:00:10 AEDT
+Received: from outbound-smtp60.blacknight.com (outbound-smtp60.blacknight.com [46.22.136.244])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2d5H1WRcz3cQV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 21:59:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UJ2ydcyF;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P2d5G3tdhz4wgv;
-	Thu, 26 Jan 2023 21:59:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1674730786;
-	bh=PCtjVepWpk4GVT4pLOjcJhXEJ7Ve61N+43Vi055QQMk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UJ2ydcyFtr+dijCjka/06++SoUFGz/mq3/xT9p1dnPwjot0Kgs6fMRIKhz94CnzDc
-	 2Hcq+L1/i+Ev/9TQIZVamh1HBvXA1MGcDdi4656157jNthYE6vVtBO0dH2ePLrE27S
-	 6vmTMqTuZrfHpBG9iHGFRiu/P1/S0m9W7+GDyZCANd+FFVz5/qJrtPeY1aaQoKs+Pc
-	 6oEDXodwmoar9TGA5H0pwzyT8RIYgkAPTiga6NIqfBk3cDwBSDslVeNBgUCfzlL4BV
-	 xHd2VIv2d+cokONEHtTWVfIvkoZW6b0K5BNZjOzIGtq2iNC39zK16f9JcvRcZ/aswT
-	 vpCunW79QOJAg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 1/2] powerpc/pci: Allow to disable filling deprecated
- pci-OF-bus-map
-In-Reply-To: <20230122112118.qhezbsmoeggbkqfs@pali>
-References: <20220817163927.24453-1-pali@kernel.org>
- <20221009112555.spnwid27r4rwi67q@pali>
- <20221101222603.h3nlrp6xuhrnkmht@pali>
- <20221126162345.a4uuyefmtavfqa6g@pali>
- <20221216181206.tfzd2qalkking6sj@pali>
- <20230122112118.qhezbsmoeggbkqfs@pali>
-Date: Thu, 26 Jan 2023 21:59:43 +1100
-Message-ID: <87r0vhzhls.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2fQy0FW9z3fBf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 23:00:09 +1100 (AEDT)
+Received: from mail.blacknight.com (pemlinmail05.blacknight.ie [81.17.254.26])
+	by outbound-smtp60.blacknight.com (Postfix) with ESMTPS id 6B9C5FAAF2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:52:29 +0000 (GMT)
+Received: (qmail 32236 invoked from network); 26 Jan 2023 11:52:28 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2023 11:52:28 -0000
+Date: Thu, 26 Jan 2023 11:52:24 +0000
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 1/7] kernel/fork: convert vma assignment to a memcpy
+Message-ID: <20230126115224.3urhskf35eomk7xl@techsingularity.net>
+References: <20230125233554.153109-1-surenb@google.com>
+ <20230125233554.153109-2-surenb@google.com>
+ <20230125162159.a66e5ef05fecb405e85ffec9@linux-foundation.org>
+ <CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+ <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,145 +47,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com, linuxppc-dev@lists.
+ ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pali Roh=C3=A1r <pali@kernel.org> writes:
-> PING? It is more than 5 months since this patch series is there and it
-> still has not received any comment.
+On Wed, Jan 25, 2023 at 05:34:49PM -0800, Andrew Morton wrote:
+> On Wed, 25 Jan 2023 16:50:01 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> 
+> > On Wed, Jan 25, 2023 at 4:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> > >
+> > > On Wed, 25 Jan 2023 15:35:48 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> > >
+> > > > Convert vma assignment in vm_area_dup() to a memcpy() to prevent compiler
+> > > > errors when we add a const modifier to vma->vm_flags.
+> > > >
+> > > > ...
+> > > >
+> > > > --- a/kernel/fork.c
+> > > > +++ b/kernel/fork.c
+> > > > @@ -482,7 +482,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+> > > >                * orig->shared.rb may be modified concurrently, but the clone
+> > > >                * will be reinitialized.
+> > > >                */
+> > > > -             *new = data_race(*orig);
+> > > > +             memcpy(new, orig, sizeof(*new));
+> > >
+> > > The data_race() removal is unchangelogged?
+> > 
+> > True. I'll add a note in the changelog about that. Ideally I would
+> > like to preserve it but I could not find a way to do that.
+> > 
+> 
+> Perhaps Paul can comment?
+> 
+> I wonder if KCSAN knows how to detect this race, given that it's now in
+> a memcpy.  I assume so.
 
-There was some related discussion in another thread.
+data_race() is just wrapping an expression around
+__kcsan_[en|dis]able_current and ensuring the expression is evaluated once
+and returning the correct type. I believe the following should be sufficient.
 
-I planned to pick it up last merge window, but it breaks the
-pmac32_defconfig build when CONFIG_PPC_PCI_OF_BUS_MAP_FILL=3Dn:
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 9f7fe3541897..1b30ee568e02 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -472,7 +472,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+ 		 * orig->shared.rb may be modified concurrently, but the clone
+ 		 * will be reinitialized.
+ 		 */
+-		*new = data_race(*orig);
++		data_race(memcpy(new, orig, sizeof(*new)));
+ 		INIT_LIST_HEAD(&new->anon_vma_chain);
+ 		dup_anon_vma_name(orig, new);
+ 	}
 
-  ld: arch/powerpc/platforms/powermac/feature.o: in function `core99_ata100=
-_enable':
-  feature.c:(.text+0xcd0): undefined reference to `pci_device_from_OF_node'
-  ld: arch/powerpc/platforms/powermac/pci.o: in function `pmac_pci_init':
-  pci.c:(.init.text+0x5d4): undefined reference to `pci_device_from_OF_node'
-  ld: pci.c:(.init.text+0x660): undefined reference to `pci_device_from_OF_=
-node'
+I don't see how memcpy could automagically figure out whether the memcpy
+is prone to races or not in an arbitrary context.
 
-So I dropped it, and haven't had time to work out a fix.
+Assuming using data_race this way is ok then
 
-cheers
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
 
-> On Friday 16 December 2022 19:12:06 Pali Roh=C3=A1r wrote:
->> PING?
->>=20
->> On Saturday 26 November 2022 17:23:45 Pali Roh=C3=A1r wrote:
->> > PING?
->> >=20
->> > On Tuesday 01 November 2022 23:26:03 Pali Roh=C3=A1r wrote:
->> > > Hello! Gentle reminder...
->> > >=20
->> > > On Sunday 09 October 2022 13:25:55 Pali Roh=C3=A1r wrote:
->> > > > Hello! Any comments on this? It would be nice to take these two pa=
-tches
->> > > > (or at least patch 2) to finally enable PPC_PCI_BUS_NUM_DOMAIN_DEP=
-ENDENT
->> > > > by default where possible.
->> > > >=20
->> > > > Per following comment there can be an issue with early powermac so=
- seems
->> > > > that PPC_PCI_OF_BUS_MAP_FILL still has to be by default enabled (w=
-hich
->> > > > implies that PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT is disabled) on powe=
-rmac:
->> > > > https://lore.kernel.org/linuxppc-dev/575f239205e8635add81c9f902b7d=
-9db7beb83ea.camel@kernel.crashing.org/
->> > > >=20
->> > > > On Wednesday 17 August 2022 18:39:26 Pali Roh=C3=A1r wrote:
->> > > > > Creating or filling pci-OF-bus-map property in the device-tree is
->> > > > > deprecated since May 2006 [1]. Allow to disable filling this pro=
-perty by
->> > > > > unsetting config option CONFIG_PPC_PCI_OF_BUS_MAP_FILL for remai=
-ning chrp
->> > > > > and powermac code.
->> > > > >=20
->> > > > > Disabling of pci-OF-bus-map property allows to enable new option
->> > > > > CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT also for chrp and powerm=
-ac.
->> > > > >=20
->> > > > > [1] - https://lore.kernel.org/linuxppc-dev/1148016268.13249.14.c=
-amel@localhost.localdomain/
->> > > > >=20
->> > > > > Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
->> > > > > ---
->> > > > >  arch/powerpc/Kconfig         | 12 +++++++++++-
->> > > > >  arch/powerpc/kernel/pci_32.c |  6 ++++++
->> > > > >  2 files changed, 17 insertions(+), 1 deletion(-)
->> > > > >=20
->> > > > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> > > > > index 5881441f7672..df2696c406ad 100644
->> > > > > --- a/arch/powerpc/Kconfig
->> > > > > +++ b/arch/powerpc/Kconfig
->> > > > > @@ -373,9 +373,19 @@ config PPC_DCR
->> > > > >  	depends on PPC_DCR_NATIVE || PPC_DCR_MMIO
->> > > > >  	default y
->> > > > >=20=20
->> > > > > +config PPC_PCI_OF_BUS_MAP_FILL
->> > > > > +	bool "Fill pci-OF-bus-map property in the device-tree"
->> > > > > +	depends on PPC32
->> > > > > +	depends on PPC_PMAC || PPC_CHRP
->> > > > > +	default y
->> > > > > +	help
->> > > > > +	  This option creates and fills pci-OF-bus-map property in the
->> > > > > +	  device-tree which is deprecated and is needed only for old
->> > > > > +	  platforms.
->> > > > > +
->> > > > >  config PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
->> > > > >  	depends on PPC32
->> > > > > -	depends on !PPC_PMAC && !PPC_CHRP
->> > > > > +	depends on !PPC_PCI_OF_BUS_MAP_FILL
->> > > > >  	bool "Assign PCI bus numbers from zero individually for each P=
-CI domain"
->> > > > >  	help
->> > > > >  	  By default on PPC32 were PCI bus numbers unique across all P=
-CI domains.
->> > > > > diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/=
-pci_32.c
->> > > > > index 433965bf37b4..ffc4e1928c80 100644
->> > > > > --- a/arch/powerpc/kernel/pci_32.c
->> > > > > +++ b/arch/powerpc/kernel/pci_32.c
->> > > > > @@ -64,6 +64,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_IBM,	PC=
-I_DEVICE_ID_IBM_CPC710_PCI64,	fixu
->> > > > >=20=20
->> > > > >  #if defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP)
->> > > > >=20=20
->> > > > > +#ifdef CONFIG_PPC_PCI_OF_BUS_MAP_FILL
->> > > > > +
->> > > > >  static u8* pci_to_OF_bus_map;
->> > > > >  static int pci_bus_count;
->> > > > >=20=20
->> > > > > @@ -223,6 +225,8 @@ pci_create_OF_bus_map(void)
->> > > > >  }
->> > > > >  #endif
->> > > > >=20=20
->> > > > > +#endif /* CONFIG_PPC_PCI_OF_BUS_MAP_FILL */
->> > > > > +
->> > > > >  #endif /* defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP) =
-*/
->> > > > >=20=20
->> > > > >  void pcibios_setup_phb_io_space(struct pci_controller *hose)
->> > > > > @@ -264,6 +268,7 @@ static int __init pcibios_init(void)
->> > > > >  	}
->> > > > >=20=20
->> > > > >  #if defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP)
->> > > > > +#ifdef CONFIG_PPC_PCI_OF_BUS_MAP_FILL
->> > > > >  	pci_bus_count =3D next_busno;
->> > > > >=20=20
->> > > > >  	/* OpenFirmware based machines need a map of OF bus
->> > > > > @@ -272,6 +277,7 @@ static int __init pcibios_init(void)
->> > > > >  	 */
->> > > > >  	if (pci_assign_all_buses)
->> > > > >  		pcibios_make_OF_bus_map();
->> > > > > +#endif
->> > > > >  #endif
->> > > > >=20=20
->> > > > >  	/* Call common code to handle resource allocation */
->> > > > > --=20
->> > > > > 2.20.1
->> > > > >=20
+-- 
+Mel Gorman
+SUSE Labs
