@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5695267C201
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 01:52:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254E467C219
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 01:57:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2Mcs1yTJz3fCn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 11:52:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2Mk56lyRz3fD8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 11:57:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hw634KVE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VPV23bB/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2d; helo=mail-yb1-xb2d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hw634KVE;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VPV23bB/;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2Mby4t52z2yHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:51:58 +1100 (AEDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id d132so307607ybb.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 16:51:58 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2MjD2vSCz3bZk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 11:56:31 +1100 (AEDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 129so368197ybb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 16:56:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=erqaH/f6aiKK2Y2revDVg8Kw4fhimJKEevbWpDvyDBg=;
-        b=hw634KVELmZovB0koBFlTAd5HhJuv9a7pYcJyRWRKHoGtoQdRC7yF8vjOQ2U0bypmG
-         bxJMDOSqi6YCIMq0O0u7h7DlvsucKb2iKlM/NvE7Dmx0WmnHc7FtctOsvR0ZSG7Pdi/c
-         RIAivTP216iTEOjdE9b7cFfM4NXSuPy059FKCQhl9h+cH8k+Q2vVGluOc8e9Sq0ojcpT
-         3LP64M2kOZduDnYP/DTPERa7qITWr9LoSvGDwwlcByzhMus0GTtyhtr99lMEUJLUgkVM
-         Nvw0hslXpJWDqz1wU+kVDqiaq4XhMZ7lGAb1fmx6jFLYgoaep29ldxo9/UK06Uu6JPcS
-         mLDQ==
+        bh=j6PJ67oAnfzV9PxkuyEMm7X3urH+VAUx7uNIfBIgK8A=;
+        b=VPV23bB/NTAePn3ETVAx/0rZ5RYy1tyqMgRlKO0QViQnGhUmX7jyE5mB35Xi9APjlY
+         DL1Dqno6sd1kt+SACNdRv9yNuwSO4WLY5aSWK1Lo6e1Z5K7hVz05KgRAL08GGJeN8i95
+         VoJ8IJ8WCXFymcNzjmnd6pEwTWFDmHZiuixuMrEkedvabWF0sGRFPCEruskVOmNZ2z9v
+         4MQJZB50jLKj5Qtx9ezhphFW1ZgV+grFYvY4bw1CA898+aH9wE7fT07rW0gZUvs+zBC7
+         /0EjzxiaogGu8EDN1Au38zJws9yGvLda8TtNbSovZLrAXep+lJAoyouy9SaVV9e3LqLB
+         ssUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=erqaH/f6aiKK2Y2revDVg8Kw4fhimJKEevbWpDvyDBg=;
-        b=t5ycZW3nzRPB62A2w0rnzsYBT8kPUamCC3DPxQz9havV6Z/yYAMzSW4UPxStDWh0tG
-         k03RbBbwPnvtm9+0walo71dNqC08gvdv2ovi7B5jtDu1NMLQAM6OUXx8L89+ktVrCKh2
-         zRuhrypjqNbaek009AoWJKJNNPe/0LAnZZZO7RO4c3DbwSrMBwfVrfzLlrSjtupMXRTE
-         sEeEKKziKdOz0JMQAqL35cJ47Uy8tctx9vXQPeUpYkJPsHP1kG4jlC1/JH60aRJWNzae
-         k/8v8lXo684xyNBhLx8HSAgTRE2vEBGHhlY9lRgHFI7GhDR1P4A7Js0/bcGjr47sCNlG
-         0CNw==
-X-Gm-Message-State: AFqh2kqBy3UgS4YILKi4/ZNcUjLaKELKoJCQ4eDh3BO3Ywtpdvs2Ho5o
-	E5gaO79yEGtrvKMGNhx+6ikTD+l8mF+DNaK3e7FdCA==
-X-Google-Smtp-Source: AMrXdXuWS62n/voZpqLFx7lY106TWS0DFfvcP0at+KMVcEseFA31+u6DR/UW+7IKRl7uOX0L8iaQWbLpM1VsRjvwvbM=
-X-Received: by 2002:a25:f305:0:b0:7b8:6d00:ef23 with SMTP id
- c5-20020a25f305000000b007b86d00ef23mr3939970ybs.119.1674694315876; Wed, 25
- Jan 2023 16:51:55 -0800 (PST)
+        bh=j6PJ67oAnfzV9PxkuyEMm7X3urH+VAUx7uNIfBIgK8A=;
+        b=xLOsWtvzK2qedRkH8vPPSOMWme3dbAMxG/9EmiFelZGALb5p2RlmYvmLAv3opUkdk6
+         xT2+nXGDL/ArKWOE5x02guD3xma97W4/EFScUHcTeMeVV68YxB0O3ivO0+8R8PHIzmTM
+         o1je95uA4mEuiWjgsJV7zMiJFN9LbB2/8Yfpi8ivp3GzuF3i3siDkqqC6tu1wHStccyQ
+         RdE6C2ma0uuSIRobVKWiTdQ0de7WvbXvRridprz34oZ6Zr6PFb/CjJybHD4vzRNWAKwB
+         4GcIMaTHVP7e3RsCFANxIEQeomvp1gUtI1ix8jp2VWjjYhFDC8CslBehvcRe43U9wyGR
+         HXIw==
+X-Gm-Message-State: AO0yUKVuyzeYY9fsawLZlORSbrXdEoExDsj0shbFiQe+XhVo11xXNUYY
+	nwSCpGhxYV4JPTul7O0zGLiA0W2fUzBluFnMvdNGrA==
+X-Google-Smtp-Source: AK7set8NIfHhdPuyL1RvDuayyrK39JHTj20Y7CDEMECMUkWmAbcHmsIgGk35BlpCcNAq5/QsmCjbLZ6FgKApKS2x2KE=
+X-Received: by 2002:a25:c247:0:b0:80b:6201:bee7 with SMTP id
+ s68-20020a25c247000000b0080b6201bee7mr1062130ybf.340.1674694588781; Wed, 25
+ Jan 2023 16:56:28 -0800 (PST)
 MIME-Version: 1.0
 References: <20230125233554.153109-1-surenb@google.com> <20230125233554.153109-3-surenb@google.com>
- <20230125162419.13379944d6c0d4253d7bc88c@linux-foundation.org>
-In-Reply-To: <20230125162419.13379944d6c0d4253d7bc88c@linux-foundation.org>
+ <20230125162810.ec222773d13cd26c55991fde@linux-foundation.org>
+In-Reply-To: <20230125162810.ec222773d13cd26c55991fde@linux-foundation.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 25 Jan 2023 16:51:44 -0800
-Message-ID: <CAJuCfpF21a7seLpEcoWbDLDWUznAOdQo9P6LERmi-iyKMgQGXA@mail.gmail.com>
+Date: Wed, 25 Jan 2023 16:56:17 -0800
+Message-ID: <CAJuCfpFWTNpz7LB+931Gc+yYwBq3-y+_doH2WdtjhTGnxLxvig@mail.gmail.com>
 Subject: Re: [PATCH v3 2/7] mm: introduce vma->vm_flags wrapper functions
 To: Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -78,33 +78,39 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 25, 2023 at 4:24 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+On Wed, Jan 25, 2023 at 4:28 PM Andrew Morton <akpm@linux-foundation.org> wrote:
 >
 > On Wed, 25 Jan 2023 15:35:49 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
 >
-> > vm_flags are among VMA attributes which affect decisions like VMA merging
-> > and splitting. Therefore all vm_flags modifications are performed after
-> > taking exclusive mmap_lock to prevent vm_flags updates racing with such
-> > operations. Introduce modifier functions for vm_flags to be used whenever
-> > flags are updated. This way we can better check and control correct
-> > locking behavior during these updates.
-> >
-> > ...
-> >
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > +static inline void init_vm_flags(struct vm_area_struct *vma,
-> > +static inline void reset_vm_flags(struct vm_area_struct *vma,
-> > +static inline void set_vm_flags(struct vm_area_struct *vma,
-> > +static inline void clear_vm_flags(struct vm_area_struct *vma,
-> > +static inline void mod_vm_flags(struct vm_area_struct *vma,
+> > --- a/include/linux/mm_types.h
+> > +++ b/include/linux/mm_types.h
+> > @@ -491,7 +491,15 @@ struct vm_area_struct {
+> >        * See vmf_insert_mixed_prot() for discussion.
+> >        */
+> >       pgprot_t vm_page_prot;
+> > -     unsigned long vm_flags;         /* Flags, see mm.h. */
+> > +
+> > +     /*
+> > +      * Flags, see mm.h.
+> > +      * To modify use {init|reset|set|clear|mod}_vm_flags() functions.
+> > +      */
+> > +     union {
+> > +             const vm_flags_t vm_flags;
+> > +             vm_flags_t __private __vm_flags;
+> > +     };
 >
-> vm_flags_init(), vm_flags_reset(), etc?
+> Typically when making a change like this we'll rename the affected
+> field/variable/function/etc.  This will reliably and deliberately break
+> unconverted usage sites.
 >
-> This would be more idiomatic and I do think the most-significant-first
-> naming style is preferable.
+> This const trick will get us partway there, by breaking setters.  But
+> renaming it will break both setters and getters.
 
-Thanks for the suggestion! I will rename them in the next version.
+My intent here is to break setters but to allow getters to keep
+reading vma->vm_flags directly. We could provide get_vm_flags() and
+convert all getters as well but it would introduce a huge additional
+churn (800+ hits) with no obvious benefits, I think. Does that clarify
+the intent of this trick?
 
 >
 > --
