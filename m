@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B9967C257
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED84867C259
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 02:28:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NNs3y8nz3fPl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:27:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P2NPt5YbWz3fCd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jan 2023 12:28:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=szv/8QdN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JZnpDOIz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3sdxrywckdgagpmecpqemmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--irogers.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3udxrywckdggoxumkxymuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--irogers.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=szv/8QdN;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JZnpDOIz;
 	dkim-atps=neutral
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NDX2Slsz3fDG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:20:12 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-4d5097a95f5so4138757b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:20:11 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P2NDh2JVGz3fFY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jan 2023 12:20:20 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id n203-20020a2572d4000000b0078f09db9888so326144ybc.18
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jan 2023 17:20:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rOKzY9YOyxiZd0jwhBCOLQV0VT54WWM+lqROihc/Rhw=;
-        b=szv/8QdNSp2myZhetiv+HBlEzrYqtH54GGv+4csDy6tkYmSOpnwfgd8SizPlPCYMl7
-         BT6unBlOqiizZhkCKtirqUKAZTutPbk+WAeKe7xm3Ow/tYJ14SOscBOib2QVMdyNR6zB
-         2xayHzwqsTnWj4IiJgAMl16SvkORUua1H9c/vUE/6NI79psnvhHOqeOzS3HYg3gaMmxF
-         ru/Zv+iHMCvLUZka9TjOqZsGj5e6oa6sEttZPrLbZ1hsRpoKwaXVB4k6EPEIa0Q590Og
-         rmo9oyt5YAwjFm/Elbc5lfpNIymEOGJkMDdEFC5+t4yLjuRfFwiR4WFccmMnSJTVuf2P
-         RVUA==
+        bh=MAdD7aTTEqkP5HdeXRA7lzcpuzaRnpaYpyFgNxVObzs=;
+        b=JZnpDOIzUAbs8WxEGBnDE6m1ZTXlLA1Jtxo7aWggFpy47aRCNG977HobRvI9JTvaK6
+         9lDwQDYOsP2Rj+O2En6ttDEj+qL8xXtGTlSaNKwQKATh+jkkcimbGEpGRHKg8urWXk8X
+         foOv2ZY6IAYw6N9+h42VPcd9yJdTwJKrieQqH1KqvvGnulHgKte8o1jRGKCShWxtxfhl
+         SWqdR/PdmhDAm1td9jESRDz6NhSc6+lJoKe1ez1j3JeznzIf6DhjDbv36+Q/ZoYasp87
+         bWEKOo7BL+HfF23mdQpEw2LOQTxxyhDHQ2Jz+RaqQDgZWyYuPG7ya6Rg3zQFaPhmgcPA
+         fKPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rOKzY9YOyxiZd0jwhBCOLQV0VT54WWM+lqROihc/Rhw=;
-        b=PDG/slyXxhib0RET9GAU8fpqMOyxux8NxV2nIWg674+2e6EdcOi5jmm/Xe4QAo6KUd
-         AEkrTsixcybFXJzdpy0E7C08XLffA6ezT5J7Y3//x+9vKoj5DMqxcN3kBC79H1OZdPDW
-         plf29roNrr6WNR9qS0ZeePyTip0ubJabKLI6Xi5QbWfyX88Ijf0rOBaXoFDIwBe4o6S1
-         6o+Jcga95h1FYEM9OPMsm+LNtTFuIUycvOMusqLFN6kP7c66Sbr2eood6F5FWIXotxqp
-         0/LzoYk9HF1gTUJa0K13veenwFQpSEQ30Rs5R9vdF81NDK/JeNT705ceas4jjxvKmAXb
-         kpqA==
-X-Gm-Message-State: AFqh2kqgzEF/JegJ2sqIEWSiniMFn7dL61IjKx/nqqo7dEmZjP2oe/32
-	VxSy1EqX7kCXi0kVdCncfw1oNVBg4dDh
-X-Google-Smtp-Source: AMrXdXvF8lJSvZWcavK7Q1tHKy9uwBax3i34mr7oaH67rab6/l55Wb54YSMzQO04ft9SdijBc4q9I+5h24Lm
+        bh=MAdD7aTTEqkP5HdeXRA7lzcpuzaRnpaYpyFgNxVObzs=;
+        b=i7QRFxgz+ZPr63CDchLJHdm53LjrQCOaf1zY5I0hbpfWVC8ewUvLWA92G5QUboBKzV
+         VLNV80XQrr9JApLFq5rPG19BsjmHKHL8J7AaJLBAn24vigkVsUqVwJrZ+a1RwcjkkX6+
+         AUQSK1YbIy9FQAitwXYeNKIESA9BkdHKxIGuP6EPxuIh8WuFXnaINi0ctTu2iHUC+FFU
+         loWyKlPA1m+FZbeilMR7irQwP9pwPNA7Rcsp3nQvvcsnIiKfA4+BryEezrTdaONo+LCv
+         s3U3KktGDfMSmBgDREs1c7mV/RHPm+qn/yR6FnG88Qb5xrD8bKGH5V4G7Dcj9HM2wpHr
+         xdcQ==
+X-Gm-Message-State: AFqh2koEORbbwHSbRyTkn5BIWEhI/BfYoH9yZhleRBHjp3NSuMNer/h0
+	QzE/PF+6mTqozz7ScatMSlBZCmte6gop
+X-Google-Smtp-Source: AMrXdXuv+5ghhoLqr4oNVqKDlaxIO2mOSiGSfUw8D3xiuGu2o0RwPDrKQBxszk0pLCXmc3CDznharnmPbs0d
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2d4:203:568d:4d98:b468:b025])
- (user=irogers job=sendgmr) by 2002:a25:8b82:0:b0:75e:ca27:ca65 with SMTP id
- j2-20020a258b82000000b0075eca27ca65mr4100382ybl.464.1674696009789; Wed, 25
- Jan 2023 17:20:09 -0800 (PST)
-Date: Wed, 25 Jan 2023 17:18:50 -0800
+ (user=irogers job=sendgmr) by 2002:a81:5a83:0:b0:4fc:6377:6e14 with SMTP id
+ o125-20020a815a83000000b004fc63776e14mr2751829ywb.142.1674696017947; Wed, 25
+ Jan 2023 17:20:17 -0800 (PST)
+Date: Wed, 25 Jan 2023 17:18:51 -0800
 In-Reply-To: <20230126011854.198243-1-irogers@google.com>
-Message-Id: <20230126011854.198243-9-irogers@google.com>
+Message-Id: <20230126011854.198243-10-irogers@google.com>
 Mime-Version: 1.0
 References: <20230126011854.198243-1-irogers@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Subject: [PATCH v4 08/12] perf jevents: Combine table prefix and suffix writing
+Subject: [PATCH v4 09/12] perf pmu-events: Introduce pmu_metrics_table
 From: Ian Rogers <irogers@google.com>
 To: John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>, 
 	James Clark <james.clark@arm.com>, Mike Leach <mike.leach@linaro.org>, 
@@ -90,107 +90,542 @@ Cc: Ian Rogers <irogers@google.com>, Perry Taylor <perry.taylor@intel.com>, Cale
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Combine into a single function to simplify, in a later change, writing
-metrics separately.
+Add a metrics table that is just a cast from pmu_events_table. This
+changes the APIs so that event and metric usage of the underlying
+table is different. For the no jevents case the tables are already
+separate, later changes will separate the tables for the jevents case.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- tools/perf/pmu-events/jevents.py | 36 +++++++++++++-------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ tools/perf/arch/arm64/util/pmu.c         | 11 ++++-
+ tools/perf/pmu-events/empty-pmu-events.c | 21 ++++-----
+ tools/perf/pmu-events/jevents.py         | 21 ++++++---
+ tools/perf/pmu-events/pmu-events.h       | 10 +++--
+ tools/perf/tests/expand-cgroup.c         |  2 +-
+ tools/perf/tests/parse-metric.c          |  2 +-
+ tools/perf/tests/pmu-events.c            |  5 ++-
+ tools/perf/util/metricgroup.c            | 54 ++++++++++++------------
+ tools/perf/util/metricgroup.h            |  2 +-
+ tools/perf/util/pmu.c                    |  5 +++
+ tools/perf/util/pmu.h                    |  1 +
+ 11 files changed, 78 insertions(+), 56 deletions(-)
 
+diff --git a/tools/perf/arch/arm64/util/pmu.c b/tools/perf/arch/arm64/util/pmu.c
+index 801bf52e2ea6..2779840d8896 100644
+--- a/tools/perf/arch/arm64/util/pmu.c
++++ b/tools/perf/arch/arm64/util/pmu.c
+@@ -22,7 +22,14 @@ static struct perf_pmu *pmu__find_core_pmu(void)
+ 			return NULL;
+ 
+ 		return pmu;
+-	}
++}
++
++const struct pmu_metrics_table *pmu_metrics_table__find(void)
++{
++	struct perf_pmu *pmu = pmu__find_core_pmu();
++
++	if (pmu)
++		return perf_pmu__find_metrics_table(pmu);
+ 
+ 	return NULL;
+ }
+@@ -32,7 +39,7 @@ const struct pmu_events_table *pmu_events_table__find(void)
+ 	struct perf_pmu *pmu = pmu__find_core_pmu();
+ 
+ 	if (pmu)
+-		return perf_pmu__find_table(pmu);
++		return perf_pmu__find_events_table(pmu);
+ 
+ 	return NULL;
+ }
+diff --git a/tools/perf/pmu-events/empty-pmu-events.c b/tools/perf/pmu-events/empty-pmu-events.c
+index 10bd4943ebf8..a938b74cf487 100644
+--- a/tools/perf/pmu-events/empty-pmu-events.c
++++ b/tools/perf/pmu-events/empty-pmu-events.c
+@@ -278,13 +278,11 @@ int pmu_events_table_for_each_event(const struct pmu_events_table *table, pmu_ev
+ 	return 0;
+ }
+ 
+-int pmu_events_table_for_each_metric(const struct pmu_events_table *etable, pmu_metric_iter_fn fn,
+-				     void *data)
++int pmu_metrics_table_for_each_metric(const struct pmu_metrics_table *table, pmu_metric_iter_fn fn,
++				      void *data)
+ {
+-	struct pmu_metrics_table *table = (struct pmu_metrics_table *)etable;
+-
+ 	for (const struct pmu_metric *pm = &table->entries[0]; pm->metric_expr; pm++) {
+-		int ret = fn(pm, etable, data);
++		int ret = fn(pm, table, data);
+ 
+ 		if (ret)
+ 			return ret;
+@@ -320,9 +318,9 @@ const struct pmu_events_table *perf_pmu__find_events_table(struct perf_pmu *pmu)
+ 	return table;
+ }
+ 
+-const struct pmu_events_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu)
++const struct pmu_metrics_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu)
+ {
+-	const struct pmu_events_table *table = NULL;
++	const struct pmu_metrics_table *table = NULL;
+ 	char *cpuid = perf_pmu__getcpuid(pmu);
+ 	int i;
+ 
+@@ -340,7 +338,7 @@ const struct pmu_events_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu
+ 			break;
+ 
+ 		if (!strcmp_cpuid_str(map->cpuid, cpuid)) {
+-			table = (const struct pmu_events_table *)&map->metric_table;
++			table = &map->metric_table;
+ 			break;
+ 		}
+ 	}
+@@ -359,13 +357,13 @@ const struct pmu_events_table *find_core_events_table(const char *arch, const ch
+ 	return NULL;
+ }
+ 
+-const struct pmu_events_table *find_core_metrics_table(const char *arch, const char *cpuid)
++const struct pmu_metrics_table *find_core_metrics_table(const char *arch, const char *cpuid)
+ {
+ 	for (const struct pmu_events_map *tables = &pmu_events_map[0];
+ 	     tables->arch;
+ 	     tables++) {
+ 		if (!strcmp(tables->arch, arch) && !strcmp_cpuid_str(tables->cpuid, cpuid))
+-			return (const struct pmu_events_table *)&tables->metric_table;
++			return &tables->metric_table;
+ 	}
+ 	return NULL;
+ }
+@@ -386,8 +384,7 @@ int pmu_for_each_core_metric(pmu_metric_iter_fn fn, void *data)
+ 	for (const struct pmu_events_map *tables = &pmu_events_map[0];
+ 	     tables->arch;
+ 	     tables++) {
+-		int ret = pmu_events_table_for_each_metric(
+-			(const struct pmu_events_table *)&tables->metric_table, fn, data);
++		int ret = pmu_metrics_table_for_each_metric(&tables->metric_table, fn, data);
+ 
+ 		if (ret)
+ 			return ret;
 diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
-index 4cdbf34b7298..5f8d490c7269 100755
+index 5f8d490c7269..d83cc94af51f 100755
 --- a/tools/perf/pmu-events/jevents.py
 +++ b/tools/perf/pmu-events/jevents.py
-@@ -19,10 +19,10 @@ _sys_event_tables = []
- # JsonEvent. Architecture standard events are in json files in the top
- # f'{_args.starting_dir}/{_args.arch}' directory.
- _arch_std_events = {}
--# Track whether an events table is currently being defined and needs closing.
--_close_table = False
- # Events to write out when the table is closed
- _pending_events = []
-+# Name of table to be written out
-+_pending_events_tblname = None
- # Global BigCString shared by all structures.
- _bcs = None
- # Order specific JsonEvent attributes will be visited.
-@@ -378,24 +378,13 @@ def preprocess_arch_std_files(archpath: str) -> None:
-           _arch_std_events[event.metric_name.lower()] = event
+@@ -611,10 +611,12 @@ int pmu_events_table_for_each_event(const struct pmu_events_table *table,
+         return 0;
+ }
  
- 
--def print_events_table_prefix(tblname: str) -> None:
--  """Called when a new events table is started."""
--  global _close_table
--  if _close_table:
--    raise IOError('Printing table prefix but last table has no suffix')
--  _args.output_file.write(f'static const struct compact_pmu_event {tblname}[] = {{\n')
--  _close_table = True
--
--
- def add_events_table_entries(item: os.DirEntry, topic: str) -> None:
-   """Add contents of file to _pending_events table."""
--  if not _close_table:
--    raise IOError('Table entries missing prefix')
-   for e in read_json_events(item.path, topic):
-     _pending_events.append(e)
- 
- 
--def print_events_table_suffix() -> None:
-+def print_pending_events() -> None:
-   """Optionally close events table."""
- 
-   def event_cmp_key(j: JsonEvent) -> Tuple[bool, str, str, str, str]:
-@@ -407,17 +396,19 @@ def print_events_table_suffix() -> None:
-     return (j.desc is not None, fix_none(j.topic), fix_none(j.name), fix_none(j.pmu),
-             fix_none(j.metric_name))
- 
--  global _close_table
--  if not _close_table:
-+  global _pending_events
-+  if not _pending_events:
-     return
- 
--  global _pending_events
-+  global _pending_events_tblname
-+  _args.output_file.write(
-+      f'static const struct compact_pmu_event {_pending_events_tblname}[] = {{\n')
+-int pmu_events_table_for_each_metric(const struct pmu_events_table *table,
++int pmu_metrics_table_for_each_metric(const struct pmu_metrics_table *mtable,
+                                      pmu_metric_iter_fn fn,
+                                      void *data)
+ {
++        const struct pmu_events_table *table = (const struct pmu_events_table *)mtable;
 +
-   for event in sorted(_pending_events, key=event_cmp_key):
-     _args.output_file.write(event.to_c_string())
--    _pending_events = []
-+  _pending_events = []
+         for (size_t i = 0; i < table->length; i++) {
+                 struct pmu_metric pm;
+                 int ret;
+@@ -622,7 +624,7 @@ int pmu_events_table_for_each_metric(const struct pmu_events_table *table,
+                 decompress_metric(table->entries[i].offset, &pm);
+                 if (!pm.metric_expr)
+                         continue;
+-                ret = fn(&pm, table, data);
++                ret = fn(&pm, mtable, data);
+                 if (ret)
+                         return ret;
+         }
+@@ -656,6 +658,11 @@ const struct pmu_events_table *perf_pmu__find_events_table(struct perf_pmu *pmu)
+         return table;
+ }
  
-   _args.output_file.write('};\n\n')
--  _close_table = False
++const struct pmu_metrics_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu)
++{
++        return (struct pmu_metrics_table *)perf_pmu__find_events_table(pmu);
++}
++
+ const struct pmu_events_table *find_core_events_table(const char *arch, const char *cpuid)
+ {
+         for (const struct pmu_events_map *tables = &pmu_events_map[0];
+@@ -667,9 +674,9 @@ const struct pmu_events_table *find_core_events_table(const char *arch, const ch
+         return NULL;
+ }
  
- def get_topic(topic: str) -> str:
-   if topic.endswith('metrics.json'):
-@@ -455,12 +446,13 @@ def process_one_file(parents: Sequence[str], item: os.DirEntry) -> None:
+-const struct pmu_events_table *find_core_metrics_table(const char *arch, const char *cpuid)
++const struct pmu_metrics_table *find_core_metrics_table(const char *arch, const char *cpuid)
+ {
+-        return (struct pmu_events_table *)find_core_events_table(arch, cpuid);
++       return (struct pmu_metrics_table *)find_core_events_table(arch, cpuid);
+ }
  
-   # model directory, reset topic
-   if item.is_dir() and is_leaf_dir(item.path):
--    print_events_table_suffix()
-+    print_pending_events()
+ int pmu_for_each_core_event(pmu_event_iter_fn fn, void *data)
+@@ -690,7 +697,8 @@ int pmu_for_each_core_metric(pmu_metric_iter_fn fn, void *data)
+         for (const struct pmu_events_map *tables = &pmu_events_map[0];
+              tables->arch;
+              tables++) {
+-                int ret = pmu_events_table_for_each_metric(&tables->table, fn, data);
++                int ret = pmu_metrics_table_for_each_metric(
++                                (struct pmu_metrics_table *)&tables->table, fn, data);
  
-     tblname = file_name_to_table_name(parents, item.name)
-     if item.name == 'sys':
-       _sys_event_tables.append(tblname)
--    print_events_table_prefix(tblname)
-+    global _pending_events_tblname
-+    _pending_events_tblname = tblname
-     return
+                 if (ret)
+                         return ret;
+@@ -727,7 +735,8 @@ int pmu_for_each_sys_metric(pmu_metric_iter_fn fn, void *data)
+         for (const struct pmu_sys_events *tables = &pmu_sys_event_tables[0];
+              tables->name;
+              tables++) {
+-                int ret = pmu_events_table_for_each_metric(&tables->table, fn, data);
++                int ret = pmu_metrics_table_for_each_metric(
++                                (struct pmu_metrics_table *)&tables->table, fn, data);
  
-   # base dir or too deep
-@@ -809,7 +801,7 @@ struct compact_pmu_event {
-   for arch in archs:
-     arch_path = f'{_args.starting_dir}/{arch}'
-     ftw(arch_path, [], process_one_file)
--    print_events_table_suffix()
-+    print_pending_events()
+                 if (ret)
+                         return ret;
+diff --git a/tools/perf/pmu-events/pmu-events.h b/tools/perf/pmu-events/pmu-events.h
+index dca32979d6a4..b7d4a66b8ad2 100644
+--- a/tools/perf/pmu-events/pmu-events.h
++++ b/tools/perf/pmu-events/pmu-events.h
+@@ -39,28 +39,30 @@ struct pmu_metric {
+ };
  
-   print_mapping_table(archs)
-   print_system_mapping_table()
+ struct pmu_events_table;
++struct pmu_metrics_table;
+ 
+ typedef int (*pmu_event_iter_fn)(const struct pmu_event *pe,
+ 				 const struct pmu_events_table *table,
+ 				 void *data);
+ 
+ typedef int (*pmu_metric_iter_fn)(const struct pmu_metric *pm,
+-				  const struct pmu_events_table *table,
++				  const struct pmu_metrics_table *table,
+ 				  void *data);
+ 
+ int pmu_events_table_for_each_event(const struct pmu_events_table *table, pmu_event_iter_fn fn,
+ 				    void *data);
+-int pmu_events_table_for_each_metric(const struct pmu_events_table *table, pmu_metric_iter_fn fn,
++int pmu_metrics_table_for_each_metric(const struct pmu_metrics_table *table, pmu_metric_iter_fn fn,
+ 				     void *data);
+ 
+ const struct pmu_events_table *perf_pmu__find_events_table(struct perf_pmu *pmu);
+-const struct pmu_events_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu);
++const struct pmu_metrics_table *perf_pmu__find_metrics_table(struct perf_pmu *pmu);
+ const struct pmu_events_table *find_core_events_table(const char *arch, const char *cpuid);
+-const struct pmu_events_table *find_core_metrics_table(const char *arch, const char *cpuid);
++const struct pmu_metrics_table *find_core_metrics_table(const char *arch, const char *cpuid);
+ int pmu_for_each_core_event(pmu_event_iter_fn fn, void *data);
+ int pmu_for_each_core_metric(pmu_metric_iter_fn fn, void *data);
+ 
+ const struct pmu_events_table *find_sys_events_table(const char *name);
++const struct pmu_metrics_table *find_sys_metrics_table(const char *name);
+ int pmu_for_each_sys_event(pmu_event_iter_fn fn, void *data);
+ int pmu_for_each_sys_metric(pmu_metric_iter_fn fn, void *data);
+ 
+diff --git a/tools/perf/tests/expand-cgroup.c b/tools/perf/tests/expand-cgroup.c
+index 4f3195b84463..672a27f37060 100644
+--- a/tools/perf/tests/expand-cgroup.c
++++ b/tools/perf/tests/expand-cgroup.c
+@@ -180,7 +180,7 @@ static int expand_metric_events(void)
+ 	struct evlist *evlist;
+ 	struct rblist metric_events;
+ 	const char metric_str[] = "CPI";
+-	const struct pmu_events_table *pme_test;
++	const struct pmu_metrics_table *pme_test;
+ 
+ 	evlist = evlist__new();
+ 	TEST_ASSERT_VAL("failed to get evlist", evlist);
+diff --git a/tools/perf/tests/parse-metric.c b/tools/perf/tests/parse-metric.c
+index 6c527cd805fe..9fec6040950c 100644
+--- a/tools/perf/tests/parse-metric.c
++++ b/tools/perf/tests/parse-metric.c
+@@ -72,7 +72,7 @@ static int __compute_metric(const char *name, struct value *vals,
+ 	struct rblist metric_events = {
+ 		.nr_entries = 0,
+ 	};
+-	const struct pmu_events_table *pme_test;
++	const struct pmu_metrics_table *pme_test;
+ 	struct perf_cpu_map *cpus;
+ 	struct runtime_stat st;
+ 	struct evlist *evlist;
+diff --git a/tools/perf/tests/pmu-events.c b/tools/perf/tests/pmu-events.c
+index c2b3ada57cbc..9f2e385e0991 100644
+--- a/tools/perf/tests/pmu-events.c
++++ b/tools/perf/tests/pmu-events.c
+@@ -813,7 +813,8 @@ struct metric {
+ 	struct metric_ref metric_ref;
+ };
+ 
+-static int test__parsing_callback(const struct pmu_metric *pm, const struct pmu_events_table *table,
++static int test__parsing_callback(const struct pmu_metric *pm,
++				  const struct pmu_metrics_table *table,
+ 				  void *data)
+ {
+ 	int *failures = data;
+@@ -995,7 +996,7 @@ static int metric_parse_fake(const char *metric_name, const char *str)
+ }
+ 
+ static int test__parsing_fake_callback(const struct pmu_metric *pm,
+-				       const struct pmu_events_table *table __maybe_unused,
++				       const struct pmu_metrics_table *table __maybe_unused,
+ 				       void *data __maybe_unused)
+ {
+ 	return metric_parse_fake(pm->metric_name, pm->metric_expr);
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index 47fd02af66f1..f3559be95541 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -457,7 +457,7 @@ struct metricgroup_iter_data {
+ };
+ 
+ static int metricgroup__sys_event_iter(const struct pmu_metric *pm,
+-				       const struct pmu_events_table *table,
++				       const struct pmu_metrics_table *table,
+ 				       void *data)
+ {
+ 	struct metricgroup_iter_data *d = data;
+@@ -477,8 +477,8 @@ static int metricgroup__sys_event_iter(const struct pmu_metric *pm,
+ }
+ 
+ static int metricgroup__add_to_mep_groups_callback(const struct pmu_metric *pm,
+-						const struct pmu_events_table *table __maybe_unused,
+-						void *vdata)
++					const struct pmu_metrics_table *table __maybe_unused,
++					void *vdata)
+ {
+ 	struct rblist *groups = vdata;
+ 
+@@ -488,16 +488,16 @@ static int metricgroup__add_to_mep_groups_callback(const struct pmu_metric *pm,
+ void metricgroup__print(const struct print_callbacks *print_cb, void *print_state)
+ {
+ 	struct rblist groups;
+-	const struct pmu_events_table *table;
++	const struct pmu_metrics_table *table;
+ 	struct rb_node *node, *next;
+ 
+ 	rblist__init(&groups);
+ 	groups.node_new = mep_new;
+ 	groups.node_cmp = mep_cmp;
+ 	groups.node_delete = mep_delete;
+-	table = pmu_events_table__find();
++	table = pmu_metrics_table__find();
+ 	if (table) {
+-		pmu_events_table_for_each_metric(table,
++		pmu_metrics_table_for_each_metric(table,
+ 						 metricgroup__add_to_mep_groups_callback,
+ 						 &groups);
+ 	}
+@@ -765,11 +765,11 @@ struct metricgroup_add_iter_data {
+ 	bool system_wide;
+ 	struct metric *root_metric;
+ 	const struct visited_metric *visited;
+-	const struct pmu_events_table *table;
++	const struct pmu_metrics_table *table;
+ };
+ 
+ static bool metricgroup__find_metric(const char *metric,
+-				     const struct pmu_events_table *table,
++				     const struct pmu_metrics_table *table,
+ 				     struct pmu_metric *pm);
+ 
+ static int add_metric(struct list_head *metric_list,
+@@ -780,7 +780,7 @@ static int add_metric(struct list_head *metric_list,
+ 		      bool system_wide,
+ 		      struct metric *root_metric,
+ 		      const struct visited_metric *visited,
+-		      const struct pmu_events_table *table);
++		      const struct pmu_metrics_table *table);
+ 
+ /**
+  * resolve_metric - Locate metrics within the root metric and recursively add
+@@ -807,7 +807,7 @@ static int resolve_metric(struct list_head *metric_list,
+ 			  bool system_wide,
+ 			  struct metric *root_metric,
+ 			  const struct visited_metric *visited,
+-			  const struct pmu_events_table *table)
++			  const struct pmu_metrics_table *table)
+ {
+ 	struct hashmap_entry *cur;
+ 	size_t bkt;
+@@ -889,7 +889,7 @@ static int __add_metric(struct list_head *metric_list,
+ 			bool system_wide,
+ 			struct metric *root_metric,
+ 			const struct visited_metric *visited,
+-			const struct pmu_events_table *table)
++			const struct pmu_metrics_table *table)
+ {
+ 	const struct visited_metric *vm;
+ 	int ret;
+@@ -982,7 +982,7 @@ struct metricgroup__find_metric_data {
+ };
+ 
+ static int metricgroup__find_metric_callback(const struct pmu_metric *pm,
+-					     const struct pmu_events_table *table  __maybe_unused,
++					     const struct pmu_metrics_table *table  __maybe_unused,
+ 					     void *vdata)
+ {
+ 	struct metricgroup__find_metric_data *data = vdata;
+@@ -995,7 +995,7 @@ static int metricgroup__find_metric_callback(const struct pmu_metric *pm,
+ }
+ 
+ static bool metricgroup__find_metric(const char *metric,
+-				     const struct pmu_events_table *table,
++				     const struct pmu_metrics_table *table,
+ 				     struct pmu_metric *pm)
+ {
+ 	struct metricgroup__find_metric_data data = {
+@@ -1003,7 +1003,7 @@ static bool metricgroup__find_metric(const char *metric,
+ 		.pm = pm,
+ 	};
+ 
+-	return pmu_events_table_for_each_metric(table, metricgroup__find_metric_callback, &data)
++	return pmu_metrics_table_for_each_metric(table, metricgroup__find_metric_callback, &data)
+ 		? true : false;
+ }
+ 
+@@ -1015,7 +1015,7 @@ static int add_metric(struct list_head *metric_list,
+ 		      bool system_wide,
+ 		      struct metric *root_metric,
+ 		      const struct visited_metric *visited,
+-		      const struct pmu_events_table *table)
++		      const struct pmu_metrics_table *table)
+ {
+ 	int ret = 0;
+ 
+@@ -1045,8 +1045,8 @@ static int add_metric(struct list_head *metric_list,
+ }
+ 
+ static int metricgroup__add_metric_sys_event_iter(const struct pmu_metric *pm,
+-						const struct pmu_events_table *table __maybe_unused,
+-						void *data)
++					const struct pmu_metrics_table *table __maybe_unused,
++					void *data)
+ {
+ 	struct metricgroup_add_iter_data *d = data;
+ 	int ret;
+@@ -1105,7 +1105,7 @@ struct metricgroup__add_metric_data {
+ };
+ 
+ static int metricgroup__add_metric_callback(const struct pmu_metric *pm,
+-					    const struct pmu_events_table *table,
++					    const struct pmu_metrics_table *table,
+ 					    void *vdata)
+ {
+ 	struct metricgroup__add_metric_data *data = vdata;
+@@ -1143,7 +1143,7 @@ static int metricgroup__add_metric(const char *metric_name, const char *modifier
+ 				   const char *user_requested_cpu_list,
+ 				   bool system_wide,
+ 				   struct list_head *metric_list,
+-				   const struct pmu_events_table *table)
++				   const struct pmu_metrics_table *table)
+ {
+ 	LIST_HEAD(list);
+ 	int ret;
+@@ -1163,7 +1163,7 @@ static int metricgroup__add_metric(const char *metric_name, const char *modifier
+ 		 * Iterate over all metrics seeing if metric matches either the
+ 		 * name or group. When it does add the metric to the list.
+ 		 */
+-		ret = pmu_events_table_for_each_metric(table, metricgroup__add_metric_callback,
++		ret = pmu_metrics_table_for_each_metric(table, metricgroup__add_metric_callback,
+ 						       &data);
+ 		if (ret)
+ 			goto out;
+@@ -1219,7 +1219,7 @@ static int metricgroup__add_metric(const char *metric_name, const char *modifier
+ static int metricgroup__add_metric_list(const char *list, bool metric_no_group,
+ 					const char *user_requested_cpu_list,
+ 					bool system_wide, struct list_head *metric_list,
+-					const struct pmu_events_table *table)
++					const struct pmu_metrics_table *table)
+ {
+ 	char *list_itr, *list_copy, *metric_name, *modifier;
+ 	int ret, count = 0;
+@@ -1429,7 +1429,7 @@ static int parse_groups(struct evlist *perf_evlist, const char *str,
+ 			bool system_wide,
+ 			struct perf_pmu *fake_pmu,
+ 			struct rblist *metric_events_list,
+-			const struct pmu_events_table *table)
++			const struct pmu_metrics_table *table)
+ {
+ 	struct evlist *combined_evlist = NULL;
+ 	LIST_HEAD(metric_list);
+@@ -1577,7 +1577,7 @@ int metricgroup__parse_groups(struct evlist *perf_evlist,
+ 			      bool system_wide,
+ 			      struct rblist *metric_events)
+ {
+-	const struct pmu_events_table *table = pmu_events_table__find();
++	const struct pmu_metrics_table *table = pmu_metrics_table__find();
+ 
+ 	if (!table)
+ 		return -EINVAL;
+@@ -1588,7 +1588,7 @@ int metricgroup__parse_groups(struct evlist *perf_evlist,
+ }
+ 
+ int metricgroup__parse_groups_test(struct evlist *evlist,
+-				   const struct pmu_events_table *table,
++				   const struct pmu_metrics_table *table,
+ 				   const char *str,
+ 				   bool metric_no_group,
+ 				   bool metric_no_merge,
+@@ -1601,7 +1601,7 @@ int metricgroup__parse_groups_test(struct evlist *evlist,
+ }
+ 
+ static int metricgroup__has_metric_callback(const struct pmu_metric *pm,
+-					    const struct pmu_events_table *table __maybe_unused,
++					    const struct pmu_metrics_table *table __maybe_unused,
+ 					    void *vdata)
+ {
+ 	const char *metric = vdata;
+@@ -1617,12 +1617,12 @@ static int metricgroup__has_metric_callback(const struct pmu_metric *pm,
+ 
+ bool metricgroup__has_metric(const char *metric)
+ {
+-	const struct pmu_events_table *table = pmu_events_table__find();
++	const struct pmu_metrics_table *table = pmu_metrics_table__find();
+ 
+ 	if (!table)
+ 		return false;
+ 
+-	return pmu_events_table_for_each_metric(table, metricgroup__has_metric_callback,
++	return pmu_metrics_table_for_each_metric(table, metricgroup__has_metric_callback,
+ 						(void *)metric) ? true : false;
+ }
+ 
+diff --git a/tools/perf/util/metricgroup.h b/tools/perf/util/metricgroup.h
+index b1f186d0f514..84030321a057 100644
+--- a/tools/perf/util/metricgroup.h
++++ b/tools/perf/util/metricgroup.h
+@@ -73,7 +73,7 @@ int metricgroup__parse_groups(struct evlist *perf_evlist,
+ 			      bool system_wide,
+ 			      struct rblist *metric_events);
+ int metricgroup__parse_groups_test(struct evlist *evlist,
+-				   const struct pmu_events_table *table,
++				   const struct pmu_metrics_table *table,
+ 				   const char *str,
+ 				   bool metric_no_group,
+ 				   bool metric_no_merge,
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index f8c214d8815f..c256b29defad 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -655,6 +655,11 @@ __weak const struct pmu_events_table *pmu_events_table__find(void)
+ 	return perf_pmu__find_events_table(NULL);
+ }
+ 
++__weak const struct pmu_metrics_table *pmu_metrics_table__find(void)
++{
++	return perf_pmu__find_metrics_table(NULL);
++}
++
+ /*
+  * Suffix must be in form tok_{digits}, or tok{digits}, or same as pmu_name
+  * to be valid.
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index 64c596a358cc..6b770f17eb86 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -231,6 +231,7 @@ void pmu_add_cpu_aliases_table(struct list_head *head, struct perf_pmu *pmu,
+ 
+ char *perf_pmu__getcpuid(struct perf_pmu *pmu);
+ const struct pmu_events_table *pmu_events_table__find(void);
++const struct pmu_metrics_table *pmu_metrics_table__find(void);
+ bool pmu_uncore_alias_match(const char *pmu_name, const char *name);
+ void perf_pmu_free_alias(struct perf_pmu_alias *alias);
+ 
 -- 
 2.39.1.456.gfc5497dd1b-goog
 
