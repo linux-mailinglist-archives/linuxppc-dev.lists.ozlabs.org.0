@@ -1,133 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E445D67DD5B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 07:10:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E42567DE7E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 08:27:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P36cS4zDlz3fHh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 17:10:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P38Kq41qhz3fH0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 18:27:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=pVap1wne;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=BHL2yK0m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.241.70; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=pVap1wne;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=BHL2yK0m;
 	dkim-atps=neutral
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2070.outbound.protection.outlook.com [40.107.241.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P36bP6mThz3fDy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 17:09:04 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jGOcpOVWxItgXoZVYHTNa2wAD+Le1ChI2uA1988/WnqlrKRro99DZ6ni86ubC90SxhBs0aph6V/+U4Rts73xCUrUhYDHcN61auFNV7Q4suFach5y3TskiUjvF4Tpx/OLYmb00ocaZ24XYibjG3+awTVrjUoqs/cI65nHOlQaONf7syMBFXqMIVMr4MODayeqqJdmH1FZInIIxSKWeMm4Tq1nYzzP+5AhBaDiDbdv9Hb0zWzDNySs9M47W+gEa8f1Gl6/DPZ+nr1vzrbntfCBdtrasqk0G6p0g3820gWMVZThEfYjwTdqHO+GTGIcPzZEVKPWnilre4gH8Ltz6gGLSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n46FbRmrkujeUAKjWExMFFVEeUfi9L91hflwQYgzs1Q=;
- b=SkLnAe09yx1mwtRSnXuZt0jlrwzCpft4SECMq1KiMM3SwSOnEnmc37HRKjoiwWvMvajnOPkAt9YWb64F/HdYeDWAGTw8jYCv5zwqNgMl38oEA09YVaoE2kwGQPNdEmZ+Yh4v66nMdcVCkci5Ex19QdJgbWV//Yfd8wv6NVMtMMkVDKRIs4OLGLhyjcmLhzNjTF3ZX/TI9EgiFdgfuv1wzqXCzcG4fwBVeStFWocVOriI6KLVQyuHtzFOnnycecgGco2vnhLrP5LLVs3GeyJiFOVG5j1Tx6T/3DLudKoTFFe1jaq6s8b+DfjRdKLc/UxoRem8+E/j9Dp9KRtEgh2A9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n46FbRmrkujeUAKjWExMFFVEeUfi9L91hflwQYgzs1Q=;
- b=pVap1wneMLXYEtoiO3vgOHU6EPUAHrKr1dvF9lO3d4P41K+vaSElUwBmqrMf8+27MoFx9KL9XebXHAHNg+scJ/G5wotgSrqdhzllkb/rajKiBcm2X7lBsM5DIoeoR2E7xkBXW4SIdj2u+aDWba7Rr6mam7z/9Nh00L/sZmucffWXMLS/uxC8cKEnJqNrOw4tB6ziqR7bZw8UCNyF+HPQYjBN32N/14MzJa/ukOGy40osZd3zHG/s6nl9KoDUUstFan1+2WpEfF6+DRjRC8suY458o/sgE9nqLDDzHhtMJRjl3xQZ7pP3qlm3UV/OcBLxOxm7FX16ZhTzy3J5n6+Yiw==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2087.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:17::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.23; Fri, 27 Jan
- 2023 06:08:44 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097%4]) with mapi id 15.20.6002.033; Fri, 27 Jan 2023
- 06:08:44 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Gray <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] powerpc/tlb: Remove BUILD_BUG for book3s/32/tlbflush.h
- local_flush_tlb_page_psize
-Thread-Topic: [PATCH] powerpc/tlb: Remove BUILD_BUG for book3s/32/tlbflush.h
- local_flush_tlb_page_psize
-Thread-Index: AQHZMD63caK9kPPNA0eQ1a4ZVMQtPK6u4luAgAJo4YCAAH/lAA==
-Date: Fri, 27 Jan 2023 06:08:44 +0000
-Message-ID: <225b6988-d1b4-214a-728b-19b7d9bf276a@csgroup.eu>
-References: <20230124215424.9068-1-bgray@linux.ibm.com>
- <ffcd0097-b366-b98c-9853-1d10d78a5666@csgroup.eu>
- <0e47ee626fc06957a51c4535f1cddcf7c57836e3.camel@linux.ibm.com>
-In-Reply-To: <0e47ee626fc06957a51c4535f1cddcf7c57836e3.camel@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2087:EE_
-x-ms-office365-filtering-correlation-id: 8e72d2a7-0db9-4c5c-a6c8-08db002cf242
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  Iq11BcAVFT5V21jCVJSt+G7xPhI3GsdhiMU7+46Jo07mvKQPXFQRvSz+sGXy/afdGTIZq8hsfY25qIkKpmJQ1kZrqpE1H6ziBM+iJ1+OUmPwbFwgGH0K+B3bh622OWqL8n1lagT0PjMoIGXGDAYx8TZrUhdzSxzUF7O4hvTPJkMljAog7LmAnu+a/8SnvAxe38RTBoAnwi4Y7910DSnU92ehasNxJtU5+Vu/asogkL9X/d/sdT7Z8CkW203LAasJzdr6Zl4G4GK803b2NAUVVgJLqgPqBN814fkuRomuoiBzxD8xlYOVPKcfnuBMuuKrW0iG8v4wJQONwdG3mHGm/yfVSTarwNPoQCjTn4/rO20H4y3jn4x6OWzD+ALhjH4B4z7g66TYuTNjyYlKwM8XfxkKL+2Am55QnVYRr+RH7+7hcoW5n0jrCnDN1ccEVtuYcyKMZM7rHl5pkz/8xThB62WAEoXPYJ0NrMiODqs6wJPdFByhNBvG4xFQI1d2GhhFxcuA9wwep1lF57wTZtLC4j0xEZ3s2UNdVRI1+wrgmFhd0++Zxbe+HRHEPMoU735c855vl15x++PyYszsOZ4luKopi5A5DcBHXyfI5czx9n736mWSxIMnZCLmhZaAPpCTf+aRhRySzX1uQpkxDd2RqGo+e6wOHNRCtSKfPinWeVb5ZRvvMDUrutvGHY4xnNjf90ji3onz5oJJPvD7cEsHFOucuEW7lwYxtAV1f3DtuHoAblwEXORWNLmkLFATmm+KS7Pl8Lg1M51sb27TAdDXhand5TSclZrpNELSlxsF4vw=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(376002)(396003)(366004)(136003)(346002)(451199018)(44832011)(2906002)(66574015)(6506007)(5660300002)(8936002)(41300700001)(6486002)(8676002)(4326008)(91956017)(76116006)(26005)(186003)(6512007)(31686004)(478600001)(2616005)(86362001)(122000001)(83380400001)(38100700002)(38070700005)(66476007)(66446008)(71200400001)(66556008)(66946007)(64756008)(316002)(31696002)(110136005)(36756003)(32563001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?cUZXNEYrdDVhQzJ6SnZFbFdvME9tYW1wMWQ1RVEvS1NzSjBIdDl1MFlrbUlJ?=
- =?utf-8?B?WFpFZWY0a3ZNQ0JsSVZQeUNManArVi9VazNOdGRsNEJLR3NJeGJ2SVkzZktk?=
- =?utf-8?B?MndYazJENTJ4MThzTlVWMXNsNXRuY25lNzVRSUt3SkxNRFhHNGN2R2FXNHVP?=
- =?utf-8?B?cE9vREpFTk4zbzRRWDFPcndXcDV5RlYyWERSbElTUHlvR0pyMFVMbFNrMG5v?=
- =?utf-8?B?VTFGSkhUZHgvUU1mMTA3YjljcytISTZxR21yUjE4dU5VVGVvQjY3Z2M0WHVz?=
- =?utf-8?B?bVE0UWgrUUpUZmlXYU45MEttbExwWmtKVVhtTUtiWjlKSkgzSFNzNVk5MzVJ?=
- =?utf-8?B?OEdzVXJQZ05ZSUg3cHVNdHpxOElhQW5KbUM1cENSd3BXMzl0T2R3YUJBcVF2?=
- =?utf-8?B?WDNVeE1HMTdHSERYcng5TlBndDVwR28zZ0JVbFZxaEJuVUdRdHZYM3FYQzVk?=
- =?utf-8?B?L0lGcGwvU0JwcTE1eDBVYjNtdHMyNzJxdDczK1lLZ3FNeUhNbkRNWVIrSXdP?=
- =?utf-8?B?Y0JVWHlNcHlidVZoU0lGcHZMdVlyZFBJMUx0L1NGTzlsSEtNbjY1T2pLeVFr?=
- =?utf-8?B?clA1Wmo0N2w1eTk4VFIxSE5yd2R2aTJaTlVuMHVBbzhiQXpHaHdiU1VKS2tt?=
- =?utf-8?B?bEJDeitCR1NRVDkxdlJJanJOak8yck8rYTZBeWdTQjJlcHl4b1VycDRsZUtn?=
- =?utf-8?B?WVZ6a3k4cUhRQWxRMWR6QVJNSDZYbStEREtyS2taUFNsL0U4VVp0YkVwUzdW?=
- =?utf-8?B?b3VaNEFQajlJelZla21NQUN5bWFsUVB1SC94OXlWaFBzRWFwemdSd3lNbDJ6?=
- =?utf-8?B?UjJmQlk5UHNPaHpxM2ZDU0lXbUptRnlWNTVaV1g5WFBYL3NHWGFnWjZLdUov?=
- =?utf-8?B?bmgwRHpyeStJbG9adGFtQURUYmRWdGttYWNMOTVLd3VsQzQ0VVpqenlPZGVz?=
- =?utf-8?B?M2EvMlJaeUJUdjJyTHBLVm1LSGdRQ3FNL1drdHIvclhHYjI4UFZaKzFCL2lK?=
- =?utf-8?B?QnFBbTA1eWlqRm41czdSdFBNSjJDZWVncFBzNC8xZU9jNmZ3MU1rVlI2RW9s?=
- =?utf-8?B?M2dqMHM5R21aajJaNGM3cVZkMU5Mbks0YkNCVjNDMzJjTk9TUkZvQlBlSHNp?=
- =?utf-8?B?d0xQeVg1bnNQRVpFQnlqWmY3ektOY0NaemZnOE1NNDJ3eGh0WG5DZzBMemxP?=
- =?utf-8?B?NzR6S21WazhzMmxaOEdySzVyVzJ5QWJ3R1NKYytaTGFQRWdFam84THF2UGEx?=
- =?utf-8?B?Njg2S2FIcURZYUpaY3AvbFRTemRETDJBaklYMW16OHJGcWp4TjJEUk1DNHhF?=
- =?utf-8?B?Vng0cStaOTg5T3JKQ21qQm9reG1TV1FkZDJEY2RGcVJRT3ZVR1JvaVVTdm5n?=
- =?utf-8?B?VFJ4dllTSGNPRC91WmQzdjZKbjZnSnNKbnUvQVE2Q0ZsVWF2NlMxbmZvWnBI?=
- =?utf-8?B?aENkcEllVGhWcE1OeGxzQlR4S3FYNWxtd3ZVVTE1UHF3cVM1d2xVcmdpQk1o?=
- =?utf-8?B?YjIvbi96K09mVnZkQlpyOXV0dWVQL0Z6S0JFRHZDWDAxZTFYcnV0MVAvYko0?=
- =?utf-8?B?VnFUcjhHUTk4aVJiR0prbG1iem1Xclg4a1dJWmU5LzE5eC9WOHE4NksyUmhE?=
- =?utf-8?B?K2tmb2lIQmJZaTUramluWVBJb0ovK2Q5Q3ovSjZEeHk2b0Z1cGt0WldqeER1?=
- =?utf-8?B?N1JpNGdxZ01JQ3lXeGpqL2JtMGtOTHVkM0ttNFVrd2tKd1djdklYeG1rN1pU?=
- =?utf-8?B?U3lPRW1DbnNuTDhmNmY2VThiSkowdUFjOFZHSlc0RjlNU3NjdHdMWWpxUFg1?=
- =?utf-8?B?alRVM1ZSdmV1bUlvR2YrUU16czR0VUZpN1hQaXdVS0YwQ1R2WDlvTnNZSnFx?=
- =?utf-8?B?R0pualVMWWdybXZxd09Cb2NmNjR6TklCY0RwbllNdXp3TTAzTzhKanorRWNo?=
- =?utf-8?B?cWVIdzBpVFU0ZENZbmNUYjRoQTI0Z2d3RTc3WFc1bmZ4cktybGIwRkJRODUx?=
- =?utf-8?B?VUZtVGhVMFlnM0k2K2Q1QVc2OEM1S0E0bkprZnBwZGtXV3M4OHlsY3JRREdV?=
- =?utf-8?B?RTMxY0MvU3FicUUrczZGdHQvWURkYWhJdHFKaUE5cjRLUmJJZjlyenUyWFlt?=
- =?utf-8?B?Q3R1eUVHdzFTQ0FmNm94OFB6L0s4aFMrdjhXL0JvY1lqTWpsaGpab2poMGVj?=
- =?utf-8?B?WWc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F2742E309971AC4C90BAA413CE3427CB@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P37KH70lWz2yZv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 17:41:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=u92ZIG8NeiReqULUpJ3dTyWf+uSNhJCKYYthA6vycZI=; b=BHL2yK0mIJr+KABpOGeA+u3Rl4
+	B7i2Rbbg1zsJ5XUcinksH8hUB+n5okYbng9loY48Tjyofjk8OiUG4xkeaXAWl27DOJNOXqOxncMab
+	MYR6RasB+6kB7NBxI5Ptdqc1xJnRvtvJMJgoTVl3e6o9pKE2P3FDcHqx+Z9F/gvv9fPUr/g6wVmk2
+	9Dc/EI24A/yOAoVs8mO3i8ly6BVPoqaTkISl0X1f71XCb1dbLyrGH9wWZnJIw2IzLOYM27mAEX1GD
+	Se8srjkBYH4HkNZB0oYO6bGYGUHrSz2Oe6l41n4L6/KLtiiYAz/bal9B0+Qc6rEeLWb2YaS+NqC6y
+	f2ChDZSQ==;
+Received: from [2601:1c2:d80:3110::9307] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pLIPB-00DM0u-Dt; Fri, 27 Jan 2023 06:40:09 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 00/35] Documentation: correct lots of spelling errors (series 1)
+Date: Thu, 26 Jan 2023 22:39:30 -0800
+Message-Id: <20230127064005.1558-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e72d2a7-0db9-4c5c-a6c8-08db002cf242
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2023 06:08:44.5916
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ncb0Hp/WwCmpjYyB8J5yrL+GcKMpXZSG9q/HQdCtqE5hj9Pze3rVo+ZqTHCxH0Wu4yRfmVYFfQAKlprd0EhRuhTl95yfIjIVrKzAV3Q5KXc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2087
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 27 Jan 2023 18:26:42 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,52 +56,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Juri Lelli <juri.lelli@redhat.com>, Henrik Rydberg <rydberg@bitmath.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>, Benjamin Tissoires <benjamin.tissoires@redhat.com>, Pavel Machek <pavel@ucw.cz>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Evgeniy Polyakov <zbr@ioremap.net>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincent Guittot <vincent.guittot@linaro.org>, James Morris <jmorris@namei.org>, linux-acpi@vger.kernel.org, Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linux-sgx@vger.kernel.org, Karsten Keil <isdn@linux-pingi.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-spi@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Vladimir Oltean <olteanv@gmail.com>, alsa-devel@alsa-project.org, linux-usb@vger.kernel.org,
+  linux-doc@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, keyrings@vger.kernel.org, linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org, Paul Moore <paul@paul-moore.com>, linux-trace-kernel@vger.kernel.org, Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Daniel Jordan <daniel.m.jordan@oracle.com>, linux-crypto@vger.kernel.org, linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, coresight@lists.linaro.org, Bjorn Helgaas <bhelgaas@google.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Mathieu Poirier <mathieu.poirier@linaro.org>, Wolfram Sang <wsa@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, isdn4lin
+ ux@listserv.isdn4linux.de, linux-input@vger.kernel.org, "Serge E. Hallyn" <serge@hallyn.com>, Fenghua Yu <fenghua.yu@intel.com>, Jiri Kosina <jikos@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, linux-fbdev@vger.kernel.org, Reinette Chatre <reinette.chatre@intel.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, target-devel@vger.kernel.org, bpf@vger.kernel.org, Petr Mladek <pmladek@suse.com>, Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>, linux-mm@kvack.org, linux-trace-devel@vger.kernel.org, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, linux-leds@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>, linux-scsi@vger.kernel.org, Marc Zyngier <maz@kernel.org>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <
+ mingo@redhat.com>, Jonas Bonn <jonas@southpole.se>, Heiko Carstens <hca@linux.ibm.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-block@vger.kernel.org, =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>, openrisc@lists.librecores.org, Josh Poimboeuf <jpoimboe@kernel.org>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, linux-security-module@vger.kernel.org, Daniel Bristot de Oliveira <bristot@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI2LzAxLzIwMjMgw6AgMjM6MzAsIEJlbmphbWluIEdyYXkgYSDDqWNyaXTCoDoNCj4g
-T24gV2VkLCAyMDIzLTAxLTI1IGF0IDA5OjQzICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3Rl
-Og0KPiANCj4+IEJ5IHRoZSB3YXksIGFyZSB5b3Ugc2hvdWxkIHRoZSBwcm9ibGVtIGlzIHJlYWxs
-eSBCVUlMRF9CVUcoKSA/DQo+PiBMb29raW5nDQo+PiBhdCB5b3VyIHBhdGNoIEkgd291bGQgdGhp
-bmsgdGhhdCB0aGUgcHJvYmxlbSBpcyBiZWNhdXNlIGl0IGlzICJzdGF0aWMNCj4+IGlubGluZSIu
-IEhhdmUgeW91IHRyaWVkICdzdGF0aWMgX19hbHdheXNfaW5saW5lJyBpbnN0ZWFkID8NCj4gDQo+
-IEkgZGlkIG5vdCB0cnkgaXQsIHNvIEkganVzdCBkaWQgYnV0IGl0IGRvZXNuJ3QgbWFrZSBhIGRp
-ZmZlcmVuY2UuDQo+IA0KPiBMb29raW5nIGZ1cnRoZXIsIHRoZSBmYWlsaW5nIGNvbmZpZyBhbHNv
-IGVuYWJsZWQNCj4gQ09ORklHX0pVTVBfTEFCRUxfRkVBVFVSRV9DSEVDS19ERUJVRywgd2hpY2gg
-Y2F1c2VzIHRoZQ0KPiBtbXVfaGFzX2ZlYXR1cmUoTU1VX0ZUUl9UWVBFX1JBRElYKSBjYWxsIG9m
-IHJhZGl4X2VuYWJsZWQoKSB0byBiZSBub24tDQo+IHRyaXZpYWwuIEl0IG11c3QgY2hlY2sgc3Rh
-dGljX2tleV9pbml0aWFsaXplZCwgYW5kIGZhbGxzIGJhY2sgdG8NCj4gZWFybHlfbW11X2hhc19m
-ZWF0dXJlIGlmIGl0IHRyaWdnZXJzLiBDbGFuZyBhcHBhcmVudGx5IGNhbid0IHNlZSB0aGF0DQo+
-IGVhcmx5X21tdV9oYXNfZmVhdHVyZSB3aWxsIGFsc28gYWx3YXlzIHJldHVybiBmYWxzZSBmb3Ig
-UmFkaXgsIHNvDQo+IGRvZXNuJ3Qgc2VlIHRoYXQgZXZlcnl0aGluZyBndWFyZGVkIGJ5IHJhZGl4
-X2VuYWJsZWQoKSBpcyBkZWFkIGNvZGUuIEkNCj4gc3VwcG9zZSBpdCdzIGNvbXBsaWNhdGVkIGJ5
-IHRoZSBmYWN0IGl0IHN0aWxsIGhhcyB0byBydW4NCj4gbW11X2hhc19mZWF0dXJlIGZvciB0aGUg
-YXNzZXJ0aW9uIHNpZGUgZWZmZWN0IGRlc3BpdGUgdGhlIHJldHVybiB2YWx1ZQ0KPiBiZWluZyBr
-bm93YWJsZSBhdCBjb21waWxlIHRpbWUuDQo+IA0KPiBTbyBiZWNhdXNlIG9mIHRoaXMgd2VpcmQg
-aW50ZXJhY3Rpb24sIHRoZSBmb2xsb3dpbmcgc2hvdWxkIChhbmQgZG9lcykNCj4gYWxzbyBwcmV2
-ZW50IHRoZSBjb21waWxhdGlvbiBlcnJvciBieSBtYWtpbmcgdGhlIHJhZGl4X2VuYWJsZWQoKSBy
-ZXR1cm4NCj4gdmFsdWUgbW9yZSBvYnZpb3VzIHRvIHRoZSBjb21waWxlciBpbiB0aGUgY2FzZSB3
-aGVyZSBSYWRpeCBpcyBub3QNCj4gaW1wbGVtZW50ZWQuIChJJ3ZlIHB1dCB0aGUgY29uc3RhbnQg
-c2Vjb25kIGhlcmUgc28gdGhlIGVhcmx5IHVzYWdlDQo+IGFzc2VydGlvbiBzdGlsbCBydW5zKS4N
-Cg0KQnV0IHRoZW4sIHRoYXQncyBwcm9iYWJseSBub3QgdGhlIG9ubHkgcGxhY2Ugd2hlcmUgd2Ug
-bWF5IGdldCBhbiBpc3N1ZSANCndpdGggcmFkaXhfZW5hYmxlZCgpIG9yIGFueSBvdGhlciB1c2Ug
-b2YgbW11X2hhc19mZWF0dXJlKCkgYnkgdGhlIHdheS4NCg0KV2UgYXJlIGluIGEgdHJpdmlhbCBz
-aXR1YXRpb24gd2hlcmUgdGhlIGZlYXR1cmUgY2hlY2sgaXMgZWl0aGVyIGFsd2F5cyANCnRydWUg
-b3IgYWx3YXlzIGZhbHNlLiBJcyBpdCB3b3J0aCBjaGVja2luZyBmb3IganVtcCBsYWJlbCBpbml0
-IGluIHRoYXQgDQpjYXNlID8NCg0KSSB0aGluayB0aGUgYmVzdCBzb2x1dGlvbiBzaG91bGQgYmUg
-dG8gbW92ZSB0aGUgZm9sbG93aW5nIHRyaXZpYWwgY2hlY2tzIA0KYWJvdmUgdGhlIHN0YXRpY19r
-ZXlfaW5pdGlhbGlzZWQgY2hlY2s6DQoNCglpZiAoTU1VX0ZUUlNfQUxXQVlTICYgZmVhdHVyZSkN
-CgkJcmV0dXJuIHRydWU7DQoNCglpZiAoIShNTVVfRlRSU19QT1NTSUJMRSAmIGZlYXR1cmUpKQ0K
-CQlyZXR1cm4gZmFsc2U7DQoNCkNocmlzdG9waGUNCg0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gv
-cG93ZXJwYy9pbmNsdWRlL2FzbS9tbXUuaA0KPiBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9t
-bXUuaA0KPiBpbmRleCA5NGI5ODExNTI2NjcuLjM1OTJmZjlhNTIyYiAxMDA2NDQNCj4gLS0tIGEv
-YXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL21tdS5oDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9pbmNs
-dWRlL2FzbS9tbXUuaA0KPiBAQCAtMzI3LDcgKzMyNyw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBh
-c3NlcnRfcHRlX2xvY2tlZChzdHJ1Y3QNCj4gbW1fc3RydWN0ICptbSwgdW5zaWduZWQgbG9uZyBh
-ZGRyKQ0KPiAgIA0KPiAgIHN0YXRpYyBfX2Fsd2F5c19pbmxpbmUgYm9vbCByYWRpeF9lbmFibGVk
-KHZvaWQpDQo+ICAgew0KPiAtICAgICAgIHJldHVybiBtbXVfaGFzX2ZlYXR1cmUoTU1VX0ZUUl9U
-WVBFX1JBRElYKTsNCj4gKyAgICAgICByZXR1cm4gbW11X2hhc19mZWF0dXJlKE1NVV9GVFJfVFlQ
-RV9SQURJWCkgJiYNCj4gSVNfRU5BQkxFRChDT05GSUdfUFBDX1JBRElYX01NVSk7DQo+ICAgfQ0K
-PiAgIA0KPiAgIHN0YXRpYyBfX2Fsd2F5c19pbmxpbmUgYm9vbCBlYXJseV9yYWRpeF9lbmFibGVk
-KHZvaWQpDQo=
+Correct many spelling errors in Documentation/ as reported by codespell.
+
+Maintainers of specific kernel subsystems are only Cc-ed on their
+respective patches, not the entire series. [if all goes well]
+
+These patches are based on linux-next-20230125.
+
+
+ [PATCH 01/35] Documentation: arm64: correct spelling
+ [PATCH 02/35] Documentation: arm: correct spelling
+ [PATCH 03/35] Documentation: block: correct spelling
+ [PATCH 04/35] Documentation: bpf: correct spelling
+ [PATCH 05/35] Documentation: core-api: correct spelling
+ [PATCH 06/35] Documentation: fault-injection: correct spelling
+ [PATCH 07/35] Documentation: fb: correct spelling
+ [PATCH 08/35] Documentation: features: correct spelling
+ [PATCH 09/35] Documentation: firmware-guide/acpi: correct spelling
+ [PATCH 10/35] Documentation: hid: correct spelling
+ [PATCH 11/35] Documentation: i2c: correct spelling
+ [PATCH 12/35] Documentation: input: correct spelling
+ [PATCH 13/35] Documentation: isdn: correct spelling
+ [PATCH 14/35] Documentation: leds: correct spelling
+ [PATCH 15/35] Documentation: litmus-tests: correct spelling
+ [PATCH 16/35] Documentation: livepatch: correct spelling
+ [PATCH 17/35] Documentation: locking: correct spelling
+ [PATCH 18/35] Documentation: mm: correct spelling
+ [PATCH 19/35] Documentation: openrisc: correct spelling
+ [PATCH 20/35] Documentation: PCI: correct spelling
+ [PATCH 21/35] Documentation: powerpc: correct spelling
+ [PATCH 22/35] Documentation: power: correct spelling
+ [PATCH 23/35] Documentation: s390: correct spelling
+ [PATCH 24/35] Documentation: scheduler: correct spelling
+ [PATCH 25/35] Documentation: security: correct spelling
+ [PATCH 26/35] Documentation: sound: correct spelling
+ [PATCH 27/35] Documentation: spi: correct spelling
+ [PATCH 28/35] Documentation: target: correct spelling
+ [PATCH 29/35] Documentation: timers: correct spelling
+ [PATCH 30/35] Documentation: tools/rtla: correct spelling
+ [PATCH 31/35] Documentation: trace: correct spelling
+ [PATCH 32/35] Documentation: usb: correct spelling
+ [PATCH 33/35] Documentation: w1: correct spelling
+ [PATCH 34/35] Documentation: x86: correct spelling
+ [PATCH 35/35] Documentation: xtensa: correct spelling
+
+
+ Documentation/PCI/endpoint/pci-vntb-howto.rst                    |    2 -
+ Documentation/PCI/msi-howto.rst                                  |    2 -
+ Documentation/arm/arm.rst                                        |    2 -
+ Documentation/arm/ixp4xx.rst                                     |    4 +-
+ Documentation/arm/keystone/knav-qmss.rst                         |    2 -
+ Documentation/arm/stm32/stm32-dma-mdma-chaining.rst              |    6 +--
+ Documentation/arm/sunxi/clocks.rst                               |    2 -
+ Documentation/arm/swp_emulation.rst                              |    2 -
+ Documentation/arm/tcm.rst                                        |    2 -
+ Documentation/arm/vlocks.rst                                     |    2 -
+ Documentation/arm64/booting.rst                                  |    2 -
+ Documentation/arm64/elf_hwcaps.rst                               |    2 -
+ Documentation/arm64/sve.rst                                      |    4 +-
+ Documentation/block/data-integrity.rst                           |    2 -
+ Documentation/bpf/libbpf/libbpf_naming_convention.rst            |    6 +--
+ Documentation/bpf/map_xskmap.rst                                 |    2 -
+ Documentation/bpf/ringbuf.rst                                    |    4 +-
+ Documentation/bpf/verifier.rst                                   |    2 -
+ Documentation/core-api/packing.rst                               |    2 -
+ Documentation/core-api/padata.rst                                |    2 -
+ Documentation/fault-injection/fault-injection.rst                |    2 -
+ Documentation/fb/sm712fb.rst                                     |    2 -
+ Documentation/fb/sstfb.rst                                       |    2 -
+ Documentation/features/core/thread-info-in-task/arch-support.txt |    2 -
+ Documentation/firmware-guide/acpi/acpi-lid.rst                   |    2 -
+ Documentation/firmware-guide/acpi/namespace.rst                  |    2 -
+ Documentation/hid/hid-alps.rst                                   |    2 -
+ Documentation/hid/hid-bpf.rst                                    |    2 -
+ Documentation/hid/hiddev.rst                                     |    2 -
+ Documentation/hid/hidraw.rst                                     |    2 -
+ Documentation/hid/intel-ish-hid.rst                              |    2 -
+ Documentation/i2c/gpio-fault-injection.rst                       |    2 -
+ Documentation/i2c/smbus-protocol.rst                             |    2 -
+ Documentation/input/devices/iforce-protocol.rst                  |    2 -
+ Documentation/input/multi-touch-protocol.rst                     |    2 -
+ Documentation/isdn/interface_capi.rst                            |    2 -
+ Documentation/isdn/m_isdn.rst                                    |    2 -
+ Documentation/leds/leds-qcom-lpg.rst                             |    4 +-
+ Documentation/litmus-tests/README                                |    2 -
+ Documentation/livepatch/reliable-stacktrace.rst                  |    2 -
+ Documentation/locking/lockdep-design.rst                         |    4 +-
+ Documentation/locking/locktorture.rst                            |    2 -
+ Documentation/locking/locktypes.rst                              |    2 -
+ Documentation/locking/preempt-locking.rst                        |    2 -
+ Documentation/mm/hmm.rst                                         |    4 +-
+ Documentation/mm/hwpoison.rst                                    |    2 -
+ Documentation/openrisc/openrisc_port.rst                         |    4 +-
+ Documentation/power/suspend-and-interrupts.rst                   |    2 -
+ Documentation/powerpc/kasan.txt                                  |    2 -
+ Documentation/powerpc/papr_hcalls.rst                            |    2 -
+ Documentation/powerpc/qe_firmware.rst                            |    4 +-
+ Documentation/powerpc/vas-api.rst                                |    4 +-
+ Documentation/s390/pci.rst                                       |    4 +-
+ Documentation/s390/vfio-ccw.rst                                  |    2 -
+ Documentation/scheduler/sched-bwc.rst                            |    2 -
+ Documentation/scheduler/sched-energy.rst                         |    4 +-
+ Documentation/security/digsig.rst                                |    4 +-
+ Documentation/security/keys/core.rst                             |    2 -
+ Documentation/security/secrets/coco.rst                          |    2 -
+ Documentation/sound/alsa-configuration.rst                       |    8 ++--
+ Documentation/sound/cards/audigy-mixer.rst                       |    2 -
+ Documentation/sound/cards/maya44.rst                             |    2 -
+ Documentation/sound/cards/sb-live-mixer.rst                      |    2 -
+ Documentation/sound/designs/jack-controls.rst                    |    2 -
+ Documentation/sound/designs/seq-oss.rst                          |    2 -
+ Documentation/sound/hd-audio/notes.rst                           |    2 -
+ Documentation/spi/pxa2xx.rst                                     |   12 +++---
+ Documentation/spi/spi-lm70llp.rst                                |    2 -
+ Documentation/spi/spi-summary.rst                                |    2 -
+ Documentation/target/tcmu-design.rst                             |    2 -
+ Documentation/timers/hrtimers.rst                                |    2 -
+ Documentation/tools/rtla/rtla-timerlat-top.rst                   |    2 -
+ Documentation/trace/coresight/coresight-etm4x-reference.rst      |    2 -
+ Documentation/trace/events.rst                                   |    6 +--
+ Documentation/trace/fprobe.rst                                   |    2 -
+ Documentation/trace/ftrace-uses.rst                              |    2 -
+ Documentation/trace/hwlat_detector.rst                           |    2 -
+ Documentation/trace/rv/runtime-verification.rst                  |    2 -
+ Documentation/trace/uprobetracer.rst                             |    2 -
+ Documentation/usb/chipidea.rst                                   |   19 +++++-----
+ Documentation/usb/gadget-testing.rst                             |    2 -
+ Documentation/usb/mass-storage.rst                               |    2 -
+ Documentation/w1/w1-netlink.rst                                  |    2 -
+ Documentation/x86/boot.rst                                       |    2 -
+ Documentation/x86/buslock.rst                                    |    2 -
+ Documentation/x86/mds.rst                                        |    2 -
+ Documentation/x86/resctrl.rst                                    |    2 -
+ Documentation/x86/sgx.rst                                        |    2 -
+ Documentation/xtensa/atomctl.rst                                 |    2 -
+ 89 files changed, 124 insertions(+), 123 deletions(-)
+
+
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Vladimir Oltean <olteanv@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
+Cc: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Wolfram Sang <wsa@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Henrik Rydberg <rydberg@bitmath.org>
+Cc: Karsten Keil <isdn@linux-pingi.de>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: Stafford Horne <shorne@gmail.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Len Brown <len.brown@intel.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Evgeniy Polyakov <zbr@ioremap.net>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+
+Cc: alsa-devel@alsa-project.org
+Cc: coresight@lists.linaro.org
+Cc: bpf@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: isdn4linux@listserv.isdn4linux.de
+Cc: keyrings@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-block@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-i2c@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-leds@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-scsi@vger.kernel.org
+Cc: linux-sgx@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+Cc: linux-trace-devel@vger.kernel.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: live-patching@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: target-devel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
