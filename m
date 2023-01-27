@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F1767EEE8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:57:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC91B67EEF4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:58:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3SzP3ygMz3fcC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:57:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3T0Q4BSyz3fHW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:58:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GKKENfMf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iI2a7Mep;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3ainuywykdmk796t2qv33v0t.r310x29c44r-sta0x787.3e0pq7.36v@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3bsnuywykdmwac9w5ty66y3w.u64305cf77u-vwd30aba.6h3sta.69y@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GKKENfMf;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iI2a7Mep;
 	dkim-atps=neutral
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3SdK0hZCz3fJD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3SdK6DDQz3fKk
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:41:57 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-4d5097a95f5so65079967b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:56 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id a62-20020a25ca41000000b0080b838a5199so6344390ybg.6
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L4ezA/DdKPqYrQ5cS+Ke2gtcDFDEWQ5+mTqJ9joAzRk=;
-        b=GKKENfMfMG4N0pZCcl9OmPXOIcATJjfZsJmDxgzcwEK7KGqwCsad+AWtcOXvaoC0br
-         qvO01w86MwzjSygGqi8PA6cojX9dXaSV7GQ7IPy4D+7hoAEyyoJoE4vESGbmz//KocjS
-         XInPKVcNcxUU/7v9tYz8Eq3N+worhIjUrPeLT3iGbzfEm71MChhnFLrlat60IF4TyfFg
-         cT/sx9cN16Dq7Csnqgd8AQwbf9+2MwGgrR42iD3xwMMpBpotxh+QKt5ySOsx98KoL0iq
-         FNYiUMi+Hv+PIq3dZA5NAAwxArkgkUL/euE7T+pJZglO6ldDOiv8hb2KxyDrVWXCBL/Q
-         MOaA==
+        bh=vIuOo+WD7hhMM8dbfJD4mGHBD08/Cqf6l0kIi97gWpI=;
+        b=iI2a7MepfOBNDqB7wu+/83gKbYOOOUW8grtwa3CiYxFM9JfwE6yM70Ne3Bb3nWcBVw
+         Yu75uY4jTmGekedOn8ngeIwpB83dCuwgdGAmo3PP8/5H9WQZ6zUPSiR4iOLBbFN7215j
+         t5fY8PD6baQLdLtkjh6u6ca2lGsT7fHu5oxzuRWhyEjLoCc6wJIYtxHPj4OPz1R/r154
+         +v9JTIHiwr1S1nQG1EzjVKOQzPqMVCb1Q8Qi6vYQuYU/8I9rd1kQnHGC5kdzCbnlOWk7
+         FPBIbkrQ5+p0qEBCYmhl8CWtOia+KC/VA/z2TgOLyA8KXzLYreAkUsa906GcFZG1qYyr
+         SCmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L4ezA/DdKPqYrQ5cS+Ke2gtcDFDEWQ5+mTqJ9joAzRk=;
-        b=M5cfRwq+l+W4yXqWc0hQTsRPfqj6pY/McUxsy5hMjrmKvnZuXRTslB4MmAHlcP0OCQ
-         4/lRZBJTPlq2b9IWxW1tyxCDaBRZ7jJVcAxTx5Bol7lrsKCMurIa8dPkrw4oKjRR3h7q
-         18fzREke0DScQe5V+mvdPXZ/LCDlqL8osrGyk9xQTlRQvn4ZnPchlTP6lcQxuboW3Nx/
-         3QoObczsOxkAaqIIrYqO1238LdAjHUXCIiFwUJwG732q+g9tqr0Y0Azz/NbMYKUFtrwC
-         nPx6XzLKMOJZ+boFo2i+RREim3riebbrX6CIWH6GvMXlqSMkvqizqLhPn8BGCRQri070
-         A8Iw==
-X-Gm-Message-State: AFqh2kpGJwEqSsf6uB/5ks9KFZo3s1b4nfKyhxVbrOr430Pz0ErlDcCf
-	BFKcMbQV16FAJhckPSdvRAgY78cWr9s=
-X-Google-Smtp-Source: AMrXdXtaMEzriXRGDDaPyWp6cI2qFr9C55J9V7x8prQAmgawr911NF2wOHqTeINFz8M7FkUN1SViGFe49Jc=
+        bh=vIuOo+WD7hhMM8dbfJD4mGHBD08/Cqf6l0kIi97gWpI=;
+        b=pB9xcxhHICEg1GN7qhnl6uCOwFDVwQUlSzH/SoQpVxxtkMU3vlfSbp2yz7hySiapIi
+         IB7r14jm+c6j5G51tw/gbqlUM4BVaufN68E6skZn3oW+sR9850BY9GnjiJsU1EKaaf0E
+         fE5tLFqAAiIbetE/TmWJZ2YdfiqjuJd6Up+M+BRmzFVs8C45gcoB9+cH+pqnyAp4Rjhf
+         w0fOfJT+4uvox+hEYjXcV9/PYvbix/1r+HzC5l3NYy2D841sxb5MMQZ1QO71275nJyHz
+         zkPlP0zHorwp2eUeSz9XosiNnuMWW6H99icRxXAhtHV5CYnF05L1O1myB6dGVmoeiYAI
+         Dt1g==
+X-Gm-Message-State: AO0yUKVgbYjnqpX+Wfb19s6KJ+wVbk2FOr7weFD0LreZ1fGKB37ctWg6
+	e5jmTf/Ruw8P5/nhC9ApphmNKatq00Y=
+X-Google-Smtp-Source: AK7set91XCOXqw0Dg5UJpzZX/mqq3ueYFNiPcfvNNp2V4Tl7t8riuyYgZdoB/8yFEdiYxfiOzkRBBcWpyqU=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:4e19:be9:c5d0:8483])
- (user=surenb job=sendgmr) by 2002:a25:3c9:0:b0:803:3696:c473 with SMTP id
- 192-20020a2503c9000000b008033696c473mr2168756ybd.224.1674848514947; Fri, 27
- Jan 2023 11:41:54 -0800 (PST)
-Date: Fri, 27 Jan 2023 11:40:54 -0800
+ (user=surenb job=sendgmr) by 2002:a81:3e15:0:b0:506:653c:db97 with SMTP id
+ l21-20020a813e15000000b00506653cdb97mr1675918ywa.201.1674848517274; Fri, 27
+ Jan 2023 11:41:57 -0800 (PST)
+Date: Fri, 27 Jan 2023 11:40:55 -0800
 In-Reply-To: <20230127194110.533103-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230127194110.533103-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230127194110.533103-18-surenb@google.com>
-Subject: [PATCH v2 17/33] mm/mremap: write-lock VMA while remapping it to a
- new address range
+Message-ID: <20230127194110.533103-19-surenb@google.com>
+Subject: [PATCH v2 18/33] mm: write-lock VMAs before removing them from VMA tree
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -75,45 +74,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, Laurent Dufour <laurent.dufour@fr.ibm.com>, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, surenb@google.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin
- @google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, surenb@google.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, tatashin@google.com, mgorman@techsingularity.net, rp
+ pt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Write-lock VMA as locked before copying it and when copy_vma produces
-a new VMA.
+Write-locking VMAs before isolating them ensures that page fault
+handlers don't operate on isolated VMAs.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
 ---
- mm/mmap.c   | 1 +
- mm/mremap.c | 1 +
- 2 files changed, 2 insertions(+)
+ mm/mmap.c  | 1 +
+ mm/nommu.c | 5 +++++
+ 2 files changed, 6 insertions(+)
 
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 60038c24d836..b3c247073aa0 100644
+index b3c247073aa0..5bdfd087b632 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -3202,6 +3202,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 			get_file(new_vma->vm_file);
- 		if (new_vma->vm_ops && new_vma->vm_ops->open)
- 			new_vma->vm_ops->open(new_vma);
-+		vma_start_write(new_vma);
- 		if (vma_link(mm, new_vma))
- 			goto out_vma_link;
- 		*need_rmap_locks = false;
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 411a85682b58..dd541e59edda 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -623,6 +623,7 @@ static unsigned long move_vma(struct vm_area_struct *vma,
- 			return -ENOMEM;
- 	}
- 
+@@ -2261,6 +2261,7 @@ int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ static inline int munmap_sidetree(struct vm_area_struct *vma,
+ 				   struct ma_state *mas_detach)
+ {
 +	vma_start_write(vma);
- 	new_pgoff = vma->vm_pgoff + ((old_addr - vma->vm_start) >> PAGE_SHIFT);
- 	new_vma = copy_vma(&vma, new_addr, new_len, new_pgoff,
- 			   &need_rmap_locks);
+ 	mas_set_range(mas_detach, vma->vm_start, vma->vm_end - 1);
+ 	if (mas_store_gfp(mas_detach, vma, GFP_KERNEL))
+ 		return -ENOMEM;
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 57ba243c6a37..2ab162d773e2 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -588,6 +588,7 @@ static int delete_vma_from_mm(struct vm_area_struct *vma)
+ 		       current->pid);
+ 		return -ENOMEM;
+ 	}
++	vma_start_write(vma);
+ 	cleanup_vma_from_mm(vma);
+ 
+ 	/* remove from the MM's tree and list */
+@@ -1519,6 +1520,10 @@ void exit_mmap(struct mm_struct *mm)
+ 	 */
+ 	mmap_write_lock(mm);
+ 	for_each_vma(vmi, vma) {
++		/*
++		 * No need to lock VMA because this is the only mm user and no
++		 * page fault handled can race with it.
++		 */
+ 		cleanup_vma_from_mm(vma);
+ 		delete_vma(mm, vma);
+ 		cond_resched();
 -- 
 2.39.1
 
