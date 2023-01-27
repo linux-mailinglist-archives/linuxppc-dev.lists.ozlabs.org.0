@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326C667EFFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 21:53:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E689967F002
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 21:57:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3VDG74dDz3fF2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 07:53:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3VJ263jzz3chK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 07:57:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=R5OFcqos;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E8yJ7N9z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=R5OFcqos;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E8yJ7N9z;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3VCJ5bDgz3cfh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 07:52:59 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id ADE0CB821E5;
-	Fri, 27 Jan 2023 20:52:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0AFC433D2;
-	Fri, 27 Jan 2023 20:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1674852774;
-	bh=EI2Cd7DddQ4cHwZUEfRyPJFASLDITgFJfNb4SBvJYLw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R5OFcqos3HQAWVVDc/HnM15Sr+c+WZRBXzeCBu/YpesDbR+NFyB63Ki/LLNuDBZ2f
-	 hS07f2aywYK3zr3NoQh8p+ko9QG+Q9imfg82EVJHMXw1fLXczGfnCKUiEsrdNG86js
-	 60MpZ4Ka+SfAAhLTam2Bm0hf/FhlTGzPly4haWIM=
-Date: Fri, 27 Jan 2023 12:52:53 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH] scripts/spelling.txt: add "exsits" pattern and fix typo
- instances
-Message-Id: <20230127125253.0cee02d6e286b5f7ac63dab6@linux-foundation.org>
-In-Reply-To: <20230127092708.43247f7e@booty>
-References: <20230126152205.959277-1-luca.ceresoli@bootlin.com>
-	<20230126155526.3247785a@kernel.org>
-	<20230127092708.43247f7e@booty>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3VH61qxjz3cfj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 07:56:17 +1100 (AEDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-50aa54cc7c0so55560397b3.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 12:56:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e+UKvH7+Fs0UBN0fQYs2fra7FelxOXxsOOmTjKmz4Bk=;
+        b=E8yJ7N9znM0aToa4LxzQHUBZn3b5x2U1d1NWdDmLWflzMnqSetaFDiht0QQJTSjCnC
+         Qo//IGO3iJS8K8gckFQUA70aGC+vZyFuRK7+B8r0GjHNLP4D+jqM1fUl4SekM6in6Nxy
+         Z+JZ9RL15W8p9FW0FWiNA2c46yBUvHDyUz7Lhupci++hv++YjjBtACUE1uhQEgZQ0bVj
+         rP0UZcpjzu3430SG0pn9W++pmGI1vQhgwerQo1eS6B/AzBF3agvhUSbve89Tno9r4IYs
+         LgamG4aw4/mVOctaL0ruQYNGIiV5K8BbfAW0+byriKBV+7Q7dXAHF0FDTt8tkGXljW3C
+         h8Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+UKvH7+Fs0UBN0fQYs2fra7FelxOXxsOOmTjKmz4Bk=;
+        b=PRVRiEoeOsSkuSUOSubuknbGC01ykEzr0z/B2aiAXEKxPWOP1NTFCrhbCQ3N3czbuq
+         jRcCzKpx7blD1JWz9w3eQ3+guFHaaphYzIrfyRm3Pm0XnKOiRZqST/fD7witp8jiPUIT
+         tx+W2wClXbjfwfbQU+Xrx3eVMvoKps+NLPWklZQ81SVdxnxQuk7ZyA5Vn3RyiuaQscOz
+         0qEedsqZT/Ub8mL74vchYEFPzDKjBc6ulE8CWYWW7eWazcHaR2LfZz9CY8VrF/cpNsEY
+         vsFsvtOr4ESydvUHL8N0ZrXiH4hKvrtDw8/0HJ2aYWvYy45pNEJRuIt2B22ExpGTxsZo
+         J/bA==
+X-Gm-Message-State: AO0yUKVNRwnXaMx09J6Z/eWsTLvNuE+b5lwr05qcho07LatbcdfPyNhI
+	huQhTi5YJJ3c2VW2JveGmX4YDNeF7U9bqtYF5xoYmw==
+X-Google-Smtp-Source: AK7set9X+MemZwETKZc4IHg1twC+Il9/CFR1bpn9h2wXhLc2t6gCqLQVfqsQTiQzJwwYAUMtSxNAvjWnDd7kQbg6W74=
+X-Received: by 2002:a81:1e46:0:b0:509:115b:a39b with SMTP id
+ e67-20020a811e46000000b00509115ba39bmr859277ywe.263.1674852973662; Fri, 27
+ Jan 2023 12:56:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20230126193752.297968-1-surenb@google.com> <20230126193752.297968-4-surenb@google.com>
+ <20230127174530.sws4xg3qjsx3agh4@offworld>
+In-Reply-To: <20230127174530.sws4xg3qjsx3agh4@offworld>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 27 Jan 2023 12:56:02 -0800
+Message-ID: <CAJuCfpGfbP=HcZMRzqvvWSk7+EZEwrQMhE2VhDYXNgX-HRrvLA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] mm: replace VM_LOCKED_CLEAR_MASK with VM_LOCKED_MASK
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, michel@lespinasse.org, 
+	jglisse@google.com, mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org, 
+	mgorman@techsingularity.net, willy@infradead.org, liam.howlett@oracle.com, 
+	peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org, 
+	mingo@redhat.com, will@kernel.org, luto@kernel.org, songliubraving@fb.com, 
+	peterx@redhat.com, david@redhat.com, dhowells@redhat.com, hughd@google.com, 
+	bigeasy@linutronix.de, kent.overstreet@linux.dev, punit.agrawal@bytedance.com, 
+	lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com, 
+	axelrasmussen@google.com, joelaf@google.com, minchan@google.com, 
+	rppt@kernel.org, jannh@google.com, shakeelb@google.com, tatashin@google.com, 
+	edumazet@google.com, gthelen@google.com, gurua@google.com, 
+	arjunroy@google.com, soheil@google.com, leewalsh@google.com, posk@google.com, 
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,24 +87,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dev@openvswitch.org, alsa-devel@alsa-project.org, Leon Romanovsky <leon@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Pravin B Shelar <pshelar@ovn.org>, Nicolin Chen <nicoleotsuka@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, Colin Ian King <colin.i.king@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 27 Jan 2023 09:27:08 +0100 Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+On Fri, Jan 27, 2023 at 10:12 AM Davidlohr Bueso <dave@stgolabs.net> wrote:
+>
+> On Thu, 26 Jan 2023, Suren Baghdasaryan wrote:
+>
+> >To simplify the usage of VM_LOCKED_CLEAR_MASK in vm_flags_clear(),
+> >replace it with VM_LOCKED_MASK bitmask and convert all users.
+>
+> Might be good to mention explicitly no change in semantics, but
+> otherwise lgtm
 
-> > On Thu, 26 Jan 2023 16:22:05 +0100 Luca Ceresoli wrote:
-> > > Fix typos and add the following to the scripts/spelling.txt:
-> > > 
-> > >   exsits||exists
-> > > 
-> > > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>  
-> > 
-> > You need to split this up per subsystem, I reckon :(
-> 
-> Ironically, it was the case initially but I have squashed my commits
-> based on several prior commits that do it together. Now I rechecked
-> and it seems like this happened only until July 2019, so apparently the
-> policy has changed. Will split.
+Thanks! I'll add that if a new version is cut in the future.
 
-It's not worth the effort.  I'll send the patch upstream as-is.
+>
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
