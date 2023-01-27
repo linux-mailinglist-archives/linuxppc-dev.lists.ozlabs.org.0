@@ -1,50 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C94F67DDA8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 07:41:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB3367DEB6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 08:53:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P37JZ1GxJz3fCR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 17:41:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P38wL1Mqbz3fJF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 18:53:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=J058ZoDS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CsR2RWjX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=shawnguo@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=J058ZoDS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CsR2RWjX;
 	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P37HZ20w8z3ch0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 17:40:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=CA1Cigbjbo5d5kU+L4D/OrisiUcoKP764Ad5A2j0x8s=; b=J058ZoDSOmgIy+41JlX8VQ/lVD
-	qfnzQ4K91uwGZWBMc0FOc8u18kq333GsVAotxcqrKJB4CUfERHCn+CjDxDKzpV5ZBCVuVHFc7mrvd
-	+qt06JxB/UpmfisQSGvwPTvtmJFNNCha3KeDgoP2RKtjWE4tk/fBb9ozmZgp5pad9Rax+m4lPk7pe
-	umTKtZ/+rP7KGwrqxtvC3tZddGvL5kBIqglMv0KQmg4mIFTcZUZUZZ5GQpiiEB5egTfEr/XDrMuBc
-	UVwFb8pDfJH3NUQDUCO7dy8fI4yP+NuFtJONImIXeXwkuli7JXFXGeYw/6n6+TcifRssCWT6NC0r+
-	M9arjeOw==;
-Received: from [2601:1c2:d80:3110::9307] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pLIPM-00DM0u-A4; Fri, 27 Jan 2023 06:40:20 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 21/35] Documentation: powerpc: correct spelling
-Date: Thu, 26 Jan 2023 22:39:52 -0800
-Message-Id: <20230127064005.1558-23-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230127064005.1558-1-rdunlap@infradead.org>
-References: <20230127064005.1558-1-rdunlap@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P38vL5B39z3ch3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 18:53:02 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E770961A15;
+	Fri, 27 Jan 2023 07:52:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55717C433EF;
+	Fri, 27 Jan 2023 07:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674805978;
+	bh=VBAppkMJFtAu58j7X9LUIoG4yxGDA5AuNKS3v4F8NoE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CsR2RWjXnB1vEIsEa7Mq8ccjrHR5N1s09H1lCu/LSTfybB+I+7hvlMBV7gxmoN8/c
+	 xgU58GTVDT8jRKQFWo2WrReBeKtvnfpRC5yZpspFuF6ptJLEE4DdGU8bKhQi/QbRfQ
+	 8BH+SxD3XS8fDdXNj5LOzRYJ2DSMPE/khDNag1UI8ZjX3oG+ozYSvbqgp/LgMeV5DI
+	 VrULfdY6lRRzfvyb6ecP0LEoRav09SGsaruzP7enZYMI/MfZVAcz+K8R/aeKb4IqM8
+	 kFu661L8uS/u4/V9B0sEFIT8TXfYHmevFy+Qk/XS75nVrTs63qdTIWj2RkTLt5xuUq
+	 X0Jr5tOaX7BjA==
+Date: Fri, 27 Jan 2023 15:52:49 +0800
+From: Shawn Guo <shawnguo@kernel.org>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH v9 07/10] arm64: dts: ls1046ardb: Add serdes bindings
+Message-ID: <20230127075248.GL20713@T480>
+References: <20221230000139.2846763-1-sean.anderson@seco.com>
+ <20221230000139.2846763-8-sean.anderson@seco.com>
+ <20230125234335.GC20713@T480>
+ <8074f0be-8a70-a937-49f2-123e0bfc6218@seco.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8074f0be-8a70-a937-49f2-123e0bfc6218@seco.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,84 +63,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Correct spelling problems for Documentation/powerpc/ as reported
-by codespell.
+On Thu, Jan 26, 2023 at 11:48:53AM -0500, Sean Anderson wrote:
+> On 1/25/23 18:43, Shawn Guo wrote:
+> > On Thu, Dec 29, 2022 at 07:01:36PM -0500, Sean Anderson wrote:
+> >> This adds appropriate bindings for the macs which use the SerDes. The
+> >> 156.25MHz fixed clock is a crystal. The 100MHz clocks (there are
+> >> actually 3) come from a Renesas 6V49205B at address 69 on i2c0. There is
+> >> no driver for this device (and as far as I know all you can do with the
+> >> 100MHz clocks is gate them), so I have chosen to model it as a single
+> >> fixed clock.
+> >> 
+> >> Note: the SerDes1 lane numbering for the LS1046A is *reversed*.
+> >> This means that Lane A (what the driver thinks is lane 0) uses pins
+> >> SD1_TX3_P/N.
+> >> 
+> >> Because this will break ethernet if the serdes is not enabled, enable
+> >> the serdes driver by default on Layerscape.
+> >> 
+> >> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> >> ---
+> >> This depends on [1].
+> >> 
+> >> [1] https://lore.kernel.org/netdev/20220804194705.459670-4-sean.anderson@seco.com/
+> >> 
+> >> Changes in v9:
+> >> - Fix name of phy mode node
+> >> - phy-type -> fsl,phy
+> >> 
+> >> Changes in v8:
+> >> - Rename serdes phy handles to use _A, _B, etc. instead of _0, _1, etc.
+> >>   This should help remind readers that the numbering corresponds to the
+> >>   physical layout of the registers, and not the lane (pin) number.
+> >> 
+> >> Changes in v6:
+> >> - XGI.9 -> XFI.9
+> >> 
+> >> Changes in v4:
+> >> - Convert to new bindings
+> >> 
+> >>  .../boot/dts/freescale/fsl-ls1046a-rdb.dts    | 112 ++++++++++++++++++
+> >>  drivers/phy/freescale/Kconfig                 |   1 +
+> > 
+> > The phy driver Kconfig change shouldn't be part of this patch.
+> 
+> I put it here for bisectability, since this is the point where we need
+> to enable it. But I can do this in a separate patch if you want.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
----
- Documentation/powerpc/kasan.txt       |    2 +-
- Documentation/powerpc/papr_hcalls.rst |    2 +-
- Documentation/powerpc/qe_firmware.rst |    4 ++--
- Documentation/powerpc/vas-api.rst     |    4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+From DT ABI perspective, it's already broken anyway if you need to change
+kernel and DT atomically.
 
-diff -- a/Documentation/powerpc/kasan.txt b/Documentation/powerpc/kasan.txt
---- a/Documentation/powerpc/kasan.txt
-+++ b/Documentation/powerpc/kasan.txt
-@@ -40,7 +40,7 @@ checks can be delayed until after the MM
- instrument any code that runs with translations off after booting. This is the
- current approach.
- 
--To avoid this limitiation, the KASAN shadow would have to be placed inside the
-+To avoid this limitation, the KASAN shadow would have to be placed inside the
- linear mapping, using the same high-bits trick we use for the rest of the linear
- mapping. This is tricky:
- 
-diff -- a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -22,7 +22,7 @@ privileged operations. Currently there a
- On PPC64 arch a guest kernel running on top of a PAPR hypervisor is called
- a *pSeries guest*. A pseries guest runs in a supervisor mode (HV=0) and must
- issue hypercalls to the hypervisor whenever it needs to perform an action
--that is hypervisor priviledged [3]_ or for other services managed by the
-+that is hypervisor privileged [3]_ or for other services managed by the
- hypervisor.
- 
- Hence a Hypercall (hcall) is essentially a request by the pseries guest
-diff -- a/Documentation/powerpc/qe_firmware.rst b/Documentation/powerpc/qe_firmware.rst
---- a/Documentation/powerpc/qe_firmware.rst
-+++ b/Documentation/powerpc/qe_firmware.rst
-@@ -232,11 +232,11 @@ For example, to match the 8323, revision
- 'extended_modes' is a bitfield that defines special functionality which has an
- impact on the device drivers.  Each bit has its own impact and has special
- instructions for the driver associated with it.  This field is stored in
--the QE library and available to any driver that calles qe_get_firmware_info().
-+the QE library and available to any driver that calls qe_get_firmware_info().
- 
- 'vtraps' is an array of 8 words that contain virtual trap values for each
- virtual traps.  As with 'extended_modes', this field is stored in the QE
--library and available to any driver that calles qe_get_firmware_info().
-+library and available to any driver that calls qe_get_firmware_info().
- 
- 'microcode' (type: struct qe_microcode):
- 	For each RISC processor there is one 'microcode' structure.  The first
-diff -- a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
---- a/Documentation/powerpc/vas-api.rst
-+++ b/Documentation/powerpc/vas-api.rst
-@@ -46,7 +46,7 @@ request queue into the application's vir
- The application can then submit one or more requests to the engine by
- using copy/paste instructions and pasting the CRBs to the virtual address
- (aka paste_address) returned by mmap(). User space can close the
--established connection or send window by closing the file descriptior
-+established connection or send window by closing the file descriptor
- (close(fd)) or upon the process exit.
- 
- Note that applications can send several requests with the same window or
-@@ -240,7 +240,7 @@ issued. This signal returns with the fol
- 	siginfo.si_signo = SIGSEGV;
- 	siginfo.si_errno = EFAULT;
- 	siginfo.si_code = SEGV_MAPERR;
--	siginfo.si_addr = CSB adress;
-+	siginfo.si_addr = CSB address;
- 
- In the case of multi-thread applications, NX send windows can be shared
- across all threads. For example, a child thread can open a send window,
+Shawn
