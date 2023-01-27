@@ -2,73 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A1A67DF9A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C00D67DFA6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 10:06:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3BPd10Y4z3fK5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:00:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WVav3P/B;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3BWt3VH0z3fJw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:06:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::30; helo=mail-oa1-x30.google.com; envelope-from=leobras.c@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WVav3P/B;
-	dkim-atps=neutral
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3BNj61Rpz3bk8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 20:00:03 +1100 (AEDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-15f64f2791dso5618020fac.7
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 01:00:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=v2hSS8RRNEiKdXNBkoxjOlqOIzTHsfUutd2F8KxRjVc=;
-        b=WVav3P/BvZwERU61cqc+7WHLADxXI6Tj/8iSeHsbhXgEBenzqZfMA2OUsIrJqHgBO3
-         tJX0kaY3lVVp69kxaCKuAStXjnE8aa3byUFIWDBAwHZLF502pb5/vjbCRsSgcr1l9lMO
-         NMwxf9XmbOJLjgKtXdgeQ5OTcuVfP+R6jBzvHR4x5P92BuF+0e76jDE+O7JLvg1WiVOo
-         9nIrRwlBiftTcCDT0J///SDIAoMeyHLDRIoCT4heiUt5NPg1w/OJb31ahWZqzCeynNTS
-         ryl2vqbWClwoW2t6RCdEIYJGY7eIyAHE3SIgC4znxi+F8efCPt3wQmzKXfF1xIuXhr70
-         61oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v2hSS8RRNEiKdXNBkoxjOlqOIzTHsfUutd2F8KxRjVc=;
-        b=fm+UCPjx2HaKMw0wj3m0orGH9zzlmUnVWZLDwl64Qp926YvYdEiXr5d4umJWlXVc5Q
-         EfFHYMcRuEELGaVIz6IXtuGaVWX1YaTA9IFi2El2OyWnQ3+8JlSIguxXQ+VJLBFmkSvR
-         EfGfWVH9wnfdMQhHv1g+724777URtqMt2fb/q2qOtefc7h3mREM9b4NenqTbDrNehEpQ
-         U5H++ZMI20ftkhpfEd2Ub6l1fhoVVEM5vFs/l1S4jeWQSNsdvBeCsHucuIZ3K0rMZjLt
-         vn3FFLZly14bfZghBzIzBeZG/S83XRhuexMgZBRpkMZXDKI88NDBFeAGurfulmHYrxWg
-         YXyg==
-X-Gm-Message-State: AO0yUKUn8Q4EXlyJoSqOKcdMWjEVZAiScBKrRWYSJRdO2vMtuFDs1EjD
-	p7TsB81viSsZWqBNY5vhrcfj23EVm6Y=
-X-Google-Smtp-Source: AK7set/Oq/TjWQdc/27dKCTsZKI2wNCpnXcEMh20i3ydhU6PDEL1mXztICP70raZMnAJsFQIeTWfKg==
-X-Received: by 2002:a05:6870:c08f:b0:163:6d5d:5125 with SMTP id c15-20020a056870c08f00b001636d5d5125mr773029oad.19.1674810000160;
-        Fri, 27 Jan 2023 01:00:00 -0800 (PST)
-Received: from ?IPv6:2804:1b3:a800:6912:c477:c73a:cf7c:3a27? ([2804:1b3:a800:6912:c477:c73a:cf7c:3a27])
-        by smtp.gmail.com with ESMTPSA id w19-20020a9d77d3000000b00661b46cc26bsm1519319otl.9.2023.01.27.00.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 00:59:59 -0800 (PST)
-Message-ID: <190942891d616be7fcc3f5c5ed41f035f29c4521.camel@gmail.com>
-Subject: Re: [PATCH] powerpc/rtas: Replace one-element arrays with flexible
- arrays
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 27 Jan 2023 05:59:56 -0300
-In-Reply-To: <20230127085023.271674-1-ajd@linux.ibm.com>
-References: <20230127085023.271674-1-ajd@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.2 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3BWG4ClFz3cdw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 20:05:44 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-207-p-8H2nnBPfSw_AWgsS6nQg-1; Fri, 27 Jan 2023 09:05:38 +0000
+X-MC-Unique: p-8H2nnBPfSw_AWgsS6nQg-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.45; Fri, 27 Jan
+ 2023 09:05:37 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.045; Fri, 27 Jan 2023 09:05:37 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Andrew Donnellan' <ajd@linux.ibm.com>, 'Segher Boessenkool'
+	<segher@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: RE: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
+ structures and buffers
+Thread-Topic: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
+ structures and buffers
+Thread-Index: AQHZMarbHHGSrma/kEeRKp/dNdgk5K6w84EwgAClz4CAAF8Y4A==
+Date: Fri, 27 Jan 2023 09:05:37 +0000
+Message-ID: <b016aefff9514ed1ad40620cea6d3b9f@AcuMS.aculab.com>
+References: <20230120074306.1326298-1-ajd@linux.ibm.com>
+	 <20230120074306.1326298-3-ajd@linux.ibm.com>
+	 <87pmb2pxpa.fsf@mpe.ellerman.id.au>
+	 <20230126171925.GN25951@gate.crashing.org>
+	 <5118edd7f1f445afa1812d2b9b62dd4f@AcuMS.aculab.com>
+ <2de207dadb936f25db123ae2d02aea91a9841656.camel@linux.ibm.com>
+In-Reply-To: <2de207dadb936f25db123ae2d02aea91a9841656.camel@linux.ibm.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,55 +65,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linux-hardening@vger.kernel.org
+Cc: "sudhakar@linux.ibm.com" <sudhakar@linux.ibm.com>, "bgray@linux.ibm.com" <bgray@linux.ibm.com>, "erichte@linux.ibm.com" <erichte@linux.ibm.com>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "zohar@linux.ibm.com" <zohar@linux.ibm.com>, "gjoyce@linux.ibm.com" <gjoyce@linux.ibm.com>, "joel@jms.id.au" <joel@jms.id.au>, "ruscur@russell.cc" <ruscur@russell.cc>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "gcwilson@linux.ibm.com" <gcwilson@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2023-01-27 at 19:50 +1100, Andrew Donnellan wrote:
-> Using a one-element array as a fake flexible array is deprecated.
->=20
-> Replace the one-element flexible arrays in rtas-types.h with C99 standard
-> flexible array members instead.
->=20
-> This helps us move towards enabling -fstrict-flex-arrays=3D3 in future.
->=20
-> Found using scripts/coccinelle/misc/flexible_array.cocci.
->=20
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Leonardo Bras <leobras.c@gmail.com>
-> Cc: linux-hardening@vger.kernel.org
-> Link: https://github.com/KSPP/linux/issues/21
-> Link: https://github.com/KSPP/linux/issues/79
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/rtas-types.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/rtas-types.h b/arch/powerpc/include=
-/asm/rtas-types.h
-> index 8df6235d64d1..40ec03a05c0b 100644
-> --- a/arch/powerpc/include/asm/rtas-types.h
-> +++ b/arch/powerpc/include/asm/rtas-types.h
-> @@ -44,7 +44,7 @@ struct rtas_error_log {
->  	 */
->  	u8		byte3;			/* General event or error*/
->  	__be32		extended_log_length;	/* length in bytes */
-> -	unsigned char	buffer[1];		/* Start of extended log */
-> +	unsigned char	buffer[];		/* Start of extended log */
->  						/* Variable length.      */
->  };
-> =20
-> @@ -85,7 +85,7 @@ struct rtas_ext_event_log_v6 {
->  					/* that defines the format for	*/
->  					/* the vendor specific log type	*/
->  	/* Byte 16-end of log */
-> -	u8 vendor_log[1];		/* Start of vendor specific log	*/
-> +	u8 vendor_log[];		/* Start of vendor specific log	*/
->  					/* Variable length.		*/
->  };
-> =20
+RnJvbTogQW5kcmV3IERvbm5lbGxhbg0KPiBTZW50OiAyNyBKYW51YXJ5IDIwMjMgMDM6MjENCj4g
+DQo+IE9uIFRodSwgMjAyMy0wMS0yNiBhdCAxNzozMSArMDAwMCwgRGF2aWQgTGFpZ2h0IHdyb3Rl
+Og0KPiA+IENoYW5naW5nIHRoZSBzaXplIHRvIGt6YWxsb2MoKSBkb2Vzbid0IGhlbHAuDQo+ID4g
+VGhlIGFsaWdubWVudCBkZXBlbmRzIG9uIHRoZSBhbGxvY2F0b3IgYW5kIGlzIG9ubHkgcmVxdWly
+ZWQgdG8gaGF2ZQ0KPiA+IGEgcmVsYXRpdmVseSBzbWFsbCBhbGlnbm1lbnQgKEFSQ0hfTUlOQUxJ
+R04/KSByZWdhcmRsZXNzIG9mIHRoZSBzaXplLg0KPiA+DQo+ID4gSUlSQyBvbmUgb2YgdGhlIGFs
+bG9jYXRvcnMgYWRkcyBhIHNtYWxsIGhlYWRlciB0byBldmVyeSBpdGVtLg0KPiA+IEl0IHdvbid0
+IHJldHVybiAxNiBieXRlIGFsaWduZWQgaXRlbXMgYXQgYWxsLg0KPiANCj4gSSdtIHJlbHlpbmcg
+b24gdGhlIGJlaGF2aW91ciBkZXNjcmliZWQgaW4gRG9jdW1lbnRhdGlvbi9jb3JlLQ0KPiBhcGkv
+bWVtb3J5LWFsbG9jYXRpb24ucnN0Og0KPiANCj4gICAgIFRoZSBhZGRyZXNzIG9mIGEgY2h1bmsg
+YWxsb2NhdGVkIHdpdGgga21hbGxvYyBpcyBhbGlnbmVkIHRvIGF0DQo+ICAgICBsZWFzdCBBUkNI
+X0tNQUxMT0NfTUlOQUxJR04gYnl0ZXMuIEZvciBzaXplcyB3aGljaCBhcmUgYSBwb3dlciBvZg0K
+PiAgICAgdHdvLCB0aGUgYWxpZ25tZW50IGlzIGFsc28gZ3VhcmFudGVlZCB0byBiZSBhdCBsZWFz
+dCB0aGUgcmVzcGVjdGl2ZQ0KPiAgICAgc2l6ZS4NCj4gDQo+IElzIHRoaXMgd3Jvbmc/DQoNClRo
+ZSBhbGlnbm1lbnQgZm9yIHBvd2VyIG9mIHR3byBkb2Vzbid0IG1hdGNoIHdoYXQgSSd2ZSBpbmZl
+cnJlZA0KZnJvbSByZWFkaW5nIGNvbW1lbnRzIG9uIG90aGVyIHBhdGNoZXMuDQoNCkl0IGlzIHRy
+dWUgZm9yIGRtYV9tYWxsb2NfY29oZXJlbnQoKSAtIHRoYXQgZG9lcyBndWFyYW50ZWUgdGhhdCBh
+DQoxNmsgYWxsb2NhdGUgd2lsbCBiZSBhbGlnbmVkIG9uIGEgMTZrIHBoeXNpY2FsIGFkZHJlc3Mg
+Ym91bmRhcnkuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJy
+YW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lz
+dHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-LGTM.
-
-FWIW:
-Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
