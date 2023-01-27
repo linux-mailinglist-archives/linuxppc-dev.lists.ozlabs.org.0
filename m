@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB3367DEB6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 08:53:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A6A67DEB8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 08:55:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P38wL1Mqbz3fJF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 18:53:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P38xc4Spgz3fGg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 18:55:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CsR2RWjX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ab38RrYu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=shawnguo@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=shawnguo@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CsR2RWjX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ab38RrYu;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P38vL5B39z3ch3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 18:53:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P38wj25qDz3fFS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 18:54:13 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E770961A15;
-	Fri, 27 Jan 2023 07:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55717C433EF;
-	Fri, 27 Jan 2023 07:52:55 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 5E01BB81FB7;
+	Fri, 27 Jan 2023 07:54:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600A7C433EF;
+	Fri, 27 Jan 2023 07:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674805978;
-	bh=VBAppkMJFtAu58j7X9LUIoG4yxGDA5AuNKS3v4F8NoE=;
+	s=k20201202; t=1674806049;
+	bh=CM71a7RaPTKo5G+aWp9LGHGbcPlqyBG685bqrz/8uJY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CsR2RWjXnB1vEIsEa7Mq8ccjrHR5N1s09H1lCu/LSTfybB+I+7hvlMBV7gxmoN8/c
-	 xgU58GTVDT8jRKQFWo2WrReBeKtvnfpRC5yZpspFuF6ptJLEE4DdGU8bKhQi/QbRfQ
-	 8BH+SxD3XS8fDdXNj5LOzRYJ2DSMPE/khDNag1UI8ZjX3oG+ozYSvbqgp/LgMeV5DI
-	 VrULfdY6lRRzfvyb6ecP0LEoRav09SGsaruzP7enZYMI/MfZVAcz+K8R/aeKb4IqM8
-	 kFu661L8uS/u4/V9B0sEFIT8TXfYHmevFy+Qk/XS75nVrTs63qdTIWj2RkTLt5xuUq
-	 X0Jr5tOaX7BjA==
-Date: Fri, 27 Jan 2023 15:52:49 +0800
+	b=Ab38RrYubwJ/Bf8gU8e5ltFEMR680slK5s1jVaoKxRnglRIg1PFf826eC0hgtSVDV
+	 HLmDjzOXdvMv8md5rlx735fM5c0OlSh4K3RbSVAoT29tc0OWZrni2aeEF0CH04lwnc
+	 bhTYpVcLplNzIG2yaAOYCKoDQtP0dgW26+1LLOO00dRTaYay2t37bea6mYggYT+YGZ
+	 0GYe5ROZVOiT5IDAr+eIihMXj6GTsxMlBtyCfOUh4HmfROsX6kS5CtY48TjrRXmF59
+	 vpOqnDPuFz7GQuV9srMdOLa+EEniFdJ+zkZJcgc0GU05WClVGWE3AREDDr4FWAnVxC
+	 Q3c236md0EikA==
+Date: Fri, 27 Jan 2023 15:53:57 +0800
 From: Shawn Guo <shawnguo@kernel.org>
 To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v9 07/10] arm64: dts: ls1046ardb: Add serdes bindings
-Message-ID: <20230127075248.GL20713@T480>
+Subject: Re: [PATCH v9 06/10] arm64: dts: ls1046a: Add serdes bindings
+Message-ID: <20230127075356.GM20713@T480>
 References: <20221230000139.2846763-1-sean.anderson@seco.com>
- <20221230000139.2846763-8-sean.anderson@seco.com>
- <20230125234335.GC20713@T480>
- <8074f0be-8a70-a937-49f2-123e0bfc6218@seco.com>
+ <20221230000139.2846763-7-sean.anderson@seco.com>
+ <20230125234638.GD20713@T480>
+ <aa602661-f7f6-ca63-d8a7-d6de0e924259@seco.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8074f0be-8a70-a937-49f2-123e0bfc6218@seco.com>
+In-Reply-To: <aa602661-f7f6-ca63-d8a7-d6de0e924259@seco.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,53 +67,18 @@ Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzy
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 11:48:53AM -0500, Sean Anderson wrote:
-> On 1/25/23 18:43, Shawn Guo wrote:
-> > On Thu, Dec 29, 2022 at 07:01:36PM -0500, Sean Anderson wrote:
-> >> This adds appropriate bindings for the macs which use the SerDes. The
-> >> 156.25MHz fixed clock is a crystal. The 100MHz clocks (there are
-> >> actually 3) come from a Renesas 6V49205B at address 69 on i2c0. There is
-> >> no driver for this device (and as far as I know all you can do with the
-> >> 100MHz clocks is gate them), so I have chosen to model it as a single
-> >> fixed clock.
-> >> 
-> >> Note: the SerDes1 lane numbering for the LS1046A is *reversed*.
-> >> This means that Lane A (what the driver thinks is lane 0) uses pins
-> >> SD1_TX3_P/N.
-> >> 
-> >> Because this will break ethernet if the serdes is not enabled, enable
-> >> the serdes driver by default on Layerscape.
-> >> 
-> >> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> >> ---
-> >> This depends on [1].
-> >> 
-> >> [1] https://lore.kernel.org/netdev/20220804194705.459670-4-sean.anderson@seco.com/
-> >> 
-> >> Changes in v9:
-> >> - Fix name of phy mode node
-> >> - phy-type -> fsl,phy
-> >> 
-> >> Changes in v8:
-> >> - Rename serdes phy handles to use _A, _B, etc. instead of _0, _1, etc.
-> >>   This should help remind readers that the numbering corresponds to the
-> >>   physical layout of the registers, and not the lane (pin) number.
-> >> 
-> >> Changes in v6:
-> >> - XGI.9 -> XFI.9
-> >> 
-> >> Changes in v4:
-> >> - Convert to new bindings
-> >> 
-> >>  .../boot/dts/freescale/fsl-ls1046a-rdb.dts    | 112 ++++++++++++++++++
-> >>  drivers/phy/freescale/Kconfig                 |   1 +
+On Thu, Jan 26, 2023 at 11:43:26AM -0500, Sean Anderson wrote:
+> On 1/25/23 18:46, Shawn Guo wrote:
+> > On Thu, Dec 29, 2022 at 07:01:35PM -0500, Sean Anderson wrote:
+> >> This adds bindings for the SerDes devices. They are disabled by default
 > > 
-> > The phy driver Kconfig change shouldn't be part of this patch.
+> > s/bindings/descriptions?
+> > 
+> > The term "bindings" generally means the schema/doc in
+> > Documentation/devicetree/bindings/.
 > 
-> I put it here for bisectability, since this is the point where we need
-> to enable it. But I can do this in a separate patch if you want.
+> How about "nodes"?
 
-From DT ABI perspective, it's already broken anyway if you need to change
-kernel and DT atomically.
+Yeah, or device nodes.
 
 Shawn
