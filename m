@@ -1,59 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF4D67E2BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 12:09:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9726C67E2D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 12:13:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3FGM1HdZz3fK5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 22:09:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3FLS3czWz3fJ0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 22:13:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Lss0HKdl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=r3/7/ud5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3FFS2ds4z3fDf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 22:09:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3FKb0Rtdz3cH1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 22:12:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Lss0HKdl;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=r3/7/ud5;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P3FFR5p05z4xHV;
-	Fri, 27 Jan 2023 22:08:59 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P3FKZ6Rgvz4xG5;
+	Fri, 27 Jan 2023 22:12:34 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1674817740;
-	bh=Y9utl1kOHVvMVILv+GUuqyaSSu0UglfF0XYXjmDGNlo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Lss0HKdluvv5JI2rpIb69PH0xbX1GwXooNuCM9bRM7tTwmfiwMopaz3cHjNvc53Yc
-	 6PKoVjuxokRqj/c0yq2Nf2PxqkZi+vEvchyBacGOZJMdsQwnTEOTEEnl+bdHtHVaLY
-	 spGCu4jYruPxPt5SFluIcaUw5KigftfZ1t9ynldKha4s6rFp3QHirPk3pRVZYZcwDi
-	 b1fbYVZNEpbA76c//EU4p0d5wElXGMHu5zKwz8zP1jAmNr6T/6dbAINrpssgby+vnz
-	 x1Irji28fWg2yKJ+uvIHHtCEMr/L8+FSR2OIk9Mr5yj34gRv3LCcT4CqggX7UpyKQS
-	 jXyI/sdcB8eSw==
+	s=201909; t=1674817955;
+	bh=HkSp7Wnxq2Z3nPJKXlXV4u/CrrBr82U1fuR5hzJobOU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r3/7/ud5V36zKrAmtTCfwVmgzROzb0/xjiabvifl5GkIMqlr42ipRvsuIlBvlnudE
+	 9Zb7GnDie6gehnwg5gOd91zdVUHflPEqcTE5eqPmFXiRyIIicwM49/fNm91yhdCxrF
+	 4bUE8E1c/loXBXdOnhUvQit7/YS128Uli165gn1TRoi+5dNzS2PNIZvE5h3mT07Fnx
+	 MItsG+O3/UOVBRskGnfI10N1ZFZ3m774e61Bb6+7YS4bcvt+vV3ggPDA58r34hPj95
+	 J8F0zrVtM6RBpICd0VlApJ4jZWSpEsS8AQy6z3y8i20guAOSBMa/MxYsVz9j1phAGS
+	 HFji5d2+tuuJg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, David Laight
- <David.Laight@ACULAB.COM>, 'Segher Boessenkool'
- <segher@kernel.crashing.org>
-Subject: Re: [PATCH v4 02/24] powerpc/pseries: Fix alignment of PLPKS
- structures and buffers
-In-Reply-To: <2de207dadb936f25db123ae2d02aea91a9841656.camel@linux.ibm.com>
-References: <20230120074306.1326298-1-ajd@linux.ibm.com>
- <20230120074306.1326298-3-ajd@linux.ibm.com>
- <87pmb2pxpa.fsf@mpe.ellerman.id.au>
- <20230126171925.GN25951@gate.crashing.org>
- <5118edd7f1f445afa1812d2b9b62dd4f@AcuMS.aculab.com>
- <2de207dadb936f25db123ae2d02aea91a9841656.camel@linux.ibm.com>
-Date: Fri, 27 Jan 2023 22:08:59 +1100
-Message-ID: <87y1pos08k.fsf@mpe.ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/rtas: Drop unused export symbols
+Date: Fri, 27 Jan 2023 22:12:31 +1100
+Message-Id: <20230127111231.84294-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,42 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sudhakar@linux.ibm.com" <sudhakar@linux.ibm.com>, "bgray@linux.ibm.com" <bgray@linux.ibm.com>, "erichte@linux.ibm.com" <erichte@linux.ibm.com>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "zohar@linux.ibm.com" <zohar@linux.ibm.com>, "gjoyce@linux.ibm.com" <gjoyce@linux.ibm.com>, "joel@jms.id.au" <joel@jms.id.au>, "ruscur@russell.cc" <ruscur@russell.cc>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "gcwilson@linux.ibm.com" <gcwilson@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: nathanl@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> On Thu, 2023-01-26 at 17:31 +0000, David Laight wrote:
->> Changing the size to kzalloc() doesn't help.
->> The alignment depends on the allocator and is only required to have
->> a relatively small alignment (ARCH_MINALIGN?) regardless of the size.
->> 
->> IIRC one of the allocators adds a small header to every item.
->> It won't return 16 byte aligned items at all.
->
-> I'm relying on the behaviour described in Documentation/core-
-> api/memory-allocation.rst:
->
->     The address of a chunk allocated with kmalloc is aligned to at
->     least ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of
->     two, the alignment is also guaranteed to be at least the respective
->     size.
->
-> Is this wrong?
+Some RTAS symbols are never used by modular code, drop their exports.
 
-I believe it's correct.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/rtas.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-For SLAB and SLUB it boils down to:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/slab_common.c?commit=830b3c68c1fb1e9176028d02ef86f3cf76aa2476#n640
+FYI: I'll slot this in prior to Nathan's series changing the exports to GPL.
 
-That's where the kmalloc slabs are created (see create_kmalloc_cache())
-just below.
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 6c5716b19d69..149742119b6d 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -341,7 +341,6 @@ int rtas_service_present(const char *service)
+ {
+ 	return rtas_token(service) != RTAS_UNKNOWN_SERVICE;
+ }
+-EXPORT_SYMBOL(rtas_service_present);
+ 
+ #ifdef CONFIG_RTAS_ERROR_LOGGING
+ 
+@@ -356,7 +355,6 @@ int rtas_get_error_log_max(void)
+ {
+ 	return rtas_error_log_max;
+ }
+-EXPORT_SYMBOL(rtas_get_error_log_max);
+ 
+ static void __init init_error_log_max(void)
+ {
+@@ -622,7 +620,6 @@ unsigned int rtas_busy_delay_time(int status)
+ 
+ 	return ms;
+ }
+-EXPORT_SYMBOL(rtas_busy_delay_time);
+ 
+ /**
+  * rtas_busy_delay() - helper for RTAS busy and extended delay statuses
+@@ -820,7 +817,6 @@ bool rtas_indicator_present(int token, int *maxindex)
+ 
+ 	return false;
+ }
+-EXPORT_SYMBOL(rtas_indicator_present);
+ 
+ int rtas_set_indicator(int indicator, int index, int new_value)
+ {
+-- 
+2.39.1
 
-If you create your own slab (with kmem_cache_create()) then the
-alignment is up to you, so that's why there's no power-of-2 logic in
-calculate_alignment().
-
-And SLOB (which we don't use) does something similar:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/slob.c?commit=830b3c68c1fb1e9176028d02ef86f3cf76aa2476#n493
-
-cheers
