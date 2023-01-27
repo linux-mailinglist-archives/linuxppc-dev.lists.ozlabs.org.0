@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474D967EEC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:50:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0168267EEC7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:51:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3Sq118HXz3fMw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:50:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3Sr15gyZz3fVh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:51:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oFyOjlhE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Q7jceUjh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=37yjuywykdlyoqnajxckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=38ijuywykdlkrtqdmafnnfkd.bnlkhmtwoob-cdukhrsr.nykzar.nqf@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oFyOjlhE;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Q7jceUjh;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3Scy1lcsz3fHt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:41:38 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id n194-20020a2540cb000000b008038647d9ebso6355041yba.5
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3Sd10ktBz3fJf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:41:40 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-507aac99fdfso65532237b3.11
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nu9/mdu38G6WtBjXb6Do7xpUyt6CdrDbmAUDhoyp47k=;
-        b=oFyOjlhEa6jPD1d+pKzu8xqMu9sShcBJM0zkcdXAO9bWZHfs5hDegJ8sEKWFr4AQNl
-         iGPCIH7iC8aR5RiIjRoH9W2KUncZPWl0b5vsJXQEB2UE60mYiP5ldYuNlEW3dM96CgJp
-         +2KdvoCyVN7G6APzAMKWAfXHTUhAA+JaJZhJgfnGwlr68Zr0GLZrYj2YnOQkKo96sWGj
-         Ng0DOWnRANnP+XQns5edhVeWyYl+9EdfDgkHbYKOkVF++Ku/0IaWanDTI7HqCQuL/w5R
-         edw8ZGqmSQJCCmVgs5lV30HhGrOZqx2K3qMJgNbHCqjkT1CdH2dJNnKk0QEKLZZ9jCPS
-         y7/w==
+        bh=OfsRQat1IE0fDeYSs5Psw7qjLLZE8mkiXmSdSDqQs6E=;
+        b=Q7jceUjhtfhNXIUFz0/MzwmS5ZgtWEAK+cBK0blt69F8+KIFs/AwOKnAqPB+IEDKT/
+         FyLbx1gLVqD34Rlv7gRilV5FNygR87+qF/41EC627UqwDLTg6NJEFnAj/1s6LMME1gBy
+         h9D9urWoN0e32uyucIiiCDtt59fZ91UJGpShxrAxprHccHpeDkPGS432b78Iuw1rAi+Y
+         PGxS0P/Csnmusy4TpNpOjbr38NhV2uRvkkx/I7vAEJVPhb/fpP3E3BB7l9N5Jq8Ddy4K
+         G0deOaLN7bYZJlZOXJL3xM94KhFiD/71EdmjsD4THVYmj7eB4g9ZYLPfdvfcp6yLyVR8
+         Oqkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nu9/mdu38G6WtBjXb6Do7xpUyt6CdrDbmAUDhoyp47k=;
-        b=zWSEFPkfGKjr8b55byTWKWml9e/WrF4ewjPTUGh6PJItyUJHFIcvwgbuy2z9+FoDv3
-         7MjGE6w74eVsMQgZWOKcQQTjivcXvs+9Lxwrg+a6GXSwiE/zIElaqMeEUInbgoVSSM5H
-         t/NuO13XYffXY+dirB6JU0liLIzNB5Uvw/igmYoC87T4/iHI/iXpAqXG3oXp2u2VJJRi
-         vlW/P3i3KjAhfSsl7XYT+YiXL33Ejeta1Sh3AUwj/1d07dMz3Z2/46Y1xLkwhRNgUukk
-         n12qGF/JagOgJLxZcTvFVKBHCo/NNHtyFxo1Xnm5nkAEsSUpsJwp5kUna898efngPZnd
-         MmfA==
-X-Gm-Message-State: AFqh2krTJBwNFM7OLaIcttZcOqQe9ueEzkHBjnaZbh8DdcLkw9s9YMQq
-	Yq2ZL5bjcW4wFwNJOssoXL75+TMnAHE=
-X-Google-Smtp-Source: AMrXdXtMMT5r56SGjlxKGvDbQirEmfUIu1ilIQcv1/3wi/4TSk/ascWeVtYTcuwkoFwuriGWfFUnQoKWHlg=
+        bh=OfsRQat1IE0fDeYSs5Psw7qjLLZE8mkiXmSdSDqQs6E=;
+        b=EP9Qz5CSdGuGb7TU3mbvb1fw1Gn76jM39NBCjxv+T69CMXve4yOTlMui8gsbSRtprS
+         JVNoWnF+5i44T0GbH9/cR5jCpHGW00gGe1OfXcdwQxkv1/K6DXYqZKmOmYjgAuWfDSuL
+         jc6B3Yjtc/F4ieQ3xMIj7Wws8OKHymAMQK9waf0t65e041X9yToaoQAskwDqtoCl+BWV
+         ck1/qJHLuuUa5s0Nkz8z0C7K/rkEw9L80HNKN1LDVomkFwM6V/woVGu1KK5IOZu+WCh4
+         z8CrI3stQxSJdoZsVaL0smmH3N6U9AKcDS9MBgXokAMXXCc7/nnbj8evpxz5mE7EmqaR
+         j1RQ==
+X-Gm-Message-State: AO0yUKW2AKGJrzfiRunFV18MQvLubTF9Dy+3MsnfLwk7u4v8XCWXD+F0
+	vPP+6a7v60eu8jFm0j+eZLlFe9AZnEw=
+X-Google-Smtp-Source: AK7set9LIYXWd5UhR4gu2cf1OYz0XpBzDlrTVxbQWEhDgYvTk1OPOqMByF3iTmnXKTsrl+3RDXXXUtjCRT8=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:4e19:be9:c5d0:8483])
- (user=surenb job=sendgmr) by 2002:a0d:cdc7:0:b0:4df:f712:5d57 with SMTP id
- p190-20020a0dcdc7000000b004dff7125d57mr3818080ywd.303.1674848495850; Fri, 27
- Jan 2023 11:41:35 -0800 (PST)
-Date: Fri, 27 Jan 2023 11:40:46 -0800
+ (user=surenb job=sendgmr) by 2002:a0d:f2c3:0:b0:50a:468d:48d8 with SMTP id
+ b186-20020a0df2c3000000b0050a468d48d8mr731943ywf.104.1674848498315; Fri, 27
+ Jan 2023 11:41:38 -0800 (PST)
+Date: Fri, 27 Jan 2023 11:40:47 -0800
 In-Reply-To: <20230127194110.533103-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230127194110.533103-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230127194110.533103-10-surenb@google.com>
-Subject: [PATCH v2 09/33] mm: rcu safe VMA freeing
+Message-ID: <20230127194110.533103-11-surenb@google.com>
+Subject: [PATCH v2 10/33] mm: move mmap_lock assert function definitions
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,78 +79,56 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michel Lespinasse <michel@lespinasse.org>
+Move mmap_lock assert function definitions up so that they can be used
+by other mmap_lock routines.
 
-This prepares for page faults handling under VMA lock, looking up VMAs
-under protection of an rcu read lock, instead of the usual mmap read lock.
-
-Signed-off-by: Michel Lespinasse <michel@lespinasse.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm_types.h | 13 ++++++++++---
- kernel/fork.c            | 20 +++++++++++++++++++-
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ include/linux/mmap_lock.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 8410c3052148..62e413f84011 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -480,9 +480,16 @@ struct anon_vma_name {
- struct vm_area_struct {
- 	/* The first cache line has the info for VMA tree walking. */
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 96e113e23d04..e49ba91bb1f0 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -60,6 +60,18 @@ static inline void __mmap_lock_trace_released(struct mm_struct *mm, bool write)
  
--	unsigned long vm_start;		/* Our start address within vm_mm. */
--	unsigned long vm_end;		/* The first byte after our end address
--					   within vm_mm. */
-+	union {
-+		struct {
-+			/* VMA covers [vm_start; vm_end) addresses within mm */
-+			unsigned long vm_start;
-+			unsigned long vm_end;
-+		};
-+#ifdef CONFIG_PER_VMA_LOCK
-+		struct rcu_head vm_rcu;	/* Used for deferred freeing. */
-+#endif
-+	};
+ #endif /* CONFIG_TRACING */
  
- 	struct mm_struct *vm_mm;	/* The address space we belong to. */
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5f23d5e03362..314d51eb91da 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -479,12 +479,30 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- 	return new;
- }
- 
--void vm_area_free(struct vm_area_struct *vma)
-+static void __vm_area_free(struct vm_area_struct *vma)
- {
- 	free_anon_vma_name(vma);
- 	kmem_cache_free(vm_area_cachep, vma);
- }
- 
-+#ifdef CONFIG_PER_VMA_LOCK
-+static void vm_area_free_rcu_cb(struct rcu_head *head)
++static inline void mmap_assert_locked(struct mm_struct *mm)
 +{
-+	struct vm_area_struct *vma = container_of(head, struct vm_area_struct,
-+						  vm_rcu);
-+	__vm_area_free(vma);
-+}
-+#endif
-+
-+void vm_area_free(struct vm_area_struct *vma)
-+{
-+#ifdef CONFIG_PER_VMA_LOCK
-+	call_rcu(&vma->vm_rcu, vm_area_free_rcu_cb);
-+#else
-+	__vm_area_free(vma);
-+#endif
++	lockdep_assert_held(&mm->mmap_lock);
++	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
 +}
 +
- static void account_kernel_stack(struct task_struct *tsk, int account)
++static inline void mmap_assert_write_locked(struct mm_struct *mm)
++{
++	lockdep_assert_held_write(&mm->mmap_lock);
++	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
++}
++
+ static inline void mmap_init_lock(struct mm_struct *mm)
  {
- 	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
+ 	init_rwsem(&mm->mmap_lock);
+@@ -150,18 +162,6 @@ static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
+ 	up_read_non_owner(&mm->mmap_lock);
+ }
+ 
+-static inline void mmap_assert_locked(struct mm_struct *mm)
+-{
+-	lockdep_assert_held(&mm->mmap_lock);
+-	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
+-}
+-
+-static inline void mmap_assert_write_locked(struct mm_struct *mm)
+-{
+-	lockdep_assert_held_write(&mm->mmap_lock);
+-	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
+-}
+-
+ static inline int mmap_lock_is_contended(struct mm_struct *mm)
+ {
+ 	return rwsem_is_contended(&mm->mmap_lock);
 -- 
 2.39.1
 
