@@ -1,64 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E946567E5C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:50:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2184A67E63B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 14:11:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3HW15NhMz3fHQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 23:50:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3Hym071qz3fHf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 00:11:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=2QkeNLS7;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LIj/sjeZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aivNL1MD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=2QkeNLS7;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LIj/sjeZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aivNL1MD;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3HV32sMtz3cdr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 23:50:02 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 9D4551FEB5;
-	Fri, 27 Jan 2023 12:49:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1674823799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GP9NL13Rf97tWq7NcnHFZorJIck1tg1rt/ecYqO31yg=;
-	b=2QkeNLS7Zk4oROO1gOmTHIaKEMK7D3878W7X32mvkTyGiwd7e7Rqbr3n3jDLSko7BUUY84
-	1D/sEKora7JvGBck/MvcMMtw4oXmIsxmR2p10SLAxMY8r1zz2c/3olGZDI2c1PU4b5tQn4
-	aP5GSTgka34VlNvZsarsGNXivPRJ/DE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1674823799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GP9NL13Rf97tWq7NcnHFZorJIck1tg1rt/ecYqO31yg=;
-	b=LIj/sjeZush1mKcK9oMcWvz7H3//fYRQHsjvI+rhVVpRpyJTgqvcWN8hbFj2GL5ZKn/hwz
-	doSM4u1zOF40BGDA==
-Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 70BFF2C141;
-	Fri, 27 Jan 2023 12:49:59 +0000 (UTC)
-Date: Fri, 27 Jan 2023 13:50:04 +0100 (CET)
-From: Miroslav Benes <mbenes@suse.cz>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: Re: [PATCH 2/2] powerpc/module_64: Fix "expected nop" error on module
- re-patching
-In-Reply-To: <2f6329ffd9674df6ff57e03edeb2ca54414770ab.1674617130.git.jpoimboe@kernel.org>
-Message-ID: <alpine.LSU.2.21.2301271349490.7389@pobox.suse.cz>
-References: <cover.1674617130.git.jpoimboe@kernel.org> <2f6329ffd9674df6ff57e03edeb2ca54414770ab.1674617130.git.jpoimboe@kernel.org>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3Hxk5dtPz3fCY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 00:10:34 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30RC1OrS010035;
+	Fri, 27 Jan 2023 13:10:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=mI8i9MTSsYzZV7suqERmHFNF665YMmu1efTHtlRfWHE=;
+ b=aivNL1MD05Rtv47yVCNmilQz/2wYvQjoXMeP3eEAW25CX/hQPDz4COct1JQYs3NM0Uqs
+ 8NTOJsdsUVuBBOGFE2uc2CM6icgaJRXZO8Aa/ncIRZCuLmyUJFjExbtQIDQ+0/3Luyyw
+ ygM/TUIwTjA3U/natamqiTkAUXfk8MjWH2JAD9SqG7w/NQd2iZKzocDoyLy+tB+5YoAg
+ wXpPix9ORiSCcTttdFqt8wMNVBPzosl5HeAqIXeFfd6N6R6P5xu447BHoZkJSSvZpSAL
+ 7WwWEAXWNGor41HMwEiHyu+qfISgCBvYE6QOhJ7bpS23g1rg45xfElV0XCb5JzTyQFhr ZQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nce8m9pcn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 13:10:31 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30RC3Tje020110;
+	Fri, 27 Jan 2023 13:10:30 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nce8m9pcb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 13:10:30 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30RAoXBj004500;
+	Fri, 27 Jan 2023 13:10:30 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3n87p8k4dk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 13:10:30 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30RDASUs3605134
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Jan 2023 13:10:28 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 94EAD5805C;
+	Fri, 27 Jan 2023 13:10:28 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 714FC58054;
+	Fri, 27 Jan 2023 13:10:28 +0000 (GMT)
+Received: from localhost (unknown [9.211.111.131])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Jan 2023 13:10:28 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/rtas: Replace one-element arrays with flexible
+ arrays
+In-Reply-To: <20230127085023.271674-1-ajd@linux.ibm.com>
+References: <20230127085023.271674-1-ajd@linux.ibm.com>
+Date: Fri, 27 Jan 2023 07:10:28 -0600
+Message-ID: <87357wp1h7.fsf@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KIbM4aQG0R9_EksZ-y0t-UPOiI6ZCa8Y
+X-Proofpoint-GUID: T1IUKyhZvGmcsYwWc3AR1jPPeD8FaAus
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-27_08,2023-01-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ mlxscore=0 spamscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 priorityscore=1501 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301270123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,30 +96,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Leonardo Bras <leobras.c@gmail.com>, linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 24 Jan 2023, Josh Poimboeuf wrote:
+Andrew Donnellan <ajd@linux.ibm.com> writes:
+> Using a one-element array as a fake flexible array is deprecated.
+>
+> Replace the one-element flexible arrays in rtas-types.h with C99 standard
+> flexible array members instead.
+>
+> This helps us move towards enabling -fstrict-flex-arrays=3 in future.
+>
+> Found using scripts/coccinelle/misc/flexible_array.cocci.
+>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Leonardo Bras <leobras.c@gmail.com>
+> Cc: linux-hardening@vger.kernel.org
+> Link: https://github.com/KSPP/linux/issues/21
+> Link: https://github.com/KSPP/linux/issues/79
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/rtas-types.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/rtas-types.h b/arch/powerpc/include/asm/rtas-types.h
+> index 8df6235d64d1..40ec03a05c0b 100644
+> --- a/arch/powerpc/include/asm/rtas-types.h
+> +++ b/arch/powerpc/include/asm/rtas-types.h
+> @@ -44,7 +44,7 @@ struct rtas_error_log {
+>  	 */
+>  	u8		byte3;			/* General event or error*/
+>  	__be32		extended_log_length;	/* length in bytes */
+> -	unsigned char	buffer[1];		/* Start of extended log */
+> +	unsigned char	buffer[];		/* Start of extended log */
+>  						/* Variable length.      */
+>  };
+>  
+> @@ -85,7 +85,7 @@ struct rtas_ext_event_log_v6 {
+>  					/* that defines the format for	*/
+>  					/* the vendor specific log type	*/
+>  	/* Byte 16-end of log */
+> -	u8 vendor_log[1];		/* Start of vendor specific log	*/
+> +	u8 vendor_log[];		/* Start of vendor specific log	*/
+>  					/* Variable length.		*/
+>  };
 
-> When a module with a livepatched function is unloaded and then reloaded,
-> klp attempts to dynamically re-patch it.  On ppc64, that fails with the
-> following error:
-> 
->   module_64: livepatch_nfsd: Expected nop after call, got e8410018 at e_show+0x60/0x548 [livepatch_nfsd]
->   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
->   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
-> 
-> The error happens because the restore r2 instruction had already
-> previously been written into the klp module's replacement function when
-> the original function was patched the first time.  So the instruction
-> wasn't a nop as expected.
-> 
-> When the restore r2 instruction has already been patched in, detect that
-> and skip the warning and the instruction write.
-> 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+I see at least one place that consults the size of one of these structs,
+in get_pseries_errorlog():
 
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+	/* Check that we understand the format */
+	if (ext_log_length < sizeof(struct rtas_ext_event_log_v6) || ...
 
-M
+Don't all such sites need to be audited/adjusted for changes like this?
