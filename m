@@ -1,71 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BA867E70A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 14:49:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FD067EF35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 21:06:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3JpJ4d8zz3fHH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 00:49:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3T9n3Ldkz3ftN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 07:06:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W2WmomO6;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RapVKdmr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=q2M2drMz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W2WmomO6;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RapVKdmr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=q2M2drMz;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3JnJ2XT8z3fDf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 00:48:18 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674827292;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kw/UexsSySmCBQfo+jBXXjDxKL8QdcF+X/4S+iGj/Pc=;
-	b=W2WmomO6w8/n8QCQEb5ppjaGqDrwwWDfFQnzWUF7pqbMfPtC4oZ+p2cI+asFAXV8WHHfJ2
-	c5F3kfBCwfv4AHM+Xou7okC5kKvbUknnZHi2Apb8tXsEytJl+ZXfC4SuSUP6m33Gt5PbEV
-	eyNYBhMyG/KaBqOeewrsbeD8Zy/h7mQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674827293;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kw/UexsSySmCBQfo+jBXXjDxKL8QdcF+X/4S+iGj/Pc=;
-	b=RapVKdmrVIOHk5tUnzsoiudwF5qESuS/DWsYXfjlOCqYHBJp6HY6VOlli76hcEdGNkbrk3
-	6Pfky8OGXcIiXntLFVAbu74/ZdrrIxbyNKg7xvRueh5IQSwtayBLwEY1MLKU4YfiAkZtfo
-	dl6Q+vnJZMxWenB9wuoneHRhon9Y41Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-553-4jfb2mIeMtO6M4x2NXRfrg-1; Fri, 27 Jan 2023 08:48:09 -0500
-X-MC-Unique: 4jfb2mIeMtO6M4x2NXRfrg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B97D585A588;
-	Fri, 27 Jan 2023 13:48:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.22.33.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 8BFD640C141B;
-	Fri, 27 Jan 2023 13:48:07 +0000 (UTC)
-Date: Fri, 27 Jan 2023 08:48:06 -0500
-From: Joe Lawrence <joe.lawrence@redhat.com>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: Re: [PATCH 0/2] powerpc: Fix livepatch module re-patching issue
-Message-ID: <Y9PWFp29nAdtdPqp@redhat.com>
-References: <cover.1674617130.git.jpoimboe@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3JpK5ZGRz3fK5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 00:49:12 +1100 (AEDT)
+Received: by mail-wm1-x333.google.com with SMTP id m16-20020a05600c3b1000b003dc4050c94aso676277wms.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 05:49:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zoz2PQgrtb+OysccxNzHVaJmvkqki0yLQikOO7BNmw4=;
+        b=q2M2drMzlcZQkq/v+8uIO/hM5Uh6/uo4ymrX1mIkT1vKRTFQ+GP28MwJrmm5DmOUa7
+         1Tzc2yhjVVuslssvEU3ggpipvvVVqiCaohkkbFDs8rQRSXNQHYdu7cR+dk72h9pDce1x
+         CAazXuU8b8GxRvktFu9VcxZZzapnSgCQsycOYMRoL0gpEd3jknxAzlpcmJePsXnVlavf
+         DkjfWm/r0MKOlK16uyVHYZdpD3NVkUI0/coR/WoOru1RWALePMG3hCE3Os721PPT7a4L
+         uW1grhG8i7XhxcJuQhF585vKL0pIgj/4EyFWMtIbTy45aICHUQL1AqOlJ8t4w1bWXT3L
+         5eIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zoz2PQgrtb+OysccxNzHVaJmvkqki0yLQikOO7BNmw4=;
+        b=qUiEhyGpqlU4nDVE6LjW6awm4z7lG8VyTn1Ez66RLs2srDbkuXeo9QHKeoLnFEJ/mt
+         Y8SF4/P46Y1DBOBBfmi7/B8/TXr0/uX9LO9uT0HOny4QLH0Wk/VsRhwYhIzB3hJBXN92
+         35LcFQBMXEn2CDo8ef92dB5U2pM3KHcV7IRrZad7AtAj8CLBx+gBKLmlRizNubhdaALu
+         x+Ot250fRBG+QaExEL35Xf+Ps9KxyIK58FnEC1zKWj8PubEj6p82DIIk70kCmjyM035C
+         EeNL77cL1PVCtu21t66SEvGRMw2i4zME2yqOpp7ZCvugLARnL0XBrlmPi4/KHiVFgzhM
+         ahGw==
+X-Gm-Message-State: AO0yUKUN1nvfSBge9W7wwmPrAM0v4nAntY9Gk0UzK4CE2tbtYW9i18Zy
+	0mOWec0DNGti2EpZuLsz6khotd+yGn/SLD+Zw5yTJQ==
+X-Google-Smtp-Source: AK7set/OLRlDkPQvGZxQiFQx7sIAxoq6CwQEyUAL8NY5JMX+xmJwqMfc0USpko3DcCRbnjh5Y9hcUomUV7fjOXb2JIE=
+X-Received: by 2002:a05:600c:354f:b0:3dc:40b4:2d1f with SMTP id
+ i15-20020a05600c354f00b003dc40b42d1fmr38363wmq.174.1674827343524; Fri, 27 Jan
+ 2023 05:49:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1674617130.git.jpoimboe@kernel.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+References: <20230126233645.200509-1-irogers@google.com> <56f1ed31-886d-358d-cfcc-0ab9fe7a76d8@oracle.com>
+In-Reply-To: <56f1ed31-886d-358d-cfcc-0ab9fe7a76d8@oracle.com>
+From: Ian Rogers <irogers@google.com>
+Date: Fri, 27 Jan 2023 05:48:53 -0800
+Message-ID: <CAP-5=fWc1UcjZT-8YcqHaiSEUGJCMNd4Syx3-MVhnk5PGUDPMQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/15] jevents/pmu-events improvements
+To: John Garry <john.g.garry@oracle.com>
+Content-Type: multipart/alternative; boundary="000000000000df5ad005f33f20e9"
+X-Mailman-Approved-At: Sat, 28 Jan 2023 07:04:45 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,33 +74,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Kang Minchul <tegongkang@gmail.com>, Sandipan Das <sandipan.das@amd.com>, Peter Zijlstra <peterz@infradead.org>, Perry Taylor <perry.taylor@intel.com>, Stephane Eranian <eranian@google.com>, LKML <linux-kernel@vger.kernel.org>, James Clark <james.clark@arm.com>, Kim Phillips <kim.phillips@amd.com>, Will Deacon <will@kernel.org>, Kan Liang <kan.liang@linux.intel.com>, Rob Herring <robh@kernel.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Xing Zhengjun <zhengjun.xing@linux.intel.com>, Mike Leach <mike.leach@linaro.org>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Caleb Biggers <caleb.biggers@intel.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Ravi Bangoria <ravi.bangoria@amd.com>, Florian Fischer <florian.fischer@muhq.space>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, 
+ Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>, linuxppc-dev@lists.ozlabs.org, Jing Zhang <renyu.zj@linux.alibaba.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 24, 2023 at 07:38:03PM -0800, Josh Poimboeuf wrote:
-> Fix a livepatch bug seen when reloading a patched module.
-> 
-> This is the powerpc counterpart to Song Liu's fix for a similar issue on
-> x86:
-> 
->   https://lkml.kernel.org/lkml/20230121004945.697003-2-song@kernel.org
-> 
-> Josh Poimboeuf (2):
->   powerpc/module_64: Improve restore_r2() return semantics
->   powerpc/module_64: Fix "expected nop" error on module re-patching
-> 
->  arch/powerpc/kernel/module_64.c | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
-> 
-> -- 
-> 2.39.0
-> 
+--000000000000df5ad005f33f20e9
+Content-Type: text/plain; charset="UTF-8"
 
-For the series,
+On Fri, Jan 27, 2023, 5:20 AM John Garry <john.g.garry@oracle.com> wrote:
 
-Reviewed-and-tested-by: Joe Lawrence <joe.lawrence@redhat.com>
+> On 26/01/2023 23:36, Ian Rogers wrote:
+>
+> Hi Ian,
+>
+> At a glance, none of this series has your Signed-off-by tag..
+>
+> Thanks,
+> John
+>
 
---
-Joe
 
+Thanks John, will fix. Is there anything else?
+
+Ian
+
+> Add an optimization to jevents using the metric code, rewrite metrics
+> > in terms of each other in order to minimize size and improve
+> > readability. For example, on Power8
+> > other_stall_cpi is rewritten from:
+> > "PM_CMPLU_STALL / PM_RUN_INST_CMPL - PM_CMPLU_STALL_BRU_CRU /
+> PM_RUN_INST_CMPL - PM_CMPLU_STALL_FXU / PM_RUN_INST_CMPL -
+> PM_CMPLU_STALL_VSU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_LSU /
+> PM_RUN_INST_CMPL - PM_CMPLU_STALL_NTCG_FLUSH / PM_RUN_INST_CMPL -
+> PM_CMPLU_STALL_NO_NTF / PM_RUN_INST_CMPL"
+> > to:
+> > "stall_cpi - bru_cru_stall_cpi - fxu_stall_cpi - vsu_stall_cpi -
+> lsu_stall_cpi - ntcg_flush_cpi - no_ntf_stall_cpi"
+> > Which more closely matches the definition on Power9.
+> >
+> > A limitation of the substitutions are that they depend on strict
+> > equality and the shape of the tree. This means that for "a + b + c"
+> > then a substitution of "a + b" will succeed while "b + c" will fail
+> > (the LHS for "+ c" is "a + b" not just "b").
+> >
+> > Separate out the events and metrics in the pmu-events tables saving
+> > 14.8% in the table size while making it that metrics no longer need to
+> > iterate over all events and vice versa. These changes remove evsel's
+> > direct metric support as the pmu_event no longer has a metric to
+> > populate it. This is a minor issue as the code wasn't working
+> > properly, metrics for this are rare and can still be properly ran
+> > using '-M'.
+> >
+> > Add an ability to just build certain models into the jevents generated
+> > pmu-metrics.c code. This functionality is appropriate for operating
+> > systems like ChromeOS, that aim to minimize binary size and know all
+> > the target CPU models.
+>
+>
+
+--000000000000df5ad005f33f20e9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
+"gmail_attr">On Fri, Jan 27, 2023, 5:20 AM John Garry &lt;<a href=3D"mailto=
+:john.g.garry@oracle.com">john.g.garry@oracle.com</a>&gt; wrote:<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
+ #ccc solid;padding-left:1ex">On 26/01/2023 23:36, Ian Rogers wrote:<br>
+<br>
+Hi Ian,<br>
+<br>
+At a glance, none of this series has your Signed-off-by tag..<br>
+<br>
+Thanks,<br>
+John<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">Thanks John, will fix. Is there anything el=
+se?</div><div dir=3D"auto"><br></div><div dir=3D"auto">Ian</div><div dir=3D=
+"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;=
+padding-left:1ex">
+&gt; Add an optimization to jevents using the metric code, rewrite metrics<=
+br>
+&gt; in terms of each other in order to minimize size and improve<br>
+&gt; readability. For example, on Power8<br>
+&gt; other_stall_cpi is rewritten from:<br>
+&gt; &quot;PM_CMPLU_STALL / PM_RUN_INST_CMPL - PM_CMPLU_STALL_BRU_CRU / PM_=
+RUN_INST_CMPL - PM_CMPLU_STALL_FXU / PM_RUN_INST_CMPL - PM_CMPLU_STALL_VSU =
+/ PM_RUN_INST_CMPL - PM_CMPLU_STALL_LSU / PM_RUN_INST_CMPL - PM_CMPLU_STALL=
+_NTCG_FLUSH / PM_RUN_INST_CMPL - PM_CMPLU_STALL_NO_NTF / PM_RUN_INST_CMPL&q=
+uot;<br>
+&gt; to:<br>
+&gt; &quot;stall_cpi - bru_cru_stall_cpi - fxu_stall_cpi - vsu_stall_cpi - =
+lsu_stall_cpi - ntcg_flush_cpi - no_ntf_stall_cpi&quot;<br>
+&gt; Which more closely matches the definition on Power9.<br>
+&gt; <br>
+&gt; A limitation of the substitutions are that they depend on strict<br>
+&gt; equality and the shape of the tree. This means that for &quot;a + b + =
+c&quot;<br>
+&gt; then a substitution of &quot;a + b&quot; will succeed while &quot;b + =
+c&quot; will fail<br>
+&gt; (the LHS for &quot;+ c&quot; is &quot;a + b&quot; not just &quot;b&quo=
+t;).<br>
+&gt; <br>
+&gt; Separate out the events and metrics in the pmu-events tables saving<br=
+>
+&gt; 14.8% in the table size while making it that metrics no longer need to=
+<br>
+&gt; iterate over all events and vice versa. These changes remove evsel&#39=
+;s<br>
+&gt; direct metric support as the pmu_event no longer has a metric to<br>
+&gt; populate it. This is a minor issue as the code wasn&#39;t working<br>
+&gt; properly, metrics for this are rare and can still be properly ran<br>
+&gt; using &#39;-M&#39;.<br>
+&gt; <br>
+&gt; Add an ability to just build certain models into the jevents generated=
+<br>
+&gt; pmu-metrics.c code. This functionality is appropriate for operating<br=
+>
+&gt; systems like ChromeOS, that aim to minimize binary size and know all<b=
+r>
+&gt; the target CPU models.<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000df5ad005f33f20e9--
