@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DA267EEBE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DE667EEC1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:48:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3Slr2572z3fQ2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:47:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3Sn02zr6z3fVK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:48:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=h4z95aWq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=n77zu0oR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=36cjuywykdk8hjgtcqvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=36yjuywykdlikmjwftyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=h4z95aWq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=n77zu0oR;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3Scq1ybVz3fHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:41:31 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id z9-20020a25ba49000000b007d4416e3667so6418993ybj.23
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3Scs3L2Dz3fJv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:41:33 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id a62-20020a25ca41000000b0080b838a5199so6343375ybg.6
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:41:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A97N+ZL4sr7Moa7VA3MaIfeszXjKUidgl5sbUl4VE3M=;
-        b=h4z95aWqlTijLuw2+pa/O521iwctvYJ/JE9Gk94Om8JNdm1J4qRBJ1EfNZDOaurfUb
-         h0xAr5ZA79m4jhsd5KmptV8L5YTVXkJEqIIo06fTcAgDWyf2Iw1unXEy8R6f3F+h7n0/
-         eKAno27phPvhqEsCndY+cAQm1TD4BuL7gONpQNAXYFn8Kf2q+ZhvCxmCxJsT4hK4blKF
-         lDmG8J5RutFJ9mwfq4DqWgfTIN8+TeptwgRlAF+qB5k0K+pf2NR8dkIUNhEjxCEKvwc/
-         GAm3buayP+cfA/HX9e16HQfg7j+WzzAIFSLNgZD3Zm/44+VjSwN/Bplr8AdUjUNKklkq
-         c5Vw==
+        bh=mDt1g22Fa9gYu2Kb7/F2UNWz7p2znEfhohgEMazkZAE=;
+        b=n77zu0oRsJL7OvjwFNjS7T1FAOtu4hdvxpK7kq3XthnUipBv5szcKq0gW6Eh2qWZ+N
+         VqA54npBtuI1r6BsRB8yCAVHYO39SuVCqNfhqCm/Ya4OMopwGqTAxzjzqXFTaLEmWefn
+         G7d9A2dlsE9NEs9J39+IVmn9jXa2H7iuxd7eUv1r4SdiVN/BsV9E4rX7Fx/7SJnqIKhp
+         5pljM+LwjnmUAESpDExSAXXjwcvSQjwdpBA+epV9jtEBYonrLt6ilkcmvKbIgLrFIqhL
+         dWwHvu2PRt1rquBCjgEA2IpAdLCPilrM/O5s952uzrtLUUUIX7VUyMYpZs8xK3jyFgDu
+         2ztw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A97N+ZL4sr7Moa7VA3MaIfeszXjKUidgl5sbUl4VE3M=;
-        b=QEh6W33yoUazr6V2m7Mlhmp3i9Ayv5RGaSMfoETvnzWTAEwfUGYXd/8SdFaNiKY+J8
-         tYWfeUJDJ3wBtyEIxU2XKF2qUdBR5cNU5O5MTbTh6WxTqonGQf7R1MSL6Ss6F26AkOed
-         SrkAw4GmEowRe++rS3rb6FXqmmfiRWwHiZvngAdRGuLFwO7RiBDh4fXWOd13f/2MPAZs
-         CVAou/V8V4GYB70bXy9ecD805e1saLKpu7GyAOlKEirWbfLwXgktAviDIVdY32x+ISKE
-         n+DPUa0A+7eu8PWE0a9EOBMob7kog31OwfG2aLlBXfl1H1sPrZ0gF39LifIZ7Z98cmFF
-         lllw==
-X-Gm-Message-State: AO0yUKWPnIKL40sewk6OE+cohth47H2O/yL2D9IZbaa0EuWt1mt371b0
-	KHGtx/8swJF9+eJTKpqcVxr11J4Ysbc=
-X-Google-Smtp-Source: AK7set8r1BYS7Wv/oAXgdJ6+dIiQhgZ/QiambSorQvdFTePlCpS2jC0PmTUUP3dVFKS1ORR7IfLO9gpuOYg=
+        bh=mDt1g22Fa9gYu2Kb7/F2UNWz7p2znEfhohgEMazkZAE=;
+        b=Z0HmRj591Sa45U8N6NOdIuqMmNFsH1+ZcoBe8c+6us4EdGFtYdRikPJ1uqgrn8BN3T
+         DxEeuBXmmDj8MZQf2CFacxJSAklZhuItx0sEw4fv/9hcEL6muPHwfwd1NG5j58VCdpeT
+         xojIWWio6hOcWInLyvbUbvTWjuN5VJAYooj9Q3TW17CJZcr8hbUHJnTMuI0ECkRcr5Ul
+         CtrJ8Xf8JavdvTxIos2uI+UiI2BaiTy4QyQuwEkh3OFv39pNA7XOaeTEtt4gYabLNJYa
+         +l9zDUAom0NsG5iT8pD0dIzv1Cow1NtUqZ1YFBM57LcbGY6krLKdHqY5EPRBmLwmGjvk
+         YAUA==
+X-Gm-Message-State: AO0yUKWBt/piMxI+pEI1swYpa0e7C4KFXv4Tz6vu6jI7/rDkdJtoBjP6
+	/2LcI8ql944q9e0KoxTzp4WWdIEPtmQ=
+X-Google-Smtp-Source: AK7set9vKZUOyTcPurWe/bFPJyhfVHuV/nLiUj+ueaBvjKNu+svIA1blUVC8f6GWjxXLSfMUdNgMQcXmD6M=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:4e19:be9:c5d0:8483])
- (user=surenb job=sendgmr) by 2002:a81:9bd6:0:b0:509:5557:c194 with SMTP id
- s205-20020a819bd6000000b005095557c194mr892323ywg.449.1674848488954; Fri, 27
- Jan 2023 11:41:28 -0800 (PST)
-Date: Fri, 27 Jan 2023 11:40:43 -0800
+ (user=surenb job=sendgmr) by 2002:a25:354:0:b0:80b:543d:2106 with SMTP id
+ 81-20020a250354000000b0080b543d2106mr1234365ybd.10.1674848491227; Fri, 27 Jan
+ 2023 11:41:31 -0800 (PST)
+Date: Fri, 27 Jan 2023 11:40:44 -0800
 In-Reply-To: <20230127194110.533103-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230127194110.533103-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230127194110.533103-7-surenb@google.com>
-Subject: [PATCH v2 06/33] maple_tree: Add smp_rmb() to dead node detection
+Message-ID: <20230127194110.533103-8-surenb@google.com>
+Subject: [PATCH v2 07/33] mm: Enable maple tree RCU mode by default.
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -81,46 +81,78 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 
-Add an smp_rmb() before reading the parent pointer to ensure that
-anything read from the node prior to the parent pointer hasn't been
-reordered ahead of this check.
+Use the maple tree in RCU mode for VMA tracking.  This is necessary for
+the use of per-VMA locking.  RCU mode is enabled by default but disabled
+when exiting an mm and for the new tree during a fork.
 
-The is necessary for RCU mode.
+Also enable RCU for the tree used in munmap operations to ensure the
+nodes remain valid for readers.
 
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
 Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- lib/maple_tree.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/mm_types.h | 3 ++-
+ kernel/fork.c            | 3 +++
+ mm/mmap.c                | 4 +++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 49e399e8afaa..859303d2da90 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -532,9 +532,11 @@ static inline struct maple_node *mte_parent(const struct maple_enode *enode)
-  */
- static inline bool ma_dead_node(const struct maple_node *node)
- {
--	struct maple_node *parent = (void *)((unsigned long)
--					     node->parent & ~MAPLE_NODE_MASK);
-+	struct maple_node *parent;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index da983aedb741..8410c3052148 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -768,7 +768,8 @@ struct mm_struct {
+ 	unsigned long cpu_bitmap[];
+ };
  
-+	/* Do not reorder reads from the node prior to the parent check */
-+	smp_rmb();
-+	parent = (void *)((unsigned long) node->parent & ~MAPLE_NODE_MASK);
- 	return (parent == node);
- }
+-#define MM_MT_FLAGS	(MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN)
++#define MM_MT_FLAGS	(MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN | \
++			 MT_FLAGS_USE_RCU)
+ extern struct mm_struct init_mm;
  
-@@ -549,6 +551,8 @@ static inline bool mte_dead_node(const struct maple_enode *enode)
- 	struct maple_node *parent, *node;
+ /* Pointer magic because the dynamic array size confuses some compilers. */
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5e3029ea8e1e..5f23d5e03362 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -617,6 +617,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 	if (retval)
+ 		goto out;
  
- 	node = mte_to_node(enode);
-+	/* Do not reorder reads from the node prior to the parent check */
-+	smp_rmb();
- 	parent = mte_parent(enode);
- 	return (parent == node);
- }
++	mt_clear_in_rcu(vmi.mas.tree);
+ 	for_each_vma(old_vmi, mpnt) {
+ 		struct file *file;
+ 
+@@ -700,6 +701,8 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 	retval = arch_dup_mmap(oldmm, mm);
+ loop_out:
+ 	vma_iter_free(&vmi);
++	if (!retval)
++		mt_set_in_rcu(vmi.mas.tree);
+ out:
+ 	mmap_write_unlock(mm);
+ 	flush_tlb_mm(oldmm);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 9d0dadb55e9a..9efe13d36df7 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -2277,7 +2277,8 @@ do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	int count = 0;
+ 	int error = -ENOMEM;
+ 	MA_STATE(mas_detach, &mt_detach, 0, 0);
+-	mt_init_flags(&mt_detach, MT_FLAGS_LOCK_EXTERN);
++	mt_init_flags(&mt_detach, vmi->mas.tree->ma_flags &
++		      (MT_FLAGS_LOCK_MASK | MT_FLAGS_USE_RCU));
+ 	mt_set_external_lock(&mt_detach, &mm->mmap_lock);
+ 
+ 	/*
+@@ -3042,6 +3043,7 @@ void exit_mmap(struct mm_struct *mm)
+ 	 */
+ 	set_bit(MMF_OOM_SKIP, &mm->flags);
+ 	mmap_write_lock(mm);
++	mt_clear_in_rcu(&mm->mm_mt);
+ 	free_pgtables(&tlb, &mm->mm_mt, vma, FIRST_USER_ADDRESS,
+ 		      USER_PGTABLES_CEILING);
+ 	tlb_finish_mmu(&tlb);
 -- 
 2.39.1
 
