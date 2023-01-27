@@ -1,65 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A2C67EEFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 20:59:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AB967EF02
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 21:00:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3T1R0jYjz3frv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 06:59:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3T2R5sH1z3fKW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jan 2023 07:00:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=dIXUHHJy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kcxorgjD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3bynuywykdm4ceby7v08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3cinuywykdnefhe1ay3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=dIXUHHJy;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kcxorgjD;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3SdP6ChTz3fKG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:42:01 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id n8-20020a258d08000000b007facaf67acfso6393660ybl.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:42:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3SdS1FNkz3fHg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jan 2023 06:42:04 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id o1-20020a252801000000b0080b8600bdc9so6361929ybo.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 11:42:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PbZvlTacNRMtTYgLZEFyk5N8KO4rHMcD13osXtjRKQc=;
-        b=dIXUHHJyt3zldvcJ25OA8M/N2ekAkSadxrM4Vc86G1vAxHUN7FQNbSzlWzbH3EF3Ay
-         Np/mC7lgd8yNrbdx+fJZdOiPs5Ax7Y+isaOSeA0W3slHJVunqRE0R5gvKOYJUJLOV6vy
-         eusS7uxTBSUHthbBE/M+AcF029iuITRiXxkeDAE1bHTcC4qSxwHlMi32ImCbpO9h9EMV
-         +wvjzOskJitBDhg128jcOLxlukATYCWhVPwB6m3ynKWMcyTvnD5SZLfuK2oGD5H+Rl4/
-         hAABUVAQozzvBCIG2lhb5atfzqUlxx9w7Rjl6rs3/T9zVK0hATJevSe9VLcJ9uJd0aXA
-         HxXQ==
+        bh=1VGgj1TmnjNrGwceq1Y9mwtgHdomU/ZJ3zMBBp7twvM=;
+        b=kcxorgjDvieL4H0gsZ4o6ev4StdVYsVDA7GZVrIORQdjZKoFiGI1KoZQdzzvMshMrE
+         snI0AzaYSvDLC9zEn2IBQumHO6CKLkrL/i3wJ9ueET6bm8oRn7QEPBX+BM7UODPO3hzZ
+         U4MGRqXmViJMsS4HDNU6vnAmwplZNvnqe2D+qu3fGFBMwOJOM+QBc0aicDuQnfczJKX+
+         vPW/+j1Kiez+csRZc1jn4fVsV2fgBwTNZpRX4guJZVX8gsy3dFik2ggDGPcziixMOIIZ
+         ZlSkjqSVG2I0FEWcD7z9JqxBzo/zAlN1m8/Qkt+nlr6qzU3SYltCmGn1Rp59psmpvaAD
+         Fzjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PbZvlTacNRMtTYgLZEFyk5N8KO4rHMcD13osXtjRKQc=;
-        b=yQ8LmB1mW0oWKe0QVQ5IP47a9hrUS16WFYhIDGTZOtuGnqqtQ4DAVyWB2eA80oQ68U
-         /0q9ukt3NmTIV4cfKJfgz5H5s28BVBFm2rlwSz6uwrfSnbGO808zCoA4+nwUMILnSDJ7
-         H5cafnzEk8aY03uTRk8bnGkncqdDU3Wn33E3eiQQxMQFJU6RQfLYRCo2brKuCLiQof0D
-         6KI4dWsdEbNfuCvuNfjLgmSyhiHFuupza/1rpiirwVD7+jmB2y31kMuryvpD8v0ZLAEC
-         OkXaAVO8MjolX+9oHC0dC3dOFT+4VgoRJMct+AumvitGTQ89k/EY2uYA4JwEDcG6O0cT
-         u3cg==
-X-Gm-Message-State: AFqh2kp61I1XzBZihdiS2WPuDVjaRlgAiiuIY2lG16SeQ/vSWf0oqL3s
-	mH/Y2S5WgNnHH546+CdjvXhcy6Yid7o=
-X-Google-Smtp-Source: AMrXdXtxOfNby/WJjyD0PPf8WyFmfovtGs47EqfediusuKgjOEAtqZl1SXyt3bJWMQsRbQEhpFz5LQpAf70=
+        bh=1VGgj1TmnjNrGwceq1Y9mwtgHdomU/ZJ3zMBBp7twvM=;
+        b=fq4lulSnMgtGxGYavwJCvIckstP3dGuoi69v6OOiwja3+jWY40870/SOQDEJL5tNqq
+         7xBAnO7ESOzXQ/U7NjFFcXjZXaempv2kvOw6e3p9PBkxUs4rhxeiciGnx0m68Bd1E2IV
+         3EcVO9RXMioLmid0y6OWNYNgfXsucVyrVrCTAG0+ztEyZJDFxrwne0xKmbBreET3/mSI
+         8yGppEaD+FKx4NKLMpkivMhTi1k+dNoYNz1f8XNYY+CLBRt9+S2EanzxYINAhsksZICs
+         Y8EFS9KQa9ZexzgQY8psuGQwLFnKKLBhtYyEt9zt3ntJJCKq4r4A7xOAy0/VMUQ9Ckcu
+         PH6A==
+X-Gm-Message-State: AO0yUKXjqxOFmsg3ROtzbvIq/GzIxP84Oihd4tj5gwCJRoIyLSRmuV8g
+	frRqV+GD6gS9VwEX1+EXCsMDQRXdKdw=
+X-Google-Smtp-Source: AK7set/jPsOwzlm+kUPz+CABbySieLCP3cL/8jypOFocWiEQOE8fcbH4Z91B+4ltIKP12TkxYenF+FhrAT0=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:4e19:be9:c5d0:8483])
- (user=surenb job=sendgmr) by 2002:a81:cd4:0:b0:4dc:e929:40fa with SMTP id
- 203-20020a810cd4000000b004dce92940famr5633708ywm.331.1674848519684; Fri, 27
- Jan 2023 11:41:59 -0800 (PST)
-Date: Fri, 27 Jan 2023 11:40:56 -0800
+ (user=surenb job=sendgmr) by 2002:a0d:cb8b:0:b0:50b:1b97:f19a with SMTP id
+ n133-20020a0dcb8b000000b0050b1b97f19amr434148ywd.164.1674848522027; Fri, 27
+ Jan 2023 11:42:02 -0800 (PST)
+Date: Fri, 27 Jan 2023 11:40:57 -0800
 In-Reply-To: <20230127194110.533103-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230127194110.533103-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230127194110.533103-20-surenb@google.com>
-Subject: [PATCH v2 19/33] mm: conditionally write-lock VMA in free_pgtables
+Message-ID: <20230127194110.533103-21-surenb@google.com>
+Subject: [PATCH v2 20/33] mm/mmap: write-lock adjacent VMAs if they can grow
+ into unmapped area
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,86 +80,36 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Normally free_pgtables needs to lock affected VMAs except for the case
-when VMAs were isolated under VMA write-lock. munmap() does just that,
-isolating while holding appropriate locks and then downgrading mmap_lock
-and dropping per-VMA locks before freeing page tables.
-Add a parameter to free_pgtables for such scenario.
+While unmapping VMAs, adjacent VMAs might be able to grow into the area
+being unmapped. In such cases write-lock adjacent VMAs to prevent this
+growth.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- mm/internal.h | 2 +-
- mm/memory.c   | 6 +++++-
- mm/mmap.c     | 5 +++--
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ mm/mmap.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 90bb2078444c..52d7e9c2e58f 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -105,7 +105,7 @@ void folio_activate(struct folio *folio);
- 
- void free_pgtables(struct mmu_gather *tlb, struct maple_tree *mt,
- 		   struct vm_area_struct *start_vma, unsigned long floor,
--		   unsigned long ceiling);
-+		   unsigned long ceiling, bool mm_wr_locked);
- void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
- 
- struct zap_details;
-diff --git a/mm/memory.c b/mm/memory.c
-index 7a04a1130ec1..d48c76e9fa57 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -348,7 +348,7 @@ void free_pgd_range(struct mmu_gather *tlb,
- 
- void free_pgtables(struct mmu_gather *tlb, struct maple_tree *mt,
- 		   struct vm_area_struct *vma, unsigned long floor,
--		   unsigned long ceiling)
-+		   unsigned long ceiling, bool mm_wr_locked)
- {
- 	MA_STATE(mas, mt, vma->vm_end, vma->vm_end);
- 
-@@ -366,6 +366,8 @@ void free_pgtables(struct mmu_gather *tlb, struct maple_tree *mt,
- 		 * Hide vma from rmap and truncate_pagecache before freeing
- 		 * pgtables
- 		 */
-+		if (mm_wr_locked)
-+			vma_start_write(vma);
- 		unlink_anon_vmas(vma);
- 		unlink_file_vma(vma);
- 
-@@ -380,6 +382,8 @@ void free_pgtables(struct mmu_gather *tlb, struct maple_tree *mt,
- 			       && !is_vm_hugetlb_page(next)) {
- 				vma = next;
- 				next = mas_find(&mas, ceiling - 1);
-+				if (mm_wr_locked)
-+					vma_start_write(vma);
- 				unlink_anon_vmas(vma);
- 				unlink_file_vma(vma);
- 			}
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 5bdfd087b632..57cb3a2ac9b1 100644
+index 57cb3a2ac9b1..3baf218836bb 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -2157,7 +2157,8 @@ static void unmap_region(struct mm_struct *mm, struct maple_tree *mt,
- 	update_hiwater_rss(mm);
- 	unmap_vmas(&tlb, mt, vma, start, end, mm_wr_locked);
- 	free_pgtables(&tlb, mt, vma, prev ? prev->vm_end : FIRST_USER_ADDRESS,
--				 next ? next->vm_start : USER_PGTABLES_CEILING);
-+				 next ? next->vm_start : USER_PGTABLES_CEILING,
-+				 mm_wr_locked);
- 	tlb_finish_mmu(&tlb);
- }
+@@ -2399,11 +2399,13 @@ do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	 * down_read(mmap_lock) and collide with the VMA we are about to unmap.
+ 	 */
+ 	if (downgrade) {
+-		if (next && (next->vm_flags & VM_GROWSDOWN))
++		if (next && (next->vm_flags & VM_GROWSDOWN)) {
++			vma_start_write(next);
+ 			downgrade = false;
+-		else if (prev && (prev->vm_flags & VM_GROWSUP))
++		} else if (prev && (prev->vm_flags & VM_GROWSUP)) {
++			vma_start_write(prev);
+ 			downgrade = false;
+-		else
++		} else
+ 			mmap_write_downgrade(mm);
+ 	}
  
-@@ -3069,7 +3070,7 @@ void exit_mmap(struct mm_struct *mm)
- 	mmap_write_lock(mm);
- 	mt_clear_in_rcu(&mm->mm_mt);
- 	free_pgtables(&tlb, &mm->mm_mt, vma, FIRST_USER_ADDRESS,
--		      USER_PGTABLES_CEILING);
-+		      USER_PGTABLES_CEILING, true);
- 	tlb_finish_mmu(&tlb);
- 
- 	/*
 -- 
 2.39.1
 
