@@ -1,53 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3025767E553
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:34:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD6A67E587
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 13:39:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P3H8Y0jSbz3fJl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 23:34:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P3HFk32Wjz3fGY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jan 2023 23:39:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AOIO/dmB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Ad+cNpj/;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Odo7hPqr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AOIO/dmB;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Ad+cNpj/;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Odo7hPqr;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3HDp1N2Qz3bXQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 23:38:34 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 210851FF3C;
+	Fri, 27 Jan 2023 12:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1674823103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dg/eZw9C2WEGUOLobcqz+Lpe/vuPYoV3mKnbpIUu6/Q=;
+	b=Ad+cNpj/TSE9SFlIsoDZIWx9lsf197KgIpbXzFMdtjAAP08CL8GRm27Ukusg26Xi292FZv
+	iIFNZhud0zPzcoH16g8IctWfqoRlN7oVJc0tjjspHjqf02EWyVJ4iXL1og3pnxg/leM7r3
+	gjjcdpg+qHxCkJyJkXC5SGsoAI+2Iug=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1674823103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dg/eZw9C2WEGUOLobcqz+Lpe/vuPYoV3mKnbpIUu6/Q=;
+	b=Odo7hPqrvOEgs4vQJva60XbLzuMONIFl3t72oFZ5rbE7h5n2Jo0e8vciALpbb3apamadxv
+	2cWpHvzUzp+7F6DQ==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P3H7c35KGz3c7K
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jan 2023 23:34:03 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EE15C61B94;
-	Fri, 27 Jan 2023 12:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3CDC433D2;
-	Fri, 27 Jan 2023 12:33:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1674822839;
-	bh=TS2+CpKa2cp61H4L2xyxqqO1Xa+9EPd/tgoYGYbo2PU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AOIO/dmBppqhBtGmbssqspC6gF08zWXRP3blx3PpWb0QrYlXVWOIZA8xnJc3C+eWu
-	 5kyaDq09s3nJoxaQTN1VT1ciyn4JxcwsT9/Jl/kmN/S2+jN0xhoMHwTeCOCpIUG7wd
-	 bvY4O/P0xk2eSogKpMu0lC1ZQFj2jr5pjAoJdOX4=
-Date: Fri, 27 Jan 2023 13:33:56 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 01/16] of: device: make of_device_uevent_modalias()
- take a const device *
-Message-ID: <Y9PEtP7oLjRJTxFM@kroah.com>
-References: <20230111113018.459199-1-gregkh@linuxfoundation.org>
- <20230111113018.459199-2-gregkh@linuxfoundation.org>
- <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
+	by relay2.suse.de (Postfix) with ESMTPS id 87D2C2C141;
+	Fri, 27 Jan 2023 12:38:21 +0000 (UTC)
+Date: Fri, 27 Jan 2023 13:38:26 +0100 (CET)
+From: Miroslav Benes <mbenes@suse.cz>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: Re: [PATCH 1/2] powerpc/module_64: Improve restore_r2() return
+ semantics
+In-Reply-To: <15baf76c271a0ae09f7b8556e50f2b4251e7049d.1674617130.git.jpoimboe@kernel.org>
+Message-ID: <alpine.LSU.2.21.2301271338001.7389@pobox.suse.cz>
+References: <cover.1674617130.git.jpoimboe@kernel.org> <15baf76c271a0ae09f7b8556e50f2b4251e7049d.1674617130.git.jpoimboe@kernel.org>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJ4QsLym-bQGGjUpzT14MYuTE1n8BQkGn6Ey9NiFF7u7w@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +70,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Liang He <windhl@126.com>, Zou Wei <zou_wei@huawei.com>, Samuel Holland <samuel@sholland.org>, Frank Rowand <frowand.list@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Corentin Labbe <clabbe@baylibre.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Lyude Paul <lyude@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, Nicholas Piggin <npiggin@gmail.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 11, 2023 at 08:54:04AM -0600, Rob Herring wrote:
-> On Wed, Jan 11, 2023 at 5:30 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > of_device_uevent_modalias() does not modify the device pointer passed to
-> > it, so mark it constant.  In order to properly do this, a number of
-> > busses need to have a modalias function added as they were attempting to
-> > just point to of_device_uevent_modalias instead of their bus-specific
-> > modalias function.  This is fine except if the prototype for a bus and
-> > device type modalias function diverges and then problems could happen.  To
-> > prevent all of that, just wrap the call to of_device_uevent_modalias()
-> > directly for each bus and device type individually.
+On Tue, 24 Jan 2023, Josh Poimboeuf wrote:
+
+> restore_r2() returns 1 on success, which is surprising for a non-boolean
+> function.  Change it to return 0 on success and -errno on error to match
+> kernel coding convention.
 > 
-> Why not just put the wrapper function in the DT code instead of making
-> 4 copies of it?
+> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Ok, I looked at doing this today, but in the end, making "4" copies of
-this is simpler overall.  To do it your way would require a "const"
-version of the function be added to the core, and then convert these 4
-busses to use that, and then when the real function is converted to be
-const, move all of these functions back over to use that again.
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 
-Lots of churn, and then in the end, we still have the mismatch of a
-the same function callback being used in two different types of
-callbacks (one a bus, one a class).  This way we separate them to make
-things much more obvious and self-contained.
-
-So I'll keep this as-is for now, thanks.
-
-greg k-h
+M
