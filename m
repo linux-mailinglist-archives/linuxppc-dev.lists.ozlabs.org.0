@@ -1,58 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E6967FE29
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 11:27:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BE867FBCE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 00:22:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P4SDs6Xryz3bh5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 21:27:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LEOdKD+x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P49Tf14cTz2xB5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 10:22:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LEOdKD+x;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P45fk1Nh0z2yJQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 07:30:22 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 11704B80BEB;
-	Sat, 28 Jan 2023 20:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AA46EC4339C;
-	Sat, 28 Jan 2023 20:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674937816;
-	bh=NyfyYmvHuYCep7B9YHaipGsiO9fFZKxd2hw/3QQJwqQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LEOdKD+xVK+ChdUeMYF7EWUBmGq14I7a4s4JCxsX0Z2pbDfy98ZnOQg9LaM70RuVC
-	 9xRu4+lF+DVHmBGVHpWV6C3DKQnB6htlyuiQ1J3mBpVE0Cta4vW2RE/BXmcJavx0so
-	 NpT9ZM/k0gp3REittQZbOAE5Pu2nnNW4ZzWWewKaFAFD3E6WwCsC+zOFh5CoV4HfQe
-	 lQLG294nW9w5VbGq5Yt6s9D6T/oia27mZXgUwJMw43HV8z7gJz+N1dbAJrJr5rDjld
-	 W58/LuDYy+LQisFZsbodjJ+lGQoGjrCfyPfOcghY/B7T6gUkoFPJyIGFHljP3NeW1j
-	 sFiy6/39HdTbA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 76D09E52504;
-	Sat, 28 Jan 2023 20:30:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P48g96GgWz3cBt
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 09:45:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=DyB9Vj9xQ6QPWO2/0ubzR4pe1ytfMqO3uNOVBQFARx4=; b=gll/4aWbNrhHk87vl7Jm7WsLsb
+	3G3dSBLayBbLTvl2BVI+8Ov1xW5VCIU1P4L+Qzqnk/x8s6U8A7XUMEztVNv7POLOaMj3N7Cf7gVU5
+	/5OfBMqkkTrlcF1yVYrwtVE15TXAZmcyb6AjJ/mExCJ8kP6guI5eqdHu4g3mpLaZFmjIhkJ3+rt44
+	Ie416c7jrvFs/dj2kqPdZPNPyY2+h6AmC/O1SunkX9Snhxs1ogFGK6VDgt4fWnRJIeYmpfKS1h8S0
+	Uk7mQ6PT/aSZkt1pA9onP7GwsD1PbnflX4mwjy1v5/++PYqkYkiUBj72SiyUBwNJWWMrWxnjlGtNT
+	F5FwJNSw==;
+Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pLtx6-008xZ5-PT; Sat, 28 Jan 2023 22:45:44 +0000
+Message-ID: <38e58d03-3142-72ae-7424-696499a99bb2@infradead.org>
+Date: Sat, 28 Jan 2023 14:45:37 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2 1/2] powerpc/ps3: Change updateboltedpp panic to info
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1672767868.git.geoff@infradead.org>
+ <2df879d982809c05b0dfade57942fe03dbe9e7de.1672767868.git.geoff@infradead.org>
+ <25cc9a51-2311-d7d3-3451-08725e6384cd@csgroup.eu>
+ <284aed88-dc26-d74a-cf7a-f5875ba058eb@infradead.org>
+ <87mt6j9wcf.fsf@mpe.ellerman.id.au>
+ <a449698b-93f5-0742-77fe-5699544eab5c@infradead.org>
+ <75194fe4-8276-4749-ab41-f8ddf02a0200@csgroup.eu>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <75194fe4-8276-4749-ab41-f8ddf02a0200@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 00/35] Documentation: correct lots of spelling errors (series
- 1)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <167493781647.31903.18128774325127042067.git-patchwork-notify@kernel.org>
-Date: Sat, 28 Jan 2023 20:30:16 +0000
-References: <20230127064005.1558-1-rdunlap@infradead.org>
-In-Reply-To: <20230127064005.1558-1-rdunlap@infradead.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-X-Mailman-Approved-At: Sun, 29 Jan 2023 21:26:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,38 +60,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, juri.lelli@redhat.com, rydberg@bitmath.org, rafael@kernel.org, catalin.marinas@arm.com, dri-devel@lists.freedesktop.org, perex@perex.cz, benjamin.tissoires@redhat.com, pavel@ucw.cz, srinivas.pandruvada@linux.intel.com, zbr@ioremap.net, agordeev@linux.ibm.com, vincent.guittot@linaro.org, jmorris@namei.org, linux-acpi@vger.kernel.org, len.brown@intel.com, linux-pm@vger.kernel.org, tglx@linutronix.de, linux-sgx@vger.kernel.org, isdn@linux-pingi.de, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, mhiramat@kernel.org, olteanv@gmail.com, alsa-devel@alsa-project.org, linux-doc@vger.kernel.org, jcmvbkbc@gmail.com, keyrings@vger.kernel.org, linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org, paul@paul-moore.com, linux-trace-kernel@vger.kernel.org, deller@gmx.de, lee@kernel.org, andrii@kernel.org, daniel.m.jordan@oracle.com, linux-crypto@vger.kernel.org, linux-xtensa@linux-xtensa.org, gor@linux.ibm.com
- , suzuki.poulose@arm.com, coresight@lists.linaro.org, bhelgaas@google.com, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, mathieu.poirier@linaro.org, wsa@kernel.org, jarkko@kernel.org, linux-pci@vger.kernel.org, lpieralisi@kernel.org, ast@kernel.org, will@kernel.org, daniel@iogearbox.net, corbet@lwn.net, isdn4linux@listserv.isdn4linux.de, linux-input@vger.kernel.org, serge@hallyn.com, fenghua.yu@intel.com, jikos@kernel.org, akinobu.mita@gmail.com, rostedt@goodmis.org, broonie@kernel.org, bp@alien8.de, linux-fbdev@vger.kernel.org, reinette.chatre@intel.com, martin.petersen@oracle.com, dmitry.torokhov@gmail.com, naoya.horiguchi@nec.com, target-devel@vger.kernel.org, bpf@vger.kernel.org, pmladek@suse.com, peterz@infradead.org, dhowells@redhat.com, linux-mm@kvack.org, linux-trace-devel@vger.kernel.org, live-patching@vger.kernel.org, mbenes@suse.cz, linux-leds@vger.kernel.org, steffen.klassert@secunet.com, linux-scsi@vger.kernel.org, maz@kernel.org, x86@kernel.
- org, linux@armlinux.org.uk, mingo@redhat.com, jonas@southpole.se, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, linux-block@vger.kernel.org, jglisse@redhat.com, openrisc@lists.librecores.org, jpoimboe@kernel.org, axboe@kernel.dk, netdev@vger.kernel.org, tiwai@suse.com, linux-security-module@vger.kernel.org, bristot@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
-
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Thu, 26 Jan 2023 22:39:30 -0800 you wrote:
-> Correct many spelling errors in Documentation/ as reported by codespell.
+On 1/16/23 23:26, Christophe Leroy wrote:
+> Le 16/01/2023 à 21:08, Geoff Levand a écrit :
+>>
+>> As mentioned, I'd really like to keep PS3 included in ppc64_defconfig.  My
+>> original patch that basically just ignores the call to
+>> mmu_hash_ops.updateboltedpp allows that, and I haven't experienced any problems
+>> with it yet.
 > 
-> Maintainers of specific kernel subsystems are only Cc-ed on their
-> respective patches, not the entire series. [if all goes well]
+> When you say you have not experienced any problems with it, do you mean 
+> that STRICT_RWX works for you ? When you select CONFIG_DEBUG_RODATA_TEST 
+> it tells you that it works ? Otherwise it looks incorrect to enable 
+> something that doesn't work.
+
+What I mean is that the system boots up, and works as expected.
+I have not tried with CONFIG_DEBUG_RODATA_TEST set.
+
+>> My preference would be to keep PS3 in ppc64_defconfig, and either apply my
+>> original patch, or I keep that patch in my ps3-linux repo on kernel.org. Then,
+>> if we end up adding runtime support for RWX I then fixup PS3 to use that.
+>>
 > 
-> These patches are based on linux-next-20230125.
-> 
-> [...]
+> In that case I see two solutions:
+> 1/ Implement updateboltedpp for PS3.
 
-Here is the summary with links:
-  - [04/35] Documentation: bpf: correct spelling
-    https://git.kernel.org/bpf/bpf-next/c/1d3cab43f4c7
-  - [05/35] Documentation: core-api: correct spelling
-    (no matching commit)
-  - [13/35] Documentation: isdn: correct spelling
-    (no matching commit)
+I'm now looking into if this is possible.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 2/ Implement arch_parse_debug_rodata() to always set rodata_enabled = 
+> false on PS3, and update free_initmem() to only call mark_initmem_nx() 
+> when strict_kernel_rwx_enabled() returns true.
 
+OK, I'll consider this if I cannot get updateboltedp working.
+
+-Geoff
 
