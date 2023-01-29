@@ -1,53 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E067FF37
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 13:47:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B8967FF3C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 13:53:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P4WL30S6Fz3f8N
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 23:47:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P4WTL2JPHz3cZp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 23:53:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=njDRT8r1;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=k6rhWPlj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=40.92.52.50; helo=apc01-psa-obe.outbound.protection.outlook.com; envelope-from=set_pte_at@outlook.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=njDRT8r1;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=k6rhWPlj;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01olkn2050.outbound.protection.outlook.com [40.92.52.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P4WFs0NbPz3dvX
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 23:43:45 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4953F60D34;
-	Sun, 29 Jan 2023 12:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C766C433A4;
-	Sun, 29 Jan 2023 12:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674996222;
-	bh=eLMgEpQxFKcAQB5p9iZMGAjv2bPuIyDEI2WrhwgUdQ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njDRT8r1V+uNxSVhpHR4udjDyRAbAHBMKXFaL5NWEOtGVKJyxCPFGbqSBc5dMAksK
-	 2ou+lRn371Ns36eD9qA3Fisz9Im5X2GjiQcRRmbyFJgq8kRLe+ZSKNOiesYqPNHdHn
-	 GuWKHlZHWnycj8xdKyzwDNAzu0/Q6GsslJEW6ylVyhVe2Y3NR6CiyaC4iBpfsrWtJR
-	 MBkgT0U0En1Neikz9EZkCEPDPsz5x8JX/BxKB0W26mLXO/iUJNmkdnFrUCX/0jclYU
-	 m++POMddFWraKFM7w9sk3/DqjnuxZF+J7+LfdptfN29jqclkpmpxIMvzSaE5c0iruH
-	 oU0b+vvosjpKA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 4/4] mm, arch: add generic implementation of pfn_valid() for FLATMEM
-Date: Sun, 29 Jan 2023 14:42:35 +0200
-Message-Id: <20230129124235.209895-5-rppt@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230129124235.209895-1-rppt@kernel.org>
-References: <20230129124235.209895-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P4WSL3dLBz2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 23:52:48 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lN1Y7rbHxvHcHQWQmbSLDN4xwrfMW7KIGSYhHIYVvWr42JQunGJhF7HY7KzZDyOhw+fjW7SR3DuAlGF5KFzYU1W4tNmgZw9BqKxI1oZr54WL2iv2I8qEax4QoCvZ3XGfmB/4VXSBu9PJwZGtgQLzgguuzqNozaSlyllaKxg0o0rifoOM5Rohh8rE4h9ii44/EdF/RM7mK12qKyrjC8MB4pBzIwprNg6TUmbZv2hkX25zO6WcLSVD8Faz5qgLb4a+8I6607UMD1pK20nF446Vt3y13oR4X70044ub0GBiJVfPQS+JHTyD9pLDphNM083AAUHF4JHVRnKHJzIHr4cxNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qETodQsnU3oSyAxOJa564KyaVIIt4mXDsM/O5ayyoMU=;
+ b=Tn7husH8BfdFsX53iArLEdH9D2iBmrEZMmsNGGcdEXf2Ele2ig5N3cFbenroUex6mKJCUdSD4icqLVWRkqRWFBK6h6SwNP1q8Sb2h2azgIB/ejHYNzjVWDFdxzOhStnbvgYRcMoAjimp3m4brolATLydkjN6IOBNJCgaB1hpo2JLEMS9WegiohOKtkx4ePsT7ZYAejxbZeGp3Uo2GOmAvZ7R8X6aXBrYFurCQHXvIapwNimHihEIUzAWrmtbtdD61s/xr/P4bU4/MOfGDxjLX0yX+9d7oxy7CES6zmprlbYI4EVd641oKcRSco+LyxA78nfyAYgDxDH9Ep/eOoBZ3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qETodQsnU3oSyAxOJa564KyaVIIt4mXDsM/O5ayyoMU=;
+ b=k6rhWPljrSo3cXhD98aGm5Pqg1GRjJZOWzLSjsySB5V6+kaHIW4/iHqmJ/FBu7qMyLp8OfwjhzLQmaNmaAeUJsfg4LxncPE69NqFwPFsx9bVZfeLhtbWvRGNwf3poIkTyhNgu2ktRTys8CN0rrfN6pteBuK6Y3K814CJTd+jqugFhgatyujEi3cP51VFVw8ncUEO+S6TmmlXcPQR3UHgTPtOlLnBiwU+yXYEtkqLRZsT59UrT9v0zWX19DkObmZWS8cqZNez2/watkeZJQQKYMaei4y5LqMdP8RtXFElnWePAuc3d+YlaoBg+Mwg/1AdgBIcNbyWcHDrqE023SgWaQ==
+Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:152::9)
+ by TYCP286MB3470.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:3ab::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.36; Sun, 29 Jan
+ 2023 12:52:28 +0000
+Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::82ce:8498:c0e9:4760]) by TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::82ce:8498:c0e9:4760%9]) with mapi id 15.20.6043.033; Sun, 29 Jan 2023
+ 12:52:28 +0000
+Date: Sun, 29 Jan 2023 20:52:23 +0800
+From: Dawei Li <set_pte_at@outlook.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com
+Subject: Re: [PATCH v2] powerpc: macio: Make remove callback of macio driver
+ void returned
+Message-ID:  <TYCP286MB2323CBCB5294E4700F70A12BCAD29@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+References: <TYCP286MB2323FA245F0C35C5D7486CC9CAC09@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TYCP286MB2323FA245F0C35C5D7486CC9CAC09@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+X-TMN: [B79uw/XDwj2/m8YyAWbZdGq7XlcHCEIX]
+X-ClientProxiedBy: SI1PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::13) To TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:152::9)
+X-Microsoft-Original-Message-ID: <20230129125223.GA443864@wendao-VirtualBox>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCP286MB2323:EE_|TYCP286MB3470:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9f76479-4c1a-4c54-8b38-08db01f7ad29
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	E5j4umYtgX7TKMT1CKbXRCHa/vNx4Sv3Z6Psnaaae0uC5OLRtcEMPl+hktux0C2LkZeUY5Dp+0rQ68W7iZndb8IKvL4LQxUhohWbyQNXQLTU+nm1kZ7rjaFanBrky5prRRnHIZrBczjXwChGz66dQ9EfGKs+eqmSeQNwo8ilEEhStrKWopJft7Q8YdbR8lK4LETIrJKB8C2ID/ZCVhsa7ye6oh0v3uxB7PD/vTOrVWOMdZXPEXurkOJmaxzbm3PjxyddBWLn9PgHA3K3XOz7A6SWWbYY3G+ISKQbzXa9uevBsqlvBoOm1iJO7pS6CFvbGu1L9Vn+Vpmx+UQhnHXYsRLCHBn9T4w2J6gFJhfqlyuJMSZNX1pcQyGQ1ia/CVuBAAAlxyI+sXhBzR0rlpI4h8w+nbDS6oVhqYfB3EQMkBil9Avu1Nny2IjTBSNoXV0Hu+6VU7uoHQS3gy6qi4YGkuMdBmno8byB58m210/ODQqCVXujRKYPZLluaoatmuOHdUdNSqAmbWtGA7kG5efRvmlWqVdYGNkT6c4okS/RlSwUf3kLucBlkcNajsvwsC3VyLhAjvrtsvtMNM5kUcvBK4faw3RVZzhFYLXv596m7/j4/YAi2J4XEbB0I9bs/OUr2T+BXclrEll/PWt3s/MA3Q==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?zZhiiX8e4vlxgIlQV5SH+o8aWXf4LF31ZqVrTouxMKu24WGSZ+RDwR+2qlCb?=
+ =?us-ascii?Q?CYQS5r65+pz64klTWLjL65D12OubRXD7dO8eeijbEYIsZMrDMzpmsSUTX7Qv?=
+ =?us-ascii?Q?1JPaRTLgX32MnLoOA+Z1AnORYtrB62GFPZLxpj+VJ+dA/Eupy82iwuJgRXBh?=
+ =?us-ascii?Q?7a97Io6emfP4UDdR5FujmyGIsePLYg5f5GHKtmMGdRIJzvOTwXkzgaImnwKI?=
+ =?us-ascii?Q?JiGmNEICij+X1QTdcP94m09gLwjYC925SR6ov7RYl3ylnRNOc6bqCtEAE2p9?=
+ =?us-ascii?Q?QZ329rQIwkZ3tZjhzhFxv0KRIh1/YgdvjsMVrmNvQExUukZd7bqwmo9il7mV?=
+ =?us-ascii?Q?15ykYza4lqaxYNnqL0+w/w16NpX6evcNcZNTyv9XEkpNTuGl3Oc7BiRRfG2h?=
+ =?us-ascii?Q?V+aXNObRH2z5MUdJSJez0bfpLZkeMFy83wfu3nRPd/N0fxom0mJauc5j6GX+?=
+ =?us-ascii?Q?P8qe7pdlKWmJDhcujdcai9+uRmvff7v9VtCDZUSFm5mOuvKU9obdG75xPuaU?=
+ =?us-ascii?Q?GHXIOxAP13jSe8yUUvVkkwdPFobP5IQi3FfOIWNfmhgtxhvDopk16xI3xk2X?=
+ =?us-ascii?Q?jFZscTA5xCqbbZilsL4FwdtqPzamI0pka/HBXJuqW8Opx2S4xSutxUKiIHke?=
+ =?us-ascii?Q?TXVi4fRE36x4H/lLBoluObT4pA++BjF8gZvXX6VDICh1B51GR/8wJarhrzig?=
+ =?us-ascii?Q?4MiQlTepiI0/RBRtF9RHEgxaGCY6c7LAgNk7I6m/iyLhP06Bl1tTsyH7ZNn4?=
+ =?us-ascii?Q?puh0LvWlvMLhnaN4OYlmCFVKEaii9ulseGw+rOval2zPqpXqBeZBdRI2A6sv?=
+ =?us-ascii?Q?qhvIbCa0j5IOa6wcOz0whs3ixCI3dSbIiKrUm+aNG+VKVRUVxGQ1YHPLiems?=
+ =?us-ascii?Q?lqAR/Ih8EwnSJf+JmPreGsVzcjttQvakJfIG3V7lD900YAc6qS5rHcd/1MqI?=
+ =?us-ascii?Q?/qZcHzfVTAAQZz88cW3uUtPjEAQF5yZN6xt2/aVTJPAo7/DBihfKKgtyhB1U?=
+ =?us-ascii?Q?BJj5SyaZXIJQCDFu5gcEjyQdsBtzX6NQ2Fqxj1OxZ8CGp64AYQbB9hvUFn1C?=
+ =?us-ascii?Q?zuqthyaU0/H8wslLd0HH5HQY7+AtD2r+to+I7DPaxXifldH9vggl6E6lkW0O?=
+ =?us-ascii?Q?2mKhOvxals5U6aRbBE5JgtJw6oY+li04rty00DSrrYLSOQMRM63ItUfx1yux?=
+ =?us-ascii?Q?2TcTN8FOox0xyJLwlNrjJEjrurd9mNeqpMasmothKQooFNCcu8QCux+GTRvb?=
+ =?us-ascii?Q?toNuCX8eYPiicJ2Fn0d/nXh12UTQMmPu9kJAFPsj+Q=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9f76479-4c1a-4c54-8b38-08db01f7ad29
+X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2023 12:52:28.2111
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB3470
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,398 +110,269 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Mic
- hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Mike Rapoport \(IBM\)" <rppt@kernel.org>, Huacai Chen <chenhuacai@loongson.cn>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On Sun, Jan 15, 2023 at 09:17:23PM +0800, Dawei Li wrote:
+> Commit fc7a6209d571 ("bus: Make remove callback return void") forces
+> bus_type::remove be void-returned, it doesn't make much sense for any
+> bus based driver implementing remove callbalk to return non-void to
+> its caller.
+> 
+> This change is for macio bus based drivers.
+> 
+> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
 
-Every architecture that supports FLATMEM memory model defines its own
-version of pfn_valid() that essentially compares a pfn to max_mapnr.
+Gentle ping.
 
-Use mips/powerpc version implemented as static inline as a generic
-implementation of pfn_valid() and drop its per-architecture definitions.
+Thanks
 
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Guo Ren <guoren@kernel.org>		# csky
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>	# LoongArch
-Acked-by: Stafford Horne <shorne@gmail.com>	# OpenRISC
----
- arch/alpha/include/asm/page.h      |  4 ----
- arch/arc/include/asm/page.h        |  1 -
- arch/csky/include/asm/page.h       |  1 -
- arch/hexagon/include/asm/page.h    |  1 -
- arch/ia64/include/asm/page.h       |  4 ----
- arch/loongarch/include/asm/page.h  | 13 -------------
- arch/m68k/include/asm/page_no.h    |  2 --
- arch/microblaze/include/asm/page.h |  1 -
- arch/mips/include/asm/page.h       | 13 -------------
- arch/nios2/include/asm/page.h      |  9 ---------
- arch/openrisc/include/asm/page.h   |  2 --
- arch/parisc/include/asm/page.h     |  4 ----
- arch/powerpc/include/asm/page.h    |  9 ---------
- arch/riscv/include/asm/page.h      |  5 -----
- arch/sh/include/asm/page.h         |  3 ---
- arch/sparc/include/asm/page_32.h   |  1 -
- arch/um/include/asm/page.h         |  1 -
- arch/x86/include/asm/page_32.h     |  4 ----
- arch/x86/include/asm/page_64.h     |  4 ----
- arch/xtensa/include/asm/page.h     |  4 ++--
- include/asm-generic/memory_model.h | 12 ++++++++++++
- include/asm-generic/page.h         |  2 --
- 22 files changed, 14 insertions(+), 86 deletions(-)
-
-diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
-index 8f3f5eecba28..227d32b6b75f 100644
---- a/arch/alpha/include/asm/page.h
-+++ b/arch/alpha/include/asm/page.h
-@@ -87,10 +87,6 @@ typedef struct page *pgtable_t;
- #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
- #define virt_addr_valid(kaddr)	pfn_valid((__pa(kaddr) >> PAGE_SHIFT))
- 
--#ifdef CONFIG_FLATMEM
--#define pfn_valid(pfn)		((pfn) < max_mapnr)
--#endif /* CONFIG_FLATMEM */
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- 
-diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 9a62e1d87967..e43fe27ec54d 100644
---- a/arch/arc/include/asm/page.h
-+++ b/arch/arc/include/asm/page.h
-@@ -109,7 +109,6 @@ extern int pfn_valid(unsigned long pfn);
- #else /* CONFIG_HIGHMEM */
- 
- #define ARCH_PFN_OFFSET		virt_to_pfn(CONFIG_LINUX_RAM_BASE)
--#define pfn_valid(pfn)		(((pfn) - ARCH_PFN_OFFSET) < max_mapnr)
- 
- #endif /* CONFIG_HIGHMEM */
- 
-diff --git a/arch/csky/include/asm/page.h b/arch/csky/include/asm/page.h
-index ed7451478b1b..b23e3006a9e0 100644
---- a/arch/csky/include/asm/page.h
-+++ b/arch/csky/include/asm/page.h
-@@ -39,7 +39,6 @@
- 
- #define virt_addr_valid(kaddr)  ((void *)(kaddr) >= (void *)PAGE_OFFSET && \
- 			(void *)(kaddr) < high_memory)
--#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && ((pfn) - ARCH_PFN_OFFSET) < max_mapnr)
- 
- extern void *memset(void *dest, int c, size_t l);
- extern void *memcpy(void *to, const void *from, size_t l);
-diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
-index d7d4f9fca327..9c03b9965f07 100644
---- a/arch/hexagon/include/asm/page.h
-+++ b/arch/hexagon/include/asm/page.h
-@@ -95,7 +95,6 @@ struct page;
- /* Default vm area behavior is non-executable.  */
- #define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
- 
--#define pfn_valid(pfn) ((pfn) < max_mapnr)
- #define virt_addr_valid(kaddr) pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
- 
- /*  Need to not use a define for linesize; may move this to another file.  */
-diff --git a/arch/ia64/include/asm/page.h b/arch/ia64/include/asm/page.h
-index 1b990466d540..783eceab5df3 100644
---- a/arch/ia64/include/asm/page.h
-+++ b/arch/ia64/include/asm/page.h
-@@ -97,10 +97,6 @@ do {						\
- 
- #include <asm-generic/memory_model.h>
- 
--#ifdef CONFIG_FLATMEM
--# define pfn_valid(pfn)		((pfn) < max_mapnr)
--#endif
--
- #define page_to_phys(page)	(page_to_pfn(page) << PAGE_SHIFT)
- #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
-diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
-index 53f284a96182..fb5338b352e6 100644
---- a/arch/loongarch/include/asm/page.h
-+++ b/arch/loongarch/include/asm/page.h
-@@ -82,19 +82,6 @@ typedef struct { unsigned long pgprot; } pgprot_t;
- 
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
- 
--#ifdef CONFIG_FLATMEM
--
--static inline int pfn_valid(unsigned long pfn)
--{
--	/* avoid <linux/mm.h> include hell */
--	extern unsigned long max_mapnr;
--	unsigned long pfn_offset = ARCH_PFN_OFFSET;
--
--	return pfn >= pfn_offset && pfn < max_mapnr;
--}
--
--#endif
--
- #define virt_to_pfn(kaddr)	PFN_DOWN(PHYSADDR(kaddr))
- #define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
- 
-diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
-index 0a8ccef777fd..2555ec57149d 100644
---- a/arch/m68k/include/asm/page_no.h
-+++ b/arch/m68k/include/asm/page_no.h
-@@ -26,8 +26,6 @@ extern unsigned long memory_end;
- #define virt_to_page(addr)	(mem_map + (((unsigned long)(addr)-PAGE_OFFSET) >> PAGE_SHIFT))
- #define page_to_virt(page)	__va(((((page) - mem_map) << PAGE_SHIFT) + PAGE_OFFSET))
- 
--#define pfn_valid(pfn)	        ((pfn) < max_mapnr)
--
- #define	virt_addr_valid(kaddr)	(((unsigned long)(kaddr) >= PAGE_OFFSET) && \
- 				((unsigned long)(kaddr) < memory_end))
- 
-diff --git a/arch/microblaze/include/asm/page.h b/arch/microblaze/include/asm/page.h
-index 4b8b2fa78fc5..7b9861bcd458 100644
---- a/arch/microblaze/include/asm/page.h
-+++ b/arch/microblaze/include/asm/page.h
-@@ -112,7 +112,6 @@ extern int page_is_ram(unsigned long pfn);
- #  define page_to_phys(page)     (page_to_pfn(page) << PAGE_SHIFT)
- 
- #  define ARCH_PFN_OFFSET	(memory_start >> PAGE_SHIFT)
--#  define pfn_valid(pfn)	((pfn) >= ARCH_PFN_OFFSET && (pfn) < (max_mapnr + ARCH_PFN_OFFSET))
- # endif /* __ASSEMBLY__ */
- 
- #define	virt_addr_valid(vaddr)	(pfn_valid(virt_to_pfn(vaddr)))
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 9286f11ff6ad..5978a8dfb917 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -224,19 +224,6 @@ extern phys_addr_t __phys_addr_symbol(unsigned long x);
- 
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
- 
--#ifdef CONFIG_FLATMEM
--
--static inline int pfn_valid(unsigned long pfn)
--{
--	/* avoid <linux/mm.h> include hell */
--	extern unsigned long max_mapnr;
--	unsigned long pfn_offset = ARCH_PFN_OFFSET;
--
--	return pfn >= pfn_offset && pfn < max_mapnr;
--}
--
--#endif
--
- #define virt_to_pfn(kaddr)   	PFN_DOWN(virt_to_phys((void *)(kaddr)))
- #define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
- 
-diff --git a/arch/nios2/include/asm/page.h b/arch/nios2/include/asm/page.h
-index 6a989819a7c1..0ae7d9ce369b 100644
---- a/arch/nios2/include/asm/page.h
-+++ b/arch/nios2/include/asm/page.h
-@@ -86,15 +86,6 @@ extern struct page *mem_map;
- 
- # define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
- 
--static inline bool pfn_valid(unsigned long pfn)
--{
--	/* avoid <linux/mm.h> include hell */
--	extern unsigned long max_mapnr;
--	unsigned long pfn_offset = ARCH_PFN_OFFSET;
--
--	return pfn >= pfn_offset && pfn < max_mapnr;
--}
--
- # define virt_to_page(vaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(vaddr)))
- # define virt_addr_valid(vaddr)	pfn_valid(PFN_DOWN(virt_to_phys(vaddr)))
- 
-diff --git a/arch/openrisc/include/asm/page.h b/arch/openrisc/include/asm/page.h
-index aab6e64d6db4..52b0d7e76446 100644
---- a/arch/openrisc/include/asm/page.h
-+++ b/arch/openrisc/include/asm/page.h
-@@ -80,8 +80,6 @@ typedef struct page *pgtable_t;
- 
- #define page_to_phys(page)      ((dma_addr_t)page_to_pfn(page) << PAGE_SHIFT)
- 
--#define pfn_valid(pfn)          ((pfn) < max_mapnr)
--
- #define virt_addr_valid(kaddr)	(pfn_valid(virt_to_pfn(kaddr)))
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
-index 6faaaa3ebe9b..667e703c0e8f 100644
---- a/arch/parisc/include/asm/page.h
-+++ b/arch/parisc/include/asm/page.h
-@@ -155,10 +155,6 @@ extern int npmem_ranges;
- #define __pa(x)			((unsigned long)(x)-PAGE_OFFSET)
- #define __va(x)			((void *)((unsigned long)(x)+PAGE_OFFSET))
- 
--#ifndef CONFIG_SPARSEMEM
--#define pfn_valid(pfn)		((pfn) < max_mapnr)
--#endif
--
- #ifdef CONFIG_HUGETLB_PAGE
- #define HPAGE_SHIFT		PMD_SHIFT /* fixed for transparent huge pages */
- #define HPAGE_SIZE      	((1UL) << HPAGE_SHIFT)
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index edf1dd1b0ca9..f2b6bf5687d0 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -117,15 +117,6 @@ extern long long virt_phys_offset;
- 
- #ifdef CONFIG_FLATMEM
- #define ARCH_PFN_OFFSET		((unsigned long)(MEMORY_START >> PAGE_SHIFT))
--#ifndef __ASSEMBLY__
--extern unsigned long max_mapnr;
--static inline bool pfn_valid(unsigned long pfn)
--{
--	unsigned long min_pfn = ARCH_PFN_OFFSET;
--
--	return pfn >= min_pfn && pfn < max_mapnr;
--}
--#endif
- #endif
- 
- #define virt_to_pfn(kaddr)	(__pa(kaddr) >> PAGE_SHIFT)
-diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
-index 9f432c1b5289..7fed7c431928 100644
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -171,11 +171,6 @@ extern phys_addr_t __phys_addr_symbol(unsigned long x);
- 
- #define sym_to_pfn(x)           __phys_to_pfn(__pa_symbol(x))
- 
--#ifdef CONFIG_FLATMEM
--#define pfn_valid(pfn) \
--	(((pfn) >= ARCH_PFN_OFFSET) && (((pfn) - ARCH_PFN_OFFSET) < max_mapnr))
--#endif
--
- #endif /* __ASSEMBLY__ */
- 
- #define virt_addr_valid(vaddr)	({						\
-diff --git a/arch/sh/include/asm/page.h b/arch/sh/include/asm/page.h
-index eca5daa43b93..09ac6c7faee0 100644
---- a/arch/sh/include/asm/page.h
-+++ b/arch/sh/include/asm/page.h
-@@ -169,9 +169,6 @@ typedef struct page *pgtable_t;
- #define PFN_START		(__MEMORY_START >> PAGE_SHIFT)
- #define ARCH_PFN_OFFSET		(PFN_START)
- #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
--#ifdef CONFIG_FLATMEM
--#define pfn_valid(pfn)		((pfn) >= min_low_pfn && (pfn) < max_low_pfn)
--#endif
- #define virt_addr_valid(kaddr)	pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
- 
- #include <asm-generic/memory_model.h>
-diff --git a/arch/sparc/include/asm/page_32.h b/arch/sparc/include/asm/page_32.h
-index fff8861df107..6be6f683f98f 100644
---- a/arch/sparc/include/asm/page_32.h
-+++ b/arch/sparc/include/asm/page_32.h
-@@ -130,7 +130,6 @@ extern unsigned long pfn_base;
- #define ARCH_PFN_OFFSET		(pfn_base)
- #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
- 
--#define pfn_valid(pfn)		(((pfn) >= (pfn_base)) && (((pfn)-(pfn_base)) < max_mapnr))
- #define virt_addr_valid(kaddr)	((((unsigned long)(kaddr)-PAGE_OFFSET)>>PAGE_SHIFT) < max_mapnr)
- 
- #include <asm-generic/memory_model.h>
-diff --git a/arch/um/include/asm/page.h b/arch/um/include/asm/page.h
-index cdbd9653aa14..84866127d074 100644
---- a/arch/um/include/asm/page.h
-+++ b/arch/um/include/asm/page.h
-@@ -108,7 +108,6 @@ extern unsigned long uml_physmem;
- #define phys_to_pfn(p) ((p) >> PAGE_SHIFT)
- #define pfn_to_phys(pfn) PFN_PHYS(pfn)
- 
--#define pfn_valid(pfn) ((pfn) < max_mapnr)
- #define virt_addr_valid(v) pfn_valid(phys_to_pfn(__pa(v)))
- 
- #include <asm-generic/memory_model.h>
-diff --git a/arch/x86/include/asm/page_32.h b/arch/x86/include/asm/page_32.h
-index df42f8aa99e4..580d71aca65a 100644
---- a/arch/x86/include/asm/page_32.h
-+++ b/arch/x86/include/asm/page_32.h
-@@ -15,10 +15,6 @@ extern unsigned long __phys_addr(unsigned long);
- #define __phys_addr_symbol(x)	__phys_addr(x)
- #define __phys_reloc_hide(x)	RELOC_HIDE((x), 0)
- 
--#ifdef CONFIG_FLATMEM
--#define pfn_valid(pfn)		((pfn) < max_mapnr)
--#endif /* CONFIG_FLATMEM */
--
- #include <linux/string.h>
- 
- static inline void clear_page(void *page)
-diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_64.h
-index 198e03e59ca1..cc6b8e087192 100644
---- a/arch/x86/include/asm/page_64.h
-+++ b/arch/x86/include/asm/page_64.h
-@@ -39,10 +39,6 @@ extern unsigned long __phys_addr_symbol(unsigned long);
- 
- #define __phys_reloc_hide(x)	(x)
- 
--#ifdef CONFIG_FLATMEM
--#define pfn_valid(pfn)          ((pfn) < max_pfn)
--#endif
--
- void clear_page_orig(void *page);
- void clear_page_rep(void *page);
- void clear_page_erms(void *page);
-diff --git a/arch/xtensa/include/asm/page.h b/arch/xtensa/include/asm/page.h
-index 493eb7083b1a..a77d04972eb9 100644
---- a/arch/xtensa/include/asm/page.h
-+++ b/arch/xtensa/include/asm/page.h
-@@ -11,6 +11,8 @@
- #ifndef _XTENSA_PAGE_H
- #define _XTENSA_PAGE_H
- 
-+#include <linux/const.h>
-+
- #include <asm/processor.h>
- #include <asm/types.h>
- #include <asm/cache.h>
-@@ -189,8 +191,6 @@ static inline unsigned long ___pa(unsigned long va)
- #endif
- #define __va(x)	\
- 	((void *)((unsigned long) (x) - PHYS_OFFSET + PAGE_OFFSET))
--#define pfn_valid(pfn) \
--	((pfn) >= ARCH_PFN_OFFSET && ((pfn) - ARCH_PFN_OFFSET) < max_mapnr)
- 
- #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
- #define page_to_virt(page)	__va(page_to_pfn(page) << PAGE_SHIFT)
-diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-index a2c8ed60233a..13d2a844d928 100644
---- a/include/asm-generic/memory_model.h
-+++ b/include/asm-generic/memory_model.h
-@@ -19,6 +19,18 @@
- #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
- 				 ARCH_PFN_OFFSET)
- 
-+#ifndef pfn_valid
-+static inline int pfn_valid(unsigned long pfn)
-+{
-+	/* avoid <linux/mm.h> include hell */
-+	extern unsigned long max_mapnr;
-+	unsigned long pfn_offset = ARCH_PFN_OFFSET;
-+
-+	return pfn >= pfn_offset && pfn < max_mapnr;
-+}
-+#define pfn_valid pfn_valid
-+#endif
-+
- #elif defined(CONFIG_SPARSEMEM_VMEMMAP)
- 
- /* memmap is virtually contiguous.  */
-diff --git a/include/asm-generic/page.h b/include/asm-generic/page.h
-index 6fc47561814c..c0be2edeb484 100644
---- a/include/asm-generic/page.h
-+++ b/include/asm-generic/page.h
-@@ -84,8 +84,6 @@ extern unsigned long memory_end;
- #define page_to_phys(page)      ((dma_addr_t)page_to_pfn(page) << PAGE_SHIFT)
- #endif
- 
--#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && ((pfn) - ARCH_PFN_OFFSET) < max_mapnr)
--
- #define	virt_addr_valid(kaddr)	(((void *)(kaddr) >= (void *)PAGE_OFFSET) && \
- 				((void *)(kaddr) < (void *)memory_end))
- 
--- 
-2.35.1
-
+> ---
+> v1 -> v2
+> - Revert unneeded changes.
+> - Rebased on latest powerpc/next.
+> 
+> v1
+> - https://lore.kernel.org/all/TYCP286MB2323FCDC7ECD87F8D97CB74BCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM/
+> ---
+>  arch/powerpc/include/asm/macio.h                | 2 +-
+>  drivers/ata/pata_macio.c                        | 4 +---
+>  drivers/macintosh/rack-meter.c                  | 4 +---
+>  drivers/net/ethernet/apple/bmac.c               | 4 +---
+>  drivers/net/ethernet/apple/mace.c               | 4 +---
+>  drivers/net/wireless/intersil/orinoco/airport.c | 4 +---
+>  drivers/scsi/mac53c94.c                         | 5 +----
+>  drivers/scsi/mesh.c                             | 5 +----
+>  drivers/tty/serial/pmac_zilog.c                 | 7 ++-----
+>  sound/aoa/soundbus/i2sbus/core.c                | 4 +---
+>  10 files changed, 11 insertions(+), 32 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/macio.h b/arch/powerpc/include/asm/macio.h
+> index ff5fd82d9ff0..cb9c386dacf8 100644
+> --- a/arch/powerpc/include/asm/macio.h
+> +++ b/arch/powerpc/include/asm/macio.h
+> @@ -125,7 +125,7 @@ static inline struct pci_dev *macio_get_pci_dev(struct macio_dev *mdev)
+>  struct macio_driver
+>  {
+>  	int	(*probe)(struct macio_dev* dev, const struct of_device_id *match);
+> -	int	(*remove)(struct macio_dev* dev);
+> +	void	(*remove)(struct macio_dev *dev);
+>  
+>  	int	(*suspend)(struct macio_dev* dev, pm_message_t state);
+>  	int	(*resume)(struct macio_dev* dev);
+> diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
+> index 9ccaac9e2bc3..653106716a4b 100644
+> --- a/drivers/ata/pata_macio.c
+> +++ b/drivers/ata/pata_macio.c
+> @@ -1187,7 +1187,7 @@ static int pata_macio_attach(struct macio_dev *mdev,
+>  	return rc;
+>  }
+>  
+> -static int pata_macio_detach(struct macio_dev *mdev)
+> +static void pata_macio_detach(struct macio_dev *mdev)
+>  {
+>  	struct ata_host *host = macio_get_drvdata(mdev);
+>  	struct pata_macio_priv *priv = host->private_data;
+> @@ -1202,8 +1202,6 @@ static int pata_macio_detach(struct macio_dev *mdev)
+>  	ata_host_detach(host);
+>  
+>  	unlock_media_bay(priv->mdev->media_bay);
+> -
+> -	return 0;
+>  }
+>  
+>  #ifdef CONFIG_PM_SLEEP
+> diff --git a/drivers/macintosh/rack-meter.c b/drivers/macintosh/rack-meter.c
+> index c28893e41a8b..f2f83c4f3af5 100644
+> --- a/drivers/macintosh/rack-meter.c
+> +++ b/drivers/macintosh/rack-meter.c
+> @@ -523,7 +523,7 @@ static int rackmeter_probe(struct macio_dev* mdev,
+>  	return rc;
+>  }
+>  
+> -static int rackmeter_remove(struct macio_dev* mdev)
+> +static void rackmeter_remove(struct macio_dev *mdev)
+>  {
+>  	struct rackmeter *rm = dev_get_drvdata(&mdev->ofdev.dev);
+>  
+> @@ -558,8 +558,6 @@ static int rackmeter_remove(struct macio_dev* mdev)
+>  
+>  	/* Get rid of me */
+>  	kfree(rm);
+> -
+> -	return 0;
+>  }
+>  
+>  static int rackmeter_shutdown(struct macio_dev* mdev)
+> diff --git a/drivers/net/ethernet/apple/bmac.c b/drivers/net/ethernet/apple/bmac.c
+> index 9e653e2925f7..292b1f9cd9e7 100644
+> --- a/drivers/net/ethernet/apple/bmac.c
+> +++ b/drivers/net/ethernet/apple/bmac.c
+> @@ -1591,7 +1591,7 @@ bmac_proc_info(char *buffer, char **start, off_t offset, int length)
+>  }
+>  #endif
+>  
+> -static int bmac_remove(struct macio_dev *mdev)
+> +static void bmac_remove(struct macio_dev *mdev)
+>  {
+>  	struct net_device *dev = macio_get_drvdata(mdev);
+>  	struct bmac_data *bp = netdev_priv(dev);
+> @@ -1609,8 +1609,6 @@ static int bmac_remove(struct macio_dev *mdev)
+>  	macio_release_resources(mdev);
+>  
+>  	free_netdev(dev);
+> -
+> -	return 0;
+>  }
+>  
+>  static const struct of_device_id bmac_match[] =
+> diff --git a/drivers/net/ethernet/apple/mace.c b/drivers/net/ethernet/apple/mace.c
+> index fd1b008b7208..e6350971c707 100644
+> --- a/drivers/net/ethernet/apple/mace.c
+> +++ b/drivers/net/ethernet/apple/mace.c
+> @@ -272,7 +272,7 @@ static int mace_probe(struct macio_dev *mdev, const struct of_device_id *match)
+>  	return rc;
+>  }
+>  
+> -static int mace_remove(struct macio_dev *mdev)
+> +static void mace_remove(struct macio_dev *mdev)
+>  {
+>  	struct net_device *dev = macio_get_drvdata(mdev);
+>  	struct mace_data *mp;
+> @@ -296,8 +296,6 @@ static int mace_remove(struct macio_dev *mdev)
+>  	free_netdev(dev);
+>  
+>  	macio_release_resources(mdev);
+> -
+> -	return 0;
+>  }
+>  
+>  static void dbdma_reset(volatile struct dbdma_regs __iomem *dma)
+> diff --git a/drivers/net/wireless/intersil/orinoco/airport.c b/drivers/net/wireless/intersil/orinoco/airport.c
+> index a890bfa0d5cc..276a06cdd1f5 100644
+> --- a/drivers/net/wireless/intersil/orinoco/airport.c
+> +++ b/drivers/net/wireless/intersil/orinoco/airport.c
+> @@ -85,7 +85,7 @@ airport_resume(struct macio_dev *mdev)
+>  	return err;
+>  }
+>  
+> -static int
+> +static void
+>  airport_detach(struct macio_dev *mdev)
+>  {
+>  	struct orinoco_private *priv = dev_get_drvdata(&mdev->ofdev.dev);
+> @@ -111,8 +111,6 @@ airport_detach(struct macio_dev *mdev)
+>  
+>  	macio_set_drvdata(mdev, NULL);
+>  	free_orinocodev(priv);
+> -
+> -	return 0;
+>  }
+>  
+>  static int airport_hard_reset(struct orinoco_private *priv)
+> diff --git a/drivers/scsi/mac53c94.c b/drivers/scsi/mac53c94.c
+> index f75928f7773e..42648ca9b8ed 100644
+> --- a/drivers/scsi/mac53c94.c
+> +++ b/drivers/scsi/mac53c94.c
+> @@ -508,7 +508,7 @@ static int mac53c94_probe(struct macio_dev *mdev, const struct of_device_id *mat
+>  	return rc;
+>  }
+>  
+> -static int mac53c94_remove(struct macio_dev *mdev)
+> +static void mac53c94_remove(struct macio_dev *mdev)
+>  {
+>  	struct fsc_state *fp = (struct fsc_state *)macio_get_drvdata(mdev);
+>  	struct Scsi_Host *host = fp->host;
+> @@ -526,11 +526,8 @@ static int mac53c94_remove(struct macio_dev *mdev)
+>  	scsi_host_put(host);
+>  
+>  	macio_release_resources(mdev);
+> -
+> -	return 0;
+>  }
+>  
+> -
+>  static struct of_device_id mac53c94_match[] = 
+>  {
+>  	{
+> diff --git a/drivers/scsi/mesh.c b/drivers/scsi/mesh.c
+> index 84b541a57b7b..cd2575b88c85 100644
+> --- a/drivers/scsi/mesh.c
+> +++ b/drivers/scsi/mesh.c
+> @@ -1986,7 +1986,7 @@ static int mesh_probe(struct macio_dev *mdev, const struct of_device_id *match)
+>  	return -ENODEV;
+>  }
+>  
+> -static int mesh_remove(struct macio_dev *mdev)
+> +static void mesh_remove(struct macio_dev *mdev)
+>  {
+>  	struct mesh_state *ms = (struct mesh_state *)macio_get_drvdata(mdev);
+>  	struct Scsi_Host *mesh_host = ms->host;
+> @@ -2013,11 +2013,8 @@ static int mesh_remove(struct macio_dev *mdev)
+>  	macio_release_resources(mdev);
+>  
+>  	scsi_host_put(mesh_host);
+> -
+> -	return 0;
+>  }
+>  
+> -
+>  static struct of_device_id mesh_match[] = 
+>  {
+>  	{
+> diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
+> index 13668ffdb1e7..d4640479c338 100644
+> --- a/drivers/tty/serial/pmac_zilog.c
+> +++ b/drivers/tty/serial/pmac_zilog.c
+> @@ -1507,12 +1507,12 @@ static int pmz_attach(struct macio_dev *mdev, const struct of_device_id *match)
+>   * That one should not be called, macio isn't really a hotswap device,
+>   * we don't expect one of those serial ports to go away...
+>   */
+> -static int pmz_detach(struct macio_dev *mdev)
+> +static void pmz_detach(struct macio_dev *mdev)
+>  {
+>  	struct uart_pmac_port	*uap = dev_get_drvdata(&mdev->ofdev.dev);
+>  	
+>  	if (!uap)
+> -		return -ENODEV;
+> +		return;
+>  
+>  	uart_remove_one_port(&pmz_uart_reg, &uap->port);
+>  
+> @@ -1523,11 +1523,8 @@ static int pmz_detach(struct macio_dev *mdev)
+>  	dev_set_drvdata(&mdev->ofdev.dev, NULL);
+>  	uap->dev = NULL;
+>  	uap->port.dev = NULL;
+> -	
+> -	return 0;
+>  }
+>  
+> -
+>  static int pmz_suspend(struct macio_dev *mdev, pm_message_t pm_state)
+>  {
+>  	struct uart_pmac_port *uap = dev_get_drvdata(&mdev->ofdev.dev);
+> diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
+> index 51ed2f34b276..35f39727994d 100644
+> --- a/sound/aoa/soundbus/i2sbus/core.c
+> +++ b/sound/aoa/soundbus/i2sbus/core.c
+> @@ -364,15 +364,13 @@ static int i2sbus_probe(struct macio_dev* dev, const struct of_device_id *match)
+>  	return 0;
+>  }
+>  
+> -static int i2sbus_remove(struct macio_dev* dev)
+> +static void i2sbus_remove(struct macio_dev *dev)
+>  {
+>  	struct i2sbus_control *control = dev_get_drvdata(&dev->ofdev.dev);
+>  	struct i2sbus_dev *i2sdev, *tmp;
+>  
+>  	list_for_each_entry_safe(i2sdev, tmp, &control->list, item)
+>  		soundbus_remove_one(&i2sdev->sound);
+> -
+> -	return 0;
+>  }
+>  
+>  #ifdef CONFIG_PM
+> -- 
+> 2.25.1
+> 
