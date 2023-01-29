@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F135467FF32
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 13:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E3967FF35
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 13:45:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P4WGv68B6z3ccn
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 23:44:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P4WHv35mwz3f5f
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jan 2023 23:45:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOlDKwso;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R0nQr0pB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOlDKwso;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R0nQr0pB;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P4WFB4hjhz3cMt
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 23:43:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P4WFV3BMdz3cS4
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jan 2023 23:43:26 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B6AB160D3D;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id ABFF360D42;
+	Sun, 29 Jan 2023 12:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB863C433A8;
 	Sun, 29 Jan 2023 12:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C73C433A7;
-	Sun, 29 Jan 2023 12:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674996188;
-	bh=cgWDMwNotrvgtwLOXkxr022OhYpC4uBm5qKZZMTCdc4=;
+	s=k20201202; t=1674996199;
+	bh=LN+b67L2GuYmW7NwwfmoYPOQn6/pUneVShVCsQXwAMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOlDKwso6wRfZVylh618GS0Ouplr5vx0EbZPPHD3xUb+8QoPpiFEHadR57onqorCd
-	 YVV0X4T7n8gLAlDCcDoHkjHy+WzsJoiwhi5dfYlZ0/SJbhBTB4CLpq8O6xDe8ABdAj
-	 ibLF/6hCOLr13VOj/azi035hOFFfeFmuDXjRvCo9nQzUAZ1DneDknyLVqg+z3u91Hb
-	 JSM0yS+mjSe2REo/FRs3DbdIX7npqpWYBVELIqlPxuJWRXDIEj2eP/ud0TKhe2R7e/
-	 shdVeHbLA/9GwBZjKAbCX1zbNI+chUKkqGr1E/I9bnpduDb0l68n12sXR48UTQjqrn
-	 2HPElfopuZj9Q==
+	b=R0nQr0pB/ARk6wpI1wApVcVwgzvL3nJvZL0d1rEEnUQjWCN8tFtMC8RLAoPrMcWp2
+	 RDTPNMDGCtYLZKrFtqYc+unayS8BpfmpBREVaITviVkY9SQqoa9DIPak7ZMaylUoNU
+	 XkEUMVMunXKWmZPR9BcpXjNlA5vQUkeeuQZo5bDTV+GIseFI+xGOGnl6U0jF878itf
+	 mh/e6H0Y33/zTuC21r/0CJPhnc1+7P3/Qqea7El3CYfWpYJrYLN7QObiWb+sV322Md
+	 3wRUSA/Myj0DO5A4pbRCW2jOQFtmwI9nGJsN3Q1ij2VEBYnaXPWn8lukuSf+C48vvu
+	 mJ0VjB6iJLE0w==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 1/4] arm: include asm-generic/memory_model.h from page.h rather than memory.h
-Date: Sun, 29 Jan 2023 14:42:32 +0200
-Message-Id: <20230129124235.209895-2-rppt@kernel.org>
+Subject: [PATCH v2 2/4] m68k: use asm-generic/memory_model.h for both MMU and !MMU
+Date: Sun, 29 Jan 2023 14:42:33 +0200
+Message-Id: <20230129124235.209895-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230129124235.209895-1-rppt@kernel.org>
 References: <20230129124235.209895-1-rppt@kernel.org>
@@ -66,46 +66,64 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-Makes it consistent with other architectures and allows for generic
-definition of pfn_valid() in asm-generic/memory_model.h with clear override
-in arch/arm/include/asm/page.h
+The MMU variant uses generic definitions of page_to_pfn() and
+pfn_to_page(), but !MMU defines them in include/asm/page_no.h for no
+good reason.
+
+Include asm-generic/memory_model.h in the common include/asm/page.h and
+drop redundant definitions.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/arm/include/asm/memory.h | 2 --
- arch/arm/include/asm/page.h   | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/m68k/include/asm/page.h    | 6 +-----
+ arch/m68k/include/asm/page_mm.h | 1 -
+ arch/m68k/include/asm/page_no.h | 2 --
+ 3 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
-index d8eef4bd8c71..62e9df024445 100644
---- a/arch/arm/include/asm/memory.h
-+++ b/arch/arm/include/asm/memory.h
-@@ -386,6 +386,4 @@ static inline unsigned long __virt_to_idmap(unsigned long x)
- 
+diff --git a/arch/m68k/include/asm/page.h b/arch/m68k/include/asm/page.h
+index 2f1c54e4725d..a5993ad83ed8 100644
+--- a/arch/m68k/include/asm/page.h
++++ b/arch/m68k/include/asm/page.h
+@@ -62,11 +62,7 @@ extern unsigned long _ramend;
+ #include <asm/page_no.h>
  #endif
  
--#include <asm-generic/memory_model.h>
+-#ifndef CONFIG_MMU
+-#define __phys_to_pfn(paddr)	((unsigned long)((paddr) >> PAGE_SHIFT))
+-#define __pfn_to_phys(pfn)	PFN_PHYS(pfn)
+-#endif
 -
- #endif
-diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
-index 5fcc8a600e36..74bb5947b387 100644
---- a/arch/arm/include/asm/page.h
-+++ b/arch/arm/include/asm/page.h
-@@ -158,6 +158,7 @@ typedef struct page *pgtable_t;
- 
- #ifdef CONFIG_HAVE_ARCH_PFN_VALID
- extern int pfn_valid(unsigned long);
-+#define pfn_valid pfn_valid
- #endif
- 
- #include <asm/memory.h>
-@@ -167,5 +168,6 @@ extern int pfn_valid(unsigned long);
- #define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
  #include <asm-generic/getorder.h>
 +#include <asm-generic/memory_model.h>
  
- #endif
+ #endif /* _M68K_PAGE_H */
+diff --git a/arch/m68k/include/asm/page_mm.h b/arch/m68k/include/asm/page_mm.h
+index a5b459bcb7d8..3903db2e8da7 100644
+--- a/arch/m68k/include/asm/page_mm.h
++++ b/arch/m68k/include/asm/page_mm.h
+@@ -134,7 +134,6 @@ extern int m68k_virt_to_node_shift;
+ })
+ 
+ #define ARCH_PFN_OFFSET (m68k_memory[0].addr >> PAGE_SHIFT)
+-#include <asm-generic/memory_model.h>
+ 
+ #define virt_addr_valid(kaddr)	((unsigned long)(kaddr) >= PAGE_OFFSET && (unsigned long)(kaddr) < (unsigned long)high_memory)
+ #define pfn_valid(pfn)		virt_addr_valid(pfn_to_virt(pfn))
+diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
+index c9d0d84158a4..0a8ccef777fd 100644
+--- a/arch/m68k/include/asm/page_no.h
++++ b/arch/m68k/include/asm/page_no.h
+@@ -26,8 +26,6 @@ extern unsigned long memory_end;
+ #define virt_to_page(addr)	(mem_map + (((unsigned long)(addr)-PAGE_OFFSET) >> PAGE_SHIFT))
+ #define page_to_virt(page)	__va(((((page) - mem_map) << PAGE_SHIFT) + PAGE_OFFSET))
+ 
+-#define pfn_to_page(pfn)	virt_to_page(pfn_to_virt(pfn))
+-#define page_to_pfn(page)	virt_to_pfn(page_to_virt(page))
+ #define pfn_valid(pfn)	        ((pfn) < max_mapnr)
+ 
+ #define	virt_addr_valid(kaddr)	(((unsigned long)(kaddr) >= PAGE_OFFSET) && \
 -- 
 2.35.1
 
