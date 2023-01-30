@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E98681E4A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 23:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D2E681E5F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 23:47:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5NXv3yhKz3bXQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:44:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5Nbz1XkDz3f5Q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:47:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Po18K8qD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g5jT/Q+3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Po18K8qD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g5jT/Q+3;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5NWx6wRrz2xkm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 09:43:57 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UKwl1q022242
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:55 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5NWz1h1jz2xkm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 09:43:58 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30ULKdeT004111
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=9szCe/pMSxH3ejAhsLxrEZP38yMrVIthoS8DpxwfO28=;
- b=Po18K8qDl8cyIJe9JAEJQwLWaExX987kV0nN77rHAemUI7/frYLQK0J7Bqk1Gomk/bsF
- mwdgZ2BncdY/zU1xKQJTcoCW93ANcZFxyM7YJJp2h8kGfSn1rnqsGrywVPAtZA5o9fXh
- pUXmFSTDrMscqgMwW1oe3mzdGqZYqIQseLJsxo1IyUGs1PyUBWHoDBpjuSGxBWlqtb5Q
- meGs8tSAjJ0wZzKkmUnXKhAqNwVvJsII6W/jWJTYKvItfBWcP8dBq1VAsTgRyssMKm16
- lrZirbCGgHB/2m/9EvXGrZ9OQJNVWjchlgiViNyEj48AAqZda1wDh7qwyKy5cpErmRFU 6Q== 
+ bh=2xwKp84M79wmucUQK2UjfTEtoLiOx5WCvSxnoWSN6LM=;
+ b=g5jT/Q+3yBW2SE5FI3V9DQv3QPAAQyjGOGWgANIesv+jupxIDEgX9iN9xgDhyo2E4GYU
+ MQJpTTm259vo6hJYvwIr6kntcih+nrVzmasSxsCNMXO6FcP+eGr6IgXQbH1Qxrtu6yuc
+ 7VM9D3SvccSb5l5CcW+4Hd1xlBaz1hqqIZHlZetZ6pb76RzEuHpfhZmhZ4q3fZPP/zob
+ 5lu5dLXanIQXspV5CW5ZcOFpGnWFu4l+u6HcACoTYcas+MYskmXobrgGzVXYg8mEj40Z
+ dO1qo4onmKIe+ExLYY1fseVyjMnAYetPq4LHvdkxP1vqw0nNOW4rxEbb9EKQJyRAZGHE Ow== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nemu9u5y8-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nenqq1r64-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:54 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30UMJBl0004060
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:54 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nemu9u5xw-1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:55 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30UMcuuF030921
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:55 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nenqq1r5r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jan 2023 22:43:55 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30ULUKMN006475;
+	Mon, 30 Jan 2023 22:43:54 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3ncvtm86cc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 30 Jan 2023 22:43:54 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UL95Fm025825;
-	Mon, 30 Jan 2023 22:43:53 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3ncvtrg8ac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 22:43:53 +0000
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30UMhqsC36766112
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30UMhrex41550318
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jan 2023 22:43:52 GMT
+	Mon, 30 Jan 2023 22:43:53 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4408D58053;
+	by IMSVA (Postfix) with ESMTP id 097065805F;
+	Mon, 30 Jan 2023 22:43:53 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D81F58043;
 	Mon, 30 Jan 2023 22:43:52 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B184858043;
-	Mon, 30 Jan 2023 22:43:51 +0000 (GMT)
 Received: from li-6bf4d4cc-31f5-11b2-a85c-838e9310af65.ibm.com.com (unknown [9.163.39.106])
 	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 30 Jan 2023 22:43:51 +0000 (GMT)
+	Mon, 30 Jan 2023 22:43:52 +0000 (GMT)
 From: Brian King <brking@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/7] hvcs: Fix hvcs port reference counting
-Date: Mon, 30 Jan 2023 16:43:15 -0600
-Message-Id: <20230130224321.164843-2-brking@linux.vnet.ibm.com>
+Subject: [PATCH 2/7] hvcs: Remove sysfs file prior to vio unregister
+Date: Mon, 30 Jan 2023 16:43:16 -0600
+Message-Id: <20230130224321.164843-3-brking@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230130224321.164843-1-brking@linux.vnet.ibm.com>
 References: <20230130224321.164843-1-brking@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: u1lJ6S3-BnbgxW3YnakXly4mkM2zip-O
-X-Proofpoint-ORIG-GUID: QhD0OzEQyKYC2KDL8pGZS5-fnIFN_1ZV
+X-Proofpoint-ORIG-GUID: jHCAQCGRFUaH0Cc8hj7Ghur9ZZ_nKc7Y
+X-Proofpoint-GUID: sI34prKdPvMbRyuPn6QtfYwrh223kE8E
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-30_17,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 mlxscore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxscore=0 phishscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 adultscore=0 mlxlogscore=934 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2301300206
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +100,37 @@ Cc: Brian King <brking@linux.vnet.ibm.com>, mmc@linux.vnet.ibm.com, brking@pobox
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hvcs driver only ever gets two references to the port. One
-at initialization time, and one at install time. Remove the code
-that was trying to do multiple port puts for each open, which
-would result in more puts than gets.
+This moves the removal of the rescan sysfs attribute to occur
+before the call to unregister the vio to ensure the removal
+does not fail due to the vio driver already being freed.
 
 Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
 ---
- drivers/tty/hvc/hvcs.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/tty/hvc/hvcs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
-index 4ba24963685e..faf5ccfc561e 100644
+index faf5ccfc561e..9131dcb2e8d8 100644
 --- a/drivers/tty/hvc/hvcs.c
 +++ b/drivers/tty/hvc/hvcs.c
-@@ -1215,12 +1215,9 @@ static void hvcs_hangup(struct tty_struct * tty)
+@@ -1519,6 +1519,8 @@ static int __init hvcs_module_init(void)
+ 
+ static void __exit hvcs_module_exit(void)
  {
- 	struct hvcs_struct *hvcsd = tty->driver_data;
- 	unsigned long flags;
--	int temp_open_count;
- 	int irq;
- 
- 	spin_lock_irqsave(&hvcsd->lock, flags);
--	/* Preserve this so that we know how many kref refs to put */
--	temp_open_count = hvcsd->port.count;
- 
++	driver_remove_file(&hvcs_vio_driver.driver, &driver_attr_rescan);
++
  	/*
- 	 * Don't kref put inside the spinlock because the destruction
-@@ -1247,21 +1244,6 @@ static void hvcs_hangup(struct tty_struct * tty)
- 	spin_unlock_irqrestore(&hvcsd->lock, flags);
+ 	 * This driver receives hvcs_remove callbacks for each device upon
+ 	 * module removal.
+@@ -1538,8 +1540,6 @@ static void __exit hvcs_module_exit(void)
+ 	hvcs_pi_buff = NULL;
+ 	spin_unlock(&hvcs_pi_lock);
  
- 	free_irq(irq, hvcsd);
+-	driver_remove_file(&hvcs_vio_driver.driver, &driver_attr_rescan);
 -
--	/*
--	 * We need to kref_put() for every open_count we have since the
--	 * tty_hangup() function doesn't invoke a close per open connection on a
--	 * non-console device.
--	 */
--	while(temp_open_count) {
--		--temp_open_count;
--		/*
--		 * The final put will trigger destruction of the hvcs_struct.
--		 * NOTE:  If this hangup was signaled from user space then the
--		 * final put will never happen.
--		 */
--		tty_port_put(&hvcsd->port);
--	}
- }
+ 	tty_unregister_driver(hvcs_tty_driver);
  
- /*
+ 	hvcs_free_index_list();
 -- 
 2.31.1
 
