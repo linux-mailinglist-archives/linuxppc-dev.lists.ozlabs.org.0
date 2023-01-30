@@ -2,57 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE1668192F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 19:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C97D681E16
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 23:30:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5GwF0K3Cz3f3s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 05:31:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5ND82F54z3cLR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:30:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=eYp1e+Hl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.44; helo=mail-oa1-f44.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d34; helo=mail-io1-xd34.google.com; envelope-from=skhan@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=eYp1e+Hl;
+	dkim-atps=neutral
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5Gvj5bVYz3bZv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 05:30:41 +1100 (AEDT)
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-1631b928691so16182222fac.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 10:30:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5NCD3gH3z309T
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 09:29:26 +1100 (AEDT)
+Received: by mail-io1-xd34.google.com with SMTP id e204so5045016iof.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 14:29:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FrkG7DevmIdVc4QArNSZDf3MBemOe3Y2WuDo8bGLhYY=;
+        b=eYp1e+HlTRtX/dmDx1X/Nzf4NRNxwLZBD1+YjCo8GWixigQSZfNV0vOpD3Z39FSFXX
+         v8f/klrijTAWh0RAdtn0o4kbVmd7JYq4DxFZeVpqGFwFRiQvnGkAcaQ07no/E8wTF4jw
+         esuV9HG5GnmnBMJQI99nqNS77Bd+cbKzC/1K8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UL0XOnM/U7AHKraTDCdJZWk2TQOTKFX1C9g4dchN86w=;
-        b=MeS5cBNRSFjf2PbO91fWf2PwDZVpClLkeUaUTOACIDj4GHbsLgpzMersibA4Hn8dAv
-         ILJrtGtTv3Ns2gSXN0DO7gHZ55JxdcwYYZvR+Nk6VnM/OXbp2iTVxYdGxN23oi1t29Fy
-         aN4qT5Eoa1Qpkgcx7WMZpBCGT/G9Iew+XaSlL/Ynd5vf+5djQyxrUsNfzG8qRFY4TO4f
-         8JdCHM6e4eXdr179KCfzBLNFEhkBQ70wFN4z5GkNAm/Rr1yNv3RaD9fNhlv+GkEn1ADP
-         irvNPUVpxXSV+1Vs+6AF5Fki+0tBZXSTSaNN181ak90q6QH7paByPbotGYDYfiUBjZ3F
-         Cigw==
-X-Gm-Message-State: AO0yUKU6LLVBi9ZXKxUGMy2TG1EC8LQYAPkvw4+CNCSgIcbkzfrUYmVJ
-	VSVE19v14XhJ4lgUNNJGLg==
-X-Google-Smtp-Source: AK7set8WumFqo2/url09aCWXFr9d4CgsgMxE0JPfvUmC+ZR+vH6Rzi3hfHg9slwsD0qBFnUrzRcYzQ==
-X-Received: by 2002:a05:6870:2482:b0:156:6665:ed6d with SMTP id s2-20020a056870248200b001566665ed6dmr4636731oaq.38.1675103439204;
-        Mon, 30 Jan 2023 10:30:39 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w17-20020a056870e2d100b00144e6ffe9e5sm5534767oad.47.2023.01.30.10.30.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jan 2023 10:30:38 -0800 (PST)
-Received: (nullmailer pid 3079408 invoked by uid 1000);
-	Mon, 30 Jan 2023 18:30:37 -0000
-Date: Mon, 30 Jan 2023 12:30:37 -0600
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v4 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
- controller
-Message-ID: <20230130183037.GA3076426-robh@kernel.org>
-References: <20230126083222.374243-1-herve.codina@bootlin.com>
- <20230126083222.374243-6-herve.codina@bootlin.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FrkG7DevmIdVc4QArNSZDf3MBemOe3Y2WuDo8bGLhYY=;
+        b=G/6c30Te0ScBwPirg8oQ/qfaL2MlGH2f9mZH0Pu5rB3Sf1hN0VAR2PE/jcA27bVzCY
+         HgNCUR2X/ZgLFupQKjdLYSrquRsKxfS8xYDGypUCuiRWFWDb6ZAPZ+HQz0zvd0VpkP9S
+         7fH/dyywQf8lzVrk3fLdnMiheFSUk3FFvn/WoaEYjZqng3wFPdCTFUq8G+5A29ihqNFD
+         VY7khYWcO86QgkdT1hZNsFGjSmftXyJxKP5guTgCS0QmguLSZxBRT2Q2l2X0+0/etWkv
+         YjPzMrMABTy17V7kiplG0egi5C26PZYT2hl+G0hyYK2K4tOrGCpdGkooPPpnK03C474T
+         rRGg==
+X-Gm-Message-State: AO0yUKXaRJRprAcSNmqYorCQO9IivPMy+pmjmgLcvmFQoFyDNMz3Dkja
+	Lc8m6JlYVqy4eraPmKz9XiYz/A==
+X-Google-Smtp-Source: AK7set911zMxEqxO1w9EG1O10Ez3qr3zH2+1KFmESEgMcD4E8s1Ysp+q7URLob2ktg+Dq9IYDPRD9g==
+X-Received: by 2002:a5d:9d11:0:b0:718:2fa2:6648 with SMTP id j17-20020a5d9d11000000b007182fa26648mr1441851ioj.2.1675117763133;
+        Mon, 30 Jan 2023 14:29:23 -0800 (PST)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id c4-20020a92cf44000000b00310c6f85ea9sm3699637ilr.82.2023.01.30.14.29.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Jan 2023 14:29:22 -0800 (PST)
+Message-ID: <560824bd-da2d-044c-4f71-578fc34a47cd@linuxfoundation.org>
+Date: Mon, 30 Jan 2023 15:29:21 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230126083222.374243-6-herve.codina@bootlin.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 00/34] selftests: Fix incorrect kernel headers search path
+Content-Language: en-US
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>
+References: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,199 +80,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 09:32:17AM +0100, Herve Codina wrote:
-> Add support for the QMC (QUICC Multichannel Controller)
-> available in some PowerQUICC SoC such as MPC885 or MPC866.
+On 1/27/23 06:57, Mathieu Desnoyers wrote:
+> Hi,
 > 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 167 ++++++++++++++++++
-
-fsl,cpm1-scc-qmc.yaml
-
->  1 file changed, 167 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+> This series fixes incorrect kernel header search path in kernel
+> selftests.
 > 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
-> new file mode 100644
-> index 000000000000..9141a8ca183b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
-> @@ -0,0 +1,167 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
-> +
-> +maintainers:
-> +  - Herve Codina <herve.codina@bootlin.com>
-> +
-> +description:
-> +  The QMC (QUICC Multichannel Controller) emulates up to 64 channels within one
-> +  serial controller using the same TDM physical interface routed from TSA.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,mpc885-scc-qmc
-> +          - fsl,mpc866-scc-qmc
-> +      - const: fsl,cpm1-scc-qmc
-> +
-> +  reg:
-> +    items:
-> +      - description: SCC (Serial communication controller) register base
-> +      - description: SCC parameter ram base
-> +      - description: Dual port ram base
-> +
-> +  reg-names:
-> +    items:
-> +      - const: scc_regs
-> +      - const: scc_pram
-> +      - const: dpram
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description: SCC interrupt line in the CPM interrupt controller
-> +
-> +  fsl,tsa-serial:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: phandle to TSA node
-> +          - enum: [1, 2, 3]
-> +            description: |
-> +              TSA serial interface (dt-bindings/soc/fsl,tsa.h defines these
-> +              values)
-> +               - 1: SCC2
-> +               - 2: SCC3
-> +               - 3: SCC4
-> +    description:
-> +      Should be a phandle/number pair. The phandle to TSA node and the TSA
-> +      serial interface to use.
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  '#chan-cells':
-> +    const: 1
-
-What's this?
-
-> +
-> +patternProperties:
-> +  '^channel@([0-9]|[1-5][0-9]|6[0-3])$':
-> +    description:
-> +      A channel managed by this controller
-> +    type: object
-> +
-> +    properties:
-> +      reg:
-> +        minimum: 0
-> +        maximum: 63
-> +        description:
-> +          The channel number
-> +
-> +      fsl,operational-mode:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        enum: [transparent, hdlc]
-> +        default: transparent
-> +        description: |
-> +          The channel operational mode
-> +            - hdlc: The channel handles HDLC frames
-> +            - transparent: The channel handles raw data without any processing
-> +
-> +      fsl,reverse-data:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          The bit order as seen on the channels is reversed,
-> +          transmitting/receiving the MSB of each octet first.
-> +          This flag is used only in 'transparent' mode.
-> +
-> +      fsl,tx-ts-mask:
-> +        $ref: /schemas/types.yaml#/definitions/uint64
-> +        description:
-> +          Channel assigned Tx time-slots within the Tx time-slots routed by the
-> +          TSA to this cell.
-> +
-> +      fsl,rx-ts-mask:
-> +        $ref: /schemas/types.yaml#/definitions/uint64
-> +        description:
-> +          Channel assigned Rx time-slots within the Rx time-slots routed by the
-> +          TSA to this cell.
-> +
-> +    required:
-> +      - reg
-> +      - fsl,tx-ts-mask
-> +      - fsl,rx-ts-mask
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - interrupts
-> +  - fsl,tsa-serial
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +  - '#chan-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/soc/fsl,tsa.h>
-> +
-> +    qmc@a60 {
-> +        compatible = "fsl,mpc885-scc-qmc", "fsl,cpm1-scc-qmc";
-> +        reg = <0xa60 0x20>,
-> +              <0x3f00 0xc0>,
-> +              <0x2000 0x1000>;
-> +        reg-names = "scc_regs", "scc_pram", "dpram";
-> +        interrupts = <27>;
-> +        interrupt-parent = <&CPM_PIC>;
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        #chan-cells = <1>;
-> +
-> +        fsl,tsa-serial = <&tsa FSL_CPM_TSA_SCC4>;
-> +
-> +        channel@16 {
-> +            /* Ch16 : First 4 even TS from all routed from TSA */
-> +            reg = <16>;
-> +            fsl,mode = "transparent";
-> +            fsl,reverse-data;
-> +            fsl,tx-ts-mask = <0x00000000 0x000000aa>;
-> +            fsl,rx-ts-mask = <0x00000000 0x000000aa>;
-> +        };
-> +
-> +        channel@17 {
-> +            /* Ch17 : First 4 odd TS from all routed from TSA */
-> +            reg = <17>;
-> +            fsl,mode = "transparent";
-> +            fsl,reverse-data;
-> +            fsl,tx-ts-mask = <0x00000000 0x00000055>;
-> +            fsl,rx-ts-mask = <0x00000000 0x00000055>;
-> +        };
-> +
-> +        channel@19 {
-> +            /* Ch19 : 8 TS (TS 8..15) from all routed from TSA */
-> +            reg = <19>;
-> +            fsl,mode = "hdlc";
-> +            fsl,tx-ts-mask = <0x00000000 0x0000ff00>;
-> +            fsl,rx-ts-mask = <0x00000000 0x0000ff00>;
-> +        };
-> +    };
-> -- 
-> 2.39.0
+> Near the end of the series, a few changes are not tagged as "Fixes"
+> because the current behavior is to rely on the kernel sources uapi files
+> rather than on the installed kernel header files. Nevertheless, those
+> are updated for consistency.
 > 
+> There are situations where "../../../../include/" was added to -I search
+> path, which is bogus for userspace tests and caused issues with types.h.
+> Those are removed.
+> 
+> Thanks,
+> 
+> Mathieu
+> 
+> Mathieu Desnoyers (34):
+
+The below patches are now applied to linux-kselftest next for Linux 6.3-rc1
+
+>    selftests: arm64: Fix incorrect kernel headers search path
+>    selftests: clone3: Fix incorrect kernel headers search path
+>    selftests: core: Fix incorrect kernel headers search path
+>    selftests: dma: Fix incorrect kernel headers search path
+>    selftests: dmabuf-heaps: Fix incorrect kernel headers search path
+>    selftests: drivers: Fix incorrect kernel headers search path
+>    selftests: filesystems: Fix incorrect kernel headers search path
+>    selftests: futex: Fix incorrect kernel headers search path
+>    selftests: gpio: Fix incorrect kernel headers search path
+>    selftests: ipc: Fix incorrect kernel headers search path
+>    selftests: kcmp: Fix incorrect kernel headers search path
+>    selftests: media_tests: Fix incorrect kernel headers search path
+>    selftests: membarrier: Fix incorrect kernel headers search path
+>    selftests: mount_setattr: Fix incorrect kernel headers search path
+>    selftests: move_mount_set_group: Fix incorrect kernel headers search
+>      path
+>    selftests: perf_events: Fix incorrect kernel headers search path
+>    selftests: pid_namespace: Fix incorrect kernel headers search path
+>    selftests: pidfd: Fix incorrect kernel headers search path
+>    selftests: ptp: Fix incorrect kernel headers search path
+>    selftests: rseq: Fix incorrect kernel headers search path
+>    selftests: sched: Fix incorrect kernel headers search path
+>    selftests: seccomp: Fix incorrect kernel headers search path
+>    selftests: sync: Fix incorrect kernel headers search path
+>    selftests: user_events: Fix incorrect kernel headers search path
+>    selftests: vm: Fix incorrect kernel headers search path
+>    selftests: x86: Fix incorrect kernel headers search path
+>    selftests: iommu: Use installed kernel headers search path
+>    selftests: memfd: Use installed kernel headers search path
+>    selftests: ptrace: Use installed kernel headers search path
+>    selftests: tdx: Use installed kernel headers search path
+> 
+
+These will be applied by maintainers to their trees.
+
+>    selftests: bpf: Fix incorrect kernel headers search path # 02/34
+>    selftests: net: Fix incorrect kernel headers search path # 17/34
+>    selftests: powerpc: Fix incorrect kernel headers search path # 21/34
+>    selftests: bpf docs: Use installed kernel headers search path # 30/34
+
+thanks,
+-- Shuah
