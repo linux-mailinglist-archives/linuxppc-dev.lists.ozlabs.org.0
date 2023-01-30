@@ -2,73 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C97D681E16
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 23:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2405681E52
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 23:45:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5ND82F54z3cLR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:30:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5NYw5jrWz3cNJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:45:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=eYp1e+Hl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B59+4P+I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d34; helo=mail-io1-xd34.google.com; envelope-from=skhan@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=eYp1e+Hl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B59+4P+I;
 	dkim-atps=neutral
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5NCD3gH3z309T
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 09:29:26 +1100 (AEDT)
-Received: by mail-io1-xd34.google.com with SMTP id e204so5045016iof.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 14:29:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FrkG7DevmIdVc4QArNSZDf3MBemOe3Y2WuDo8bGLhYY=;
-        b=eYp1e+HlTRtX/dmDx1X/Nzf4NRNxwLZBD1+YjCo8GWixigQSZfNV0vOpD3Z39FSFXX
-         v8f/klrijTAWh0RAdtn0o4kbVmd7JYq4DxFZeVpqGFwFRiQvnGkAcaQ07no/E8wTF4jw
-         esuV9HG5GnmnBMJQI99nqNS77Bd+cbKzC/1K8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FrkG7DevmIdVc4QArNSZDf3MBemOe3Y2WuDo8bGLhYY=;
-        b=G/6c30Te0ScBwPirg8oQ/qfaL2MlGH2f9mZH0Pu5rB3Sf1hN0VAR2PE/jcA27bVzCY
-         HgNCUR2X/ZgLFupQKjdLYSrquRsKxfS8xYDGypUCuiRWFWDb6ZAPZ+HQz0zvd0VpkP9S
-         7fH/dyywQf8lzVrk3fLdnMiheFSUk3FFvn/WoaEYjZqng3wFPdCTFUq8G+5A29ihqNFD
-         VY7khYWcO86QgkdT1hZNsFGjSmftXyJxKP5guTgCS0QmguLSZxBRT2Q2l2X0+0/etWkv
-         YjPzMrMABTy17V7kiplG0egi5C26PZYT2hl+G0hyYK2K4tOrGCpdGkooPPpnK03C474T
-         rRGg==
-X-Gm-Message-State: AO0yUKXaRJRprAcSNmqYorCQO9IivPMy+pmjmgLcvmFQoFyDNMz3Dkja
-	Lc8m6JlYVqy4eraPmKz9XiYz/A==
-X-Google-Smtp-Source: AK7set911zMxEqxO1w9EG1O10Ez3qr3zH2+1KFmESEgMcD4E8s1Ysp+q7URLob2ktg+Dq9IYDPRD9g==
-X-Received: by 2002:a5d:9d11:0:b0:718:2fa2:6648 with SMTP id j17-20020a5d9d11000000b007182fa26648mr1441851ioj.2.1675117763133;
-        Mon, 30 Jan 2023 14:29:23 -0800 (PST)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id c4-20020a92cf44000000b00310c6f85ea9sm3699637ilr.82.2023.01.30.14.29.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Jan 2023 14:29:22 -0800 (PST)
-Message-ID: <560824bd-da2d-044c-4f71-578fc34a47cd@linuxfoundation.org>
-Date: Mon, 30 Jan 2023 15:29:21 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5NWx6sfRz2xjR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 09:43:57 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UMgBCg024048
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=7jDjqkXsZwUjy9PzzLHnUH8g+gJ3Windvisd2JlK+E0=;
+ b=B59+4P+IC+5XqlPrtwwwFsVz9Vpfc6tfLqe/wuzcEEtj6+KFDO/OPo0KSm9d5lXajEzu
+ 8XkhmllwtRdndwPC/h3I9O53EDwDZc+JbYLYxbSTvELAG3neKiKFQJHrtAUkB+JqNIWx
+ 90I9c1p4SFfR353kQYushrw2AxM1IQ9/6JpbqvdI/a77jkIcY2XA0Bt+txz9VdfqMlYR
+ yp0HhGnAZ6XGtxBgY1vj0f+dFPDm7xM0btdGR1wQ5n4gcrDw1IF+EjJrKSyHtclJn0O0
+ VLWYekTvGYopG+YGSuLh59UVxGXLx+cqUTikX4gUsMxLGMuTRSyevHNSsUx77txljmgZ Tg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nepwm8137-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:54 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30UMhn6G027374
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:43:53 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nepwm812e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jan 2023 22:43:53 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UJUPas007776;
+	Mon, 30 Jan 2023 22:43:52 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3ncvten0h9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jan 2023 22:43:52 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30UMhpmi5309060
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Jan 2023 22:43:51 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 881E158059;
+	Mon, 30 Jan 2023 22:43:51 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ECC7E58043;
+	Mon, 30 Jan 2023 22:43:50 +0000 (GMT)
+Received: from li-6bf4d4cc-31f5-11b2-a85c-838e9310af65.ibm.com.com (unknown [9.163.39.106])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 30 Jan 2023 22:43:50 +0000 (GMT)
+From: Brian King <brking@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/7] hvcs: Various hvcs device hotplug fixes
+Date: Mon, 30 Jan 2023 16:43:14 -0600
+Message-Id: <20230130224321.164843-1-brking@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 00/34] selftests: Fix incorrect kernel headers search path
-Content-Language: en-US
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>
-References: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qbIyl4eOjp_G3S96NXrIm5wQQ2I-YkFt
+X-Proofpoint-GUID: 7VFMIy84R0Y3Hm7LPclpUCSJGBw3qcJE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-30_17,2023-01-30_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ phishscore=0 mlxscore=0 malwarescore=0 mlxlogscore=790 lowpriorityscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301300206
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,72 +93,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+Cc: Brian King <brking@linux.vnet.ibm.com>, mmc@linux.vnet.ibm.com, brking@pobox.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/27/23 06:57, Mathieu Desnoyers wrote:
-> Hi,
-> 
-> This series fixes incorrect kernel header search path in kernel
-> selftests.
-> 
-> Near the end of the series, a few changes are not tagged as "Fixes"
-> because the current behavior is to rely on the kernel sources uapi files
-> rather than on the installed kernel header files. Nevertheless, those
-> are updated for consistency.
-> 
-> There are situations where "../../../../include/" was added to -I search
-> path, which is bogus for userspace tests and caused issues with types.h.
-> Those are removed.
-> 
-> Thanks,
-> 
-> Mathieu
-> 
-> Mathieu Desnoyers (34):
+This patch series fixes a number of issues with hotplugging
+hvcs devices including memory leaks as well as, the inability
+to reconnect to a console device after it has been hot added
+back, since it was not getting cleaned up properly on the
+hotplug remove path.
 
-The below patches are now applied to linux-kselftest next for Linux 6.3-rc1
+Brian King (7):
+  hvcs: Fix hvcs port reference counting
+  hvcs: Remove sysfs file prior to vio unregister
+  hvcs: Remove sysfs group earlier
+  hvcs: Get reference to tty in remove
+  hvcs: Use vhangup in hotplug remove
+  hvcs: Synchronize hotplug remove with port free
+  powerpc: Fix device node refcounting
 
->    selftests: arm64: Fix incorrect kernel headers search path
->    selftests: clone3: Fix incorrect kernel headers search path
->    selftests: core: Fix incorrect kernel headers search path
->    selftests: dma: Fix incorrect kernel headers search path
->    selftests: dmabuf-heaps: Fix incorrect kernel headers search path
->    selftests: drivers: Fix incorrect kernel headers search path
->    selftests: filesystems: Fix incorrect kernel headers search path
->    selftests: futex: Fix incorrect kernel headers search path
->    selftests: gpio: Fix incorrect kernel headers search path
->    selftests: ipc: Fix incorrect kernel headers search path
->    selftests: kcmp: Fix incorrect kernel headers search path
->    selftests: media_tests: Fix incorrect kernel headers search path
->    selftests: membarrier: Fix incorrect kernel headers search path
->    selftests: mount_setattr: Fix incorrect kernel headers search path
->    selftests: move_mount_set_group: Fix incorrect kernel headers search
->      path
->    selftests: perf_events: Fix incorrect kernel headers search path
->    selftests: pid_namespace: Fix incorrect kernel headers search path
->    selftests: pidfd: Fix incorrect kernel headers search path
->    selftests: ptp: Fix incorrect kernel headers search path
->    selftests: rseq: Fix incorrect kernel headers search path
->    selftests: sched: Fix incorrect kernel headers search path
->    selftests: seccomp: Fix incorrect kernel headers search path
->    selftests: sync: Fix incorrect kernel headers search path
->    selftests: user_events: Fix incorrect kernel headers search path
->    selftests: vm: Fix incorrect kernel headers search path
->    selftests: x86: Fix incorrect kernel headers search path
->    selftests: iommu: Use installed kernel headers search path
->    selftests: memfd: Use installed kernel headers search path
->    selftests: ptrace: Use installed kernel headers search path
->    selftests: tdx: Use installed kernel headers search path
-> 
+ arch/powerpc/platforms/pseries/reconfig.c |  1 +
+ drivers/tty/hvc/hvcs.c                    | 61 +++++++++--------------
+ 2 files changed, 25 insertions(+), 37 deletions(-)
 
-These will be applied by maintainers to their trees.
+-- 
+2.31.1
 
->    selftests: bpf: Fix incorrect kernel headers search path # 02/34
->    selftests: net: Fix incorrect kernel headers search path # 17/34
->    selftests: powerpc: Fix incorrect kernel headers search path # 21/34
->    selftests: bpf docs: Use installed kernel headers search path # 30/34
-
-thanks,
--- Shuah
