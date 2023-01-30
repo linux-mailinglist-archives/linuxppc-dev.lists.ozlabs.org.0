@@ -2,85 +2,113 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB33680B9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 12:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEB3680C33
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 12:45:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P55484R4yz3ccl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 22:07:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P55vd4nRDz3cd8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jan 2023 22:45:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fLcucfLr;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NhcaMtDd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.220.79; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fLcucfLr;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NhcaMtDd;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P553B5G6xz3c4w
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:06:29 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UACoBa001696;
-	Mon, 30 Jan 2023 11:06:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Lw3EWnXcBXwkKzIC3dNF6o/WHsfx4BxFNPvSZeia8EA=;
- b=fLcucfLrRL3mzYcYzrKpIaiEfJDknAGUV8xYehdTBSR+4WIp9jBoIhCxk79monQn5MYt
- jrLv/x7l+CNT2okmoAKEueejwjakJGke4Tp8JNIOCyCDg9hQML4y3EaeJuQuGDymKPEm
- p8xnxVI1yH8I6ZvdaUPVNEmn2iSIYe9q/NbZheRPN7W0FYYh44Fjm817boe9MJX8IC7B
- 9T2ST3IDWUOse8DWxjEY3E3GlBFpF80txSjNIAVeURlmGgvt29kqxJTp1L/1s6D6UbPo
- zFJ1Pxdc/nAcaFA/CXTkXkWrcJNB20zp3lf7k4BmAFuhje3Gdr7nZAv4kjOm1+brxfRm hQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nebxesa14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 11:06:24 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30T8KLqW026078;
-	Mon, 30 Jan 2023 11:06:22 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3ndn6u8sf0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 11:06:22 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30UB6IBV45744622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jan 2023 11:06:18 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FBB52004E;
-	Mon, 30 Jan 2023 11:06:18 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA17F2004B;
-	Mon, 30 Jan 2023 11:06:17 +0000 (GMT)
-Received: from [9.43.118.213] (unknown [9.43.118.213])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 30 Jan 2023 11:06:17 +0000 (GMT)
-Message-ID: <267cdc83-8f9b-7288-45e5-88465354e486@linux.ibm.com>
-Date: Mon, 30 Jan 2023 16:36:16 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P55tf4KfWz3Wtr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jan 2023 22:44:07 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=M2h9Z26qMuynlKsM6VHkyoY4hfs1dVuWCqsKWRs5nHLvst1Uf5C70fgjlKjzXOrmX8aGuSla3u2Xo1pB2Um3XGszmd27siNqOFGjruOoj1OkN7M6CzGY8xTV0RNgWxi/qKVnyA9nmnpPgI0IUjhuejXfbR0JgS6n4S7mqlQJYpIszpVbzJV/9atfGGyngsPrvzJz+PWZm4Zwzh4fBP3OtVJvlxQn2qQAvZE586ToNWJPdFR9u7OW0QnQJuUJa0cOrl1QHsstduAXDIWin0GbbVrzA3p/s2IliW5+OxXrtqByzIZRir2Fqp+gqtcWfTw+WaQlZaWWdtIUsPI0PlAocg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rAEhd6lFjlqhsDdSkhLZD2XuXICiUrmsfT/om6jGR28=;
+ b=idqeP40/2oEXsUGO18Typ5iDbXZ0ioYsqJjeVyLHgNcnEUF3TPfZmXWfklNJqBN1Id67q/dTGBxR5M4xYLkWAgXQDHHMeq0hmjOGXa7uvi0enGHl7oYnJXDQcfJljWVpI6iyiHJhjlxudZjHPrsAfHuniA8jlJl4Ws9O0/GjnKLWVt9VFT7VjdlnAmZus+KfjwTI7o+8fZQEITAkj96hvCkWHaDqJixbb5cpLe/py27VuLYT2YqJ8dNTjz31V4ropQw6S6+PpqZLTj77ZEvmNaDUyvmDaqOCLNk9QqA1e9gJCw06gYFBzH2TUnJnj0NS384Zp9ZC+2JJT8KiEcQ3/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rAEhd6lFjlqhsDdSkhLZD2XuXICiUrmsfT/om6jGR28=;
+ b=NhcaMtDdSc7GvoNYC6GXRJW8dIm46N744ndgUWEZuurJdki0rxPvhs6nqT46KdJbDWUU4Y2QhBroK1B3HtGCSvnWFxLlUhCz/6AsJhbVAQYPzZ4u9wzD2m+wruAEb9o7SmBMKZftAelHaq7xi1nIQCD1jn8ZDsItLppDLNryI+c4WV61kuu87Eq/VicY52JQrgZXmzvrit/xgfO33PdK9yPoDZlFoCoWv2WWlezMj4a4k/LNTxjw9u5/YQwQDbsMDao84SqOY1qVsl/GoRlz94oTGGYyheDS8dKOKDtwtYb0amgJKikfB2+tv3PiIdIihdOKw7Q2lo/N2AaiAYtXkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
+ by DS0PR12MB7608.namprd12.prod.outlook.com (2603:10b6:8:13b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.33; Mon, 30 Jan
+ 2023 11:43:48 +0000
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::465a:6564:6198:2f4e]) by BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::465a:6564:6198:2f4e%4]) with mapi id 15.20.6043.023; Mon, 30 Jan 2023
+ 11:43:48 +0000
+References: <cover.f52b9eb2792bccb8a9ecd6bc95055705cfe2ae03.1674538665.git-series.apopple@nvidia.com>
+ <748338ffe4c42d86669923159fe0426808ecb04d.1674538665.git-series.apopple@nvidia.com>
+ <Y8/r91PGGiY5JJvE@nvidia.com>
+User-agent: mu4e 1.8.10; emacs 28.2
+From: Alistair Popple <apopple@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC PATCH 01/19] mm: Introduce vm_account
+Date: Mon, 30 Jan 2023 22:36:43 +1100
+In-reply-to: <Y8/r91PGGiY5JJvE@nvidia.com>
+Message-ID: <87h6w8z1qr.fsf@nvidia.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SY5PR01CA0018.ausprd01.prod.outlook.com
+ (2603:10c6:10:1f9::9) To BYAPR12MB3176.namprd12.prod.outlook.com
+ (2603:10b6:a03:134::26)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] powerpc/imc-pmu: Revert nest_init_lock to being a mutex
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20230130014401.540543-1-mpe@ellerman.id.au>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <20230130014401.540543-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H-gRkAI-r8QmJWeXHPUvDg5s2B03igcd
-X-Proofpoint-ORIG-GUID: H-gRkAI-r8QmJWeXHPUvDg5s2B03igcd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-30_10,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- phishscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301300106
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|DS0PR12MB7608:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63676471-5db8-44d1-d5dc-08db02b7400f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	uITFThuSePSYf6UfX9hAnQ5ABtfQ9djgBVpBv1CwVbfHxYJNopZ/PA5wtDtuzYSyi51+j8EdFA3q/o5NNh0uvRqaoA6andeyiEMhwgCgRPmJMFjyNRCpQpSpA7Y5ajaKnkJgHW706Hkz9UfQYMIqzplYXbWIZBcPpW59hqJgvIbdbArSKziv6d3P1lbIaOsUIJGR6jl76yUb1NwZxjucINfDaH/lpfXJj7QDG18jcAuGxOaQ/bDsPGr5wuHY1hHJ+ruC6zq7h3WB369yhETBKh8QgvXPEU9SEJVKjkx4K07c3Up143QsRKr0G98grU5gIJP9brKawooyJILWLR6gZ+kanw+ugrz7pAo2+VRvbuWL74mjOWxB2yOTQCIZepOfo3l/6+q31SgQBDD8erVC0GKpxw8J0MM4ajlaBOaHED3f4W7kTJZmt5Ag+8PnyJq8aZgHhNH56ls2intNK6Nilvm8fi4aR4tuzoX3yowahj0rncl2M7h9kMeSdx72yyefq3kPwKLZGy3NLi8djcnUSMfSvDX1f00MmKizs1k7/QZx6VVYu8p79VULzbo/fLHPEM/kUiwMqbuiLHfa8/rjskLXDck3/KW7uBT/Nj5R/0JjTcXD5IKaCWtmr/3sziKas4DbWj/1a9lYfzHXu/FL3Q==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(396003)(376002)(346002)(39860400002)(366004)(451199018)(38100700002)(86362001)(36756003)(2906002)(41300700001)(6666004)(7416002)(478600001)(37006003)(6486002)(186003)(8936002)(5660300002)(66946007)(4326008)(316002)(66476007)(66556008)(83380400001)(8676002)(26005)(6512007)(6636002)(6506007)(6862004)(2616005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?CrK9itskcDj4GP0CRorgythrPzWZHEJkTrp2yYI7P8Dwv7okOe4mmeIyC/1N?=
+ =?us-ascii?Q?7JqHzYzMKQPdxwZV6r8xSyhhPb5Y+BGyuxAPapvQalUO2+MSfSN3StRrLRFl?=
+ =?us-ascii?Q?AT2VSQA1bGUy57lbLsPWObCYAMyLVqYvCQUx7/7bVvOaUY36YqCNSE8C66Z4?=
+ =?us-ascii?Q?iUpL/uaf6enikRyX7J04UsSBkazsrE6fIIzhIpH3kzl6W3+RqYhn621W/4ip?=
+ =?us-ascii?Q?02uWOTJsYmBDUUB1C+2QmVDW4CwB5bcA0ZjH0NWzc8QxzsCuUuyANtySDiEk?=
+ =?us-ascii?Q?Vi4oLGoRp9CcAnbu3HV1fYY7VIstNyh6Zui7fNo/1WcN9c31BF1EyOpOICdv?=
+ =?us-ascii?Q?hkmPX43sr98uhMMzqWwLTbbjc7/i6gtAVmzextZlUUG/lrnJ2euE7vc/TKRp?=
+ =?us-ascii?Q?ZGWrAw4yLj9VnLLI0WECU/PELqCSQij1E9raROFqaoo04UG6pyHwSKIiGA96?=
+ =?us-ascii?Q?6WrREcYnJ1HIxqCc+gTYnlEsjBX+5Kmwyf1CbsvRwpjWjUBt8ElpqIVg9VaT?=
+ =?us-ascii?Q?N6wBvlsd9ReqypptzdHRJf3raCYjh10WMO0O909AHnP4TgT8ixdbA+Aed1mv?=
+ =?us-ascii?Q?3c71HkzRf/eLWmeZzFXkdLDpEAl56NXmS7hSLLUg/4Q3N3lg9WTHv/PO+WHi?=
+ =?us-ascii?Q?xXs9gQWO9yuQd/lHTQLuiSODxc5VgCHwFgT3VBi8nQItBkHL1CEZgrn0TLqs?=
+ =?us-ascii?Q?32N38Ca3r11gzJfJ/LLrkfLj1JHD3lMw1DIDM86Aymrdy9aqee+soMs5Tx6r?=
+ =?us-ascii?Q?dm1wrpd4SqKt0MJXo2IzndpOn4XZLKzyILn+lzvtL2wb05A4JsiwjCG1FmJP?=
+ =?us-ascii?Q?0nG7jMPU9AyApTKV8RbPvN8VduIlFzPS/C0e07e50zwjO8nonXWSOf9lbSY9?=
+ =?us-ascii?Q?dVbQAkIQZikO1t7LOeOFfnncqrcdYZt3MmGdLw9xAFl7dNSjtnnyBhoBEtkB?=
+ =?us-ascii?Q?Fh0TJbl8o1hS5jC1jg+IUaFZnP80dktvNH88oE0/AqhEn9pw2V5Y/YTxoZVc?=
+ =?us-ascii?Q?EfFIhrPwX/cRg/zTI6p6WjoFjKF7sf9bx5fWyxVcJUPwSvgPeY6eOaToyoz8?=
+ =?us-ascii?Q?Q9g0zBTxDf1xJ4G0JzNHMnqgyv9GYCeKkvSf3058iH+CibEHoHCKhCIJ455v?=
+ =?us-ascii?Q?aSzrIp6nkzqZkVp/5MaFH4Vhac0cBPhqWeEIzZUm6BFD1u5iYOov1wYt1935?=
+ =?us-ascii?Q?izLVourlGwdD7f80UkKDqQzhIptqRrzyep4mmcH/fBaPbD9wQ/xKYzFmcCvw?=
+ =?us-ascii?Q?+n4kGiV+Xllhpnj4U3Ihzl18GBeopUbpRP5cAX6oaA71DPew96oxMgScpyqx?=
+ =?us-ascii?Q?cM49SuFQENyVSXXiNaRCSkLN8E4aN1zBVknBYnDJvRKiHfhGAyjF0fWj8J6M?=
+ =?us-ascii?Q?JqqkyLkgrgoZf52FKPoZS/y0StU3I9puaUuKIHUIecfkv8hEGc3Y/Cci7FO1?=
+ =?us-ascii?Q?9S9IbhFWef2310CNECiqkVH3CdyiAgg1hXv08ExiG53iqGtnGhyDbUpLvnAW?=
+ =?us-ascii?Q?XY7KIC9hx6oKVgleGX2hUYzFSH/kgeydpsxbvvTUuOQ+cgN/JXsCIY9GOWAx?=
+ =?us-ascii?Q?txGFhvvxQ6YpkMdtgv9eP2glnZziyi58vY1Jgwlc?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63676471-5db8-44d1-d5dc-08db02b7400f
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2023 11:43:48.2451
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hMWVFjjUx/ulcyPi3NPfUnsdbArWq0SDPB2f54nJbyllgoeyJ4Sr4t8y10Xg901y58rv3rWQjtS1F8223SCh4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7608
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,127 +120,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: rds-devel@oss.oracle.com, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, linux-rdma@vger.kernel.org, jhubbard@nvidia.com, linux-fpga@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, netdev@vger.kernel.org, mkoutny@suse.com, daniel@ffwll.ch, hannes@cmpxchg.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, surenb@google.com, tjmercier@google.com, io-uring@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-On 1/30/23 07:14, Michael Ellerman wrote:
-> The recent commit 76d588dddc45 ("powerpc/imc-pmu: Fix use of mutex in
-> IRQs disabled section") fixed warnings (and possible deadlocks) in the
-> IMC PMU driver by converting the locking to use spinlocks.
-> 
-> It also converted the init-time nest_init_lock to a spinlock, even
-> though it's not used at runtime in IRQ disabled sections or while
-> holding other spinlocks.
-> 
-> This leads to warnings such as:
-> 
->   BUG: sleeping function called from invalid context at include/linux/percpu-rwsem.h:49
->   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
->   preempt_count: 1, expected: 0
->   CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc2-14719-gf12cd06109f4-dirty #1
->   Hardware name: Mambo,Simulated-System POWER9 0x4e1203 opal:v6.6.6 PowerNV
->   Call Trace:
->     dump_stack_lvl+0x74/0xa8 (unreliable)
->     __might_resched+0x178/0x1a0
->     __cpuhp_setup_state+0x64/0x1e0
->     init_imc_pmu+0xe48/0x1250
->     opal_imc_counters_probe+0x30c/0x6a0
->     platform_probe+0x78/0x110
->     really_probe+0x104/0x420
->     __driver_probe_device+0xb0/0x170
->     driver_probe_device+0x58/0x180
->     __driver_attach+0xd8/0x250
->     bus_for_each_dev+0xb4/0x140
->     driver_attach+0x34/0x50
->     bus_add_driver+0x1e8/0x2d0
->     driver_register+0xb4/0x1c0
->     __platform_driver_register+0x38/0x50
->     opal_imc_driver_init+0x2c/0x40
->     do_one_initcall+0x80/0x360
->     kernel_init_freeable+0x310/0x3b8
->     kernel_init+0x30/0x1a0
->     ret_from_kernel_thread+0x5c/0x64
-> 
-> Fix it by converting nest_init_lock back to a mutex, so that we can call
-> sleeping functions while holding it. There is no interaction between
-> nest_init_lock and the runtime spinlocks used by the actual PMU routines.
+> On Tue, Jan 24, 2023 at 04:42:30PM +1100, Alistair Popple wrote:
+>> +/**
+>> + * enum vm_account_flags - Determine how pinned/locked memory is accounted.
+>> + * @VM_ACCOUNT_TASK: Account pinned memory to mm->pinned_vm.
+>> + * @VM_ACCOUNT_BYPASS: Don't enforce rlimit on any charges.
+>> + * @VM_ACCOUNT_USER: Accounnt locked memory to user->locked_vm.
+>> + *
+>> + * Determines which statistic pinned/locked memory is accounted
+>> + * against. All limits will be enforced against RLIMIT_MEMLOCK and the
+>> + * pins cgroup if CONFIG_CGROUP_PINS is enabled.
+>> + *
+>> + * New drivers should use VM_ACCOUNT_TASK. VM_ACCOUNT_USER is used by
+>> + * pre-existing drivers to maintain existing accounting against
+>> + * user->locked_mm rather than mm->pinned_mm.
+>
+> I thought the guidance was the opposite of this, it is the newer
+> places in the kernel that are using VM_ACCOUNT_USER?
 
-Thanks for the patch. Patch looks good to me.
+I'd just assumed mm->pinned_vm was preferred because that's what most
+drivers use. user->locked_mm does seem more sensible though as at least
+it's possible to meaningfully enforce some overall limit. Will switch
+the flags/comment around to suggest new users use VM_ACCOUNT_USER.
 
-Reviewed-by: Kajol Jain<kjain@linux.ibm.com>
-Tested-by: Kajol Jain<kjain@linux.ibm.com>
+> I haven't got to the rest of the patches yet, but isn't there also a
+> mm->pinned_vm vs mm->locked_vm variation in the current drivers as
+> well?
+>
+>> +void vm_account_init_current(struct vm_account *vm_account)
+>> +{
+>> +	vm_account_init(vm_account, current, NULL, VM_ACCOUNT_TASK);
+>> +}
+>> +EXPORT_SYMBOL_GPL(vm_account_init_current);
+>
+> This can probably just be a static inline
+>
+> You might consider putting all this in some new vm_account.h - given
+> how rarely it is used? Compile times and all
 
-Thanks,
-Kajol Jain
-> 
-> Fixes: 76d588dddc45 ("powerpc/imc-pmu: Fix use of mutex in IRQs disabled section")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/perf/imc-pmu.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-> index 100e97daf76b..9d229ef7f86e 100644
-> --- a/arch/powerpc/perf/imc-pmu.c
-> +++ b/arch/powerpc/perf/imc-pmu.c
-> @@ -22,7 +22,7 @@
->   * Used to avoid races in counting the nest-pmu units during hotplug
->   * register and unregister
->   */
-> -static DEFINE_SPINLOCK(nest_init_lock);
-> +static DEFINE_MUTEX(nest_init_lock);
->  static DEFINE_PER_CPU(struct imc_pmu_ref *, local_nest_imc_refc);
->  static struct imc_pmu **per_nest_pmu_arr;
->  static cpumask_t nest_imc_cpumask;
-> @@ -1629,7 +1629,7 @@ static void imc_common_mem_free(struct imc_pmu *pmu_ptr)
->  static void imc_common_cpuhp_mem_free(struct imc_pmu *pmu_ptr)
->  {
->  	if (pmu_ptr->domain == IMC_DOMAIN_NEST) {
-> -		spin_lock(&nest_init_lock);
-> +		mutex_lock(&nest_init_lock);
->  		if (nest_pmus == 1) {
->  			cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_NEST_IMC_ONLINE);
->  			kfree(nest_imc_refc);
-> @@ -1639,7 +1639,7 @@ static void imc_common_cpuhp_mem_free(struct imc_pmu *pmu_ptr)
->  
->  		if (nest_pmus > 0)
->  			nest_pmus--;
-> -		spin_unlock(&nest_init_lock);
-> +		mutex_unlock(&nest_init_lock);
->  	}
->  
->  	/* Free core_imc memory */
-> @@ -1796,11 +1796,11 @@ int init_imc_pmu(struct device_node *parent, struct imc_pmu *pmu_ptr, int pmu_id
->  		* rest. To handle the cpuhotplug callback unregister, we track
->  		* the number of nest pmus in "nest_pmus".
->  		*/
-> -		spin_lock(&nest_init_lock);
-> +		mutex_lock(&nest_init_lock);
->  		if (nest_pmus == 0) {
->  			ret = init_nest_pmu_ref();
->  			if (ret) {
-> -				spin_unlock(&nest_init_lock);
-> +				mutex_unlock(&nest_init_lock);
->  				kfree(per_nest_pmu_arr);
->  				per_nest_pmu_arr = NULL;
->  				goto err_free_mem;
-> @@ -1808,7 +1808,7 @@ int init_imc_pmu(struct device_node *parent, struct imc_pmu *pmu_ptr, int pmu_id
->  			/* Register for cpu hotplug notification. */
->  			ret = nest_pmu_cpumask_init();
->  			if (ret) {
-> -				spin_unlock(&nest_init_lock);
-> +				mutex_unlock(&nest_init_lock);
->  				kfree(nest_imc_refc);
->  				kfree(per_nest_pmu_arr);
->  				per_nest_pmu_arr = NULL;
-> @@ -1816,7 +1816,7 @@ int init_imc_pmu(struct device_node *parent, struct imc_pmu *pmu_ptr, int pmu_id
->  			}
->  		}
->  		nest_pmus++;
-> -		spin_unlock(&nest_init_lock);
-> +		mutex_unlock(&nest_init_lock);
->  		break;
->  	case IMC_DOMAIN_CORE:
->  		ret = core_imc_pmu_cpumask_init();
+Works for me.
+
+> Jason
+
