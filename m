@@ -1,95 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724CB68213D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 02:04:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA855682256
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 03:44:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5RfW0BlBz3cT4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 12:04:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5Tsx4sGZz3cLJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 13:44:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aW4+wnNb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sy+l8OzN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=XdTx3I1H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aW4+wnNb;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sy+l8OzN;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=XdTx3I1H;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5RdX6MXnz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 12:04:00 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UNtdLr012160;
-	Tue, 31 Jan 2023 01:03:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Z/WVbO8gN4wPG1dnX9SSO/A5Ayug/qmMRUvrltJ14kI=;
- b=aW4+wnNbgFF4xvepgnWYWtHo+yCBWEcomolmCmETQjTeceUvINz7y+KvhXULPBGtWRY0
- UokC4HcGwRo1rOfdEBDrsCPYxaRvcU/uew3z/rqBZ/5wEyJChLM4v93w3xGpC3Mpwv21
- 0UccGchtz5xD5EqYyvPQ0r6tnDNz6AIvbXrJlS1Y2N4xhRdGX43duZ4n+m67f63JpkSN
- NzIPX+Id4vlCkenV/sq3tHHi0RfYqfALHhPmJSLk0LpF5mfHfGxb9ErdCrrWQ4WOk+Vu
- PLIx7lnSwQWHf7hsNGzlHkd2ziRqC3OQhg218c2geH35q41recriDTaEsdNO5pruJ1J4 uw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nen9cnksq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 01:03:51 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30U9ZAGl031351;
-	Tue, 31 Jan 2023 01:03:50 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3ncvv6a1tf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 01:03:50 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V13lNH43516286
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 Jan 2023 01:03:47 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B695D2004B;
-	Tue, 31 Jan 2023 01:03:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3866720040;
-	Tue, 31 Jan 2023 01:03:47 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 31 Jan 2023 01:03:47 +0000 (GMT)
-Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8AF3F60425;
-	Tue, 31 Jan 2023 12:03:44 +1100 (AEDT)
-Message-ID: <a2dd2067cf4eee3362a02e76ec335710e8bb04b8.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 24/24] integrity/powerpc: Support loading keys from
- pseries secvar
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Mimi Zohar <zohar@linux.ibm.com>, Russell Currey <ruscur@russell.cc>,
-        linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Date: Tue, 31 Jan 2023 12:03:44 +1100
-In-Reply-To: <adbb8d2f438f01f32d9e09b508cde31b3efdc3a4.camel@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5Trv6WRwz2yHc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 13:43:58 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.nyi.internal (Postfix) with ESMTP id 39D065C0538;
+	Mon, 30 Jan 2023 21:43:55 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Mon, 30 Jan 2023 21:43:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1675133035; x=
+	1675219435; bh=Lw3BTNjw1z5tIita9M1yTykNXOkxFT8Y+0NmfodF47I=; b=s
+	y+l8OzNeqsXTsDaSr4JCPj78O9RuH2YaWRFx3DSr/xs725/onPftkPoW60d4luCS
+	3SUfmRO7gDnXDR6EZv2zCP/1T3OvZ/2qE90XCaO2ScWoeyP7F13Qw631/ABpRvRp
+	iDjXmwTZxVB63GgEfJvM7MYP9z/PRQyrTMn/oSCrtFKFNRpn+ZrHwtv6q7PjEErq
+	ZftMY1Sqx4DeVby7cu9tNsB0CThE8+xt82gZLqSuSfjHN6pwfKh/XzfQZmZuUAXe
+	cWa5z4LQxGhJqp1ap7YqQ3wy3aozssfU6vbQkE8qcMq8mEjxiizglc6Y2HeR2xe9
+	OWlLPZ294CY2Tm7G34Fqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1675133035; x=
+	1675219435; bh=Lw3BTNjw1z5tIita9M1yTykNXOkxFT8Y+0NmfodF47I=; b=X
+	dTx3I1HNhUBm7zNfZAvPaRhCBqOpmDfeFCJLNUqDiW7noKhMLGDxVuibuKYXyMLo
+	H1gWO2XIvlCpO4HFKFnOwuh8dZphQeqoM41HojlRJGr9ZgL2lSPtqCxngu9GSZRy
+	dlqh6UT3OWWZ0KjbaoAKizZ3xuHwoObQdC/klPHjIrS1oaGD9vxZUsbQk1h4LGka
+	uDukGl5XGg31agjbsbqGfiYhxLl4oHNKGMMTmws/E8GusdpXwSo5OgUOikDdUg+n
+	cabHCw8XRgI2HqqEnRALvrB9FzqQzRY/2ukHJqOeXUVP4o12BcahzG6SnGbAaXs7
+	UVdHVOd13QMUSbeAxWyQQ==
+X-ME-Sender: <xms:aoDYY24wa32cur2nTEMGb2Myda9oedrTXiO4t_jRSXXEpszsxzRZcQ>
+    <xme:aoDYY_6OhAWxkdXEr5r42n7eIEmy8Mlh_e11rixCJyZFa9XbH_2anAtea6MhH-ow-
+    sDZKJ6D5oK9zrdaNA>
+X-ME-Received: <xmr:aoDYY1ducX8lt-YMg6kHG6KWzf19MfUTd14fEyknHyL6dHPvYzBDigwDL3cdeMpLwJgGBNlazkj9BOd8NcKimFqrFoUHg0i4P7cY5MpLBVdAiw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeffedgheduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthgsredt
+    tderjeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruh
+    hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepheduieduhedtueefueegfffguddu
+    gfffveekvefgteethedvfedvheeuhffghefhnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:aoDYYzKRhZvhIrKrMOSz1SxRxmOIqOC9wgKSTDOwHYfRKmCV7oFFzw>
+    <xmx:aoDYY6KCraqefrlhsdx5r2i2GdGD48VTzhsolxnVOqL_Lcdi4bRtaQ>
+    <xmx:aoDYY0zHfPmYfl56XcAsSZ-oJlH6q2t6Yg6BQFFQOP_YVhDroWNjNQ>
+    <xmx:a4DYY8Cxh_cFY9qUkWSc9T5JduFjdxS74BKgU9rXawNmgFcywYLRkA>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Jan 2023 21:43:50 -0500 (EST)
+Message-ID: <ae746d6137e5a215c7370d23d367c6dda7a57c90.camel@russell.cc>
+Subject: Re: [PATCH v4 21/24] powerpc/pseries: Pass PLPKS password on kexec
+From: Russell Currey <ruscur@russell.cc>
+To: Nicholas Piggin <npiggin@gmail.com>, Andrew Donnellan
+ <ajd@linux.ibm.com>,  linuxppc-dev@lists.ozlabs.org,
+ linux-integrity@vger.kernel.org
+Date: Tue, 31 Jan 2023 13:43:46 +1100
+In-Reply-To: <CQ053TUZQIPP.1OHV7MVS4F4HT@bobo>
 References: <20230120074306.1326298-1-ajd@linux.ibm.com>
-	 <20230120074306.1326298-25-ajd@linux.ibm.com>
-	 <57dca1ea3ef66bc0935bdd1dab4536f1151f4004.camel@linux.ibm.com>
-	 <71b48934e26a991eaf62c9869a8dfee769e0799d.camel@russell.cc>
-	 <adbb8d2f438f01f32d9e09b508cde31b3efdc3a4.camel@linux.ibm.com>
+	 <20230120074306.1326298-22-ajd@linux.ibm.com>
+	 <CQ053TUZQIPP.1OHV7MVS4F4HT@bobo>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EEMhfqoPOJmHQ3bm8UrBtAwhoYFSu34E
-X-Proofpoint-GUID: EEMhfqoPOJmHQ3bm8UrBtAwhoYFSu34E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-30_19,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- mlxscore=0 phishscore=0 malwarescore=0 adultscore=0 clxscore=1015
- mlxlogscore=999 priorityscore=1501 spamscore=0 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301310008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,18 +98,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sudhakar@linux.ibm.com, bgray@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, gjoyce@linux.ibm.com, joel@jms.id.au, gcwilson@linux.ibm.com
+Cc: gjoyce@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, sudhakar@linux.ibm.com, joel@jms.id.au, bgray@linux.ibm.com, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2023-01-24 at 21:47 -0500, Mimi Zohar wrote:
-> Agreed.=C2=A0 Thank you for the explanation.=C2=A0 To simplify review, I
-> suggest
-> either adding this explanation in the patch description or stage the
-> change by replacing the existing "ibm,edk2-compat-v1" usage first.
+T24gVHVlLCAyMDIzLTAxLTI0IGF0IDE0OjM2ICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
+Cj4gT24gRnJpIEphbiAyMCwgMjAyMyBhdCA1OjQzIFBNIEFFU1QsIEFuZHJldyBEb25uZWxsYW4g
+d3JvdGU6Cj4gPiBGcm9tOiBSdXNzZWxsIEN1cnJleSA8cnVzY3VyQHJ1c3NlbGwuY2M+Cj4gPiAK
+PiA+IEJlZm9yZSBpbnRlcmFjdGluZyB3aXRoIHRoZSBQTFBLUywgd2UgYXNrIHRoZSBoeXBlcnZp
+c29yIHRvCj4gPiBnZW5lcmF0ZSBhCj4gPiBwYXNzd29yZCBmb3IgdGhlIGN1cnJlbnQgYm9vdCwg
+d2hpY2ggaXMgdGhlbiByZXF1aXJlZCBmb3IgbW9zdAo+ID4gZnVydGhlcgo+ID4gUExQS1Mgb3Bl
+cmF0aW9ucy4KPiA+IAo+ID4gSWYgd2Uga2V4ZWMgaW50byBhIG5ldyBrZXJuZWwsIHRoZSBuZXcg
+a2VybmVsIHdpbGwgdHJ5IGFuZCBmYWlsIHRvCj4gPiBnZW5lcmF0ZSBhIG5ldyBwYXNzd29yZCwg
+YXMgdGhlIHBhc3N3b3JkIGhhcyBhbHJlYWR5IGJlZW4gc2V0Lgo+ID4gCj4gPiBQYXNzIHRoZSBw
+YXNzd29yZCB0aHJvdWdoIHRvIHRoZSBuZXcga2VybmVsIHZpYSB0aGUgZGV2aWNlIHRyZWUsIGlu
+Cj4gPiAvY2hvc2VuL3BscGtzLXB3LiBDaGVjayBmb3IgdGhlIHByZXNlbmNlIG9mIHRoaXMgcHJv
+cGVydHkgYmVmb3JlCj4gPiB0cnlpbmcKPiAKPiBJbiAvY2hvc2VuL2libSxwbHBrcy1wdwoKR29v
+ZCBjYXRjaCwgdGhhbmtzCgo+IAo+ID4gdG8gZ2VuZXJhdGUgYSBuZXcgcGFzc3dvcmQgLSBpZiBp
+dCBleGlzdHMsIHVzZSB0aGUgZXhpc3RpbmcKPiA+IHBhc3N3b3JkIGFuZAo+ID4gcmVtb3ZlIGl0
+IGZyb20gdGhlIGRldmljZSB0cmVlLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSdXNzZWxsIEN1
+cnJleSA8cnVzY3VyQHJ1c3NlbGwuY2M+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBBbmRyZXcgRG9ubmVs
+bGFuIDxhamRAbGludXguaWJtLmNvbT4KPiA+IAo+ID4gLS0tCj4gPiAKPiA+IHYzOiBOZXcgcGF0
+Y2gKPiA+IAo+ID4gdjQ6IEZpeCBjb21waWxlIHdoZW4gQ09ORklHX1BTRVJJRVNfUExQS1M9biAo
+c25vd3BhdGNoKQo+ID4gCj4gPiDCoMKgwqAgRml4IGVycm9yIGhhbmRsaW5nIG9uIGZkdF9wYXRo
+X29mZnNldCgpIGNhbGwgKHJ1c2N1cikKPiA+IC0tLQo+ID4gwqBhcmNoL3Bvd2VycGMva2V4ZWMv
+ZmlsZV9sb2FkXzY0LmPCoMKgwqDCoMKgIHwgMTggKysrKysrKysrKysrKysrKysrCj4gPiDCoGFy
+Y2gvcG93ZXJwYy9wbGF0Zm9ybXMvcHNlcmllcy9wbHBrcy5jIHwgMTggKysrKysrKysrKysrKysr
+KystCj4gPiDCoDIgZmlsZXMgY2hhbmdlZCwgMzUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
+KQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tleGVjL2ZpbGVfbG9hZF82NC5j
+Cj4gPiBiL2FyY2gvcG93ZXJwYy9rZXhlYy9maWxlX2xvYWRfNjQuYwo+ID4gaW5kZXggYWY4ODU0
+ZjllYWUzLi4wYzkxMzBhZjYwY2MgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL3Bvd2VycGMva2V4ZWMv
+ZmlsZV9sb2FkXzY0LmMKPiA+ICsrKyBiL2FyY2gvcG93ZXJwYy9rZXhlYy9maWxlX2xvYWRfNjQu
+Ywo+ID4gQEAgLTI3LDYgKzI3LDcgQEAKPiA+IMKgI2luY2x1ZGUgPGFzbS9rZXhlY19yYW5nZXMu
+aD4KPiA+IMKgI2luY2x1ZGUgPGFzbS9jcmFzaGR1bXAtcHBjNjQuaD4KPiA+IMKgI2luY2x1ZGUg
+PGFzbS9wcm9tLmg+Cj4gPiArI2luY2x1ZGUgPGFzbS9wbHBrcy5oPgo+ID4gwqAKPiA+IMKgc3Ry
+dWN0IHVtZW1faW5mbyB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgdTY0ICpidWY7wqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgLyogZGF0YSBidWZmZXIgZm9yIHVzYWJsZS1tZW1vcnkKPiA+IHBy
+b3BlcnR5ICovCj4gPiBAQCAtMTE1Niw2ICsxMTU3LDkgQEAgaW50IHNldHVwX25ld19mZHRfcHBj
+NjQoY29uc3Qgc3RydWN0IGtpbWFnZQo+ID4gKmltYWdlLCB2b2lkICpmZHQsCj4gPiDCoHsKPiA+
+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgY3Jhc2hfbWVtICp1bWVtID0gTlVMTCwgKnJtZW0gPSBO
+VUxMOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGludCBpLCBucl9yYW5nZXMsIHJldDsKPiA+ICsjaWZk
+ZWYgQ09ORklHX1BTRVJJRVNfUExQS1MKPiA+ICvCoMKgwqDCoMKgwqDCoGludCBjaG9zZW5fb2Zm
+c2V0Owo+ID4gKyNlbmRpZgo+IAo+IENvdWxkIHB1dCB0aGlzIGluIHBscGtzX2lzX2F2YWlsYWJs
+ZSBhbmQgYXZvaWQgYW4gaWZkZWYuCgpZZXAsIG1vdmluZyB0aGlzIG91dCwgdGhvdWdoIG5vdCBp
+bnRvIHBscGtzX2lzX2F2YWlsYWJsZSgpLgoKPiAKPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+LyoKPiA+IMKgwqDCoMKgwqDCoMKgwqAgKiBSZXN0cmljdCBtZW1vcnkgdXNhZ2UgZm9yIGtkdW1w
+IGtlcm5lbCBieSBzZXR0aW5nIHVwCj4gPiBAQCAtMTIzMCw2ICsxMjM0LDIwIEBAIGludCBzZXR1
+cF9uZXdfZmR0X3BwYzY0KGNvbnN0IHN0cnVjdCBraW1hZ2UKPiA+ICppbWFnZSwgdm9pZCAqZmR0
+LAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiDCoMKgwqDCoMKgwqDC
+oMKgfQo+ID4gwqAKPiA+ICsjaWZkZWYgQ09ORklHX1BTRVJJRVNfUExQS1MKPiA+ICvCoMKgwqDC
+oMKgwqDCoC8vIElmIHdlIGhhdmUgUExQS1MgYWN0aXZlLCB3ZSBuZWVkIHRvIHByb3ZpZGUgdGhl
+IHBhc3N3b3JkCj4gPiArwqDCoMKgwqDCoMKgwqBpZiAocGxwa3NfaXNfYXZhaWxhYmxlKCkpIHsK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjaG9zZW5fb2Zmc2V0ID0gZmR0X3Bh
+dGhfb2Zmc2V0KGZkdCwgIi9jaG9zZW4iKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpZiAoY2hvc2VuX29mZnNldCA8IDApIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZXJyKCJDYW4ndCBmaW5kIGNob3NlbiBub2RlOiAl
+c1xuIiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIGZkdF9zdHJlcnJvcihjaG9zZW5fb2Zmc2V0KSk7Cj4gPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdvdG8gb3V0Owo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqByZXQgPSBmZHRfc2V0cHJvcChmZHQsIGNob3Nlbl9vZmZzZXQsICJpYm0scGxwa3MtCj4g
+PiBwdyIsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBwbHBrc19nZXRfcGFzc3dvcmQoKSwKPiA+IHBscGtzX2dldF9w
+YXNzd29yZGxlbigpKTsKPiA+ICvCoMKgwqDCoMKgwqDCoH0KPiA+ICsjZW5kaWYgLy8gQ09ORklH
+X1BTRVJJRVNfUExQS1MKPiAKPiBJIHRoaW5rIGlmIHlvdSBkZWZpbmUgcGxwa3NfZ2V0X3Bhc3N3
+b3JkIGFuZCBwbHBrc19nZXRfcGFzc3dvcmRsZW4gYXMKPiBCVUlMRF9CVUdfT04gd2hlbiBQTFBL
+UyBpcyBub3QgY29uZmlndXJlZCBhbmQgcGxwa3NfaXNfYXZhaWxhYmxlIGFzCj4gZmFsc2UsIHlv
+dSBjb3VsZCByZW1vdmUgdGhlIGlmZGVmIGVudGlyZWx5LgoKSSdtIG1vdmluZyB0aGlzIGludG8g
+YSBoZWxwZXIgaW4gcGxwa3MuYyBzaW5jZSBub3cgdGhlcmUncyBGRFQgaGFuZGxpbmcKaW4gZWFy
+bHkgYm9vdCBpbiB0aGVyZS4gIFdlIGNhbiBkcm9wIHBscGtzX2dldF9wYXNzd29yZCgpIGVudGly
+ZWx5LgoKPiAKPiA+ICsKPiA+IMKgb3V0Ogo+ID4gwqDCoMKgwqDCoMKgwqDCoGtmcmVlKHJtZW0p
+Owo+ID4gwqDCoMKgwqDCoMKgwqDCoGtmcmVlKHVtZW0pOwo+ID4gZGlmZiAtLWdpdCBhL2FyY2gv
+cG93ZXJwYy9wbGF0Zm9ybXMvcHNlcmllcy9wbHBrcy5jCj4gPiBiL2FyY2gvcG93ZXJwYy9wbGF0
+Zm9ybXMvcHNlcmllcy9wbHBrcy5jCj4gPiBpbmRleCBiM2M3NDEwYTRmMTMuLjAzNTBmMTBlMTc1
+NSAxMDA2NDQKPiA+IC0tLSBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcHNlcmllcy9wbHBrcy5j
+Cj4gPiArKysgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3BzZXJpZXMvcGxwa3MuYwo+ID4gQEAg
+LTE2LDYgKzE2LDcgQEAKPiA+IMKgI2luY2x1ZGUgPGxpbnV4L3NsYWIuaD4KPiA+IMKgI2luY2x1
+ZGUgPGxpbnV4L3N0cmluZy5oPgo+ID4gwqAjaW5jbHVkZSA8bGludXgvdHlwZXMuaD4KPiA+ICsj
+aW5jbHVkZSA8bGludXgvb2YuaD4KPiA+IMKgI2luY2x1ZGUgPGFzbS9odmNhbGwuaD4KPiA+IMKg
+I2luY2x1ZGUgPGFzbS9tYWNoZGVwLmg+Cj4gPiDCoCNpbmNsdWRlIDxhc20vcGxwa3MuaD4KPiA+
+IEBAIC0xMjYsNyArMTI3LDIyIEBAIHN0YXRpYyBpbnQgcGxwa3NfZ2VuX3Bhc3N3b3JkKHZvaWQp
+Cj4gPiDCoHsKPiA+IMKgwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCBsb25nIHJldGJ1ZltQTFBBUl9I
+Q0FMTF9CVUZTSVpFXSA9IHsgMCB9Owo+ID4gwqDCoMKgwqDCoMKgwqDCoHU4ICpwYXNzd29yZCwg
+Y29uc3VtZXIgPSBQTFBLU19PU19PV05FUjsKPiA+IC3CoMKgwqDCoMKgwqDCoGludCByYzsKPiA+
+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBwcm9wZXJ0eSAqcHJvcDsKPiA+ICvCoMKgwqDCoMKgwqDC
+oGludCByYywgbGVuOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgLy8gQmVmb3JlIHdlIGdlbmVy
+YXRlIHRoZSBwYXNzd29yZCwgd2UgbWF5IGhhdmUgYmVlbiBib290ZWQKPiA+IGJ5IGtleGVjIGFu
+ZAo+ID4gK8KgwqDCoMKgwqDCoMKgLy8gcHJvdmlkZWQgd2l0aCBhIHByZXZpb3VzIHBhc3N3b3Jk
+LsKgIENoZWNrIGZvciB0aGF0Cj4gPiBmaXJzdC4KPiAKPiBTbyBub3QgcmVhbGx5IGdlbmVyYXRp
+bmcgdGhlIHBhc3N3b3JkIHRoZW4uIFNob3VsZCBpdCBiZSBpbiBhCj4gZGlmZmVyZW50Cj4gZnVu
+Y3Rpb24gdGhlIGNhbGxlciBtYWtlcyBmaXJzdD8KClllcyB0aGlzIHNob3VsZCBoYXZlIGJlZW4g
+c2VwYXJhdGUsIGFuZCBub3cgaGFzIHRvIGJlIGFueXdheSBzaW5jZQp3ZSdyZSByZXRyaWV2aW5n
+IHRoZSBwYXNzd29yZCBmcm9tIHRoZSBGRFQgaW4gZWFybHkgYm9vdC4KCj4gCj4gPiArwqDCoMKg
+wqDCoMKgwqBwcm9wID0gb2ZfZmluZF9wcm9wZXJ0eShvZl9jaG9zZW4sICJpYm0scGxwa3MtcHci
+LCAmbGVuKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChwcm9wKSB7Cj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgb3NwYXNzd29yZGxlbmd0aCA9ICh1MTYpbGVuOwo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG9zcGFzc3dvcmQgPSBremFsbG9jKG9zcGFzc3dvcmRs
+ZW5ndGgsIEdGUF9LRVJORUwpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlm
+ICghb3NwYXNzd29yZCkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBvZl9yZW1vdmVfcHJvcGVydHkob2ZfY2hvc2VuLCBwcm9wKTsKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIC1FTk9NRU07
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoG1lbWNweShvc3Bhc3N3b3JkLCBwcm9wLT52YWx1ZSwgbGVuKTsKPiA+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gb2ZfcmVtb3ZlX3Byb3BlcnR5
+KG9mX2Nob3NlbiwgcHJvcCk7Cj4gCj4gV2h5IGRvIHlvdSByZW1vdmUgdGhlIHByb3BlcnR5IGFm
+dGVyd2FyZD8KCkFzIEFuZHJldyBtZW50aW9uZWQsIHNvIHdlIGRvbid0IGhhdmUgYSBwYXNzd29y
+ZCBsaW5nZXJpbmcgaW4gdGhlCmRldmljZSB0cmVlLCB0aG91Z2ggaXQncyBub3QgZXNwZWNpYWxs
+eSB1c2VmdWwuICBXZSdyZSBnb2luZyB0byBnZXQgaXQKYW5kIGNsZWFyIGl0IGZyb20gdGhlIEZE
+VCBpbiBlYXJseSBib290IGluc3RlYWQuCgo+IAo+IFRoYW5rcywKPiBOaWNrCgo=
 
-Will clarify in the commit message of the next revision.
-
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
