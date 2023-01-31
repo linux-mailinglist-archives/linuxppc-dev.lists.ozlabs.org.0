@@ -2,130 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1ADE682472
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A486824BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:42:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5ZzG3vLyz3c9L
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:34:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5b7X56nnz3cKb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:42:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=LXhdS4/L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VWQTHs5L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.20.60; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=LXhdS4/L;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VWQTHs5L;
 	dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060.outbound.protection.outlook.com [40.107.20.60])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5ZyG1zSdz2xvF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 17:33:56 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AqsPZmPafU9h7opj7vp4MBbaLJWOKUL83F5qZvpQb988y6ayf++OL/WbjdFN0thEo9KnzZVvEwtOnABI2Gnafjg8DEBQSIZKwWsaRp8re3Tmh+adwLEhGsY9QnQyt4PySkBzJoilJYACJ+kp10PDqFNC3k1e4V40C/aERc00gi/jrnJA4OjlNv+qCm40Va0irV1wxLvkb/8LaJLMii+aWzAkHzTI2bgK2S6RZk0u7gEDV7Y1YlF4YH9aaS1z0QujYabGIXD9mHSNKZiVEeO2oaqmWPi7XSxj1hGAJdmhHMeno3ZTdCM0PLDg9H08wVPf+mn+eZ5JGhGf5ygKefVKHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9zYxtpv8ht/pdZ1/UNdvuyeub4Xlau09ZNTxJfuJwY8=;
- b=TUolWdbKoDHJmJWbJ6xIQuDDa9HJlnAaJFOE+kawXt7JxVe3QIkn7SGxhrG00Gq+Kva9XDkMlJ5OoCG5vw5VxtcRmou0W7rQ3Mxk//cl2w1fkh5hjDuQMFCExl1kMByK/C1rT0JVe2mCRcVDIwkBdXVM1zPPHKReFo5qEkTspSBA3DVeQhv1w+QcflUww0Dqf5k3dVlknQxtny0HLR2Uy0VO1WwKTx7XGOV/EePm5AcHYGIFYifPSjhTkgRGFyr04fX4oy0rEPbrHS0t3YloYhdfTGYY2ATDhEWhg1wlNfyFEBm7zhOS4dI9w/Dhfm/FUjf4rUgVwBTrvwlRtu+6sA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9zYxtpv8ht/pdZ1/UNdvuyeub4Xlau09ZNTxJfuJwY8=;
- b=LXhdS4/LsO2xzhW0Hp4Ac5Jv0ERcyLI5C4NLggJDO2SO238AGi3aHhmuQvfNiYh3U4Xw3mszE5uWxkO0pZa33/230aWnXiK0P4hUrQ5kF4XFhhno1KAUcSM8GROu5o8KrAtLrELluErB4COJI1e8H1j5GqxceYTdUdLF5JPxZPKt7kz/Xi4IGdKgOGoFxlmGVrgrOdu2BBxo7I84yteCQ9Zd5zKPFXJ+Pb0iqlk1bGJ40DfVRCdGISJsOC8myG+WvO4grNCgiD0KSNnOyR8bdpgJe5+aqPk8isAkZ2xJs1yAdsHCrn8VW8pGV/Uf8wDb8wpk5IYhaS6oPvPzPJZZJQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB1866.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:169::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.38; Tue, 31 Jan
- 2023 06:33:34 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097%6]) with mapi id 15.20.6043.038; Tue, 31 Jan 2023
- 06:33:34 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Gray <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] powerpc/tlb: Implement book3s/32/tlbflush.h
- local_flush_tlb_page_psize
-Thread-Topic: [PATCH] powerpc/tlb: Implement book3s/32/tlbflush.h
- local_flush_tlb_page_psize
-Thread-Index: AQHZNR/tYZTE+/A9A0SyFlqRUThyaa64EaIA
-Date: Tue, 31 Jan 2023 06:33:34 +0000
-Message-ID: <2de01197-54b6-0e96-5615-3cd212cfec83@csgroup.eu>
-References: <20230131025817.279417-1-bgray@linux.ibm.com>
-In-Reply-To: <20230131025817.279417-1-bgray@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB1866:EE_
-x-ms-office365-filtering-correlation-id: a531f305-6a33-4fb7-5063-08db03551427
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  x3hoyCPUaZU+f3Q83qPSbof3MB0OJhvQk52b4ydOJtWoaB60/uOuIOU3wW04myI5VTMFNHOSQkzDQq3ceyxXp5077uyN1F/2kZp23oNXqHFekzquW2TLwjWSfqkMdbq2Y4/KG8+y8uBUSPKwdfYkxe/c9M7lHpL2CfAXlKYWY8R59eUz+nB0260YrO8hsW8rgZcy6Zd/UdSQzGt9DakAiHgISHHVvVQjmldAacCb6vS1hChTx90mwui7GABaBXdkA0rojWbkGmL6mgFK4nGDqrCIVoZfyoNeFILiADOEDQf7Rmhh68fbrYjOIn+jyUH5lTyjKMahy50sCWRDIgtlk2JRrxH8peVB/Y1V/WpizrZATB38YHTrZHYqLIPUn6IfGz9LjEOhvy7Er58jIKqUCpd0n1Ng3kJ/3m1j3HGwbq5k/9MU2sS+cVxsAUR2eJKn5M93lpIXe0ffZPrRR+Esvzya2ALW3BzsgP8IKwFsv4psUoZMuQ0TkHFbnFMv+nAf3KpQVv/etHeEyD4ylTJt87JvoWmxOzGIpqGWLfQGSjm1zm1clAKx4IAIXe9BmU/tThqHticucD8hrxRuLAb4M9gOmXgp8LNiOq/4lvYODmg9jqj3+SO8Fc4UQlCX/GJ5lzrn1N+DcWMJBLIPRuVlyPfD4rzIgLACjHhTR20iBHFHGMhoxUbXyQMQDj0cLjE6dedLdQaoMWKWfYiOdJ2MJeCBWWpTYTB23CLF4JxITT0xHs1W2MLv4G4uBS+0dcfFU6cTX6kRKT/2N2leasmRxBzQW7tpVqTNWvfbSWUwsMzKtTId3iW87EecDO0wFfxA
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(396003)(346002)(136003)(376002)(366004)(451199018)(478600001)(76116006)(966005)(6486002)(91956017)(54906003)(5660300002)(38100700002)(122000001)(6512007)(86362001)(110136005)(31696002)(186003)(26005)(2616005)(38070700005)(316002)(8936002)(41300700001)(36756003)(44832011)(6506007)(83380400001)(4326008)(71200400001)(2906002)(64756008)(66556008)(66476007)(66446008)(66946007)(8676002)(31686004)(32563001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?clR6VkhuYzVZZzB3dWFQMjJmZVkwdnhvNkFUUmVYajZPRUNVREwwUU1HWmxn?=
- =?utf-8?B?cHlQbVI3aXhrWVQyK1RhVEp0VGNRT25lelNHNEhiM2k1dTl4UXRGbFl3WFVB?=
- =?utf-8?B?bE5ZNUNqVC9peFNwY1BYZlBMWjJsOU5ZczFmYS9uS1l0cExudTd5bm9QZjJN?=
- =?utf-8?B?a2FIZlE3NG9IMEdCU0gydDdyVDVrU0hjaEFMcHJoTHh2UnhWL3p3WkpwYUZJ?=
- =?utf-8?B?VGMvdTNaVis5Z1ZPTk9uUnluRVQrZ3crdmsrOWVGQnprUlBLVnRxZktvN3dY?=
- =?utf-8?B?ZXhudjlpcjFZNk0rT3RRQ2xOdHlJV2tuUFh5M1c3a2RKbW5oeVF3Z3QzemRu?=
- =?utf-8?B?WkU3SGt1UG5YZFhRbWw5MFFEdU9oUzhpQlVrbm45b2NkbHFMRXA2b1dOeCtW?=
- =?utf-8?B?T0lDdVBtYnZuNHBnR1ZEUmlZazVVUnI5eTQ5T0l6T00yNEpmMlpOeE92eUdF?=
- =?utf-8?B?SFRrSzNhM0VIY0Fnb0tnWFU4MWNGbmM3bGloV0lubGp4a1MzZEx3M1pONDJC?=
- =?utf-8?B?NitzNEUvc3g5eHhPTkc3Z1gwdEhnMCtObHpVblYrQ05hRjBZTkc3cE9lSWVt?=
- =?utf-8?B?bXErZ3RCOTR5Y1cza2p4ejNNbUtvMU51UE14MnR1SG0ycnhOc3pnaUJzMlNT?=
- =?utf-8?B?OHMzQ0p1YXRJNzZ6bGtHMDdvbGRzZ0lIbGh3ZEFET2ZoNmtaaWFGbzJmTzUv?=
- =?utf-8?B?SDJNR0ZXZXRGQjBPYUwrKzFDM2hUNkhMWGxuZjhTM3NFeGsvYllnc3R2UHBi?=
- =?utf-8?B?MVQ4Q2RRNkNXQnFIRDg5ZG00bzVYUHdqVXBqaCtSS2NVVEJQemtLUjhvRHVn?=
- =?utf-8?B?NXpsYnZWVWZESE5pMFlIVzFibUJudWxuaTczYzFsZDV4V3YyWTJKbzFvcFpi?=
- =?utf-8?B?UDB6Nzc0WW1XUkYyUmxEUitqWHpHZTBJemQ1bkEzL1NQQlRTQVlERFFHaWk4?=
- =?utf-8?B?TFJWOWQ3Y2lPV3dmZHRMdlovUTFmZVc4RTZPa1JQUkNrTi9JY0IzQTNOelc3?=
- =?utf-8?B?SEk0TFZlYkpqR3NlOFFEalE1WDhjWWxkSWkvR1NYN1VZQURvUksyWmFBTEQx?=
- =?utf-8?B?bkZGVmxBWEhucWc2YkY5ZmtnREhSSFA3eElYS2xMYVI2RWQzcVY1L2dhTTJO?=
- =?utf-8?B?OWNuTWZ6ZkI1K2h2STFsbWR5aHczKzFMYW43d09oWXJBaXNHVUZDVHF3cGZI?=
- =?utf-8?B?eFZud3YxUEUraVBFaWVEb1FEaC9XaHlNTlk1WnAvTkRRSFhtV2Y2RXdqN2M5?=
- =?utf-8?B?c3pRZCs0aEhZWWtaUDVDdHN4S1A5S1ZmS2ViTUxaR1QrUUFpb0N4MUdaK1dM?=
- =?utf-8?B?U0VLTVEvcVpkakNqUEkvMkRITC9GdG9uRXlqc0VFaWl2dGVJN1FMa094aTRs?=
- =?utf-8?B?enBBS3luS0tvazZZWEttZ1ZKOG1mQjBTUU1XVWNLQkZyVFVTWlV6ekxtTlFH?=
- =?utf-8?B?NHhmYndYYUh0VThwU2x0K2pxUzlpeTF5U2lDVUc4RGN4Y2RyRWlmczZVWFNW?=
- =?utf-8?B?Vks5bnl6T3JDL0RlZ0tKeFJ6RzFScHRnV0hVRmp4YUk3NEVLYUwveFU4b1lW?=
- =?utf-8?B?MitoQ3pOaWZCNzZiVWlpV0ZlMHkvMGFWd3lHQitNNDJmVzhxQjdhSjcyem5C?=
- =?utf-8?B?aU14bW1LeGVJa0MvZGxrT3R6MVI2Zjhuc0RTZHBYSDVYbWRhSHQ5T1pUVk5Y?=
- =?utf-8?B?ZmxEOHJFNzVaTTFoUHh6OEpjdC8xdlZsMjhyZ1VYbVI5TFhxTkt6K1pJcGJH?=
- =?utf-8?B?VWJkUmdYNnVjaHF2M21ERkE5aEZML2FPYkNrR1J6NCtpZTlXbTREUTh1RGlW?=
- =?utf-8?B?NXNqUFRVaGowQzlkamxBa3dsb3h0eTl5SWlXWkVKV3M1U09Ec1UxV1QrenRC?=
- =?utf-8?B?NjlFWGE3bU9vRGw5TmxxYzYyVU0wT00wMW8vK1VqWjd5LzdyUDVHZGw3bDR2?=
- =?utf-8?B?RU85RXBOVnBUS21PYWpvbWF4MWp0Z3FsWXE2ajA3aUFlOXBYZ3k0ZGJqWDdj?=
- =?utf-8?B?cSt3UWxMUldMQnlGWWdVOXpDeFRQSHVrdjlueCs5L3V3QXIwM1VKdjhmOEFT?=
- =?utf-8?B?cHJNeml0QjdoM2J4VkVvVW1vK3NtS3ZyQkRaZDArdCtvbms1dk1hZXA5WUVo?=
- =?utf-8?B?KzhXSnFtN0tnZVRXYktHRFBBMW5paG9sWnJ5R1dxVS9kVFZWRHNhSmtSY2Ev?=
- =?utf-8?B?Y2c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8FCD0D8C9C7F974B9E3C39E18D59A284@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5b5b03H1z2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 17:40:18 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V5PdxL029099;
+	Tue, 31 Jan 2023 06:40:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Oj5fUqD8cXfhCXGHqmmAnB4nFoPDkXudrH0a2Bq25gU=;
+ b=VWQTHs5Lwd/FOzlueNuXV5zXQqjGQJ00nuljuX/obnvlvVSeULmlzRpwdWs1DT0hm6oI
+ riVQxGWflg4LX1Tn6Oz8BtICizcdGDgxljnskHEeecmYP0mNZLay6mqsFEJTg4NI12Va
+ b+1aFn4mIQI6lB/tY4irHcgRpRviSi/SZJQ1P5xXhmbfORd+5lYRzeEqyaLKoYdlQ9IT
+ bGtCU7oX84QC2Ci/38EVMdwMT7rn3o48JOlDcTqGFsjbVGX/RTwrzccHtqD2ZynPsi8s
+ p8YcHkdKSJIkXoTngHjNrHTjO53TRHzVcw+EY0AQC6ooqX/cPl8XFeYGF3QFdGDKqBFv Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dh6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Jan 2023 06:40:12 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30V5rDV3021862;
+	Tue, 31 Jan 2023 06:40:12 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dga-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Jan 2023 06:40:11 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UHGNZJ013226;
+	Tue, 31 Jan 2023 06:40:09 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvsha6wx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Jan 2023 06:40:09 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V6e7uP43254156
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Jan 2023 06:40:07 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDE0A2004D;
+	Tue, 31 Jan 2023 06:40:06 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EEABF2004B;
+	Tue, 31 Jan 2023 06:40:05 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Jan 2023 06:40:05 +0000 (GMT)
+Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B7D3160151;
+	Tue, 31 Jan 2023 17:40:03 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: [PATCH v5 00/25] pSeries dynamic secure boot secvar interface + platform keyring loading
+Date: Tue, 31 Jan 2023 17:39:03 +1100
+Message-Id: <20230131063928.388035-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.39.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 6mVqwP3h7xxCkZ0jYJ50CcSQOfEQg9EC
+X-Proofpoint-GUID: Xtx_qJn4w6seaN2XOtA0aO3n_Jesf0OS
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a531f305-6a33-4fb7-5063-08db03551427
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jan 2023 06:33:34.7813
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sCj7nL7a+3KeZBtn1/l1PqXT68do4RuyUtfjHtqwgnr/G5hEKjG6TlM/mGgYDRPtcTerYbY06OdCqEgnudZVnUMht+MxPrD2U2maUZktNZg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB1866
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-31_02,2023-01-30_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ phishscore=0 priorityscore=1501 adultscore=0 suspectscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301310059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,69 +99,229 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>
+Cc: sudhakar@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, gjoyce@linux.ibm.com, ruscur@russell.cc, joel@jms.id.au, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com, stefanb@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDMxLzAxLzIwMjMgw6AgMDM6NTgsIEJlbmphbWluIEdyYXkgYSDDqWNyaXTCoDoNCj4g
-VGhlIGNvbW1pdCBpbnRyb2R1Y2luZyB0aGlzIGZ1bmN0aW9uIGltcGxlbWVudGVkIGl0IGFzIGEg
-YnVpbGQgYnVnIG9uIHRoaXMNCj4gcGxhdGZvcm0gdG8gbWFrZSB0aGUgY29tcGlsZXIgaGFwcHks
-IGFzIHRoZSBvbmx5IHVzZSBpbiB0aGUgY29kZSBpcyBndWFyZGVkDQo+IGJlaGluZCBhIHJhZGl4
-X2VuYWJsZWQoKSBjb25kaXRpb25hbC4NCj4gDQo+IEdDQyByZWNvZ25pc2VzIHRoYXQgY3B1X2hh
-c19mZWF0dXJlKE1NVV9GVFJfVFlQRV9SQURJWCkgcmV0dXJucyBmYWxzZSBvbiB0aGlzDQo+IHBs
-YXRmb3JtIGFuZCBlbGltaW5hdGVzIHRoZSBidWlsZCBidWcgYXMgZGVhZCBjb2RlLiBIb3dldmVy
-LCB3aGVuDQo+IENPTkZJR19KVU1QX0xBQkVMX0ZFQVRVUkVfQ0hFQ0tfREVCVUcgaXMgZW5hYmxl
-ZCwgdGhlIGFzc2VydGlvbiBhbmQgcG9zc2libGUNCj4gY2FsbCB0byBlYXJseV9jcHVfLi4uIHBy
-ZXZlbnRzIENsYW5nIGZyb20gZWxpbWluYXRpbmcgYW55IGNvZGUgdGhhdCdzDQo+IGNvbmRpdGlv
-bmFsIG9uIHRoZSByZXR1cm4gdmFsdWUuIFNvIENsYW5nIHRyaWdnZXJzIHRoZSBidWlsZCBidWcg
-YXMgcmVwb3J0ZWQNCj4gYnkgdGhlIGtlcm5lbCB0ZXN0IHJvYm90Og0KDQpJIHN0aWxsIHRoaW5r
-IGl0IGlzIG5vdCB0aGUgY29ycmVjdCBmaXguIFlvdSBhcmUgcHV0dGluZyB0aGUgcHJvYmxlbSAN
-CnVuZGVyIHRoZSBjYXJwZXQgaW5zdGVhZCBvZiBmaXhpbmcgaXQuIFRoZXJlIGFyZSBtYW55IG90
-aGVyIHBsYWNlcyB3aGVyZSANCnJhZGl4X2VuYWJsZWQoKSBvciBvdGhlciBtbXVfaGFzX2ZlYXR1
-cmUoKSBhcmUgdXNlZCB3aXRoIHRoZSBleHBlY3RhdGlvbiANCnRoYXQgb25lIGxlZyB3aWxsIGJl
-IGVsaW1pbmF0ZWQgYXQgYnVpbGQgdGltZS4NCg0KQXMgd3JpdHRlbiBpbiBwcmV2aW91cyB0aHJl
-YWQsIGhhdmUgeW91IGNvbnNpZGVyZWQgcmV3b3JraW5nIA0KbW11X2hhc19mZWF0dXJlKCkgdG8g
-bW92ZSB0aGUgQ09ORklHX0pVTVBfTEFCRUxfRkVBVFVSRV9DSEVDS19ERUJVRyANCmFmdGVyIHRo
-ZSBiZWxvdyBibG9jazoNCg0KCWlmIChNTVVfRlRSU19BTFdBWVMgJiBmZWF0dXJlKQ0KCQlyZXR1
-cm4gdHJ1ZTsNCg0KCWlmICghKE1NVV9GVFJTX1BPU1NJQkxFICYgZmVhdHVyZSkpDQoJCXJldHVy
-biBmYWxzZTsNCg0KDQpBbmQgYXMgdGhpcyBsb29rcyBsaWtlIGEgQ2xhbmcgYnVnIG9yIGxpbWl0
-YXRpb24sIGNhbiB5b3UgcHJvdmlkZSB1cyANCndpdGggYSBsaW5rIHRvIHRoZSBDbGFuZyBpc3N1
-ZSB5b3UgaGF2ZSBvcGVuZWQgZm9yIGl0ID8NCg0KDQpMb29raW5nIGludG8gaXQgaW4gbW9yZSBk
-ZXRhaWxzLCBJJ20gZXZlbiBtb3JlIHB1enpsZWQuIEFzIGZhciBhcyBJIGNhbiANCnNlZSwgbG9j
-YWxfZmx1c2hfdGxiX3BhZ2VfcHNpemUoKSBpcyB1c2VkIG9ubHkgYXQgb25lIHBsYWNlLCB0aGF0
-IGlzIA0KZnVuY3Rpb24gX19kb19wYXRjaF9pbnN0cnVjdGlvbl9tbSgpLiBTbyBpZiBDbGFuZyBm
-YWlscyB0byBpZGVudGlmeSBpdCANCmFzIGEgZGVhZCBsZWcsIGl0IGlzIHRoZSBmdWxsIF9fZG9f
-cGF0Y2hfaW5zdHJ1Y3Rpb25fbW0oKSB3aGljaCBpcyBrZXB0IA0KZm9yIG5vIHJlYXNvbi4NCg0K
-T24gdGhlIG90aGVyIGhhbmQsIEkgc2VlIHRoYXQgbG9jYWxfZmx1c2hfdGxiX3BhZ2VfcHNpemUo
-KSBpbXBsZW1lbnRlZCANCmZvciBub2hhc2gvMzIsIHNvIHllcyB3ZSBjYW4gYWxzbyBpbXBsZW1l
-bnQgaXQgZm9yIGJvb2szcy8zMi4gQnV0IHRoZW4gDQp0aGUgY29tbWl0IGxvZyBzaG91bGQgZXhw
-bGFpbiB0aGluZ3MgZGlmZmVyZW50bHkuDQoNCkJ5IHRoZSB3YXksIEkgYWxzbyBzZWUgdGhhdCBs
-b2NhbF9mbHVzaF90bGJfcGFnZV9wc2l6ZSgpIGZvciBib29rM3MvNjQgDQpkb2VzIGp1c3Qgbm90
-aGluZyBhdCBhbGwgZm9yIG5vbiBSYWRpeC4gSXMgdGhhdCBjb3JyZWN0ID8NCg0KVGhhbmtzDQpD
-aHJpc3RvcGhlDQoNCg0KPiANCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGx2bS8yMDIzMDEy
-MTIzNDguZURrb3d2ZkYtbGtwQGludGVsLmNvbQ0KPiANCj4gRml4ZXM6IDI3NGQ4NDJmYTFlZiAo
-InBvd2VycGMvdGxiOiBBZGQgbG9jYWwgZmx1c2ggZm9yIHBhZ2UgZ2l2ZW4gbW1fc3RydWN0IGFu
-ZCBwc2l6ZSIpDQo+IFJlcG9ydGVkLWJ5OiBrZXJuZWwgdGVzdCByb2JvdCA8bGtwQGludGVsLmNv
-bT4NCj4gU2lnbmVkLW9mZi1ieTogQmVuamFtaW4gR3JheSA8YmdyYXlAbGludXguaWJtLmNvbT4N
-Cj4gLS0tDQo+IA0KPiBTdXBlcnNlZGVzIGh0dHBzOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcHJv
-amVjdC9saW51eHBwYy1kZXYvcGF0Y2gvMjAyMzAxMjQyMTU0MjQuOTA2OC0xLWJncmF5QGxpbnV4
-LmlibS5jb20vDQo+IA0KPiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vYm9vazNz
-LzMyL3RsYmZsdXNoLmggfCA0ICstLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24o
-KyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2luY2x1
-ZGUvYXNtL2Jvb2szcy8zMi90bGJmbHVzaC5oIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2Jv
-b2szcy8zMi90bGJmbHVzaC5oDQo+IGluZGV4IDRiZTU3MjkwODEyNC4uY2RlM2I2ZjVkNTYzIDEw
-MDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vYm9vazNzLzMyL3RsYmZsdXNo
-LmgNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2Jvb2szcy8zMi90bGJmbHVzaC5o
-DQo+IEBAIC0yLDggKzIsNiBAQA0KPiAgICNpZm5kZWYgX0FTTV9QT1dFUlBDX0JPT0szU18zMl9U
-TEJGTFVTSF9IDQo+ICAgI2RlZmluZSBfQVNNX1BPV0VSUENfQk9PSzNTXzMyX1RMQkZMVVNIX0gN
-Cj4gDQo+IC0jaW5jbHVkZSA8bGludXgvYnVpbGRfYnVnLmg+DQo+IC0NCj4gICAjZGVmaW5lIE1N
-VV9OT19DT05URVhUICAgICAgKDApDQo+ICAgLyoNCj4gICAgKiBUTEIgZmx1c2hpbmcgZm9yICJj
-bGFzc2ljIiBoYXNoLU1NVSAzMi1iaXQgQ1BVcywgNnh4LCA3eHgsIDd4eHgNCj4gQEAgLTgwLDcg
-Kzc4LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIGxvY2FsX2ZsdXNoX3RsYl9wYWdlKHN0cnVjdCB2
-bV9hcmVhX3N0cnVjdCAqdm1hLA0KPiAgIHN0YXRpYyBpbmxpbmUgdm9pZCBsb2NhbF9mbHVzaF90
-bGJfcGFnZV9wc2l6ZShzdHJ1Y3QgbW1fc3RydWN0ICptbSwNCj4gICAJCQkJCSAgICAgIHVuc2ln
-bmVkIGxvbmcgdm1hZGRyLCBpbnQgcHNpemUpDQo+ICAgew0KPiAtCUJVSUxEX0JVRygpOw0KPiAr
-CWZsdXNoX3JhbmdlKG1tLCB2bWFkZHIsIHZtYWRkciArIFBBR0VfU0laRSk7DQo+ICAgfQ0KPiAN
-Cj4gICBzdGF0aWMgaW5saW5lIHZvaWQgbG9jYWxfZmx1c2hfdGxiX21tKHN0cnVjdCBtbV9zdHJ1
-Y3QgKm1tKQ0KPiANCj4gYmFzZS1jb21taXQ6IGNhMjcyNzUxYmExOGNhOGYxMzdhZjYzMWNiYzlm
-M2Y5ODdmYWI2ZTMNCj4gLS0NCj4gMi4zOS4xDQo=
+This series exposes an interface to userspace for reading and writing
+secure variables contained within the PowerVM LPAR Platform KeyStore
+(PLPKS) for the purpose of configuring dynamic secure boot, and adds
+the glue required to load keys from the PLPKS into the platform keyring.
+
+This series builds on past work by Nayna Jain[0] in exposing PLPKS
+variables to userspace.  Rather than being a generic interface for
+interacting with the keystore, however, we use the existing powerpc
+secvar infrastructure to only expose objects in the keystore used
+for dynamic secure boot.  This has the benefit of leveraging an
+existing interface and making the implementation relatively minimal.
+
+This series integrates a previous series to fix some bugs in PLPKS
+and implement support for signed updates[1], and a cleanup patch from
+Michael Ellerman[2].
+
+There are a few relevant details to note about the implementation:
+
+ * New additions to the secvar API: format(), max_size(), config_attrs,
+   var_names
+
+ * New optional sysfs directory "config/" for arbitrary ASCII variables
+
+ * Some OPAL-specific code has been relocated from secvar-sysfs.c to
+   powernv platform code.  Would appreciate any powernv testing!
+
+ * Variable names are fixed and only those used for secure boot are
+   exposed.  This is not a generic PLPKS interface, but also doesn't
+   preclude one being added in future.
+
+With this series, both powernv and pseries platforms support dynamic
+secure boot through the same interface.
+
+Many thanks to Nayna Jain, Ben Gray, Sudhakar Kuppusamy, Shubham Pandey,
+Mimi Zohar, George Wilson and the others at IBM who have helped us with
+developing this series, and to everyone who has provided review comments
+and feedback.
+
+[0]: https://lore.kernel.org/linuxppc-dev/20221106210744.603240-1-nayna@linux.ibm.com/
+[1]: https://lore.kernel.org/linuxppc-dev/20221220071626.1426786-1-ajd@linux.ibm.com/
+[2]: https://lore.kernel.org/linuxppc-dev/20230112023819.1692452-1-mpe@ellerman.id.au/
+
+v1: https://lore.kernel.org/linuxppc-dev/20221228072943.429266-1-ruscur@russell.cc/
+v2: https://lore.kernel.org/linuxppc-dev/20221230042014.154483-1-ruscur@russell.cc/
+v3: https://lore.kernel.org/linuxppc-dev/20230118061049.1006141-1-ajd@linux.ibm.com/
+v4: https://lore.kernel.org/linuxppc-dev/20230120074306.1326298-1-ajd@linux.ibm.com/
+
+=================
+
+Changes in v5:
+
+    New patch to fix incorrect return value in secvar_sysfs_load() (ruscur)
+
+    Better explanation of power of 2 kmalloc rounding (mpe)
+
+    Add null component check on signed updates (npiggin)
+
+    Don't export plpks_signed_update_var() (npiggin)
+
+    Fix all the feedback we got on kexec handling, including removing the
+    password from the FDT (npiggin, mpe)
+
+    Enable plpks-secvar.c using CONFIG_PPC_SECURE_BOOT rather than
+    CONFIG_PPC_SECVAR_SYSFS (ajd)
+
+    Clarify handling of ibm,secvar-backend vs ibm,edk2-compat-v1
+    compatible string (zohar)
+
+    Lots of miscellaneous improvements (npiggin)
+
+Changes in v4:
+
+    Fix the build when CONFIG_PSERIES_PLPKS=n (snowpatch)
+
+    Shuffled fixes to the front the series (npiggin)
+
+    Pass buffer size in secvar_operations->format() (stefanb, npiggin)
+
+    Return an error when set_secvar_ops() fails (npiggin)
+
+    Add some extra null checks (stefanb, gjoyce)
+
+    Add commit message comment elaborating on PAGE_SIZE issues (joel)
+
+    Fix error handling in the kexec code (ruscur)
+
+    Fix hvcall.h MAX_HCALL_OPCODE rebasing issue (npiggin)
+
+Changes in v3:
+
+    Integrate Andrew's PLPKS bugfixes and enhancements series and Michael
+    Ellerman's u64 cleanup patch into this series (and update the other
+    patches to use u64)
+
+    New patches to load keys from the PLPKS into the kernel's platform
+    keyring (ruscur)
+
+    New patches to pass PLPKS password to new kernels when kexecing
+    (ruscur)
+
+    Improve handling of format strings (ruscur)
+
+    Clean up secvar error messages (ajd)
+
+    Merge config attributes into secvar_operations (mpe)
+
+    Add a new static variable names API rather than (ab)using get_next()
+    (ajd/mpe)
+
+    Warning message when PAGE_SIZE is smaller than the max object size
+    (ajd)
+
+    Move plpks.h to the include directory, and move a bunch of constants
+    in there with a consistent naming scheme
+
+    Refresh PLPKS config values whenever plpks_get_usedspace() is called
+    (ajd)
+
+    Extra validation on PLPKS config values (ruscur)
+
+    Return maxobjlabelsize to userspace as is without subtracting overhead (ruscur)
+
+    Fix error code handling in plpks_confirm_object_flushed() (ruscur)
+
+    Pass plpks_var struct to plpks_signed_update_var() by reference (mpe)
+
+    Make the data buffer in plpks_read_var() caller-allocated to reduce
+    number of allocations/copies (mpe)
+
+    Rework the Kconfig options so that PSERIES_PLPKS is a hidden option,
+    turned on by enabling PPC_SECURE_BOOT, and the PLPKS secvar code is
+    activated by PPC_SECVAR_SYSFS to match powernv (ajd)
+
+    Use machine_arch_initcall() rather than device_initcall() so we don't
+    break powernv (mpe)
+
+    Improve ABI documentation (mpe)
+
+    Return -EIO on most read errors (mpe)
+
+    Add "grubdbx" variable (Sudhakar)
+
+    Use utf8s_to_utf16s() rather than our own "UCS-2" conversion code (mpe)
+
+    Fix SB_VERSION data length (ruscur)
+
+    Stop prepending policy data on read (ruscur)
+
+    Don't print errors to the kernel log when reading non-existent
+    variables (Sudhakar)
+
+    Miscellaneous code style, checkpatch cleanups
+
+Changes in v2:
+
+    Remove unnecessary config vars from sysfs and document the others,
+    thanks to review from Greg.  If we end up needing to expose more, we
+    can add them later and update the docs.
+
+    Use sysfs_emit() instead of sprintf() for all sysfs strings
+
+    Change the size of the sysfs binary attributes to include the 8-byte
+    flags header, preventing truncation of large writes.
+
+Andrew Donnellan (8):
+  powerpc/pseries: Fix handling of PLPKS object flushing timeout
+  powerpc/pseries: Fix alignment of PLPKS structures and buffers
+  powerpc/secvar: Clean up init error messages
+  powerpc/secvar: Allow backend to populate static list of variable
+    names
+  powerpc/secvar: Warn when PAGE_SIZE is smaller than max object size
+  powerpc/secvar: Don't print error on ENOENT when reading variables
+  powerpc/pseries: Make caller pass buffer to plpks_read_var()
+  powerpc/pseries: Turn PSERIES_PLPKS into a hidden option
+
+Michael Ellerman (1):
+  powerpc/secvar: Use u64 in secvar_operations
+
+Nayna Jain (2):
+  powerpc/pseries: Expose PLPKS config values, support additional fields
+  powerpc/pseries: Implement signed update for PLPKS objects
+
+Russell Currey (14):
+  powerpc/secvar: Fix incorrect return in secvar_sysfs_load()
+  powerpc/secvar: Warn and error if multiple secvar ops are set
+  powerpc/secvar: Use sysfs_emit() instead of sprintf()
+  powerpc/secvar: Handle format string in the consumer
+  powerpc/secvar: Handle max object size in the consumer
+  powerpc/secvar: Extend sysfs to include config vars
+  powerpc/pseries: Move plpks.h to include directory
+  powerpc/pseries: Move PLPKS constants to header file
+  powerpc/pseries: Log hcall return codes for PLPKS debug
+  powerpc/pseries: Add helper to get PLPKS password length
+  powerpc/pseries: Pass PLPKS password on kexec
+  powerpc/pseries: Implement secvars for dynamic secure boot
+  integrity/powerpc: Improve error handling & reporting when loading
+    certs
+  integrity/powerpc: Support loading keys from PLPKS
+
+ Documentation/ABI/testing/sysfs-secvar        |  75 +++-
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/hvcall.h             |   1 +
+ arch/powerpc/include/asm/plpks.h              | 195 +++++++++
+ arch/powerpc/include/asm/secvar.h             |  21 +-
+ arch/powerpc/kernel/prom.c                    |   4 +
+ arch/powerpc/kernel/secvar-ops.c              |   8 +-
+ arch/powerpc/kernel/secvar-sysfs.c            | 176 ++++----
+ arch/powerpc/kexec/file_load_64.c             |  15 +-
+ arch/powerpc/platforms/powernv/opal-secvar.c  |  60 ++-
+ arch/powerpc/platforms/pseries/Kconfig        |  19 +-
+ arch/powerpc/platforms/pseries/Makefile       |   4 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c | 219 ++++++++++
+ arch/powerpc/platforms/pseries/plpks.c        | 378 +++++++++++++++---
+ arch/powerpc/platforms/pseries/plpks.h        |  71 ----
+ .../integrity/platform_certs/load_powerpc.c   |  47 ++-
+ 16 files changed, 1040 insertions(+), 254 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/plpks.h
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-secvar.c
+ delete mode 100644 arch/powerpc/platforms/pseries/plpks.h
+
+-- 
+2.39.1
