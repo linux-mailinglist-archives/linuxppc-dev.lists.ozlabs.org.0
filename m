@@ -1,86 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB8368226D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 03:59:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C246682286
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 04:07:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5VBw2sYsz3cd7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 13:59:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5VMq73B3z3c73
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 14:07:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R7vBCyr4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RqjFY4KC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5VLq2PYHz3bT7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 14:06:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R7vBCyr4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RqjFY4KC;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4P5VLn4D6Nz4xwy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 14:06:25 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4P5VLn496Pz4xwq; Tue, 31 Jan 2023 14:06:25 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RqjFY4KC;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5V9y5zDMz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 13:58:46 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V2W84J031138;
-	Tue, 31 Jan 2023 02:58:38 GMT
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4P5VLm6vnPz4x1h;
+	Tue, 31 Jan 2023 14:06:24 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V2E7MY008345;
+	Tue, 31 Jan 2023 03:06:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=WU6+Re5td5CpgGK9u8CZ3Hnl+alKtBh3vjpjgUODC38=;
- b=R7vBCyr4heY4OMx1YHrj4gbk46TrIJTL5Pc0FbyjhLfRV6WGPKG+SigJ3cJypfgQpeX4
- vpSRS8rXgUeI4I56K5twr6fXxuYaerctB2v8mlY/6zS0z44m2NpmQdjTSxtIauzWa4lc
- vvhJU9MxJOwKcJ5pqDK/Stix7GZ0FQmvJwS26Xjm80GnT8UzdzlkZytnDSi8RSqpjrT3
- wKIeyBrDdse/rtFnlYW9mIBlFipV0cYG998fF3BdJQJrWBI10QMzOAScSXjpeC1Zk9Cf
- sE3d2mysjb5zQb1zRY+kA/ON/YvVFyW/RS8NAhkQJrq6372B9zPUkRk9YNHc2xu+MmIU JQ== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nersfame1-1
+ bh=O7P6zzM3RFIc9WQ/TtCEEVF/ljUnsvXunPPNYrBahQA=;
+ b=RqjFY4KCOoL9wNKP6qoruyIC+jgrdu6uAMR3NxE+ZP78NY1gyPcYrnu/gEVKX2V8x3/e
+ hrFPveGnGbyncWiqpX4VZOMqAWwNDXYBsRTf/DUOnvC4TBmIDSx01o/UnUJUC+MtMSrQ
+ S6a8BLnQp8rtJVflkFhG6VjeX5chi9u+szFWHL3cewr5ts0sjaJ+Rpk45VZDEhe+gTNT
+ XxSTPG87nyCgSXqd9WF3F9MzU6CfzSD0P9mZDHy9Hii0mtNHk80Z0NQu3BzVHVVqY25/
+ zixE9EpqtV+pp31MWVsmO/9OZzwqy+HIswrUOL9I0sg024kwwo0oyCk2+StDaQo6KWz7 mg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3net14s159-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 02:58:38 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UGCvn5014009;
-	Tue, 31 Jan 2023 02:58:35 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvsha34w-1
+	Tue, 31 Jan 2023 03:06:22 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UL30Zu014675;
+	Tue, 31 Jan 2023 03:06:20 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3ncvtttxd1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 02:58:35 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V2wXoT23658988
+	Tue, 31 Jan 2023 03:06:20 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V36HME47120780
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 Jan 2023 02:58:33 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D27520040;
-	Tue, 31 Jan 2023 02:58:33 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 835C52004B;
-	Tue, 31 Jan 2023 02:58:32 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 31 Jan 2023 02:58:32 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C798260151;
-	Tue, 31 Jan 2023 13:58:30 +1100 (AEDT)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/tlb: Implement book3s/32/tlbflush.h local_flush_tlb_page_psize
-Date: Tue, 31 Jan 2023 13:58:17 +1100
-Message-Id: <20230131025817.279417-1-bgray@linux.ibm.com>
+	Tue, 31 Jan 2023 03:06:17 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9DD6820040;
+	Tue, 31 Jan 2023 03:06:17 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 738CA20043;
+	Tue, 31 Jan 2023 03:06:16 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.6.148])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Jan 2023 03:06:16 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/kexec_file: account hot-pluggable memory while estimating FDT size
+Date: Tue, 31 Jan 2023 08:36:15 +0530
+Message-Id: <20230131030615.729894-1-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.39.1
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: aTz-zrOTw6hp2jnBxuP61B0acJ4JDa5-
-X-Proofpoint-GUID: aTz-zrOTw6hp2jnBxuP61B0acJ4JDa5-
+X-Proofpoint-GUID: VgNGgMeAGofopFhzgroJrD30W733YSqC
+X-Proofpoint-ORIG-GUID: VgNGgMeAGofopFhzgroJrD30W733YSqC
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-30_19,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=551 bulkscore=0 phishscore=0 mlxscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2301310021
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 mlxlogscore=840 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301310026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,57 +103,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Benjamin Gray <bgray@linux.ibm.com>
+Cc: mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit introducing this function implemented it as a build bug on this
-platform to make the compiler happy, as the only use in the code is guarded
-behind a radix_enabled() conditional.
+On Systems where online memory is lesser compared to max memory, the
+kexec_file_load system call may fail to load the kdump kernel with the
+below errors:
 
-GCC recognises that cpu_has_feature(MMU_FTR_TYPE_RADIX) returns false on this
-platform and eliminates the build bug as dead code. However, when
-CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG is enabled, the assertion and possible
-call to early_cpu_... prevents Clang from eliminating any code that's
-conditional on the return value. So Clang triggers the build bug as reported
-by the kernel test robot:
+    "Failed to update fdt with linux,drconf-usable-memory property"
+    "Error setting up usable-memory property for kdump kernel"
 
-https://lore.kernel.org/llvm/202301212348.eDkowvfF-lkp@intel.com
+This happens because the size estimation for usable memory properties
+for the kdump kernel's FDT is based on the online memory whereas the
+usable memory properties include max memory. In short, the hot-pluggable
+memory is not accounted for while estimating the size of the usable
+memory properties.
 
-Fixes: 274d842fa1ef ("powerpc/tlb: Add local flush for page given mm_struct and psize")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+The issue is addressed by calculating usable memory property size using
+max hotplug address instead of the last online memory address.
+
+Fixes: 2377c92e37fe ("powerpc/kexec_file: fix FDT size estimation for kdump kernel")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
+Since v2: rebase the patch on top of
+http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230130014707.541110-1-mpe@ellerman.id.au/
 
-Supersedes https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230124215424.9068-1-bgray@linux.ibm.com/
+ arch/powerpc/kexec/file_load_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
- arch/powerpc/include/asm/book3s/32/tlbflush.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-index 4be572908124..cde3b6f5d563 100644
---- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
- #define _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
-
--#include <linux/build_bug.h>
--
- #define MMU_NO_CONTEXT      (0)
- /*
-  * TLB flushing for "classic" hash-MMU 32-bit CPUs, 6xx, 7xx, 7xxx
-@@ -80,7 +78,7 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma,
- static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
- 					      unsigned long vmaddr, int psize)
- {
--	BUILD_BUG();
-+	flush_range(mm, vmaddr, vmaddr + PAGE_SIZE);
- }
-
- static inline void local_flush_tlb_mm(struct mm_struct *mm)
-
-base-commit: ca272751ba18ca8f137af631cbc9f3f987fab6e3
---
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 3caee570e79bf..6af82fb53a493 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -990,7 +990,7 @@ unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image)
+ 	 * number of usable memory entries and use for FDT size estimation.
+ 	 */
+ 	if (drmem_lmb_size()) {
+-		usm_entries = ((memblock_end_of_DRAM() / drmem_lmb_size()) +
++		usm_entries = ((memory_hotplug_max() / drmem_lmb_size()) +
+ 			       (2 * (resource_size(&crashk_res) / drmem_lmb_size())));
+ 		extra_size = (unsigned int)(usm_entries * sizeof(u64));
+ 	} else
+-- 
 2.39.1
+
