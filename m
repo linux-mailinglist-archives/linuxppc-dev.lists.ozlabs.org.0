@@ -2,92 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A486824BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A5F6824C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:43:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5b7X56nnz3cKb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:42:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5b9c0CJ5z3f55
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:43:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VWQTHs5L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hj/m3V/e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VWQTHs5L;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hj/m3V/e;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5b5b03H1z2yNs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 17:40:18 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V5PdxL029099;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5b5b3Nqrz2yZv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 17:40:19 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V61vmT020628;
 	Tue, 31 Jan 2023 06:40:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=Oj5fUqD8cXfhCXGHqmmAnB4nFoPDkXudrH0a2Bq25gU=;
- b=VWQTHs5Lwd/FOzlueNuXV5zXQqjGQJ00nuljuX/obnvlvVSeULmlzRpwdWs1DT0hm6oI
- riVQxGWflg4LX1Tn6Oz8BtICizcdGDgxljnskHEeecmYP0mNZLay6mqsFEJTg4NI12Va
- b+1aFn4mIQI6lB/tY4irHcgRpRviSi/SZJQ1P5xXhmbfORd+5lYRzeEqyaLKoYdlQ9IT
- bGtCU7oX84QC2Ci/38EVMdwMT7rn3o48JOlDcTqGFsjbVGX/RTwrzccHtqD2ZynPsi8s
- p8YcHkdKSJIkXoTngHjNrHTjO53TRHzVcw+EY0AQC6ooqX/cPl8XFeYGF3QFdGDKqBFv Wg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=7zg1tUagYbEpIMwYaXEmmouyBNZUUmpuXixmXYcdebM=;
+ b=Hj/m3V/eDiNJ6GAoheF0uw1PKkW2pZUcMaNufLFk2BXfQyTswe9Ft3rNR4h7cw7w3Tew
+ D3NHohzCeMsfkIGXayvZuw5qX3vwj74ywfi2SpPxH0hfDoWyHbXTnj9H0iq5NJhQ3Kva
+ 8f0r43HC9FwjD7mtapWF3XMa1nTqLaUpFNHEGmIcYr0lKpuYQ6e86a0JTzW/09TgXhMC
+ WSq6pk3QbJY/IpyVZfcHouumEbps0pfjqOWb56CkzNFhY94JGBfD51AjVOcUEw8JOEc3
+ CIGc+NPJfRb+ZOmelJBgIfTSc5LZttZPXJeehSDBe2hsjwMz3eAw4mWEJaotLSqGysy3 bw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dh6-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3newc40rr8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 31 Jan 2023 06:40:12 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30V5rDV3021862;
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30V6LWAC024564;
 	Tue, 31 Jan 2023 06:40:12 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dga-1
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3newc40rq6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 06:40:11 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UHGNZJ013226;
-	Tue, 31 Jan 2023 06:40:09 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvsha6wx-1
+	Tue, 31 Jan 2023 06:40:12 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30ULAuql009758;
+	Tue, 31 Jan 2023 06:40:10 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3ncvt7j7gj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 06:40:09 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V6e7uP43254156
+	Tue, 31 Jan 2023 06:40:10 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V6e6ZO21168558
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Tue, 31 Jan 2023 06:40:07 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDE0A2004D;
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7906C20043;
 	Tue, 31 Jan 2023 06:40:06 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EEABF2004B;
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED13720040;
 	Tue, 31 Jan 2023 06:40:05 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
 	Tue, 31 Jan 2023 06:40:05 +0000 (GMT)
 Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B7D3160151;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CD50960637;
 	Tue, 31 Jan 2023 17:40:03 +1100 (AEDT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v5 00/25] pSeries dynamic secure boot secvar interface + platform keyring loading
-Date: Tue, 31 Jan 2023 17:39:03 +1100
-Message-Id: <20230131063928.388035-1-ajd@linux.ibm.com>
+Subject: [PATCH v5 01/25] powerpc/pseries: Fix handling of PLPKS object flushing timeout
+Date: Tue, 31 Jan 2023 17:39:04 +1100
+Message-Id: <20230131063928.388035-2-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.39.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6mVqwP3h7xxCkZ0jYJ50CcSQOfEQg9EC
-X-Proofpoint-GUID: Xtx_qJn4w6seaN2XOtA0aO3n_Jesf0OS
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20230131063928.388035-1-ajd@linux.ibm.com>
+References: <20230131063928.388035-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: S2wY0vyD_i2FSYgExCoAfbgNmFCWVKLS
+X-Proofpoint-GUID: jr7wMDhLwNuLCtfdDOuV9dTx4h3gCUCk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-31_02,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- phishscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301310059
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999 clxscore=1015
+ suspectscore=0 bulkscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301310059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,225 +105,81 @@ Cc: sudhakar@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series exposes an interface to userspace for reading and writing
-secure variables contained within the PowerVM LPAR Platform KeyStore
-(PLPKS) for the purpose of configuring dynamic secure boot, and adds
-the glue required to load keys from the PLPKS into the platform keyring.
-
-This series builds on past work by Nayna Jain[0] in exposing PLPKS
-variables to userspace.  Rather than being a generic interface for
-interacting with the keystore, however, we use the existing powerpc
-secvar infrastructure to only expose objects in the keystore used
-for dynamic secure boot.  This has the benefit of leveraging an
-existing interface and making the implementation relatively minimal.
-
-This series integrates a previous series to fix some bugs in PLPKS
-and implement support for signed updates[1], and a cleanup patch from
-Michael Ellerman[2].
-
-There are a few relevant details to note about the implementation:
-
- * New additions to the secvar API: format(), max_size(), config_attrs,
-   var_names
-
- * New optional sysfs directory "config/" for arbitrary ASCII variables
-
- * Some OPAL-specific code has been relocated from secvar-sysfs.c to
-   powernv platform code.  Would appreciate any powernv testing!
-
- * Variable names are fixed and only those used for secure boot are
-   exposed.  This is not a generic PLPKS interface, but also doesn't
-   preclude one being added in future.
-
-With this series, both powernv and pseries platforms support dynamic
-secure boot through the same interface.
-
-Many thanks to Nayna Jain, Ben Gray, Sudhakar Kuppusamy, Shubham Pandey,
-Mimi Zohar, George Wilson and the others at IBM who have helped us with
-developing this series, and to everyone who has provided review comments
-and feedback.
-
-[0]: https://lore.kernel.org/linuxppc-dev/20221106210744.603240-1-nayna@linux.ibm.com/
-[1]: https://lore.kernel.org/linuxppc-dev/20221220071626.1426786-1-ajd@linux.ibm.com/
-[2]: https://lore.kernel.org/linuxppc-dev/20230112023819.1692452-1-mpe@ellerman.id.au/
-
-v1: https://lore.kernel.org/linuxppc-dev/20221228072943.429266-1-ruscur@russell.cc/
-v2: https://lore.kernel.org/linuxppc-dev/20221230042014.154483-1-ruscur@russell.cc/
-v3: https://lore.kernel.org/linuxppc-dev/20230118061049.1006141-1-ajd@linux.ibm.com/
-v4: https://lore.kernel.org/linuxppc-dev/20230120074306.1326298-1-ajd@linux.ibm.com/
-
-=================
-
-Changes in v5:
-
-    New patch to fix incorrect return value in secvar_sysfs_load() (ruscur)
-
-    Better explanation of power of 2 kmalloc rounding (mpe)
-
-    Add null component check on signed updates (npiggin)
-
-    Don't export plpks_signed_update_var() (npiggin)
-
-    Fix all the feedback we got on kexec handling, including removing the
-    password from the FDT (npiggin, mpe)
-
-    Enable plpks-secvar.c using CONFIG_PPC_SECURE_BOOT rather than
-    CONFIG_PPC_SECVAR_SYSFS (ajd)
-
-    Clarify handling of ibm,secvar-backend vs ibm,edk2-compat-v1
-    compatible string (zohar)
-
-    Lots of miscellaneous improvements (npiggin)
-
-Changes in v4:
-
-    Fix the build when CONFIG_PSERIES_PLPKS=n (snowpatch)
-
-    Shuffled fixes to the front the series (npiggin)
-
-    Pass buffer size in secvar_operations->format() (stefanb, npiggin)
-
-    Return an error when set_secvar_ops() fails (npiggin)
-
-    Add some extra null checks (stefanb, gjoyce)
-
-    Add commit message comment elaborating on PAGE_SIZE issues (joel)
-
-    Fix error handling in the kexec code (ruscur)
-
-    Fix hvcall.h MAX_HCALL_OPCODE rebasing issue (npiggin)
-
-Changes in v3:
-
-    Integrate Andrew's PLPKS bugfixes and enhancements series and Michael
-    Ellerman's u64 cleanup patch into this series (and update the other
-    patches to use u64)
-
-    New patches to load keys from the PLPKS into the kernel's platform
-    keyring (ruscur)
-
-    New patches to pass PLPKS password to new kernels when kexecing
-    (ruscur)
-
-    Improve handling of format strings (ruscur)
-
-    Clean up secvar error messages (ajd)
-
-    Merge config attributes into secvar_operations (mpe)
-
-    Add a new static variable names API rather than (ab)using get_next()
-    (ajd/mpe)
-
-    Warning message when PAGE_SIZE is smaller than the max object size
-    (ajd)
-
-    Move plpks.h to the include directory, and move a bunch of constants
-    in there with a consistent naming scheme
-
-    Refresh PLPKS config values whenever plpks_get_usedspace() is called
-    (ajd)
-
-    Extra validation on PLPKS config values (ruscur)
-
-    Return maxobjlabelsize to userspace as is without subtracting overhead (ruscur)
-
-    Fix error code handling in plpks_confirm_object_flushed() (ruscur)
-
-    Pass plpks_var struct to plpks_signed_update_var() by reference (mpe)
-
-    Make the data buffer in plpks_read_var() caller-allocated to reduce
-    number of allocations/copies (mpe)
-
-    Rework the Kconfig options so that PSERIES_PLPKS is a hidden option,
-    turned on by enabling PPC_SECURE_BOOT, and the PLPKS secvar code is
-    activated by PPC_SECVAR_SYSFS to match powernv (ajd)
-
-    Use machine_arch_initcall() rather than device_initcall() so we don't
-    break powernv (mpe)
-
-    Improve ABI documentation (mpe)
-
-    Return -EIO on most read errors (mpe)
-
-    Add "grubdbx" variable (Sudhakar)
-
-    Use utf8s_to_utf16s() rather than our own "UCS-2" conversion code (mpe)
-
-    Fix SB_VERSION data length (ruscur)
-
-    Stop prepending policy data on read (ruscur)
-
-    Don't print errors to the kernel log when reading non-existent
-    variables (Sudhakar)
-
-    Miscellaneous code style, checkpatch cleanups
-
-Changes in v2:
-
-    Remove unnecessary config vars from sysfs and document the others,
-    thanks to review from Greg.  If we end up needing to expose more, we
-    can add them later and update the docs.
-
-    Use sysfs_emit() instead of sprintf() for all sysfs strings
-
-    Change the size of the sysfs binary attributes to include the 8-byte
-    flags header, preventing truncation of large writes.
-
-Andrew Donnellan (8):
-  powerpc/pseries: Fix handling of PLPKS object flushing timeout
-  powerpc/pseries: Fix alignment of PLPKS structures and buffers
-  powerpc/secvar: Clean up init error messages
-  powerpc/secvar: Allow backend to populate static list of variable
-    names
-  powerpc/secvar: Warn when PAGE_SIZE is smaller than max object size
-  powerpc/secvar: Don't print error on ENOENT when reading variables
-  powerpc/pseries: Make caller pass buffer to plpks_read_var()
-  powerpc/pseries: Turn PSERIES_PLPKS into a hidden option
-
-Michael Ellerman (1):
-  powerpc/secvar: Use u64 in secvar_operations
-
-Nayna Jain (2):
-  powerpc/pseries: Expose PLPKS config values, support additional fields
-  powerpc/pseries: Implement signed update for PLPKS objects
-
-Russell Currey (14):
-  powerpc/secvar: Fix incorrect return in secvar_sysfs_load()
-  powerpc/secvar: Warn and error if multiple secvar ops are set
-  powerpc/secvar: Use sysfs_emit() instead of sprintf()
-  powerpc/secvar: Handle format string in the consumer
-  powerpc/secvar: Handle max object size in the consumer
-  powerpc/secvar: Extend sysfs to include config vars
-  powerpc/pseries: Move plpks.h to include directory
-  powerpc/pseries: Move PLPKS constants to header file
-  powerpc/pseries: Log hcall return codes for PLPKS debug
-  powerpc/pseries: Add helper to get PLPKS password length
-  powerpc/pseries: Pass PLPKS password on kexec
-  powerpc/pseries: Implement secvars for dynamic secure boot
-  integrity/powerpc: Improve error handling & reporting when loading
-    certs
-  integrity/powerpc: Support loading keys from PLPKS
-
- Documentation/ABI/testing/sysfs-secvar        |  75 +++-
- arch/powerpc/Kconfig                          |   1 +
- arch/powerpc/include/asm/hvcall.h             |   1 +
- arch/powerpc/include/asm/plpks.h              | 195 +++++++++
- arch/powerpc/include/asm/secvar.h             |  21 +-
- arch/powerpc/kernel/prom.c                    |   4 +
- arch/powerpc/kernel/secvar-ops.c              |   8 +-
- arch/powerpc/kernel/secvar-sysfs.c            | 176 ++++----
- arch/powerpc/kexec/file_load_64.c             |  15 +-
- arch/powerpc/platforms/powernv/opal-secvar.c  |  60 ++-
- arch/powerpc/platforms/pseries/Kconfig        |  19 +-
- arch/powerpc/platforms/pseries/Makefile       |   4 +-
- arch/powerpc/platforms/pseries/plpks-secvar.c | 219 ++++++++++
- arch/powerpc/platforms/pseries/plpks.c        | 378 +++++++++++++++---
- arch/powerpc/platforms/pseries/plpks.h        |  71 ----
- .../integrity/platform_certs/load_powerpc.c   |  47 ++-
- 16 files changed, 1040 insertions(+), 254 deletions(-)
- create mode 100644 arch/powerpc/include/asm/plpks.h
- create mode 100644 arch/powerpc/platforms/pseries/plpks-secvar.c
- delete mode 100644 arch/powerpc/platforms/pseries/plpks.h
-
+plpks_confirm_object_flushed() uses the H_PKS_CONFIRM_OBJECT_FLUSHED hcall
+to check whether changes to an object in the Platform KeyStore have been
+flushed to non-volatile storage.
+
+The hcall returns two output values, the return code and the flush status.
+plpks_confirm_object_flushed() polls the hcall until either the flush
+status has updated, the return code is an error, or a timeout has been
+exceeded.
+
+While we're still polling, the hcall is returning H_SUCCESS (0) as the
+return code. In the timeout case, this means that upon exiting the polling
+loop, rc is 0, and therefore 0 is returned to the user.
+
+Handle the timeout case separately and return ETIMEDOUT if triggered.
+
+Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
+Reported-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Tested-by: Russell Currey <ruscur@russell.cc>
+Reviewed-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+
+---
+
+v3: Merge plpks fixes and signed update series with secvar series
+
+    Neaten how we return at the end of the function (ruscur)
+
+v4: Move up in series (npiggin)
+---
+ arch/powerpc/platforms/pseries/plpks.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 4edd1585e245..9e85b6d85b0b 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -248,6 +248,7 @@ static int plpks_confirm_object_flushed(struct label *label,
+ 					struct plpks_auth *auth)
+ {
+ 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
++	bool timed_out = true;
+ 	u64 timeout = 0;
+ 	u8 status;
+ 	int rc;
+@@ -259,22 +260,26 @@ static int plpks_confirm_object_flushed(struct label *label,
+ 
+ 		status = retbuf[0];
+ 		if (rc) {
++			timed_out = false;
+ 			if (rc == H_NOT_FOUND && status == 1)
+ 				rc = 0;
+ 			break;
+ 		}
+ 
+-		if (!rc && status == 1)
++		if (!rc && status == 1) {
++			timed_out = false;
+ 			break;
++		}
+ 
+ 		usleep_range(PKS_FLUSH_SLEEP,
+ 			     PKS_FLUSH_SLEEP + PKS_FLUSH_SLEEP_RANGE);
+ 		timeout = timeout + PKS_FLUSH_SLEEP;
+ 	} while (timeout < PKS_FLUSH_MAX_TIMEOUT);
+ 
+-	rc = pseries_status_to_err(rc);
++	if (timed_out)
++		return -ETIMEDOUT;
+ 
+-	return rc;
++	return pseries_status_to_err(rc);
+ }
+ 
+ int plpks_write_var(struct plpks_var var)
 -- 
 2.39.1
+
