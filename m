@@ -1,67 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69645683315
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:56:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A163268331B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:57:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5rml2Jg6z3cdW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 03:56:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5rnl3DHZz3dyW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 03:57:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GvyuAwIE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QvBwW/P2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GvyuAwIE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QvBwW/P2;
 	dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5rln6xCHz3bW2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5rln6slHz2xl6
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 03:55:48 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id k13so15764381plg.0
+Received: by mail-pl1-x62b.google.com with SMTP id m2so10705014plg.4
         for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 08:55:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vnlVaRgsae3nqVZuJIAVJLLNiUe7NfzgzUJTWm08nRs=;
-        b=GvyuAwIEjOByHmmBVKf4dIz1HFngrLxwisUIOr6Ofax3/aPM+bKNPZOKXhqe9/UiiM
-         fTvKeqhD1j9lSU6S+qpfVF/w0F+Uh6o0Ps02UAQlK+lv5jhuu7kO4WjppCiek8NXMTnt
-         xi8J/xdVi4mf3ozWZJkUNkF+1/P/LqDajBAXqlpS6uxV2fC+YMgKP6PZbIwfMQhKvQ5T
-         8PttI0JmAhMX2xadHE9MFciPKHP4lJxdDKU+6Qdq1H44iulK4o0pSWUIIosVbj6ZeF5J
-         N/UYfoVnxx8n9ih1X76HVnJSzC+iNYMI/r6HsxJAPrtqH3w4THefj6HU+kLRhy/RMoel
-         RxqQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WNv1NH6crUe3EWJ/2wkBhfP0j0dEvWb5r6AB12gg7pE=;
+        b=QvBwW/P2j0VaveZDl3tGM6rFSTZEFRVhQKzCaI+X3LDzG6WmPUDZcifxdoAl2qTvBi
+         f1o0C7EbUB2nZ8Pur/bVxP6M92MLgW0LkyLKKq4YTgudquBzfXTsctiy6WsjZZ7b46XL
+         Wb+4qDTguSHf05ktUQzP1Q9E67OJE6a+YGf5963LDs3PGEg52PBdW+WJxcjNeI9Mj5Wo
+         duamrGSZYlNJplpbP/Q3CC/zTfAGoLdfteBZ0UvhcHpfYEqlh6D6bYJWujxIizot0H1z
+         o8Cc6TIGYP/LzEw9ts0yawRjPOR3PM2pf9/G1kftu5QNl7CDldkEGYoOmkCB3BotXkna
+         YnXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vnlVaRgsae3nqVZuJIAVJLLNiUe7NfzgzUJTWm08nRs=;
-        b=1rHgKOjsmY7xr4eUqO8/LA+Yg+dBr/Bh4T6L9jeSTVtLkqQCKs4PfsBtYzE3aRyVXT
-         ljnlHHItDKBxsLlQ9ITQA3tA5Cxxa7G7LU7NuaHLEThIsTvx/5dgOSKyKJUlzu9uFsjh
-         oxEb9Y9BuvDc4dZKGJ+okVP02gPebTIuehoXH0JSDer96WWIuybHjmXbpAIKFn5NUlSW
-         OUcjWxClCSVVVdTW0waoa18GSh5QMs0J2oUi1hA9HXVD4rb8iuToNTr9QzPVRpJfGq5k
-         Z1HijVjnYLKo1pct5XhfaVD1gTpTp0hcj5l3VCB6lUrKMiMXII1vhEHQPvzWlqPt6BNd
-         sYFw==
-X-Gm-Message-State: AFqh2koz460Kys5aBD4rpxftf3JvrbP1TUjA12TfIIcWMCMnMHMD2Pbk
-	H7oM5ZxUcBtipIaye/K7+1KBKEp2DX0=
-X-Google-Smtp-Source: AMrXdXtCX5B7p5HXJ5SCnqbI6aQO3yLEYKdKPV8qhyYtRq1uvn6dy9B052cfV8kkQSMCAT2CCXhdUg==
-X-Received: by 2002:a17:90a:528e:b0:229:eae4:bef9 with SMTP id w14-20020a17090a528e00b00229eae4bef9mr46149902pjh.43.1675184142206;
-        Tue, 31 Jan 2023 08:55:42 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WNv1NH6crUe3EWJ/2wkBhfP0j0dEvWb5r6AB12gg7pE=;
+        b=kiHasAleq26z48M1gjSxgWWPyjs51xnQ/+JMaIcP8qYeaSw7Jg3/xQCOQLMK2kFcDs
+         PnrpW+C0JuYwWAMIITmaSKogkJ7m4LQcRWiPRyH8hMHmVgOz5DXf7ffqv16v8QFm8jM1
+         TbQYShoesEwftUzAZ69Qwfql+xkqv/htDOOtfb49lTA/4yA8XY0Hr/oj2gC+MBHciLcL
+         YPjVljcKQXI+g/I7PR4u3X/3AguFp4qNqqNpZN+BSCKw0HuogQWo5042qJXAMJNaiQlq
+         JusgM2Y3LYyjyk7CzGnoN/bzzQhHavFxyVw7v9F5UZSFlY2pF9ZX1nW271qS628JEdAG
+         JsKA==
+X-Gm-Message-State: AO0yUKVI2m/TiHCvx7VOb7XuURS7a+8d8YEOykXj9f7Jf9qCn1RZnDGe
+	quu9caXyvZzJu3pGSsFn18O89GFo9zo=
+X-Google-Smtp-Source: AK7set8OAkLbgh6wZcev+enmRG7emeYlrpKRPjlJ/t77R6Pa2rypzVsdnDwLyyi+rN1TDU7PWQUTYw==
+X-Received: by 2002:a17:90b:3e81:b0:22c:8636:bd66 with SMTP id rj1-20020a17090b3e8100b0022c8636bd66mr11219914pjb.37.1675184145376;
+        Tue, 31 Jan 2023 08:55:45 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([203.194.37.234])
-        by smtp.gmail.com with ESMTPSA id bk7-20020a17090b080700b00223f495dc28sm9029371pjb.14.2023.01.31.08.55.40
+        by smtp.gmail.com with ESMTPSA id bk7-20020a17090b080700b00223f495dc28sm9029371pjb.14.2023.01.31.08.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Jan 2023 08:55:41 -0800 (PST)
+        Tue, 31 Jan 2023 08:55:44 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/8] powerpc: improve copy_thread
-Date: Wed,  1 Feb 2023 02:55:26 +1000
-Message-Id: <20230131165534.601490-1-npiggin@gmail.com>
+Subject: [PATCH 1/8] powerpc: copy_thread remove unused pkey code
+Date: Wed,  1 Feb 2023 02:55:27 +1000
+Message-Id: <20230131165534.601490-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20230131165534.601490-1-npiggin@gmail.com>
+References: <20230131165534.601490-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,28 +82,44 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The way copy_thread works, particularly with kernel threads and kernel
-created user threads is a bit muddled and confusing. This series tries
-to straighten things out a bit.
+The pkey registers (AMR, IAMR) do not get loaded from the switch frame
+so it is pointless to save anything there. Remove the dead code.
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/process.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-Nicholas Piggin (8):
-  powerpc: copy_thread remove unused pkey code
-  powerpc: copy_thread make ret_from_fork register setup consistent
-  powerpc: use switch frame for ret_from_kernel_thread parameters
-  powerpc/64: ret_from_fork avoid restoring regs twice
-  powerpc: copy_thread differentiate kthreads and user mode threads
-  powerpc: differentiate kthread from user kernel thread start
-  powerpc: copy_thread don't set _TIF_RESTOREALL
-  powerpc: copy_thread don't set ppr in user interrupt frame regs
-
- arch/powerpc/kernel/entry_32.S     |  23 +++++-
- arch/powerpc/kernel/interrupt_64.S |  28 ++++++-
- arch/powerpc/kernel/process.c      | 121 ++++++++++++++++-------------
- 3 files changed, 110 insertions(+), 62 deletions(-)
-
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index c22cc234672f..ba10505f62c1 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1814,6 +1814,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	sp -= STACK_SWITCH_FRAME_SIZE;
+ 	((unsigned long *)sp)[0] = sp + STACK_SWITCH_FRAME_SIZE;
+ 	kregs = (struct pt_regs *)(sp + STACK_SWITCH_FRAME_REGS);
++	kregs->nip = ppc_function_entry(f);
+ 	p->thread.ksp = sp;
+ 
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+@@ -1846,17 +1847,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 
+ 	p->thread.tidr = 0;
+ #endif
+-	/*
+-	 * Run with the current AMR value of the kernel
+-	 */
+-#ifdef CONFIG_PPC_PKEY
+-	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+-		kregs->amr = AMR_KUAP_BLOCKED;
+-
+-	if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP))
+-		kregs->iamr = AMR_KUEP_BLOCKED;
+-#endif
+-	kregs->nip = ppc_function_entry(f);
+ 	return 0;
+ }
+ 
 -- 
 2.37.2
 
