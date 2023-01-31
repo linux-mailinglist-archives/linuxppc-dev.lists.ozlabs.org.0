@@ -1,96 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69A168320F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:01:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8275C683244
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:08:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5qXY3Mpzz3cj6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 03:01:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5qjg3JTjz3cMP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 03:08:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EJmi0eAk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QhsqvRa9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EJmi0eAk;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QhsqvRa9;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5qWd4G3lz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 03:00:13 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30VG080i009268;
-	Tue, 31 Jan 2023 16:00:08 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5qhj1B5gz2ymk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 03:08:04 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30VG09qc003873;
+	Tue, 31 Jan 2023 16:07:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=QhnY2LtE17z4R7y31f+Vs6DSz5B7T93PdcPupTXylLg=;
- b=EJmi0eAkn8G64zQYLoVW2Byz0C8VKszQurvTFoxYSKjoD2l4ObcRMakgvx2wOXslekUn
- vIEBNHVCJDLL750ZRJdZIW/frFJDyqki09M+VNzcDhH/klY10rCGSFtfriHiluN+SeKN
- MYOWpCXOV7mZ2asF3Jk6QbgDR7H8H9SvriBWGvde5z5YCqeW2LkLIG/uEgWjzfE3551q
- YQYL7oczMj4jScgMXtQNwQ1w70uTJQuI1xb5fk/9DoeBHRkuI4OcxCu8IKXaySrnCp3u
- 26cGzRNbBPy48wK8YGbwhF/4nmbLelU9PTTR6WsizDQJQIwRvuoadPFr7Hj0tLJjXUxD sA== 
+ bh=Fu/tbqqHfgUN/kgoduzd2305awnVX2CCCG//YFy9Nqs=;
+ b=QhsqvRa94JK+0PGfGdvoKEbF4ytf/OEx9VukAxDuLaHOpl5/xApnQcipAidxW8Ob5sl1
+ OB8uU9copXJVVMVYJGMNVpae9vbcS9N2T27gTEpzJP7We+XqXih4KQydG4SMu6gKv3XK
+ iXzZRbJoT+7nFyGijFrFdaTK9itcLXYgo4GPqi3F2C5fpA/DxV8rSRlj51pza74rf85m
+ ros6OxL0VDcfHK+Y/ZmA1eyVaXOzU8tyiOycRhUR057OiSjzbhMYrOxbQxBVD91yzJxP
+ HlYuZ5HwvF9WXvHhfZXH6BiKEuI9jq+9BSLa5dc48h6Ni6zzdlGksyjWZCI7BOrlJUh0 rw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nf31ndfpx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nf3xjcaj9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 16:00:07 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30VG06gu009078;
-	Tue, 31 Jan 2023 16:00:06 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nf31ndfgs-1
+	Tue, 31 Jan 2023 16:07:58 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30VG0jdj011553;
+	Tue, 31 Jan 2023 16:07:58 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nf3xjcahx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 16:00:06 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VExGD0012295;
-	Tue, 31 Jan 2023 15:59:56 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
-	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3ncvvdgsw9-1
+	Tue, 31 Jan 2023 16:07:58 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VF8kAW028521;
+	Tue, 31 Jan 2023 16:07:57 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
+	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3ncvuygvf6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 15:59:56 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30VFxsEQ34406840
+	Tue, 31 Jan 2023 16:07:57 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30VG7uOq7013000
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 Jan 2023 15:59:54 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75BD258065;
-	Tue, 31 Jan 2023 15:59:54 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9430758067;
-	Tue, 31 Jan 2023 15:59:53 +0000 (GMT)
+	Tue, 31 Jan 2023 16:07:56 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6284B58063;
+	Tue, 31 Jan 2023 16:07:56 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAED55805B;
+	Tue, 31 Jan 2023 16:07:54 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 31 Jan 2023 15:59:53 +0000 (GMT)
-Message-ID: <4bc7245d-15f4-cb9c-dddc-4a05a3de98db@linux.ibm.com>
-Date: Tue, 31 Jan 2023 10:59:53 -0500
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Jan 2023 16:07:54 +0000 (GMT)
+Message-ID: <55871940-1da9-0ea0-8f46-28be3e2beadd@linux.ibm.com>
+Date: Tue, 31 Jan 2023 11:07:54 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.0
-Subject: Re: [PATCH v5 14/25] powerpc/pseries: Move plpks.h to include
- directory
+Subject: Re: [PATCH v5 15/25] powerpc/pseries: Move PLPKS constants to header
+ file
 Content-Language: en-US
 To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
         linux-integrity@vger.kernel.org
 References: <20230131063928.388035-1-ajd@linux.ibm.com>
- <20230131063928.388035-15-ajd@linux.ibm.com>
+ <20230131063928.388035-16-ajd@linux.ibm.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230131063928.388035-15-ajd@linux.ibm.com>
+In-Reply-To: <20230131063928.388035-16-ajd@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: otwtGfecQnNQ_VfRy5RR16rJ7i63x8n-
-X-Proofpoint-GUID: 4Y4lJK87A0fpbmhZoI9heAsZUPmhu2jx
+X-Proofpoint-ORIG-GUID: MNOx4h7Sw_MDjVgPbGt8J0Y0JjOhSTSw
+X-Proofpoint-GUID: 84OAhpqQYiuARIr_F57v33GnVLxTvizM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-31_08,2023-01-31_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 malwarescore=0 bulkscore=0 adultscore=0 mlxscore=0
- phishscore=0 impostorscore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2301310137
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 clxscore=1015
+ impostorscore=0 mlxscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301310142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,63 +111,11 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 1/31/23 01:39, Andrew Donnellan wrote:
 > From: Russell Currey <ruscur@russell.cc>
 > 
-> Move plpks.h from platforms/pseries/ to include/asm/. This is necessary
-> for later patches to make use of the PLPKS from code in other subsystems.
+> Move the constants defined in plpks.c to plpks.h, and standardise their
+> naming, so that PLPKS consumers can make use of them later on.
 > 
 > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> 
-> ---
-> 
-> v3: New patch
-> ---
->   .../powerpc/{platforms/pseries => include/asm}/plpks.h | 10 +++++++---
->   arch/powerpc/platforms/pseries/plpks.c                 |  3 +--
->   2 files changed, 8 insertions(+), 5 deletions(-)
->   rename arch/powerpc/{platforms/pseries => include/asm}/plpks.h (89%)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/plpks.h b/arch/powerpc/include/asm/plpks.h
-> similarity index 89%
-> rename from arch/powerpc/platforms/pseries/plpks.h
-> rename to arch/powerpc/include/asm/plpks.h
-> index 275ccd86bfb5..8295502ee93b 100644
-> --- a/arch/powerpc/platforms/pseries/plpks.h
-> +++ b/arch/powerpc/include/asm/plpks.h
-> @@ -6,8 +6,10 @@
->    * Platform keystore for pseries LPAR(PLPKS).
->    */
->   
-> -#ifndef _PSERIES_PLPKS_H
-> -#define _PSERIES_PLPKS_H
-> +#ifndef _ASM_POWERPC_PLPKS_H
-> +#define _ASM_POWERPC_PLPKS_H
-> +
-> +#ifdef CONFIG_PSERIES_PLPKS
->   
->   #include <linux/types.h>
->   #include <linux/list.h>
-> @@ -68,4 +70,6 @@ int plpks_read_fw_var(struct plpks_var *var);
->    */
->   int plpks_read_bootloader_var(struct plpks_var *var);
->   
-> -#endif
-> +#endif // CONFIG_PSERIES_PLPKS
-> +
-> +#endif // _ASM_POWERPC_PLPKS_H
-> diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-> index a01cf2ff140a..13e6daadb179 100644
-> --- a/arch/powerpc/platforms/pseries/plpks.c
-> +++ b/arch/powerpc/platforms/pseries/plpks.c
-> @@ -18,8 +18,7 @@
->   #include <linux/types.h>
->   #include <asm/hvcall.h>
->   #include <asm/machdep.h>
-> -
-> -#include "plpks.h"
-> +#include <asm/plpks.h>
->   
->   #define PKS_FW_OWNER	     0x1
->   #define PKS_BOOTLOADER_OWNER 0x2
-
 
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
