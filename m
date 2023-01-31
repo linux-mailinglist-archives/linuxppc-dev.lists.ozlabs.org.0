@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBE4683340
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 18:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDEB683345
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 18:03:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5rvp5jdnz3fC4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 04:02:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5rwq4zwfz3fV3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 04:03:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fT41x56x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZAbdo6JO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fT41x56x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZAbdo6JO;
 	dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5rm008Zzz3cNR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 03:56:00 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id m13so3801607plx.13
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 08:55:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5rm41Gyjz3cdD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 03:56:03 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id m11so14794069pji.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 08:56:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vfo+8gBitn71FY78nktDeC/vcNsaSUps5A5lrIaA/U4=;
-        b=fT41x56xjqZwSa+FhlctaZBPs7yUR9pnhWnr0/bn+WylBlXd1+6b5s05Ldpo3Bgrx1
-         tBmeI+Ml4YXyT+gJIN0UdYi4icdvLdlK5PK0kXUGzFBl1b760nuzJDEQfkFQIRazzoib
-         YCbchVqAPHUAiKHD+0e83mDGcRJC+033IaOSw14uIhLj7SUtUCh8z8udEm8wHg/Yg3+C
-         jdoeAVJi0QxBoo//WmzvlSetzn/rkFHo9SXmCBaBf9KOv8LTXqSCBeDpMBHh0s4L+xR7
-         ocvCdm8epQE0JTJST+iE6Thxw3DoWoIYBUPN26xSbnCE7SoFgv5cPjKXAUUBXF9R3JVn
-         HgaA==
+        bh=NfzygFx2ypzeNsLPbQ7CYH7PUz0kl+onmnyCFvwRex8=;
+        b=ZAbdo6JO83vYybM+fkSkOZ1DVNi4KNRirYIqk+jq9SPqls4ncFwzh3nMH8t9FyVyU3
+         wiJu5SKFEN6iUrJGMFoh2fXULx2BbxffHAZO5zNty08FB3wN8xgFHKNZdLOsDTh6jhCN
+         KmX4I0A096s6RCcCAeu0EoPGY4mzS2Py1FxpIeV2SUi9bi0EVp3r9VjWKj+1lrZr74Ct
+         vkbvZ22QgUkbz3bN1XIH5++buT7JL8PJ2AyjvvIls1EVeUIfgTVnX8PZofwv9kOWqWzH
+         52cdPKLAbDmtQvEcUTXIIdK9mYtBmThAvfP4Vm0+qDj/fDN2cn2YuFHqK6mt03feI5wv
+         mjJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vfo+8gBitn71FY78nktDeC/vcNsaSUps5A5lrIaA/U4=;
-        b=Asmz5UjLB+MLyZMkGlQXrAQxwvE42b+Crz/MWmq+cdmRpZDSljHfZOfpthUd40KRUw
-         Spo5Qh+dbaoxCBdKVp7rGKKLsq3xKcycFmjcnunXyL5YZs4mbCr7ITkICwqQn6FVgqtc
-         RF7+afai3TUE5IgFv8POd8uusboIZR9AUGiZKkLCFGO5uUk8/cgwK4IrWrz3tDw3r11i
-         tyucp5d0CoVxKL4XV5DVFsudD+wdy6G6LHuLcWUrMp+LY16AutwFsAjKKRitNI9s2YF3
-         Sk6DUskr0z2w1ZtNQqpHVtVmZXz2d/zokkigK1qF8pwhuer3fjeVsdfZ8jydFiCe+VEg
-         Ntyw==
-X-Gm-Message-State: AO0yUKWGGdcwt/dClmxamGTleB55sAPnjta6mTjho0zVgbgr9jV4Ig0V
-	sCRml2JWDmm3NfBIXAM/rmO9Aqdo0O4=
-X-Google-Smtp-Source: AK7set8D2eDqpTKj0N0jESavkW9W0W88ysQK6Nd9XrEN2gFyWXcSAPdcv84EyRMuvl8NmE01flbqrQ==
-X-Received: by 2002:a17:90a:728c:b0:22c:8ba9:4ce8 with SMTP id e12-20020a17090a728c00b0022c8ba94ce8mr11078676pjg.15.1675184159123;
-        Tue, 31 Jan 2023 08:55:59 -0800 (PST)
+        bh=NfzygFx2ypzeNsLPbQ7CYH7PUz0kl+onmnyCFvwRex8=;
+        b=himWNXbHu1Hifusjw/Dm13qj67lp+NdPvkoO54hc/iY0uZJL25Q3/1KC3aV4BIhMlJ
+         D/PBgDq6IMRznL52NwaKu87b9q31G4Vz6vAPW4vaBPUqMxIDr5crSerPn9gS2PLv4kam
+         HUmx3Pheet+h0eDNzYwzi1aWPI7l810eVk1gwxjMtfT6duDRkNJE+UkGbkO0mZsCKpTT
+         OZr5NhIExBlLmJqRD9zUV7TEH12IReJVrkBREtdX/VeUsUQhn1snLgPj5NxA61UTm/jy
+         y+foU7oenZF04C+q+hcKgRgcSqRUf81fDafAg1QGOp4hztJTtKKypBWVJnCAXffBdKSA
+         4PmQ==
+X-Gm-Message-State: AFqh2koJQoJnARtzZQFl5aRgsqWVdVnlGaTx71KQG4NSSZ6Jk4gTt8D3
+	NU04sz1ckuPjZ3tYgV9jIu9pRE+GTWY=
+X-Google-Smtp-Source: AMrXdXu5MqXUl57vUjghnnf1AkqdLZBiJ2TTnGp3rmECNqHIQH1q15f4RSq7zG6lkOaRAbxERg/jqA==
+X-Received: by 2002:a17:90a:3cc4:b0:225:d450:2ccc with SMTP id k4-20020a17090a3cc400b00225d4502cccmr56078257pjd.30.1675184161555;
+        Tue, 31 Jan 2023 08:56:01 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([203.194.37.234])
-        by smtp.gmail.com with ESMTPSA id bk7-20020a17090b080700b00223f495dc28sm9029371pjb.14.2023.01.31.08.55.57
+        by smtp.gmail.com with ESMTPSA id bk7-20020a17090b080700b00223f495dc28sm9029371pjb.14.2023.01.31.08.55.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Jan 2023 08:55:58 -0800 (PST)
+        Tue, 31 Jan 2023 08:56:00 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 7/8] powerpc: copy_thread don't set _TIF_RESTOREALL
-Date: Wed,  1 Feb 2023 02:55:33 +1000
-Message-Id: <20230131165534.601490-8-npiggin@gmail.com>
+Subject: [PATCH 8/8] powerpc: copy_thread don't set ppr in user interrupt frame regs
+Date: Wed,  1 Feb 2023 02:55:34 +1000
+Message-Id: <20230131165534.601490-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230131165534.601490-1-npiggin@gmail.com>
 References: <20230131165534.601490-1-npiggin@gmail.com>
@@ -82,52 +82,32 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the kernel user thread path, don't set _TIF_RESTOREALL because the
-thread is required to call kernel_execve() before it returns, which will
-set _TIF_RESTOREALL if necessary via start_thread().
+syscalls do not set the PPR field in their interrupt frame and return
+from syscall always sets the default PPR for userspace, so setting the
+value in the ret_from_fork frame is not necessary and mildly
+inconsistent. Remove it.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/interrupt_64.S | 5 +++++
- arch/powerpc/kernel/process.c      | 2 --
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/process.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index 90370b89905b..f53012254fca 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -748,6 +748,11 @@ _GLOBAL(ret_from_kernel_user_thread)
- #endif
- 	bctrl
- 	li	r3,0
-+	/*
-+	 * It does not matter whether this returns via the scv or sc path
-+	 * because it returns as execve() and therefore has no calling ABI
-+	 * (i.e., it sets registers according to the exec()ed entry point).
-+	 */
- 	b	.Lsyscall_exit
- 
- _GLOBAL(start_kernel_thread)
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 53215cdb19dd..e67597fd998f 100644
+index e67597fd998f..3685a74a9041 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -1746,7 +1746,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 	extern void start_kernel_thread(void);
- 	void (*f)(void);
- 	unsigned long sp = (unsigned long)task_stack_page(p) + THREAD_SIZE;
--	struct thread_info *ti = task_thread_info(p);
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- 	int i;
- #endif
-@@ -1786,7 +1785,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- #ifdef CONFIG_PPC64
- 			childregs->softe = IRQS_ENABLED;
- #endif
--			ti->flags |= _TIF_RESTOREALL;
- 			f = ret_from_kernel_user_thread;
- 		} else {
- 			struct pt_regs *regs = current_pt_regs();
+@@ -1814,11 +1814,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 				f = ret_from_fork;
+ 		}
+ 
+-#ifdef CONFIG_PPC64
+-		if (cpu_has_feature(CPU_FTR_HAS_PPR))
+-			childregs->ppr = DEFAULT_PPR;
+-#endif
+-
+ 		childregs->msr &= ~(MSR_FP|MSR_VEC|MSR_VSX);
+ 		p->thread.regs = childregs;
+ 	}
 -- 
 2.37.2
 
