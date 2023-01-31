@@ -1,56 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B4E6825BE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 08:46:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2728682621
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 09:05:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5cZC45bJz3cM6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 18:46:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5czN4FFHz3ccg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 19:05:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kut/azU7;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Rvpx8cHz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::225; helo=relay5-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kut/azU7;
-	dkim-atps=neutral
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5cXf2gfQz3cGm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 18:45:21 +1100 (AEDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 40C181C0004;
-	Tue, 31 Jan 2023 07:45:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1675151114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wMe+6sH9kAIkOp6zpYrCxiYnhxYIO5nkKGD3Z8ma8r0=;
-	b=kut/azU7sBFwJKKha2Hf0Qt0ZLGEVip7CNkI2Hx1xDS2aW9gbjDBCVPYMFN0t5YhIGVEyF
-	hYiBnzl0ipwhmV/lrsSteBmr1Zu+OLvnxoeCywGzWHVdv+8ySOKo/qyOkpd+FvrP3eMIZz
-	RvoOqoh6E4nBbOeNQ83gcZFm+nAGAfMQge79AxgkzGmMoN/WrwksO3Eez8J3qvGlDzMLzW
-	xWdg9eAnBa88KKiAlbj5gtNSjFMHT3BmNaA9/qbSJaEtKj/VSQQYauN/ZZbeVGd1djLBPL
-	7Z4vDPDnYaRDN4adENmDTXiZuLnMoFxbnKXGaKqp8h1ErfazEJDupN/PRANAEg==
-Date: Tue, 31 Jan 2023 08:45:08 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 05/10] dt-bindings: soc: fsl: cpm_qe: Add QMC
- controller
-Message-ID: <20230131084508.32b80a1b@bootlin.com>
-In-Reply-To: <20230130183037.GA3076426-robh@kernel.org>
-References: <20230126083222.374243-1-herve.codina@bootlin.com>
-	<20230126083222.374243-6-herve.codina@bootlin.com>
-	<20230130183037.GA3076426-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5cyR33RNz2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 19:04:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Rvpx8cHz;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P5cyP6mlxz4x1S;
+	Tue, 31 Jan 2023 19:04:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1675152254;
+	bh=iiCiAoCzDZpzO4m//p4xEnCPoub9jaFKFmMItf3K708=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Rvpx8cHzXuY3PAzo6rRAd3CVb91pxqWIYK6DQYtqYVLnpNVJpsdi9CzfjbEPXTQBH
+	 b7j7MOusIj+0k5nytd2xflYaIj/r73/IsrLh07bIHJGDErieCjHEpGaD/duf8fTlLn
+	 hRO1tsWKTKqnRGHcgIz4hEMNpKsfAp4LrqDY+jF8rS6xqdFZsEDOT+ZyFZSz1qjNoa
+	 6GE6MfpaEunFtC3VXoIiZdRajTqVV+mtqMvBNUEuiBMBK+OSQZG4eVqYFd2s6UEUwl
+	 Gd2C2mbi0vgInYLr/zT4taWSfcAP9q8sY8D1qubAiCQ8WFqk8UWtOKUgya1LKKMOlh
+	 +iZZgCAOFk9Gw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Miehlbradt <nicholas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] powerpc: Implement arch_within_stack_frames
+In-Reply-To: <20230119053127.17782-1-nicholas@linux.ibm.com>
+References: <20230119053127.17782-1-nicholas@linux.ibm.com>
+Date: Tue, 31 Jan 2023 19:04:12 +1100
+Message-ID: <87fsbrf7ur.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,242 +57,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+Nicholas Miehlbradt <nicholas@linux.ibm.com> writes:
+> Walks the stack when copy_{to,from}_user address is in the stack to
+> ensure that the object being copied is entirely within a single stack
+> frame.
 
-On Mon, 30 Jan 2023 12:30:37 -0600
-Rob Herring <robh@kernel.org> wrote:
+... and that it exists above the parameter save area, so is not pointing
+at any stack metadata right?
 
-> On Thu, Jan 26, 2023 at 09:32:17AM +0100, Herve Codina wrote:
-> > Add support for the QMC (QUICC Multichannel Controller)
-> > available in some PowerQUICC SoC such as MPC885 or MPC866.
-> >=20
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      | 167 ++++++++++++++++++=
- =20
->=20
-> fsl,cpm1-scc-qmc.yaml
+> Substatially similar to the x86 implementation except using the back
+        ^
+        n
+> chain to traverse the stack and identify stack frame boundaries.
 
-Ok, will be changed in the next iteration.
+The x86 version does use the back chain (frame pointer) doesn't it?
+Possibly this comment is just out of date now?
 
->=20
-> >  1 file changed, 167 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fs=
-l,qmc.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.y=
-aml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
-> > new file mode 100644
-> > index 000000000000..9141a8ca183b
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
-> > @@ -0,0 +1,167 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qmc.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: PowerQUICC CPM QUICC Multichannel Controller (QMC)
-> > +
-> > +maintainers:
-> > +  - Herve Codina <herve.codina@bootlin.com>
-> > +
-> > +description:
-> > +  The QMC (QUICC Multichannel Controller) emulates up to 64 channels w=
-ithin one
-> > +  serial controller using the same TDM physical interface routed from =
-TSA.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - enum:
-> > +          - fsl,mpc885-scc-qmc
-> > +          - fsl,mpc866-scc-qmc
-> > +      - const: fsl,cpm1-scc-qmc
-> > +
-> > +  reg:
-> > +    items:
-> > +      - description: SCC (Serial communication controller) register ba=
-se
-> > +      - description: SCC parameter ram base
-> > +      - description: Dual port ram base
-> > +
-> > +  reg-names:
-> > +    items:
-> > +      - const: scc_regs
-> > +      - const: scc_pram
-> > +      - const: dpram
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +    description: SCC interrupt line in the CPM interrupt controller
-> > +
-> > +  fsl,tsa-serial:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> > +    items:
-> > +      - items:
-> > +          - description: phandle to TSA node
-> > +          - enum: [1, 2, 3]
-> > +            description: |
-> > +              TSA serial interface (dt-bindings/soc/fsl,tsa.h defines =
-these
-> > +              values)
-> > +               - 1: SCC2
-> > +               - 2: SCC3
-> > +               - 3: SCC4
-> > +    description:
-> > +      Should be a phandle/number pair. The phandle to TSA node and the=
- TSA
-> > +      serial interface to use.
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> > +  '#chan-cells':
-> > +    const: 1 =20
->=20
-> What's this?
+> Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+> ---
+> v2: Rename PARAMETER_SAVE_OFFSET to STACK_FRAME_PARAMS
+>     Add definitions of STACK_FRAME_PARAMS for PPC32 and remove dependancy on PPC64
+>     Ignore the current stack frame and start with it's parent, similar to x86
+>
+> v1: https://lore.kernel.org/linuxppc-dev/20221214044252.1910657-1-nicholas@linux.ibm.com/
+> ---
+>  arch/powerpc/Kconfig                   |  1 +
+>  arch/powerpc/include/asm/thread_info.h | 36 ++++++++++++++++++++++++++
+>  2 files changed, 37 insertions(+)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 2ca5418457ed..97ca54773521 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -198,6 +198,7 @@ config PPC
+>  	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
+>  	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
+>  	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
+> +	select HAVE_ARCH_WITHIN_STACK_FRAMES
+>  	select HAVE_ARCH_KGDB
+>  	select HAVE_ARCH_MMAP_RND_BITS
+>  	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+> index af58f1ed3952..c5dce5f239c1 100644
+> --- a/arch/powerpc/include/asm/thread_info.h
+> +++ b/arch/powerpc/include/asm/thread_info.h
+> @@ -186,6 +186,42 @@ static inline bool test_thread_local_flags(unsigned int flags)
+>  #define is_elf2_task() (0)
+>  #endif
+>  
+> +#if defined(CONFIG_PPC64_ELF_ABI_V1)
+> +#define STACK_FRAME_PARAMS 48
+> +#elif defined(CONFIG_PPC64_ELF_ABI_V2)
+> +#define STACK_FRAME_PARAMS 32
+> +#elif defined(CONFIG_PPC32)
+> +#define STACK_FRAME_PARAMS 8
+> +#endif
 
-A QMC consumer, such as "QMC audio" in this series, can have a phandle with
-an argument that points to this QMC node. For instance, in the "QMC audio"
-node, we have:
-  fsl,qmc-chan =3D <&qmc 16>;
+Can you please put those in ppc_asm.h?
 
-The #chan-cells property in TSA specify the presence of this argument.
+There's an ifdef starting around line 187 where they should fit nicely,
+it has the __STK_PARAM macros already. The ppc32 case is at line 245.
 
-What do you think if I add the following description:
-   '#chan-cells':
-     const: 1
-     description:
-       QMC consumers that use a phandle to QMC need to pass the channel
-       number with this phandle.
-       For instance "fsl,qmc-chan =3D <&qmc 16>;".
+In a subsequent patch we could make the __STK_PARAM macros use your new
+#defines for the offsets.
 
->=20
-> > +
-> > +patternProperties:
-> > +  '^channel@([0-9]|[1-5][0-9]|6[0-3])$':
-> > +    description:
-> > +      A channel managed by this controller
-> > +    type: object
-> > +
-> > +    properties:
-> > +      reg:
-> > +        minimum: 0
-> > +        maximum: 63
-> > +        description:
-> > +          The channel number
-> > +
-> > +      fsl,operational-mode:
-> > +        $ref: /schemas/types.yaml#/definitions/string
-> > +        enum: [transparent, hdlc]
-> > +        default: transparent
-> > +        description: |
-> > +          The channel operational mode
-> > +            - hdlc: The channel handles HDLC frames
-> > +            - transparent: The channel handles raw data without any pr=
-ocessing
-> > +
-> > +      fsl,reverse-data:
-> > +        $ref: /schemas/types.yaml#/definitions/flag
-> > +        description:
-> > +          The bit order as seen on the channels is reversed,
-> > +          transmitting/receiving the MSB of each octet first.
-> > +          This flag is used only in 'transparent' mode.
-> > +
-> > +      fsl,tx-ts-mask:
-> > +        $ref: /schemas/types.yaml#/definitions/uint64
-> > +        description:
-> > +          Channel assigned Tx time-slots within the Tx time-slots rout=
-ed by the
-> > +          TSA to this cell.
-> > +
-> > +      fsl,rx-ts-mask:
-> > +        $ref: /schemas/types.yaml#/definitions/uint64
-> > +        description:
-> > +          Channel assigned Rx time-slots within the Rx time-slots rout=
-ed by the
-> > +          TSA to this cell.
-> > +
-> > +    required:
-> > +      - reg
-> > +      - fsl,tx-ts-mask
-> > +      - fsl,rx-ts-mask
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - reg-names
-> > +  - interrupts
-> > +  - fsl,tsa-serial
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> > +  - '#chan-cells'
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/soc/fsl,tsa.h>
-> > +
-> > +    qmc@a60 {
-> > +        compatible =3D "fsl,mpc885-scc-qmc", "fsl,cpm1-scc-qmc";
-> > +        reg =3D <0xa60 0x20>,
-> > +              <0x3f00 0xc0>,
-> > +              <0x2000 0x1000>;
-> > +        reg-names =3D "scc_regs", "scc_pram", "dpram";
-> > +        interrupts =3D <27>;
-> > +        interrupt-parent =3D <&CPM_PIC>;
-> > +
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +        #chan-cells =3D <1>;
-> > +
-> > +        fsl,tsa-serial =3D <&tsa FSL_CPM_TSA_SCC4>;
-> > +
-> > +        channel@16 {
-> > +            /* Ch16 : First 4 even TS from all routed from TSA */
-> > +            reg =3D <16>;
-> > +            fsl,mode =3D "transparent";
-> > +            fsl,reverse-data;
-> > +            fsl,tx-ts-mask =3D <0x00000000 0x000000aa>;
-> > +            fsl,rx-ts-mask =3D <0x00000000 0x000000aa>;
-> > +        };
-> > +
-> > +        channel@17 {
-> > +            /* Ch17 : First 4 odd TS from all routed from TSA */
-> > +            reg =3D <17>;
-> > +            fsl,mode =3D "transparent";
-> > +            fsl,reverse-data;
-> > +            fsl,tx-ts-mask =3D <0x00000000 0x00000055>;
-> > +            fsl,rx-ts-mask =3D <0x00000000 0x00000055>;
-> > +        };
-> > +
-> > +        channel@19 {
-> > +            /* Ch19 : 8 TS (TS 8..15) from all routed from TSA */
-> > +            reg =3D <19>;
-> > +            fsl,mode =3D "hdlc";
-> > +            fsl,tx-ts-mask =3D <0x00000000 0x0000ff00>;
-> > +            fsl,rx-ts-mask =3D <0x00000000 0x0000ff00>;
-> > +        };
-> > +    };
-> > --=20
-> > 2.39.0
-> >  =20
+> +
+> +/*
+> + * Walks up the stack frames to make sure that the specified object is
+> + * entirely contained by a single stack frame.
+> + *
+> + * Returns:
+> + *	GOOD_FRAME	if within a frame
+> + *	BAD_STACK	if placed across a frame boundary (or outside stack)
+> + */
+> +static inline int arch_within_stack_frames(const void * const stack,
+> +					   const void * const stackend,
+> +					   const void *obj, unsigned long len)
+> +{
+> +	const void *params;
+> +	const void *frame;
+> +
+> +	params = *(const void * const *)current_stack_pointer + STACK_FRAME_PARAMS;
+> +	frame = **(const void * const * const *)current_stack_pointer;
+> +
+> +	while (stack <= frame && frame < stackend) {
+> +		if (obj + len <= frame)
+> +			return obj >= params ? GOOD_FRAME : BAD_STACK;
+> +		params = frame + STACK_FRAME_PARAMS;
+> +		frame = *(const void * const *)frame;
+> +	}
 
-Thanks for the review,
-Herv=C3=A9
+I think the logic here is OK, but the variable naming makes it a bit
+hard to follow.
 
---=20
-Herv=C3=A9 Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Normally the stack pointer points at the lowest address of a frame, so
+the "params" of that frame are at a higher address.
+
+But here we have "frame" pointing at the caller frame (higher address)
+as we check that obj sits above the params of the callee frame (lower
+address).
+
+So "params" and "frame" are different frames. I can't immediately come
+up with a naming that makes it clearer though.
+
+I think it could also be helped with a comment using some ASCII art :)
+
+cheers
