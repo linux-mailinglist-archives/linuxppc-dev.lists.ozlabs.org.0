@@ -1,95 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C596824DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:52:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC86B6824DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 07:51:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P5bMs5GW9z3f2q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:52:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P5bLr4Qfdz3fYT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Jan 2023 17:51:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Dq0z19nz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I8QQBIWW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Dq0z19nz;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I8QQBIWW;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5b5d4RDrz2yZv
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P5b5d3v8Cz3bT7
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 17:40:21 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V5PW6k028985;
-	Tue, 31 Jan 2023 06:40:17 GMT
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V6EFpr003360;
+	Tue, 31 Jan 2023 06:40:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=n6+EpYurlDSJF9uQ8AOPjqaREtyx5u5vW36NTargbZE=;
- b=Dq0z19nz16n+/+QCFm73jl3/Dnx8juVjgcHWpiE55H9Nd88UeN5EW1Bj/h5QK4sSgO73
- v2Mo8SvECvKd63jX4dlq7cYhshqmAPfxRNvnH8kqQXJ2BygsAtPCpLc9FIxakC5bQox+
- m9EDWcFOvvOiTgG3EZtdapZsnDjE4p0e8WIJIM0v0mYYkoRtdHMuj9I9wL1bl9Ghw2Fn
- IF999FDoQBzfYfAbVxgZgb2tqYUmBsqMBJL1/2W4QWq/XY7xdwZUP9eu78HBacbpjE56
- 4kUlaOCjTjx2VuFanKNoxuJBrVdvmhjmM/psyXaIFn8F0ouwHdBFBqJF+9Ju5viH7VsQ vA== 
+ bh=CeT+HXR//BWiccmV91ac1X5y2aYpEBfq7VFAphJ1y6s=;
+ b=I8QQBIWWh08/feUevXjB6z8qYXkLu6IaPVZT+bwIKi8h6gU3PA/kYB4X3YUVRTAhb/Gl
+ w2gAe43sDCd/KLDxBN/S7/XfZmgkJkL1k/EjuRd4sZb1U2+lmzmXhMtddmUZ7mLZxUCW
+ axvNS2ZGFd4kwxqPdmDatteW2uHR0ZWq7HY/Vgq9jOQujoq8vT63dlgghOXXmTV6Mn6b
+ ml3v8HH52eWb9YxTIiGqJi7pwumU+W+HCOHIY/s82L+Zu6+jDgUBENQSjSuTqnV9R5YE
+ A5ht1qZ8pIBQIGFv/e0tlCo5VFWkUKMjAJU63sFOKCehudwcWshqnPcbGGodgTU40XxK sQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dkg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3newhm0fs2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 31 Jan 2023 06:40:16 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30V5vGUj005170;
-	Tue, 31 Jan 2023 06:40:16 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nevu21dj9-1
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30V6Euks006418;
+	Tue, 31 Jan 2023 06:40:15 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3newhm0fr4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Jan 2023 06:40:16 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UCq597016468;
+	Tue, 31 Jan 2023 06:40:15 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30V3LI8E025083;
 	Tue, 31 Jan 2023 06:40:13 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3ncvt7j7gq-1
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3ncvv6a7ds-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 31 Jan 2023 06:40:13 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V6eBeF26018348
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30V6eAjB49086832
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Tue, 31 Jan 2023 06:40:11 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 51CD82004D;
-	Tue, 31 Jan 2023 06:40:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C716F2004E;
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD3642004E;
+	Tue, 31 Jan 2023 06:40:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E2B920040;
 	Tue, 31 Jan 2023 06:40:10 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
 	Tue, 31 Jan 2023 06:40:10 +0000 (GMT)
 Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 26136609BD;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 34DD8609BE;
 	Tue, 31 Jan 2023 17:40:05 +1100 (AEDT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v5 20/25] powerpc/pseries: Turn PSERIES_PLPKS into a hidden option
-Date: Tue, 31 Jan 2023 17:39:23 +1100
-Message-Id: <20230131063928.388035-21-ajd@linux.ibm.com>
+Subject: [PATCH v5 21/25] powerpc/pseries: Add helper to get PLPKS password length
+Date: Tue, 31 Jan 2023 17:39:24 +1100
+Message-Id: <20230131063928.388035-22-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230131063928.388035-1-ajd@linux.ibm.com>
 References: <20230131063928.388035-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9D2_oZAgKWCQvctXCMF7XAhsi4At3DKY
-X-Proofpoint-GUID: EJbiktnVvxjhwj_RVlHXEfNVp6F1zaDJ
+X-Proofpoint-ORIG-GUID: ERgL8LpBP4ZCkG3n0aJzoe9aMuYumYdk
+X-Proofpoint-GUID: NjsZbwwZPLvbVESAfIjS14i9y-C6yax6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-31_02,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- phishscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=929 bulkscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301310059
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ suspectscore=0 mlxlogscore=802 lowpriorityscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301310059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,74 +105,57 @@ Cc: sudhakar@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It seems a bit unnecessary for the PLPKS code to have a user-visible
-config option when it doesn't do anything on its own, and there's existing
-options for enabling Secure Boot-related features.
+From: Russell Currey <ruscur@russell.cc>
 
-It should be enabled by PPC_SECURE_BOOT, which will eventually be what
-uses PLPKS to populate keyrings.
+Add helper function to get the PLPKS password length. This will be used
+in a later patch to support passing the password between kernels over
+kexec.
 
-However, we can't get of the separate option completely, because it will
-also be used for SED Opal purposes.
-
-Change PSERIES_PLPKS into a hidden option, which is selected by
-PPC_SECURE_BOOT.
-
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 ---
 
 v3: New patch
 
-v5: Change the previous description into a comment (npiggin)
+v5: Drop plpks_get_password() since we no longer need to expose it.
 ---
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/platforms/pseries/Kconfig | 19 +++++++++----------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ arch/powerpc/include/asm/plpks.h       | 5 +++++
+ arch/powerpc/platforms/pseries/plpks.c | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b8c4ac56bddc..d4ed46101bec 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -1029,6 +1029,7 @@ config PPC_SECURE_BOOT
- 	depends on PPC_POWERNV || PPC_PSERIES
- 	depends on IMA_ARCH_POLICY
- 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
-+	select PSERIES_PLPKS if PPC_PSERIES
- 	help
- 	  Systems with firmware secure boot enabled need to define security
- 	  policies to extend secure boot to the OS. This config allows a user
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index a3b4d99567cb..e51d65969318 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -151,16 +151,15 @@ config IBMEBUS
+diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
+index 0c49969b0864..757313e00521 100644
+--- a/arch/powerpc/include/asm/plpks.h
++++ b/arch/powerpc/include/asm/plpks.h
+@@ -171,6 +171,11 @@ u32 plpks_get_maxlargeobjectsize(void);
+  */
+ u64 plpks_get_signedupdatealgorithms(void);
  
- config PSERIES_PLPKS
- 	depends on PPC_PSERIES
--	bool "Support for the Platform Key Storage"
--	help
--	  PowerVM provides an isolated Platform Keystore(PKS) storage
--	  allocation for each LPAR with individually managed access
--	  controls to store sensitive information securely. It can be
--	  used to store asymmetric public keys or secrets as required
--	  by different usecases. Select this config to enable
--	  operating system interface to hypervisor to access this space.
--
--	  If unsure, select N.
-+	bool
-+	# PowerVM provides an isolated Platform Keystore (PKS) storage
-+	# allocation for each LPAR with individually managed access
-+	# controls to store sensitive information securely. It can be
-+	# used to store asymmetric public keys or secrets as required
-+	# by different usecases.
-+	#
-+	# This option is selected by in-kernel consumers that require
-+	# access to the PKS.
++/**
++ * Returns the length of the PLPKS password in bytes.
++ */
++u16 plpks_get_passwordlen(void);
++
+ #endif // CONFIG_PSERIES_PLPKS
  
- config PAPR_SCM
- 	depends on PPC_PSERIES && MEMORY_HOTPLUG && LIBNVDIMM
+ #endif // _ASM_POWERPC_PLPKS_H
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 926b6a927326..6940280ae94a 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -359,6 +359,11 @@ u64 plpks_get_signedupdatealgorithms(void)
+ 	return signedupdatealgorithms;
+ }
+ 
++u16 plpks_get_passwordlen(void)
++{
++	return ospasswordlength;
++}
++
+ bool plpks_is_available(void)
+ {
+ 	int rc;
 -- 
 2.39.1
 
