@@ -1,71 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A25683AE9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 01:04:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CD7685C0F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 01:18:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P62Gs4tGZz3f3F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:04:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P62ZC6msZz3cdc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:18:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kjgH2CMP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RI7uLn2F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2d; helo=mail-yb1-xb2d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kjgH2CMP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RI7uLn2F;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P62Fw2hnvz2yNm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 11:04:03 +1100 (AEDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id x4so20332545ybp.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Jan 2023 16:04:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZUycsi7Qy1G+kA/BDKEqAynjD+S1ub0yGcBr2S1csDg=;
-        b=kjgH2CMPcbJUL89I13duLHr/x00EFsX3fEJyRMjgA3lmo+3BlhNvsXihc340eh4Mo2
-         xJLlakMeru4DhNc2LQ7VdXDjksVjD8J95ylIlceJjZjmLcziSrIGjflqo01hf0aIuPRr
-         /Tm7tSWg1BzuIO5SMCXWDrfUCKN94wOyzFfYw06eAp4JwvSUDIkxnWZVGG8jazLCRLQ4
-         fy9jQY5nCrkr6ftTyn2XwMB2wYenW9lk/kPwLomUt2hRm3TEP3rTyKcgDtcfIeERobCm
-         uThPnsvu8qu2+2UDFWG+LRF+g46vJaxVjEr6TrfgDRaIL6R7vK5wPEjDj7fJztXMnUO3
-         CX+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZUycsi7Qy1G+kA/BDKEqAynjD+S1ub0yGcBr2S1csDg=;
-        b=vYfm5K4YOQvJs9/L3c4PF+ufUCkd2gZYdRW7esT0cxrT08DcmOjuN0TiI9US4HPXvs
-         64TjB2pjAM7itvprEisskBvs5Mp5UIvrE/Xx699G/Ji9mwORoq6Q7HVpJhP8P8Js4kT9
-         K0bgnR2RP3tMupsVhVpb8k0C7OiH/u801nyF8PzEz9pyUoY1T8cHBWYdn649ube6MQWj
-         xwCb2GZbpdGNdt4D83mOPYWIGbghl8c+eNLeBdSdIw+mIpPPb7YAXCOhRXzaAs/xmBqf
-         cNMsliU1BgdPD6P6CF/Am9qqvQYTCRILsg8N+IBKbR5TMRpDrqYhYEwW90GUQt4m39QL
-         6hqA==
-X-Gm-Message-State: AO0yUKWQYqD+Rhz0puiqRgxT6uRnv0NOTtD74qkouunqdZZrfP7hW87z
-	db/RQFGJEyFyboJcBilOZt4r5F4yaxKl6tDAj1mj/g==
-X-Google-Smtp-Source: AK7set8i/R4jubc4/eBLZr1C2uot2lhviGeGxjdH9LtwH5rX8BcQ29iFG2gEY6poGbAAfxlHLKG4eGpFSJTOl8lO5k0=
-X-Received: by 2002:a25:2441:0:b0:80b:5988:2045 with SMTP id
- k62-20020a252441000000b0080b59882045mr107656ybk.59.1675209840310; Tue, 31 Jan
- 2023 16:04:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P62YF2xW6z3045
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 11:17:20 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3110AShK018642;
+	Wed, 1 Feb 2023 00:17:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=BQtc1YEZQK77m7/RZAfMpsNWtEG3PM+iL8btat6rATQ=;
+ b=RI7uLn2FMwfkMzX/AUhAtXN1OQd3mfur//mRLpLvykS7Im+yL08MQLqY32iaqD29njHO
+ e842Nn7SX02wYqn1LV3G1Yh9l9geCl5Pwov+hhLnXjBoE5AILICnDpEKZVDe/T3REWaZ
+ sKPFDa9IuNJQ6XtIvoEokFwS+3x7yOPR38DEW5q2ExmLnGIGXUP01voSDEhlEUZzUqIl
+ Rh0KjKfgaBot0uY1KxPk0mGQhBEp84q/ChJXRx0Nh6s1as6htvsXlSDH5f5NPGJMCsbO
+ p9rG92uel9U8GrEZXNu2KjWxUukx964pNEObF+BQLpCRAHYdZ1Uu2GOCdJraZ9zrZBHs sw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfag0bvm0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 00:17:13 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3110DNdc015860;
+	Wed, 1 Feb 2023 00:17:13 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfag0bvkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 00:17:13 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VDArjt013356;
+	Wed, 1 Feb 2023 00:17:11 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3ncvtyc39k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 00:17:10 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3110H8op41681264
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Feb 2023 00:17:08 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83CB22004F;
+	Wed,  1 Feb 2023 00:17:08 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 04EC32004B;
+	Wed,  1 Feb 2023 00:17:08 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Feb 2023 00:17:07 +0000 (GMT)
+Received: from civic.. (unknown [9.177.19.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8ADFA60217;
+	Wed,  1 Feb 2023 11:16:59 +1100 (AEDT)
+From: Rohan McLure <rmclure@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] powerpc: Add KCSAN support
+Date: Wed,  1 Feb 2023 11:16:42 +1100
+Message-Id: <20230201001642.1278930-1-rmclure@linux.ibm.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <20230126193752.297968-1-surenb@google.com> <20230126193752.297968-5-surenb@google.com>
- <Y9jSFFeHYZE1/yFg@hyeyoo> <CAJuCfpEzaVkgQt=C-33jAh1vLVJAjoyM8X5AD9CzyDUJnPDCkw@mail.gmail.com>
- <20230131125355.f07f42af56b23bfa28b2a58c@linux-foundation.org>
- <CAJuCfpHmtkzrKx45SQQ0gXLoybtgHxHmTP5J4L74ChTqSfFA-g@mail.gmail.com> <20230131151209.d53ba65c3c065979808d9912@linux-foundation.org>
-In-Reply-To: <20230131151209.d53ba65c3c065979808d9912@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 31 Jan 2023 16:03:49 -0800
-Message-ID: <CAJuCfpF-Lu2fX6azVzmpJn75qDgwjpWjKT85=CEbwo2YAnx-Qw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] mm: replace vma->vm_flags direct modifications
- with modifier calls
-To: Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dqg4mgg31gMTtCURtbpme_Wexlg2Kv7c
+X-Proofpoint-ORIG-GUID: Rcj1OB-rEhb2Wnry5US8DDHaJx5wrGkY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-31_08,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ phishscore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=752 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301310206
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,43 +98,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, Hyeonggon Yoo <42.hyeyoo@gmail.com>, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, Sebastian Reichel <sebastian.reichel@collabora.com>, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, h
- annes@cmpxchg.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: Rohan McLure <rmclure@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 31, 2023 at 3:12 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Tue, 31 Jan 2023 13:08:19 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
->
-> > On Tue, Jan 31, 2023 at 12:54 PM Andrew Morton
-> > <akpm@linux-foundation.org> wrote:
-> > >
-> > > On Tue, 31 Jan 2023 10:54:22 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
-> > >
-> > > > > > -             vma->vm_flags &= ~VM_MAYWRITE;
-> > > > > > +             vm_flags_clear(vma, VM_MAYSHARE);
-> > > > > >       }
-> > > > >
-> > > > > I think it should be:
-> > > > >         s/VM_MAYSHARE/VM_MAYWRITE/
-> > > >
-> > >
-> > > I added the fixup.  Much better than resending a seven patch series for a
-> > > single line change.  Unless you have substantial other changes pending.
-> >
-> > Thanks! That sounds reasonable.
-> >
-> > I'll also need to introduce vm_flags_reset_once() to use in
-> > replacement of WRITE_ONCE(vma->vm_flags, newflags) case. Should I send
-> > a separate short patch for that?
->
-> That depends on what the patch looks like.  How about you send it
-> and we'll see?
+Add Kernel Concurrency Sanitiser support for powerpc. Doing so involves
+exclusion of a number of compilation units from instrumentation, as was
+done with KASAN.
 
-Here it is: https://lore.kernel.org/all/20230201000116.1333160-1-surenb@google.com/
+KCSAN uses watchpoints on memory accesses to enforce the semantics of
+the Linux kernel memory model, notifying the user of observed data races
+which have not been declared to be intended in source through the
+data_race() macro, in order to remove false positives.
 
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+A number of such race conditions are identified. This patch series
+provides support for the instrumentation, with bug fixes as well as
+removal of false positives to be issued in future patches.
+
+Rohan McLure (5):
+  powerpc: kcsan: Add exclusions from instrumentation
+  powerpc: kcsan: Exclude udelay to prevent recursive instrumentation
+  powerpc: kcsan: Memory barriers semantics
+  powerpc: kcsan: Prevent recursive instrumentation with IRQ
+    save/restores
+  powerpc: kcsan: Add KCSAN Support
+
+ arch/powerpc/Kconfig               |  1 +
+ arch/powerpc/include/asm/barrier.h | 10 +++++-----
+ arch/powerpc/kernel/Makefile       | 10 ++++++++++
+ arch/powerpc/kernel/irq_64.c       |  6 +++---
+ arch/powerpc/kernel/time.c         |  4 ++--
+ arch/powerpc/kernel/trace/Makefile |  1 +
+ arch/powerpc/kernel/vdso/Makefile  |  1 +
+ arch/powerpc/lib/Makefile          |  2 ++
+ arch/powerpc/purgatory/Makefile    |  1 +
+ arch/powerpc/xmon/Makefile         |  1 +
+ 10 files changed, 27 insertions(+), 10 deletions(-)
+
+-- 
+2.37.2
+
