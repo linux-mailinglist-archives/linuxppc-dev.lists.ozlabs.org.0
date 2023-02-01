@@ -2,98 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4D5685FCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 07:33:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D57D4685FD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 07:35:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6Btz1wkvz3cfl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 17:33:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6Bx14sLsz3f7K
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 17:35:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G8MuzEAq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XQh2nL+n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6Btl5glkz3f3j
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 17:33:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G8MuzEAq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XQh2nL+n;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4P6Btf6JqSz4xyf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 17:32:58 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4P6Btf6H4Jz4xyd; Wed,  1 Feb 2023 17:32:58 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XQh2nL+n;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6Bsz1RYZz3cBj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 17:32:22 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3116VZsd013970;
-	Wed, 1 Feb 2023 06:32:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=KtvOWY/RgxQHLtnWYGAXoYBF9LHCjUdaD3Hg5fuLSKg=;
- b=G8MuzEAqxXIQHnNKHt+5nv/2bbGvNYROuKwd9gAK5Lbmtae3028T0vQVzO4nyk3t8EI9
- bt89HlMYORJdnS/ABCjjVq2AGiY2/7sVZk8j31jKDSmr57jHOJEo2V0iGy9ftZi15SvN
- hInarY7a/PsJkEYLmBZyerijd/Tc1NpGOCWj3drC2JJE2SprIixGlXEqY0N4iN2ZabfL
- N5X2hakmWKK/jsA71FH0UokJSS2XgzOEjrAIVFfPp9aMA5kX67LWEmPGLJM+jpSQrBVt
- VkJNMzLBDThQEWpvd5snq299dqRet2msal/dnCsC9huUzbfQC5MluPjbShlXcNcUoFWI 1w== 
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4P6Btf3BJGz4xyB
+	for <linuxppc-dev@ozlabs.org>; Wed,  1 Feb 2023 17:32:58 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3116VvPk029433;
+	Wed, 1 Feb 2023 06:32:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=2K9u0HOV6aWe3Ve0ljcXL8szjNAZ8dM73Mk4mBaqQZ8=;
+ b=XQh2nL+nUxNTweJtIOEq4t9NqQlRKwB4PzLSLQ7wXcjq82R/ghXo7bTr4SaG7UQxjtTb
+ 1k5uzFgUoM4AwVgK4Bfxc7efL50IhKagKX82v6kwgAhGutIqywiOd8mxrYSzWmR0Fr5U
+ 1ZwvLdhPWZfRGzr/VIRg+42xUvNWhg+44xx3f50epV16QQyF9Iq5meO9tMXdU8R4O1AP
+ bQmBRMvpf/k7++rUH2qw0+L8NNUitqo9XvJwnyp0QP9t/G17+T2K4akUHriVoo022sk1
+ 6OhEODDz25/RXOm1smAYta20PLMHwLmjfzGf6rJz2P6LKtuPEyxVLjPshM4JXX+417Sq Og== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfjw180g5-1
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfjw6g0hs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Feb 2023 06:32:15 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3116WEH2015822;
-	Wed, 1 Feb 2023 06:32:14 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfjw180fe-1
+	Wed, 01 Feb 2023 06:32:46 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3116WQbH030778;
+	Wed, 1 Feb 2023 06:32:45 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfjw6g0h2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Feb 2023 06:32:14 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VG30OU001561;
-	Wed, 1 Feb 2023 06:32:12 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3ncvv6b5b6-1
+	Wed, 01 Feb 2023 06:32:45 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3116IeKY026867;
+	Wed, 1 Feb 2023 06:32:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3ncvs7mdpu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Feb 2023 06:32:12 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3116WAS344040486
+	Wed, 01 Feb 2023 06:32:43 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3116We1F26411390
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Feb 2023 06:32:10 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26CB220043;
-	Wed,  1 Feb 2023 06:32:10 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 270AB2004B;
-	Wed,  1 Feb 2023 06:32:09 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Feb 2023 06:32:09 +0000 (GMT)
-Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 219FE6051E;
-	Wed,  1 Feb 2023 17:32:04 +1100 (AEDT)
-Message-ID: <126118f816e9b24b2e459a3802a9ca01db64a24c.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 23/25] powerpc/pseries: Implement secvars for dynamic
- secure boot
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-integrity@vger.kernel.org
-Date: Wed, 01 Feb 2023 17:32:03 +1100
-In-Reply-To: <00aa1164-5a90-7a72-1f0d-67a9561419cb@linux.ibm.com>
-References: <20230131063928.388035-1-ajd@linux.ibm.com>
-	 <20230131063928.388035-24-ajd@linux.ibm.com>
-	 <00aa1164-5a90-7a72-1f0d-67a9561419cb@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
-MIME-Version: 1.0
+	Wed, 1 Feb 2023 06:32:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 527382004D;
+	Wed,  1 Feb 2023 06:32:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D3BF20040;
+	Wed,  1 Feb 2023 06:32:37 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.109.52])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Feb 2023 06:32:37 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v8 0/8] In kernel handling of CPU hotplug events for crash kernel
+Date: Wed,  1 Feb 2023 12:02:28 +0530
+Message-Id: <20230201063236.963344-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.39.1
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NBaQxBOlmqpQNQN8Qlv7wgp3LgI8YMWf
-X-Proofpoint-ORIG-GUID: oP8rJGJhs628wLn65pZvMvNZUapA596D
+X-Proofpoint-GUID: F-6EA_RnhDoFCJ_6YRQ0989fpTjtOHA2
+X-Proofpoint-ORIG-GUID: 2lOys8jiowwv40zYSya0dpSMJAEnZJaJ
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-02-01_02,2023-01-31_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- clxscore=1015 adultscore=0 mlxlogscore=642 malwarescore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2302010051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -106,63 +110,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sudhakar@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, gjoyce@linux.ibm.com, ruscur@russell.cc, joel@jms.id.au, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com
+Cc: eric.devolder@oracle.com, bhe@redhat.com, mahesh@linux.vnet.ibm.com, kexec@lists.infradead.org, ldufour@linux.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIzLTAxLTMxIGF0IDEyOjExIC0wNTAwLCBTdGVmYW4gQmVyZ2VyIHdyb3RlOgo+
-ID4gK3N0YXRpYyBpbnQgcGxwa3NfZ2V0X3ZhcmlhYmxlKGNvbnN0IGNoYXIgKmtleSwgdTY0IGtl
-eV9sZW4sIHU4Cj4gPiAqZGF0YSwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB1NjQgKmRhdGFfc2l6ZSkKPiA+ICt7Cj4gPiArwqDC
-oMKgwqDCoMKgwqBzdHJ1Y3QgcGxwa3NfdmFyIHZhciA9IHswfTsKPiA+ICvCoMKgwqDCoMKgwqDC
-oGludCByYyA9IDA7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqAvLyBXZSBzdWJ0cmFjdCAxIGZy
-b20ga2V5X2xlbiBiZWNhdXNlIHdlIGRvbid0IG5lZWQgdG8KPiA+IGluY2x1ZGUgdGhlCj4gPiAr
-wqDCoMKgwqDCoMKgwqAvLyBudWxsIHRlcm1pbmF0b3IgYXQgdGhlIGVuZCBvZiB0aGUgc3RyaW5n
-Cj4gPiArwqDCoMKgwqDCoMKgwqB2YXIubmFtZSA9IGtjYWxsb2Moa2V5X2xlbiAtIDEsIHNpemVv
-Zih3Y2hhcl90KSwKPiA+IEdGUF9LRVJORUwpOwo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKCF2YXIu
-bmFtZSkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gLUVOT01FTTsK
-PiA+ICvCoMKgwqDCoMKgwqDCoHJjID0gdXRmOHNfdG9fdXRmMTZzKGtleSwga2V5X2xlbiAtIDEs
-IFVURjE2X0xJVFRMRV9FTkRJQU4sCj4gPiAod2NoYXJfdCAqKXZhci5uYW1lLAo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrZXlfbGVu
-IC0gMSk7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAocmMgPCAwKQo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGdvdG8gZXJyOwo+ID4gK8KgwqDCoMKgwqDCoMKgdmFyLm5hbWVsZW4g
-PSByYyAqIDI7Cj4gCj4gQXJlIHlvdSBzdXJlIHRoaXMgaXMgbm90IGp1c3Qgc3VwcG9zZWQgdG8g
-YmUgJ3JjJz8KCm5hbWVsZW4gaXMgYSBsZW5ndGggaW4gYnl0ZXMsIG5vdCBjaGFyYWN0ZXJzLCB3
-aGlsZSB1dGY4c190b191dGYxNnMoKQpyZXR1cm5zIHRoZSBudW1iZXIgb2YgY2hhcmFjdGVycy4g
-SSBzdXBwb3NlIHRoaXMgY291bGQgYmUgY2xlYXJlciBieQpjaGFuZ2luZyAyIHRvIHNpemVvZih3
-Y2hhcl90KS4KCj4gCj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqB2YXIub3MgPSBQTFBLU19WQVJf
-TElOVVg7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAoZGF0YSkgewo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHZhci5kYXRhID0gZGF0YTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB2YXIuZGF0YWxlbiA9ICpkYXRhX3NpemU7Cj4gPiArwqDCoMKgwqDCoMKgwqB9
-Cj4gPiArwqDCoMKgwqDCoMKgwqByYyA9IHBscGtzX3JlYWRfb3NfdmFyKCZ2YXIpOwo+ID4gKwo+
-ID4gK8KgwqDCoMKgwqDCoMKgaWYgKHJjKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGdvdG8gZXJyOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgKmRhdGFfc2l6ZSA9IHZhci5k
-YXRhbGVuOwo+ID4gKwo+ID4gK2VycjoKPiA+ICvCoMKgwqDCoMKgwqDCoGtmcmVlKHZhci5uYW1l
-KTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChyYyAmJiByYyAhPSAtRU5PRU5UKSB7Cj4gPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZXJyKCJGYWlsZWQgdG8gcmVhZCB2YXJpYWJs
-ZSAnJXMnOiAlZFxuIiwga2V5LAo+ID4gcmMpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoC8vIFJldHVybiAtRUlPIHNpbmNlIHVzZXJzcGFjZSBwcm9iYWJseSBkb2Vzbid0Cj4g
-PiBjYXJlIGFib3V0IHRoZQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8vIHNw
-ZWNpZmljIGVycm9yCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmMgPSAtRUlP
-Owo+ID4gK8KgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIHJjOwo+ID4g
-K30KPiA+ICsKPiA+ICtzdGF0aWMgaW50IHBscGtzX3NldF92YXJpYWJsZShjb25zdCBjaGFyICpr
-ZXksIHU2NCBrZXlfbGVuLCB1OAo+ID4gKmRhdGEsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdTY0IGRhdGFfc2l6ZSkKPiA+ICt7
-Cj4gPiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgcGxwa3NfdmFyIHZhciA9IHswfTsKPiA+ICvCoMKg
-wqDCoMKgwqDCoGludCByYyA9IDA7Cj4gPiArwqDCoMKgwqDCoMKgwqB1NjQgZmxhZ3M7Cj4gPiAr
-Cj4gPiArwqDCoMKgwqDCoMKgwqAvLyBTZWN1cmUgdmFyaWFibGVzIG5lZWQgdG8gYmUgcHJlZml4
-ZWQgd2l0aCA4IGJ5dGVzIG9mCj4gPiBmbGFncy4KPiA+ICvCoMKgwqDCoMKgwqDCoC8vIFdlIG9u
-bHkgd2FudCB0byBwZXJmb3JtIHRoZSB3cml0ZSBpZiB3ZSBoYXZlIGF0IGxlYXN0Cj4gPiBvbmUg
-Ynl0ZSBvZiBkYXRhLgo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKGRhdGFfc2l6ZSA8PSBzaXplb2Yo
-ZmxhZ3MpKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAtRUlOVkFM
-Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgLy8gV2Ugc3VidHJhY3QgMSBmcm9tIGtleV9sZW4g
-YmVjYXVzZSB3ZSBkb24ndCBuZWVkIHRvCj4gPiBpbmNsdWRlIHRoZQo+ID4gK8KgwqDCoMKgwqDC
-oMKgLy8gbnVsbCB0ZXJtaW5hdG9yIGF0IHRoZSBlbmQgb2YgdGhlIHN0cmluZwo+ID4gK8KgwqDC
-oMKgwqDCoMKgdmFyLm5hbWUgPSBrY2FsbG9jKGtleV9sZW4gLSAxLCBzaXplb2Yod2NoYXJfdCks
-Cj4gPiBHRlBfS0VSTkVMKTsKPiBoZXJlIEkgd291bGQgdGhpbmsgdGhhdCBpdCBzaG91bGQgYmUg
-a2V5X2xlbiAqIDIgLSAxIHNpbmNlCj4gdXRmOHNfdG9fdXRmMTZzIHByZXN1bWFibHkgbWFrZXMg
-dGhlIHN0cmluZyBsb25nZXIKCk5vLCB3Y2hhcl90IGlzIHUxNiwgc28gdGhpcyBhbGxvY2F0ZXMg
-KGtleV9sZW4gLSAxKSpzaXplb2YodTE2KSA9CihrZXlfbGVuIC0gMSkqMiBieXRlcy4KCi0tIApB
-bmRyZXcgRG9ubmVsbGFuICAgIE96TGFicywgQURMIENhbmJlcnJhCmFqZEBsaW51eC5pYm0uY29t
-ICAgSUJNIEF1c3RyYWxpYSBMaW1pdGVkCg==
+The Problem:
+============
+Post hotplug/DLPAR events the capture kernel holds stale information about the
+system. Dump collection with stale capture kernel might end up in dump capture
+failure or an inaccurate dump collection.
+
+Existing solution:
+==================
+The existing solution to keep the capture kernel up-to-date by monitoring
+hotplug event via udev rule and trigger a full capture kernel reload for
+every hotplug event.
+
+Shortcomings:
+------------------------------------------------
+- Leaves a window where kernel crash might not lead to a successful dump
+  collection.
+- Reloading all kexec components for each hotplug is inefficient.
+- udev rules are prone to races if hotplug events are frequent.
+
+More about issues with an existing solution is posted here:
+ - https://lkml.org/lkml/2020/12/14/532
+ - https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-February/240254.html
+
+Proposed Solution:
+==================
+Instead of reloading all kexec segments on hotplug event, this patch series
+focuses on updating only the relevant kexec segment. Once the kexec segments
+are loaded in the kernel reserved area then an arch-specific hotplug handler
+will update the relevant kexec segment based on hotplug event type.
+
+Series Dependecies
+==================
+This patch series implements the crash hotplug handler on PowerPC. The generic
+for crash hotplug update is introduced by https://lkml.org/lkml/2022/12/9/520 patch series.
+
+Git tree for testing:
+=====================
+The below git tree has this patch series applied on top of dependent patch
+series.
+https://github.com/sourabhjains/linux/commits/in-kernel-crash-update
+
+Note: only kexec_file_load syscall will work. For kexec_load mirnor
+changes are required in kexec tool.
+
+To realise the feature the kdump udev rules must be disabled for CPU/Memory
+hotplug events. Comment out the below line in kdump udev rule file:
+
+  RHEL: /usr/lib/udev/rules.d/98-kexec.rules
+
+  	#SUBSYSTEM=="cpu", ACTION=="online", GOTO="kdump_reload_cpu"
+	#SUBSYSTEM=="memory", ACTION=="online", GOTO="kdump_reload_mem"
+	#SUBSYSTEM=="memory", ACTION=="offline", GOTO="kdump_reload_mem"
+
+  SLES: /usr/lib/kdump/70-kdump.rules
+
+	#SUBSYSTEM=="memory", ACTION=="add|remove", GOTO="kdump_try_restart"
+	#SUBSYSTEM=="cpu", ACTION=="online", GOTO="kdump_try_restart"
+---
+Changelog:
+
+v7 -> v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v6 -> v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v5 -> v6
+  - Added crash memory hotplug support
+
+v4 -> v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v3 -> v4:
+  - Update the logic to find the additional space needed for hotadd CPUs post
+    kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash hotplug
+    support for kexec_file_load" patch to know more about the change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v2 -> v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of https://lkml.org/lkml/2022/3/3/674 [v5]
+  - Fixed warning reported by checpatch script
+
+v1 -> v2:
+  - Use generic hotplug handler introduced by https://lkml.org/lkml/2022/2/9/1406, a
+    significant change from v1.
+
+Sourabh Jain (8):
+  powerpc/kexec: turn some static helper functions public
+  powerpc/crash hp: introduce a new config option CRASH_HOTPLUG
+  powerpc/crash: update kimage_arch struct
+  crash: add phdr for possible CPUs in elfcorehdr
+  crash: pass hotplug action type to arch crash hotplug handler
+  powerpc/crash: add crash CPU hotplug support
+  crash: forward memory_notify args to arch crash hotplug handler
+  powerpc/kexec: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |  12 +
+ arch/powerpc/include/asm/kexec.h        |  18 ++
+ arch/powerpc/include/asm/kexec_ranges.h |   1 +
+ arch/powerpc/kexec/core_64.c            | 335 ++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |  19 +-
+ arch/powerpc/kexec/file_load_64.c       | 237 +++--------------
+ arch/powerpc/kexec/ranges.c             |  60 +++++
+ arch/x86/include/asm/kexec.h            |   3 +-
+ arch/x86/kernel/crash.c                 |   5 +-
+ include/linux/kexec.h                   |   6 +-
+ kernel/crash_core.c                     |  23 +-
+ 11 files changed, 502 insertions(+), 217 deletions(-)
+
+-- 
+2.39.1
 
