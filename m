@@ -2,74 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7DC6865E0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 13:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C9C686809
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 15:12:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6Lh93qYsz3f3j
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 23:24:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6P540V3Xz3f4k
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 01:12:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JFlcwhut;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bI4IDCcs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JFlcwhut;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bI4IDCcs;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6LgB73JQz3bfm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 23:23:32 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id t17so1177513pfj.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Feb 2023 04:23:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JEkiUTacxMxuQViA2zFVDrCybVhWswU79PAFJJV/w9g=;
-        b=JFlcwhut2YxmzOnINTmfWPgykYOoLnNzxL7qoNOpca+oiLZu8x5995wnOMAxVO+Ros
-         XgubNWP6I84WorhX/iUfTp0ZDNOaxcuFDzmMCuFrPtBkuuwag9xqEI4RqxxPsooCQ0FQ
-         8ItpDZyF9Zv4u2C+Vf2/v7tnRbxkE0PXjCp8YbR7borkIjcoVXpNWrcJDiJDLyjgnV/h
-         u+tsoufLduN4tVPPYx1Pb4csiCV27ywPKrB0bIF6biJifnwwzaBm16XfH7DpmZgLL3tX
-         3uDLvtanpupnMFpJac9gBh/h5/dmuW1WAMrZpBHcqEuzjxkX8xL9mH5HpZhHq2X6gAz4
-         07MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JEkiUTacxMxuQViA2zFVDrCybVhWswU79PAFJJV/w9g=;
-        b=M3H3lQEMtJJB918Dr9ux2pSkhy6VRBMJSgIlofYuHH6tnS+zslWyoNM05MGe6RwFcT
-         B198DiQNW8chRK/JdHSRs32xXWqbb2I+bshslOZoGts600h0SZGoIaSDe7tANBOtoaBg
-         1C9OZSeak7js0dLwyusCNUuXPosDdwBIDDyTLuq8s5LVBSodb94wCuiiPfPt8Xuo+b+/
-         cxlhTVmEhcVVsNhKSia9YfrkXlKpivvVPcSa0v5me/LiFgLxSwQCxcnrCrFFWAOWEm/A
-         1oD9B/uf9+0EKwFyPFVCZt266H0kkRyPPssyWKTF+5We9JDyylRfThVyhjiurs9gxSz4
-         cX1Q==
-X-Gm-Message-State: AO0yUKXr6s0gOJngrDisGnQq5LtZqzeL7Pqa+hrdxQgVcB+QHniSQsyc
-	oeYzMh0U+a+10i26MFAudSU=
-X-Google-Smtp-Source: AK7set+GpUrYJx7Y0L584QZ8mHnSLMQmzHWvHob6Mlx6VGj4q3DTD2lRBF5v76Gk3l8+0GlLwkWQow==
-X-Received: by 2002:a05:6a00:1392:b0:593:91e4:99e2 with SMTP id t18-20020a056a00139200b0059391e499e2mr2628027pfg.34.1675254210775;
-        Wed, 01 Feb 2023 04:23:30 -0800 (PST)
-Received: from hyeyoo ([114.29.91.56])
-        by smtp.gmail.com with ESMTPSA id y40-20020a056a001ca800b0058dbb5c5038sm243351pfw.182.2023.02.01.04.23.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 04:23:29 -0800 (PST)
-Date: Wed, 1 Feb 2023 21:23:16 +0900
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v4 4/7] mm: replace vma->vm_flags direct modifications
- with modifier calls
-Message-ID: <Y9pZtC+IEjVQO6fh@hyeyoo>
-References: <20230126193752.297968-1-surenb@google.com>
- <20230126193752.297968-5-surenb@google.com>
- <Y9jSFFeHYZE1/yFg@hyeyoo>
- <CAJuCfpEzaVkgQt=C-33jAh1vLVJAjoyM8X5AD9CzyDUJnPDCkw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpEzaVkgQt=C-33jAh1vLVJAjoyM8X5AD9CzyDUJnPDCkw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6P483BWKz3bTB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 01:11:51 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 311DY3v6038208;
+	Wed, 1 Feb 2023 14:11:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=aDn96LlKb8K5QcSAFpamlmdy+JcfWMZa3JA8M+p7LXg=;
+ b=bI4IDCcslIYPAM6zQTmXFe/jqKnZpAeL7EZIaK0CeLJf8cib7taBp2KCxPG7D87eOXl+
+ +gZgqJlYIJw6Y7sH+llIIzky89JSOLRpsl7brxAk2pm1YSPeZt5Fxv7ctk71fhpMnW0d
+ 9Io/W+66PkdCsru7yz7muQE/sIcL8prf1fkpjt2iqpxCnB3VTV7qNJD0fyS8xlmNY2m+
+ K92k70N9Mg3n+vgvXRBHE3B2SkhU5TgvJKdIhGzrLX+OBluUkh2sUf0KpxqKtPN6OZtg
+ aGpcCjoKyY6Q1dWIFy6vvaKukknWvCkBUtW5PJ7JsSk0dIOEjKSnbHe1gz4J2mZ59+xH Wg== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfs31s572-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 14:11:42 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VG30p0001561;
+	Wed, 1 Feb 2023 14:11:38 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3ncvv6bj5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 14:11:38 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 311EBXKX45482332
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Feb 2023 14:11:34 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DA6FB2004D;
+	Wed,  1 Feb 2023 14:11:33 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B25C20043;
+	Wed,  1 Feb 2023 14:11:32 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.38.8])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Feb 2023 14:11:32 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: [PATCH] powerpc/hv-24x7: Fix pvr check when setting interface
+ version
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20230131184804.220756-1-kjain@linux.ibm.com>
+Date: Wed, 1 Feb 2023 19:41:21 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AEDF0612-3814-4FF2-A0CD-5688E496078A@linux.ibm.com>
+References: <20230131184804.220756-1-kjain@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ufQXKnf-syMrEo0bKTqPgA6WlFtuyevg
+X-Proofpoint-ORIG-GUID: ufQXKnf-syMrEo0bKTqPgA6WlFtuyevg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-01_04,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 clxscore=1011
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302010120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,114 +92,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, Sebastian Reichel <sebastian.reichel@collabora.com>, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundat
- ion.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 31, 2023 at 10:54:22AM -0800, Suren Baghdasaryan wrote:
-> On Tue, Jan 31, 2023 at 12:32 AM Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
-> >
-> > On Thu, Jan 26, 2023 at 11:37:49AM -0800, Suren Baghdasaryan wrote:
-> > > Replace direct modifications to vma->vm_flags with calls to modifier
-> > > functions to be able to track flag changes and to keep vma locking
-> > > correctness.
-> > >
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > Acked-by: Michal Hocko <mhocko@suse.com>
-> > > Acked-by: Mel Gorman <mgorman@techsingularity.net>
-> > > Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > > Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > > ---
-> > >  arch/arm/kernel/process.c                          |  2 +-
-> > >  120 files changed, 188 insertions(+), 199 deletions(-)
-> > >
-> >
-> > Hello Suren,
-> 
-> Hi Hyeonggon,
-> 
-> >
-> > [...]
-> >
-> > Whoa, it's so long.
-> > Mostly looks fine but two things I'm not sure about:
-> >
-> > > diff --git a/drivers/misc/open-dice.c b/drivers/misc/open-dice.c
-> > > index 9dda47b3fd70..7be4e6c9f120 100644
-> > > --- a/drivers/misc/open-dice.c
-> > > +++ b/drivers/misc/open-dice.c
-> > > @@ -95,12 +95,12 @@ static int open_dice_mmap(struct file *filp, struct vm_area_struct *vma)
-> > >               if (vma->vm_flags & VM_WRITE)
-> > >                       return -EPERM;
-> > >               /* Ensure userspace cannot acquire VM_WRITE later. */
-> > > -             vma->vm_flags &= ~VM_MAYWRITE;
-> > > +             vm_flags_clear(vma, VM_MAYSHARE);
-> > >       }
-> >
-> > I think it should be:
-> >         s/VM_MAYSHARE/VM_MAYWRITE/
-> 
-> Good eye! Yes, this is definitely a bug. Will post a next version with this fix.
-> 
-> >
-> > > diff --git a/mm/mlock.c b/mm/mlock.c
-> > > index 5c4fff93cd6b..ed49459e343e 100644
-> > > --- a/mm/mlock.c
-> > > +++ b/mm/mlock.c
-> > > @@ -380,7 +380,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
-> > >        */
-> > >       if (newflags & VM_LOCKED)
-> > >               newflags |= VM_IO;
-> > > -     WRITE_ONCE(vma->vm_flags, newflags);
-> > > +     vm_flags_reset(vma, newflags);
-> > >
-> > >       lru_add_drain();
-> > >       walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
-> > > @@ -388,7 +388,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
-> > >
-> > >       if (newflags & VM_IO) {
-> > >               newflags &= ~VM_IO;
-> > > -             WRITE_ONCE(vma->vm_flags, newflags);
-> > > +             vm_flags_reset(vma, newflags);
-> > >       }
-> > >  }
-> >
-> > wondering the if the comment above is still true?
-> >
-> >         /*
-> >          * There is a slight chance that concurrent page migration,
-> >          * or page reclaim finding a page of this now-VM_LOCKED vma,
-> >          * will call mlock_vma_folio() and raise page's mlock_count:
-> >          * double counting, leaving the page unevictable indefinitely.
-> >          * Communicate this danger to mlock_vma_folio() with VM_IO,
-> >          * which is a VM_SPECIAL flag not allowed on VM_LOCKED vmas.
-> >          * mmap_lock is held in write mode here, so this weird
-> >          * combination should not be visible to other mmap_lock users;
-> >          * but WRITE_ONCE so rmap walkers must see VM_IO if VM_LOCKED.
-> >          */
-> >
-> > does ACCESS_PRIVATE() still guarentee that compiler cannot mysteriously
-> > optimize writes like WRITE_ONCE()?
-> 
-> I don't see ACCESS_PRIVATE() providing the same guarantees as
-> WRITE_ONCE(), therefore I think this also needs to be changed. I'll
-> need to introduce something like vm_flags_reset_once() and use it
-> here. vm_flags_reset_once() would do WRITE_ONCE() and otherwise would
-> be identical to vm_flags_reset().
->
-> I'll post a new version with the fixes later today.
->
-> Thanks for the review!
-> Suren.
-
-Thanks for quick reply!
-
-Andrew's fix and the new patch looks good to me.
-with these two things addressed:
-
-Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
 
-Regards,
-Hyeonggon
+> On 01-Feb-2023, at 12:18 AM, Kajol Jain <kjain@linux.ibm.com> wrote:
+>=20
+> Commit ec3eb9d941a9 ("powerpc/perf: Use PVR rather than
+> oprofile field to determine CPU version") added usage
+> of pvr value instead of oprofile field to determine the
+> platform. In hv-24x7 pmu driver code, pvr check uses PVR_POWER8
+> when assigning the interface version for power8 platform.
+> But power8 can also have other pvr values like PVR_POWER8E and
+> PVR_POWER8NVL. Hence the interface version won't be set
+> properly incase of PVR_POWER8E and PVR_POWER8NVL.
+> Fix this issue by adding the checks for PVR_POWER8E and
+> PVR_POWER8NVL as well.
+>=20
+> Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field =
+to determine CPU version")
+> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+
+Thanks for the fix. Tested on Power8 successfully.
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+
+> arch/powerpc/perf/hv-24x7.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+> index 33c23225fd54..8c3253df133d 100644
+> --- a/arch/powerpc/perf/hv-24x7.c
+> +++ b/arch/powerpc/perf/hv-24x7.c
+> @@ -1727,7 +1727,8 @@ static int hv_24x7_init(void)
+> }
+>=20
+> /* POWER8 only supports v1, while POWER9 only supports v2. */
+> - if (PVR_VER(pvr) =3D=3D PVR_POWER8)
+> + if (PVR_VER(pvr) =3D=3D PVR_POWER8 || PVR_VER(pvr) =3D=3D =
+PVR_POWER8E ||
+> + PVR_VER(pvr) =3D=3D PVR_POWER8NVL)
+
+Do we really need the check for Power8NV?
