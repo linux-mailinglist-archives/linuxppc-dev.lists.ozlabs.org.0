@@ -1,62 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0EF6860DD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 08:44:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D474B686346
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:01:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6DTM6xmzz3f3d
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 18:44:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6HWP4j4rz3f6K
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 21:01:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=plb39T26;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dyn8SS/h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=plb39T26;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dyn8SS/h;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6DSR0hYFz3bvZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 18:43:49 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5D0B333A5A;
-	Wed,  1 Feb 2023 07:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1675237424; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EIPupChmZWdqCbipzzk6WIge6ktn1mIlacRGTtLMASA=;
-	b=plb39T261+q73vUMZloi+nvkH8nnyo+NMJ3mWpZsLfYYmeWt/WorRYCmo/s5C1ChCTGt2v
-	3zeJW7/3Quy+a++wy39qc2ym1EPIKxsP++jtuZtDVsjGQBIcgFFF7gE5Hjqq1lrrCau9wl
-	eZlhFhYILXyWtEI3TjhVbj0vmXaTico=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2C2211348C;
-	Wed,  1 Feb 2023 07:43:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id UybHCTAY2mOWMwAAMHmgww
-	(envelope-from <mhocko@suse.com>); Wed, 01 Feb 2023 07:43:44 +0000
-Date: Wed, 1 Feb 2023 08:43:43 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 1/1] mm: introduce vm_flags_reset_once to replace
- WRITE_ONCE vm_flags updates
-Message-ID: <Y9oYL93beiezSf3V@dhcp22.suse.cz>
-References: <20230201000116.1333160-1-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6Gnj1WtGz300C
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 20:28:56 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3119LMCn020602;
+	Wed, 1 Feb 2023 09:28:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=UPfS0JSqsHWU6KFIzDh5IR0blcrMc8zrkhvGc8dCkzg=;
+ b=dyn8SS/hAZt7z6BLPl1ytITxklw66SuGrWyzOBpQUA0gL8W2s1AC/4XRDzLusfNMh9Gx
+ 766e9XSjsQAhPcz2NeT/Mae2NeLNfNMd0/ABobKbJgARM/ZfHrq306Y8Z3mW2c/M8VLb
+ 2t2VdF78yAU+skzWyM02CWwu2/xO5h+ms9WDmC+/Bo8IGPGQjQyvactSgEQ55E0F6WN2
+ rFiSSyGWGTDKPiyUdyg7B1RmddT09Un8hs15am4uBoYihdpPkaVQ/1hHV6B1nKDCc8Wq
+ qxcIvkBsieyVOTvdVSgfXcksOOJsjNuGq7LFrkVq9KgeVDqLlWyVdXwLlAltAOGIIsW9 hQ== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nfncm853a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 09:28:50 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30VJfGfr030067;
+	Wed, 1 Feb 2023 09:28:48 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvshba5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Feb 2023 09:28:48 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3119Si0j48038390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Feb 2023 09:28:44 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B6AD12004E;
+	Wed,  1 Feb 2023 09:28:44 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A91E2004B;
+	Wed,  1 Feb 2023 09:28:44 +0000 (GMT)
+Received: from [9.204.207.144] (unknown [9.204.207.144])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Feb 2023 09:28:43 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------6mREV7prr1cZoyQESwrmns2W"
+Message-ID: <945a90d3-f14e-dd57-4eea-bcdc5f8a96a0@linux.ibm.com>
+Date: Wed, 1 Feb 2023 14:58:43 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230201000116.1333160-1-surenb@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v2] powerpc/mce: log the error for all unrecoverable
+ errors
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20230127182943.73073-1-ganeshgr@linux.ibm.com>
+ <87bkmfeycs.fsf@mpe.ellerman.id.au>
+From: Ganesh G R <ganeshgr@linux.ibm.com>
+In-Reply-To: <87bkmfeycs.fsf@mpe.ellerman.id.au>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AZpNWMy961WD6z7_FJaKZwI1_7PhJJw5
+X-Proofpoint-ORIG-GUID: AZpNWMy961WD6z7_FJaKZwI1_7PhJJw5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-01_03,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
+ mlxlogscore=999 suspectscore=0 spamscore=0 priorityscore=1501
+ malwarescore=0 mlxscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302010078
+X-Mailman-Approved-At: Wed, 01 Feb 2023 20:59:59 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,79 +94,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, 42.hyeyoo@gmail.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingula
- rity.net, rppt@kernel.org
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 31-01-23 16:01:16, Suren Baghdasaryan wrote:
-> Provide vm_flags_reset_once() and replace the vm_flags updates which used
-> WRITE_ONCE() to prevent compiler optimizations.
-> 
-> Fixes: 0cce31a0aa0e ("mm: replace vma->vm_flags direct modifications with modifier calls")
-> Reported-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+This is a multi-part message in MIME format.
+--------------6mREV7prr1cZoyQESwrmns2W
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This would have been better folded into the vm_flags modification patch
-because it would be more obvious change. Hugh has provided a very nice
-comment in mlock_vma_pages_range but the git blame would be more visible
-when the conversion is from WRITE_ONCE.
 
-One way or the other
-Acked-by: Michal Hocko <mhocko@suse.com>
+On 1/31/23 4:59 PM, Michael Ellerman wrote:
 
-> ---
-> Notes:
-> - The patch applies cleanly over mm-unstable
-> - The SHA in Fixes: line is from mm-unstable, so is... unstable
-> 
->  include/linux/mm.h | 7 +++++++
->  mm/mlock.c         | 4 ++--
->  2 files changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5bf0ad48faaa..23ce04f6e91e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -648,6 +648,13 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
->  	vm_flags_init(vma, flags);
->  }
->  
-> +static inline void vm_flags_reset_once(struct vm_area_struct *vma,
-> +				       vm_flags_t flags)
-> +{
-> +	mmap_assert_write_locked(vma->vm_mm);
-> +	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
-> +}
-> +
->  static inline void vm_flags_set(struct vm_area_struct *vma,
->  				vm_flags_t flags)
->  {
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index ed49459e343e..617469fce96d 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -380,7 +380,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  	 */
->  	if (newflags & VM_LOCKED)
->  		newflags |= VM_IO;
-> -	vm_flags_reset(vma, newflags);
-> +	vm_flags_reset_once(vma, newflags);
->  
->  	lru_add_drain();
->  	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
-> @@ -388,7 +388,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  
->  	if (newflags & VM_IO) {
->  		newflags &= ~VM_IO;
-> -		vm_flags_reset(vma, newflags);
-> +		vm_flags_reset_once(vma, newflags);
->  	}
->  }
->  
-> -- 
-> 2.39.1.456.gfc5497dd1b-goog
+> Ganesh Goudar<ganeshgr@linux.ibm.com>  writes:
+>> For all unrecoverable errors we are missing to log the
+>> error, Since machine_check_log_err() is not getting called
+>> for unrecoverable errors.
+>>
+>> Raise irq work in save_mce_event() for unrecoverable errors,
+>> So that we log the error from MCE event handling block in
+>> timer handler.
+> But the patch also removes the irq work raise from machine_check_ue_event().
+>
+> That's currently done unconditionally, regardless of the disposition. So
+> doesn't this change also drop logging of recoverable UEs?
+>
+> Maybe that's OK, but the change log should explain it.
 
--- 
-Michal Hocko
-SUSE Labs
+Yes, its ok, exception vector code will do that for recoverable errors, ill explain
+this in commit message.
+
+>
+>> Log without this change
+>>
+>>   MCE: CPU27: machine check (Severe)  Real address Load/Store (foreign/control memory) [Not recovered]
+>>   MCE: CPU27: PID: 10580 Comm: inject-ra-err NIP: [0000000010000df4]
+>>   MCE: CPU27: Initiator CPU
+>>   MCE: CPU27: Unknown
+>>
+>> Log with this change
+>>
+>>   MCE: CPU24: machine check (Severe)  Real address Load/Store (foreign/control memory) [Not recovered]
+>>   MCE: CPU24: PID: 1589811 Comm: inject-ra-err NIP: [0000000010000e48]
+>>   MCE: CPU24: Initiator CPU
+>>   MCE: CPU24: Unknown
+>>   RTAS: event: 5, Type: Platform Error (224), Severity: 3
+>>
+>> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
+>> Reviewed-by: Mahesh Salgaonkar<mahesh@linux.ibm.com>
+>> ---
+>> V2: Rephrasing the commit message.
+>> ---
+>>   arch/powerpc/kernel/mce.c | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+>> index 6c5d30fba766..a1cb2172eb7b 100644
+>> --- a/arch/powerpc/kernel/mce.c
+>> +++ b/arch/powerpc/kernel/mce.c
+>> @@ -131,6 +131,13 @@ void save_mce_event(struct pt_regs *regs, long handled,
+>>   	if (mce->error_type == MCE_ERROR_TYPE_UE)
+>>   		mce->u.ue_error.ignore_event = mce_err->ignore_event;
+>>   
+>> +	/*
+>> +	 * Raise irq work, So that we don't miss to log the error for
+>> +	 * unrecoverable errors.
+>> +	 */
+>> +	if (mce->disposition == MCE_DISPOSITION_NOT_RECOVERED)
+>> +		mce_irq_work_queue();
+>> +
+>>   	if (!addr)
+>>   		return;
+>>   
+>> @@ -235,7 +242,6 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+>>   	       evt, sizeof(*evt));
+>>   
+>>   	/* Queue work to process this event later. */
+> This comment is meaningless without the function call it's commenting
+> about, ie. the comment should be removed too.
+
+ok.
+
+Thanks.
+
+--------------6mREV7prr1cZoyQESwrmns2W
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">
+      <pre>On 1/31/23 4:59 PM, Michael Ellerman wrote:</pre>
+    </div>
+    <blockquote type="cite" cite="mid:87bkmfeycs.fsf@mpe.ellerman.id.au">
+      <pre class="moz-quote-pre" wrap="">Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a> writes:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">For all unrecoverable errors we are missing to log the
+error, Since machine_check_log_err() is not getting called
+for unrecoverable errors.
+
+Raise irq work in save_mce_event() for unrecoverable errors,
+So that we log the error from MCE event handling block in
+timer handler.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+But the patch also removes the irq work raise from machine_check_ue_event().
+
+That's currently done unconditionally, regardless of the disposition. So
+doesn't this change also drop logging of recoverable UEs?
+
+Maybe that's OK, but the change log should explain it.</pre>
+    </blockquote>
+    <pre>Yes, its ok, exception vector code will do that for recoverable errors, ill explain
+this in commit message.
+</pre>
+    <blockquote type="cite" cite="mid:87bkmfeycs.fsf@mpe.ellerman.id.au">
+      <pre class="moz-quote-pre" wrap="">
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Log without this change
+
+ MCE: CPU27: machine check (Severe)  Real address Load/Store (foreign/control memory) [Not recovered]
+ MCE: CPU27: PID: 10580 Comm: inject-ra-err NIP: [0000000010000df4]
+ MCE: CPU27: Initiator CPU
+ MCE: CPU27: Unknown
+
+Log with this change
+
+ MCE: CPU24: machine check (Severe)  Real address Load/Store (foreign/control memory) [Not recovered]
+ MCE: CPU24: PID: 1589811 Comm: inject-ra-err NIP: [0000000010000e48]
+ MCE: CPU24: Initiator CPU
+ MCE: CPU24: Unknown
+ RTAS: event: 5, Type: Platform Error (224), Severity: 3
+
+Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
+Reviewed-by: Mahesh Salgaonkar <a class="moz-txt-link-rfc2396E" href="mailto:mahesh@linux.ibm.com">&lt;mahesh@linux.ibm.com&gt;</a>
+---
+V2: Rephrasing the commit message.
+---
+ arch/powerpc/kernel/mce.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 6c5d30fba766..a1cb2172eb7b 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -131,6 +131,13 @@ void save_mce_event(struct pt_regs *regs, long handled,
+ 	if (mce-&gt;error_type == MCE_ERROR_TYPE_UE)
+ 		mce-&gt;u.ue_error.ignore_event = mce_err-&gt;ignore_event;
+ 
++	/*
++	 * Raise irq work, So that we don't miss to log the error for
++	 * unrecoverable errors.
++	 */
++	if (mce-&gt;disposition == MCE_DISPOSITION_NOT_RECOVERED)
++		mce_irq_work_queue();
++
+ 	if (!addr)
+ 		return;
+ 
+@@ -235,7 +242,6 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+ 	       evt, sizeof(*evt));
+ 
+ 	/* Queue work to process this event later. */
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+This comment is meaningless without the function call it's commenting
+about, ie. the comment should be removed too.</pre>
+    </blockquote>
+    <pre class="moz-quote-pre" wrap="">ok.
+
+Thanks.
+</pre>
+  </body>
+</html>
+
+--------------6mREV7prr1cZoyQESwrmns2W--
+
