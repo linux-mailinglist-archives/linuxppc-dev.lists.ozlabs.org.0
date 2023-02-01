@@ -2,59 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CCC685C29
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 01:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D882685C2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 01:31:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P62qG2wv1z3cfB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:29:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P62sG6lTNz3f2x
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:31:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nVnnqVa+;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ro0UNMmx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nVnnqVa+;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ro0UNMmx;
 	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P62pL0xL8z3bhx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 11:28:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P62pM1vY0z3bfp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 11:28:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675211322; x=1706747322;
+  t=1675211323; x=1706747323;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=HrhAGtIJd788n5n1e2K0hj/AG50esvEDB4w6/+ljcD8=;
-  b=nVnnqVa+ZEN6bLs4eNiQmU6XE7rWpB6lVQeXOCCaMo7188dQKDKTzGAn
-   IUmCt3JhyVZVnRsYOmfzBtsQX3HOF2Hg11FyBHrHFPv4X37tg3vWX4UBU
-   y2flmV9pwiV2/DSfIPgKUBNBOKuF8rr+n4+oOENqMBvS1S3ZDY6FYI1TO
-   wJUqwSNGE1IdS2V29tClMpGu+Ly0eEFiTJRr+r3w1yisqCHfK+JDsxU3u
-   cJlzu878XXQs9Ef3XBXGTxMbT5Luma6ja7O7vqeQ9DeMrCYLguEVn8aBG
-   /VmHU78tH9V6fNpoq5FsWpXMxF/NNjdSgaK7N9p+N9IDsO0IFGGkYOWme
+  bh=1UWSUeISC1DXvCcFW2MaFt6uneTS2UuU6t96cXd/wTM=;
+  b=Ro0UNMmxNVHqunDqrYCF7CiGFK5beO1BC6nUOsDh3Qj5ZeTOZ9dK4ws2
+   xO0qiFnCvyYyVqUMNizQQOtNH89jugZhtN2mvf7GwUSudR+Q926TO+W6Q
+   dwUbhgBlr0bHjxruRGmlrAPZWynE6DxlcrSOCAoYSMYPf8q491IYuEiBH
+   CPpEhQJHo9OKnLDcRTRT7IeQuPPfZhtXF//mVxjW3az4kaOk6bzohFG+w
+   m+tKkp77D/LtVw8DuwOytLPqQ2aKSr76R8QdQbE4mUmERutOd0f2cqWlT
+   VJb+/smIJHhgOio9uetJpIKhDScdsMtK1MDDuVuT8NTPz4ITXPAu2B9fM
    w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="308345053"
+X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="355330309"
 X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="308345053"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2023 16:28:37 -0800
+   d="scan'208";a="355330309"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2023 16:28:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="910108007"
+X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="664689758"
 X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="910108007"
+   d="scan'208";a="664689758"
 Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 31 Jan 2023 16:28:33 -0800
+  by orsmga002.jf.intel.com with ESMTP; 31 Jan 2023 16:28:33 -0800
 Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1pN0zI-0004qI-1B;
-	Wed, 01 Feb 2023 00:28:32 +0000
-Date: Wed, 01 Feb 2023 08:28:19 +0800
+	id 1pN0zJ-0004qO-0u;
+	Wed, 01 Feb 2023 00:28:33 +0000
+Date: Wed, 01 Feb 2023 08:28:21 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 37e5bf9657c8af85b91dda79c14eee5b7e0406d7
-Message-ID: <63d9b223.o6BR3YA/7nNtKtlv%lkp@intel.com>
+Subject: [powerpc:fixes] BUILD SUCCESS
+ 111bcb37385353f0510e5847d5abcd1c613dba23
+Message-ID: <63d9b225.WZM8/IghCinXucLF%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,13 +74,13 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 37e5bf9657c8af85b91dda79c14eee5b7e0406d7  powerpc/64s: Reconnect tlb_flush() to hash__tlb_flush()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+branch HEAD: 111bcb37385353f0510e5847d5abcd1c613dba23  powerpc/64s/radix: Fix RWX mapping with relocated kernel
 
 elapsed time: 745m
 
-configs tested: 69
-configs skipped: 106
+configs tested: 61
+configs skipped: 101
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -96,43 +96,35 @@ i386                 randconfig-a002-20230130
 i386                 randconfig-a005-20230130
 x86_64                    rhel-8.3-kselftests
 arc                              allyesconfig
-i386                             allyesconfig
-i386                                defconfig
 x86_64                              defconfig
 x86_64                           allyesconfig
 x86_64                               rhel-8.3
+i386                             allyesconfig
+i386                                defconfig
 x86_64                            allnoconfig
 ia64                             allmodconfig
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                           rhel-8.3-bpf
-x86_64                         rhel-8.3-kunit
 sh                               allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
 x86_64               randconfig-a006-20230130
 x86_64               randconfig-a004-20230130
 x86_64               randconfig-a005-20230130
 x86_64               randconfig-a002-20230130
 x86_64               randconfig-a001-20230130
 x86_64               randconfig-a003-20230130
-arm                                 defconfig
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
 riscv                    nommu_virt_defconfig
 riscv                          rv32_defconfig
 riscv                    nommu_k210_defconfig
 riscv                             allnoconfig
 i386                   debian-10.3-kselftests
 i386                              debian-10.3
+arm                                 defconfig
 x86_64                          rhel-8.3-func
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
 i386                          debian-10.3-kvm
 i386                        debian-10.3-kunit
 i386                         debian-10.3-func
-arm                              allyesconfig
 i386                          randconfig-c001
 
 clang tested configs:
