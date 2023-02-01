@@ -1,64 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68294685C2A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 01:30:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1BC685CE2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 02:56:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P62rG1Yplz3f5B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 11:30:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P64lW4CdYz3cFm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Feb 2023 12:56:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V/P2b4RW;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eajPxbIo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V/P2b4RW;
-	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P62pK4psnz3bfp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 11:28:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675211321; x=1706747321;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7ipeNsaVVwIqhwUJavk4PCDMsctidv1/7fUdH86dHPs=;
-  b=V/P2b4RWLq1Ep1FyffEToCdiwaLc6vA8zE+rNI8iCbTRVA2JUfd21J5o
-   hIkYSJNDLHwMJkxCNS544+7rP1NE96aIejRJ/hup5aBoa5k/R7rQJBuhe
-   U96VTQwKQ16IDUEMWRu5/d17+Wh7DNj8zNqHiXB7wkpotFmPOl3XbdfKb
-   dLXYxt/qbQkZ5Uvlo+JxOutamBCgWmGQ3lYc3QgaL28xcus2ElK8kHezx
-   zrqjkYzMA+cqbQpYZjxz2A1gdOa0mEpmb+3Mtr/nhN+XxauTPF6hyfrYM
-   f3i3ybuZL/lH+tHEOkt/O8mXTiyJljZWX1iggrawvT+xhxYuGcB8/lPtn
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="355330306"
-X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="355330306"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2023 16:28:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="664689760"
-X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="664689760"
-Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 31 Jan 2023 16:28:34 -0800
-Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pN0zJ-0004qQ-10;
-	Wed, 01 Feb 2023 00:28:33 +0000
-Date: Wed, 01 Feb 2023 08:28:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 5746ca131e2496ccd5bb4d7a0244d6c38070cbf5
-Message-ID: <63d9b229.FMAj9vZ6XD3uWKXj%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P64kc2gz5z3bcw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Feb 2023 12:55:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eajPxbIo;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P64kX6WZSz4x1h;
+	Wed,  1 Feb 2023 12:55:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1675216533;
+	bh=/nQ1iVcFMNLWv8g/c7lxZLK5B4PK/MsNqIAhWNLxPkw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eajPxbIoL2X5UTn6GTDhP0ZxpK8CHyAsYc/j7eKZ6FQTJThN4CQY8b36iwGE6ZwMR
+	 6383TYvgOzYe09MfRQIaQx3Zbjw13TWz1Q5LN5CWGUa6QpKe4FZUYaNoMONxwggcbr
+	 u9MzI+JTQ7x545VSOPy2o2OgWYV3dbdwNs3u/kJkwTnOPezKqUlYy7Jqc6YlNc1zDx
+	 XJtifYM2VKWYilLSXhSgUZZGDxOjk2d+3cGPzCC4M4MFemcR6PfzlhhbBeP44Co8W1
+	 K756WN/IYF8sJJu0gCBGJZr9lKVy1Bn/8fozUHSI0hWBCQbrr1NgI1WszEzPofzv+V
+	 kQHLMhEPMBbtg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/kexec_file: Fix division by zero in extra size
+ estimation
+In-Reply-To: <9a5254fa-f47c-c53e-478d-adbd8d91e9dc@linux.ibm.com>
+References: <20230130014707.541110-1-mpe@ellerman.id.au>
+ <9a5254fa-f47c-c53e-478d-adbd8d91e9dc@linux.ibm.com>
+Date: Wed, 01 Feb 2023 12:55:27 +1100
+Message-ID: <878rhif8ts.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,25 +60,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 5746ca131e2496ccd5bb4d7a0244d6c38070cbf5  powerpc/64: Don't recurse irq replay
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+> On 30/01/23 07:17, Michael Ellerman wrote:
+>> In kexec_extra_fdt_size_ppc64() there's logic to estimate how much
+>> extra space will be needed in the device tree for some memory related
+>> properties.
+>>
+>> That logic uses the size of RAM divided by drmem_lmb_size() to do the
+>> estimation. However drmem_lmb_size() can be zero if the machine has no
+>> hotpluggable memory configured, which is the case when booting with qemu
+>> and no maxmem=3Dx parameter is passed (the default).
+>>
+>> The division by zero is reported by UBSAN, and can also lead to an
+>> overflow and a warning from kvmalloc, and kdump kernel loading fails:
+>>
+>>    WARNING: CPU: 0 PID: 133 at mm/util.c:596 kvmalloc_node+0x15c/0x160
+>>    Modules linked in:
+>>    CPU: 0 PID: 133 Comm: kexec Not tainted 6.2.0-rc5-03455-g07358bd97810=
+ #223
+>>    Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0=
+xf000005 of:SLOF,git-dd0dca pSeries
+>>    NIP:  c00000000041ff4c LR: c00000000041fe58 CTR: 0000000000000000
+>>    REGS: c0000000096ef750 TRAP: 0700   Not tainted  (6.2.0-rc5-03455-g07=
+358bd97810)
+>>    MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2424824=
+2  XER: 2004011e
+>>    CFAR: c00000000041fed0 IRQMASK: 0
+>>    ...
+>>    NIP kvmalloc_node+0x15c/0x160
+>>    LR  kvmalloc_node+0x68/0x160
+>>    Call Trace:
+>>      kvmalloc_node+0x68/0x160 (unreliable)
+>>      of_kexec_alloc_and_setup_fdt+0xb8/0x7d0
+>>      elf64_load+0x25c/0x4a0
+>>      kexec_image_load_default+0x58/0x80
+>>      sys_kexec_file_load+0x5c0/0x920
+>>      system_call_exception+0x128/0x330
+>>      system_call_vectored_common+0x15c/0x2ec
+>>
+>> To fix it, skip the calculation if drmem_lmb_size() is zero.
+>>
+>> Fixes: 2377c92e37fe ("powerpc/kexec_file: fix FDT size estimation for kd=
+ump kernel")
+>> Cc: stable@vger.kernel.org # v5.12+
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>   arch/powerpc/kexec/file_load_64.c | 10 ++++++----
+>>   1 file changed, 6 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file=
+_load_64.c
+>> index af8854f9eae3..3caee570e79b 100644
+>> --- a/arch/powerpc/kexec/file_load_64.c
+>> +++ b/arch/powerpc/kexec/file_load_64.c
+>> @@ -989,10 +989,12 @@ unsigned int kexec_extra_fdt_size_ppc64(struct kim=
+age *image)
+>>   	 * linux,drconf-usable-memory properties. Get an approximate on the
+>>   	 * number of usable memory entries and use for FDT size estimation.
+>>   	 */
+>> -	usm_entries =3D ((memblock_end_of_DRAM() / drmem_lmb_size()) +
+>> -		       (2 * (resource_size(&crashk_res) / drmem_lmb_size())));
+>> -
+>> -	extra_size =3D (unsigned int)(usm_entries * sizeof(u64));
+>> +	if (drmem_lmb_size()) {
+>> +		usm_entries =3D ((memblock_end_of_DRAM() / drmem_lmb_size()) +
+>> +			       (2 * (resource_size(&crashk_res) / drmem_lmb_size())));
+>> +		extra_size =3D (unsigned int)(usm_entries * sizeof(u64));
+>> +	} else
+>> +		extra_size =3D 0;
+>>=20=20=20
+>>   	/*
+>>   	 * Get the number of CPU nodes in the current DT. This allows to
+>
+> I failed to replicate this issue.
+>
+> Qemu command used:
+> $ qemu-system-ppc64 -enable-kvm -smp 4,cores=3D2 -drive=20
+> file=3Dmy-image.qcow2 -nographic -m 2G
+>
+>
+> lsmem (inside guest):
+> RANGE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SIZE=C2=A0 STATE REMOVA=
+BLE BLOCK
+> 0x0000000000000000-0x000000007fffffff=C2=A0=C2=A0 2G online=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 yes 0-127
+>
+> Memory block size:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 16M
+> Total online memory:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2G
+> Total offline memory:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0B
+>
+> Not sure what I am missing, but changes looks good to me.
 
-elapsed time: 720m
+Hmm, interesting.
 
-configs tested: 2
-configs skipped: 115
+Do you have /proc/device-tree/ibm,dynamic-reconfiguration-memory in the VM?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+What version of qemu are you using? I think I tested with 6.2 and 7.1.
 
-gcc tested configs:
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+cheers
