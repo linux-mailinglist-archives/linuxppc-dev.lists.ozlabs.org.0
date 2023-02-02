@@ -2,56 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15586872A7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 01:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E8A6872F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 02:27:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6gQb4rrPz3dvc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 11:58:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6h3B0hBNz3f3d
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 12:27:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u24iMQwq;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZXYP83vV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u24iMQwq;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZXYP83vV;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6gPd6c4Nz3bf7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 11:57:57 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 063C2B82397;
-	Thu,  2 Feb 2023 00:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0B3C433D2;
-	Thu,  2 Feb 2023 00:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675299472;
-	bh=s42/VVaCIYQ0nI3ZhFObWiwS/t5JoeInmu8DKR5/Gvw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u24iMQwqDSuzKZUdgG4vRc5KYHyIRIAXyne/t58zIEX0bNEE3TvoQ6BFouO3wn+S7
-	 fJt4S+81W6EAnIprfJzDdBzVc39e+520QTJqFfp3zVkFD9ONRKILhpB+KvwR/lt+Qh
-	 MA4I3m9uTqWbuJZ1fdDZSv9vbKjBwTvQtILUniBzpv1k0w+dS4vCe3u9bQVEz7litB
-	 PdL82IekoPyqW5vFSp1Q4yu7ndewa0vFnAAPSuX54bXTe3sKH23c08OtaTAblL2sz2
-	 IojsSC5V3gqi4HSQ3aXAMXpwga1RWjWSBm0VMGWMcXPCZ4zpeTO2gj87tCBQFWERaz
-	 0gPk+cvQAhkdQ==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 7F094405BE; Wed,  1 Feb 2023 21:57:49 -0300 (-03)
-Date: Wed, 1 Feb 2023 21:57:49 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH] tests/bpf: Fix the bpf test to check for libtraceevent
- support
-Message-ID: <Y9sKjYV8b37vstQ0@kernel.org>
-References: <20230131135001.54578-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6h2B5QsJz3cCP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 12:26:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675301170; x=1706837170;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=00sP9P8m2aPj9JN1NlE7dRngJCFuyLba3yRrUFoqPW0=;
+  b=ZXYP83vVplf4GtQzdpLiuX4eZamg1TtWtAsIVLFUf6tp7iEZr0Fl6V7A
+   mrclxdamo3Pc0+6MKtTNMjywAoIIQAoeKhoF8QEHC1zV93ZEu1iZwfPOB
+   VcplppjVUxVEgd/EjqngOCAA5iDaDeGqF74w8M/LrlfByEB/2lAmTOE06
+   7dUH0psWLNqi/0kYJjW07PoxbXamFeq9ycIzerjw8/J71lQLoIiMfl/zO
+   G6rqQUHKvEAHWsXo45IaDz1A2nVpBdcvNFpxY0yJnl9jylNpczcDus/0C
+   orMgvOd1j70HWFNbIWYFiKlHdJKPa+A0a+8lsOgVWIJojCqu6Di7x7LoE
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="328334849"
+X-IronPort-AV: E=Sophos;i="5.97,266,1669104000"; 
+   d="scan'208";a="328334849"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2023 17:26:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="695579475"
+X-IronPort-AV: E=Sophos;i="5.97,266,1669104000"; 
+   d="scan'208";a="695579475"
+Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 01 Feb 2023 17:26:01 -0800
+Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pNOMS-0005z6-14;
+	Thu, 02 Feb 2023 01:26:00 +0000
+Date: Thu, 02 Feb 2023 09:25:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ fc546faa559538fb312c77e055243ece18ab3288
+Message-ID: <63db1109.dReJ+EYz1NzSRXhf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230131135001.54578-1-atrajeev@linux.vnet.ibm.com>
-X-Url: http://acmel.wordpress.com
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,130 +70,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Jan 31, 2023 at 07:20:01PM +0530, Athira Rajeev escreveu:
-> "bpf" tests fails in environment with missing libtraceevent
-> support as below:
-> 
->  # ./perf test 36
->  36: BPF filter                                                      :
->  36.1: Basic BPF filtering                                           : FAILED!
->  36.2: BPF pinning                                                   : FAILED!
->  36.3: BPF prologue generation                                       : FAILED!
-> 
-> The environment has clang but missing the libtraceevent
-> devel. Hence perf is compiled without libtraceevent support.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: fc546faa559538fb312c77e055243ece18ab3288  powerpc/kexec_file: Count hot-pluggable memory in FDT estimate
 
-Thanks, applied.
+elapsed time: 873m
 
-- Arnaldo
+configs tested: 39
+configs skipped: 127
 
- 
-> Detailed logs:
-> 	./perf test -v "Basic BPF filtering"
-> 
-> 	Failed to add BPF event syscalls:sys_enter_epoll_pwait
-> 	bpf: tracepoint call back failed, stop iterate
-> 	Failed to add events selected by BPF
-> 
-> The bpf tests tris to add probe event which fails
-> at "parse_events_add_tracepoint" function due to missing
-> libtraceevent. Add check for "HAVE_LIBTRACEEVENT" in the
-> "tests/bpf.c" before proceeding with the test.
-> 
-> With the change,
-> 
-> 	# ./perf test 36
->  	36: BPF filter                                                      :
->  	36.1: Basic BPF filtering                                           : Skip (not compiled in or missing libtraceevent support)
->  	36.2: BPF pinning                                                   : Skip (not compiled in or missing libtraceevent support)
->  	36.3: BPF prologue generation                                       : Skip (not compiled in or missing libtraceevent support)
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/tests/bpf.c | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
-> index 17c023823713..4af39528f611 100644
-> --- a/tools/perf/tests/bpf.c
-> +++ b/tools/perf/tests/bpf.c
-> @@ -23,7 +23,7 @@
->  #define NR_ITERS       111
->  #define PERF_TEST_BPF_PATH "/sys/fs/bpf/perf_test"
->  
-> -#ifdef HAVE_LIBBPF_SUPPORT
-> +#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_LIBTRACEEVENT)
->  #include <linux/bpf.h>
->  #include <bpf/bpf.h>
->  
-> @@ -330,10 +330,10 @@ static int test__bpf(int i)
->  static int test__basic_bpf_test(struct test_suite *test __maybe_unused,
->  				int subtest __maybe_unused)
->  {
-> -#ifdef HAVE_LIBBPF_SUPPORT
-> +#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_LIBTRACEEVENT)
->  	return test__bpf(0);
->  #else
-> -	pr_debug("Skip BPF test because BPF support is not compiled\n");
-> +	pr_debug("Skip BPF test because BPF or libtraceevent support is not compiled\n");
->  	return TEST_SKIP;
->  #endif
->  }
-> @@ -341,10 +341,10 @@ static int test__basic_bpf_test(struct test_suite *test __maybe_unused,
->  static int test__bpf_pinning(struct test_suite *test __maybe_unused,
->  			     int subtest __maybe_unused)
->  {
-> -#ifdef HAVE_LIBBPF_SUPPORT
-> +#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_LIBTRACEEVENT)
->  	return test__bpf(1);
->  #else
-> -	pr_debug("Skip BPF test because BPF support is not compiled\n");
-> +	pr_debug("Skip BPF test because BPF or libtraceevent support is not compiled\n");
->  	return TEST_SKIP;
->  #endif
->  }
-> @@ -352,17 +352,17 @@ static int test__bpf_pinning(struct test_suite *test __maybe_unused,
->  static int test__bpf_prologue_test(struct test_suite *test __maybe_unused,
->  				   int subtest __maybe_unused)
->  {
-> -#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_BPF_PROLOGUE)
-> +#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_BPF_PROLOGUE) && defined(HAVE_LIBTRACEEVENT)
->  	return test__bpf(2);
->  #else
-> -	pr_debug("Skip BPF test because BPF support is not compiled\n");
-> +	pr_debug("Skip BPF test because BPF or libtraceevent support is not compiled\n");
->  	return TEST_SKIP;
->  #endif
->  }
->  
->  
->  static struct test_case bpf_tests[] = {
-> -#ifdef HAVE_LIBBPF_SUPPORT
-> +#if defined(HAVE_LIBBPF_SUPPORT) && defined(HAVE_LIBTRACEEVENT)
->  	TEST_CASE("Basic BPF filtering", basic_bpf_test),
->  	TEST_CASE_REASON("BPF pinning", bpf_pinning,
->  			"clang isn't installed or environment missing BPF support"),
-> @@ -373,9 +373,9 @@ static struct test_case bpf_tests[] = {
->  	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
->  #endif
->  #else
-> -	TEST_CASE_REASON("Basic BPF filtering", basic_bpf_test, "not compiled in"),
-> -	TEST_CASE_REASON("BPF pinning", bpf_pinning, "not compiled in"),
-> -	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
-> +	TEST_CASE_REASON("Basic BPF filtering", basic_bpf_test, "not compiled in or missing libtraceevent support"),
-> +	TEST_CASE_REASON("BPF pinning", bpf_pinning, "not compiled in or missing libtraceevent support"),
-> +	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in or missing libtraceevent support"),
->  #endif
->  	{ .name = NULL, }
->  };
-> -- 
-> 2.39.0
-> 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+ia64                             allmodconfig
+i386                 randconfig-a003-20230130
+i386                 randconfig-a001-20230130
+i386                 randconfig-a004-20230130
+i386                 randconfig-a006-20230130
+i386                 randconfig-a002-20230130
+i386                 randconfig-a005-20230130
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64               randconfig-a006-20230130
+x86_64               randconfig-a004-20230130
+x86_64               randconfig-a005-20230130
+x86_64               randconfig-a002-20230130
+x86_64               randconfig-a001-20230130
+x86_64               randconfig-a003-20230130
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+arm                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+alpha                               defconfig
+
+clang tested configs:
+x86_64               randconfig-a014-20230130
+x86_64               randconfig-a015-20230130
+x86_64               randconfig-a016-20230130
+x86_64               randconfig-a013-20230130
+x86_64               randconfig-a011-20230130
+x86_64               randconfig-a012-20230130
+i386                 randconfig-a014-20230130
+i386                 randconfig-a013-20230130
+i386                 randconfig-a015-20230130
+i386                 randconfig-a016-20230130
+i386                 randconfig-a012-20230130
+i386                 randconfig-a011-20230130
 
 -- 
-
-- Arnaldo
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
