@@ -2,93 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4961687461
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 05:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB75068746B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 05:26:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6lsz3vh8z3f5t
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 15:19:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6m214RDlz3f4n
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 15:26:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LEC/R8+v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CgGp3MPi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LEC/R8+v;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CgGp3MPi;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6lrQ60vxz3f3j
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 15:17:58 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3124CitY015373;
-	Thu, 2 Feb 2023 04:17:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=UJyx33X2mEFICKmRbx6pJHu3630595wm5XGur++GdNw=;
- b=LEC/R8+vpe2FLWoRKJrfK9WkXmPCZ/h44Mtd2gS+sW3tjGD5dN+rnTgp02c2cSfgXkvV
- /xsSyidRis01UMVzLAWqMa+GiJebLbYVdpfLpQ/B9Z7jS1uVFD78gjyMoQd8uCtXBf76
- V8dYx/d8eZkCflIYtEf7zvIkMTq0W3JJEqb+7OjL3HnLiavJ9UWpLZ6htLocFPmB57Av
- OYMBBAcXMC12X6ksXrhUVO8zYgP3SERsngi8HWzXVZD3SZ64RjMdsjXRis5g2owl1Yg6
- 6w5UAc6bVKyvHmospTxGTXlvBxJcunrg1WTt4+5LNr7n4kR9Iv/9uumtsqskItnQzuT4 HQ== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6m155vDdz3bW2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 15:25:29 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3123pP4d003646;
+	Thu, 2 Feb 2023 04:25:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=MZf/mkAdYFsBf/zrP9dmHgke66D82LLDSUkJDNXYsqE=;
+ b=CgGp3MPimU4Tb1eVWwc+J95/NiAelnkDyQgYNCzbLEDSjeIlVaWj7UqTxEm7+0KHHTJF
+ MTXcvX7vuj3FBfRQF6Y5nxBd4F0xG8Fs3U+Rc083R/6SECsBFVUPU3OesP9xDpdriAJD
+ yXEHmoil/SGzW2JhecUFohb52r7CSAPNjmdTAjQdS4T0h4fmIr76sz5sOulywHPD7feq
+ Y4rmdPo2KH1tPLvwj+0O7xwaACf19sfBj1qcUGOtWsxoek/1eusp1dwgZ41GpZua83Is
+ nqdKXUMLfCtWAswpeIL3fqbklpG8g0/fUU5zCr4tkCvQ1zKgBx24ru/hi/AjtD4V7mJh hA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ng5ga8m4s-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ng5mx0mf0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Feb 2023 04:17:41 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3124FUHG020865;
-	Thu, 2 Feb 2023 04:17:41 GMT
+	Thu, 02 Feb 2023 04:25:23 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3123vG3N022956;
+	Thu, 2 Feb 2023 04:25:23 GMT
 Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ng5ga8m43-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ng5mx0mea-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Feb 2023 04:17:41 +0000
+	Thu, 02 Feb 2023 04:25:23 +0000
 Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 311Kddn1013277;
-	Thu, 2 Feb 2023 04:17:38 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3ncvtydnp7-1
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 311JgQ9w012859;
+	Thu, 2 Feb 2023 04:25:21 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3ncvtydnth-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Feb 2023 04:17:38 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3124HZaS47251948
+	Thu, 02 Feb 2023 04:25:21 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3124PI0545613420
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Feb 2023 04:17:35 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F50120043;
-	Thu,  2 Feb 2023 04:17:35 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DFA3020040;
-	Thu,  2 Feb 2023 04:17:32 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.7.19])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  2 Feb 2023 04:17:32 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH] tools/perf: Fix usage of perf probe when libtraceevent is
- missing
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <Y9sIyTLHssijIFLT@kernel.org>
-Date: Thu, 2 Feb 2023 09:47:32 +0530
+	Thu, 2 Feb 2023 04:25:18 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3C7820043;
+	Thu,  2 Feb 2023 04:25:18 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 468F620040;
+	Thu,  2 Feb 2023 04:25:18 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Feb 2023 04:25:18 +0000 (GMT)
+Received: from [9.192.255.228] (unknown [9.192.255.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 509B860112;
+	Thu,  2 Feb 2023 15:25:13 +1100 (AEDT)
+Message-ID: <0994b8f4bcc73c7f64e40719c68d9fe904c8d19f.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 3/4] powerpc/rtas: remove lock and args fields from
+ global rtas struct
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 02 Feb 2023 15:25:12 +1100
+In-Reply-To: <20230124140448.45938-4-nathanl@linux.ibm.com>
+References: <20230124140448.45938-1-nathanl@linux.ibm.com>
+	 <20230124140448.45938-4-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2874491F-C1DA-4EFB-96CC-7772D6A7A61A@linux.vnet.ibm.com>
-References: <20230131134748.54567-1-atrajeev@linux.vnet.ibm.com>
- <Y9sIyTLHssijIFLT@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XewyGZcKMJuUQPijdG0WMAishWfPMMwF
-X-Proofpoint-ORIG-GUID: WyV9akE3EBXrSvQQcDIM-TgoLByYfhcz
+X-Proofpoint-ORIG-GUID: pkW41jJWVype3TrqUZHv2RybIxBgtNNP
+X-Proofpoint-GUID: 7QeOskqaAfnSUXvR4ChdBuKCZGs2wJ0d
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-02-01_04,2023-01-31_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- suspectscore=0 clxscore=1015 bulkscore=0 mlxlogscore=999 impostorscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302020031
+ definitions=2023-02-01_15,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302020036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,111 +104,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, Jiri Olsa <jolsa@kernel.org>, kjain@linux.ibm.com, Namhyung Kim <namhyung@kernel.org>, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: ldufour@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 2023-01-24 at 08:04 -0600, Nathan Lynch wrote:
+> Only code internal to the RTAS subsystem needs access to the central
+> lock and parameter block. Remove these from the globally visible
+> 'rtas' struct and make them file-static in rtas.c.
+>=20
+> Some changed lines in rtas_call() lack appropriate spacing around
+> operators and cause checkpatch errors; fix these as well.
+>=20
+> Suggested-by: Laurent Dufour <ldufour@linux.ibm.com>
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-> On 02-Feb-2023, at 6:20 AM, Arnaldo Carvalho de Melo <acme@kernel.org> =
-wrote:
->=20
-> Em Tue, Jan 31, 2023 at 07:17:48PM +0530, Athira Rajeev escreveu:
->> While parsing the tracepoint events in parse_events_add_tracepoint()
->> function, code checks for HAVE_LIBTRACEEVENT support. This is needed
->> since libtraceevent is necessary for tracepoint. But while adding
->> probe points, check for LIBTRACEEVENT is not done in case of perf =
-probe.
->> Hence, in environment with missing libtraceevent-devel, it is
->> observed that adding a probe point shows below message though it
->> can't be used via perf record.
->=20
-> Thanks, applied.
->=20
-> - Arnaldo
-
-Thanks Arnaldo
-
-Athira
->=20
->=20
->> Example:
->> Adding probe point:
->> 	./perf probe 'vfs_getname=3Dgetname_flags:72 =
-pathname=3Dresult->name:string'
->> 	Added new event:
->> 	  probe:vfs_getname    (on getname_flags:72 with =
-pathname=3Dresult->name:string)
->>=20
->> 	You can now use it in all perf tools, such as:
->>=20
->> 		perf record -e probe:vfs_getname -aR sleep 1
->>=20
->> But trying perf record:
->> 	./perf  record -e probe:vfs_getname -aR sleep 1
->> 	event syntax error: 'probe:vfs_getname'
->> 				\___ unsupported tracepoint
->> 	libtraceevent is necessary for tracepoint support
->> 	Run 'perf list' for a list of valid events
->>=20
->> The builtin tool like perf record needs libtraceevent to
->> parse tracefs. But still the probe can be used by enabling
->> via tracefs. Patch fixes the probe usage message to the user
->> based on presence of libtraceevent. With the fix,
->>=20
->> # ./perf probe 'pmu:myprobe=3Dschedule'
->> Added new event:
->>   pmu:myprobe          (on schedule)
->>=20
->> perf is not linked with libtraceevent, to use the new probe you can =
-use tracefs:
->>=20
->> 	cd /sys/kernel/tracing/
->> 	echo 1 > events/pmu/myprobe/enable
->> 	echo 1 > tracing_on
->> 	cat trace_pipe
->> 	Before removing the probe, echo 0 > events/pmu/myprobe/enable
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/builtin-probe.c | 9 +++++++++
->> 1 file changed, 9 insertions(+)
->>=20
->> diff --git a/tools/perf/builtin-probe.c b/tools/perf/builtin-probe.c
->> index ed73d0b89ca2..e72f6cea76f7 100644
->> --- a/tools/perf/builtin-probe.c
->> +++ b/tools/perf/builtin-probe.c
->> @@ -383,9 +383,18 @@ static int perf_add_probe_events(struct =
-perf_probe_event *pevs, int npevs)
->>=20
->> 	/* Note that it is possible to skip all events because of =
-blacklist */
->> 	if (event) {
->> +#ifndef HAVE_LIBTRACEEVENT
->> +		pr_info("\nperf is not linked with libtraceevent, to use =
-the new probe you can use tracefs:\n\n");
->> +		pr_info("\tcd /sys/kernel/tracing/\n");
->> +		pr_info("\techo 1 > events/%s/%s/enable\n", group, =
-event);
->> +		pr_info("\techo 1 > tracing_on\n");
->> +		pr_info("\tcat trace_pipe\n");
->> +		pr_info("\tBefore removing the probe, echo 0 > =
-events/%s/%s/enable\n", group, event);
->> +#else
->> 		/* Show how to use the event. */
->> 		pr_info("\nYou can now use it in all perf tools, such =
-as:\n\n");
->> 		pr_info("\tperf record -e %s:%s -aR sleep 1\n\n", group, =
-event);
->> +#endif
->> 	}
->>=20
->> out_cleanup:
->> --=20
->> 2.39.0
->>=20
->=20
-> --=20
->=20
-> - Arnaldo
-
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
