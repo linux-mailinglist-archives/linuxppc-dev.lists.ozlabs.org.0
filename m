@@ -1,89 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45026889C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 23:30:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBAF6889C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 23:31:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7D4b4w6Rz3cdv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 09:30:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7D5d0QLvz3fD4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 09:31:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bg4z7aM4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p3b5qokE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bg4z7aM4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p3b5qokE;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7D2Y6F6Kz3bfj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 09:28:21 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 312LfxA0015192;
-	Thu, 2 Feb 2023 22:28:17 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7D2Z3yRFz3cCF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 09:28:22 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 312KrFZt004389;
+	Thu, 2 Feb 2023 22:28:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=9szCe/pMSxH3ejAhsLxrEZP38yMrVIthoS8DpxwfO28=;
- b=Bg4z7aM4Oue1yDsx7/PbP5p5l9X7Z5sXrDWxrAO0hpdx8i9C2q8PzgfE79L9ssnnGP9M
- snHFQCm+hLfX+rbPDFhTZEmf/+Rs2J16qqEjUpxwlUnK5BARBMm46274qC7z82HKWA1C
- WWr8m3X7BYMT5RZsA3WEAUGd9TuxDp8Y5eCdhxnayfGo6c04UmlrHVccNS3BnJZX+RtC
- TrKbjW2DBfICHrRd2eNfmnDnmS0bpCXYzcNdIjxbS3LEnDx7fatBhspM0N8QmXcSujx4
- KvQxFAWIqiE9DoaL5qs85Qzo5WrBlb8EI7hwxJnxBiabYQfpqIigOqQYQqszEM2O5t7s dw== 
+ bh=AiZTmifYs+4xG39q2dNGwfbChtkRg6LjLeKsv8ePRQI=;
+ b=p3b5qokEVw24UZJVoL+BlE16jUCNxH1Jk0q4s01MuCbEJ9WzwA8oqEhTMNu3z4CmZQ/n
+ x0n0d17xZX8lqMGGbpmNkc6fT86Xm0K/WAMT7MLmYq7P5o0yzWHaYXAdVm/4AP0yJuOR
+ NQXY6eVd9LPJ5eS9JdQJQzKFwFXEE5YN80noVcBsymsCLFrPNC2WQ5YcuoCJ5XaQttVu
+ OfZNJ7f93ZxGv8n2KUrXJ2Qi1FWK4tcRWb4YMMsLXzLm9kC4bLWeaKISq3tv4u+IM7DN
+ khhdH366LkwH6cgqJSWGnmrwFAG4xE71HLnPZ8S4sBSxIajeLpgzzGzBxbms9aDQMclL ew== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngmy41apy-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngkm0bgd7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Feb 2023 22:28:17 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 312MRXKI031258;
+	Thu, 02 Feb 2023 22:28:19 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 312M0Wlc006476;
+	Thu, 2 Feb 2023 22:28:18 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngkm0bgcv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Feb 2023 22:28:18 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 312LUBrY006449;
 	Thu, 2 Feb 2023 22:28:17 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngmy41apu-1
+Received: from smtprelay06.wdc07v.mail.ibm.com ([9.208.129.118])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3ncvtmw298-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 02 Feb 2023 22:28:17 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 312IewGs028518;
-	Thu, 2 Feb 2023 22:28:16 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3ncvuywrt0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Feb 2023 22:28:16 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 312MSFnL6619830
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 312MSGT88192628
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Feb 2023 22:28:15 GMT
+	Thu, 2 Feb 2023 22:28:16 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7DF0458059;
+	by IMSVA (Postfix) with ESMTP id 5FEE85804B;
+	Thu,  2 Feb 2023 22:28:16 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6B7A58055;
 	Thu,  2 Feb 2023 22:28:15 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C45355804B;
-	Thu,  2 Feb 2023 22:28:14 +0000 (GMT)
 Received: from li-6bf4d4cc-31f5-11b2-a85c-838e9310af65.ibm.com.com (unknown [9.211.158.218])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Feb 2023 22:28:14 +0000 (GMT)
+	Thu,  2 Feb 2023 22:28:15 +0000 (GMT)
 From: Brian King <brking@linux.vnet.ibm.com>
 To: gregkh@linuxfoundation.org
-Subject: [PATCH v2 1/6] hvcs: Fix hvcs port reference counting
-Date: Thu,  2 Feb 2023 16:27:59 -0600
-Message-Id: <20230202222804.383229-2-brking@linux.vnet.ibm.com>
+Subject: [PATCH v2 2/6] hvcs: Use dev_groups to manage hvcs device attributes
+Date: Thu,  2 Feb 2023 16:28:00 -0600
+Message-Id: <20230202222804.383229-3-brking@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230202222804.383229-1-brking@linux.vnet.ibm.com>
 References: <20230202222804.383229-1-brking@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DE94K9Xyp_eFSCENItyjRZw9TDQUdf6A
-X-Proofpoint-GUID: UEoP2wzfO0cBG9aB-PnGwSzaCt8DVQQC
+X-Proofpoint-ORIG-GUID: oFDDLA-gS-oDZzkh7-wPyFIVTAq1wFCX
+X-Proofpoint-GUID: 0IgVWNrYR7TZFMejvjX6ouq8GJr3e7Ad
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-02-02_14,2023-02-02_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- mlxscore=0 malwarescore=0 clxscore=1015 phishscore=0 bulkscore=0
- mlxlogscore=999 lowpriorityscore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ mlxlogscore=999 lowpriorityscore=0 spamscore=0 impostorscore=0
+ adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2302020196
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +100,86 @@ Cc: Brian King <brking@linux.vnet.ibm.com>, mmc@linux.vnet.ibm.com, linuxppc-dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hvcs driver only ever gets two references to the port. One
-at initialization time, and one at install time. Remove the code
-that was trying to do multiple port puts for each open, which
-would result in more puts than gets.
+Use the dev_groups functionality to manage the attribute groups
+for hvcs devices. This simplifies the code and also eliminates
+errors coming from kernfs when attempting to remove a console
+device that is in use.
 
 Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
 ---
- drivers/tty/hvc/hvcs.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/tty/hvc/hvcs.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
-index 4ba24963685e..faf5ccfc561e 100644
+index faf5ccfc561e..7f79444b4d89 100644
 --- a/drivers/tty/hvc/hvcs.c
 +++ b/drivers/tty/hvc/hvcs.c
-@@ -1215,12 +1215,9 @@ static void hvcs_hangup(struct tty_struct * tty)
- {
- 	struct hvcs_struct *hvcsd = tty->driver_data;
- 	unsigned long flags;
--	int temp_open_count;
- 	int irq;
+@@ -432,7 +432,7 @@ static ssize_t hvcs_index_show(struct device *dev, struct device_attribute *attr
  
- 	spin_lock_irqsave(&hvcsd->lock, flags);
--	/* Preserve this so that we know how many kref refs to put */
--	temp_open_count = hvcsd->port.count;
+ static DEVICE_ATTR(index, S_IRUGO, hvcs_index_show, NULL);
  
- 	/*
- 	 * Don't kref put inside the spinlock because the destruction
-@@ -1247,21 +1244,6 @@ static void hvcs_hangup(struct tty_struct * tty)
+-static struct attribute *hvcs_attrs[] = {
++static struct attribute *hvcs_dev_attrs[] = {
+ 	&dev_attr_partner_vtys.attr,
+ 	&dev_attr_partner_clcs.attr,
+ 	&dev_attr_current_vty.attr,
+@@ -441,8 +441,13 @@ static struct attribute *hvcs_attrs[] = {
+ 	NULL,
+ };
+ 
+-static struct attribute_group hvcs_attr_group = {
+-	.attrs = hvcs_attrs,
++static struct attribute_group hvcs_attr_dev_group = {
++	.attrs = hvcs_dev_attrs,
++};
++
++const static struct attribute_group *hvcs_attr_dev_groups[] = {
++	&hvcs_attr_dev_group,
++	NULL,
+ };
+ 
+ static ssize_t rescan_show(struct device_driver *ddp, char *buf)
+@@ -688,8 +693,6 @@ static void hvcs_destruct_port(struct tty_port *p)
  	spin_unlock_irqrestore(&hvcsd->lock, flags);
+ 	spin_unlock(&hvcs_structs_lock);
  
- 	free_irq(irq, hvcsd);
+-	sysfs_remove_group(&vdev->dev.kobj, &hvcs_attr_group);
 -
--	/*
--	 * We need to kref_put() for every open_count we have since the
--	 * tty_hangup() function doesn't invoke a close per open connection on a
--	 * non-console device.
--	 */
--	while(temp_open_count) {
--		--temp_open_count;
--		/*
--		 * The final put will trigger destruction of the hvcs_struct.
--		 * NOTE:  If this hangup was signaled from user space then the
--		 * final put will never happen.
--		 */
--		tty_port_put(&hvcsd->port);
--	}
+ 	kfree(hvcsd);
  }
  
- /*
+@@ -721,7 +724,6 @@ static int hvcs_probe(
+ {
+ 	struct hvcs_struct *hvcsd;
+ 	int index, rc;
+-	int retval;
+ 
+ 	if (!dev || !id) {
+ 		printk(KERN_ERR "HVCS: probed with invalid parameter.\n");
+@@ -778,13 +780,6 @@ static int hvcs_probe(
+ 	list_add_tail(&(hvcsd->next), &hvcs_structs);
+ 	spin_unlock(&hvcs_structs_lock);
+ 
+-	retval = sysfs_create_group(&dev->dev.kobj, &hvcs_attr_group);
+-	if (retval) {
+-		printk(KERN_ERR "HVCS: Can't create sysfs attrs for vty-server@%X\n",
+-		       hvcsd->vdev->unit_address);
+-		return retval;
+-	}
+-
+ 	printk(KERN_INFO "HVCS: vty-server@%X added to the vio bus.\n", dev->unit_address);
+ 
+ 	/*
+@@ -831,6 +826,9 @@ static struct vio_driver hvcs_vio_driver = {
+ 	.probe		= hvcs_probe,
+ 	.remove		= hvcs_remove,
+ 	.name		= hvcs_driver_name,
++	.driver = {
++		.dev_groups = hvcs_attr_dev_groups,
++	},
+ };
+ 
+ /* Only called from hvcs_get_pi please */
 -- 
 2.31.1
 
