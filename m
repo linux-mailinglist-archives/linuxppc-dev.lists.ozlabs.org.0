@@ -1,50 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F63687D11
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 13:19:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446B9687F4A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 14:54:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6yWr18fzz3f64
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 23:19:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P70dv0pwrz3f5B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 00:54:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YvY10bBY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qbCASdw/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6yVs491Qz3cCP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 23:18:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YvY10bBY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qbCASdw/;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P6yVq6tXjz4x1h;
-	Thu,  2 Feb 2023 23:18:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1675340308;
-	bh=EYC/9439mSfnQMQey+GUzzlI2rkvaq20NXIkn1OcU5Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YvY10bBYuwNc2kHPERMPZQ4XpKxP9uyBxEN5Zqu1JZAq8khvM2ABhiHv5KtkUCCzp
-	 gsJ06BhF2jWoosB4Ywn0hnpoX8m6uMicv81/kLJWRoe67N23rRRjY1BlGL32gmAsK5
-	 CgmanQfrcklWcxKSxqu91Fv/Duf4XlaX47dUEe33IiUrdJwy4aJQzu5aK1StbExX7b
-	 e8nom1IX3ICDrgYxEkM1I/cGTyjS8zHhtZeM3t0QGD2PzMy1d3brhxqr9h1/O9mgVR
-	 4asQ0PvaZrUM5rRE/SvgMerMe9wmc+3zLPk34UL9NaYNj37PGswHuU1rko3kStjVdx
-	 09QyKF7BerlVw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Don't select ARCH_WANTS_NO_INSTR
-Date: Thu,  2 Feb 2023 23:18:05 +1100
-Message-Id: <20230202121805.1176492-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P70cv1DTgz3bhx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 00:53:50 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 312DfdKI023243;
+	Thu, 2 Feb 2023 13:53:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=KHT04ypkuMNAE1cyVpqufW7bFUM1S1XbQRRzIGWowkU=;
+ b=qbCASdw/Il7AmUjL1AtsPdAoV23ZBDAatCZeK7uGS3C3U5rIazqwYYX0TKLMZtAEYWDG
+ uyUIsBk0tj/SskHSBVVIKIyl87nIMc+ZgY14jWK5tY5s4aZ4ytYHQl3b32QsqWxjx6Cg
+ UoSDQGQ8wcbRBriTTCmwAZo7Fs8eqbUWlF51Wbw1yE+ztsjjM21G1Y+dvwbo09JG+9yo
+ btWukpk2Se52Z9Td1cc1Q3H/sJ+xWIpigUrGXFNKHnCZJ909m6Hnwij4YBlFvTA6mw5V
+ wQ5MJxZWovbPLhpitDW3N1XCCQru7/qrllmAEH/P/TTqRyKK8gw4gvmjprPOTXdvCR7f +A== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngcs1aqg4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Feb 2023 13:53:34 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3123lct6013346;
+	Thu, 2 Feb 2023 13:53:32 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvshcf5u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Feb 2023 13:53:32 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 312DrUXJ47120826
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Feb 2023 13:53:30 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C46C20043;
+	Thu,  2 Feb 2023 13:53:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6425E20040;
+	Thu,  2 Feb 2023 13:53:29 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.126.173])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Feb 2023 13:53:29 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: [PATCH] powerpc: Don't select ARCH_WANTS_NO_INSTR
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20230202121805.1176492-1-mpe@ellerman.id.au>
+Date: Thu, 2 Feb 2023 19:23:18 +0530
+Content-Transfer-Encoding: 7bit
+Message-Id: <13CC27B9-BDFE-4C68-89F1-F56E1F8C0468@linux.ibm.com>
+References: <20230202121805.1176492-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SeqSOQZMice_JQcbblGTByI-MHIzvneZ
+X-Proofpoint-ORIG-GUID: SeqSOQZMice_JQcbblGTByI-MHIzvneZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-02_04,2023-02-02_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxlogscore=805 mlxscore=0 suspectscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302020121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,51 +91,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, sachinp@linux.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only KASAN
-support") added a select of ARCH_WANTS_NO_INSTR, because it also added
-some uses of noinstr. However noinstr is always defined, regardless of
-ARCH_WANTS_NO_INSTR, so there's no need to select it just for that.
 
-As PeterZ says [1]:
-  Note that by selecting ARCH_WANTS_NO_INSTR you effectively state to
-  abide by its rules.
+> 
+> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+> Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
 
-As of now the powerpc code does not abide by those rules, and trips some
-new warnings added by Peter in linux-next.
+Thanks for the patch Michael. 
 
-So until the code can be fixed to avoid those warnings, disable
-ARCH_WANTS_NO_INSTR.
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
 
-Note that ARCH_WANTS_NO_INSTR is also used to gate building KCOV and
-parts of KCSAN. However none of the noinstr annotations in powerpc were
-added for KCOV or KCSAN, instead instrumentation is blocked at the file
-level using KCOV_INSTRUMENT_foo.o := n.
-
-[1]: https://lore.kernel.org/linuxppc-dev/Y9t6yoafrO5YqVgM@hirez.programming.kicks-ass.net
-
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b8c4ac56bddc..7a5f8dbfbdd0 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -163,7 +163,6 @@ config PPC
- 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
--	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
- 	select BUILDTIME_TABLE_SORT
--- 
-2.39.1
+> arch/powerpc/Kconfig | 1 -
+> 1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index b8c4ac56bddc..7a5f8dbfbdd0 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -163,7 +163,6 @@ config PPC
+> select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+> select ARCH_WANT_LD_ORPHAN_WARN
+> select ARCH_WANTS_MODULES_DATA_IN_VMALLOC if PPC_BOOK3S_32 || PPC_8xx
+> - select ARCH_WANTS_NO_INSTR
+> select ARCH_WEAK_RELEASE_ACQUIRE
+> select BINFMT_ELF
+> select BUILDTIME_TABLE_SORT
+> -- 
+> 2.39.1
+> 
 
