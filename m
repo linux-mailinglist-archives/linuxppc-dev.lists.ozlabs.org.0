@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F97687278
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 01:41:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D075687282
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 01:51:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6g336Bc7z3ch2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 11:41:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6gFp116Lz3f4T
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 11:51:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MGrW5dfL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFdM1dcQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MGrW5dfL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFdM1dcQ;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6g256CGRz3bfT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 11:41:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6gDv5H7Fz3bfT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 11:50:23 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E7BBF61984;
-	Thu,  2 Feb 2023 00:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A270C433EF;
-	Thu,  2 Feb 2023 00:40:57 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4A703617B9;
+	Thu,  2 Feb 2023 00:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852EFC433D2;
+	Thu,  2 Feb 2023 00:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675298457;
-	bh=+638RvD+o/lvgldQGllUcA183Rg0ykBFb7o+NSPTUtw=;
+	s=k20201202; t=1675299020;
+	bh=n4hEtb9EsHvuZXUBIU6Nt1NkOzJbp4LmhhGVAKGL/oM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MGrW5dfLVI1DywUJCS8E98Zp62gAT/ebwCVOl7A/pSdej6qE4eGfZ1BmatXoQKMC+
-	 mY9MA6JUgn0oAWesxFRBlPgyufc9vgiL/CW4Il4PetzieU/l3z/8dSVkuQ6DO12NqV
-	 iTBmKDFhrkySLZvx0h/V4sCupJCWCY+PD6QSZZe253z2sYyGIp3QWPWc9TjZWq1bMV
-	 nU2ARofjGDz3ryGOzZ1194bt+y8U8m17I11hOmeLNu8ywl8GmRlPbds7eX7Fq3gS9P
-	 is+r3E+XukAqo1aj8bPFPZ7qLdfkOgJp/LQBn9Lvoaysqb2bqbsioyfN2l7GWsYggw
-	 IhLatb5PCduuQ==
+	b=KFdM1dcQ/s/BfrmN0LW+CyT6wpOEo7UCEfR3Ge9p3Xq45sHXDedOO7yDikfSW9hGw
+	 tdKxPhCskYq3k8qKlLH3O47v+MeqRhr4IlpNax6uEAjmlDJMb/bvsG/Ks+02WAyTv7
+	 9rL6D3BPDLZJMLHMwC30O+FCy9uDv3zQt3IaKLcpBmx2VcgdyzwMWi8S6bobRlDINb
+	 XllOK6hQp/MuO3T9OTZD9oiSeZLHp8t1ideHug7MVTEZ+DhZP9RcdDM7ZDUpwnGyqN
+	 fyXsVi+OOkWYJcCgmex4kCom51UmqvxbRDqTZUL79zNPZdOcW2XQqbZXDJf82FZLa2
+	 CQlmRDe4X8dgg==
 Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 965F6405BE; Wed,  1 Feb 2023 21:40:54 -0300 (-03)
-Date: Wed, 1 Feb 2023 21:40:54 -0300
+	id 0868C405BE; Wed,  1 Feb 2023 21:50:18 -0300 (-03)
+Date: Wed, 1 Feb 2023 21:50:17 -0300
 From: Arnaldo Carvalho de Melo <acme@kernel.org>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] tests/shell: Add check for perf data file in
- record+probe_libc_inet_pton test
-Message-ID: <Y9sGlo2tnSvYX2uF@kernel.org>
-References: <20230201180421.59640-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf: Fix usage of perf probe when libtraceevent
+ is missing
+Message-ID: <Y9sIyTLHssijIFLT@kernel.org>
+References: <20230131134748.54567-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230201180421.59640-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20230131134748.54567-1-atrajeev@linux.vnet.ibm.com>
 X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,64 +67,82 @@ Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-u
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Wed, Feb 01, 2023 at 11:34:20PM +0530, Athira Rajeev escreveu:
-> "probe libc's inet_pton & backtrace it with ping" test
-> installs a uprobe and uses perf record/script to check
-> the backtrace. Currently even if the "perf record" fails,
-> the test reports success. Logs below:
-> 
->  # ./perf test -v "probe libc's inet_pton & backtrace it with ping"
->  81: probe libc's inet_pton & backtrace it with ping                 :
-> --- start ---
+Em Tue, Jan 31, 2023 at 07:17:48PM +0530, Athira Rajeev escreveu:
+> While parsing the tracepoint events in parse_events_add_tracepoint()
+> function, code checks for HAVE_LIBTRACEEVENT support. This is needed
+> since libtraceevent is necessary for tracepoint. But while adding
+> probe points, check for LIBTRACEEVENT is not done in case of perf probe.
+> Hence, in environment with missing libtraceevent-devel, it is
+> observed that adding a probe point shows below message though it
+> can't be used via perf record.
 
-Please add spaces before --- as this separates the commit log message
-from the patch and ends up chopped up when I use git-am.
-
-I'm fixing it now.
+Thanks, applied.
 
 - Arnaldo
 
-> test child forked, pid 304211
-> failed to open /tmp/perf.data.Btf: No such file or directory
-> test child finished with 0
-> ---- end ----
-> probe libc's inet_pton & backtrace it with ping: Ok
+ 
+> Example:
+> Adding probe point:
+> 	./perf probe 'vfs_getname=getname_flags:72 pathname=result->name:string'
+> 	Added new event:
+> 	  probe:vfs_getname    (on getname_flags:72 with pathname=result->name:string)
 > 
-> Fix this by adding check for presence of perf.data file
-> before proceeding with "perf script".
+> 	You can now use it in all perf tools, such as:
 > 
-> With the patch changes, test reports fail correctly.
+> 		perf record -e probe:vfs_getname -aR sleep 1
 > 
->  # ./perf test -v "probe libc's inet_pton & backtrace it with ping"
->  81: probe libc's inet_pton & backtrace it with ping                 :
-> --- start ---
-> test child forked, pid 304358
-> FAIL: perf record failed to create "/tmp/perf.data.Uoi"
-> test child finished with -1
-> ---- end ----
-> probe libc's inet_pton & backtrace it with ping: FAILED!
+> But trying perf record:
+> 	./perf  record -e probe:vfs_getname -aR sleep 1
+> 	event syntax error: 'probe:vfs_getname'
+> 				\___ unsupported tracepoint
+> 	libtraceevent is necessary for tracepoint support
+> 	Run 'perf list' for a list of valid events
+> 
+> The builtin tool like perf record needs libtraceevent to
+> parse tracefs. But still the probe can be used by enabling
+> via tracefs. Patch fixes the probe usage message to the user
+> based on presence of libtraceevent. With the fix,
+> 
+>  # ./perf probe 'pmu:myprobe=schedule'
+>  Added new event:
+>    pmu:myprobe          (on schedule)
+> 
+>  perf is not linked with libtraceevent, to use the new probe you can use tracefs:
+> 
+> 	cd /sys/kernel/tracing/
+> 	echo 1 > events/pmu/myprobe/enable
+> 	echo 1 > tracing_on
+> 	cat trace_pipe
+> 	Before removing the probe, echo 0 > events/pmu/myprobe/enable
 > 
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  tools/perf/tests/shell/record+probe_libc_inet_pton.sh | 5 +++++
->  1 file changed, 5 insertions(+)
+>  tools/perf/builtin-probe.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-> index 57e7a6a470c9..08cdd902d0cf 100755
-> --- a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-> +++ b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-> @@ -58,6 +58,11 @@ trace_libc_inet_pton_backtrace() {
->  	perf_data=`mktemp -u /tmp/perf.data.XXX`
->  	perf_script=`mktemp -u /tmp/perf.script.XXX`
->  	perf record -e $event_name/$eventattr/ -o $perf_data ping -6 -c 1 ::1 > /dev/null 2>&1
-> +	# check if perf data file got created in above step.
-> +	if [ ! -e $perf_data ]; then
-> +		printf "FAIL: perf record failed to create \"%s\" \n" "$perf_data"
-> +		return 1
-> +	fi
->  	perf script -i $perf_data | tac | grep -m1 ^ping -B9 | tac > $perf_script
+> diff --git a/tools/perf/builtin-probe.c b/tools/perf/builtin-probe.c
+> index ed73d0b89ca2..e72f6cea76f7 100644
+> --- a/tools/perf/builtin-probe.c
+> +++ b/tools/perf/builtin-probe.c
+> @@ -383,9 +383,18 @@ static int perf_add_probe_events(struct perf_probe_event *pevs, int npevs)
 >  
->  	exec 3<$perf_script
+>  	/* Note that it is possible to skip all events because of blacklist */
+>  	if (event) {
+> +#ifndef HAVE_LIBTRACEEVENT
+> +		pr_info("\nperf is not linked with libtraceevent, to use the new probe you can use tracefs:\n\n");
+> +		pr_info("\tcd /sys/kernel/tracing/\n");
+> +		pr_info("\techo 1 > events/%s/%s/enable\n", group, event);
+> +		pr_info("\techo 1 > tracing_on\n");
+> +		pr_info("\tcat trace_pipe\n");
+> +		pr_info("\tBefore removing the probe, echo 0 > events/%s/%s/enable\n", group, event);
+> +#else
+>  		/* Show how to use the event. */
+>  		pr_info("\nYou can now use it in all perf tools, such as:\n\n");
+>  		pr_info("\tperf record -e %s:%s -aR sleep 1\n\n", group, event);
+> +#endif
+>  	}
+>  
+>  out_cleanup:
 > -- 
 > 2.39.0
 > 
