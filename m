@@ -1,58 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDC3687B48
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 12:01:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F63687D11
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 13:19:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P6wpW5r3nz3f48
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 22:01:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P6yWr18fzz3f64
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Feb 2023 23:19:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YvY10bBY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6wnx1FkBz302m
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 22:01:21 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4P6wnm60SJz9svy;
-	Thu,  2 Feb 2023 12:01:16 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4RsAhJRFSqBV; Thu,  2 Feb 2023 12:01:16 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4P6wnl5FQYz9svt;
-	Thu,  2 Feb 2023 12:01:15 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A51AE8B779;
-	Thu,  2 Feb 2023 12:01:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JTaqZHlsZ_TI; Thu,  2 Feb 2023 12:01:15 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.5.213])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 706558B767;
-	Thu,  2 Feb 2023 12:01:15 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 312B1Due4109513
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 2 Feb 2023 12:01:13 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 312B1BVI4109507;
-	Thu, 2 Feb 2023 12:01:11 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc: Disable CPU unknown by CLANG when CC_IS_CLANG
-Date: Thu,  2 Feb 2023 12:01:04 +0100
-Message-Id: <e62892e32c14a7a5738c597e39e0082cb0abf21c.1675335659.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P6yVs491Qz3cCP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Feb 2023 23:18:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YvY10bBY;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P6yVq6tXjz4x1h;
+	Thu,  2 Feb 2023 23:18:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1675340308;
+	bh=EYC/9439mSfnQMQey+GUzzlI2rkvaq20NXIkn1OcU5Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YvY10bBYuwNc2kHPERMPZQ4XpKxP9uyBxEN5Zqu1JZAq8khvM2ABhiHv5KtkUCCzp
+	 gsJ06BhF2jWoosB4Ywn0hnpoX8m6uMicv81/kLJWRoe67N23rRRjY1BlGL32gmAsK5
+	 CgmanQfrcklWcxKSxqu91Fv/Duf4XlaX47dUEe33IiUrdJwy4aJQzu5aK1StbExX7b
+	 e8nom1IX3ICDrgYxEkM1I/cGTyjS8zHhtZeM3t0QGD2PzMy1d3brhxqr9h1/O9mgVR
+	 4asQ0PvaZrUM5rRE/SvgMerMe9wmc+3zLPk34UL9NaYNj37PGswHuU1rko3kStjVdx
+	 09QyKF7BerlVw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Don't select ARCH_WANTS_NO_INSTR
+Date: Thu,  2 Feb 2023 23:18:05 +1100
+Message-Id: <20230202121805.1176492-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1675335662; l=1918; s=20211009; h=from:subject:message-id; bh=T1nm18iJl4xpzofZJ+3Z32joE+oZKTCIgLvBiflPfmI=; b=ki6QPdVA71l70DsTw316cQGEqYIa1O1NQ6XC1aacpUVfw8BJtC1bWsleSB2MW9+5Jh7dVfR2PTny yq2fug/1AzQsN57PnuOLdeoJDb+Q7rb0tKiJHx8EuyIb28MV6/wn
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,80 +56,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: peterz@infradead.org, sachinp@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CLANG only knows the following CPUs:
+Commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only KASAN
+support") added a select of ARCH_WANTS_NO_INSTR, because it also added
+some uses of noinstr. However noinstr is always defined, regardless of
+ARCH_WANTS_NO_INSTR, so there's no need to select it just for that.
 
-generic, 440, 450, 601, 602, 603, 603e, 603ev, 604, 604e, 620, 630,
-g3, 7400, g4, 7450, g4+, 750, 8548, 970, g5, a2, e500, e500mc, e5500,
-power3, pwr3, power4, pwr4, power5, pwr5, power5x, pwr5x, power6,
-pwr6, power6x, pwr6x, power7, pwr7, power8, pwr8, power9, pwr9,
-power10, pwr10, powerpc, ppc, ppc32, powerpc64, ppc64, powerpc64le,
-ppc64le, futur
+As PeterZ says [1]:
+  Note that by selecting ARCH_WANTS_NO_INSTR you effectively state to
+  abide by its rules.
 
-Disable other ones when CC_IS_CLANG.
+As of now the powerpc code does not abide by those rules, and trips some
+new warnings added by Peter in linux-next.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+So until the code can be fixed to avoid those warnings, disable
+ARCH_WANTS_NO_INSTR.
+
+Note that ARCH_WANTS_NO_INSTR is also used to gate building KCOV and
+parts of KCSAN. However none of the noinstr annotations in powerpc were
+added for KCOV or KCSAN, instead instrumentation is blocked at the file
+level using KCOV_INSTRUMENT_foo.o := n.
+
+[1]: https://lore.kernel.org/linuxppc-dev/Y9t6yoafrO5YqVgM@hirez.programming.kicks-ass.net
+
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/platforms/Kconfig.cputype | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/powerpc/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 29d6be033576..046b571496b1 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -143,6 +143,7 @@ config POWERPC_CPU
- config CELL_CPU
- 	bool "Cell Broadband Engine"
- 	depends on PPC_BOOK3S_64 && !CPU_LITTLE_ENDIAN
-+	depends on !CC_IS_CLANG
- 	select PPC_64S_HASH_MMU
- 
- config PPC_970_CPU
-@@ -187,11 +188,13 @@ config E5500_CPU
- config E6500_CPU
- 	bool "Freescale e6500"
- 	depends on PPC64 && PPC_E500
-+	depends on !CC_IS_CLANG
- 	select PPC_HAS_LBARX_LHARX
- 
- config 405_CPU
- 	bool "40x family"
- 	depends on 40x
-+	depends on !CC_IS_CLANG
- 
- config 440_CPU
- 	bool "440 (44x family)"
-@@ -200,22 +203,27 @@ config 440_CPU
- config 464_CPU
- 	bool "464 (44x family)"
- 	depends on 44x
-+	depends on !CC_IS_CLANG
- 
- config 476_CPU
- 	bool "476 (47x family)"
- 	depends on PPC_47x
-+	depends on !CC_IS_CLANG
- 
- config 860_CPU
- 	bool "8xx family"
- 	depends on PPC_8xx
-+	depends on !CC_IS_CLANG
- 
- config E300C2_CPU
- 	bool "e300c2 (832x)"
- 	depends on PPC_BOOK3S_32
-+	depends on !CC_IS_CLANG
- 
- config E300C3_CPU
- 	bool "e300c3 (831x)"
- 	depends on PPC_BOOK3S_32
-+	depends on !CC_IS_CLANG
- 
- config G4_CPU
- 	bool "G4 (74xx)"
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b8c4ac56bddc..7a5f8dbfbdd0 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -163,7 +163,6 @@ config PPC
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
+-	select ARCH_WANTS_NO_INSTR
+ 	select ARCH_WEAK_RELEASE_ACQUIRE
+ 	select BINFMT_ELF
+ 	select BUILDTIME_TABLE_SORT
 -- 
 2.39.1
 
