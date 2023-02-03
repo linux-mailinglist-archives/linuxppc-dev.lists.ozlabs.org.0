@@ -1,40 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C04068A21B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 19:39:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D003668A0CA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 18:49:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7kvq37psz3fFt
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 05:39:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7jpg4yYMz3fBw
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 04:49:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YUGCo4Zb;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=jefflexu@linux.alibaba.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 303 seconds by postgrey-1.36 at boromir; Fri, 03 Feb 2023 20:54:46 AEDT
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YUGCo4Zb;
+	dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7WGZ297fz3c9V
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 20:54:45 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0VaoUwBD_1675417773;
-Received: from 30.221.129.149(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0VaoUwBD_1675417773)
-          by smtp.aliyun-inc.com;
-          Fri, 03 Feb 2023 17:49:35 +0800
-Message-ID: <160b9e99-bff6-e37c-5f16-00157766535e@linux.alibaba.com>
-Date: Fri, 3 Feb 2023 17:49:33 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7jnl0112z2ynf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 04:48:57 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id f16-20020a17090a9b1000b0023058bbd7b2so5020185pjp.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 09:48:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1t48P/jVd6+3dhw3pck4JM1odaqwThYt8bjKIe9FySY=;
+        b=YUGCo4ZbvxduWRBHH9xOGxUv8LoaXyN+VOL8K8Kve/u16uDaalEXH+kBO1C3PAOZdM
+         U2FdeDmTEYvv/Khm9Hp1pGOcZfLi1gl8qmki4SmGN3WfKIsCemaDy6HsGXS8a2DwuvSq
+         p7nNVpP/rnqBe+1jiPBY7eVjGaGnTjSVk5H8VHlpO4DlQHD7k1TC35BcdqTcy2ZQRaSF
+         4md/KQ7IeYFOS2FYZ+qMRDUx2NMJplrAtBdVvGxGX0DbpsM7eAfg2iIiZtKPhF8ngclz
+         nFNAH/NrZwg3lKNjgzMI4QsgFt81DdqqGb/JrZPeZ3VqGuwxbqlyijT98K4d4Jb58ATa
+         yKNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1t48P/jVd6+3dhw3pck4JM1odaqwThYt8bjKIe9FySY=;
+        b=VRkuiKY5Lf6QyJp8HzNxNTvQ2VafnSZuQMIqoY3wZVQ5I7wTbY0a7jVkMOrdLtVhLL
+         JAEGKkWySoQs9OrD6v5oku8EalEQpWsndY1bfv13du3+D9xGcyZ6rndK314/fgvL1fi1
+         8JMocCZFytRIg8FVZRQWl6xT9MRZN21isdy45CZc4LUUwaw5uFwQ19+vRhxijX28JpVU
+         xBR7j+JpWxBoEENAzP3pWQ5DSPaM6bUPXumOHJIIlUqUKmG4PT5DPbtbhqqjLDWwK3mz
+         wOrHoPLcmbkDSVN482pJI5MDJofNP7rDwfiBT31jZwGuG5iFuY38oiTm+zoTlcPn0hyd
+         FQ3w==
+X-Gm-Message-State: AO0yUKVfX+6A3ISH6EVRmnJ3Fmjevx0XabkChcXtVriEq023CnUxrHJf
+	6SWIEYZbCXOV+Y2ps0ISQ4C40Q==
+X-Google-Smtp-Source: AK7set8NtYpsGJ6byRewhpDzAYHCL4kVnwYOuRswQz6j6iO+lQNMoz+KA+gf7NkDr7m6tVMm7U3Fmg==
+X-Received: by 2002:a17:902:d1d5:b0:198:d5cc:44a8 with SMTP id g21-20020a170902d1d500b00198d5cc44a8mr260726plb.19.1675446534414;
+        Fri, 03 Feb 2023 09:48:54 -0800 (PST)
+Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
+        by smtp.gmail.com with ESMTPSA id b2-20020a1709027e0200b00194b3a7853esm1865998plm.181.2023.02.03.09.48.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 09:48:53 -0800 (PST)
+Date: Fri, 3 Feb 2023 17:48:49 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 2/7] KVM: x86: Improve return type handling in
+ kvm_vm_ioctl_get_nr_mmu_pages()
+Message-ID: <Y91JAb0kKBYQjO8a@google.com>
+References: <20230203094230.266952-1-thuth@redhat.com>
+ <20230203094230.266952-3-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: make alloc_anon_inode more useful
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>
-References: <20210309155348.974875-1-hch@lst.de>
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
-In-Reply-To: <20210309155348.974875-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Sat, 04 Feb 2023 05:37:56 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230203094230.266952-3-thuth@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,49 +79,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, David Hildenbrand <david@redhat.com>, "VMware, Inc." <pv-drivers@vmware.com>, "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, Nadav Amit <namit@vmware.com>, Al Viro <viro@zeniv.linux.org.uk>, Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Nitin Gupta <ngupta@vflare.org>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-Sorry for digging...
-
-This patch series seems useful for fs developers.  I'm not sure its
-current status and why it doesn't get merged.
-
-
-On 3/9/21 11:53 PM, Christoph Hellwig wrote:
-> Hi all,
+On Fri, Feb 03, 2023, Thomas Huth wrote:
+> kvm_vm_ioctl_get_nr_mmu_pages() tries to return a "unsigned long" value,
+> but its caller only stores ther return value in an "int" - which is also
+> what all the other kvm_vm_ioctl_*() functions are returning. So returning
+> values that do not fit into a 32-bit integer anymore does not work here.
+> It's better to adjust the return type, add a sanity check and return an
+> error instead if the value is too big.
 > 
-> this series first renames the existing alloc_anon_inode to
-> alloc_anon_inode_sb to clearly mark it as requiring a superblock.
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  arch/x86/kvm/x86.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> It then adds a new alloc_anon_inode that works on the anon_inode
-> file system super block, thus removing tons of boilerplate code.
-> 
-> The few remainig callers of alloc_anon_inode_sb all use alloc_file_pseudo
-> later, but might also be ripe for some cleanup.
-> 
-> Diffstat:
->  arch/powerpc/platforms/pseries/cmm.c |   27 +-------------
->  drivers/dma-buf/dma-buf.c            |    2 -
->  drivers/gpu/drm/drm_drv.c            |   64 +----------------------------------
->  drivers/misc/cxl/api.c               |    2 -
->  drivers/misc/vmw_balloon.c           |   24 +------------
->  drivers/scsi/cxlflash/ocxl_hw.c      |    2 -
->  drivers/virtio/virtio_balloon.c      |   30 +---------------
->  fs/aio.c                             |    2 -
->  fs/anon_inodes.c                     |   15 +++++++-
->  fs/libfs.c                           |    2 -
->  include/linux/anon_inodes.h          |    1 
->  include/linux/fs.h                   |    2 -
->  kernel/resource.c                    |   30 ++--------------
->  mm/z3fold.c                          |   38 +-------------------
->  mm/zsmalloc.c                        |   48 +-------------------------
->  15 files changed, 39 insertions(+), 250 deletions(-)
-> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index da4bbd043a7b..caa2541833dd 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6007,8 +6007,11 @@ static int kvm_vm_ioctl_set_nr_mmu_pages(struct kvm *kvm,
+>  	return 0;
+>  }
+>  
+> -static unsigned long kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
+> +static int kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
+>  {
+> +	if (kvm->arch.n_max_mmu_pages > INT_MAX)
+> +		return -EOVERFLOW;
+> +
+>  	return kvm->arch.n_max_mmu_pages;
+>  }
 
--- 
-Thanks,
-Jingbo
+My vote is to skip this patch, skip deprecation, and go straight to deleting
+KVM_GET_NR_MMU_PAGES.  The ioctl() has never worked[*], and none of the VMMs I
+checked use it (QEMU, Google's internal VMM, kvmtool, CrosVM).
+
+[*] https://lore.kernel.org/all/YpZu6%2Fk+8EydfBKf@google.com
