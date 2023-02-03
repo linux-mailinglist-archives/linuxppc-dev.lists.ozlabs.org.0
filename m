@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A9268979E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 12:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00ED6897A1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 12:21:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7Y943KgQz3f8N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 22:20:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7YB54Dtfz3fBY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 22:21:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e/Ohsw5d;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TjtWDHoU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e/Ohsw5d;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TjtWDHoU;
 	dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7Y634M8vz3f6L
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 22:17:31 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id v23so4903151plo.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 03:17:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7Y656dnyz3f7N
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 22:17:33 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id m2so4889425plg.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 03:17:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w0/ElOy4og40E/sgS0rJoL1iS6ffRA2WFEnT5Pdlkrw=;
-        b=e/Ohsw5dd9hY1JKjcmDQc4pC/ncOsNN8FEksS9QWLnPEePgEXZnpdq9Cn608ez0vLm
-         Wfl/yHu28PDjsz1viBF+ukzYbtZnr0W2QrEqR+VNKYNCHan4zQzbPNHCtNO0J5d7vr/C
-         yir1LJcQlmWpQFhia2RDY93mRMgnvnebAkgM9xZ/7YfZUMKEvkxDyCg3RC0tzv6UIDgm
-         pGzhbQCdZQncT3PzaVFPwjj2ThaLGlQh4cPoG5KkWBInCJJ5GK7ztQmO8U4AfRO3WbI4
-         pBfA5r9I9WS1zHmmBAGQQ8Rz/VLh98w4sxqIqkkl3KWlz6Gfohe6myX1TAW8hQoidtTT
-         0JBg==
+        bh=48YFaNCLRJJqW41HHDBi+5xfANsipTmFh9JB3btUi5Y=;
+        b=TjtWDHoUpxwffYtN8qHuISDw9QBSsOUf6DvC0KSlkqLkWyidL/gtRT3y0qZKQhMTMB
+         oYmLn1RE6bLLyxZyK+AvNE5dz2IfI5V7idqQAfXIjIDX+SbHjlpuLykgSpar1siW3scH
+         4Nvm0z6egodNOGxJlW6j/pVWGrPxJZ0Tw9h0dU1/1Et+q4zBh59o6B5eYyFCsQxAG6XY
+         Z/Wga6qQfShegnn6X7JPbPZSc/NLyUMbwq+UpiYRSZsoDwAm41KGcdTwDpUW0DGsvBAp
+         5pGhF5cS0h85LptBBd9T9ky/yqCTxmlvhSQX1HBB91ng9nh1gnPqNYhfjd2M3zNH/z65
+         CsYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w0/ElOy4og40E/sgS0rJoL1iS6ffRA2WFEnT5Pdlkrw=;
-        b=YLidmxC5zZELS2K7QybtDhNf+Klpd0+qj19dT+jDuBF+n8HG8jvuRKemVmGpaqGlM3
-         +LIuZrGkR6wpslYp3BWgyB23jBhxV1ki9gAwTAY0rV5BVKqz7l7KVDeCTxhwWS1gd0q7
-         iNHLDH8AtQUrwUSdnw6L/+nsa90ZZYzBzvGvUw/EnhdGQj2nT041UUzt9FiVVSpGljBc
-         bzD6zHEHCn1SDgSj7aMNF/Ag18Z5VvuZI4zAGfrloQ6Gynr7HXwJjwfp4jZkfTkJsDdi
-         SlRKhZton6SgaP94zULZl/zhU9HvQm3/NDXjldAO/txxRydbNj36Nrxto+mgh4oCwp82
-         5Iyg==
-X-Gm-Message-State: AO0yUKV9EmOXn36PyuxVGWy+9p4jdkZ/xkKnDHrswDqD6kH181RBScu6
-	4p2iOMtSMqT4VKpIGUAEGlOk2MR1FY4=
-X-Google-Smtp-Source: AK7set+sHsfWROcWN4HAO7M/EZHAfBJEzMgDdlXRrTDDvAqq9B3Lk61uF2SxWUvwLeStDQkuWpmzAQ==
-X-Received: by 2002:a17:90b:4c84:b0:22b:eb46:7d2 with SMTP id my4-20020a17090b4c8400b0022beb4607d2mr10016489pjb.47.1675423048967;
-        Fri, 03 Feb 2023 03:17:28 -0800 (PST)
+        bh=48YFaNCLRJJqW41HHDBi+5xfANsipTmFh9JB3btUi5Y=;
+        b=UIQtbxvdVvMUE2/BDJ4lxo5PI4Erbkwd6cCHXm7kZLa6FhOfjGfMkBth8g2IxO7gem
+         HinxY/FuuEbdcaqG82wGmTyLJ6Mjx0m9NRXS0pN0psl6ramVWngybpzDhTU8NoCQYb7+
+         uHDcSBBeclgqAN8KYVMyVvHWfN1044ZT6YtbA8dBZLd4gJSTG/B2+CXMLyPPXrRb467V
+         fuZfOl7Kai2bl8II/sdSTSIjSkOrJX24fDHjB9H8SQ2jcbapvD82C7qDdsloHukzmzKQ
+         8VSDnGMi/Igkl32F568c520QPLmi/4NqANXxjeE0dL5Pn5jcoU1n8deYdtV6wqugB9fv
+         /8vQ==
+X-Gm-Message-State: AO0yUKX32Hm8yvlg1RfA+yaVq6Z2rB4kIlZPBSVEg2p3ln9qjWdqcEZV
+	z9LckNVHPGz7oFnaVvwnk967v0zIiuo=
+X-Google-Smtp-Source: AK7set8P9XRsTkhP6zu3BiUAVGvmERk00xG/SCrgSY7NjsX8sFtY5F/wi45XkvHJNPNVhwt9wIUFRg==
+X-Received: by 2002:a17:90b:1a91:b0:230:537c:a39d with SMTP id ng17-20020a17090b1a9100b00230537ca39dmr4092556pjb.0.1675423051241;
+        Fri, 03 Feb 2023 03:17:31 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (193-116-117-77.tpgi.com.au. [193.116.117.77])
-        by smtp.gmail.com with ESMTPSA id i15-20020a63bf4f000000b004f2c088328bsm1285151pgo.43.2023.02.03.03.17.27
+        by smtp.gmail.com with ESMTPSA id i15-20020a63bf4f000000b004f2c088328bsm1285151pgo.43.2023.02.03.03.17.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 03:17:28 -0800 (PST)
+        Fri, 03 Feb 2023 03:17:30 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/3] powerpc/64s/radix: mm->context.id should always be valid
-Date: Fri,  3 Feb 2023 21:17:17 +1000
-Message-Id: <20230203111718.1149852-3-npiggin@gmail.com>
+Subject: [PATCH 3/3] powerpc/64s/radix: Remove TLB_FLUSH_ALL test from range flushes
+Date: Fri,  3 Feb 2023 21:17:18 +1000
+Message-Id: <20230203111718.1149852-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230203111718.1149852-1-npiggin@gmail.com>
 References: <20230203111718.1149852-1-npiggin@gmail.com>
@@ -82,126 +82,87 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The MMU_NO_CONTEXT checks are an unnecessary complication. Make
-these warn to prepare to remove them in future.
+This looks like it came across from x86, but x86 uses TLB_FLUSH_ALL as
+a parameter to internal functions. Powerpc never sets it anywhere.
+
+Remove the associated logic and leave a warning for now.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/book3s64/radix_tlb.c | 39 +++++++++++++++-------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ arch/powerpc/mm/book3s64/radix_tlb.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 1e451184cba4..27aa5b0fbb3f 100644
+index 27aa5b0fbb3f..2608ff7cf62c 100644
 --- a/arch/powerpc/mm/book3s64/radix_tlb.c
 +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -700,12 +700,13 @@ static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
-  */
- void radix__local_flush_tlb_mm(struct mm_struct *mm)
- {
--	unsigned long pid;
-+	unsigned long pid = mm->context.id;
-+
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
-+		return;
- 
- 	preempt_disable();
--	pid = mm->context.id;
--	if (pid != MMU_NO_CONTEXT)
--		_tlbiel_pid(pid, RIC_FLUSH_TLB);
-+	_tlbiel_pid(pid, RIC_FLUSH_TLB);
- 	preempt_enable();
+@@ -1107,6 +1107,9 @@ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
  }
- EXPORT_SYMBOL(radix__local_flush_tlb_mm);
-@@ -713,12 +714,13 @@ EXPORT_SYMBOL(radix__local_flush_tlb_mm);
- #ifndef CONFIG_SMP
- void radix__local_flush_all_mm(struct mm_struct *mm)
- {
--	unsigned long pid;
-+	unsigned long pid = mm->context.id;
+ EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
+ 
++/*
++ * Doesn't appear to be used anywhere. Remove.
++ */
+ #define TLB_FLUSH_ALL -1UL
+ 
+ /*
+@@ -1128,7 +1131,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 	unsigned int page_shift = mmu_psize_defs[mmu_virtual_psize].shift;
+ 	unsigned long page_size = 1UL << page_shift;
+ 	unsigned long nr_pages = (end - start) >> page_shift;
+-	bool fullmm = (end == TLB_FLUSH_ALL);
+ 	bool flush_pid, flush_pwc = false;
+ 	enum tlb_flush_type type;
+ 
+@@ -1136,15 +1138,15 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
+ 		return;
+ 
++	WARN_ON_ONCE(end == TLB_FLUSH_ALL);
 +
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
-+		return;
- 
  	preempt_disable();
--	pid = mm->context.id;
--	if (pid != MMU_NO_CONTEXT)
--		_tlbiel_pid(pid, RIC_FLUSH_ALL);
-+	_tlbiel_pid(pid, RIC_FLUSH_ALL);
- 	preempt_enable();
- }
- EXPORT_SYMBOL(radix__local_flush_all_mm);
-@@ -732,12 +734,13 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
- void radix__local_flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
- 				       int psize)
- {
--	unsigned long pid;
-+	unsigned long pid = mm->context.id;
-+
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
-+		return;
+ 	smp_mb(); /* see radix__flush_tlb_mm */
+-	type = flush_type_needed(mm, fullmm);
++	type = flush_type_needed(mm, false);
+ 	if (type == FLUSH_TYPE_NONE)
+ 		goto out;
  
- 	preempt_disable();
--	pid = mm->context.id;
--	if (pid != MMU_NO_CONTEXT)
--		_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-+	_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
- 	preempt_enable();
- }
- 
-@@ -945,7 +948,7 @@ void radix__flush_tlb_mm(struct mm_struct *mm)
+-	if (fullmm)
+-		flush_pid = true;
+-	else if (type == FLUSH_TYPE_GLOBAL)
++	if (type == FLUSH_TYPE_GLOBAL)
+ 		flush_pid = nr_pages > tlb_single_page_flush_ceiling;
+ 	else
+ 		flush_pid = nr_pages > tlb_local_single_page_flush_ceiling;
+@@ -1328,7 +1330,6 @@ static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+ 	unsigned int page_shift = mmu_psize_defs[psize].shift;
+ 	unsigned long page_size = 1UL << page_shift;
+ 	unsigned long nr_pages = (end - start) >> page_shift;
+-	bool fullmm = (end == TLB_FLUSH_ALL);
+ 	bool flush_pid;
  	enum tlb_flush_type type;
  
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
+@@ -1336,17 +1337,15 @@ static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+ 	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
  		return;
+ 
+-	fullmm = (end == TLB_FLUSH_ALL);
++	WARN_ON_ONCE(end == TLB_FLUSH_ALL);
  
  	preempt_disable();
-@@ -985,7 +988,7 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
- 	enum tlb_flush_type type;
+ 	smp_mb(); /* see radix__flush_tlb_mm */
+-	type = flush_type_needed(mm, fullmm);
++	type = flush_type_needed(mm, false);
+ 	if (type == FLUSH_TYPE_NONE)
+ 		goto out;
  
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
- 		return;
- 
- 	preempt_disable();
-@@ -1024,7 +1027,7 @@ void radix__flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
- 	enum tlb_flush_type type;
- 
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
- 		return;
- 
- 	preempt_disable();
-@@ -1130,7 +1133,7 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 	enum tlb_flush_type type;
- 
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
- 		return;
- 
- 	preempt_disable();
-@@ -1330,7 +1333,7 @@ static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
- 	enum tlb_flush_type type;
- 
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
- 		return;
- 
- 	fullmm = (end == TLB_FLUSH_ALL);
-@@ -1406,7 +1409,7 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
- 	enum tlb_flush_type type;
- 
- 	pid = mm->context.id;
--	if (unlikely(pid == MMU_NO_CONTEXT))
-+	if (WARN_ON_ONCE(pid == MMU_NO_CONTEXT))
- 		return;
- 
- 	/* 4k page size, just blow the world */
+-	if (fullmm)
+-		flush_pid = true;
+-	else if (type == FLUSH_TYPE_GLOBAL)
++	if (type == FLUSH_TYPE_GLOBAL)
+ 		flush_pid = nr_pages > tlb_single_page_flush_ceiling;
+ 	else
+ 		flush_pid = nr_pages > tlb_local_single_page_flush_ceiling;
 -- 
 2.37.2
 
