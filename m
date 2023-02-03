@@ -1,76 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12B868956B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 11:22:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5D76895FA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 11:26:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7Wv44NR4z3f8C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 21:22:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7WzP2S9Gz3f8T
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 21:26:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iGcWrv4W;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GuYi/0Ct;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iGcWrv4W;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GuYi/0Ct;
 	dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7Wt96df7z3c83
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 21:22:07 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id o16-20020a17090ad25000b00230759a8c06so1578385pjw.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 02:22:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7WyW3sH6z3f5C
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 21:25:55 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id pj3so4603425pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 02:25:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BC26glmyLYvqdRj/s/s6MK4qi5hy8JZOEYo3ZDI0Vnw=;
-        b=iGcWrv4W143DbiJRKR8Be2u+UuFLvv+TMD04aaKkE8FyPZW/j/42Togzc26Of4xCHk
-         L4O+J9J3KGooZvCPheaHtCVvhd+8yD7F+6cwfgRaYM7XlcjMHxjcBj+d00IuGOnZoxua
-         p47HghzIR0V5V9BHB1MOTBO58vuNmWhvqwqTKzCWyKZoGTbMh0eeUZEg1LCG1i8w6yr+
-         rGoonbhjlDDP0EM8BSTnSmM8hJ6sGKjQQ8ZQlho2AVRiZ9i9GSJGVG8WpNzZ88bsOJib
-         p3nxwmBfaPRdS2D7OrOB+MkhuKe20M4wZIzbxooQQ7YLHch4yOj2EJIoaSWTjBZnOEHA
-         LYGA==
+        bh=RJHkDDeQx0HejRi96FH48T3/m9KusdrvPAz5RLkFiYg=;
+        b=GuYi/0CtoNZTHZdXaYL/KsMcKdyHJvgDMpjwjNhfQcbpBFbzAt5Xqlin1GouIgftLZ
+         wEXcLRQZk/H88gOTLOogLatyldZsUQfUsnIC5htADmPrsErCAjJgBDv0cAi5EZ61tBrR
+         dE3CS/7hb9NmndH6cdDg5enT5vspCHVAwTLolJeNvELrOxicE9/eBJXEqxR43yMolkwO
+         yHZz2eI5qtbhD5SjVEa4cf2zpqU8O0OvQWsBM7Kw8eTi6lurOdGydFpwPiAg7gW70Kgl
+         s2mV/4BLSmXfsNWO+PUCIZobePmwWj/7bGrCuI+YfA9cu7ddSRO0YxTgCBTzaIRqlj9s
+         0t2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=BC26glmyLYvqdRj/s/s6MK4qi5hy8JZOEYo3ZDI0Vnw=;
-        b=Te0Pzye3gRxRK3PiXhqOhTIw4YS4kuJ1ShxC6em+mxuqoWe4F2oj4vgzOEXGbNJQes
-         ANBWmmdJYAlaoGpnjG/5rrIobZkLmkau8B3p0wbZdQWKlbVMEhHTY7tPJvaQz/tzthho
-         tH41aoAuPf30KPc4AdyvxF/s1cndRhj8ASjhANN0rPrtUYVQ3EZjpNrecZirE715umfm
-         VItHSZwkMdsaplBp1Ov4HyszyGeyyARF8PiKaJRdgRMeevS2dpjTXdPm6Ky3zRD0iN3B
-         j8BW67SyhlMDSE5FlDUCl/FFOsS+7e/SIoMcmMz0YB9+FUkjMubXSlZWne/vTpGqWHz2
-         +u6A==
-X-Gm-Message-State: AO0yUKVuFi97e6NwCmtmJxa2FRySpr26yL0x9I9bZdSyU656lSrQIHJy
-	WxhuG2W4sFr8qcBnFTgTRcA=
-X-Google-Smtp-Source: AK7set+WpN/kIwzQ9KpDMGx5dpl4PBMS/21AHFGf650c2cUKaoV8+4j20Irc5p0mFaig/53VJ2J67w==
-X-Received: by 2002:a05:6a20:a002:b0:bb:aabe:7a56 with SMTP id p2-20020a056a20a00200b000bbaabe7a56mr12482709pzj.58.1675419724901;
-        Fri, 03 Feb 2023 02:22:04 -0800 (PST)
+        bh=RJHkDDeQx0HejRi96FH48T3/m9KusdrvPAz5RLkFiYg=;
+        b=FJcNPfvBNEzmnTu66soPBW63lCNu1L3lhJwGlONpMZwqWIK3s/x5qcCCazFVk5MYAG
+         x8T+cSvGORBFb/kvkTsrPib4Qv8gPo6KX3E2RbvOjVUPlZnxLCOkHqLoEfpFKeFCAcYT
+         gkzDY42hmgh2z83lvw+qQMGxLg0tYUy/C5GQM42KfCvnzarolAGjUTvAtJOlQqMOAX7T
+         e1ReCqhW06eY5LjG3z965mK7OFEDoJyy1WLMzzQ0JBtgG7u4tUvfVGOvzSaK09WwtP4A
+         46CfbWHJWjJhgQP2PrMKI+FcGLGg76YjdYMR4SFAvqxziMFSWzpdaN0872EMo4gtvL6s
+         /ZTA==
+X-Gm-Message-State: AO0yUKXAOJ3EoTznwUeFZy3GSuKYxHDcbqzkcmi2TJu853XqhXkumod2
+	BcCBtNuXrLEXXcaUPD3t7yN8nhjmO3o=
+X-Google-Smtp-Source: AK7set9dH1qq18dTuJhF4k5FtMMxUnAdr2+bhY5dJX9o/q0GKsKJ+VBFzOzpM11WrGCAkpjI1hnxkA==
+X-Received: by 2002:a17:90b:3e83:b0:230:3256:2ef3 with SMTP id rj3-20020a17090b3e8300b0023032562ef3mr10105935pjb.43.1675419952341;
+        Fri, 03 Feb 2023 02:25:52 -0800 (PST)
 Received: from localhost (193-116-117-77.tpgi.com.au. [193.116.117.77])
-        by smtp.gmail.com with ESMTPSA id l6-20020a639846000000b004768b74f208sm1233813pgo.4.2023.02.03.02.21.58
+        by smtp.gmail.com with ESMTPSA id x36-20020a17090a38a700b0022bb9f05753sm4637558pjb.48.2023.02.03.02.25.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 02:22:04 -0800 (PST)
+        Fri, 03 Feb 2023 02:25:51 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Feb 2023 20:21:55 +1000
-Message-Id: <CQ8UPZX0BERP.2TFM4914IGJZF@bobo>
-Subject: Re: [PATCH 4/7] KVM: PPC: Standardize on "int" return types in the
- powerpc KVM code
+Date: Fri, 03 Feb 2023 20:25:48 +1000
+Message-Id: <CQ8USYNS32BA.37RU0GOQ2LO7M@bobo>
+Subject: Re: [merge] WARN arch/powerpc/kernel/irq_64.c:278
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>, "Paolo Bonzini"
- <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>
+To: "Sachin Sant" <sachinp@linux.ibm.com>, "linuxppc-dev"
+ <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.13.0
-References: <20230203094230.266952-1-thuth@redhat.com>
- <20230203094230.266952-5-thuth@redhat.com>
-In-Reply-To: <20230203094230.266952-5-thuth@redhat.com>
+References: <7C586644-B8B4-4B41-86E3-80A60D5FE1C7@linux.ibm.com>
+In-Reply-To: <7C586644-B8B4-4B41-86E3-80A60D5FE1C7@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,30 +80,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian
- Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Marc
- Zyngier <maz@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Zenghui Yu <yuzenghui@huawei.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Feb 3, 2023 at 7:42 PM AEST, Thomas Huth wrote:
-> Most functions that are related to kvm_arch_vm_ioctl() already use
-> "int" as return type to pass error values back to the caller. Some
-> outlier functions use "long" instead for no good reason (they do not
-> really require long values here). Let's standardize on "int" here to
-> avoid casting the values back and forth between the two types.
+On Fri Feb 3, 2023 at 4:26 PM AEST, Sachin Sant wrote:
+> I am observing an intermittent crash while running powerpc/security
+> selftests on a Power10 LPAR booted with powerpc/merge branch code.
 >
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 5644 at arch/powerpc/kernel/irq_64.c:278 arch_local_=
+irq_restore+0x254/0x260
 
-Thanks for the patch. It looks fine to me, it should be okay to
-go via Paolo's tree if he's going to take the series.
+Okay, I guess the static branch test changes from true to false both
+times it is tested and so it doesn't recover properly. It's a real bug.
+I don't know why I didn't change the static branch under stop machine,
+maybe it gets into some recursive issue, that would be ideal if we could
+though. But this might be a safer minimal fix?
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Thanks,
+Nick
+--
 
-> ---
->  arch/powerpc/include/asm/kvm_ppc.h  | 14 +++++++-------
->  arch/powerpc/kvm/book3s_64_mmu_hv.c | 14 +++++++-------
->  arch/powerpc/kvm/book3s_64_vio.c    |  4 ++--
->  arch/powerpc/kvm/book3s_hv.c        |  6 +++---
->  arch/powerpc/kvm/book3s_pr.c        |  4 ++--
->  5 files changed, 21 insertions(+), 21 deletions(-)
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrup=
+t.c
+index fc6631a80527..0ec1581619db 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -50,16 +50,18 @@ static inline bool exit_must_hard_disable(void)
+  */
+ static notrace __always_inline bool prep_irq_for_enabled_exit(bool restart=
+able)
+ {
++	bool must_hard_disable =3D (exit_must_hard_disable() || !restartable);
++
+ 	/* This must be done with RI=3D1 because tracing may touch vmaps */
+ 	trace_hardirqs_on();
+=20
+-	if (exit_must_hard_disable() || !restartable)
++	if (must_hard_disable)
+ 		__hard_EE_RI_disable();
+=20
+ #ifdef CONFIG_PPC64
+ 	/* This pattern matches prep_irq_for_idle */
+ 	if (unlikely(lazy_irq_pending_nocheck())) {
+-		if (exit_must_hard_disable() || !restartable) {
++		if (must_hard_disable) {
+ 			local_paca->irq_happened |=3D PACA_IRQ_HARD_DIS;
+ 			__hard_RI_enable();
+ 		}
