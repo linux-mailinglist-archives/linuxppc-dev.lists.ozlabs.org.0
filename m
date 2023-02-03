@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3431768A5CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 23:09:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF9768A5D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 23:10:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7qYz74vFz3fGT
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 09:09:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7qb05JH3z3fSN
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 09:10:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z3i2Svvz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mDs+6rDG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z3i2Svvz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mDs+6rDG;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7qV70GdPz3cGk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 09:05:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7qV80cT2z3f7N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 09:05:52 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 207F3B82C2D;
-	Fri,  3 Feb 2023 22:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B087C433AC;
-	Fri,  3 Feb 2023 22:05:45 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0AB46B82C29;
+	Fri,  3 Feb 2023 22:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F222EC433A7;
+	Fri,  3 Feb 2023 22:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675461946;
-	bh=b34U778UNXN7FRC5Ic8t90JQ9Tx7F3W870Rcd50IB6g=;
+	s=k20201202; t=1675461948;
+	bh=IUG7346ru2LIaCtxjax/xlHvBhlssHCzq8SttudiekY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3i2Svvz2DgckJMayCk0gnjzplyWv/xWz4lNF/4iQturQRPy9bpRXkh6LHKDE0VTj
-	 hLT80F7fD7LkSFDdo5XVfokUo2iYIZIkb6RfMG4ZOdTlIUUKJz7jxdNBXJhwhDJi7k
-	 TtZBctqmDSxTE/uROnYS1JbhnFDadTX80kk2WDbnIWma9DW9nR8COcEuQ+AJZyfnGM
-	 43FlnaF2H3EggZw3KAqoB2U390Knt/al5l2dzI1AD5mqnBV8xoNTaf+0YclHPcnzYS
-	 7yH77W1niwbTQwyCnpJgLEmtK0D79wQ1JvuUdroyJZVYC4GQi6U4CJfIOFQxXXFLMP
-	 YxbeNerpjAahQ==
+	b=mDs+6rDG1dzYFDAxIKMUYCPpuI8xVxCk4vK7vY7SgBBbS+9M4fpuTaBD9RlOR4IpY
+	 5NXqrjuw9ORKV94tm3vuwmSTrBJxoFJCTyK0InA92qEFqLJwQgCoGOouJ+2PtAAGkB
+	 tywZI2GzgHL8sm2n0h5hvEG303bBDNv1IbORapWkTJr9KSjXUHNAj+2yMiIMNQdWSe
+	 UL3lPmOXr1Dvb5uH4eKO4vP0s+38mGzfgCc7Dw5nVS3fnY1BCp6vQo477htt3OULlx
+	 6ruyxQleCq0SasoQbj3h1mZCK0oMuduqz7cDOi0p2JVDR54NP7OttRvDrXst1X78to
+	 FA+WZR+13rHMw==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 03/22] arm/cpu: Make sure arch_cpu_idle_dead() doesn't return
-Date: Fri,  3 Feb 2023 14:05:12 -0800
-Message-Id: <5ef67c263f7602d0accfe7b50805a7eb576618c0.1675461757.git.jpoimboe@kernel.org>
+Subject: [PATCH 04/22] arm64/cpu: Mark cpu_die() __noreturn
+Date: Fri,  3 Feb 2023 14:05:13 -0800
+Message-Id: <b0d5d5608d1485495204d3dcac29bdeb8036a619.1675461757.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <cover.1675461757.git.jpoimboe@kernel.org>
 References: <cover.1675461757.git.jpoimboe@kernel.org>
@@ -65,31 +65,27 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
-BUG().
-
-BUG() is preferable to unreachable() because BUG() is a more explicit
-failure mode and avoids undefined behavior like falling off the edge of
-the function into whatever code happens to be next.
+cpu_die() doesn't return.  Annotate it as such.  By extension this also
+makes arch_cpu_idle_dead() noreturn.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/arm/kernel/smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/smp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 0b8c25763adc..adcd417c526b 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -382,6 +382,8 @@ void arch_cpu_idle_dead(void)
- 		: "r" (task_stack_page(current) + THREAD_SIZE - 8),
- 		  "r" (current)
- 		: "r0");
-+
-+	BUG();
- }
- #endif /* CONFIG_HOTPLUG_CPU */
+diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
+index fc55f5a57a06..5733a31bab08 100644
+--- a/arch/arm64/include/asm/smp.h
++++ b/arch/arm64/include/asm/smp.h
+@@ -100,7 +100,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
+ extern int __cpu_disable(void);
  
+ extern void __cpu_die(unsigned int cpu);
+-extern void cpu_die(void);
++extern void __noreturn cpu_die(void);
+ extern void cpu_die_early(void);
+ 
+ static inline void cpu_park_loop(void)
 -- 
 2.39.0
 
