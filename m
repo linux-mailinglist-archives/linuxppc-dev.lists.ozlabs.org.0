@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B5568A5E4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 23:14:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CACF68A5ED
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 23:16:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7qhB4zwtz3fGn
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 09:14:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7qkM275zz3fVy
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 09:16:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bWyWlCGQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUxqaJ3w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bWyWlCGQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUxqaJ3w;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7qVJ0Fv0z3f96
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 09:06:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7qVP4DhLz3fBL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 09:06:05 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5114D62028;
+	by sin.source.kernel.org (Postfix) with ESMTPS id 44B4BCE31BE;
+	Fri,  3 Feb 2023 22:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5039DC433AA;
 	Fri,  3 Feb 2023 22:05:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7129AC433A7;
-	Fri,  3 Feb 2023 22:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675461958;
-	bh=xE5ZmRzKMxAFPrHiSIoJTZlCDR5ti+ono/cm0PWjfeU=;
+	s=k20201202; t=1675461960;
+	bh=7d++Hui9U2QmrKVsgoxi792ojGAxFKsPKUzhCpj0Vz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWyWlCGQ8ixOuALZdKCzLss/6SMXhh1P0jHxv5K8dz+pGFJWRKFe/rDpdYt/pbEBy
-	 Cv20t60IqNd4k2OPeeakryqDZQBCSnCIFbZYn4w8Wh4hZfyxfuwPiu4jwkipYMyAjx
-	 3wjdyLJq2+oQSUZX9lPMnbCOK9kacUFdHpR/7gDTkVlFBlenq2ALG85m81cnxhAlqT
-	 DUmyvxZm4cJjdO0Y03EgNOuJPyX9ZAC+k2Whi2B9zytn0fu/YSFoO3CbU5ghN7eGNf
-	 AnlKFwVCJfplEUcEgqGsH3y9cSX006B8L7WqnSyPF5fCyXIzVXK57ufqsSU1oTeXrl
-	 yrsQBm2IXfrYQ==
+	b=aUxqaJ3ww87KOGdisOk/HBl19AfmCI5IwgU45YTMMCbIOEAKmYokeRwWgk458aBdz
+	 KAB2IA5A6KZwBO7KL27vUbssmzJh7ENV38QqtoqOcvWzHLrWYU0SayIkMkcSRT9MFV
+	 rTXdxTX48v4hwkeYdjTBdMWiSWGW97wTHOHIHCoTCLhuLDOSQ6E13CVInzoI5HdmNi
+	 3mbcM1YB9zlDGO+z4veQYZkCQn+awXjDQLZSURiYJducHsArb8fWxtgCDFxv5s177E
+	 FUekw0iJc/v9Ta+STjHGBIEOmOzc69H99WWgT7FCYTGb4FUxkC0cXDeNCacXAzXnoD
+	 6xgtVXdRGS0sg==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 09/22] mips/cpu: Expose play_dead()'s prototype definition
-Date: Fri,  3 Feb 2023 14:05:18 -0800
-Message-Id: <a532966831383927f5f4fbec0a1e13304588685a.1675461757.git.jpoimboe@kernel.org>
+Subject: [PATCH 10/22] mips/cpu: Make sure play_dead() doesn't return
+Date: Fri,  3 Feb 2023 14:05:19 -0800
+Message-Id: <b131d3e00967034d86692b894a66c6a656e7de3f.1675461757.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <cover.1675461757.git.jpoimboe@kernel.org>
 References: <cover.1675461757.git.jpoimboe@kernel.org>
@@ -65,26 +65,43 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include <asm/smp.h> to make sure play_dead() matches its prototype going
-forward.
+play_dead() doesn't return.  Make that more explicit with a BUG().
+
+BUG() is preferable to unreachable() because BUG() is a more explicit
+failure mode and avoids undefined behavior like falling off the edge of
+the function into whatever code happens to be next.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/mips/kernel/smp-bmips.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/smp-bmips.c | 2 ++
+ arch/mips/loongson64/smp.c   | 1 +
+ 2 files changed, 3 insertions(+)
 
 diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index f5d7bfa3472a..df9158e8329d 100644
+index df9158e8329d..be85fa075830 100644
 --- a/arch/mips/kernel/smp-bmips.c
 +++ b/arch/mips/kernel/smp-bmips.c
-@@ -38,6 +38,7 @@
- #include <asm/traps.h>
- #include <asm/barrier.h>
- #include <asm/cpu-features.h>
-+#include <asm/smp.h>
+@@ -414,6 +414,8 @@ void __ref play_dead(void)
+ 	"	wait\n"
+ 	"	j	bmips_secondary_reentry\n"
+ 	: : : "memory");
++
++	BUG();
+ }
  
- static int __maybe_unused max_cpus = 1;
+ #endif /* CONFIG_HOTPLUG_CPU */
+diff --git a/arch/mips/loongson64/smp.c b/arch/mips/loongson64/smp.c
+index 660e1de4412a..c81c2bd07c62 100644
+--- a/arch/mips/loongson64/smp.c
++++ b/arch/mips/loongson64/smp.c
+@@ -822,6 +822,7 @@ void play_dead(void)
+ 	state_addr = &per_cpu(cpu_state, cpu);
+ 	mb();
+ 	play_dead_at_ckseg1(state_addr);
++	BUG();
+ }
  
+ static int loongson3_disable_clock(unsigned int cpu)
 -- 
 2.39.0
 
