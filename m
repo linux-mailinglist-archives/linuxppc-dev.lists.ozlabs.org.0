@@ -1,75 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5432688D36
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 03:46:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A388688EAD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 05:55:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7Kmb3mkrz3f7h
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 13:46:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7Ncm143Gz3f82
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 15:55:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JyiEUSKh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KFrzymvn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JyiEUSKh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KFrzymvn;
 	dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7Klf32qQz3cdr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 13:45:49 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id q9so2764803pgq.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Feb 2023 18:45:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fBOAUiNQ/mUK+ucDXemLW03th/5lppbNUK8agoo8boo=;
-        b=JyiEUSKhK2pWfJDv+ivY/U0Gw9RN+qe+jLJEGLHGmYB0F4TVSFr34WEphWla+5SVTt
-         ObDLjmFQolcccr24Lb7R0396tdLsGNMYzWMPlLCZ3s8Y6z5KNMtVYaQjamHEUO3mWS17
-         sSPipPehFHdDIO8Q7cVBBYe7XG4G+jXOpxZo9qllMxyj8oRi335mg48TQx01bxdWZv8s
-         GCaAQDAc8BhMAcFmaWKe/lPAo8AnTceBJVYfgLT83ocIyUVN0WMGP2DNPMhZ+dXrMTdQ
-         e6mfDq/vKeaaAEUtv2+mFbd0DYKxMzNrr3nG9G12pD1zDcbNFtchd+YVwibAxSu+mUsb
-         29kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fBOAUiNQ/mUK+ucDXemLW03th/5lppbNUK8agoo8boo=;
-        b=aO+XsD61nrjnJoWEUICqTwEytHLyVWVJoBvoRImGlaw0QXEq16Hm2R/YfjT6zmDqnW
-         HSk/xjDmWziTQMoo2rHUmnPt7AM+BTKfsXH7nUoB7jID2Y10y9zKElHxniPeFujGtoSO
-         E9id3431Cg2OAL9HvxBBL169Up/bA8S/uJt5q2bVY9OakvOzsEZadjHpjPvjPPO0x4WQ
-         Ei7bdCDdEOj98jmTcKKmiLa4orXr/SozNFsGqicjjrbjjXErTLULbrp0GNlF+bBfM4D4
-         doPl/g0ZtSsD3xxZltObYvY97Ka/UhKbeDjpH0VZSDXEHTG3esIzWf2oxCAAdQe957LC
-         RYxw==
-X-Gm-Message-State: AO0yUKU3gN/UwUDXPdeQgruVMIQstFm63iLtlMi9bCCNm3SSMIhVn+aO
-	FsJlogCPcVHGVkjd7TKbaxs=
-X-Google-Smtp-Source: AK7set/fjHHMz8haI3xgiadUs+PTKhiUbyeLWt7ubhPZ18tHsy84Hu+X13hwYBPk/ZtOovBgK5TYAQ==
-X-Received: by 2002:a05:6a00:882:b0:593:908c:240 with SMTP id q2-20020a056a00088200b00593908c0240mr11077976pfj.14.1675392346411;
-        Thu, 02 Feb 2023 18:45:46 -0800 (PST)
-Received: from localhost (193-116-117-77.tpgi.com.au. [193.116.117.77])
-        by smtp.gmail.com with ESMTPSA id m6-20020aa79006000000b00571f66721aesm425762pfo.42.2023.02.02.18.45.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Feb 2023 18:45:45 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7Nbq2FL4z2yHc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Feb 2023 15:54:14 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3134g9ue019445;
+	Fri, 3 Feb 2023 04:54:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=W8rYU7i2MsqiUPujyD0cbiERh7DumgP4TFgHuz+pnqk=;
+ b=KFrzymvn9YAwNCZXROOil4AZlG6wfNgtH/3uWGPCzLEk/lpv0P6fUKw/e0RHtAsyMca5
+ p3vqFElEUO1Mj3xcNrG00PLVeSfddf1+vgoK9h0ZwDSGZYlfTv/CdsBdBZN/g7a0/XDm
+ Peug3HNHwTdi+wTujQqSVwErqOQBeffcThPv2BQFly/qIp6Ty29wgY13Pc/Z3dbyhMyF
+ +2e7pX4iD25B19AIRay9yTw90h9vFz9V1kjkvldSb9gb1GHZ84IeV33xK6dn3gUQMIPn
+ B+EbtQwDmG2GVIvzeqCtDZdNRmiLrL9reykjt0eb0slu1Byov19/6wsr8Qo6kDhUQp7L PA== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ngstghrpb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Feb 2023 04:54:07 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 312HkAEp009107;
+	Fri, 3 Feb 2023 04:54:05 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ncvshcy83-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Feb 2023 04:54:05 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3134s2KC44630486
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 3 Feb 2023 04:54:02 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2392F20043;
+	Fri,  3 Feb 2023 04:54:02 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 766AE20040;
+	Fri,  3 Feb 2023 04:54:00 +0000 (GMT)
+Received: from [9.43.51.223] (unknown [9.43.51.223])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  3 Feb 2023 04:54:00 +0000 (GMT)
+Message-ID: <8d033512-6a36-c8b0-44fe-51f4067ea282@linux.ibm.com>
+Date: Fri, 3 Feb 2023 10:23:59 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] powerpc/hv-24x7: Fix pvr check when setting interface
+ version
+Content-Language: en-US
+To: Sachin Sant <sachinp@linux.ibm.com>
+References: <20230131184804.220756-1-kjain@linux.ibm.com>
+ <AEDF0612-3814-4FF2-A0CD-5688E496078A@linux.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <AEDF0612-3814-4FF2-A0CD-5688E496078A@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Feb 2023 12:45:40 +1000
-Message-Id: <CQ8L0O2CYDIX.8HICM7H2PCMN@bobo>
-Subject: Re: Bug: Write fault blocked by KUAP! (kernel 6.2-rc6, Talos II)
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Benjamin Gray" <bgray@linux.ibm.com>, "Erhard F."
- <erhard_f@mailbox.org>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.13.0
-References: <20230203004649.1f59dbd4@yea>
- <5f0714428e4c696e3d5c00f3bafb4d2970cb6e2b.camel@linux.ibm.com>
-In-Reply-To: <5f0714428e4c696e3d5c00f3bafb4d2970cb6e2b.camel@linux.ibm.com>
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UkdftkFVPuylhhlBGm8z7mL91KKERBC-
+X-Proofpoint-GUID: UkdftkFVPuylhhlBGm8z7mL91KKERBC-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-03_02,2023-02-02_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 mlxscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302030040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,60 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Feb 3, 2023 at 12:02 PM AEST, Benjamin Gray wrote:
-> On Fri, 2023-02-03 at 00:46 +0100, Erhard F. wrote:
-> > Happened during boot:
-> >=20
-> > [...]
-> > Creating 6 MTD partitions on "flash@0":
-> > 0x000000000000-0x000004000000 : "PNOR"
-> > 0x000001b21000-0x000003921000 : "BOOTKERNEL"
-> > 0x000003a44000-0x000003a68000 : "CAPP"
-> > 0x000003a88000-0x000003a89000 : "VERSION"
-> > 0x000003a89000-0x000003ac9000 : "IMA_CATALOG"
-> > 0x000003e10000-0x000004000000 : "BOOTKERNFW"
-> > BTRFS info: devid 1 device path /dev/root changed to /dev/nvme0n1p3
-> > scanned by systemd-udevd (387)
-> > Kernel attempted to write user page (aa55c280000) - exploit attempt?
-> > (uid: 0)
-> > ------------[ cut here ]------------
-> > Bug: Write fault blocked by KUAP!
 
-KUAP is a red herring of course, the KUAP test just checks if the
-faulting address is below TASK_SIZE.
 
-[snip]
+On 2/1/23 19:41, Sachin Sant wrote:
+> 
+> 
+>> On 01-Feb-2023, at 12:18 AM, Kajol Jain <kjain@linux.ibm.com> wrote:
+>>
+>> Commit ec3eb9d941a9 ("powerpc/perf: Use PVR rather than
+>> oprofile field to determine CPU version") added usage
+>> of pvr value instead of oprofile field to determine the
+>> platform. In hv-24x7 pmu driver code, pvr check uses PVR_POWER8
+>> when assigning the interface version for power8 platform.
+>> But power8 can also have other pvr values like PVR_POWER8E and
+>> PVR_POWER8NVL. Hence the interface version won't be set
+>> properly incase of PVR_POWER8E and PVR_POWER8NVL.
+>> Fix this issue by adding the checks for PVR_POWER8E and
+>> PVR_POWER8NVL as well.
+>>
+>> Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
+>> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> ---
+> 
+> Thanks for the fix. Tested on Power8 successfully.
+> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+> 
+>> arch/powerpc/perf/hv-24x7.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+>> index 33c23225fd54..8c3253df133d 100644
+>> --- a/arch/powerpc/perf/hv-24x7.c
+>> +++ b/arch/powerpc/perf/hv-24x7.c
+>> @@ -1727,7 +1727,8 @@ static int hv_24x7_init(void)
+>> }
+>>
+>> /* POWER8 only supports v1, while POWER9 only supports v2. */
+>> - if (PVR_VER(pvr) == PVR_POWER8)
+>> + if (PVR_VER(pvr) == PVR_POWER8 || PVR_VER(pvr) == PVR_POWER8E ||
+>> + PVR_VER(pvr) == PVR_POWER8NVL)
+> 
+> Do we really need the check for Power8NV?
 
-> > --- interrupt: 300 at __patch_instruction+0x50/0x70
-> > NIP:=C2=A0 c000000000064670 LR: c000000000064c2c CTR: c000000000048ee0
-> > REGS: c000000023b57630 TRAP: 0300=C2=A0=C2=A0 Tainted: G=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- T=C2=A0=C2=A0
-> > (6.2.0-rc6-P9)
-> > MSR:=C2=A0 900000000280b032 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI>=C2=A0 CR:
-> > 24222244=C2=A0 XER: 00000000
-> > CFAR: c00000000006462c DAR: 00000aa55c280000 DSISR: 42000000 IRQMASK:
-                                            ^^^^        ^^
-First byte of page, store, no PTE.
-
-> > 1=20
-> > GPR00: 0000000000000000 c000000023b578d0 c000000000e7cc00
-> > c00800000ce33ffc=20
-> > GPR04: 041ae13000000000 00000aa55c27fffc 0000000000000000
-                                        ^^^^
-Last word of previous page.
-
-Probably from create_stub function descriptor patching, which is not
-actually patching in an instruction so it probably gets unlucky and
-gets some data that matches prefix opcode and so it tries to store
-8 bytes.
-
-So not your bug, your temp mm code just exposed it. Data shouldn't
-be patched using patch_instruction. We should have a patch_data_u32
-or similar that doesn't use instructions.
+Hi Sachin,
+    Thanks for testing the patch. Here the NVL in POWER8NVL corresponds
+to "NVLink" and its not related to PowerNV. PVR value used to specify
+processor version which might be in used in any of  pseries/powernv,
+hence I added this check.
 
 Thanks,
-Nick
+Kajol Jain
