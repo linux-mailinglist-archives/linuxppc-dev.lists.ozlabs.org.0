@@ -1,73 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D003668A0CA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 18:49:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143CC68A111
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 18:59:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7jpg4yYMz3fBw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 04:49:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7k2574rQz3f7x
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 04:59:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YUGCo4Zb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YccVIaj7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YUGCo4Zb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YccVIaj7;
 	dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7jnl0112z2ynf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 04:48:57 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id f16-20020a17090a9b1000b0023058bbd7b2so5020185pjp.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 09:48:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1t48P/jVd6+3dhw3pck4JM1odaqwThYt8bjKIe9FySY=;
-        b=YUGCo4ZbvxduWRBHH9xOGxUv8LoaXyN+VOL8K8Kve/u16uDaalEXH+kBO1C3PAOZdM
-         U2FdeDmTEYvv/Khm9Hp1pGOcZfLi1gl8qmki4SmGN3WfKIsCemaDy6HsGXS8a2DwuvSq
-         p7nNVpP/rnqBe+1jiPBY7eVjGaGnTjSVk5H8VHlpO4DlQHD7k1TC35BcdqTcy2ZQRaSF
-         4md/KQ7IeYFOS2FYZ+qMRDUx2NMJplrAtBdVvGxGX0DbpsM7eAfg2iIiZtKPhF8ngclz
-         nFNAH/NrZwg3lKNjgzMI4QsgFt81DdqqGb/JrZPeZ3VqGuwxbqlyijT98K4d4Jb58ATa
-         yKNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1t48P/jVd6+3dhw3pck4JM1odaqwThYt8bjKIe9FySY=;
-        b=VRkuiKY5Lf6QyJp8HzNxNTvQ2VafnSZuQMIqoY3wZVQ5I7wTbY0a7jVkMOrdLtVhLL
-         JAEGKkWySoQs9OrD6v5oku8EalEQpWsndY1bfv13du3+D9xGcyZ6rndK314/fgvL1fi1
-         8JMocCZFytRIg8FVZRQWl6xT9MRZN21isdy45CZc4LUUwaw5uFwQ19+vRhxijX28JpVU
-         xBR7j+JpWxBoEENAzP3pWQ5DSPaM6bUPXumOHJIIlUqUKmG4PT5DPbtbhqqjLDWwK3mz
-         wOrHoPLcmbkDSVN482pJI5MDJofNP7rDwfiBT31jZwGuG5iFuY38oiTm+zoTlcPn0hyd
-         FQ3w==
-X-Gm-Message-State: AO0yUKVfX+6A3ISH6EVRmnJ3Fmjevx0XabkChcXtVriEq023CnUxrHJf
-	6SWIEYZbCXOV+Y2ps0ISQ4C40Q==
-X-Google-Smtp-Source: AK7set8NtYpsGJ6byRewhpDzAYHCL4kVnwYOuRswQz6j6iO+lQNMoz+KA+gf7NkDr7m6tVMm7U3Fmg==
-X-Received: by 2002:a17:902:d1d5:b0:198:d5cc:44a8 with SMTP id g21-20020a170902d1d500b00198d5cc44a8mr260726plb.19.1675446534414;
-        Fri, 03 Feb 2023 09:48:54 -0800 (PST)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id b2-20020a1709027e0200b00194b3a7853esm1865998plm.181.2023.02.03.09.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 09:48:53 -0800 (PST)
-Date: Fri, 3 Feb 2023 17:48:49 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/7] KVM: x86: Improve return type handling in
- kvm_vm_ioctl_get_nr_mmu_pages()
-Message-ID: <Y91JAb0kKBYQjO8a@google.com>
-References: <20230203094230.266952-1-thuth@redhat.com>
- <20230203094230.266952-3-thuth@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7k1B5KW9z3cdr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 04:58:54 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id D8067B82B8C;
+	Fri,  3 Feb 2023 17:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B326C433D2;
+	Fri,  3 Feb 2023 17:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675447129;
+	bh=h0FX8njn5v6dhV2AUGOJNYLtMQEKPbwS8wqqRVOBFXY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YccVIaj7oaIBJXC0g+3yS+sil13YXsVVAYIp9f2Bd0HIyWQHX8pkeeGpE5yqISmpQ
+	 NWyJWS3MfXIHCRUP7hmOBWXl4yGXJ1XQ3tbtpljGE90J7SeLIH0T+A9gnLj8Dvy7ID
+	 QeOIrs1upGpfj1NDWWvM+SAJdlsTtMmSNb4rEdnVKy9aPjTEvGKwZFOk5zQfpzJcLP
+	 uCZ2RaQ522dlqarGF87ZXl0KEpxyJusSK3SG9DZRRUGCk7Ce/tU6sWdahxYzt+/oAq
+	 z983AnRaVXjiOhOF8Zn2cWO+x/IX6Hum3xScZdy8wtSLqtmb/VsG62YKforEDlbKt5
+	 k91fom1q1q9ew==
+Received: by pali.im (Postfix)
+	id 4F160723; Fri,  3 Feb 2023 18:58:46 +0100 (CET)
+Date: Fri, 3 Feb 2023 18:58:46 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH 1/2] powerpc/64: Set default CPU in Kconfig
+Message-ID: <20230203175846.oczctwfr2jq7usze@pali>
+References: <76c11197b058193dcb8e8b26adffba09cfbdab11.1674632329.git.christophe.leroy@csgroup.eu>
+ <20230201113155.18113-1-naresh.kamboju@linaro.org>
+ <04b55866-aa17-f500-855a-7d4fb4bbaacf@csgroup.eu>
+ <CAKwvOdnc_ggT_2FQQwq71PiDE_D1xxXXnB5iSWvvoa3pu7kMdQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230203094230.266952-3-thuth@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKwvOdnc_ggT_2FQQwq71PiDE_D1xxXXnB5iSWvvoa3pu7kMdQ@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,42 +66,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "anders.roxell@linaro.org" <anders.roxell@linaro.org>, "arnd@arndb.de" <arnd@arndb.de>, Naresh Kamboju <naresh.kamboju@linaro.org>, "llvm@lists.linux.dev" <llvm@lists.linux.dev>, qiongsiwu@gmail.com, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, nemanja.i.ibm@gmail.com, "nathan@kernel.org" <nathan@kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, Linux Kernel Functional Testing <lkft@linaro.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 03, 2023, Thomas Huth wrote:
-> kvm_vm_ioctl_get_nr_mmu_pages() tries to return a "unsigned long" value,
-> but its caller only stores ther return value in an "int" - which is also
-> what all the other kvm_vm_ioctl_*() functions are returning. So returning
-> values that do not fit into a 32-bit integer anymore does not work here.
-> It's better to adjust the return type, add a sanity check and return an
-> error instead if the value is too big.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  arch/x86/kvm/x86.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index da4bbd043a7b..caa2541833dd 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -6007,8 +6007,11 @@ static int kvm_vm_ioctl_set_nr_mmu_pages(struct kvm *kvm,
->  	return 0;
->  }
->  
-> -static unsigned long kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
-> +static int kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
->  {
-> +	if (kvm->arch.n_max_mmu_pages > INT_MAX)
-> +		return -EOVERFLOW;
-> +
->  	return kvm->arch.n_max_mmu_pages;
->  }
+On Wednesday 01 February 2023 09:29:45 Nick Desaulniers wrote:
+> On Wed, Feb 1, 2023 at 3:41 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+> >
+> >
+> >
+> > Le 01/02/2023 à 12:31, Naresh Kamboju a écrit :
+> > > Following build regression started from next-20230131.
+> > >
+> > > Regressions found on powerpc:
+> > >
+> > >    build/clang-nightly-tqm8xx_defconfig
+> > >    build/clang-nightly-ppc64e_defconfig
+> > >
+> > >
+> > > make --silent --keep-going --jobs=8 O=/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- HOSTCC=clang CC=clang LLVM=1 LLVM_IAS=0 tqm8xx_defconfig
+> > > make --silent --keep-going --jobs=8 O=/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- HOSTCC=clang CC=clang LLVM=1 LLVM_IAS=0
+> > >
+> > > error: unknown target CPU '860'
+> > > note: valid target CPU values are: generic, 440, 450, 601, 602, 603, 603e, 603ev, 604, 604e, 620, 630, g3, 7400, g4, 7450, g4+, 750, 8548, 970, g5, a2, e500, e500mc, e5500, power3, pwr3, power4, pwr4, power5, pwr5, power5x, pwr5x, power6, pwr6, power6x, pwr6x, power7, pwr7, power8, pwr8, power9, pwr9, power10, pwr10, powerpc, ppc, ppc32, powerpc64, ppc64, powerpc64le, ppc64le, future
+> > > make[2]: *** [/builds/linux/scripts/Makefile.build:114: scripts/mod/devicetable-offsets.s] Error 1
+> > > error: unknown target CPU '860'
+> > > note: valid target CPU values are: generic, 440, 450, 601, 602, 603, 603e, 603ev, 604, 604e, 620, 630, g3, 7400, g4, 7450, g4+, 750, 8548, 970, g5, a2, e500, e500mc, e5500, power3, pwr3, power4, pwr4, power5, pwr5, power5x, pwr5x, power6, pwr6, power6x, pwr6x, power7, pwr7, power8, pwr8, power9, pwr9, power10, pwr10, powerpc, ppc, ppc32, powerpc64, ppc64, powerpc64le, ppc64le, future
+> > > make[2]: *** [/builds/linux/scripts/Makefile.build:252: scripts/mod/empty.o] Error 1
+> >
+> >
+> > On GCC, the possible values are:
+> >
+> > ppc-linux-gcc: note : valid arguments to ‘-mcpu=’ are: 401 403 405 405fp
+> > 440 440fp 464 464fp 476 476fp 505 601 602 603 603e 604 604e 620 630 740
+> > 7400 7450 750 801 821 823 8540 8548 860 970 G3 G4 G5 a2 cell e300c2
+> > e300c3 e500mc e500mc64 e5500 e6500 ec603e native power3 power4 power5
+> > power5+ power6 power6x power7 power8 powerpc powerpc64 powerpc64le rs64
+> > titan
+> >
+> > How do you tell CLANG that you are building for powerpc 8xx ?
 
-My vote is to skip this patch, skip deprecation, and go straight to deleting
-KVM_GET_NR_MMU_PAGES.  The ioctl() has never worked[*], and none of the VMMs I
-checked use it (QEMU, Google's internal VMM, kvmtool, CrosVM).
+Maybe llvm does not have support for this old CPU core at all? Because
+from 'note: valid target CPU values are:' message it looks like that.
 
-[*] https://lore.kernel.org/all/YpZu6%2Fk+8EydfBKf@google.com
+> + Nemanjai, Qiongsi,
+> 
+> 
+> >
+> > >
+> > >
+> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > >
+> > > https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230201/testrun/14479384/suite/build/test/clang-nightly-tqm8xx_defconfig/history/
+> > >
+> > > The bisection pointed to this commit,
+> > >    45f7091aac35 ("powerpc/64: Set default CPU in Kconfig")
+> > >
+> > > --
+> > > Linaro LKFT
+> > > https://lkft.linaro.org
+> 
+> 
+> 
+> -- 
+> Thanks,
+> ~Nick Desaulniers
