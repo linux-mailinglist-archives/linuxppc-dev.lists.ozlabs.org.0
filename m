@@ -2,52 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4EF68A61B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Feb 2023 23:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2649A68A770
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 02:07:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7qxc1c8jz3fg2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 09:26:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7vWN57cWz3f8s
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 12:07:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o8eHohIT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cOFCW2eK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=skhan@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o8eHohIT;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cOFCW2eK;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7qVm4pVGz3fBv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 09:06:24 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A647462037;
-	Fri,  3 Feb 2023 22:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C566CC433EF;
-	Fri,  3 Feb 2023 22:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675461982;
-	bh=nXrabXpKFkbXCMFjc3rmCrrnT82/WMJleHEGw691mcc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8eHohITAVmxjRXNbpfeL/cd8yNdoWWWFTWag8bI9FPvrbMJMbn7FDeWO6jeb5YOD
-	 09wPFTEb38+tMtIgPe9CHEcvDL5qejhmyy++aNANFxprUQblrITcsG2eqHUbL8gmjP
-	 4gSQVCoZOcsy77T+LMkCLBQL3ugwMFw9fYlynnFYPAuVOyx0fjaF1UNV9fyR8q62PB
-	 h633UkAqPNNQmIqlOFdeaLl3kp8E9fQrbTqg4QDEu+JRFrn1I6ApIrNEekrHOTvbXp
-	 jHiZ0SPsYXyBzSGzOGZrRgHnyMS++i5x/iAEJAM5eK7R7f/TB4A4nPAJaqn+bn24YL
-	 BOf5EfzEJfk4Q==
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 22/22] sched/idle: Mark arch_cpu_idle_dead() __noreturn
-Date: Fri,  3 Feb 2023 14:05:31 -0800
-Message-Id: <2eeb4425572785d1f05d8761dba1cf88c2105304.1675461757.git.jpoimboe@kernel.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <cover.1675461757.git.jpoimboe@kernel.org>
-References: <cover.1675461757.git.jpoimboe@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7vVQ0lRKz3bjy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 12:06:20 +1100 (AEDT)
+Received: by mail-io1-xd31.google.com with SMTP id q6so2608435ior.12
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 17:06:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EJJNrsJn7yzBqph2acvSr4Hti6BrkgyiwRkgePteRzI=;
+        b=cOFCW2eKrPz/F7vUGV3S812saggF5YeG/hVM7hcFN7yyU4S9pS1nxzMNle0FhONcm0
+         QinIgL9G1RKgP/tdAGV0W7F1TlYTQQnn5j6CVZ8G16iJYwrrpp8MBWSstnhHVVbP9jaa
+         +1GfdV7ZDn1qFvbfmQwolq9ris01IwB9DRXK0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJJNrsJn7yzBqph2acvSr4Hti6BrkgyiwRkgePteRzI=;
+        b=03mGedNkvXmsri+YjveftBtSvyOfLKk4oG1tTDqS4yvb8j4sVC+97j8Suw8mqZ0oVw
+         tEagzNR6Pbg5t6CdJA3NPuC0XnBIJwIsBwrbmv5Iqi7+jIpVlPyzAKfV+qRBmuNRVcIt
+         0pOIlS33NCSF+Rq55v3OTG3NySzfiEEUfgTgBVEHyWR9bnGc/LSbHFCS7P3d5j5z2/8R
+         blSkKlXGW9mkep/V4PvwWeq+MfGaA23ZGW6pt9SN46EjBZvUzcK+j5YnekIIyULET9JP
+         X3lANf/ZWu3/1/WZr/oO9Hl3RTsQDx8kxnmQpTB12A6rg6GYKmXTSdsyoLs8HmrBCG4M
+         4zJA==
+X-Gm-Message-State: AO0yUKWcQmmaLLTZ8fknio+zlBDqA5vGPGkMI2BmMp2w2viiNe1a7OaJ
+	NszB62fchLZJNxPlDRlWubOSOg==
+X-Google-Smtp-Source: AK7set9499rugZh/K8yzehbsATZ6fL7OrnwVY1iWmkEuyNyOtCYXT0lcwjPiJcBHW95uVphhlXqPsA==
+X-Received: by 2002:a6b:3b14:0:b0:715:f031:a7f5 with SMTP id i20-20020a6b3b14000000b00715f031a7f5mr6443794ioa.1.1675472776701;
+        Fri, 03 Feb 2023 17:06:16 -0800 (PST)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id h16-20020a022b10000000b003a970f21f9asm1294500jaa.78.2023.02.03.17.06.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Feb 2023 17:06:15 -0800 (PST)
+Message-ID: <975995d6-366a-88e3-2321-f0728f7e22a7@linuxfoundation.org>
+Date: Fri, 3 Feb 2023 18:06:15 -0700
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 00/34] selftests: Fix incorrect kernel headers search path
+Content-Language: en-US
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>
+References: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
+ <560824bd-da2d-044c-4f71-578fc34a47cd@linuxfoundation.org>
+ <799b87d9-af19-0e6a-01b7-419b4893a0df@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <799b87d9-af19-0e6a-01b7-419b4893a0df@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,64 +82,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, bsegall@google.com, jcmvbkbc@gmail.com, guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-mips@vger.kernel.org, linux-alph
- a@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before commit 076cbf5d2163 ("x86/xen: don't let xen_pv_play_dead()
-return"), in Xen, when a previously offlined CPU was brought back
-online, it unexpectedly resumed execution where it left off in the
-middle of the idle loop.
+On 2/1/23 19:07, Shuah Khan wrote:
+> Hi Mathieu,
+> 
+> On 1/30/23 15:29, Shuah Khan wrote:
+>> On 1/27/23 06:57, Mathieu Desnoyers wrote:
+>>> Hi,
+>>>
+>>> This series fixes incorrect kernel header search path in kernel
+>>> selftests.
+>>>
+>>> Near the end of the series, a few changes are not tagged as "Fixes"
+>>> because the current behavior is to rely on the kernel sources uapi files
+>>> rather than on the installed kernel header files. Nevertheless, those
+>>> are updated for consistency.
+>>>
+>>> There are situations where "../../../../include/" was added to -I search
+>>> path, which is bogus for userspace tests and caused issues with types.h.
+>>> Those are removed.
+>>>
+> 
+> Thanks again for taking care of this. I did out of tree build testing on
+> x86 on linux-kselftest next with these patches below. I haven't seen
+> any problems introduced by the patch set.
+> 
+>>>    selftests: dma: Fix incorrect kernel headers search path
+> This one needs a change and I will send a patch on top of yours.
+> Even with that this test depends on unexported header from the
+> repo and won't build out of tree. This is not related to your
+> change.
+> 
+>>>    selftests: mount_setattr: Fix incorrect kernel headers search path
+> This one fails to build with our without patch - an existing error.
+> 
+> I have to do cross-build tests on arm64 and other arch patches still.
+> This will happen later this week.
 
-There were some hacks to make that work, but the behavior was surprising
-as do_idle() doesn't expect an offlined CPU to return from the dead (in
-arch_cpu_idle_dead()).
+arm64, s390 patches look good.
 
-Now that Xen has been fixed, and the arch-specific implementations of
-arch_cpu_idle_dead() also don't return, give it a __noreturn attribute.
-
-This will cause the compiler to complain if an arch-specific
-implementation might return.  It also improves code generation for both
-caller and callee.
-
-Also fixes the following warning:
-
-  vmlinux.o: warning: objtool: do_idle+0x25f: unreachable instruction
-
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
- include/linux/cpu.h   | 2 +-
- tools/objtool/check.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index f83e4519c5f0..8582a7142623 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -182,7 +182,7 @@ void arch_cpu_idle(void);
- void arch_cpu_idle_prepare(void);
- void arch_cpu_idle_enter(void);
- void arch_cpu_idle_exit(void);
--void arch_cpu_idle_dead(void);
-+void __noreturn arch_cpu_idle_dead(void);
- 
- int cpu_report_state(int cpu);
- int cpu_check_up_prepare(int cpu);
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0f67c6a8bc98..e3fa2279d612 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -167,6 +167,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 		"__reiserfs_panic",
- 		"__stack_chk_fail",
- 		"__ubsan_handle_builtin_unreachable",
-+		"arch_cpu_idle_dead",
- 		"cpu_bringup_and_idle",
- 		"cpu_startup_entry",
- 		"do_exit",
--- 
-2.39.0
-
+thanks,
+-- Shuah
