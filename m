@@ -1,76 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2649A68A770
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 02:07:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4805968A77E
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 02:13:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P7vWN57cWz3f8s
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 12:07:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P7vft0sBMz3f87
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Feb 2023 12:13:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cOFCW2eK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NjHUnR2S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=skhan@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cOFCW2eK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NjHUnR2S;
 	dkim-atps=neutral
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7vVQ0lRKz3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 12:06:20 +1100 (AEDT)
-Received: by mail-io1-xd31.google.com with SMTP id q6so2608435ior.12
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 17:06:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EJJNrsJn7yzBqph2acvSr4Hti6BrkgyiwRkgePteRzI=;
-        b=cOFCW2eKrPz/F7vUGV3S812saggF5YeG/hVM7hcFN7yyU4S9pS1nxzMNle0FhONcm0
-         QinIgL9G1RKgP/tdAGV0W7F1TlYTQQnn5j6CVZ8G16iJYwrrpp8MBWSstnhHVVbP9jaa
-         +1GfdV7ZDn1qFvbfmQwolq9ris01IwB9DRXK0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EJJNrsJn7yzBqph2acvSr4Hti6BrkgyiwRkgePteRzI=;
-        b=03mGedNkvXmsri+YjveftBtSvyOfLKk4oG1tTDqS4yvb8j4sVC+97j8Suw8mqZ0oVw
-         tEagzNR6Pbg5t6CdJA3NPuC0XnBIJwIsBwrbmv5Iqi7+jIpVlPyzAKfV+qRBmuNRVcIt
-         0pOIlS33NCSF+Rq55v3OTG3NySzfiEEUfgTgBVEHyWR9bnGc/LSbHFCS7P3d5j5z2/8R
-         blSkKlXGW9mkep/V4PvwWeq+MfGaA23ZGW6pt9SN46EjBZvUzcK+j5YnekIIyULET9JP
-         X3lANf/ZWu3/1/WZr/oO9Hl3RTsQDx8kxnmQpTB12A6rg6GYKmXTSdsyoLs8HmrBCG4M
-         4zJA==
-X-Gm-Message-State: AO0yUKWcQmmaLLTZ8fknio+zlBDqA5vGPGkMI2BmMp2w2viiNe1a7OaJ
-	NszB62fchLZJNxPlDRlWubOSOg==
-X-Google-Smtp-Source: AK7set9499rugZh/K8yzehbsATZ6fL7OrnwVY1iWmkEuyNyOtCYXT0lcwjPiJcBHW95uVphhlXqPsA==
-X-Received: by 2002:a6b:3b14:0:b0:715:f031:a7f5 with SMTP id i20-20020a6b3b14000000b00715f031a7f5mr6443794ioa.1.1675472776701;
-        Fri, 03 Feb 2023 17:06:16 -0800 (PST)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id h16-20020a022b10000000b003a970f21f9asm1294500jaa.78.2023.02.03.17.06.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 17:06:15 -0800 (PST)
-Message-ID: <975995d6-366a-88e3-2321-f0728f7e22a7@linuxfoundation.org>
-Date: Fri, 3 Feb 2023 18:06:15 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P7vdv25ncz3cF8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 12:12:51 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5774A6204C
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 01:12:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73BBC433B4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Feb 2023 01:12:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675473165;
+	bh=0asfVCpuy+ETCtLElPtYddrgJX0d+emBWsKYbAvgUSg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NjHUnR2SMV6z1nYlDsx18pdaYVqRNoWc0qy+JZKYvWy9A2/aNWDT/Zcc1VuN3LpBk
+	 BHO7a+UWkrCbr7tIMsbiJcW08mJQrutSae8sjzbY2yTquduGD1S75JptE2V94CuHZ9
+	 dttGDlygN+PlAgKrEnBbh02BTSkPcbJjD/mmZ2OjVdwp+2zUSzzJYuLie36CRMRH2m
+	 BCNEg1yW8DiqcrRuXnMz7q97kPUCf/igZlztYEFMXkxu4lTgwVsHT2Y4vPB+fv2I45
+	 treDdxLfVm4Xo9kIGz/U0PB3fSsQxF7GAvG09BPdoaWSqVqEDw/Bl5+LonXCOZV8EM
+	 8X69FQT7ZO2hA==
+Received: by mail-ej1-f43.google.com with SMTP id m2so19963778ejb.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Feb 2023 17:12:45 -0800 (PST)
+X-Gm-Message-State: AO0yUKWe1fzQilEZOaErnFjtbqAlDn9MGoK6Sn7MorrlQfQxBZ2earnP
+	cnJgwYvLtvilwiW6rDgi2/QFHlavhYi1d7uwOU4=
+X-Google-Smtp-Source: AK7set8d2wN/FrByoELlHyIqk75D2M0EbNicNZv8b+fs1zPJUylkd4dAYoofH/2BIYKRkzzgrVhuEwXH3PfZW7NSuUo=
+X-Received: by 2002:a17:906:8419:b0:884:c19c:7c6 with SMTP id
+ n25-20020a170906841900b00884c19c07c6mr3300870ejx.120.1675473163646; Fri, 03
+ Feb 2023 17:12:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 00/34] selftests: Fix incorrect kernel headers search path
-Content-Language: en-US
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>
-References: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
- <560824bd-da2d-044c-4f71-578fc34a47cd@linuxfoundation.org>
- <799b87d9-af19-0e6a-01b7-419b4893a0df@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <799b87d9-af19-0e6a-01b7-419b4893a0df@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <cover.1675461757.git.jpoimboe@kernel.org> <f860f3a1c1a53c437a99abc53e8f1a798aef6881.1675461757.git.jpoimboe@kernel.org>
+In-Reply-To: <f860f3a1c1a53c437a99abc53e8f1a798aef6881.1675461757.git.jpoimboe@kernel.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Sat, 4 Feb 2023 09:12:31 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSKe3ve4_rsOYpmSBOyUSU5rpLHyijn9i2-i+WfLqxzYw@mail.gmail.com>
+Message-ID: <CAJF2gTSKe3ve4_rsOYpmSBOyUSU5rpLHyijn9i2-i+WfLqxzYw@mail.gmail.com>
+Subject: Re: [PATCH 05/22] csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,47 +67,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-kernel@vger.kernel.org,
+  linux-alpha@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/1/23 19:07, Shuah Khan wrote:
-> Hi Mathieu,
-> 
-> On 1/30/23 15:29, Shuah Khan wrote:
->> On 1/27/23 06:57, Mathieu Desnoyers wrote:
->>> Hi,
->>>
->>> This series fixes incorrect kernel header search path in kernel
->>> selftests.
->>>
->>> Near the end of the series, a few changes are not tagged as "Fixes"
->>> because the current behavior is to rely on the kernel sources uapi files
->>> rather than on the installed kernel header files. Nevertheless, those
->>> are updated for consistency.
->>>
->>> There are situations where "../../../../include/" was added to -I search
->>> path, which is bogus for userspace tests and caused issues with types.h.
->>> Those are removed.
->>>
-> 
-> Thanks again for taking care of this. I did out of tree build testing on
-> x86 on linux-kselftest next with these patches below. I haven't seen
-> any problems introduced by the patch set.
-> 
->>>    selftests: dma: Fix incorrect kernel headers search path
-> This one needs a change and I will send a patch on top of yours.
-> Even with that this test depends on unexported header from the
-> repo and won't build out of tree. This is not related to your
-> change.
-> 
->>>    selftests: mount_setattr: Fix incorrect kernel headers search path
-> This one fails to build with our without patch - an existing error.
-> 
-> I have to do cross-build tests on arm64 and other arch patches still.
-> This will happen later this week.
+On Sat, Feb 4, 2023 at 6:05 AM Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+>
+> arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
+> BUG().
+>
+> BUG() is preferable to unreachable() because BUG() is a more explicit
+> failure mode and avoids undefined behavior like falling off the edge of
+> the function into whatever code happens to be next.
+>
+> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> ---
+>  arch/csky/kernel/smp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+> index b45d1073307f..0ec20efaf5fd 100644
+> --- a/arch/csky/kernel/smp.c
+> +++ b/arch/csky/kernel/smp.c
+> @@ -317,5 +317,7 @@ void arch_cpu_idle_dead(void)
+>                 "jmpi   csky_start_secondary"
+>                 :
+>                 : "r" (secondary_stack));
+> +
+> +       BUG();
+Why not:
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index f26ab2675f7d..1d3bf903add2 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -285,6 +285,7 @@ static void do_idle(void)
+                        tick_nohz_idle_stop_tick();
+                        cpuhp_report_idle_dead();
+                        arch_cpu_idle_dead();
++                       BUG();
+                }
 
-arm64, s390 patches look good.
+                arch_cpu_idle_enter();
 
-thanks,
--- Shuah
+>  }
+>  #endif
+> --
+> 2.39.0
+>
+
+
+-- 
+Best Regards
+ Guo Ren
