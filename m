@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF39468AF0F
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 10:45:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652F568AF10
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 10:45:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P8kys5KXdz3f8n
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 20:45:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P8kzS1pSnz3fGQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 20:45:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8kvW1yM0z3cf8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8kvW244Sz3dwd
 	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Feb 2023 20:42:31 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P8kvR2hfSz4xyf;
-	Sun,  5 Feb 2023 20:42:27 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P8kvS0BK1z4xyj;
+	Sun,  5 Feb 2023 20:42:28 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20230121095352.2823517-1-npiggin@gmail.com>
-References: <20230121095352.2823517-1-npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64s: Fix local irq disable when PMIs are disabled
-Message-Id: <167559010434.1647710.12584447645752109701.b4-ty@ellerman.id.au>
-Date: Sun, 05 Feb 2023 20:41:44 +1100
+In-Reply-To: <20230121100156.2824054-1-npiggin@gmail.com>
+References: <20230121100156.2824054-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: Fix perf profiling asynchronous interrupt handlers
+Message-Id: <167559010526.1647710.419514345651025158.b4-ty@ellerman.id.au>
+Date: Sun, 05 Feb 2023 20:41:45 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 21 Jan 2023 19:53:52 +1000, Nicholas Piggin wrote:
-> When PMI interrupts are soft-masked, local_irq_save() will clear the PMI
-> mask bit, allowing PMIs in and causing a race condition. This causes a
-> deadlock in native_hpte_insert via hash_preload, which depends on PMIs
-> being disabled since commit 8b91cee5eadd ("powerpc/64s/hash: Make hash
-> faults work in NMI context"). native_hpte_insert calls local_irq_save().
-> It's possible the lpar hash code is also affected when tracing is
-> enabled because __trace_hcall_entry() calls local_irq_save().
+On Sat, 21 Jan 2023 20:01:56 +1000, Nicholas Piggin wrote:
+> Interrupt entry sets the soft mask to IRQS_ALL_DISABLED to match the
+> hard irq disabled state. So when should_hard_irq_enable() returns true
+> because we want PMI interrupts in irq handlers, MSR[EE] is enabled but
+> PMIs just get soft-masked. Fix this by clearing IRQS_PMI_DISABLED before
+> enabling MSR[EE].
+> 
+> This also tidies some of the warnings, no need to duplicate them in
+> both should_hard_irq_enable() and do_hard_irq_enable().
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/64s: Fix local irq disable when PMIs are disabled
-      https://git.kernel.org/powerpc/c/bc88ef663265676419555df2dc469a471c0add31
+[1/1] powerpc/64: Fix perf profiling asynchronous interrupt handlers
+      https://git.kernel.org/powerpc/c/c28548012ee2bac55772ef7685138bd1124b80c3
 
 cheers
