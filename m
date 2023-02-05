@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A92368AF0A
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 10:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94B568AF06
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 10:42:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P8kxj6nSCz3fHd
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 20:44:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P8kvy6XDMz3fDp
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 20:42:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8kvQ6Z0Gz3bZj
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Feb 2023 20:42:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8kvP5CBZz3bYw
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Feb 2023 20:42:25 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P8kvQ5FT0z4xyB;
-	Sun,  5 Feb 2023 20:42:26 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P8kvN5FdPz4x1h;
+	Sun,  5 Feb 2023 20:42:24 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20230130014707.541110-1-mpe@ellerman.id.au>
-References: <20230130014707.541110-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/kexec_file: Fix division by zero in extra size estimation
-Message-Id: <167559010752.1647710.7373851723687940810.b4-ty@ellerman.id.au>
-Date: Sun, 05 Feb 2023 20:41:47 +1100
+In-Reply-To: <20230110124753.1325426-1-mpe@ellerman.id.au>
+References: <20230110124753.1325426-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc/64s/radix: Fix crash with unaligned relocated kernel
+Message-Id: <167559010966.1647710.3621700369737652487.b4-ty@ellerman.id.au>
+Date: Sun, 05 Feb 2023 20:41:49 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: hbathini@linux.ibm.com, sourabhjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 30 Jan 2023 12:47:07 +1100, Michael Ellerman wrote:
-> In kexec_extra_fdt_size_ppc64() there's logic to estimate how much
-> extra space will be needed in the device tree for some memory related
-> properties.
+On Tue, 10 Jan 2023 23:47:52 +1100, Michael Ellerman wrote:
+> If a relocatable kernel is loaded at an address that is not 2MB aligned
+> and told not to relocate to zero, the kernel can crash due to
+> mark_rodata_ro() incorrectly changing some read-write data to read-only.
 > 
-> That logic uses the size of RAM divided by drmem_lmb_size() to do the
-> estimation. However drmem_lmb_size() can be zero if the machine has no
-> hotpluggable memory configured, which is the case when booting with qemu
-> and no maxmem=x parameter is passed (the default).
+> Scenarios where the misalignment can occur are when the kernel is
+> loaded by kdump or using the RELOCATABLE_TEST config option.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/kexec_file: Fix division by zero in extra size estimation
-      https://git.kernel.org/powerpc/c/7294194b47e994753a86eee8cf1c61f3f36458a3
+[1/2] powerpc/64s/radix: Fix crash with unaligned relocated kernel
+      https://git.kernel.org/powerpc/c/98d0219e043e09013e883eacde3b93e0b2bf944d
+[2/2] powerpc/64s/radix: Fix RWX mapping with relocated kernel
+      https://git.kernel.org/powerpc/c/111bcb37385353f0510e5847d5abcd1c613dba23
 
 cheers
