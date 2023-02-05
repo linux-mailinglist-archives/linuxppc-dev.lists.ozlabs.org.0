@@ -1,49 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B5568ADEA
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 02:24:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8998368ADF6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 02:36:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P8WrJ6jhqz3f8g
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 12:24:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P8X773Nslz3f94
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Feb 2023 12:36:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Y9WMHSnJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uX9MJcpe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8WqQ2s1gz3bTB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Feb 2023 12:23:14 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Y9WMHSnJ;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uX9MJcpe;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4P8WqQ1B86z4xG5;
-	Sun,  5 Feb 2023 12:23:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1675560194;
-	bh=+S+S6flET8zT5WTMl8b0//zYmEAC41UnRzFrIe5j+eA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Y9WMHSnJBCuOqidZGw9ThWGyzWJxP3cfWbg9WDBOe/RlKInYwdrj7VsqjEz7ZTXpH
-	 vAzn+xEIrOlOXDjOdM7SM1LLfhu8HUcpDEUQii/LLwBOWcKwIFK/w3Hhhnx+u+b39C
-	 VEU8TCQHt8oUdy36lAGULLNBFYWDUQuGIoyR0qwoq5pqBdb5FDItTtrUofYMum82bA
-	 Hn5ceY3oHHDYpOhtGp5IeeLbVZXSdBacnC/05xjzK2hhGbUzTWzkgYUAvqjyfT7oFV
-	 uK3NOyqDGBcaY/w0IySRDfjtqEyA6ecKnAGQco4h17SILjhCZkzQXRhN4J0uHUtf2w
-	 GdIk50dnwYpJQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.2-4 tag
-Date: Sun, 05 Feb 2023 12:23:13 +1100
-Message-ID: <87y1pcewhq.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P8X66014kz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Feb 2023 12:35:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=IwELQq+u55+D3EFvij7/3Egp7EtXodznpG+Iv+sxei8=; b=uX9MJcpeKwFhTkM119uoroA8Iv
+	vyKEQS7SOMmSNNMxChhOzOM9rhrDjlj8tuW9hQwW//kgZswtij9P1eFIXdQ7seLRw76cGozpeRE2e
+	t6NAJeFvoRBEbzEeFKh82WdDwaYu9uhh0prJLlkCoCz1zxzopNJvmZTIvNu8Leo5B1Q2oA1GtvnC1
+	KTD4OD0oSsDUO2gtgnZ/LZNe0MwZpchPEd/gYAvd7QCgyl7S1aJ3Z9JxhEKKzfgZ5Zwo2QfNW/Guf
+	0f9bEZFjq8l9zTJgJqpxLoIdtrf2lMeR0BlJUwHauHiaA3hJYaWvlbLhZPTJJPKpwqaQ9ih30Ie1u
+	aIh+jpuQ==;
+Received: from [2601:1c2:d00:6a60::9526]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pOTwh-005p7l-Bc; Sun, 05 Feb 2023 01:35:55 +0000
+Message-ID: <4e96046c-96f8-d5ae-3143-00a0bba6b9b9@infradead.org>
+Date: Sat, 4 Feb 2023 17:35:54 -0800
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: PPC64 TOC. warnings
+Content-Language: en-US
+To: Masahiro Yamada <masahiroy@kernel.org>
+References: <80c85984-7609-cab5-2341-48baeb67841e@infradead.org>
+ <CAK7LNAQ2==FuLS9P3xqHocd_+4SxkP-Y45F038Y0o9SYwPR6SA@mail.gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <CAK7LNAQ2==FuLS9P3xqHocd_+4SxkP-Y45F038Y0o9SYwPR6SA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,97 +60,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sourabhjain@linux.ibm.com, sv@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Hi Linus,
-
-Please pull some more powerpc fixes for 6.2.
-
-It's a bit of a big batch for rc6, but just because I didn't send any fixes the last week
-or two while I was on vacation, next week should be quieter.
-
-cheers
-
-The following changes since commit f12cd06109f47c2fb4b23a45ab55404c47ef7fae:
-
-  powerpc/64s/hash: Make stress_hpt_timer_fn() static (2023-01-12 10:53:37 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.2-4
-
-for you to fetch changes up to 1665c027afb225882a5a0b014c45e84290b826c2:
-
-  powerpc/64s: Reconnect tlb_flush() to hash__tlb_flush() (2023-02-02 13:25:47 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.2 #4
-
- - Fix a few objtool warnings since we recently enabled objtool.
-
- - Fix a deadlock with the hash MMU vs perf record.
-
- - Fix perf profiling of asynchronous interrupt handlers.
-
- - Revert the IMC PMU nest_init_lock to being a mutex.
-
- - Two commits fixing problems with the kexec_file FDT size estimation.
-
- - Two commits fixing problems with strict RWX vs kernels running at non-zero.
-
- - Reconnect tlb_flush() to hash__tlb_flush()
-
-Thanks to: Kajol Jain, Nicholas Piggin, Sachin Sant Sathvika Vasireddy, Sourabh Jain.
-
-- ------------------------------------------------------------------
-Michael Ellerman (5):
-      powerpc/imc-pmu: Revert nest_init_lock to being a mutex
-      powerpc/kexec_file: Fix division by zero in extra size estimation
-      powerpc/64s/radix: Fix crash with unaligned relocated kernel
-      powerpc/64s/radix: Fix RWX mapping with relocated kernel
-      powerpc/64s: Reconnect tlb_flush() to hash__tlb_flush()
-
-Nicholas Piggin (2):
-      powerpc/64s: Fix local irq disable when PMIs are disabled
-      powerpc/64: Fix perf profiling asynchronous interrupt handlers
-
-Sathvika Vasireddy (2):
-      powerpc/85xx: Fix unannotated intra-function call warning
-      powerpc/kvm: Fix unannotated intra-function call warning
-
-Sourabh Jain (1):
-      powerpc/kexec_file: Count hot-pluggable memory in FDT estimate
 
 
- arch/powerpc/include/asm/book3s/64/tlbflush.h |  2 +
- arch/powerpc/include/asm/hw_irq.h             | 43 ++++++++++++++------
- arch/powerpc/kernel/dbell.c                   |  2 +-
- arch/powerpc/kernel/head_85xx.S               |  3 +-
- arch/powerpc/kernel/irq.c                     |  2 +-
- arch/powerpc/kernel/time.c                    |  2 +-
- arch/powerpc/kexec/file_load_64.c             | 11 +++--
- arch/powerpc/kvm/booke.c                      |  5 +--
- arch/powerpc/mm/book3s64/radix_pgtable.c      | 24 +++++++++++
- arch/powerpc/perf/imc-pmu.c                   | 14 +++----
- 10 files changed, 77 insertions(+), 31 deletions(-)
------BEGIN PGP SIGNATURE-----
+On 2/4/23 09:40, Masahiro Yamada wrote:
+> On Sun, Feb 5, 2023 at 2:30 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>>
+>> Hi,
+>>
+>> I'm seeing thousands of these warnings:
+>> (gcc 12.2.0)
+>>
+>>
+>> ./include/generated/autoksyms.h:7:9: warning: ISO C99 requires whitespace after the macro name
+>>     7 | #define __KSYM_TOC. 1
+>>       |         ^~~~~~~~~~
+>>
+>> In file included from ../include/asm-generic/export.h:57,
+>>                  from ./arch/powerpc/include/generated/asm/export.h:1,
+>>                  from ../arch/powerpc/kernel/misc.S:17:
+>> ./include/generated/autoksyms.h:7:9: warning: missing whitespace after the macro name
+>>     7 | #define __KSYM_TOC. 1
+>>       |         ^~~~~~~~~~
+>>
+>>
+>> Can anything be done about them?
+>>
+>> Thanks.
+>> --
+>> ~Randy
+> 
+> 
+> 
+> Hmm, I just thought this issue was fixed by
+> commit 29500f15b54b63ad0ea60b58e85144262bd24df2
+> 
+> 
+> 
+> Does this happen only for GCC 12?
+> 
+> Does the following patch fix the issue?
+> (I did not test it.)
+> 
+> 
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmPfBM8ACgkQUevqPMjh
-pYAFDQ/8CgBQ+Cf7q1yNm35L+IjA2kLub392pXEPVFf5+81hdib8VdSdLVsngXwZ
-e7bwbId16xzLVGB3MDm8MqokCxwWcd3n8RjCMKal408c1qqcdlLHEi52MmQK2e2W
-CIfGM5HbrqlEy8y4IfHQZ5W8DdjVh+8EzlfIMYJyyLB6508o1G9BB0ToFo/VtrZH
-pB2cnXKLpthZ18l9n6t5z49rSOLukndwJif7Dloi8nTkz4NJ+uD8g1eQEQtiXPmC
-KkBc19HWvHkHYGGg6nHCT0nvUEJ6jY4RBzTTyJnRdSrZwMACwiCqHS4p1EoKuU1+
-kC7SN2VpJDSpGpxGItxPA+GgtaPuwWy/bY9ffEbRI46qpS2J/W2ChcAPhhdE1roY
-IBIPD/p3hiAJNBtK4tpsv0hoErPnOIVKgsAsgKy/4dxojElCGGXn2FqbdFfOmp4u
-Vh8vy6ploiiuQZjLB/znNyzD72jjqfyNPAaT05rLIgnAYdOnFYHm7KLoEyxL48gj
-nxsDmXen8JWuVvRMpA7magZ4MHmjJ5GOaZfjqEM5d0nFIuQErlYyztQ88QfMX7Gu
-TW92hAFe6F5d5FNbN+AG4l/qr6fHJ96ViIED1q+2zNj+Uh/JTMTHk0b/BuSM+6u+
-SNeQrlqksha1OlgGtxb5fskdly8lPVytPXgCrWjuvU8K/jaqQN8=
-=kk/e
------END PGP SIGNATURE-----
+I have been running build tests all day (have probably done around 500 builds)
+and I'm not seeing the build problem now. I don't know why not or what changed.
+
+I have not applied the patch below. I'm just trying to reproduce the problem
+and cannot do so. (Bad me: I had 3 build failures earlier but I didn't save the
+failing .config files! I didn't think that it would be so difficult to reproduce.)
+
+Thanks for your help.
+
+> 
+> 
+> 
+> diff --git a/scripts/gen_autoksyms.sh b/scripts/gen_autoksyms.sh
+> index 12bcfae940ee..70d4ab3621f6 100755
+> --- a/scripts/gen_autoksyms.sh
+> +++ b/scripts/gen_autoksyms.sh
+> @@ -54,7 +54,7 @@ EOT
+>  } | sed -e 's/ /\n/g' | sed -n -e '/^$/!p' |
+>  # Remove the dot prefix for ppc64; symbol names with a dot (.) hold entry
+>  # point addresses.
+> -sed -e 's/^\.//' |
+> +sed -e 's/^\.//g' |
+>  sort -u |
+>  # Ignore __this_module. It's not an exported symbol, and will be resolved
+>  # when the final .ko's are linked.
+
+
+-- 
+~Randy
