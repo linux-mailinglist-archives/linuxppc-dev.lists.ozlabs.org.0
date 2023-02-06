@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40DF68C662
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 20:04:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571C568C663
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 20:04:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P9bK04ccCz3fTv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 06:04:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9bL10x5hz3fbt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 06:04:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W/o7HifC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SpSFkI+A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W/o7HifC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SpSFkI+A;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5z4tctz3cMR
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5z4vj8z3cMn
 	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 05:54:31 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5585860FF4;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4AC1460FE1;
 	Mon,  6 Feb 2023 18:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 82610C433A8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8BAD5C433AC;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1675709665;
-	bh=+pC+FZc9iAE0L6DVRGOjsHp8weWdfKOZBYNgltfouaw=;
+	bh=IlLHZk5f5J2l4/P4Yaw17Kfwk4GTaWxSkG9RzGkL5Ew=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=W/o7HifCAEOeT+WMD7oK/vf/YcaC8B8YI72rbI2cv7Vt+SbRbMC8C368z1MBtWDNp
-	 cCZdCgrLZI5HTKf8vrFNhyXPLcIAFcGq7gFOwQGaD49cm4Snw0IjzZC3PHSSZnPltc
-	 XoHdL2Uw0RIWjIAxFCTtnojma1Ls/XC8tZ4xxj9nffKEJheX0Y02RccIF4WgFKj/xo
-	 Lt55RbhcJltVOCXdxoPNwD2t57AfKta3bqVRrWiY2fjb0eyJ8xZEhTUl6fDAUHtz+D
-	 fkcyKOhCl63ZKizh4HNbt8eQTlKGIfy0KlYKf6oKK84M3tspmzmiZTJQrMoLQDPvSj
-	 aqxoUbRzcBRMQ==
+	b=SpSFkI+AJn143F9NF7x/Gq4MTTv4x65N2zdAqvSpYlG3WDvADbdDD6qgsJO+Ra2yK
+	 uwKyNINNpXKb4bhy2M+ejMalGDO5rlVqCsoryKQg9LCstv2xys0Ip9nxFyy33kBdiI
+	 tyJydBCln0BDfI321xkTVH1w0wt0xjKItSCs+qoPqEvxmSL7aghp7phSUXwItpD3js
+	 2+ZEDLC9Ccb4MkteaMVMnlE5VwW6Kh6GXNtMgfhXL0WR/dtmoey4AZzHi5vhp+95re
+	 f8Ej+0pyjcA8maPTmD+8x1d464EytGlNokS7fo2XNtiLiMvp3MkuSjC7sbXTXz39UC
+	 QfuafiqEtCk9w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FD17C6379F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B580C636D3;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 From: Nathan Lynch via B4 Submission Endpoint
  <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Mon, 06 Feb 2023 12:54:25 -0600
-Subject: [PATCH v2 09/19] powerpc/tracing: tracepoints for RTAS entry and
- exit
+Date: Mon, 06 Feb 2023 12:54:26 -0600
+Subject: [PATCH v2 10/19] powerpc/rtas: add tracepoints around RTAS entry
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230125-b4-powerpc-rtas-queue-v2-9-9aa6bd058063@linux.ibm.com>
+Message-Id: <20230125-b4-powerpc-rtas-queue-v2-10-9aa6bd058063@linux.ibm.com>
 References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 In-Reply-To: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
@@ -59,11 +58,11 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
  Andrew Donnellan <ajd@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=6439;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=3071;
  i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
- bh=wDn9ix2eBqz3VhUH9dpd9gT14peQ95qrGRvmcr4zpbw=;
- b=8oX6AelRB0SLjApT/g5sVekIN5so4s+FirYUaMYDqFZfYVFK7z7YyaJyTnRWK/06bxPRtzCvR
- ONU/SmIWU+BAIYI//X0N6ztHe4RS7HtPTQqy7nEpVdGI/1S7fgqkouC
+ bh=5scexNa7Ih0QI44Wd77pHpg0KZ6geAmSW9N53TuzSCo=;
+ b=bD6Liq6BeAwLuDHqmgYwXXGQ9Mq0N/VCpOhCWGPLrT5V1kjV03dxOEA/HjG9yF1b/LEbfH/rz
+ nSMJMbagFa5D3Y8aNqcffMCwv93X2ki9slfD78Ug2iWnGoafm0nYwFB
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
 X-Endpoint-Received:  by B4 Submission Endpoint for nathanl@linux.ibm.com/20230206 with auth_id=27
@@ -86,167 +85,104 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Add two sets of tracepoints to be used around RTAS entry:
-
-* rtas_input/rtas_output, which emit the function name, its inputs,
-  the returned status, and any other outputs. These produce an API-level
-  record of OS<->RTAS activity.
-
-* rtas_ll_entry/rtas_ll_exit, which are lower-level and emit the
-  entire contents of the parameter block (aka rtas_args) on entry and
-  exit. Likely useful only for debugging.
-
-With uses of these tracepoints in do_enter_rtas() to be added in the
-following patch, examples of get-time-of-day and event-scan functions
-as rendered by trace-cmd (with some multi-line formatting manually
-imposed on the rtas_ll_* entries to avoid extremely long lines in the
-commit message):
-
-cat-36800 [059]  4978.518303: rtas_input:           get-time-of-day arguments:
-cat-36800 [059]  4978.518306: rtas_ll_entry:        token=3 nargs=0 nret=8
-                                                    params: [0]=0x00000000 [1]=0x00000000 [2]=0x00000000 [3]=0x00000000
-                                                            [4]=0x00000000 [5]=0x00000000 [6]=0x00000000 [7]=0x00000000
-							    [8]=0x00000000 [9]=0x00000000 [10]=0x00000000 [11]=0x00000000
-							    [12]=0x00000000 [13]=0x00000000 [14]=0x00000000 [15]=0x00000000
-cat-36800 [059]  4978.518366: rtas_ll_exit:         token=3 nargs=0 nret=8
-                                                    params: [0]=0x00000000 [1]=0x000007e6 [2]=0x0000000b [3]=0x00000001
-						            [4]=0x00000000 [5]=0x0000000e [6]=0x00000008 [7]=0x2e0dac40
-							    [8]=0x00000000 [9]=0x00000000 [10]=0x00000000 [11]=0x00000000
-							    [12]=0x00000000 [13]=0x00000000 [14]=0x00000000 [15]=0x00000000
-cat-36800 [059]  4978.518366: rtas_output:          get-time-of-day status: 0, other outputs: 2022 11 1 0 14 8 772648000
-
-kworker/39:1-336   [039]  4982.731623: rtas_input:           event-scan arguments: 4294967295 0 80484920 2048
-kworker/39:1-336   [039]  4982.731626: rtas_ll_entry:        token=6 nargs=4 nret=1
-                                                             params: [0]=0xffffffff [1]=0x00000000 [2]=0x04cc1a38 [3]=0x00000800
-							             [4]=0x00000000 [5]=0x0000000e [6]=0x00000008 [7]=0x2e0dac40
-								     [8]=0x00000000 [9]=0x00000000 [10]=0x00000000 [11]=0x00000000
-								     [12]=0x00000000 [13]=0x00000000 [14]=0x00000000 [15]=0x00000000
-kworker/39:1-336   [039]  4982.731676: rtas_ll_exit:         token=6 nargs=4 nret=1
-                                                             params: [0]=0xffffffff [1]=0x00000000 [2]=0x04cc1a38 [3]=0x00000800
-							             [4]=0x00000001 [5]=0x0000000e [6]=0x00000008 [7]=0x2e0dac40
-								     [8]=0x00000000 [9]=0x00000000 [10]=0x00000000 [11]=0x00000000
-								     [12]=0x00000000 [13]=0x00000000 [14]=0x00000000 [15]=0x00000000
-kworker/39:1-336   [039]  4982.731677: rtas_output:          event-scan status: 1, other outputs:
+Decompose the RTAS entry C code into tracing and non-tracing variants,
+calling the just-added tracepoints in the tracing-enabled path. Skip
+tracing in contexts known to be unsafe (real mode, CPU offline).
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/include/asm/trace.h | 103 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+ arch/powerpc/kernel/rtas.c | 59 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 53 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/trace.h b/arch/powerpc/include/asm/trace.h
-index 08cd60cd70b7..82cc2c6704e6 100644
---- a/arch/powerpc/include/asm/trace.h
-+++ b/arch/powerpc/include/asm/trace.h
-@@ -119,6 +119,109 @@ TRACE_EVENT_FN_COND(hcall_exit,
- );
- #endif
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 52c1ed7869b8..3290f25b9b34 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -38,6 +38,7 @@
+ #include <asm/page.h>
+ #include <asm/rtas.h>
+ #include <asm/time.h>
++#include <asm/trace.h>
+ #include <asm/udbg.h>
  
-+#ifdef CONFIG_PPC_RTAS
+ struct rtas_filter {
+@@ -523,24 +524,70 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
+ /* This is here deliberately so it's only used in this file */
+ void enter_rtas(unsigned long);
+ 
++static void __do_enter_rtas(struct rtas_args *args)
++{
++	enter_rtas(__pa(args));
++	srr_regs_clobbered(); /* rtas uses SRRs, invalidate */
++}
 +
-+#include <asm/rtas-types.h>
++static void __do_enter_rtas_trace(struct rtas_args *args)
++{
++	const char *name = NULL;
++	/*
++	 * If the tracepoints that consume the function name aren't
++	 * active, avoid the lookup.
++	 */
++	if ((trace_rtas_input_enabled() || trace_rtas_output_enabled())) {
++		const s32 token = be32_to_cpu(args->token);
++		const struct rtas_function *func = rtas_token_to_function(token);
 +
-+TRACE_EVENT(rtas_input,
++		name = func->name;
++	}
 +
-+	TP_PROTO(struct rtas_args *rtas_args, const char *name),
++	trace_rtas_input(args, name);
++	trace_rtas_ll_entry(args);
 +
-+	TP_ARGS(rtas_args, name),
++	__do_enter_rtas(args);
 +
-+	TP_STRUCT__entry(
-+		__field(__u32, nargs)
-+		__string(name, name)
-+		__dynamic_array(__u32, inputs, be32_to_cpu(rtas_args->nargs))
-+	),
++	trace_rtas_ll_exit(args);
++	trace_rtas_output(args, name);
++}
 +
-+	TP_fast_assign(
-+		__entry->nargs = be32_to_cpu(rtas_args->nargs);
-+		__assign_str(name, name);
-+		be32_to_cpu_array(__get_dynamic_array(inputs), rtas_args->args, __entry->nargs);
-+	),
-+
-+	TP_printk("%s arguments: %s", __get_str(name),
-+		  __print_array(__get_dynamic_array(inputs), __entry->nargs, 4)
-+	)
-+);
-+
-+TRACE_EVENT(rtas_output,
-+
-+	TP_PROTO(struct rtas_args *rtas_args, const char *name),
-+
-+	TP_ARGS(rtas_args, name),
-+
-+	TP_STRUCT__entry(
-+		__field(__u32, nr_other)
-+		__field(__s32, status)
-+		__string(name, name)
-+		__dynamic_array(__u32, other_outputs, be32_to_cpu(rtas_args->nret) - 1)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->nr_other = be32_to_cpu(rtas_args->nret) - 1;
-+		__entry->status = be32_to_cpu(rtas_args->rets[0]);
-+		__assign_str(name, name);
-+		be32_to_cpu_array(__get_dynamic_array(other_outputs),
-+				  &rtas_args->rets[1], __entry->nr_other);
-+	),
-+
-+	TP_printk("%s status: %d, other outputs: %s", __get_str(name), __entry->status,
-+		  __print_array(__get_dynamic_array(other_outputs),
-+				__entry->nr_other, 4)
-+	)
-+);
-+
-+DECLARE_EVENT_CLASS(rtas_parameter_block,
-+
-+	TP_PROTO(struct rtas_args *rtas_args),
-+
-+	TP_ARGS(rtas_args),
-+
-+	TP_STRUCT__entry(
-+		__field(u32, token)
-+		__field(u32, nargs)
-+		__field(u32, nret)
-+		__array(__u32, params, 16)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->token = be32_to_cpu(rtas_args->token);
-+		__entry->nargs = be32_to_cpu(rtas_args->nargs);
-+		__entry->nret = be32_to_cpu(rtas_args->nret);
-+		be32_to_cpu_array(__entry->params, rtas_args->args, ARRAY_SIZE(rtas_args->args));
-+	),
-+
-+	TP_printk("token=%u nargs=%u nret=%u params:"
-+		  " [0]=0x%08x [1]=0x%08x [2]=0x%08x [3]=0x%08x"
-+		  " [4]=0x%08x [5]=0x%08x [6]=0x%08x [7]=0x%08x"
-+		  " [8]=0x%08x [9]=0x%08x [10]=0x%08x [11]=0x%08x"
-+		  " [12]=0x%08x [13]=0x%08x [14]=0x%08x [15]=0x%08x",
-+		  __entry->token, __entry->nargs, __entry->nret,
-+		  __entry->params[0], __entry->params[1], __entry->params[2], __entry->params[3],
-+		  __entry->params[4], __entry->params[5], __entry->params[6], __entry->params[7],
-+		  __entry->params[8], __entry->params[9], __entry->params[10], __entry->params[11],
-+		  __entry->params[12], __entry->params[13], __entry->params[14], __entry->params[15]
-+	)
-+);
-+
-+DEFINE_EVENT(rtas_parameter_block, rtas_ll_entry,
-+
-+	TP_PROTO(struct rtas_args *rtas_args),
-+
-+	TP_ARGS(rtas_args)
-+);
-+
-+DEFINE_EVENT(rtas_parameter_block, rtas_ll_exit,
-+
-+	TP_PROTO(struct rtas_args *rtas_args),
-+
-+	TP_ARGS(rtas_args)
-+);
-+
-+#endif /* CONFIG_PPC_RTAS */
-+
- #ifdef CONFIG_PPC_POWERNV
- extern int opal_tracepoint_regfunc(void);
- extern void opal_tracepoint_unregfunc(void);
+ static void do_enter_rtas(struct rtas_args *args)
+ {
+-	unsigned long msr;
+-
++	const unsigned long msr = mfmsr();
++	/*
++	 * Situations where we want to skip any active tracepoints for
++	 * safety reasons:
++	 *
++	 * 1. The last code executed on an offline CPU as it stops,
++	 *    i.e. we're about to call stop-self. The tracepoints'
++	 *    function name lookup uses xarray, which uses RCU, which
++	 *    isn't valid to call on an offline CPU.  Any events
++	 *    emitted on an offline CPU will be discarded anyway.
++	 *
++	 * 2. In real mode, as when invoking ibm,nmi-interlock from
++	 *    the pseries MCE handler. We cannot count on trace
++	 *    buffers or the entries in rtas_token_to_function_xarray
++	 *    to be contained in the RMO.
++	 */
++	const unsigned long mask = MSR_IR | MSR_DR;
++	const bool can_trace = likely(cpu_online(raw_smp_processor_id()) &&
++				      (msr & mask) == mask);
+ 	/*
+ 	 * Make sure MSR[RI] is currently enabled as it will be forced later
+ 	 * in enter_rtas.
+ 	 */
+-	msr = mfmsr();
+ 	BUG_ON(!(msr & MSR_RI));
+ 
+ 	BUG_ON(!irqs_disabled());
+ 
+ 	hard_irq_disable(); /* Ensure MSR[EE] is disabled on PPC64 */
+ 
+-	enter_rtas(__pa(args));
+-
+-	srr_regs_clobbered(); /* rtas uses SRRs, invalidate */
++	if (can_trace)
++		__do_enter_rtas_trace(args);
++	else
++		__do_enter_rtas(args);
+ }
+ 
+ struct rtas_t rtas;
 
 -- 
 2.39.1
