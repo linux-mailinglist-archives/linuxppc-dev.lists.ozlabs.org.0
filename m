@@ -2,94 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AEF68B424
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 03:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC44F68B467
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 04:13:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P996q6yPSz3f93
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 13:23:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9BCd6N3Nz3cf3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 14:13:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GTN1c/5k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBHWxbUE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GTN1c/5k;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBHWxbUE;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P990k6GxNz3c8f
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 13:18:30 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3160IrOu018983;
-	Mon, 6 Feb 2023 02:18:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=4zAYxwoNGsKhWou4H4eBW5kYCRuovqzJGg1HviIdEc0=;
- b=GTN1c/5k6h83o1yH+ktMBs0o0+QpxAipAXGd6Rpqp9kQF584okK2e1MtenhIhf+Gbz0V
- pg3hFBB6Qs6wcoOtp3iau/FijQDab5oPxNGjW2e1JUwbCeK+Lkl3aKUwT3TMAjKXvORI
- E0CxYzK+1qnSGJpUa2VBFl6zcvSRtDvBtkwwq+tZPSNBEOuDM9DPmcCH779G3oOR4ctD
- 4SDTGUceLyl5fPEDbqdFxPeNE76bC3Ta8bdavcnH3rPqDizL9Cq2kLCXi7GbrBR9vNOP
- NNHJAnXg3hRE0AigHW1WXaZZ32/GDNDZggOp3DmRgWL2pW/edojCE5euk9Kar7Wpzqfe 1Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nj1a0avwe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Feb 2023 02:18:25 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3162Biec009137;
-	Mon, 6 Feb 2023 02:18:24 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nj1a0avvw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Feb 2023 02:18:24 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31605N8Q024259;
-	Mon, 6 Feb 2023 02:18:23 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3nhf06sup9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Feb 2023 02:18:23 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3162IKuf43909396
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Feb 2023 02:18:20 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86F1B2004B;
-	Mon,  6 Feb 2023 02:18:20 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EAA7020040;
-	Mon,  6 Feb 2023 02:18:19 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Feb 2023 02:18:19 +0000 (GMT)
-Received: from civic.. (haven.au.ibm.com [9.192.254.114])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9BBf4cR5z30RT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 14:12:10 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 944C4606E9;
-	Mon,  6 Feb 2023 13:18:14 +1100 (AEDT)
-From: Rohan McLure <rmclure@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 5/5] powerpc: kcsan: Add KCSAN Support
-Date: Mon,  6 Feb 2023 13:18:01 +1100
-Message-Id: <20230206021801.105268-6-rmclure@linux.ibm.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230206021801.105268-1-rmclure@linux.ibm.com>
-References: <20230206021801.105268-1-rmclure@linux.ibm.com>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D45F560C07
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 03:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E4CC433EF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 03:12:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675653127;
+	bh=SEHqDj0pecZaoDvI2TxfvISMCoNXpVJslROmtkQHTl0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aBHWxbUE1qscXgToVSLDbDbOTBJx5ol3QAloFKF6quHuxSLDc6bLN0hEb6oLgxGmy
+	 MnLxdeRrgyeBdJ9pGDDQDN8qL5E9eF3ZREg1BlrIswbxzqSGfwNgKGkpU7eR7l/H+i
+	 Vbq9BwU/inl0wIHB7aGtD4Z3NEhanBgFaoByYV66gksXGt6rGyMFlx2u7/LVAOMEK5
+	 3UQMP1Lhs7EYtOpLuMlrIWY7J57uJMJDeSdRPH5Gq31PiUX/XFKpgBmcKERl5TtGxs
+	 zZmDid7aciqyecTQEc01AFRGPklMTl/8Ni72awcEbNNyPoB7lSyFUULT/gnF3yjq+a
+	 QYealvajIFRZg==
+Received: by mail-ej1-f51.google.com with SMTP id lu11so30517646ejb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Feb 2023 19:12:07 -0800 (PST)
+X-Gm-Message-State: AO0yUKUCPOcTczCnqrjP9PhvnY6OoyD8/01AegvKp0RAPBZgZuHc+CXt
+	if8peIlrX8WotN+VnjPSc2fW7ZjZUDDIsEUmI8A=
+X-Google-Smtp-Source: AK7set+C2OPIEjxuD4imJwgo/SdFRSDGqxy+aWdQoxwR9LsZ/L0xaRFmrPMBBJUVbKfwf6WwaCs9pUvWr8CjvlkkXS4=
+X-Received: by 2002:a17:906:8419:b0:884:c19c:7c6 with SMTP id
+ n25-20020a170906841900b00884c19c07c6mr4724728ejx.120.1675653125517; Sun, 05
+ Feb 2023 19:12:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SHjL4B3WLgxbxOv2btC-bSL3Ve3-Z4iX
-X-Proofpoint-ORIG-GUID: 4vUDioMIelix9JtzvanQ1NIWCoR67Eoc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-02-06_01,2023-02-03_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=814 clxscore=1015 impostorscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302060018
+References: <cover.1675461757.git.jpoimboe@kernel.org> <f860f3a1c1a53c437a99abc53e8f1a798aef6881.1675461757.git.jpoimboe@kernel.org>
+ <CAJF2gTSKe3ve4_rsOYpmSBOyUSU5rpLHyijn9i2-i+WfLqxzYw@mail.gmail.com> <20230204022932.k24laszjs3v4bc3v@treble>
+In-Reply-To: <20230204022932.k24laszjs3v4bc3v@treble>
+From: Guo Ren <guoren@kernel.org>
+Date: Mon, 6 Feb 2023 11:11:53 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSrGNm3xkwzws4uh1bv__1XYFCh322MJtk2ObQmv1_nEA@mail.gmail.com>
+Message-ID: <CAJF2gTSrGNm3xkwzws4uh1bv__1XYFCh322MJtk2ObQmv1_nEA@mail.gmail.com>
+Subject: Re: [PATCH 05/22] csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,38 +68,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>, npiggin@gmail.com
+Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-kernel@vger.kernel.org,
+  linux-alpha@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Enable HAVE_ARCH_KCSAN on all powerpc platforms, permitting use of the
-kernel concurrency sanitiser through the CONFIG_KCSAN_* kconfig options.
-KCSAN requires compiler builtins __atomic_* 64-bit values, and so only
-report support on PPC64.
+On Sat, Feb 4, 2023 at 10:29 AM Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+>
+> On Sat, Feb 04, 2023 at 09:12:31AM +0800, Guo Ren wrote:
+> > On Sat, Feb 4, 2023 at 6:05 AM Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+> > >
+> > > arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
+> > > BUG().
+> > >
+> > > BUG() is preferable to unreachable() because BUG() is a more explicit
+> > > failure mode and avoids undefined behavior like falling off the edge of
+> > > the function into whatever code happens to be next.
+> > >
+> > > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > > ---
+> > >  arch/csky/kernel/smp.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+> > > index b45d1073307f..0ec20efaf5fd 100644
+> > > --- a/arch/csky/kernel/smp.c
+> > > +++ b/arch/csky/kernel/smp.c
+> > > @@ -317,5 +317,7 @@ void arch_cpu_idle_dead(void)
+> > >                 "jmpi   csky_start_secondary"
+> > >                 :
+> > >                 : "r" (secondary_stack));
+> > > +
+> > > +       BUG();
+> > Why not:
+> > diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+> > index f26ab2675f7d..1d3bf903add2 100644
+> > --- a/kernel/sched/idle.c
+> > +++ b/kernel/sched/idle.c
+> > @@ -285,6 +285,7 @@ static void do_idle(void)
+> >                         tick_nohz_idle_stop_tick();
+> >                         cpuhp_report_idle_dead();
+> >                         arch_cpu_idle_dead();
+> > +                       BUG();
+>
+> Without the BUG() in csky arch_cpu_idle_dead(), the compiler will warn
+> about arch_cpu_idle_dead() returning, because it's marked __noreturn but
+> doesn't clearly return (as far as the compiler knows).
+>
+> And we want it marked __noreturn so we'll be more likely to catch such
+> bugs at build time.
+>
+> And as a bonus we get better code generation and clearer code semantics
+> which helps both humans and tooling understand the intent of the code.
+Thx for the clarification.
 
-See documentation in Documentation/dev-tools/kcsan.rst for more
-information.
+Acked-by: Guo Ren <guoren@kernel.org>
 
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
----
-v3: Restrict support to 64-bit, as TSAN expects 64-bit __atomic_* compiler
-built-ins.
----
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+>
+> --
+> Josh
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b8c4ac56bddc..55bc2d724c73 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -198,6 +198,7 @@ config PPC
- 	select HAVE_ARCH_KASAN			if PPC_RADIX_MMU
- 	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64
- 	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
-+	select HAVE_ARCH_KCSAN            if PPC64
- 	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
- 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
- 	select HAVE_ARCH_KGDB
+
+
 -- 
-2.37.2
-
+Best Regards
+ Guo Ren
