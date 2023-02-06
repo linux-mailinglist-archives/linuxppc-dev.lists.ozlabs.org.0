@@ -1,69 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A51568B4D4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 05:23:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC6668B4F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 05:41:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P9CnB0V1Kz3cJF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 15:23:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9D9n3cYsz3cLJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 15:41:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OwzOhebu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lYFvjvxQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OwzOhebu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lYFvjvxQ;
 	dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9CmG5Qsnz3cBP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 15:22:52 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id d6-20020a17090ae28600b00230aa72904fso2077790pjz.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Feb 2023 20:22:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DaSzq8FqzUHiUTcUMRlnptzOUkBQVIQiEEXXE3bN2Lc=;
-        b=OwzOhebuvUgPtW9WCTaKUt7vxHiSOs19AobQNeAwVe11n3M9vnQvWkCh7lwxt1Kffp
-         mo3/1X6Omof+ZZ2+pOq7l3eOFb6f6MJs/cTWrg9GSz/RH/EHag7MHGHDD9Ze7jGiPMPl
-         ArfZ/CNRPPbczOz8sNCDL688CLtUizr4+dClmfYDhhJ9HIwYbUhmaNnKQW64uETVYWYv
-         JpLqDpYxY2ZYeVCLQr5wKqoCL0YkKe8ibYztJm9RGfA0ZkTO3XiRdahLybPYjW398tw2
-         NuR/U60QQGT2w2qrvMbYEjiUGdZSCNXR1sX0KnrXN5R6+TQfqO3ZMRFY/mgqwSuHcEew
-         fciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DaSzq8FqzUHiUTcUMRlnptzOUkBQVIQiEEXXE3bN2Lc=;
-        b=ETm6Zz0HloLvwHywt4H33gDZ+8FqREZFO3fgEoM56QLOQkmS7xaQflRFE70560mS+L
-         uWQDmKPL9UTvpd9gfM0L9nO4CG7i3ay1jt6GV3HPbtZIfDUgxHPIZGMPWDTE37pJ2JO/
-         QqlvY+x7lKspj+Pueshv5/mYSgVb1FbMCRYTQBqEZXLG1mngO6POVAhel86WbHw96rLU
-         AjANCOC2jLfPPDp5x1Uqr8Gk9vjuhDVV1vTNCswkOATp0qq5x5AQJ/UbIfPWg1kklZQw
-         uiTZ8mwWtEl3uMyxdzHb+wiExUOHU5jO8pgEJXyM9UAgdKUkxD1lanDyUhQEibqN+QCh
-         1OkA==
-X-Gm-Message-State: AO0yUKXrdERKnvOooaUMaWRuQrhKgWu5eqkavO0ObCbKBNVygrPM7k12
-	a28SZ8SJ8/q6ThvGy7Bv6VxKGm+dOys=
-X-Google-Smtp-Source: AK7set+SAXL+sf6qEwnNuOzN1ySNDtQUEf1K9A4AfD7mlH6yYWvXuSpVoJbQrExT990amlOz9JA3sg==
-X-Received: by 2002:a05:6a20:3d92:b0:b9:7a47:bca5 with SMTP id s18-20020a056a203d9200b000b97a47bca5mr25000739pzi.43.1675657368084;
-        Sun, 05 Feb 2023 20:22:48 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com ([203.194.47.63])
-        by smtp.gmail.com with ESMTPSA id r9-20020a63a009000000b004db2b310f95sm5116323pge.16.2023.02.05.20.22.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Feb 2023 20:22:47 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s/interrupt: Fix interrupt exit race with security mitigation switch
-Date: Mon,  6 Feb 2023 14:22:40 +1000
-Message-Id: <20230206042240.92103-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9D8t1q74z30RT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Feb 2023 15:40:44 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3161HG7U022945;
+	Mon, 6 Feb 2023 04:40:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=RV7WUkegwLiL+5H2WOWRskyGI+Aqqf6qVmM1XCFZL4w=;
+ b=lYFvjvxQaSc04i2Oa7qs+04vsEZvCmZ1KBAnoi4Rc9YGMxToZO9+1NuNBMezesK3kcDJ
+ IKgqsxFM1DELn6TDHzZLDsYgexTHEvymybeUA4ENOhEfj6hD+zv0L3fJ7cL103TFnrIr
+ m/9dkIFKXpNoiFvzLBs16ob060iVArXZNABmwr2F0Pjwz15dKA5zEF0Bk785gvYkuSgK
+ NY2ikn1G8N6WcqboLe95i6l5wWZg6DGb2VhWPmq5dgW1RdOXfghUwdKXvH8n4CQFlN06
+ 5hO3pfsqGLjZJhHOZ8xggPcetQrpdFofZwYv3FHyaUQYYx6AVgUKgPXAwcYnfEkF99oO mA== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nj16rdddx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Feb 2023 04:40:38 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3160sh11022813;
+	Mon, 6 Feb 2023 04:40:35 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3nhemfhd82-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Feb 2023 04:40:35 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3164eVQk46858706
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Feb 2023 04:40:31 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C86832004B;
+	Mon,  6 Feb 2023 04:40:31 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 87D6F20043;
+	Mon,  6 Feb 2023 04:40:30 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.64.42])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  6 Feb 2023 04:40:30 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH] tools/perf/tests: Add system wide check for perf bench
+ workload in all metric test
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20230202164413.56743-1-kjain@linux.ibm.com>
+Date: Mon, 6 Feb 2023 10:10:28 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3BB099AB-5FB4-40FF-A281-C06A42FBEBC7@linux.vnet.ibm.com>
+References: <20230202164413.56743-1-kjain@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hpv7KVvmI5IwzfXBm52H9-hTvdVzdYkM
+X-Proofpoint-GUID: hpv7KVvmI5IwzfXBm52H9-hTvdVzdYkM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-06_02,2023-02-03_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0 impostorscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302060039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,64 +92,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The RFI and STF security mitigation options can flip the
-interrupt_exit_not_reentrant static branch condition concurrently with
-the interrupt exit code which tests that branch.
 
-Interrupt exit tests this condition to set MSR[EE|RI] for exit, then
-again in the case a soft-masked interrupt is found pending, to recover
-the MSR so the interrupt can be replayed before attempting to exit
-again. If the condition changes between these two tests, the MSR and irq
-soft-mask state will become corrupted, leading to warnings and possible
-crashes. For example, if the branch is initially true then false,
-MSR[EE] will be 0 but PACA_IRQ_HARD_DIS clear and EE may not get
-enabled, leading to warnings in irq_64.c.
 
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-The static_branch condition should not be evaluated multiple times by
-the caller when coded like this AFAIKS because if code patching is
-disabled then it becomes an atomic_read of the key, and if it is enabled
-then it should be done with asm volatile so the compiler should be
-unable to expand it again.
+> On 02-Feb-2023, at 10:14 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
+>=20
+> Testcase stat_all_metrics.sh fails in powerpc:
+>=20
+> 92: perf all metrics test : FAILED!
+>=20
+> Logs with verbose:
+>=20
+> [command]# ./perf test 92 -vv
+> 92: perf all metrics test                                           :
+> --- start ---
+> test child forked, pid 13262
+> Testing BRU_STALL_CPI
+> Testing COMPLETION_STALL_CPI
+> ----
+> Testing TOTAL_LOCAL_NODE_PUMPS_P23
+> Metric 'TOTAL_LOCAL_NODE_PUMPS_P23' not printed in:
+> Error:
+> Invalid event (hv_24x7/PM_PB_LNS_PUMP23,chip=3D3/) in per-thread mode, =
+enable system wide with '-a'.
+> Testing TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01
+> Metric 'TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01' not printed in:
+> Error:
+> Invalid event (hv_24x7/PM_PB_RTY_LNS_PUMP01,chip=3D3/) in per-thread =
+mode, enable system wide with '-a'.
+> ----
+>=20
+> Based on above logs, we could see some of the hv-24x7 metric events =
+fails,
+> and logs suggest to run the metric event with -a option.
+> This change happened after the commit a4b8cfcabb1d ("perf stat: Delay =
+metric
+> parsing"), which delayed the metric parsing phase and now before =
+metric parsing
+> phase perf tool identifies, whether target is system-wide or not. With =
+this
+> change, perf_event_open will fails with workload monitoring for uncore =
+events
+> as expected.
+>=20
+> The perf all metric test case fails as some of the hv-24x7 metric =
+events
+> may need bigger workload to get the data. And the added perf bench
+> workload in 'perf all metric test case' will not run for hv-24x7 =
+without=20
+> -a option.
+>=20
+> Fix this issue by adding system wide check for perf bench workload.
+>=20
+> Result with the patch changes in powerpc:
+>=20
+> 92: perf all metrics test : Ok
+>=20
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-Thanks,
-Nick
+Looks good to me
 
- arch/powerpc/kernel/interrupt.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index fc6631a80527..0ec1581619db 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -50,16 +50,18 @@ static inline bool exit_must_hard_disable(void)
-  */
- static notrace __always_inline bool prep_irq_for_enabled_exit(bool restartable)
- {
-+	bool must_hard_disable = (exit_must_hard_disable() || !restartable);
-+
- 	/* This must be done with RI=1 because tracing may touch vmaps */
- 	trace_hardirqs_on();
- 
--	if (exit_must_hard_disable() || !restartable)
-+	if (must_hard_disable)
- 		__hard_EE_RI_disable();
- 
- #ifdef CONFIG_PPC64
- 	/* This pattern matches prep_irq_for_idle */
- 	if (unlikely(lazy_irq_pending_nocheck())) {
--		if (exit_must_hard_disable() || !restartable) {
-+		if (must_hard_disable) {
- 			local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 			__hard_RI_enable();
- 		}
--- 
-2.37.2
+> ---
+> tools/perf/tests/shell/stat_all_metrics.sh | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>=20
+> diff --git a/tools/perf/tests/shell/stat_all_metrics.sh =
+b/tools/perf/tests/shell/stat_all_metrics.sh
+> index 6e79349e42be..d49832a316d9 100755
+> --- a/tools/perf/tests/shell/stat_all_metrics.sh
+> +++ b/tools/perf/tests/shell/stat_all_metrics.sh
+> @@ -23,6 +23,13 @@ for m in $(perf list --raw-dump metrics); do
+>   then
+>     continue
+>   fi
+> +  # Failed again, possibly the event is uncore pmu event which will =
+need
+> +  # system wide monitoring with workload, so retry with -a option
+> +  result=3D$(perf stat -M "$m" -a perf bench internals synthesize =
+2>&1)
+> +  if [[ "$result" =3D~ "${m:0:50}" ]]
+> +  then
+> +    continue
+> +  fi
+>   echo "Metric '$m' not printed in:"
+>   echo "$result"
+>   if [[ "$err" !=3D "1" ]]
+> --=20
+> 2.39.0
+>=20
 
