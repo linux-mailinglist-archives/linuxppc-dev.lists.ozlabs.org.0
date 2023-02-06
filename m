@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391E268C65D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 20:02:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D9868C633
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 19:55:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P9bGz053mz3fVp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 06:02:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9b6q6zDZz3f5F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 05:55:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MfpVM3Nr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VCozk+Bi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MfpVM3Nr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VCozk+Bi;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5y3sVkz3cHF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 05:54:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5x2dTlz2xBF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 05:54:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 7209EB815D1;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 8C7AFB815D7;
 	Mon,  6 Feb 2023 18:54:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2503BC433D2;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 39E9BC4339E;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1675709665;
-	bh=UQjctR6kXdByIcypvhbUMOS/4kr/migmys1Em3Evst8=;
+	bh=2pFPNH3QjsKSRDYdqjRkrMORBq9dIGNfoLmGeH8oQzE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=MfpVM3NrjsNzPtP3F9etnSioqVapx6/xd7/Ke8rToZUyr6vh85MoFNJTppzZmLWkG
-	 f//DF85aqnFGex27fY987BBJqKNoScFg65sIM23JjsuSEjOG5NE1e95FinkbQrGyeH
-	 YcfG9zNpRIquJsOlSIeYg9C39l98O5hF0OQhCKkKl+r8aYK8E6BD+tRTD7sGKQa0WO
-	 M1lZz06PVGbumZKD117YHnjf2JwRgDc2OS5YzUFDGv0/b3bcUNsl4kO0PKwjxxk0Li
-	 bgt+LmvMVbGqUrVfA7CWWsGocDyTXp5sKA099KmpUxqZQlm7Gt/u48S15+zrCNwTcn
-	 fU2sFaX9Rabrg==
+	b=VCozk+BiyOHwPzn6fKBkI/EbXmV+Xdu4QUg4tdMKoxIs3/ZIvq7UTKELoieK5/pzO
+	 y8KcwVdUe0d1qLzDHNe90VbcQZ3NbNYonX/6ReJgaf/4i2UTbCHCT7ZBB2b0pJKlfq
+	 y7exfPFKqXavpGXqz8ESa27+C9ApM0nUK9DyY5eGU27Af7xzax0/DVovGfg9uyAzE9
+	 ElEUXpQA27SejIEDIKdIGhtFe+7LU1XlYayWONL+QY7ED8zITpjf/GtJdkAQt9Rqjt
+	 +8Y6g0QW5J6KnGMGGTZ1uWeZj5Q1IuuDawjW3hasrvURxeokSqkPnKslNSRrMMuNP8
+	 UfPQ09q5ItxQw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07301C05027;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 177BBC63797;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 From: Nathan Lynch via B4 Submission Endpoint
  <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Mon, 06 Feb 2023 12:54:17 -0600
-Subject: [PATCH v2 01/19] powerpc/rtas: handle extended delays safely in
- early boot
+Date: Mon, 06 Feb 2023 12:54:18 -0600
+Subject: [PATCH v2 02/19] powerpc/perf/hv-24x7: add missing RTAS retry
+ status handling
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230125-b4-powerpc-rtas-queue-v2-1-9aa6bd058063@linux.ibm.com>
+Message-Id: <20230125-b4-powerpc-rtas-queue-v2-2-9aa6bd058063@linux.ibm.com>
 References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 In-Reply-To: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
@@ -59,11 +59,11 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
  Andrew Donnellan <ajd@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=3779;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=2749;
  i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
- bh=pLkh3/obNWVA07fMBbNuF95oFvgPYtA8yiTJ8EjahUk=;
- b=s+khifzqEVF1RwfURHFHOqye8hBqeNSzTN5qy++G9PFN1j17oMOQlNhAkHMtp6F5KrgqUJPdl
- wgOaYZOOwMLDzuvlIOMLOLBddAFzLSLzxdzSfkUF8GW7VNPCJSgtXnB
+ bh=/LsCrvhYcOs18AHY/8B4mKFcVOBSY003WWGJyJqeLe0=;
+ b=pHbKpFCnUZ9xxJWt4MlN94+/yR2o/5AzcVkx2M/b9uKFYM0YQpUVL+3BOpCGbU0ghLdoE2Z+f
+ JLeFAYRHQofB3hj3ZJJpME43a2eEbc8ha0ZkKVpEMZbh5F+DqMoX659
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
 X-Endpoint-Received:  by B4 Submission Endpoint for nathanl@linux.ibm.com/20230206 with auth_id=27
@@ -86,116 +86,85 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Some code that runs early in boot calls RTAS functions that can return
--2 or 990x statuses, which mean the caller should retry. An example is
-pSeries_cmo_feature_init(), which invokes ibm,get-system-parameter but
-treats these benign statuses as errors instead of retrying.
+The ibm,get-system-parameter RTAS function may return -2 or 990x,
+which indicate that the caller should try again. read_24x7_sys_info()
+ignores this, allowing transient failures in reporting processor
+module information.
 
-pSeries_cmo_feature_init() and similar code should be made to retry
-until they succeed or receive a real error, using the usual pattern:
-
-	do {
-		rc = rtas_call(token, etc...);
-	} while (rtas_busy_delay(rc));
-
-But rtas_busy_delay() will perform a timed sleep on any 990x
-status. This isn't safe so early in boot, before the CPU scheduler and
-timer subsystem have initialized.
-
-The -2 RTAS status is much more likely to occur during single-threaded
-boot than 990x in practice, at least on PowerVM. This is because -2
-usually means that RTAS made progress but exhausted its self-imposed
-timeslice, while 990x is associated with concurrent requests from the
-OS causing internal contention. Regardless, according to the language
-in PAPR, the OS should be prepared to handle either type of status at
-any time.
-
-Add a fallback path to rtas_busy_delay() to handle this as safely as
-possible, performing a small delay on 990x. Include a counter to
-detect retry loops that aren't making progress and bail out.
-
-This was found by inspection and I'm not aware of any real
-failures. However, the implementation of rtas_busy_delay() before
-commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
-was not susceptible to this problem, so let's treat this as a
-regression.
+Move the RTAS call into a coventional rtas_busy_delay()-based loop,
+along with the parsing of results on success.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
+Fixes: 8ba214267382 ("powerpc/hv-24x7: Add rtas call in hv-24x7 driver to get processor details")
 ---
- arch/powerpc/kernel/rtas.c | 48 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ arch/powerpc/perf/hv-24x7.c | 42 ++++++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 795225d7f138..ec2df09a70cf 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -606,6 +606,46 @@ unsigned int rtas_busy_delay_time(int status)
- 	return ms;
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 33c23225fd54..fcfebf5bd378 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -79,9 +79,8 @@ static u32 phys_coresperchip; /* Physical cores per chip */
+  */
+ void read_24x7_sys_info(void)
+ {
+-	int call_status, len, ntypes;
+-
+-	spin_lock(&rtas_data_buf_lock);
++	const s32 token = rtas_token("ibm,get-system-parameter");
++	int call_status;
+ 
+ 	/*
+ 	 * Making system parameter: chips and sockets and cores per chip
+@@ -91,32 +90,27 @@ void read_24x7_sys_info(void)
+ 	phys_chipspersocket = 1;
+ 	phys_coresperchip = 1;
+ 
+-	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
+-				NULL,
+-				PROCESSOR_MODULE_INFO,
+-				__pa(rtas_data_buf),
+-				RTAS_DATA_BUF_SIZE);
++	do {
++		spin_lock(&rtas_data_buf_lock);
++		call_status = rtas_call(token, 3, 1, NULL, PROCESSOR_MODULE_INFO,
++					__pa(rtas_data_buf), RTAS_DATA_BUF_SIZE);
++		if (call_status == 0) {
++			int ntypes = be16_to_cpup((__be16 *)&rtas_data_buf[2]);
++			int len = be16_to_cpup((__be16 *)&rtas_data_buf[0]);
++
++			if (len >= 8 && ntypes != 0) {
++				phys_sockets = be16_to_cpup((__be16 *)&rtas_data_buf[4]);
++				phys_chipspersocket = be16_to_cpup((__be16 *)&rtas_data_buf[6]);
++				phys_coresperchip = be16_to_cpup((__be16 *)&rtas_data_buf[8]);
++			}
++		}
++		spin_unlock(&rtas_data_buf_lock);
++	} while (rtas_busy_delay(call_status));
+ 
+ 	if (call_status != 0) {
+ 		pr_err("Error calling get-system-parameter %d\n",
+ 		       call_status);
+-	} else {
+-		len = be16_to_cpup((__be16 *)&rtas_data_buf[0]);
+-		if (len < 8)
+-			goto out;
+-
+-		ntypes = be16_to_cpup((__be16 *)&rtas_data_buf[2]);
+-
+-		if (!ntypes)
+-			goto out;
+-
+-		phys_sockets = be16_to_cpup((__be16 *)&rtas_data_buf[4]);
+-		phys_chipspersocket = be16_to_cpup((__be16 *)&rtas_data_buf[6]);
+-		phys_coresperchip = be16_to_cpup((__be16 *)&rtas_data_buf[8]);
+ 	}
+-
+-out:
+-	spin_unlock(&rtas_data_buf_lock);
  }
  
-+/*
-+ * Early boot fallback for rtas_busy_delay().
-+ */
-+static bool __init rtas_busy_delay_early(int status)
-+{
-+	static size_t successive_ext_delays __initdata;
-+	bool ret;
-+
-+	switch (status) {
-+	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
-+		/*
-+		 * In the unlikely case that we receive an extended
-+		 * delay status in early boot, the OS is probably not
-+		 * the cause, and there's nothing we can do to clear
-+		 * the condition. Best we can do is delay for a bit
-+		 * and hope it's transient. Lie to the caller if it
-+		 * seems like we're stuck in a retry loop.
-+		 */
-+		mdelay(1);
-+		ret = true;
-+		successive_ext_delays += 1;
-+		if (successive_ext_delays > 1000) {
-+			pr_err("too many extended delays, giving up\n");
-+			dump_stack();
-+			ret = false;
-+		}
-+		break;
-+	case RTAS_BUSY:
-+		ret = true;
-+		successive_ext_delays = 0;
-+		break;
-+	default:
-+		ret = false;
-+		successive_ext_delays = 0;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * rtas_busy_delay() - helper for RTAS busy and extended delay statuses
-  *
-@@ -624,11 +664,17 @@ unsigned int rtas_busy_delay_time(int status)
-  * * false - @status is not @RTAS_BUSY nor an extended delay hint. The
-  *           caller is responsible for handling @status.
-  */
--bool rtas_busy_delay(int status)
-+bool __ref rtas_busy_delay(int status)
- {
- 	unsigned int ms;
- 	bool ret;
- 
-+	/*
-+	 * Can't do timed sleeps before timekeeping is up.
-+	 */
-+	if (system_state < SYSTEM_SCHEDULING)
-+		return rtas_busy_delay_early(status);
-+
- 	switch (status) {
- 	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
- 		ret = true;
+ /* Domains for which more than one result element are returned for each event. */
 
 -- 
 2.39.1
