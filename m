@@ -2,54 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BA968C64D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 19:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B9E68C650
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Feb 2023 19:59:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P9bBw4k6jz3f5H
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 05:58:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9bCx2FPxz3fGK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 05:59:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r90dwivM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E49BJaM0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r90dwivM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E49BJaM0;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5x6jFlz3cMH
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9b5x6rZ1z3cML
 	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 05:54:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 32D6660FBE;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 551A560FF3;
 	Mon,  6 Feb 2023 18:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7380BC433A7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A3A91C433AE;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1675709665;
-	bh=yFCLSff5g9N73PTfFhfjF2I4SmvWiHPutCEghVmqaBo=;
+	bh=2+/C62Cj5XqTy3lANqwGh0Jri9G4x9c4zdUvAqRA8eE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=r90dwivMgVFqoYHNFVREIv9Jkb1GQVKaSe2bO1AeJxXv/d5Gp/fF6NL0DjU+2CZCa
-	 yZCbrsLjOOGdBZtpnYrbAGytYrPo1ho+oPo648kUTdKe7qC3Hr1bB6b3paNE8XxQZf
-	 3NYx1PAhjLQzlL28Uc90T0bDQw+cxZtGHgBAg/IqqQUMMAnM5TavexFJBI7AcwiwMq
-	 DeEuB3sscr/QfzVaPaCrO0Mu8Ux2ZpR6orZWhDAIhSOZai8fhj/5KLPXdHrnPnFhE4
-	 HK7T5xsW/Rmbwqra243mkKq27Ebp0hxn3GP8QMpCTlacvAUNrBS/G53mU7qezpyTOu
-	 tu5YdLxntbF+w==
+	b=E49BJaM0GIn4NHZCWyrowkzRCjpBV6D43LCNIpguv4ha2x/JFSi5Mw6KYY4SDtSvp
+	 36QLEOgy0gK4pRCFivEOVAJOCVbKMwarNpwsBqvWeG4/CHzwZkGeZIC52NOmQ+BMZf
+	 jnvppw9l7SKIQc7/AFrI6ohDvte0ZKAi2kSNxpgMawbmhyOBcPUScOWRedykxGY5zc
+	 F9i4bb6Ls1PNlpuDjnxrXTi8ZdAauumvEKIZpVLlsw9TVkPbQ0cg3urzaJinXE1XIf
+	 T5/DU0mVXn1QOhbpaGqhAeQfUFggHDOCH0WcuWRlFoYZKJb+pcAwldVJscVY8rRbfK
+	 3ktCRjXaCdatw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64366C63797;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 933F7C05027;
 	Mon,  6 Feb 2023 18:54:25 +0000 (UTC)
 From: Nathan Lynch via B4 Submission Endpoint
  <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Mon, 06 Feb 2023 12:54:24 -0600
-Subject: [PATCH v2 08/19] powerpc/rtas: strengthen do_enter_rtas() type
- safety, drop inline
+Date: Mon, 06 Feb 2023 12:54:28 -0600
+Subject: [PATCH v2 12/19] powerpc/pseries/dlpar: use RTAS work area API
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230125-b4-powerpc-rtas-queue-v2-8-9aa6bd058063@linux.ibm.com>
+Message-Id: <20230125-b4-powerpc-rtas-queue-v2-12-9aa6bd058063@linux.ibm.com>
 References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 In-Reply-To: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
@@ -59,11 +58,11 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
  Andrew Donnellan <ajd@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=2269;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1675709663; l=2354;
  i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
- bh=9Yr7i29cxHzbcLM+tqcLfVMpwD3tr631VIrfNoGrBVc=;
- b=gAkncFUQ10QFX/TaZq6iO+uPxafXhJnsIZwTuQzbKiFVzQmVBN5XEuvdksXYj8RTANXMXfNfK
- vcSXNWvZ5HhB6fCc6IRcgJCKbTUsfbjkSI+pq8WnEnrr8VOX07liAUL
+ bh=9dtec63TyTAEuoicCzxLzqqe0gY/Ou+fcqwMt3OKZi4=;
+ b=hp7Eyn3aDtjazWR66YZJl+askh38zNTJB8W1M2enk+AjTFOT3ZPGXtB2Gore79uN7q4XiJU1v
+ 7YmmKcr/ZmxB254Gt9l+qzSOJqqTlvIHmi3Upu/8KyXPNMxS74h1l4c
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
 X-Endpoint-Received:  by B4 Submission Endpoint for nathanl@linux.ibm.com/20230206 with auth_id=27
@@ -86,70 +85,80 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Make do_enter_rtas() take a pointer to struct rtas_args and do the
-__pa() conversion in one place instead of leaving it to callers. This
-also makes it possible to introduce enter/exit tracepoints that access
-the rtas_args struct fields.
-
-There's no apparent reason to force inlining of do_enter_rtas()
-either, and it seems to bloat the code a bit. Let the compiler decide.
+Hold a work area object for the duration of the RTAS
+ibm,configure-connector sequence, eliminating locking and copying
+around each RTAS call.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/rtas.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/powerpc/platforms/pseries/dlpar.c | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 2804382c74b1..52c1ed7869b8 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -523,7 +523,7 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
- /* This is here deliberately so it's only used in this file */
- void enter_rtas(unsigned long);
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 498d6efcb5ae..9b65b50a5456 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -22,6 +22,7 @@
+ #include <asm/machdep.h>
+ #include <linux/uaccess.h>
+ #include <asm/rtas.h>
++#include <asm/rtas-work-area.h>
  
--static inline void do_enter_rtas(unsigned long args)
-+static void do_enter_rtas(struct rtas_args *args)
- {
- 	unsigned long msr;
+ static struct workqueue_struct *pseries_hp_wq;
  
-@@ -538,7 +538,7 @@ static inline void do_enter_rtas(unsigned long args)
+@@ -137,6 +138,7 @@ struct device_node *dlpar_configure_connector(__be32 drc_index,
+ 	struct property *property;
+ 	struct property *last_property = NULL;
+ 	struct cc_workarea *ccwa;
++	struct rtas_work_area *work_area;
+ 	char *data_buf;
+ 	int cc_token;
+ 	int rc = -1;
+@@ -145,29 +147,18 @@ struct device_node *dlpar_configure_connector(__be32 drc_index,
+ 	if (cc_token == RTAS_UNKNOWN_SERVICE)
+ 		return NULL;
  
- 	hard_irq_disable(); /* Ensure MSR[EE] is disabled on PPC64 */
+-	data_buf = kzalloc(RTAS_DATA_BUF_SIZE, GFP_KERNEL);
+-	if (!data_buf)
+-		return NULL;
++	work_area = rtas_work_area_alloc(SZ_4K);
++	data_buf = rtas_work_area_raw_buf(work_area);
  
--	enter_rtas(args);
-+	enter_rtas(__pa(args));
+ 	ccwa = (struct cc_workarea *)&data_buf[0];
+ 	ccwa->drc_index = drc_index;
+ 	ccwa->zero = 0;
  
- 	srr_regs_clobbered(); /* rtas uses SRRs, invalidate */
- }
-@@ -892,7 +892,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
- 	save_args = rtas_args;
- 	rtas_args = err_args;
+ 	do {
+-		/* Since we release the rtas_data_buf lock between configure
+-		 * connector calls we want to re-populate the rtas_data_buffer
+-		 * with the contents of the previous call.
+-		 */
+-		spin_lock(&rtas_data_buf_lock);
+-
+-		memcpy(rtas_data_buf, data_buf, RTAS_DATA_BUF_SIZE);
+-		rc = rtas_call(cc_token, 2, 1, NULL, rtas_data_buf, NULL);
+-		memcpy(data_buf, rtas_data_buf, RTAS_DATA_BUF_SIZE);
+-
+-		spin_unlock(&rtas_data_buf_lock);
+-
+-		if (rtas_busy_delay(rc))
+-			continue;
++		do {
++			rc = rtas_call(cc_token, 2, 1, NULL,
++				       rtas_work_area_phys(work_area), NULL);
++		} while (rtas_busy_delay(rc));
  
--	do_enter_rtas(__pa(&rtas_args));
-+	do_enter_rtas(&rtas_args);
+ 		switch (rc) {
+ 		case COMPLETE:
+@@ -227,7 +218,7 @@ struct device_node *dlpar_configure_connector(__be32 drc_index,
+ 	} while (rc);
  
- 	err_args = rtas_args;
- 	rtas_args = save_args;
-@@ -939,7 +939,7 @@ va_rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
- 	for (i = 0; i < nret; ++i)
- 		args->rets[i] = 0;
+ cc_error:
+-	kfree(data_buf);
++	rtas_work_area_free(work_area);
  
--	do_enter_rtas(__pa(args));
-+	do_enter_rtas(args);
- }
- 
- void rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, ...)
-@@ -1756,7 +1756,7 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	raw_spin_lock_irqsave(&rtas_lock, flags);
- 
- 	rtas_args = args;
--	do_enter_rtas(__pa(&rtas_args));
-+	do_enter_rtas(&rtas_args);
- 	args = rtas_args;
- 
- 	/* A -1 return code indicates that the last command couldn't
+ 	if (rc) {
+ 		if (first_dn)
 
 -- 
 2.39.1
