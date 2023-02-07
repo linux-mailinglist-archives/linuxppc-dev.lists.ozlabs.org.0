@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EE768E123
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C02268E12F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:29:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBCqF4lbBz3f3r
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:28:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBCrG1Jpkz3f53
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:29:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dtjIj0+J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iiy/ocb/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dtjIj0+J;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iiy/ocb/;
 	dkim-atps=neutral
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB59x463rz3bbX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 01:29:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB59y4QHcz3bZx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 01:29:42 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675780181; x=1707316181;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=slc0KZtNoZ1bsJm/e5gBRrLuxfQ5uLgrlphY9y9ttTg=;
-  b=dtjIj0+JqNBizSEf7k1qwn1JnWaqCLdHmZ50jG0OkFJviAtZQWvU7jg3
-   B4B6ib/mzYyeRAoMTazp/+Qa33LqAdMGFCM3+wqhiqX2ysgdr4NI965vN
-   mzwHR+e76irsOICrHfzfXZkiRGYy5x9cNmnOqTkCOC6VwC+eLFUagjiL6
-   xFijSd2MPnZmGgGA9AffisNQslZ31jFHh2bJGUoXSoj5a5+7HFFkinqwS
-   cyhIiY1Tf4UgRrBIAhUM1O/LPP7N7L7LkFsK1a4pQHDgJzzKVKKQQjzLY
-   huWgZ5DtpwO8A4bfoZtzUVufdkJidSyry5DS11ia95XSeG10MZOVMFtEd
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="313163895"
+  t=1675780182; x=1707316182;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=7VgWr2VPj8L1NsfjGJ63Vno2YkqOebd37sMf+dqhyeo=;
+  b=iiy/ocb/3SdrdOi+kZ2TLCNrjjjru8sVRy7881BZMLHYGvnN6/llMg/l
+   h/+4KB/LnVwfSzMsE/u8MmBi3F8nWneHMMFSrX+mLURd3r9Qeed7/k7Sp
+   Rug/IkAG1p/EqDFzS0nAk7MH77qujgFRfquQvD/nNq1GelUomJe3GeSN7
+   lFaNBJv3/kZeDs+UcDNfDWEZYYJOZ9WwzKD6T4R3cemghfHXJ4pJCl7WT
+   uGoa1dtxsaEJbwkAorCT/2174dOAgvOiwQiEgU5VQ1QhsocJZH+mrx9Wl
+   sbYvqJrNH9VOSE6VHYunt8u2IzSiNT4EjCBevkNv9oi+Yk5TpcWHasQt9
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="313163931"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="313163895"
+   d="scan'208";a="313163931"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 06:29:34 -0800
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 06:29:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="644465265"
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="644465274"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="644465265"
+   d="scan'208";a="644465274"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 07 Feb 2023 06:29:22 -0800
+  by orsmga006.jf.intel.com with ESMTP; 07 Feb 2023 06:29:23 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 95C3D1C5; Tue,  7 Feb 2023 16:30:00 +0200 (EET)
+	id 2D031210; Tue,  7 Feb 2023 16:30:02 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
@@ -82,10 +82,12 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	SHA-cyfmac-dev-list@infineon.com,
 	linux-arch@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v3 00/12] gpiolib cleanups
-Date: Tue,  7 Feb 2023 16:29:40 +0200
-Message-Id: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 01/12] gpiolib: remove empty asm/gpio.h files
+Date: Tue,  7 Feb 2023 16:29:41 +0200
+Message-Id: <20230207142952.51844-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
+References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Wed, 08 Feb 2023 06:27:18 +1100
@@ -100,106 +102,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Eric Dumazet <edumazet@google.com>, Alim Akhtar <alim.akhtar@samsung.com>, Frank Rowand <frowand.list@gmail.com>, Alex Shi <alexs@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Yanteng Si <siyanteng@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Gregory Clement <gregory.clement@bootlin.com>, Kalle Valo <kvalo@kernel.org>, Hante Meuleman <hante.meuleman@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Franky Lin <franky.lin@broadcom.com>, Arend
-  van Spriel <aspriel@gmail.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, Keerthy <j-keerthy@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Geert Uytterhoeven <geert+renesas@glider.be>, Eric Dumazet <edumazet@google.com>, Alim Akhtar <alim.akhtar@samsung.com>, Frank Rowand <frowand.list@gmail.com>, Alex Shi <alexs@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Yanteng Si <siyanteng@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Gregory Clement <gregory.clement@bootlin.com>, Kalle Valo <kvalo@kernel.org>, Hante Meuleman <hante.meuleman@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com
+ >, Franky Lin <franky.lin@broadcom.com>, Arend van Spriel <aspriel@gmail.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, Keerthy <j-keerthy@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These are some older patches Arnd did last year, rebased to
-linux-next-20230207. On top there are Andy's patches regarding
-similar topic.
+From: Arnd Bergmann <arnd@arndb.de>
 
-The main goal is to remove some of the legacy bits of the gpiolib
-interfaces, where the corner cases are easily avoided or replaced
-with gpio descriptor based interfaces.
+The arm and sh versions of this file are identical to the generic
+versions and can just be removed.
 
-Changes in v3:
-- reworked touchscreen patch in accordance with Dmitry's comments
-- rebased on the latest Linux Next
-- added on top Andy's series
+The drivers that actually use the sh3 specific version also include
+cpu/gpio.h directly, with the exception of magicpanelr2, which is
+easily fixed. This leaves coldfire as the only gpio driver
+that needs something custom for gpiolib.
 
-Changes in v2:
-- dropped patch 8 after Andy's identical patch was merged
-- rebase on latest gpio tree
-- leave unused gpio_cansleep() in place for now
-- address feedback from Andy Shevchenko
-
-Andy Shevchenko (5):
-  gpio: aggregator: Add missing header(s)
-  gpiolib: Drop unused forward declaration from driver.h
-  gpiolib: Deduplicate forward declarations in consumer.h
-  gpiolib: Group forward declarations in consumer.h
-  gpiolib: Clean up headers
-
-Arnd Bergmann (7):
-  gpiolib: remove empty asm/gpio.h files
-  gpiolib: coldfire: remove custom asm/gpio.h
-  gpiolib: remove asm-generic/gpio.h
-  gpiolib: remove gpio_set_debounce
-  gpiolib: remove legacy gpio_export
-  gpiolib: split linux/gpio/driver.h out of linux/gpio.h
-  gpiolib: split of_mm_gpio_chip out of linux/of_gpio.h
-
- Documentation/admin-guide/gpio/sysfs.rst      |   2 +-
- Documentation/driver-api/gpio/legacy.rst      |  23 ---
- .../zh_CN/driver-api/gpio/legacy.rst          |  20 ---
- Documentation/translations/zh_TW/gpio.txt     |  19 ---
- MAINTAINERS                                   |   1 -
- arch/arm/Kconfig                              |   1 -
- arch/arm/include/asm/gpio.h                   |  21 ---
- arch/arm/mach-omap1/irq.c                     |   1 +
- arch/arm/mach-omap2/pdata-quirks.c            |   9 +-
- arch/arm/mach-orion5x/board-rd88f5182.c       |   1 +
- arch/arm/mach-s3c/s3c64xx.c                   |   1 +
- arch/arm/mach-sa1100/assabet.c                |   1 +
- arch/arm/plat-orion/gpio.c                    |   1 +
- arch/m68k/Kconfig.cpu                         |   1 -
- arch/m68k/include/asm/gpio.h                  |  95 -----------
- arch/m68k/include/asm/mcfgpio.h               |   2 +-
- arch/powerpc/platforms/44x/Kconfig            |   1 +
- arch/powerpc/platforms/4xx/gpio.c             |   2 +-
- arch/powerpc/platforms/8xx/Kconfig            |   1 +
- arch/powerpc/platforms/8xx/cpm1.c             |   2 +-
- arch/powerpc/platforms/Kconfig                |   2 +
- arch/powerpc/sysdev/cpm_common.c              |   2 +-
- arch/sh/Kconfig                               |   1 -
- arch/sh/boards/board-magicpanelr2.c           |   1 +
- arch/sh/boards/mach-ap325rxa/setup.c          |   7 +-
- arch/sh/include/asm/gpio.h                    |  45 ------
- drivers/gpio/Kconfig                          |  19 ++-
- drivers/gpio/TODO                             |  15 +-
- drivers/gpio/gpio-aggregator.c                |   9 +-
- drivers/gpio/gpio-altera.c                    |   2 +-
- drivers/gpio/gpio-davinci.c                   |   2 -
- drivers/gpio/gpio-mm-lantiq.c                 |   2 +-
- drivers/gpio/gpio-mpc5200.c                   |   2 +-
- drivers/gpio/gpiolib-acpi.c                   |  10 +-
- drivers/gpio/gpiolib-acpi.h                   |   1 -
- drivers/gpio/gpiolib-of.c                     |   9 +-
- drivers/gpio/gpiolib-of.h                     |   1 -
- drivers/gpio/gpiolib-swnode.c                 |   5 +-
- drivers/gpio/gpiolib-sysfs.c                  |  25 ++-
- drivers/gpio/gpiolib.c                        |   9 +-
- drivers/input/touchscreen/ads7846.c           |  24 +--
- drivers/media/pci/sta2x11/sta2x11_vip.c       |  10 +-
- drivers/net/ieee802154/ca8210.c               |   3 +-
- .../broadcom/brcm80211/brcmsmac/led.c         |   1 +
- drivers/pinctrl/core.c                        |   1 -
- drivers/soc/fsl/qe/gpio.c                     |   2 +-
- include/asm-generic/gpio.h                    | 147 ------------------
- include/linux/gpio.h                          | 100 +++++++-----
- include/linux/gpio/consumer.h                 |  24 +--
- include/linux/gpio/driver.h                   |  31 +++-
- .../legacy-of-mm-gpiochip.h}                  |  33 +---
- include/linux/mfd/ucb1x00.h                   |   1 +
- include/linux/of_gpio.h                       |  21 ---
- 53 files changed, 223 insertions(+), 549 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/arm/Kconfig                    |  1 -
+ arch/arm/include/asm/gpio.h         | 21 --------------
+ arch/sh/Kconfig                     |  1 -
+ arch/sh/boards/board-magicpanelr2.c |  1 +
+ arch/sh/include/asm/gpio.h          | 45 -----------------------------
+ 5 files changed, 1 insertion(+), 68 deletions(-)
  delete mode 100644 arch/arm/include/asm/gpio.h
- delete mode 100644 arch/m68k/include/asm/gpio.h
  delete mode 100644 arch/sh/include/asm/gpio.h
- delete mode 100644 include/asm-generic/gpio.h
- copy include/linux/{of_gpio.h => gpio/legacy-of-mm-gpiochip.h} (50%)
 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e24a9820e12f..1d1a603d964d 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -24,7 +24,6 @@ config ARM
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU
+ 	select ARCH_HAS_TEARDOWN_DMA_OPS if MMU
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+-	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if CPU_V7 || CPU_V7M || CPU_V6K
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_KEEP_MEMBLOCK
+diff --git a/arch/arm/include/asm/gpio.h b/arch/arm/include/asm/gpio.h
+deleted file mode 100644
+index 4ebbb58f06ea..000000000000
+--- a/arch/arm/include/asm/gpio.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ARCH_ARM_GPIO_H
+-#define _ARCH_ARM_GPIO_H
+-
+-#include <asm-generic/gpio.h>
+-
+-/* The trivial gpiolib dispatchers */
+-#define gpio_get_value  __gpio_get_value
+-#define gpio_set_value  __gpio_set_value
+-#define gpio_cansleep   __gpio_cansleep
+-
+-/*
+- * Provide a default gpio_to_irq() which should satisfy every case.
+- * However, some platforms want to do this differently, so allow them
+- * to override it.
+- */
+-#ifndef gpio_to_irq
+-#define gpio_to_irq	__gpio_to_irq
+-#endif
+-
+-#endif /* _ARCH_ARM_GPIO_H */
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 0665ac0add0b..ccb866750a88 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -4,7 +4,6 @@ config SUPERH
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM && MMU
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE if SPARSEMEM && MMU
+-	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
+ 	select ARCH_HAS_BINFMT_FLAT if !MMU
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+diff --git a/arch/sh/boards/board-magicpanelr2.c b/arch/sh/boards/board-magicpanelr2.c
+index 56bd386ff3b0..75de893152af 100644
+--- a/arch/sh/boards/board-magicpanelr2.c
++++ b/arch/sh/boards/board-magicpanelr2.c
+@@ -21,6 +21,7 @@
+ #include <linux/sh_intc.h>
+ #include <mach/magicpanelr2.h>
+ #include <asm/heartbeat.h>
++#include <cpu/gpio.h>
+ #include <cpu/sh7720.h>
+ 
+ /* Dummy supplies, where voltage doesn't matter */
+diff --git a/arch/sh/include/asm/gpio.h b/arch/sh/include/asm/gpio.h
+deleted file mode 100644
+index 588c1380e4cb..000000000000
+--- a/arch/sh/include/asm/gpio.h
++++ /dev/null
+@@ -1,45 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0
+- *
+- *  include/asm-sh/gpio.h
+- *
+- * Generic GPIO API and pinmux table support for SuperH.
+- *
+- * Copyright (c) 2008 Magnus Damm
+- */
+-#ifndef __ASM_SH_GPIO_H
+-#define __ASM_SH_GPIO_H
+-
+-#include <linux/kernel.h>
+-#include <linux/errno.h>
+-
+-#if defined(CONFIG_CPU_SH3)
+-#include <cpu/gpio.h>
+-#endif
+-
+-#include <asm-generic/gpio.h>
+-
+-#ifdef CONFIG_GPIOLIB
+-
+-static inline int gpio_get_value(unsigned gpio)
+-{
+-	return __gpio_get_value(gpio);
+-}
+-
+-static inline void gpio_set_value(unsigned gpio, int value)
+-{
+-	__gpio_set_value(gpio, value);
+-}
+-
+-static inline int gpio_cansleep(unsigned gpio)
+-{
+-	return __gpio_cansleep(gpio);
+-}
+-
+-static inline int gpio_to_irq(unsigned gpio)
+-{
+-	return __gpio_to_irq(gpio);
+-}
+-
+-#endif /* CONFIG_GPIOLIB */
+-
+-#endif /* __ASM_SH_GPIO_H */
 -- 
 2.39.1
 
