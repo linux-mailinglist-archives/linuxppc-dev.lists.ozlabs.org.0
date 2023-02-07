@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D4E68E158
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4DC68E15E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:38:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBD0J06Qcz3fhS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:36:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBD2K2fbwz3fTf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:38:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Yb63uS3G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aGtf3zJ3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Yb63uS3G;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aGtf3zJ3;
 	dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB5B70tzkz3cBk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 01:29:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB5BC0nnfz3cL8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 01:29:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675780191; x=1707316191;
+  t=1675780195; x=1707316195;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=e2HL48VZL68iHiIHMOw3KrWX1/vewPFZgcuY53UtAyY=;
-  b=Yb63uS3GSZq9tS/0M6W8fGUs1meNBQdsRi497ttSpAcg0njwf/GR6L8/
-   965vrMygUiqVCx+J8J+vY684TRW2mHi9+LIw58w22Vm4W6nzU7YlXn687
-   ZP5ECk4P1QVJyzOJ7ranp/UlxWjZlhIEhM1PxlN8FHIHzjsek0uoTn9qh
-   gDu3vYfuzPgGITvl/H1tfWaq8s3FLBBVQ8p7IgaWuls5YsKSelemuhRkN
-   SUjcUxDIkYr2OsFzaJTj4UaPXLsU7gxGmh0dXMjw8ARJ46Gz0zNbovkBV
-   ZlVDRstKo9FrTblHLV/KaqFIQfVU6tjEE2fWXFUg7lXwhLuu4mmIo+13n
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="391915866"
+  bh=A4CXaCS1V5YYLH/ZOzB/EoGrp/Od1buKWHTb7RvcWAk=;
+  b=aGtf3zJ3jb9Wc15BQ0xe/r7akGcjaiiPP2HqMvPQCu3VhpLRlwuZfYDD
+   J9mDjCuHrLc1k9n4gaIYYjB1XXfbqv6XRJNby5L6bZDkEem5z0ZWO6EkH
+   zeFVKbbLOrNbkSTENve1iq3i/lgcVEGMc3nMDcPxLMJQpQnoYD++hs1EG
+   kcCMdCl8G/5JiDTwIDKOsEXUCp/X6cmHMU/BpC618luwFFl1vJ1Pz8FJ5
+   j3IU1Sl15b/Vs9gzEqTUiMRcRUPI/ez61uJLcpVQfhDPFtqmlfmRukM7s
+   l6LDxEGHMQCwJeQntrVwZJQFDE/y4s0+Dg+cLPpR2fSKzaioZzOCUQcQH
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="313164090"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="391915866"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 06:29:49 -0800
+   d="scan'208";a="313164090"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 06:29:52 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="912355086"
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="644465389"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="912355086"
+   d="scan'208";a="644465389"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 07 Feb 2023 06:29:39 -0800
+  by orsmga006.jf.intel.com with ESMTP; 07 Feb 2023 06:29:40 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id CEAE14C9; Tue,  7 Feb 2023 16:30:02 +0200 (EET)
+	id DD3DF556; Tue,  7 Feb 2023 16:30:02 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
@@ -82,9 +82,9 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	SHA-cyfmac-dev-list@infineon.com,
 	linux-arch@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v3 11/12] gpiolib: Group forward declarations in consumer.h
-Date: Tue,  7 Feb 2023 16:29:51 +0200
-Message-Id: <20230207142952.51844-12-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 12/12] gpiolib: Clean up headers
+Date: Tue,  7 Feb 2023 16:29:52 +0200
+Message-Id: <20230207142952.51844-13-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
 References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
@@ -107,34 +107,353 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich F
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For better maintenance group the forward declarations together.
+There is a few things done:
+- include only the headers we are direct user of
+- when pointer is in use, provide a forward declaration
+- add missing headers
+- group generic headers and subsystem headers
+- sort each group alphabetically
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/gpio/consumer.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpio/gpiolib-acpi.c   | 10 ++++++----
+ drivers/gpio/gpiolib-acpi.h   |  1 -
+ drivers/gpio/gpiolib-of.c     |  6 ++++--
+ drivers/gpio/gpiolib-of.h     |  1 -
+ drivers/gpio/gpiolib-swnode.c |  5 +++--
+ drivers/gpio/gpiolib-sysfs.c  | 21 ++++++++++++++++-----
+ drivers/gpio/gpiolib.c        |  9 ++++++---
+ include/linux/gpio.h          |  9 +++------
+ include/linux/gpio/consumer.h | 14 ++++++++++----
+ include/linux/gpio/driver.h   | 30 +++++++++++++++++++++++-------
+ 10 files changed, 71 insertions(+), 35 deletions(-)
 
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index bb583cea366c..3871dade186a 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -7,17 +7,19 @@
+  *          Mika Westerberg <mika.westerberg@linux.intel.com>
+  */
+ 
++#include <linux/acpi.h>
+ #include <linux/dmi.h>
+ #include <linux/errno.h>
+-#include <linux/gpio/consumer.h>
+-#include <linux/gpio/driver.h>
+-#include <linux/gpio/machine.h>
+ #include <linux/export.h>
+-#include <linux/acpi.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/mutex.h>
+ #include <linux/pinctrl/pinctrl.h>
+ 
++#include <linux/gpio/consumer.h>
++#include <linux/gpio/driver.h>
++#include <linux/gpio/machine.h>
++
+ #include "gpiolib.h"
+ #include "gpiolib-acpi.h"
+ 
+diff --git a/drivers/gpio/gpiolib-acpi.h b/drivers/gpio/gpiolib-acpi.h
+index 5fa315b3c912..a6f3be0bb921 100644
+--- a/drivers/gpio/gpiolib-acpi.h
++++ b/drivers/gpio/gpiolib-acpi.h
+@@ -9,7 +9,6 @@
+ #define GPIOLIB_ACPI_H
+ 
+ #include <linux/err.h>
+-#include <linux/errno.h>
+ #include <linux/types.h>
+ 
+ #include <linux/gpio/consumer.h>
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 0f699af438b0..1436cdb5fa26 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -10,14 +10,16 @@
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+-#include <linux/module.h>
+ #include <linux/io.h>
+-#include <linux/gpio/consumer.h>
++#include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_gpio.h>
+ #include <linux/pinctrl/pinctrl.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
++
++#include <linux/gpio/consumer.h>
+ #include <linux/gpio/machine.h>
+ 
+ #include "gpiolib.h"
+diff --git a/drivers/gpio/gpiolib-of.h b/drivers/gpio/gpiolib-of.h
+index e5bb065d82ef..6b3a5347c5d9 100644
+--- a/drivers/gpio/gpiolib-of.h
++++ b/drivers/gpio/gpiolib-of.h
+@@ -4,7 +4,6 @@
+ #define GPIOLIB_OF_H
+ 
+ #include <linux/err.h>
+-#include <linux/errno.h>
+ #include <linux/types.h>
+ 
+ #include <linux/notifier.h>
+diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+index dd9ccac214d1..b5a6eaf3729b 100644
+--- a/drivers/gpio/gpiolib-swnode.c
++++ b/drivers/gpio/gpiolib-swnode.c
+@@ -6,13 +6,14 @@
+  */
+ #include <linux/err.h>
+ #include <linux/errno.h>
+-#include <linux/gpio/consumer.h>
+-#include <linux/gpio/driver.h>
+ #include <linux/kernel.h>
+ #include <linux/printk.h>
+ #include <linux/property.h>
+ #include <linux/string.h>
+ 
++#include <linux/gpio/consumer.h>
++#include <linux/gpio/driver.h>
++
+ #include "gpiolib.h"
+ #include "gpiolib-swnode.h"
+ 
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index 6e4267944f80..c1cbf71329f0 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -1,18 +1,29 @@
+ // SPDX-License-Identifier: GPL-2.0
++
++#include <linux/bitops.h>
++#include <linux/device.h>
+ #include <linux/idr.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/kdev_t.h>
++#include <linux/kstrtox.h>
++#include <linux/list.h>
+ #include <linux/mutex.h>
+-#include <linux/device.h>
++#include <linux/printk.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/string.h>
+ #include <linux/sysfs.h>
++#include <linux/types.h>
++
+ #include <linux/gpio/consumer.h>
+ #include <linux/gpio/driver.h>
+-#include <linux/interrupt.h>
+-#include <linux/kdev_t.h>
+-#include <linux/slab.h>
+-#include <linux/ctype.h>
+ 
+ #include "gpiolib.h"
+ #include "gpiolib-sysfs.h"
+ 
++struct kernfs_node;
++
+ #define GPIO_IRQF_TRIGGER_NONE		0
+ #define GPIO_IRQF_TRIGGER_FALLING	BIT(0)
+ #define GPIO_IRQF_TRIGGER_RISING	BIT(1)
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 99a2c77c3711..900f6573c070 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -6,22 +6,25 @@
+ #include <linux/debugfs.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
++#include <linux/errno.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
+-#include <linux/gpio.h>
+-#include <linux/gpio/driver.h>
+-#include <linux/gpio/machine.h>
+ #include <linux/idr.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ 
++#include <linux/gpio.h>
++#include <linux/gpio/driver.h>
++#include <linux/gpio/machine.h>
++
+ #include <uapi/linux/gpio.h>
+ 
+ #include "gpiolib-acpi.h"
+diff --git a/include/linux/gpio.h b/include/linux/gpio.h
+index 84bb49939d6e..574c45be924b 100644
+--- a/include/linux/gpio.h
++++ b/include/linux/gpio.h
+@@ -12,7 +12,7 @@
+ #ifndef __LINUX_GPIO_H
+ #define __LINUX_GPIO_H
+ 
+-#include <linux/errno.h>
++struct device;
+ 
+ /* see Documentation/driver-api/gpio/legacy.rst */
+ 
+@@ -132,20 +132,17 @@ void gpio_free_array(const struct gpio *array, size_t num);
+ 
+ /* CONFIG_GPIOLIB: bindings for managed devices that want to request gpios */
+ 
+-struct device;
+-
+ int devm_gpio_request(struct device *dev, unsigned gpio, const char *label);
+ int devm_gpio_request_one(struct device *dev, unsigned gpio,
+ 			  unsigned long flags, const char *label);
+ 
+ #else /* ! CONFIG_GPIOLIB */
+ 
+-#include <linux/bug.h>
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ 
+-struct device;
+-struct gpio_chip;
++#include <asm/bug.h>
++#include <asm/errno.h>
+ 
+ static inline bool gpio_is_valid(int number)
+ {
 diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index a7eb8aa1e54c..5432e5d5fbfb 100644
+index 5432e5d5fbfb..1c4385a00f88 100644
 --- a/include/linux/gpio/consumer.h
 +++ b/include/linux/gpio/consumer.h
-@@ -7,6 +7,7 @@
- #include <linux/compiler_types.h>
- #include <linux/err.h>
+@@ -3,15 +3,14 @@
+ #define __LINUX_GPIO_CONSUMER_H
  
-+struct acpi_device;
+ #include <linux/bits.h>
+-#include <linux/bug.h>
+-#include <linux/compiler_types.h>
+-#include <linux/err.h>
++#include <linux/types.h>
+ 
+ struct acpi_device;
  struct device;
  struct fwnode_handle;
- struct gpio_desc;
-@@ -602,8 +603,6 @@ struct acpi_gpio_mapping {
- 	unsigned int quirks;
- };
+-struct gpio_desc;
++
+ struct gpio_array;
++struct gpio_desc;
  
--struct acpi_device;
--
- #if IS_ENABLED(CONFIG_GPIOLIB) && IS_ENABLED(CONFIG_ACPI)
+ /**
+  * struct gpio_descs - Struct containing an array of descriptors that can be
+@@ -185,8 +184,11 @@ struct gpio_desc *devm_fwnode_gpiod_get_index(struct device *dev,
  
- int acpi_dev_add_driver_gpios(struct acpi_device *adev,
+ #else /* CONFIG_GPIOLIB */
+ 
++#include <linux/err.h>
+ #include <linux/kernel.h>
+ 
++#include <asm/bug.h>
++
+ static inline int gpiod_count(struct device *dev, const char *con_id)
+ {
+ 	return 0;
+@@ -616,6 +618,8 @@ struct gpio_desc *acpi_get_and_request_gpiod(char *path, unsigned int pin, char
+ 
+ #else  /* CONFIG_GPIOLIB && CONFIG_ACPI */
+ 
++#include <linux/err.h>
++
+ static inline int acpi_dev_add_driver_gpios(struct acpi_device *adev,
+ 			      const struct acpi_gpio_mapping *gpios)
+ {
+@@ -647,6 +651,8 @@ void gpiod_unexport(struct gpio_desc *desc);
+ 
+ #else  /* CONFIG_GPIOLIB && CONFIG_GPIO_SYSFS */
+ 
++#include <asm/errno.h>
++
+ static inline int gpiod_export(struct gpio_desc *desc,
+ 			       bool direction_may_change)
+ {
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 262a84ce9bcb..5c6db5533be6 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -2,27 +2,35 @@
+ #ifndef __LINUX_GPIO_DRIVER_H
+ #define __LINUX_GPIO_DRIVER_H
+ 
+-#include <linux/device.h>
+-#include <linux/irq.h>
++#include <linux/bits.h>
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/irqdomain.h>
++#include <linux/irqhandler.h>
+ #include <linux/lockdep.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/pinctrl/pinctrl.h>
+ #include <linux/property.h>
++#include <linux/spinlock_types.h>
+ #include <linux/types.h>
+ 
++#ifdef CONFIG_GENERIC_MSI_IRQ
+ #include <asm/msi.h>
++#endif
+ 
+-struct gpio_desc;
++struct device;
++struct irq_chip;
++struct irq_data;
++struct module;
+ struct of_phandle_args;
++struct pinctrl_dev;
+ struct seq_file;
+-struct gpio_device;
+-struct module;
+-enum gpiod_flags;
+-enum gpio_lookup_flags;
+ 
+ struct gpio_chip;
++struct gpio_desc;
++struct gpio_device;
++
++enum gpio_lookup_flags;
++enum gpiod_flags;
+ 
+ union gpio_irq_fwspec {
+ 	struct irq_fwspec	fwspec;
+@@ -679,6 +687,10 @@ bool gpiochip_irqchip_irq_valid(const struct gpio_chip *gc,
+ int gpiochip_irqchip_add_domain(struct gpio_chip *gc,
+ 				struct irq_domain *domain);
+ #else
++
++#include <asm/bug.h>
++#include <asm/errno.h>
++
+ static inline int gpiochip_irqchip_add_domain(struct gpio_chip *gc,
+ 					      struct irq_domain *domain)
+ {
+@@ -756,6 +768,10 @@ struct gpio_chip *gpiod_to_chip(const struct gpio_desc *desc);
+ 
+ #else /* CONFIG_GPIOLIB */
+ 
++#include <linux/err.h>
++
++#include <asm/bug.h>
++
+ static inline struct gpio_chip *gpiod_to_chip(const struct gpio_desc *desc)
+ {
+ 	/* GPIO can never have been requested */
 -- 
 2.39.1
 
