@@ -2,53 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EBD68DF05
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 18:34:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C95D68DF68
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 18:52:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PB9Gb60dfz3cHF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 04:33:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PB9h11kpHz3dyW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 04:52:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tXxwcE/g;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=osqPv5YX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=elver@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tXxwcE/g;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=osqPv5YX;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB9Fj0Vxsz3cC1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 04:33:12 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DD3E660F8F;
-	Tue,  7 Feb 2023 17:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45330C433EF;
-	Tue,  7 Feb 2023 17:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675791189;
-	bh=OOFodDg/RJjo5qTVphmNP/E/fr/ShyEQVDZAWMtFoM0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tXxwcE/gOF0eNx0XF92RAoYkNum7JZnXOZnnavM7kzrO0MQevxJJtXQxPJNmPEoZR
-	 tAMLz9nlYUiMrkjH/XKT2k/4CJZ7++RadCYpn6C4IHt8JHwnxoVyjFlB66hlg6cJRQ
-	 RtVlmuj69eecz4+uNG9d2OCUVRkR6tgweGdQ7Ag3A9B3i0x3l1Z/3o2JXHp4uErqyf
-	 t3GKQ32zFVa94qvR26M0CjRf2YghqCdXlloIl2kbFkmDdMkoXcoi91RlDvfyQm8h4p
-	 fB3bxwZHldFOuKK/WwIFRqJvJxjNiXAvBoMPfmM9C2dJCIEbPzS8z2Zbf2jvHi7ZV3
-	 3Wl3kMwIvcAmA==
-Date: Tue, 7 Feb 2023 09:33:04 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1.1 22/22] sched/idle: Mark arch_cpu_idle_dead() __noreturn
-Message-ID: <20230207173304.le5rvsz2emasye7s@treble>
-References: <cover.1675461757.git.jpoimboe@kernel.org>
- <2eeb4425572785d1f05d8761dba1cf88c2105304.1675461757.git.jpoimboe@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PB9g46Dvnz3cHF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 04:51:43 +1100 (AEDT)
+Received: by mail-yb1-xb35.google.com with SMTP id t1so10148724ybd.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 09:51:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qb55dZPeepUrU4dONRVCiplOK1WRN2GzgymWvixZoMg=;
+        b=osqPv5YXD9KFrvX5xnFy8CUYFAWiSf0TV9t5i3MEKamSmU9tFGjRDCs1u/XqY1G13c
+         i6pYlMd68NMPO/Vedk6AcIFLgqm8HrI3/qPL1y7vZncAYTCEyqSrNAbJZM2VrqErZ8vE
+         vYSPBKKwZMjz5SEmQBIcguvlkAAu4HI8iU9GtcIxBLqfIFtHc1+tEcsFlKjpkFlG3dFW
+         gBuI4hLJV/kDKiZTVpscn7mE6ZSCu01j1e0PqLYCrPPeQY790Sql5iGePJqjpe7p+/8m
+         QMCJPDQeKVMx4ezFk3QQVdPny7Iqi5MsgukjUBO+FDede2Fc9auClY/3UNbI1EeJUwJr
+         wSEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qb55dZPeepUrU4dONRVCiplOK1WRN2GzgymWvixZoMg=;
+        b=oMl/Lgs6eHaWFCPbYXAP7fWwCi+DtZUSIUby+paEFz3FRZWH3q+NjVzcgyc2RQ49UM
+         mLnNrhm0b0v+PXUNq9POSnYyJ6mb0Nk7oUzB1LZtVydWNtBb1bt3wurweAIYxv/ioav0
+         rrmRmTbcIuSYLd8KAyIXdQbqjHxqBuuiI2emyhiGHktbcNI4uC3ChOsoczn2FPw6FmUi
+         xBZFarFOX7aCll6NtOFoG1r/gmQJRnZK/u2HUjChA8afIXtvT1h9+tniBXvIroVw1ODZ
+         6JSTL/pIt20KNHUVA6GaigoFMKlAU8khOi5clc3yxfvn/xmodrsCBRPafXPP3ke3bXXj
+         bNrQ==
+X-Gm-Message-State: AO0yUKVGZZgJLunAHjkXoXLr6nhsh7ApHmXNLzbEz2VyCxmKwdyCAeKT
+	KtCZZbk0BJOiECN6ZU4q3y6rP5CPHsbe+lQoUL51Cw==
+X-Google-Smtp-Source: AK7set9r3qcQFvPGmSBKOE2p2Dur7dojJoZY7jIMhwlJcCIVaJG5DIhQnDd3GTlaHrTkINqqtCRHtwU34sRjaK5kIvM=
+X-Received: by 2002:a5b:8c8:0:b0:821:e4b8:8802 with SMTP id
+ w8-20020a5b08c8000000b00821e4b88802mr443293ybq.142.1675792299969; Tue, 07 Feb
+ 2023 09:51:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2eeb4425572785d1f05d8761dba1cf88c2105304.1675461757.git.jpoimboe@kernel.org>
+References: <20230125233554.153109-1-surenb@google.com> <20230125233554.153109-2-surenb@google.com>
+ <20230125162159.a66e5ef05fecb405e85ffec9@linux-foundation.org>
+ <CAJuCfpG5HyMP3RM1jTJxCnN4WUz4APAcxbkOT48ZtJDXcb3z3w@mail.gmail.com>
+ <20230125173449.5472cffc989dfab4b83c491d@linux-foundation.org>
+ <20230126172726.GA682281@paulmck-ThinkPad-P17-Gen-1> <Y+KHWcpxd09prihv@elver.google.com>
+ <CAJuCfpHY07stD9T12oqcz2ELJf42ExP-Du3ZdT84CcOk5VVi-Q@mail.gmail.com>
+In-Reply-To: <CAJuCfpHY07stD9T12oqcz2ELJf42ExP-Du3ZdT84CcOk5VVi-Q@mail.gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Tue, 7 Feb 2023 18:51:03 +0100
+Message-ID: <CANpmjNOq1fTwHVci2Ugikd2PkuDq26J83HBSGKGehTTPi0AnnQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] kernel/fork: convert vma assignment to a memcpy
+To: Suren Baghdasaryan <surenb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,278 +78,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, bsegall@google.com, jcmvbkbc@gmail.com, guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-mips@vger.kernel.org, linux-alph
- a@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, "Paul E. McKenney" <paulmck@kernel.org>, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, hughlynch@google.com, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, Andrew Morton <akpm@linux-fo
+ undation.org>, tatashin@google.com, mgorman@techsingularity.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before commit 076cbf5d2163 ("x86/xen: don't let xen_pv_play_dead()
-return"), in Xen, when a previously offlined CPU was brought back
-online, it unexpectedly resumed execution where it left off in the
-middle of the idle loop.
+On Tue, 7 Feb 2023 at 18:24, Suren Baghdasaryan <surenb@google.com> wrote:
+>
+> On Tue, Feb 7, 2023 at 9:16 AM Marco Elver <elver@google.com> wrote:
+> >
+> > On Thu, Jan 26, 2023 at 09:27AM -0800, Paul E. McKenney wrote:
+> > > On Wed, Jan 25, 2023 at 05:34:49PM -0800, Andrew Morton wrote:
+> > > > On Wed, 25 Jan 2023 16:50:01 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> > > >
+> > > > > On Wed, Jan 25, 2023 at 4:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> > > > > >
+> > > > > > On Wed, 25 Jan 2023 15:35:48 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
+> > > > > >
+> > > > > > > Convert vma assignment in vm_area_dup() to a memcpy() to prevent compiler
+> > > > > > > errors when we add a const modifier to vma->vm_flags.
+> > > > > > >
+> > > > > > > ...
+> > > > > > >
+> > > > > > > --- a/kernel/fork.c
+> > > > > > > +++ b/kernel/fork.c
+> > > > > > > @@ -482,7 +482,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+> > > > > > >                * orig->shared.rb may be modified concurrently, but the clone
+> > > > > > >                * will be reinitialized.
+> > > > > > >                */
+> > > > > > > -             *new = data_race(*orig);
+> > > > > > > +             memcpy(new, orig, sizeof(*new));
+> > > > > >
+> > > > > > The data_race() removal is unchangelogged?
+> > > > >
+> > > > > True. I'll add a note in the changelog about that. Ideally I would
+> > > > > like to preserve it but I could not find a way to do that.
+> > > >
+> > > > Perhaps Paul can comment?
+> > > >
+> > > > I wonder if KCSAN knows how to detect this race, given that it's now in
+> > > > a memcpy.  I assume so.
+> > >
+> > > I ran an experiment memcpy()ing between a static array and an onstack
+> > > array, and KCSAN did not complain.  But maybe I was setting it up wrong.
+> > >
+> > > This is what I did:
+> > >
+> > >       long myid = (long)arg; /* different value for each task */
+> > >       static unsigned long z1[10] = { 0 };
+> > >       unsigned long z2[10];
+> > >
+> > >       ...
+> > >
+> > >       memcpy(z1, z2, ARRAY_SIZE(z1) * sizeof(z1[0]));
+> > >       for (zi = 0; zi < ARRAY_SIZE(z1); zi++)
+> > >               z2[zi] += myid;
+> > >       memcpy(z2, z1, ARRAY_SIZE(z1) * sizeof(z1[0]));
+> > >
+> > > Adding Marco on CC for his thoughts.
+> >
+> > ( Sorry for not seeing it earlier - just saw this by chance. )
+> >
+> > memcpy() data races will be detected as of (given a relatively recent
+> > Clang compiler):
+> >
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7c201739beef
+> >
+> > Also beware that the compiler is free to "optimize" things by either
+> > inlining memcpy() (turning an explicit memcpy() into just a bunch of
+> > loads/stores), or outline plain assignments into memcpy() calls. So the
+> > only way to be sure what ends up there is to look at the disassembled
+> > code.
+> >
+> > The data_race() was introduced by:
+> >
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cda099b37d716
+> >
+> > It says:
+> >  "vm_area_dup() blindly copies all fields of original VMA to the new one.
+> >   This includes coping vm_area_struct::shared.rb which is normally
+> >   protected by i_mmap_lock. But this is fine because the read value will
+> >   be overwritten on the following __vma_link_file() under proper
+> >   protection. Thus, mark it as an intentional data race and insert a few
+> >   assertions for the fields that should not be modified concurrently."
+> >
+> > And as far as I can tell this hasn't changed.
+>
+> Thanks for the feedback, Marco!
+> So, IIUC Mel's proposal to use data_race(memcpy(new, orig,
+> sizeof(*new))); is fine in this case, right?
 
-There were some hacks to make that work, but the behavior was surprising
-as do_idle() doesn't expect an offlined CPU to return from the dead (in
-arch_cpu_idle_dead()).
-
-Now that Xen has been fixed, and the arch-specific implementations of
-arch_cpu_idle_dead() also don't return, give it a __noreturn attribute.
-
-This will cause the compiler to complain if an arch-specific
-implementation might return.  It also improves code generation for both
-caller and callee.
-
-Also fixes the following warning:
-
-  vmlinux.o: warning: objtool: do_idle+0x25f: unreachable instruction
-
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
-v1.1:
-- add __noreturn to the implementations (in addition to just the
-  prototype)
-
- arch/alpha/kernel/process.c     | 2 +-
- arch/arm/kernel/smp.c           | 2 +-
- arch/arm64/kernel/process.c     | 2 +-
- arch/csky/kernel/smp.c          | 2 +-
- arch/ia64/kernel/process.c      | 2 +-
- arch/loongarch/kernel/process.c | 2 +-
- arch/mips/kernel/process.c      | 2 +-
- arch/parisc/kernel/process.c    | 2 +-
- arch/powerpc/kernel/smp.c       | 2 +-
- arch/riscv/kernel/cpu-hotplug.c | 2 +-
- arch/s390/kernel/idle.c         | 2 +-
- arch/sh/kernel/idle.c           | 2 +-
- arch/sparc/kernel/process_64.c  | 2 +-
- arch/x86/kernel/process.c       | 2 +-
- arch/xtensa/kernel/smp.c        | 2 +-
- include/linux/cpu.h             | 2 +-
- tools/objtool/check.c           | 1 +
- 17 files changed, 17 insertions(+), 16 deletions(-)
-
-diff --git a/arch/alpha/kernel/process.c b/arch/alpha/kernel/process.c
-index 94938f856545..c9a5ed23c5a6 100644
---- a/arch/alpha/kernel/process.c
-+++ b/arch/alpha/kernel/process.c
-@@ -60,7 +60,7 @@ void arch_cpu_idle(void)
- 	wtint(0);
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	wtint(INT_MAX);
- 	BUG();
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index adcd417c526b..c2daa0f2f784 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -320,7 +320,7 @@ void __cpu_die(unsigned int cpu)
-  * of the other hotplug-cpu capable cores, so presumably coming
-  * out of idle fixes this.
-  */
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	unsigned int cpu = smp_processor_id();
- 
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index 71d59b5abede..089ced6d6bd6 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -69,7 +69,7 @@ void (*pm_power_off)(void);
- EXPORT_SYMBOL_GPL(pm_power_off);
- 
- #ifdef CONFIG_HOTPLUG_CPU
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
-        cpu_die();
- }
-diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
-index 0ec20efaf5fd..9c7a20b73ac6 100644
---- a/arch/csky/kernel/smp.c
-+++ b/arch/csky/kernel/smp.c
-@@ -300,7 +300,7 @@ void __cpu_die(unsigned int cpu)
- 	pr_notice("CPU%u: shutdown\n", cpu);
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	idle_task_exit();
- 
-diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
-index 78f5794b2dde..9a5cd9fad3a9 100644
---- a/arch/ia64/kernel/process.c
-+++ b/arch/ia64/kernel/process.c
-@@ -225,7 +225,7 @@ static inline void __noreturn play_dead(void)
- }
- #endif /* CONFIG_HOTPLUG_CPU */
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	play_dead();
- }
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index edfd220a3737..ba70e94eb996 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -61,7 +61,7 @@ unsigned long boot_option_idle_override = IDLE_NO_OVERRIDE;
- EXPORT_SYMBOL(boot_option_idle_override);
- 
- #ifdef CONFIG_HOTPLUG_CPU
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	play_dead();
- }
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 093dbbd6b843..a3225912c862 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -40,7 +40,7 @@
- #include <asm/stacktrace.h>
- 
- #ifdef CONFIG_HOTPLUG_CPU
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	play_dead();
- }
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index c064719b49b0..97c6f875bd0e 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -159,7 +159,7 @@ EXPORT_SYMBOL(running_on_qemu);
- /*
-  * Called from the idle thread for the CPU which has been shutdown.
-  */
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- #ifdef CONFIG_HOTPLUG_CPU
- 	idle_task_exit();
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 6b90f10a6c81..f62e5e651bcd 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1752,7 +1752,7 @@ void __cpu_die(unsigned int cpu)
- 		smp_ops->cpu_die(cpu);
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	/*
- 	 * Disable on the down path. This will be re-enabled by
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index f7a832e3a1d1..59b80211c25f 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -71,7 +71,7 @@ void __cpu_die(unsigned int cpu)
- /*
-  * Called from the idle thread for the CPU which has been shutdown.
-  */
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	idle_task_exit();
- 
-diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-index cb653c87018f..481ca32e628e 100644
---- a/arch/s390/kernel/idle.c
-+++ b/arch/s390/kernel/idle.c
-@@ -143,7 +143,7 @@ void arch_cpu_idle_exit(void)
- {
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	cpu_die();
- }
-diff --git a/arch/sh/kernel/idle.c b/arch/sh/kernel/idle.c
-index 114f0c4abeac..d662503b0665 100644
---- a/arch/sh/kernel/idle.c
-+++ b/arch/sh/kernel/idle.c
-@@ -30,7 +30,7 @@ void default_idle(void)
- 	clear_bl_bit();
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	play_dead();
- }
-diff --git a/arch/sparc/kernel/process_64.c b/arch/sparc/kernel/process_64.c
-index 91c2b8124527..b51d8fb0ecdc 100644
---- a/arch/sparc/kernel/process_64.c
-+++ b/arch/sparc/kernel/process_64.c
-@@ -95,7 +95,7 @@ void arch_cpu_idle(void)
- }
- 
- #ifdef CONFIG_HOTPLUG_CPU
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	sched_preempt_enable_no_resched();
- 	cpu_play_dead();
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index f1ec36caf1d8..3e30147a537e 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -727,7 +727,7 @@ void arch_cpu_idle_enter(void)
- 	local_touch_nmi();
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	play_dead();
- }
-diff --git a/arch/xtensa/kernel/smp.c b/arch/xtensa/kernel/smp.c
-index 7bad78495536..054bd64eab19 100644
---- a/arch/xtensa/kernel/smp.c
-+++ b/arch/xtensa/kernel/smp.c
-@@ -322,7 +322,7 @@ void __cpu_die(unsigned int cpu)
- 	pr_err("CPU%u: unable to kill\n", cpu);
- }
- 
--void arch_cpu_idle_dead(void)
-+void __noreturn arch_cpu_idle_dead(void)
- {
- 	cpu_die();
- }
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index f83e4519c5f0..8582a7142623 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -182,7 +182,7 @@ void arch_cpu_idle(void);
- void arch_cpu_idle_prepare(void);
- void arch_cpu_idle_enter(void);
- void arch_cpu_idle_exit(void);
--void arch_cpu_idle_dead(void);
-+void __noreturn arch_cpu_idle_dead(void);
- 
- int cpu_report_state(int cpu);
- int cpu_check_up_prepare(int cpu);
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0f67c6a8bc98..e3fa2279d612 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -167,6 +167,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 		"__reiserfs_panic",
- 		"__stack_chk_fail",
- 		"__ubsan_handle_builtin_unreachable",
-+		"arch_cpu_idle_dead",
- 		"cpu_bringup_and_idle",
- 		"cpu_startup_entry",
- 		"do_exit",
--- 
-2.39.0
-
+Yes, that'd work.
