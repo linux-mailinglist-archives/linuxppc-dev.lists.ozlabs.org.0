@@ -2,56 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F84768E160
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F74C68E104
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:20:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBD4K2VXHz3fY7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:40:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=icQIS6QV;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBCdc3xmhz3f3y
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 06:20:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=icQIS6QV;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBBqD3yHsz3cKv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 05:43:52 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B6F8F60F6A;
-	Tue,  7 Feb 2023 18:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D06C433D2;
-	Tue,  7 Feb 2023 18:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675795429;
-	bh=z46LV0K67pYt+9sG+8XPfphcBy3wjoS4vl+j+OOVUvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=icQIS6QVs3SIYrh/ewyBWxOXyRdTzSi5iQLtHvNEjG7lvYhQ+DvHhk+3KEs5qU2sU
-	 TMTqOav5kG8GY5JR22dKb78qqMAt/Bg2JYkWEyM+MGuclGw0hQvMcVEtbzsmiJlItD
-	 IEGaquWuCLNILvUo5685guZahlOFm7IGWB2GaIQ6/vE/h0SUH8mRyEHQMupAISjrjW
-	 fnVVq+bZn0SaHzKt6ZHA6LtwE38N/APEa35C82I5WgacjEtf/+fE+N1kuSQDae5KOg
-	 NbPJHolFeXjK9+XKnt9280QC9hb68ZWPxwLnKvG03l5612lhbMN4Z8sBFUzc9BZ9vj
-	 q3xPIHrd6PLJg==
-Date: Tue, 7 Feb 2023 10:43:45 -0800
-From: Lee Jones <lee@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 06/12] gpiolib: split linux/gpio/driver.h out of
- linux/gpio.h
-Message-ID: <Y+Kb4Ql+I7/Abm48@google.com>
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
- <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBCd03Hvhz3cBm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 06:20:02 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pPTVE-0008RO-Dk; Tue, 07 Feb 2023 20:19:40 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pPTV7-003Lv6-9E; Tue, 07 Feb 2023 20:19:34 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pPTV7-001ew5-M9; Tue, 07 Feb 2023 20:19:33 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 0/3] ALSA: core: Make some functions return void
+Date: Tue,  7 Feb 2023 20:19:04 +0100
+Message-Id: <20230207191907.467756-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=808; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=fiHwx1QeMPt+DsYxhkk7Rh8I9hMhkeRIK9B2EQA/e1o=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBj4qQba27+3E/GrUTCtoY8yibTKJga/4v6pQi9yw9y 8kw05T+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY+KkGwAKCRDB/BR4rcrsCSE8B/ kB3nfLGneK7JgKBpkJOKm715kZQQMwmDYOvxE2w1QqfLmP6AizVyYscXzABq7ILR8Xvn+9/h9qV+T3 ijinLE8JYkwqFju+23tc63hZO/R2W2qsf+ktqWxUKhM7dtuCeN4k/rLBlxQosqp3Y2p15xbyVF8C7B o+n6nRReddxVoFQY8y39Ur2YlPP9tVYke+5oTGtDBp2+ZqCWQKShnKAB28Qlz4skEmLHud/nMyZ64n iZU//pEqdZ+gEUZ8QWhYb53qfmyx2vNA0epaqPcjdEx8byNHVz6xvRMNUt/kcj7NIOjfMqAZupVZAY mf7oYTZ0vibp7ftk9H6/st8cosaCe7
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
-X-Mailman-Approved-At: Wed, 08 Feb 2023 06:27:18 +1100
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,39 +59,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Devarsh Thakkar <devarsht@ti.com>, linux-doc@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet <edumazet@google.com>, Alim Akhtar <alim.akhtar@samsung.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Li Yang <leoyang.li@nxp.com>, Frank Rowand <frowand.list@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Qiang Zhao <qiang.zhao@nxp.com>, linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-samsung-soc@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-sh@vger.kernel.org, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, SHA-cyfmac-dev-list@infineon.com, Geert Uytterhoeven <geert@linux-m68k.org>, Alex Shi <alexs@kernel.org>, linux-input@vger.k
- ernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Arend van Spriel <aspriel@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Hante Meuleman <hante.meuleman@broadcom.com>, linux-gpio@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Yanteng Si <siyanteng@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Franky Lin <franky.lin@broadcom.com>, brcm80211-dev-list.pdl@broadcom.com, Keerthy <j-keerthy@ti.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, linux-wpan@vger.kernel.org, linux-doc-tw-discuss@lists.sourceforge.net, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemlo
- ft.net>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh+dt@kernel.org>, netdev@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linuxppc-dev@lists.ozlabs.org, Gregory Clement <gregory.clement@bootlin.com>
+Cc: alsa-devel@alsa-project.org, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 07 Feb 2023, Andy Shevchenko wrote:
+Hello,
 
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Almost all gpio drivers include linux/gpio/driver.h, and other
-> files should not rely on includes from this header.
-> 
-> Remove the indirect include from here and include the correct
-> headers directly from where they are used.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  arch/arm/mach-omap1/irq.c                              | 1 +
->  arch/arm/mach-orion5x/board-rd88f5182.c                | 1 +
->  arch/arm/mach-s3c/s3c64xx.c                            | 1 +
->  arch/arm/mach-sa1100/assabet.c                         | 1 +
->  arch/arm/plat-orion/gpio.c                             | 1 +
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c | 1 +
->  include/linux/gpio.h                                   | 2 --
->  include/linux/mfd/ucb1x00.h                            | 1 +
+while checking in which cases hda_tegra_remove() can return a non-zero value, I
+found that actually cannot happen. This series makes the involved functions
+return void to make this obvious.
 
-Acked-by: Lee Jones <lee@kernel.org>
+This is a preparation for making platform_driver::remove return void, too.
 
->  8 files changed, 7 insertions(+), 2 deletions(-)
+Best regards
+Uwe
 
+Uwe Kleine-König (3):
+  ALSA: core: Make snd_card_disconnect() return void
+  ALSA: core: Make snd_card_free_when_closed() return void
+  ALSA: core: Make snd_card_free() return void
+
+ include/sound/core.h      |  6 +++---
+ sound/core/init.c         | 40 ++++++++++++++-------------------------
+ sound/pci/hda/hda_tegra.c |  6 ++----
+ sound/ppc/snd_ps3.c       |  4 +---
+ 4 files changed, 20 insertions(+), 36 deletions(-)
+
+
+base-commit: 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
 -- 
-Lee Jones [李琼斯]
+2.39.0
+
