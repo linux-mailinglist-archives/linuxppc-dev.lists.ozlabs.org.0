@@ -2,96 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F4C68D2CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 10:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0C668D3AF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 11:10:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4P9yWp25fgz2xm3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 20:29:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4P9zQK5wDnz3cgv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Feb 2023 21:10:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S9xDg8J/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S9xDg8J/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CqL/phTT;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CqL/phTT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S9xDg8J/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S9xDg8J/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CqL/phTT;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CqL/phTT;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9ySY3NCmz3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 20:26:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4P9zPM1ds9z2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Feb 2023 21:09:10 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675762009;
+	s=mimecast20190719; t=1675764547;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/F3qfr1H23q3phH6cljEmKpLs439z5etAwPY/FDcZlA=;
-	b=S9xDg8J/ybIMa0er2wIJQ35rbFTNl4c7a4vT6O3QNXRhvs/KaG7B3j8jr1XP3rJt/+BPka
-	andEgZ4bEyy0VRqMAY4OiW6p5SD9UkM/48thxWe0KGxe0Sbw9PIg9RjdcnztpdU99OEUpj
-	D577eXMyqmzei7uPZCJkFD8E7vh9zkY=
+	bh=ZR0ulCP18stSdAGdIDCbqMw0+hgLOSFlaljh5KnkP+U=;
+	b=CqL/phTTY8ycT04Ar7Rfp2K3szix6ooXbJ3RDQP9TkdAx1HJnVCbc7iPGB8IbS1w/DFHjY
+	osmDJzydKOoz/ylvcYv1au0XMmKH8I/B9HWdSvnkUcTQZdtvlbFgeW3/1UQCGiQiQnsHCR
+	y24YBfRfj1APun5/qGcJb9IauHe+hXc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675762009;
+	s=mimecast20190719; t=1675764547;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/F3qfr1H23q3phH6cljEmKpLs439z5etAwPY/FDcZlA=;
-	b=S9xDg8J/ybIMa0er2wIJQ35rbFTNl4c7a4vT6O3QNXRhvs/KaG7B3j8jr1XP3rJt/+BPka
-	andEgZ4bEyy0VRqMAY4OiW6p5SD9UkM/48thxWe0KGxe0Sbw9PIg9RjdcnztpdU99OEUpj
-	D577eXMyqmzei7uPZCJkFD8E7vh9zkY=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZR0ulCP18stSdAGdIDCbqMw0+hgLOSFlaljh5KnkP+U=;
+	b=CqL/phTTY8ycT04Ar7Rfp2K3szix6ooXbJ3RDQP9TkdAx1HJnVCbc7iPGB8IbS1w/DFHjY
+	osmDJzydKOoz/ylvcYv1au0XMmKH8I/B9HWdSvnkUcTQZdtvlbFgeW3/1UQCGiQiQnsHCR
+	y24YBfRfj1APun5/qGcJb9IauHe+hXc=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-484-xDQ__YMPOgGgfAPHRIaf6A-1; Tue, 07 Feb 2023 04:26:45 -0500
-X-MC-Unique: xDQ__YMPOgGgfAPHRIaf6A-1
-Received: by mail-qt1-f198.google.com with SMTP id cr22-20020a05622a429600b003b694a9f291so8182770qtb.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 01:26:44 -0800 (PST)
+ us-mta-495-BB48TPXKOsGYo8h5tEZ42A-1; Tue, 07 Feb 2023 05:09:06 -0500
+X-MC-Unique: BB48TPXKOsGYo8h5tEZ42A-1
+Received: by mail-qt1-f197.google.com with SMTP id x16-20020ac87ed0000000b003b82d873b38so8327554qtj.13
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 02:09:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/F3qfr1H23q3phH6cljEmKpLs439z5etAwPY/FDcZlA=;
-        b=viXBPQZf/Enw3n/XnUx9DkA5o6Yny4bnq2PlEuvvJTLptdDQskWql8UF6YndzdYI0G
-         nFKIuvGyL9uuShVQaJ8sc6ff+zzsRss/pXQXNOw5tEtDxnWySmtqxT7Ey57ms74Psf6Q
-         0LOWFtQ9r8SagQPpFIhs/GiC4eTKe9C4SNB1Xc6FA64HIpBguc1zSvqjOXDy/SqDXupM
-         60fpj4nYQpBl0NICncBZUwiKuvHcQeWLvyue1KJZgB8TZqb0VLII+8miMzSeD75kiNSB
-         1xizUSx/qlXGx1D0NoEc8uHgcscvALa5b+qqMlMu4f1ZraYFKFHhz7vDYPzXwlvJa5QG
-         lfzA==
-X-Gm-Message-State: AO0yUKXzsdBr2FSilnkxPqowSbzNoZm0kanecZH1C+ONvxRrnleVGStN
-	9RmRYZ7g8Vqszkrt9iOex5qhmRbIzI4+8AeNHaGb1qgRXhyT8QKb0IzeYl7613JHLfg3lKVGOfJ
-	YFwjXQIDaRDyGtpmxsq6UV8KegQ==
-X-Received: by 2002:a05:622a:188d:b0:3b9:a441:37f3 with SMTP id v13-20020a05622a188d00b003b9a44137f3mr3131478qtc.64.1675762004532;
-        Tue, 07 Feb 2023 01:26:44 -0800 (PST)
-X-Google-Smtp-Source: AK7set8bB7OmE4JZ0vH4S5PaJ9NaK/oiOhz8aqf0f6ynkAzsxoZg5CO1XDpfEPDTS/rewIBCUB+dtA==
-X-Received: by 2002:a05:622a:188d:b0:3b9:a441:37f3 with SMTP id v13-20020a05622a188d00b003b9a44137f3mr3131454qtc.64.1675762004253;
-        Tue, 07 Feb 2023 01:26:44 -0800 (PST)
+        bh=ZR0ulCP18stSdAGdIDCbqMw0+hgLOSFlaljh5KnkP+U=;
+        b=5uxrrZ2B2oTN7VIrTMz8N4I/0/Mr2bmYzwXlPRsPD9iXTsorPeWr3vnC12fE71pzIP
+         UiBuKgKjm3I6HYXr/LS5OK8rcsKUuxMl5R4jfWc6bjuo41o67U9sV/1XRqTujlEUf7RM
+         s1t5H1ChU25m22SNShUWyuyJrzQ5XfqYsaURRGLjef2MbxG7n78Vu4EZKZYGtk+xc0BL
+         4y9c6HXTp+krzsiBNbIKu2UvLLLpbfBkq6XHGcvJfjBe+5L69T9DMFREty+zj7GW9GnU
+         vT4/E7iggjmgexpl569PIrqSXytxEPM//c3NFk01GYO/ocDdmHMdH47A0675AU84xKqj
+         /0VQ==
+X-Gm-Message-State: AO0yUKVf9BFEpOdKHToJ3JoZCE+v9Io+B3Dy70mfUmtM7i8AdpG8NksQ
+	WddsA1oIsT/m7FAmC3qJIPjugoQ7scc8BRYutTvp09oO6ySwGcW6WSu3wI5Ace9ofdsnFe9GhnL
+	wcl8H+YoxZXJhF/KEpB5HrD2lSg==
+X-Received: by 2002:a05:622a:1106:b0:3b6:3a12:2bf9 with SMTP id e6-20020a05622a110600b003b63a122bf9mr4752913qty.2.1675764545704;
+        Tue, 07 Feb 2023 02:09:05 -0800 (PST)
+X-Google-Smtp-Source: AK7set+kMUgLmXDnmLUe9OBwQo0pZwTWJP+zfBA/Ea2dEBA2nMdufvraXZdginHor8Q4n1IhuHpRow==
+X-Received: by 2002:a05:622a:1106:b0:3b6:3a12:2bf9 with SMTP id e6-20020a05622a110600b003b63a122bf9mr4752889qty.2.1675764545475;
+        Tue, 07 Feb 2023 02:09:05 -0800 (PST)
 Received: from [192.168.0.2] (ip-109-43-176-120.web.vodafone.de. [109.43.176.120])
-        by smtp.gmail.com with ESMTPSA id dl12-20020a05620a1d0c00b0071323d3e37fsm9034385qkb.133.2023.02.07.01.26.40
+        by smtp.gmail.com with ESMTPSA id p13-20020a05620a056d00b007208dd55183sm9072533qkp.40.2023.02.07.02.09.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 01:26:43 -0800 (PST)
-Message-ID: <579f432d-6100-0ba1-5ba4-f72349ec9173@redhat.com>
-Date: Tue, 7 Feb 2023 10:26:39 +0100
+        Tue, 07 Feb 2023 02:09:04 -0800 (PST)
+Message-ID: <7b32d58b-846f-b8d7-165b-9f505e5f00f0@redhat.com>
+Date: Tue, 7 Feb 2023 11:09:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [PATCH 2/7] KVM: x86: Improve return type handling in
- kvm_vm_ioctl_get_nr_mmu_pages()
-To: Sean Christopherson <seanjc@google.com>
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Steven Price <steven.price@arm.com>,
+ Cornelia Huck <cohuck@redhat.com>
 References: <20230203094230.266952-1-thuth@redhat.com>
- <20230203094230.266952-3-thuth@redhat.com> <Y91JAb0kKBYQjO8a@google.com>
+ <20230203094230.266952-7-thuth@redhat.com>
+ <c6e605fe-f251-d8b6-64ed-bd1e17e79512@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <Y91JAb0kKBYQjO8a@google.com>
+Subject: Re: [PATCH 6/7] KVM: arm64: Change return type of
+ kvm_vm_ioctl_mte_copy_tags() to "int"
+In-Reply-To: <c6e605fe-f251-d8b6-64ed-bd1e17e79512@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,54 +107,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Eric Auger <eric.auger@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/02/2023 18.48, Sean Christopherson wrote:
-> On Fri, Feb 03, 2023, Thomas Huth wrote:
->> kvm_vm_ioctl_get_nr_mmu_pages() tries to return a "unsigned long" value,
->> but its caller only stores ther return value in an "int" - which is also
->> what all the other kvm_vm_ioctl_*() functions are returning. So returning
->> values that do not fit into a 32-bit integer anymore does not work here.
->> It's better to adjust the return type, add a sanity check and return an
->> error instead if the value is too big.
+On 07/02/2023 01.09, Gavin Shan wrote:
+> Hi Thomas,
+> 
+> On 2/3/23 8:42 PM, Thomas Huth wrote:
+>> This function only returns normal integer values, so there is
+>> no need to declare its return value as "long".
 >>
 >> Signed-off-by: Thomas Huth <thuth@redhat.com>
 >> ---
->>   arch/x86/kvm/x86.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>   arch/arm64/include/asm/kvm_host.h | 4 ++--
+>>   arch/arm64/kvm/guest.c            | 4 ++--
+>>   2 files changed, 4 insertions(+), 4 deletions(-)
 >>
->> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> index da4bbd043a7b..caa2541833dd 100644
->> --- a/arch/x86/kvm/x86.c
->> +++ b/arch/x86/kvm/x86.c
->> @@ -6007,8 +6007,11 @@ static int kvm_vm_ioctl_set_nr_mmu_pages(struct kvm *kvm,
->>   	return 0;
->>   }
->>   
->> -static unsigned long kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
->> +static int kvm_vm_ioctl_get_nr_mmu_pages(struct kvm *kvm)
->>   {
->> +	if (kvm->arch.n_max_mmu_pages > INT_MAX)
->> +		return -EOVERFLOW;
->> +
->>   	return kvm->arch.n_max_mmu_pages;
->>   }
+>> diff --git a/arch/arm64/include/asm/kvm_host.h 
+>> b/arch/arm64/include/asm/kvm_host.h
+>> index 35a159d131b5..b1a16343767f 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -963,8 +963,8 @@ int kvm_arm_vcpu_arch_get_attr(struct kvm_vcpu *vcpu,
+>>   int kvm_arm_vcpu_arch_has_attr(struct kvm_vcpu *vcpu,
+>>                      struct kvm_device_attr *attr);
+>> -long kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>> -                struct kvm_arm_copy_mte_tags *copy_tags);
+>> +int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>> +                   struct kvm_arm_copy_mte_tags *copy_tags);
+>>   /* Guest/host FPSIMD coordination helpers */
+>>   int kvm_arch_vcpu_run_map_fp(struct kvm_vcpu *vcpu);
+>> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+>> index cf4c495a4321..80e530549c34 100644
+>> --- a/arch/arm64/kvm/guest.c
+>> +++ b/arch/arm64/kvm/guest.c
+>> @@ -1013,8 +1013,8 @@ int kvm_arm_vcpu_arch_has_attr(struct kvm_vcpu *vcpu,
+>>       return ret;
+>>   }
+>> -long kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>> -                struct kvm_arm_copy_mte_tags *copy_tags)
+>> +int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>> +                   struct kvm_arm_copy_mte_tags *copy_tags)
+>>   {
+>>       gpa_t guest_ipa = copy_tags->guest_ipa;
+>>       size_t length = copy_tags->length;
+>>
 > 
-> My vote is to skip this patch, skip deprecation, and go straight to deleting
-> KVM_GET_NR_MMU_PAGES.  The ioctl() has never worked[*], and none of the VMMs I
-> checked use it (QEMU, Google's internal VMM, kvmtool, CrosVM).
+> It's possible for the function to return number of bytes have been copied.
+> Its type is 'size_t', same to 'unsigned long'. So 'int' doesn't have sufficient
+> space for it if I'm correct.
+> 
+> long kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>                                  struct kvm_arm_copy_mte_tags *copy_tags)
+> {
+>          gpa_t guest_ipa = copy_tags->guest_ipa;
+>          size_t length = copy_tags->length;
+>          :
+>          :
+> out:
+>          mutex_unlock(&kvm->slots_lock);
+>          /* If some data has been copied report the number of bytes copied */
+>          if (length != copy_tags->length)
+>                  return copy_tags->length - length;
+>          return ret;
+> }
 
-I guess I'm living too much in the QEMU world where things need to be 
-deprecated first before removing them ;-)
-But sure, if everybody agrees that removing this directly is fine, too, I 
-can do this in v2.
+Oh, drat, I thought I had checked all return statements ... this must have 
+fallen through the cracks, sorry!
+
+Anyway, this is already a problem now: The function is called from 
+kvm_arch_vm_ioctl() (which still returns a long), which in turn is called 
+from kvm_vm_ioctl() in virt/kvm/kvm_main.c. And that functions stores the 
+return value in an "int r" variable. So the upper bits are already lost there.
+
+Also, how is this supposed to work from user space? The normal "ioctl()" 
+libc function just returns an "int" ? Is this ioctl already used in a 
+userspace application somewhere? ... at least in QEMU, I didn't spot it yet...
 
   Thomas
-
-
-PS: Has there ever been a discussion about the other deprecated interfaces 
-in include/uapi/linux/kvm.h ? Most of the stuff there seems to be from 2009 
-... so maybe it's time now to remove that, too?
 
