@@ -2,159 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4624368EF90
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 14:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5A968EF99
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 14:16:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBgQk0WXLz3f8H
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 00:12:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBgVd4W3jz3cff
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 00:16:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlSsVD94;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K3YwynGz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=fengwei.yin@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlSsVD94;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K3YwynGz;
 	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBf1k5x96z3bM7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 23:09:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675858171; x=1707394171;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=is0pnbUlCSwNC13hHLUzg+YQtH+19+Etby7SBYvbZhw=;
-  b=VlSsVD94LO8tntBXAX/9sUJCIQHYRp3RsYGOFzoT3vqx7Gkj0sIuwYoU
-   2zYNtRq1TkT9BLAz+9xtpYdyODL1JNmt3DAOUradb+5oyLUuOmVhdsZDj
-   voRn99jIepgudBjVWhgVbCiV2+nfKMZUySH3yXIpxo7FOd/H4aQff7LoI
-   O7Hi5RvwdIectjbL4E6As7XEafqcfvqi9Zm3ILpZnZtL4BenzIpYpC6uO
-   pSsHZklvFRRdVCuGZ8qc+4gm7LoK0X3yV44pb3e6nVelNKZcVyokkzG6x
-   Fuy9bhu0e+2Ln0y9u/+birl//YzTmZ7VssvjGiOs92Sd4XV2frDB7FpGx
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="357172663"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="357172663"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 04:09:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="775994587"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="775994587"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga002.fm.intel.com with ESMTP; 08 Feb 2023 04:09:14 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Wed, 8 Feb 2023 04:09:14 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Wed, 8 Feb 2023 04:09:14 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.171)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Wed, 8 Feb 2023 04:09:13 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UetAz8TcwLb92WJwlPycXHgOSX6nbCXukdgaXL26bB9XiWUNQxHEMRFGQ1XLYz7lM5JlQQubXnrfvTFWJNTMxEVnfQk5iKRIfpwpc872/kuMw5WHpQhA2Xl1kV6xD357u7c5JJxmbs5N/Nnj7FgWXpOmjBi5nhZLYHl3hMaCIOs3DfE3xmgRsyuC7sLeyq+HhF4rOdacNdoeQ5HMvOO2mEmakHBQGRoZUlGjgv+qMm8S056XsjhL+gxoTsdTgYojvVxYyTxa3aJYxIjQoeJUAYQE6OZ9PwGh4t+9PCQLcbzkkpmzn+liSidi3qV7wcsgk4cuyPgwUOnJU4t14TVzWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mgq8yb/IGQqgIlS+tWoKk1s1+G5L24A9Gc4USdsUKyE=;
- b=WeNS+txvvlnKmoMufEvu8ytm5gWM8eaDBQk/OkrOoD+LGj7D9UukdOKxxJGo9VUWaJlYlXTQQxdd4fUdxRIV7WEymCV7+Hv9/2QpUkWsaNf4Zxwml/1mkKDEDVgWwWVmHWx1d0mNr9waHkyamTklNogYiGcT0fI8YilfBdrC2DXUl4tt3oKOTIQetpHFRxf3HACisWcck6njxFEeZuazTTSa3BA2cKxxMuVcXkCqZISNPgD4mAixbnpEDBCu+UKKTYStA5XPPSdr/1GmqjpdLhKESTIIa/mUImLT4B9fEubZi6GHAqEzxV/92ly37+QeFyZNySHEfxxdoeF1beVMrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB4820.namprd11.prod.outlook.com (2603:10b6:303:6f::8)
- by SA1PR11MB7015.namprd11.prod.outlook.com (2603:10b6:806:2b8::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.35; Wed, 8 Feb
- 2023 12:09:11 +0000
-Received: from CO1PR11MB4820.namprd11.prod.outlook.com
- ([fe80::1531:707:dec4:68b4]) by CO1PR11MB4820.namprd11.prod.outlook.com
- ([fe80::1531:707:dec4:68b4%6]) with mapi id 15.20.6086.017; Wed, 8 Feb 2023
- 12:09:11 +0000
-Message-ID: <b44d5dc7-ee7a-80e0-5401-829bf5740de5@intel.com>
-Date: Wed, 8 Feb 2023 20:09:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.1
-Subject: Re: API for setting multiple PTEs at once
-To: Alexandre Ghiti <alex@ghiti.fr>, Matthew Wilcox <willy@infradead.org>,
-	<linux-arch@vger.kernel.org>
-References: <Y9wnr8SGfGGbi/bk@casper.infradead.org>
- <Y+K0O35jNNzxiXE6@casper.infradead.org>
- <ba99ed28-61e4-4acd-ce17-338f5a49ef26@ghiti.fr>
-Content-Language: en-US
-From: "Yin, Fengwei" <fengwei.yin@intel.com>
-In-Reply-To: <ba99ed28-61e4-4acd-ce17-338f5a49ef26@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR03CA0090.apcprd03.prod.outlook.com
- (2603:1096:4:7c::18) To CO1PR11MB4820.namprd11.prod.outlook.com
- (2603:10b6:303:6f::8)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBgTd46YNz2yXL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 00:15:17 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 318D9EhU032361;
+	Wed, 8 Feb 2023 13:15:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=mWwGpXJUxry2N+ftgb+39sOvwFnYXTNWApXud3m0siY=;
+ b=K3YwynGzksGKbKdGLZHqdHIQ+j1rMX1GeEiO3v6GgQ4Ick5WnVlbklnbumMxRRI15Qyv
+ xj7DQJpBGwn3mSYurS9GqJWrWJxzVoJaFoTd9uf2DCKRpJnZu5Ror1VzsOLE4uGdGRIS
+ +KHv+WLZZ/hB7owUKcsZGSyqlZjgbejWqhN5avEJ4z+tB+Ap3UZ+v7pHB9UN3HUWEupM
+ gI9mTB3GsXdyiV4xLPnQOgFVcEEm/+dbYj7dd+xU0kLvE3FQQFnxQKKSNXrSx75JuwKv
+ W6NYA4S2moLBpTkqo6mcBKijp9JgklPnEyJ2decbUbMBiHyI3VoexPBlw5KfKYwVFvJT Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmc2v8e6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 13:15:01 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 318DADk0002467;
+	Wed, 8 Feb 2023 13:15:00 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmc2v8e5t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 13:15:00 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 318BTRal001036;
+	Wed, 8 Feb 2023 13:14:59 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3nhf07dfhh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 13:14:59 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 318DEvAN40174052
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Feb 2023 13:14:57 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2713E58056;
+	Wed,  8 Feb 2023 13:14:57 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0578258052;
+	Wed,  8 Feb 2023 13:14:57 +0000 (GMT)
+Received: from localhost (unknown [9.163.2.97])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Feb 2023 13:14:56 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Lynch via B4 Submission
+ Endpoint <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Kajol
+ Jain <kjain@linux.ibm.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Mahesh
+ J Salgaonkar <mahesh@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>
+Subject: Re: [PATCH v2 01/19] powerpc/rtas: handle extended delays safely in
+ early boot
+In-Reply-To: <87ttzwwgh4.fsf@mpe.ellerman.id.au>
+References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
+ <20230125-b4-powerpc-rtas-queue-v2-1-9aa6bd058063@linux.ibm.com>
+ <87ttzwwgh4.fsf@mpe.ellerman.id.au>
+Date: Wed, 08 Feb 2023 07:14:56 -0600
+Message-ID: <87wn4snvsf.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB4820:EE_|SA1PR11MB7015:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74446351-54ae-4c4a-5f78-08db09cd4997
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3uX1/jzWwBD41j7lQH8xDqE+z6KOqrU1p4GTnaVEZudK4K+xQcNEe7JAbr9CB3MseGBWBguyx5VwRX6Y/tz7USNfmgAShnSfzhsH6sYkgxQ8Sk/jb/MRKCpEom3TzXzItgeSnB0SODs8AxMGHZZl9Cugno4pcmAjgtAIBv4/2nqWYrqkZz9etf9EGD83SsNp+YSKe1TsNf7ZPPhj9CYXnBFSdTWukPdBFLWLKBqL5/6+gZgfXGeUmDEBvXWCQsGyzMPBkMCg4dylY+ufTpZCLLAVjm7Nn4oND+dvxVMHprsDmcD823aBG3cbfEOuAc2qLGYUKCUoGw5Z9pkPxLXaANeFKt7cqUGmUofFPQSwiNlm0WmT0nxJNhMGrbMa8Q3cbgBx2MoJKK8G8CLySJHA5NmfsdH7VFnFtOyvW3hvZM3FlJV+sgXxCtlSa5js53PEO51DBa5WlUrG5OmygOfZnYtNE0//jR7abLekuGkxR/n+reTKdKJu9HapwjfDEU703n0dfrH8m1mkC+ilA1uQQjiX+W9qaYvAQUf4eTxpFiQbBVVuKyy7QjAhdDQ7VdM2FDFAS6wjEjpG1+RlThnW4CJP2JGVb9DjelTlMZE+QgiaF/wC0kij8/DxcZGr+aLxKTZAvI3k7O3l7/gf4qLLRzcdWTYRwShEGWNk1O2m+niYSD4fuMwiqjX45gy59budM5zfhO2t4DftoVIlk2AKGbcAl+SYD9xqsZ9o7J4+bgNSX2Jsaoff//dSYcSobzYgfg2Z0JIISBANMJhJxnvpbgw7EadXJ0FS6posiH9pVv3e0UkhC8/I9vNd6rRz0wlt
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4820.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(39860400002)(136003)(396003)(346002)(366004)(376002)(451199018)(8936002)(41300700001)(8676002)(6512007)(186003)(26005)(2616005)(83380400001)(82960400001)(2906002)(66946007)(4326008)(66476007)(66556008)(31696002)(31686004)(5660300002)(110136005)(7416002)(316002)(38100700002)(86362001)(6486002)(478600001)(966005)(6666004)(53546011)(6506007)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3k1QkJlbXFBcHM2TDZ1N3d2NEF2bXk4b20wMEdHdmFPa2ZuTkdMYXZYbE9L?=
- =?utf-8?B?RlY1Vy9sNXV1a1ltMythM2d4ZllRU2M2cHhLTnMxS3B5c051Vm9FTmMxd3hM?=
- =?utf-8?B?MG5WSFZjdmN5SkZnWkt3Sml6ZWZROURpby9DVVY1WnhiaThFZ3F5V3RKeHZ2?=
- =?utf-8?B?ZXNqV3FVSWlpM2NGbmFtYzhSdEE0d25rM01qbUNBc24xSFVadDl1QmZMMzA4?=
- =?utf-8?B?UzBuYnFRNU1ldVVielIxMzAxVUFITzRYb1pkS2gxdTN3bVlSdmhISWIzNEdK?=
- =?utf-8?B?OUhyNmJERXBJcXo3Y2huR0RkaVc1azJWYVFDVGJ1US9IbkJRU2E2cnpSN244?=
- =?utf-8?B?aWJQVklSNzdDVHJaZ0M2czBQYTNaempPYjBma2hmL0EzRW1ldlVDUkpZY2tM?=
- =?utf-8?B?dlVCSFRyMk5iS2EyV2ZhTVdaZTdvbXZuNktiVjNsL0Z2ZFQzTzlldXlEVEJH?=
- =?utf-8?B?UFlZcFRONWxUMXBZeU5CdHNza2tBdDg5Yk1TMDlVZTNMYUVBWGxmcmFSNHV3?=
- =?utf-8?B?dGt5YVRKSWUyWXlJQmRtRmJaakpIVzdzeFRnNXZqSVRoTThSN1Z6Z2pjcHJl?=
- =?utf-8?B?UVgrUlBjbmljV3hjWjNEanhHa1MybGxZWWp1d1dpWnFZOXJRaE1HUTNvbUVx?=
- =?utf-8?B?NW5jUkdYWVdSSWFnQXNwN3BsenZuWVVCMElvajNsQi9MZm9WN0Mzc29kTTdG?=
- =?utf-8?B?UEZyY2w1MmU1R2k1UVNNUzRqTmJZTmxGMDlIQmtqeDR0NFQ0SGFDdDZyZ25r?=
- =?utf-8?B?cml1UHd4dCtiU2xQdHJNazgrMHU5dTNrdW9kZ0VmK1FCS2M1MnppenJKV3dT?=
- =?utf-8?B?VTB4RkdWYVFEdG54VXpxMnF1WWZTM29DQnJVQWxlUzUwRzR1ZithSFdERHNk?=
- =?utf-8?B?TzZNVjdsMzRGdHVOMXdjazE1Qm05alZXSCtuQmVVQnpMeHZma0x3NmhrcHJ0?=
- =?utf-8?B?UjJCRFZ1bllFaHA2R2JBZEp2UEpZOTdiT0FxZm8wZkZsTUNyR0NTL3hLMmM3?=
- =?utf-8?B?NHl1aHBoelhWTnBpUnMreThNaTU2SkVEazZmMnR3b21xMlY2eGtrSkJ5cHRV?=
- =?utf-8?B?S0paMjFndXVaSEFMYUlVWWsyOUxnbkJkWTdncE9XNDBCVkJ1T0hBYWpQd2Vs?=
- =?utf-8?B?bzc0NjExNTFWOUZheDJFQmlCa3VKWTVObW0ycmdnQ0h2dTNaa0d5UmxKVFBI?=
- =?utf-8?B?SFI0dU5WVnlpWjd0bWF4NDZTTklpYnlRSWpJU21iUHFoS0JLYjV0QVNXSTJK?=
- =?utf-8?B?VmVyaHFLT0RwYmtuMmMrNTgxVno4ZU9kdnhNTHlIRzhnNnAyL0N2MWJmTDMz?=
- =?utf-8?B?ZytRRHBnZVF5a3FYVjJ3TG9GRGZyOWpmUlVQT05CYXk1WXRJQVU0UnNlbmFt?=
- =?utf-8?B?UmdRUUJxZHB3V05XTnVDN1dSTEViVHNuQWRlYmFmMXQyS0M0VTluTU5CcmFj?=
- =?utf-8?B?SDV5alUvWEltS1B0MDhMWFBEZDRsK3FQYzFpZ1ZUVWdGTHh6a0JGY2NHdGxP?=
- =?utf-8?B?b0lmNFkwRk9mcVZiT1ZSRDZTdWI3UnlxaklmeHBIcGJTZEV1Zm9yK01Wangy?=
- =?utf-8?B?WjE0WW14THN0SWNhRUJSOEZNdFZMSlRCMDVVN3NlYmxoOHloN25oeUlvdjVQ?=
- =?utf-8?B?YnYzamU2aXpOVy93aU5IMHVJWmZxVWhxYzJRNXdiaUh0blR1V1I1Q09kUXp1?=
- =?utf-8?B?cXZSejU3TE9zeisvVUhSZ2J1ejduQVlxdFo2L1hBR0d0ZVh0MEpiak9lVnVu?=
- =?utf-8?B?Q1IycWxQUURIWFpOZ0dVY05TNmdwdC9jcnJ3L3Azd2lqL29od3YyWSs4d214?=
- =?utf-8?B?SkJqOWhnV2VzZW12cU55UTBGdHl6ODdSZGlQNldiVzR6U2VHYS85Zi91OGVO?=
- =?utf-8?B?eFFEV201Q0YvUGN2M2ZISUQ4WUkxVHNPNjFTZ3FPVGZ4akMyTTdyb1pJeVIy?=
- =?utf-8?B?YzRpNWhLVWpkaGpPVWVWWEg0Nzg4K3Y5WWU4TDdrcE1uT2FqQkFXTlMvMWxu?=
- =?utf-8?B?N2ZBMUhWSzdlYmZKMUJSbjlnaHRpeHZVUm0xcWN1MlEwRkhlS1F5L2daNzFz?=
- =?utf-8?B?Y2Q0VkdFZVoxUXRzdy9OVWdVbU8zMldHZm8wQmd6K1RZdE11MWZoSEJ0VDhy?=
- =?utf-8?B?WWxXM0kvV1IwZjV5TkZSUFB3VVFOdXduNmh2R0ZPSDVZQkluMDRROElUbUto?=
- =?utf-8?B?bEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74446351-54ae-4c4a-5f78-08db09cd4997
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4820.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2023 12:09:11.3003
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zosHd4DwCyREAi4opUOQu23bZx1HzMLtiKazf49KiBq+KVmyfnJXQ3lMJfd91Maax6AZIK+hLTFMjjTOdSuVgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7015
-X-OriginatorOrg: intel.com
-X-Mailman-Approved-At: Thu, 09 Feb 2023 00:10:33 +1100
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: mBWR8ZRtM2gfpR6DtW2caxkDuUYywfVc
+X-Proofpoint-ORIG-GUID: 8eeFieQwzdoEcJTawAVvgpHQyU_6tkHe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-08_04,2023-02-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ clxscore=1011 bulkscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302080116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -166,58 +109,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Nathan Lynch via B4 Submission Endpoint <devnull+nathanl.linux.ibm.com@kernel.org> writes:
+>> From: Nathan Lynch <nathanl@linux.ibm.com>
+>>
+>> Some code that runs early in boot calls RTAS functions that can return
+>> -2 or 990x statuses, which mean the caller should retry. An example is
+>> pSeries_cmo_feature_init(), which invokes ibm,get-system-parameter but
+>> treats these benign statuses as errors instead of retrying.
+>>
+>> pSeries_cmo_feature_init() and similar code should be made to retry
+>> until they succeed or receive a real error, using the usual pattern:
+>>
+>> 	do {
+>> 		rc = rtas_call(token, etc...);
+>> 	} while (rtas_busy_delay(rc));
+>>
+>> But rtas_busy_delay() will perform a timed sleep on any 990x
+>> status. This isn't safe so early in boot, before the CPU scheduler and
+>> timer subsystem have initialized.
+>>
+>> The -2 RTAS status is much more likely to occur during single-threaded
+>> boot than 990x in practice, at least on PowerVM. This is because -2
+>> usually means that RTAS made progress but exhausted its self-imposed
+>> timeslice, while 990x is associated with concurrent requests from the
+>> OS causing internal contention. Regardless, according to the language
+>> in PAPR, the OS should be prepared to handle either type of status at
+>> any time.
+>>
+>> Add a fallback path to rtas_busy_delay() to handle this as safely as
+>> possible, performing a small delay on 990x. Include a counter to
+>> detect retry loops that aren't making progress and bail out.
+>>
+>> This was found by inspection and I'm not aware of any real
+>> failures. However, the implementation of rtas_busy_delay() before
+>> commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
+>> was not susceptible to this problem, so let's treat this as a
+>> regression.
+>>
+>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+>> Fixes: 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
+>> ---
+>>  arch/powerpc/kernel/rtas.c | 48 +++++++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 47 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>> index 795225d7f138..ec2df09a70cf 100644
+>> --- a/arch/powerpc/kernel/rtas.c
+>> +++ b/arch/powerpc/kernel/rtas.c
+>> @@ -606,6 +606,46 @@ unsigned int rtas_busy_delay_time(int status)
+>>  	return ms;
+>>  }
+>>  
+>> +/*
+>> + * Early boot fallback for rtas_busy_delay().
+>> + */
+>> +static bool __init rtas_busy_delay_early(int status)
+>> +{
+>> +	static size_t successive_ext_delays __initdata;
+>> +	bool ret;
+>
+> I think the logic would be easier to read if this was called "wait", but
+> maybe that's just me.
+
+Maybe "retry"? That communicates what the function is telling callers to do.
+
+>
+>> +	switch (status) {
+>> +	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
+>> +		/*
+>> +		 * In the unlikely case that we receive an extended
+>> +		 * delay status in early boot, the OS is probably not
+>> +		 * the cause, and there's nothing we can do to clear
+>> +		 * the condition. Best we can do is delay for a bit
+>> +		 * and hope it's transient. Lie to the caller if it
+>> +		 * seems like we're stuck in a retry loop.
+>> +		 */
+>> +		mdelay(1);
+>> +		ret = true;
+>> +		successive_ext_delays += 1;
+>> +		if (successive_ext_delays > 1000) {
+>> +			pr_err("too many extended delays, giving up\n");
+>> +			dump_stack();
+>> +			ret = false;
+>
+> Shouldn't we zero successive_ext_delays here?
+>
+> Otherwise a subsequent (possibly different) RTAS call will immediately
+> fail out here if it gets a single extended delay from RTAS, won't it?
+
+Yes, will fix. Thanks.
+
+>
+>> +		}
+>> +		break;
+>> +	case RTAS_BUSY:
+>> +		ret = true;
+>> +		successive_ext_delays = 0;
+>> +		break;
+>> +	default:
+>> +		ret = false;
+>> +		successive_ext_delays = 0;
+>> +		break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>>  /**
+>>   * rtas_busy_delay() - helper for RTAS busy and extended delay statuses
+>>   *
+>> @@ -624,11 +664,17 @@ unsigned int rtas_busy_delay_time(int status)
+>>   * * false - @status is not @RTAS_BUSY nor an extended delay hint. The
+>>   *           caller is responsible for handling @status.
+>>   */
+>> -bool rtas_busy_delay(int status)
+>> +bool __ref rtas_busy_delay(int status)
+>
+> Can you explain the __ref in the change log.
+
+Yes, will add that.
 
 
-On 2/8/2023 7:23 PM, Alexandre Ghiti wrote:
-> Hi Matthew,
-> 
-> On 2/7/23 21:27, Matthew Wilcox wrote:
->> On Thu, Feb 02, 2023 at 09:14:23PM +0000, Matthew Wilcox wrote:
->>> For those of you not subscribed, linux-mm is currently discussing
->>> how best to handle page faults on large folios.  I simply made it work
->>> when adding large folio support.  Now Yin Fengwei is working on
->>> making it fast.
->> OK, here's an actual implementation:
+>>  {
+>>  	unsigned int ms;
+>>  	bool ret;
+>>  
+>> +	/*
+>> +	 * Can't do timed sleeps before timekeeping is up.
+>> +	 */
+>> +	if (system_state < SYSTEM_SCHEDULING)
+>> +		return rtas_busy_delay_early(status);
+>> +
+>>  	switch (status) {
+>>  	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
+>>  		ret = true;
 >>
->> https://lore.kernel.org/linux-mm/20230207194937.122543-3-willy@infradead.org/
->>
->> It survives a run of xfstests.  If your architecture doesn't store its
->> PFNs at PAGE_SHIFT, you're going to want to implement your own set_ptes(),
-> 
-> 
-> riscv stores its pfn at PAGE_PFN_SHIFT instead of PAGE_SHIFT, se we need to reimplement set_ptes. But I have been playing with your patchset and we never fall into the case where set_ptes is called with nr > 1, any idea why? I booted a large ubuntu defconfig and launched will_it_scale.page_fault4.
-Need to use xfs filesystem to get large folio for file mapping.
-Other filesystem may be also OK. But I just tried xfs. Thanks.
-
-
-Regards
-Yin, Fengwei
-
-> 
-> I'll come up with the proper implementation of set_ptes anyway soon.
-> 
-> Thanks,
-> 
-> Alex
-> 
-> 
->> or you'll see entirely the wrong pages mapped into userspace.  You may
->> also wish to implement set_ptes() if it can be done more efficiently
->> than __pte(pteval(pte) + PAGE_SIZE).
->>
->> Architectures that implement things like flush_icache_page() and
->> update_mmu_cache() may want to propose batched versions of those.
->> That's alpha, csky, m68k, mips, nios2, parisc, sh,
->> arm, loongarch, openrisc, powerpc, riscv, sparc and xtensa.
->> Maintainers BCC'd, mailing lists CC'd.
->>
->> I'm happy to collect implementations and submit them as part of a v6.
->>
->> _______________________________________________
->> linux-riscv mailing list
->> linux-riscv@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+> cheers
