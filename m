@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591A268E704
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 05:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2023068E705
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 05:25:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBRjY1RTsz3cTk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 15:24:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBRkf6WwMz3cg0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 15:25:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bz6RSRSO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GWM1srF0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bz6RSRSO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GWM1srF0;
 	dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBRhY57j8z2yPY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 15:23:55 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id ea13so3004389pfb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 20:23:55 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBRjm0TCjz2ynD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 15:24:59 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id 24so691724pgt.7
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 20:24:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fwckPzzpAfCiiq4nczjtD5+CfSxL2gLGQ05Qh9vCh7o=;
-        b=Bz6RSRSOPmxuVwz6B0Oe83p8SIQx3wB2q52iXk0yQDOirVJt6sDknz//TgRXU9rX1N
-         pmVE/p2r5cIYXVU0XOGgApKWEM1LnUuAYSIik/RCtZFVnVgyEj0kN3AQceRVCjSX5etO
-         IsF0o4NKXCJl/u5k4odty4wBrRdg0cmYkAx81YjCIrek7KDCpeol3tiVBjs7TZwR2fLa
-         st9ANEcaJPOzVrXIje9X/WkHqi/eQICEXG6rjnHhzfE/7GckM/NpZ8h0HX2Fc2CrrrNw
-         fSAs2txO53xdCFZDWuHsa53YOioaTURYH92PMevJa1M130BFiiN9s/0Nz14j8RsxpcDS
-         /UOg==
+        bh=P03OlggRzHLuSZ2ATed+avheebm+eO5F7PlB2QrpWoo=;
+        b=GWM1srF0XcnceJgPu1AFXOzfJfBbhpib+Uist8GhWYZFUFDmVfF1gLnQs9WVAIVnoR
+         jhSP+A9ReQlkQKjjNeIfkRTflFqX3JTo6t9tRjbiSPpCyReZ2zMKlxFmgQ5jAY3U8ckH
+         rf6cw2viebOlriAmomPsWVSibdVjgeVxj4vcEvhNmkYOdJkEv2Xx2AGWV/0RDyiUmvdE
+         0WhoCAlAjf+AP29yK2bObAI4wo8erhDGq+3rCPVuePcrYMMY+7SlMhLg+S5PZXFMj2o+
+         pz2NZf2d6d116SBSj3xNc/cpsdQpb3xzUAzUak6iLA520USFqSxocMYIh/Cy235Wn41T
+         nvMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fwckPzzpAfCiiq4nczjtD5+CfSxL2gLGQ05Qh9vCh7o=;
-        b=SZIoR7l//pX8uWiyCJ30sLZsBZEtL3tT4uynxvjot6MvBb8jDQR62j2Ybxn6kcoTuB
-         d44Fv+eqp9GbOoV1RKGDxbArErK8nLhxG4PxNqScZJieZxj3fgxhY5KhaaG7Nx6ubfqK
-         cIjtx9rJ1399EOQPIsQEvJT4vX9J3FRSVH93vsw6Z/8t545lg6kljGZedb5QEzs9AWLE
-         rXcPwzVXVaz4fCbv2d0fZ82xkIK5C5xLIq96iY42UTU5t6Qy0d5rt0oUs69uYpodJbSd
-         xLzBK7Dnw/KpxpHHSvSth+oTk2W2iafkgk1hKp0TnLVenT5kQvRRJ+Jh1ORqHDtsrHt/
-         o0Nw==
-X-Gm-Message-State: AO0yUKVXXh5U+yQyjPLHje/9ZgP5RAEpvjLUZ+8Zo+FZO4SJYTJ1Et+X
-	7cKeGau0kcXA6PoFUNy3RZENVq1W7r0QljMK2gQ=
-X-Google-Smtp-Source: AK7set9bEtzV65PTBeYIkXgXf9bddryQqJLhFkR+zQpm+gO+JZ8lC12Z3FZOvL/dTQgQhXyM9rzDp2tV8S/qKVV2CLM=
-X-Received: by 2002:a63:6f8d:0:b0:4fa:bd95:3913 with SMTP id
- k135-20020a636f8d000000b004fabd953913mr1223387pgc.1.1675830232494; Tue, 07
- Feb 2023 20:23:52 -0800 (PST)
+        bh=P03OlggRzHLuSZ2ATed+avheebm+eO5F7PlB2QrpWoo=;
+        b=snp8hWFhSxdD9CXZeemiAjDIZ4W2SnLHI9mPzzaIhsWv8+0VJZ8WYZrYDoKs1PwGOA
+         XT3gFQ/IiCh8cGSOFMleO7iN8I7IUjXptwxKc2NrtMOt/rH5jYkOkSRIVwC7mztc+uxC
+         0HZPpYLLI8j5avUrD2WtNcaghgEVfzMAz7XVhtKymQsihsH1HgtgUDnVJkqj1lEv6mHx
+         WI2pSqP3PmxHvRww7etnm9CzIVygZ7iD2zzAgGd7+prHgTCl6JchjwOnUgre/sBj+7Ke
+         8xfhcw6vEWhpVvOb+V0o2OsUucR7+A7belUypQZoChCDG3o0qDxq1HqLSI5s6czuq3Sy
+         3W0Q==
+X-Gm-Message-State: AO0yUKWHwHSxheFrtzGfnhz54bZmNOVfkl6KfMrPtr90cXXQ1oYbknqw
+	yyodTUPEVMH00dQaMDJ+XE1EQMth0snvVsGyKeo=
+X-Google-Smtp-Source: AK7set8RB3+a4NwP63rvUfNIU7bqqO0OMVLYV0T0kpE8DlOz7U4gstR/HobmuPYxzuQihYvhKCMKPKMa74AQCiYtI28=
+X-Received: by 2002:a63:b54b:0:b0:478:c84a:ade1 with SMTP id
+ u11-20020a63b54b000000b00478c84aade1mr1129473pgo.66.1675830296997; Tue, 07
+ Feb 2023 20:24:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20230208032202.1357949-1-rmclure@linux.ibm.com> <20230208032202.1357949-2-rmclure@linux.ibm.com>
-In-Reply-To: <20230208032202.1357949-2-rmclure@linux.ibm.com>
+References: <20230208032202.1357949-1-rmclure@linux.ibm.com> <20230208032202.1357949-3-rmclure@linux.ibm.com>
+In-Reply-To: <20230208032202.1357949-3-rmclure@linux.ibm.com>
 From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Tue, 7 Feb 2023 20:23:41 -0800
-Message-ID: <CAMo8BfLFR6Oza0TPZy32PkEYqGhEvwtQvM=KGwdBgXuXv9Lr+A@mail.gmail.com>
-Subject: Re: [PATCH v4 1/7] kcsan: Add atomic builtin stubs for 32-bit systems
+Date: Tue, 7 Feb 2023 20:24:45 -0800
+Message-ID: <CAMo8BfL9Lfd1Lwkk4Cs5enrhgYutCxzsT2kUYEMUyJ1sqd7XAg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/7] xtensa: kcsan: Remove kcsan stubs for atomic builtins
 To: Rohan McLure <rmclure@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,29 +79,24 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Tue, Feb 7, 2023 at 7:22 PM Rohan McLure <rmclure@linux.ibm.com> wrote:
 >
-> KCSAN instruments calls to atomic builtins, and will in turn call these
-> builtins itself. As such, architectures supporting KCSAN must have
-> compiler support for these atomic primitives.
+> A prior patch implemented stubs in place of the __atomic_* builtins in
+> generic code, as it is useful for other 32-bit architectures such as
+> 32-bit powerpc.
 >
-> Since 32-bit systems are unlikely to have 64-bit compiler builtins,
-> provide a stub for each missing builtin, and use BUG() to assert
-> unreachability.
->
-> In commit 725aea873261 ("xtensa: enable KCSAN"), xtensa implements these
-> locally, but does not advertise the fact with preprocessor macros. To
-> avoid production of duplicate symbols, do not build the stubs on xtensa.
-> A future patch will remove the xtensa implementation of these stubs.
+> Remove the kcsan-stubs.c translation unit and instead use
+> the generic implementation.
 >
 > Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 > ---
-> v4: New patch
+> V4: New patch
 > ---
->  kernel/kcsan/Makefile |  3 ++
->  kernel/kcsan/stubs.c  | 78 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 81 insertions(+)
->  create mode 100644 kernel/kcsan/stubs.c
+>  arch/xtensa/lib/Makefile      |  1 -
+>  arch/xtensa/lib/kcsan-stubs.c | 54 -----------------------------------
+>  kernel/kcsan/Makefile         |  5 +---
+>  3 files changed, 1 insertion(+), 59 deletions(-)
+>  delete mode 100644 arch/xtensa/lib/kcsan-stubs.c
 
-Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
 -- 
 Thanks.
