@@ -2,102 +2,131 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB34168EEBC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 13:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 239AF68EEEE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 13:25:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBfCC5QzKz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 23:17:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBfMq6cfdz3cgy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 23:25:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KlkuZW6R;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZV3b0JZR;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=nozx7lKW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:fe0c::61c; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KlkuZW6R;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZV3b0JZR;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=nozx7lKW;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on061c.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0c::61c])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBfBB4fHpz2xYL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 23:16:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675858604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rjMSi9ok1TzHSDU3w1PUUtKMgZdBUc/PnFmrcylWMYk=;
-	b=KlkuZW6RhOdKFBjinnEPhFgicj410BCsjLmi+eGEwia8fLYfZFxmvq5+DSS/BIZkJ4fiCG
-	ccEKi8rIszNOr7TOF0po7Uw8kredEb5NHgvc/YQhLoWT4PohyQ71vHP104d06qh8tYjFB4
-	jAdJuQxp79flS4z2uRGbNR5DT6ogz80=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675858605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rjMSi9ok1TzHSDU3w1PUUtKMgZdBUc/PnFmrcylWMYk=;
-	b=ZV3b0JZR/JUqJyeWKigVedVfdIEFJQb9oKPjro9HOQ9it10MZEhIKBsN/1xmzYlXO4nuEI
-	3wh1HQvf5JzIaMR9eCnyJDbzH5DyvH5OwVZkgWHrt8TcZbXrjRE9DSUCR4PobchF9cV/nM
-	bYVhCJ0AFmhBQtVdTnlTcV2ZZ588JmY=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-659-QhO7dUKhNtyPZnrZ6jz2ow-1; Wed, 08 Feb 2023 07:16:43 -0500
-X-MC-Unique: QhO7dUKhNtyPZnrZ6jz2ow-1
-Received: by mail-qt1-f199.google.com with SMTP id x16-20020ac87ed0000000b003b82d873b38so10666061qtj.13
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Feb 2023 04:16:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rjMSi9ok1TzHSDU3w1PUUtKMgZdBUc/PnFmrcylWMYk=;
-        b=IStavQKgZctS9yuuabxczkrsYDw7o6zrrm+l58tGGx9VFDsMpVpGYEWo66L0NZV4Hz
-         GittO6nFn6znwa6DcockKjpy4jIoihRSEWLoHxrl8ePEHDQjAnqFZk7d6wbvcZs3w5Hs
-         yWJb/B+KGVbMHH7dyPEG6D/e6xuUWM8X6H5DT1WEGFPJq/F4M0dxfhefZM0Hp5prL9+S
-         EDkJQ0PU8oVT38bw1+TvXDetKhY6B4QxqyE3fPkHiro0QX2vEgmfDQcreIVe9/BD87GQ
-         eoaO9ZroxGe9hKzlEDRiFU/ZRJWUNOtWH0UZDlwWt5zI/XhkSE9rN7gh74pwSl/801uZ
-         NFbQ==
-X-Gm-Message-State: AO0yUKWvAQK/BRXQVkbKbquYG3WhZ8o5eW7Xul6Tz/wR1oP2rJ6lZoEq
-	XqKaFXP4FnqU9lU9p+YjT2iOlBdQJVSGBmryOlXkvmNy3VO1jMTasPfL7cmO9PAyhJzMTC3qSBq
-	YXtdXGkxanHzG4wEylVSoljLyOg==
-X-Received: by 2002:a05:6214:2348:b0:56b:ef8e:18ec with SMTP id hu8-20020a056214234800b0056bef8e18ecmr12324933qvb.12.1675858603323;
-        Wed, 08 Feb 2023 04:16:43 -0800 (PST)
-X-Google-Smtp-Source: AK7set9NZULWqTl2Mcke9STbzAhWv2Gmx/BViB8dl8z0WU3BjxNZZ22NA4XHXc1de+u8uoed8iFu9Q==
-X-Received: by 2002:a05:6214:2348:b0:56b:ef8e:18ec with SMTP id hu8-20020a056214234800b0056bef8e18ecmr12324890qvb.12.1675858603023;
-        Wed, 08 Feb 2023 04:16:43 -0800 (PST)
-Received: from [192.168.0.2] (ip-109-43-177-253.web.vodafone.de. [109.43.177.253])
-        by smtp.gmail.com with ESMTPSA id 22-20020ac85616000000b003b630456b8fsm11264751qtr.89.2023.02.08.04.16.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 04:16:42 -0800 (PST)
-Message-ID: <ac8073a3-868f-a923-4cb8-fda4785e7484@redhat.com>
-Date: Wed, 8 Feb 2023 13:16:38 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBfLr0ZWXz3cd8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 23:24:18 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=O6uWikwRibTElTPmOKvm49s1z5wXNcitdtI0EbDIPPNL296xNEcv/f4Td657RrnGAPDlNiw4juPMBowM004dgPCY62/Jkt3GByGUI9eBiqIO5QN4BAp9bBtk48Oor13sdtf2ucHBPuIgvI0/SExdkO5FqaNGYnCGbo+USRfApDh0xfYSTo3wiDliq+ab+vKbu7mHUJ4rCt2RBHWLTzrWvGqBPseG2PZQSYsJLfCSBrKg1Z6tGLqGPox/6oAPTQ773Znwq4fwQq7qf1v48Go2oBSNGn97PWRU4lb0EYaNO10TImkr5Npjd488IhK8eJG7YIM4fpmgCus1ZyW9nqAybg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=76OOWkeubUx6Wwq+FokfNgoPKodb0wyCm5wtvOgI29w=;
+ b=CWskoqOqdZX5kordphVAKaUYXJj2NgKgpMDVmjThVIzN+/cMW9yeQaPSl8Bv4YbJwKgsFQwyhlBm+3/v3k5kT35Ez+wKNihqDN9vzqVm0VnkdqubpjbcQVZzCgg72w0ZkM12Ar8Gg5hrXPZfRzOHigF6cUW0YyQSZ+uEAn/D5qgwu25lbjfSYM6xrqiqZtjrpDc0DA8rBud37KHUmOHJCQETSHH6jVRpYGKqZbgOZFJqzLSXSHfQcTGdrHuFHXeM2YYqKyTt7+6njbWDYpxrlNGkpdiB7w4FAFBsflMoMTzT2hiMD7PQATov2ogeGCaBiT5DIa7Tiwyyr/GNm3sefA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=76OOWkeubUx6Wwq+FokfNgoPKodb0wyCm5wtvOgI29w=;
+ b=nozx7lKWtIvOPm2yagOn0D8wF2j9hHXYN7N5To07eUXl7gRO4YRvn9ceLFW2KgmZuOeTmx8Fy4N6RNTO08K+p+W5QFevQHtT0Qs8/frGvyVzFxctytPeuiYIUR1EGO2IadSroRH/I0FOSI1tFpfpGyLHWlryuta+WRafXMNmGODF/1KMS1RmHE2Y8KwEkEy7j2NoX5r6A1G7GR703ftxMRq7UHmqp41AqxeZrLiZyDFn6hfHmG3ckUbZxB2WsyCLsSzpICC3M9fyDfP+GtFgQNzwbqPBtmM9gazwpvaZ36AekdgHz2RmmJdUmBB3qw8Mmu4VSyV9MdSEXapcCuhwnw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB2968.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.17; Wed, 8 Feb
+ 2023 12:23:57 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097%6]) with mapi id 15.20.6086.017; Wed, 8 Feb 2023
+ 12:23:57 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Rohan McLure <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-xtensa@linux.xtensa.org"
+	<linux-xtensa@linux.xtensa.org>
+Subject: Re: [PATCH v4 1/7] kcsan: Add atomic builtin stubs for 32-bit systems
+Thread-Topic: [PATCH v4 1/7] kcsan: Add atomic builtin stubs for 32-bit
+ systems
+Thread-Index: AQHZO2zaljeNbslhQEmPfCmPMy0ctK7E+ZSA
+Date: Wed, 8 Feb 2023 12:23:57 +0000
+Message-ID: <fab33693-3a11-2649-0556-e4501faec418@csgroup.eu>
+References: <20230208032202.1357949-1-rmclure@linux.ibm.com>
+ <20230208032202.1357949-2-rmclure@linux.ibm.com>
+In-Reply-To: <20230208032202.1357949-2-rmclure@linux.ibm.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2968:EE_
+x-ms-office365-filtering-correlation-id: b05d4348-ac2b-43e1-3473-08db09cf59d0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  UvLziTN8+Js1TlwQ99/vZN/Hp+VL8VR4GU/s8rKKCUUxDBY1t7L73vN2ZnfOquvuFQUYvzz6tcm+sgtgDO1bzX6Z+l9JFIcoWMfsNCDJP4I3OZZcmB3ifUinVQv2iD4KWCbmGz0fnhyNN8g/PtlLw7uCJKqFKjA/zb3jble6PxcDdY2Js+n+3HE7Xrb6iFE1aD/XiXwzqdFpyTtD1MhQgHc4+tWV7seFzZe3gyMEWiObyC+edPKxRUDtFpf8I7OlAdOSpvnf5Hv8qqFIkzVtm1PX6gDUKd/M7Y81eEWo38jldRh+VHm8c1FPwQlszcNObsoPEEavTTazqLBGAYazAgrRi6q3/RCQ4RtLRGaD4mSil4sU1yjcKzctjGe70dOfA5H3zkqfH3kwdcUWgVMKpMi2ONSeYLC4/GoEDf7qmUmx24cq2hFYZusV8JgWCskkzY8YAetMoW1litdVDt6PmIIU3z1UaV/nzkBKyaYt7bYY90AX0c+yZLwDlkHOWign4h0UYp9427nOdNDXLt0QsVj2Ba0w3i8Azez5bf7RHmd2QOKKtUYX2qulBpezTmVUUrGw+cd0q5ApHekh3nU1+deZeMtNZBUzxUQIX98VGX91alUX2HoMkza9M6++zR1C7Cl0j7+OoSUp6L5f5pqM9mZXL0Zsl61ujGYsjQN4Qk1LJpq2WxFz8JMPSL9K8PB9Gvs07QM9ofaySNrPU13Qyu+QEQihRDzkE8auk+XQBn4awA0Ro/TXUPqjGbPeA5IUhl8xTXu40+TB5mVoKxfi7w==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(136003)(366004)(346002)(39850400004)(376002)(451199018)(31686004)(38100700002)(36756003)(38070700005)(31696002)(122000001)(26005)(83380400001)(2616005)(6512007)(186003)(6506007)(71200400001)(2906002)(91956017)(4326008)(66946007)(66476007)(66446008)(64756008)(66556008)(8676002)(478600001)(6486002)(110136005)(76116006)(5660300002)(8936002)(44832011)(41300700001)(86362001)(316002)(54906003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SkpLQUh6ZFF2dGN6Yjllckp6SVBTdVRrZ091ZS91LzdSZjgvTDFFRGZNZG9s?=
+ =?utf-8?B?bDZWOGlFeEF5UVdrdWVSRVpUL0w4VzY1eXpSbVRDeGJjQ2dPQVVsaEJjdGJo?=
+ =?utf-8?B?UUk2VHRCVFgzbkRvbmZ1QW9pVS8wVkxCelliYUlvaW16MkFqekVUNU5vYnJR?=
+ =?utf-8?B?K1RKU0FXOG8zd093R1dHd3UzbVRzM1RvL243T3k0UGhPdE5SVmF1ZnRTUVBP?=
+ =?utf-8?B?UXpJL0lFbTBLbTNNS3lyVit6MzFpcEdyM29YU1cvYW9jcEYwam11cktaZU5R?=
+ =?utf-8?B?VEpMMlBpSXFTWGJueENVc3VjUU1zWHRUaWxaMVpQcEhadEZpblVwUFh2bVdp?=
+ =?utf-8?B?MTEwZGZHWmkrVGxBRGxOenpOemR3VlhCQVJoV3l1U2dMU2w4cDZkWTEydVhK?=
+ =?utf-8?B?RGZ5cmVZWGQ2WUZON21mMlViOWoraDFwVy9nT0dNUHI0N2tVVzlKVTMrYUtB?=
+ =?utf-8?B?am1Gc2VPc3ZNU0xuVTVIMmZneEpzRmNTSWh2SE1Mc0JnMXdzRXcvNDkvZXVU?=
+ =?utf-8?B?MVBwZW9qS3JzK3ZGV1ZOTDNFRDdFTGZySXVGbHg5a1B3cVNaZkJtRFZRWlhy?=
+ =?utf-8?B?LzVscEt5bDM4U0ovZktCSC9hSWdIdVdNV2Fkb0xiOE8zcHFlVXJkQ1VocFJ0?=
+ =?utf-8?B?WFNSSUdUSjlwb3laUDFqNzFMeDRBZ21tR3dYamxFV25YYXlaUkFaODVCbVNS?=
+ =?utf-8?B?TDFvZmh3RmlERm90cGM3MWpFU09YUnEvdytuQWowWGlsL040YW81blRxWXk0?=
+ =?utf-8?B?OFB6WVhTY2JTWnRFbm0zd09UTDBwMSttQU5SelY2L0RPZWQzREk0QWp6UFlh?=
+ =?utf-8?B?Q3dxY2t2VllQaGIzMWNMSUEybVlRNmUzazlxK2ZyU0gvWG1UOXdIMzg3VCsv?=
+ =?utf-8?B?TGJReXlDVWRLVUxsdWM1UUxEdVBUUWc5ZkxobklEejR2dEdVNXkwVGxLbGc4?=
+ =?utf-8?B?c0RvaVhKQzNDaEFnbTl5cTM2SkNkaW5LdGx1cFVxbGRyYmNQQWwwSytmaExR?=
+ =?utf-8?B?dXFGaTJnRlZpNWlnYnBoaFVOSTlObmZGRjQ2WFBsV0U4b1BmM0J3TERKV2xT?=
+ =?utf-8?B?T1R1ZUlUYWdVRVIrRUJza1dPbjNMNjRLUG5Bc2UrTno0c28zM1U3OXRyVTQx?=
+ =?utf-8?B?T1AyVC85blI1UnFCb09tL0JpbWZxOVVNbG9QREpKcGQva1lwUW5IUFpMZUZi?=
+ =?utf-8?B?U2NTRFlDRVpUVmVQVnZWUmYvVm03RkdRbm9NUEs0VEo5UDI3cGIzcENhUE9l?=
+ =?utf-8?B?Nk1td24vbHhDNm1kOUNPMmpLMm1zRG1nenhVODdjeml3WGQ4empzK2tEQlhy?=
+ =?utf-8?B?MUdQMGpSQkc5eWZxaGdQeGZFWE9NSm5qSE1CRkY5MWdNL0VwTktmamZ1Ulgw?=
+ =?utf-8?B?bFdhMCt2RUNMWEZFSFBFUXA0YlRiNmd4M3VOeUNiYjlpMHpDTDBnZStUZkk0?=
+ =?utf-8?B?SDFpWVd4emtzSXh0T2FBWmVtMjVNM3J2OC8xRUZmbVdBTkppbjNJOHRMdktl?=
+ =?utf-8?B?OVIvUWNjUlR6QUxPNk9NamlINkNnNzhqR240M0F5ZHZ6TkM3TUxXYXk0RFNt?=
+ =?utf-8?B?OVhOYngvNXdYSnRlVnM5N0pPQTRKL0tBOUQzTWw0dTdIT09iS1REVnRWb1hR?=
+ =?utf-8?B?MUhxZXJ6QlhEejZ3dVZQZmNDVFlMdVczZXo5ZWpKYTNEUy9yZkVHSU0rdHZk?=
+ =?utf-8?B?ZitWZVF5cEhyTGN1ZjE1ekNZeE9May9EblplZjBFeXBiaEZVbFVOSzlJc1Np?=
+ =?utf-8?B?MSsxY3pBV1FETlI4SG9ndkhFWEdiQ05uYnhkbE5kNHQ4eXJrV3pPSWNQeDQ0?=
+ =?utf-8?B?eEk1dzd2LzNGMHVVanphTmRhWXVnN01pUzIyUTd5ZmIvU3M4aEhKWTFpZWE3?=
+ =?utf-8?B?YXlIY1dXQVczTGVtRGVLQVo1NmkyUlFQUlJkY09MT3NJc0k0dDIyck9UQlM5?=
+ =?utf-8?B?WHIzNk1TTjEwL3NMZ2hIckw5QVRuN0FWS3Z5c0lha3FQdFBXL093QW9jZXFu?=
+ =?utf-8?B?NXN4enlZdjM4a0NrWmFZRENHZFVzdGNqU1dLaXZZdDBHb25ITjE5T2k4MUpJ?=
+ =?utf-8?B?WnlPb2JJUXVZUkpDcmZoV210Szg3QkZhditYSDdpMWpZL3dZR3BKUEo3dWk0?=
+ =?utf-8?B?bGNwVkhXNHFGMDgxb0Q5RG55cjVjMTQ5THRBbTcxV1lCblFrbzFPUnByUGpK?=
+ =?utf-8?B?Mmc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E4F712FF880E5E4E967535041F293490@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-To: Steven Price <steven.price@arm.com>, Cornelia Huck <cohuck@redhat.com>,
- Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-References: <20230203094230.266952-1-thuth@redhat.com>
- <20230203094230.266952-7-thuth@redhat.com>
- <c6e605fe-f251-d8b6-64ed-bd1e17e79512@redhat.com>
- <7b32d58b-846f-b8d7-165b-9f505e5f00f0@redhat.com>
- <d0b3a1e7-0864-f169-cdea-60ad95951b3f@redhat.com> <87zg9oleyb.fsf@redhat.com>
- <ce11001e-dbe5-8694-71a5-841f4d614456@arm.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 6/7] KVM: arm64: Change return type of
- kvm_vm_ioctl_mte_copy_tags() to "int"
-In-Reply-To: <ce11001e-dbe5-8694-71a5-841f4d614456@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: b05d4348-ac2b-43e1-3473-08db09cf59d0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2023 12:23:57.2285
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qPM6G019cOfZHgjpOU759pEADsskVWKab/8el8MNsj03L35HvqvYGNTT1ry/2btzA6Hg2FsemcUcaf/Ulob3XKICp26cVWOPbih8RwsXMg0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2968
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,87 +138,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Eric Auger <eric.auger@redhat.com>
+Cc: "chris@zankel.net" <chris@zankel.net>, "elver@google.com" <elver@google.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/02/2023 12.51, Steven Price wrote:
-> On 08/02/2023 08:49, Cornelia Huck wrote:
->> On Wed, Feb 08 2023, Gavin Shan <gshan@redhat.com> wrote:
->>
->>> On 2/7/23 9:09 PM, Thomas Huth wrote:
->>>> Oh, drat, I thought I had checked all return statements ... this must have fallen through the cracks, sorry!
->>>>
->>>> Anyway, this is already a problem now: The function is called from kvm_arch_vm_ioctl() (which still returns a long), which in turn is called from kvm_vm_ioctl() in virt/kvm/kvm_main.c. And that functions stores the return value in an "int r" variable. So the upper bits are already lost there.
-> 
-> Sorry about that, I was caught out by kvm_arch_vm_ioctl() returning long...
-
-That's why I'm trying to fix that return type mess with my series, to avoid 
-such problems in the future :-)
-
->>>> Also, how is this supposed to work from user space? The normal "ioctl()" libc function just returns an "int" ? Is this ioctl already used in a userspace application somewhere? ... at least in QEMU, I didn't spot it yet...
->>>>
->>
->> We will need it in QEMU to implement migration with MTE (the current
->> proposal simply adds a migration blocker when MTE is enabled, as there
->> are various other things that need to be figured out for this to work.)
->> But maybe other VMMs already use it (and have been lucky because they
->> always dealt with shorter lengths?)
->>
->>>
->>> The ioctl command KVM_ARM_MTE_COPY_TAGS was merged recently and not used
->>> by QEMU yet. I think struct kvm_arm_copy_mte_tags::length needs to be
->>> '__u32' instead of '__u64' in order to standardize the return value.
->>> Something like below. Documentation/virt/kvm/api.rst::section-4.130
->>> needs update accordingly.
->>>
->>>      struct kvm_arm_copy_mte_tags {
->>>           __u64 guest_ipa;
->>>           __u32 pad;
->>>           __u32 length;
->>>           void __user *addr;
->>>           __u64 flags;
->>>           __u64 reserved[2];
->>>     };
->>
->> Can we do this in a more compatible way, as we are dealing with an API?
->> Like returning -EINVAL if length is too big?
->>
-> 
-> I agree the simplest fix for the problem is simply to reject any
-> lengths>INT_MAX:
-> 
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index cf4c495a4321..94aed7ce85c4 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -1032,6 +1032,13 @@ long kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
->   	if (copy_tags->flags & ~KVM_ARM_TAGS_FROM_GUEST)
->   		return -EINVAL;
-> 
-> +	/*
-> +	 * ioctl returns int, so lengths above INT_MAX cannot be
-> +	 * represented in the return value
-> +	 */
-> +	if (length > INT_MAX)
-> +		return -EINVAL;
-> +
->   	if (length & ~PAGE_MASK || guest_ipa & ~PAGE_MASK)
->   		return -EINVAL;
-> 
-> This could also be fixed in a useable way by including a new flag which
-> returns the length in an output field of the ioctl structure. I'm
-> guessing a 2GB limit would be annoying to work around.
-
-I agree that checking for length > INT_MAX is likely the best thing to do 
-here right now. I'll add that in v2 of my series.
-
-But actually, this might even be a good thing from another point of view (so 
-I'm not sure whether your idea with the flag should really be pursued): The 
-code here takes a mutex and then runs a while loop that depends on the 
-length - which could cause the lock to be held for a rather long time if 
-length is a 64-bit value. Forcing the user space to limit the length here 
-could help to avoid taking the lock for too long.
-
-  Thomas
-
+DQoNCkxlIDA4LzAyLzIwMjMgw6AgMDQ6MjEsIFJvaGFuIE1jTHVyZSBhIMOpY3JpdMKgOg0KPiBL
+Q1NBTiBpbnN0cnVtZW50cyBjYWxscyB0byBhdG9taWMgYnVpbHRpbnMsIGFuZCB3aWxsIGluIHR1
+cm4gY2FsbCB0aGVzZQ0KPiBidWlsdGlucyBpdHNlbGYuIEFzIHN1Y2gsIGFyY2hpdGVjdHVyZXMg
+c3VwcG9ydGluZyBLQ1NBTiBtdXN0IGhhdmUNCj4gY29tcGlsZXIgc3VwcG9ydCBmb3IgdGhlc2Ug
+YXRvbWljIHByaW1pdGl2ZXMuDQo+IA0KPiBTaW5jZSAzMi1iaXQgc3lzdGVtcyBhcmUgdW5saWtl
+bHkgdG8gaGF2ZSA2NC1iaXQgY29tcGlsZXIgYnVpbHRpbnMsDQo+IHByb3ZpZGUgYSBzdHViIGZv
+ciBlYWNoIG1pc3NpbmcgYnVpbHRpbiwgYW5kIHVzZSBCVUcoKSB0byBhc3NlcnQNCj4gdW5yZWFj
+aGFiaWxpdHkuDQo+IA0KPiBJbiBjb21taXQgNzI1YWVhODczMjYxICgieHRlbnNhOiBlbmFibGUg
+S0NTQU4iKSwgeHRlbnNhIGltcGxlbWVudHMgdGhlc2UNCj4gbG9jYWxseSwgYnV0IGRvZXMgbm90
+IGFkdmVydGlzZSB0aGUgZmFjdCB3aXRoIHByZXByb2Nlc3NvciBtYWNyb3MuIFRvDQo+IGF2b2lk
+IHByb2R1Y3Rpb24gb2YgZHVwbGljYXRlIHN5bWJvbHMsIGRvIG5vdCBidWlsZCB0aGUgc3R1YnMg
+b24geHRlbnNhLg0KPiBBIGZ1dHVyZSBwYXRjaCB3aWxsIHJlbW92ZSB0aGUgeHRlbnNhIGltcGxl
+bWVudGF0aW9uIG9mIHRoZXNlIHN0dWJzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogUm9oYW4gTWNM
+dXJlIDxybWNsdXJlQGxpbnV4LmlibS5jb20+DQo+IC0tLQ0KPiB2NDogTmV3IHBhdGNoDQo+IC0t
+LQ0KPiAgIGtlcm5lbC9rY3Nhbi9NYWtlZmlsZSB8ICAzICsrDQo+ICAga2VybmVsL2tjc2FuL3N0
+dWJzLmMgIHwgNzggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0K
+PiAgIDIgZmlsZXMgY2hhbmdlZCwgODEgaW5zZXJ0aW9ucygrKQ0KPiAgIGNyZWF0ZSBtb2RlIDEw
+MDY0NCBrZXJuZWwva2NzYW4vc3R1YnMuYw0KDQpJIHRoaW5rIGl0IHdvdWxkIGJlIGJldHRlciB0
+byBtZXJnZSBwYXRjaCAxIGFuZCBwYXRjaCAyLCB0aGF0IHdheSB3ZSANCndvdWxkIGtlZXAgdGhl
+IGhpc3RvcnkgYW5kIHNlZSB0aGF0IHN0dWJzLmMgYWxtb3N0IGNvbWVzIGZyb20geHRlbnNhLg0K
+DQpUaGUgc3VtbWFyeSB3b3VsZCB0aGVuIGJlOg0KDQogIGFyY2gveHRlbnNhL2xpYi9NYWtlZmls
+ZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KICBrZXJuZWwva2NzYW4vTWFr
+ZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyICstDQogIGFyY2gveHRl
+bnNhL2xpYi9rY3Nhbi1zdHVicy5jID0+IGtlcm5lbC9rY3Nhbi9zdHVicy5jIHwgMjYgDQorKysr
+KysrKysrKysrKysrKysrKysrKysrLQ0KICAzIGZpbGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMo
+KyksIDMgZGVsZXRpb25zKC0pDQoNCg0KPiANCj4gZGlmZiAtLWdpdCBhL2tlcm5lbC9rY3Nhbi9N
+YWtlZmlsZSBiL2tlcm5lbC9rY3Nhbi9NYWtlZmlsZQ0KPiBpbmRleCA4Y2Y3MGYwNjhkOTIuLjVk
+ZmM1ODI1YWFlOSAxMDA2NDQNCj4gLS0tIGEva2VybmVsL2tjc2FuL01ha2VmaWxlDQo+ICsrKyBi
+L2tlcm5lbC9rY3Nhbi9NYWtlZmlsZQ0KPiBAQCAtMTIsNiArMTIsOSBAQCBDRkxBR1NfY29yZS5v
+IDo9ICQoY2FsbCBjYy1vcHRpb24sLWZuby1jb25zZXJ2ZS1zdGFjaykgXA0KPiAgIAktZm5vLXN0
+YWNrLXByb3RlY3RvciAtRERJU0FCTEVfQlJBTkNIX1BST0ZJTElORw0KPiAgIA0KPiAgIG9iai15
+IDo9IGNvcmUubyBkZWJ1Z2ZzLm8gcmVwb3J0Lm8NCj4gK2lmbmRlZiBYVEVOU0ENCj4gKwlvYmot
+eSArPSBzdHVicy5vDQoNCm9iai0kKENPTkZJR18zMkJJVCkgKz0gc3R1YnMubw0KDQpUaGF0IHdv
+dWxkIGF2b2lkIHRoZSAjaWYgQ09ORklHXzMyQklUIGluIHN0dWJzLmMNCg0KPiArZW5kaWYNCj4g
+ICANCj4gICBLQ1NBTl9JTlNUUlVNRU5UX0JBUlJJRVJTX3NlbGZ0ZXN0Lm8gOj0geQ0KPiAgIG9i
+ai0kKENPTkZJR19LQ1NBTl9TRUxGVEVTVCkgKz0gc2VsZnRlc3Qubw0KPiBkaWZmIC0tZ2l0IGEv
+a2VybmVsL2tjc2FuL3N0dWJzLmMgYi9rZXJuZWwva2NzYW4vc3R1YnMuYw0KPiBuZXcgZmlsZSBt
+b2RlIDEwMDY0NA0KPiBpbmRleCAwMDAwMDAwMDAwMDAuLmVjNWNkOTliZTQyMg0KPiAtLS0gL2Rl
+di9udWxsDQo+ICsrKyBiL2tlcm5lbC9rY3Nhbi9zdHVicy5jDQo+IEBAIC0wLDAgKzEsNzggQEAN
+Cj4gKy8vIFNQRFgtTGljZW5zZSBJZGVudGlmaWVyOiBHUEwtMi4wDQoNCk1pc3NpbmcgLSBiZXR3
+ZWVuIExpY2Vuc2UgYW5kIElkZW50aWZpZXIgPw0KDQo+ICsNCj4gKyNpbmNsdWRlIDxsaW51eC9i
+dWcuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC90eXBlcy5oPg0KPiArDQo+ICsjaWZkZWYgQ09ORklH
+XzMyQklUDQoNClNob3VsZCBiZSBoYW5kbGVkIGluIE1ha2VmaWxlDQoNCj4gKw0KPiArI2lmICFf
+X2hhc19idWlsdGluKF9fYXRvbWljX3N0b3JlXzgpDQoNCkRvZXMgYW55IDMyIGJpdCBBUkNIIHN1
+cHBvcnQgdGhhdCA/IElzIHRoYXQgI2lmIHJlcXVpcmVkID8NCg0KSWYgeWVzLCBkbyB3ZSByZWFs
+bHkgbmVlZCB0aGUgI2lmIGZvciBlYWNoIGFuZCBldmVyeSBmdW5jdGlvbiwgY2FuJ3Qgd2UgDQpq
+dXN0IGNoZWNrIGZvciBvbmUgYW5kIGFzc3VtZSB0aGF0IGlmIHdlIGRvbid0IGhhdmUgX19hdG9t
+aWNfc3RvcmVfOCB3ZSANCmRvbid0IGhhdmUgYW55IG9mIHRoZSBmdW5jdGlvbnMgPw0KDQoNCj4g
+K3ZvaWQgX19hdG9taWNfc3RvcmVfOCh2b2xhdGlsZSB2b2lkICpwLCB1NjQgdiwgaW50IGkpDQo+
+ICt7DQo+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYNCj4gKw0KPiArI2lmICFfX2hhc19idWls
+dGluKF9fYXRvbWljX2xvYWRfOCkNCj4gK3U2NCBfX2F0b21pY19sb2FkXzgoY29uc3Qgdm9sYXRp
+bGUgdm9pZCAqcCwgaW50IGkpDQo+ICt7DQo+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYNCj4g
+Kw0KPiArI2lmICFfX2hhc19idWlsdGluKF9fYXRvbWljX2V4Y2hhbmdlXzgpDQo+ICt1NjQgX19h
+dG9taWNfZXhjaGFuZ2VfOCh2b2xhdGlsZSB2b2lkICpwLCB1NjQgdiwgaW50IGkpDQo+ICt7DQo+
+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYNCj4gKw0KPiArI2lmICFfX2hhc19idWlsdGluKF9f
+YXRvbWljX2NvbXBhcmVfZXhjaGFuZ2VfOCkNCj4gK2Jvb2wgX19hdG9taWNfY29tcGFyZV9leGNo
+YW5nZV84KHZvbGF0aWxlIHZvaWQgKnAxLCB2b2lkICpwMiwgdTY0IHYsIGJvb2wgYiwgaW50IGkx
+LCBpbnQgaTIpDQo+ICt7DQo+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYNCj4gKw0KPiArI2lm
+ICFfX2hhc19idWlsdGluKF9fYXRvbWljX2ZldGNoX2FkZF84KQ0KPiArdTY0IF9fYXRvbWljX2Zl
+dGNoX2FkZF84KHZvbGF0aWxlIHZvaWQgKnAsIHU2NCB2LCBpbnQgaSkNCj4gK3sNCj4gKwlCVUco
+KTsNCj4gK30NCj4gKyNlbmRpZg0KPiArDQo+ICsjaWYgIV9faGFzX2J1aWx0aW4oX19hdG9taWNf
+ZmV0Y2hfc3ViXzgpDQo+ICt1NjQgX19hdG9taWNfZmV0Y2hfc3ViXzgodm9sYXRpbGUgdm9pZCAq
+cCwgdTY0IHYsIGludCBpKQ0KPiArew0KPiArCUJVRygpOw0KPiArfQ0KPiArI2VuZGlmDQo+ICsN
+Cj4gKyNpZiAhX19oYXNfYnVpbHRpbihfX2F0b21pY19mZXRjaF9hbmRfOCkNCj4gK3U2NCBfX2F0
+b21pY19mZXRjaF9hbmRfOCh2b2xhdGlsZSB2b2lkICpwLCB1NjQgdiwgaW50IGkpDQo+ICt7DQo+
+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYNCj4gKw0KPiArI2lmICFfX2hhc19idWlsdGluKF9f
+YXRvbWljX2ZldGNoX29yXzgpDQo+ICt1NjQgX19hdG9taWNfZmV0Y2hfb3JfOCh2b2xhdGlsZSB2
+b2lkICpwLCB1NjQgdiwgaW50IGkpDQo+ICt7DQo+ICsJQlVHKCk7DQo+ICt9DQo+ICsjZW5kaWYN
+Cj4gKw0KPiArI2lmICFfX2hhc19idWlsdGluKF9fYXRvbWljX2ZldGNoX3hvcl84KQ0KPiArdTY0
+IF9fYXRvbWljX2ZldGNoX3hvcl84KHZvbGF0aWxlIHZvaWQgKnAsIHU2NCB2LCBpbnQgaSkNCj4g
+K3sNCj4gKwlCVUcoKTsNCj4gK30NCj4gKyNlbmRpZg0KPiArDQo+ICsjaWYgIV9faGFzX2J1aWx0
+aW4oX19hdG9taWNfZmV0Y2hfbmFuZF84KQ0KPiArdTY0IF9fYXRvbWljX2ZldGNoX25hbmRfOCh2
+b2xhdGlsZSB2b2lkICpwLCB1NjQgdiwgaW50IGkpDQo+ICt7DQo+ICsJQlVHKCk7DQo+ICt9DQo+
+ICsjZW5kaWYNCj4gKw0KPiArI2VuZGlmIC8qIENPTkZJR18zMkJJVCAqLw0K
