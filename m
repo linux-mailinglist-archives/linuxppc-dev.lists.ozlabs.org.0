@@ -1,99 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECEB68F075
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 15:13:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6115D68F129
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 15:49:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBhmS4pm5z3cfj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 01:13:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBjYy2JDrz3cdD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 01:49:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OGBsiXLb;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OGBsiXLb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o78BhQDH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OGBsiXLb;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OGBsiXLb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o78BhQDH;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBhlS2rqFz3cBP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 01:12:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675865535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVdXAMmBKMdGVdB031db9qoOwXwbq1WnNqDyKF+cm50=;
-	b=OGBsiXLbAfe2wmFk/OcEx63gOnI+eOWErydxml+KZxIBHonHDG18/KrZQpTAik2n+K0H/Q
-	tSU8oigJ2OI2of0jx/EY40MFQvFgf9bl1p5yTz5L/J/mgl9yAOpjyL8XTwsuk/IZf3k4He
-	APIN5YOF5hzpvjYMz7/SFUhcUvejt2o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675865535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVdXAMmBKMdGVdB031db9qoOwXwbq1WnNqDyKF+cm50=;
-	b=OGBsiXLbAfe2wmFk/OcEx63gOnI+eOWErydxml+KZxIBHonHDG18/KrZQpTAik2n+K0H/Q
-	tSU8oigJ2OI2of0jx/EY40MFQvFgf9bl1p5yTz5L/J/mgl9yAOpjyL8XTwsuk/IZf3k4He
-	APIN5YOF5hzpvjYMz7/SFUhcUvejt2o=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-136-P2uZ2k7IMnikWOE1G7V0tA-1; Wed, 08 Feb 2023 09:12:11 -0500
-X-MC-Unique: P2uZ2k7IMnikWOE1G7V0tA-1
-Received: by mail-wr1-f70.google.com with SMTP id f14-20020a0560001a8e00b002c3b562d76cso2902806wry.12
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Feb 2023 06:12:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MVdXAMmBKMdGVdB031db9qoOwXwbq1WnNqDyKF+cm50=;
-        b=P9AymIB4mGpYaX7gXRnTsQyu3vyLuygRoxYsg57o40gpJhsBFeSqxglGknNgd3w/oQ
-         vz+P6BIHEOuQ6IsP+LnuHflLSuXyAs+iOJeYk4oiE+77fwB2mYaXKEvthuwQGORCINpB
-         imvaCb3GTAgnIDktj3+eM1MQf2vak4jYIYuTXPa27HCn2L7XCiDvI0ug5+2c6A/4RNLB
-         U5KkfrhmJ6UiakuVKKL0vr6I9u0TUBe4YhWXIRG6ZAHfRp7OWEdDpV3902SU16AHd8gd
-         bV0VNOptiRDZwLW4yx3nfoTozDrjXVotyNJWI2MVb757Kq8MlkQP56x6nvSVC9+loqA3
-         HWlA==
-X-Gm-Message-State: AO0yUKWIp4Sgm34Q9aV+zc85JC0fbT+v36/WCGS7Y0TwZNHudoaHGBtS
-	+aXogl7uTb4waKRzvPMP/A264WhwiU8+IjQizigH06nR0QkiAOV4VIR0LyikGl2C7rHO9WX86pZ
-	VI8Le2qnubUJ9mJmTpvAWrPQqaA==
-X-Received: by 2002:a05:600c:2ac8:b0:3d9:fb59:c16b with SMTP id t8-20020a05600c2ac800b003d9fb59c16bmr6807516wme.36.1675865529850;
-        Wed, 08 Feb 2023 06:12:09 -0800 (PST)
-X-Google-Smtp-Source: AK7set9buY9+5cxJmjHAU1gwkYhkjh45ggBfiU2I1/g0SGqFxOSQ99Rkm86npGHpTIA79oxlUNrbqQ==
-X-Received: by 2002:a05:600c:2ac8:b0:3d9:fb59:c16b with SMTP id t8-20020a05600c2ac800b003d9fb59c16bmr6807491wme.36.1675865529588;
-        Wed, 08 Feb 2023 06:12:09 -0800 (PST)
-Received: from ?IPV6:2003:cb:c704:b300:758c:6214:cd51:8ab0? (p200300cbc704b300758c6214cd518ab0.dip0.t-ipconnect.de. [2003:cb:c704:b300:758c:6214:cd51:8ab0])
-        by smtp.gmail.com with ESMTPSA id a3-20020a05600c224300b003db01178b62sm2066527wmm.40.2023.02.08.06.12.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 06:12:08 -0800 (PST)
-Message-ID: <39fd91e3-c93b-23c6-afc6-cbe473bb0ca9@redhat.com>
-Date: Wed, 8 Feb 2023 15:12:06 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBjXy0BNlz3bTS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 01:48:17 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 318EfolE020107;
+	Wed, 8 Feb 2023 14:48:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=Y78WRnPUf5dogSmwoGN9dnJZEpvp9kGRrscQHCetKVE=;
+ b=o78BhQDH1NMtNcQv1LcvzUwifWLixp1Hp87Dx9i5rQwAL2GdvXHv1ylOo/itRdEpNwzo
+ EXiAjM50FzmJxUBFGmwXj6yG6v6mEgQsxgm20BKjyzZKENiGXFYbq8uDbKvGTWELHSMw
+ 00gai9TRvJGXCvAgrvCaKR1qZZ31cVrR7G4r8h1wgAZfN6cm4wKlLFcJ3AvltnwDgc3x
+ o0JoXWcJtgmEttFnzj1gL+idJDv7W5j0ZVQrPeDDqEQIGo9ZbGA5QTxcXkPtPpyinkdB
+ wsqgQnq3/n0BoPRj10C6dDNUJZ7MXMJ5H4Xpg2mKG0ErSioFA3lwuJxzx8qgSWKpYeuz Aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmdqp0558-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 14:48:05 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 318Eh2xW024419;
+	Wed, 8 Feb 2023 14:48:04 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmdqp054q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 14:48:04 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 318BYuFB003016;
+	Wed, 8 Feb 2023 14:48:03 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3nhf07u6wk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Feb 2023 14:48:03 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 318Em1UE1180174
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Feb 2023 14:48:01 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D17158064;
+	Wed,  8 Feb 2023 14:48:01 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52A0858063;
+	Wed,  8 Feb 2023 14:48:01 +0000 (GMT)
+Received: from localhost (unknown [9.163.2.97])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Feb 2023 14:48:01 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Lynch via B4 Submission
+ Endpoint <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Kajol
+ Jain <kjain@linux.ibm.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Mahesh
+ J Salgaonkar <mahesh@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>
+Subject: Re: [PATCH v2 11/19] powerpc/rtas: add work area allocator
+In-Reply-To: <87o7q4wera.fsf@mpe.ellerman.id.au>
+References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
+ <20230125-b4-powerpc-rtas-queue-v2-11-9aa6bd058063@linux.ibm.com>
+ <87o7q4wera.fsf@mpe.ellerman.id.au>
+Date: Wed, 08 Feb 2023 08:48:01 -0600
+Message-ID: <87r0v0nrha.fsf@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-To: Mark Brown <broonie@kernel.org>
-References: <20230113171026.582290-1-david@redhat.com>
- <20230113171026.582290-5-david@redhat.com> <Y+GcDFMNHw2cdDN1@sirena.org.uk>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH mm-unstable v1 04/26] arm/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-In-Reply-To: <Y+GcDFMNHw2cdDN1@sirena.org.uk>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7lw-xMbuwfIWl9rWmJkq5-bz_q9akM42
+X-Proofpoint-ORIG-GUID: HyGKjXfByEH-M5urxjBa82_ylYjPzY21
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-08_06,2023-02-08_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302080128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,77 +108,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.
- org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.02.23 01:32, Mark Brown wrote:
-> On Fri, Jan 13, 2023 at 06:10:04PM +0100, David Hildenbrand wrote:
->> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE by stealing one bit from the
->> offset. This reduces the maximum swap space per file to 64 GiB (was 128
->> GiB).
->>
->> While at it drop the PTE_TYPE_FAULT from __swp_entry_to_pte() which is
->> defined to be 0 and is rather confusing because we should be dealing
->> with "Linux PTEs" not "hardware PTEs". Also, properly mask the type in
->> __swp_entry().
-> 
-> Today's -next (and at least back to Friday, older logs are unclear - I
-> only noticed -next issues today) fails to NFS boot on an AT91SAM9G20-EK
-> (an old ARMv5 platform) with multi_v5_defconfig, a bisect appears to
-> point to this patch (20aae9eff5acd8f5 in today's -next) as the culprit.
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Nathan Lynch via B4 Submission Endpoint
+> <devnull+nathanl.linux.ibm.com@kernel.org> writes:
+>> diff --git a/arch/powerpc/include/asm/rtas-work-area.h b/arch/powerpc/include/asm/rtas-work-area.h
+>> new file mode 100644
+>> index 000000000000..76ccb039cc37
+>> --- /dev/null
+>> +++ b/arch/powerpc/include/asm/rtas-work-area.h
+>> @@ -0,0 +1,45 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +#ifndef POWERPC_RTAS_WORK_AREA_H
+>> +#define POWERPC_RTAS_WORK_AREA_H
+>
+> The usual style would be _ASM_POWERPC_RTAS_WORK_AREA_H.
 
-It's been in -next for quite a while, thanks for the report!
+OK. (will change in all new headers)
 
-> 
-> The failure happens at some point after starting userspace, the kernel
-> starts spamming the console with messages in the form:
-> 
->      get_swap_device: Bad swap file entry 10120d20
-> 
+>> +static struct rtas_work_area_allocator_state {
+>> +	struct gen_pool *gen_pool;
+>> +	char *arena;
+>> +	struct mutex mutex; /* serializes allocations */
+>> +	struct wait_queue_head wqh;
+>> +	mempool_t descriptor_pool;
+>> +	bool available;
+>> +} rwa_state_ = {
+>> +	.mutex = __MUTEX_INITIALIZER(rwa_state_.mutex),
+>> +	.wqh = __WAIT_QUEUE_HEAD_INITIALIZER(rwa_state_.wqh),
+>> +};
+>> +static struct rtas_work_area_allocator_state *rwa_state = &rwa_state_;
+>
+> I assumed the pointer was so you could swap this out at runtime or
+> something, but I don't think you do.
+>
+> Any reason not to drop the pointer and just use rwa_state.foo accessors?
+> That would also allow the struct to be anonymous.
+>
+> Or if you have the pointer you can at least make it NULL prior to init
+> and avoid the need for "available".
 
-_swap_info_get() tells us that the swp type seems to be bad.
-I assume we're dealing with a migration entry, if swap is disabled, and fail to
-detect is_migration_entry() correctly because the type is messed up.
-
-Could you give the following a test?
-
-
- From 8c4bdbd9862f85782d5919d044c172b584063e83 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Wed, 8 Feb 2023 15:08:01 +0100
-Subject: [PATCH] arm/mm: Fix swp type masking in __swp_entry()
-
-We're masking with the number of type bits instead of the type mask, which
-is obviously wrong.
-
-Fixes: 20aae9eff5ac ("arm/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE")
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
-  arch/arm/include/asm/pgtable.h | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index 2e626e6da9a3..a58ccbb406ad 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -292,7 +292,7 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
-  
-  #define __swp_type(x)		(((x).val >> __SWP_TYPE_SHIFT) & __SWP_TYPE_MASK)
-  #define __swp_offset(x)		((x).val >> __SWP_OFFSET_SHIFT)
--#define __swp_entry(type, offset) ((swp_entry_t) { (((type) & __SWP_TYPE_BITS) << __SWP_TYPE_SHIFT) | \
-+#define __swp_entry(type, offset) ((swp_entry_t) { (((type) & __SWP_TYPE_MASK) << __SWP_TYPE_SHIFT) | \
-  						   ((offset) << __SWP_OFFSET_SHIFT) })
-  
-  #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
--- 
-2.39.1
+I think it's there because earlier versions of this that I never posted
+had unit tests. I'll either resurrect those or reduce the indirection.
 
 
--- 
-Thanks,
+>> +/*
+>> + * A single work area buffer and descriptor to serve requests early in
+>> + * boot before the allocator is fully initialized.
+>> + */
+>> +static bool early_work_area_in_use __initdata;
+>> +static char early_work_area_buf[SZ_4K] __initdata;
+>
+> That should be page aligned I think?
 
-David / dhildenb
+Yes. It happens to be safe in this version because ibm,get-system-parameter,
+which has no alignment requirement, is the only function used early
+enough to use the buffer. But that's too fragile.
 
+
+>> +static struct rtas_work_area early_work_area __initdata = {
+>> +	.buf = early_work_area_buf,
+>> +	.size = sizeof(early_work_area_buf),
+>> +};
+>> +
+>> +
+>> +static struct rtas_work_area * __init rtas_work_area_alloc_early(size_t size)
+>> +{
+>> +	WARN_ON(size > early_work_area.size);
+>> +	WARN_ON(early_work_area_in_use);
+>> +	early_work_area_in_use = true;
+>> +	memset(early_work_area.buf, 0, early_work_area.size);
+>> +	return &early_work_area;
+>> +}
+>> +
+>> +static void __init rtas_work_area_free_early(struct rtas_work_area *work_area)
+>> +{
+>> +	WARN_ON(work_area != &early_work_area);
+>> +	WARN_ON(!early_work_area_in_use);
+>> +	early_work_area_in_use = false;
+>> +}
+>> +
+>> +struct rtas_work_area * __ref rtas_work_area_alloc(size_t size)
+>> +{
+>> +	struct rtas_work_area *area;
+>> +	unsigned long addr;
+>> +
+>> +	might_sleep();
+>> +
+>> +	WARN_ON(size > RTAS_WORK_AREA_MAX_ALLOC_SZ);
+>> +	size = min_t(size_t, size, RTAS_WORK_AREA_MAX_ALLOC_SZ);
+>
+> This seems unsafe.
+>
+> If you return a buffer smaller than the caller asks for they're likely
+> to read/write past the end of it and corrupt memory.
+
+OK, let's figure out another way to handle this.
+
+> AFAIK genalloc doesn't have guard pages or anything fancy to save us
+> from that - but maybe I'm wrong, I've never used it.
+
+Yeah we would have to build our own thing on top of it. And I don't
+think it could be something that traps on access, it would have to be a
+check in rtas_work_area_free(), after the fact.
+
+> There's only three callers in the end, seems like we should just return
+> NULL if the size is too large and have callers check the return value.
+
+There are more conversions to do, and a property I hope to maintain is
+that requests can't fail. Existing users of rtas_data_buf don't have
+error paths for failure to acquire the buffer.
+
+I believe the allocation size passed to rtas_work_area_alloc() can be
+known at build time in all cases. Maybe we could prevent inappropriate
+requests from being built with a compile-time assertion (untested):
+
+/* rtas-work-area.h */
+
+static inline struct rtas_work_area *rtas_work_area_alloc(size_t sz)
+{
+	static_assert(sz < RTAS_WORK_AREA_MAX_ALLOC_SZ);
+        return __rtas_work_area_alloc(sz);
+}
+
+I think this would be OK? If I can't make it work I'll fall back to
+returning NULL as you suggest, but it will make for more churn (and
+risk) in the conversions.
+
+
+>> +	if (!rwa_state->available) {
+>> +		area = rtas_work_area_alloc_early(size);
+>> +		goto out;
+>> +	}
+>> +
+>> +	/*
+>> +	 * To ensure FCFS behavior and prevent a high rate of smaller
+>> +	 * requests from starving larger ones, use the mutex to queue
+>> +	 * allocations.
+>> +	 */
+>> +	mutex_lock(&rwa_state->mutex);
+>> +	wait_event(rwa_state->wqh,
+>> +		   (addr = gen_pool_alloc(rwa_state->gen_pool, size)) != 0);
+>> +	mutex_unlock(&rwa_state->mutex);
+>> +
+>> +	area = mempool_alloc(&rwa_state->descriptor_pool, GFP_KERNEL);
+>> +	*area = (typeof(*area)){
+>> +		.size = size,
+>> +		.buf = (char *)addr,
+>> +	};
+>
+> That is an odd way to write that :)
+
+yeah I'll change it.
+
+>
+>> +out:
+>> +	pr_devel("%ps -> %s() -> buf=%p size=%zu\n",
+>> +		 (void *)_RET_IP_, __func__, area->buf, area->size);
+>
+> Can we drop those? They need a recompile to enable, so if someone needs
+> debugging they can just rewrite them - or use some sort of tracing
+> instead.
+
+Sure.
+
+
+>> +machine_arch_initcall(pseries, rtas_work_area_allocator_init);
+>
+> Should it live in platforms/pseries then?
+
+Yeah it probably ought to. I am pretty sure the "work area" construct is
+PAPR-specific, and I haven't found any evidence that it's used on
+non-pseries.
+
+
+>> +/**
+>> + * rtas_work_area_reserve_arena() - reserve memory suitable for RTAS work areas.
+>> + */
+>> +int __init rtas_work_area_reserve_arena(const phys_addr_t limit)
+>> +{
+>> +	const phys_addr_t align = RTAS_WORK_AREA_ARENA_ALIGN;
+>> +	const phys_addr_t size = RTAS_WORK_AREA_ARENA_SZ;
+>> +	const phys_addr_t min = MEMBLOCK_LOW_LIMIT;
+>> +	const int nid = NUMA_NO_NODE;
+>
+> This should probably also be restricted to pseries?
+
+Yes.
