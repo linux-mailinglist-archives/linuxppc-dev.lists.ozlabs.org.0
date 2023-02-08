@@ -2,93 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA8468F57F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 18:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F1368FA7B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 23:56:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBnJ35FXMz3f5S
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 04:37:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBwN72TTXz3fVl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 09:56:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iQlyfdDm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jJjGQkMO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=imbrenda@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iQlyfdDm;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jJjGQkMO;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBnH34r0pz3bWC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 04:36:31 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 318HHkOQ007083;
-	Wed, 8 Feb 2023 17:35:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=w8wjwMlgb9GsgoiOCFXp4yyLA2K11B5J/RaqzGmUZsQ=;
- b=iQlyfdDmDN5+8c2FxTO+NZYAeS/32r3k5LjX151TY4iQU9gpQ99bLxRJslWjYLg3Rbcs
- SpZ4AJFF+3LwRWYlp3/s9lheOrup6+zAmmHeDYSOj+pILxxke92luvi+GfifAo/eCkO1
- 9aOia16dX6fPgAT1Uq0FAB4wC607DPSAZ4nqeqAlT4Zrmn8s9GrJebzbbC5vsMkfb/vA
- prZjUimKOH7MCsmq9k73JDwg3TWQk+30/+9x9TMH0QxL1CyVqXYGeFl65u20XSbzl7VD
- NiDSIgGc9W0MphwU07hg9Z8nsAmQEs/4bGFuKrjTaPh6LR+NzKkdkvbISlH4ga3wxB0+ Zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmfx08w5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Feb 2023 17:35:58 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 318HI5Pn008839;
-	Wed, 8 Feb 2023 17:35:57 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nmfx08w4a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Feb 2023 17:35:57 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3185ag5Q024247;
-	Wed, 8 Feb 2023 17:35:55 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3nhf06w746-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Feb 2023 17:35:54 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 318HZpH743647422
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Feb 2023 17:35:51 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 686DE2004B;
-	Wed,  8 Feb 2023 17:35:51 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E311C20040;
-	Wed,  8 Feb 2023 17:35:50 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.56])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Feb 2023 17:35:50 +0000 (GMT)
-Date: Wed, 8 Feb 2023 18:35:49 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 7/7] KVM: Change return type of kvm_arch_vm_ioctl() to
- "int"
-Message-ID: <20230208183549.145b708d@p-imbrenda>
-In-Reply-To: <20230203094230.266952-8-thuth@redhat.com>
-References: <20230203094230.266952-1-thuth@redhat.com>
-	<20230203094230.266952-8-thuth@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBnDB01Klz3cJC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 04:34:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675877642; x=1707413642;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sDFh6JeR2XcTkYhVvLPcaBAq4Ze0UO0qz9+CSTh3saw=;
+  b=jJjGQkMO/f/Ws46vZ5HLhM2pTLXwx2VOb/tK2s+ilnP7wz0uas+uImPs
+   eqwx+PEwhExmK3JRk8Ol7+XANU9kfvLTjsrSHHW0MzOD8QJF7DstAOZnm
+   5g0AeZ3miB8kRHVAKBOdxqngdhCeOXIH8ASyfuv5VVgC7gAYHunz0HRON
+   Qe3LAqPdoTZ4gKh48BUUjv/SmQfcQqPpWHDbRZXV+m8nZm11n87Jpe8AJ
+   GsTvEvjxFPVro97CX/oEJu70/+jEZz67q+HFp96p7Mj8WTEDZCb5sAoDr
+   ADqgzSWjpVkMFRUSq7Ow6BCjxyQ2d6hmoGJl7mxutkDPnLicqnWjx+D0e
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="310225284"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="310225284"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 09:33:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="697723002"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="697723002"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 08 Feb 2023 09:33:08 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 6543F1A6; Wed,  8 Feb 2023 19:33:47 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Michael Walle <michael@walle.cc>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Dipen Patel <dipenp@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Lee Jones <lee@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc-tw-discuss@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com,
+	SHA-cyfmac-dev-list@infineon.com,
+	linux-arch@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v4 00/18] gpiolib cleanups
+Date: Wed,  8 Feb 2023 19:33:25 +0200
+Message-Id: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5z7FZjk3Eq_9afR6qjVBjFisFOAsYUoj
-X-Proofpoint-GUID: rTE80i3B1iv3R7DqYEkof08grhL3yDR7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-02-08_08,2023-02-08_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=960
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302080153
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 09 Feb 2023 09:48:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,134 +106,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>, Sean Christopherson <seanjc@google.com>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Eric Dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Li Yang <leoyang.li@nxp.com>, Frank Rowand <frowand.list@gmail.com>, Alex Shi <alexs@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Yanteng Si <siyanteng@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Kalle Valo <kvalo@kernel.org>, Hante Meuleman <hante.meuleman@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Frank
+ y Lin <franky.lin@broadcom.com>, Arend van Spriel <aspriel@gmail.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, Keerthy <j-keerthy@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, "David S. Miller" <davem@davemloft.net>, Gregory Clement <gregory.clement@bootlin.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri,  3 Feb 2023 10:42:30 +0100
-Thomas Huth <thuth@redhat.com> wrote:
+These are some older patches Arnd did last year, rebased to
+linux-next-20230208. On top there are Andy's patches regarding
+similar topic. The series starts with Linus Walleij's patches.
 
-> All kvm_arch_vm_ioctl() implementations now only deal with "int"
-> types as return values, so we can change the return type of these
-> functions to use "int" instead of "long".
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+The main goal is to remove some of the legacy bits of the gpiolib
+interfaces, where the corner cases are easily avoided or replaced
+with gpio descriptor based interfaces.
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+The idea is to get an immutable branch and route the whole series
+via GPIO tree.
 
-> ---
->  arch/arm64/kvm/arm.c       | 3 +--
->  arch/mips/kvm/mips.c       | 4 ++--
->  arch/powerpc/kvm/powerpc.c | 5 ++---
->  arch/riscv/kvm/vm.c        | 3 +--
->  arch/s390/kvm/kvm-s390.c   | 3 +--
->  arch/x86/kvm/x86.c         | 3 +--
->  include/linux/kvm_host.h   | 3 +--
->  7 files changed, 9 insertions(+), 15 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 9c5573bc4614..e791ad6137b8 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1449,8 +1449,7 @@ static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
->  	}
->  }
->  
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -		       unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
->  	struct kvm *kvm = filp->private_data;
->  	void __user *argp = (void __user *)arg;
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index a25e0b73ee70..84cadaa2c2d3 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -1003,9 +1003,9 @@ void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm,
->  	kvm_flush_remote_tlbs(kvm);
->  }
->  
-> -long kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
-> -	long r;
-> +	int r;
->  
->  	switch (ioctl) {
->  	default:
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 04494a4fb37a..6f6ba55c224f 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -2386,12 +2386,11 @@ static int kvmppc_get_cpu_char(struct kvm_ppc_cpu_char *cp)
->  }
->  #endif
->  
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -                       unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
->  	struct kvm *kvm __maybe_unused = filp->private_data;
->  	void __user *argp = (void __user *)arg;
-> -	long r;
-> +	int r;
->  
->  	switch (ioctl) {
->  	case KVM_PPC_GET_PVINFO: {
-> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> index 65a964d7e70d..c13130ab459a 100644
-> --- a/arch/riscv/kvm/vm.c
-> +++ b/arch/riscv/kvm/vm.c
-> @@ -87,8 +87,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->  	return r;
->  }
->  
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -		       unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
->  	return -EINVAL;
->  }
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 8ad1972b8a73..86ca49814983 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -2850,8 +2850,7 @@ static int kvm_s390_vm_mem_op(struct kvm *kvm, struct kvm_s390_mem_op *mop)
->  	return r;
->  }
->  
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -		       unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
->  	struct kvm *kvm = filp->private_data;
->  	void __user *argp = (void __user *)arg;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index caa2541833dd..c03363efc774 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -6653,8 +6653,7 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
->  	return 0;
->  }
->  
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -		       unsigned int ioctl, unsigned long arg)
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  {
->  	struct kvm *kvm = filp->private_data;
->  	void __user *argp = (void __user *)arg;
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 4f26b244f6d0..ed2f1f02976b 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1398,8 +1398,7 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
->  			bool line_status);
->  int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->  			    struct kvm_enable_cap *cap);
-> -long kvm_arch_vm_ioctl(struct file *filp,
-> -		       unsigned int ioctl, unsigned long arg);
-> +int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg);
->  long kvm_arch_vm_compat_ioctl(struct file *filp, unsigned int ioctl,
->  			      unsigned long arg);
->  
+Changes in v4:
+- incorporated Linus Walleij's patches
+- reworked touchscreen patch to have bare minimum changes (Dmitry)
+- described changes in gpio-aggregator in full (Geert)
+- addressed compilation errors (LKP)
+- added tags (Geert, Lee, Vincenzo)
+
+Changes in v3:
+- reworked touchscreen patch in accordance with Dmitry's comments
+- rebased on the latest Linux Next
+- added on top Andy's series
+
+Changes in v2:
+- dropped patch 8 after Andy's identical patch was merged
+- rebase on latest gpio tree
+- leave unused gpio_cansleep() in place for now
+- address feedback from Andy Shevchenko
+
+Andy Shevchenko (7):
+  gpio: aggregator: Add missing header(s)
+  gpio: reg: Add missing header(s)
+  gpio: regmap: Add missing header(s)
+  gpiolib: Drop unused forward declaration from driver.h
+  gpiolib: Deduplicate forward declarations in consumer.h
+  gpiolib: Group forward declarations in consumer.h
+  gpiolib: Clean up headers
+
+Arnd Bergmann (7):
+  gpiolib: remove empty asm/gpio.h files
+  gpiolib: coldfire: remove custom asm/gpio.h
+  gpiolib: remove asm-generic/gpio.h
+  gpiolib: remove gpio_set_debounce()
+  gpiolib: remove legacy gpio_export()
+  gpiolib: split linux/gpio/driver.h out of linux/gpio.h
+  gpiolib: split of_mm_gpio_chip out of linux/of_gpio.h
+
+Linus Walleij (4):
+  ARM: orion/gpio: Use the right include
+  ARM: s3c24xx: Use the right include
+  hte: tegra-194: Use proper includes
+  gpiolib: Make the legacy <linux/gpio.h> consumer-only
+
+ Documentation/admin-guide/gpio/sysfs.rst      |   2 +-
+ Documentation/driver-api/gpio/legacy.rst      |  23 ---
+ .../zh_CN/driver-api/gpio/legacy.rst          |  20 ---
+ Documentation/translations/zh_TW/gpio.txt     |  19 ---
+ MAINTAINERS                                   |   1 -
+ arch/arm/Kconfig                              |   1 -
+ arch/arm/include/asm/gpio.h                   |  21 ---
+ arch/arm/mach-omap1/irq.c                     |   1 +
+ arch/arm/mach-omap2/pdata-quirks.c            |   9 +-
+ arch/arm/mach-orion5x/board-rd88f5182.c       |   1 +
+ arch/arm/mach-s3c/s3c64xx.c                   |   2 +-
+ arch/arm/mach-sa1100/assabet.c                |   1 +
+ arch/arm/plat-orion/gpio.c                    |   5 +-
+ arch/m68k/Kconfig.cpu                         |   1 -
+ arch/m68k/include/asm/gpio.h                  |  95 -----------
+ arch/m68k/include/asm/mcfgpio.h               |   2 +-
+ arch/powerpc/platforms/44x/Kconfig            |   1 +
+ arch/powerpc/platforms/4xx/gpio.c             |   2 +-
+ arch/powerpc/platforms/8xx/Kconfig            |   1 +
+ arch/powerpc/platforms/8xx/cpm1.c             |   2 +-
+ arch/powerpc/platforms/Kconfig                |   2 +
+ arch/powerpc/sysdev/cpm_common.c              |   2 +-
+ arch/sh/Kconfig                               |   1 -
+ arch/sh/boards/board-magicpanelr2.c           |   1 +
+ arch/sh/boards/mach-ap325rxa/setup.c          |   7 +-
+ arch/sh/include/asm/gpio.h                    |  45 ------
+ drivers/gpio/Kconfig                          |  19 ++-
+ drivers/gpio/TODO                             |  15 +-
+ drivers/gpio/gpio-aggregator.c                |   9 +-
+ drivers/gpio/gpio-altera.c                    |   2 +-
+ drivers/gpio/gpio-davinci.c                   |   2 -
+ drivers/gpio/gpio-mm-lantiq.c                 |   2 +-
+ drivers/gpio/gpio-mpc5200.c                   |   2 +-
+ drivers/gpio/gpio-reg.c                       |  12 +-
+ drivers/gpio/gpio-regmap.c                    |  12 +-
+ drivers/gpio/gpiolib-acpi.c                   |  10 +-
+ drivers/gpio/gpiolib-acpi.h                   |   1 -
+ drivers/gpio/gpiolib-of.c                     |   9 +-
+ drivers/gpio/gpiolib-of.h                     |   1 -
+ drivers/gpio/gpiolib-swnode.c                 |   5 +-
+ drivers/gpio/gpiolib-sysfs.c                  |  25 ++-
+ drivers/gpio/gpiolib.c                        |   9 +-
+ drivers/hte/hte-tegra194-test.c               |  10 +-
+ drivers/input/touchscreen/ads7846.c           |   5 +-
+ drivers/media/pci/sta2x11/sta2x11_vip.c       |  10 +-
+ drivers/net/ieee802154/ca8210.c               |   3 +-
+ .../broadcom/brcm80211/brcmsmac/led.c         |   1 +
+ drivers/pinctrl/core.c                        |   1 -
+ drivers/soc/fsl/qe/gpio.c                     |   2 +-
+ include/asm-generic/gpio.h                    | 147 ------------------
+ include/linux/gpio.h                          | 104 ++++++++-----
+ include/linux/gpio/consumer.h                 |  24 +--
+ include/linux/gpio/driver.h                   |  31 +++-
+ .../legacy-of-mm-gpiochip.h}                  |  33 +---
+ include/linux/mfd/ucb1x00.h                   |   1 +
+ include/linux/of_gpio.h                       |  21 ---
+ 56 files changed, 240 insertions(+), 556 deletions(-)
+ delete mode 100644 arch/arm/include/asm/gpio.h
+ delete mode 100644 arch/m68k/include/asm/gpio.h
+ delete mode 100644 arch/sh/include/asm/gpio.h
+ delete mode 100644 include/asm-generic/gpio.h
+ copy include/linux/{of_gpio.h => gpio/legacy-of-mm-gpiochip.h} (50%)
+
+-- 
+2.39.1
 
