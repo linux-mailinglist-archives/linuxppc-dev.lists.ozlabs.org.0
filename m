@@ -1,102 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3940E68FA80
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 23:59:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193EF68FA3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 23:24:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBwSD0n2pz3fH5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 09:59:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBvfv2wNbz3cBm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 09:24:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Bgav7g4y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CMTCSn9N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Bgav7g4y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CMTCSn9N;
 	dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBnDL6DmKz3cMy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 04:34:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675877651; x=1707413651;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=e2HL48VZL68iHiIHMOw3KrWX1/vewPFZgcuY53UtAyY=;
-  b=Bgav7g4yAfBIE7KwD6PgsPT9Ti853IU1qMeR2W8x8cy4Jensv/LqI5kD
-   867fBMjapopyq00Z50w6XP/2E8EwXVGoG3H9/Vnd7IqVcU4wPX8TxgYNC
-   SGdvcF8FP7BIpWxP7e5OG1B6r7G+UWeYa1ewCclJWfLdumys5c4Rm6mnk
-   EaePNIx4Ac5kPxRceNCjpvPD+9zB0t2UW9+ikjkK1RYuHKBGXNtq5VKp9
-   pGuPZMOSBuv9d76xeHeuKB7NNDejo1EVbzSwxko9CXgkNqBEfq1y+P4Xr
-   zicnuHj9lNqstXNVnd7W5atYNJ8fIMXeWTdu2rgmEczLrvtdIJAMwlQII
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="327564447"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="327564447"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 09:33:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="644939112"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="644939112"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 08 Feb 2023 09:33:33 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 873635CC; Wed,  8 Feb 2023 19:33:48 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Michael Walle <michael@walle.cc>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Dipen Patel <dipenp@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Lee Jones <lee@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc-tw-discuss@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com,
-	SHA-cyfmac-dev-list@infineon.com,
-	linux-arch@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v4 17/18] gpiolib: Group forward declarations in consumer.h
-Date: Wed,  8 Feb 2023 19:33:42 +0200
-Message-Id: <20230208173343.37582-18-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBvdx4hXRz3c6H
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 09:23:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9CBEE617FB;
+	Wed,  8 Feb 2023 22:23:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A47AC433EF;
+	Wed,  8 Feb 2023 22:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675894993;
+	bh=OTzvcsJ+7/dblWvZKx0OO7rGkqobHrEhsSkHSFYQUeU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CMTCSn9NLVq9SnuioEIW7nld5dGU6EYQNsWBNgVqAcaZUyloxU9EVuP/Qa0o13pkd
+	 B0XADOrQhPnRuX4Z//DGHrmcFUi/vVP7jaYx8B955g5Msag8gEW4BHWadctTjX/hjm
+	 WHvbflnndg9xNZ5rdvGPA8/ASkuUaHeSCg1e0vtBgxD6flaqaFsRo9MUlP+beKnBWh
+	 5c0wAxIqskNsY5dG/JDG2403gwPoYcxEE0Q9c+KFfioJoKd9L6taQI/B/D6WUJQfrH
+	 Gu1FQucseaD95r4B9oV7zzaSk4YWesnlDDw8jtBsMH/EGnANaC5b6GqN9Tze/BhVsl
+	 ZPuoGRGsF9QNQ==
+Date: Wed, 8 Feb 2023 16:23:11 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <frank.li@nxp.com>
+Subject: Re: [External] : RE: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP
+ mode support for ls1028a
+Message-ID: <20230208222311.GA2490083@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 09 Feb 2023 09:48:32 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <HE1PR0401MB2331634B29ED9EDAB032B73888DB9@HE1PR0401MB2331.eurprd04.prod.outlook.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,39 +59,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Eric Dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Li Yang <leoyang.li@nxp.com>, Frank Rowand <frowand.list@gmail.com>, Alex Shi <alexs@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Yanteng Si <siyanteng@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Kalle Valo <kvalo@kernel.org>, Hante Meuleman <hante.meuleman@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Frank
- y Lin <franky.lin@broadcom.com>, Arend van Spriel <aspriel@gmail.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, Keerthy <j-keerthy@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, "David S. Miller" <davem@davemloft.net>, Gregory Clement <gregory.clement@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, Roy Zang <roy.zang@nxp.com>, ALOK TIWARI <alok.a.tiwari@oracle.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>, "M.H. Lian" <minghuan.lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For better maintenance group the forward declarations together.
+On Tue, Feb 07, 2023 at 04:20:21PM +0000, Frank Li wrote:
+> > Subject: Re: [External] : RE: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP
+> > mode support for ls1028a
+> > 
+> >          { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
+> > +       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+> >         { .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
+> > 
+> > can it be like this for better readability. ?
+> 
+> It is just chip name and follow name conversion, which already
+> upstreamed and documented. 
+>
+> Why do you think it not is good readability? 
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/gpio/consumer.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I thought maybe ALOK's point was to sort the list, which does make a
+lot of sense.  But if you want to sort by the .data member, I would
+think you would make .compatible a secondary sort key, which means
+ls1028a would come before ls1046a, so you would end up with this
+instead:
 
-diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index a7eb8aa1e54c..5432e5d5fbfb 100644
---- a/include/linux/gpio/consumer.h
-+++ b/include/linux/gpio/consumer.h
-@@ -7,6 +7,7 @@
- #include <linux/compiler_types.h>
- #include <linux/err.h>
- 
-+struct acpi_device;
- struct device;
- struct fwnode_handle;
- struct gpio_desc;
-@@ -602,8 +603,6 @@ struct acpi_gpio_mapping {
- 	unsigned int quirks;
+ static const struct of_device_id ls_pcie_ep_of_match[] = {
++       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+        { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
+        { .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
+        { .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
+        { .compatible = "fsl,lx2160ar2-pcie-ep", .data = &lx2_ep_drvdata },
+        { },
  };
- 
--struct acpi_device;
--
- #if IS_ENABLED(CONFIG_GPIOLIB) && IS_ENABLED(CONFIG_ACPI)
- 
- int acpi_dev_add_driver_gpios(struct acpi_device *adev,
--- 
-2.39.1
 
