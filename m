@@ -2,59 +2,158 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130C568EF8B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 14:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4624368EF90
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 14:12:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBgPj6b3nz3f5X
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 00:11:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBgQk0WXLz3f8H
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 00:12:46 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlSsVD94;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.170; helo=mail-qt1-f170.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=fengwei.yin@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlSsVD94;
+	dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBbLt0fZHz2ym7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 21:09:08 +1100 (AEDT)
-Received: by mail-qt1-f170.google.com with SMTP id 5so10158939qtp.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Feb 2023 02:09:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Al90dbaVnMvp1zrarwIGYloHZEfuuu1TJgBG8XepFdE=;
-        b=DbO46Bw05pCEM763GIAVhBaI0Vj+v53unJIPM1npO6sdcaSeQb1Mh3tlTOOR8FdHR1
-         yHWJV6TBi12GJHg3kYd982r6C9czpSS7W0TJIvlzUZvOwoYy4TIf9XOyqaEhhKgh7lPs
-         dV6goGQx+Pg55N2zC1OojXPMKEhbyQJkvmgujwJMis05hwAm2v8+HYM3XvZUlx1I2aC/
-         c/RIKyeB1fRGP4yjiW9zoncBi+Veo8RhRB79fXn+qU1HXSq9PJE/cRyLYfJ4ZVveEvyr
-         jjPpU3lZh+p2GEYFDrMsD0NyFqnHVyR6Gheupnyo/b2Y0dHbcLXkiCxdSv/nOGbUOziV
-         CJIA==
-X-Gm-Message-State: AO0yUKUVztkHPrSAka6VFg3YRloWX7GJLrXsaSfKsYaXQDfE0F7BKjpV
-	xnvyv3MlOm9uRsfUMyUZ7dHQ6adAY+WnSiqK
-X-Google-Smtp-Source: AK7set+I27hpH2UL94kUbZhjxOIx+shEhk/c3ndOunUA4HSXsL9wCtTKC7H8YZT6xc9TJ2ZdZdBZmQ==
-X-Received: by 2002:a05:622a:130e:b0:3b9:b761:b0aa with SMTP id v14-20020a05622a130e00b003b9b761b0aamr11187060qtk.11.1675850945064;
-        Wed, 08 Feb 2023 02:09:05 -0800 (PST)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id h184-20020a376cc1000000b006fcb77f3bd6sm11234237qkc.98.2023.02.08.02.09.02
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 02:09:03 -0800 (PST)
-Received: by mail-yb1-f181.google.com with SMTP id q9so569112ybk.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Feb 2023 02:09:02 -0800 (PST)
-X-Received: by 2002:a5b:508:0:b0:8a3:59a4:340e with SMTP id
- o8-20020a5b0508000000b008a359a4340emr741320ybp.604.1675850942618; Wed, 08 Feb
- 2023 02:09:02 -0800 (PST)
-MIME-Version: 1.0
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com> <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 8 Feb 2023 11:08:51 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] gpio: aggregator: Add missing header(s)
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBf1k5x96z3bM7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 23:09:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675858171; x=1707394171;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=is0pnbUlCSwNC13hHLUzg+YQtH+19+Etby7SBYvbZhw=;
+  b=VlSsVD94LO8tntBXAX/9sUJCIQHYRp3RsYGOFzoT3vqx7Gkj0sIuwYoU
+   2zYNtRq1TkT9BLAz+9xtpYdyODL1JNmt3DAOUradb+5oyLUuOmVhdsZDj
+   voRn99jIepgudBjVWhgVbCiV2+nfKMZUySH3yXIpxo7FOd/H4aQff7LoI
+   O7Hi5RvwdIectjbL4E6As7XEafqcfvqi9Zm3ILpZnZtL4BenzIpYpC6uO
+   pSsHZklvFRRdVCuGZ8qc+4gm7LoK0X3yV44pb3e6nVelNKZcVyokkzG6x
+   Fuy9bhu0e+2Ln0y9u/+birl//YzTmZ7VssvjGiOs92Sd4XV2frDB7FpGx
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="357172663"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="357172663"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 04:09:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="775994587"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="775994587"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmsmga002.fm.intel.com with ESMTP; 08 Feb 2023 04:09:14 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Wed, 8 Feb 2023 04:09:14 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Wed, 8 Feb 2023 04:09:14 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.171)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Wed, 8 Feb 2023 04:09:13 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UetAz8TcwLb92WJwlPycXHgOSX6nbCXukdgaXL26bB9XiWUNQxHEMRFGQ1XLYz7lM5JlQQubXnrfvTFWJNTMxEVnfQk5iKRIfpwpc872/kuMw5WHpQhA2Xl1kV6xD357u7c5JJxmbs5N/Nnj7FgWXpOmjBi5nhZLYHl3hMaCIOs3DfE3xmgRsyuC7sLeyq+HhF4rOdacNdoeQ5HMvOO2mEmakHBQGRoZUlGjgv+qMm8S056XsjhL+gxoTsdTgYojvVxYyTxa3aJYxIjQoeJUAYQE6OZ9PwGh4t+9PCQLcbzkkpmzn+liSidi3qV7wcsgk4cuyPgwUOnJU4t14TVzWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mgq8yb/IGQqgIlS+tWoKk1s1+G5L24A9Gc4USdsUKyE=;
+ b=WeNS+txvvlnKmoMufEvu8ytm5gWM8eaDBQk/OkrOoD+LGj7D9UukdOKxxJGo9VUWaJlYlXTQQxdd4fUdxRIV7WEymCV7+Hv9/2QpUkWsaNf4Zxwml/1mkKDEDVgWwWVmHWx1d0mNr9waHkyamTklNogYiGcT0fI8YilfBdrC2DXUl4tt3oKOTIQetpHFRxf3HACisWcck6njxFEeZuazTTSa3BA2cKxxMuVcXkCqZISNPgD4mAixbnpEDBCu+UKKTYStA5XPPSdr/1GmqjpdLhKESTIIa/mUImLT4B9fEubZi6GHAqEzxV/92ly37+QeFyZNySHEfxxdoeF1beVMrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB4820.namprd11.prod.outlook.com (2603:10b6:303:6f::8)
+ by SA1PR11MB7015.namprd11.prod.outlook.com (2603:10b6:806:2b8::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.35; Wed, 8 Feb
+ 2023 12:09:11 +0000
+Received: from CO1PR11MB4820.namprd11.prod.outlook.com
+ ([fe80::1531:707:dec4:68b4]) by CO1PR11MB4820.namprd11.prod.outlook.com
+ ([fe80::1531:707:dec4:68b4%6]) with mapi id 15.20.6086.017; Wed, 8 Feb 2023
+ 12:09:11 +0000
+Message-ID: <b44d5dc7-ee7a-80e0-5401-829bf5740de5@intel.com>
+Date: Wed, 8 Feb 2023 20:09:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.6.1
+Subject: Re: API for setting multiple PTEs at once
+To: Alexandre Ghiti <alex@ghiti.fr>, Matthew Wilcox <willy@infradead.org>,
+	<linux-arch@vger.kernel.org>
+References: <Y9wnr8SGfGGbi/bk@casper.infradead.org>
+ <Y+K0O35jNNzxiXE6@casper.infradead.org>
+ <ba99ed28-61e4-4acd-ce17-338f5a49ef26@ghiti.fr>
+Content-Language: en-US
+From: "Yin, Fengwei" <fengwei.yin@intel.com>
+In-Reply-To: <ba99ed28-61e4-4acd-ce17-338f5a49ef26@ghiti.fr>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR03CA0090.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::18) To CO1PR11MB4820.namprd11.prod.outlook.com
+ (2603:10b6:303:6f::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB4820:EE_|SA1PR11MB7015:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74446351-54ae-4c4a-5f78-08db09cd4997
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3uX1/jzWwBD41j7lQH8xDqE+z6KOqrU1p4GTnaVEZudK4K+xQcNEe7JAbr9CB3MseGBWBguyx5VwRX6Y/tz7USNfmgAShnSfzhsH6sYkgxQ8Sk/jb/MRKCpEom3TzXzItgeSnB0SODs8AxMGHZZl9Cugno4pcmAjgtAIBv4/2nqWYrqkZz9etf9EGD83SsNp+YSKe1TsNf7ZPPhj9CYXnBFSdTWukPdBFLWLKBqL5/6+gZgfXGeUmDEBvXWCQsGyzMPBkMCg4dylY+ufTpZCLLAVjm7Nn4oND+dvxVMHprsDmcD823aBG3cbfEOuAc2qLGYUKCUoGw5Z9pkPxLXaANeFKt7cqUGmUofFPQSwiNlm0WmT0nxJNhMGrbMa8Q3cbgBx2MoJKK8G8CLySJHA5NmfsdH7VFnFtOyvW3hvZM3FlJV+sgXxCtlSa5js53PEO51DBa5WlUrG5OmygOfZnYtNE0//jR7abLekuGkxR/n+reTKdKJu9HapwjfDEU703n0dfrH8m1mkC+ilA1uQQjiX+W9qaYvAQUf4eTxpFiQbBVVuKyy7QjAhdDQ7VdM2FDFAS6wjEjpG1+RlThnW4CJP2JGVb9DjelTlMZE+QgiaF/wC0kij8/DxcZGr+aLxKTZAvI3k7O3l7/gf4qLLRzcdWTYRwShEGWNk1O2m+niYSD4fuMwiqjX45gy59budM5zfhO2t4DftoVIlk2AKGbcAl+SYD9xqsZ9o7J4+bgNSX2Jsaoff//dSYcSobzYgfg2Z0JIISBANMJhJxnvpbgw7EadXJ0FS6posiH9pVv3e0UkhC8/I9vNd6rRz0wlt
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4820.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(39860400002)(136003)(396003)(346002)(366004)(376002)(451199018)(8936002)(41300700001)(8676002)(6512007)(186003)(26005)(2616005)(83380400001)(82960400001)(2906002)(66946007)(4326008)(66476007)(66556008)(31696002)(31686004)(5660300002)(110136005)(7416002)(316002)(38100700002)(86362001)(6486002)(478600001)(966005)(6666004)(53546011)(6506007)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3k1QkJlbXFBcHM2TDZ1N3d2NEF2bXk4b20wMEdHdmFPa2ZuTkdMYXZYbE9L?=
+ =?utf-8?B?RlY1Vy9sNXV1a1ltMythM2d4ZllRU2M2cHhLTnMxS3B5c051Vm9FTmMxd3hM?=
+ =?utf-8?B?MG5WSFZjdmN5SkZnWkt3Sml6ZWZROURpby9DVVY1WnhiaThFZ3F5V3RKeHZ2?=
+ =?utf-8?B?ZXNqV3FVSWlpM2NGbmFtYzhSdEE0d25rM01qbUNBc24xSFVadDl1QmZMMzA4?=
+ =?utf-8?B?UzBuYnFRNU1ldVVielIxMzAxVUFITzRYb1pkS2gxdTN3bVlSdmhISWIzNEdK?=
+ =?utf-8?B?OUhyNmJERXBJcXo3Y2huR0RkaVc1azJWYVFDVGJ1US9IbkJRU2E2cnpSN244?=
+ =?utf-8?B?aWJQVklSNzdDVHJaZ0M2czBQYTNaempPYjBma2hmL0EzRW1ldlVDUkpZY2tM?=
+ =?utf-8?B?dlVCSFRyMk5iS2EyV2ZhTVdaZTdvbXZuNktiVjNsL0Z2ZFQzTzlldXlEVEJH?=
+ =?utf-8?B?UFlZcFRONWxUMXBZeU5CdHNza2tBdDg5Yk1TMDlVZTNMYUVBWGxmcmFSNHV3?=
+ =?utf-8?B?dGt5YVRKSWUyWXlJQmRtRmJaakpIVzdzeFRnNXZqSVRoTThSN1Z6Z2pjcHJl?=
+ =?utf-8?B?UVgrUlBjbmljV3hjWjNEanhHa1MybGxZWWp1d1dpWnFZOXJRaE1HUTNvbUVx?=
+ =?utf-8?B?NW5jUkdYWVdSSWFnQXNwN3BsenZuWVVCMElvajNsQi9MZm9WN0Mzc29kTTdG?=
+ =?utf-8?B?UEZyY2w1MmU1R2k1UVNNUzRqTmJZTmxGMDlIQmtqeDR0NFQ0SGFDdDZyZ25r?=
+ =?utf-8?B?cml1UHd4dCtiU2xQdHJNazgrMHU5dTNrdW9kZ0VmK1FCS2M1MnppenJKV3dT?=
+ =?utf-8?B?VTB4RkdWYVFEdG54VXpxMnF1WWZTM29DQnJVQWxlUzUwRzR1ZithSFdERHNk?=
+ =?utf-8?B?TzZNVjdsMzRGdHVOMXdjazE1Qm05alZXSCtuQmVVQnpMeHZma0x3NmhrcHJ0?=
+ =?utf-8?B?UjJCRFZ1bllFaHA2R2JBZEp2UEpZOTdiT0FxZm8wZkZsTUNyR0NTL3hLMmM3?=
+ =?utf-8?B?NHl1aHBoelhWTnBpUnMreThNaTU2SkVEazZmMnR3b21xMlY2eGtrSkJ5cHRV?=
+ =?utf-8?B?S0paMjFndXVaSEFMYUlVWWsyOUxnbkJkWTdncE9XNDBCVkJ1T0hBYWpQd2Vs?=
+ =?utf-8?B?bzc0NjExNTFWOUZheDJFQmlCa3VKWTVObW0ycmdnQ0h2dTNaa0d5UmxKVFBI?=
+ =?utf-8?B?SFI0dU5WVnlpWjd0bWF4NDZTTklpYnlRSWpJU21iUHFoS0JLYjV0QVNXSTJK?=
+ =?utf-8?B?VmVyaHFLT0RwYmtuMmMrNTgxVno4ZU9kdnhNTHlIRzhnNnAyL0N2MWJmTDMz?=
+ =?utf-8?B?ZytRRHBnZVF5a3FYVjJ3TG9GRGZyOWpmUlVQT05CYXk1WXRJQVU0UnNlbmFt?=
+ =?utf-8?B?UmdRUUJxZHB3V05XTnVDN1dSTEViVHNuQWRlYmFmMXQyS0M0VTluTU5CcmFj?=
+ =?utf-8?B?SDV5alUvWEltS1B0MDhMWFBEZDRsK3FQYzFpZ1ZUVWdGTHh6a0JGY2NHdGxP?=
+ =?utf-8?B?b0lmNFkwRk9mcVZiT1ZSRDZTdWI3UnlxaklmeHBIcGJTZEV1Zm9yK01Wangy?=
+ =?utf-8?B?WjE0WW14THN0SWNhRUJSOEZNdFZMSlRCMDVVN3NlYmxoOHloN25oeUlvdjVQ?=
+ =?utf-8?B?YnYzamU2aXpOVy93aU5IMHVJWmZxVWhxYzJRNXdiaUh0blR1V1I1Q09kUXp1?=
+ =?utf-8?B?cXZSejU3TE9zeisvVUhSZ2J1ejduQVlxdFo2L1hBR0d0ZVh0MEpiak9lVnVu?=
+ =?utf-8?B?Q1IycWxQUURIWFpOZ0dVY05TNmdwdC9jcnJ3L3Azd2lqL29od3YyWSs4d214?=
+ =?utf-8?B?SkJqOWhnV2VzZW12cU55UTBGdHl6ODdSZGlQNldiVzR6U2VHYS85Zi91OGVO?=
+ =?utf-8?B?eFFEV201Q0YvUGN2M2ZISUQ4WUkxVHNPNjFTZ3FPVGZ4akMyTTdyb1pJeVIy?=
+ =?utf-8?B?YzRpNWhLVWpkaGpPVWVWWEg0Nzg4K3Y5WWU4TDdrcE1uT2FqQkFXTlMvMWxu?=
+ =?utf-8?B?N2ZBMUhWSzdlYmZKMUJSbjlnaHRpeHZVUm0xcWN1MlEwRkhlS1F5L2daNzFz?=
+ =?utf-8?B?Y2Q0VkdFZVoxUXRzdy9OVWdVbU8zMldHZm8wQmd6K1RZdE11MWZoSEJ0VDhy?=
+ =?utf-8?B?WWxXM0kvV1IwZjV5TkZSUFB3VVFOdXduNmh2R0ZPSDVZQkluMDRROElUbUto?=
+ =?utf-8?B?bEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74446351-54ae-4c4a-5f78-08db09cd4997
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4820.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2023 12:09:11.3003
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zosHd4DwCyREAi4opUOQu23bZx1HzMLtiKazf49KiBq+KVmyfnJXQ3lMJfd91Maax6AZIK+hLTFMjjTOdSuVgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7015
+X-OriginatorOrg: intel.com
 X-Mailman-Approved-At: Thu, 09 Feb 2023 00:10:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,67 +166,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich Felker <dalias@libc.org>, Devarsh Thakkar <devarsht@ti.com>, linux-doc@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet <edumazet@google.com>, Lee Jones <lee@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Li Yang <leoyang.li@nxp.com>, Frank Rowand <frowand.list@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Qiang Zhao <qiang.zhao@nxp.com>, linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-samsung-soc@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-sh@vger.kernel.org, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, SHA-cyfmac-dev-list@infineon.com, Alex Shi <alexs@kernel.org>, linux-input@vger.kernel.org, Jaku
- b Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Arend van Spriel <aspriel@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Hante Meuleman <hante.meuleman@broadcom.com>, linux-gpio@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Yanteng Si <siyanteng@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Franky Lin <franky.lin@broadcom.com>, brcm80211-dev-list.pdl@broadcom.com, Keerthy <j-keerthy@ti.com>, Mun Yew Tham <mun.yew.tham@intel.com>, Hu Haowen <src.res@email.cn>, linux-wpan@vger.kernel.org, linux-doc-tw-discuss@lists.sourceforge.net, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Krzysz
- tof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh+dt@kernel.org>, netdev@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linuxppc-dev@lists.ozlabs.org, Gregory Clement <gregory.clement@bootlin.com>
+Cc: linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
 
-Thanks for your patch!
 
-On Tue, Feb 7, 2023 at 3:29 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
+On 2/8/2023 7:23 PM, Alexandre Ghiti wrote:
+> Hi Matthew,
+> 
+> On 2/7/23 21:27, Matthew Wilcox wrote:
+>> On Thu, Feb 02, 2023 at 09:14:23PM +0000, Matthew Wilcox wrote:
+>>> For those of you not subscribed, linux-mm is currently discussing
+>>> how best to handle page faults on large folios.  I simply made it work
+>>> when adding large folio support.  Now Yin Fengwei is working on
+>>> making it fast.
+>> OK, here's an actual implementation:
+>>
+>> https://lore.kernel.org/linux-mm/20230207194937.122543-3-willy@infradead.org/
+>>
+>> It survives a run of xfstests.  If your architecture doesn't store its
+>> PFNs at PAGE_SHIFT, you're going to want to implement your own set_ptes(),
+> 
+> 
+> riscv stores its pfn at PAGE_PFN_SHIFT instead of PAGE_SHIFT, se we need to reimplement set_ptes. But I have been playing with your patchset and we never fall into the case where set_ptes is called with nr > 1, any idea why? I booted a large ubuntu defconfig and launched will_it_scale.page_fault4.
+Need to use xfs filesystem to get large folio for file mapping.
+Other filesystem may be also OK. But I just tried xfs. Thanks.
 
-That applies only to the addition of #include <linux/slab.h>...
-Please also describe the other changes.
 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/gpio/gpio-aggregator.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-> index 6d17d262ad91..20a686f12df7 100644
-> --- a/drivers/gpio/gpio-aggregator.c
-> +++ b/drivers/gpio/gpio-aggregator.c
-> @@ -10,19 +10,20 @@
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
->  #include <linux/ctype.h>
-> -#include <linux/gpio.h>
-> -#include <linux/gpio/consumer.h>
-> -#include <linux/gpio/driver.h>
-> -#include <linux/gpio/machine.h>
->  #include <linux/idr.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/overflow.h>
->  #include <linux/platform_device.h>
-> +#include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/string.h>
->
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/gpio/machine.h>
-> +
->  #define AGGREGATOR_MAX_GPIOS 512
+Regards
+Yin, Fengwei
 
-For the actual changes:
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+> I'll come up with the proper implementation of set_ptes anyway soon.
+> 
+> Thanks,
+> 
+> Alex
+> 
+> 
+>> or you'll see entirely the wrong pages mapped into userspace.  You may
+>> also wish to implement set_ptes() if it can be done more efficiently
+>> than __pte(pteval(pte) + PAGE_SIZE).
+>>
+>> Architectures that implement things like flush_icache_page() and
+>> update_mmu_cache() may want to propose batched versions of those.
+>> That's alpha, csky, m68k, mips, nios2, parisc, sh,
+>> arm, loongarch, openrisc, powerpc, riscv, sparc and xtensa.
+>> Maintainers BCC'd, mailing lists CC'd.
+>>
+>> I'm happy to collect implementations and submit them as part of a v6.
+>>
+>> _______________________________________________
+>> linux-riscv mailing list
+>> linux-riscv@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-riscv
