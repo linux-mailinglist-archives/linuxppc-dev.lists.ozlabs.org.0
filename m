@@ -2,40 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1060668EDE4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 12:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ED668EDFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 12:34:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBd3L6hQbz3f7D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 22:25:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBdDn5BClz3f4t
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 22:34:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fXWANCuB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ghiti.fr (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-X-Greylist: delayed 115 seconds by postgrey-1.36 at boromir; Wed, 08 Feb 2023 22:25:20 AEDT
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=thierry.reding@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fXWANCuB;
+	dkim-atps=neutral
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBd2m15Wnz3bW6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 22:25:19 +1100 (AEDT)
-Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 6AD5FD078E
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 11:23:31 +0000 (UTC)
-Received: (Authenticated sender: alex@ghiti.fr)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9D4FA20008;
-	Wed,  8 Feb 2023 11:23:09 +0000 (UTC)
-Message-ID: <ba99ed28-61e4-4acd-ce17-338f5a49ef26@ghiti.fr>
-Date: Wed, 8 Feb 2023 12:23:09 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBdCq0Gqbz2xKj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 22:33:08 +1100 (AEDT)
+Received: by mail-ed1-x535.google.com with SMTP id r3so10268105edq.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Feb 2023 03:33:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HIu5FMX5zzGn7W3WV4iDVGUOhSdTojc3bSXVJLsQvOI=;
+        b=fXWANCuB/MzwMxY8e/PE9hMX6kQQgSi4nwzOxcZP1sqB8ClZa9gcDxf95xcMCFGA60
+         8r4HPxPuojmsyiGZM5fo54iQbE21y+qmauAqwiUZ3JgfWGvn5hFl6n/jQnypHDEAEiIN
+         BuyuO7rl564g2V4OrWmmn0okwkjZbGE1TCtQTMGjJTfw9GCV5cQzEBQZbHy2naOM6bpE
+         uDbQrwann+eaSyPP4Qr1iDlD/kMNgp3Ia2Gz41p5KUz1dsAlq9DKH/Kv+GyzBHKHadV6
+         bLLJuLtOY0ewEYZPIZXw0dCi5dG6BoEsrdfO+bUYCY7Ew7umVt4h/WIptyhk6gza7ptd
+         eQIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HIu5FMX5zzGn7W3WV4iDVGUOhSdTojc3bSXVJLsQvOI=;
+        b=f9bTmgN0MGETXTjhHvMfBxHklsslU4Sko6o37aIi79/qhVCCJWRNPU4qb8eKOF1DRZ
+         m/N0P8FDBMZHAebhp3GParcgcbV1Xrmq3uYT7ThEVoJYVqzvA4QGnofdUNwHZnGFfRxE
+         MRWXyxpmlWa0zcrUCwH9hbiHO9hcpZrEZeQF9pJND9RUh6WFSDvkWxSw5SrEddwST0sD
+         0xaB1udGunbop0TlzPkj8yc6BL5/1uzqJ3xflRIuHnoTgJ5XkeU+l+lGf/l/zPKVTBjc
+         QkCmgQuz2W1fytnnW1qt7OBIhTH3q0gg7WnVLZ8LuZWFz7vTV2uz6uUiwXrMyLvapj1B
+         diuw==
+X-Gm-Message-State: AO0yUKW5Y/PKvrZ2gLP1SG5/C8OEfquKNUwNWQ3tuLg1sdS2arDF67b0
+	XcnDoJ9k5rnyOtjWVaOYWAU=
+X-Google-Smtp-Source: AK7set+tg8yMsoPfm6aG9wW3C95mLbOW3tHfVXRDEHWicn13te2n5qII2lTooySpSVWWHaqcTV5FYg==
+X-Received: by 2002:a50:9f25:0:b0:4aa:a517:b861 with SMTP id b34-20020a509f25000000b004aaa517b861mr7580201edf.30.1675855982063;
+        Wed, 08 Feb 2023 03:33:02 -0800 (PST)
+Received: from orome (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id y89-20020a50bb62000000b004aab193b8dbsm4424195ede.80.2023.02.08.03.33.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Feb 2023 03:33:01 -0800 (PST)
+Date: Wed, 8 Feb 2023 12:33:00 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 3/3] ALSA: core: Make snd_card_free() return void
+Message-ID: <Y+OIbIEn4QSQCB7M@orome>
+References: <20230207191907.467756-1-u.kleine-koenig@pengutronix.de>
+ <20230207191907.467756-4-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-From: Alexandre Ghiti <alex@ghiti.fr>
-Subject: Re: API for setting multiple PTEs at once
-To: Matthew Wilcox <willy@infradead.org>, linux-arch@vger.kernel.org
-References: <Y9wnr8SGfGGbi/bk@casper.infradead.org>
- <Y+K0O35jNNzxiXE6@casper.infradead.org>
-Content-Language: en-US
-In-Reply-To: <Y+K0O35jNNzxiXE6@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="D5qM/4zvEVCMgXpb"
+Content-Disposition: inline
+In-Reply-To: <20230207191907.467756-4-u.kleine-koenig@pengutronix.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,52 +81,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, Yin Fengwei <fengwei.yin@intel.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, Geoff Levand <geoff@infradead.org>, Takashi Iwai <tiwai@suse.com>, Nicholas Piggin <npiggin@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, kernel@pengutronix.de, linux-tegra@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Matthew,
 
-On 2/7/23 21:27, Matthew Wilcox wrote:
-> On Thu, Feb 02, 2023 at 09:14:23PM +0000, Matthew Wilcox wrote:
->> For those of you not subscribed, linux-mm is currently discussing
->> how best to handle page faults on large folios.  I simply made it work
->> when adding large folio support.  Now Yin Fengwei is working on
->> making it fast.
-> OK, here's an actual implementation:
->
-> https://lore.kernel.org/linux-mm/20230207194937.122543-3-willy@infradead.org/
->
-> It survives a run of xfstests.  If your architecture doesn't store its
-> PFNs at PAGE_SHIFT, you're going to want to implement your own set_ptes(),
+--D5qM/4zvEVCMgXpb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 07, 2023 at 08:19:07PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> The function returns 0 unconditionally. Make it return void instead and
+> simplify all callers accordingly.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  include/sound/core.h      | 2 +-
+>  sound/core/init.c         | 6 ++----
+>  sound/pci/hda/hda_tegra.c | 6 ++----
+>  sound/ppc/snd_ps3.c       | 4 +---
+>  4 files changed, 6 insertions(+), 12 deletions(-)
 
-riscv stores its pfn at PAGE_PFN_SHIFT instead of PAGE_SHIFT, se we need 
-to reimplement set_ptes. But I have been playing with your patchset and 
-we never fall into the case where set_ptes is called with nr > 1, any 
-idea why? I booted a large ubuntu defconfig and launched 
-will_it_scale.page_fault4.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-I'll come up with the proper implementation of set_ptes anyway soon.
+--D5qM/4zvEVCMgXpb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
 
-Alex
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmPjiGsACgkQ3SOs138+
+s6GK+Q//ZiTKsijeECRfzHmIOgymJ77EeHGA/vhS4NBBfe9U296ifD3l2Iyv+64i
+fI7nKoz7sr+HxnB675oWnqtDQNIogLRPrej9fG7qGtqk7JWxnUuGkELw43jefGp+
+62Q7q/UXC7tSPNf3lZGD1Mcown6X1SkSwohIqvqhY5GLcSMV8/QMOIIQIHeeyjTZ
+fxtr8htfD+XArBu+CD5gbo8mQezE3zwlOOnms6OfciwEK/RU70OPK/Do38/gDaIf
+c7oJv32pu43UekdJES/C4HhfkdSi/xOUZSYRnl13V0xQ0imngncCPUU+sV+yRhGu
+tSqIpDypo9GBzu/AyGMD7L+7wTOlhZKYcPCH7+wUil7H+7QNx5kqxTZQY+w6rMR6
+Z7MHYsU5oTnhsgvJmTybU/NFp1Cb0jNlWzH+YvuJz82Wx9wD7p3l+HkOazLj63wv
+e1Ktc1Dn9AOKMJR4R6IFwb8T9FiqtQ4MWdJmCbLSuRemo62DYAPzm2els+2lO7yG
+/vzZSAi/655ELwubZcGkMQ6ng3nda0JRSqocaT/AzwpnWiTok+srqy2JuoLjE1uG
+OLMieD4toJrYTzqR1wPK1lKtJu+qXgw2GsI0nbGJ//kcAK9l5rwKZT0ye8bwG+5N
+BWkK1n+90YKZI00GffWXjiOaH/yuzSYrQZuDtzAizFJ0UX87E4k=
+=sIaY
+-----END PGP SIGNATURE-----
 
-
-> or you'll see entirely the wrong pages mapped into userspace.  You may
-> also wish to implement set_ptes() if it can be done more efficiently
-> than __pte(pteval(pte) + PAGE_SIZE).
->
-> Architectures that implement things like flush_icache_page() and
-> update_mmu_cache() may want to propose batched versions of those.
-> That's alpha, csky, m68k, mips, nios2, parisc, sh,
-> arm, loongarch, openrisc, powerpc, riscv, sparc and xtensa.
-> Maintainers BCC'd, mailing lists CC'd.
->
-> I'm happy to collect implementations and submit them as part of a v6.
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+--D5qM/4zvEVCMgXpb--
