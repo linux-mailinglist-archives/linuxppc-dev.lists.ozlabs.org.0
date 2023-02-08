@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B3768E58E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 02:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E93268E593
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 02:49:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBNDY2YRWz3f3K
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 12:47:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBNGd6bdBz3bW6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 12:49:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T3Rnvod+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pR81DF44;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T3Rnvod+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pR81DF44;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBNCZ3Rsvz3bTc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 12:47:05 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id bg10-20020a17090b0d8a00b00230c7f312d4so725906pjb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 17:47:05 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBNFk3DvBz2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 12:48:57 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id pj3so16906259pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 17:48:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KjZgcroriwsEugk9weWmwBjNRJc6RS0hv55s25nO4rI=;
-        b=T3Rnvod+sGjsj4Tp/F4rNsfDkPXTVmQKBueGwJ6rbffiNG3ks34G1SvONwjbbpKSLx
-         K+aMl/olK6iozVZB51N7ov4qxoGCUcZBbDcc1w7U8kKQLGvoStlIamTHhU3Y3tMVXsQ2
-         dwJV0Ik729AAGrh3WdwN1AMG+YeI6rvaleYvbndhh1/CGcVapI9TA7J8GqdJ+71qYHNv
-         IN9Y5weECLfx5f0egpHIdWT3WSoDownqAQoNz1uTzumQKUU7zFyxshcwHYxy1z7YKEd5
-         Trx94brejc8JavIrW8fWP36rkAMfgMsI0utsNzWJSsd0mzipVcsuKJSCJxgFNlUbpAXr
-         DElw==
+        bh=T2dajks7+pLSuhCk0mnl5yufn01/RNR3ouO2WMM0QZw=;
+        b=pR81DF44OfWquLPnGm6SkA1FB6N+pwQAdnY8mkVyK+SimNhi9y2ULovzSn1jp1qhqc
+         mwLwe4WyIPB58XgoAt87CNAIhERfXOvmMCVSUJbO05YoWnMWIxAN+l+Zu0X+nNogvcgK
+         9VOZPjnGugfGTxtJvJvy4yTI2QTDa0mk7EiJWvkTx1slVJJupGcuePODKdMVH+Utl9YN
+         8wDq+5FQHemIrSq/AKc3i4nb0qTZmJnz6SZ5KWE4+vgOc8+8aWsxDeTTQNIRA6AMysse
+         8Tv3p/dMtikONAl03d0CsQmmxg2GAWCwfZOUVMpE07f96bEwQnGspwatTyOu0ibhzWkV
+         UoNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KjZgcroriwsEugk9weWmwBjNRJc6RS0hv55s25nO4rI=;
-        b=UQ6qNQAT7KBZYf/1VG3grye01LZYSACwweHvYHtsIrBfJYI94wia1To8fgWum0E8Ah
-         YbXXt+mH34Nw1nv62vkh8gIVQzNIQmTdHhJWuas+DxG2Td4SQUu8yi7x3bYkLUTDV4+i
-         DQqbkGDsy7A72Pb9r86LFs7IaD6PvL0xSBubOUvv9udUK7WfP97qjuNcqg1II6m4zbH0
-         WkIJPWmWYhmgRl/T/19soEo6wlPt/W/wuNlc7O4hWIpVjwaXMOZwj2gowG9XFBPCFRx0
-         W0SXl2L/VCyDv9Cx78BNx/v8LmmcbiIVbRuVbbqBSeuFXNbSQSpspKZ356WtzcT9zcAT
-         d89A==
-X-Gm-Message-State: AO0yUKX7bQeULJiYoFfXK3sGU76YGPStnFSWGCGsTB2+Qd7QVaBvPg2f
-	zejdwCHh/k0M+4x3TMHN6/Y=
-X-Google-Smtp-Source: AK7set+Rx8bwFJXZPUypnmLEaScqNCFoHUGKQdnDDCzWzsSJ8ehu9pZaOgXwJDEoM4zRSDGCA3KG3A==
-X-Received: by 2002:a17:90b:1652:b0:22c:46a1:67ca with SMTP id il18-20020a17090b165200b0022c46a167camr6033526pjb.37.1675820821100;
-        Tue, 07 Feb 2023 17:47:01 -0800 (PST)
+        bh=T2dajks7+pLSuhCk0mnl5yufn01/RNR3ouO2WMM0QZw=;
+        b=uRA5dcmUpJ08KISa/9yxGLjDhzrkrmnVteCms5D+/OI88hUa2SjXGGSfS0q9HS+uC+
+         N5eMzCSqZCDOVK/3Ziga/dj2LVH3vdVpUa3osgaa/LiXuPr6JzwCV8KI53ftvNwWnIIz
+         kdmtUNRQg9haafvBef7IR2meyXW0iUlS9G2ifQ4IN/VGxS427jo4DCx8ZJV2u0P7mNGL
+         Hv32sZc3439XOmxlGx0TM/G8xYySbe6t1tU/3AuugtNWZBkJknWPSGMhPKh+mEm49jDd
+         P0aWWpsCkFJ4HhcegKydHSJl6f9d7xEV0TO+VHveWVg8/c3N0Ns+GQ/iXSkGwfDMPqy9
+         a7GA==
+X-Gm-Message-State: AO0yUKVS6bhIwLWYJqpHDNenaLiz4WeNLwqxXNyirJIt0XPFPcYEdAd/
+	N/AcZcD9efqiJXLAunZtSvQ=
+X-Google-Smtp-Source: AK7set+naAmhvq2efFvTFqN3g41QFEpkFxiyEFRHmMtUw8p7kOQvCHxftMqwTIX2qsh3cugyi2g6LA==
+X-Received: by 2002:a17:90b:4a8e:b0:22b:f780:d346 with SMTP id lp14-20020a17090b4a8e00b0022bf780d346mr6363137pjb.1.1675820934449;
+        Tue, 07 Feb 2023 17:48:54 -0800 (PST)
 Received: from localhost ([2400:8902::f03c:93ff:fe27:642a])
-        by smtp.gmail.com with ESMTPSA id q12-20020a17090a2dcc00b00230a50e6eadsm198397pjm.24.2023.02.07.17.46.49
+        by smtp.gmail.com with ESMTPSA id o10-20020a17090a4b4a00b002308f09460fsm195288pjl.26.2023.02.07.17.48.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Feb 2023 17:46:58 -0800 (PST)
-Date: Wed, 8 Feb 2023 01:46:46 +0000
+        Tue, 07 Feb 2023 17:48:52 -0800 (PST)
+Date: Wed, 8 Feb 2023 01:48:39 +0000
 From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH 1/1] mm: introduce vm_flags_reset_once to replace
- WRITE_ONCE vm_flags updates
-Message-ID: <Y+L/BubSzdbpTS4P@localhost>
-References: <20230201000116.1333160-1-surenb@google.com>
+Subject: Re: [PATCH v4 2/7] mm: introduce vma->vm_flags wrapper functions
+Message-ID: <Y+L/dzMaraz5oC3N@localhost>
+References: <20230126193752.297968-1-surenb@google.com>
+ <20230126193752.297968-3-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230201000116.1333160-1-surenb@google.com>
+In-Reply-To: <20230126193752.297968-3-surenb@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,65 +83,99 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 31, 2023 at 04:01:16PM -0800, Suren Baghdasaryan wrote:
-> Provide vm_flags_reset_once() and replace the vm_flags updates which used
-> WRITE_ONCE() to prevent compiler optimizations.
+On Thu, Jan 26, 2023 at 11:37:47AM -0800, Suren Baghdasaryan wrote:
+> vm_flags are among VMA attributes which affect decisions like VMA merging
+> and splitting. Therefore all vm_flags modifications are performed after
+> taking exclusive mmap_lock to prevent vm_flags updates racing with such
+> operations. Introduce modifier functions for vm_flags to be used whenever
+> flags are updated. This way we can better check and control correct
+> locking behavior during these updates.
 > 
-> Fixes: 0cce31a0aa0e ("mm: replace vma->vm_flags direct modifications with modifier calls")
-> Reported-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Acked-by: Mel Gorman <mgorman@techsingularity.net>
 > ---
-> Notes:
-> - The patch applies cleanly over mm-unstable
-> - The SHA in Fixes: line is from mm-unstable, so is... unstable
-> 
->  include/linux/mm.h | 7 +++++++
->  mm/mlock.c         | 4 ++--
->  2 files changed, 9 insertions(+), 2 deletions(-)
+>  include/linux/mm.h       | 40 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/mm_types.h | 10 +++++++++-
+>  2 files changed, 49 insertions(+), 1 deletion(-)
 > 
 > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5bf0ad48faaa..23ce04f6e91e 100644
+> index 8d636e895ee9..abb31103d060 100644
 > --- a/include/linux/mm.h
 > +++ b/include/linux/mm.h
-> @@ -648,6 +648,13 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
->  	vm_flags_init(vma, flags);
+> @@ -627,6 +627,46 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+>  	INIT_LIST_HEAD(&vma->anon_vma_chain);
 >  }
 >  
-> +static inline void vm_flags_reset_once(struct vm_area_struct *vma,
-> +				       vm_flags_t flags)
+> +/* Use when VMA is not part of the VMA tree and needs no locking */
+> +static inline void vm_flags_init(struct vm_area_struct *vma,
+> +				 vm_flags_t flags)
 > +{
-> +	mmap_assert_write_locked(vma->vm_mm);
-> +	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
+> +	ACCESS_PRIVATE(vma, __vm_flags) = flags;
 > +}
 > +
->  static inline void vm_flags_set(struct vm_area_struct *vma,
->  				vm_flags_t flags)
+> +/* Use when VMA is part of the VMA tree and modifications need coordination */
+> +static inline void vm_flags_reset(struct vm_area_struct *vma,
+> +				  vm_flags_t flags)
+> +{
+> +	mmap_assert_write_locked(vma->vm_mm);
+> +	vm_flags_init(vma, flags);
+> +}
+> +
+> +static inline void vm_flags_set(struct vm_area_struct *vma,
+> +				vm_flags_t flags)
+> +{
+> +	mmap_assert_write_locked(vma->vm_mm);
+> +	ACCESS_PRIVATE(vma, __vm_flags) |= flags;
+> +}
+> +
+> +static inline void vm_flags_clear(struct vm_area_struct *vma,
+> +				  vm_flags_t flags)
+> +{
+> +	mmap_assert_write_locked(vma->vm_mm);
+> +	ACCESS_PRIVATE(vma, __vm_flags) &= ~flags;
+> +}
+> +
+> +/*
+> + * Use only when the order of set/clear operations is unimportant, otherwise
+> + * use vm_flags_{set|clear} explicitly.
+> + */
+> +static inline void vm_flags_mod(struct vm_area_struct *vma,
+> +				vm_flags_t set, vm_flags_t clear)
+> +{
+> +	mmap_assert_write_locked(vma->vm_mm);
+> +	vm_flags_init(vma, (vma->vm_flags | set) & ~clear);
+> +}
+> +
+>  static inline void vma_set_anonymous(struct vm_area_struct *vma)
 >  {
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index ed49459e343e..617469fce96d 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -380,7 +380,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>  	vma->vm_ops = NULL;
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 2d6d790d9bed..da983aedb741 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -491,7 +491,15 @@ struct vm_area_struct {
+>  	 * See vmf_insert_mixed_prot() for discussion.
 >  	 */
->  	if (newflags & VM_LOCKED)
->  		newflags |= VM_IO;
-> -	vm_flags_reset(vma, newflags);
-> +	vm_flags_reset_once(vma, newflags);
+>  	pgprot_t vm_page_prot;
+> -	unsigned long vm_flags;		/* Flags, see mm.h. */
+> +
+> +	/*
+> +	 * Flags, see mm.h.
+> +	 * To modify use vm_flags_{init|reset|set|clear|mod} functions.
+> +	 */
+> +	union {
+> +		const vm_flags_t vm_flags;
+> +		vm_flags_t __private __vm_flags;
+> +	};
 >  
->  	lru_add_drain();
->  	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
-> @@ -388,7 +388,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  
->  	if (newflags & VM_IO) {
->  		newflags &= ~VM_IO;
-> -		vm_flags_reset(vma, newflags);
-> +		vm_flags_reset_once(vma, newflags);
->  	}
->  }
+>  	/*
+>  	 * For areas with an address space and backing store,
 
 Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
->  
 > -- 
-> 2.39.1.456.gfc5497dd1b-goog
+> 2.39.1
+> 
 > 
