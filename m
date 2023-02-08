@@ -2,72 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1726968E5AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 02:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5510668E5E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 03:11:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PBNPf7181z3bVJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 12:55:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PBNmC1xJrz3cXl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Feb 2023 13:11:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JkO4G2i5;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZqjGyVa9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JkO4G2i5;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZqjGyVa9;
 	dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBNNm3Hj6z2yNX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 12:55:04 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id i2so4270238ple.13
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Feb 2023 17:55:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yFAeINwYtb2cLRVJgVtc+kWYFXCI8f2NbANQERXXFd0=;
-        b=JkO4G2i5cU/E6yafLtwtlFjL7+8wulry7a3Ey9V3mhwaVhE5SCUWQDoZVhZPaJxlGI
-         W7d/w1XtEKV7IhqrixH+q71lyrUCd8HJl3B1ld0dIhUjEdwxgt3fFM20XarQ1VkKO68i
-         9i/rKN56pXvZLCaBQyFAMpCf+59UHwOB4r0b/+K3XrymyynR9/FfXqj9Yjbx7MwmAcFH
-         lUmt0Te8AJSpvDmDxzZmo5tvAucslU2O8+4fKnourd8kcCtO//6Yj6ESjtdIMXQUhd37
-         j5cJnwVsAZWJJbRYLXcDvSWPhMMUSTPCa/Vje6uZyqu6YN5P5QfJQgrNvgX53OlNUlZW
-         gMQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yFAeINwYtb2cLRVJgVtc+kWYFXCI8f2NbANQERXXFd0=;
-        b=LU//Hd+1s9oGoynCKs2ZqwMfGcS74e0cpZ/bCCl3s+rogrG5veElSdzTS+uA3737YG
-         HasQlt8U59IEQVW7QW8+y3vPpGfpJ7SmdttVx/+OSkGNCZeY35G8YKVOniTP5C3fthIk
-         logWmq4liTF712M3hcmmjpJA2opwO+WYS0eFySeIlfM/WHWqo4V6lUuF7699H7xsr0Ay
-         qGRMPyEfrIQ/kCtXtsL2XHxyA3e4R6S9rzK1ASXNp4jTBStrmDO8l/0zVDtoi1IxJyxA
-         0ReZiKI7+cbQB3e+1fMKiAuJHQLnVdVg/5heR+3PJpzfnF9isJneBdEycPvKoqXQjq4F
-         LbuA==
-X-Gm-Message-State: AO0yUKVrJn7I4qPJ9VtI5d5q1o5GxgmFYpAsTwbfKH7O08mTSElclIK6
-	0GstDwIvhiEgukjpTRcJywE=
-X-Google-Smtp-Source: AK7set9mvmEYqv3hl2OrC0zKo+qq3fUo4V5nX2RfOnU0+7cYrKdJNxD+cYH5ETHUyGXyK29itm5v/w==
-X-Received: by 2002:a05:6a20:8e08:b0:be:abb2:66ff with SMTP id y8-20020a056a208e0800b000beabb266ffmr6740582pzj.60.1675821302133;
-        Tue, 07 Feb 2023 17:55:02 -0800 (PST)
-Received: from localhost ([2400:8902::f03c:93ff:fe27:642a])
-        by smtp.gmail.com with ESMTPSA id q20-20020a638c54000000b004eecc3080f8sm8635372pgn.29.2023.02.07.17.54.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Feb 2023 17:54:59 -0800 (PST)
-Date: Wed, 8 Feb 2023 01:54:47 +0000
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v4 5/7] mm: replace vma->vm_flags indirect modification
- in ksm_madvise
-Message-ID: <Y+MA5wUYgtq6Ll++@localhost>
-References: <20230126193752.297968-1-surenb@google.com>
- <20230126193752.297968-6-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PBNlB0kkzz2xGq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Feb 2023 13:10:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=AuTyDSrSjqaHZtVxnBwKuHAyQ6R0P+ssQyTf+RiDt24=; b=ZqjGyVa9C8gevk4DdJl9RIZ3Z/
+	JhUhMdElBE4KCOSfvQ6kWk+fROA6xuLYbtFt1wqcEYaS/38nancZyGQE7K5mUEzQg0AXTDK3sqf1k
+	gXP7VDbcT50A0h+xR43+n0Cab00vGpqb358gqLqkuOnW+gE4H2Ata+DvYiT6i4D3M5Mqr1sLfakUk
+	5BOBj2Ez4fd2X4wIWSVbevBwCnVNRDEiy8VeubVqwY6z09mycaN0ECFoh/gx0dfDvgRiEqZcBDJO0
+	1U43rm4nA+7N15ElcAb78D8f2eeBZaRtQ/bz0+1VbfUr7/xhZfwBCNaVSyAxvAockml9xHs2gpK9D
+	U9q4HP1g==;
+Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pPZuk-000mBb-Qa; Wed, 08 Feb 2023 02:10:27 +0000
+Message-ID: <40b2139d-274f-10c5-e74a-3849c94475ae@infradead.org>
+Date: Tue, 7 Feb 2023 18:10:19 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230126193752.297968-6-surenb@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 3/3] ALSA: core: Make snd_card_free() return void
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20230207191907.467756-1-u.kleine-koenig@pengutronix.de>
+ <20230207191907.467756-4-u.kleine-koenig@pengutronix.de>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <20230207191907.467756-4-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,82 +63,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity
- .net, rppt@kernel.org
+Cc: alsa-devel@alsa-project.org, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 26, 2023 at 11:37:50AM -0800, Suren Baghdasaryan wrote:
-> Replace indirect modifications to vma->vm_flags with calls to modifier
-> functions to be able to track flag changes and to keep vma locking
-> correctness.
+Hi Uwe,
+
+On 2/7/23 11:19, Uwe Kleine-König wrote:
+> The function returns 0 unconditionally. Make it return void instead and
+> simplify all callers accordingly.
 > 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Acked-by: Mel Gorman <mgorman@techsingularity.net>
-> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c | 6 +++++-
->  arch/s390/mm/gmap.c                | 6 +++++-
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 1d67baa5557a..709ebd578394 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -393,6 +393,7 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  {
->  	unsigned long gfn = memslot->base_gfn;
->  	unsigned long end, start = gfn_to_hva(kvm, gfn);
-> +	unsigned long vm_flags;
->  	int ret = 0;
->  	struct vm_area_struct *vma;
->  	int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
-> @@ -409,12 +410,15 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  			ret = H_STATE;
->  			break;
->  		}
-> +		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
-> +		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> -			  merge_flag, &vma->vm_flags);
-> +			  merge_flag, &vm_flags);
->  		if (ret) {
->  			ret = H_STATE;
->  			break;
->  		}
-> +		vm_flags_reset(vma, vm_flags);
->  		start = vma->vm_end;
->  	} while (end > vma->vm_end);
->  
-> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> index ab836597419d..5a716bdcba05 100644
-> --- a/arch/s390/mm/gmap.c
-> +++ b/arch/s390/mm/gmap.c
-> @@ -2587,14 +2587,18 @@ int gmap_mark_unmergeable(void)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> +	unsigned long vm_flags;
->  	int ret;
->  	VMA_ITERATOR(vmi, mm, 0);
->  
->  	for_each_vma(vmi, vma) {
-> +		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
-> +		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> -				  MADV_UNMERGEABLE, &vma->vm_flags);
-> +				  MADV_UNMERGEABLE, &vm_flags);
->  		if (ret)
->  			return ret;
-> +		vm_flags_reset(vma, vm_flags);
->  	}
->  	mm->def_flags &= ~VM_MERGEABLE;
->  	return 0;
-> -- 
+>  include/sound/core.h      | 2 +-
+>  sound/core/init.c         | 6 ++----
+>  sound/pci/hda/hda_tegra.c | 6 ++----
+>  sound/ppc/snd_ps3.c       | 4 +---
+>  4 files changed, 6 insertions(+), 12 deletions(-)
 
-Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+> --- a/sound/ppc/snd_ps3.c
+> +++ b/sound/ppc/snd_ps3.c
+> @@ -1053,9 +1053,7 @@ static void snd_ps3_driver_remove(struct ps3_system_bus_device *dev)
+>  	 * ctl and preallocate buffer will be freed in
+>  	 * snd_card_free
+>  	 */
+> -	ret = snd_card_free(the_card.card);
+> -	if (ret)
+> -		pr_info("%s: ctl freecard=%d\n", __func__, ret);
+> +	snd_card_free(the_card.card);
+>  
+>  	dma_free_coherent(&dev->core,
+>  			  PAGE_SIZE,
 
-> 2.39.1
-> 
-> 
+Looks OK for PS3.
+
+Acked-by: Geoff Levand <geoff@infradead.org>
+
