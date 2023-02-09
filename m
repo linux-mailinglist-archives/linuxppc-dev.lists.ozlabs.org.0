@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBAE690B8A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 15:20:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8094C690B92
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 15:21:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCJt82w4Hz3f5H
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 01:20:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCJv82Fznz3fHG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 01:21:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=HJPsu/Wz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=uuZ/oXOr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112b; helo=mail-yw1-x112b.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=HJPsu/Wz;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=uuZ/oXOr;
 	dkim-atps=neutral
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCD4Q2rsGz3cdZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 21:43:50 +1100 (AEDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-527979e8670so19260227b3.10
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Feb 2023 02:43:50 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCD5P1s3Xz3cbV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 21:44:41 +1100 (AEDT)
+Received: by mail-yb1-xb31.google.com with SMTP id x4so1860527ybp.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Feb 2023 02:44:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tNSj88tAbE2c6y06Ms9sAOyNH2UyWm+Nrt13hPQ8iWI=;
-        b=HJPsu/Wz/435Gl3W5fT4LJ0iVcWC4lhFzEpUL8YyaR7PHlvhZ83ixgxoByTXAid1J6
-         Q5GAhluj0HC3PbE1r/44Y5Po7Dcqxzy82TkQMMXBgK87a8FhdSiUApImVIBuCtr7BiYC
-         dQLEBtEZdWctRXxi6/C2opdxP4i1uwAWHCHdDSA/D1SRv93/BupZ5BhMYI4QvWArqCap
-         jvLGTJwRxDNHq2E5jYN8fkuP96FlRR3JcB7Y5i9dj53kAAZKJ1YJN62fLu6KRbhOa9LI
-         tP08YGlrCMdjGNwfJa+qKCNB8+CEi1mdDPS1pUUWPuKXJEJYoVbW8egTh0v2xuSgaBHI
-         mAXQ==
+        bh=4qUYzBh+htvaSXOzFbNonzhWIZMquhylnwgwaeahDZw=;
+        b=uuZ/oXOru1y5UKbjewNxej2lUBZUjA/1ggGu58hEptHz0z4GXGOaT7FaMOglr+2wPj
+         4/MsVJ6KLCikf3ZFZNyK0Gy12bs9MQqkPAtfTr75QUjILYQQ/DRnb2+a60m8owu7ZRy6
+         STtBilq89ZUzNjAwwp8kE2q+7q6e6f5g/d+9CTEAorBMILiidfS6YQHMkfUk7LQYdTv/
+         NI++1y0LwBY9js8Sr97WQfezP1Ee3hKFW9ffbD2Ed7rpzUZN3ALWW0F5B6y9hYsVO7uT
+         0dDXJ4o+1R2iwk4/GIy5Xk4EtkzULEIoKVf/W3QINP0rEKMAOq0w8D/WStNV1a1neNO3
+         Xjtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tNSj88tAbE2c6y06Ms9sAOyNH2UyWm+Nrt13hPQ8iWI=;
-        b=6EVKjq8iYfjEfgqAEL3/nB8aEttygAVDtz2oALcYS8ISJ+Trys3vvllSzMbOHcm0Wn
-         QFLHH2+Kojznb1d1saWnd9wzTsinjAkIEMS+kD5E5ty4D6xUjJ28DM5dmuljMC9KJZha
-         2osWc01cAvQkElNR3VxlFPO4G39yIY/Y3CA2WoaOoSTz53XDY20b94UzT8TGkmeRjIg+
-         mgtg01vsZHmQqMw63lo39KB525EHuFrDp+oc0qM7gpoW3c/v6X47w08vaYws0mysCnQP
-         TonWnjCbEzH760VoeV4ZT9pLTdOGi+V1Ii8ZMWI+gzkW8KSm/pshkcvmE+R8sUFffxvX
-         /ZRQ==
-X-Gm-Message-State: AO0yUKV/N894w9Dc5oC4oAUrriIDtD3DF4Ti7sEb1mQQ+DTGtcPnA9Tg
-	92xokOpkAQKVB63a568yzvhNy4Rh0Sp5IG2Ie72+/g==
-X-Google-Smtp-Source: AK7set9ymol3+anqgOuNHLyeYoAoKJBt8lF4LiRuMMBcOpRzV7KXZewKH5NE/Xez2syh1Qjfl7P5JUsj0CNKmumi+ig=
-X-Received: by 2002:a0d:ca01:0:b0:52a:ac51:c6d1 with SMTP id
- m1-20020a0dca01000000b0052aac51c6d1mr903762ywd.477.1675939426884; Thu, 09 Feb
- 2023 02:43:46 -0800 (PST)
+        bh=4qUYzBh+htvaSXOzFbNonzhWIZMquhylnwgwaeahDZw=;
+        b=rN0soqdzpj/MCTwyHG9rrQQ5TFQFPBNCOU8yB+7jiwGr2V9G667pxq3L7STfFXosgE
+         yUvwb6ihNzbppxXuZbWrZ0Ko+So1/N8LWEY13SqmQZ66b3I5OnYX7GNCnRZwBki4KB60
+         /zY0euYoMiOq04G5riPU1D3a0jKDGBTIyjLnQejjlyRU5Fdu9H+TVSTZRozxFQL7VZpm
+         pmbJuHi3jx2ml5DusLziKzuRgpxgbAwTdhgo0K4dLWq1k5dHonR5F7gqzYzK6v19Yl0+
+         Dcupz3F1gZ8lWnH23fiIq2HB9FdhK05MCnxns2SK7/Jes49+jCBsbx23TG6T8IZQQjMO
+         0vGA==
+X-Gm-Message-State: AO0yUKXfIkoWHlFIl7hBFTIWhu4BpdY9WINgTZCX7uwZB5YILtU6i3kM
+	3/Q3bLBvyy19dc4VsVgGakCTk+r6bn1H8Hhpe5vPqg==
+X-Google-Smtp-Source: AK7set9d9VE2L5hryiHb25bGtGaGLrBq8cYlmsHU1RCuAZ6kpI7lLERRU7ZJG+pSow3smAjpy+w5g/+hxXK6eBZGKHY=
+X-Received: by 2002:a25:d987:0:b0:893:76b2:9200 with SMTP id
+ q129-20020a25d987000000b0089376b29200mr1091099ybg.584.1675939478849; Thu, 09
+ Feb 2023 02:44:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-14-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230208173343.37582-14-andriy.shevchenko@linux.intel.com>
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-19-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230208173343.37582-19-andriy.shevchenko@linux.intel.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 9 Feb 2023 11:43:35 +0100
-Message-ID: <CACRpkdYvZyon5hkgbks0dUqY8QsfrKcuU048LHRPg=UwLezE-A@mail.gmail.com>
-Subject: Re: [PATCH v4 13/18] gpio: reg: Add missing header(s)
+Date: Thu, 9 Feb 2023 11:44:27 +0100
+Message-ID: <CACRpkdbO85vArYXF1iY8Z1wXXFTs5rOffyzy2zWK=PgM+mGM_g@mail.gmail.com>
+Subject: Re: [PATCH v4 18/18] gpiolib: Clean up headers
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Fri, 10 Feb 2023 01:15:07 +1100
@@ -83,10 +83,12 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
->
-> While at it, split out the GPIO group of headers.
+> There is a few things done:
+> - include only the headers we are direct user of
+> - when pointer is in use, provide a forward declaration
+> - add missing headers
+> - group generic headers and subsystem headers
+> - sort each group alphabetically
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
