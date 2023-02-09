@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD01690B80
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 15:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F36690B81
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 15:18:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCJq73Gs4z3fBC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 01:17:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCJr76R69z3f7w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 01:18:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NoRufYnW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EDs5k/W1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112c; helo=mail-yw1-x112c.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NoRufYnW;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EDs5k/W1;
 	dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCD2x0WJDz3c4B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 21:42:32 +1100 (AEDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 184so1804293ybw.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Feb 2023 02:42:32 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCD3X6knSz3c7X
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 21:43:04 +1100 (AEDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-52bf58b417fso19467157b3.6
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Feb 2023 02:43:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1EVNZNpF/Er877/te7k/r7KimgWui6kPYTMbzlbMpHE=;
-        b=NoRufYnWd3sLfMds3pddswGHnqjpzO29628T+k+Q97BW963D2fJT2hsh+eLfD4RQRH
-         zdt1oPrfGIR6Ose1yZAl+8pQgeUH06VeoxND49uyRtLk5wZaK6P1vWkHUPfwzBs82HZR
-         oz2k/BMEaFgmS29Yh5uwqHaYMz9Lhz6PDpDDMeI348cBYuVGYWvMWT7QO/+7wp9T5Vuw
-         22Lz60wzbBdJCYBR+gQPrDMAhySTtLLftil07FrKSjq7YegvR0bKStX2X/FTg/1VqIdH
-         Sge2BQn9ZdQJjuaYgcGGeAH8hZsKUPivgELlTQNAPWs8P8uYFiU7J3aJu1bicHqUtpvb
-         002g==
+        bh=1Dfnv6QTzazTlsxHac3XWatpVo8TGduuTbtSvglXVvU=;
+        b=EDs5k/W16zn0Ewb4Av+rMGdR5etMeYUDSOnhWymGYKcLYthti1GYfA2TP5e5t/ERNh
+         MKbbieo53E8kpeB0Yyv2NvHUk0yfrE/gvmFC1NYjTeJDTe1h+OdhU5+m3DFeFdI2TB7T
+         p17dPLZa8O46uE7nuWG/UhXPfYyFM5D148s8bTaU+meKYR6c/RyiM9fXtLSdxRl8iuwD
+         C9fro1Hx0Q5jEuplvrdGWMyNelcJTVf+a5N4QugPxawAs41AoO9OZIKCubn/wPeMvXNA
+         /bZx2ceCuEj/De9Vb4bWeaLRk4MMHC2KK2V4YS0PUdsK3mqNfcVg1olMoECAbSvgLbOn
+         l2fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1EVNZNpF/Er877/te7k/r7KimgWui6kPYTMbzlbMpHE=;
-        b=5/MIXgpP86RYxMPKnboTdYxYcKO+EvUejE506ajF55rNcLbhD/jku9bX8o62e4ue+C
-         rSN4sfkE+6yQ3Tc/dLpCebiXkNEth1d7NPNQBE4rEX+rAms3FkC+3CW239JugJFLEf23
-         L7KGibX6XDasQztk1NznM/+f1R3TcEbFJG8cVDBzXQXkIj+dNRb2cAQ3PGLz3HeLyBz1
-         sGLdAOIpzGQMPZ6GKw/twYahI3EN0la+XwX9fBmRRqMKWqrbc2CAiGPFPGG1wlYMP/tA
-         V+V8u25aKGgobYGjhRdOEPFyIRl0vOeVuPXhnW9N1+cKWdt7cP3mHPD6LiSnWnufnG9d
-         GB1A==
-X-Gm-Message-State: AO0yUKViZ9B596QXFgN20LpHMwYJnWkGB75+uAzLSoAlM2Z5dZeUVpma
-	yG4+1uxlqPVBkHVjsraADGWRwAIAuS04cmTGUAgOrA==
-X-Google-Smtp-Source: AK7set/4egQ6ymaaXnifQxB1VP1BF0zfzUZPRKdac18DBhBo3kRtxaBrvl/7jPL1oolTNNR8WQJzGyOCYU7Jrhx58mc=
-X-Received: by 2002:a5b:1c4:0:b0:8c9:2650:4ece with SMTP id
- f4-20020a5b01c4000000b008c926504ecemr420798ybp.210.1675939349691; Thu, 09 Feb
- 2023 02:42:29 -0800 (PST)
+        bh=1Dfnv6QTzazTlsxHac3XWatpVo8TGduuTbtSvglXVvU=;
+        b=4uDBCwKZyiqnkjHY5uo8SDG3n/XCUpsHRBxMhRbER1jf79JhHLgkr+7MbR7u9B8IDA
+         TqOCXYKygbUk8MBp4IdAXJNq4ZIOJwr6E7WKjOCN6Jve3R3B4CX4u4QcJxos1wuMflaa
+         qC7dDgZvr/CxlK7utCV1NMoUHAUVwysY/eO1JDTIxl1lBEqgkG1JqrobUEcIdj/CpbeI
+         Q4h+Af+HyrlGXENn7XSe4kUkVjYY8dMzkIRJ98d210EySbTod2earUSK966NVKzVfqyp
+         lVMc6Kql8bhZguIyxRZpaHTa4oN13pDRxwVIPDms+K39joy/byMsCFu2EACdXvtJoFvS
+         b0ig==
+X-Gm-Message-State: AO0yUKWB94SnE7zRNI1W3vJHOx+iEHJ8S6lJfq5CKAX76AnScm2iMN6v
+	n+ReuPqlFCGyt/b8GWdb2fYPuOt8rquE011Su+dixA==
+X-Google-Smtp-Source: AK7set9QMguoIjGfWWwpFvhgz/Kg7HslLMdKNBORB2dldIzFQhQQTBP68JgHz09/otq/c2jQJlbDIxPqVcPmUJJPotc=
+X-Received: by 2002:a81:d509:0:b0:4f3:8d0e:edce with SMTP id
+ i9-20020a81d509000000b004f38d0eedcemr1154619ywj.185.1675939382102; Thu, 09
+ Feb 2023 02:43:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-17-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230208173343.37582-17-andriy.shevchenko@linux.intel.com>
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com> <20230208173343.37582-18-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230208173343.37582-18-andriy.shevchenko@linux.intel.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 9 Feb 2023 11:42:18 +0100
-Message-ID: <CACRpkdY+u4uQAXLggL=Shf7_dES_HRRtew+9Cxuipxi3nHRRCA@mail.gmail.com>
-Subject: Re: [PATCH v4 16/18] gpiolib: Deduplicate forward declarations in consumer.h
+Date: Thu, 9 Feb 2023 11:42:50 +0100
+Message-ID: <CACRpkdY6rc3hBoY=Cf4nTmMu=VA-d+VUveG6PsU6bvRKAgnxxA@mail.gmail.com>
+Subject: Re: [PATCH v4 17/18] gpiolib: Group forward declarations in consumer.h
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Fri, 10 Feb 2023 01:15:07 +1100
@@ -83,8 +83,7 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 
-> The struct fwnode_handle pointer is used in both branches of ifdeffery,
-> no need to have a copy of the same in each of them, just make it global.
+> For better maintenance group the forward declarations together.
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
