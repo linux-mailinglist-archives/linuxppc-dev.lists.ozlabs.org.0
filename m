@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F023A690723
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 12:24:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 404C269072C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 12:25:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCDzG5VS4z3fGw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 22:24:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCF0H0s8Kz3f4J
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Feb 2023 22:25:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C/p8OHmR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ikl/e6iJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C/p8OHmR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ikl/e6iJ;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCDsz68wsz3f8p
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 22:19:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCDtd08qyz3fFL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Feb 2023 22:20:25 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EA30761A2B;
-	Thu,  9 Feb 2023 11:19:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72156C433EF;
-	Thu,  9 Feb 2023 11:19:48 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4DA6661A27;
+	Thu,  9 Feb 2023 11:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F7C43442;
+	Thu,  9 Feb 2023 11:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1675941589;
-	bh=n6P8LMMd0mFFqrkF+MVvwQSKUmYLoDeVhPpm81ktIf4=;
+	s=k20201202; t=1675941623;
+	bh=W6MQMq/vWq0GqHIEotcX2c7hywazkBraHo3opyqlDqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/p8OHmRE08Davrvy5vnJPdT+ezoLq2iPVwLi4leuqL+Idyiyk06GcYePxptWPr1u
-	 BHGE5WTWrn4JPtDIc+MCS/Zd16kFiTsVXZDDtnrXtm49+Yo2/naWT1LURXQgtPfAdn
-	 p6dEDeAqGRHy4HJxkAysG5rCWYujWzRHgmEP9lKYLyzaqSePWLw4MAEEiq2pisLnOJ
-	 L947wDAAf9704b6BEUm4uJHhLlUXsYS67fYKjzrnmvAJlap1nGbP2nWKbpXT0LIeFo
-	 Bd0p3UiHX+d40MOR5D3nEtltFclZzLH4/0o05/Zb5CZLWcI3Yx21sJhZQUoCIsY//F
-	 r/zYeB8y/WeVA==
+	b=Ikl/e6iJI5eto30aujHwdC9yy4sGw3SOF57y4AfThbFlnPaLCSghuWnRvu/p5I2YI
+	 y2cgxpdvzdHXA8UR9uic1T1Juv7eSkIqxkyh63pqaNqfx5eQm9YFRSFQpne2HbDW48
+	 +oTquLTWBCnFPSjhqdTXSDu+Thb+MGkQqPGSuVg3szXzg3u2d+UxMO4OIB98bpZTVm
+	 kjuTyhY3Uav1XgBb5KMV7rDJYr3R7FeWUxgOIUidGF42W9xcN35a6DvdeG61Z86dhq
+	 5kHyliTdVaei2BeIFGfW1Gl9fXrnRZZ1NTuWcRGsDLojCYaIIp2Lz6QHqhxOrp6M8r
+	 vypIjuxJvN8wQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/10] powerpc/kvm: Fix unannotated intra-function call warning
-Date: Thu,  9 Feb 2023 06:19:15 -0500
-Message-Id: <20230209111921.1893095-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 4/6] powerpc/85xx: Fix unannotated intra-function call warning
+Date: Thu,  9 Feb 2023 06:19:57 -0500
+Message-Id: <20230209111959.1893269-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230209111921.1893095-1-sashal@kernel.org>
-References: <20230209111921.1893095-1-sashal@kernel.org>
+In-Reply-To: <20230209111959.1893269-1-sashal@kernel.org>
+References: <20230209111959.1893269-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,55 +62,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, kernel test robot <lkp@intel.com>, npiggin@gmail.com, Sathvika Vasireddy <sv@linux.ibm.com>, seanjc@google.com, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, kernel test robot <lkp@intel.com>, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Sathvika Vasireddy <sv@linux.ibm.com>
 
-[ Upstream commit fe6de81b610e5d0b9d2231acff2de74a35482e7d ]
+[ Upstream commit 8afffce6aa3bddc940ac1909627ff1e772b6cbf1 ]
 
 objtool throws the following warning:
-  arch/powerpc/kvm/booke.o: warning: objtool: kvmppc_fill_pt_regs+0x30:
+  arch/powerpc/kernel/head_85xx.o: warning: objtool: .head.text+0x1a6c:
   unannotated intra-function call
 
-Fix the warning by setting the value of 'nip' using the _THIS_IP_ macro,
-without using an assembly bl/mflr sequence to save the instruction
-pointer.
+Fix the warning by annotating KernelSPE symbol with SYM_FUNC_START_LOCAL
+and SYM_FUNC_END macros.
 
 Reported-by: kernel test robot <lkp@intel.com>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230128124158.1066251-1-sv@linux.ibm.com
+Link: https://lore.kernel.org/r/20230128124138.1066176-1-sv@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/booke.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/head_fsl_booke.S | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index be9a45874194f..fc2bb33a4e0e2 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -887,16 +887,15 @@ static int kvmppc_handle_debug(struct kvm_run *run, struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+index 2386ce2a9c6e4..1c8097fc75fff 100644
+--- a/arch/powerpc/kernel/head_fsl_booke.S
++++ b/arch/powerpc/kernel/head_fsl_booke.S
+@@ -889,7 +889,7 @@ _GLOBAL(load_up_spe)
+  * SPE unavailable trap from kernel - print a message, but let
+  * the task use SPE in the kernel until it returns to user mode.
+  */
+-KernelSPE:
++SYM_FUNC_START_LOCAL(KernelSPE)
+ 	lwz	r3,_MSR(r1)
+ 	oris	r3,r3,MSR_SPE@h
+ 	stw	r3,_MSR(r1)	/* enable use of SPE after return */
+@@ -906,6 +906,7 @@ KernelSPE:
+ #endif
+ 	.align	4,0
  
- static void kvmppc_fill_pt_regs(struct pt_regs *regs)
- {
--	ulong r1, ip, msr, lr;
-+	ulong r1, msr, lr;
++SYM_FUNC_END(KernelSPE)
+ #endif /* CONFIG_SPE */
  
- 	asm("mr %0, 1" : "=r"(r1));
- 	asm("mflr %0" : "=r"(lr));
- 	asm("mfmsr %0" : "=r"(msr));
--	asm("bl 1f; 1: mflr %0" : "=r"(ip));
- 
- 	memset(regs, 0, sizeof(*regs));
- 	regs->gpr[1] = r1;
--	regs->nip = ip;
-+	regs->nip = _THIS_IP_;
- 	regs->msr = msr;
- 	regs->link = lr;
- }
+ /*
 -- 
 2.39.0
 
