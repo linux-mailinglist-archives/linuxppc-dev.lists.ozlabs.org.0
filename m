@@ -1,101 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AE46914B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 00:37:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153DD6915D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 01:46:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCYF33MHYz3f4F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 10:37:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCZmW6ZvBz3cdC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 11:46:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mvE+FQ/J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JxRZ2wss;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mvE+FQ/J;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JxRZ2wss;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCYD406cQz3c7X
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 10:36:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCZlY3qHCz3bf7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 11:45:29 +1100 (AEDT)
 Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 319NXKRR016791;
-	Thu, 9 Feb 2023 23:36:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31A0KKuM028206;
+	Fri, 10 Feb 2023 00:45:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=pp1;
- bh=jaf6m4VhlbXDwH+cMaQh7RkDpa1SzKlRanNCyGBdWcQ=;
- b=mvE+FQ/JX2Vyw3dmO77qmBeaJAqlF8zHcV7BEPNNUb3TU0lOZymZTl1YRhxGjA851z6k
- 9/nht/RHCtECfo4d3du3XtTocr2pw+LpDW8NqoAEbgfsH8Ub6AGr/IQEHR+d+Yd47Y23
- zgDseHeopMDG98htJzgAP9UPutLfGGL//dQDRjAz499r4BJ8FatbMcif5wgHhdJwUgx8
- O+p9ox/QM4mB2A23PKF3CINSmeyOWjYCJsE1IbBniXfh5uD3CB12B7mXdI8j2G3MIUzH
- 0ChTFIxvys3Mlu4rFwBoVPMboDkIZbZUMkCGRrIKTOVb+hpHV8+H00deywt0ssw2dzJL Kw== 
+ bh=HNjO3rAJRFru6xsI7socoZLiUxDF8uEACllAfNjdtsY=;
+ b=JxRZ2wss+hQuyW4VDhke1c+TyCHzDq0g30zcL0YUMqdYoNOQxRXo6/d5fHeq7Dl/xCSP
+ ApW4/DKrN6osy+1EoksNwswp7GrWmCJbfIQl14QbNaTBJj5MGHepnpYIqcX0kEkDjGIo
+ K1uzBsYEjld3Gak1/qs8UDAi4SdnXbRiofFvRbNW5Ukp3VNWnEtfZR4Otl8fTpN3kDvW
+ urm/tl/oDm5r5DMCYpmpZ2anHo96dw1V4fixp+aWzyvR3U4RAu6B3OT1PSvQza4BshPd
+ r2bCQ9BEGLlYFDj+iyiY45FXXTjOfvqSlQLy36dSNEn215EzzQ0SIlCrT0eMuaR+/iZ+ qQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnakxg380-1
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnb9yreu1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Feb 2023 23:36:29 +0000
+	Fri, 10 Feb 2023 00:45:23 +0000
 Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 319NXsLm017722;
-	Thu, 9 Feb 2023 23:36:29 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnakxg36v-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31A0UXFm000824;
+	Fri, 10 Feb 2023 00:45:22 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnb9yret8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Feb 2023 23:36:29 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 319CXVwT023824;
-	Thu, 9 Feb 2023 23:36:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3nhf06xsdx-1
+	Fri, 10 Feb 2023 00:45:22 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 319CniW4022560;
+	Fri, 10 Feb 2023 00:45:21 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3nhemfpugq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Feb 2023 23:36:27 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 319NaPAC26542612
+	Fri, 10 Feb 2023 00:45:21 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31A0jIiW28770804
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Feb 2023 23:36:25 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2BE282004B;
-	Thu,  9 Feb 2023 23:36:25 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25DDB2004E;
-	Thu,  9 Feb 2023 23:36:24 +0000 (GMT)
+	Fri, 10 Feb 2023 00:45:18 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C64262004D;
+	Fri, 10 Feb 2023 00:45:18 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C023F20040;
+	Fri, 10 Feb 2023 00:45:17 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Feb 2023 23:36:24 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.177.7.194])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Feb 2023 00:45:17 +0000 (GMT)
+Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 439B4600BA;
-	Fri, 10 Feb 2023 10:36:16 +1100 (AEDT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH v4 1/7] kcsan: Add atomic builtin stubs for 32-bit systems
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <E2FD06BA-F229-425B-B143-01152496C01D@linux.ibm.com>
-Date: Fri, 10 Feb 2023 10:36:01 +1100
-Message-Id: <2BF57568-3288-42A5-B274-65B116DFF71A@linux.ibm.com>
-References: <20230208032202.1357949-1-rmclure@linux.ibm.com>
- <20230208032202.1357949-2-rmclure@linux.ibm.com>
- <fab33693-3a11-2649-0556-e4501faec418@csgroup.eu>
- <E2FD06BA-F229-425B-B143-01152496C01D@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: buZAZpdW47jfkrBpGewRpf5Mhb8ENgRn
-X-Proofpoint-GUID: BqJ8uyujq8pxxOeS9905LGNBKfD5jgQc
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 806C860394;
+	Fri, 10 Feb 2023 11:45:12 +1100 (AEDT)
+Message-ID: <50d7c326e1eb65e996ee1a99139e4b50c06fadb3.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/3] powerpc/code-patching: Add generic memory patching
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org"
+	 <linuxppc-dev@lists.ozlabs.org>
+Date: Fri, 10 Feb 2023 11:45:12 +1100
+In-Reply-To: <39ef8e60-679e-a244-8273-67e50671e513@csgroup.eu>
+References: <20230207015643.590684-1-bgray@linux.ibm.com>
+	 <20230207015643.590684-2-bgray@linux.ibm.com>
+	 <39ef8e60-679e-a244-8273-67e50671e513@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: WFsX1mSZj6mGWE9ppsYi5m4URfPJ5nnz
+X-Proofpoint-ORIG-GUID: 7mf6Onqw3xxDYOo8Awv0vjpfaeQawwQd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-09_15,2023-02-09_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015
- adultscore=0 bulkscore=0 phishscore=0 impostorscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302090212
+ definitions=2023-02-09_16,2023-02-09_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ malwarescore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302100002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,197 +106,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "chris@zankel.net" <chris@zankel.net>, "elver@google.com" <elver@google.com>, "linux-xtensa@linux.xtensa.org" <linux-xtensa@linux.xtensa.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "erhard_f@mailbox.org" <erhard_f@mailbox.org>, "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 9 Feb 2023, at 10:14 am, Rohan McLure <rmclure@linux.ibm.com> wrote:
+On Thu, 2023-02-09 at 07:15 +0000, Christophe Leroy wrote:
+> > +static inline int patch_uint(u32 *addr, unsigned int val)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return patch_instruction(add=
+r, ppc_inst(val));
 >=20
+> Would it make more sense that patch_instruction() calls patch_uint()=20
+> instead of the reverse ?
 >=20
->=20
->> On 8 Feb 2023, at 11:23 pm, Christophe Leroy <christophe.leroy@csgroup.e=
-u> wrote:
->>=20
->>=20
->>=20
->> Le 08/02/2023 =C3=A0 04:21, Rohan McLure a =C3=A9crit :
->>> KCSAN instruments calls to atomic builtins, and will in turn call these
->>> builtins itself. As such, architectures supporting KCSAN must have
->>> compiler support for these atomic primitives.
->>>=20
->>> Since 32-bit systems are unlikely to have 64-bit compiler builtins,
->>> provide a stub for each missing builtin, and use BUG() to assert
->>> unreachability.
->>>=20
->>> In commit 725aea873261 ("xtensa: enable KCSAN"), xtensa implements these
->>> locally, but does not advertise the fact with preprocessor macros. To
->>> avoid production of duplicate symbols, do not build the stubs on xtensa.
->>> A future patch will remove the xtensa implementation of these stubs.
->>>=20
->>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
->>> ---
->>> v4: New patch
->>> ---
->>> kernel/kcsan/Makefile |  3 ++
->>> kernel/kcsan/stubs.c  | 78 +++++++++++++++++++++++++++++++++++++++++++
->>> 2 files changed, 81 insertions(+)
->>> create mode 100644 kernel/kcsan/stubs.c
->>=20
->> I think it would be better to merge patch 1 and patch 2, that way we=20
->> would keep the history and see that stubs.c almost comes from xtensa.
->>=20
->> The summary would then be:
->>=20
->> arch/xtensa/lib/Makefile                              |  1 -
->> kernel/kcsan/Makefile                                 |  2 +-
->> arch/xtensa/lib/kcsan-stubs.c =3D> kernel/kcsan/stubs.c | 26=20
->> +++++++++++++++++++++++++-
->> 3 files changed, 26 insertions(+), 3 deletions(-)
->>=20
->>=20
->>>=20
->>> diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
->>> index 8cf70f068d92..5dfc5825aae9 100644
->>> --- a/kernel/kcsan/Makefile
->>> +++ b/kernel/kcsan/Makefile
->>> @@ -12,6 +12,9 @@ CFLAGS_core.o :=3D $(call cc-option,-fno-conserve-sta=
-ck) \
->>>  -fno-stack-protector -DDISABLE_BRANCH_PROFILING
->>>=20
->>> obj-y :=3D core.o debugfs.o report.o
->>> +ifndef XTENSA
->>> + obj-y +=3D stubs.o
->>=20
->> obj-$(CONFIG_32BIT) +=3D stubs.o
->>=20
->> That would avoid the #if CONFIG_32BIT in stubs.c
->=20
-> Thanks. Yes happy to do this.
->=20
->>=20
->>> +endif
->>>=20
->>> KCSAN_INSTRUMENT_BARRIERS_selftest.o :=3D y
->>> obj-$(CONFIG_KCSAN_SELFTEST) +=3D selftest.o
->>> diff --git a/kernel/kcsan/stubs.c b/kernel/kcsan/stubs.c
->>> new file mode 100644
->>> index 000000000000..ec5cd99be422
->>> --- /dev/null
->>> +++ b/kernel/kcsan/stubs.c
->>> @@ -0,0 +1,78 @@
->>> +// SPDX-License Identifier: GPL-2.0
->>=20
->> Missing - between License and Identifier ?
->>=20
->>> +
->>> +#include <linux/bug.h>
->>> +#include <linux/types.h>
->>> +
->>> +#ifdef CONFIG_32BIT
->>=20
->> Should be handled in Makefile
->>=20
->>> +
->>> +#if !__has_builtin(__atomic_store_8)
->>=20
->> Does any 32 bit ARCH support that ? Is that #if required ?
->>=20
->> If yes, do we really need the #if for each and every function, can't we=
-=20
->> just check for one and assume that if we don't have __atomic_store_8 we=
-=20
->> don't have any of the functions ?
->=20
-> Turns out that testing with gcc provides 8-byte atomic builtins on x86
-> and arm on 32-bit. However I believe it should just suffice to check for
-> __atomic_store_8 or any other such builtin i.e. if an arch implements one=
- it
-> likely implements them all from what I=E2=80=99ve seen.
 
-In reality, __has_builtin only specifies that GCC is aware of the existance=
- of
-the builtin, but linking against libatomic may still be required. Let=E2=80=
-=99s
-remove this check, and have ppc32 and xtensa opt into compiling this stubs =
-file.
+That's what I had originally, but I figured it would be nicer to see
+'patch_instruction' in the disassembly given it's still the main usage.
+It's equivalent otherwise though.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D108734
-
+> > diff --git a/arch/powerpc/lib/code-patching.c
+> > b/arch/powerpc/lib/code-patching.c
+> > index b00112d7ad46..0f7e9949faf0 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -20,16 +20,14 @@
+> > =C2=A0 #include <asm/code-patching.h>
+> > =C2=A0 #include <asm/inst.h>
+> > =C2=A0=20
+> > -static int __patch_instruction(u32 *exec_addr, ppc_inst_t instr,
+> > u32 *patch_addr)
+> > +static int __patch_memory(void *exec_addr, unsigned long val, void
+> > *patch_addr,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ bool is_dword)
+> > =C2=A0 {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!ppc_inst_prefixed(instr=
+)) {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0u32 val =3D ppc_inst_val(instr);
+> > -
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0__put_kernel_nofault(patch_addr, &val, u32,
+> > failed);
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0u64 val =3D ppc_inst_as_ulong(instr);
+> > -
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ENABLED(CONFIG_PPC64)=
+ && unlikely(is_dword)) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0__put_kernel_nofault(patch_addr, &val, u64,
+> > failed);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0unsigned int val32 =3D val;
 >=20
->>=20
->>=20
->>> +void __atomic_store_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_load_8)
->>> +u64 __atomic_load_8(const volatile void *p, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_exchange_8)
->>> +u64 __atomic_exchange_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_compare_exchange_8)
->>> +bool __atomic_compare_exchange_8(volatile void *p1, void *p2, u64 v, b=
-ool b, int i1, int i2)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_add_8)
->>> +u64 __atomic_fetch_add_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_sub_8)
->>> +u64 __atomic_fetch_sub_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_and_8)
->>> +u64 __atomic_fetch_and_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_or_8)
->>> +u64 __atomic_fetch_or_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_xor_8)
->>> +u64 __atomic_fetch_xor_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#if !__has_builtin(__atomic_fetch_nand_8)
->>> +u64 __atomic_fetch_nand_8(volatile void *p, u64 v, int i)
->>> +{
->>> + BUG();
->>> +}
->>> +#endif
->>> +
->>> +#endif /* CONFIG_32BIT */
+> Why unsigned int and not u32 as before ?
+>=20
 
+No particular reason, I just tend to use int/long over 32/64 in code
+compiled on 32 bit as well and there was a long period of time between
+removing the original vars and fixing the big endian issue.
 
+> > +#ifdef CONFIG_PPC64
+> > +
+> > +int patch_instruction(u32 *addr, ppc_inst_t instr)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ppc_inst_prefixed(instr)=
+)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return patch_memory(addr, ppc_inst_as_ulong(instr),
+> > true);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0else
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return patch_memory(addr, ppc_inst_val(instr),
+> > false);
+> > +}
+> > +NOKPROBE_SYMBOL(patch_instruction)
+> > +
+> > +int patch_uint(void *addr, unsigned int val)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return patch_memory(addr, va=
+l, false);
+> > +}
+> > +NOKPROBE_SYMBOL(patch_uint)
+> > +
+> > +int patch_ulong(void *addr, unsigned long val)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return patch_memory(addr, va=
+l, true);
+> > +}
+> > +NOKPROBE_SYMBOL(patch_ulong)
+> > +
+> > +#else
+> > +
+> > +noinline int patch_instruction(u32 *addr, ppc_inst_t instr)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return patch_memory(addr, pp=
+c_inst_val(instr), false);
+> > +}
+>=20
+> A comment explaining the reason for the noinline would be welcome
+> here.
+
+Yeah makes sense
+
+> By the way, would the noinline change anything on PPC64 ? If not we=20
+> could have a common function as ppc_inst_prefixed() constant folds to
+> false in PPC32.
+
+On ppc64 that prevents patch_branch() from calling patch_memory()
+directly with is_dword=3Dfalse.
