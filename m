@@ -2,94 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC26C6919E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 09:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01006919F4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 09:25:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCmmb3blTz3fTL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 19:17:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCmxw52vVz3fPk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 19:25:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fyaamj8p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=klKgPnm9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fyaamj8p;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=klKgPnm9;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCmVB0m7Qz3cLX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 19:04:33 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31A7sbTN025276;
-	Fri, 10 Feb 2023 08:04:29 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCmVC07Tjz3bcw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 19:04:34 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31A7wZLm013901;
+	Fri, 10 Feb 2023 08:04:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=qZAUAYNyMth+nPFzeTG+4szRNRHxZNhxEcB9Us7i+xk=;
- b=fyaamj8p1x1jmFsM5DVLKU24WAfAX9TFg/hDqv5KfhHCTcXqQ3k29fSVFYFFRlxISqbt
- IkVUZlJQBVnzdoCmanK7ZML1JmzVIk+gMd2L7qi+vVG5nwoNY98rAvZKZf+kRuMKo0XP
- Zzii3V5jsJqBtz4aG1qnjh2DVn3iL0CHh7F8a9melJ/LbR96eyTO7jntPP1QWBT97l4P
- k+ZYhFij2lDIF7gVhHQF9VLhPfLZh4k/9ZzDe3yogtAIVnJa/80EKCMefLVectgmGAve
- gJMtPadDxRn8apZdEu1EyGfllkzEpGwbaFFYI22Bt148SNfzCjyyzRdBJDgPZO+N9oHy nA== 
+ bh=Ufq03sxlKcM4fJM7m9OQUwYu9n4sTonoeB8rVuBDA/s=;
+ b=klKgPnm9GpXFzIQrbJ6owuCLrUO9uIkAFGdSbgYNhDIbOfWjXi7UYnoeJ0kqv0pKekRt
+ L8dp7hVmudY0IijVq0sowxo1Qui7O5WBYk1FDUcFo+pCwK95HvdXOd8Jrvd1QBEibp+z
+ M7RWof7ONjdVSsKBzzoVaQbpb2qAmscNovEviLi+3XjkDRGvmaGeMScSK2VACvXAYxzs
+ v4LqV1uDjB4dCft7Kfuq0W7BUdCjyFPtqj7tr50Ka5gA+hG3HbEkLPJvZtXFGzRlQC6g
+ bf51yFD/faLY8go8AqlGM8i8+dbcEjI732hzKiQPK4QdnaZDWDNwT+yKK0VCQcIXJeul zw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnhxxg9de-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnj0sr5gm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 08:04:28 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31A7uilY031226;
-	Fri, 10 Feb 2023 08:04:28 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnhxxg9c2-1
+	Fri, 10 Feb 2023 08:04:29 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31A7wrOZ014490;
+	Fri, 10 Feb 2023 08:04:29 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnj0sr5eu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 08:04:28 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31A7kBnl002393;
-	Fri, 10 Feb 2023 08:04:25 GMT
+	Fri, 10 Feb 2023 08:04:29 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 319D65dx005776;
+	Fri, 10 Feb 2023 08:04:26 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3nhf06q4vk-1
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3nhf06n40h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 08:04:25 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31A84M8F25494038
+	Fri, 10 Feb 2023 08:04:26 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31A84NJB23397108
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Feb 2023 08:04:22 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A65772004E;
+	Fri, 10 Feb 2023 08:04:23 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AAFFC20043;
+	Fri, 10 Feb 2023 08:04:23 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A1AC420040;
 	Fri, 10 Feb 2023 08:04:22 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A2C212004D;
-	Fri, 10 Feb 2023 08:04:21 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Feb 2023 08:04:21 +0000 (GMT)
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Feb 2023 08:04:22 +0000 (GMT)
 Received: from jarvis-ozlabs-ibm-com.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 777B960996;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 85A2A609A2;
 	Fri, 10 Feb 2023 19:04:15 +1100 (AEDT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v6 16/26] powerpc/pseries: Expose PLPKS config values, support additional fields
-Date: Fri, 10 Feb 2023 19:03:51 +1100
-Message-Id: <20230210080401.345462-17-ajd@linux.ibm.com>
+Subject: [PATCH v6 17/26] powerpc/pseries: Implement signed update for PLPKS objects
+Date: Fri, 10 Feb 2023 19:03:52 +1100
+Message-Id: <20230210080401.345462-18-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230210080401.345462-1-ajd@linux.ibm.com>
 References: <20230210080401.345462-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oZQCA7tMPPL0IbPRUtMcTkntCbMDSu9s
-X-Proofpoint-GUID: G0vC_NuFDeYvE0qUHXN-ZcOaO0-ExTaw
+X-Proofpoint-ORIG-GUID: yddcBJeUW4ZxZwRLbcjZ5s-tP9lTadIU
+X-Proofpoint-GUID: ienj2NToylmtsmS-89KlEUd0TynZGOhD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-10_03,2023-02-09_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 suspectscore=0 clxscore=1015 mlxscore=0 bulkscore=0
- impostorscore=0 mlxlogscore=999 phishscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302100070
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 suspectscore=0 clxscore=1015
+ bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302100070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,19 +107,20 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nayna Jain <nayna@linux.ibm.com>
 
-The plpks driver uses the H_PKS_GET_CONFIG hcall to retrieve configuration
-and status information about the PKS from the hypervisor.
+The Platform Keystore provides a signed update interface which can be used
+to create, replace or append to certain variables in the PKS in a secure
+fashion, with the hypervisor requiring that the update be signed using the
+Platform Key.
 
-Update _plpks_get_config() to handle some additional fields. Add getter
-functions to allow the PKS configuration information to be accessed from
-other files. Validate that the values we're getting comply with the spec.
+Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
+driver to allow signed updates to PKS objects.
 
-While we're here, move the config struct in _plpks_get_config() off the
-stack - it's getting large and we also need to make sure it doesn't cross
-a page boundary.
+(The plpks driver doesn't need to do any cryptography or otherwise handle
+the actual signed variable contents - that will be handled by userspace
+tooling.)
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-[ajd: split patch, extend to support additional v3 API fields, minor fixes]
+[ajd: split patch, add timeout handling and misc cleanups]
 Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Russell Currey <ruscur@russell.cc>
@@ -129,272 +130,162 @@ Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
 v3: Merge plpks fixes and signed update series with secvar series
 
-    Refresh config values in plpks_get_usedspace() (ajd)
+    Fix error code handling in plpks_confirm_object_flushed() (ruscur)
 
-    Validate the config values being returned comply with spec (ruscur)
+    Pass plpks_var struct to plpks_signed_update_var() by reference (mpe)
 
-    Return maxobjlabelsize as is (ruscur)
+    Consistent constant naming scheme (ruscur)
 
-    Move plpks.h to include/asm (ruscur)
+v4: Fix MAX_HCALL_OPCODE rebasing issue (npiggin)
 
-    Fix checkpatch checks (ruscur)
+v5: Drop the EXPORT_SYMBOL since we don't need it (npiggin)
+
+    Return an error if plpks_signed_update_var() is called with non-NULL
+    component (npiggin)
 ---
- arch/powerpc/include/asm/plpks.h       |  58 ++++++++++
- arch/powerpc/platforms/pseries/plpks.c | 149 +++++++++++++++++++++++--
- 2 files changed, 195 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/hvcall.h      |  1 +
+ arch/powerpc/include/asm/plpks.h       |  5 ++
+ arch/powerpc/platforms/pseries/plpks.c | 74 ++++++++++++++++++++++++--
+ 3 files changed, 75 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 95fd7f9485d5..c099780385dd 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -335,6 +335,7 @@
+ #define H_RPT_INVALIDATE	0x448
+ #define H_SCM_FLUSH		0x44C
+ #define H_GET_ENERGY_SCALE_INFO	0x450
++#define H_PKS_SIGNED_UPDATE	0x454
+ #define H_WATCHDOG		0x45C
+ #define MAX_HCALL_OPCODE	H_WATCHDOG
+ 
 diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 6466aadd7145..7c5f51a9af7c 100644
+index 7c5f51a9af7c..e7204e6c0ca4 100644
 --- a/arch/powerpc/include/asm/plpks.h
 +++ b/arch/powerpc/include/asm/plpks.h
-@@ -96,6 +96,64 @@ int plpks_read_fw_var(struct plpks_var *var);
-  */
- int plpks_read_bootloader_var(struct plpks_var *var);
+@@ -68,6 +68,11 @@ struct plpks_var_name_list {
+ 	struct plpks_var_name varlist[];
+ };
  
 +/**
-+ * Returns if PKS is available on this LPAR.
++ * Updates the authenticated variable. It expects NULL as the component.
 + */
-+bool plpks_is_available(void);
++int plpks_signed_update_var(struct plpks_var *var, u64 flags);
 +
-+/**
-+ * Returns version of the Platform KeyStore.
-+ */
-+u8 plpks_get_version(void);
-+
-+/**
-+ * Returns hypervisor storage overhead per object, not including the size of
-+ * the object or label. Only valid for config version >= 2
-+ */
-+u16 plpks_get_objoverhead(void);
-+
-+/**
-+ * Returns maximum password size. Must be >= 32 bytes
-+ */
-+u16 plpks_get_maxpwsize(void);
-+
-+/**
-+ * Returns maximum object size supported by Platform KeyStore.
-+ */
-+u16 plpks_get_maxobjectsize(void);
-+
-+/**
-+ * Returns maximum object label size supported by Platform KeyStore.
-+ */
-+u16 plpks_get_maxobjectlabelsize(void);
-+
-+/**
-+ * Returns total size of the configured Platform KeyStore.
-+ */
-+u32 plpks_get_totalsize(void);
-+
-+/**
-+ * Returns used space from the total size of the Platform KeyStore.
-+ */
-+u32 plpks_get_usedspace(void);
-+
-+/**
-+ * Returns bitmask of policies supported by the hypervisor.
-+ */
-+u32 plpks_get_supportedpolicies(void);
-+
-+/**
-+ * Returns maximum byte size of a single object supported by the hypervisor.
-+ * Only valid for config version >= 3
-+ */
-+u32 plpks_get_maxlargeobjectsize(void);
-+
-+/**
-+ * Returns bitmask of signature algorithms supported for signed updates.
-+ * Only valid for config version >= 3
-+ */
-+u64 plpks_get_signedupdatealgorithms(void);
-+
- #endif // CONFIG_PSERIES_PLPKS
- 
- #endif // _ASM_POWERPC_PLPKS_H
+ /**
+  * Writes the specified var and its data to PKS.
+  * Any caller of PKS driver should present a valid component type for
 diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 91f3f623a2c7..1189246b03dc 100644
+index 1189246b03dc..cee06fb9a370 100644
 --- a/arch/powerpc/platforms/pseries/plpks.c
 +++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -24,8 +24,16 @@ static u8 *ospassword;
- static u16 ospasswordlength;
- 
- // Retrieved with H_PKS_GET_CONFIG
-+static u8 version;
-+static u16 objoverhead;
- static u16 maxpwsize;
- static u16 maxobjsize;
-+static s16 maxobjlabelsize;
-+static u32 totalsize;
-+static u32 usedspace;
-+static u32 supportedpolicies;
-+static u32 maxlargeobjectsize;
-+static u64 signedupdatealgorithms;
- 
- struct plpks_auth {
- 	u8 version;
-@@ -206,32 +214,149 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- static int _plpks_get_config(void)
+@@ -81,6 +81,12 @@ static int pseries_status_to_err(int rc)
+ 		err = -ENOENT;
+ 		break;
+ 	case H_BUSY:
++	case H_LONG_BUSY_ORDER_1_MSEC:
++	case H_LONG_BUSY_ORDER_10_MSEC:
++	case H_LONG_BUSY_ORDER_100_MSEC:
++	case H_LONG_BUSY_ORDER_1_SEC:
++	case H_LONG_BUSY_ORDER_10_SEC:
++	case H_LONG_BUSY_ORDER_100_SEC:
+ 		err = -EBUSY;
+ 		break;
+ 	case H_AUTHORITY:
+@@ -184,14 +190,17 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
+ 				     u16 namelen)
  {
- 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
--	struct {
-+	struct config {
- 		u8 version;
- 		u8 flags;
--		__be32 rsvd0;
-+		__be16 rsvd0;
-+		__be16 objoverhead;
- 		__be16 maxpwsize;
- 		__be16 maxobjlabelsize;
- 		__be16 maxobjsize;
- 		__be32 totalsize;
- 		__be32 usedspace;
- 		__be32 supportedpolicies;
--		__be64 rsvd1;
--	} __packed config;
-+		__be32 maxlargeobjectsize;
-+		__be64 signedupdatealgorithms;
-+		u8 rsvd1[476];
-+	} __packed * config;
- 	size_t size;
--	int rc;
-+	int rc = 0;
-+
-+	size = sizeof(*config);
-+
-+	// Config struct must not cross a page boundary. So long as the struct
-+	// size is a power of 2, this should be fine as alignment is guaranteed
-+	config = kzalloc(size, GFP_KERNEL);
-+	if (!config) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(config), size);
-+
-+	if (rc != H_SUCCESS) {
-+		rc = pseries_status_to_err(rc);
-+		goto err;
-+	}
-+
-+	version = config->version;
-+	objoverhead = be16_to_cpu(config->objoverhead);
-+	maxpwsize = be16_to_cpu(config->maxpwsize);
-+	maxobjsize = be16_to_cpu(config->maxobjsize);
-+	maxobjlabelsize = be16_to_cpu(config->maxobjlabelsize);
-+	totalsize = be32_to_cpu(config->totalsize);
-+	usedspace = be32_to_cpu(config->usedspace);
-+	supportedpolicies = be32_to_cpu(config->supportedpolicies);
-+	maxlargeobjectsize = be32_to_cpu(config->maxlargeobjectsize);
-+	signedupdatealgorithms = be64_to_cpu(config->signedupdatealgorithms);
-+
-+	// Validate that the numbers we get back match the requirements of the spec
-+	if (maxpwsize < 32) {
-+		pr_err("Invalid Max Password Size received from hypervisor (%d < 32)\n", maxpwsize);
-+		rc = -EIO;
-+		goto err;
-+	}
-+
-+	if (maxobjlabelsize < 255) {
-+		pr_err("Invalid Max Object Label Size received from hypervisor (%d < 255)\n",
-+		       maxobjlabelsize);
-+		rc = -EIO;
-+		goto err;
+ 	struct label *label;
+-	size_t slen;
++	size_t slen = 0;
+ 
+ 	if (!name || namelen > PLPKS_MAX_NAME_SIZE)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	slen = strlen(component);
+-	if (component && slen > sizeof(label->attr.prefix))
+-		return ERR_PTR(-EINVAL);
++	// Support NULL component for signed updates
++	if (component) {
++		slen = strlen(component);
++		if (slen > sizeof(label->attr.prefix))
++			return ERR_PTR(-EINVAL);
 +	}
  
--	size = sizeof(config);
-+	if (totalsize < 4096) {
-+		pr_err("Invalid Total Size received from hypervisor (%d < 4096)\n", totalsize);
-+		rc = -EIO;
-+		goto err;
+ 	// The label structure must not cross a page boundary, so we align to the next power of 2
+ 	label = kzalloc(roundup_pow_of_two(sizeof(*label)), GFP_KERNEL);
+@@ -397,6 +406,61 @@ static int plpks_confirm_object_flushed(struct label *label,
+ 	return pseries_status_to_err(rc);
+ }
+ 
++int plpks_signed_update_var(struct plpks_var *var, u64 flags)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	int rc;
++	struct label *label;
++	struct plpks_auth *auth;
++	u64 continuetoken = 0;
++	u64 timeout = 0;
++
++	if (!var->data || var->datalen <= 0 || var->namelen > PLPKS_MAX_NAME_SIZE)
++		return -EINVAL;
++
++	if (!(var->policy & PLPKS_SIGNEDUPDATE))
++		return -EINVAL;
++
++	// Signed updates need the component to be NULL.
++	if (var->component)
++		return -EINVAL;
++
++	auth = construct_auth(PLPKS_OS_OWNER);
++	if (IS_ERR(auth))
++		return PTR_ERR(auth);
++
++	label = construct_label(var->component, var->os, var->name, var->namelen);
++	if (IS_ERR(label)) {
++		rc = PTR_ERR(label);
++		goto out;
 +	}
 +
-+	if (version >= 3 && maxlargeobjectsize >= 65536 && maxobjsize != 0xFFFF) {
-+		pr_err("Invalid Max Object Size (0x%x != 0xFFFF)\n", maxobjsize);
-+		rc = -EIO;
-+		goto err;
-+	}
++	do {
++		rc = plpar_hcall9(H_PKS_SIGNED_UPDATE, retbuf,
++				  virt_to_phys(auth), virt_to_phys(label),
++				  label->size, var->policy, flags,
++				  virt_to_phys(var->data), var->datalen,
++				  continuetoken);
 +
-+err:
-+	kfree(config);
++		continuetoken = retbuf[0];
++		if (pseries_status_to_err(rc) == -EBUSY) {
++			int delay_ms = get_longbusy_msecs(rc);
++			mdelay(delay_ms);
++			timeout += delay_ms;
++		}
++		rc = pseries_status_to_err(rc);
++	} while (rc == -EBUSY && timeout < PLPKS_MAX_TIMEOUT);
++
++	if (!rc)
++		rc = plpks_confirm_object_flushed(label, auth);
++
++	kfree(label);
++out:
++	kfree(auth);
++
 +	return rc;
 +}
 +
-+u8 plpks_get_version(void)
-+{
-+	return version;
-+}
+ int plpks_write_var(struct plpks_var var)
+ {
+ 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
+@@ -443,7 +507,7 @@ int plpks_remove_var(char *component, u8 varos, struct plpks_var_name vname)
+ 	struct label *label;
+ 	int rc;
  
--	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(&config), size);
-+u16 plpks_get_objoverhead(void)
-+{
-+	return objoverhead;
-+}
+-	if (!component || vname.namelen > PLPKS_MAX_NAME_SIZE)
++	if (vname.namelen > PLPKS_MAX_NAME_SIZE)
+ 		return -EINVAL;
  
--	if (rc != H_SUCCESS)
--		return pseries_status_to_err(rc);
-+u16 plpks_get_maxpwsize(void)
-+{
-+	return maxpwsize;
-+}
- 
--	maxpwsize = be16_to_cpu(config.maxpwsize);
--	maxobjsize = be16_to_cpu(config.maxobjsize);
-+u16 plpks_get_maxobjectsize(void)
-+{
-+	return maxobjsize;
-+}
-+
-+u16 plpks_get_maxobjectlabelsize(void)
-+{
-+	return maxobjlabelsize;
-+}
-+
-+u32 plpks_get_totalsize(void)
-+{
-+	return totalsize;
-+}
-+
-+u32 plpks_get_usedspace(void)
-+{
-+	// Unlike other config values, usedspace regularly changes as objects
-+	// are updated, so we need to refresh.
-+	int rc = _plpks_get_config();
-+	if (rc) {
-+		pr_err("Couldn't get config, rc: %d\n", rc);
-+		return 0;
-+	}
-+	return usedspace;
-+}
-+
-+u32 plpks_get_supportedpolicies(void)
-+{
-+	return supportedpolicies;
-+}
-+
-+u32 plpks_get_maxlargeobjectsize(void)
-+{
-+	return maxlargeobjectsize;
-+}
-+
-+u64 plpks_get_signedupdatealgorithms(void)
-+{
-+	return signedupdatealgorithms;
-+}
-+
-+bool plpks_is_available(void)
-+{
-+	int rc;
-+
-+	rc = _plpks_get_config();
-+	if (rc)
-+		return false;
- 
--	return 0;
-+	return true;
- }
- 
- static int plpks_confirm_object_flushed(struct label *label,
+ 	auth = construct_auth(PLPKS_OS_OWNER);
 -- 
 2.39.1
 
