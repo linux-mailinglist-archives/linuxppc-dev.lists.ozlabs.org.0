@@ -1,97 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5176A692943
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 22:29:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69DD692A35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 23:34:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PD6MB07Ynz303P
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 08:29:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PD7pJ4L3Vz3fBc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 09:34:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pYVlD6QB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A/tGDdNv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pYVlD6QB;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A/tGDdNv;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PD6LD2FC7z3bVP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 08:28:51 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31ALHrYB013876;
-	Fri, 10 Feb 2023 21:28:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=i2L7Ia8mK7A5ZkFcCIDcuqRFhX3LFkYSRraV5RpB/N0=;
- b=pYVlD6QBILIm2kSaLn86Yx8Z7cytyyPO+/ivIlFqFyqemYON8IczZAqX3Hsn+jCQpoMp
- rPyWdp6kEP5iX+NRJBmfR4KTE04wtUsUpLj7nlIf1aRqFnCNdnxo8Fz/OlNNQ1ZG7RZ+
- zrpkMtcsbSUWP4LRGjIyDfeQNnSoE47RvB2SG3O5udjiooewWgvCGdw9WUa3X0WS7wmU
- /fOZwkLDJ2NVIxMVJk5zi6HhsLJmgSzpUzvLhI7I61Ri9+K4OdNfVTuEo0iS81VXixPR
- 3qb6VfzMmGjCEc26e7vPpsg0FK+zqJzOIFi+56gtNL9TzVWQD1D1+YUKv1dWugoAcKdJ Fg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnwqf86yy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 21:28:46 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31ALNX1M032059;
-	Fri, 10 Feb 2023 21:28:45 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnwqf86yq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 21:28:45 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31AJ23mu017625;
-	Fri, 10 Feb 2023 21:28:44 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3nhf0890g0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 21:28:44 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31ALShbT7602810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Feb 2023 21:28:43 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DBE8F58054;
-	Fri, 10 Feb 2023 21:28:42 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 66E6558050;
-	Fri, 10 Feb 2023 21:28:41 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Feb 2023 21:28:41 +0000 (GMT)
-Message-ID: <a63276d5-1be4-b140-6a4a-4ad4efa60eda@linux.ibm.com>
-Date: Fri, 10 Feb 2023 16:28:40 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PD7nL0gFnz3bVD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 09:33:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676068438; x=1707604438;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=pR1CO4fGX0zX/77VlHz6LJJtRsjIRqOd/EPNDg0FKN4=;
+  b=A/tGDdNvrUF/TJunvyIqe2VKfmfctq+kUBTdcllhaQwGyC4IHIkriZ4m
+   N7tiYWEhGIVY9LnINXr+LPeqUCixvgOqILqXHt6aAw0OO31RPeJeg52/f
+   p3bck4o7JWPvZqE428q/gRay+07LC9m2Oktwj+TjeL2dxtjO6krmL4MTK
+   QtA09TN82TxrLQMwCxBwTfOzPxJ9Z7E66m/gsLzVgpZi0ZuKgJp05buFT
+   09WN6Q+1SLxxH8dKHBUY2eBAeEza9UyVZO+wlA2B5wlUzKNKFFgpC1Ccp
+   2DHQd4fySL1NwAi3DvmtZbXukjn8jY03VOfpjO8bBvh26xG9PntqaJoq7
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="416766940"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="416766940"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 14:33:47 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="700624145"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="700624145"
+Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.212.70.240])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 14:33:45 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+Date: Fri, 10 Feb 2023 14:33:23 -0800
+Subject: [PATCH RFC] PCI/AER: Enable internal AER errors by default
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v6 24/26] powerpc/pseries: Implement secvars for dynamic
- secure boot
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-integrity@vger.kernel.org
-References: <20230210080401.345462-1-ajd@linux.ibm.com>
- <20230210080401.345462-25-ajd@linux.ibm.com>
- <f35e9ba1-5fdb-4cfa-5b41-cc55307dcd45@linux.ibm.com>
-In-Reply-To: <f35e9ba1-5fdb-4cfa-5b41-cc55307dcd45@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EAs5PgRdluiiEpYwXP300TK4RVeRSB_e
-X-Proofpoint-ORIG-GUID: EUsq-Nrm3brOT4M4ZheaLuvRfA5l5fq6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-10_15,2023-02-09_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- mlxlogscore=995 bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 impostorscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302100179
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230209-cxl-pci-aer-v1-1-f9a817fa4016@intel.com>
+X-B4-Tracking: v=1; b=H4sIADPG5mMC/x2NQQrCQAwAv1JyNrC7BWm9Cj7Aq3hIs9EGlrVkq
+ RRK/27wOAPD7NDEVBpcuh1Mvtr0Ux3iqQOeqb4FNTtDCqkPKYzIW8GFFUkM45AznSMPqR/Bi4m
+ a4GRUefamrqW4XExeuv0XD7jfrvA8jh9tCYHMdwAAAA==
+To: Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ben Widawsky <bwidawsk@kernel.org>, 
+ Dan Williams <dan.j.williams@intel.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+ Oliver O'Halloran <oohall@gmail.com>
+X-Mailer: b4 0.13-dev-ada30
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1676068425; l=3060;
+ i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
+ bh=pR1CO4fGX0zX/77VlHz6LJJtRsjIRqOd/EPNDg0FKN4=;
+ b=3gNeuhIE1BaE04Aim9tnTthinw/4LA+7yLTjBnO8gGUzW2sdpOgvErYPebdih+13TlsLOCjpPZUv
+ zSJGeLxpB7zBCh1i+fLENggLlNM8qNAkifL9PSc8Gwe1eYSJ0PZQ
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,62 +79,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gjoyce@linux.ibm.com, bgray@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, sudhakar@linux.ibm.com, zohar@linux.ibm.com, ruscur@russell.cc, brking@linux.ibm.com, gcwilson@linux.ibm.com, joel@jms.id.au
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Stefan Roese <sr@denx.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The CXL driver expects internal error reporting to be enabled via
+pci_enable_pcie_error_reporting().  It is likely other drivers expect the same.
+Dave submitted a patch to enable the CXL side[1] but the PCI AER registers
+still mask errors.
 
+PCIe v6.0 Uncorrectable Mask Register (7.8.4.3) and Correctable Mask
+Register (7.8.4.6) default to masking internal errors.  The
+Uncorrectable Error Severity Register (7.8.4.4) defaults internal errors
+as fatal.
 
-On 2/10/23 16:23, Stefan Berger wrote:
-> 
-> 
+Enable internal errors to be reported via the standard
+pci_enable_pcie_error_reporting() call.  Ensure uncorrectable errors are set
+non-fatal to limit any impact to other drivers.
 
->> +
->> +// PLPKS dynamic secure boot doesn't give us a format string in the same way OPAL does.
->> +// Instead, report the format using the SB_VERSION variable in the keystore.
->> +// The string is made up by us, and takes the form "ibm,plpks-sb-v<n>" (or "ibm,plpks-sb-unknown"
->> +// if the SB_VERSION variable doesn't exist). Hypervisor defines the SB_VERSION variable as a
->> +// "1 byte unsigned integer value".
->> +static ssize_t plpks_secvar_format(char *buf, size_t bufsize)
->> +{
->> +    struct plpks_var var = {0};
->> +    ssize_t ret;
->> +    u8 version;
->> +
->> +    var.component = NULL;
-> 
-> Since it's initialized with {0} this is not necessary.
-> 
->> +    // Only the signed variables have null bytes in their names, this one doesn't
->> +    var.name = "SB_VERSION";
->> +    var.namelen = strlen(var.name);
->> +    var.datalen = 1;
->> +    var.data = &version;
->> +
->> +    // Unlike the other vars, SB_VERSION is owned by firmware instead of the OS
->> +    ret = plpks_read_fw_var(&var);
->> +    if (ret) {
->> +        if (ret == -ENOENT) {
->> +            ret = snprintf(buf, bufsize, "ibm,plpks-sb-unknown");
->> +        } else {
->> +            pr_err("Error %ld reading SB_VERSION from firmware\n", ret);
->> +            ret = -EIO;
->> +        }
->> +        goto err;
->> +    }
->> +
->> +    ret = snprintf(buf, bufsize, "ibm,plpks-sb-v%hhu", version);
->> +
->> +err:
->> +    kfree(var.data);
-> 
-> remove the kfree()
+[1] https://lore.kernel.org/all/167604864163.2392965.5102660329807283871.stgit@djiang5-mobl3.local/
 
-Actually don't remove it but it should probably be
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Stefan Roese <sr@denx.de>
+Cc: "Kuppuswamy Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: linux-cxl@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+This is RFC to see if it is acceptable to be part of the standard
+pci_enable_pcie_error_reporting() call or perhaps a separate pci core
+call should be introduced.  It is anticipated that enabling this error
+reporting is what existing drivers are expecting.  The errors are marked
+non-fatal therefore it should not adversely affect existing devices.
+---
+ drivers/pci/pcie/aer.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-if (var.data != &version)
-     kfree(var.data);
-> 
->> +    return ret;
->> +}
->> +
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 625f7b2cafe4..9d3ed3a5fc23 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -229,11 +229,28 @@ int pcie_aer_is_native(struct pci_dev *dev)
+ 
+ int pci_enable_pcie_error_reporting(struct pci_dev *dev)
+ {
++	int pos_cap_err;
++	u32 reg;
+ 	int rc;
+ 
+ 	if (!pcie_aer_is_native(dev))
+ 		return -EIO;
+ 
++	pos_cap_err = dev->aer_cap;
++
++	/* Unmask correctable and uncorrectable (non-fatal) internal errors */
++	pci_read_config_dword(dev, pos_cap_err + PCI_ERR_COR_MASK, &reg);
++	reg &= ~PCI_ERR_COR_INTERNAL;
++	pci_write_config_dword(dev, pos_cap_err + PCI_ERR_COR_MASK, reg);
++
++	pci_read_config_dword(dev, pos_cap_err + PCI_ERR_UNCOR_SEVER, &reg);
++	reg &= ~PCI_ERR_UNC_INTN;
++	pci_write_config_dword(dev, pos_cap_err + PCI_ERR_UNCOR_SEVER, reg);
++
++	pci_read_config_dword(dev, pos_cap_err + PCI_ERR_UNCOR_MASK, &reg);
++	reg &= ~PCI_ERR_UNC_INTN;
++	pci_write_config_dword(dev, pos_cap_err + PCI_ERR_UNCOR_MASK, reg);
++
+ 	rc = pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_AER_FLAGS);
+ 	return pcibios_err_to_errno(rc);
+ }
+
+---
+base-commit: e5ab7f206ffc873160bd0f1a52cae17ab692a9d1
+change-id: 20230209-cxl-pci-aer-18dda61c8239
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
+
