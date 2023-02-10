@@ -2,94 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DAF6928E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 22:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E968569292F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 22:24:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PD5jn5BF4z3fBN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 08:00:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PD6Dm5zDnz3fB9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 08:24:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UgDvUmH2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sUc/DdKT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UgDvUmH2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sUc/DdKT;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PD5hr0KHKz3f7F
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 07:59:55 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31AKxkFK011980;
-	Fri, 10 Feb 2023 20:59:50 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PD6Cn1QfDz3cFd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 08:23:16 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31ALE1W3029438;
+	Fri, 10 Feb 2023 21:23:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=TVPsqEgq/UFUKhLhIogo2fjWgGmZdW8m8Jf/Ri0ZqO8=;
- b=UgDvUmH2E6u6YWzLHceHPbauVpGO8x7NpgF4dwCAxWR++RJqGo2EIyQ5GzskPtxr42HG
- 6jktxQzuMwJhjAbKAljSJnZOKGonCySvx7NUnR8Ewy0woBekhED9CJFr6LzPVqBTETzY
- VECMnTvu47PyBgW7FhUTr9L+O5GmznLCd5dphFuC5rGj7q9xuiJyyW5T08SUeFfny83J
- FWlu2HoGtPTaoZ6cyVQf8S4RcDoadZNm0jSUga4zN68H3dkPR9PR+JZrOZekKxc4Vp6j
- vy8VJAG3hzMxDr6VAbPoNNLkC7a7tscsNiBJIaUVxneOnvZ530eOBFGMt6lwzRZBfQrp Yg== 
+ bh=gpk8BI8oqai5DZRrAJZIxZJCrNS/DKbtbIhPlBIholI=;
+ b=sUc/DdKT27ILz84RTXkfp3sdXUw/OJBgwzDY9MzGQNLZYnq3bGt6zmgaWYaqLjwJ1T0C
+ gYjlz+7fMCPixcNK5+bst+ZbmnLq5YpbYIx5xR8qGhvwuPMImwyDXUjTJUUZ0iIqda2f
+ bW3wYC6AwMUuWWXdTNjT6eJgC2KlwmxwsZ6pA9GMUyrf+Rvu1wwghB3w71RcwMgu4R5R
+ yI9+us8/BPkqTA9Y1N/g0ckKvpWQfc5K4Hv/xmyEGkmI8C9bs40V2et6sb7YOL3wN42V
+ E8ReT+uqFqJJGbH/hoQJ0+mYC+GSNipCk12JHO3BzNfsjD+u4GjjHK5V34ystvBYWyI0 RQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnweyg02b-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnwna861v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 20:59:50 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31AKxnOh012293;
-	Fri, 10 Feb 2023 20:59:49 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnweyg01v-1
+	Fri, 10 Feb 2023 21:23:09 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31ALFLr4000852;
+	Fri, 10 Feb 2023 21:23:09 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnwna861n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 20:59:49 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31AK8WZo006137;
-	Fri, 10 Feb 2023 20:59:48 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
-	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3nhf07gtd5-1
+	Fri, 10 Feb 2023 21:23:08 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31AJBCOg001991;
+	Fri, 10 Feb 2023 21:23:08 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3nhf080ytx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Feb 2023 20:59:48 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31AKxk4V8651290
+	Fri, 10 Feb 2023 21:23:08 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31ALN6VK66912678
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Feb 2023 20:59:46 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B25558058;
-	Fri, 10 Feb 2023 20:59:46 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69FEA58057;
-	Fri, 10 Feb 2023 20:59:45 +0000 (GMT)
+	Fri, 10 Feb 2023 21:23:06 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 98FCE58056;
+	Fri, 10 Feb 2023 21:23:06 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 183335803F;
+	Fri, 10 Feb 2023 21:23:05 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Feb 2023 20:59:45 +0000 (GMT)
-Message-ID: <07132425-72e5-60d0-765d-223f0f3e7d64@linux.ibm.com>
-Date: Fri, 10 Feb 2023 15:59:45 -0500
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Feb 2023 21:23:04 +0000 (GMT)
+Message-ID: <f35e9ba1-5fdb-4cfa-5b41-cc55307dcd45@linux.ibm.com>
+Date: Fri, 10 Feb 2023 16:23:04 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [PATCH v6 23/26] powerpc/pseries: Pass PLPKS password on kexec
+Subject: Re: [PATCH v6 24/26] powerpc/pseries: Implement secvars for dynamic
+ secure boot
 Content-Language: en-US
 To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
         linux-integrity@vger.kernel.org
 References: <20230210080401.345462-1-ajd@linux.ibm.com>
- <20230210080401.345462-24-ajd@linux.ibm.com>
+ <20230210080401.345462-25-ajd@linux.ibm.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230210080401.345462-24-ajd@linux.ibm.com>
+In-Reply-To: <20230210080401.345462-25-ajd@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Kd-KQy8B1MkJNfHt8LfeMcSKzANWwwVb
-X-Proofpoint-ORIG-GUID: -nPK3iSKprJm9mxfg2V81JtnS9uBGGMA
+X-Proofpoint-GUID: c9KJJiRNQ_QG5fFHlOS3ZQBJ0pGw4QTs
+X-Proofpoint-ORIG-GUID: jXeG-ofgwmh8qYk57BcWKdFzs8hra_z_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-10_15,2023-02-09_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 impostorscore=0 adultscore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302100175
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302100179
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,243 +111,468 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 2/10/23 03:03, Andrew Donnellan wrote:
 > From: Russell Currey <ruscur@russell.cc>
 > 
-> Before interacting with the PLPKS, we ask the hypervisor to generate a
-> password for the current boot, which is then required for most further
-> PLPKS operations.
+> The pseries platform can support dynamic secure boot (i.e. secure boot
+> using user-defined keys) using variables contained with the PowerVM LPAR
+> Platform KeyStore (PLPKS).  Using the powerpc secvar API, expose the
+> relevant variables for pseries dynamic secure boot through the existing
+> secvar filesystem layout.
 > 
-> If we kexec into a new kernel, the new kernel will try and fail to
-> generate a new password, as the password has already been set.
+> The relevant variables for dynamic secure boot are signed in the
+> keystore, and can only be modified using the H_PKS_SIGNED_UPDATE hcall.
+> Object labels in the keystore are encoded using ucs2 format.  With our
+> fixed variable names we don't have to care about encoding outside of the
+> necessary byte padding.
 > 
-> Pass the password through to the new kernel via the device tree, in
-> /chosen/ibm,plpks-pw. Check for the presence of this property before
-> trying to generate a new password - if it exists, use the existing
-> password and remove it from the device tree.
+> When a user writes to a variable, the first 8 bytes of data must contain
+> the signed update flags as defined by the hypervisor.
 > 
-> This only works with the kexec_file_load() syscall, not the older
-> kexec_load() syscall, however if you're using Secure Boot then you want
-> to be using kexec_file_load() anyway.
+> When a user reads a variable, the first 4 bytes of data contain the
+> policies defined for the object.
 > 
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Limitations exist due to the underlying implementation of sysfs binary
+> attributes, as is the case for the OPAL secvar implementation -
+> partial writes are unsupported and writes cannot be larger than PAGE_SIZE.
+> (Even when using bin_attributes, which can be larger than a single page,
+> sysfs only gives us one page's worth of write buffer at a time, and the
+> hypervisor does not expose an interface for partial writes.)
+> 
+> Co-developed-by: Nayna Jain <nayna@linux.ibm.com>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
 > 
 > ---
 > 
-> v3: New patch
+> v2: Remove unnecessary config vars from sysfs and document the others,
+>      thanks to review from Greg.  If we end up needing to expose more, we
+>      can add them later and update the docs.
 > 
-> v4: Fix compile when CONFIG_PSERIES_PLPKS=n (snowpatch)
+>      Use sysfs_emit() instead of sprintf(), thanks to Greg.
 > 
->      Fix error handling on fdt_path_offset() call (ruscur)
+>      Change the size of the sysfs binary attributes to include the 8-byte
+>      flags header, preventing truncation of large writes.
 > 
-> v5: Fix DT property name in commit message (npiggin)
+> v3: plpks_set_variable(): pass var to plpks_signed_update_var() as a
+>      pointer (mpe)
 > 
->      Clear prop in FDT during init to prevent password exposure (mpe)
+>      Update copyright date (ajd)
 > 
->      Rework to remove ifdefs from C code (npiggin)
+>      Consistent comment style (ajd)
 > 
-> v6: Rebase on top of 7294194b47e994753a86eee8cf1c61f3f36458a3 and
->      fc546faa559538fb312c77e055243ece18ab3288
+>      Change device_initcall() to machine_arch_initcall(pseries...) so we
+>      don't try to load on powernv and kill the machine (mpe)
 > 
->      Whitespace (stefanb)
+>      Add config attributes into plpks_secvar_ops (mpe)
 > 
->      Use more const (stefanb)
+>      Get rid of PLPKS_SECVAR_COUNT macro (mpe)
 > 
->      Get rid of FDT extra space allocation for node overhead, as it
->      shouldn't be necessary (ruscur)
+>      Reworded descriptions in ABI documentation (mpe)
 > 
->      Note kexec_file_load() restriction in commit message
+>      Switch to using secvar_ops->var_names rather than
+>      secvar_ops->get_next() (ajd/mpe)
+> 
+>      Optimise allocation/copying of buffers (mpe)
+> 
+>      Elaborate the comment documenting the "format" string (mpe)
+> 
+>      Return -EIO on errors in the read case (mpe)
+> 
+>      Add "grubdbx" variable (Sudhakar Kuppusamy)
+> 
+>      Use utf8s_to_utf16s() rather than our own "UCS-2" conversion code (mpe)
+> 
+>      Change uint64_t to u64 (mpe)
+> 
+>      Fix SB_VERSION data length (ruscur)
+> 
+>      Stop prepending policy data on read (ruscur)
+> 
+>      Enforce max format length on format string (not strictly needed, but
+>      makes the length limit clear) (ajd)
+> 
+>      Update include of plpks.h to reflect new path (ruscur)
+> 
+>      Consistent constant naming scheme (ruscur)
+> 
+> v4: Return set_secvar_ops() return code
+> 
+>      Pass buffer size to plpks_secvar_format() (stefanb, npiggin)
+> 
+>      Add missing null check (stefanb)
+> 
+>      Add comment to commit message explaining PAGE_SIZE write limit (joel)
+> 
+> v5: Add comment explaining why we use "key_len - 1" (npiggin)
+> 
+>      Use strlen(var.name) instead of hardcoding 10 as length of
+>      "SB_VERSION" (npiggin)
+> 
+>      Improve comments about use of SB_VERSION and format string (npiggin)
+> 
+>      Change "+ 8" to "+ sizeof(u64)" when accounting for flags size in
+>      working out file's max size (npiggin)
+> 
+>      Compile plpks-secvar.c based on CONFIG_PPC_SECURE_BOOT, not
+>      CONFIG_PPC_SECVAR_SYSFS, as the secvar backend is needed for loading
+>      keys into keyrings even if the sysfs interface is disabled (ajd)
+> 
+> v6: Update date in ABI docs (stefanb)
+> 
+>      Get rid of 1 byte kzalloc (npiggin)
 > ---
->   arch/powerpc/include/asm/plpks.h       | 14 ++++++
->   arch/powerpc/kernel/prom.c             |  4 ++
->   arch/powerpc/kexec/file_load_64.c      | 18 +++++---
->   arch/powerpc/platforms/pseries/plpks.c | 61 ++++++++++++++++++++++++++
->   4 files changed, 92 insertions(+), 5 deletions(-)
+>   Documentation/ABI/testing/sysfs-secvar        |  75 +++++-
+>   arch/powerpc/platforms/pseries/Makefile       |   4 +-
+>   arch/powerpc/platforms/pseries/plpks-secvar.c | 218 ++++++++++++++++++
+>   3 files changed, 294 insertions(+), 3 deletions(-)
+>   create mode 100644 arch/powerpc/platforms/pseries/plpks-secvar.c
 > 
-> diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-> index 757313e00521..23b77027c916 100644
-> --- a/arch/powerpc/include/asm/plpks.h
-> +++ b/arch/powerpc/include/asm/plpks.h
-> @@ -176,6 +176,20 @@ u64 plpks_get_signedupdatealgorithms(void);
->    */
->   u16 plpks_get_passwordlen(void);
+> diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+> index feebb8c57294..857cf12b0904 100644
+> --- a/Documentation/ABI/testing/sysfs-secvar
+> +++ b/Documentation/ABI/testing/sysfs-secvar
+> @@ -18,6 +18,14 @@ Description:	A string indicating which backend is in use by the firmware.
+>   		This determines the format of the variable and the accepted
+>   		format of variable updates.
 >   
-> +/**
-> + * Called in early init to retrieve and clear the PLPKS password from the DT.
-> + */
-> +void plpks_early_init_devtree(void);
+> +		On powernv/OPAL, this value is provided by the OPAL firmware
+> +		and is expected to be "ibm,edk2-compat-v1".
 > +
-> +/**
-> + * Populates the FDT with the PLPKS password to prepare for kexec.
-> + */
-> +int plpks_populate_fdt(void *fdt);
-> +#else // CONFIG_PSERIES_PLPKS
-> +static inline bool plpks_is_available(void) { return false; }
-> +static inline u16 plpks_get_passwordlen(void) { BUILD_BUG(); }
-> +static inline void plpks_early_init_devtree(void) { }
-> +static inline int plpks_populate_fdt(void *fdt) { BUILD_BUG(); }
->   #endif // CONFIG_PSERIES_PLPKS
->   
->   #endif // _ASM_POWERPC_PLPKS_H
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 4f1c920aa13e..8a13b378770f 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -56,6 +56,7 @@
->   #include <asm/drmem.h>
->   #include <asm/ultravisor.h>
->   #include <asm/prom.h>
-> +#include <asm/plpks.h>
->   
->   #include <mm/mmu_decl.h>
->   
-> @@ -893,6 +894,9 @@ void __init early_init_devtree(void *params)
->   		powerpc_firmware_features |= FW_FEATURE_PS3_POSSIBLE;
->   #endif
->   
-> +	/* If kexec left a PLPKS password in the DT, get it and clear it */
-> +	plpks_early_init_devtree();
+> +		On pseries/PLPKS, this is generated by the kernel based on the
+> +		version number in the SB_VERSION variable in the keystore, and
+> +		has the form "ibm,plpks-sb-v<version>", or
+> +		"ibm,plpks-sb-unknown" if there is no SB_VERSION variable.
 > +
->   	tm_init();
+>   What:		/sys/firmware/secvar/vars/<variable name>
+>   Date:		August 2019
+>   Contact:	Nayna Jain <nayna@linux.ibm.com>
+> @@ -34,7 +42,7 @@ Description:	An integer representation of the size of the content of the
 >   
->   	DBG(" <- early_init_devtree()\n");
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index 52085751f5f4..8a9469e1ce71 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -27,6 +27,7 @@
->   #include <asm/kexec_ranges.h>
->   #include <asm/crashdump-ppc64.h>
->   #include <asm/prom.h>
-> +#include <asm/plpks.h>
+>   What:		/sys/firmware/secvar/vars/<variable_name>/data
+>   Date:		August 2019
+> -Contact:	Nayna Jain h<nayna@linux.ibm.com>
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+>   Description:	A read-only file containing the value of the variable. The size
+>   		of the file represents the maximum size of the variable data.
 >   
->   struct umem_info {
->   	u64 *buf;		/* data buffer for usable-memory property */
-> @@ -977,12 +978,17 @@ static unsigned int cpu_node_size(void)
->    */
->   unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image)
->   {
-> -	unsigned int cpu_nodes, extra_size;
-> +	unsigned int cpu_nodes, extra_size = 0;
->   	struct device_node *dn;
->   	u64 usm_entries;
->   
-> +	// Budget some space for the password blob. There's already extra space
-> +	// for the key name
-> +	if (plpks_is_available())
-> +		extra_size += (unsigned int)plpks_get_passwordlen();
+> @@ -44,3 +52,68 @@ Contact:	Nayna Jain <nayna@linux.ibm.com>
+>   Description:	A write-only file that is used to submit the new value for the
+>   		variable. The size of the file represents the maximum size of
+>   		the variable data that can be written.
 > +
->   	if (image->type != KEXEC_TYPE_CRASH)
-> -		return 0;
-> +		return extra_size;
->   
->   	/*
->   	 * For kdump kernel, account for linux,usable-memory and
-> @@ -992,9 +998,7 @@ unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image)
->   	if (drmem_lmb_size()) {
->   		usm_entries = ((memory_hotplug_max() / drmem_lmb_size()) +
->   			       (2 * (resource_size(&crashk_res) / drmem_lmb_size())));
-> -		extra_size = (unsigned int)(usm_entries * sizeof(u64));
-> -	} else {
-> -		extra_size = 0;
-> +		extra_size += (unsigned int)(usm_entries * sizeof(u64));
->   	}
->   
->   	/*
-> @@ -1233,6 +1237,10 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
->   		}
->   	}
->   
-> +	// If we have PLPKS active, we need to provide the password to the new kernel
-> +	if (plpks_is_available())
-> +		ret = plpks_populate_fdt(fdt);
+> +What:		/sys/firmware/secvar/config
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	This optional directory contains read-only config attributes as
+> +		defined by the secure variable implementation.  All data is in
+> +		ASCII format. The directory is only created if the backing
+> +		implementation provides variables to populate it, which at
+> +		present is only PLPKS on the pseries platform.
 > +
->   out:
->   	kfree(rmem);
->   	kfree(umem);
-> diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-> index 671a10acaebf..cdf09e5bd741 100644
-> --- a/arch/powerpc/platforms/pseries/plpks.c
-> +++ b/arch/powerpc/platforms/pseries/plpks.c
-> @@ -16,6 +16,9 @@
->   #include <linux/slab.h>
->   #include <linux/string.h>
->   #include <linux/types.h>
-> +#include <linux/of_fdt.h>
-> +#include <linux/libfdt.h>
-> +#include <linux/memblock.h>
->   #include <asm/hvcall.h>
->   #include <asm/machdep.h>
->   #include <asm/plpks.h>
-> @@ -128,6 +131,12 @@ static int plpks_gen_password(void)
->   	u8 *password, consumer = PLPKS_OS_OWNER;
->   	int rc;
+> +What:		/sys/firmware/secvar/config/version
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Config version as reported by the hypervisor in ASCII decimal
+> +		format.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> +
+> +What:		/sys/firmware/secvar/config/max_object_size
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Maximum allowed size of	objects in the keystore in bytes,
+> +		represented in ASCII decimal format.
+> +
+> +		This is not necessarily the same as the max size that can be
+> +		written to an update file as writes can contain more than
+> +		object data, you should use the size of the update file for
+> +		that purpose.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> +
+> +What:		/sys/firmware/secvar/config/total_size
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Total size of the PLPKS in bytes, represented in ASCII decimal
+> +		format.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> +
+> +What:		/sys/firmware/secvar/config/used_space
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Current space consumed by the key store, in bytes, represented
+> +		in ASCII decimal format.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> +
+> +What:		/sys/firmware/secvar/config/supported_policies
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Bitmask of supported policy flags by the hypervisor,
+> +		represented as an 8 byte hexadecimal ASCII string. Consult the
+> +		hypervisor documentation for what these flags are.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> +
+> +What:		/sys/firmware/secvar/config/signed_update_algorithms
+> +Date:		February 2023
+> +Contact:	Nayna Jain <nayna@linux.ibm.com>
+> +Description:	Bitmask of flags indicating which algorithms the hypervisor
+> +		supports for signed update of objects, represented as a 16 byte
+> +		hexadecimal ASCII string. Consult the hypervisor documentation
+> +		for what these flags mean.
+> +
+> +		Currently only provided by PLPKS on the pseries platform.
+> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+> index 92310202bdd7..20a0f3c3fe04 100644
+> --- a/arch/powerpc/platforms/pseries/Makefile
+> +++ b/arch/powerpc/platforms/pseries/Makefile
+> @@ -27,8 +27,8 @@ obj-$(CONFIG_PAPR_SCM)		+= papr_scm.o
+>   obj-$(CONFIG_PPC_SPLPAR)	+= vphn.o
+>   obj-$(CONFIG_PPC_SVM)		+= svm.o
+>   obj-$(CONFIG_FA_DUMP)		+= rtas-fadump.o
+> -obj-$(CONFIG_PSERIES_PLPKS) += plpks.o
+> -
+> +obj-$(CONFIG_PSERIES_PLPKS)	+= plpks.o
+> +obj-$(CONFIG_PPC_SECURE_BOOT)	+= plpks-secvar.o
+>   obj-$(CONFIG_SUSPEND)		+= suspend.o
+>   obj-$(CONFIG_PPC_VAS)		+= vas.o vas-sysfs.o
 >   
-> +	// If we booted from kexec, we could be reusing an existing password already
-> +	if (ospassword) {
-> +		pr_debug("Password of length %u already in use\n", ospasswordlength);
-> +		return 0;
-> +	}
+> diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
+> new file mode 100644
+> index 000000000000..98d0f2b31e0d
+> --- /dev/null
+> +++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
+> @@ -0,0 +1,218 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
 > +
->   	// The password must not cross a page boundary, so we align to the next power of 2
->   	password = kzalloc(roundup_pow_of_two(maxpwsize), GFP_KERNEL);
->   	if (!password)
-> @@ -621,6 +630,58 @@ int plpks_read_bootloader_var(struct plpks_var *var)
->   	return plpks_read_var(PLPKS_BOOTLOADER_OWNER, var);
->   }
->   
-> +int plpks_populate_fdt(void *fdt)
-> +{
-> +	int chosen_offset = fdt_path_offset(fdt, "/chosen");
-> +
-> +	if (chosen_offset < 0) {
-> +		pr_err("Can't find chosen node: %s\n",
-> +		       fdt_strerror(chosen_offset));
-> +		return chosen_offset;
-> +	}
-> +
-> +	return fdt_setprop(fdt, chosen_offset, "ibm,plpks-pw", ospassword, ospasswordlength);
-> +}
-> +
-> +// Once a password is registered with the hypervisor it cannot be cleared without
-> +// rebooting the LPAR, so to keep using the PLPKS across kexec boots we need to
-> +// recover the previous password from the FDT.
+> +// Secure variable implementation using the PowerVM LPAR Platform KeyStore (PLPKS)
 > +//
-> +// There are a few challenges here.  We don't want the password to be visible to
-> +// users, so we need to clear it from the FDT.  This has to be done in early boot.
-> +// Clearing it from the FDT would make the FDT's checksum invalid, so we have to
-> +// manually cause the checksum to be recalculated.
-> +void __init plpks_early_init_devtree(void)
+> +// Copyright 2022, 2023 IBM Corporation
+> +// Authors: Russell Currey
+> +//          Andrew Donnellan
+> +//          Nayna Jain
+> +
+> +#define pr_fmt(fmt) "secvar: "fmt
+> +
+> +#include <linux/printk.h>
+> +#include <linux/init.h>
+> +#include <linux/types.h>
+> +#include <linux/slab.h>
+> +#include <linux/string.h>
+> +#include <linux/kobject.h>
+> +#include <linux/nls.h>
+> +#include <asm/machdep.h>
+> +#include <asm/secvar.h>
+> +#include <asm/plpks.h>
+> +
+> +// Config attributes for sysfs
+> +#define PLPKS_CONFIG_ATTR(name, fmt, func)			\
+> +	static ssize_t name##_show(struct kobject *kobj,	\
+> +				   struct kobj_attribute *attr,	\
+> +				   char *buf)			\
+> +	{							\
+> +		return sysfs_emit(buf, fmt, func());		\
+> +	}							\
+> +	static struct kobj_attribute attr_##name = __ATTR_RO(name)
+> +
+> +PLPKS_CONFIG_ATTR(version, "%u\n", plpks_get_version);
+> +PLPKS_CONFIG_ATTR(max_object_size, "%u\n", plpks_get_maxobjectsize);
+> +PLPKS_CONFIG_ATTR(total_size, "%u\n", plpks_get_totalsize);
+> +PLPKS_CONFIG_ATTR(used_space, "%u\n", plpks_get_usedspace);
+> +PLPKS_CONFIG_ATTR(supported_policies, "%08x\n", plpks_get_supportedpolicies);
+> +PLPKS_CONFIG_ATTR(signed_update_algorithms, "%016llx\n", plpks_get_signedupdatealgorithms);
+> +
+> +static const struct attribute *config_attrs[] = {
+> +	&attr_version.attr,
+> +	&attr_max_object_size.attr,
+> +	&attr_total_size.attr,
+> +	&attr_used_space.attr,
+> +	&attr_supported_policies.attr,
+> +	&attr_signed_update_algorithms.attr,
+> +	NULL,
+> +};
+> +
+> +static u32 get_policy(const char *name)
 > +{
-> +	void *fdt = initial_boot_params;
-> +	int chosen_node = fdt_path_offset(fdt, "/chosen");
-> +	const u8 *password;
-> +	int len;
-> +
-> +	if (chosen_node < 0)
-> +		return;
-> +
-> +	password = fdt_getprop(fdt, chosen_node, "ibm,plpks-pw", &len);
-> +	if (len <= 0) {
-> +		pr_debug("Couldn't find ibm,plpks-pw node.\n");
-> +		return;
-> +	}
-> +
-> +	ospassword = memblock_alloc_raw(len, SMP_CACHE_BYTES);
-> +	if (!ospassword) {
-> +		pr_err("Error allocating memory for password.\n");
-> +		goto out;
-> +	}
-> +
-> +	memcpy(ospassword, password, len);
-> +	ospasswordlength = (u16)len;
-> +
-> +out:
-> +	fdt_nop_property(fdt, chosen_node, "ibm,plpks-pw");
-> +	// Since we've cleared the password, we must update the FDT checksum
-> +	early_init_dt_verify(fdt);
+> +	if ((strcmp(name, "db") == 0) ||
+> +	    (strcmp(name, "dbx") == 0) ||
+> +	    (strcmp(name, "grubdb") == 0) ||
+> +	    (strcmp(name, "grubdbx") == 0) ||
+> +	    (strcmp(name, "sbat") == 0))
+> +		return (PLPKS_WORLDREADABLE | PLPKS_SIGNEDUPDATE);
+> +	else
+> +		return PLPKS_SIGNEDUPDATE;
 > +}
 > +
->   static __init int pseries_plpks_init(void)
->   {
->   	int rc;
+> +static const char * const plpks_var_names[] = {
+> +	"PK",
+> +	"KEK",
+> +	"db",
+> +	"dbx",
+> +	"grubdb",
+> +	"grubdbx",
+> +	"sbat",
+> +	"moduledb",
+> +	"trustedcadb",
+> +	NULL,
+> +};
+> +
+> +static int plpks_get_variable(const char *key, u64 key_len, u8 *data,
+> +			      u64 *data_size)
+> +{
+> +	struct plpks_var var = {0};
+> +	int rc = 0;
+> +
+> +	// We subtract 1 from key_len because we don't need to include the
+> +	// null terminator at the end of the string
+> +	var.name = kcalloc(key_len - 1, sizeof(wchar_t), GFP_KERNEL);
+> +	if (!var.name)
+> +		return -ENOMEM;
+> +	rc = utf8s_to_utf16s(key, key_len - 1, UTF16_LITTLE_ENDIAN, (wchar_t *)var.name,
+> +			     key_len - 1);
+> +	if (rc < 0)
+> +		goto err;
+> +	var.namelen = rc * 2;
+> +
+> +	var.os = PLPKS_VAR_LINUX;
+> +	if (data) {
+> +		var.data = data;
+> +		var.datalen = *data_size;
+> +	}
+> +	rc = plpks_read_os_var(&var);
+> +
+> +	if (rc)
+> +		goto err;
+> +
+> +	*data_size = var.datalen;
+> +
+> +err:
+> +	kfree(var.name);
+> +	if (rc && rc != -ENOENT) {
+> +		pr_err("Failed to read variable '%s': %d\n", key, rc);
+> +		// Return -EIO since userspace probably doesn't care about the
+> +		// specific error
+> +		rc = -EIO;
+> +	}
+> +	return rc;
+> +}
+> +
+> +static int plpks_set_variable(const char *key, u64 key_len, u8 *data,
+> +			      u64 data_size)
+> +{
+> +	struct plpks_var var = {0};
+> +	int rc = 0;
+> +	u64 flags;
+> +
+> +	// Secure variables need to be prefixed with 8 bytes of flags.
+> +	// We only want to perform the write if we have at least one byte of data.
+> +	if (data_size <= sizeof(flags))
+> +		return -EINVAL;
+> +
+> +	// We subtract 1 from key_len because we don't need to include the
+> +	// null terminator at the end of the string
+> +	var.name = kcalloc(key_len - 1, sizeof(wchar_t), GFP_KERNEL);
+> +	if (!var.name)
+> +		return -ENOMEM;
+> +	rc = utf8s_to_utf16s(key, key_len - 1, UTF16_LITTLE_ENDIAN, (wchar_t *)var.name,
+> +			     key_len - 1);
+> +	if (rc < 0)
+> +		goto err;
+> +	var.namelen = rc * 2;
+> +
+> +	memcpy(&flags, data, sizeof(flags));
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+conversion from bytestream to integer: I think in this case it would be better to use
+
+flags = cpu_to_be64p((__u64*)data);
+
+so that the flags always in hypervisor/big endian format
+
+> +
+> +	var.datalen = data_size - sizeof(flags);
+> +	var.data = data + sizeof(flags);
+> +	var.os = PLPKS_VAR_LINUX;
+> +	var.policy = get_policy(key);
+> +
+> +	// Unlike in the read case, the plpks error code can be useful to
+> +	// userspace on write, so we return it rather than just -EIO
+> +	rc = plpks_signed_update_var(&var, flags);
+> +
+> +err:
+> +	kfree(var.name);
+> +	return rc;
+> +}
+> +
+> +// PLPKS dynamic secure boot doesn't give us a format string in the same way OPAL does.
+> +// Instead, report the format using the SB_VERSION variable in the keystore.
+> +// The string is made up by us, and takes the form "ibm,plpks-sb-v<n>" (or "ibm,plpks-sb-unknown"
+> +// if the SB_VERSION variable doesn't exist). Hypervisor defines the SB_VERSION variable as a
+> +// "1 byte unsigned integer value".
+> +static ssize_t plpks_secvar_format(char *buf, size_t bufsize)
+> +{
+> +	struct plpks_var var = {0};
+> +	ssize_t ret;
+> +	u8 version;
+> +
+> +	var.component = NULL;
+
+Since it's initialized with {0} this is not necessary.
+
+> +	// Only the signed variables have null bytes in their names, this one doesn't
+> +	var.name = "SB_VERSION";
+> +	var.namelen = strlen(var.name);
+> +	var.datalen = 1;
+> +	var.data = &version;
+> +
+> +	// Unlike the other vars, SB_VERSION is owned by firmware instead of the OS
+> +	ret = plpks_read_fw_var(&var);
+> +	if (ret) {
+> +		if (ret == -ENOENT) {
+> +			ret = snprintf(buf, bufsize, "ibm,plpks-sb-unknown");
+> +		} else {
+> +			pr_err("Error %ld reading SB_VERSION from firmware\n", ret);
+> +			ret = -EIO;
+> +		}
+> +		goto err;
+> +	}
+> +
+> +	ret = snprintf(buf, bufsize, "ibm,plpks-sb-v%hhu", version);
+> +
+> +err:
+> +	kfree(var.data);
+
+remove the kfree()
+
+> +	return ret;
+> +}
+> +
+> +static int plpks_max_size(u64 *max_size)
+> +{
+> +	// The max object size reported by the hypervisor is accurate for the
+> +	// object itself, but we use the first 8 bytes of data on write as the
+> +	// signed update flags, so the max size a user can write is larger.
+> +	*max_size = (u64)plpks_get_maxobjectsize() + sizeof(u64);
+> +
+> +	return 0;
+> +}
+> +
+> +
+> +static const struct secvar_operations plpks_secvar_ops = {
+> +	.get = plpks_get_variable,
+> +	.set = plpks_set_variable,
+> +	.format = plpks_secvar_format,
+> +	.max_size = plpks_max_size,
+> +	.config_attrs = config_attrs,
+> +	.var_names = plpks_var_names,
+> +};
+> +
+> +static int plpks_secvar_init(void)
+> +{
+> +	if (!plpks_is_available())
+> +		return -ENODEV;
+> +
+> +	return set_secvar_ops(&plpks_secvar_ops);
+> +}
+> +machine_device_initcall(pseries, plpks_secvar_init);
