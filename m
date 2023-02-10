@@ -1,64 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848DA6916F8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 03:59:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75697691730
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 04:39:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PCdjy3H3Cz3f54
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 13:59:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCfc827z4z3f3m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 14:39:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ULtZrf1U;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=g+gp30X+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ULtZrf1U;
-	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCdhy62tRz3bZv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 13:58:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675997907; x=1707533907;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bD4wP7yBCLk+q/qTw4V9H8yAGrNVhE9hcOqbF5MmXHA=;
-  b=ULtZrf1U+1NWUWTSPIgiXQASai6S7CjFmnPdrFfnyPWYSQxqzDDDAQvj
-   xIJogGl7+SC4Kmyr3M1V4LC4jeF6EVUqnDRY6tD8gjdOqC3AIDElnHP46
-   CfpV6/TTz3hkvqEATasu79JP3yqioe6tZY3sra76A2pIFxSvjqKS3RRmo
-   Be+w/DCdcHNXu18B/pp+ltk5lo6/PmU+JGyaNcgQtDH0tIqQoIjpsdW2A
-   4PUx11grbMjMHCiMNdcMXNwkdvCztUKn3tYVVG7Qr6hEVBUiNCPlDEpXw
-   OxxAD5TmcY/36AuEHLBD+U7X5c++ZnbOa5m79V9olpZWhXXbTXm6ftz/G
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="310684568"
-X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
-   d="scan'208";a="310684568"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 18:58:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="736586551"
-X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
-   d="scan'208";a="736586551"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 09 Feb 2023 18:58:15 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pQJc7-0005Tg-1G;
-	Fri, 10 Feb 2023 02:58:15 +0000
-Date: Fri, 10 Feb 2023 10:58:12 +0800
-From: kernel test robot <lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCfbD5q0cz3bck
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 14:38:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=g+gp30X+;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PCfbC1gt9z4xNH;
+	Fri, 10 Feb 2023 14:38:31 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1676000311;
+	bh=+0AIMDf9647rvs8+Q7dwAwQ6K6344eJt+hok2qkYWRk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=g+gp30X+1eVZAf3ALMnwy+5TwI9VVpx1/qHMMQLyIrven4LKyhkhUXfHsVIsVYlyX
+	 mBw8zXLRp67XgvYWApIg5/DcKyo1go5ZR7Mq80q4a6m3ZUcPA8pQppFJd8g3kKIz2x
+	 LgnOFzl6JCR0WMhB0uSJ9wH7c85LpIWKBEeqcV8S2U0fqotvW4f0k7SBT9mujXbDac
+	 8CZmo6qfYt9Vk9BoclSjwbccmegFYhySwnpZpRiVNtqGKfEafCp6+O67jd5/uSCmRF
+	 3L3ILk+bBrBV8nbs6MVXdOJwVHII1Fc7V0vOCDXyH3joXeCaKpM6Sf6ZUYfpVdnuJW
+	 3cNyigMoNQ+TQ==
+Date: Fri, 10 Feb 2023 14:38:29 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 6acecfa485d3de955c35a18730c106ddf1e7600e
-Message-ID: <63e5b2c4.GTkwxAQMq8mdPrPO%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Subject: linux-next: build failure after merge of the powerpc tree
+Message-ID: <20230210143829.4ab676bd@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/3jYrWzezKBrYae+EmJWEE1Q";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,87 +56,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 6acecfa485d3de955c35a18730c106ddf1e7600e  powerpc/kcsan: Add KCSAN Support
+--Sig_/3jYrWzezKBrYae+EmJWEE1Q
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-elapsed time: 747m
+Hi all,
 
-configs tested: 62
-configs skipped: 2
+After merging the powerpc tree, today's linux-next build (powerpc64
+allnoconfig) failed like this:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+arch/powerpc/kernel/setup_64.c: In function 'early_setup':
+arch/powerpc/kernel/setup_64.c:400:34: error: 'struct thread_info' has no m=
+ember named 'cpu'
+  400 |         task_thread_info(current)->cpu =3D boot_cpuid; // fix task_=
+cpu(current)
+      |                                  ^~
 
-gcc tested configs:
-um                           x86_64_defconfig
-um                             i386_defconfig
-powerpc                           allnoconfig
-arc                                 defconfig
-x86_64                            allnoconfig
-s390                             allmodconfig
-alpha                               defconfig
-s390                                defconfig
-s390                             allyesconfig
-sh                               allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64                              defconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-x86_64                               rhel-8.3
-ia64                             allmodconfig
-x86_64                        randconfig-a006
-x86_64                           allyesconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                           rhel-8.3-bpf
-i386                          randconfig-a016
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-i386                          randconfig-a005
-x86_64                           rhel-8.3-kvm
-arc                  randconfig-r043-20230209
-arm                  randconfig-r046-20230209
-x86_64                        randconfig-a004
-i386                          randconfig-a014
-x86_64                        randconfig-a013
-i386                                defconfig
-i386                          randconfig-a012
-x86_64                        randconfig-a011
-x86_64                        randconfig-a002
-x86_64                        randconfig-a015
-arm                                 defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-arm64                            allyesconfig
-arm                              allyesconfig
-i386                             allyesconfig
+Caused by commit
 
-clang tested configs:
-s390                 randconfig-r044-20230209
-i386                          randconfig-a006
-i386                          randconfig-a002
-i386                          randconfig-a004
-hexagon              randconfig-r045-20230209
-hexagon              randconfig-r041-20230209
-x86_64                        randconfig-a016
-riscv                randconfig-r042-20230209
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                          rhel-8.3-rust
+  0ecf51ca51e5 ("powerpc/64: Fix task_cpu in early boot when booting non-ze=
+ro cpuid")
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+# CONFIG_SMP is not set
+
+I applied the following fix up for today.
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Fri, 10 Feb 2023 14:21:33 +1100
+Subject: [PATCH] fixup for "powerpc/64: Fix task_cpu in early boot when boo=
+ting non-zero cpuid"
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/kernel/setup_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 78d8a105764b..b2e0d3ce4261 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -397,7 +397,9 @@ void __init early_setup(unsigned long dt_ptr)
+ 	setup_paca(paca_ptrs[boot_cpuid]); /* install the paca into registers */
+ 	// smp_processor_id() now reports boot_cpuid
+=20
++#ifdef CONFIG_SMP
+ 	task_thread_info(current)->cpu =3D boot_cpuid; // fix task_cpu(current)
++#endif
+=20
+ 	/*
+ 	 * Configure exception handlers. This include setting up trampolines
+--=20
+2.39.1
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/3jYrWzezKBrYae+EmJWEE1Q
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPlvDUACgkQAVBC80lX
+0Gx5dQf9H1dUoqhzZt/F/WloAtElvaCyEa2JzUllu9ogsjUNxxIpJz6Org/LHfjK
+RhDsoNYPHIt5umUxmmZ0ZcfFI+ZK6QrvPoGeZsDGWY0Y1zj3BVqfxpKri90Waxae
+AHJDPHJBJcyyNcymykYRJ7/eoqit1d4yFTYyERifTwuY6pKPxdH2Dm5YUsw4LRhN
+6kJqbNZb/QzfkGgsO2rsvWhGmhdS7nDIkLfIUpx9lMqwj3On7M8iOzYLI6Ey5acy
+avQ0YoK2YZyhzejsqRzRo3NjuRn1+ocl5+1O67fJPEeFwuXb81KdL2fliPiaEIaX
+aUC1RTm4t06F8+RuIKH8OeyJQtDdZA==
+=idtf
+-----END PGP SIGNATURE-----
+
+--Sig_/3jYrWzezKBrYae+EmJWEE1Q--
