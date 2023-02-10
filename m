@@ -1,51 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894D56917E2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 06:09:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D902D691822
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 06:54:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PChbl2jBDz3f40
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 16:09:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PCjcZ55v0z3f5s
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Feb 2023 16:54:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VzBHDakF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NObTTh+7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PChZp3WcXz3cHF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 16:08:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PCjbh5HWDz3bTK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 16:54:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VzBHDakF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NObTTh+7;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PChZj6hzVz4xwy;
-	Fri, 10 Feb 2023 16:08:13 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PCjbh1cKvz4y0Z;
+	Fri, 10 Feb 2023 16:54:08 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1676005696;
-	bh=gjOEhpmQ4QzYiJxNRSCplO6mzBIo8CgdHMudas4f4m4=;
+	s=201909; t=1676008448;
+	bh=rIX03P72u35Uxe05IJNhmS/NECsV0SF+1IiW3aVJS9o=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VzBHDakF5oapgbqSwyCXW4NlOxuhWIXgHT5bnjksmwxnwzB2j77QlwtNy9auFKO5k
-	 R5zuzvTLv5v6JR0g4zAQSDALbGO0+HtyCcaxIv+XCmtUOUNdsZXpr/60HJ8m0se9Ac
-	 HCqPfRmHl1K9cRm2zGL0JLt1dLbvDoohuA4JmvWcFN0J1XTPyIZXfr0n3q8zPBgbwM
-	 2KTETWI8PkOX6ZP5se3LmuOaFIoUbfwmRFq7s/gffXRM+ntl6Tsz8s7uIuoBncovYH
-	 169scsrJUZSYlGwI60JQl2lk38JbvV/eRPo8tLjsBgWQeltv5kZiHwGm5Gqurl9z/4
-	 hTaeq+aYRbc4A==
+	b=NObTTh+7aaB6WQ4UriwuGltSQwMSed/X59b4sK3AQD8hL9nbxxwvvtYdwVQZtCf1k
+	 TJp6eR6A1da6O/7Q48SVC47efPnlKvFie8KR5HxdL/nWv1Iv+qUZ5lcdIn+09qkd9R
+	 XivsNr3wwpdwmueM3Odig/1/KzC/mVbgy89NQdCfVRW3XliD00ZHEwHHN/HDEtxH4/
+	 4CbWUuWd17y3cCoxdwvxmcrMos9r5JMXTF+qc+/p7/vg3pAGcfPLugXivXS3MsO9D3
+	 jo/vtGsaHa9pOE4pLl14wRh/Koh9ymht0J255oewPV+XwtQH0EJJxqtl0TFolDUJOE
+	 1/Lb5wIEIJG+g==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-unstable v1 17/26] powerpc/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit book3s
-In-Reply-To: <20230113171026.582290-18-david@redhat.com>
-References: <20230113171026.582290-1-david@redhat.com>
- <20230113171026.582290-18-david@redhat.com>
-Date: Fri, 10 Feb 2023 16:08:07 +1100
-Message-ID: <87cz6iw1jc.fsf@mpe.ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, Nathan Lynch via B4 Submission
+ Endpoint <devnull+nathanl.linux.ibm.com@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Kajol
+ Jain <kjain@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, Mahesh
+ J Salgaonkar <mahesh@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Nick Child <nnac123@linux.ibm.com>
+Subject: Re: [PATCH v2 01/19] powerpc/rtas: handle extended delays safely in
+ early boot
+In-Reply-To: <87wn4snvsf.fsf@linux.ibm.com>
+References: <20230125-b4-powerpc-rtas-queue-v2-0-9aa6bd058063@linux.ibm.com>
+ <20230125-b4-powerpc-rtas-queue-v2-1-9aa6bd058063@linux.ibm.com>
+ <87ttzwwgh4.fsf@mpe.ellerman.id.au> <87wn4snvsf.fsf@linux.ibm.com>
+Date: Fri, 10 Feb 2023 16:54:05 +1100
+Message-ID: <87a61mvzeq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,105 +65,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Yang Shi <shy828301@gmail.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.
- ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David Hildenbrand <david@redhat.com> writes:
-> We already implemented support for 64bit book3s in commit bff9beaa2e80
-> ("powerpc/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE for book3s")
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> Nathan Lynch via B4 Submission Endpoint <devnull+nathanl.linux.ibm.com@kernel.org> writes:
+>>> From: Nathan Lynch <nathanl@linux.ibm.com>
+>>>
+>>> Some code that runs early in boot calls RTAS functions that can return
+>>> -2 or 990x statuses, which mean the caller should retry. An example is
+>>> pSeries_cmo_feature_init(), which invokes ibm,get-system-parameter but
+>>> treats these benign statuses as errors instead of retrying.
+>>>
+>>> pSeries_cmo_feature_init() and similar code should be made to retry
+>>> until they succeed or receive a real error, using the usual pattern:
+>>>
+>>> 	do {
+>>> 		rc = rtas_call(token, etc...);
+>>> 	} while (rtas_busy_delay(rc));
+>>>
+>>> But rtas_busy_delay() will perform a timed sleep on any 990x
+>>> status. This isn't safe so early in boot, before the CPU scheduler and
+>>> timer subsystem have initialized.
+>>>
+>>> The -2 RTAS status is much more likely to occur during single-threaded
+>>> boot than 990x in practice, at least on PowerVM. This is because -2
+>>> usually means that RTAS made progress but exhausted its self-imposed
+>>> timeslice, while 990x is associated with concurrent requests from the
+>>> OS causing internal contention. Regardless, according to the language
+>>> in PAPR, the OS should be prepared to handle either type of status at
+>>> any time.
+>>>
+>>> Add a fallback path to rtas_busy_delay() to handle this as safely as
+>>> possible, performing a small delay on 990x. Include a counter to
+>>> detect retry loops that aren't making progress and bail out.
+>>>
+>>> This was found by inspection and I'm not aware of any real
+>>> failures. However, the implementation of rtas_busy_delay() before
+>>> commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
+>>> was not susceptible to this problem, so let's treat this as a
+>>> regression.
+>>>
+>>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+>>> Fixes: 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
+>>> ---
+>>>  arch/powerpc/kernel/rtas.c | 48 +++++++++++++++++++++++++++++++++++++++++++++-
+>>>  1 file changed, 47 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>> index 795225d7f138..ec2df09a70cf 100644
+>>> --- a/arch/powerpc/kernel/rtas.c
+>>> +++ b/arch/powerpc/kernel/rtas.c
+>>> @@ -606,6 +606,46 @@ unsigned int rtas_busy_delay_time(int status)
+>>>  	return ms;
+>>>  }
+>>>  
+>>> +/*
+>>> + * Early boot fallback for rtas_busy_delay().
+>>> + */
+>>> +static bool __init rtas_busy_delay_early(int status)
+>>> +{
+>>> +	static size_t successive_ext_delays __initdata;
+>>> +	bool ret;
+>>
+>> I think the logic would be easier to read if this was called "wait", but
+>> maybe that's just me.
 >
-> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE also in 32bit by reusing yet
-> unused LSB 2 / MSB 29. There seems to be no real reason why that bit cannot
-> be used, and reusing it avoids having to steal one bit from the swap
-> offset.
->
-> While at it, mask the type in __swp_entry().
->
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  arch/powerpc/include/asm/book3s/32/pgtable.h | 38 +++++++++++++++++---
->  1 file changed, 33 insertions(+), 5 deletions(-)
+> Maybe "retry"? That communicates what the function is telling callers to do.
 
-I gave this a quick test on a ppc32 machine, everything seems fine.
-
-Your test_swp_exclusive.c passes, and an LTP run looks normal.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Yeah, that's even better.
 
 cheers
-
-> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> index 75823f39e042..0ecb3a58f23f 100644
-> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> @@ -42,6 +42,9 @@
->  #define _PMD_PRESENT_MASK (PAGE_MASK)
->  #define _PMD_BAD	(~PAGE_MASK)
->  
-> +/* We borrow the _PAGE_USER bit to store the exclusive marker in swap PTEs. */
-> +#define _PAGE_SWP_EXCLUSIVE	_PAGE_USER
-> +
->  /* And here we include common definitions */
->  
->  #define _PAGE_KERNEL_RO		0
-> @@ -363,17 +366,42 @@ static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
->  #define pmd_page(pmd)		pfn_to_page(pmd_pfn(pmd))
->  
->  /*
-> - * Encode and decode a swap entry.
-> - * Note that the bits we use in a PTE for representing a swap entry
-> - * must not include the _PAGE_PRESENT bit or the _PAGE_HASHPTE bit (if used).
-> - *   -- paulus
-> + * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
-> + * are !pte_none() && !pte_present().
-> + *
-> + * Format of swap PTEs (32bit PTEs):
-> + *
-> + *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-> + *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-> + *   <----------------- offset --------------------> < type -> E H P
-> + *
-> + *   E is the exclusive marker that is not stored in swap entries.
-> + *   _PAGE_PRESENT (P) and __PAGE_HASHPTE (H) must be 0.
-> + *
-> + * For 64bit PTEs, the offset is extended by 32bit.
->   */
->  #define __swp_type(entry)		((entry).val & 0x1f)
->  #define __swp_offset(entry)		((entry).val >> 5)
-> -#define __swp_entry(type, offset)	((swp_entry_t) { (type) | ((offset) << 5) })
-> +#define __swp_entry(type, offset)	((swp_entry_t) { ((type) & 0x1f) | ((offset) << 5) })
->  #define __pte_to_swp_entry(pte)		((swp_entry_t) { pte_val(pte) >> 3 })
->  #define __swp_entry_to_pte(x)		((pte_t) { (x).val << 3 })
->  
-> +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-> +static inline int pte_swp_exclusive(pte_t pte)
-> +{
-> +	return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
-> +}
-> +
-> +static inline pte_t pte_swp_mkexclusive(pte_t pte)
-> +{
-> +	return __pte(pte_val(pte) | _PAGE_SWP_EXCLUSIVE);
-> +}
-> +
-> +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
-> +{
-> +	return __pte(pte_val(pte) & ~_PAGE_SWP_EXCLUSIVE);
-> +}
-> +
->  /* Generic accessors to PTE bits */
->  static inline int pte_write(pte_t pte)		{ return !!(pte_val(pte) & _PAGE_RW);}
->  static inline int pte_read(pte_t pte)		{ return 1; }
-> -- 
-> 2.39.0
->
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
