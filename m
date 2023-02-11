@@ -2,76 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC896692BDD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 01:16:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5637692C8E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 02:36:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PDB3q55RQz3f60
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 11:16:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PDCrR56D6z3f8f
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 12:36:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=ADJ+NDsg;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FjGHBfbY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d29; helo=mail-io1-xd29.google.com; envelope-from=skhan@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=ADJ+NDsg;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FjGHBfbY;
 	dkim-atps=neutral
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PDB2s6Bypz3bVK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 11:15:47 +1100 (AEDT)
-Received: by mail-io1-xd29.google.com with SMTP id l128so2590895iof.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Feb 2023 16:15:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qbkcBCzqB6Bhnw08ObqB4UKeNk62tom/v69d4G2QaHo=;
-        b=ADJ+NDsgKyHyN8uoAdicRC4TZYYcp9IncDhQqJ/pK3xuapGF2kXR16aWyA3vBiCQp0
-         /sDAp9j9LtU1F707Vz870jS59vZ+QIvkPxitLoXLcGtzQhM5XeXyQjnpQRM1PF81gN39
-         qL/KvKn0G3q6tNs1860AZIEcQM0srawlAwoiA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbkcBCzqB6Bhnw08ObqB4UKeNk62tom/v69d4G2QaHo=;
-        b=IqKWzFUM/gb9rKyaw1E5TkH1Y/bxLJ4obSNQekzH4zjM1p+yMhXPTEWh1JH3v2KqDt
-         B/+Q09ZaeMbWBAWGtp64ryBaMuFf+fUdZ97Eaa2RfJiSrohyCdapRu6ImA2TcYfnF2Jv
-         6Hd1l4yC2r+qrnFrZy18Sh6xJg1HNe0Mj1H+9e/+CWBSYQz2cdtBOrw2fHt7mtIovwJs
-         4jGXCAqql38DIwl/0yI00VN/VFznOa88xytAK4ZMGRLvPPTAzJ84xL5CkCnhI5pyMI+U
-         uFjvqQ/dB4H9/Su6fGLSnfz/IiziGK0BrCnxGvjrUePOvbfCA5pJTNF6qcVGBja+mm8z
-         qgUw==
-X-Gm-Message-State: AO0yUKWKcAnN0RHhCZWq64mGg8uHympppSUflXpAld5Jc4qpKKuxRXoY
-	6aV/MeMTV2RcKinHF1MxfPw/Vw==
-X-Google-Smtp-Source: AK7set/LYZ0DlptJM/8MELucz4/oGHkq3EnrHPTYhMfuT7mKai/9dPxEnYLdjBR81HUtP0VXeg3Zow==
-X-Received: by 2002:a5d:9046:0:b0:71d:63e5:7b5f with SMTP id v6-20020a5d9046000000b0071d63e57b5fmr11461339ioq.2.1676074543415;
-        Fri, 10 Feb 2023 16:15:43 -0800 (PST)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id n10-20020a5ed90a000000b0073a312aaae5sm1725931iop.36.2023.02.10.16.15.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Feb 2023 16:15:42 -0800 (PST)
-Message-ID: <dae27584-faf7-f132-1272-cb21248e5fa9@linuxfoundation.org>
-Date: Fri, 10 Feb 2023 17:15:41 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PDCqQ61Cyz3cGm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 12:35:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676079363; x=1707615363;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eNTrJHvMrhMHFO9hWWhp+xMx68MfxBnXu8L3fwRI0e4=;
+  b=FjGHBfbYv0Ke7CieN7jSe5cM0ODKhYdmtss5dvgLdbqM+pYbXUd+GcqB
+   wBvkjxnOiwVb1ef29xpp3Tg72LCVpfDv9N8AylFXnv99aEwHTPzOGNCUk
+   E8SRzAf1aJ8BXpJasvS0q4CaB3lSTmVlBeLAznRXhVKZ8/LcKEusEevpX
+   7MdSA6wMAMb3JIHbbhCTgL/q43pLYQ5yNLGkpBcTzCHUNHDCyIoNtB3kr
+   dtw6pmjhKZEuvcIQ3PMC2W0jJ9nBGfRzx56HhT7R3wzBVFRqLK0GghqVI
+   40mgm67gY6Wmqsf/5fK8jokrOIfjK0mD71ixHi1zZ0gtnjpcIEECNevpH
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="331873791"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="331873791"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 17:35:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="618070330"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="618070330"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 10 Feb 2023 17:35:52 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pQenw-0006AF-0B;
+	Sat, 11 Feb 2023 01:35:52 +0000
+Date: Sat, 11 Feb 2023 09:35:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ 231635a26513955fea98638e79e0a43734976c3b
+Message-ID: <63e6f0cb.yvTEMYUxJn3OQ+8X%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 00/34] selftests: Fix incorrect kernel headers search path
-Content-Language: en-US
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Christoph Hellwig <hch@lst.de>
-References: <20230127135755.79929-1-mathieu.desnoyers@efficios.com>
- <560824bd-da2d-044c-4f71-578fc34a47cd@linuxfoundation.org>
- <799b87d9-af19-0e6a-01b7-419b4893a0df@linuxfoundation.org>
- <975995d6-366a-88e3-2321-f0728f7e22a7@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <975995d6-366a-88e3-2321-f0728f7e22a7@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,90 +70,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/3/23 18:06, Shuah Khan wrote:
-> On 2/1/23 19:07, Shuah Khan wrote:
->> Hi Mathieu,
->>
->> On 1/30/23 15:29, Shuah Khan wrote:
->>> On 1/27/23 06:57, Mathieu Desnoyers wrote:
->>>> Hi,
->>>>
->>>> This series fixes incorrect kernel header search path in kernel
->>>> selftests.
->>>>
->>>> Near the end of the series, a few changes are not tagged as "Fixes"
->>>> because the current behavior is to rely on the kernel sources uapi files
->>>> rather than on the installed kernel header files. Nevertheless, those
->>>> are updated for consistency.
->>>>
->>>> There are situations where "../../../../include/" was added to -I search
->>>> path, which is bogus for userspace tests and caused issues with types.h.
->>>> Those are removed.
->>>>
->>
->> Thanks again for taking care of this. I did out of tree build testing on
->> x86 on linux-kselftest next with these patches below. I haven't seen
->> any problems introduced by the patch set.
->>
->>>>    selftests: dma: Fix incorrect kernel headers search path
->> This one needs a change and I will send a patch on top of yours.
->> Even with that this test depends on unexported header from the
->> repo and won't build out of tree. This is not related to your
->> change.
->>
->>>>    selftests: mount_setattr: Fix incorrect kernel headers search path
->> This one fails to build with our without patch - an existing error.
->>
->> I have to do cross-build tests on arm64 and other arch patches still.
->> This will happen later this week.
-> 
-> arm64, s390 patches look good.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 231635a26513955fea98638e79e0a43734976c3b  powerpc/kcsan: Add KCSAN Support
 
-I am seeing problem with selftests/dma and selfttests/user_events.
+elapsed time: 733m
 
-1. selftests: dma: Fix incorrect kernel headers search path
+configs tested: 73
+configs skipped: 3
 
-dma test no longer builds. This test depends on linux/map_benchmark.h
-which is not included in uapi
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The order of include directorries -isystem followed by installed kernel
-headers, breaks the test build with the change to use KHDR_INCLUDES
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230210
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm                  randconfig-r046-20230210
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+sh                               allmodconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+x86_64                               rhel-8.3
 
+clang tested configs:
+hexagon              randconfig-r041-20230210
+hexagon              randconfig-r045-20230210
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+riscv                randconfig-r042-20230210
+s390                 randconfig-r044-20230210
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
 
-I am going to revert this patch for now and figure a longer term fix.
-The problem is the dependency on a non-uapi file: linux/map_benchmark.h
-
-Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common
-header file for map_benchmark definition") change added this
-dependency on including linux/map_benchmark.h
-
-Christoph, Do you see this map_benchmark.h as part of uapi?
-
-
-2. selftests: user_events: Fix incorrect kernel headers search path
-This one depends on linux/user_events.h which has bee removed from
-uapi in this commit:
-
-commit 5cfff569cab8bf544bab62c911c5d6efd5af5e05
-Author: Steven Rostedt (Google) <rostedt@goodmis.org>
-Date:   Fri Apr 1 14:39:03 2022 -0400
-
-     tracing: Move user_events.h temporarily out of include/uapi
-
-This isn't a regression from 6.2 - this test stopped building once
-user_events.h has been removed from uapi. I will add a note that
-this test depends on a non-uapi header and can't be built at the
-moment.
-
-thanks,
--- Shuah
-
-
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
