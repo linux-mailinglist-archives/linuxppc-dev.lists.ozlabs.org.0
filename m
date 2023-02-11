@@ -2,59 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5637692C8E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 02:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 023F6692C9D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 02:46:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PDCrR56D6z3f8f
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 12:36:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PDD3p6CM5z3f8h
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Feb 2023 12:46:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FjGHBfbY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fBLQZoJ+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FjGHBfbY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fBLQZoJ+;
 	dkim-atps=neutral
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PDCqQ61Cyz3cGm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 12:35:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PDD2r1zjxz3083
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Feb 2023 12:45:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676079363; x=1707615363;
+  t=1676079956; x=1707615956;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=eNTrJHvMrhMHFO9hWWhp+xMx68MfxBnXu8L3fwRI0e4=;
-  b=FjGHBfbYv0Ke7CieN7jSe5cM0ODKhYdmtss5dvgLdbqM+pYbXUd+GcqB
-   wBvkjxnOiwVb1ef29xpp3Tg72LCVpfDv9N8AylFXnv99aEwHTPzOGNCUk
-   E8SRzAf1aJ8BXpJasvS0q4CaB3lSTmVlBeLAznRXhVKZ8/LcKEusEevpX
-   7MdSA6wMAMb3JIHbbhCTgL/q43pLYQ5yNLGkpBcTzCHUNHDCyIoNtB3kr
-   dtw6pmjhKZEuvcIQ3PMC2W0jJ9nBGfRzx56HhT7R3wzBVFRqLK0GghqVI
-   40mgm67gY6Wmqsf/5fK8jokrOIfjK0mD71ixHi1zZ0gtnjpcIEECNevpH
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="331873791"
+  bh=s98rh4gdhEnFpMbioS0eSDEE88PNBvO3K5iqVKCM8tM=;
+  b=fBLQZoJ+3FIn8X2jQjSWbBUTxNKTqWnS4BmgLm8+h9HNZFOpbx9TbIG7
+   EZtX8nRLeDzBMlr/gru09VR1MJttObGt2AVmIsa5mt3lpOArn9rV2cQrv
+   CeD1HF4ECkpKaeOg71ivT9rh+YoaVK+bB1A8sZUN+PA5WSPBj09kdrAsv
+   KhrRcU8GvtPhdVe4wazEQIdKfK0dhaCd1/bOedZUBMYKLBKIFUFiNvdMD
+   cKUO1Gcq93GBwT5iDxHINrqv8/hxUoopgflR33i5Q+uFnQg9e+Yk8DKE+
+   FYX9qXEX9iwMpNsl/DxOt5XleVyNbOLT0s/GBGcTsQdmtacRFfJmo+WN4
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="331874410"
 X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
-   d="scan'208";a="331873791"
+   d="scan'208";a="331874410"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 17:35:53 -0800
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 17:45:54 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="618070330"
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="618071726"
 X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
-   d="scan'208";a="618070330"
+   d="scan'208";a="618071726"
 Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 10 Feb 2023 17:35:52 -0800
+  by orsmga003.jf.intel.com with ESMTP; 10 Feb 2023 17:45:53 -0800
 Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1pQenw-0006AF-0B;
-	Sat, 11 Feb 2023 01:35:52 +0000
-Date: Sat, 11 Feb 2023 09:35:07 +0800
+	id 1pQexc-0006AR-0k;
+	Sat, 11 Feb 2023 01:45:52 +0000
+Date: Sat, 11 Feb 2023 09:44:54 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 231635a26513955fea98638e79e0a43734976c3b
-Message-ID: <63e6f0cb.yvTEMYUxJn3OQ+8X%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ e4d432f204d77e853b9d55810ebc877fa6d69a3d
+Message-ID: <63e6f316.NEUtjCLaUngS0Iw8%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,10 +74,10 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 231635a26513955fea98638e79e0a43734976c3b  powerpc/kcsan: Add KCSAN Support
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: e4d432f204d77e853b9d55810ebc877fa6d69a3d  integrity/powerpc: Support loading keys from PLPKS
 
-elapsed time: 733m
+elapsed time: 743m
 
 configs tested: 73
 configs skipped: 3
