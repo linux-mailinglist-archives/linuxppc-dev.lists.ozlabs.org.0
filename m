@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEC769387F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Feb 2023 17:27:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDC36938DC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Feb 2023 17:54:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFCYV0knsz3bgy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 03:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFD942fZdz3bkV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 03:54:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHZ1dOpc;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kG+y7CGc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHZ1dOpc;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFCXX6GNXz3bg5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 03:26:36 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id A62E8B80D33;
-	Sun, 12 Feb 2023 16:26:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8E1C433D2;
-	Sun, 12 Feb 2023 16:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676219190;
-	bh=PHaVWIiDiKuPiyj9CpZVeYgSGEpSXGrmMvcZSQN2a1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WHZ1dOpcNlciKJV60ceMatG/ln4gwqhaZjp3ZE5RHjwYiIsNbKgPfiLOmHrkEtBNT
-	 0LBqZ54vZ15wL/dO9fbXmNbGA5IZXywhsLgmuVeT8Mxh6nsVQ2XXz5mIslqXmGe9/g
-	 AzIa8vrmuhuYMA0WsrKUzqY1iJ2X6VnzRjkJW1xeJOjb+i+e+3nJ6w3tM54rnCLk9r
-	 bZn+yK6CEohAWfFi7LJuH0EYEVZLCz4dM4UGrtoZL997U+pcfquEEXsVB3fsWZbkQi
-	 9pDJGG+mrF8objq54yFjgqFeB5zDvEOjRdynh9jYkrT7/GybhbLGr2AHJa/rTTFxa0
-	 QsuwvU4Larsqw==
-Date: Sun, 12 Feb 2023 18:26:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 4/4] mm, arch: add generic implementation of
- pfn_valid() for FLATMEM
-Message-ID: <Y+kTHsaq8FAG72CX@kernel.org>
-References: <20230129124235.209895-1-rppt@kernel.org>
- <20230129124235.209895-5-rppt@kernel.org>
- <20230212161320.GA3784076@roeck-us.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFD825Rl3z3bg9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 03:53:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=e3QIGkPYOypBTQQmE9saiNs12hwhbdowV8aUrohay2Q=; b=kG+y7CGc+2oevUYz8TVScNnTyS
+	IDEfP0PJeHpnLR0zBg2rbd2i3NeHUSI02DSNjCpDQAXqFEnlLas9Kw86v0MvXhNypk2/BoDFCiW7W
+	guE3qmjD0z0RTmyOk6n70oPNRXxlJS3rSpfZfMbHtix0kiLqM+YiOoLokI2t588dKM/7S733xNQa2
+	lv/W0P9mdBRFAZkfcIl5CjYjMm0yPRPzV3yTRumKCxEZra8fll+w0denCUFWT5f7VkjWehNRjFN39
+	jLFKPr/1bTRAFAEqfrE6Cod3xovw/n0TbSWA02GdmarsHmYCSAe6x1OsxlVAag8Jdx6kKObUnQ73s
+	NUdy41Ew==;
+Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pRFbI-004zkP-Ng; Sun, 12 Feb 2023 16:53:17 +0000
+Message-ID: <06917dd0-c4f1-c80a-16a7-f2baac47027d@infradead.org>
+Date: Sun, 12 Feb 2023 08:53:07 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230212161320.GA3784076@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 04/11] drivers/ps3: Read video= option with
+ fb_get_option()
+To: Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
+ airlied@gmail.com, deller@gmx.de, javierm@redhat.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230209135509.7786-1-tzimmermann@suse.de>
+ <20230209135509.7786-5-tzimmermann@suse.de>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <20230209135509.7786-5-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,31 +61,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Mic
- hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Huacai Chen <chenhuacai@loongson.cn>
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Guenter,
+Hi Thomas,
 
-On Sun, Feb 12, 2023 at 08:13:20AM -0800, Guenter Roeck wrote:
-> On Sun, Jan 29, 2023 at 02:42:35PM +0200, Mike Rapoport wrote:
-> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > 
-> > Every architecture that supports FLATMEM memory model defines its own
-> > version of pfn_valid() that essentially compares a pfn to max_mapnr.
-> > 
-> > Use mips/powerpc version implemented as static inline as a generic
-> > implementation of pfn_valid() and drop its per-architecture definitions.
-> > 
+On 2/9/23 05:55, Thomas Zimmermann wrote:
+> Get the kernel's global video= parameter with fb_get_option(). Done
+> to unexport the internal fbdev state fb_mode_config. No functional
+> changes.
 > 
-> With this patch in the tree, sh4 and sh4eb qemu emulations no longer boot.
-> Reverting this patch fixes the problem.
- 
-Can you please test with only partial revert for arch/sh?
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>  drivers/ps3/ps3av.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 
-> Guenter
+I wanted to test these changes on the PS3, but got this
+error when trying to apply this patch set to Linux-6.2-rc7:
 
--- 
-Sincerely yours,
-Mike.
+  Applying: fbdev: Handle video= parameter in video/cmdline.c
+  error: patch failed: drivers/gpu/drm/Kconfig:10
+  error: drivers/gpu/drm/Kconfig: patch does not apply
+
+Is there a Linux kernel revision that these will apply to,
+or is there a git repository I can pull them from?
+
+-Geoff
