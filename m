@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEC2693E3D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 07:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3C5693E69
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 07:38:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFZB82226z3c9N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 17:26:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFZRD5Vw2z3c6X
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 17:38:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oDTaHYE7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k6tlOEQZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::234; helo=mail-oi1-x234.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c33; helo=mail-oo1-xc33.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oDTaHYE7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k6tlOEQZ;
 	dkim-atps=neutral
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFZ974C9Sz3bbX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 17:26:01 +1100 (AEDT)
-Received: by mail-oi1-x234.google.com with SMTP id c15so9361325oic.8
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Feb 2023 22:26:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFZQF5zkxz3bhT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 17:37:23 +1100 (AEDT)
+Received: by mail-oo1-xc33.google.com with SMTP id r192-20020a4a37c9000000b00517677496d0so1098685oor.13
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Feb 2023 22:37:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WBfrO2gGyOvBRZ1A5wp4UK8YioFxtCNN29YZ0C6yJUM=;
-        b=oDTaHYE7Ifi7cTfoJaBKOA+euRlCFlo+ykP9tRkGsweDWCjfPlRLBkVyxOHGFcmNqc
-         PSZTRHnsx3UreCHv1p9ynDEvrC5nGpdC4VXbwWYrd2yYwCkykGDPLP2SNyHtKIRZ0Fzf
-         m5Q5HPiFjmx/8JH/hVxhNaJo4GLuifz/a00mQ5ccFU5DlCskiDprH6pwoBt/q7h6DDjY
-         XLGT8w6vJ24mYBL9QM1YV+CRlakf167YfDtx3KOo8lkNAunfJWM4pqGoRQPXTLOlgYkl
-         nosLoRl5OZPv9+Xx589w5Zoaba/auqZwvIrVa4S9ZAslff1MJvy24KQ2HNmX2D2e/q/v
-         LF/A==
+        bh=r+mD21wjZ7sbz4e4MxBS6xbK/1FhjAg9+awm6A789ww=;
+        b=k6tlOEQZNhmHTa+ZCajRLjNoXOkqSfo4mR8OrWgNmaL2MKywaTjKPH0ulYH6V9boxY
+         52UWHSIcC8rNsw1dQfTkq/COZKRQGSqbB6Kc2G15s3DFFoFMZdeK0fle1rX83pU7KJ4L
+         ++BO1fcXWC7mjkIEb9evuvP+OSvCviMd3N1ZHNescW7Lpv6a0HL6BarepuSkif6zPqmJ
+         C0miEzpiGke8zc2vSBRq5eRVJsUX8UcbybG0D55ni/6ICUXuIpztwVcd4DNb/6z3a9gS
+         0Q6J9mDHSQbj/EfASGYAa6yP1HnW6//0d7Bxm++QcZv8+DAFF4S+17znkvYeLv4XlC8U
+         Iyig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WBfrO2gGyOvBRZ1A5wp4UK8YioFxtCNN29YZ0C6yJUM=;
-        b=lus3rEgeT5wATBQBJv+ec36s/bLTpgOnr7Yw7rupDw4ZgqRNp3ELoDh4uiw2F5c/RC
-         bH8HZBljW5CJ4GRac2OvRdz5klbXYjdbLpccs4H8/v2MQXWkOQPTrD2z/Coc4edCN6CG
-         6tZsaxJPbE+bKQXG7cdOhJ0qxObiTtgD1Jgd9Q8Z9AnhnqcNy/gz2EgysAybdr0C+K2s
-         6oDAY14RjFK7kBoYaXrd70SROuMwqTVaet5QrihauFa/bOFaMvfEKfiYYBfbMarOyVeL
-         Jee6hxGmRWjj4soodAFep//LeqKzltvV1XLFnZB4xM3mpyYHXSq4Ifq9T5csabNfzMYQ
-         /WTA==
-X-Gm-Message-State: AO0yUKUtzU9v+LDGklWvl0FJrXOzY/hv9OydH13+Swlf9QCYBAUTpEfj
-	74JWaGept782AszObVPUIno=
-X-Google-Smtp-Source: AK7set/+6jsdhTf2sJtfJcDHaoQnUg14v4tlGoQakT99S8J8gTSqtG1+VHr+8pC/SE0SaaNJlMokqg==
-X-Received: by 2002:a05:6808:d2:b0:363:b918:643b with SMTP id t18-20020a05680800d200b00363b918643bmr10584927oic.31.1676269558366;
-        Sun, 12 Feb 2023 22:25:58 -0800 (PST)
+        bh=r+mD21wjZ7sbz4e4MxBS6xbK/1FhjAg9+awm6A789ww=;
+        b=ngNXo85c/F0cHSKC+xDWNBd3Q8mrqButEYu0ppWVsCw0RlpzOgdAHI0DnDMYRU9QSs
+         pWXcUFzA8B/7gr2KPQSg3qgsHZihAY/NVsKj8VSq5/I9dm84a3ai2gb12WOMwS3JnqzY
+         B5xk0HeMUYKuTQc8jpY4PTMx+yR8qTkDpTDpArzhYs94tb+d+9sYkOGNldqnt69j6fhu
+         1XUIUBp4FOe/5+z6GFfFeT1n3fj2k4PEsGa+YAfcwK1bJhx6YzZ0BgtDwpKKOD7p5eIP
+         Pa0PxXBnYYsN8Qq70/8SCnGtpiWH5BDtKjIRr0uYCMMIhM0C85IIsbn63jgogNHhPtLb
+         O52g==
+X-Gm-Message-State: AO0yUKUHbhw7a7WJruZzRm8PpvNvzdKk53wjr0riJK0RmGQn7svhfLbn
+	XuIBL9cFrEWEWJc1cYUdNr4=
+X-Google-Smtp-Source: AK7set8CrGfl+FsDAT8ZOxZzNC5b1OZaQkksHfF8KDK4IpXQlQWLkqRaCxpy9jhC5xUjdOk1jrrITw==
+X-Received: by 2002:a4a:d623:0:b0:512:2016:53e5 with SMTP id n3-20020a4ad623000000b00512201653e5mr12513885oon.6.1676270240292;
+        Sun, 12 Feb 2023 22:37:20 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id dq3-20020a056808428300b0037d8148cf04sm1851027oib.46.2023.02.12.22.25.54
+        by smtp.gmail.com with ESMTPSA id b15-20020a4ad88f000000b004fc4000ae48sm4528998oov.15.2023.02.12.22.37.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Feb 2023 22:25:57 -0800 (PST)
-Message-ID: <8267dc7e-329f-73cf-b50e-9bf2606b8751@roeck-us.net>
-Date: Sun, 12 Feb 2023 22:25:52 -0800
+        Sun, 12 Feb 2023 22:37:19 -0800 (PST)
+Message-ID: <15a2c023-fdfa-9543-ac36-a846e5f8a000@roeck-us.net>
+Date: Sun, 12 Feb 2023 22:37:15 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH v2 2/4] m68k: use asm-generic/memory_model.h for both MMU
- and !MMU
+Subject: Re: [PATCH v2 4/4] mm, arch: add generic implementation of
+ pfn_valid() for FLATMEM
 Content-Language: en-US
 To: Mike Rapoport <rppt@kernel.org>
 References: <20230129124235.209895-1-rppt@kernel.org>
- <20230129124235.209895-3-rppt@kernel.org>
- <20230212173513.GA4052259@roeck-us.net> <Y+mPJYpVBk1YutDL@kernel.org>
+ <20230129124235.209895-5-rppt@kernel.org>
+ <20230212161320.GA3784076@roeck-us.net> <Y+mRz6Wfocopv9jw@kernel.org>
 From: Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <Y+mPJYpVBk1YutDL@kernel.org>
+In-Reply-To: <Y+mRz6Wfocopv9jw@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,63 +86,49 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Mic
- hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+ hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Huacai Chen <chenhuacai@loongson.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/12/23 17:15, Mike Rapoport wrote:
-> Hi,
-> 
-> On Sun, Feb 12, 2023 at 09:35:13AM -0800, Guenter Roeck wrote:
->> Hi,
->>
->> On Sun, Jan 29, 2023 at 02:42:33PM +0200, Mike Rapoport wrote:
+On 2/12/23 17:26, Mike Rapoport wrote:
+> On Sun, Feb 12, 2023 at 08:13:20AM -0800, Guenter Roeck wrote:
+>> On Sun, Jan 29, 2023 at 02:42:35PM +0200, Mike Rapoport wrote:
 >>> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 >>>
->>> The MMU variant uses generic definitions of page_to_pfn() and
->>> pfn_to_page(), but !MMU defines them in include/asm/page_no.h for no
->>> good reason.
+>>> Every architecture that supports FLATMEM memory model defines its own
+>>> version of pfn_valid() that essentially compares a pfn to max_mapnr.
 >>>
->>> Include asm-generic/memory_model.h in the common include/asm/page.h and
->>> drop redundant definitions.
+>>> Use mips/powerpc version implemented as static inline as a generic
+>>> implementation of pfn_valid() and drop its per-architecture definitions.
 >>>
->>> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
->>> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->>> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 >>
->> This patch results in a boot failure when trying to boot the mcf5208evb qemu
->> emulation. Reverting it together with "mm, arch: add generic implementation
->> of pfn_valid() for FLATMEM" fixes the problem. There is no error log - the
->> emulation hangs silently until aborted.
+>> With this patch in the tree, sh4 and sh4eb qemu emulations no longer boot.
+>> Reverting this patch fixes the problem.
 > 
-> With the patch below I was able to get to the mount of the root file system,
-> but I don't have one, so I couldn't test the boot properly.
+> This should be a better fix than a revert:
 > 
-> diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
-> index 43ff6b109ebb..060e4c0e7605 100644
-> --- a/arch/m68k/include/asm/page_no.h
-> +++ b/arch/m68k/include/asm/page_no.h
-> @@ -28,6 +28,8 @@ extern unsigned long memory_end;
->   #define	virt_addr_valid(kaddr)	(((unsigned long)(kaddr) >= PAGE_OFFSET) && \
->   				((unsigned long)(kaddr) < memory_end))
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index 506784702430..bf1b54055316 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -301,6 +301,7 @@ void __init paging_init(void)
+>   	 */
+>   	max_low_pfn = max_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
+>   	min_low_pfn = __MEMORY_START >> PAGE_SHIFT;
+> +	set_max_mapnr(max_low_pfn - min_low_pfn);
 >   
-> +#define ARCH_PFN_OFFSET PHYS_PFN(PAGE_OFFSET_RAW)
-> +
->   #endif /* __ASSEMBLY__ */
->   
->   #endif /* _M68K_PAGE_NO_H */
+>   	nodes_clear(node_online_map);
 >   
 
-Yes, that works.
+Confirmed, this fixes the problem for me.
 
 Thanks,
 Guenter
 
+>   
 >> Guenter
 >>
 >> ---
->> bisect log:
->>
 >> # bad: [6ba8a227fd19d19779005fb66ad7562608e1df83] Add linux-next specific files for 20230210
 >> # good: [4ec5183ec48656cec489c49f989c508b68b518e3] Linux 6.2-rc7
 >> git bisect start 'HEAD' 'v6.2-rc7'
@@ -170,10 +156,8 @@ Guenter
 >> git bisect bad b704c765b08cabe82adf76a4d1a74f3688eee410
 >> # bad: [e5734c8b0edfd2a053a5c256189586a3b1e9f63d] mm, arch: add generic implementation of pfn_valid() for FLATMEM
 >> git bisect bad e5734c8b0edfd2a053a5c256189586a3b1e9f63d
->> # bad: [ad8aecea034c591b9754bc5908da9719853aa7fa] mips: drop definition of pfn_valid() for DISCONTIGMEM
->> git bisect bad ad8aecea034c591b9754bc5908da9719853aa7fa
->> # bad: [1f6271a0dfdf952c2e3981f424784d48f243a2be] m68k: use asm-generic/memory_model.h for both MMU and !MMU
->> git bisect bad 1f6271a0dfdf952c2e3981f424784d48f243a2be
->> # first bad commit: [1f6271a0dfdf952c2e3981f424784d48f243a2be] m68k: use asm-generic/memory_model.h for both MMU and !MMU
+>> # good: [ad8aecea034c591b9754bc5908da9719853aa7fa] mips: drop definition of pfn_valid() for DISCONTIGMEM
+>> git bisect good ad8aecea034c591b9754bc5908da9719853aa7fa
+>> # first bad commit: [e5734c8b0edfd2a053a5c256189586a3b1e9f63d] mm, arch: add generic implementation of pfn_valid() for FLATMEM
 > 
 
