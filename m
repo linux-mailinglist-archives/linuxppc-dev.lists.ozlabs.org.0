@@ -2,57 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2EF693F33
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 08:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1512F694271
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 11:12:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFc8T2D80z3cB9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 18:55:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P/NLBLn1;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFgBV0L5fz3cGT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 21:12:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P/NLBLn1;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=2a02:1800:110:4::f00:10; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
+Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [IPv6:2a02:1800:110:4::f00:10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFc7W2PsCz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 18:54:47 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 16B7EB80E01;
-	Mon, 13 Feb 2023 07:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3884FC433EF;
-	Mon, 13 Feb 2023 07:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676274881;
-	bh=6metnuiv9QkmKFu+JTHLVBvZLre3nFtuNi3AR7PlA78=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P/NLBLn1QBccO0iLmwEVdjTRTOu/1JTVdr0CvbgYz4ThLcAoENpkQwi1mRk7/P19V
-	 Brn+rbVYSD8LBBQWtetps+o6x9tV427CYirqerxd+gmGggehAz5OXTZeiD3MkT7U29
-	 s/as2HenQlPGtPPTTf3fp/G4jLA+MmtrrPcey6hAK36CzGgOAg/0LtwnODYIfT0DI9
-	 MUeph4dw/P2V8jMyhN9SftHlhcEV/JNhGKIKb6cMv7netYSdbt356AlVVkhPoiPUvd
-	 r4aExWVaj3CL3McIngU/VdH3ENcuJwfiC6rBQVcgRCzZo3MtbE8U1j5N/4s5pn2pxp
-	 sfCWQJUUPJk8Q==
-Date: Mon, 13 Feb 2023 09:54:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 4/4] mm, arch: add generic implementation of
- pfn_valid() for FLATMEM
-Message-ID: <Y+nsqV6u/PqNlwDS@kernel.org>
-References: <20230129124235.209895-1-rppt@kernel.org>
- <20230129124235.209895-5-rppt@kernel.org>
- <20230212161320.GA3784076@roeck-us.net>
- <Y+mRz6Wfocopv9jw@kernel.org>
- <15a2c023-fdfa-9543-ac36-a846e5f8a000@roeck-us.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFg9s6HTxz3bqW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 21:11:59 +1100 (AEDT)
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4PFg9h0kWlz4x3xn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 11:11:52 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:5d34:d0af:a884:130e])
+	by laurent.telenet-ops.be with bizsmtp
+	id LaBq2900Q3vMoCy01aBqf9; Mon, 13 Feb 2023 11:11:51 +0100
+Received: from geert (helo=localhost)
+	by ramsan.of.borg with local-esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1pRVoM-008u3i-AL;
+	Mon, 13 Feb 2023 11:11:50 +0100
+Date: Mon, 13 Feb 2023 11:11:50 +0100 (CET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: linux-kernel@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.2-rc8
+In-Reply-To: <20230213100542.328169-1-geert@linux-m68k.org>
+Message-ID: <7154f87-ca35-4d13-7a7c-1e29105d3b8c@linux-m68k.org>
+References: <CAHk-=wj1=T1KzpPWbhqfFWOEp5Wf_kj3JjTHSHmEngf0-Vv7aA@mail.gmail.com> <20230213100542.328169-1-geert@linux-m68k.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15a2c023-fdfa-9543-ac36-a846e5f8a000@roeck-us.net>
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,50 +47,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Mic
- hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Huacai Chen <chenhuacai@loongson.cn>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew, 
+On Mon, 13 Feb 2023, Geert Uytterhoeven wrote:
+> JFYI, when comparing v6.2-rc8[1] to v6.2-rc7[3], the summaries are:
+>  - build errors: +11/-1
 
-On Sun, Feb 12, 2023 at 10:37:15PM -0800, Guenter Roeck wrote:
-> On 2/12/23 17:26, Mike Rapoport wrote:
-> > On Sun, Feb 12, 2023 at 08:13:20AM -0800, Guenter Roeck wrote:
-> > > On Sun, Jan 29, 2023 at 02:42:35PM +0200, Mike Rapoport wrote:
-> > > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > > > 
-> > > > Every architecture that supports FLATMEM memory model defines its own
-> > > > version of pfn_valid() that essentially compares a pfn to max_mapnr.
-> > > > 
-> > > > Use mips/powerpc version implemented as static inline as a generic
-> > > > implementation of pfn_valid() and drop its per-architecture definitions.
-> > > > 
-> > > 
-> > > With this patch in the tree, sh4 and sh4eb qemu emulations no longer boot.
-> > > Reverting this patch fixes the problem.
-> > 
-> > This should be a better fix than a revert:
-> > 
-> > diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> > index 506784702430..bf1b54055316 100644
-> > --- a/arch/sh/mm/init.c
-> > +++ b/arch/sh/mm/init.c
-> > @@ -301,6 +301,7 @@ void __init paging_init(void)
-> >   	 */
-> >   	max_low_pfn = max_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
-> >   	min_low_pfn = __MEMORY_START >> PAGE_SHIFT;
-> > +	set_max_mapnr(max_low_pfn - min_low_pfn);
-> >   	nodes_clear(node_online_map);
-> 
-> Confirmed, this fixes the problem for me.
- 
-What is your preference for this and m68k fix? Fixups on top of mm-stable
-or v3 of the entire series? 
+   + {standard input}: Error: unrecognized opcode: `dcbfl':  => 5736, 4743, 4327, 4476, 4447, 5067, 4602, 5212, 5224, 4298, 5594, 4315, 5050, 5195, 4464, 5079
+   + {standard input}: Error: unrecognized opcode: `dlmzb.':  => 2848, 18800, 2842, 2383, 106, 2377, 3327, 112
+   + {standard input}: Error: unrecognized opcode: `iccci':  => 204, 163, 510
+   + {standard input}: Error: unrecognized opcode: `lbarx':  => 570, 196
+   + {standard input}: Error: unrecognized opcode: `mbar':  => 887, 558, 1172, 539, 516, 837, 1457, 1125, 815, 7523, 1100, 1385, 368, 703, 662, 468, 441, 1410
+   + {standard input}: Error: unrecognized opcode: `mfdcr':  => 3589, 4358, 3565, 3493, 3614, 128, 3445, 276, 3518, 3541, 3469, 4413
+   + {standard input}: Error: unrecognized opcode: `mtdcr':  => 265, 4402, 4430, 4375, 4388, 4347, 117, 4443
+   + {standard input}: Error: unrecognized opcode: `stbcx.':  => 196, 570
+   + {standard input}: Error: unrecognized opcode: `tlbwe':  => 475, 476, 477
 
-> Thanks,
-> Guenter
+powerpc-gcc11/ppc64_book3e_allmodconfig
+powerpc-gcc11/powerpc-allmodconfig
+powerpc-gcc11/corenet64_smp_defconfig
+powerpc-gcc11/powerpc-allyesconfig
+powerpc-gcc11/44x/fsp2_defconfig
 
--- 
-Sincerely yours,
-Mike.
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ceaa837f96adb69c0df0397937cd74991d5d821a/ (all 152 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/4ec5183ec48656cec489c49f989c508b68b518e3/ (all 152 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
