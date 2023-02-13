@@ -2,78 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3C5693E69
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 07:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D70D693EB1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 08:07:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFZRD5Vw2z3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 17:38:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFb5B1sRcz3c6P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 18:07:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k6tlOEQZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tLxoYTtm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c33; helo=mail-oo1-xc33.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k6tlOEQZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tLxoYTtm;
 	dkim-atps=neutral
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFZQF5zkxz3bhT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 17:37:23 +1100 (AEDT)
-Received: by mail-oo1-xc33.google.com with SMTP id r192-20020a4a37c9000000b00517677496d0so1098685oor.13
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Feb 2023 22:37:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+mD21wjZ7sbz4e4MxBS6xbK/1FhjAg9+awm6A789ww=;
-        b=k6tlOEQZNhmHTa+ZCajRLjNoXOkqSfo4mR8OrWgNmaL2MKywaTjKPH0ulYH6V9boxY
-         52UWHSIcC8rNsw1dQfTkq/COZKRQGSqbB6Kc2G15s3DFFoFMZdeK0fle1rX83pU7KJ4L
-         ++BO1fcXWC7mjkIEb9evuvP+OSvCviMd3N1ZHNescW7Lpv6a0HL6BarepuSkif6zPqmJ
-         C0miEzpiGke8zc2vSBRq5eRVJsUX8UcbybG0D55ni/6ICUXuIpztwVcd4DNb/6z3a9gS
-         0Q6J9mDHSQbj/EfASGYAa6yP1HnW6//0d7Bxm++QcZv8+DAFF4S+17znkvYeLv4XlC8U
-         Iyig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r+mD21wjZ7sbz4e4MxBS6xbK/1FhjAg9+awm6A789ww=;
-        b=ngNXo85c/F0cHSKC+xDWNBd3Q8mrqButEYu0ppWVsCw0RlpzOgdAHI0DnDMYRU9QSs
-         pWXcUFzA8B/7gr2KPQSg3qgsHZihAY/NVsKj8VSq5/I9dm84a3ai2gb12WOMwS3JnqzY
-         B5xk0HeMUYKuTQc8jpY4PTMx+yR8qTkDpTDpArzhYs94tb+d+9sYkOGNldqnt69j6fhu
-         1XUIUBp4FOe/5+z6GFfFeT1n3fj2k4PEsGa+YAfcwK1bJhx6YzZ0BgtDwpKKOD7p5eIP
-         Pa0PxXBnYYsN8Qq70/8SCnGtpiWH5BDtKjIRr0uYCMMIhM0C85IIsbn63jgogNHhPtLb
-         O52g==
-X-Gm-Message-State: AO0yUKUHbhw7a7WJruZzRm8PpvNvzdKk53wjr0riJK0RmGQn7svhfLbn
-	XuIBL9cFrEWEWJc1cYUdNr4=
-X-Google-Smtp-Source: AK7set8CrGfl+FsDAT8ZOxZzNC5b1OZaQkksHfF8KDK4IpXQlQWLkqRaCxpy9jhC5xUjdOk1jrrITw==
-X-Received: by 2002:a4a:d623:0:b0:512:2016:53e5 with SMTP id n3-20020a4ad623000000b00512201653e5mr12513885oon.6.1676270240292;
-        Sun, 12 Feb 2023 22:37:20 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b15-20020a4ad88f000000b004fc4000ae48sm4528998oov.15.2023.02.12.22.37.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Feb 2023 22:37:19 -0800 (PST)
-Message-ID: <15a2c023-fdfa-9543-ac36-a846e5f8a000@roeck-us.net>
-Date: Sun, 12 Feb 2023 22:37:15 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFb4D2zrlz3brQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 18:06:51 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31D5H9DB023820;
+	Mon, 13 Feb 2023 07:06:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=qWEsjfSLm20NR7cgu39EiHHZE+a5Ptdfs1rUWc2ZQGs=;
+ b=tLxoYTtm1xfLzpt/C33zO1FF85kivIj0Z9X5/mCqOYOgU9m6d9b6sEVTcm0SlNRL+kDn
+ ntL0JZyUbSEUGTWk/6HejMzx51SD0u5Tw6VhjzjSbU9LEe7IsgGN/oaC3bmNVZyBC/yW
+ LuuGzg3RRQYNJBBNZbGVOBrXbD5Dd/iE1jUUTkIfH1WlNjTh28q7FHiXJYdsS38HViTC
+ lORwdP4g43JGs2BHIbNKJZybFav70nmJNK9a2O1fg73lnCBxncus5A66SO7qO6bfgLe8
+ E//BMGV/JabSob/ZfaLoUneyjKgsPPGnDwsIQI4vzmBJtm5MUGVv0yoS8AN+ldBn599U Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nq4ftb4jp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 07:06:44 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31D6w7er003800;
+	Mon, 13 Feb 2023 07:06:44 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nq4ftb4hv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 07:06:44 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31CIH0qt017758;
+	Mon, 13 Feb 2023 07:06:42 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3np2n6j8mw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 07:06:42 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31D76ds015860402
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Feb 2023 07:06:39 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A21D72004D;
+	Mon, 13 Feb 2023 07:06:39 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 28DF920040;
+	Mon, 13 Feb 2023 07:06:39 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Feb 2023 07:06:39 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3E80C60418;
+	Mon, 13 Feb 2023 18:06:37 +1100 (AEDT)
+Message-ID: <6a7d93a51d19e0cec28b2169d1ab0262148ff717.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 24/26] powerpc/pseries: Implement secvars for dynamic
+ secure boot
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-integrity@vger.kernel.org
+Date: Mon, 13 Feb 2023 18:06:36 +1100
+In-Reply-To: <f35e9ba1-5fdb-4cfa-5b41-cc55307dcd45@linux.ibm.com>
+References: <20230210080401.345462-1-ajd@linux.ibm.com>
+	 <20230210080401.345462-25-ajd@linux.ibm.com>
+	 <f35e9ba1-5fdb-4cfa-5b41-cc55307dcd45@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2 4/4] mm, arch: add generic implementation of
- pfn_valid() for FLATMEM
-Content-Language: en-US
-To: Mike Rapoport <rppt@kernel.org>
-References: <20230129124235.209895-1-rppt@kernel.org>
- <20230129124235.209895-5-rppt@kernel.org>
- <20230212161320.GA3784076@roeck-us.net> <Y+mRz6Wfocopv9jw@kernel.org>
-From: Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <Y+mRz6Wfocopv9jw@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: poTtsvcm-YPlY9HrCe3JDzzg6sEAZ6bL
+X-Proofpoint-ORIG-GUID: f0dY8lXzRFscAF21b2e9zPbht2vgGy0s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-13_02,2023-02-09_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ clxscore=1015 phishscore=0 impostorscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=820 spamscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302130063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,79 +106,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Mic
- hal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Huacai Chen <chenhuacai@loongson.cn>
+Cc: sudhakar@linux.ibm.com, erichte@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, gjoyce@linux.ibm.com, ruscur@russell.cc, joel@jms.id.au, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/12/23 17:26, Mike Rapoport wrote:
-> On Sun, Feb 12, 2023 at 08:13:20AM -0800, Guenter Roeck wrote:
->> On Sun, Jan 29, 2023 at 02:42:35PM +0200, Mike Rapoport wrote:
->>> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
->>>
->>> Every architecture that supports FLATMEM memory model defines its own
->>> version of pfn_valid() that essentially compares a pfn to max_mapnr.
->>>
->>> Use mips/powerpc version implemented as static inline as a generic
->>> implementation of pfn_valid() and drop its per-architecture definitions.
->>>
->>
->> With this patch in the tree, sh4 and sh4eb qemu emulations no longer boot.
->> Reverting this patch fixes the problem.
-> 
-> This should be a better fix than a revert:
-> 
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 506784702430..bf1b54055316 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -301,6 +301,7 @@ void __init paging_init(void)
->   	 */
->   	max_low_pfn = max_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
->   	min_low_pfn = __MEMORY_START >> PAGE_SHIFT;
-> +	set_max_mapnr(max_low_pfn - min_low_pfn);
->   
->   	nodes_clear(node_online_map);
->   
+On Fri, 2023-02-10 at 16:23 -0500, Stefan Berger wrote:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy(&flags, data, sizeof(=
+flags));
+>=20
+> conversion from bytestream to integer: I think in this case it would
+> be better to use
+>=20
+> flags =3D cpu_to_be64p((__u64*)data);
+>=20
+> so that the flags always in hypervisor/big endian format
 
-Confirmed, this fixes the problem for me.
+Thanks for catching this - it turns out we weren't properly testing the
+one flag that exists (append vs replace) in our test script, so I
+didn't notice this.
 
-Thanks,
-Guenter
-
->   
->> Guenter
->>
->> ---
->> # bad: [6ba8a227fd19d19779005fb66ad7562608e1df83] Add linux-next specific files for 20230210
->> # good: [4ec5183ec48656cec489c49f989c508b68b518e3] Linux 6.2-rc7
->> git bisect start 'HEAD' 'v6.2-rc7'
->> # good: [94613f0efc69ed41f9229ef5c294db3ec37145da] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git
->> git bisect good 94613f0efc69ed41f9229ef5c294db3ec37145da
->> # good: [19e62c715fe70dae4582c2874ed3e66715d09af6] Merge branch 'rcu/next' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git
->> git bisect good 19e62c715fe70dae4582c2874ed3e66715d09af6
->> # good: [5d8b7ecef7f4a681b6e5538db59ff26c389c0ab6] Merge branch 'for-next' of https://gitlab.com/peda-linux/mux.git
->> git bisect good 5d8b7ecef7f4a681b6e5538db59ff26c389c0ab6
->> # good: [c349bf6ec83903b20fe570c5609b9a864a64e09c] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/krisman/unicode.git
->> git bisect good c349bf6ec83903b20fe570c5609b9a864a64e09c
->> # good: [5a06a9f17454df38f35672be522ff5eb9b4277d2] selftest: add testing unsharing and counting ksm zero page
->> git bisect good 5a06a9f17454df38f35672be522ff5eb9b4277d2
->> # bad: [f5d115a7b06e5661ed5218ffa9a2644c4ff1c135] Merge branch 'mm-nonmm-unstable' into mm-everything
->> git bisect bad f5d115a7b06e5661ed5218ffa9a2644c4ff1c135
->> # bad: [acb018d6ea0c055381fba7dddaef386ee28f8075] mm/vmalloc.c: allow vread() to read out vm_map_ram areas
->> git bisect bad acb018d6ea0c055381fba7dddaef386ee28f8075
->> # good: [1a5d9782ac969dc6e61c6786500b5160603188ea] mm/mmap: remove __vma_adjust()
->> git bisect good 1a5d9782ac969dc6e61c6786500b5160603188ea
->> # good: [4b32363697de957dcc890b6245bec3f58903639a] arm: include asm-generic/memory_model.h from page.h rather than memory.h
->> git bisect good 4b32363697de957dcc890b6245bec3f58903639a
->> # bad: [328cf3fa6682ce6a4de6f8bb8009c833dc33f3c8] mm/migrate: convert isolate_movable_page() to use folios
->> git bisect bad 328cf3fa6682ce6a4de6f8bb8009c833dc33f3c8
->> # bad: [b704c765b08cabe82adf76a4d1a74f3688eee410] mm/mempolicy: convert queue_pages_pmd() to queue_folios_pmd()
->> git bisect bad b704c765b08cabe82adf76a4d1a74f3688eee410
->> # bad: [e5734c8b0edfd2a053a5c256189586a3b1e9f63d] mm, arch: add generic implementation of pfn_valid() for FLATMEM
->> git bisect bad e5734c8b0edfd2a053a5c256189586a3b1e9f63d
->> # good: [ad8aecea034c591b9754bc5908da9719853aa7fa] mips: drop definition of pfn_valid() for DISCONTIGMEM
->> git bisect good ad8aecea034c591b9754bc5908da9719853aa7fa
->> # first bad commit: [e5734c8b0edfd2a053a5c256189586a3b1e9f63d] mm, arch: add generic implementation of pfn_valid() for FLATMEM
-> 
-
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
