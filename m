@@ -1,43 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B3869478E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 14:59:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AD1694889
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 15:48:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFmDD1YhLz3cCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 00:59:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFnJL2zqxz3cCL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 01:48:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FneBY2U1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=h08.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 313 seconds by postgrey-1.36 at boromir; Tue, 14 Feb 2023 00:58:51 AEDT
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FneBY2U1;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFmCb5rklz3bXv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 00:58:51 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 019173000794D;
-	Mon, 13 Feb 2023 14:53:28 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id D8E261E172; Mon, 13 Feb 2023 14:53:27 +0100 (CET)
-Date: Mon, 13 Feb 2023 14:53:27 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v6 6/7] PCI: pciehp: Rely on `link_active_reporting'
-Message-ID: <20230213135327.GA29595@wunner.de>
-References: <alpine.DEB.2.21.2302022022230.45310@angie.orcam.me.uk>
- <alpine.DEB.2.21.2302051459210.33812@angie.orcam.me.uk>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFnHM4zqfz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 01:47:11 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31DDUiKu008361;
+	Mon, 13 Feb 2023 14:47:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=QPbIJT1R+C2zP+fBcszLLqmmE3eMP/+u6XJt5DvBiW8=;
+ b=FneBY2U1OErUNU2JlBwGEG+b0Ejt5GsE0ydoS4FWAftWhS/3bxddSiYo2H35310C2YDC
+ o0OHzUWtCjpbySOJ/gJqX8WXhJYqRmWNYpfABUmbVoiag2vTMMpScKb6zfhMtjwt5dOX
+ M8b9Eedop7ChEhbnBZ3eojwCdN8+bKUlBCJ0GJ97NfYRHIcM/N99ZhUvHm82r5mHbppW
+ vtsRQV1dZyxeQE6BCdt+x5QNRxuGEJkJkPzg05lzSU8KCiHgDuhmn6SJkIit5Fq+TV6B
+ e+4eX+xJxwzMH2mI9BjdnEbJBMwkrOyV7TsiKLpsEsVpOgzn7cqryG0ONmkJFCshDrQm UA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nqp5et605-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 14:47:01 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31DEkBij032281;
+	Mon, 13 Feb 2023 14:47:01 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nqp5et5w8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 14:47:01 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31DDJh5a000883;
+	Mon, 13 Feb 2023 14:46:53 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3np2n75mg6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Feb 2023 14:46:52 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31DEkoWi590432
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Feb 2023 14:46:51 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBCB658065;
+	Mon, 13 Feb 2023 14:46:50 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B279A5805A;
+	Mon, 13 Feb 2023 14:46:50 +0000 (GMT)
+Received: from localhost (unknown [9.211.96.43])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Feb 2023 14:46:50 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        Srikar Dronamraju
+ <srikar@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/cpuhp: respect current SMT when adding
+ new CPU
+In-Reply-To: <20230213124510.12651-1-ldufour@linux.ibm.com>
+References: <20230213124510.12651-1-ldufour@linux.ibm.com>
+Date: Mon, 13 Feb 2023 08:46:50 -0600
+Message-ID: <87ilg5aahx.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2302051459210.33812@angie.orcam.me.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: md95E-y93AZ79lrnfDcPw_kVHyuS2O3M
+X-Proofpoint-ORIG-GUID: ZKtSF9cYHdXI1pVJ8GkkUCtgV6K5kNUO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-13_09,2023-02-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 suspectscore=0
+ clxscore=1011 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302130131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,58 +98,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Oliver O'Halloran <oohall@gmail.com>, Stefan Roese <sr@denx.de>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jim Wilson <wilson@tuliptree.org>, Nicholas Piggin <npiggin@gmail.com>, Alex Williamson <alex.williamson@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, David Abdurachmanov <david.abdurachmanov@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Feb 05, 2023 at 03:49:21PM +0000, Maciej W. Rozycki wrote:
-> Use `link_active_reporting' to determine whether Data Link Layer Link 
-> Active Reporting is available rather than re-retrieving the capability.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> When a new CPU is added, the kernel is activating all its threads. This
+> leads to weird, but functional, result when adding CPU on a SMT 4 system
+> for instance.
+>
+> Here the newly added CPU 1 has 8 threads while the other one has 4 threads
+> active (system has been booted with the 'smt-enabled=4' kernel option):
+>
+> ltcden3-lp12:~ # ppc64_cpu --info
+> Core   0:    0*    1*    2*    3*    4     5     6     7
+> Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
+>
+> There is no SMT value in the kernel. It is possible to run unbalanced LPAR
+> with 2 threads for a CPU, 4 for another one, and 5 on the latest.
+>
+> To work around this possibility, and assuming that the LPAR run with the
+> same number of threads for each CPU, which is the common case,
 
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+I am skeptical at best of baking that assumption into this code. Mixed
+SMT modes within a partition doesn't strike me as an unreasonable
+possibility for some use cases. And if that's wrong, then we should just
+add a global smt value instead of using heuristics.
 
-I believe this should work without the preceding patches in the series,
-hence can be applied independently.
+> the number
+> of active threads of the CPU doing the hot-plug operation is computed. Only
+> that number of threads will be activated for the newly added CPU.
+>
+> This way on a LPAR running in SMT=4, newly added CPU will be running 4
+> threads, which is what a end user would expect.
 
-Thanks,
+I could see why most users would prefer this new behavior. But surely
+some users have come to expect the existing behavior, which has been in
+place for years, and developed workarounds that might be broken by this
+change?
 
-Lukas
+I would suggest that to handle this well, we need to give user space
+more ability to tell the kernel what actions to take on added cores, on
+an opt-in basis.
 
->  drivers/pci/hotplug/pciehp_hpc.c |    7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> linux-pcie-link-active-reporting-hpc.diff
-> Index: linux-macro/drivers/pci/hotplug/pciehp_hpc.c
-> ===================================================================
-> --- linux-macro.orig/drivers/pci/hotplug/pciehp_hpc.c
-> +++ linux-macro/drivers/pci/hotplug/pciehp_hpc.c
-> @@ -984,7 +984,7 @@ static inline int pcie_hotplug_depth(str
->  struct controller *pcie_init(struct pcie_device *dev)
->  {
->  	struct controller *ctrl;
-> -	u32 slot_cap, slot_cap2, link_cap;
-> +	u32 slot_cap, slot_cap2;
->  	u8 poweron;
->  	struct pci_dev *pdev = dev->port;
->  	struct pci_bus *subordinate = pdev->subordinate;
-> @@ -1030,9 +1030,6 @@ struct controller *pcie_init(struct pcie
->  	if (dmi_first_match(inband_presence_disabled_dmi_table))
->  		ctrl->inband_presence_disabled = 1;
->  
-> -	/* Check if Data Link Layer Link Active Reporting is implemented */
-> -	pcie_capability_read_dword(pdev, PCI_EXP_LNKCAP, &link_cap);
-> -
->  	/* Clear all remaining event bits in Slot Status register. */
->  	pcie_capability_write_word(pdev, PCI_EXP_SLTSTA,
->  		PCI_EXP_SLTSTA_ABP | PCI_EXP_SLTSTA_PFD |
-> @@ -1051,7 +1048,7 @@ struct controller *pcie_init(struct pcie
->  		FLAG(slot_cap, PCI_EXP_SLTCAP_EIP),
->  		FLAG(slot_cap, PCI_EXP_SLTCAP_NCCS),
->  		FLAG(slot_cap2, PCI_EXP_SLTCAP2_IBPD),
-> -		FLAG(link_cap, PCI_EXP_LNKCAP_DLLLARC),
-> +		FLAG(pdev->link_active_reporting, true),
->  		pdev->broken_cmd_compl ? " (with Cmd Compl erratum)" : "");
->  
->  	/*
+This could take the form of extending the DLPAR sysfs command set:
+
+Option 1 - Add a flag that tells the kernel not to online any threads at
+all; user space will online the desired threads later.
+
+Option 2 - Add an option that tells the kernel which SMT mode to apply.
