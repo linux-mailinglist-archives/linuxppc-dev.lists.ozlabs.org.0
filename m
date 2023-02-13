@@ -1,60 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029C8694CF6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 17:32:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1118F695097
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 20:25:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFqdF5hcWz3cKG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 03:32:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PFvRr0m1Dz3c7s
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 06:24:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=R4iTn6xH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qxa9vOI4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=R4iTn6xH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qxa9vOI4;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFqcH1L36z3bg5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 03:31:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=bGNxZYPN8DFGD+DAyTWS3zPGWV5ykBQ5tFyV385U9oc=; b=R4iTn6xH8zDJTusokMQXuA5WPJ
-	Oh+/9/zhQ1iGYv06sWa4L39n+21g1lSA8X0KLvTooiD4limw8fjBX+LzN6N2N9QBMDeVc67SFGS7j
-	X/JXtkCSz3XcM8VXpeiEYXUFxm8F9U+pdp046JlHjG+uSepuEYVupTGDjAJ3AZ8kc587hFnyehufg
-	m9k4/xBxDK8i2PX/3jJJKGMucsVX/12Dxx4EnBmOlvTqyFh8Ov+oNT3Ijyj29u7MUkaGdaxRl6Lfd
-	aUzKLC6n14UuTVnhsiPJuObd+hsAyu+ZQcmxlqIvc3dSzpXeRrhhYfz6HpjQuLF5pKFF0B++FOLRC
-	VUF4+4wg==;
-Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pRbjk-005vGY-H6; Mon, 13 Feb 2023 16:31:29 +0000
-Message-ID: <f8b1ef96-3d33-fa35-d99f-af00bf8c2e40@infradead.org>
-Date: Mon, 13 Feb 2023 08:31:19 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFvQs5Lrnz3c16
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 06:24:05 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B88BE61210;
+	Mon, 13 Feb 2023 19:24:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 29DA1C433D2;
+	Mon, 13 Feb 2023 19:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676316242;
+	bh=N2q4Yr1egbB89n2iF6ldwNY4NM1E3aAf9LEmso0qefI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Qxa9vOI4rqaALs1MYeqrXyWJUGtSoeNFD02u717Le5UaLucWZ9UqaY6Ti1o9zpguk
+	 87fhxu/3CABeXm65lqtM70fAdC8Pgn5hc/L1CRqTj2/JOGHuRNiX3bCnI/+Qjn9ne3
+	 lZphh/Y9FxPkHtZAW9ixRPOV9OsSvybSlOo//0pUHvvbvGYsGlhUMF1NgXIqmvk9JK
+	 sa1bGOpN334B/nFmjbenhOVPiPkoDfg+oB8npfPrKsBScRNzpy0qs4804hbfzB5EBm
+	 y1LzbLP+pV0dMZJhSakir8+F1/CfGJt6FubBzOhSwSLnq9sIXPLkpup4kVs/yo4hkd
+	 okIsXMMe3EA2w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05C86C636CC;
+	Mon, 13 Feb 2023 19:24:02 +0000 (UTC)
+From: Nathan Lynch via B4 Submission Endpoint
+ <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Mon, 13 Feb 2023 13:23:51 -0600
+Subject: [PATCH v2] powerpc/machdep: warn when machine_is() used too early
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 04/11] drivers/ps3: Read video= option with
- fb_get_option()
-To: Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
- airlied@gmail.com, deller@gmx.de, javierm@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu
-References: <20230209135509.7786-1-tzimmermann@suse.de>
- <20230209135509.7786-5-tzimmermann@suse.de>
- <06917dd0-c4f1-c80a-16a7-f2baac47027d@infradead.org>
- <fedc746f-1685-a5a1-b847-7031b66c1fd2@suse.de>
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <fedc746f-1685-a5a1-b847-7031b66c1fd2@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: =?utf-8?q?=3C20230210-warn-on-machine-is-before-probe-machine-v2?=
+ =?utf-8?q?-1-b57f8243c51c=40linux=2Eibm=2Ecom=3E?=
+X-B4-Tracking: v=1; b=H4sIAEaO6mMC/5WOwQ6CMBBEf4X07BJaJCSe/A/DoVu3som0ZIuII
+ fy7hYN3j28meTOrSiRMSV2KVQnNnDiGDOZUKNfb8CDge2ZlKlNXRlfwthIgBhis6znkOgGSj0I
+ wSkT65XXb6Aa1P9eIKtvQJgIUG1y/+wabJpK9GIU8L8eFW5e55zRF+RyPZr2n/4/PGjT4yqFtW
+ m0aj9cnh9dSMg6li4Pqtm37Am6AbAj7AAAA
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: b4 0.12.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1676316241; l=2389;
+ i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
+ bh=U3ysgvX48P2OhQ8+xTLXW5puL0334RlB2L8QsGv/IKE=;
+ b=xj6L8LjBONdygVBMhBaA2rb/K/eyTrNwMkG341NO9eCEME4hEsTrMAZSivJXcUOs4uP9AIc3k
+ 68arfJ7oESyBaEXqktpv7uDs6Uwra5cdA/HLJRftQWa6j7uzqt9tBBs
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
+X-Endpoint-Received:  by B4 Submission Endpoint for nathanl@linux.ibm.com/20230206 with auth_id=27
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,38 +78,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-On 2/13/23 03:29, Thomas Zimmermann wrote:
-> Am 12.02.23 um 17:53 schrieb Geoff Levand:
->> On 2/9/23 05:55, Thomas Zimmermann wrote:
->>> Get the kernel's global video= parameter with fb_get_option(). Done
->>> to unexport the internal fbdev state fb_mode_config. No functional
->>> changes.
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> ---
->>>   drivers/ps3/ps3av.c | 11 +++++++++--
->>>   1 file changed, 9 insertions(+), 2 deletions(-)
->>
->> I wanted to test these changes on the PS3, but got this
->> error when trying to apply this patch set to Linux-6.2-rc7:
->>
->>    Applying: fbdev: Handle video= parameter in video/cmdline.c
->>    error: patch failed: drivers/gpu/drm/Kconfig:10
->>    error: drivers/gpu/drm/Kconfig: patch does not apply
->>
->> Is there a Linux kernel revision that these will apply to,
->> or is there a git repository I can pull them from?
-> 
-> Thanks for testing.  My base version is a recent DRM development tree. The repo is at https://cgit.freedesktop.org/drm/drm-tip/, the branch is drm-tip.
+machine_is() can't provide correct results before probe_machine() has
+run. Warn when it's used too early in boot, placing the WARN_ON() in a
+helper function so the reported file:line indicates exactly what went
+wrong.
 
-I tested the drm-tip branch at c54b5fcf3e68 on PS3 and it
-seemed to work OK.
+checkpatch complains about __attribute__((weak)) in the patch, so
+change that to __weak, and align the line continuations as well.
 
-Tested-by: Geoff Levand <geoff@infradead.org>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+Prompted by my attempts to do some pseries-specific setup during
+rtas_initialize() and being puzzled for a while that it wasn't
+working.
+
+Changes in v2:
+- Use WARN_ON(), not WARN().
+- Introduce __machine_is() helper function so the line reported is
+  accurate.
+- Update __attribute__((weak)) to __weak for checkpatch's sake.
+- Link to v1: https://lore.kernel.org/r/20230210-warn-on-machine-is-before-probe-machine-v1-1-f0cba57125fb@linux.ibm.com
+---
+ arch/powerpc/include/asm/machdep.h | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 378b8d5836a7..459736d5e511 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -3,6 +3,7 @@
+ #define _ASM_POWERPC_MACHDEP_H
+ #ifdef __KERNEL__
+ 
++#include <linux/compiler.h>
+ #include <linux/seq_file.h>
+ #include <linux/init.h>
+ #include <linux/dma-mapping.h>
+@@ -220,11 +221,16 @@ extern struct machdep_calls *machine_id;
+ 	EXPORT_SYMBOL(mach_##name);				\
+ 	struct machdep_calls mach_##name __machine_desc =
+ 
+-#define machine_is(name) \
+-	({ \
+-		extern struct machdep_calls mach_##name \
+-			__attribute__((weak));		 \
+-		machine_id == &mach_##name; \
++static inline bool __machine_is(const struct machdep_calls *md)
++{
++	WARN_ON(!machine_id); // complain if used before probe_machine()
++	return machine_id == md;
++}
++
++#define machine_is(name)                                        \
++	({                                                      \
++		extern struct machdep_calls mach_##name __weak; \
++		__machine_is(&mach_##name);                     \
+ 	})
+ 
+ static inline void log_error(char *buf, unsigned int err_type, int fatal)
+
+---
+base-commit: 0bfb97203f5f300777624a2ad6f8f84aea3e8658
+change-id: 20230210-warn-on-machine-is-before-probe-machine-37515b1f43bb
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
 
