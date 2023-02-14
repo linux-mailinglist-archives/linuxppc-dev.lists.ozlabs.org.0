@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A379696CEB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 19:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A612B696CF6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 19:30:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGV9H72Syz3cLc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 05:29:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGVBk45Dfz3cBj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 05:30:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bHhn4MxW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hpBfb/N7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bHhn4MxW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hpBfb/N7;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGV8P4v2xz3c34
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 05:28:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGV9r1nHHz3c34
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 05:29:52 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9971F61839;
-	Tue, 14 Feb 2023 18:28:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5279BC433D2;
-	Tue, 14 Feb 2023 18:28:33 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 07D97617B3;
+	Tue, 14 Feb 2023 18:29:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8614C433EF;
+	Tue, 14 Feb 2023 18:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676399315;
-	bh=FbF6sDzVu8IYeXRzBwpTRcd2V9cyuwcFeFjq0Ymm7Do=;
+	s=k20201202; t=1676399389;
+	bh=oQROITW1uKecfEo2cGdUy6SKWCigHCuMd3wvoPcK/Ko=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bHhn4MxW4jaWFJ2rWLLTx3PrN1UgQYhr8rIIi09a5nKp9q1ESDXYN6B61WfPK+RCk
-	 kGOo0Ttnppg2I0ImN2NZWVnYn5Hj3XaN0LDcyDf/bwqXXcmVPP3k8vhBjHFmJR2Bwl
-	 59QsKYYCyuVJKOZH8QhykBvzswD6lxU5Dm7UQEUn/f61z0n0wk0iCLguGpDT9BQtko
-	 BMamtHKjb0Kw6J2wXAyHy1UIJAIQSjMfecn63l73DrJUySuInHCUTNK20Fu4b0MRwy
-	 oFsYNMAp0xS4VwbLeGrloRppo8ZqhdA7joLLtCUVdDhIWqqYlEK1n6Wnc+Yaj98vfY
-	 KvhcfOKc0ivxg==
-Date: Tue, 14 Feb 2023 10:28:31 -0800
+	b=hpBfb/N7GqHlXo7xtxu5LoZyyUht86rqLf73Z3PeLujJU6jGBfG4Crx1t8FD0bkFr
+	 cpbiPz0/QDlZfYRI4h2P3lLrmD5Z/xbGq7cs4Ut0xjuJi4YzSzkvOMMKpBtebTlCtL
+	 l4e1AgnghjvPjyVVks0KpZOXqFcPu3BTc7mr5i2f6zK8LRTHRiYvESRTTFIvkhp+LF
+	 VuUuwaRBMKyTuPkTeqMUDJ4+UTzBxdWeQgQAGNmVm18KuHS/90CWYpvajdj9AOJsed
+	 2UAZeIOgM0zNiULRxmya9V9eCoG8CCRRUJHb21auhUA9pbURPxp8PbGI4vjFY9YHnJ
+	 dx0ZQ0blYHc8A==
+Date: Tue, 14 Feb 2023 10:29:46 -0800
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 13/24] sh/cpu: Make sure play_dead() doesn't return
-Message-ID: <20230214182831.7l73rzoeqjowbyly@treble>
+Subject: Re: [PATCH v2 00/24] cpu,sched: Mark arch_cpu_idle_dead() __noreturn
+Message-ID: <20230214182946.x64fakiyfrjumuy2@treble>
 References: <cover.1676358308.git.jpoimboe@kernel.org>
- <d0c3ff5349adfe8fd227acc236ae2c278a05eb4c.1676358308.git.jpoimboe@kernel.org>
- <2575e5f7-b11a-020f-06ef-ba42301d7415@linaro.org>
+ <a48ebe98-82b5-8f7b-8327-4e60bdb231c8@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2575e5f7-b11a-020f-06ef-ba42301d7415@linaro.org>
+In-Reply-To: <a48ebe98-82b5-8f7b-8327-4e60bdb231c8@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,40 +66,21 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 14, 2023 at 08:57:39AM +0100, Philippe Mathieu-Daudé wrote:
+On Tue, Feb 14, 2023 at 10:25:50AM +0100, Philippe Mathieu-Daudé wrote:
 > On 14/2/23 08:05, Josh Poimboeuf wrote:
-> > play_dead() doesn't return.  Make that more explicit with a BUG().
+> > v2:
+> > - make arch_call_rest_init() and rest_init() __noreturn
+> > - make objtool 'global_returns' work for weak functions
+> > - rebase on tip/objtool/core with dependencies merged in (mingo)
+> > - add acks
 > > 
-> > BUG() is preferable to unreachable() because BUG() is a more explicit
-> > failure mode and avoids undefined behavior like falling off the edge of
-> > the function into whatever code happens to be next.
-> > 
-> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> > ---
-> >   arch/sh/include/asm/smp-ops.h | 1 +
-> >   1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/arch/sh/include/asm/smp-ops.h b/arch/sh/include/asm/smp-ops.h
-> > index e27702130eb6..63866b1595a0 100644
-> > --- a/arch/sh/include/asm/smp-ops.h
-> > +++ b/arch/sh/include/asm/smp-ops.h
-> > @@ -27,6 +27,7 @@ static inline void plat_smp_setup(void)
-> >   static inline void play_dead(void)
-> >   {
-> >   	mp_ops->play_dead();
-> > +	BUG();
-> >   }
+> > v1.1:
+> > - add __noreturn to all arch_cpu_idle_dead() implementations (mpe)
 > 
-> Shouldn't we decorate plat_smp_ops::play_dead() as noreturn first?
+> Possible similar candidates: panic_smp_self_stop, nmi_panic_self_stop
+> and kexec.
 
-I guess it really depends on how far we want to go down the __noreturn
-rabbit hole.  To keep the patch set constrained yet still useful I
-stopped when I got to a function pointer, as I think it still needs a
-BUG() afterwards either way.
-
-That said, there would still be benefits of adding __noreturn to
-function pointers, I just wanted to keep the patch set down to a
-manageable size ;-)
+Agreed.  Any volunteers?
 
 -- 
 Josh
