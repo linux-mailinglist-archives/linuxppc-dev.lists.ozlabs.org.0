@@ -2,75 +2,132 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C906970C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 23:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F81697015
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 22:52:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGbWr5Yxxz3cfH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 09:30:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGZg95synz3ch5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 08:52:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=YLvFKW+E;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=RsKirE2F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1a::60c; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=YLvFKW+E;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=RsKirE2F;
 	dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060c.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1a::60c])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGS8h1VFGz3bwQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 03:58:42 +1100 (AEDT)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31EGXk5t027870;
-	Tue, 14 Feb 2023 16:57:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2022-7-12;
- bh=COxPmLf+paRDDdFuvH25Zi2bcrkGUWbmw1AV1Vzz6fg=;
- b=YLvFKW+EqHo4lJihtKam5O2u/Ez9btXYR9UATFH2zB8Iu5e5Y/RW6Fp0KY6CkhCradAN
- WTilqdKWZFcLKiqsqfa4V8mYN1ZQvBadLk2TsOnIkEtZUKsfbgOWWK7HvSPFJKd8W46X
- 6I8lZN4dOtwp7sy+z6JM8Hyy2wb+bAGvhr+gIyRw8kVIAEWVmTfaTTf5O0Ec6XCJ2W+/
- s+ECjqJ+6XkIgXtXUIiTIJDq/ia5qoW1iTGafvouFXOp0XKQKEIPCwqm6SXEU/hwPFGd
- rIIwhMwB2pOtB0Be/uO7OEApgaB8P0mSiaWnOpESEKGFyDpTBPCUpGUYLIbIrtBSw8Fd aQ== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3np2mtdxts-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Feb 2023 16:57:48 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 31EGuKPb009707;
-	Tue, 14 Feb 2023 16:57:47 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3np1f5uuka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Feb 2023 16:57:47 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31EGuHor039739;
-	Tue, 14 Feb 2023 16:57:45 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3np1f5uuff-9;
-	Tue, 14 Feb 2023 16:57:45 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: (subset) [PATCH 00/35] Documentation: correct lots of spelling errors (series 1)
-Date: Tue, 14 Feb 2023 11:57:35 -0500
-Message-Id: <167639371105.486235.1228754650636546815.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230127064005.1558-1-rdunlap@infradead.org>
-References: <20230127064005.1558-1-rdunlap@infradead.org>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGZfC2jKpz3c9r
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 08:51:13 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=R1wgHNTDSs5SGrZWfzmKNsvtVBFCWK848tV1DNoM55PEDpMxmvoIcQ60xg0iKYl+NmBP8MEjmPR0eCZKJ3HTGmu1FPtjZybuzP6BxxIa6dGt2vszk2AhYGKfw73+xVgXZGdVPvz854rto8Ozw3ukYEFXehakx684wCb3q+sJ+2lIpglXEOimFp1/HpZvQxZHrrOmbFmib2ipX0f5WFR+SIDbtEPGU4PFKsVgGfEGA41NGElJRhRFCA3JOVZUm0MlRD4IjPr6VnQNoBA4ddUSMBF9c/08Oqj2NPOUv7LZB+uD2VmQpf/STVRDqU9XeAh6mGQcFlznWWiNCINkIWCfvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kdtFYlX20IEK541Gw8+LiZ8Q//r+toSMtPAvioJzOJc=;
+ b=DMMzDv8Sz3WJ9zz44cnI0oszL1MKTFy2ca1dtYrsX9K0q7tQX2F5dMqTjC3Q5JNm60yST9Zv0GxnybCCtJKNkzto87BFhFdWZNNrm+anG4/I9arnYct+NdskZ1SrWKHSRZ151sNGudLsM0RPpmPVj4P3xKNbvC30ESso10pgU2qVEntqnucJfG9PQikmnb3lORRFTybw7X35KAXl4F5x6o2o18OgXF7hubSCOmKPu/oGBhlg32e5nfQHt2YGvnBFj6e14ZuI8huc03EyZhj8VY50Gpm8OenWukTaGtHd8tTi4afzOYlhNvLd4xaGNu3Eokw7zZILt22EKUBP0DchJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kdtFYlX20IEK541Gw8+LiZ8Q//r+toSMtPAvioJzOJc=;
+ b=RsKirE2Fl4R4StZmEIt9zuRzZaNbiaVK/mU30sHexk+bBWH2h/fHiqYTDV8IBO4/sqs5eVZ7zQrl/rIz4klB70ydZRZucO+oO5OLf1FFGMpBTH0i5WkxQAkMlfUCNaTILMbfsA1Y/F34dUoUIlQxAGIz7Cb/qI0aznzcKc823h4=
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by AS8PR04MB8644.eurprd04.prod.outlook.com (2603:10a6:20b:42b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Tue, 14 Feb
+ 2023 21:50:53 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6086.023; Tue, 14 Feb 2023
+ 21:50:52 +0000
+From: Frank Li <frank.li@nxp.com>
+To: Sean Anderson <sean.anderson@seco.com>, "M.H. Lian"
+	<minghuan.lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang
+	<roy.zang@nxp.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring
+	<robh@kernel.org>, =?utf-8?B?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE
+ LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, "open list:PCI DRIVER FOR
+ FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, "moderated list:PCI DRIVER
+ FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] Re: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
+Thread-Topic: [EXT] Re: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
+Thread-Index: AQHZJr0yaCK3pFdB6EKPvZEvJoExp67O6h2AgABEYyA=
+Date: Tue, 14 Feb 2023 21:50:51 +0000
+Message-ID:  <HE1PR0401MB233186A0CDA481B775B9B92888A29@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+References: <20230112193621.1513505-1-Frank.Li@nxp.com>
+ <45d1fdae-f6c0-ab19-f6a2-2499ead9289a@seco.com>
+In-Reply-To: <45d1fdae-f6c0-ab19-f6a2-2499ead9289a@seco.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|AS8PR04MB8644:EE_
+x-ms-office365-filtering-correlation-id: 544d0d55-197f-4fcc-c247-08db0ed58a8b
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  bpKY/Lj2cq9//+UBHoxVYGkLBCIS7+tVyp1zGroaGJyybjZUCTTMpL8HCNo9Lb5D/jzyDaSlGjrEK1icLyEAo0autc6GVuZoB46X0lvgH8NC//ubl4cztSBFqMU6zwuEmSTutG3lqosVwoOwg39oqD5co7PWnP65auwFxS+eKjAFbfYsi1X/cQR6/HWZz46GbiHcIRPkiB6gDWWpjUj93CXIys0SvixmevHp1wEvzWongNEBXc4Tbyd/jMkwyvskL9VsbiqGs2U3a9t1wPZ0K812kcGC+DKzVtVQOTMElxlpZLGbpEfIOapyuiQ5oLl6vkGVNZwQEkBzciZtEQolepfGXKlxr+ESYNt91yAed/8QF7/nWZ4nWQH9wnJtBHIXUFmZA06QzdEK9djb8fpSyeNjXhRBYGa3FS/t1pJRlr4pdh9WS4t8+FlfYDSS8pk1KKpXLdkUvBlEe+mmk8jgXCOf8XE7E6Nfqn/dS5t4hzuW/I8mMB4QiLMdvgJH0sV/wA8A+LDWTbCiiOT+CrMwZTGNEsL1cJL+gSegDGFHbocJfJCuUPg5LkYcpKGggru/3KzSa7QOs/NAfphL56mwcAN/eNdRLtqRp93foSO7cW8AzeUSGtxG1DvBGZDrbYpoLJ/IZtkL2jhx7HcHWe8iWs0IgR8i9LCfHzWbgid1i/rNxjBrqE8ZkybaYiGYh8qEVKYaRYnTA5cgLCe8oU/Ttg==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(136003)(39860400002)(346002)(376002)(366004)(451199018)(71200400001)(4326008)(9686003)(5660300002)(7416002)(4744005)(41300700001)(2906002)(26005)(186003)(52536014)(55236004)(6506007)(55016003)(38100700002)(44832011)(38070700005)(8936002)(316002)(478600001)(66946007)(110136005)(86362001)(7696005)(8676002)(66446008)(66556008)(66476007)(64756008)(76116006)(83380400001)(33656002)(122000001)(921005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SVJ4a0I1SUFOT3VpTEpKWGthUUxXREREcVMrR0h3ZXZqcGdCNXlLSFVSbWFa?=
+ =?utf-8?B?bXNnTEhZM3ppVFA0MjVkQjlaa0VUSHo3eEkyQnNuZytiL3QrYXNKejBCd2RU?=
+ =?utf-8?B?UXU0UlY4VUVlTTU2TGx2M092YXFSNnJXeFlxc2ROVzdiZ1Mrbmo1dEd0MU9i?=
+ =?utf-8?B?TzRncDlRVyt2djBhSXEyTzVQbk51dTJTUUVFS1lEbFdkYnFwbFM5WXBWS2FB?=
+ =?utf-8?B?ZmVhZU5rU25LeWh0M2phbTRFZngwVXNIbGFGWnNIUVJWTy9vUlptaTcvLy9Z?=
+ =?utf-8?B?ek9MYVR3RlZxNUJVN0NoZmpzQUZSWkJTQS9rTVBxOHlKMXpZREVqczM4TUJ1?=
+ =?utf-8?B?QW9sQ0YvZUNZdUtoQklLakZXb0J2K3BaZXJRU3pFTExEOGxoaEx5VkxaUzVT?=
+ =?utf-8?B?RGJGeFF5LzYwRDZ6L1lEczNNbmZTTGRIWnFGMmQ4V3U4dExqbm1WUUVrY2NL?=
+ =?utf-8?B?bWRVK1l6bzA4elJiVXA1ckFYcXF2di8waHV5YkNRS0NuazJ1ME41T1A2YUM4?=
+ =?utf-8?B?eWtJNFBocHp1SUxPZGZkNzR6MkwvSUc2R3lnQXViSE5QNENjdk9wYlFKdTk0?=
+ =?utf-8?B?UU5jeUhFeWd4c0E0ZEc3aXBRZ2dOWncyN0NldGlCWFdJREl6VjJXc0U5eTlM?=
+ =?utf-8?B?ckw5eitZTXhPejNzNXlEYVlpb0RWblBpUmM3ZEdlSEVGMEpvVFJVM1MvMWR6?=
+ =?utf-8?B?ZHI2eDJiQitDN1RqQ3kxWlV0ODRCd2dzU2lmdS9OZUpXd3ZOVTBETU5lSTNX?=
+ =?utf-8?B?cDRkR1BBT0hocUJLUWovQm1udWMyc2dMMkthNFpjcHljWGpqWm5JWlFXQmVu?=
+ =?utf-8?B?OVdrd2VobituZUlpdmllSTNCc3g2UzhEai9kOGFzNGFjMnA2TDM5eW4wRVgv?=
+ =?utf-8?B?UmJwUXVMcGJTNUxVcHM0RkFUdmdLTUFGQTJBNldCdnZ2R29FQ1gzK0oya3NO?=
+ =?utf-8?B?bEVaVDlaRkVnVVhzWjk3Rk5zd0hzcjJ5ZDhQUTJuVFU2THFYZjQwd2MrVmVN?=
+ =?utf-8?B?YjlnUVlMU3F4TmNzakVJZG1sRWZ0czd6M1FEaXNkYWxUaElBY0xQc1NTd2lT?=
+ =?utf-8?B?ZFJpVXVzK1ZNN3dUMUpMdDEwcDNKYzR3YkRPMGZoQjRCTWFGWUQyQUl6N3Z0?=
+ =?utf-8?B?VFZtOGIyWTVLNTF3Wm1KRlBDcEdsNHd5YU9McFdUb0pBR2phOG15OEFNZGMx?=
+ =?utf-8?B?L1lTZ0Z6Mzl3bHFUdGdTRHFtbU50RFFrQkV1ODNIekJnR2p1ekhYMXhLSmJp?=
+ =?utf-8?B?dHRjT0tOallKVGtyQ3lWS3ZiSmdGMzFqdS9ycFR0QjY2NDh3bThtOS80QURm?=
+ =?utf-8?B?eVZRMDBRb2xwZ0loeXFaWnpUMnRWeDIveEhQaWxiUmJlUHdiQmhWWlRPSk1k?=
+ =?utf-8?B?aWFya1dWT1pFbTYraXZITldqRHBMSFNkeHJnYWV4empkSGc1R0RoOHVpTzVl?=
+ =?utf-8?B?N2RjaG8xV0g5bmR2SEJpaU93amE4ZjVSQXVMaVM5V2ZRM2F3UWMzNGcxNDB0?=
+ =?utf-8?B?cU9UQk5GZFhsV1p3Z3I4cjdpQWNTSllSNWpPaVhnQUVYQStDdzNFd0w4bE0y?=
+ =?utf-8?B?cjJHdjlrV21vSlllTFJ1bGJVNWIzRlF5dytCaHZlMG1ZWkZReXZFdHhvdFpH?=
+ =?utf-8?B?MUhDdmEvQVREMVFCK2JiZ0dlVTBkZTA5QlFPbVd4TGdnbzhtQ3lRM1cxaE5R?=
+ =?utf-8?B?bEE2Rmk1TVp6T1ZpMnRlU2xuNXpRejdDWkVLci82dTJaTjlzYU81Vk9zcmFV?=
+ =?utf-8?B?MXpXb3ZPTU5VclVsQmRlR2tMOXA5R1NzZkYyRjRHN2JMYWx6MmJSZWFZRXVp?=
+ =?utf-8?B?Ti9WSVNlWUV5Y2NnQTlYbDhwT2lOTnhWbGJOZ3JIR0lObnFVaTZDbnduWnBF?=
+ =?utf-8?B?T0kzbjRkOXJ3amFtTDhNNkRSOTU1aG9LWTRTRlZUSVpwQ1FEYVNQdjFORExK?=
+ =?utf-8?B?M25pc2lyWW1uYmZBd3pra2NXTkFhZFl1SDUzMmxtdTFQOHdGWjlzWHZha1RS?=
+ =?utf-8?B?WlJuK2NzdmNmOWg2bm4vVGkwa01XNEdHeDJXUG1mZUVXQlJiMDJrUng0ZTNM?=
+ =?utf-8?B?NnNPMVFwS3NVTnYrWkg5WTZ2WEE3ZU9LRjRqSTExV29JbUR5RXRrVi9KS1NQ?=
+ =?utf-8?Q?Hp0g=3D?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-14_11,2023-02-14_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxscore=0 spamscore=0 mlxlogscore=997 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302140144
-X-Proofpoint-GUID: F9bpdPmEiXIR5xn5JduF_4kuCVCc4so3
-X-Proofpoint-ORIG-GUID: F9bpdPmEiXIR5xn5JduF_4kuCVCc4so3
-X-Mailman-Approved-At: Wed, 15 Feb 2023 09:30:03 +1100
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 544d0d55-197f-4fcc-c247-08db0ed58a8b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2023 21:50:51.7670
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UAWV3M1HauDVJWaxLWLZOxxxxyh/vN10NT7yhMH1xibAolbdHpjcT/MlVKp88hp02YStuxNLo1VdD8DQ8NP8Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8644
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,28 +139,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Juri Lelli <juri.lelli@redhat.com>, Henrik Rydberg <rydberg@bitmath.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>, Benjamin Tissoires <benjamin.tissoires@redhat.com>, Pavel Machek <pavel@ucw.cz>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Evgeniy Polyakov <zbr@ioremap.net>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincent Guittot <vincent.guittot@linaro.org>, James Morris <jmorris@namei.org>, linux-acpi@vger.kernel.org, Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linux-sgx@vger.kernel.org, Karsten Keil <isdn@linux-pingi.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linux-spi@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Vladimir Oltean <olteanv@gmail.com>, alsa-devel@alsa-project.org, linux-doc@vger.kernel.org, Max Filipp
- ov <jcmvbkbc@gmail.com>, keyrings@vger.kernel.org, linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org, Paul Moore <paul@paul-moore.com>, linux-trace-kernel@vger.kernel.org, Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Daniel Jordan <daniel.m.jordan@oracle.com>, linux-crypto@vger.kernel.org, linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, coresight@lists.linaro.org, Bjorn Helgaas <bhelgaas@google.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Mathieu Poirier <mathieu.poirier@linaro.org>, Wolfram Sang <wsa@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, isdn4linux@listserv.isdn4linux.de, linux-input
- @vger.kernel.org, "Serge E. Hallyn" <serge@hallyn.com>, Fenghua Yu <fenghua.yu@intel.com>, Jiri Kosina <jikos@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, linux-fbdev@vger.kernel.org, Reinette Chatre <reinette.chatre@intel.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, target-devel@vger.kernel.org, bpf@vger.kernel.org, Petr Mladek <pmladek@suse.com>, Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>, linux-mm@kvack.org, linux-trace-devel@vger.kernel.org, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, linux-leds@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>, linux-scsi@vger.kernel.org, Marc Zyngier <maz@kernel.org>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Jonas Bonn <jonas@
- southpole.se>, Heiko Carstens <hca@linux.ibm.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-block@vger.kernel.org, =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>, openrisc@lists.librecores.org, Josh Poimboeuf <jpoimboe@kernel.org>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, linux-security-module@vger.kernel.org, Daniel Bristot de Oliveira <bristot@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 26 Jan 2023 22:39:30 -0800, Randy Dunlap wrote:
-
-> Correct many spelling errors in Documentation/ as reported by codespell.
-> 
-> Maintainers of specific kernel subsystems are only Cc-ed on their
-> respective patches, not the entire series. [if all goes well]
-> 
-> These patches are based on linux-next-20230125.
-> 
-> [...]
-
-Applied to 6.3/scsi-queue, thanks!
-
-[28/35] Documentation: target: correct spelling
-        https://git.kernel.org/mkp/scsi/c/c57ac5748be5
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+PiA+DQo+ID4gKyAgICAgLyogc2V0IDY0LWJpdCBETUEgbWFzayBhbmQgY29oZXJlbnQgRE1BIG1h
+c2sgKi8NCj4gPiArICAgICBpZiAoZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudChkZXYsIERNQV9C
+SVRfTUFTSyg2NCkpKQ0KPiA+ICsgICAgICAgICAgICAgZGV2X3dhcm4oZGV2LCAiRmFpbGVkIHRv
+IHNldCA2NC1iaXQgRE1BIG1hc2suXG4iKTsNCj4gDQo+IElzbid0IHRoaXMgbWFuZGF0b3J5PyBX
+aHkgbm90IGRldl9lcnJfcHJvYmUgYW5kIHJldHVybiB0aGUgZXJyb3I/DQoNCkkgZG9uJ3QgdGhp
+bmsgaXQgaXMgbWFuZGF0b3J5LiBJZiBmYWlsdXJlLCBkbWEgd2lsbCB1c2Ugc3dpb3RsYi4gDQpK
+dXN0IGFuIGFkZGl0aW9uYWwgbWVtY3B5IGludm9sdmVkLiANCg0KRnJhbmsgTGkNCg0KPiANCj4g
+LS1TZWFuDQo+IA0KPiA+ICAgICAgIHBsYXRmb3JtX3NldF9kcnZkYXRhKHBkZXYsIHBjaWUpOw0K
+PiA+DQo+ID4gICAgICAgcmV0ID0gZHdfcGNpZV9lcF9pbml0KCZwY2ktPmVwKTsNCg0K
