@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA87695A91
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:25:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17916695A92
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:26:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGCR91nDpz3fWx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:25:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGCS8738Cz3fd6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:26:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qtoom7YB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UTx7NvZZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qtoom7YB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UTx7NvZZ;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC2R5SjKz3cMH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:07:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC2T6LV8z3cLB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:07:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E42A261465;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2E23061451;
+	Tue, 14 Feb 2023 07:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12EEC433AF;
 	Tue, 14 Feb 2023 07:07:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F595C433A7;
-	Tue, 14 Feb 2023 07:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676358445;
-	bh=1pqvhflGCMe/wrdXOMGr/PebbGgnoXhSUZ8eiEoomNs=;
+	s=k20201202; t=1676358447;
+	bh=QgOyKDCiySM7B7nEI/CeCUdB9V4cgp0r+x00hCG0bAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtoom7YBj3WBm4M85syos7pcETmxlT1MO3MRIBzB66grdniTPurXhV+aT1FnjslmP
-	 cMp8MWlimGazyrts9GCWRE8gcSjSDK92J9KS5PhgvRRjWcdrU9y1ofmCeleW/ftCC/
-	 Wbj9tPEch8OC7fzaBaluyhN4gvUOnlPmYj2fushMqqylVs5lB0xce5ctDacvlOLhw1
-	 gXV0gp4IRLXlK+aa4b1o04FzIlzpIDShD/Axowf7OBsRnGemMDdukKh93uEPCVtkqh
-	 aPBcMAbBB6Dy6grAZpPwHtPBnbks1EAiqjozMkYpQDepqD0nDE14RN33E32CXChkal
-	 EPgyHn2BysIww==
+	b=UTx7NvZZYy13iCrSLJI4/e/stpitBs/+hLagiJy96BUaFJ5MujJ4J6mQCivTly9aU
+	 XuFeDhwKqeLcYDae4jWwak72Pf2i7BG8JbrSVF8YoiubDwMTmJDUGjeFBflHfWBgnO
+	 6L32o4C5b8JR78z11RsYWTZBwUIC5CFlMvD5lE2d/1HUy8GsTmXNJ/g9JeZ6adGDGu
+	 SpBAhjB5JhWlZVQ+YSlBEcxV3F7h5KixnUuQi9X4K6aJAaVEr7xJRMQnGQfMIMUBD9
+	 C+jRTbtnaIlGZMy31m/B6Ep+S7vN+3+3dGihQRhahxNc49RXvYQGaQk8wYeSksBU4B
+	 Yd1Op3p5cd5dg==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 20/24] xtensa/cpu: Mark cpu_die() __noreturn
-Date: Mon, 13 Feb 2023 23:05:54 -0800
-Message-Id: <ad801544cab7c26a0f3bbf7cfefb67303f4cd866.1676358308.git.jpoimboe@kernel.org>
+Subject: [PATCH v2 21/24] sched/idle: Make sure weak version of arch_cpu_idle_dead() doesn't return
+Date: Mon, 13 Feb 2023 23:05:55 -0800
+Message-Id: <cf5ad95eef50f7704bb30e7770c59bfe23372af7.1676358308.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1676358308.git.jpoimboe@kernel.org>
 References: <cover.1676358308.git.jpoimboe@kernel.org>
@@ -65,27 +65,26 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cpu_die() doesn't return.  Annotate it as such.  By extension this also
-makes arch_cpu_idle_dead() noreturn.
+arch_cpu_idle_dead() should never return.  Make it so.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/xtensa/include/asm/smp.h | 2 +-
+ kernel/sched/idle.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/xtensa/include/asm/smp.h b/arch/xtensa/include/asm/smp.h
-index 4e43f5643891..5dc5bf8cdd77 100644
---- a/arch/xtensa/include/asm/smp.h
-+++ b/arch/xtensa/include/asm/smp.h
-@@ -33,7 +33,7 @@ void show_ipi_list(struct seq_file *p, int prec);
- 
- void __cpu_die(unsigned int cpu);
- int __cpu_disable(void);
--void cpu_die(void);
-+void __noreturn cpu_die(void);
- void cpu_restart(void);
- 
- #endif /* CONFIG_HOTPLUG_CPU */
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index e9ef66be2870..56e152f06d0f 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -75,7 +75,7 @@ static noinline int __cpuidle cpu_idle_poll(void)
+ void __weak arch_cpu_idle_prepare(void) { }
+ void __weak arch_cpu_idle_enter(void) { }
+ void __weak arch_cpu_idle_exit(void) { }
+-void __weak arch_cpu_idle_dead(void) { }
++void __weak arch_cpu_idle_dead(void) { while (1); }
+ void __weak arch_cpu_idle(void)
+ {
+ 	cpu_idle_force_poll = 1;
 -- 
 2.39.1
 
