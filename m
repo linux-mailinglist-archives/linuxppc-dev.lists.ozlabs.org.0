@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17916695A92
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC213695A94
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:27:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGCS8738Cz3fd6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:26:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGCT94FdZz3fZ3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:27:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UTx7NvZZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QbCTtkRP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UTx7NvZZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QbCTtkRP;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC2T6LV8z3cLB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:07:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC2Y0mKqz3cJK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:07:33 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2E23061451;
-	Tue, 14 Feb 2023 07:07:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12EEC433AF;
-	Tue, 14 Feb 2023 07:07:25 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id A26B0B81C03;
+	Tue, 14 Feb 2023 07:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0DAC433A7;
+	Tue, 14 Feb 2023 07:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676358447;
-	bh=QgOyKDCiySM7B7nEI/CeCUdB9V4cgp0r+x00hCG0bAs=;
+	s=k20201202; t=1676358449;
+	bh=nPbz5xOaaR7NDhO9DoSuJHej7ImmCT6qFtXYRUPe9iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTx7NvZZYy13iCrSLJI4/e/stpitBs/+hLagiJy96BUaFJ5MujJ4J6mQCivTly9aU
-	 XuFeDhwKqeLcYDae4jWwak72Pf2i7BG8JbrSVF8YoiubDwMTmJDUGjeFBflHfWBgnO
-	 6L32o4C5b8JR78z11RsYWTZBwUIC5CFlMvD5lE2d/1HUy8GsTmXNJ/g9JeZ6adGDGu
-	 SpBAhjB5JhWlZVQ+YSlBEcxV3F7h5KixnUuQi9X4K6aJAaVEr7xJRMQnGQfMIMUBD9
-	 C+jRTbtnaIlGZMy31m/B6Ep+S7vN+3+3dGihQRhahxNc49RXvYQGaQk8wYeSksBU4B
-	 Yd1Op3p5cd5dg==
+	b=QbCTtkRPMFx4nrooNoGOfJ3srlkvjL8Q0JxwwQRhbw7JzTw4E1NOcM5votUGXjcOI
+	 bwNIVjqgBxHXFasgtTguxT+q1aIxc/mIWyCxPg++08GBZnfqopz3bkDonDMIpf4Ky9
+	 LmmejYIb2RbvOM7BgY+ZPOyErGEpT84i2NpQdf7XK4tjGwSwp3MPtl4eDCfgFp/0sU
+	 PCvytiHTDPIi7VsxHtMruoDNWWKI9PdaGlVl4DlIHdnjzm/hwestBwEfWhfAeSH1C4
+	 KmGJSiECze1iTyVfMoQ6R5LBQk+n9PkrMQAZBkTScLTVqvsxTvSumqYOrTmbP/39QF
+	 i1ONpamZqe3NQ==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 21/24] sched/idle: Make sure weak version of arch_cpu_idle_dead() doesn't return
-Date: Mon, 13 Feb 2023 23:05:55 -0800
-Message-Id: <cf5ad95eef50f7704bb30e7770c59bfe23372af7.1676358308.git.jpoimboe@kernel.org>
+Subject: [PATCH v2 22/24] objtool: Include weak functions in 'global_noreturns' check
+Date: Mon, 13 Feb 2023 23:05:56 -0800
+Message-Id: <85c4281eecd9388e7b3b21ef550119caa5305327.1676358308.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1676358308.git.jpoimboe@kernel.org>
 References: <cover.1676358308.git.jpoimboe@kernel.org>
@@ -65,26 +65,37 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_cpu_idle_dead() should never return.  Make it so.
+If a global __noreturn function prototype has a corresponding weak
+function, it should also be __noreturn.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- kernel/sched/idle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index e9ef66be2870..56e152f06d0f 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -75,7 +75,7 @@ static noinline int __cpuidle cpu_idle_poll(void)
- void __weak arch_cpu_idle_prepare(void) { }
- void __weak arch_cpu_idle_enter(void) { }
- void __weak arch_cpu_idle_exit(void) { }
--void __weak arch_cpu_idle_dead(void) { }
-+void __weak arch_cpu_idle_dead(void) { while (1); }
- void __weak arch_cpu_idle(void)
- {
- 	cpu_idle_force_poll = 1;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index ba07a8ebaf73..0a1cf867d9b2 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -193,14 +193,14 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 	if (!func)
+ 		return false;
+ 
+-	if (func->bind == STB_WEAK)
+-		return false;
+-
+-	if (func->bind == STB_GLOBAL)
++	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK)
+ 		for (i = 0; i < ARRAY_SIZE(global_noreturns); i++)
+ 			if (!strcmp(func->name, global_noreturns[i]))
+ 				return true;
+ 
++	if (func->bind == STB_WEAK)
++		return false;
++
+ 	if (!func->len)
+ 		return false;
+ 
 -- 
 2.39.1
 
