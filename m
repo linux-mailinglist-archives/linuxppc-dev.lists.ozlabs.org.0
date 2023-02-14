@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D8695A59
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:11:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D1B695A5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:12:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGC6h0Hb4z3chq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:11:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGC7h301vz3cLc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:12:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uWSwmz7m;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIt7PESU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uWSwmz7m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIt7PESU;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC1v4DwXz3cBm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:06:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC1x2SZ2z3c9C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:07:01 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 37698B81BFB;
-	Tue, 14 Feb 2023 07:06:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31830C433AC;
-	Tue, 14 Feb 2023 07:06:54 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id F0248B81C01;
+	Tue, 14 Feb 2023 07:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC7AC433D2;
+	Tue, 14 Feb 2023 07:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676358415;
-	bh=oKr+64PCQbKmVhIylAaRqnfLnM47aB4SsgpB++1picw=;
+	s=k20201202; t=1676358417;
+	bh=1IRtpjryrFlaH3zPaQpRgLkIHqmynE5Y+t83e8Katow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWSwmz7maJITaav1CLWBhY0wq77E2TQEFKj9SKI7oT4oMpxVqb3lnDG9f8hCIs7vx
-	 HVTVUNH/CEB+xnKwRtPrWXCjjXX2QoZ6agft9A4TFcEbpCpKEzT26/mEGxqnQiz95o
-	 zkfcQQxa8cvlxnYRQYWNZohgh7gKqA1EEVTuJI/igRwz7PuH4itxjP9aX6J5xm6WHv
-	 AqE4y1+HEUJO8h2TaNm+RWH5Twq/9S9n93G3vmmCUYhVhMNLRNmz8AdGFdTOEjqc58
-	 eqx4YmZwfXjO7QxwI0rh92vrbJzEUVkWPecbQGWlfLvjGw76DlG8tSDV49G6oiOOzu
-	 wAL7TpohQ8anw==
+	b=WIt7PESUlL7eAgHG5yZuO/+Pzi2Iam84D6QDgX/lNFfE8E0LXUA7q2LZkTiM5E8Fr
+	 ltBF7m+A7cmNRWpEhtz56mVsB+LFjKR/8ja/VIadHjfLNx6yoIichWpu3qYfGaq9zV
+	 JUaO6KsixyAIrqpbjns4PoYgTh+jmEq6E6/qod0ooIa5PLN2YlJkG0c45baK9kSFk7
+	 rEpSQ/SUSV1Cm1007AMLqK1a8R4bFLtedrlHoNLHVcT+P7vYH3dJ2lb1AoYpaKKEfb
+	 G5zQb6o7kDZcoEXZ/kyJnO9GlC/GcWjY5p12geGmAv8g+mjBO16dd/Nnx7oWVJM63e
+	 qIsMMhe6b0uBA==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 04/24] arm64/cpu: Mark cpu_die() __noreturn
-Date: Mon, 13 Feb 2023 23:05:38 -0800
-Message-Id: <e47fc487980d5330e6059ac6e16416bec88cda0e.1676358308.git.jpoimboe@kernel.org>
+Subject: [PATCH v2 05/24] csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+Date: Mon, 13 Feb 2023 23:05:39 -0800
+Message-Id: <1e9ecc3d248e82973e80bc336fc9f97e3ba2708d.1676358308.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1676358308.git.jpoimboe@kernel.org>
 References: <cover.1676358308.git.jpoimboe@kernel.org>
@@ -65,27 +65,31 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cpu_die() doesn't return.  Annotate it as such.  By extension this also
-makes arch_cpu_idle_dead() noreturn.
+arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
+BUG().
 
+BUG() is preferable to unreachable() because BUG() is a more explicit
+failure mode and avoids undefined behavior like falling off the edge of
+the function into whatever code happens to be next.
+
+Acked-by: Guo Ren <guoren@kernel.org>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/arm64/include/asm/smp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/csky/kernel/smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
-index fc55f5a57a06..5733a31bab08 100644
---- a/arch/arm64/include/asm/smp.h
-+++ b/arch/arm64/include/asm/smp.h
-@@ -100,7 +100,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
- extern int __cpu_disable(void);
- 
- extern void __cpu_die(unsigned int cpu);
--extern void cpu_die(void);
-+extern void __noreturn cpu_die(void);
- extern void cpu_die_early(void);
- 
- static inline void cpu_park_loop(void)
+diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+index b45d1073307f..0ec20efaf5fd 100644
+--- a/arch/csky/kernel/smp.c
++++ b/arch/csky/kernel/smp.c
+@@ -317,5 +317,7 @@ void arch_cpu_idle_dead(void)
+ 		"jmpi	csky_start_secondary"
+ 		:
+ 		: "r" (secondary_stack));
++
++	BUG();
+ }
+ #endif
 -- 
 2.39.1
 
