@@ -1,76 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B33695C8F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 09:14:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B063695D59
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 09:42:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGDWH03LMz3cML
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 19:14:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGF7Y1sr6z3cJ7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 19:42:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VyF1fPdQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q0CFhD00;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VyF1fPdQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q0CFhD00;
 	dkim-atps=neutral
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGDVM4g75z3cBP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 19:13:14 +1100 (AEDT)
-Received: by mail-wm1-x330.google.com with SMTP id l37-20020a05600c1d2500b003dfe46a9801so10927197wms.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 00:13:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cRk5ZZgGHESQjRAciCkzTAgvsM2DNZ9ZsvdntVwJ0aM=;
-        b=VyF1fPdQ9QypQQWSzFllqGzI7seyTSuDNNWwfWkkysTNgd3Z0AjIHNF4LL0vR9kDt1
-         TWXLrpk12hmDLU5xwDRS8oUfZzApeC/OHNNgO/kMt5igi3066XuNNQHPHFYxq5aB3Iio
-         Rm5A78vOgv0qZPG3TgPZ61nsLc76jlc9DVGKtErGMeKDI9u1sAq/m/nABeTJZydjJdxc
-         KGyGm1+PtUnlS5irzivoc/koNSZhBHg8b061deMm/1IYjdDegSeovedsXz378PrcPSkc
-         AtwiyODrhxTX3DivF8dzOcKQXifNwgDmLtIw7KfLqn/lQcvbpYuvCV1bwFmaRQqmk4vF
-         cK6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cRk5ZZgGHESQjRAciCkzTAgvsM2DNZ9ZsvdntVwJ0aM=;
-        b=KYwcE4bytcLu2b/bYi1gEZaofHr5RQ6XgB+T664bHyWZJMKMcJvmHWs7bXKUQDYF3B
-         8vqxEJKzXMaOg+GmwRmpkfdexMjDoAw54Ak9Y6iJddgC2fgd/OXItjA623yuZ2W6fLk7
-         GNCbBh1r5iD0+nFpeYjr1Vg5cug9A4e8NpqYONmqjw2Uwjb2vOO5vd2FLZkWhz+mrNv8
-         U4D4iIJK6dcCBViVqvEjOvznxkNjnoxJjf5r8PjznEG8EwCUgBL14kpBlTKbrkQqYaoZ
-         rAmRsaq7sUqg19wzKfn5DL6zQ5Q2GpflgpQuSxLKFQ+gShHCUmi4kozDqmJrlyxXFDeX
-         tVDg==
-X-Gm-Message-State: AO0yUKUYR5+2sRZX7ifbF4D5WOwV5NqNBSxKvXh5PBkEgIXKHhkR0hH9
-	3zJzKWMPp4fwFvR/CGVW3GI8gw==
-X-Google-Smtp-Source: AK7set86AEK8D+D8+uPrCG75m0oQUNX8HZoOAkr8DDcCJCZFL80/CRikdClz+P95k5T2L/MBj1J/jQ==
-X-Received: by 2002:a05:600c:30d2:b0:3dc:4fd7:31f7 with SMTP id h18-20020a05600c30d200b003dc4fd731f7mr1177763wmn.41.1676362392093;
-        Tue, 14 Feb 2023 00:13:12 -0800 (PST)
-Received: from [192.168.30.216] ([81.0.6.76])
-        by smtp.gmail.com with ESMTPSA id l9-20020a05600c4f0900b003db1ca20170sm17626418wmq.37.2023.02.14.00.13.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Feb 2023 00:13:11 -0800 (PST)
-Message-ID: <14274f04-2991-95bd-c29b-07e86e8755c1@linaro.org>
-Date: Tue, 14 Feb 2023 09:13:08 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGF5W596pz3brK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 19:40:15 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31E8Vi22004628;
+	Tue, 14 Feb 2023 08:38:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=XmTTRTqN8QHhuqqaK0B4wcZMFk6wbx4+9SlCVYUudEg=;
+ b=q0CFhD00GHRgiAn5Lc7+9XPoIXhbH37jo9LPP5gO0FR/vTvQM2oqGpmnUzQ/izmDF9v0
+ KdAdBX+lzRH997zibc6I+ZDhX9NkR3s4PeteSiWnk3qMLqykhF7VHts/j4ounccd62iV
+ 6zcE2d9N3AcFvu42RVPJGqHk19n5kfAfYcELyf5vZX21pLHO9cWuVpRgVcF4ehkFPB9o
+ K9L59Nu09a5yT/SgLgfiy57OTzuJRb0tm23G7nl+ZAEOvsDYZRkFKkNDE7G+veUt0tTq
+ kDWPNL6pCGB2ooJtc34IbfhYfLJPh8EqpCM4gyBz9pzkOASeQq1W919Hg2daScb2Sld3 rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nr6v9r5bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Feb 2023 08:38:57 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31E8bEt7027902;
+	Tue, 14 Feb 2023 08:38:55 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nr6v9r5as-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Feb 2023 08:38:55 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31E65wsH017640;
+	Tue, 14 Feb 2023 08:38:52 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3np2n6kqqk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Feb 2023 08:38:52 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31E8cnPQ39649594
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Feb 2023 08:38:49 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDF1E20043;
+	Tue, 14 Feb 2023 08:38:48 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3EAF20040;
+	Tue, 14 Feb 2023 08:38:47 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.244])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 14 Feb 2023 08:38:47 +0000 (GMT)
+Date: Tue, 14 Feb 2023 09:38:47 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v3 00/24] Remove COMMAND_LINE_SIZE from uapi
+Message-ID: <Y+tIl07KOOrGZ2Et@osiris>
+References: <20230214074925.228106-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v2 04/24] arm64/cpu: Mark cpu_die() __noreturn
-Content-Language: en-US
-To: Josh Poimboeuf <jpoimboe@kernel.org>, linux-kernel@vger.kernel.org
-References: <cover.1676358308.git.jpoimboe@kernel.org>
- <e47fc487980d5330e6059ac6e16416bec88cda0e.1676358308.git.jpoimboe@kernel.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e47fc487980d5330e6059ac6e16416bec88cda0e.1676358308.git.jpoimboe@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230214074925.228106-1-alexghiti@rivosinc.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lcWVAyn8KN60Dj6qJ5LWCkwvnMHsQyNY
+X-Proofpoint-GUID: QnuEgtAeE2k8CuQJG5mickOtwsFFWUEl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-14_05,2023-02-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0 bulkscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302140067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,31 +95,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, bsegall@google.com, jcmvbkbc@gmail.com, guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-mips@vger.kernel.org, linux-alph
- a@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntr
+ aeger@linux.ibm.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/2/23 08:05, Josh Poimboeuf wrote:
-> cpu_die() doesn't return.  Annotate it as such.  By extension this also
-> makes arch_cpu_idle_dead() noreturn.
+On Tue, Feb 14, 2023 at 08:49:01AM +0100, Alexandre Ghiti wrote:
+> This all came up in the context of increasing COMMAND_LINE_SIZE in the
+> RISC-V port.  In theory that's a UABI break, as COMMAND_LINE_SIZE is the
+> maximum length of /proc/cmdline and userspace could staticly rely on
+> that to be correct.
 > 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> ---
->   arch/arm64/include/asm/smp.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Usually I wouldn't mess around with changing this sort of thing, but
+> PowerPC increased it with a5980d064fe2 ("powerpc: Bump COMMAND_LINE_SIZE
+> to 2048").  There are also a handful of examples of COMMAND_LINE_SIZE
+> increasing, but they're from before the UAPI split so I'm not quite sure
+> what that means: e5a6a1c90948 ("powerpc: derive COMMAND_LINE_SIZE from
+> asm-generic"), 684d2fd48e71 ("[S390] kernel: Append scpdata to kernel
+> boot command line"), 22242681cff5 ("MIPS: Extend COMMAND_LINE_SIZE"),
+> and 2b74b85693c7 ("sh: Derive COMMAND_LINE_SIZE from
+> asm-generic/setup.h.").
 > 
-> diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
-> index fc55f5a57a06..5733a31bab08 100644
-> --- a/arch/arm64/include/asm/smp.h
-> +++ b/arch/arm64/include/asm/smp.h
-> @@ -100,7 +100,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
->   extern int __cpu_disable(void);
->   
->   extern void __cpu_die(unsigned int cpu);
-> -extern void cpu_die(void);
-> +extern void __noreturn cpu_die(void);
->   extern void cpu_die_early(void);
+> It seems to me like COMMAND_LINE_SIZE really just shouldn't have been
+> part of the uapi to begin with, and userspace should be able to handle
+> /proc/cmdline of whatever length it turns out to be.  I don't see any
+> references to COMMAND_LINE_SIZE anywhere but Linux via a quick Google
+> search, but that's not really enough to consider it unused on my end.
+> 
+> The feedback on the v1 seemed to indicate that COMMAND_LINE_SIZE really
+> shouldn't be part of uapi, so this now touches all the ports.  I've
+> tried to split this all out and leave it bisectable, but I haven't
+> tested it all that aggressively.
 
-Shouldn't cpu_operations::cpu_die() be declared noreturn first?
-
+Just to confirm this assumption a bit more: that's actually the same
+conclusion that we ended up with when commit 3da0243f906a ("s390: make
+command line configurable") went upstream.
