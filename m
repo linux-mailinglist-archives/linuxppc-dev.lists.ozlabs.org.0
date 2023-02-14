@@ -2,49 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EC6695780
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 04:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9F4695797
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 04:49:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PG6Gc5WW1z3cJg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 14:32:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PG6fT62Fyz3cHh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 14:49:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=oUR/jiYu;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjJtPzhR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PG6Fh19XFz3bgk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 14:31:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=oUR/jiYu;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjJtPzhR;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PG6Fg37lcz4x5V;
-	Tue, 14 Feb 2023 14:31:51 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1676345511;
-	bh=Bfgx8xUHxfhLQ0qS9KkOxVzt4NQCDeV4YkZ6medyiX8=;
-	h=Date:From:To:Cc:Subject:From;
-	b=oUR/jiYuNfxc5YhytS6fPgt5nVZIGrGauTkAEK0wrdIWA26ORvmIQAMCr+CEMEhhw
-	 RnK3+jOw19fZKS0s62gnRUSM2l3fBJ3ll70OeWrBbrNoDqoujA0Yl2LTRBfw3qm/xM
-	 QERIjhTx/BLC61Df01c0u4Fx6jMPl3H6aFh6Ifkyjou/0hTsf3A0PCH1qoYc2JRaVg
-	 T+tvBJFjltSE3Ci+hTf/j/FxDDAm9eO1nRRaUR32jkQ3UumnVlj3EpWJefinZT9UtR
-	 4to3q4Jvb4DmvKgPN0IsFU6ltp3TQ/aMyUEjv9Jy2Ysi+pPMquJMpk4hrF+Ge+Tjxy
-	 munDc/u0QzyZw==
-Date: Tue, 14 Feb 2023 14:31:50 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PG6dV0mHzz3bfK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 14:48:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676346542; x=1707882542;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cJ/no5vmHwQlC+gPD4mZe8K76nDCsCV0+5yYFD5qFZk=;
+  b=TjJtPzhRUpHNWRIdjYUJDnTw9Pa2S9siAOh63cXHI6DN5OSRy8Rm6nza
+   YG6GetIKf5leDPW5J5mU7q9EtYUfYDik3SNaMX62qynsx5XNCZpS6knze
+   PsICk88uWhoIfHBINTCJsMyNKz+DlWeM705uq2oX5tzsVUep/aAAmhn1+
+   pMQajn0VYhCE1DO9YlH34SslOp9tZFSsCUW9JikMXga9P6XXejOVgX38e
+   ZBuOttNqy0E9nr1wXEGAlBoC/VMVMrJ88vG4pv2DUGe0uF3IGTJTmdctB
+   zu0NHpHOW475K/XSwVGuKbnE61EI/lYRO8Qg4vs4Zt9U0bHjI3N2Og6Rn
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="333206430"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="333206430"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 19:48:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="778137590"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="778137590"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 13 Feb 2023 19:48:52 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pRmJH-0008Bd-27;
+	Tue, 14 Feb 2023 03:48:51 +0000
+Date: Tue, 14 Feb 2023 11:48:26 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: linux-next: qemu boot log difference today
-Message-ID: <20230214143150.7c7fdd05@canb.auug.org.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 631bb79c0c5654bdd79b6df186f9e41981a2b1fa
+Message-ID: <63eb048a.jTmUj3V6KbApOaME%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/F4uhqVyv5ZP1XVIfUuW3fIK";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,43 +70,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/F4uhqVyv5ZP1XVIfUuW3fIK
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 631bb79c0c5654bdd79b6df186f9e41981a2b1fa  powerpc/nohash: Fix build error with binutils >= 2.38
 
-Hi all,
+elapsed time: 900m
 
-Today's qemu boot log shows 256k extra in reserved memory:
+configs tested: 42
+configs skipped: 3
 
-- Memory: 2046080K/2097152K available (14720K kernel code, 2944K rwdata, 18=
-048K rodata, 5184K init, 1431K bss, 51072K reserved, 0K cma-reserved)
-+ Memory: 2045824K/2097152K available (14720K kernel code, 2944K rwdata, 18=
-048K rodata, 5184K init, 1439K bss, 51328K reserved, 0K cma-reserved)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I don't know what has caused this.
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+sh                               allmodconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/F4uhqVyv5ZP1XVIfUuW3fIK
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPrAKYACgkQAVBC80lX
-0GxnpQf+MAoK/LgFvfGt+1XO7leXU/c20y0bYK2QgHtBNKQFbccFTelduZBPVX/e
-NbwZSBxyhZtiHJ7zFVu4EXuGbihCWvu/UylKKDxKAMGNgy6W3hCnjH9vEo1r14Yk
-D+Mlqv42tLg36biJ/Lx6mVDsxh2Y+zZAKEwyK4a+yhVKCTfZ3iz7hw0vXlA6S6Ry
-xf76njpf+Nu96SNgEzqDT1Ta4H6vq5khumj4V4hDyrMGnf4bKb0LoTxDTuFQxUgi
-ctBb3747AzE8+lGEgNFpeUgLnsgJzXM7EPQMPvnima8DkD8ME+804ktvl/K3Tgfd
-OmB0TvXBNeDqyLLydaOmlRBzlAz2Rw==
-=Bdie
------END PGP SIGNATURE-----
-
---Sig_/F4uhqVyv5ZP1XVIfUuW3fIK--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
