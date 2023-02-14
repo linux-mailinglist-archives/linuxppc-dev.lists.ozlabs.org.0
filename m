@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C5D695409
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Feb 2023 23:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B39695531
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 01:07:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PFzth24kbz3ccr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 09:45:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PG1js6gnJz3cFN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 11:07:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=atX5FSy3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=atX5FSy3;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PFzt24pWsz3bgk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 09:44:24 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-91-bQdp4kpzOVOJNtCS0YM40g-1; Mon, 13 Feb 2023 22:44:17 +0000
-X-MC-Unique: bQdp4kpzOVOJNtCS0YM40g-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.45; Mon, 13 Feb
- 2023 22:44:16 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.045; Mon, 13 Feb 2023 22:44:16 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Bjorn Helgaas' <helgaas@kernel.org>, Ira Weiny <ira.weiny@intel.com>
-Subject: RE: [PATCH RFC] PCI/AER: Enable internal AER errors by default
-Thread-Topic: [PATCH RFC] PCI/AER: Enable internal AER errors by default
-Thread-Index: AQHZP/OWtZukbVOH0kqW0g36cswuDK7NdzVQ
-Date: Mon, 13 Feb 2023 22:44:16 +0000
-Message-ID: <f5d13d0d67a34567a586a1171ba44b52@AcuMS.aculab.com>
-References: <20230209-cxl-pci-aer-v1-1-f9a817fa4016@intel.com>
- <20230213213820.GA2935044@bhelgaas>
-In-Reply-To: <20230213213820.GA2935044@bhelgaas>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PG1hw67mKz3bh7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 11:06:40 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A93E661368;
+	Tue, 14 Feb 2023 00:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC84C433D2;
+	Tue, 14 Feb 2023 00:06:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676333197;
+	bh=7w+QCpSPJLTXIjjwLzAaojQaLQkv4JGlLYFaWApxh2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=atX5FSy3oMqM0KJX4C9JKBaYToW3bt9BZfi4iTetnG8kgxG1NORadoz221vwE5XHR
+	 VXyIxXQ26X2Xhpwf30nLLhfmhXLQPCYJ8LoSVKpJlU1iXN6UZVmAhM+IPOgswpbuZK
+	 ttbnaBBayDQOLKM1/mBoP+bItXrsH/ZLt8ztlmSEGyJdFOA9D2bCoJPLFLFC/tco9G
+	 j5/9RkiWU8Fe5GTDu2rdHQcIGj962P3YwhVIPm4N+9zpxT/fxwXunUSrjZb8RwkKXe
+	 0p3NVE7Ob6NNeUoEDtZ/ZOrlnhFzEdsccpjZmK2ihBlfHxm17p9P2t0Kz8qUg5Uu1d
+	 QGDYjtDmmIEmw==
+Date: Mon, 13 Feb 2023 19:06:36 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [PATCH AUTOSEL 6.1 17/38] powerpc/85xx: Fix unannotated
+ intra-function call warning
+Message-ID: <Y+rQjJr2CyQhfIZN@sashalap>
+References: <20230209111459.1891941-1-sashal@kernel.org>
+ <20230209111459.1891941-17-sashal@kernel.org>
+ <288e133f-f740-6818-8125-8079217ab822@linux.ibm.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <288e133f-f740-6818-8125-8079217ab822@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,60 +62,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alison Schofield <alison.schofield@intel.com>, Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ben Widawsky <bwidawsk@kernel.org>, Oliver O'Halloran <oohall@gmail.com>, Jonathan
- Cameron <Jonathan.Cameron@Huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, Stefan Roese <sr@denx.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, stable@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Bjorn Helgaas
-> Sent: 13 February 2023 21:38
->=20
-> On Fri, Feb 10, 2023 at 02:33:23PM -0800, Ira Weiny wrote:
-> > The CXL driver expects internal error reporting to be enabled via
-> > pci_enable_pcie_error_reporting().  It is likely other drivers expect t=
-he same.
-> > Dave submitted a patch to enable the CXL side[1] but the PCI AER regist=
-ers
-> > still mask errors.
-> >
-> > PCIe v6.0 Uncorrectable Mask Register (7.8.4.3) and Correctable Mask
-> > Register (7.8.4.6) default to masking internal errors.  The
-> > Uncorrectable Error Severity Register (7.8.4.4) defaults internal error=
-s
-> > as fatal.
-> >
-> > Enable internal errors to be reported via the standard
-> > pci_enable_pcie_error_reporting() call.  Ensure uncorrectable errors ar=
-e set
-> > non-fatal to limit any impact to other drivers.
->=20
-> Do you have any background on why the spec makes these errors masked
-> by default?  I'm sympathetic to wanting to learn about all the errors
-> we can, but I'm a little wary if the spec authors thought it was
-> important to mask these by default.
+On Fri, Feb 10, 2023 at 04:55:54PM +0530, Sathvika Vasireddy wrote:
+>Hi Sasha,
+>
+>On 09/02/23 16:44, Sasha Levin wrote:
+>>From: Sathvika Vasireddy <sv@linux.ibm.com>
+>>
+>>[ Upstream commit 8afffce6aa3bddc940ac1909627ff1e772b6cbf1 ]
+>>
+>>objtool throws the following warning:
+>>   arch/powerpc/kernel/head_85xx.o: warning: objtool: .head.text+0x1a6c:
+>>   unannotated intra-function call
+>>
+>>Fix the warning by annotating KernelSPE symbol with SYM_FUNC_START_LOCAL
+>>and SYM_FUNC_END macros.
+>>
+>>Reported-by: kernel test robot <lkp@intel.com>
+>>Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+>>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>Link: https://lore.kernel.org/r/20230128124138.1066176-1-sv@linux.ibm.com
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>  arch/powerpc/kernel/head_85xx.S | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
+>>index 52c0ab416326a..d3939849f4550 100644
+>>--- a/arch/powerpc/kernel/head_85xx.S
+>>+++ b/arch/powerpc/kernel/head_85xx.S
+>>@@ -862,7 +862,7 @@ _GLOBAL(load_up_spe)
+>>   * SPE unavailable trap from kernel - print a message, but let
+>>   * the task use SPE in the kernel until it returns to user mode.
+>>   */
+>>-KernelSPE:
+>>+SYM_FUNC_START_LOCAL(KernelSPE)
+>>  	lwz	r3,_MSR(r1)
+>>  	oris	r3,r3,MSR_SPE@h
+>>  	stw	r3,_MSR(r1)	/* enable use of SPE after return */
+>>@@ -879,6 +879,7 @@ KernelSPE:
+>>  #endif
+>>  	.align	4,0
+>>+SYM_FUNC_END(KernelSPE)
+>>  #endif /* CONFIG_SPE */
+>>  /*
+>
+>Please drop this patch because objtool enablement patches for powerpc 
+>are not a part of kernel v6.1.
 
-I'd guess that it is for backwards compatibility with older hardware
-and/or software that that didn't support error notifications.
+Ack, I'll drop this and the other one you've pointed out. Thanks!
 
-Then there are the x86 systems that manage to take the AER
-error into some 'board management hardware' which finally
-interrupts the kernel with an NMI - and the obvious consequence.
-These systems are NEBS? 'qualified' for telecoms use, but take
-out a PCIe link and the system crashes.
-
-It is pretty easy to generate a PCIe error.
-Any endpoint with two (or more) different sized BARs leaves
-a big chunk of PCIe address space that is forwarded by the upstream
-bridge but is not responded to.
-The requirement to put the MSI-X area in its own BAR pretty much
-ensures that such addresses exist.
-
-(Never mind reprogramming the fpga that is terminating the link.)
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+-- 
+Thanks,
+Sasha
