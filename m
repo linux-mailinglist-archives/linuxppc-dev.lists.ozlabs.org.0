@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7637695DC7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 09:59:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4331D695DE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 10:02:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGFWl5Hbpz3cRW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 19:59:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGFbN0sbVz3ccg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 20:02:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.41; helo=mail-ej1-f41.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.50; helo=mail-lf1-f50.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGFVy6cGLz3cMT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 19:58:50 +1100 (AEDT)
-Received: by mail-ej1-f41.google.com with SMTP id gn39so4213ejc.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 00:58:50 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGFZn3b8Xz3Wtp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 20:02:09 +1100 (AEDT)
+Received: by mail-lf1-f50.google.com with SMTP id x40so22483065lfu.12
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 01:02:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UXpQWLOfRB0cj7wBmiF/GaVLxY5OIU6uD4JxDn3mdPQ=;
-        b=yIN/xdDCQ9y58e6UQ1H/swnPlUOgi3nc4CruprZ/0E3QskN0TLmawbI5gQ9fLf9G2M
-         uBkSch+g/2W8eP2ynn4qH3UPGVjVHM0xWV5MZK02FwVnRGrLPFhZRO/+Ku86J3nm6IWQ
-         Z57bwyiXYWQwCtM5kg/C2hWmznk4TPz95vQgB+gKXHoAxEr1CkrmPkpozelPN4aavpxx
-         JtrQ2gapmp+/JnDfxRqWgsv+6aqSJs0sdnOjf0z4q2Q7ttN8ymkmNzt+OqEQ32JWxCr8
-         KIpht/PAOIZRWW1Q3Ob7+dCpBj763MybYFxSbj7qsJtHSisZ+vjM7jPJjYIHUhHXeruT
-         P19w==
-X-Gm-Message-State: AO0yUKXDCOEIyUL/NeATVIeyO5ccCvTtSWQ215hLncoprShh11mSIXKo
-	BLk4vrGhlI66b/7U9ibNWw1Q7o1ldaS52A6H
-X-Google-Smtp-Source: AK7set+52vptqBTnfLDPwL7XgoRxFhsWlgovA4+7pfVD3HsI+Ctg9NoN/+JtO0MTirnXSUX8SHuxSw==
-X-Received: by 2002:a17:907:7245:b0:8a5:8620:575 with SMTP id ds5-20020a170907724500b008a586200575mr2761245ejc.3.1676365125554;
-        Tue, 14 Feb 2023 00:58:45 -0800 (PST)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id e13-20020a170906044d00b0088eb55ed9cbsm7947966eja.187.2023.02.14.00.58.43
+        bh=Vo1pwF0Y3+477kchtQyZldRaytGfE/r9ZXPNmjOtQDY=;
+        b=Nl/2Q0itTRqy4k6j48uOpefB/QhOwnDpwz1eaE7smt/z6EBvoT7mGLTKimXu/pRCjN
+         KuXHHS3LJoocVwdTeloHAHL8vJnSBzY4TfK9ups/E1ClIGsFElDe/5xmCbWGSy5vmzyK
+         /QM0ElB+wmqvUAGmjyxPZCBdGFB61UfQPaCETz9uaUK993htkiivKrJ3wUpZwLXRCaAX
+         xAReSq0xPwaVpbzTilQZ8jMVlaQAFObAvXaQEdDTfSLKKte8nlGUGa7QJSJFux09cUvZ
+         JCUqQ8Z6Z7mWJW1NcHadQKi+c93GYysHoRx3HoImikQRx3qPlSJkx5+9HIkslAHiurjy
+         SZsQ==
+X-Gm-Message-State: AO0yUKXCRckHtu+QdoxuNEuC2pLH39u3goNgLOPHP/Ijbxr0jz0OMw0u
+	fbsnoahNFgtLw3KLVjIMxc29gSpGbqO7m9Yb
+X-Google-Smtp-Source: AK7set8521Ihh3uWkhthY251qTO25SW0cPgR5/uHJFII880muJ9ywpqMASFzMh9XCZ9BIga2Y//Yxg==
+X-Received: by 2002:ac2:42d2:0:b0:4a4:68b7:f86d with SMTP id n18-20020ac242d2000000b004a468b7f86dmr792015lfl.17.1676365323609;
+        Tue, 14 Feb 2023 01:02:03 -0800 (PST)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id g11-20020a19ac0b000000b004d2af072645sm1042723lfc.143.2023.02.14.01.01.59
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Feb 2023 00:58:45 -0800 (PST)
-Received: by mail-ej1-f46.google.com with SMTP id gn39so3681ejc.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 00:58:43 -0800 (PST)
-X-Received: by 2002:a05:651c:4ca:b0:28e:54f:b187 with SMTP id
- e10-20020a05651c04ca00b0028e054fb187mr203743lji.5.1676365112291; Tue, 14 Feb
- 2023 00:58:32 -0800 (PST)
+        Tue, 14 Feb 2023 01:02:00 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id d8so17573719ljq.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 01:01:59 -0800 (PST)
+X-Received: by 2002:a2e:9448:0:b0:293:5264:ad89 with SMTP id
+ o8-20020a2e9448000000b002935264ad89mr149971ljh.37.1676365308893; Tue, 14 Feb
+ 2023 01:01:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20230214074925.228106-1-alexghiti@rivosinc.com> <Y+tIl07KOOrGZ2Et@osiris>
-In-Reply-To: <Y+tIl07KOOrGZ2Et@osiris>
+References: <20230214074925.228106-1-alexghiti@rivosinc.com> <20230214074925.228106-16-alexghiti@rivosinc.com>
+In-Reply-To: <20230214074925.228106-16-alexghiti@rivosinc.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 14 Feb 2023 09:58:17 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVG4=UmKDa17dys9e3iGM75u4+13nQVyjMHK--aD6WKfw@mail.gmail.com>
-Message-ID: <CAMuHMdVG4=UmKDa17dys9e3iGM75u4+13nQVyjMHK--aD6WKfw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/24] Remove COMMAND_LINE_SIZE from uapi
-To: Heiko Carstens <hca@linux.ibm.com>
+Date: Tue, 14 Feb 2023 10:01:35 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVQeh4ZqSmVXkNJTOCZ_Ywi0b0JiGpg2EQFRWZXzkNeyw@mail.gmail.com>
+Message-ID: <CAMuHMdVQeh4ZqSmVXkNJTOCZ_Ywi0b0JiGpg2EQFRWZXzkNeyw@mail.gmail.com>
+Subject: Re: [PATCH v3 15/24] m68k: Remove empty <uapi/asm/setup.h>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,47 +66,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-xtensa@linux-xt
- ensa.org, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Vasily Gorbik <gor@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Palmer Dabbelt <palmer@rivosinc.com>, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger
+ @linux.ibm.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Heiko,
-
-On Tue, Feb 14, 2023 at 9:39 AM Heiko Carstens <hca@linux.ibm.com> wrote:
-> On Tue, Feb 14, 2023 at 08:49:01AM +0100, Alexandre Ghiti wrote:
-> > This all came up in the context of increasing COMMAND_LINE_SIZE in the
-> > RISC-V port.  In theory that's a UABI break, as COMMAND_LINE_SIZE is the
-> > maximum length of /proc/cmdline and userspace could staticly rely on
-> > that to be correct.
-> >
-> > Usually I wouldn't mess around with changing this sort of thing, but
-> > PowerPC increased it with a5980d064fe2 ("powerpc: Bump COMMAND_LINE_SIZE
-> > to 2048").  There are also a handful of examples of COMMAND_LINE_SIZE
-> > increasing, but they're from before the UAPI split so I'm not quite sure
-> > what that means: e5a6a1c90948 ("powerpc: derive COMMAND_LINE_SIZE from
-> > asm-generic"), 684d2fd48e71 ("[S390] kernel: Append scpdata to kernel
-> > boot command line"), 22242681cff5 ("MIPS: Extend COMMAND_LINE_SIZE"),
-> > and 2b74b85693c7 ("sh: Derive COMMAND_LINE_SIZE from
-> > asm-generic/setup.h.").
-> >
-> > It seems to me like COMMAND_LINE_SIZE really just shouldn't have been
-> > part of the uapi to begin with, and userspace should be able to handle
-> > /proc/cmdline of whatever length it turns out to be.  I don't see any
-> > references to COMMAND_LINE_SIZE anywhere but Linux via a quick Google
-> > search, but that's not really enough to consider it unused on my end.
-> >
-> > The feedback on the v1 seemed to indicate that COMMAND_LINE_SIZE really
-> > shouldn't be part of uapi, so this now touches all the ports.  I've
-> > tried to split this all out and leave it bisectable, but I haven't
-> > tested it all that aggressively.
+On Tue, Feb 14, 2023 at 9:05 AM Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
+> From: Palmer Dabbelt <palmer@rivosinc.com>
 >
-> Just to confirm this assumption a bit more: that's actually the same
-> conclusion that we ended up with when commit 3da0243f906a ("s390: make
-> command line configurable") went upstream.
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-Commit 622021cd6c560ce7 ("s390: make command line configurable"),
-I assume?
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
 Gr{oetje,eeting}s,
 
