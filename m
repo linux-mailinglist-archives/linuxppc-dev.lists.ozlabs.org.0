@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA12269640B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 13:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4F7696459
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 14:11:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGLpx44Xyz3cMl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 23:58:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGM6S74k2z3cdL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 00:11:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WJdnIzCN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AroULSWk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WJdnIzCN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AroULSWk;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGLnz3cq7z3c7B
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 23:57:10 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id d13-20020a17090ad3cd00b0023127b2d602so15370427pjw.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 04:57:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGM5X2Th3z3cFt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 00:10:38 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id b5so16996114plz.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 05:10:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LvbvVZeDxlmyQ+MKMrDf7Zww7VWZ6K77IBbIyuFkUUM=;
-        b=WJdnIzCNdsEVhQsGHsWOO7yTWXr+pWI+PtbYUorKW2BchHqmwSwOGYAdoPufsKo0lJ
-         bXDPWjxdhH0QnGSePHf16V7IoRXQeuhXlPcWmkxu8rZSjSr3Sh7jD3eqfhHEY8D454AL
-         h9BqNX+KCkb4XJj5QiYoEyv/SXP+BeQ/BY4l0AmplspY3uh+sSGXDRYM23x/cN3z17v4
-         7mVXCjohMU5LW8N+7VSWMBw+LVgUYmGtE+fRcUV+X7h/ZuXCVclocMVqOgQVU0PU1ZT/
-         Iaxkx1YKf72wvTPUawYrrDuiNA9tC+Rro4eK9+FeLt6f2iRUNM5NC3UOCLKbbbVT0kzB
-         CWuQ==
+        bh=/UCnR+z6gmAvcqmKIJeLEMH14WiUbQ57wKTFDt5pcJ8=;
+        b=AroULSWko9Zr7eGEPpWTPA6D2mG8vKfAIsqG1/UHiZHP3HX3PbVp0qrMJ+FuAJsbWS
+         v05+kTojvExJxZ8W+9yB21D5w8vexFjRyphDjBsOddEZTMVdttkVBNXjxWFQ3Iqwojqw
+         +DKSZuOkQRuVKSaqQXL+bh2B50zxlDW7/k12RIgkMnOVm0uYI6LnfzeI25mloiCklp33
+         VHHtIf4Dpr/qSsDgSQMEDKRS4lg6TE80G2m56Li8ak7Mi6jrTmPyCPMKDQkClT1hFcFO
+         HozC1z+zsQ4VmKCtjiLNbcQm7z7g/V4D6C2WAOwQT8Y+WTTuWkSjrC9wQJ19rS06uj77
+         A7tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LvbvVZeDxlmyQ+MKMrDf7Zww7VWZ6K77IBbIyuFkUUM=;
-        b=EQdZKFNOing6dDo0tCHi/PjeZLtVg6aqOJxDha07JNgcqHIL/qukvXXGFp+aJX8RLx
-         NqLKojN236jCNEWkBXURtuXSeNNjPOVQHKVEyYM0iYBZ4Dzw6ZjHkdcyHroNZ8UY8lZz
-         wD7AehNUn8UWCNl6KomdPAwVvffJHr/iRIs0QtXPwurrBHQNUJELvBGrXUbYsYTp71Bz
-         sLImGRNMzPnNjtmq7kaykonledLfCvSE9BcmuBXbldRwLwle4bRc4+gIoohgW/hw4okZ
-         TRVtB7ueK4WeqtfmgiMZo801QjIm11f0hjd3WT43vCmVCIfgNDFQbn/88/GvfpzPhT3N
-         X8iw==
-X-Gm-Message-State: AO0yUKUhuVdEVUMRxStwlpS3vvxLPo3lPIKbeyWvBzfsU/tNDr2eOY+r
-	yzFW5EDwPKt4izskP3UyYcm91VES3LDnWwZzGTo=
-X-Google-Smtp-Source: AK7set8VxH7lwiKYZQHjj1alCNiwWZsomKyHPncWio7rYDiPFQWyD3jSnBu7216hvtJHxDxHzVWwlnilO9YoLshnmQM=
+        bh=/UCnR+z6gmAvcqmKIJeLEMH14WiUbQ57wKTFDt5pcJ8=;
+        b=lxUBFYjrBZf49g1/36NGHrUIwqkubocR+RjX3Z5kTHglbft320rlcF4YVVk46+c7by
+         TgrS4X3GLy1lihciwVbOOp/21gxW7EWWKQxFF3Vresj3hEjLFnkk9yfC9PdaFQCDYee7
+         98kNCJLjUG+S3+NE7e/orr9LdP8ilfK/KLNNT9YMVnEzsGgWmbC96b48pTsaVnJPKNHk
+         kZdWRCTpGp8vNFtOQqnI6h117j39dwDfnwQ6l7xsAG4AR89YcNJkFgi/3KAffZ57vZIB
+         Aehq+GAqzwdfCYCRIz1aKObt8hPdR3eRfCRK9SJe6IkmVlQWdX89ruVdzvkZGf7OdY0E
+         3WTQ==
+X-Gm-Message-State: AO0yUKXiP8L8DPplLfCTvw5B+vnkAf03+ofwcAHAoHLo38llq6SkZ4iS
+	Vpfr4qeCI/HxBMP1GKJxszwqAlF0mjMaiVvUK1I=
+X-Google-Smtp-Source: AK7set8wnbcla18BA65mD0tF+YGFQZaLOi1vF6MNFPYgJ+xCNbkwNuOA5gg0rl8sjl7Hw+xmx/asisuFdRpgxW5I32w=
 X-Received: by 2002:a17:90a:d486:b0:233:c720:e6d5 with SMTP id
- s6-20020a17090ad48600b00233c720e6d5mr2292500pju.94.1676379427739; Tue, 14 Feb
- 2023 04:57:07 -0800 (PST)
+ s6-20020a17090ad48600b00233c720e6d5mr2301551pju.94.1676380235318; Tue, 14 Feb
+ 2023 05:10:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20230214074925.228106-1-alexghiti@rivosinc.com> <20230214074925.228106-12-alexghiti@rivosinc.com>
-In-Reply-To: <20230214074925.228106-12-alexghiti@rivosinc.com>
+References: <20230214074925.228106-1-alexghiti@rivosinc.com> <20230214074925.228106-22-alexghiti@rivosinc.com>
+In-Reply-To: <20230214074925.228106-22-alexghiti@rivosinc.com>
 From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Tue, 14 Feb 2023 04:56:56 -0800
-Message-ID: <CAMo8BfJ_RF2C7EkZJusFuVPh0-7zpgNaj1pDf079CSKzRBrQjg@mail.gmail.com>
-Subject: Re: [PATCH v3 11/24] xtensa: Remove COMMAND_LINE_SIZE from uapi
+Date: Tue, 14 Feb 2023 05:10:24 -0800
+Message-ID: <CAMo8BfLCDbYWBWfF7ZJtG_U7E846RmJLF5OFdWpaFOv8ydo0Eg@mail.gmail.com>
+Subject: Re: [PATCH v3 21/24] xtensa: Remove empty <uapi/asm/setup.h>
 To: Alexandre Ghiti <alexghiti@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,19 +78,15 @@ Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-doc@vger.ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 14, 2023 at 12:01 AM Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
+On Tue, Feb 14, 2023 at 12:11 AM Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
 >
 > From: Palmer Dabbelt <palmer@rivosinc.com>
 >
-> As far as I can tell this is not used by userspace and thus should not
-> be part of the user-visible API.
->
 > Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 > ---
->  arch/xtensa/include/asm/setup.h      | 17 +++++++++++++++++
->  arch/xtensa/include/uapi/asm/setup.h |  2 --
->  2 files changed, 17 insertions(+), 2 deletions(-)
->  create mode 100644 arch/xtensa/include/asm/setup.h
+>  arch/xtensa/include/uapi/asm/setup.h | 15 ---------------
+>  1 file changed, 15 deletions(-)
+>  delete mode 100644 arch/xtensa/include/uapi/asm/setup.h
 
 Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
