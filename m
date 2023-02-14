@@ -2,63 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9F4695797
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 04:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2A6695870
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 06:20:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PG6fT62Fyz3cHh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 14:49:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PG8gX2R2Wz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 16:20:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjJtPzhR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ddf+SX01;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjJtPzhR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ddf+SX01;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PG6dV0mHzz3bfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 14:48:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676346542; x=1707882542;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cJ/no5vmHwQlC+gPD4mZe8K76nDCsCV0+5yYFD5qFZk=;
-  b=TjJtPzhRUpHNWRIdjYUJDnTw9Pa2S9siAOh63cXHI6DN5OSRy8Rm6nza
-   YG6GetIKf5leDPW5J5mU7q9EtYUfYDik3SNaMX62qynsx5XNCZpS6knze
-   PsICk88uWhoIfHBINTCJsMyNKz+DlWeM705uq2oX5tzsVUep/aAAmhn1+
-   pMQajn0VYhCE1DO9YlH34SslOp9tZFSsCUW9JikMXga9P6XXejOVgX38e
-   ZBuOttNqy0E9nr1wXEGAlBoC/VMVMrJ88vG4pv2DUGe0uF3IGTJTmdctB
-   zu0NHpHOW475K/XSwVGuKbnE61EI/lYRO8Qg4vs4Zt9U0bHjI3N2Og6Rn
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="333206430"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="333206430"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 19:48:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="778137590"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="778137590"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 13 Feb 2023 19:48:52 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pRmJH-0008Bd-27;
-	Tue, 14 Feb 2023 03:48:51 +0000
-Date: Tue, 14 Feb 2023 11:48:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 631bb79c0c5654bdd79b6df186f9e41981a2b1fa
-Message-ID: <63eb048a.jTmUj3V6KbApOaME%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PG8fX5t3Nz3bh1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 16:20:04 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31E5HlYT006974;
+	Tue, 14 Feb 2023 05:19:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=on/G+7xydrT612HiE9+iKfuHNvPuUmqw1zf4SLBWcm0=;
+ b=Ddf+SX016z+OY+svfB5UhuyzyWyFCKz62U+PzeZfpNx73/+72O/7J420rp0npmVBUq+5
+ 0rJUA1cGeeCEx/yZmj63ym5NJoegwYm9J+KzZnur9aWuxj1DY9xfSLGy7Bkw1f7DTYHK
+ PsmMHE8q5zG8DF36X2WakD5pwkNI6QGEuOu3/m4AmUr+P4XQCD3ze1DYz1W79/AZIld5
+ DJEMh+2ufJLMPR1oo+b4pBVrg4rxf4jzEGwBI5UKulOZyConQO4EfQdnqdjDC/h2Xkks
+ sjrQzRDK2BXzj29bYmtL4H22+UonDwpIkHIIjJmc7NQBgIiYQ/dBtzOcxxXRmSpcSLQD +Q== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nr41e00kf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Feb 2023 05:19:45 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31E1BSFv020028;
+	Tue, 14 Feb 2023 05:19:44 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3np2n6x2ym-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Feb 2023 05:19:44 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31E5Jhrv37683604
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Feb 2023 05:19:44 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3D535805B;
+	Tue, 14 Feb 2023 05:19:43 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C0B858058;
+	Tue, 14 Feb 2023 05:19:43 +0000 (GMT)
+Received: from localhost (unknown [9.211.96.43])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Feb 2023 05:19:43 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: Re: linux-next: qemu boot log difference today
+In-Reply-To: <20230214143150.7c7fdd05@canb.auug.org.au>
+References: <20230214143150.7c7fdd05@canb.auug.org.au>
+Date: Mon, 13 Feb 2023 23:19:43 -0600
+Message-ID: <878rh0aknk.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: s3pa4hTPdjUeE41BhGsKVamhkK-zeFZ2
+X-Proofpoint-GUID: s3pa4hTPdjUeE41BhGsKVamhkK-zeFZ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-14_03,2023-02-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302140041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,65 +89,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 631bb79c0c5654bdd79b6df186f9e41981a2b1fa  powerpc/nohash: Fix build error with binutils >= 2.38
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+>
+> Today's qemu boot log shows 256k extra in reserved memory:
+>
+> - Memory: 2046080K/2097152K available (14720K kernel code, 2944K rwdata, 18048K rodata, 5184K init, 1431K bss, 51072K reserved, 0K cma-reserved)
+> + Memory: 2045824K/2097152K available (14720K kernel code, 2944K rwdata, 18048K rodata, 5184K init, 1439K bss, 51328K reserved, 0K cma-reserved)
+>
+> I don't know what has caused this.
 
-elapsed time: 900m
+Assuming it's pseries, it's the RTAS work area allocator reserving the
+memory.
 
-configs tested: 42
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-sh                               allmodconfig
-sparc                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+43033bc62d34 powerpc/pseries: add RTAS work area allocator
