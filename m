@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F80695A13
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53976959DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 08:08:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGC4h3zhBz3cMk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:09:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGC3h5MVfz3cC5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:08:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dAlEp0FZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o1g46Mnm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dAlEp0FZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o1g46Mnm;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC1r6mdxz3c6V
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGC1r6Nwzz3c63
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:06:56 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9C696B81BFC;
-	Tue, 14 Feb 2023 07:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94853C433A7;
-	Tue, 14 Feb 2023 07:06:48 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 649A9B81BFF;
+	Tue, 14 Feb 2023 07:06:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7744CC433AE;
+	Tue, 14 Feb 2023 07:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676358410;
-	bh=/WRpZ+fgwXF0z/GQYKwOihjxOQ5dza8faN+YuvFg6xA=;
+	s=k20201202; t=1676358412;
+	bh=Ya58HiCcymNeXiDsDrSrB3MVa42ANSTnVDrYM/I8DGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAlEp0FZUQmU3s+7nxa65cD0n3h9c7eJJZjXGr3hhHtUntee21fQKh3l9ntfq4KbC
-	 3uL5hEjnYQn4bxN/OMzXjHF0pqPHb9d1Mj6gggaMFr2ZB1IbDgksvUGZPatb6zeY4p
-	 US6fZpQ/eFrQEhekkbHzHVcs9ntVzGENf7WwrjcjRMEAT4p0JrsF0O+9aigRk4dHvY
-	 p2C+OwYq/kn5g8didBavBbKvz/LCCMVYK+ImBjDxSPohVp1RyvxwBWm6s0VIbeK7gX
-	 Zs1DSSupvJ0IqkiCQuQhWek6mO45nkdVQiVqMyeg2qyQXHiVZ0vEb4+2b613bDaJFf
-	 6y9cII9Se4ZJg==
+	b=o1g46MnmwcBx8T5+mpqxpWg9RNiPGwxWh7u50+UbvVV/HCNE/CzztVflEM53qxglv
+	 YYK/YrY0Q9V6xIHds9bSBH9HN0lqUKa6Z1xe3cfCjxpSNsspagp2pNbL0WMNKEQ0Rx
+	 pzr+HaAh9N3K2/cV0XtAVxzNNCB75oEBpHNITqIRR27J3mfkFgz/r562+bVXahSIST
+	 IY0Pnmrhw/r9K8+6kstkVaj4pLQJnS5iSYM8p9up4WRV2EcZ3VkSKGVUgn+3GYoIew
+	 SCyrNFtXGmtYxVMosYI0z60anWodjY2gKyCCb0H5AEcAnHnT5mlvQpZIVvTrKYjllD
+	 UOkJrRuEY33Fg==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 01/24] alpha/cpu: Expose arch_cpu_idle_dead()'s prototype declaration
-Date: Mon, 13 Feb 2023 23:05:35 -0800
-Message-Id: <b0405c2ac5686303b6026e1ac27cfd769b21a7d0.1676358308.git.jpoimboe@kernel.org>
+Subject: [PATCH v2 02/24] alpha/cpu: Make sure arch_cpu_idle_dead() doesn't return
+Date: Mon, 13 Feb 2023 23:05:36 -0800
+Message-Id: <19ffef09a175fecb783abcd44d6bcfeade2857eb.1676358308.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1676358308.git.jpoimboe@kernel.org>
 References: <cover.1676358308.git.jpoimboe@kernel.org>
@@ -65,8 +65,12 @@ Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include <linux/cpu.h> to make sure arch_cpu_idle_dead() matches its
-prototype going forward.
+arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
+BUG().
+
+BUG() is preferable to unreachable() because BUG() is a more explicit
+failure mode and avoids undefined behavior like falling off the edge of
+the function into whatever code happens to be next.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
@@ -74,17 +78,17 @@ Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/alpha/kernel/process.c b/arch/alpha/kernel/process.c
-index ce20c31828a0..d1f2e8b6b107 100644
+index d1f2e8b6b107..d0ff06eda8fa 100644
 --- a/arch/alpha/kernel/process.c
 +++ b/arch/alpha/kernel/process.c
-@@ -9,6 +9,7 @@
-  * This file handles the architecture-dependent parts of process handling.
-  */
+@@ -63,6 +63,7 @@ void arch_cpu_idle(void)
+ void arch_cpu_idle_dead(void)
+ {
+ 	wtint(INT_MAX);
++	BUG();
+ }
+ #endif /* ALPHA_WTINT */
  
-+#include <linux/cpu.h>
- #include <linux/errno.h>
- #include <linux/module.h>
- #include <linux/sched.h>
 -- 
 2.39.1
 
