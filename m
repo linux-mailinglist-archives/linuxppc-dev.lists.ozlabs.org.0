@@ -1,70 +1,124 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70345696A3A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 17:48:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A02F696BC7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 18:33:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGRwz216xz3cfl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 03:48:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGSwp2WY4z3cdj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 04:33:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=p2TLRP1L;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=pQTjg92o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1129; helo=mail-yw1-x1129.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0d::626; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=p2TLRP1L;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=pQTjg92o;
 	dkim-atps=neutral
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on0626.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::626])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGRw01NmZz3c6V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 03:47:43 +1100 (AEDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-501c3a414acso214446477b3.7
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 08:47:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ayL3I3lSJXQSr5Jm+VXTau51rl41gfRsh35PsMQ4l4=;
-        b=p2TLRP1LQYRQFLiyDUgbiLevDu32jCQ1L/y8KHXKpM3qk3yQMC/KRusxiAUo/2I5FR
-         akQzZTLXnxb+P1qBmss9iIWLDGKg0C359syK073euM8tuN5Sl/8WYF11lclUeYyAUpMT
-         hAGRMYI/iF5fhJver2jb4sWSYvtAFyiBKJIPjFvWpjnoUJwPU0kqPytUKfvSHAYHbAg2
-         M09YNljijJZij+Yr4ZSoVYpX0jHEwLPIiBY9qadnh3wJ0BvnRF1uG1ci8Ku87aTVb1aO
-         81XWgOzFKio+DbidG2VtE3NpZSUFQFw5KG2e47GfYfbWHge6uJXUOgMZ4f80jBrT9T8b
-         1Jfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/ayL3I3lSJXQSr5Jm+VXTau51rl41gfRsh35PsMQ4l4=;
-        b=VWLfFjM63kKWyw8ocN+5fng3P6UhHIzxSkOu2SmBj1Knn0XCz3jyDm1v1WOPIbvojM
-         FOq+izLd7RglYsCT+DU7f6/2NxTkazbOaw72spqJZEA0x8HeJu+N+yGmLCLq37/o3n3T
-         Xp5/SdOKUMjnvLEF5mj6R81fpZPIRYlHgd3v250338thFiZF7kMs+7bDufPYaD3mUmhB
-         tGdX1sPb9VclF+3IsgRE5cFKQiKPl3HGvjgSIs2x/YDP4v8k8twCy4KQWY0040D9QzrW
-         sl2+sOsxeM6wEKZfU0Leqaz6BsXYMBCOQbSOeD1yGdlgnkW7ZDaoA8jJF7wzZgBPQNl3
-         REXQ==
-X-Gm-Message-State: AO0yUKUoRzT0Kmlvr2db0eK4hXLnh1eK+dPMMzkBTvWjkWI/OLMvbfiQ
-	bpHNy933aeTP9w6TksOYJIFiKsp0BYKJhOhQC9JDog==
-X-Google-Smtp-Source: AK7set/mxOKdHn92cBwjyApj3R28pXKEhuPBGovIRR6cczvfLCLR3WjxmhojkFsLR3cVOKM9zEYVw0ts4tZUpyJ11zo=
-X-Received: by 2002:a0d:f5c4:0:b0:52e:c93a:bb36 with SMTP id
- e187-20020a0df5c4000000b0052ec93abb36mr319927ywf.277.1676393257997; Tue, 14
- Feb 2023 08:47:37 -0800 (PST)
-MIME-Version: 1.0
-References: <20230127194110.533103-1-surenb@google.com> <20230127145138.8cc44bf00ebf289dffec0975@linux-foundation.org>
- <Y9Rdmy5h2F1z5yR3@casper.infradead.org> <CAJuCfpEq2F4EwWAeP6nLqS9m9XLpUss8n=35ZTgYgtiAJyvsxQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpEq2F4EwWAeP6nLqS9m9XLpUss8n=35ZTgYgtiAJyvsxQ@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 14 Feb 2023 08:47:26 -0800
-Message-ID: <CAJuCfpG8Lq9xOce4yaNm1XzdAxVWTJYA85zjDbcpJ5MxxHr+4g@mail.gmail.com>
-Subject: Re: [PATCH v2 00/33] Per-VMA locks
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGSvq35mJz2xJN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 04:32:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=V6Cd+SHwOcbvBIqo4r8ldT+mhnLVYUCeZuo/21xVHFB+ThUXVNINKW3VPF9CaePnQkTYXC/CqSkLNabZGFALvkO77ycvGuUDudok++jVSWk1qsp7yCciVUBhnMafg7Sv/zpvi74aB410ImZY3m2RKgAzEEJGyem24jlvQuX9O1LSp0Obxe8Oa9dyExoswFQo9/RUe0Fyuq9WJL/2AToQM3qSrX85WaUBEt04v2yI17Cj3y22XYKHg86IceHktknwGEMXQeOJLMBz+PGf8ZuZ0YfMCfAMueuwOBLad9zIIFcyTEeB1nVk26NodT66uiIJREjDMeqAkrBaZL6//jkR7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pUmacs2Si16Nwd1In0nfau9SeQf0i21bj8HxKgfLzvg=;
+ b=JjK99Afh4RKjt7oNrQuZ8/jeQKGLkq/vdTT5PL9devKIyoZnFmtQvtU84SDpWQqgUAbtLwBXMY8bGvroPLIDZm8uD6XfPcAqhcaPY1rc3zrD0Kj0u362cap0l6hAWtFf4no+2Dki3m1UYRbizJx+/qZKRy20bV8GGyIk9ZQ8xIPQIvYcZkc36rhBmkkmz2xRrpg/2uYYDZ6u2FyDuRg1859gaST+tUsuiKUvXRUdQNANO4RtVSWvYz9r63mUfM8l5K2/LQkB/1c0F5tfxE3ObPJXqxeLdX1ZlDBI+Iw7jrajD+G/G9E0mIYGotFgakffRFYFzwxZDMGNzIALJPRNLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pUmacs2Si16Nwd1In0nfau9SeQf0i21bj8HxKgfLzvg=;
+ b=pQTjg92omz10ZVo8dOZFEaatyJyY2hJAFg3Zt9iJBSJzssI0f6j7DtjMxW8l58o0RwxLiSNYu65KR+a/S7UTiSbiRfQm8NZd4XUSYLvF/chiT4DKzcUdjrJLpjfmH1WzjfEpWJPvRHMfGnRDUqaG+IXPq1y9XemKd05xt4Kd2bg=
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by PR3PR04MB7306.eurprd04.prod.outlook.com (2603:10a6:102:81::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Tue, 14 Feb
+ 2023 17:32:13 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6086.023; Tue, 14 Feb 2023
+ 17:32:12 +0000
+From: Frank Li <frank.li@nxp.com>
+To: "M.H. Lian" <minghuan.lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy
+ Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob
+ Herring <robh@kernel.org>, =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?=
+	<kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER
+ FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, "open list:PCI
+ DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, "moderated
+ list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
+	<linux-arm-kernel@lists.infradead.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
+Thread-Topic: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
+Thread-Index: AQHZJr0yaCK3pFdB6EKPvZEvJoExp668DfrggBLY4AA=
+Date: Tue, 14 Feb 2023 17:32:12 +0000
+Message-ID:  <HE1PR0401MB2331F2FCBCA939B32F1F7D8688A29@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+References: <20230112193621.1513505-1-Frank.Li@nxp.com>
+ <HE1PR0401MB233139AC4E34F2D5E495AECC88D69@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+In-Reply-To:  <HE1PR0401MB233139AC4E34F2D5E495AECC88D69@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|PR3PR04MB7306:EE_
+x-ms-office365-filtering-correlation-id: e6232fc0-5377-4e3d-4e6f-08db0eb16855
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  pIOQGNzk/932n0LtpOZl6RPHE0yZdMDzXBNWJgSc1kVp6LVZgP2tIIgap8bNbu8mz+dLbgjc8CjhX/qlWuJ2Bpo4TOxq791AzYhnmjdichUCIAxj7N9jXVISbL6OCvJbTEN4csOKOYE367zBGRzkdYM99jWQTuRui35AnAj6gzRJDGMfxLJLrduWsRVAW56x81ZdcM5nmCzOi77WkzoYuxquEAU5cIyAFaRPEaNJYuN3JWsvS/bgmmLNPbixIE8sJzh+6a92LLFVNk10dY6thAHHKb7CzjYg+r+BkBsOoGocHVuS5mXwxjPIgj2V6vOXsXw9QjkoWIMeZx0XzcYAHj/R+I7D3/Eom4m+h1iBgvi2kkJ4DfWKLLjpAN1GnvFE8qJ7xijezA8c2FQgURqYYZPJeztf64zQdDU59cgZrCmMm2McSbEzKk6I2DwDCxgfe5eLYfHaCll8PTJn65MsUfl5nw8Gqkd6yRNAlJVjgjBLuTAvqjnf2uFK0Gh4ePWeTnBQGmLOxgpit7fjj0+Qt8aU+5EdZ2a4Ri7jqU3exUJ4kKafNYxZVWP3G3u24WsLR8KRxuO2dKi7fyx0q/WV5DO0aSgqKD6IQoT8ohusinrEV+OEUDWF8Y9iUpEeOp9+9vOb//TFe0ZbuvpjyJ2bkkn+5vsDpyoSKSfCKtAxw2Abtnngxf6sqEMMLs2/pOShjFg8vu7mijcqW+ZfTC9vWpEOnz9o7Tq13q2tkb6YfRo=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(39860400002)(396003)(136003)(366004)(376002)(451199018)(5660300002)(52536014)(86362001)(8936002)(41300700001)(44832011)(38070700005)(33656002)(2906002)(4744005)(83380400001)(38100700002)(921005)(122000001)(7696005)(66946007)(71200400001)(478600001)(66556008)(26005)(8676002)(55016003)(4326008)(186003)(316002)(64756008)(66446008)(76116006)(66476007)(110136005)(55236004)(6506007)(9686003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?iso-8859-2?Q?M9jVdvhTmrcTfsoJjafMrkwbUsBcMmPMGFRbEjAxNQFSdiwWK57rTpMX1B?=
+ =?iso-8859-2?Q?vLh3y/novlEll8gCpjso8whz9/BX1vib+HVnlttG06X7j3TSTPPEc1irBb?=
+ =?iso-8859-2?Q?QZBN5OOmjjTcdNk2Vte0FgP5aEMR+4otcNypgBQBCWptUbU0WFmivW81Pi?=
+ =?iso-8859-2?Q?KInwq+sldzdHrTFKdqH1l5muaPZpEyhzeFvq/XFLjY5z4IqDRAG7UswIg7?=
+ =?iso-8859-2?Q?4LqzjY8dyf6e9fhDLqd8pB3jyFflNTKJla0N0hA7LskXxzUTe/UEnT6Q+v?=
+ =?iso-8859-2?Q?KmcQi8V/+PN2oXUk3wWR/Ix1FOFeVH5fX0/tlPqStb4fRbDocmh+E3j5GY?=
+ =?iso-8859-2?Q?EQ+fxQvorEfLpa2QBDtReH3I5YNLLuSCbESSMtDIU72OWgu0ypDGJ6rfis?=
+ =?iso-8859-2?Q?WBaZDOAV9kh3G4Q9lE8Q6iSwDQ0CXlwv0P2BWcEx5bhyLe5Q06Il9MTHTJ?=
+ =?iso-8859-2?Q?dWXcTRdnD/Jib/wzzt7Xqd6J7MWeh0Hxge+5df/3h8y4kUdKhDPUJCNwA+?=
+ =?iso-8859-2?Q?lHiLJn9bXyNa6mZG/1LLM3g1gvGQZGrIwIqJKZry8DLq6j0ms5OdNIr5oG?=
+ =?iso-8859-2?Q?tNEVUTp9wko08TXdu3abtKIsr4lRMrRTvLbzwps7+SF5SxS5jH2X1Ekezv?=
+ =?iso-8859-2?Q?7np/9FDaehyckkmFAC1oykPN90cU78PyzxVlcZKViUXmMlYonFGdtPzwSg?=
+ =?iso-8859-2?Q?ID49leOFpu574hK+yKH7WggUbJ/osHw4MaSXPMMDsQUPJT01XHHxB2+agm?=
+ =?iso-8859-2?Q?OEUIhdKvb0tTtWM/BC/hCd2mV9QZ+QjElpsjGRI5vcp+PziZM0j99EF5KO?=
+ =?iso-8859-2?Q?YydLwbTsv2Xh/uVSrhMw2vcfUmy8JmRNNh264ZV7nGwXQVPcMetit8+7Br?=
+ =?iso-8859-2?Q?ZnlK4x4qjCZPoCXCewGXZY4q6rcNy0BKXeYb/No+2kXQK2up8m642qg8di?=
+ =?iso-8859-2?Q?dfI03HDLqoreHoa/1WKXtkR6TtlCOQjelCKwlwNJqXJmAhINhHzyPrvxjP?=
+ =?iso-8859-2?Q?QFjuGbhNk6uZnFedXkOus3UtTujcyFxgGuPmp7dL+A0a3pyWZMYYQcdIH0?=
+ =?iso-8859-2?Q?u/hsiShTFn4hbctrWdmzWK3iE8arM6YzXKxM2fVn9N2N0o3AeyI7avSUYB?=
+ =?iso-8859-2?Q?Fd3yCbhcDDqSwcE46Uu+Zq+ddQLlEQYswEDNDYm0ZMafD4XEzonOXvMdxP?=
+ =?iso-8859-2?Q?kLU8+Mic6a2q+x8re1bm11rlJTU7nKT8E9rZs89DXP7IRvzqv1pmu33AKJ?=
+ =?iso-8859-2?Q?sz1Wx4ccOmsrKtMNjj+aEy10lF/llGFlBrBKwgHwrFW/cNdO6WAqyKj01P?=
+ =?iso-8859-2?Q?UpWEtCUgM8ymuAkpLVvpJnBRggQe18YVWUVqPJdquec5IvufDZ86iEo2Ma?=
+ =?iso-8859-2?Q?TuqsqRABJsDl6b9w/lpkyKJJiImS4CxUbio138Ewhfo1RZ/+0X3SP2mQsW?=
+ =?iso-8859-2?Q?sWUr51J5MhKlk3DfuQwmCgY+KtivZBUZMf31C1mv/oWoEjgVE6g4rnG7kN?=
+ =?iso-8859-2?Q?xqTgsmifz5tnNtki2BG1IH3W42JOu7NBT2/YZXDHFqbYDnFVO2BXznSggQ?=
+ =?iso-8859-2?Q?WbZbKxgcSo/yPlW6qbFf/4gH9gKKotxnOa8w+2v6tatjRHmkSlW77XTFrA?=
+ =?iso-8859-2?Q?5OFOrOZaFjyzI=3D?=
+Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6232fc0-5377-4e3d-4e6f-08db0eb16855
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2023 17:32:12.4853
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cklEZqnqWs9AbFfJXmVdL57hTlmPkLcOPfnrLrtn9s9Sy9gX6FbeY2Wr1YwUIGTGwkhP1D3aBa5Fws3aFCU3mA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7306
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,81 +130,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, Andrew Morton <akpm@linux-foundation.org>, tatashin@google.com, mgorman@techsingularity.net,
-  rppt@kernel.org
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 27, 2023 at 4:00 PM Suren Baghdasaryan <surenb@google.com> wrot=
-e:
->
-> On Fri, Jan 27, 2023 at 3:26 PM Matthew Wilcox <willy@infradead.org> wrot=
-e:
+> -----Original Message-----
+> From: Frank Li
+> Subject: RE: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
+>=20
+>=20
+> > Subject: [PATCH 1/1] PCI: layerscape: Set 64-bit DMA mask
 > >
-> > On Fri, Jan 27, 2023 at 02:51:38PM -0800, Andrew Morton wrote:
-> > > On Fri, 27 Jan 2023 11:40:37 -0800 Suren Baghdasaryan <surenb@google.=
-com> wrote:
-> > >
-> > > > Per-vma locks idea that was discussed during SPF [1] discussion at =
-LSF/MM
-> > > > last year [2], which concluded with suggestion that =E2=80=9Ca read=
-er/writer
-> > > > semaphore could be put into the VMA itself; that would have the eff=
-ect of
-> > > > using the VMA as a sort of range lock. There would still be content=
-ion at
-> > > > the VMA level, but it would be an improvement.=E2=80=9D This patchs=
-et implements
-> > > > this suggested approach.
-> > >
-> > > I think I'll await reviewer/tester input for a while.
-
-Over the last two weeks I did not receive any feedback on the mailing
-list but off-list a couple of people reported positive results in
-their tests and Punit reported a regression on his NUMA machine when
-running pft-threads workload. I found the source of that regression
-and have two small fixes which were confirmed to improve the
-performance (hopefully Punit will share the results here).
-I'm planning to post v3 sometime this week. If anyone has additional
-feedback, please let me know soon so that I can address it in the v3.
-Thanks,
-Suren.
-
-
->
-> Sure, I don't expect the review to be very quick considering the
-> complexity, however I would appreciate any testing that can be done.
->
-> > >
-> > > > The patchset implements per-VMA locking only for anonymous pages wh=
-ich
-> > > > are not in swap and avoids userfaultfs as their implementation is m=
-ore
-> > > > complex. Additional support for file-back page faults, swapped and =
-user
-> > > > pages can be added incrementally.
-> > >
-> > > This is a significant risk.  How can we be confident that these as ye=
-t
-> > > unimplemented parts are implementable and that the result will be goo=
-d?
+> > From: Guanhua Gao <guanhua.gao@nxp.com>
 > >
-> > They don't need to be implementable for this patchset to be evaluated
-> > on its own terms.  This patchset improves scalability for anon pages
-> > without making file/swap/uffd pages worse (or if it does, I haven't
-> > seen the benchmarks to prove it).
->
-> Making it work for all kinds of page faults would require much more
-> time. So, this incremental approach, when we tackle the mmap_lock
-> scalability problem part-by-part seems more doable. Even with
-> anonymous-only support, the patch shows considerable improvements.
-> Therefore I would argue that the patch is viable even if it does not
-> support the above-mentioned cases.
->
+> > Set DMA mask and coherent DMA mask to enable 64-bit addressing.
 > >
-> > That said, I'm confident that I have a good handle on how to make
-> > file-backed page faults work under RCU.
->
-> Looking forward to collaborating on that!
-> Thanks,
-> Suren.
+> > Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+> > Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+>=20
+> Ping
+
+Ping again
+
+>=20
+> >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
