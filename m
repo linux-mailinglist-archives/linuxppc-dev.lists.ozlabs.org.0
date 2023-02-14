@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A67F696031
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 11:04:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CE1696034
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 11:05:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGGyk6ZVHz3cNX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 21:04:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGGzl1003z3bfp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 21:05:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TbwsWG1S;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=lSkgp/oe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TbwsWG1S;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=lSkgp/oe;
 	dkim-atps=neutral
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGD4J1TWKz2yHT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:54:08 +1100 (AEDT)
-Received: by mail-wm1-x330.google.com with SMTP id m16-20020a05600c3b1000b003dc4050c94aso10846654wms.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 23:54:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGD5V5LBSz3c2j
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 18:55:10 +1100 (AEDT)
+Received: by mail-wm1-x32c.google.com with SMTP id bg5-20020a05600c3c8500b003e00c739ce4so10845068wmb.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Feb 2023 23:55:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CISuzHFPlWEL0+BckqkuDR3KPCbCkgyxsx0yLTYCfgQ=;
-        b=TbwsWG1Sn+sWyFPn93RQ/E8FmcL5js4qcQYMxtbZXz+Vuq/lOwgnwszhywHHgoFdy2
-         7+VWbilZfSUk+bbREGoM2Esjrn4SEdqWACckKJIxPYE/hCT0HqSJI4v1hwL5gwiFv+P8
-         9Wh4x2D8Q9jU/jJEdL6p7FteTGz8eAd5CjtUvl05zpXbipeHr9ppDsTmp+Iqjh63V5oJ
-         DqPmjcjAdehZFmnqAZxvgwTTbUt47kEA6Eua6Dljyl1PxvepgZOg3k3QaUD9vs/nV/G8
-         D29m2UsrBWY7AG3VIwTVeQB1nAYkz8se+m7qFSN2ubp3C+Qxjjv67nhupuqOhscVsQxC
-         7oKg==
+        bh=MCp2aB0Fva1dhBulyjK6E6ghPwf9RYai26Pkakv2HJU=;
+        b=lSkgp/oe78wiSlGjNTY3HqBSi/YUBPzLr91vjToo8n8VXLMMmWxbL1vB3wXAsaCt4y
+         hh+WVxCjfWG1PtnDpcOV5pYIh9TVLWXRbZYrdl3IqzhBx1lWrxLZeBMf5PuUuJO5T33F
+         VIfE284zT38w5XyjGbfJDN6QAzWZwGklCvYcoYU1xzqSIDFjTJZLDBB+3pXDfWU51cDU
+         qtqkBzBgmsJJm/+Hy7xZIElhOnz4tQIVdzGBLLo5NdgkH9aF/SHQQsXAT90Zmb+/8siv
+         rlBWKa+b2JZMttF0IXAXICFOmt/kt80eJ35cMpB+KjZ0MJlimlFw8toVGf88cNLSwJd3
+         FjwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CISuzHFPlWEL0+BckqkuDR3KPCbCkgyxsx0yLTYCfgQ=;
-        b=zrT/y4BvxDDa5wqDEC3s/FtFCTDa+bbtxtNW4OxQjDCOcnRQGrE5zIr9F+JMT6RV9c
-         zA4Aq8CiNy9vk+GfQ9oFo1cRKlg1bSkh1r4W/PXg7zgSWkIYaBI04NhJpnKA8xLZ05KW
-         ydIxNMRv0MPOUrxQg7DDBMJ8sFBDx4Ib5PXTW2SiYJjGXQnmFRbBTQvcP23XXxg3S7iq
-         ysCU2G2rA2BZ39IiTVAb/0CVVYxJZl/1wcl0yP0pCLVCijVLx7aUpGf87/XNsXhSKRM3
-         R6PviwSubcL6zGPRFARbLUb5op+7ooSw26esbrzbNH/Bzhmo3kcvnxe9PlEqCC4CY0zJ
-         LKiw==
-X-Gm-Message-State: AO0yUKUxpgSXDPJSY9TqLGzX3klvmwDAefwrim1xa41Ejzg6qr/YO2R+
-	gv8H6RobuRDSihfjZzobjgMR0g==
-X-Google-Smtp-Source: AK7set9BzCtqV+RYkgGgKe564EJVd05WyCH1yfNfnKO1SUr9SI4GuO9h1eq0NzoXBm8eLk/pvUJNSQ==
-X-Received: by 2002:a7b:c855:0:b0:3db:742:cfe9 with SMTP id c21-20020a7bc855000000b003db0742cfe9mr1711836wml.34.1676361244922;
-        Mon, 13 Feb 2023 23:54:04 -0800 (PST)
+        bh=MCp2aB0Fva1dhBulyjK6E6ghPwf9RYai26Pkakv2HJU=;
+        b=JRgEW4pDng6lrCp0a0SeheUhGgRM5iRL7VO1FdYCJMy1zdyNkRWo/XXlgudsBkHrb3
+         mmPYaMIfeTDQHvZoHJAbmu7E25M5XCnHA/aC5dVfsWUKgWdQtu3tnBOpycALeDIdvA5h
+         0smjfQZAysKimq4ZdTc2Oj4fKMQ4et8xHQ6GBHCcM/0GbZil22oM6br8T2E/MqZP5XW/
+         65D/pXTWUBuu2WnYPU3h6s9NQScHqZdK7b8HdVaUmCuy4A27kOGey6xbDLVtFkdlUPdq
+         fnAUC7GJZThfwBMdzuIFN7YimYhaEITRqqCREUEteX5e4Pn/jYuYEEFtwLvSpjTAtB6s
+         XnYg==
+X-Gm-Message-State: AO0yUKV0Y4r5bAtEY7c8kg+MFdZZJlXsEVtIT9RdDXSJ1RampuoJKKGJ
+	aky0pLxAxC+0fObr3tc9ekX3pw==
+X-Google-Smtp-Source: AK7set/WU71XFeLcjIpIzwCzgenyuB8Ba5kI4Pq7ubVZXIFPYkIqwtjgfBRr8tL2yeTQodjnLYD8uw==
+X-Received: by 2002:a05:600c:1656:b0:3da:2500:e702 with SMTP id o22-20020a05600c165600b003da2500e702mr1196663wmn.32.1676361306745;
+        Mon, 13 Feb 2023 23:55:06 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
-        by smtp.gmail.com with ESMTPSA id f24-20020a05600c491800b003dc0cb5e3f1sm15292695wmp.46.2023.02.13.23.54.03
+        by smtp.gmail.com with ESMTPSA id bg30-20020a05600c3c9e00b003db012d49b7sm2076462wmb.2.2023.02.13.23.55.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 23:54:04 -0800 (PST)
+        Mon, 13 Feb 2023 23:55:06 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Richard Henderson <richard.henderson@linaro.org>,
@@ -113,9 +113,9 @@ To: Jonathan Corbet <corbet@lwn.net>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v3 04/24] ia64: Remove COMMAND_LINE_SIZE from uapi
-Date: Tue, 14 Feb 2023 08:49:05 +0100
-Message-Id: <20230214074925.228106-5-alexghiti@rivosinc.com>
+Subject: [PATCH v3 05/24] m68k: Remove COMMAND_LINE_SIZE from uapi
+Date: Tue, 14 Feb 2023 08:49:06 +0100
+Message-Id: <20230214074925.228106-6-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230214074925.228106-1-alexghiti@rivosinc.com>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
@@ -144,42 +144,36 @@ be part of the user-visible API.
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 ---
- arch/ia64/include/asm/setup.h      | 10 ++++++++++
- arch/ia64/include/uapi/asm/setup.h |  6 ++----
- 2 files changed, 12 insertions(+), 4 deletions(-)
- create mode 100644 arch/ia64/include/asm/setup.h
+ arch/m68k/include/asm/setup.h      | 3 +--
+ arch/m68k/include/uapi/asm/setup.h | 2 --
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/ia64/include/asm/setup.h b/arch/ia64/include/asm/setup.h
-new file mode 100644
-index 000000000000..0b19338ea3ec
---- /dev/null
-+++ b/arch/ia64/include/asm/setup.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+
-+#ifndef __IA64_SETUP_H
-+#define __IA64_SETUP_H
-+
-+#include <uapi/asm/setup.h>
-+
-+#define COMMAND_LINE_SIZE	2048
-+
-+#endif
-diff --git a/arch/ia64/include/uapi/asm/setup.h b/arch/ia64/include/uapi/asm/setup.h
-index 8d13ce8fb03a..bcbb2b242ded 100644
---- a/arch/ia64/include/uapi/asm/setup.h
-+++ b/arch/ia64/include/uapi/asm/setup.h
-@@ -1,8 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __IA64_SETUP_H
--#define __IA64_SETUP_H
--
--#define COMMAND_LINE_SIZE	2048
-+#ifndef __UAPI_IA64_SETUP_H
-+#define __UAPI_IA64_SETUP_H
+diff --git a/arch/m68k/include/asm/setup.h b/arch/m68k/include/asm/setup.h
+index 2c99477aaf89..9a256cc3931d 100644
+--- a/arch/m68k/include/asm/setup.h
++++ b/arch/m68k/include/asm/setup.h
+@@ -23,9 +23,8 @@
+ #define _M68K_SETUP_H
  
- extern struct ia64_boot_param {
- 	__u64 command_line;		/* physical address of command line arguments */
+ #include <uapi/asm/bootinfo.h>
+-#include <uapi/asm/setup.h>
+-
+ 
++#define COMMAND_LINE_SIZE 256
+ #define CL_SIZE COMMAND_LINE_SIZE
+ 
+ #ifndef __ASSEMBLY__
+diff --git a/arch/m68k/include/uapi/asm/setup.h b/arch/m68k/include/uapi/asm/setup.h
+index 25fe26d5597c..005593acc7d8 100644
+--- a/arch/m68k/include/uapi/asm/setup.h
++++ b/arch/m68k/include/uapi/asm/setup.h
+@@ -12,6 +12,4 @@
+ #ifndef _UAPI_M68K_SETUP_H
+ #define _UAPI_M68K_SETUP_H
+ 
+-#define COMMAND_LINE_SIZE 256
+-
+ #endif /* _UAPI_M68K_SETUP_H */
 -- 
 2.37.2
 
