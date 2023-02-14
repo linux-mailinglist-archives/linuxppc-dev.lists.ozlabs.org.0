@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9FC695E37
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 10:08:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C3A695E46
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 10:09:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGFjd6Yq2z3fQf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 20:08:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGFkg1Qslz3fRf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Feb 2023 20:08:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EXGAKwqd;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=OjxC7QQw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EXGAKwqd;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=OjxC7QQw;
 	dkim-atps=neutral
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGFgM3lLCz3cgp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 20:06:07 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id o36so10489807wms.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 01:06:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGFh32R63z3chZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 20:06:43 +1100 (AEDT)
+Received: by mail-wm1-x333.google.com with SMTP id he5so2655209wmb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 01:06:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7lGDtk89XYKXto3T46jdYJS4baOVf8wKH+bEbt2a13A=;
-        b=EXGAKwqdwp45M55oyQEpZ9s11tIxJVKDmyxfqRpvLJ7iwHOMdleuZVIpZf+bKKyPLr
-         WUmLzZkawn8dDugm0+h+Q8ZztTAJOf1O7RBwABByNfudNg39nvhjEZOsLMdComtJkvIa
-         mOOACAo1ti2X0i/R+p5qH9s2EuWERiT4zROiXcWcmiZbyHZPXjCCE1gXI/suledcbnSO
-         s58Z5QMsqj5quNavEg/vVJJ+jxlYMkAW8M4TmJ/UyxO8tMShf9afsiCM+8VlZQw98Tky
-         i7/1rC5LDixGnMLStzpUQU6pXp9qisKPVZ0aJqBQKPI5FELYesfgWZu690GNKAT9DMLM
-         t++w==
+        bh=mrd61pIHrQzmg4nsVKgkd/XXpTIpHaY6sSTMHOrhSXA=;
+        b=OjxC7QQwmF9zY3g/4GkOU2LzN1229KFU+q2E5z/etnUt3sKGkRcmafL3Y8YGfN8UoH
+         /hA0Og6bQxUjDsLcLUBFud+jhM3hpqUQChsTdeXNp0tkKdVh8tevnFLlHKLxoOYq+5xL
+         Hi6CbSJ5kXMYb2q6/nwBbXnClXiYdCGxqUZS8ITbAu8oILSq9JbNtSn9tIwtBoSPdAYs
+         kOnqVm3rrx3zCADZ0mYNb2ZWJ5WCMVL/uJVdwicgJyr5x/KPBBOtEjuDsBeA9K3W7Qrz
+         TMZBc98TRM7eH3aNDw0+OEuw1gtcuxCOkgs2RDAkkGjl9mAAfAf7OaWzL1J9MXbvPMm7
+         tVkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7lGDtk89XYKXto3T46jdYJS4baOVf8wKH+bEbt2a13A=;
-        b=BuudjOsw+sGhkR4fF2vhoNd8d59aRkw8PvzD/URxPRM4i0W/4bcFR3gldyum+AKeQq
-         s49lgPT7b202Ne480zfi4mXD8PvWswauP3Zxzl1sWUiWLOhU8DzqLnmKME5b5HdnidYs
-         WPRl+KBcTEKpw39tkAk2pddPSOOj/yTU9GCnkqQtv2kfnlwN6KdbJRBvdjgOgcldhio4
-         9zH+x+xJvmxW0na+58cgGrnX3m8UDNuT8Hz5qf2OnmNF4gOygnaaEwh1j/vBl1YTOFLP
-         b8cy0V7OTDlbuSydDsdjHf142+Y+qulv72orE1rMPql4LlAu69b+d6FkwujGfdpexuvB
-         KFEQ==
-X-Gm-Message-State: AO0yUKUeVGrOBrO6/Sy6uurwTX+pYy+ElobIXW9WPGa3sjaSHRNP0kFv
-	NYVO7/lMM/BZ4F2Yutky+EfWfQ==
-X-Google-Smtp-Source: AK7set8b+gc17B9aLvg2W9QWD8SjR16ECHsQicot+4Ai+Gvau6Qhz0rnes/7lNYL7+rM27ct6ais4g==
-X-Received: by 2002:a05:600c:548c:b0:3e1:11bd:f577 with SMTP id iv12-20020a05600c548c00b003e111bdf577mr1957731wmb.26.1676365564223;
-        Tue, 14 Feb 2023 01:06:04 -0800 (PST)
+        bh=mrd61pIHrQzmg4nsVKgkd/XXpTIpHaY6sSTMHOrhSXA=;
+        b=ZSzSG0OEQ0JzFpPuhIca2NqlmM2gsqwEbG3XqBUiN0g13F2iCoZJ0WN7gHn2ZRGhWe
+         WfUc3XTX9Sg47nFxt2OX/4PPdCEeTrtwnjOTHy+Deg/MByh1qBX3DDrI5RXBTWgv3bpR
+         bvjYn0s+clAfeutSNw1k9KfKuuxaoJ2pf4TJpbsDwmDFERq45H3W9ksw/I3JpSmDLOX9
+         FCuaOh5M5AnTI9hmYrGtVJAUpyMXytNQw5AS7BoQecOydhkIQJZUzo1gv6mwZBurnidT
+         ogtU+uOrAuZvW97B/s5bTQgvxzAj00tL1hKbmCPISR1OX5bitDpGP19wWI2BOOwdolPI
+         TfhQ==
+X-Gm-Message-State: AO0yUKUe2caEFXf/d1SNgZNq/lTjCEI6BGdXvoGoSML+npzoW3FCNDOt
+	b2eux7QUR38xdbZwSYJAsVVWSg==
+X-Google-Smtp-Source: AK7set9MiM4/caZ+oETuVXovz1fIhowKvB35m6VhOBkhclAa3qSu0wh7KMvERZsT3+tjLvnUvDpWqA==
+X-Received: by 2002:a05:600c:708:b0:3e1:577:80f4 with SMTP id i8-20020a05600c070800b003e1057780f4mr1429963wmn.18.1676365598212;
+        Tue, 14 Feb 2023 01:06:38 -0800 (PST)
 Received: from [192.168.30.216] ([81.0.6.76])
-        by smtp.gmail.com with ESMTPSA id n16-20020a1c7210000000b003dc1d668866sm19174017wmc.10.2023.02.14.01.06.00
+        by smtp.gmail.com with ESMTPSA id p6-20020a05600c468600b003dc36981727sm21222346wmo.14.2023.02.14.01.06.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Feb 2023 01:06:03 -0800 (PST)
-Message-ID: <84bde3ef-4701-431c-3ae0-3f5793e1e13a@linaro.org>
-Date: Tue, 14 Feb 2023 10:05:59 +0100
+        Tue, 14 Feb 2023 01:06:37 -0800 (PST)
+Message-ID: <30e92251-cd6a-f1d9-a952-7c2fc427cb7f@linaro.org>
+Date: Tue, 14 Feb 2023 10:06:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v3 14/24] arc: Remove empty <uapi/asm/setup.h>
+Subject: Re: [PATCH v3 07/24] mips: Remove COMMAND_LINE_SIZE from uapi
 Content-Language: en-US
 To: Alexandre Ghiti <alexghiti@rivosinc.com>, Jonathan Corbet
  <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>,
@@ -99,9 +99,9 @@ To: Alexandre Ghiti <alexghiti@rivosinc.com>, Jonathan Corbet
  linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-15-alexghiti@rivosinc.com>
+ <20230214074925.228106-8-alexghiti@rivosinc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230214074925.228106-15-alexghiti@rivosinc.com>
+In-Reply-To: <20230214074925.228106-8-alexghiti@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -122,12 +122,14 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 14/2/23 08:49, Alexandre Ghiti wrote:
 > From: Palmer Dabbelt <palmer@rivosinc.com>
 > 
+> As far as I can tell this is not used by userspace and thus should not
+> be part of the user-visible API.
+> 
 > Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 > ---
->   arch/arc/include/asm/setup.h      | 1 -
->   arch/arc/include/uapi/asm/setup.h | 6 ------
->   2 files changed, 7 deletions(-)
->   delete mode 100644 arch/arc/include/uapi/asm/setup.h
+>   arch/mips/include/asm/setup.h      | 3 ++-
+>   arch/mips/include/uapi/asm/setup.h | 3 ---
+>   2 files changed, 2 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
