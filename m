@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5257E697C2C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:47:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8260697C43
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:51:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGyXR1Dx2z3ft9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:47:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGycR4BH0z3gGV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:51:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyRM4vhHz3cj3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:43:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyRR3Fwtz3cdy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:43:15 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGyRM1cdmz4x4r;
-	Wed, 15 Feb 2023 23:43:11 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGyRR23jHz4x8H;
+	Wed, 15 Feb 2023 23:43:15 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20230131184804.220756-1-kjain@linux.ibm.com>
-References: <20230131184804.220756-1-kjain@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/hv-24x7: Fix pvr check when setting interface version
-Message-Id: <167646484317.1421441.5646798011051629276.b4-ty@ellerman.id.au>
-Date: Wed, 15 Feb 2023 23:40:43 +1100
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+In-Reply-To: <20230121095805.2823731-1-npiggin@gmail.com>
+References: <20230121095805.2823731-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/3] powerpc/32: nohz full support
+Message-Id: <167646484638.1421441.15668047645206342967.b4-ty@ellerman.id.au>
+Date: Wed, 15 Feb 2023 23:40:46 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,27 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: disgoel@linux.vnet.ibm.com, atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, Sachin Sant <sachinp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 1 Feb 2023 00:18:04 +0530, Kajol Jain wrote:
-> Commit ec3eb9d941a9 ("powerpc/perf: Use PVR rather than
-> oprofile field to determine CPU version") added usage
-> of pvr value instead of oprofile field to determine the
-> platform. In hv-24x7 pmu driver code, pvr check uses PVR_POWER8
-> when assigning the interface version for power8 platform.
-> But power8 can also have other pvr values like PVR_POWER8E and
-> PVR_POWER8NVL. Hence the interface version won't be set
-> properly incase of PVR_POWER8E and PVR_POWER8NVL.
-> Fix this issue by adding the checks for PVR_POWER8E and
-> PVR_POWER8NVL as well.
+On Sat, 21 Jan 2023 19:58:02 +1000, Nicholas Piggin wrote:
+> I'd like to try get this series merged. If Christophe isn't comfortable
+> with patch 2/3 yet then maybe we could at least get the first one in
+> which shares more code and makes it tidier.
+> 
+> Since v1 I just split the first patch out so it's not introducing a
+> significant functional change.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/hv-24x7: Fix pvr check when setting interface version
-      https://git.kernel.org/powerpc/c/60bd7936f99fd8cdbeca67180f80ea13d8b97a76
+[1/3] powerpc: Consolidate 32-bit and 64-bit interrupt_enter_prepare
+      https://git.kernel.org/powerpc/c/fb3b72a3f483f81a33a9693ed03dc62158a6f77e
+[2/3] powerpc/32: implement HAVE_CONTEXT_TRACKING_USER support
+      https://git.kernel.org/powerpc/c/5c4b710a8157ec271fac4806562ee1aa1b44a53d
+[3/3] powerpc/32: select HAVE_VIRT_CPU_ACCOUNTING_GEN
+      https://git.kernel.org/powerpc/c/01f135506e2ed0403512c2467bd50746bdbd576d
 
 cheers
