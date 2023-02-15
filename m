@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7444C697C16
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:44:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5257E697C2C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:47:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGySs2GQCz3fWB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:44:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGyXR1Dx2z3ft9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:47:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyRH3STVz3cLB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:43:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyRM4vhHz3cj3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:43:11 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGyRF73j9z4x7w;
-	Wed, 15 Feb 2023 23:43:05 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGyRM1cdmz4x4r;
+	Wed, 15 Feb 2023 23:43:11 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <4fd69ef7945518c3e27f96b95046a5c1468d35bf.1675245773.git.christophe.leroy@csgroup.eu>
-References: <4fd69ef7945518c3e27f96b95046a5c1468d35bf.1675245773.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 1/9] powerpc: Remove __kernel_text_address() in show_instructions()
-Message-Id: <167646484231.1421441.4745112349089639781.b4-ty@ellerman.id.au>
-Date: Wed, 15 Feb 2023 23:40:42 +1100
+To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
+In-Reply-To: <20230131184804.220756-1-kjain@linux.ibm.com>
+References: <20230131184804.220756-1-kjain@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/hv-24x7: Fix pvr check when setting interface version
+Message-Id: <167646484317.1421441.5646798011051629276.b4-ty@ellerman.id.au>
+Date: Wed, 15 Feb 2023 23:40:43 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,42 +42,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: disgoel@linux.vnet.ibm.com, atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, Sachin Sant <sachinp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 1 Feb 2023 11:04:23 +0100, Christophe Leroy wrote:
-> That test was introducted in 2006 by
-> commit 00ae36de49cc ("[POWERPC] Better check in show_instructions").
-> At that time, there was no BPF progs.
-> 
-> As seen in message of commit 89d21e259a94 ("powerpc/bpf/32: Fix Oops
-> on tail call tests"), when a page fault occurs in test_bpf.ko for
-> instance, the code is dumped as XXXXXXXXs. Allthough
-> __kernel_text_address() checks is_bpf_text_address(), it seems it is
-> not enough.
+On Wed, 1 Feb 2023 00:18:04 +0530, Kajol Jain wrote:
+> Commit ec3eb9d941a9 ("powerpc/perf: Use PVR rather than
+> oprofile field to determine CPU version") added usage
+> of pvr value instead of oprofile field to determine the
+> platform. In hv-24x7 pmu driver code, pvr check uses PVR_POWER8
+> when assigning the interface version for power8 platform.
+> But power8 can also have other pvr values like PVR_POWER8E and
+> PVR_POWER8NVL. Hence the interface version won't be set
+> properly incase of PVR_POWER8E and PVR_POWER8NVL.
+> Fix this issue by adding the checks for PVR_POWER8E and
+> PVR_POWER8NVL as well.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/9] powerpc: Remove __kernel_text_address() in show_instructions()
-      https://git.kernel.org/powerpc/c/d9ab6da64fd15608c9feb20d769d8df1a32fe212
-[2/9] powerpc/bpf/32: No need to zeroise r4 when not doing tail call
-      https://git.kernel.org/powerpc/c/6376ed8feca829039d31a208216b958f0e439d87
-[3/9] powerpc/bpf/32: Only set a stack frame when necessary
-      https://git.kernel.org/powerpc/c/d084dcf256bc4565b4b1af9b00297ac7b51c7049
-[4/9] powerpc/bpf/32: BPF prog is never called with more than one arg
-      https://git.kernel.org/powerpc/c/7dd0e2848764306d7a70943b97584ffdc7754708
-[5/9] powerpc/bpf: Perform complete extra passes to update addresses
-      https://git.kernel.org/powerpc/c/85e031154c7c14edee0705532a9ffc8a2fe591d0
-[6/9] powerpc/bpf: Only pad length-variable code at initial pass
-      https://git.kernel.org/powerpc/c/d3921cbb6cd663193cecf04f0b170a30c6d0e390
-[7/9] powerpc/bpf/32: Optimise some particular const operations
-      https://git.kernel.org/powerpc/c/8616045fe785229b53a24b8698631826298d1500
-[8/9] powerpc/bpf/32: introduce a second source register for ALU operations
-      https://git.kernel.org/powerpc/c/c88da29b4d2ce8d0070646b8f99729e9b355a4bf
-[9/9] powerpc/bpf/32: perform three operands ALU operations
-      https://git.kernel.org/powerpc/c/19daf0aef84f33bde9c742ed41b4ded567b8dfbf
+[1/1] powerpc/hv-24x7: Fix pvr check when setting interface version
+      https://git.kernel.org/powerpc/c/60bd7936f99fd8cdbeca67180f80ea13d8b97a76
 
 cheers
