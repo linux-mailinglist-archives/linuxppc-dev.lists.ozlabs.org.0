@@ -1,62 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ED269839A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 19:42:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968016983A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 19:43:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PH6Pn2HHhz3cfg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 05:42:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PH6Qn1WLMz3f3K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 05:43:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PDt6O2zX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K8DssxvW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PDt6O2zX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K8DssxvW;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH6Nn631Kz3bVP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH6Nn6lY8z3bhS
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 05:41:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9D3C261D20;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6566661D23;
+	Wed, 15 Feb 2023 18:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B679C4339B;
 	Wed, 15 Feb 2023 18:41:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687FEC433EF;
-	Wed, 15 Feb 2023 18:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1676486486;
-	bh=jdvkUbDeD0+NjKmqBpzFb3SJxoDKFX9S+eNEcnraNH4=;
-	h=From:Subject:Date:To:Cc:From;
-	b=PDt6O2zX0ayjES6ktMzzKb5kguyA1gM3lcFdMyIAKSrpr753+jnhbXBD035CjrB+d
-	 dZpYWfnFBbXKdyKFZd2BzlRgI8UyjfyU/7epoHMBblzNdNS/382sV1CEOg6h1hq2pS
-	 ckEWIEm9XoBW72njizL2GTHFhL7ofcx7t7SWsMAlAn6Uhb2yskSV6am4gAhGSB1y7f
-	 BaV7lU+A646s3/btf83QsZ0fIzt4Wm8mwwtHJseJJNzIKCAMRJla2/6c2BFd0amEdW
-	 7V0PYMPEjBNdRSg6n7W+lDZs7hrMTsoBt5kSFO/tW+CnmcJcaCHpPCIfmxVyxKRwob
-	 pfn1toSYhmE1w==
+	bh=Bn4PnsdfMk3VpRZTuBATRwN4ucU9A9gaRgDX010A7pA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=K8DssxvWbdq3XXo1YlSzB5+4GoV8/dvTaDPuEvZyLvicAEOonCuS2M5DEFoCbrvhg
+	 9mX1bx0KyAhhg/9xZjzUlCLfgkI4AtVp12CiaitfkmBdGayB6shkHIcfQYfCaILPFl
+	 ZWwZx/cZ24fUFYqQNUm4vn0vD7tBojGDzilj0Ph30bbwU7lwBvDE/KMd10N660T9wb
+	 y0CoDUJoN5/UGiiVBnXt3o0rPnzt9mJ5v0OQ/zG481K9slBRUjyMcnYQ/P8+4OaEUm
+	 GhAGo6913DGwcPIbWcvHbaSpd/5Sd8TnWJ3pfordVGsGBdVCNuG6XT5/pW3IxuytL3
+	 5jbCLGsXGIUPA==
 From: Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 0/3] Allow CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 with ld.lld
- 15+
-Date: Wed, 15 Feb 2023 11:41:14 -0700
-Message-Id: <20230118-ppc64-elfv2-llvm-v1-0-b9e2ec9da11d@kernel.org>
+Date: Wed, 15 Feb 2023 11:41:15 -0700
+Subject: [PATCH 1/3] powerpc/boot: Only use '-mabi=elfv2' with
+ CONFIG_PPC64_BOOT_WRAPPER
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEon7WMC/x2NywrDIBAAfyXsuQtqSvr4ldLDatZGMFZ2ixRC/
- r2mx2EYZgNlSaxwHzYQbknTu3SwpwHCQuXFmObO4IwbjbVXrDVMZ+Qcm8Oc24rjjWcK08VHQ9A
- zT8rohUpYjnAl/bAcogrH9P2/Hs99/wG6U831ewAAAA==
+Message-Id: <20230118-ppc64-elfv2-llvm-v1-1-b9e2ec9da11d@kernel.org>
+References: <20230118-ppc64-elfv2-llvm-v1-0-b9e2ec9da11d@kernel.org>
+In-Reply-To: <20230118-ppc64-elfv2-llvm-v1-0-b9e2ec9da11d@kernel.org>
 To: mpe@ellerman.id.au
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1319; i=nathan@kernel.org;
- h=from:subject:message-id; bh=jdvkUbDeD0+NjKmqBpzFb3SJxoDKFX9S+eNEcnraNH4=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDMlv1UPOxtVaN/z3qfsy05LNTCRq2ycBTRbuiE729ZnVz
- Ck9/R0dpSwMYhwMsmKKLNWPVY8bGs45y3jj1CSYOaxMIEMYuDgFYCKxRxgZJrgdiSo786p/9oc3
- O8X/rOv+Kf0gyefDienPg7cy2e1cZMPI0LJ57/R2oc8n/VivJmyZEp43LWBun5W4cIXZ9DrvjHd
- ezAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1330; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=Bn4PnsdfMk3VpRZTuBATRwN4ucU9A9gaRgDX010A7pA=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDMlv1UNDVS+uVxZctb7mrC67yZbDwu3i3yIzTRpudAjIi
+ LeJeV/tKGVhEONgkBVTZKl+rHrc0HDOWcYbpybBzGFlAhnCwMUpABP5spLhf+Bf/oNmFpFBUb6v
+ WfMc5rDmiO8KlFiyN/ebnkn7A8F7Gxl+s/3U+PCZu/WaT3mP2GK3kIayadsSHt+fKtjALvwuec1
+ TdgA=
 X-Developer-Key: i=nathan@kernel.org; a=openpgp;
  fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -74,37 +73,47 @@ Cc: erhard_f@mailbox.org, trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@go
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not selectable with
-ld.lld because of an explicit dependency on GNU ld, due to lack of
-testing with LLVM.
+When CONFIG_PPC64_ELF_ABI_V2 is enabled with clang through
+CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2, building the powerpc boot wrapper
+in 32-bit mode (i.e. with CONFIG_PPC64_BOOT_WRAPPER=n) fails with:
 
-Erhard was kind enough to test this option on his hardware with LLVM 15,
-which ran without any issues. This should not be too surprising, as
-ld.lld does not have support for the ELFv1 ABI, only ELFv2, so it should
-have decent support. With this series, big endian kernels can be built
-with LLVM=1.
+    error: unknown target ABI 'elfv2'
 
-This has seen our basic set of powerpc configurations with clang-15,
-clang-16, and clang-17 but I will never be opposed to more testing :)
+The ABI cannot be changed with '-m32'; GCC silently accepts it but clang
+errors out. Only provide '-mabi=elfv2' when CONFIG_PPC64_BOOT_WRAPPER is
+enabled, which is the only way '-mabi=elfv2' will be useful.
 
-The first two patches fix a couple of issues I noticed while build
-testing and the final patch actually allows the option to be selected.
-
+Tested-by: "Erhard F." <erhard_f@mailbox.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-Nathan Chancellor (3):
-      powerpc/boot: Only use '-mabi=elfv2' with CONFIG_PPC64_BOOT_WRAPPER
-      powerpc: Fix use of '-mabi=elfv2' with clang
-      powerpc: Allow CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 with ld.lld 15+
-
- arch/powerpc/Kconfig       | 3 +--
- arch/powerpc/Makefile      | 4 +---
  arch/powerpc/boot/Makefile | 6 +++---
- 3 files changed, 5 insertions(+), 8 deletions(-)
----
-base-commit: 5dc4c995db9eb45f6373a956eb1f69460e69e6d4
-change-id: 20230118-ppc64-elfv2-llvm-39edac67bf0a
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index d32d95aea5d6..0d4a8e8bdcab 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -44,6 +44,9 @@ BOOTCFLAGS	+= -m64 -mcpu=powerpc64le
+ else
+ BOOTCFLAGS	+= -m64 -mcpu=powerpc64
+ endif
++ifdef CONFIG_PPC64_ELF_ABI_V2
++BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
++endif
+ else
+ BOOTCFLAGS	+= -m32 -mcpu=powerpc
+ endif
+@@ -55,9 +58,6 @@ BOOTCFLAGS	+= -mbig-endian
+ else
+ BOOTCFLAGS	+= -mlittle-endian
+ endif
+-ifdef CONFIG_PPC64_ELF_ABI_V2
+-BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
+-endif
+ 
+ BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+ 
+
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.39.2
 
