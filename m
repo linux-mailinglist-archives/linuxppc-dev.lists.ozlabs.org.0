@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D7D69872F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 22:14:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE808698732
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 22:15:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PH9n25zx5z3fVW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 08:14:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PH9p35BPxz3fXR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 08:15:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bgdev-pl.20210112.gappssmtp.com header.i=@bgdev-pl.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uFE2tcYX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SqSY5LQL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2607:f8b0:4864:20::933; helo=mail-ua1-x933.google.com; envelope-from=brgl@bgdev.pl; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20210112.gappssmtp.com header.i=@bgdev-pl.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uFE2tcYX;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SqSY5LQL;
 	dkim-atps=neutral
-Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH2f80p3Yz3cQV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 02:52:44 +1100 (AEDT)
-Received: by mail-ua1-x933.google.com with SMTP id b18so3670384uan.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 07:52:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
-        b=uFE2tcYXYvgsB0sRGahu4i6/jR0i1fWRumRbB6+LOj6E4ZTQeoJQKY+uir8dwyQAPf
-         0tFSiyKW/Fnvdx7G9YqrFDzJ5rpovQR98oqoI9mDNOHpQoG6qkudJ1v0/vpv9DTZyvHu
-         2FZ5pBhMrW+AwLQ0UHgvstufkVnkWswfeG6NT/qsFhsMW+RqE4zXszDTo9BrlFUTp25+
-         B7HTBOKfeZtBkRm441r7YFaJc0rXVKo3xjPJcpiXV6JNc9DsILiJLKJHBFrcxHls+m2Y
-         ZP+U/dMUytGegPXffNuxumCFe0jCae7w9HsecNZLfJZoIChNvNanAquRYPfNiHANjZr/
-         6auA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
-        b=rbf+6HTQxY9XAdWmIB43rZvp/bBg7qOnsfNwnCvRpDQDqu/OaZUKOCcb9mTMoD8Xvu
-         U/m4NsZRNDsKk4PIcDI+6tILyvZZ11jSdDLItSzlhMOqLWSM5wMcIA3I45I09A2NBvfN
-         7vgFAg/ZO7JnqOV1RYRwI26WoZqQjhBuUc1lDv2P4Ox03pEM3guSWxsP34/mdrMV7psX
-         8dZYKSfJAJMnqhOpDe75kKye+4uuSRFXWeN9hG1mAW+0gs03bUpajVxsvrvaA9rs+DR/
-         7DAYfsDR5pIJKDYdiJZA/xAj4yMPtDx4Z7XJUdt2iJBFe9QaSRkv9AEIA7awpSSijH65
-         aOzw==
-X-Gm-Message-State: AO0yUKUL80M4XN9pM+AQiUTiWQXvQ3dKapiMgZjoDgjQEqM2bGtCa8u7
-	v5fGyPNmT9bQ+pXRmEhTc8E7kMUmHgeCRGcaHEI5ig==
-X-Google-Smtp-Source: AK7set+vnGRn5VJvyu0QxjkbABjPQvrEocRoV7wexNKYGw75YkBBJD0qPPmjAkmta0f6ajtUkrNDoiyJSIKAB5KOn4A=
-X-Received: by 2002:ab0:654d:0:b0:68a:7054:58a6 with SMTP id
- x13-20020ab0654d000000b0068a705458a6mr367631uap.22.1676476360679; Wed, 15 Feb
- 2023 07:52:40 -0800 (PST)
-MIME-Version: 1.0
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 15 Feb 2023 16:52:29 +0100
-Message-ID: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH2pM3xqqz3ccl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 02:59:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676476795; x=1708012795;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rFzlPJjklUrRYXlztiXxbWF4vZTLJe24dy5KZSKBFTU=;
+  b=SqSY5LQLZMkyXS23MIPMedv8wbrr+yYJ8BbyZrjwAzfn59fVEbJg9+xx
+   U06/NeeIawtIpU276SDnX74F+gRoHF+e33Dj87VLxPdfFRGK5JFXUX2pO
+   fPY3+0yu8WlV6icx4iimpOH4q+bwt7rERbSOJ5R2M5s7Uqy82I4LAwCOb
+   kgcQ8JCICLMqmbg+C58c+IJzkffKKwXTC7ZARKmgQKB1n94kXI3QP3KJr
+   IrZyuIVYi6WhpcmfRjaaey+bIcQaVsanxKQXV6onrUdjKJy/EqUIvOiwz
+   lA9/OrkW8Rozw0KmeKin0wFg4IjODyU0zcGESVfMDwXaej+l5R5XyocEV
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="331461130"
+X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
+   d="scan'208";a="331461130"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 07:59:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="700017813"
+X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
+   d="scan'208";a="700017813"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP; 15 Feb 2023 07:59:31 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1pSKBp-007KF7-0b;
+	Wed, 15 Feb 2023 17:59:25 +0200
+Date: Wed, 15 Feb 2023 17:59:24 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
 Subject: Re: [PATCH v4 00/18] gpiolib cleanups
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <Y+0BXGLf2n+dAi4v@smile.fi.intel.com>
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+ <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Mailman-Approved-At: Thu, 16 Feb 2023 08:12:07 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,25 +79,35 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Rich F
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> These are some older patches Arnd did last year, rebased to
-> linux-next-20230208. On top there are Andy's patches regarding
-> similar topic. The series starts with Linus Walleij's patches.
->
-> The main goal is to remove some of the legacy bits of the gpiolib
-> interfaces, where the corner cases are easily avoided or replaced
-> with gpio descriptor based interfaces.
->
-> The idea is to get an immutable branch and route the whole series
-> via GPIO tree.
->
+On Wed, Feb 15, 2023 at 04:52:29PM +0100, Bartosz Golaszewski wrote:
+> On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > These are some older patches Arnd did last year, rebased to
+> > linux-next-20230208. On top there are Andy's patches regarding
+> > similar topic. The series starts with Linus Walleij's patches.
+> >
+> > The main goal is to remove some of the legacy bits of the gpiolib
+> > interfaces, where the corner cases are easily avoided or replaced
+> > with gpio descriptor based interfaces.
+> >
+> > The idea is to get an immutable branch and route the whole series
+> > via GPIO tree.
+> 
+> Andy,
+> 
+> looks like this series has all the acks it needs but I decided to not
+> send it in the upcoming merge window, I'd prefer it gets some time in
+> next so I'll let it sit until the next release cycle.
 
-Andy,
+Ah, I forgot to mention that this is for the next cycle (v6.4).
+Hence it's fine. (Moreover it's based on Linux Next, so it will
+fail compilation in any certain tree except that one.)
 
-looks like this series has all the acks it needs but I decided to not
-send it in the upcoming merge window, I'd prefer it gets some time in
-next so I'll let it sit until the next release cycle.
+I will create an immutable branch after v6.3-rc1 is out.
 
-Bart
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
