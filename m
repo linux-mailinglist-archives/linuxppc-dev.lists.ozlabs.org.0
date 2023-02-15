@@ -1,36 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02496697C2F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:48:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4AB697C59
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 13:53:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGyYZ6hM4z3g0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:48:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGyfh2GSHz3fZb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 23:53:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PPc3jdM+;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PPc3jdM+;
+	dkim-atps=neutral
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyRN5bX9z3cjW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:43:12 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGyRN4PHcz4x7W;
-	Wed, 15 Feb 2023 23:43:12 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Kajol Jain <kjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Laurent Dufour <ldufour@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nick Child <nnac123@linux.ibm.com>
-In-Reply-To: <20230125-b4-powerpc-rtas-queue-v3-0-26929c8cce78@linux.ibm.com>
-References: <20230125-b4-powerpc-rtas-queue-v3-0-26929c8cce78@linux.ibm.com>
-Subject: Re: [PATCH v3 00/20] RTAS maintenance
-Message-Id: <167646490967.1421441.4079432935893160812.b4-ty@ellerman.id.au>
-Date: Wed, 15 Feb 2023 23:41:49 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGyVX39ZBz3fhn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 23:45:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676465156; x=1708001156;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ArTeTBl6HoOFZclYi5EBGCWmiDoltI/AT5lZ8Q0N0Tc=;
+  b=PPc3jdM+X2j5xqrJpp/NbeOO6+1Q0P+GOXblkuS5qFNRkqbIgyPPZ5QK
+   1HqQ2IwcH3uDV7GjtYDeD52ejvoxDdb2QeNmzejXQKUbnx37R2tHf7D0a
+   GW73LMe4awkzTZJuvtuDtGfDIdYS7dd6X1n/YAoyEu9UbCF86TRRgHuzd
+   B9fGpuAdRwFgIFdo+a6epHKp0aX+x2H3m2XpXPM4b8bStyDzQIpsbLMN7
+   D0PEZ4IzH/vvOEZHIf6Tqalt6+2/SWZwGZ1e/andiirweCW1tk/MfJkzE
+   TWpqgJuzPGGDo0crYe0NO+6jiET5oIyUy6ZomFP/vZ2unyM4EHTvHMbbr
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="417638111"
+X-IronPort-AV: E=Sophos;i="5.97,299,1669104000"; 
+   d="scan'208";a="417638111"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 04:45:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="669600690"
+X-IronPort-AV: E=Sophos;i="5.97,299,1669104000"; 
+   d="scan'208";a="669600690"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 15 Feb 2023 04:45:46 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pSHAP-0009MX-35;
+	Wed, 15 Feb 2023 12:45:45 +0000
+Date: Wed, 15 Feb 2023 20:45:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH v4 06/10] soc: fsl: cmp1: Add support for QMC
+Message-ID: <202302152037.NXHi2aFY-lkp@intel.com>
+References: <20230126083222.374243-7-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230126083222.374243-7-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,61 +82,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 10 Feb 2023 12:41:48 -0600, Nathan Lynch wrote:
-> Proposed changes for the RTAS subsystem and client code.
-> 
-> Fixes that are subject to backporting are at the front of the queue.
-> The rest of the queue is roughly ordered with respect to maturity:
-> i.e. patches that have already garnered some review and discussion
-> precede newer, more experimental changes.
-> 
-> [...]
+Hi Herve,
 
-Applied to powerpc/next.
+I love your patch! Yet something to improve:
 
-[01/20] powerpc/rtas: handle extended delays safely in early boot
-        https://git.kernel.org/powerpc/c/09d1ea72c88198ef5a9e6b8208f544fe18acbff1
-[02/20] powerpc/perf/hv-24x7: add missing RTAS retry status handling
-        https://git.kernel.org/powerpc/c/cc4b26eab1859fa1a70711872caaf6414809973f
-[03/20] powerpc/pseries/lpar: add missing RTAS retry status handling
-        https://git.kernel.org/powerpc/c/daa8ab59044610aa8ef2ee45a6c157b5e11635e9
-[04/20] powerpc/pseries/lparcfg: add missing RTAS retry status handling
-        https://git.kernel.org/powerpc/c/5d08633e5f6564b60f1cbe09af3af40a74d66431
-[05/20] powerpc/pseries/setup: add missing RTAS retry status handling
-        https://git.kernel.org/powerpc/c/b7d5333c48a21fd6a20f54b6887bcc191d21c273
-[06/20] powerpc/rtas: ensure 4KB alignment for rtas_data_buf
-        https://git.kernel.org/powerpc/c/836b5b9fcc8e09cea7e8a59a070349a00e818308
-[07/20] powerpc/pseries: drop RTAS-based timebase synchronization
-        https://git.kernel.org/powerpc/c/d6f7fe3b25f26213953066ce8109ea47dbd33cfa
-[08/20] powerpc/rtas: improve function information lookups
-        https://git.kernel.org/powerpc/c/8252b88294d2a744df6e3c6d85909ade403a5f2c
-[09/20] powerpc/rtas: strengthen do_enter_rtas() type safety, drop inline
-        https://git.kernel.org/powerpc/c/77f85f69a97ac5f24537261a893436926c3e0cdc
-[10/20] powerpc/tracing: tracepoints for RTAS entry and exit
-        https://git.kernel.org/powerpc/c/2c81ca7fbaea06c2aed1aec66a88208d67e1e2de
-[11/20] powerpc/rtas: add tracepoints around RTAS entry
-        https://git.kernel.org/powerpc/c/24098f580e2b5ceb2cec4f02833e0a0bb5d46d2e
-[12/20] powerpc/pseries: add RTAS work area allocator
-        https://git.kernel.org/powerpc/c/43033bc62d349d8d852855a336c91d046de819bd
-[13/20] powerpc/pseries/dlpar: use RTAS work area API
-        https://git.kernel.org/powerpc/c/e27e14231eb541899efc11c33d6eeddcb74767c3
-[14/20] powerpc/pseries: PAPR system parameter API
-        https://git.kernel.org/powerpc/c/419e27f32b6dc13c3e6f443d1ad104f2845c444b
-[15/20] powerpc/pseries: convert CMO probe to papr_sysparm API
-        https://git.kernel.org/powerpc/c/b8dc71774a51182185ae197ed2f8bd085ce6c848
-[16/20] powerpc/pseries/lparcfg: convert to papr_sysparm API
-        https://git.kernel.org/powerpc/c/fff9846be00c467b4a277492af5be8487b6540e9
-[17/20] powerpc/pseries/hv-24x7: convert to papr_sysparm API
-        https://git.kernel.org/powerpc/c/69b9f5a5b2c04ce5993fe43da938f065571bdb25
-[18/20] powerpc/pseries/lpar: convert to papr_sysparm API
-        https://git.kernel.org/powerpc/c/e58d9e17b11b776e32b1d3d80bdc63d39de3463d
-[19/20] powerpc/rtas: introduce rtas_function_token() API
-        https://git.kernel.org/powerpc/c/716bfc97bd5fb7b442cdd06081f49df097f2e27b
-[20/20] powerpc/rtas: arch-wide function token lookup conversions
-        https://git.kernel.org/powerpc/c/08273c9f619cb32fb041935724f576e607101f3b
+[auto build test ERROR on broonie-sound/for-next]
+[also build test ERROR on robh/for-next powerpc/next powerpc/fixes linus/master v6.2-rc8 next-20230215]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-cheers
+url:    https://github.com/intel-lab-lkp/linux/commits/Herve-Codina/dt-bindings-soc-fsl-cpm_qe-Add-TSA-controller/20230128-152424
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/20230126083222.374243-7-herve.codina%40bootlin.com
+patch subject: [PATCH v4 06/10] soc: fsl: cmp1: Add support for QMC
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20230215/202302152037.NXHi2aFY-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/20ec2eacb76ca7252aa2934f53357663652edd0f
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Herve-Codina/dt-bindings-soc-fsl-cpm_qe-Add-TSA-controller/20230128-152424
+        git checkout 20ec2eacb76ca7252aa2934f53357663652edd0f
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202302152037.NXHi2aFY-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   powerpc-linux-ld: drivers/soc/fsl/qe/qmc.o: in function `qmc_probe':
+>> qmc.c:(.text.qmc_probe+0xd8): undefined reference to `get_immrbase'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
