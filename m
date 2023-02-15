@@ -2,62 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866156981AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 18:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0115869822B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 18:34:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PH4R63KDyz3f2j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 04:13:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PH4tt6DnRz3f2k
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 04:33:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gErMUGav;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=wTYzp+HL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=punit.agrawal@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gErMUGav;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=wTYzp+HL;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH4Q81f7kz3cXf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 04:12:32 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0B30361CFB;
-	Wed, 15 Feb 2023 17:12:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1323DC433D2;
-	Wed, 15 Feb 2023 17:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676481148;
-	bh=MnTXXCrHB8q0dm2TiMdq46pcPd1e+WyWRchO1UVIneM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=gErMUGavKVhpeh61yCAbqALnRBmTxJvZ72Au68l86Fezdkm8wLEDM6pFITxISAz6o
-	 +zsH1JFWOB+tg3EYzrqltMaLmlXNXO3osAJ/3rMjEyJMVM/3rEpupBGxdN74ew63V2
-	 QQrljTw9WqaAzI+zfgxuIoIkF9gHWxApqBXJiOGp1xwwrWbCvN4m2R82zomqZ3W5Ur
-	 px0muhmpjRk7VUxr/IV84YfwU7kVU+1+QlcfVQrIe4C7Yv8wrZCVQ7cqLlEY6KzAK2
-	 SUDamUI0eJdFWKeNofWuJmd15TnCsX6x48PA/ElFHGmqmFDQJ+79FNU/+XPnrQO9F/
-	 VX30YfAM384iQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 15 Feb 2023 10:12:12 -0700
-Subject: [PATCH] macintosh: windfarm: Use unsigned type for 1-bit bitfields
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PH4sw28rFz3cd2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 04:33:06 +1100 (AEDT)
+Received: by mail-wr1-x42f.google.com with SMTP id y1so19961869wru.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 09:33:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:message-id
+         :in-reply-to:date:references:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0t94xwbIE7oAhUJFQ2BQHFhw0oZE0qnNECyAb2ZFKHQ=;
+        b=wTYzp+HLVi+lx88ricSM/4zA8JGJ0VYAUK8sP1YwmHt5MGHWabBceqwlwxcEPxzMvc
+         magXOb6suv1DXlOStB5PZvc2zBV9hlnvnH4H50+kYlzyuV0Uu06GW3ZzJsNjP1wjmEm/
+         /g6mWpsZrj7fTLUZSrzvfBri7ZHgBO27wAq3dbmuY1x4ZZ0PkgpMBAjk0VwNa34aASAE
+         A6rGzpy27hnSGLZSLkcS6pi1DiFjFqnQuJ3Rc47jhXlM2nYrZ2UnOXk5csTd2qgzNdtr
+         43SrIB3xEnsd/MLqrCKN/npLj7g40d4R1m+2AC2+7QkNOt17ZlxEe1FozUu7SHAncT2A
+         rrYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:message-id
+         :in-reply-to:date:references:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0t94xwbIE7oAhUJFQ2BQHFhw0oZE0qnNECyAb2ZFKHQ=;
+        b=tuAXYk6LcC6p/DdWGgZ67bPGVOqxERr+m2fg8SRF/eeQGr544bXSke/i0+9xc5n73g
+         L+DmKm4gv5QeyfAMpQV+3dIKMLeHRKXqGVjgLBDeGAJkl4f8bQE3ySJ8ULpKDgIGbZrV
+         Ll0Xd7ckB+pJwvIUpB2DS2YVuSE0jYIf3FdN53vlggb6Uiiv3yb5aDirBEqbsu0PMAPk
+         4wueHRd5dw1KlbKeLGngazjcURbPP70maw87H7tFj4uZkYZ9MJMxgnH3Z76wwXah7XA7
+         lzcVVwgKCSEtEgGvgoMYdojkAMsFUFlDDm8z8N40+kZaAbbeWVqBkTqZi/17ly+2j1Ap
+         1TTA==
+X-Gm-Message-State: AO0yUKXGIozr2J4hrXI9AUIj8yCpy1bb4qSZg9iI0eupDQq+3L2qwVIP
+	5asunJdEZ1YiBLKvfKYp2kqM6w==
+X-Google-Smtp-Source: AK7set9kT9H6NMj2/S3WBxDWHmAmNxq0wUR9ec7mDgnR1zjNhxV91JrWyeNEVDzBJm76EQ32XvPpCg==
+X-Received: by 2002:a5d:4b03:0:b0:2c5:644c:3e89 with SMTP id v3-20020a5d4b03000000b002c5644c3e89mr2357955wrq.67.1676482380110;
+        Wed, 15 Feb 2023 09:33:00 -0800 (PST)
+Received: from localhost ([95.148.15.48])
+        by smtp.gmail.com with ESMTPSA id f26-20020a5d58fa000000b002c5526680cbsm10288128wrd.92.2023.02.15.09.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Feb 2023 09:32:59 -0800 (PST)
+From: Punit Agrawal <punit.agrawal@bytedance.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [External] [PATCH v2 00/33] Per-VMA locks
+References: <20230127194110.533103-1-surenb@google.com>
+Date: Wed, 15 Feb 2023 17:32:58 +0000
+In-Reply-To: <20230127194110.533103-1-surenb@google.com> (Suren Baghdasaryan's
+	message of "Fri, 27 Jan 2023 11:40:37 -0800")
+Message-ID: <87r0uqq1f9.fsf@stealth>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230215-windfarm-wsingle-bit-bitfield-constant-conversion-v1-1-26415072e855@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAGsS7WMC/x2OwQqDMBBEf0X23AVNbA/9ldJDNBtd0LXsBi2I/
- 96kh4EZhnnMCUbKZPBsTlDa2XiTErpbA+McZCLkWDK41vnWdXc8WGIKuuJhLNNCOHCuSkxLxHE
- Ty0FyNTtppaF3faL4IOd7B4U7BCsrDTLOlbwGy6S1+Cgl/v7PvN7X9QO+MPwNnAAAAA==
-To: mpe@ellerman.id.au, benh@kernel.crashing.org
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2498; i=nathan@kernel.org;
- h=from:subject:message-id; bh=MnTXXCrHB8q0dm2TiMdq46pcPd1e+WyWRchO1UVIneM=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDMlvhar1c1ZPa7g0ZXWNysufTnWLfOMOLJF790ivuTjgh
- 7/SzUmHO0pZGMQ4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBETLgY/ik7v7EsmLOS0Xs7
- 14LFp7nnaDEoz2QUFSlrkt2ny3K2rI2R4ejNOSxll69yq7Srct7dmHH4S5hrlpzXz55D924E6d0
- 9zgsA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,69 +80,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity
+ .net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang warns:
+Suren Baghdasaryan <surenb@google.com> writes:
 
-  drivers/macintosh/windfarm_lm75_sensor.c:63:14: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  lm->inited = 1;
-                             ^ ~
+> Previous version:
+> v1: https://lore.kernel.org/all/20230109205336.3665937-1-surenb@google.co=
+m/
+> RFC: https://lore.kernel.org/all/20220901173516.702122-1-surenb@google.co=
+m/
+>
+> LWN article describing the feature:
+> https://lwn.net/Articles/906852/
+>
+> Per-vma locks idea that was discussed during SPF [1] discussion at LSF/MM
+> last year [2], which concluded with suggestion that =E2=80=9Ca reader/wri=
+ter
+> semaphore could be put into the VMA itself; that would have the effect of
+> using the VMA as a sort of range lock. There would still be contention at
+> the VMA level, but it would be an improvement.=E2=80=9D This patchset imp=
+lements
+> this suggested approach.
 
-  drivers/macintosh/windfarm_smu_sensors.c:356:19: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  pow->fake_volts = 1;
-                                  ^ ~
-  drivers/macintosh/windfarm_smu_sensors.c:368:18: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  pow->quadratic = 1;
-                                 ^ ~
+I took the patches for a spin on a 2-socket 32 core (64 threads) system
+with Intel 8336C (Ice Lake) and 512GB of RAM.
 
-There is no bug here since no code checks the actual value of these
-fields, just whether or not they are zero (boolean context), but this
-can be easily fixed by switching to an unsigned type.
+For the initial testing, "pft-threads" from the mm-tests suite[0] was
+used. The test mmaps a memory region (~100GB on the test system) and
+triggers access by a number of threads executing in parallel. For each
+degree of parallelism, the test is repeated 10 times to get a better
+feel for the behaviour. Below is an excerpt of the harmonic mean
+reported by 'compare_kernel' script[1] included with mm-tests.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/macintosh/windfarm_lm75_sensor.c | 4 ++--
- drivers/macintosh/windfarm_smu_sensors.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+The first column is results for mm-unstable as of 2023-02-10, the second
+column is the patches posted here while the third column includes
+optimizations to reclaim some of the observed regression.
 
-diff --git a/drivers/macintosh/windfarm_lm75_sensor.c b/drivers/macintosh/windfarm_lm75_sensor.c
-index 24f0a444d312..9c6febce2376 100644
---- a/drivers/macintosh/windfarm_lm75_sensor.c
-+++ b/drivers/macintosh/windfarm_lm75_sensor.c
-@@ -33,8 +33,8 @@
- #endif
- 
- struct wf_lm75_sensor {
--	int			ds1775 : 1;
--	int			inited : 1;
-+	unsigned int		ds1775 : 1;
-+	unsigned int		inited : 1;
- 	struct i2c_client	*i2c;
- 	struct wf_sensor	sens;
- };
-diff --git a/drivers/macintosh/windfarm_smu_sensors.c b/drivers/macintosh/windfarm_smu_sensors.c
-index 00c6fe25fcba..2bdb73b34d29 100644
---- a/drivers/macintosh/windfarm_smu_sensors.c
-+++ b/drivers/macintosh/windfarm_smu_sensors.c
-@@ -274,8 +274,8 @@ struct smu_cpu_power_sensor {
- 	struct list_head	link;
- 	struct wf_sensor	*volts;
- 	struct wf_sensor	*amps;
--	int			fake_volts : 1;
--	int			quadratic : 1;
-+	unsigned int		fake_volts : 1;
-+	unsigned int		quadratic : 1;
- 	struct wf_sensor	sens;
- };
- #define to_smu_cpu_power(c) container_of(c, struct smu_cpu_power_sensor, sens)
+From the results, there is a drop in page fault/second for low number of
+CPUs but good improvement with higher CPUs.
 
----
-base-commit: ceaa837f96adb69c0df0397937cd74991d5d821a
-change-id: 20230215-windfarm-wsingle-bit-bitfield-constant-conversion-324fed6e2342
+                                        6.2.0-rc4                6.2.0-rc4 =
+               6.2.0-rc4
+                             mm-unstable-20230210                   pvl-v2 =
+              pvl-v2+opt
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+Hmean     faults/cpu-1     898792.9338 (   0.00%)   894597.0474 *  -0.47%* =
+  895933.2782 *  -0.32%*
+Hmean     faults/cpu-4     751903.9803 (   0.00%)   677764.2975 *  -9.86%* =
+  688643.8163 *  -8.41%*
+Hmean     faults/cpu-7     612275.5663 (   0.00%)   565363.4137 *  -7.66%* =
+  597538.9396 *  -2.41%*
+Hmean     faults/cpu-12    434460.9074 (   0.00%)   410974.2708 *  -5.41%* =
+  452501.4290 *   4.15%*
+Hmean     faults/cpu-21    291475.5165 (   0.00%)   293936.8460 (   0.84%) =
+  308712.2434 *   5.91%*
+Hmean     faults/cpu-30    218021.3980 (   0.00%)   228265.0559 *   4.70%* =
+  241897.5225 *  10.95%*
+Hmean     faults/cpu-48    141798.5030 (   0.00%)   162322.5972 *  14.47%* =
+  166081.9459 *  17.13%*
+Hmean     faults/cpu-79     90060.9577 (   0.00%)   107028.7779 *  18.84%* =
+  109810.4488 *  21.93%*
+Hmean     faults/cpu-110    64729.3561 (   0.00%)    80597.7246 *  24.51%* =
+   83134.0679 *  28.43%*
+Hmean     faults/cpu-128    55740.1334 (   0.00%)    68395.4426 *  22.70%* =
+   69248.2836 *  24.23%*
 
+Hmean     faults/sec-1     898781.7694 (   0.00%)   894247.3174 *  -0.50%* =
+  894440.3118 *  -0.48%*
+Hmean     faults/sec-4    2965588.9697 (   0.00%)  2683651.5664 *  -9.51%* =
+ 2726450.9710 *  -8.06%*
+Hmean     faults/sec-7    4144512.3996 (   0.00%)  3891644.2128 *  -6.10%* =
+ 4099918.8601 (  -1.08%)
+Hmean     faults/sec-12   4969513.6934 (   0.00%)  4829731.4355 *  -2.81%* =
+ 5264682.7371 *   5.94%*
+Hmean     faults/sec-21   5814379.4789 (   0.00%)  5941405.3116 *   2.18%* =
+ 6263716.3903 *   7.73%*
+Hmean     faults/sec-30   6153685.3709 (   0.00%)  6489311.6634 *   5.45%* =
+ 6910843.5858 *  12.30%*
+Hmean     faults/sec-48   6197953.1327 (   0.00%)  7216320.7727 *  16.43%* =
+ 7412782.2927 *  19.60%*
+Hmean     faults/sec-79   6167135.3738 (   0.00%)  7425927.1022 *  20.41%* =
+ 7637042.2198 *  23.83%*
+Hmean     faults/sec-110  6264768.2247 (   0.00%)  7813329.3863 *  24.72%* =
+ 7984344.4005 *  27.45%*
+Hmean     faults/sec-128  6460727.8216 (   0.00%)  7875664.8999 *  21.90%* =
+ 8049910.3601 *  24.60%*
+
+[0] https://github.com/gormanm/mmtests
+[1] https://github.com/gormanm/mmtests/blob/master/compare-kernels.sh
