@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145356974C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 04:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575CE6975D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 06:23:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGjxq0727z3chn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 14:20:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGmgs1FvSz3cK9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 16:23:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TDWQ9Pmr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=fhWxOvSg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TDWQ9Pmr;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=fhWxOvSg;
 	dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGjwq6j64z3cJK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 14:19:21 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id o8so16635640pls.11
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 19:19:21 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGmft2wvPz3cJK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 16:22:28 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id b1so11839472pft.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Feb 2023 21:22:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hBDtDorWVGGnbAJlstCVLXC4KgZYcpfN89nn0eLodho=;
-        b=TDWQ9PmrwvLUcTo0lBlRuDBs6LfyqBjYoFXCZSj6/7iKJCjhRwcJUbUfI2buPyb9rd
-         xeco65Idbt5F69GXs19eLIIr/E1mdOW2sDO18XzrsZBD+rCxSEr0HrphkGMlLecQRNWE
-         fKVUl2wxjhX+iWtZIZ57DBC+0rBbt0ZIv31fmglw+YVgSA6KxZa6p66Eua+MsJsNGMI8
-         QUdukJNui/NdiTy6lOPb8nzXYjzh8NSH1P61qaqV/ULSjXcyz1Qe24/S8Er3ohkeZQiP
-         ZlVHKsxbxVvaOFpdk5QC1EZcAOetNy6F/lOwxCTH9nYKnwp5L9U3HtfofiOq7NcIsB2B
-         A1nQ==
+        bh=tV+nl5/6nbPk/6HA5pQX/rHuTHF5S4E9f4KJMF/h5x0=;
+        b=fhWxOvSg47bnqh1vlUb0tg8U7zRfENd11uhGOf5Jsz/ZocWHFEI68pLXo5d9vBVXvT
+         wSDFNO3/CV6QVriW/uJf7uSjBsTIo2nfhwr90ljf0Mtrv3l+ZNz03APZ/NoeYJxIi8AS
+         eT1BnG6scYkTL0mRsKAhicVLLfSox5xFSJlK+m4CcZ2f/19AZeBmn0TeLDNpHHUJ+j//
+         pNGe52xRL7NHFqYuRqi8NBAMhHiUAqm3krXcV9gB6lQ+ZUL8htkaq+hcUOto2vJWmQ/P
+         1t61ly6hek8z31+cUX+0shb1PAvYlU/KvbO9KdB05jwbmNe1/Zq0XZpFJiImeu8sqMJC
+         uFRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hBDtDorWVGGnbAJlstCVLXC4KgZYcpfN89nn0eLodho=;
-        b=OMzivZi1xBJm/lCmjJdQVa7fito41YKJVl1Kv+Hk0G+DakMbA0TxaBOmocVBXGZ/Zb
-         mEvgju9FOVvjomvosLYpeQa0XvUNsSWE3CG6AaqKEhd/ga/qpNgjLG3ldval2Su8nvP3
-         bqqN4QYyuBDyQrn9NhddXev2k+P9kqmIhjoX+/Mb2ITjPQHpxakVKRlJ+mHXO1mvf+6U
-         Kkh4rJzrfgqzLbOY7O4CkWV+YgD2tu1AERHUysez8VVcuGnwOQ2pIIDIwT5cfDrzAjqK
-         TheqJ166Kd+fqmnJ0At9lXiRApxNxM0oXYSpXm98bufCXC0k5CliD4kO0dQ4JTbYkaLt
-         oFAg==
-X-Gm-Message-State: AO0yUKWrrnfYsrFcL7hnvX4p8vgNED2af+goD2JBQpFEMOkNjG0SjW27
-	qk2jGXZdysAsZaGcCfrMnBDCmg==
-X-Google-Smtp-Source: AK7set8IZlzKTCD+NS6NLk03tw12Y2YvjAU5Kw+8dpbaSxkri3GTeMpV3jTg9FWVdAem4jZpgiABJg==
-X-Received: by 2002:a17:902:d2c8:b0:19a:85d9:93fd with SMTP id n8-20020a170902d2c800b0019a85d993fdmr938693plc.22.1676431157460;
-        Tue, 14 Feb 2023 19:19:17 -0800 (PST)
+        bh=tV+nl5/6nbPk/6HA5pQX/rHuTHF5S4E9f4KJMF/h5x0=;
+        b=MfGUjf0n+BNepclb+s4+9QeN3kMD1lKOFQUrjuhXow/FsfZruO71BYPFR2KGswIu4o
+         gIpXJCHP/7zeZqnItmGaauUoxK5UIjSWpA2OivsBElk0TbmqnDOZNxG6DHAUXzaKu0wG
+         D1UESGBDfhH2AgmyinIz0ERdasneJSmNDBnrW4koD/DX8HJGwG0IAuw8you8aU3cVE8w
+         zns+e4dc+h9q5CvQAbrFqxfxsj/+Pb8lO6YvNfgKpOBlIaX2mKrl8dGwL7IB0QxMx38E
+         YHkscfoU65Tl9Gxc6DE0aPI1QJk5P+MIfDkuP6XhgEX1Wrv/ibt2ICpn6T9SG+7ZSvqh
+         jFJQ==
+X-Gm-Message-State: AO0yUKV8aDLBGTgZvsKrXB/JSDn0dmNjW1AKgG5RimoxnZBK6ZKNhXEI
+	jjHRFxZNSYSuQjfS9sJ2RENRmw==
+X-Google-Smtp-Source: AK7set/rdrNLm8tItidqjsvagDbtl5rYMULe1MueAmQXNPzlIf4+Jxy35EVuWqAlcqe6sRrK/ndqkQ==
+X-Received: by 2002:aa7:9f85:0:b0:577:272f:fdb with SMTP id z5-20020aa79f85000000b00577272f0fdbmr600755pfr.29.1676438545117;
+        Tue, 14 Feb 2023 21:22:25 -0800 (PST)
 Received: from localhost ([135.180.226.51])
-        by smtp.gmail.com with ESMTPSA id s15-20020a170902b18f00b00189bf5dc96dsm10887390plr.230.2023.02.14.19.19.16
+        by smtp.gmail.com with ESMTPSA id n14-20020aa78a4e000000b005a8d396ae27sm2788868pfa.8.2023.02.14.21.22.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 19:19:16 -0800 (PST)
-Date: Tue, 14 Feb 2023 19:19:16 -0800 (PST)
-X-Google-Original-Date: Tue, 14 Feb 2023 19:19:13 PST (-0800)
-Subject: Re: [PATCH] mm: remove zap_page_range and create zap_vma_pages
-In-Reply-To: <20230104002732.232573-1-mike.kravetz@oracle.com>
+        Tue, 14 Feb 2023 21:22:24 -0800 (PST)
+Date: Tue, 14 Feb 2023 21:22:24 -0800 (PST)
+X-Google-Original-Date: Tue, 14 Feb 2023 21:22:11 PST (-0800)
+Subject: Re: [PATCH 13/19] arch/riscv: rename internal name __xchg to __arch_xchg
+In-Reply-To: <20221222114635.1251934-14-andrzej.hajda@intel.com>
 From: Palmer Dabbelt <palmer@dabbelt.com>
-To: mike.kravetz@oracle.com
-Message-ID: <mhng-6dc92fd9-0fe6-4a0d-974f-4f4468f143e4@palmer-ri-x1c9>
+To: andrzej.hajda@intel.com
+Message-ID: <mhng-e75808d7-21de-4ef8-a606-b7c652a1f38e@palmer-ri-x1c9>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -78,53 +78,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mhocko@suse.com, david@redhat.com, dave.hansen@linux.intel.com, peterx@redhat.com, linux-mm@kvack.org, edumazet@google.com, linux-riscv@lists.infradead.org, nadav.amit@gmail.com, linux-s390@vger.kernel.org, Will Deacon <will@kernel.org>, willy@infradead.org, Christoph Hellwig <hch@infradead.org>, borntraeger@linux.ibm.com, riel@surriel.com, vbabka@suse.cz, brauner@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, mike.kravetz@oracle.com
+Cc: mark.rutland@arm.com, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, andrzej.hajda@intel.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, boqun.feng@gmail.com, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, rodrigo.vivi@intel.com, andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 03 Jan 2023 16:27:32 PST (-0800), mike.kravetz@oracle.com wrote:
-> zap_page_range was originally designed to unmap pages within an address
-> range that could span multiple vmas.  While working on [1], it was
-> discovered that all callers of zap_page_range pass a range entirely within
-> a single vma.  In addition, the mmu notification call within zap_page
-> range does not correctly handle ranges that span multiple vmas.  When
-> crossing a vma boundary, a new mmu_notifier_range_init/end call pair
-> with the new vma should be made.
+On Thu, 22 Dec 2022 03:46:29 PST (-0800), andrzej.hajda@intel.com wrote:
+> __xchg will be used for non-atomic xchg macro.
 >
-> Instead of fixing zap_page_range, do the following:
-> - Create a new routine zap_vma_pages() that will remove all pages within
->   the passed vma.  Most users of zap_page_range pass the entire vma and
->   can use this new routine.
-> - For callers of zap_page_range not passing the entire vma, instead call
->   zap_page_range_single().
-> - Remove zap_page_range.
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>  arch/riscv/include/asm/atomic.h  | 2 +-
+>  arch/riscv/include/asm/cmpxchg.h | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> [1] https://lore.kernel.org/linux-mm/20221114235507.294320-2-mike.kravetz@oracle.com/
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-
-[...]
-
-> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-> index e410275918ac..5c30212d8d1c 100644
-> --- a/arch/riscv/kernel/vdso.c
-> +++ b/arch/riscv/kernel/vdso.c
-> @@ -124,13 +124,11 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
->  	mmap_read_lock(mm);
+> diff --git a/arch/riscv/include/asm/atomic.h b/arch/riscv/include/asm/atomic.h
+> index 0dfe9d857a762b..bba472928b5393 100644
+> --- a/arch/riscv/include/asm/atomic.h
+> +++ b/arch/riscv/include/asm/atomic.h
+> @@ -261,7 +261,7 @@ c_t arch_atomic##prefix##_xchg_release(atomic##prefix##_t *v, c_t n)	\
+>  static __always_inline							\
+>  c_t arch_atomic##prefix##_xchg(atomic##prefix##_t *v, c_t n)		\
+>  {									\
+> -	return __xchg(&(v->counter), n, size);				\
+> +	return __arch_xchg(&(v->counter), n, size);			\
+>  }									\
+>  static __always_inline							\
+>  c_t arch_atomic##prefix##_cmpxchg_relaxed(atomic##prefix##_t *v,	\
+> diff --git a/arch/riscv/include/asm/cmpxchg.h b/arch/riscv/include/asm/cmpxchg.h
+> index 12debce235e52d..2f4726d3cfcc25 100644
+> --- a/arch/riscv/include/asm/cmpxchg.h
+> +++ b/arch/riscv/include/asm/cmpxchg.h
+> @@ -114,7 +114,7 @@
+>  					    _x_, sizeof(*(ptr)));	\
+>  })
 >
->  	for_each_vma(vmi, vma) {
-> -		unsigned long size = vma->vm_end - vma->vm_start;
-> -
->  		if (vma_is_special_mapping(vma, vdso_info.dm))
-> -			zap_page_range(vma, vma->vm_start, size);
-> +			zap_vma_pages(vma);
->  #ifdef CONFIG_COMPAT
->  		if (vma_is_special_mapping(vma, compat_vdso_info.dm))
-> -			zap_page_range(vma, vma->vm_start, size);
-> +			zap_vma_pages(vma);
->  #endif
->  	}
+> -#define __xchg(ptr, new, size)						\
+> +#define __arch_xchg(ptr, new, size)					\
+>  ({									\
+>  	__typeof__(ptr) __ptr = (ptr);					\
+>  	__typeof__(new) __new = (new);					\
+> @@ -143,7 +143,7 @@
+>  #define arch_xchg(ptr, x)						\
+>  ({									\
+>  	__typeof__(*(ptr)) _x_ = (x);					\
+> -	(__typeof__(*(ptr))) __xchg((ptr), _x_, sizeof(*(ptr)));	\
+> +	(__typeof__(*(ptr))) __arch_xchg((ptr), _x_, sizeof(*(ptr)));	\
+>  })
+>
+>  #define xchg32(ptr, x)							\
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
-
-Thanks!
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
