@@ -1,97 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D616D697814
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 09:24:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83D969782D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 09:30:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGrjM5YPJz3cf8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 19:24:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGrqb4Hwmz3cV8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 19:30:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aIwNUPwG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EAjtSefi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aIwNUPwG;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EAjtSefi;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGrhN4zqHz3cLs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 19:24:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31F7uJNO025029;
-	Wed, 15 Feb 2023 08:23:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3a4VZdZOZVGkQIc43tX6dPj/Y98z8uiGrqTV7l/uEhQ=;
- b=aIwNUPwGq3zCUN9RpLYDEP/94DPMHFZZosnn5o8LqKcNGcR2yAc2xtuNJoB+iJq9NIFP
- g9U2sSHzE4mZdNhaKTGAPDS9YjS6uVyPAJkCaswDIL9GTeXwrHi96BN1vpdEVvCqDaVD
- yZnLqElhKtsqvb2A/Rc9fMHFjyj1pzgSSHEoYP6R2eDuzXpXpEGTrFRA7Y1HrrZuqYcW
- PXBbEqqgOnutQWApGgdALQIGci1xliSd7F4nunv929f2/aRBAbugJg4WbTpzOJajJJOt
- 3aBTaL7CFRJrL8hZldGNhZnTVGbYLajMbAaiL1g4dfCcjAb5dSpc3rvhYbe3uUYMPlOu tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nruepgkxw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Feb 2023 08:23:58 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31F7xEfT003406;
-	Wed, 15 Feb 2023 08:23:57 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nruepgkxk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Feb 2023 08:23:57 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31EJ6YT2029894;
-	Wed, 15 Feb 2023 08:23:55 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3np29fn44r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Feb 2023 08:23:55 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31F8NqYb31785322
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Feb 2023 08:23:52 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC9CF20043;
-	Wed, 15 Feb 2023 08:23:52 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC2E920040;
-	Wed, 15 Feb 2023 08:23:50 +0000 (GMT)
-Received: from [9.43.3.48] (unknown [9.43.3.48])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Feb 2023 08:23:50 +0000 (GMT)
-Message-ID: <c44227f5-0f74-8432-cb5f-748633a2b2e9@linux.ibm.com>
-Date: Wed, 15 Feb 2023 13:53:49 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGrpg4VMPz2x9d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 19:29:28 +1100 (AEDT)
+Received: by mail-wr1-x432.google.com with SMTP id o15so14885859wrc.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 00:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D+uRuWA2my0PkLfTRJkVAZ05w6wbQaFzpjSQTlA3Y10=;
+        b=EAjtSefiFMcRJUjTT1vKa++/98Yo1SN60xpEBkPSeru5QVrOombFl7ZHZ9y0eBb+k8
+         1ZpycnMJayGmVT6T6UnuPRjCB3nPxmBujGFtXaNp8cbOZSlWgdaIEhXU+GGjztzV/czy
+         1WDq6VfomA00oo7hLpCf0eBYSqerRkvKuSrVmRTM4XbxzJrQVoIbRj0AGC+iAePl6sTf
+         Z2xptiD/VOo1nfoRA4XWNffLKM3ZE08q46EkUvIRst5VglioETpQYFtr/iY0tCSkcOlD
+         bJtursUf7vQFXV0RL9Rz9XvQSF18NBopDoEorHB9a2ffDlY3yM0iSt8r0hW9VmbKY8B/
+         Tfog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+uRuWA2my0PkLfTRJkVAZ05w6wbQaFzpjSQTlA3Y10=;
+        b=WPW1o7iYv7vVM9tZ9YIMzD2dbpjzX9hW/VuBMGzq80igbgFQLoPsW+zkjdnwmSAzTN
+         jeeaais9GkcyAuEOhVaxFsDsfb63uNQrOIb85I3YrRynHnf/IeoWftwPFHU6Pd3BB1we
+         QZQsQHAVdoKiRZnz4RRkkAVtvUSuFBK3xiOr16jwDTx/4Wyis3vxBIOUzpxmS8Z8+tFd
+         3h44Z1rSqD0Ht4yO7AyxZtKXVqk5SMviawJBYUQhvUwn0QFKfvTxsP6YEkA4Iw6y8Ddp
+         cNKxx7WIejODQ9g1WjN/pLMF+kxU/6Tz9dE4zwzJ2+P+BWgXm5ld4YsboFbijcl9qpDa
+         gjyA==
+X-Gm-Message-State: AO0yUKWFgGpLXNdp1iLNwaGns0kRNhZRnYyfVmnzZhDEAUmuUh9jWnw/
+	LGbBUcbl3foycNk2QB+2hF+vDg==
+X-Google-Smtp-Source: AK7set8G2iiFdHjvUAVVY5llFOflusvwqwWTyX5fVt/Awzv2HxyXMg5++kq1nd94kDMQiFL/tQeRqw==
+X-Received: by 2002:a5d:67cc:0:b0:2c5:58fc:e1bb with SMTP id n12-20020a5d67cc000000b002c558fce1bbmr826926wrw.10.1676449764713;
+        Wed, 15 Feb 2023 00:29:24 -0800 (PST)
+Received: from [192.168.30.216] ([81.0.6.76])
+        by smtp.gmail.com with ESMTPSA id i2-20020adfefc2000000b002c553e061fdsm8524783wrp.112.2023.02.15.00.29.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 00:29:24 -0800 (PST)
+Message-ID: <c56dc4b9-035d-7773-ecb2-0e1ac6af7abc@linaro.org>
+Date: Wed, 15 Feb 2023 09:29:20 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] tools/perf/tests: Add system wide check for perf bench
- workload in all metric test
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.7.2
+Subject: Re: [PATCH v2 09/24] mips/cpu: Expose play_dead()'s prototype
+ definition
 Content-Language: en-US
-To: Ian Rogers <irogers@google.com>
-References: <20230202164413.56743-1-kjain@linux.ibm.com>
- <3BB099AB-5FB4-40FF-A281-C06A42FBEBC7@linux.vnet.ibm.com>
- <157932b6-be9b-dc92-be91-ba070ebddc75@linux.ibm.com>
- <CAP-5=fX+My97QeH-fMTRp0tZZ6=Ke7+b057G33Dok=p27cs+eA@mail.gmail.com>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <CAP-5=fX+My97QeH-fMTRp0tZZ6=Ke7+b057G33Dok=p27cs+eA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ij0kEh1sKEiAQQ9_W7TJib129ndyb4Lj
-X-Proofpoint-GUID: KcSLeOYnZWD5qleQWdFzJBhebeWLGhpD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-15_04,2023-02-14_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302150073
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+References: <cover.1676358308.git.jpoimboe@kernel.org>
+ <39835bc75af2e812fce56400533cb2ab41bcf0e2.1676358308.git.jpoimboe@kernel.org>
+ <080a5ccb-7fa0-1a75-538f-a09dc146fc4e@linaro.org>
+ <20230214181101.3a2tscbmwdnwbqpu@treble>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230214181101.3a2tscbmwdnwbqpu@treble>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,133 +85,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com, guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-kern
+ el@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2/15/23 05:36, Ian Rogers wrote:
-> On Tue, Feb 7, 2023 at 7:45 PM kajoljain <kjain@linux.ibm.com> wrote:
+On 14/2/23 19:11, Josh Poimboeuf wrote:
+> On Tue, Feb 14, 2023 at 08:46:41AM +0100, Philippe Mathieu-Daudé wrote:
+>> Hi Josh,
 >>
+>> On 14/2/23 08:05, Josh Poimboeuf wrote:
+>>> Include <asm/smp.h> to make sure play_dead() matches its prototype going
+>>> forward.
+>>>
+>>> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+>>> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+>>> ---
+>>>    arch/mips/kernel/smp-bmips.c | 1 +
+>>>    1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+>>> index f5d7bfa3472a..df9158e8329d 100644
+>>> --- a/arch/mips/kernel/smp-bmips.c
+>>> +++ b/arch/mips/kernel/smp-bmips.c
+>>> @@ -38,6 +38,7 @@
+>>>    #include <asm/traps.h>
+>>>    #include <asm/barrier.h>
+>>>    #include <asm/cpu-features.h>
+>>> +#include <asm/smp.h>
 >>
+>> What about the other implementations?
 >>
->> On 2/6/23 10:10, Athira Rajeev wrote:
->>>
->>>
->>>> On 02-Feb-2023, at 10:14 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
->>>>
->>>> Testcase stat_all_metrics.sh fails in powerpc:
->>>>
->>>> 92: perf all metrics test : FAILED!
->>>>
->>>> Logs with verbose:
->>>>
->>>> [command]# ./perf test 92 -vv
->>>> 92: perf all metrics test                                           :
->>>> --- start ---
->>>> test child forked, pid 13262
->>>> Testing BRU_STALL_CPI
->>>> Testing COMPLETION_STALL_CPI
->>>> ----
->>>> Testing TOTAL_LOCAL_NODE_PUMPS_P23
->>>> Metric 'TOTAL_LOCAL_NODE_PUMPS_P23' not printed in:
->>>> Error:
->>>> Invalid event (hv_24x7/PM_PB_LNS_PUMP23,chip=3/) in per-thread mode, enable system wide with '-a'.
->>>> Testing TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01
->>>> Metric 'TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01' not printed in:
->>>> Error:
->>>> Invalid event (hv_24x7/PM_PB_RTY_LNS_PUMP01,chip=3/) in per-thread mode, enable system wide with '-a'.
->>>> ----
->>>>
->>>> Based on above logs, we could see some of the hv-24x7 metric events fails,
->>>> and logs suggest to run the metric event with -a option.
->>>> This change happened after the commit a4b8cfcabb1d ("perf stat: Delay metric
->>>> parsing"), which delayed the metric parsing phase and now before metric parsing
->>>> phase perf tool identifies, whether target is system-wide or not. With this
->>>> change, perf_event_open will fails with workload monitoring for uncore events
->>>> as expected.
->>>>
->>>> The perf all metric test case fails as some of the hv-24x7 metric events
->>>> may need bigger workload to get the data. And the added perf bench
->>>> workload in 'perf all metric test case' will not run for hv-24x7 without
->>>> -a option.
->>>>
->>>> Fix this issue by adding system wide check for perf bench workload.
->>>>
->>>> Result with the patch changes in powerpc:
->>>>
->>>> 92: perf all metrics test : Ok
->>>>
->>>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->>>
->>> Looks good to me
->>>
->>> Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>
->> Hi Arnaldo,
->>    Let me know if patch looks fine to you.
->>
->> Thanks,
->> Kajol Jain
+>> $ git grep -L asm/smp.h $(git grep -wlF 'play_dead(void)' arch/mips)
+>> arch/mips/cavium-octeon/smp.c
+>> arch/mips/kernel/smp-bmips.c
+>> arch/mips/kernel/smp-cps.c
+>> arch/mips/loongson64/smp.c
 > 
-> I ran into a similar issue but worked around it with:
+> Indeed.  I really wish we had -Wmissing-prototypes.
 > 
-> ```
-> --- a/tools/perf/tests/shell/stat_all_metrics.sh
-> +++ b/tools/perf/tests/shell/stat_all_metrics.sh
-> @@ -11,7 +11,7 @@ for m in $(perf list --raw-dump metrics); do
->     continue
->   fi
->   # Failed so try system wide.
-> -  result=$(perf stat -M "$m" -a true 2>&1)
-> +  result=$(perf stat -M "$m" -a sleep 0.01 2>&1)
->   if [[ "$result" =~ "${m:0:50}" ]]
->   then
->     continue
-> ```
+> I'll squash this in:
 > 
-> Running the synthesize benchmark is potentially slow, wdyt of the change above?
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index 89954f5f87fb..4212584e6efa 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -20,6 +20,7 @@
+>   #include <asm/mmu_context.h>
+>   #include <asm/time.h>
+>   #include <asm/setup.h>
+> +#include <asm/smp.h>
+>   
+>   #include <asm/octeon/octeon.h>
+>   
+> diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+> index bcd6a944b839..6d69a9ba8167 100644
+> --- a/arch/mips/kernel/smp-cps.c
+> +++ b/arch/mips/kernel/smp-cps.c
+> @@ -20,6 +20,7 @@
+>   #include <asm/mipsregs.h>
+>   #include <asm/pm-cps.h>
+>   #include <asm/r4kcache.h>
+> +#include <asm/smp.h>
+>   #include <asm/smp-cps.h>
+>   #include <asm/time.h>
+>   #include <asm/uasm.h>
+> diff --git a/arch/mips/loongson64/smp.c b/arch/mips/loongson64/smp.c
+> index c81c2bd07c62..df8d789ede3c 100644
+> --- a/arch/mips/loongson64/smp.c
+> +++ b/arch/mips/loongson64/smp.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/cpufreq.h>
+>   #include <linux/kexec.h>
+>   #include <asm/processor.h>
+> +#include <asm/smp.h>
+>   #include <asm/time.h>
+>   #include <asm/tlbflush.h>
+>   #include <asm/cacheflush.h>
 
-Hi Ian,
-  Thanks for reviewing the patch. Yes we can change workload true to
-sleep 0.01 as we need bigger workload for 24x7 and sleep 0.01 will also
-work for 24x7 metric events.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I will send v2 patch with this change.
-
-Thanks,
-Kajol Jain
-
-> 
-> Thanks,
-> Ian
-> 
-> 
->>>
->>>> ---
->>>> tools/perf/tests/shell/stat_all_metrics.sh | 7 +++++++
->>>> 1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/tools/perf/tests/shell/stat_all_metrics.sh b/tools/perf/tests/shell/stat_all_metrics.sh
->>>> index 6e79349e42be..d49832a316d9 100755
->>>> --- a/tools/perf/tests/shell/stat_all_metrics.sh
->>>> +++ b/tools/perf/tests/shell/stat_all_metrics.sh
->>>> @@ -23,6 +23,13 @@ for m in $(perf list --raw-dump metrics); do
->>>>   then
->>>>     continue
->>>>   fi
->>>> +  # Failed again, possibly the event is uncore pmu event which will need
->>>> +  # system wide monitoring with workload, so retry with -a option
->>>> +  result=$(perf stat -M "$m" -a perf bench internals synthesize 2>&1)
->>>> +  if [[ "$result" =~ "${m:0:50}" ]]
->>>> +  then
->>>> +    continue
->>>> +  fi
->>>>   echo "Metric '$m' not printed in:"
->>>>   echo "$result"
->>>>   if [[ "$err" != "1" ]]
->>>> --
->>>> 2.39.0
->>>>
->>>
+Thanks.
