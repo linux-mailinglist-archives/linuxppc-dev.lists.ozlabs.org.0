@@ -1,50 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D9269788F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 09:59:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0697269791A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 10:39:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PGsSk50fzz3ch6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 19:59:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PGtMq6Y2Tz3cf2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Feb 2023 20:39:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=vncmQqU5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R16/uOSX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=vncmQqU5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R16/uOSX;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGsRm3Fp6z3bgl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 19:58:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0949261A2D;
-	Wed, 15 Feb 2023 08:58:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB9AC433EF;
-	Wed, 15 Feb 2023 08:58:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1676451487;
-	bh=jrGJzrG2skBYV2raSxtxHsTglP/uwpkm81LKlzw08iE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vncmQqU5+gf6a7yLciWkWD9jId4mQ0WeOqn2o9FVzMyGrEaigXYpoUNk1bo2fq2ue
-	 m1Dzg31J9YFSWAKTzaYrmzOtGca6QieNy0EgvRgPVKQhWYgI6S9xjGfa9dV18oVg/b
-	 HWBaom0tVl/c40f2SCHcOm2OYUcAE39bkuBBxlyQ=
-Date: Wed, 15 Feb 2023 09:58:04 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zhou nan <zhounan@nfschina.com>
-Subject: Re: [PATCH] usb: fix some spelling mistakes in comment
-Message-ID: <Y+yenCvi7vTCkb84@kroah.com>
-References: <20230215084324.7065-1-zhounan@nfschina.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PGtLr0T54z3c9C
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 20:38:59 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31F93MJN035307;
+	Wed, 15 Feb 2023 09:38:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=HaaNFUYd7/y/gH0aZ5dqcVhecNeq1B8ns+OY0zegHJE=;
+ b=R16/uOSXeY3xxE+0fWV8qKeCoo8v+flTqteaaou8Kc5cENe+eGw1ABO1V7Vw+CDef91e
+ vJ/0WBVGI2gZ8EyCEW1SDalfxrnNaJEiwOa9lPI/kNSppFGqJgvkGSklk2uAsWGDv4En
+ HyBMP4T89HVZXc03sc5y8dG+QdRtbhqb+o16PKCkdmut0Q+7tpvFl6UB88hv1iFd8UvM
+ bTwJhyvzxUt7qzMcQGAFbe4irbZpxS1cHnCpBCYfMyhb48mPXn3Dkk1Ho5U1GPrFZhdq
+ 3XULfRMeRrzQpayz19uL3wITQVv4k0DbtYgEF238T4F+G84Zd4pDr7elopEHCr504Dl2 Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nrve4h8wu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Feb 2023 09:38:50 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31F94wSO040934;
+	Wed, 15 Feb 2023 09:38:50 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nrve4h8w5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Feb 2023 09:38:50 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31EIYT1E010698;
+	Wed, 15 Feb 2023 09:38:48 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3np2n6w697-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Feb 2023 09:38:48 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31F9cjl250266396
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Feb 2023 09:38:45 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0D1D520043;
+	Wed, 15 Feb 2023 09:38:45 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 77E0020040;
+	Wed, 15 Feb 2023 09:38:42 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.3.48])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Feb 2023 09:38:42 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org
+Subject: [PATCH v2] tools/perf/tests: Change true workload to sleep workload in all metric test for system wide check
+Date: Wed, 15 Feb 2023 15:08:27 +0530
+Message-Id: <20230215093827.124921-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230215084324.7065-1-zhounan@nfschina.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ynkS7O4K1Ei1qXB-iK5cudy8PgYbXvkC
+X-Proofpoint-GUID: ihf7kGT1qK2GVUHfS9ImQoPwZtG42Ci7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-15_05,2023-02-14_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
+ malwarescore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302150087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,100 +93,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com
+Cc: irogers@google.com, maddy@linux.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 15, 2023 at 12:43:24AM -0800, Zhou nan wrote:
-> Fix typos in comment.
-> 
-> Signed-off-by: Zhou nan <zhounan@nfschina.com>
-> ---
->  drivers/usb/gadget/udc/fsl_udc_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-> index a67873a074b7..da876d09fc01 100644
-> --- a/drivers/usb/gadget/udc/fsl_udc_core.c
-> +++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-> @@ -471,7 +471,7 @@ static int dr_ep_get_stall(unsigned char ep_num, unsigned char dir)
->  ********************************************************************/
->  
->  /*------------------------------------------------------------------
-> -* struct_ep_qh_setup(): set the Endpoint Capabilites field of QH
-> +* struct_ep_qh_setup(): set the Endpoint Capabilities field of QH
->   * @zlt: Zero Length Termination Select (1: disable; 0: enable)
->   * @mult: Mult field
->   ------------------------------------------------------------------*/
-> @@ -483,7 +483,7 @@ static void struct_ep_qh_setup(struct fsl_udc *udc, unsigned char ep_num,
->  	struct ep_queue_head *p_QH = &udc->ep_qh[2 * ep_num + dir];
->  	unsigned int tmp = 0;
->  
-> -	/* set the Endpoint Capabilites in QH */
-> +	/* set the Endpoint Capabilities in QH */
->  	switch (ep_type) {
->  	case USB_ENDPOINT_XFER_CONTROL:
->  		/* Interrupt On Setup (IOS). for control ep  */
-> @@ -593,7 +593,7 @@ static int fsl_ep_enable(struct usb_ep *_ep,
->  	ep->stopped = 0;
->  
->  	/* Controller related setup */
-> -	/* Init EPx Queue Head (Ep Capabilites field in QH
-> +	/* Init EPx Queue Head (Ep Capabilities field in QH
->  	 * according to max, zlt, mult) */
->  	struct_ep_qh_setup(udc, (unsigned char) ep_index(ep),
->  			(unsigned char) ((desc->bEndpointAddress & USB_DIR_IN)
-> @@ -1361,7 +1361,7 @@ static void ch9getstatus(struct fsl_udc *udc, u8 request_type, u16 value,
->  	udc->ep0_dir = USB_DIR_IN;
->  	/* Borrow the per device status_req */
->  	req = udc->status_req;
-> -	/* Fill in the reqest structure */
-> +	/* Fill in the request structure */
->  	*((u16 *) req->req.buf) = cpu_to_le16(tmp);
->  
->  	req->ep = ep;
-> -- 
-> 2.27.0
-> 
+Testcase stat_all_metrics.sh fails in powerpc:
 
-Hi,
+98: perf all metrics test : FAILED!
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Logs with verbose:
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+[command]# ./perf test 98 -vv
+ 98: perf all metrics test                                           :
+ --- start ---
+test child forked, pid 13262
+Testing BRU_STALL_CPI
+Testing COMPLETION_STALL_CPI
+ ----
+Testing TOTAL_LOCAL_NODE_PUMPS_P23
+Metric 'TOTAL_LOCAL_NODE_PUMPS_P23' not printed in:
+Error:
+Invalid event (hv_24x7/PM_PB_LNS_PUMP23,chip=3/) in per-thread mode, enable system wide with '-a'.
+Testing TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01
+Metric 'TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01' not printed in:
+Error:
+Invalid event (hv_24x7/PM_PB_RTY_LNS_PUMP01,chip=3/) in per-thread mode, enable system wide with '-a'.
+ ----
 
-- Your patch did many different things all at once, making it difficult
-  to review.  All Linux kernel patches need to only do one thing at a
-  time.  If you need to do multiple things (such as clean up all coding
-  style issues in a file/driver), do it in a sequence of patches, each
-  one doing only one thing.  This will make it easier to review the
-  patches to ensure that they are correct, and to help alleviate any
-  merge issues that larger patches can cause.
+Based on above logs, we could see some of the hv-24x7 metric events fails,
+and logs suggest to run the metric event with -a option.
+This change happened after the commit a4b8cfcabb1d ("perf stat: Delay metric
+parsing"), which delayed the metric parsing phase and now before metric parsing
+phase perf tool identifies, whether target is system-wide or not. With this
+change, perf_event_open will fails with workload monitoring for uncore events
+as expected.
 
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
+The perf all metric test case fails as some of the hv-24x7 metric events
+may need bigger workload with system wide monitoring to get the data.
+Fix this issue by changing current system wide check from true workload to
+sleep 0.01 workload.
 
-- You did not write a descriptive Subject: for the patch, allowing Greg,
-  and everyone else, to know what this patch is all about.  Please read
-  the section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what a proper
-  Subject: line should look like.
+Result with the patch changes in powerpc:
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+98: perf all metrics test : Ok
 
-thanks,
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Suggested-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+Changelog:
 
-greg k-h's patch email bot
+v1->v2:
+- Addressed review comments from Ian, by changing true workload
+  to sleep workload in "perf all metric test". Rather then adding
+  new system wide check with perf bench workload.
+- Added Reviewed-by, Tested-by and Suggested-by tags.
+
+ tools/perf/tests/shell/stat_all_metrics.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/tests/shell/stat_all_metrics.sh b/tools/perf/tests/shell/stat_all_metrics.sh
+index 6e79349e42be..22e9cb294b40 100755
+--- a/tools/perf/tests/shell/stat_all_metrics.sh
++++ b/tools/perf/tests/shell/stat_all_metrics.sh
+@@ -11,7 +11,7 @@ for m in $(perf list --raw-dump metrics); do
+     continue
+   fi
+   # Failed so try system wide.
+-  result=$(perf stat -M "$m" -a true 2>&1)
++  result=$(perf stat -M "$m" -a sleep 0.01 2>&1)
+   if [[ "$result" =~ "${m:0:50}" ]]
+   then
+     continue
+-- 
+2.39.1
+
