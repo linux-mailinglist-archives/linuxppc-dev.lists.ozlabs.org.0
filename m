@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201CF699620
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 14:44:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 389CF699636
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 14:47:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHblX6gGXz3fBn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 00:44:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHbpV0HZDz3fVK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 00:46:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=CWJbAIta;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GGnDlsQK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=CWJbAIta;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GGnDlsQK;
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHbjj6KCNz3c6V
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 00:42:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHbjn1Q8Wz3cjF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 00:42:52 +1100 (AEDT)
 Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPA id 73AFE20009;
-	Thu, 16 Feb 2023 13:42:44 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPA id 50EF02000F;
+	Thu, 16 Feb 2023 13:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1676554967;
+	t=1676554970;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N/YhF9gMo5VM/10JELSuMdEOSOwQk2UJbMWXpfy0Qio=;
-	b=CWJbAItaZGh1N0KeFF5CFlaqqEymOKuoDoTIzq1ojv83GBOKaa4bEtFo1nJh1lAqtrcb8E
-	1dYsBoEMuYvwSY1cLYyKOo4R5FtZqxHheOT9PGXiHVK7CEGamziPzp38xDAC8V1Tmb8kbG
-	GepdmQc/GznQ7q8xTmEABbeu1N/X4HtzHilewfQmMZV4fydPRUwR+/lA1pVp//1ATpk05j
-	0jUSO6GayjVFN6kEKhyV5VYkr5scv0OTbmw9iG0R9h/M0od7ESoHxDgVM+sFYk0NNlTQg8
-	EQfoOt7+TGbRVgIi1ZBcNwOsCw68VjxxcOMySshGT/QGmqUGoag7/i/b05nIrg==
+	bh=G+UNtwo9Blm4QFpeMaX/6I3K3Hv55FXb27tDybz/bIc=;
+	b=GGnDlsQKnm32EqXRhRtWw3vWV7IhW6gwCQ9Zcc2qQ2SlvMMEgXUIf8gcmeBVE7/hR/KTbH
+	+rzz8rSoLknBWiWdbDmXx4q1wLlmc5Vst5TOmT4OF54hVji7ZnlU+BCaX//ArNE2G6wLlm
+	oue/norEFSMynbNNvMlbObBPOkO5AXawYnoMfK1z3ui0dWixcUWrQZvHOafVX9ACDOe74/
+	uNGHgkkiCVJyG9MXFJu97ukIKz6M+wNlPWSzzAdAqgP/IaxwZUeykKT8+9vE/HbfrbmAZL
+	ZxQT2euUlh16g4T3kVT+A2nnxVJ8PCAh54wiyKT3qg0QpLn6HwBBIsPFxkUeSA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Li Yang <leoyang.li@nxp.com>,
@@ -53,9 +53,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Xiubo Li <Xiubo.Lee@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>
-Subject: [PATCH v5 03/10] MAINTAINERS: add the Freescale TSA controller entry
-Date: Thu, 16 Feb 2023 14:42:19 +0100
-Message-Id: <20230216134226.1692107-4-herve.codina@bootlin.com>
+Subject: [PATCH v5 04/10] powerpc/8xx: Use a larger CPM1 command check mask
+Date: Thu, 16 Feb 2023 14:42:20 +0100
+Message-Id: <20230216134226.1692107-5-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230216134226.1692107-1-herve.codina@bootlin.com>
 References: <20230216134226.1692107-1-herve.codina@bootlin.com>
@@ -76,34 +76,40 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After contributing the driver, add myself as the maintainer
-for the Freescale TSA controller.
+The CPM1 command mask is defined for use with the standard
+CPM1 command register as described in the user's manual:
+  0  |1        3|4    7|8   11|12      14| 15|
+  RST|    -     |OPCODE|CH_NUM|     -    |FLG|
+
+In the QMC extension the CPM1 command register is redefined
+(QMC supplement user's manuel) with the following mapping:
+  0  |1        3|4    7|8           13|14| 15|
+  RST|QMC OPCODE|  1110|CHANNEL_NUMBER| -|FLG|
+
+Extend the check command mask in order to support both the
+standard CH_NUM field and the QMC extension CHANNEL_NUMBER
+field.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/powerpc/platforms/8xx/cpm1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7f86d02cb427..0cfedb2f712c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8372,6 +8372,15 @@ S:	Maintained
- F:	drivers/soc/fsl/qe/
- F:	include/soc/fsl/qe/
+diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
+index 8ef1f4392086..6b828b9f90d9 100644
+--- a/arch/powerpc/platforms/8xx/cpm1.c
++++ b/arch/powerpc/platforms/8xx/cpm1.c
+@@ -100,7 +100,7 @@ int cpm_command(u32 command, u8 opcode)
+ 	int i, ret;
+ 	unsigned long flags;
  
-+FREESCALE QUICC ENGINE TSA DRIVER
-+M:	Herve Codina <herve.codina@bootlin.com>
-+L:	linuxppc-dev@lists.ozlabs.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
-+F:	drivers/soc/fsl/qe/tsa.c
-+F:	drivers/soc/fsl/qe/tsa.h
-+F:	include/dt-bindings/soc/fsl,tsa.h
-+
- FREESCALE QUICC ENGINE UCC ETHERNET DRIVER
- M:	Li Yang <leoyang.li@nxp.com>
- L:	netdev@vger.kernel.org
+-	if (command & 0xffffff0f)
++	if (command & 0xffffff03)
+ 		return -EINVAL;
+ 
+ 	spin_lock_irqsave(&cmd_lock, flags);
 -- 
 2.39.1
 
