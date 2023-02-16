@@ -2,49 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA9C69937E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 12:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3523F699481
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 13:37:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHY752yxjz3f3j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 22:46:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHZG375QNz3f4T
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 23:37:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=NA7KiN0/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=NA7KiN0/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHY6B0p3Tz3cQV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 22:45:20 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHZF60bJ5z3cBy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 23:36:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1676550979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yr5XKKSsspi4RAZHd1reswGYxPLpqfSVJwzPdgOU6W4=;
+	b=WJ5UBhuE4CnWyn4l970yxI1t19u6kRmtWYM8DsKpxoYhjPl758KvnnBNdML3obTDZmTmIf
+	JGM5A7wKL/+J5v8HZZocgZQxYffYg+rBnkknvBFz32cuUMgM2Fp1EjzOBv3rq+ynIVRVNU
+	d0oa3V+jR3j6Cio6mjfPemMsW3wCZCE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1676550979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yr5XKKSsspi4RAZHd1reswGYxPLpqfSVJwzPdgOU6W4=;
+	b=WJ5UBhuE4CnWyn4l970yxI1t19u6kRmtWYM8DsKpxoYhjPl758KvnnBNdML3obTDZmTmIf
+	JGM5A7wKL/+J5v8HZZocgZQxYffYg+rBnkknvBFz32cuUMgM2Fp1EjzOBv3rq+ynIVRVNU
+	d0oa3V+jR3j6Cio6mjfPemMsW3wCZCE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-621-kaG1zBrrPPyNnxQLkRzQ4Q-1; Thu, 16 Feb 2023 07:36:14 -0500
+X-MC-Unique: kaG1zBrrPPyNnxQLkRzQ4Q-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2614B61FA0;
-	Thu, 16 Feb 2023 11:45:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42240C433EF;
-	Thu, 16 Feb 2023 11:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1676547918;
-	bh=YOLzZ2Nuw69e5XzNJOo+hceHeW7C0UNcjLtw+Vqy09o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NA7KiN0/fzKag96VZOFuZtb6Ep0wMs1qVDdIuoWhhbO4Ow+oz2OBgTvwyd+6vNMif
-	 PfOxIf6GTRat/dxXhGjhBmOLUbD87sKZtawjOBUlzPoMDNlZgxdYMR6e0XS9HQYU1b
-	 OYEsKvyaxSZLKCDnrwnpk7AIK8LSPcIMlzrWiFwQ=
-Date: Thu, 16 Feb 2023 12:45:16 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zhou nan <zhounan@nfschina.com>
-Subject: Re: [PATCH v2] usb: fix some spelling mistakes in comment of gadget
-Message-ID: <Y+4XTA49A+DvlXxp@kroah.com>
-References: <20230216013535.6399-1-zhounan@nfschina.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DC483C16E98;
+	Thu, 16 Feb 2023 12:36:13 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-99.pek2.redhat.com [10.72.12.99])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 49478492C3C;
+	Thu, 16 Feb 2023 12:36:06 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v4 14/16] powerpc: mm: Convert to GENERIC_IOREMAP
+Date: Thu, 16 Feb 2023 20:34:17 +0800
+Message-Id: <20230216123419.461016-15-bhe@redhat.com>
+In-Reply-To: <20230216123419.461016-1-bhe@redhat.com>
+References: <20230216123419.461016-1-bhe@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230216013535.6399-1-zhounan@nfschina.com>
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,46 +79,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com
+Cc: wangkefeng.wang@huawei.com, Baoquan He <bhe@redhat.com>, arnd@arndb.de, schnelle@linux.ibm.com, hch@infradead.org, linux-mm@kvack.org, David.Laight@ACULAB.COM, Nicholas Piggin <npiggin@gmail.com>, shorne@gmail.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, agordeev@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 15, 2023 at 05:35:35PM -0800, Zhou nan wrote:
-> usb: Fix spelling mistake in comments of gadget.
-> 
-> Signed-off-by: Zhou nan <zhounan@nfschina.com>
-> ---
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Hi,
+By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
+generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
+and iounmap() are all visible and available to arch. Arch needs to
+provide wrapper functions to override the generic versions if there's
+arch specific handling in its ioremap_prot(), ioremap() or iounmap().
+This change will simplify implementation by removing duplicated codes
+with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
+functioality as before.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Here, add wrapper functions ioremap_prot() and iounmap() for powerpc's
+special operation when ioremap() and iounmap().
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/Kconfig          |  1 +
+ arch/powerpc/include/asm/io.h |  8 +++-----
+ arch/powerpc/mm/ioremap.c     | 26 +-------------------------
+ arch/powerpc/mm/ioremap_32.c  | 19 +++++++++----------
+ arch/powerpc/mm/ioremap_64.c  | 12 ++----------
+ 5 files changed, 16 insertions(+), 50 deletions(-)
 
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 7a5f8dbfbdd0..02ae9e6afed6 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -181,6 +181,7 @@ config PPC
+ 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
+ 	select GENERIC_EARLY_IOREMAP
+ 	select GENERIC_GETTIMEOFDAY
++	select GENERIC_IOREMAP
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+ 	select GENERIC_PCI_IOMAP		if PCI
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index fc112a91d0c2..127d8300b40b 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -859,8 +859,8 @@ static inline void iosync(void)
+  *
+  */
+ extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
+-extern void __iomem *ioremap_prot(phys_addr_t address, unsigned long size,
+-				  unsigned long flags);
++#define ioremap ioremap
++#define ioremap_prot ioremap_prot
+ extern void __iomem *ioremap_wc(phys_addr_t address, unsigned long size);
+ #define ioremap_wc ioremap_wc
+ 
+@@ -874,14 +874,12 @@ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
+ #define ioremap_cache(addr, size) \
+ 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
+ 
+-extern void iounmap(volatile void __iomem *addr);
++#define iounmap iounmap
+ 
+ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size);
+ 
+ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 			unsigned long size, pgprot_t prot);
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller);
+ 
+ extern void __iomem *__ioremap_caller(phys_addr_t, unsigned long size,
+ 				      pgprot_t prot, void *caller);
+diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+index 4f12504fb405..705e8e8ffde4 100644
+--- a/arch/powerpc/mm/ioremap.c
++++ b/arch/powerpc/mm/ioremap.c
+@@ -41,7 +41,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
+ 	return __ioremap_caller(addr, size, prot, caller);
+ }
+ 
+-void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
++void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
+ {
+ 	pte_t pte = __pte(flags);
+ 	void *caller = __builtin_return_address(0);
+@@ -74,27 +74,3 @@ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 
+ 	return 0;
+ }
+-
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller)
+-{
+-	struct vm_struct *area;
+-	int ret;
+-	unsigned long va;
+-
+-	area = __get_vm_area_caller(size, VM_IOREMAP, IOREMAP_START, IOREMAP_END, caller);
+-	if (area == NULL)
+-		return NULL;
+-
+-	area->phys_addr = pa;
+-	va = (unsigned long)area->addr;
+-
+-	ret = ioremap_page_range(va, va + size, pa, prot);
+-	if (!ret)
+-		return (void __iomem *)area->addr + offset;
+-
+-	vunmap_range(va, va + size);
+-	free_vm_area(area);
+-
+-	return NULL;
+-}
+diff --git a/arch/powerpc/mm/ioremap_32.c b/arch/powerpc/mm/ioremap_32.c
+index 9d13143b8be4..ca5bc6be3e6f 100644
+--- a/arch/powerpc/mm/ioremap_32.c
++++ b/arch/powerpc/mm/ioremap_32.c
+@@ -21,6 +21,13 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	phys_addr_t p, offset;
+ 	int err;
+ 
++	/*
++	 * If the address lies within the first 16 MB, assume it's in ISA
++	 * memory space
++	 */
++	if (addr < SZ_16M)
++		addr += _ISA_MEM_BASE;
++
+ 	/*
+ 	 * Choose an address to map it to.
+ 	 * Once the vmalloc system is running, we use it.
+@@ -31,13 +38,6 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	offset = addr & ~PAGE_MASK;
+ 	size = PAGE_ALIGN(addr + size) - p;
+ 
+-	/*
+-	 * If the address lies within the first 16 MB, assume it's in ISA
+-	 * memory space
+-	 */
+-	if (p < 16 * 1024 * 1024)
+-		p += _ISA_MEM_BASE;
+-
+ #ifndef CONFIG_CRASH_DUMP
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using.
+@@ -63,7 +63,7 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 		return (void __iomem *)v + offset;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(p, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
+ 
+ 	/*
+ 	 * Should check if it is a candidate for a BAT mapping
+@@ -87,7 +87,6 @@ void iounmap(volatile void __iomem *addr)
+ 	if (v_block_mapped((unsigned long)addr))
+ 		return;
+ 
+-	if (addr > high_memory && (unsigned long)addr < ioremap_bot)
+-		vunmap((void *)(PAGE_MASK & (unsigned long)addr));
++	generic_iounmap(addr);
+ }
+ EXPORT_SYMBOL(iounmap);
+diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
+index 3acece00b33e..d24e5f166723 100644
+--- a/arch/powerpc/mm/ioremap_64.c
++++ b/arch/powerpc/mm/ioremap_64.c
+@@ -29,7 +29,7 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+ 		return NULL;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(paligned, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
+ 
+ 	pr_warn("ioremap() called early from %pS. Use early_ioremap() instead\n", caller);
+ 
+@@ -49,17 +49,9 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+  */
+ void iounmap(volatile void __iomem *token)
+ {
+-	void *addr;
+-
+ 	if (!slab_is_available())
+ 		return;
+ 
+-	addr = (void *)((unsigned long __force)PCI_FIX_ADDR(token) & PAGE_MASK);
+-
+-	if ((unsigned long)addr < ioremap_bot) {
+-		pr_warn("Attempt to iounmap early bolted mapping at 0x%p\n", addr);
+-		return;
+-	}
+-	vunmap(addr);
++	generic_iounmap(PCI_FIX_ADDR(token));
+ }
+ EXPORT_SYMBOL(iounmap);
+-- 
+2.34.1
 
-- You did not write a descriptive Subject: for the patch, allowing Greg,
-  and everyone else, to know what this patch is all about.  Please read
-  the section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what a proper
-  Subject: line should look like.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
