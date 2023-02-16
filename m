@@ -2,64 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F170698C35
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:40:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E60698C3A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:41:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP1V1xHcz3g5k
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:40:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP2W2FtNz3fps
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:41:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=e8FcGNDH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hu+sMS9o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3vlztywykdbmbdax6uz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3v7ztywykdbyegd09x2aa270.ya8749gjbby-z0h74efe.al7wxe.ad2@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=e8FcGNDH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hu+sMS9o;
 	dkim-atps=neutral
 Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXH0Nwyz3bgx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:55 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id p83-20020a25d856000000b0095d2ada3d26so832760ybg.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:54 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXK0pXzz3f3c
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:57 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id a4-20020a5b0004000000b006fdc6aaec4fso844051ybp.20
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u26HcyQZUssNB/wvgmnc8FNLt5Bjt6C27EcCpLSHQ2I=;
-        b=e8FcGNDH5VkVzBTYRblbtAQ0+ZP2ugsPFuxmDPyoQXwVKDnKFUyAPJn/SJMrsaQ1Ia
-         jo+Cd4OdGYV2adIa7Ps1WdQQvf3M0XkBbQCS2vH4hvx3mR4XIU6AeYNJ4fgFw+1soX5Z
-         Pa1xM0MUFfbg6JS2S95T1SCUKSw+S8anZTC0et5KKeuEZZM6kRmGtxME3D+du+nzcvgG
-         qzTaGZDic4CCJCQNQmsvjPxTw8HSPKOmRJrMlp7St/TdGbLlhdx8Vn9wPFTpNdXttF8Q
-         VA64i9yGakw2MEWw1P/yGjLggzJzYv4qMjifZYLSh4iksjXsYnlNyRAbe89au2hayYpB
-         yYBw==
+        bh=rll6a/VW4pEw1AhNBjbFoMRbi+XwYRGQoRwSBUD0bh4=;
+        b=hu+sMS9oSFHR1r7khxhf1UbXFcs2Z++5UsWdyoPEf98HLaKpCA/5NqLhTjKtFbNcAI
+         bq4IC94z3LeKr+N8fZ27HaBeoB9eV7FJUK2PbLxLqtWEgkZI6C3sySZgRKxnS+2i/7yz
+         RFGxaAOIl8opKirVI8bfAZAj2T7sVtyi7tZlmgl6KCk8dFxbKL8va87izUWyHNnCWm+i
+         wFd5WvNjbROGmsVfKcufeNfiLR4xBKkikebAtyhw//UrLzCCkecCcI/c1WZAFUB1nZ5g
+         ONtU8uW/bb5j1wyQf5MWCYTwREIrfwMyez4h+y24cgMUk3OrfInLJF7DZne80Aw4Hh2T
+         oQOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u26HcyQZUssNB/wvgmnc8FNLt5Bjt6C27EcCpLSHQ2I=;
-        b=LR+2oCmk+b2MNn5BribT5M4pxXcbadGzDrCbhX0q4IniZRxncMCO95Y3oT5B9LQAzM
-         UOxBmkEYjwWRMvPnK2fI1iLtapja8jd5IUtorDr/byM0Y/Ee3eo4m0nbuPlxaW1DKjJ3
-         afVU2UFfIitj+o6JBc7hkVnkdAF2xwup3qHpgdLxdfrPegAjCcekEogMExyoj7qBIJam
-         N3x6RCfi2w5Px4l0LlSQexFShQ+W1C/UJLDwlE4xZYx/4fij9jvlsgZJmFTuRXIeZP1w
-         Y5aZlHOEjYTwpdA6CpL0glZ9YaRdOiLciOSRYtQPAONbRYH1kIc85RjdkZJhPPz698VN
-         jsJw==
-X-Gm-Message-State: AO0yUKXVFiLcoXF7r4P+3lyf8depuYUjQFBpRaI9j4S6kPaF0FCNsWqb
-	K8ivnWAh4a5pb65+EvcXTmdXsdnEnbw=
-X-Google-Smtp-Source: AK7set8LRdaZWnTNJXEEL+5OavvLJg+SJ7ELgpuDSzdI0PbEuUZjWdo/eOURR51UCivz1X36gI0P4ir+qmc=
+        bh=rll6a/VW4pEw1AhNBjbFoMRbi+XwYRGQoRwSBUD0bh4=;
+        b=oEz8MVXfWCCxgJIDGsLyUReVVX8/SNn6WtxnQfMaR2Ui3OlGGIWXsqJSmVUzeHvRM5
+         WJ6buMjMovbuRpsjKaEMilPNoQSm4Buj62TKg0ej5nIPFVVQf8iS80NwcY9EHcDoyY+w
+         /yl3nn/jtW7ajPFlf8pUnQjDBdk4fY2TtxJxKFzcd+a87Vi4JzEnpuXlSgisUYjNJRPp
+         jyFSqQWAm5ZDgV5PXND7lGvjmFe3UyuJ0q3Lvn9WvfSPFS4+Q/gtBbrqqv0fwZssKfw2
+         sOQuIhUP0NYQZ651MNWjI3wFBto273Su7g3lBBlWzefdP14u/8fzeGftfSyR1gniAcwH
+         6N2Q==
+X-Gm-Message-State: AO0yUKUX9o7ZJSQH9jCbd3UlZVOflSS2HaOSzIJi7shuBxnq6/C6UHx1
+	JKrKdnYcMIiD54MFM+PqwbbMpCLsuOg=
+X-Google-Smtp-Source: AK7set/t52sA7P5kGXoASmYABiID5pIEjMuKzn7Z6yq6NOdnfI/iNhk3E99tS5Gm4PH95uk7/Rdn/fKqkhY=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a05:6902:114f:b0:855:fdcb:4467 with SMTP id
- p15-20020a056902114f00b00855fdcb4467mr31ybu.0.1676524732481; Wed, 15 Feb 2023
- 21:18:52 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:39 -0800
+ (user=surenb job=sendgmr) by 2002:a25:9012:0:b0:874:380b:887e with SMTP id
+ s18-20020a259012000000b00874380b887emr545965ybl.239.1676524735071; Wed, 15
+ Feb 2023 21:18:55 -0800 (PST)
+Date: Wed, 15 Feb 2023 21:17:40 -0800
 In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230216051750.3125598-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-25-surenb@google.com>
-Subject: [PATCH v3 24/35] mm: introduce vma detached flag
+Message-ID: <20230216051750.3125598-26-surenb@google.com>
+Subject: [PATCH v3 25/35] mm: introduce lock_vma_under_rcu to be used from
+ arch-specific code
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,88 +80,92 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Per-vma locking mechanism will search for VMA under RCU protection and
-then after locking it, has to ensure it was not removed from the VMA
-tree after we found it. To make this check efficient, introduce a
-vma->detached flag to mark VMAs which were removed from the VMA tree.
+Introduce lock_vma_under_rcu function to lookup and lock a VMA during
+page fault handling. When VMA is not found, can't be locked or changes
+after being locked, the function returns NULL. The lookup is performed
+under RCU protection to prevent the found VMA from being destroyed before
+the VMA lock is acquired. VMA lock statistics are updated according to
+the results.
+For now only anonymous VMAs can be searched this way. In other cases the
+function returns NULL.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm.h       | 11 +++++++++++
- include/linux/mm_types.h |  3 +++
- mm/mmap.c                |  2 ++
- 3 files changed, 16 insertions(+)
+ include/linux/mm.h |  3 +++
+ mm/memory.c        | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f4f702224ec5..3f98344f829c 100644
+index 3f98344f829c..36172bb38e6b 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -693,6 +693,14 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
- 	VM_BUG_ON_VMA(vma->vm_lock_seq != READ_ONCE(vma->vm_mm->mm_lock_seq), vma);
+@@ -701,6 +701,9 @@ static inline void vma_mark_detached(struct vm_area_struct *vma, bool detached)
+ 	vma->detached = detached;
  }
  
-+static inline void vma_mark_detached(struct vm_area_struct *vma, bool detached)
-+{
-+	/* When detaching vma should be write-locked */
-+	if (detached)
-+		vma_assert_write_locked(vma);
-+	vma->detached = detached;
-+}
++struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
++					  unsigned long address);
 +
  #else /* CONFIG_PER_VMA_LOCK */
  
  static inline void vma_init_lock(struct vm_area_struct *vma) {}
-@@ -701,6 +709,8 @@ static inline bool vma_start_read(struct vm_area_struct *vma)
- static inline void vma_end_read(struct vm_area_struct *vma) {}
- static inline void vma_start_write(struct vm_area_struct *vma) {}
- static inline void vma_assert_write_locked(struct vm_area_struct *vma) {}
-+static inline void vma_mark_detached(struct vm_area_struct *vma,
-+				     bool detached) {}
- 
- #endif /* CONFIG_PER_VMA_LOCK */
- 
-@@ -712,6 +722,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_mm = mm;
- 	vma->vm_ops = &dummy_vm_ops;
- 	INIT_LIST_HEAD(&vma->anon_vma_chain);
-+	vma_mark_detached(vma, false);
- 	vma_init_lock(vma);
+diff --git a/mm/memory.c b/mm/memory.c
+index 8177c59ffd2d..5e1c124552a1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5220,6 +5220,52 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
  }
+ EXPORT_SYMBOL_GPL(handle_mm_fault);
  
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index e268723eaf44..939f4f5a1115 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -511,6 +511,9 @@ struct vm_area_struct {
- #ifdef CONFIG_PER_VMA_LOCK
- 	int vm_lock_seq;
- 	struct rw_semaphore lock;
++#ifdef CONFIG_PER_VMA_LOCK
++/*
++ * Lookup and lock a VMA under RCU protection. Returned VMA is guaranteed to be
++ * stable and not isolated. If the VMA is not found or is being modified the
++ * function returns NULL.
++ */
++struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
++					  unsigned long address)
++{
++	MA_STATE(mas, &mm->mm_mt, address, address);
++	struct vm_area_struct *vma;
 +
-+	/* Flag to indicate areas detached from the mm->mm_mt tree */
-+	bool detached;
- #endif
- 
- 	/*
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 801608726be8..adf40177e68f 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -593,6 +593,7 @@ static inline void vma_complete(struct vma_prepare *vp,
- 
- 	if (vp->remove) {
- again:
-+		vma_mark_detached(vp->remove, true);
- 		if (vp->file) {
- 			uprobe_munmap(vp->remove, vp->remove->vm_start,
- 				      vp->remove->vm_end);
-@@ -2267,6 +2268,7 @@ static inline int munmap_sidetree(struct vm_area_struct *vma,
- 	if (mas_store_gfp(mas_detach, vma, GFP_KERNEL))
- 		return -ENOMEM;
- 
-+	vma_mark_detached(vma, true);
- 	if (vma->vm_flags & VM_LOCKED)
- 		vma->vm_mm->locked_vm -= vma_pages(vma);
- 
++	rcu_read_lock();
++retry:
++	vma = mas_walk(&mas);
++	if (!vma)
++		goto inval;
++
++	/* Only anonymous vmas are supported for now */
++	if (!vma_is_anonymous(vma))
++		goto inval;
++
++	if (!vma_start_read(vma))
++		goto inval;
++
++	/* Check since vm_start/vm_end might change before we lock the VMA */
++	if (unlikely(address < vma->vm_start || address >= vma->vm_end)) {
++		vma_end_read(vma);
++		goto inval;
++	}
++
++	/* Check if the VMA got isolated after we found it */
++	if (vma->detached) {
++		vma_end_read(vma);
++		/* The area was replaced with another one */
++		goto retry;
++	}
++
++	rcu_read_unlock();
++	return vma;
++inval:
++	rcu_read_unlock();
++	return NULL;
++}
++#endif /* CONFIG_PER_VMA_LOCK */
++
+ #ifndef __PAGETABLE_P4D_FOLDED
+ /*
+  * Allocate p4d page table.
 -- 
 2.39.1
 
