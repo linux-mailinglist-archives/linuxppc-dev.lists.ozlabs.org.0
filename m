@@ -1,101 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED3569A251
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 00:25:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B8469A2B6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 00:53:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHrf55f6qz3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 10:25:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHsGp3T5Qz3chp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 10:53:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oNcbgnk+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rACrYxab;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHsFr6KXFz3Wtp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 10:53:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oNcbgnk+;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rACrYxab;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHrcK2Hp4z3f3x
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 10:24:01 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31GNCUFm007237;
-	Thu, 16 Feb 2023 23:23:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=WcVW/aeSMtX332lAWfno4lAAkIXtiaglwu4yU4RuTlY=;
- b=oNcbgnk+ayNGu0mozNAxH/RRFkWdPGq1EQUQ+5LNoG2SvyccyBiYTa15J9sm+L2yHZgJ
- a3Ow0YIQ+DXk+9xdSUu5qHttc9qBf84CivmwBFMCLaydr4thQPDrOrHCZ2/mOUawupv6
- Di98jgC73gKY8toP9uaXU46JnSeUwcYL8jwJdHCWYcVTfMCjfu8GaiR8IwVPHuOrim2V
- 93WdkWvbIk09CCwwSvkyPmiiRrjdmWCZdOS//8bbguo68r5iBXWvQ+ljbAP4lUheQQbN
- pG9wLQkDOpXN/0Lfk+K/e9vD+sEvEtRbLZbHo7OErQHr/eY0I+X62GH83VE3AOQUtIx+ nA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nswxur66h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Feb 2023 23:23:55 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31GNFQcS018415;
-	Thu, 16 Feb 2023 23:23:55 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nswxur65w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Feb 2023 23:23:54 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31GHOGmc022562;
-	Thu, 16 Feb 2023 23:23:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3np2n6dd7v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Feb 2023 23:23:52 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31GNNof741419228
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Feb 2023 23:23:50 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 12DA72004B;
-	Thu, 16 Feb 2023 23:23:50 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D88D20040;
-	Thu, 16 Feb 2023 23:23:49 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Feb 2023 23:23:49 +0000 (GMT)
-Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4AA65600A5;
-	Fri, 17 Feb 2023 10:23:47 +1100 (AEDT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH 1/2] kcsan: xtensa: Add atomic builtin stubs for 32-bit
- systems
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <Y+3kwmFhWilN2OaE@elver.google.com>
-Date: Fri, 17 Feb 2023 10:23:37 +1100
-Message-Id: <BD87DB92-9BE9-4145-AAAE-F947DA4EF7FD@linux.ibm.com>
-References: <20230216050938.2188488-1-rmclure@linux.ibm.com>
- <42e62369-8dd0-cbfc-855d-7ad18e518cee@csgroup.eu>
- <Y+3kwmFhWilN2OaE@elver.google.com>
-To: Marco Elver <elver@google.com>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GekkrYdHog4pLala9GAJcHwQnvoRdTUn
-X-Proofpoint-ORIG-GUID: 1B7vN6wjGsbzGTiyS85nSqhUW6E26uuf
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PHsFq0GS4z4x89;
+	Fri, 17 Feb 2023 10:53:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1676591584;
+	bh=fP7M6V+cjNdWp1AJeaYpecLEvF9ZpOfTM+q7vfHAObU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rACrYxab0E15ubVIDUkicHNZ9A7o6QYmslTZDcOJQfv/F/0NBjWDNSogqxgIeXY6/
+	 ES7W5herbayThve7MD61VmbV1VgH9umTLzCioelUwYSDn5NuYy2zyhj33GJlWsir8a
+	 ulpOs7iyxfs3sCIy0239wGGeto2v+Mo4XuIdQOnmhKX8lsw/gpAqMubXK7uzmr+MjE
+	 fsVJHz/hJPLnVYPKrLNaflekWVbGGbrv7w8dC0g5WWu6f2WLbfm5nYmyePabZYU7Tz
+	 xBdgnLQfW2lEvmPa2LK2SR31sA6tFbYUXnUOPsQzeJnqx7s55RErGykHtpIo2Udk4K
+	 i8Rj2sYAlIr1g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Herve Codina <herve.codina@bootlin.com>, Herve Codina
+ <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Qiang
+ Zhao <qiang.zhao@nxp.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+ <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li
+ <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Nicolin Chen
+ <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH v5 00/10] Add the PowerQUICC audio support using the QMC
+In-Reply-To: <20230216134226.1692107-1-herve.codina@bootlin.com>
+References: <20230216134226.1692107-1-herve.codina@bootlin.com>
+Date: Fri, 17 Feb 2023 10:52:58 +1100
+Message-ID: <87mt5dyxph.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-16_16,2023-02-16_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
- spamscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302160198
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,115 +66,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Max Filippov <jcmvbkbc@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, kasan-dev <kasan-dev@googlegroups.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On 16 Feb 2023, at 7:09 pm, Marco Elver <elver@google.com> wrote:
->=20
-> On Thu, Feb 16, 2023 at 07:12AM +0000, Christophe Leroy wrote:
->>=20
->>=20
->> Le 16/02/2023 =C3=A0 06:09, Rohan McLure a =C3=A9crit :
->>> KCSAN instruments calls to atomic builtins, and will in turn call these
->>> builtins itself. As such, architectures supporting KCSAN must have
->>> compiler support for these atomic primitives.
->>>=20
->>> Since 32-bit systems are unlikely to have 64-bit compiler builtins,
->>> provide a stub for each missing builtin, and use BUG() to assert
->>> unreachability.
->>>=20
->>> In commit 725aea873261 ("xtensa: enable KCSAN"), xtensa implements these
->>> locally. Move these definitions to be accessible to all 32-bit
->>> architectures that do not provide the necessary builtins, with opt in
->>> for PowerPC and xtensa.
->>>=20
->>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
->>> Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
->>=20
->> This series should also be addressed to KCSAN Maintainers, shouldn't it ?
->>=20
->> KCSAN
->> M: Marco Elver <elver@google.com>
->> R: Dmitry Vyukov <dvyukov@google.com>
->> L: kasan-dev@googlegroups.com
->> S: Maintained
->> F: Documentation/dev-tools/kcsan.rst
->> F: include/linux/kcsan*.h
->> F: kernel/kcsan/
->> F: lib/Kconfig.kcsan
->> F: scripts/Makefile.kcsan
->>=20
->>=20
->>> ---
->>> Previously issued as a part of a patch series adding KCSAN support to
->>> 64-bit.
->>> Link: https://lore.kernel.org/linuxppc-dev/167646486000.1421441.1007005=
-9569986228558.b4-ty@ellerman.id.au/T/#t
->>> v1: Remove __has_builtin check, as gcc is not obligated to inline
->>> builtins detected using this check, but instead is permitted to supply
->>> them in libatomic:
->>> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D108734
->>> Instead, opt-in PPC32 and xtensa.
->>> ---
->>>  arch/xtensa/lib/Makefile                              | 1 -
->>>  kernel/kcsan/Makefile                                 | 2 ++
->>>  arch/xtensa/lib/kcsan-stubs.c =3D> kernel/kcsan/stubs.c | 0
->>>  3 files changed, 2 insertions(+), 1 deletion(-)
->>>  rename arch/xtensa/lib/kcsan-stubs.c =3D> kernel/kcsan/stubs.c (100%)
->>>=20
->>> diff --git a/arch/xtensa/lib/Makefile b/arch/xtensa/lib/Makefile
->>> index 7ecef0519a27..d69356dc97df 100644
->>> --- a/arch/xtensa/lib/Makefile
->>> +++ b/arch/xtensa/lib/Makefile
->>> @@ -8,5 +8,4 @@ lib-y +=3D memcopy.o memset.o checksum.o \
->>>      divsi3.o udivsi3.o modsi3.o umodsi3.o mulsi3.o umulsidi3.o \
->>>      usercopy.o strncpy_user.o strnlen_user.o
->>>  lib-$(CONFIG_PCI) +=3D pci-auto.o
->>> -lib-$(CONFIG_KCSAN) +=3D kcsan-stubs.o
->>>  KCSAN_SANITIZE_kcsan-stubs.o :=3D n
->>> diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
->>> index 8cf70f068d92..86dd713d8855 100644
->>> --- a/kernel/kcsan/Makefile
->>> +++ b/kernel/kcsan/Makefile
->>> @@ -12,6 +12,8 @@ CFLAGS_core.o :=3D $(call cc-option,-fno-conserve-sta=
-ck) \
->>>   -fno-stack-protector -DDISABLE_BRANCH_PROFILING
->>>=20
->>>  obj-y :=3D core.o debugfs.o report.o
->>> +obj-$(CONFIG_PPC32) +=3D stubs.o
->>> +obj-$(CONFIG_XTENSA) +=3D stubs.o
->>=20
->> Not sure it is acceptable to do it that way.
->>=20
->> There should likely be something like a CONFIG_ARCH_WANTS_KCSAN_STUBS in=
-=20
->> KCSAN's Kconfig then PPC32 and XTENSA should select it.
->=20
-> The longer I think about it, since these stubs all BUG() anyway, perhaps
-> we ought to just avoid them altogether. If you delete all the stubs from
-> ppc and xtensa, but do this:
->=20
-> | diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-> | index 54d077e1a2dc..8169d6dadd0e 100644
-> | --- a/kernel/kcsan/core.c
-> | +++ b/kernel/kcsan/core.c
-> | @@ -1261,7 +1261,9 @@ static __always_inline void kcsan_atomic_builtin_=
-memorder(int memorder)
-> |  DEFINE_TSAN_ATOMIC_OPS(8);
-> |  DEFINE_TSAN_ATOMIC_OPS(16);
-> |  DEFINE_TSAN_ATOMIC_OPS(32);
-> | +#ifdef CONFIG_64BIT
-> |  DEFINE_TSAN_ATOMIC_OPS(64);
-> | +#endif
-> |=20=20
-> |  void __tsan_atomic_thread_fence(int memorder);
-> |  void __tsan_atomic_thread_fence(int memorder)
->=20
-> Does that work?
+Herve Codina <herve.codina@bootlin.com> writes:
+> Hi,
+>
+> This series adds support for audio using the QMC controller available in
+> some Freescale PowerQUICC SoCs.
 
-This makes much more sense. Rather than assume that kcsan is the only
-consumer of __atomic_*_8, and stubbing accordingly, we should just
-remove its mention from relevant sub-archs.
+Who's going to take this series?
 
+By lines of code it's mostly in drivers/soc/fsl, so I was expecting it
+would go via that tree.
 
+Or is it a sound series that should go via one of the sound trees?
+
+cheers
+
+...
+>  .../soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml      |  172 ++
+>  .../bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml |  234 +++
+>  .../bindings/sound/fsl,qmc-audio.yaml         |  117 ++
+>  MAINTAINERS                                   |   25 +
+>  arch/powerpc/platforms/8xx/cpm1.c             |    2 +-
+>  drivers/soc/fsl/qe/Kconfig                    |   23 +
+>  drivers/soc/fsl/qe/Makefile                   |    2 +
+>  drivers/soc/fsl/qe/qmc.c                      | 1533 +++++++++++++++++
+>  drivers/soc/fsl/qe/tsa.c                      |  869 ++++++++++
+>  drivers/soc/fsl/qe/tsa.h                      |   42 +
+>  include/dt-bindings/soc/fsl,tsa.h             |   13 +
+>  include/soc/fsl/qe/qmc.h                      |   71 +
+>  sound/soc/fsl/Kconfig                         |    9 +
+>  sound/soc/fsl/Makefile                        |    2 +
+>  sound/soc/fsl/fsl_qmc_audio.c                 |  735 ++++++++
+>  15 files changed, 3848 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+>  create mode 100644 drivers/soc/fsl/qe/qmc.c
+>  create mode 100644 drivers/soc/fsl/qe/tsa.c
+>  create mode 100644 drivers/soc/fsl/qe/tsa.h
+>  create mode 100644 include/dt-bindings/soc/fsl,tsa.h
+>  create mode 100644 include/soc/fsl/qe/qmc.h
+>  create mode 100644 sound/soc/fsl/fsl_qmc_audio.c
