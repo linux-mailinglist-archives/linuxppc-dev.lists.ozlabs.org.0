@@ -1,73 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3523F699481
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 13:37:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960DB699618
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 14:43:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHZG375QNz3f4T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 23:37:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHbkZ3vRdz3f3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 00:43:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W5Ea2Hom;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJ5UBhuE;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W5Ea2Hom;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHZF60bJ5z3cBy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 23:36:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676550979;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHbjg1F8qz3c6V
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 00:42:43 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPA id D8E9B20008;
+	Thu, 16 Feb 2023 13:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1676554958;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yr5XKKSsspi4RAZHd1reswGYxPLpqfSVJwzPdgOU6W4=;
-	b=WJ5UBhuE4CnWyn4l970yxI1t19u6kRmtWYM8DsKpxoYhjPl758KvnnBNdML3obTDZmTmIf
-	JGM5A7wKL/+J5v8HZZocgZQxYffYg+rBnkknvBFz32cuUMgM2Fp1EjzOBv3rq+ynIVRVNU
-	d0oa3V+jR3j6Cio6mjfPemMsW3wCZCE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676550979;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yr5XKKSsspi4RAZHd1reswGYxPLpqfSVJwzPdgOU6W4=;
-	b=WJ5UBhuE4CnWyn4l970yxI1t19u6kRmtWYM8DsKpxoYhjPl758KvnnBNdML3obTDZmTmIf
-	JGM5A7wKL/+J5v8HZZocgZQxYffYg+rBnkknvBFz32cuUMgM2Fp1EjzOBv3rq+ynIVRVNU
-	d0oa3V+jR3j6Cio6mjfPemMsW3wCZCE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-621-kaG1zBrrPPyNnxQLkRzQ4Q-1; Thu, 16 Feb 2023 07:36:14 -0500
-X-MC-Unique: kaG1zBrrPPyNnxQLkRzQ4Q-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DC483C16E98;
-	Thu, 16 Feb 2023 12:36:13 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-99.pek2.redhat.com [10.72.12.99])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 49478492C3C;
-	Thu, 16 Feb 2023 12:36:06 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 14/16] powerpc: mm: Convert to GENERIC_IOREMAP
-Date: Thu, 16 Feb 2023 20:34:17 +0800
-Message-Id: <20230216123419.461016-15-bhe@redhat.com>
-In-Reply-To: <20230216123419.461016-1-bhe@redhat.com>
-References: <20230216123419.461016-1-bhe@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Re6dExHLTuII9oT9hr8NYXFH5m9BbCVYzgBc6Vl4QRA=;
+	b=W5Ea2Homj/n68S95eCTkqLI8o9MB23A9hRPSJnOTfis4TCTt7l0AoPk85sCxtY3P05hTnc
+	9Gm647vimy6O1M+TWJEmBYCy7Cd8nwy+Wcd6tfKdC2kIkZd4X7nXrXH6Eg8OXTho7q0n5+
+	VLDzxJROsz7GU+VKcrH7wlyGJKGdD6PPufThxKxiXlcTCMYtYoIe45cV1Lc1/Va2PuQL59
+	i2TSIwhZcj5m3kGocyOFqzhx1Ck6XXdfkgfJiq7MGtdFAuxNWRA41X6rBb1foKMj0Kx3LD
+	XpL8/WSRVa8kK8Hi1dryMEPWS6+YNvO/072q5WyrVMZr72Unsen4CmOWwUp3gA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: [PATCH v5 00/10] Add the PowerQUICC audio support using the QMC
+Date: Thu, 16 Feb 2023 14:42:16 +0100
+Message-Id: <20230216134226.1692107-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,203 +69,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, Baoquan He <bhe@redhat.com>, arnd@arndb.de, schnelle@linux.ibm.com, hch@infradead.org, linux-mm@kvack.org, David.Laight@ACULAB.COM, Nicholas Piggin <npiggin@gmail.com>, shorne@gmail.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, agordeev@linux.ibm.com
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Hi,
 
-By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-and iounmap() are all visible and available to arch. Arch needs to
-provide wrapper functions to override the generic versions if there's
-arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-This change will simplify implementation by removing duplicated codes
-with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-functioality as before.
+This series adds support for audio using the QMC controller available in
+some Freescale PowerQUICC SoCs.
 
-Here, add wrapper functions ioremap_prot() and iounmap() for powerpc's
-special operation when ioremap() and iounmap().
+This series contains three parts in order to show the different blocks
+hierarchy and their usage in this support.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/Kconfig          |  1 +
- arch/powerpc/include/asm/io.h |  8 +++-----
- arch/powerpc/mm/ioremap.c     | 26 +-------------------------
- arch/powerpc/mm/ioremap_32.c  | 19 +++++++++----------
- arch/powerpc/mm/ioremap_64.c  | 12 ++----------
- 5 files changed, 16 insertions(+), 50 deletions(-)
+The first one is related to TSA (Time Slot Assigner).
+The TSA handles the data present at the pin level (TDM with up to 64
+time slots) and dispatchs them to one or more serial controller (SCC).
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 7a5f8dbfbdd0..02ae9e6afed6 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -181,6 +181,7 @@ config PPC
- 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
- 	select GENERIC_EARLY_IOREMAP
- 	select GENERIC_GETTIMEOFDAY
-+	select GENERIC_IOREMAP
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_PCI_IOMAP		if PCI
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index fc112a91d0c2..127d8300b40b 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -859,8 +859,8 @@ static inline void iosync(void)
-  *
-  */
- extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
--extern void __iomem *ioremap_prot(phys_addr_t address, unsigned long size,
--				  unsigned long flags);
-+#define ioremap ioremap
-+#define ioremap_prot ioremap_prot
- extern void __iomem *ioremap_wc(phys_addr_t address, unsigned long size);
- #define ioremap_wc ioremap_wc
- 
-@@ -874,14 +874,12 @@ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
- #define ioremap_cache(addr, size) \
- 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
- 
--extern void iounmap(volatile void __iomem *addr);
-+#define iounmap iounmap
- 
- void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size);
- 
- int early_ioremap_range(unsigned long ea, phys_addr_t pa,
- 			unsigned long size, pgprot_t prot);
--void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
--			 pgprot_t prot, void *caller);
- 
- extern void __iomem *__ioremap_caller(phys_addr_t, unsigned long size,
- 				      pgprot_t prot, void *caller);
-diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-index 4f12504fb405..705e8e8ffde4 100644
---- a/arch/powerpc/mm/ioremap.c
-+++ b/arch/powerpc/mm/ioremap.c
-@@ -41,7 +41,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
- 	return __ioremap_caller(addr, size, prot, caller);
- }
- 
--void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
-+void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
- {
- 	pte_t pte = __pte(flags);
- 	void *caller = __builtin_return_address(0);
-@@ -74,27 +74,3 @@ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
- 
- 	return 0;
- }
--
--void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
--			 pgprot_t prot, void *caller)
--{
--	struct vm_struct *area;
--	int ret;
--	unsigned long va;
--
--	area = __get_vm_area_caller(size, VM_IOREMAP, IOREMAP_START, IOREMAP_END, caller);
--	if (area == NULL)
--		return NULL;
--
--	area->phys_addr = pa;
--	va = (unsigned long)area->addr;
--
--	ret = ioremap_page_range(va, va + size, pa, prot);
--	if (!ret)
--		return (void __iomem *)area->addr + offset;
--
--	vunmap_range(va, va + size);
--	free_vm_area(area);
--
--	return NULL;
--}
-diff --git a/arch/powerpc/mm/ioremap_32.c b/arch/powerpc/mm/ioremap_32.c
-index 9d13143b8be4..ca5bc6be3e6f 100644
---- a/arch/powerpc/mm/ioremap_32.c
-+++ b/arch/powerpc/mm/ioremap_32.c
-@@ -21,6 +21,13 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 	phys_addr_t p, offset;
- 	int err;
- 
-+	/*
-+	 * If the address lies within the first 16 MB, assume it's in ISA
-+	 * memory space
-+	 */
-+	if (addr < SZ_16M)
-+		addr += _ISA_MEM_BASE;
-+
- 	/*
- 	 * Choose an address to map it to.
- 	 * Once the vmalloc system is running, we use it.
-@@ -31,13 +38,6 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 	offset = addr & ~PAGE_MASK;
- 	size = PAGE_ALIGN(addr + size) - p;
- 
--	/*
--	 * If the address lies within the first 16 MB, assume it's in ISA
--	 * memory space
--	 */
--	if (p < 16 * 1024 * 1024)
--		p += _ISA_MEM_BASE;
--
- #ifndef CONFIG_CRASH_DUMP
- 	/*
- 	 * Don't allow anybody to remap normal RAM that we're using.
-@@ -63,7 +63,7 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 		return (void __iomem *)v + offset;
- 
- 	if (slab_is_available())
--		return do_ioremap(p, offset, size, prot, caller);
-+		return generic_ioremap_prot(addr, size, prot);
- 
- 	/*
- 	 * Should check if it is a candidate for a BAT mapping
-@@ -87,7 +87,6 @@ void iounmap(volatile void __iomem *addr)
- 	if (v_block_mapped((unsigned long)addr))
- 		return;
- 
--	if (addr > high_memory && (unsigned long)addr < ioremap_bot)
--		vunmap((void *)(PAGE_MASK & (unsigned long)addr));
-+	generic_iounmap(addr);
- }
- EXPORT_SYMBOL(iounmap);
-diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
-index 3acece00b33e..d24e5f166723 100644
---- a/arch/powerpc/mm/ioremap_64.c
-+++ b/arch/powerpc/mm/ioremap_64.c
-@@ -29,7 +29,7 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
- 		return NULL;
- 
- 	if (slab_is_available())
--		return do_ioremap(paligned, offset, size, prot, caller);
-+		return generic_ioremap_prot(addr, size, prot);
- 
- 	pr_warn("ioremap() called early from %pS. Use early_ioremap() instead\n", caller);
- 
-@@ -49,17 +49,9 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
-  */
- void iounmap(volatile void __iomem *token)
- {
--	void *addr;
--
- 	if (!slab_is_available())
- 		return;
- 
--	addr = (void *)((unsigned long __force)PCI_FIX_ADDR(token) & PAGE_MASK);
--
--	if ((unsigned long)addr < ioremap_bot) {
--		pr_warn("Attempt to iounmap early bolted mapping at 0x%p\n", addr);
--		return;
--	}
--	vunmap(addr);
-+	generic_iounmap(PCI_FIX_ADDR(token));
- }
- EXPORT_SYMBOL(iounmap);
+The second is related to QMC (QUICC Multichannel Controller).
+The QMC handles the data at the serial controller (SCC) level and splits
+again the data to creates some virtual channels.
+
+The last one is related to the audio component (QMC audio).
+It is the glue between the QMC controller and the ASoC component. It
+handles one or more QMC virtual channels and creates one DAI per QMC
+virtual channels handled.
+
+Compared to the previous iteration
+  https://lore.kernel.org/linux-kernel/20230126083222.374243-1-herve.codina@bootlin.com/
+this v5 series mainly:
+  - fixes bindings,
+  - removes one left out_8() specific ppc call (missed in v3),
+  - changes 'depends-on' in case of COMPILE_TEST.
+
+Best regards,
+Herve Codina
+
+Changes v4 -> v5
+  - patch 1
+    Rename fsl,tsa.yaml to fsl,cpm1-tsa.yaml
+    Rename #serial-cells to #fsl,serial-cells and add a description
+    Fix typos
+    Remove examples present in description
+    Use a pattern property for fsl,[rt]x-ts-routes
+
+  - patch 2
+    Remove one left out_8() ppc specific function call
+    Remove the no more needed PPC dependency in case of COMPILE_TEST
+
+  - patch 4
+    Add 'Acked-by: Michael Ellerman <mpe@ellerman.id.au>'
+
+  - patch 5
+    Rename fsl,qmc.yaml to fsl,cpm1-scc-qmc.yaml
+    Rename #chan-cells to #fsl,chan-cells and add a description
+
+  - patch 6
+    Add the SOC_FSL dependency in case of COMPILE_TEST (issue raised by
+    the kernel test robot).
+    Fix a typo in commit log
+    Add 'Acked-by: Li Yang <leoyang.li@nxp.com>'
+
+Changes v3 -> v4
+  - patches 2, 6 and 9
+    Update code comment format.
+
+  - patch 1
+    Fix some description formats.
+    Add 'additionalProperties: false' in subnode.
+    Move fsl,mode to fsl,diagnostic-mode.
+    Change clocks and clock-names properties.
+    Add '#serial-cells' property related to the newly introduced
+    fsl,tsa-serial phandle.
+
+  - patch 2
+    Move fsl,mode to fsl,diagnostic-mode.
+    Replace the	fsl,tsa phandle and the	fsl,tsa-cell-id	property by a
+    fsl,tsa-serial phandle and update the related API.
+    Add missing locks.
+
+  - patch 5
+    Fix some description format.
+    Replace the fsl,tsa phandle and the fsl,tsa-cell-id property by a
+    fsl,tsa-serial phandle.
+    Rename fsl,mode to fsl,operational-mode and update its description.
+
+  - patch 6
+    Replace the	fsl,tsa phandle and the	fsl,tsa-cell-id	property by a
+    fsl,tsa-serial phandle and use the TSA updated API.
+    Rename fsl,mode to fsl,operational-mode.
+
+  - patch 8
+    Add 'Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>'
+
+Changes v2 -> v3
+  - All bindings
+    Rename fsl-tsa.h to fsl,tsa.h
+    Add missing vendor prefix
+    Various fixes (quotes, node names, upper/lower case)
+
+  - patches 1 and 2 (TSA binding specific)
+    Remove 'reserved' values in the routing tables
+    Remove fsl,grant-mode
+    Add a better description for 'fsl,common-rxtx-pins'
+    Fix clocks/clocks-name handling against fsl,common-rxtx-pins
+    Add information related to the delays unit
+    Removed FSL_CPM_TSA_NBCELL
+    Fix license in binding header file fsl,tsa.h
+
+  - patches 5 and 6 (QMC binding specific)
+    Remove fsl,cpm-command property
+    Add interrupt property constraint
+
+  - patches 8 and 9 (QMC audio binding specific)
+    Remove 'items' in compatible property definition
+    Add missing 'dai-common.yaml' reference
+    Fix the qmc_chan phandle definition
+
+  - patch 2 and 6
+    Use io{read,write}be{32,16}
+    Change commit subjects and logs
+
+  - patch 4
+    Add 'Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+Changes v1 -> v2:
+  - patch 2 and 6
+    Fix kernel test robot errors
+
+  - other patches
+    No changes
+
+Herve Codina (10):
+  dt-bindings: soc: fsl: cpm_qe: Add TSA controller
+  soc: fsl: cpm1: Add support for TSA
+  MAINTAINERS: add the Freescale TSA controller entry
+  powerpc/8xx: Use a larger CPM1 command check mask
+  dt-bindings: soc: fsl: cpm_qe: Add QMC controller
+  soc: fsl: cpm1: Add support for QMC
+  MAINTAINERS: add the Freescale QMC controller entry
+  dt-bindings: sound: Add support for QMC audio
+  ASoC: fsl: Add support for QMC audio
+  MAINTAINERS: add the Freescale QMC audio entry
+
+ .../soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml      |  172 ++
+ .../bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml |  234 +++
+ .../bindings/sound/fsl,qmc-audio.yaml         |  117 ++
+ MAINTAINERS                                   |   25 +
+ arch/powerpc/platforms/8xx/cpm1.c             |    2 +-
+ drivers/soc/fsl/qe/Kconfig                    |   23 +
+ drivers/soc/fsl/qe/Makefile                   |    2 +
+ drivers/soc/fsl/qe/qmc.c                      | 1533 +++++++++++++++++
+ drivers/soc/fsl/qe/tsa.c                      |  869 ++++++++++
+ drivers/soc/fsl/qe/tsa.h                      |   42 +
+ include/dt-bindings/soc/fsl,tsa.h             |   13 +
+ include/soc/fsl/qe/qmc.h                      |   71 +
+ sound/soc/fsl/Kconfig                         |    9 +
+ sound/soc/fsl/Makefile                        |    2 +
+ sound/soc/fsl/fsl_qmc_audio.c                 |  735 ++++++++
+ 15 files changed, 3848 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+ create mode 100644 drivers/soc/fsl/qe/qmc.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.h
+ create mode 100644 include/dt-bindings/soc/fsl,tsa.h
+ create mode 100644 include/soc/fsl/qe/qmc.h
+ create mode 100644 sound/soc/fsl/fsl_qmc_audio.c
+
 -- 
-2.34.1
+2.39.1
 
