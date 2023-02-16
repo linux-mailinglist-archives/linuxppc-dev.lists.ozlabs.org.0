@@ -2,64 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24273698C3C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BED698C3D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:44:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP4h6kkzz3gBy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:43:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP5j4JScz3gDX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:44:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GJ5BxW0Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=aDErRd7k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3w7ztywykdboikh4d16ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3xbztywykdbwkmj6f38gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GJ5BxW0Q;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=aDErRd7k;
 	dkim-atps=neutral
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXP4dsTz3f36
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:19:01 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-507aac99fdfso8560607b3.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:19:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXQ27DPz3f74
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:19:02 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-52f2ab6a942so8480767b3.14
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:19:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+2R9wHJik/ujG7pbEIR7UB7BFuMmi7T4GQjwfs+Slo=;
-        b=GJ5BxW0Q1u88snEvipBftLmc3+Jf1QItAPirJyrJgB8Mp9ylRIIALZlXmJQ4wNiSwP
-         o865zgbeTpwGE0/miDmLSBWepWhJN06egqwo+YGBO2p834t1tPcrBoNtCdfrXD1jQzaN
-         e7lrVFe77phFTZAotKwLYsW/LOb59LyIPFjYvDx4mPrMSRvD2iWSSQr/TeKwF3SManJP
-         7zOmcrgCnGJ5t0wPXfGvFFU5Wepw7LHd2B3wtwv+KMRgdeCQNTeRgpwm3UNl2CvWi/nE
-         3FOidEUJKnpNbe60Or5Um47yum4t5Cm2ARYxCb7pet6vv6oqpLv+fwdHpYVdfug+gwv9
-         oixA==
+        bh=+haucx/0aUjNKP4B5JYWnKqFhX48IZcct98M2E1/jbw=;
+        b=aDErRd7kkY+Kp4AaU6gjM3F503YHpBTPjjocmaNoc4zXVCAuMI2RAQKjzcRAbLtJge
+         uySjaOCoHcGS53W7o3RYdOQoeaAfeHvH08PuG1fh1bxXWOGZDVGDBlzIfGuJz8kR8m0P
+         4LCu9IW21ZFA5+XCq7hXP9c4LIZtK/mDOJpY3r8EhzjVEo7Ti1XlFspuAz3gf99Vo08U
+         GQhyt4xy4/c9ROtLln2G8n+ixCeeiCqz1U0tO8VqF1k+R16fVXyhOw17lx8zHct64i1Z
+         f89mO/K5qgtX3vlh4Aty7U18axNicxnQBp8nhqlTIla4iaOnphrb06qKzWIf+oeLlfcz
+         N8gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+2R9wHJik/ujG7pbEIR7UB7BFuMmi7T4GQjwfs+Slo=;
-        b=Tf/Nkp+yj43336hV6DLyvj8Tk+5iK4jofSan5JXi7cqLeChShLy1jZTngW/ObdXOoo
-         jO8+7JI5NQYxK0n1giUSlNJu/UP47xmt8jknSW71YO4kGYHhj7MECu7TmbnFjJ3OCVhO
-         RhJcBTniWK9LeOAP4ZZJ7+/ZyAPuoWXi8IV4pewwl/0EKyAD7u6Nkv38Utty/BvR7R5l
-         nsamB8fw+UlRBnFkCpXpEZOv9M9775tiMDS1PzGtkJm7YQRddG7z2duesEyAfFPrBToU
-         KJ9PrwhzObznUrdTebeTkGZ0EQOQUPleD+KVjyX9yDQ9tWLi15HpRaaNbzQRUxsH9Cab
-         Z65w==
-X-Gm-Message-State: AO0yUKWwlkRK+MXhEkRzG0R2rdeaeNFhXKsKwuBhzSt41rB/SpRvUE9w
-	UvMyDoGSgQC/IOjFkh3fA3tLhiS2hKQ=
-X-Google-Smtp-Source: AK7set/8zrN2bEgVNx1m2BtSP2crHaoN6LxODGu2trr1UY0Ec3uUEJoRM+mde4AC+sE3ZWg+Wi9w81iJ8kk=
+        bh=+haucx/0aUjNKP4B5JYWnKqFhX48IZcct98M2E1/jbw=;
+        b=dJctqBgUqjfFUkE53YBOdFKnbWKJAAK4WyiO16cpNjv7N1d+JGTylW7XU7lADqnfTn
+         owJLDMvNBap+gPTx9/QVSLQvB7YXyNJ795Jpu3735oEpRguRoNOTUPUzwZ8q/4U3kw49
+         29GmgAabFdKnE3m9DEMJptNhmllmEpdR86BwUvChtIxJiLfabAtp72tRfCFa5qGc8TAA
+         6+kQxB3wL9TkU0HVdI8CXxhnRe+ikr3isbC41aKIZ6UwI6Xe+swhN4xQ97O5zyr89P4+
+         8LiOLoWLHZ+/AqB/4rzBZ4xfIVJkKcsYSBZghxU/SG5CDbIrJXhcME0UWrehOA7SOGWR
+         4rXw==
+X-Gm-Message-State: AO0yUKXeKIfCXl78wDkrGIFfCYG+kLMcjdA3hiZtjBFI8093Voq3v9nU
+	BZTDk80bDn2Q7VnjYoz96wwCTLtqY7c=
+X-Google-Smtp-Source: AK7set9hR8JRk82RlKZHeYCMxCYi1ok7+igo70HcdJvHzw/Nn50rv4GE5Ev7Sgo0D41w7o23DTD5b6roJhQ=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a5b:144:0:b0:8ec:cc9b:7333 with SMTP id
- c4-20020a5b0144000000b008eccc9b7333mr463396ybp.205.1676524739514; Wed, 15 Feb
- 2023 21:18:59 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:42 -0800
+ (user=surenb job=sendgmr) by 2002:a5b:c41:0:b0:91d:ddda:665f with SMTP id
+ d1-20020a5b0c41000000b0091dddda665fmr396601ybr.589.1676524741694; Wed, 15 Feb
+ 2023 21:19:01 -0800 (PST)
+Date: Wed, 15 Feb 2023 21:17:43 -0800
 In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230216051750.3125598-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-28-surenb@google.com>
-Subject: [PATCH v3 27/35] mm: add FAULT_FLAG_VMA_LOCK flag
+Message-ID: <20230216051750.3125598-29-surenb@google.com>
+Subject: [PATCH v3 28/35] mm: prevent do_swap_page from handling page faults
+ under VMA lock
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,42 +80,32 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new flag to distinguish page faults handled under protection of
-per-vma lock.
+Due to the possibility of do_swap_page dropping mmap_lock, abort fault
+handling under VMA lock and retry holding mmap_lock. This can be handled
+more gracefully in the future.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
 ---
- include/linux/mm.h       | 3 ++-
- include/linux/mm_types.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ mm/memory.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 36172bb38e6b..3c9167529417 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -478,7 +478,8 @@ static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
- 	{ FAULT_FLAG_USER,		"USER" }, \
- 	{ FAULT_FLAG_REMOTE,		"REMOTE" }, \
- 	{ FAULT_FLAG_INSTRUCTION,	"INSTRUCTION" }, \
--	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }
-+	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }, \
-+	{ FAULT_FLAG_VMA_LOCK,		"VMA_LOCK" }
+diff --git a/mm/memory.c b/mm/memory.c
+index 13369ff15ec1..555612d153ad 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3688,6 +3688,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (!pte_unmap_same(vmf))
+ 		goto out;
  
- /*
-  * vm_fault is filled by the pagefault handler and passed to the vma's
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 939f4f5a1115..212e7f923a69 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1056,6 +1056,7 @@ enum fault_flag {
- 	FAULT_FLAG_INTERRUPTIBLE =	1 << 9,
- 	FAULT_FLAG_UNSHARE =		1 << 10,
- 	FAULT_FLAG_ORIG_PTE_VALID =	1 << 11,
-+	FAULT_FLAG_VMA_LOCK =		1 << 12,
- };
- 
- typedef unsigned int __bitwise zap_flags_t;
++	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
++		ret = VM_FAULT_RETRY;
++		goto out;
++	}
++
+ 	entry = pte_to_swp_entry(vmf->orig_pte);
+ 	if (unlikely(non_swap_entry(entry))) {
+ 		if (is_migration_entry(entry)) {
 -- 
 2.39.1
 
