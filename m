@@ -1,68 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1624698C69
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:50:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3625698C74
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:57:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHPF147kMz3gPP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:50:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHPP34MHPz3fVM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:57:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kcrkMPk5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDHcSBuT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=317ztywykdc4ceboxlqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kcrkMPk5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDHcSBuT;
 	dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXn2ck9z3f8k
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:19:21 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id p7-20020a257407000000b0091b90b20cd9so871330ybc.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:19:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bIj4YrLTVPG3QwseSVPiqG0bxdZfORy7sIu/6u8O1k=;
-        b=kcrkMPk51QPn4U+Qy9PCMBVvz0+hngRjWyUVg3mDY5eCPo5kdNdGQXXAF5nSKjvtxI
-         ovQfwzu/2jGBzDo4t58Z0TFwD6xaqMMee+NhMptwfny7jSZBnt/+oKNA3aeQgGljd8sS
-         akXety944Mg3EUnDXa5SJO4Zw7aGeTPZtwigMyHbadec4ytdul9kOPOFJ5Xa+9QmQgoM
-         XeWGGTE6ollJyfe3sBlUvV2EFNH4AWaioDHTISUd5H/KMkPUAsjYGzb18bayjRFOkrs2
-         88EaIEp+Df0ZGeekcwiDAUNprBAPetgMpUou+tgl+Oy9Z03QrXgN/piqimqVkufqqcTw
-         xlTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bIj4YrLTVPG3QwseSVPiqG0bxdZfORy7sIu/6u8O1k=;
-        b=XyFkFTrF38/3cFMQKHgWaY+RTto7iTbJmdx1Pt78ebGyorQrxgGaWmygESK6Cvc8Oq
-         MFL5Fhvn+U2qm49BqKzNSoZKmOTFrHgklhTIKxvqRUxNXWaV+a+iFGPlycMwxM59uUnw
-         xVWhnb5e3/GVK53sY5ZRH4lAj8cPzQTl4OLLf2KV9qRh3/cFREzyloFgpvX2ae+5XOpL
-         Q4EnKSVhVmstH1o4CgDGHbp3glGkgsTnYuBtPtZB1ajABkt4OS2l0E4QNW90hzf8HX0u
-         qaRLSRJo6YPyPVfb03pLFAuTc3HsA56doKM+AgXTqELWzxOPvFLnVihJzqGPU/aBmJJF
-         Sq8g==
-X-Gm-Message-State: AO0yUKWw0ukRlcQNP9t+MBKOspjkG20z0DnAuieflGfRXgHloMdV66XC
-	K/KcM8/AQceDgiPiG92sM+RXscxMgpE=
-X-Google-Smtp-Source: AK7set8myT7mAaWBlS7bx8SxyKn+Tp8Tz7m7loe5CFurrliPBtK4ZSRcKwf3y/QxM2DkFEVl7Wxm2+r0UC8=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a0d:ea05:0:b0:52e:fbcd:e1b4 with SMTP id
- t5-20020a0dea05000000b0052efbcde1b4mr590898ywe.0.1676524759267; Wed, 15 Feb
- 2023 21:19:19 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:50 -0800
-In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20230216051750.3125598-1-surenb@google.com>
-X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-36-surenb@google.com>
-Subject: [PATCH v3 35/35] mm: separate vma->lock from vm_area_struct
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHPN331qJz2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:56:50 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G5LvZd011862;
+	Thu, 16 Feb 2023 05:56:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=xR27uGAGk2zgX41yCW/6RpnVB/1Z7I/J+WBAkbNFyGg=;
+ b=dDHcSBuT1nC4lTTXkJmY6+HCdcPFVrFqyEcpAwcNt7kLm+b866OJjyR00pfBKvS0U3EW
+ O+FaUYrc2LFAlaE904m0+Pw2ZIDklczYB2XOjmi6Tm9FzGIrsDoHwdUs+NdUxVZubS/+
+ jzawkSUDcbW1xr9NcCuqcLWNGTPD6CX1jXGe0URyMoJmiAGsvvR7KVIkZXtPZ6nQe70r
+ Jey7Cn7Th5TNeetFHF0LC8rAcFe0r6S9+ZqzTygMGhxAciKRXdnOiLyevUralNht52FJ
+ IHoTPuQDgh1WbUlClWhdxgvBQ0iF+bjNEICYsvSNntCqAUxHz8OkauBOFBxkWQ0pUz7f Pw== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nse98gkrw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Feb 2023 05:56:48 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31FMktE4028428;
+	Thu, 16 Feb 2023 05:56:45 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3np2n6mk3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Feb 2023 05:56:45 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31G5uhdj22151478
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Feb 2023 05:56:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B8E320043;
+	Thu, 16 Feb 2023 05:56:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD3F920040;
+	Thu, 16 Feb 2023 05:56:42 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Feb 2023 05:56:42 +0000 (GMT)
+Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C9945600D2;
+	Thu, 16 Feb 2023 16:56:40 +1100 (AEDT)
+Message-ID: <4d498c7d1808e5e9090c43822e7c79447e11bbce.camel@linux.ibm.com>
+Subject: Re: 6.2-rc7 fails building on Talos II: memory.c:(.text+0x2e14):
+ undefined reference to `hash__tlb_flush'
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: "Erhard F." <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 16 Feb 2023 16:56:40 +1100
+In-Reply-To: <20230216005535.6bff7aa6@yea>
+References: <20230216005535.6bff7aa6@yea>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Dw3gJBOVn4evYq8pSI0UUmnsqfPIOSBW
+X-Proofpoint-GUID: Dw3gJBOVn4evYq8pSI0UUmnsqfPIOSBW
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-16_04,2023-02-15_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ clxscore=1011 mlxlogscore=827 malwarescore=0 phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302160046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,255 +97,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, Suren Baghdasaryan <surenb@google.com>, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org,
-  hannes@cmpxchg.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vma->lock being part of the vm_area_struct causes performance regression
-during page faults because during contention its count and owner fields
-are constantly updated and having other parts of vm_area_struct used
-during page fault handling next to them causes constant cache line
-bouncing. Fix that by moving the lock outside of the vm_area_struct.
-All attempts to keep vma->lock inside vm_area_struct in a separate
-cache line still produce performance regression especially on NUMA
-machines. Smallest regression was achieved when lock is placed in the
-fourth cache line but that bloats vm_area_struct to 256 bytes.
-Considering performance and memory impact, separate lock looks like
-the best option. It increases memory footprint of each VMA but that
-can be optimized later if the new size causes issues.
-Note that after this change vma_init() does not allocate or
-initialize vma->lock anymore. A number of drivers allocate a pseudo
-VMA on the stack but they never use the VMA's lock, therefore it does
-not need to be allocated. The future drivers which might need the VMA
-lock should use vm_area_alloc()/vm_area_free() to allocate the VMA.
+On Thu, 2023-02-16 at 00:55 +0100, Erhard F. wrote:
+> Just noticed a build failure on 6.2-rc7 for my Talos 2 (.config
+> attached):
+>=20
+> =C2=A0# make
+> =C2=A0 CALL=C2=A0=C2=A0=C2=A0 scripts/checksyscalls.sh
+> =C2=A0 UPD=C2=A0=C2=A0=C2=A0=C2=A0 include/generated/utsversion.h
+> =C2=A0 CC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 init/version-timestamp.o
+> =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1
+> ld: ld: DWARF error: could not find abbrev number 6
+> mm/memory.o: in function `unmap_page_range':
+> memory.c:(.text+0x2e14): undefined reference to `hash__tlb_flush'
+> ld: memory.c:(.text+0x2f8c): undefined reference to `hash__tlb_flush'
+> ld: ld: DWARF error: could not find abbrev number 3117
+> mm/mmu_gather.o: in function `tlb_remove_table':
+> mmu_gather.c:(.text+0x584): undefined reference to `hash__tlb_flush'
+> ld: mmu_gather.c:(.text+0x6c4): undefined reference to
+> `hash__tlb_flush'
+> ld: mm/mmu_gather.o: in function `tlb_flush_mmu':
+> mmu_gather.c:(.text+0x80c): undefined reference to `hash__tlb_flush'
+> ld: mm/mmu_gather.o:mmu_gather.c:(.text+0xbe0): more undefined
+> references to `hash__tlb_flush' follow
+> make[1]: *** [scripts/Makefile.vmlinux:35: vmlinux] Fehler 1
+> make: *** [Makefile:1264: vmlinux] Error 2
+>=20
+> As 6.2-rc6 was good on this machine I did a quick bisect which
+> revealed this commit:
+>=20
+> =C2=A0# git bisect bad
+> 1665c027afb225882a5a0b014c45e84290b826c2 is the first bad commit
+> commit 1665c027afb225882a5a0b014c45e84290b826c2
+> Author: Michael Ellerman <mpe@ellerman.id.au>
+> Date:=C2=A0=C2=A0 Tue Jan 31 22:14:07 2023 +1100
+>=20
+> =C2=A0=C2=A0=C2=A0 powerpc/64s: Reconnect tlb_flush() to hash__tlb_flush()
+> =C2=A0=C2=A0=C2=A0=20
+> =C2=A0=C2=A0=C2=A0 Commit baf1ed24b27d ("powerpc/mm: Remove empty hash__ =
+functions")
+> =C2=A0=C2=A0=C2=A0 removed some empty hash MMU flushing routines, but got=
+ a bit
+> overeager
+> =C2=A0=C2=A0=C2=A0 and also removed the call to hash__tlb_flush() from tl=
+b_flush().
+> =C2=A0=C2=A0=C2=A0=20
+> =C2=A0=C2=A0=C2=A0 In regular use this doesn't lead to any noticable brea=
+kage, which
+> is a
+> =C2=A0=C2=A0=C2=A0 little concerning. Presumably there are flushes happen=
+ing via
+> other
+> =C2=A0=C2=A0=C2=A0 paths such as arch_leave_lazy_mmu_mode(), and/or a bit=
+ of luck.
+> =C2=A0=C2=A0=C2=A0=20
+> =C2=A0=C2=A0=C2=A0 Fix it by reinstating the call to hash__tlb_flush().
+> =C2=A0=C2=A0=C2=A0=20
+> =C2=A0=C2=A0=C2=A0 Fixes: baf1ed24b27d ("powerpc/mm: Remove empty hash__ =
+functions")
+> =C2=A0=C2=A0=C2=A0 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> =C2=A0=C2=A0=C2=A0 Link:
+> https://lore.kernel.org/r/20230131111407.806770-1-mpe@ellerman.id.au
+>=20
+> =C2=A0arch/powerpc/include/asm/book3s/64/tlbflush.h | 2 ++
+> =C2=A01 file changed, 2 insertions(+)
+>=20
+>=20
+> Regards,
+> Erhard
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- include/linux/mm.h       | 23 ++++++-------
- include/linux/mm_types.h |  6 +++-
- kernel/fork.c            | 73 ++++++++++++++++++++++++++++++++--------
- 3 files changed, 74 insertions(+), 28 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index cedef02dfd2b..96b18ef3bfa3 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -627,12 +627,6 @@ struct vm_operations_struct {
- };
- 
- #ifdef CONFIG_PER_VMA_LOCK
--static inline void vma_init_lock(struct vm_area_struct *vma)
--{
--	init_rwsem(&vma->lock);
--	vma->vm_lock_seq = -1;
--}
--
- /*
-  * Try to read-lock a vma. The function is allowed to occasionally yield false
-  * locked result to avoid performance overhead, in which case we fall back to
-@@ -644,17 +638,17 @@ static inline bool vma_start_read(struct vm_area_struct *vma)
- 	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))
- 		return false;
- 
--	if (unlikely(down_read_trylock(&vma->lock) == 0))
-+	if (unlikely(down_read_trylock(&vma->vm_lock->lock) == 0))
- 		return false;
- 
- 	/*
- 	 * Overflow might produce false locked result.
- 	 * False unlocked result is impossible because we modify and check
--	 * vma->vm_lock_seq under vma->lock protection and mm->mm_lock_seq
-+	 * vma->vm_lock_seq under vma->vm_lock protection and mm->mm_lock_seq
- 	 * modification invalidates all existing locks.
- 	 */
- 	if (unlikely(vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq))) {
--		up_read(&vma->lock);
-+		up_read(&vma->vm_lock->lock);
- 		return false;
- 	}
- 	return true;
-@@ -663,7 +657,7 @@ static inline bool vma_start_read(struct vm_area_struct *vma)
- static inline void vma_end_read(struct vm_area_struct *vma)
- {
- 	rcu_read_lock(); /* keeps vma alive till the end of up_read */
--	up_read(&vma->lock);
-+	up_read(&vma->vm_lock->lock);
- 	rcu_read_unlock();
- }
- 
-@@ -681,9 +675,9 @@ static inline void vma_start_write(struct vm_area_struct *vma)
- 	if (vma->vm_lock_seq == mm_lock_seq)
- 		return;
- 
--	down_write(&vma->lock);
-+	down_write(&vma->vm_lock->lock);
- 	vma->vm_lock_seq = mm_lock_seq;
--	up_write(&vma->lock);
-+	up_write(&vma->vm_lock->lock);
- }
- 
- static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-@@ -720,6 +714,10 @@ static inline void vma_mark_detached(struct vm_area_struct *vma,
- 
- #endif /* CONFIG_PER_VMA_LOCK */
- 
-+/*
-+ * WARNING: vma_init does not initialize vma->vm_lock.
-+ * Use vm_area_alloc()/vm_area_free() if vma needs locking.
-+ */
- static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- {
- 	static const struct vm_operations_struct dummy_vm_ops = {};
-@@ -729,7 +727,6 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_ops = &dummy_vm_ops;
- 	INIT_LIST_HEAD(&vma->anon_vma_chain);
- 	vma_mark_detached(vma, false);
--	vma_init_lock(vma);
- }
- 
- /* Use when VMA is not part of the VMA tree and needs no locking */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 212e7f923a69..30d4f867ae56 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -471,6 +471,10 @@ struct anon_vma_name {
- 	char name[];
- };
- 
-+struct vma_lock {
-+	struct rw_semaphore lock;
-+};
-+
- /*
-  * This struct describes a virtual memory area. There is one of these
-  * per VM-area/task. A VM area is any part of the process virtual memory
-@@ -510,7 +514,7 @@ struct vm_area_struct {
- 
- #ifdef CONFIG_PER_VMA_LOCK
- 	int vm_lock_seq;
--	struct rw_semaphore lock;
-+	struct vma_lock *vm_lock;
- 
- 	/* Flag to indicate areas detached from the mm->mm_mt tree */
- 	bool detached;
-diff --git a/kernel/fork.c b/kernel/fork.c
-index d0999de82f94..a152804faa14 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -451,13 +451,49 @@ static struct kmem_cache *vm_area_cachep;
- /* SLAB cache for mm_struct structures (tsk->mm) */
- static struct kmem_cache *mm_cachep;
- 
-+#ifdef CONFIG_PER_VMA_LOCK
-+
-+/* SLAB cache for vm_area_struct.lock */
-+static struct kmem_cache *vma_lock_cachep;
-+
-+static bool vma_lock_alloc(struct vm_area_struct *vma)
-+{
-+	vma->vm_lock = kmem_cache_alloc(vma_lock_cachep, GFP_KERNEL);
-+	if (!vma->vm_lock)
-+		return false;
-+
-+	init_rwsem(&vma->vm_lock->lock);
-+	vma->vm_lock_seq = -1;
-+
-+	return true;
-+}
-+
-+static inline void vma_lock_free(struct vm_area_struct *vma)
-+{
-+	kmem_cache_free(vma_lock_cachep, vma->vm_lock);
-+}
-+
-+#else /* CONFIG_PER_VMA_LOCK */
-+
-+static inline bool vma_lock_alloc(struct vm_area_struct *vma) { return true; }
-+static inline void vma_lock_free(struct vm_area_struct *vma) {}
-+
-+#endif /* CONFIG_PER_VMA_LOCK */
-+
- struct vm_area_struct *vm_area_alloc(struct mm_struct *mm)
- {
- 	struct vm_area_struct *vma;
- 
- 	vma = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
--	if (vma)
--		vma_init(vma, mm);
-+	if (!vma)
-+		return NULL;
-+
-+	vma_init(vma, mm);
-+	if (!vma_lock_alloc(vma)) {
-+		kmem_cache_free(vm_area_cachep, vma);
-+		return NULL;
-+	}
-+
- 	return vma;
- }
- 
-@@ -465,24 +501,30 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- {
- 	struct vm_area_struct *new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
- 
--	if (new) {
--		ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
--		ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
--		/*
--		 * orig->shared.rb may be modified concurrently, but the clone
--		 * will be reinitialized.
--		 */
--		data_race(memcpy(new, orig, sizeof(*new)));
--		INIT_LIST_HEAD(&new->anon_vma_chain);
--		vma_init_lock(new);
--		dup_anon_vma_name(orig, new);
-+	if (!new)
-+		return NULL;
-+
-+	ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
-+	ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
-+	/*
-+	 * orig->shared.rb may be modified concurrently, but the clone
-+	 * will be reinitialized.
-+	 */
-+	data_race(memcpy(new, orig, sizeof(*new)));
-+	if (!vma_lock_alloc(new)) {
-+		kmem_cache_free(vm_area_cachep, new);
-+		return NULL;
- 	}
-+	INIT_LIST_HEAD(&new->anon_vma_chain);
-+	dup_anon_vma_name(orig, new);
-+
- 	return new;
- }
- 
- void __vm_area_free(struct vm_area_struct *vma)
- {
- 	free_anon_vma_name(vma);
-+	vma_lock_free(vma);
- 	kmem_cache_free(vm_area_cachep, vma);
- }
- 
-@@ -493,7 +535,7 @@ static void vm_area_free_rcu_cb(struct rcu_head *head)
- 						  vm_rcu);
- 
- 	/* The vma should not be locked while being destroyed. */
--	VM_BUG_ON_VMA(rwsem_is_locked(&vma->lock), vma);
-+	VM_BUG_ON_VMA(rwsem_is_locked(&vma->vm_lock->lock), vma);
- 	__vm_area_free(vma);
- }
- #endif
-@@ -3089,6 +3131,9 @@ void __init proc_caches_init(void)
- 			NULL);
- 
- 	vm_area_cachep = KMEM_CACHE(vm_area_struct, SLAB_PANIC|SLAB_ACCOUNT);
-+#ifdef CONFIG_PER_VMA_LOCK
-+	vma_lock_cachep = KMEM_CACHE(vma_lock, SLAB_PANIC|SLAB_ACCOUNT);
-+#endif
- 	mmap_init();
- 	nsproxy_cache_init();
- }
--- 
-2.39.1
+Looks like the `return` on the radix version wasn't added back, so it
+falls through to the hash call too.
 
