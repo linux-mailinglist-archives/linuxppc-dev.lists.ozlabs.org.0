@@ -2,40 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815E96989DC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 02:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEAD698A73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 03:21:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHHbP2wMPz3fBV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 12:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHJbD09NZz3f35
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 13:21:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T214lDYw;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=nfschina.com (client-ip=42.101.60.237; helo=mail.nfschina.com; envelope-from=zhounan@nfschina.com; receiver=<UNKNOWN>)
-Received: from mail.nfschina.com (unknown [42.101.60.237])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T214lDYw;
+	dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHHZn3yMpz3cGH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 12:35:44 +1100 (AEDT)
-Received: from localhost (unknown [127.0.0.1])
-	by mail.nfschina.com (Postfix) with ESMTP id 940CE1A00990;
-	Thu, 16 Feb 2023 09:36:15 +0800 (CST)
-X-Virus-Scanned: amavisd-new at nfschina.com
-Received: from mail.nfschina.com ([127.0.0.1])
-	by localhost (localhost.localdomain [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id vQiqXFqyimAa; Thu, 16 Feb 2023 09:36:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [219.141.250.2])
-	(Authenticated sender: zhounan@nfschina.com)
-	by mail.nfschina.com (Postfix) with ESMTPA id 69E6D1A00910;
-	Thu, 16 Feb 2023 09:36:14 +0800 (CST)
-From: Zhou nan <zhounan@nfschina.com>
-To: leoyang.li@nxp.com,
-	gregkh@linuxfoundation.org
-Subject: [PATCH v2] usb: fix some spelling mistakes in comment of gadget
-Date: Wed, 15 Feb 2023 17:35:35 -0800
-Message-Id: <20230216013535.6399-1-zhounan@nfschina.com>
-X-Mailer: git-send-email 2.39.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHJZD0Ncwz3cCn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 13:20:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=kSGA/MlD2Xuj25JeBde+v37M89+xiA/8ymC62wNi/ao=; b=T214lDYwlH/i6uBH6BNzlCk6rx
+	4nxUsEUyOjm+8Jmw+aXlMddrYn/laIc6xaoE+fU4xLZAbrRZBTC3LQERXZaHxqyaq3W1za55ImRLb
+	oRJqgBk2bbAoKusoW8hJcWVjQvwN/GXXKPpP0KEx9Me1zbsMO5aAoQq3UZbhtS09vh3lJ5OBp+3p+
+	ucDo5hPWB04m3UQNM2QNgXI+pMV5gVhPCK4n5Ey/HKW4DMh6xGS2Wb429iqZu0yUjZCOn2o30ASdw
+	RjRw82BdCQgPjZHS1lWtlsnK8erByUyCysDqb5Q5dNk6Fbck51RiTbxF3aanEJLBMetCqMtAWFXLh
+	C3zLEGgA==;
+Received: from [2601:1c2:980:9ec0::df2f]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pSTsb-008HVN-8k; Thu, 16 Feb 2023 02:20:13 +0000
+Message-ID: <1ea2a91a-c724-04b2-6154-d0797273552c@infradead.org>
+Date: Wed, 15 Feb 2023 18:20:12 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v2] usb: fix some spelling mistakes in comment of gadget
+Content-Language: en-US
+To: Zhou nan <zhounan@nfschina.com>, leoyang.li@nxp.com,
+ gregkh@linuxfoundation.org
+References: <20230216013535.6399-1-zhounan@nfschina.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230216013535.6399-1-zhounan@nfschina.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,60 +60,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Zhou nan <zhounan@nfschina.com>
+Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-usb: Fix spelling mistake in comments of gadget.
 
-Signed-off-by: Zhou nan <zhounan@nfschina.com>
----
-v2:
-- Modify the title and description text.
----
- drivers/usb/gadget/udc/fsl_udc_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-index a67873a074b7..da876d09fc01 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -471,7 +471,7 @@ static int dr_ep_get_stall(unsigned char ep_num, unsigned char dir)
- ********************************************************************/
- 
- /*------------------------------------------------------------------
--* struct_ep_qh_setup(): set the Endpoint Capabilites field of QH
-+* struct_ep_qh_setup(): set the Endpoint Capabilities field of QH
-  * @zlt: Zero Length Termination Select (1: disable; 0: enable)
-  * @mult: Mult field
-  ------------------------------------------------------------------*/
-@@ -483,7 +483,7 @@ static void struct_ep_qh_setup(struct fsl_udc *udc, unsigned char ep_num,
- 	struct ep_queue_head *p_QH = &udc->ep_qh[2 * ep_num + dir];
- 	unsigned int tmp = 0;
- 
--	/* set the Endpoint Capabilites in QH */
-+	/* set the Endpoint Capabilities in QH */
- 	switch (ep_type) {
- 	case USB_ENDPOINT_XFER_CONTROL:
- 		/* Interrupt On Setup (IOS). for control ep  */
-@@ -593,7 +593,7 @@ static int fsl_ep_enable(struct usb_ep *_ep,
- 	ep->stopped = 0;
- 
- 	/* Controller related setup */
--	/* Init EPx Queue Head (Ep Capabilites field in QH
-+	/* Init EPx Queue Head (Ep Capabilities field in QH
- 	 * according to max, zlt, mult) */
- 	struct_ep_qh_setup(udc, (unsigned char) ep_index(ep),
- 			(unsigned char) ((desc->bEndpointAddress & USB_DIR_IN)
-@@ -1361,7 +1361,7 @@ static void ch9getstatus(struct fsl_udc *udc, u8 request_type, u16 value,
- 	udc->ep0_dir = USB_DIR_IN;
- 	/* Borrow the per device status_req */
- 	req = udc->status_req;
--	/* Fill in the reqest structure */
-+	/* Fill in the request structure */
- 	*((u16 *) req->req.buf) = cpu_to_le16(tmp);
- 
- 	req->ep = ep;
+On 2/15/23 17:35, Zhou nan wrote:
+> usb: Fix spelling mistake in comments of gadget.
+> 
+> Signed-off-by: Zhou nan <zhounan@nfschina.com>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
+> ---
+> v2:
+> - Modify the title and description text.
+> ---
+>  drivers/usb/gadget/udc/fsl_udc_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+
+
 -- 
-2.27.0
-
+~Randy
