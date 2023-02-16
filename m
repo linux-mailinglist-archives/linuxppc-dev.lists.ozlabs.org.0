@@ -2,90 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3625698C74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC9F698CB3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 07:14:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHPP34MHPz3fVM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:57:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHPlq24x1z3chZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 17:13:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDHcSBuT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F7NDhh/I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDHcSBuT;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F7NDhh/I;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHPN331qJz2xH6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:56:50 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G5LvZd011862;
-	Thu, 16 Feb 2023 05:56:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=xR27uGAGk2zgX41yCW/6RpnVB/1Z7I/J+WBAkbNFyGg=;
- b=dDHcSBuT1nC4lTTXkJmY6+HCdcPFVrFqyEcpAwcNt7kLm+b866OJjyR00pfBKvS0U3EW
- O+FaUYrc2LFAlaE904m0+Pw2ZIDklczYB2XOjmi6Tm9FzGIrsDoHwdUs+NdUxVZubS/+
- jzawkSUDcbW1xr9NcCuqcLWNGTPD6CX1jXGe0URyMoJmiAGsvvR7KVIkZXtPZ6nQe70r
- Jey7Cn7Th5TNeetFHF0LC8rAcFe0r6S9+ZqzTygMGhxAciKRXdnOiLyevUralNht52FJ
- IHoTPuQDgh1WbUlClWhdxgvBQ0iF+bjNEICYsvSNntCqAUxHz8OkauBOFBxkWQ0pUz7f Pw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nse98gkrw-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHPkr1DHRz3bbX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 17:13:07 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G600ts022740;
+	Thu, 16 Feb 2023 06:12:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=JiN/dvf4km/vJNfgTO+6RbKK8MPR21td+sSZc06tm34=;
+ b=F7NDhh/ILYwNfkf5COjy1N7nDYxZeE8IQz4aI5tquBg+SeQ3ySm9KS4aFgZDxiPTcgR9
+ /oYvDYu4xNANvRUUl0IHZal3dQLJk7Eq3+PcL3v6FLQVyogu5L/XYNPes0zZNLpRGKMP
+ QzqACM0KdGe7vdokdEJaZPzQm7JrIoF2cwJflhhaw4pHuwV/xMvHNuXz4wojUMSe8cpb
+ BW8j9VDYzp89oIedr5lb7MEjD6WnT8cKwGZK3HybusL3n0n/tjWvU5FiWS0xdt9b8dzZ
+ fYDo4q0XQB7fg/iZCU9M51qVgTZxZY0TaeETlGJpMPmB9aweWNhVbStPbNsMl9+2j5/7 Vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nseu60auq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Feb 2023 05:56:48 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31FMktE4028428;
-	Thu, 16 Feb 2023 05:56:45 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3np2n6mk3y-1
+	Thu, 16 Feb 2023 06:12:57 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31G60Nge024694;
+	Thu, 16 Feb 2023 06:12:56 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nseu60aty-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Feb 2023 05:56:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31G5uhdj22151478
+	Thu, 16 Feb 2023 06:12:56 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31G62fPA011341;
+	Thu, 16 Feb 2023 06:12:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3np2n6x8ed-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Feb 2023 06:12:53 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31G6CniL47251906
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Feb 2023 05:56:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B8E320043;
-	Thu, 16 Feb 2023 05:56:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD3F920040;
-	Thu, 16 Feb 2023 05:56:42 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Feb 2023 05:56:42 +0000 (GMT)
-Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C9945600D2;
-	Thu, 16 Feb 2023 16:56:40 +1100 (AEDT)
-Message-ID: <4d498c7d1808e5e9090c43822e7c79447e11bbce.camel@linux.ibm.com>
-Subject: Re: 6.2-rc7 fails building on Talos II: memory.c:(.text+0x2e14):
- undefined reference to `hash__tlb_flush'
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: "Erhard F." <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 16 Feb 2023 16:56:40 +1100
-In-Reply-To: <20230216005535.6bff7aa6@yea>
-References: <20230216005535.6bff7aa6@yea>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Dw3gJBOVn4evYq8pSI0UUmnsqfPIOSBW
-X-Proofpoint-GUID: Dw3gJBOVn4evYq8pSI0UUmnsqfPIOSBW
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Thu, 16 Feb 2023 06:12:49 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 705B720043;
+	Thu, 16 Feb 2023 06:12:49 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79F1820040;
+	Thu, 16 Feb 2023 06:12:43 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.95.24])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Feb 2023 06:12:43 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH] powerpc/perf: Add json metric events to present CPI stall cycles in powerpc
+Date: Thu, 16 Feb 2023 11:42:40 +0530
+Message-Id: <20230216061240.18067-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dIkqiMJTan-19OIfAm6qDwRkd-Bsg1H2
+X-Proofpoint-GUID: XQyw1ybHMz6jQoTek9aTcYPDi0N9xLEh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-16_04,2023-02-15_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- clxscore=1011 mlxlogscore=827 malwarescore=0 phishscore=0 spamscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302160046
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302160050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,78 +93,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2023-02-16 at 00:55 +0100, Erhard F. wrote:
-> Just noticed a build failure on 6.2-rc7 for my Talos 2 (.config
-> attached):
->=20
-> =C2=A0# make
-> =C2=A0 CALL=C2=A0=C2=A0=C2=A0 scripts/checksyscalls.sh
-> =C2=A0 UPD=C2=A0=C2=A0=C2=A0=C2=A0 include/generated/utsversion.h
-> =C2=A0 CC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 init/version-timestamp.o
-> =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1
-> ld: ld: DWARF error: could not find abbrev number 6
-> mm/memory.o: in function `unmap_page_range':
-> memory.c:(.text+0x2e14): undefined reference to `hash__tlb_flush'
-> ld: memory.c:(.text+0x2f8c): undefined reference to `hash__tlb_flush'
-> ld: ld: DWARF error: could not find abbrev number 3117
-> mm/mmu_gather.o: in function `tlb_remove_table':
-> mmu_gather.c:(.text+0x584): undefined reference to `hash__tlb_flush'
-> ld: mmu_gather.c:(.text+0x6c4): undefined reference to
-> `hash__tlb_flush'
-> ld: mm/mmu_gather.o: in function `tlb_flush_mmu':
-> mmu_gather.c:(.text+0x80c): undefined reference to `hash__tlb_flush'
-> ld: mm/mmu_gather.o:mmu_gather.c:(.text+0xbe0): more undefined
-> references to `hash__tlb_flush' follow
-> make[1]: *** [scripts/Makefile.vmlinux:35: vmlinux] Fehler 1
-> make: *** [Makefile:1264: vmlinux] Error 2
->=20
-> As 6.2-rc6 was good on this machine I did a quick bisect which
-> revealed this commit:
->=20
-> =C2=A0# git bisect bad
-> 1665c027afb225882a5a0b014c45e84290b826c2 is the first bad commit
-> commit 1665c027afb225882a5a0b014c45e84290b826c2
-> Author: Michael Ellerman <mpe@ellerman.id.au>
-> Date:=C2=A0=C2=A0 Tue Jan 31 22:14:07 2023 +1100
->=20
-> =C2=A0=C2=A0=C2=A0 powerpc/64s: Reconnect tlb_flush() to hash__tlb_flush()
-> =C2=A0=C2=A0=C2=A0=20
-> =C2=A0=C2=A0=C2=A0 Commit baf1ed24b27d ("powerpc/mm: Remove empty hash__ =
-functions")
-> =C2=A0=C2=A0=C2=A0 removed some empty hash MMU flushing routines, but got=
- a bit
-> overeager
-> =C2=A0=C2=A0=C2=A0 and also removed the call to hash__tlb_flush() from tl=
-b_flush().
-> =C2=A0=C2=A0=C2=A0=20
-> =C2=A0=C2=A0=C2=A0 In regular use this doesn't lead to any noticable brea=
-kage, which
-> is a
-> =C2=A0=C2=A0=C2=A0 little concerning. Presumably there are flushes happen=
-ing via
-> other
-> =C2=A0=C2=A0=C2=A0 paths such as arch_leave_lazy_mmu_mode(), and/or a bit=
- of luck.
-> =C2=A0=C2=A0=C2=A0=20
-> =C2=A0=C2=A0=C2=A0 Fix it by reinstating the call to hash__tlb_flush().
-> =C2=A0=C2=A0=C2=A0=20
-> =C2=A0=C2=A0=C2=A0 Fixes: baf1ed24b27d ("powerpc/mm: Remove empty hash__ =
-functions")
-> =C2=A0=C2=A0=C2=A0 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> =C2=A0=C2=A0=C2=A0 Link:
-> https://lore.kernel.org/r/20230131111407.806770-1-mpe@ellerman.id.au
->=20
-> =C2=A0arch/powerpc/include/asm/book3s/64/tlbflush.h | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
->=20
->=20
-> Regards,
-> Erhard
+Power10 Performance Monitoring Unit (PMU) provides events
+to understand stall cycles of different pipeline stages.
+These events along with completed instructions provides
+useful metrics for application tuning.
 
-Looks like the `return` on the radix version wasn't added back, so it
-falls through to the hash call too.
+Patch implements the json changes to collect counter statistics
+to present the high level CPI stall breakdown metrics. New metric
+group is named as "CPI_STALL_RATIO" and this new metric group
+presents these stall metrics:
+- DISPATCHED_CPI ( Dispatch stall cycles per insn )
+- ISSUE_STALL_CPI ( Issue stall cycles per insn )
+- EXECUTION_STALL_CPI ( Execution stall cycles per insn )
+- COMPLETION_STALL_CPI ( Completition stall cycles per insn )
+
+To avoid multipling of events, PM_RUN_INST_CMPL event has been
+modified to use PMC5(performance monitoring counter5) instead
+of PMC4. This change is needed, since completion stall event
+is using PMC4.
+
+Usage example:
+
+ ./perf stat --metric-no-group -M CPI_STALL_RATIO <workload>
+
+ Performance counter stats for 'workload':
+
+    63,056,817,982      PM_CMPL_STALL                    #     0.28 COMPLETION_STALL_CPI
+ 1,743,988,038,896      PM_ISSUE_STALL                   #     7.73 ISSUE_STALL_CPI
+   225,597,495,030      PM_RUN_INST_CMPL                 #     6.18 DISPATCHED_CPI
+                                                  #    37.48 EXECUTION_STALL_CPI
+ 1,393,916,546,654      PM_DISP_STALL_CYC
+ 8,455,376,836,463      PM_EXEC_STALL
+
+"--metric-no-group" is used for forcing PM_RUN_INST_CMPL to be scheduled
+in all group for more accuracy.
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ tools/perf/pmu-events/arch/powerpc/power10/metrics.json | 8 ++++----
+ tools/perf/pmu-events/arch/powerpc/power10/others.json  | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+index b57526fa44f2..6f53583a0c62 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+@@ -15,7 +15,7 @@
+     {
+         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled for any reason",
+         "MetricExpr": "PM_DISP_STALL_CYC / PM_RUN_INST_CMPL",
+-        "MetricGroup": "CPI",
++        "MetricGroup": "CPI;CPI_STALL_RATIO",
+         "MetricName": "DISPATCHED_CPI"
+     },
+     {
+@@ -147,13 +147,13 @@
+     {
+         "BriefDescription": "Average cycles per completed instruction when the NTC instruction has been dispatched but not issued for any reason",
+         "MetricExpr": "PM_ISSUE_STALL / PM_RUN_INST_CMPL",
+-        "MetricGroup": "CPI",
++        "MetricGroup": "CPI;CPI_STALL_RATIO",
+         "MetricName": "ISSUE_STALL_CPI"
+     },
+     {
+         "BriefDescription": "Average cycles per completed instruction when the NTC instruction is waiting to be finished in one of the execution units",
+         "MetricExpr": "PM_EXEC_STALL / PM_RUN_INST_CMPL",
+-        "MetricGroup": "CPI",
++        "MetricGroup": "CPI;CPI_STALL_RATIO",
+         "MetricName": "EXECUTION_STALL_CPI"
+     },
+     {
+@@ -309,7 +309,7 @@
+     {
+         "BriefDescription": "Average cycles per completed instruction when the NTC instruction cannot complete because the thread was blocked",
+         "MetricExpr": "PM_CMPL_STALL / PM_RUN_INST_CMPL",
+-        "MetricGroup": "CPI",
++        "MetricGroup": "CPI;CPI_STALL_RATIO",
+         "MetricName": "COMPLETION_STALL_CPI"
+     },
+     {
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/others.json b/tools/perf/pmu-events/arch/powerpc/power10/others.json
+index 7d0de1a2860b..a771e4b6bec5 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/others.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/others.json
+@@ -265,7 +265,7 @@
+     "BriefDescription": "Load Missed L1, counted at finish time."
+   },
+   {
+-    "EventCode": "0x400FA",
++    "EventCode": "0x500FA",
+     "EventName": "PM_RUN_INST_CMPL",
+     "BriefDescription": "Completed PowerPC instructions gated by the run latch."
+   }
+-- 
+2.31.1
 
