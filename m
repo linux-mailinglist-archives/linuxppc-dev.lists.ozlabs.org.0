@@ -1,51 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F2569992F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:46:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E7A699BE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 19:07:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHfSd29B1z3f45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 02:46:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHjZb3NJWz3f6y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 05:07:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=v4Efi6nP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UyMVtzJS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=v4Efi6nP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UyMVtzJS;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHfRf247dz3bgj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 02:45:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vKirnekWaY/7YPqBImOqS8So3dx7/6DOy0i+rRDyZWU=; b=v4Efi6nPZA8YmfeKqb5WLenlFD
-	0k/p7dZ0EdA4YcHjqljvXqOOGSthJzq++39zRp6/q2Fu4rML04k+dAt34kXAqraSx5+SMXuzcqQsy
-	UqRfvsgKz+ns+xawbSRrvEqH2FL8wQw/a2euo4DuP0kKao3/m6HUeqG2HOLFnEz+essxCs3IK9fMo
-	uXzSIf1j9gWIzAaDkTPeMbpnqt2dAqsOp5NQ2VRixq/5jMSgTzhQAV/Ozc5SeckJizTH65WZjobHc
-	GsL2aTYFqint8RVP1arhPmGAA0U8cD3Uk++dP8hyMS3q3LIFjgWduyiTqRr6+sS5D3YudYdBxBLRG
-	3NhSq/pQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pSgRD-008WXZ-IG; Thu, 16 Feb 2023 15:44:47 +0000
-Date: Thu, 16 Feb 2023 15:44:47 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 26/35] mm: fall back to mmap_lock if vma->anon_vma is
- not yet set
-Message-ID: <Y+5Pb4hGmV1YtNQp@casper.infradead.org>
-References: <20230216051750.3125598-1-surenb@google.com>
- <20230216051750.3125598-27-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHjYd3QrVz3cdg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 05:06:13 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4C7C16206B;
+	Thu, 16 Feb 2023 18:06:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E920C4339B;
+	Thu, 16 Feb 2023 18:06:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676570769;
+	bh=Ljr2eUs6eDwokyGBfab5ui2UKsebb30+uWqGpYOP/Vo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UyMVtzJSxon765RySRZXqQ1iaoudYWiVwA6sg9ERgiN2Q9AlRIir02lfWcixt5jbH
+	 NwwTvkQIi+wJLFP1UILZfWxB/Hq3m1paIA7XkZ1KH/iq15Md8/z5MuAA2ig1ph6Dtp
+	 xRzzLJr0YRf6p2qwNfIyuPla91kZll9hmf+LJMeEKWYkd40i1x717+2qMXoucx5VF7
+	 efhnsB0LCKqRFAI/uR+9Ss1s3l1ce65yTUqT4pnaggk5CK946JEPKvwfX7vePgj7XE
+	 PBMNVdNTRDSov2BSKCyq6xYI7s1QmpPq3P+kA2OFiPBs1swja1XoK0z2VQN3YXuQqZ
+	 DHU0GUC3n1wEw==
+Date: Thu, 16 Feb 2023 10:06:07 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Sathvika Vasireddy <sv@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20230216180607.w666rnbtm5fumziq@treble>
+References: <20230216144031.45b1fc12@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230216051750.3125598-27-surenb@google.com>
+In-Reply-To: <20230216144031.45b1fc12@canb.auug.org.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,22 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@goog
- le.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 15, 2023 at 09:17:41PM -0800, Suren Baghdasaryan wrote:
-> When vma->anon_vma is not set, page fault handler will set it by either
-> reusing anon_vma of an adjacent VMA if VMAs are compatible or by
-> allocating a new one. find_mergeable_anon_vma() walks VMA tree to find
-> a compatible adjacent VMA and that requires not only the faulting VMA
-> to be stable but also the tree structure and other VMAs inside that tree.
-> Therefore locking just the faulting VMA is not enough for this search.
-> Fall back to taking mmap_lock when vma->anon_vma is not set. This
-> situation happens only on the first page fault and should not affect
-> overall performance.
+On Thu, Feb 16, 2023 at 02:40:31PM +1100, Stephen Rothwell wrote:
+> Hi all,
+> 
+> After merging the powerpc tree, today's linux-next build (powerpc
+> pseries_le_defconfig) produced this warning:
+> 
+> arch/powerpc/kernel/head_64.o: warning: objtool: .text+0x6128: unannotated intra-function call
+> 
+> I have no idea what caused this.
 
-I think I asked this before, but don't remember getting an aswer.
-Why do we defer setting anon_vma to the first fault?  Why don't we
-set it up at mmap time?
+Adding Sathvika and Christophe.
+
+The short term fix would be something like the below, but...
+
+If powerpc objtool is only doing mcount, does it even make sense to run
+objtool on asm files?  If so, there are probably a lot more cleanups
+needed for the asm code.
+
+So I'm thinking either we should cleanup all the powerpc asm code with
+annotations like below, or we should try to make objtool mcount-mode
+ignore asm files.
+
+
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 3a7266fa8a18..1febb56ebaeb 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -472,7 +472,7 @@ SYM_FUNC_START_LOCAL(__mmu_off)
+ 	b	.	/* prevent speculative execution */
+ SYM_FUNC_END(__mmu_off)
+ 
+-start_initialization_book3s:
++SYM_FUNC_START_LOCAL(start_initialization_book3s)
+ 	mflr	r25
+ 
+ 	/* Setup some critical 970 SPRs before switching MMU off */
+@@ -494,6 +494,7 @@ start_initialization_book3s:
+ 
+ 	mtlr	r25
+ 	blr
++SYM_FUNC_END(start_initialization_book3s)
+ #endif
+ 
+ /*
