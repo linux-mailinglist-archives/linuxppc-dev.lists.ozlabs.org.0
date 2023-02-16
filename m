@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D584F698C46
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:46:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D463698C4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:47:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP7l4jm8z3g2Q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:46:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP8m73Xrz3fmv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:47:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=a3wN6yhQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VYBN/Sx6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3yrztywykdceprobk8dlldib.9ljifkrumm9-absifpqp.lwi78p.lod@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3zlztywykdcmrtqdmafnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=a3wN6yhQ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=VYBN/Sx6;
 	dkim-atps=neutral
 Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXW1gfRz3f3f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:19:07 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-507aac99fdfso8563067b3.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:19:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXb1YGpz3f43
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:19:11 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-52ec987d600so8363607b3.21
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:19:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nAnyYB3Nw50vBlFaI5emapvq5zyyV08CcfGYNR6eiBY=;
-        b=a3wN6yhQzn6ykzBbjResLcztZyUFHxuHfZtRwk9INETFTCK3R+0qznDveEPm+o/T6G
-         wJ3wEiieeEUcjgJFPl0Q1WJhoSjHld23FZEQoY2Aq8Bhu2X6QB+bcNMvcqIxTt4gpYGo
-         62C0Ezu+RzKHJNHqe8a2WWwzq3BWBtjKwlH9vropbhb+eXqNxVp6cua3PyUJuPb2PSda
-         pEBwm4EDV55dFWt5TRT7+9jNt1+V85COwPZnyzclXtLSHEwvb2nMc9rLXuPiU2TfsCi1
-         1h3mje1L/1Q/DM34hGjfe9SSEWf4rBhdCLw8Ngy6TcviKT73/jmv3Lf0iRWhfdK1hSLg
-         WjQA==
+        bh=IMepWjMdRmbly/mfPnmeELsKhzAKjn/e+MmdnnCshxo=;
+        b=VYBN/Sx6H1zkhlZQfZvD0Liynh1SzBUBQ9VOXzPL7TQljh9ke7q1U13nsJvyL8jhTT
+         VJdOiIwIjVau+ArgVKuyZBGkikb4wPVpg6tKpQ0o6b7A2xVbgU2vETmFbJMmm/kSYK3W
+         jjQeULRVDfrD7eqjNl25w/HYQSurUi+SuUv5YnVVfpqkT7+a9RL2gs3g5vQZ1Iey2WKK
+         za8Zu9gxbyi43cwHcYzE3Uj7rIHDEJE8sD5soBil1CQae5YChuN7lRgwr3AT9vKkAkhX
+         nNMop/PJ3OYQ+4sMUjA9lss931diz+voYeLd0iyVQtxE8G6e+SWaxHgo0zdZNYDoa0CR
+         el+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nAnyYB3Nw50vBlFaI5emapvq5zyyV08CcfGYNR6eiBY=;
-        b=F7OHO+M3C/OnatxbD2A3T8cQgMKkvy2T40nJTZrRSwAehrfjwtdle7AYGOCD8Qsf0q
-         YYFSktErB7VqPyRdcSdlw5tCadzMpAAuRMELRoPnqFvosVVi80zv4isgZEic5b9ywJKQ
-         AiwtKr/mAsETMUVzu42BA3dD0YqCqdsmDMiY7fz6DT6WvEnU6Hfui02IJQZTLea8nvU5
-         Bl7UCRG5B9kAxwpIfGuTVfvFY49ySMzdJgQom05hcNlkSClJwJsWD97R67v5oxJYTagR
-         PkvN4ZygIsoAd10j8CzsAJvOf/d+bH646ezdJm7SPyuoGEDz7BkK8qiz16zwZRL2QGM8
-         RxoA==
-X-Gm-Message-State: AO0yUKUJ5mqlmca+Si/r5U9QKqguncqHRD03NGsyCkrdtIIlu2ptamMy
-	/TZnyKk116eQwb86szKlyf/bLmn5/14=
-X-Google-Smtp-Source: AK7set9XJXC8LdbYcGXxryYVlcRlcBZQcF1FMhZd/N4oCcpN8tIB1OMR+nLJJI9Pn7NEIXJu3Q5fjvT0dR0=
+        bh=IMepWjMdRmbly/mfPnmeELsKhzAKjn/e+MmdnnCshxo=;
+        b=bokUtehQIcszHXuPMKHl63nn9rJZSOz2pc76x2VpfjWIHeuUfkIGyxj0Ucw5yqxeOJ
+         kYwe6jSelQq8R4azeZazmKsoitJN/e1APf7l1j7r/7IkqBdcrcGUCs09tlcdSmg59I2t
+         0K35EuBo8KAJL4oUElEpuUxEnfaCdmDNyS1WwPuRHCMWKlbOS/dz19ZCRyCO2vLwP/7j
+         l9gcsMDwDtkdW9qK8zzFQIGX/sTe3ePuNyBE1cqbc2Xn3KuJuIP58NkC2mg7F5uV5TdG
+         zDJ01eMNj2fGZncPQHs8J0NphNLB4EsCV++NIX2efWxw7MBxaL5xApjXUtjlgSUPUiyZ
+         LZHw==
+X-Gm-Message-State: AO0yUKVUiOvppow8+5zLZI0DavldBFt7T+qHhZnyGuFEao9ytzEj9z4V
+	uYeh5cWQC2votgdbaFH8K9BUjVbo65k=
+X-Google-Smtp-Source: AK7set9HCvy2lOclXRQNI1sLIIJkNYQ8CImwbHHTA3gwi641v9vkQcIdLDEBqeWHm5koRinED1uR5T68Tno=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a05:6902:18cc:b0:8a3:d147:280b with SMTP id
- ck12-20020a05690218cc00b008a3d147280bmr5ybb.3.1676524746144; Wed, 15 Feb 2023
- 21:19:06 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:45 -0800
+ (user=surenb job=sendgmr) by 2002:a81:4516:0:b0:52e:e718:9641 with SMTP id
+ s22-20020a814516000000b0052ee7189641mr16ywa.9.1676524748625; Wed, 15 Feb 2023
+ 21:19:08 -0800 (PST)
+Date: Wed, 15 Feb 2023 21:17:46 -0800
 In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230216051750.3125598-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-31-surenb@google.com>
-Subject: [PATCH v3 30/35] mm: introduce per-VMA lock statistics
+Message-ID: <20230216051750.3125598-32-surenb@google.com>
+Subject: [PATCH v3 31/35] x86/mm: try VMA lock-based page fault handling first
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,103 +79,88 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new CONFIG_PER_VMA_LOCK_STATS config option to dump extra
-statistics about handling page fault under VMA lock.
+Attempt VMA lock-based page fault handling first, and fall back to the
+existing mmap_lock-based handling if that fails.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/vm_event_item.h | 6 ++++++
- include/linux/vmstat.h        | 6 ++++++
- mm/Kconfig.debug              | 6 ++++++
- mm/memory.c                   | 2 ++
- mm/vmstat.c                   | 6 ++++++
- 5 files changed, 26 insertions(+)
+ arch/x86/Kconfig    |  1 +
+ arch/x86/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 7f5d1caf5890..8abfa1240040 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -149,6 +149,12 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #ifdef CONFIG_X86
- 		DIRECT_MAP_LEVEL2_SPLIT,
- 		DIRECT_MAP_LEVEL3_SPLIT,
-+#endif
-+#ifdef CONFIG_PER_VMA_LOCK_STATS
-+		VMA_LOCK_SUCCESS,
-+		VMA_LOCK_ABORT,
-+		VMA_LOCK_RETRY,
-+		VMA_LOCK_MISS,
- #endif
- 		NR_VM_EVENT_ITEMS
- };
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 19cf5b6892ce..fed855bae6d8 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -125,6 +125,12 @@ static inline void vm_events_fold_cpu(int cpu)
- #define count_vm_tlb_events(x, y) do { (void)(y); } while (0)
- #endif
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 3604074a878b..3647f7bdb110 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -27,6 +27,7 @@ config X86_64
+ 	# Options that are inherently 64-bit kernel only:
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
++	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select HAVE_ARCH_SOFT_DIRTY
+ 	select MODULES_USE_ELF_RELA
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index a498ae1fbe66..e4399983c50c 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -19,6 +19,7 @@
+ #include <linux/uaccess.h>		/* faulthandler_disabled()	*/
+ #include <linux/efi.h>			/* efi_crash_gracefully_on_page_fault()*/
+ #include <linux/mm_types.h>
++#include <linux/mm.h>			/* find_and_lock_vma() */
  
-+#ifdef CONFIG_PER_VMA_LOCK_STATS
-+#define count_vm_vma_lock_event(x) count_vm_event(x)
-+#else
-+#define count_vm_vma_lock_event(x) do {} while (0)
-+#endif
-+
- #define __count_zid_vm_events(item, zid, delta) \
- 	__count_vm_events(item##_NORMAL - ZONE_NORMAL + zid, delta)
- 
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index c3547a373c9c..4965a7333a3f 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -279,3 +279,9 @@ config DEBUG_KMEMLEAK_AUTO_SCAN
- 
- 	  If unsure, say Y.
- 
-+config PER_VMA_LOCK_STATS
-+	bool "Statistics for per-vma locks"
-+	depends on PER_VMA_LOCK
-+	default y
-+	help
-+	  Statistics for per-vma locks.
-diff --git a/mm/memory.c b/mm/memory.c
-index 751aebc1b29f..94194a45ffa7 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5272,6 +5272,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 	/* Check if the VMA got isolated after we found it */
- 	if (vma->detached) {
- 		vma_end_read(vma);
-+		count_vm_vma_lock_event(VMA_LOCK_MISS);
- 		/* The area was replaced with another one */
- 		goto retry;
+ #include <asm/cpufeature.h>		/* boot_cpu_has, ...		*/
+ #include <asm/traps.h>			/* dotraplinkage, ...		*/
+@@ -1333,6 +1334,38 @@ void do_user_addr_fault(struct pt_regs *regs,
  	}
-@@ -5280,6 +5281,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 	return vma;
- inval:
- 	rcu_read_unlock();
-+	count_vm_vma_lock_event(VMA_LOCK_ABORT);
- 	return NULL;
- }
- #endif /* CONFIG_PER_VMA_LOCK */
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 1ea6a5ce1c41..4f1089a1860e 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1399,6 +1399,12 @@ const char * const vmstat_text[] = {
- 	"direct_map_level2_splits",
- 	"direct_map_level3_splits",
  #endif
-+#ifdef CONFIG_PER_VMA_LOCK_STATS
-+	"vma_lock_success",
-+	"vma_lock_abort",
-+	"vma_lock_retry",
-+	"vma_lock_miss",
+ 
++#ifdef CONFIG_PER_VMA_LOCK
++	if (!(flags & FAULT_FLAG_USER))
++		goto lock_mmap;
++
++	vma = lock_vma_under_rcu(mm, address);
++	if (!vma)
++		goto lock_mmap;
++
++	if (unlikely(access_error(error_code, vma))) {
++		vma_end_read(vma);
++		goto lock_mmap;
++	}
++	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
++	vma_end_read(vma);
++
++	if (!(fault & VM_FAULT_RETRY)) {
++		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
++		goto done;
++	}
++	count_vm_vma_lock_event(VMA_LOCK_RETRY);
++
++	/* Quick path to respond to signals */
++	if (fault_signal_pending(fault, regs)) {
++		if (!user_mode(regs))
++			kernelmode_fixup_or_oops(regs, error_code, address,
++						 SIGBUS, BUS_ADRERR,
++						 ARCH_DEFAULT_PKEY);
++		return;
++	}
++lock_mmap:
++#endif /* CONFIG_PER_VMA_LOCK */
++
+ 	/*
+ 	 * Kernel-mode access to the user address space should only occur
+ 	 * on well-defined single instructions listed in the exception
+@@ -1433,6 +1466,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	}
+ 
+ 	mmap_read_unlock(mm);
++#ifdef CONFIG_PER_VMA_LOCK
++done:
 +#endif
- #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
- };
- #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
+ 	if (likely(!(fault & VM_FAULT_ERROR)))
+ 		return;
+ 
 -- 
 2.39.1
 
