@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E60698C3A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE9E698C3B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:42:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP2W2FtNz3fps
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:41:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHP3X2skXz3fj5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:42:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hu+sMS9o;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FCDmrKEx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3v7ztywykdbyegd09x2aa270.ya8749gjbby-z0h74efe.al7wxe.ad2@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3wbztywykdbggif2bz4cc492.0ca96bildd0-12j96ghg.cn9yzg.cf4@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hu+sMS9o;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FCDmrKEx;
 	dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXK0pXzz3f3c
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:57 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id a4-20020a5b0004000000b006fdc6aaec4fso844051ybp.20
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:57 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNXM4Phcz3f5g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:59 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-4bdeb1bbeafso8704977b3.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rll6a/VW4pEw1AhNBjbFoMRbi+XwYRGQoRwSBUD0bh4=;
-        b=hu+sMS9oSFHR1r7khxhf1UbXFcs2Z++5UsWdyoPEf98HLaKpCA/5NqLhTjKtFbNcAI
-         bq4IC94z3LeKr+N8fZ27HaBeoB9eV7FJUK2PbLxLqtWEgkZI6C3sySZgRKxnS+2i/7yz
-         RFGxaAOIl8opKirVI8bfAZAj2T7sVtyi7tZlmgl6KCk8dFxbKL8va87izUWyHNnCWm+i
-         wFd5WvNjbROGmsVfKcufeNfiLR4xBKkikebAtyhw//UrLzCCkecCcI/c1WZAFUB1nZ5g
-         ONtU8uW/bb5j1wyQf5MWCYTwREIrfwMyez4h+y24cgMUk3OrfInLJF7DZne80Aw4Hh2T
-         oQOw==
+        bh=76w8C0WtscQXhYR05yNYHvPFGtZWYYoigmdRBKNsAGs=;
+        b=FCDmrKExzLuCArz312mMsT1GG2XBAJpY0IRk4Dudkq8tacxOtpStMHAB4mCqF7cHzr
+         HxmYKbJzh0e/OlcI5tze/pJirqiUzOseaOUlDEtDH80qm7FP3CxiVmnvUlVVgBXp61ej
+         ykGRdx137mYbxOiW4ntwVshjUhNYXqvxbpsd7tR4+U5K8xmf3z6sAC5BmIr5igjBFbE2
+         Lhh7YXKnyKDhial8w7C+wSOyLz2qDj3wAEjKVPIMU3N4BzLNr3q2F7Jzk8qKKMPeJp0i
+         mhDW6Px8X9de0wrc9+taZBLP7xnnbG62Qe2RXE2u3O0X+3PidgLM2eknvp7ECPYQAyqI
+         26OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rll6a/VW4pEw1AhNBjbFoMRbi+XwYRGQoRwSBUD0bh4=;
-        b=oEz8MVXfWCCxgJIDGsLyUReVVX8/SNn6WtxnQfMaR2Ui3OlGGIWXsqJSmVUzeHvRM5
-         WJ6buMjMovbuRpsjKaEMilPNoQSm4Buj62TKg0ej5nIPFVVQf8iS80NwcY9EHcDoyY+w
-         /yl3nn/jtW7ajPFlf8pUnQjDBdk4fY2TtxJxKFzcd+a87Vi4JzEnpuXlSgisUYjNJRPp
-         jyFSqQWAm5ZDgV5PXND7lGvjmFe3UyuJ0q3Lvn9WvfSPFS4+Q/gtBbrqqv0fwZssKfw2
-         sOQuIhUP0NYQZ651MNWjI3wFBto273Su7g3lBBlWzefdP14u/8fzeGftfSyR1gniAcwH
-         6N2Q==
-X-Gm-Message-State: AO0yUKUX9o7ZJSQH9jCbd3UlZVOflSS2HaOSzIJi7shuBxnq6/C6UHx1
-	JKrKdnYcMIiD54MFM+PqwbbMpCLsuOg=
-X-Google-Smtp-Source: AK7set/t52sA7P5kGXoASmYABiID5pIEjMuKzn7Z6yq6NOdnfI/iNhk3E99tS5Gm4PH95uk7/Rdn/fKqkhY=
+        bh=76w8C0WtscQXhYR05yNYHvPFGtZWYYoigmdRBKNsAGs=;
+        b=RtuYbE9LC0EtVTTymNFtI/cWGAJkFbgGakHJa4AwqeFgiQC6AdOTQRkZvYedVhDUNs
+         BK96L1043L+Lir8gktSW1NlqDGpOmEvVe0jBUmUPrs5iDxHX/XC9eMbuSWCmk0wa7tUw
+         Bi9BP3Rv3xVyxg3kMk7lBHlp4CbIaUkuMqqnegQZEwVHqJFMroC01navFjkNzQBf4xNu
+         jiCiy27j7Ku/izsFSQeN+YoPrD1P8wi9ygsAdZW9fq3MMfTq5v0M9Q1dvbUaV0zFN9dk
+         iiAoczIaO23EOYlYlsXueEmo+h2Jv7HJYlD5kidwkx+HYN07Ymvqhx4L8J7jdbHyCqJR
+         ITAQ==
+X-Gm-Message-State: AO0yUKVEYkP4TqM+wN+4XG42OepX1FDCc6JARG/YM0nvc9soDtkFMSUQ
+	ya8n20UJBo+N3tYM1it3k5IxBVj9QvA=
+X-Google-Smtp-Source: AK7set/7Y/K8KWVB4K6J3b/XMgTvXO7u2Z/Kc+o++p3RcwHAcWZWf0oYrOVDXbq6GKc7ezqD+HuFayT02ok=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a25:9012:0:b0:874:380b:887e with SMTP id
- s18-20020a259012000000b00874380b887emr545965ybl.239.1676524735071; Wed, 15
- Feb 2023 21:18:55 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:40 -0800
+ (user=surenb job=sendgmr) by 2002:a81:9e0a:0:b0:532:a8a0:8d76 with SMTP id
+ m10-20020a819e0a000000b00532a8a08d76mr235300ywj.85.1676524737340; Wed, 15 Feb
+ 2023 21:18:57 -0800 (PST)
+Date: Wed, 15 Feb 2023 21:17:41 -0800
 In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230216051750.3125598-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-26-surenb@google.com>
-Subject: [PATCH v3 25/35] mm: introduce lock_vma_under_rcu to be used from
- arch-specific code
+Message-ID: <20230216051750.3125598-27-surenb@google.com>
+Subject: [PATCH v3 26/35] mm: fall back to mmap_lock if vma->anon_vma is not
+ yet set
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -80,92 +80,36 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce lock_vma_under_rcu function to lookup and lock a VMA during
-page fault handling. When VMA is not found, can't be locked or changes
-after being locked, the function returns NULL. The lookup is performed
-under RCU protection to prevent the found VMA from being destroyed before
-the VMA lock is acquired. VMA lock statistics are updated according to
-the results.
-For now only anonymous VMAs can be searched this way. In other cases the
-function returns NULL.
+When vma->anon_vma is not set, page fault handler will set it by either
+reusing anon_vma of an adjacent VMA if VMAs are compatible or by
+allocating a new one. find_mergeable_anon_vma() walks VMA tree to find
+a compatible adjacent VMA and that requires not only the faulting VMA
+to be stable but also the tree structure and other VMAs inside that tree.
+Therefore locking just the faulting VMA is not enough for this search.
+Fall back to taking mmap_lock when vma->anon_vma is not set. This
+situation happens only on the first page fault and should not affect
+overall performance.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm.h |  3 +++
- mm/memory.c        | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+)
+ mm/memory.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 3f98344f829c..36172bb38e6b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -701,6 +701,9 @@ static inline void vma_mark_detached(struct vm_area_struct *vma, bool detached)
- 	vma->detached = detached;
- }
- 
-+struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-+					  unsigned long address);
-+
- #else /* CONFIG_PER_VMA_LOCK */
- 
- static inline void vma_init_lock(struct vm_area_struct *vma) {}
 diff --git a/mm/memory.c b/mm/memory.c
-index 8177c59ffd2d..5e1c124552a1 100644
+index 5e1c124552a1..13369ff15ec1 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -5220,6 +5220,52 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
- }
- EXPORT_SYMBOL_GPL(handle_mm_fault);
+@@ -5242,6 +5242,10 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+ 	if (!vma_is_anonymous(vma))
+ 		goto inval;
  
-+#ifdef CONFIG_PER_VMA_LOCK
-+/*
-+ * Lookup and lock a VMA under RCU protection. Returned VMA is guaranteed to be
-+ * stable and not isolated. If the VMA is not found or is being modified the
-+ * function returns NULL.
-+ */
-+struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-+					  unsigned long address)
-+{
-+	MA_STATE(mas, &mm->mm_mt, address, address);
-+	struct vm_area_struct *vma;
-+
-+	rcu_read_lock();
-+retry:
-+	vma = mas_walk(&mas);
-+	if (!vma)
++	/* find_mergeable_anon_vma uses adjacent vmas which are not locked */
++	if (!vma->anon_vma)
 +		goto inval;
 +
-+	/* Only anonymous vmas are supported for now */
-+	if (!vma_is_anonymous(vma))
-+		goto inval;
-+
-+	if (!vma_start_read(vma))
-+		goto inval;
-+
-+	/* Check since vm_start/vm_end might change before we lock the VMA */
-+	if (unlikely(address < vma->vm_start || address >= vma->vm_end)) {
-+		vma_end_read(vma);
-+		goto inval;
-+	}
-+
-+	/* Check if the VMA got isolated after we found it */
-+	if (vma->detached) {
-+		vma_end_read(vma);
-+		/* The area was replaced with another one */
-+		goto retry;
-+	}
-+
-+	rcu_read_unlock();
-+	return vma;
-+inval:
-+	rcu_read_unlock();
-+	return NULL;
-+}
-+#endif /* CONFIG_PER_VMA_LOCK */
-+
- #ifndef __PAGETABLE_P4D_FOLDED
- /*
-  * Allocate p4d page table.
+ 	if (!vma_start_read(vma))
+ 		goto inval;
+ 
 -- 
 2.39.1
 
