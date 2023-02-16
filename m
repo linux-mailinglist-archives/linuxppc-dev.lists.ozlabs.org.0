@@ -2,63 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7BE698D6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 07:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6914D698D92
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 08:10:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHQgY2tfJz3bT8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 17:55:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHR0q2Vwjz3cjC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 18:10:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RI4DYS2b;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XRZTGYtz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RI4DYS2b;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XRZTGYtz;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHQfZ5sQNz3cBp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 17:54:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676530471; x=1708066471;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=efqbGtohk6zNEW5NJkEeM2jWQf6LlEtIyTaskUCZB/Y=;
-  b=RI4DYS2bJH0WVbCb0lcqgZmHKqCvuaNTjYRVkZWnOE2vInzgd14iQMJP
-   nru6FjtdmEebs55C96mY5oOFgp2NSNWL+vPjwI8Gdx3q44jzEA5fZAooQ
-   YUTWvfxuwOlahLz4stiSasEtQQ0KuUBXnGVN0GN4IfH6RXnkHnKt11bsV
-   SKpJbilb65didIJmZBqfCikH3b8C5+ULHuzYQw1wOTzc2+f6CQKp03kWF
-   O/CPTsVLNzgV6bBI2RrW2XrfcsyO5WNF/KpBuJCWg9JuBYPE4G9kJOWl1
-   16XKFopKqSsCKYfAP9lwjCi8j5m5RuWjT+v6Sa9dPNK0E8PY1IhjIeC44
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="333806650"
-X-IronPort-AV: E=Sophos;i="5.97,301,1669104000"; 
-   d="scan'208";a="333806650"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 22:54:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="663348159"
-X-IronPort-AV: E=Sophos;i="5.97,301,1669104000"; 
-   d="scan'208";a="663348159"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 15 Feb 2023 22:54:19 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pSY9r-000A5F-06;
-	Thu, 16 Feb 2023 06:54:19 +0000
-Date: Thu, 16 Feb 2023 14:54:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- b0ae5b6f3c298a005b73556740526c0e24a5633c
-Message-ID: <63edd315.ZKoddw+JoWui2Rav%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHQzs6sRyz3bgW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 18:09:29 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G6g5Mr028580;
+	Thu, 16 Feb 2023 07:09:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ObfYPI8BxAmE67i4/uRkNGu54FbHiAuxTVgKTzbuLYc=;
+ b=XRZTGYtz55XyPGqimCurGuD0mex0deOTB094g1wEzTeWyYI4w69r/6r7wFpecgm5e485
+ ns9OlQVvJpmlOPui2j903I4pHyFJ3X5w+mXFM7hvrrxWWUpapiFHl014b1ePL+Av6v1L
+ pOnqroY4vBN7enWpKk5+6pLJxHJrqNhxFfq1ocswemIKQgMEdrAY4GBIcYTU9mgWwpif
+ BXgwpoi0MAHuAyTYOp/j+U73N3bNnquoQsxS/1KWo3niCNO0p0r3d8xbWccusHMWCdEg
+ ivY/cj/vP0Eu5CnlOAPd9lVndLAwKoBixOkYdeWGqQsTbA0sy9+Xhs62MeV8dBqKIkz0 uw== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nsfeurn97-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Feb 2023 07:09:26 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31G13OXf007931;
+	Thu, 16 Feb 2023 07:09:24 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3np2n6cmwf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Feb 2023 07:09:24 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31G79M9a46662134
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Feb 2023 07:09:22 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5726120043;
+	Thu, 16 Feb 2023 07:09:22 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C8C5C20040;
+	Thu, 16 Feb 2023 07:09:21 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Feb 2023 07:09:21 +0000 (GMT)
+Received: from jarvis-ozlabs-ibm-com.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D99AC60217;
+	Thu, 16 Feb 2023 18:09:16 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, ruscur@russell.cc
+Subject: [PATCH] powerpc/pseries: Fix endianness issue when parsing PLPKS secvar flags
+Date: Thu, 16 Feb 2023 18:09:03 +1100
+Message-Id: <20230216070903.355091-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: mA2VIPttkLky_sSvFDLtm0NsGcDk2WqM
+X-Proofpoint-ORIG-GUID: mA2VIPttkLky_sSvFDLtm0NsGcDk2WqM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-16_05,2023-02-15_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ mlxscore=0 phishscore=0 mlxlogscore=872 malwarescore=0 bulkscore=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302160059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,110 +91,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nayna@linux.ibm.com, stefanb@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: b0ae5b6f3c298a005b73556740526c0e24a5633c  powerpc/kexec_file: print error string on usable memory property update failure
+When a user updates a variable through the PLPKS secvar interface, we take
+the first 8 bytes of the data written to the update attribute to pass
+through to the H_PKS_SIGNED_UPDATE hcall as flags. These bytes are always
+written in big-endian format.
 
-elapsed time: 1071m
+Currently, the flags bytes are memcpy()ed into a u64, which is then loaded
+into a register to pass as part of the hcall. This means that on LE
+systems, the bytes are in the wrong order.
 
-configs tested: 85
-configs skipped: 3
+Use be64_to_cpup() instead, to ensure the flags bytes are byteswapped if
+necessary.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Reported-by: Stefan Berger <stefanb@linux.ibm.com>
+Fixes: ccadf154cb00 ("powerpc/pseries: Implement secvars for dynamic secure boot")
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/plpks-secvar.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arc                  randconfig-r043-20230212
-arc                  randconfig-r043-20230213
-arc                  randconfig-r043-20230214
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm                  randconfig-r046-20230212
-arm                  randconfig-r046-20230214
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                 randconfig-a011-20230213
-i386                 randconfig-a012-20230213
-i386                 randconfig-a013-20230213
-i386                 randconfig-a014-20230213
-i386                 randconfig-a015-20230213
-i386                 randconfig-a016-20230213
-ia64                             allmodconfig
-ia64                                defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                randconfig-r042-20230213
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-s390                 randconfig-r044-20230213
-sh                               allmodconfig
-sparc                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                            allnoconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64               randconfig-a011-20230213
-x86_64               randconfig-a012-20230213
-x86_64               randconfig-a013-20230213
-x86_64               randconfig-a014-20230213
-x86_64               randconfig-a015-20230213
-x86_64               randconfig-a016-20230213
-x86_64                               rhel-8.3
-
-clang tested configs:
-arm                  randconfig-r046-20230213
-hexagon              randconfig-r041-20230212
-hexagon              randconfig-r041-20230213
-hexagon              randconfig-r041-20230214
-hexagon              randconfig-r045-20230212
-hexagon              randconfig-r045-20230213
-hexagon              randconfig-r045-20230214
-i386                 randconfig-a001-20230213
-i386                 randconfig-a002-20230213
-i386                 randconfig-a003-20230213
-i386                 randconfig-a004-20230213
-i386                 randconfig-a005-20230213
-i386                 randconfig-a006-20230213
-riscv                randconfig-r042-20230212
-riscv                randconfig-r042-20230214
-s390                 randconfig-r044-20230212
-s390                 randconfig-r044-20230214
-x86_64               randconfig-a001-20230213
-x86_64               randconfig-a002-20230213
-x86_64               randconfig-a003-20230213
-x86_64               randconfig-a004-20230213
-x86_64               randconfig-a005-20230213
-x86_64               randconfig-a006-20230213
-
+diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
+index f6c8888f4076..257fd1f8bc19 100644
+--- a/arch/powerpc/platforms/pseries/plpks-secvar.c
++++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
+@@ -135,7 +135,8 @@ static int plpks_set_variable(const char *key, u64 key_len, u8 *data,
+ 		goto err;
+ 	var.namelen = rc * 2;
+ 
+-	memcpy(&flags, data, sizeof(flags));
++	// Flags are contained in the first 8 bytes of the buffer, and are always big-endian
++	flags = be64_to_cpup((__be64 *)data);
+ 
+ 	var.datalen = data_size - sizeof(flags);
+ 	var.data = data + sizeof(flags);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.1
+
