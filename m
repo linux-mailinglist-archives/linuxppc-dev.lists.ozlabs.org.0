@@ -2,53 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEAD698A73
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 03:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F5F698B3D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 04:41:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHJbD09NZz3f35
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 13:21:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHLMl1xRcz3chk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 14:41:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T214lDYw;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=TukCD6eB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T214lDYw;
-	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHJZD0Ncwz3cCn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 13:20:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=kSGA/MlD2Xuj25JeBde+v37M89+xiA/8ymC62wNi/ao=; b=T214lDYwlH/i6uBH6BNzlCk6rx
-	4nxUsEUyOjm+8Jmw+aXlMddrYn/laIc6xaoE+fU4xLZAbrRZBTC3LQERXZaHxqyaq3W1za55ImRLb
-	oRJqgBk2bbAoKusoW8hJcWVjQvwN/GXXKPpP0KEx9Me1zbsMO5aAoQq3UZbhtS09vh3lJ5OBp+3p+
-	ucDo5hPWB04m3UQNM2QNgXI+pMV5gVhPCK4n5Ey/HKW4DMh6xGS2Wb429iqZu0yUjZCOn2o30ASdw
-	RjRw82BdCQgPjZHS1lWtlsnK8erByUyCysDqb5Q5dNk6Fbck51RiTbxF3aanEJLBMetCqMtAWFXLh
-	C3zLEGgA==;
-Received: from [2601:1c2:980:9ec0::df2f]
-	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pSTsb-008HVN-8k; Thu, 16 Feb 2023 02:20:13 +0000
-Message-ID: <1ea2a91a-c724-04b2-6154-d0797273552c@infradead.org>
-Date: Wed, 15 Feb 2023 18:20:12 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHLLn3F0fz3cKG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 14:40:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=TukCD6eB;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PHLLm1DY2z4x5R;
+	Thu, 16 Feb 2023 14:40:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1676518832;
+	bh=IhhtNy3W6goacXun/EPhiJafiIJA87yrMDChswJsA90=;
+	h=Date:From:To:Cc:Subject:From;
+	b=TukCD6eB0yr67J/ISyBFD4uzlbdNHnDHK+OwVPsOPMgHa6kjH1makxS4VeLGNjNqo
+	 sqQwZcBreZfl5gqXuVKqCNKhuVEqjXcFVkrPrN2D0AZksI/hH4f4CbMCXG8bFS4aVP
+	 tPejZIl1xmvaW15KOFUiZ++bCqu1Gnxr9Hrb9g7A3R/3gDuRJMORZUfOS9y0zADGPG
+	 GMYxnTVB5te/tmUDysECrJpQ6i2eqQl01IL8EfEcBriMhLVqlvq7mpoXDsDIXCvlZc
+	 agVIMRme8hdpN186gT//b8ysxJOHHY8//Dc/IWKASPaNi/OMPq6lfxTbHB1vQewR7V
+	 AJ/jl+nxmdtow==
+Date: Thu, 16 Feb 2023 14:40:31 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Subject: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20230216144031.45b1fc12@canb.auug.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2] usb: fix some spelling mistakes in comment of gadget
-Content-Language: en-US
-To: Zhou nan <zhounan@nfschina.com>, leoyang.li@nxp.com,
- gregkh@linuxfoundation.org
-References: <20230216013535.6399-1-zhounan@nfschina.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230216013535.6399-1-zhounan@nfschina.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/dglXHvi7hVb4e17fbyF=Xyc";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,28 +57,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--Sig_/dglXHvi7hVb4e17fbyF=Xyc
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-On 2/15/23 17:35, Zhou nan wrote:
-> usb: Fix spelling mistake in comments of gadget.
-> 
-> Signed-off-by: Zhou nan <zhounan@nfschina.com>
+After merging the powerpc tree, today's linux-next build (powerpc
+pseries_le_defconfig) produced this warning:
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+arch/powerpc/kernel/head_64.o: warning: objtool: .text+0x6128: unannotated =
+intra-function call
 
-Thanks.
+I have no idea what caused this.
 
-> ---
-> v2:
-> - Modify the title and description text.
-> ---
->  drivers/usb/gadget/udc/fsl_udc_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/dglXHvi7hVb4e17fbyF=Xyc
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
--- 
-~Randy
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPtpa8ACgkQAVBC80lX
+0GyOCAf/XT5HWVB0yvKvhPl6Utb11p2X3m1l7VIfHcuzgHN+Z/xTBb2rrVxumHd7
+iX6kl5zHsMfENpxd4UFnvNs8zZwFOQSVs70FcXCN7R4cEAmggxuAzsAZezYC+kIu
+zmmev8elNVcUwN4dxm7gNT4dhXgJKqhJ2BRSF2c9C3Ws4WhKYj4sJh+njnErk5XZ
+oQuBOjHzJdaZ7Qy03QyKgLPpKO/ceWRUi43ZZUJx13MBGmwCBOJBRhh+1Aar55v5
+2Mt/qdGd6L0ESMSOwyjQrBlCnOX9w9PNB3K7D9Fmw1Cjkadt3v2X2au5h5pwrNuZ
+GXgASLbb2L/dEn6q9FuPEw5953tRIg==
+=S3YE
+-----END PGP SIGNATURE-----
+
+--Sig_/dglXHvi7hVb4e17fbyF=Xyc--
