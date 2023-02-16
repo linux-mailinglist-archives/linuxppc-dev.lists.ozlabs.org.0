@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD715698BD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:25:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD64698BE5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 06:26:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHNgY47W0z3fdJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:25:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHNhk1tKPz3fh1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Feb 2023 16:26:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZK5oAM6A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Xo1jDDVi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3k7ztywykdogceboxlqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3lrztywykdosfheraotbbtyr.pbzyvahkccp-qriyvfgf.bmynof.bet@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZK5oAM6A;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Xo1jDDVi;
 	dkim-atps=neutral
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNWV1GL3z3cFd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:14 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-4c11ae6ab25so8584607b3.8
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHNWY1LvDz3chs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 16:18:17 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-4bdeb1bbeafso8691857b3.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Feb 2023 21:18:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hX1DUaFSHqHCHFWD5Crp9NnpH/+9VHFxYkECoHgya1E=;
-        b=ZK5oAM6AcKVtxFxzHW9PhD/PdA0+Kv3bSAspA28+ZPD1m3cnM9poVYSoqhonqkIeJU
-         SshDVskllMZgIeSGhnCidLA6ddGXSMxz+S/xoEp08YDrkRg+7RXAXCoS6u4tI7rKulCi
-         ggnzbiGToN5cME4XPhcHuI14WBO6+4EQsud/8F6AxE1deunG+n/R+uM3wq+OYW0Yw/xw
-         3Mt1GtYUQdIHi9t1kC0vmn2kgnR9+BG6rYf5dtABCjAt9PnVyIFEokbi9zalyZENG7ye
-         R6/8svYYK3xPGp282avPu/RfQWQWw9vT/0uQU8vbTuKv0KxRDKx0B9gWO6ClqS6abquo
-         +1jg==
+        bh=4opi4a+4wBSqIsfjyFGdOCf+RfFv13YZtxtXh5ocOUM=;
+        b=Xo1jDDViHSHN/alioaTDnw+zuoNPKrF9ZLXUf3ea0NE3bXPLl0z7WkGrQUW7AOG0Nr
+         J8SsODBneQSeaMKO7nEqhtXELAqyVVzyHag3dRajS0MNlWpB1lyOtsy0oB8MM0CrQEnP
+         Moe4iuqLi8ffYInMsJBu3lDYUcEPw1W16t68/pqdVg/PM7yHOfl4JRIe/AAV288dZ063
+         0OmpnGUH5/0w4iEIelRXBTS4gWduVmNFBkN/5ItORK5tiSjU8ab3rw3adCz9oFddo8Er
+         mGSeo2MZqEM7cxpZTU0mXlOgRPyGjhgPgDiiUmvS//v9NEkdkZgUTyYfpCAeqd0avQoQ
+         0u1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hX1DUaFSHqHCHFWD5Crp9NnpH/+9VHFxYkECoHgya1E=;
-        b=HXlloLp3og7Cs4iX0pNU0UXydlENZQvUyM7aIrisHPMg8PxTebbsLfCA0SEEjx4Kfx
-         iBl9qvh1fN8j0kGn6MPVWWOw8xYOCLhLkZTWjm3L3PpzNfThztrBkpwRO0B/mKg1uysA
-         +L3Ka2jlwQ7N+xz0ufk4xzAiyyDH4HmQJdswlllTedap4/gfq6QQR6dpxvqZ1LwLT8ea
-         Kjwmvq1fxSaI9MAwza34WRtGp+DmsqQySd7UdOvYOw20tIVh5omoXrI0OBbhziOYjGwY
-         YDUuFePzLOoxR6oV9jkPuknO5ku8hX4mtJGwOaSlpQnpXqMZgsXip/LZ8PUdKRS893D0
-         gRfQ==
-X-Gm-Message-State: AO0yUKUeiXgJ5UxnSII0cpe3xBKo3Xn6t7pO0YMQpi99XUxJ6odGADDh
-	9MVvV1BlVnwytRrGxMgVVmdRfeJGPAU=
-X-Google-Smtp-Source: AK7set+BUdfWyfJ4CpYtDrI1pKL/2vKMY8TRPzm0GzgZQonEWMOroSKkOakotgIDyZRMjNiR+HE0zfFqp3Q=
+        bh=4opi4a+4wBSqIsfjyFGdOCf+RfFv13YZtxtXh5ocOUM=;
+        b=zsjWaRoDnVO7GddJbsxDOdDOlpmXbgg/EFE6CRCly63DAcB0VZH51i6fbyFyaL9y9o
+         9Dcm3884oaTaKsdGtS7DuNWKXn5qaZ0eY9Pxsnkiv4M/HUeKbY6oosKR6tyx9+DPuP2L
+         ueRsQHkiVXlbJOJICNCy5/N9OjIYXX5zC8J5fL7tZNv3mDirTqRQrr1/z+4cpLxcWFcg
+         EvfjdWdLZPbywaRX5qfAxNzLadMab5TVu0dEjO8kvUs5etRP9tGcDXbTpGGc5lBEtDW5
+         UT9IFVZkx8lriGoJWI+bYeg0HLlwJq1HGNQZY4cBSwFj96agJw/Wo7gM9Q+zIKRGdQDn
+         +Vbg==
+X-Gm-Message-State: AO0yUKVtmBiyqdB+YdBzMWP135p3nBAzgIzzq288P1D5z+nil1XDSDh7
+	JsSixp0TDIkGGHiXWPDWA0sG0Heefr0=
+X-Google-Smtp-Source: AK7set+/DgIBDY3hKjRHmWHVe7yByHJ3rZUqgnqz5mohiI9GciRP+9xmqTdnoEyOpn2/QPX/HT0hsnAfle8=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f781:d5ed:1806:6ebb])
- (user=surenb job=sendgmr) by 2002:a05:6902:4ea:b0:926:d02a:c18a with SMTP id
- w10-20020a05690204ea00b00926d02ac18amr43355ybs.233.1676524691938; Wed, 15 Feb
- 2023 21:18:11 -0800 (PST)
-Date: Wed, 15 Feb 2023 21:17:22 -0800
+ (user=surenb job=sendgmr) by 2002:a05:6902:ca:b0:8f2:9e6:47a4 with SMTP id
+ i10-20020a05690200ca00b008f209e647a4mr3ybs.7.1676524694561; Wed, 15 Feb 2023
+ 21:18:14 -0800 (PST)
+Date: Wed, 15 Feb 2023 21:17:23 -0800
 In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230216051750.3125598-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
-Message-ID: <20230216051750.3125598-8-surenb@google.com>
-Subject: [PATCH v3 07/35] maple_tree: Add RCU lock checking to rcu callback functions
+Message-ID: <20230216051750.3125598-9-surenb@google.com>
+Subject: [PATCH v3 08/35] mm: Enable maple tree RCU mode by default.
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -81,373 +81,78 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 
-Dereferencing RCU objects within the RCU callback without the RCU check
-has caused lockdep to complain.  Fix the RCU dereferencing by using the
-RCU callback lock to ensure the operation is safe.
+Use the maple tree in RCU mode for VMA tracking.  This is necessary for
+the use of per-VMA locking.  RCU mode is enabled by default but disabled
+when exiting an mm and for the new tree during a fork.
 
-Also stop creating a new lock to use for dereferencing during
-destruction of the tree or subtree.  Instead, pass through a pointer to
-the tree that has the lock that is held for RCU dereferencing checking.
-It also does not make sense to use the maple state in the freeing
-scenario as the tree walk is a special case where the tree no longer has
-the normal encodings and parent pointers.
+Also enable RCU for the tree used in munmap operations to ensure the
+nodes remain valid for readers.
 
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Reported-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- lib/maple_tree.c | 188 ++++++++++++++++++++++++-----------------------
- 1 file changed, 96 insertions(+), 92 deletions(-)
+ include/linux/mm_types.h | 3 ++-
+ kernel/fork.c            | 3 +++
+ mm/mmap.c                | 4 +++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 8ad2d1669fad..2be86368237d 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -824,6 +824,11 @@ static inline void *mt_slot(const struct maple_tree *mt,
- 	return rcu_dereference_check(slots[offset], mt_locked(mt));
- }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 3cd60243c625..3fd5305dbbf9 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -768,7 +768,8 @@ struct mm_struct {
+ 	unsigned long cpu_bitmap[];
+ };
  
-+static inline void *mt_slot_locked(struct maple_tree *mt, void __rcu **slots,
-+				   unsigned char offset)
-+{
-+	return rcu_dereference_protected(slots[offset], mt_locked(mt));
-+}
- /*
-  * mas_slot_locked() - Get the slot value when holding the maple tree lock.
-  * @mas: The maple state
-@@ -835,7 +840,7 @@ static inline void *mt_slot(const struct maple_tree *mt,
- static inline void *mas_slot_locked(struct ma_state *mas, void __rcu **slots,
- 				       unsigned char offset)
- {
--	return rcu_dereference_protected(slots[offset], mt_locked(mas->tree));
-+	return mt_slot_locked(mas->tree, slots, offset);
- }
+-#define MM_MT_FLAGS	(MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN)
++#define MM_MT_FLAGS	(MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN | \
++			 MT_FLAGS_USE_RCU)
+ extern struct mm_struct init_mm;
  
- /*
-@@ -907,34 +912,35 @@ static inline void ma_set_meta(struct maple_node *mn, enum maple_type mt,
- }
+ /* Pointer magic because the dynamic array size confuses some compilers. */
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5e3029ea8e1e..5f23d5e03362 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -617,6 +617,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 	if (retval)
+ 		goto out;
  
- /*
-- * mas_clear_meta() - clear the metadata information of a node, if it exists
-- * @mas: The maple state
-+ * mt_clear_meta() - clear the metadata information of a node, if it exists
-+ * @mt: The maple tree
-  * @mn: The maple node
-- * @mt: The maple node type
-+ * @type: The maple node type
-  * @offset: The offset of the highest sub-gap in this node.
-  * @end: The end of the data in this node.
-  */
--static inline void mas_clear_meta(struct ma_state *mas, struct maple_node *mn,
--				  enum maple_type mt)
-+static inline void mt_clear_meta(struct maple_tree *mt, struct maple_node *mn,
-+				  enum maple_type type)
- {
- 	struct maple_metadata *meta;
- 	unsigned long *pivots;
- 	void __rcu **slots;
- 	void *next;
++	mt_clear_in_rcu(vmi.mas.tree);
+ 	for_each_vma(old_vmi, mpnt) {
+ 		struct file *file;
  
--	switch (mt) {
-+	switch (type) {
- 	case maple_range_64:
- 		pivots = mn->mr64.pivot;
- 		if (unlikely(pivots[MAPLE_RANGE64_SLOTS - 2])) {
- 			slots = mn->mr64.slot;
--			next = mas_slot_locked(mas, slots,
--					       MAPLE_RANGE64_SLOTS - 1);
--			if (unlikely((mte_to_node(next) && mte_node_type(next))))
--				return; /* The last slot is a node, no metadata */
-+			next = mt_slot_locked(mt, slots,
-+					      MAPLE_RANGE64_SLOTS - 1);
-+			if (unlikely((mte_to_node(next) &&
-+				      mte_node_type(next))))
-+				return; /* no metadata, could be node */
- 		}
- 		fallthrough;
- 	case maple_arange_64:
--		meta = ma_meta(mn, mt);
-+		meta = ma_meta(mn, type);
- 		break;
- 	default:
- 		return;
-@@ -5497,7 +5503,7 @@ static inline int mas_rev_alloc(struct ma_state *mas, unsigned long min,
- }
+@@ -700,6 +701,8 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 	retval = arch_dup_mmap(oldmm, mm);
+ loop_out:
+ 	vma_iter_free(&vmi);
++	if (!retval)
++		mt_set_in_rcu(vmi.mas.tree);
+ out:
+ 	mmap_write_unlock(mm);
+ 	flush_tlb_mm(oldmm);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 20f21f0949dd..06c0f6686de8 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -2277,7 +2277,8 @@ do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	int count = 0;
+ 	int error = -ENOMEM;
+ 	MA_STATE(mas_detach, &mt_detach, 0, 0);
+-	mt_init_flags(&mt_detach, MT_FLAGS_LOCK_EXTERN);
++	mt_init_flags(&mt_detach, vmi->mas.tree->ma_flags &
++		      (MT_FLAGS_LOCK_MASK | MT_FLAGS_USE_RCU));
+ 	mt_set_external_lock(&mt_detach, &mm->mmap_lock);
  
- /*
-- * mas_dead_leaves() - Mark all leaves of a node as dead.
-+ * mte_dead_leaves() - Mark all leaves of a node as dead.
-  * @mas: The maple state
-  * @slots: Pointer to the slot array
-  * @type: The maple node type
-@@ -5507,16 +5513,16 @@ static inline int mas_rev_alloc(struct ma_state *mas, unsigned long min,
-  * Return: The number of leaves marked as dead.
-  */
- static inline
--unsigned char mas_dead_leaves(struct ma_state *mas, void __rcu **slots,
--			      enum maple_type mt)
-+unsigned char mte_dead_leaves(struct maple_enode *enode, struct maple_tree *mt,
-+			      void __rcu **slots)
- {
- 	struct maple_node *node;
- 	enum maple_type type;
- 	void *entry;
- 	int offset;
- 
--	for (offset = 0; offset < mt_slots[mt]; offset++) {
--		entry = mas_slot_locked(mas, slots, offset);
-+	for (offset = 0; offset < mt_slot_count(enode); offset++) {
-+		entry = mt_slot(mt, slots, offset);
- 		type = mte_node_type(entry);
- 		node = mte_to_node(entry);
- 		/* Use both node and type to catch LE & BE metadata */
-@@ -5531,162 +5537,160 @@ unsigned char mas_dead_leaves(struct ma_state *mas, void __rcu **slots,
- 	return offset;
- }
- 
--static void __rcu **mas_dead_walk(struct ma_state *mas, unsigned char offset)
-+/**
-+ * mte_dead_walk() - Walk down a dead tree to just before the leaves
-+ * @enode: The maple encoded node
-+ * @offset: The starting offset
-+ *
-+ * Note: This can only be used from the RCU callback context.
-+ */
-+static void __rcu **mte_dead_walk(struct maple_enode **enode, unsigned char offset)
- {
--	struct maple_node *next;
-+	struct maple_node *node, *next;
- 	void __rcu **slots = NULL;
- 
--	next = mas_mn(mas);
-+	next = mte_to_node(*enode);
- 	do {
--		mas->node = mt_mk_node(next, next->type);
--		slots = ma_slots(next, next->type);
--		next = mas_slot_locked(mas, slots, offset);
-+		*enode = ma_enode_ptr(next);
-+		node = mte_to_node(*enode);
-+		slots = ma_slots(node, node->type);
-+		next = rcu_dereference_protected(slots[offset],
-+					lock_is_held(&rcu_callback_map));
- 		offset = 0;
- 	} while (!ma_is_leaf(next->type));
- 
- 	return slots;
- }
- 
-+/**
-+ * mt_free_walk() - Walk & free a tree in the RCU callback context
-+ * @head: The RCU head that's within the node.
-+ *
-+ * Note: This can only be used from the RCU callback context.
-+ */
- static void mt_free_walk(struct rcu_head *head)
- {
- 	void __rcu **slots;
- 	struct maple_node *node, *start;
--	struct maple_tree mt;
-+	struct maple_enode *enode;
- 	unsigned char offset;
- 	enum maple_type type;
--	MA_STATE(mas, &mt, 0, 0);
- 
- 	node = container_of(head, struct maple_node, rcu);
- 
- 	if (ma_is_leaf(node->type))
- 		goto free_leaf;
- 
--	mt_init_flags(&mt, node->ma_flags);
--	mas_lock(&mas);
- 	start = node;
--	mas.node = mt_mk_node(node, node->type);
--	slots = mas_dead_walk(&mas, 0);
--	node = mas_mn(&mas);
-+	enode = mt_mk_node(node, node->type);
-+	slots = mte_dead_walk(&enode, 0);
-+	node = mte_to_node(enode);
- 	do {
- 		mt_free_bulk(node->slot_len, slots);
- 		offset = node->parent_slot + 1;
--		mas.node = node->piv_parent;
--		if (mas_mn(&mas) == node)
--			goto start_slots_free;
--
--		type = mte_node_type(mas.node);
--		slots = ma_slots(mte_to_node(mas.node), type);
--		if ((offset < mt_slots[type]) && (slots[offset]))
--			slots = mas_dead_walk(&mas, offset);
--
--		node = mas_mn(&mas);
-+		enode = node->piv_parent;
-+		if (mte_to_node(enode) == node)
-+			goto free_leaf;
-+
-+		type = mte_node_type(enode);
-+		slots = ma_slots(mte_to_node(enode), type);
-+		if ((offset < mt_slots[type]) &&
-+		    rcu_dereference_protected(slots[offset],
-+					      lock_is_held(&rcu_callback_map)))
-+			slots = mte_dead_walk(&enode, offset);
-+		node = mte_to_node(enode);
- 	} while ((node != start) || (node->slot_len < offset));
- 
- 	slots = ma_slots(node, node->type);
- 	mt_free_bulk(node->slot_len, slots);
- 
--start_slots_free:
--	mas_unlock(&mas);
- free_leaf:
- 	mt_free_rcu(&node->rcu);
- }
- 
--static inline void __rcu **mas_destroy_descend(struct ma_state *mas,
--			struct maple_enode *prev, unsigned char offset)
-+static inline void __rcu **mte_destroy_descend(struct maple_enode **enode,
-+	struct maple_tree *mt, struct maple_enode *prev, unsigned char offset)
- {
- 	struct maple_node *node;
--	struct maple_enode *next = mas->node;
-+	struct maple_enode *next = *enode;
- 	void __rcu **slots = NULL;
-+	enum maple_type type;
-+	unsigned char next_offset = 0;
- 
- 	do {
--		mas->node = next;
--		node = mas_mn(mas);
--		slots = ma_slots(node, mte_node_type(mas->node));
--		next = mas_slot_locked(mas, slots, 0);
--		if ((mte_dead_node(next))) {
--			mte_to_node(next)->type = mte_node_type(next);
--			next = mas_slot_locked(mas, slots, 1);
--		}
-+		*enode = next;
-+		node = mte_to_node(*enode);
-+		type = mte_node_type(*enode);
-+		slots = ma_slots(node, type);
-+		next = mt_slot_locked(mt, slots, next_offset);
-+		if ((mte_dead_node(next)))
-+			next = mt_slot_locked(mt, slots, ++next_offset);
- 
--		mte_set_node_dead(mas->node);
--		node->type = mte_node_type(mas->node);
--		mas_clear_meta(mas, node, node->type);
-+		mte_set_node_dead(*enode);
-+		node->type = type;
- 		node->piv_parent = prev;
- 		node->parent_slot = offset;
--		offset = 0;
--		prev = mas->node;
-+		offset = next_offset;
-+		next_offset = 0;
-+		prev = *enode;
- 	} while (!mte_is_leaf(next));
- 
- 	return slots;
- }
- 
--static void mt_destroy_walk(struct maple_enode *enode, unsigned char ma_flags,
-+static void mt_destroy_walk(struct maple_enode *enode, struct maple_tree *mt,
- 			    bool free)
- {
- 	void __rcu **slots;
- 	struct maple_node *node = mte_to_node(enode);
- 	struct maple_enode *start;
--	struct maple_tree mt;
--
--	MA_STATE(mas, &mt, 0, 0);
- 
--	mas.node = enode;
- 	if (mte_is_leaf(enode)) {
- 		node->type = mte_node_type(enode);
- 		goto free_leaf;
- 	}
- 
--	ma_flags &= ~MT_FLAGS_LOCK_MASK;
--	mt_init_flags(&mt, ma_flags);
--	mas_lock(&mas);
--
--	mte_to_node(enode)->ma_flags = ma_flags;
- 	start = enode;
--	slots = mas_destroy_descend(&mas, start, 0);
--	node = mas_mn(&mas);
-+	slots = mte_destroy_descend(&enode, mt, start, 0);
-+	node = mte_to_node(enode); // Updated in the above call.
- 	do {
- 		enum maple_type type;
- 		unsigned char offset;
- 		struct maple_enode *parent, *tmp;
- 
--		node->type = mte_node_type(mas.node);
--		node->slot_len = mas_dead_leaves(&mas, slots, node->type);
-+		node->slot_len = mte_dead_leaves(enode, mt, slots);
- 		if (free)
- 			mt_free_bulk(node->slot_len, slots);
- 		offset = node->parent_slot + 1;
--		mas.node = node->piv_parent;
--		if (mas_mn(&mas) == node)
--			goto start_slots_free;
-+		enode = node->piv_parent;
-+		if (mte_to_node(enode) == node)
-+			goto free_leaf;
- 
--		type = mte_node_type(mas.node);
--		slots = ma_slots(mte_to_node(mas.node), type);
-+		type = mte_node_type(enode);
-+		slots = ma_slots(mte_to_node(enode), type);
- 		if (offset >= mt_slots[type])
- 			goto next;
- 
--		tmp = mas_slot_locked(&mas, slots, offset);
-+		tmp = mt_slot_locked(mt, slots, offset);
- 		if (mte_node_type(tmp) && mte_to_node(tmp)) {
--			parent = mas.node;
--			mas.node = tmp;
--			slots = mas_destroy_descend(&mas, parent, offset);
-+			parent = enode;
-+			enode = tmp;
-+			slots = mte_destroy_descend(&enode, mt, parent, offset);
- 		}
- next:
--		node = mas_mn(&mas);
--	} while (start != mas.node);
-+		node = mte_to_node(enode);
-+	} while (start != enode);
- 
--	node = mas_mn(&mas);
--	node->type = mte_node_type(mas.node);
--	node->slot_len = mas_dead_leaves(&mas, slots, node->type);
-+	node = mte_to_node(enode);
-+	node->slot_len = mte_dead_leaves(enode, mt, slots);
- 	if (free)
- 		mt_free_bulk(node->slot_len, slots);
- 
--start_slots_free:
--	mas_unlock(&mas);
--
- free_leaf:
- 	if (free)
- 		mt_free_rcu(&node->rcu);
- 	else
--		mas_clear_meta(&mas, node, node->type);
-+		mt_clear_meta(mt, node, node->type);
- }
- 
- /*
-@@ -5702,10 +5706,10 @@ static inline void mte_destroy_walk(struct maple_enode *enode,
- 	struct maple_node *node = mte_to_node(enode);
- 
- 	if (mt_in_rcu(mt)) {
--		mt_destroy_walk(enode, mt->ma_flags, false);
-+		mt_destroy_walk(enode, mt, false);
- 		call_rcu(&node->rcu, mt_free_walk);
- 	} else {
--		mt_destroy_walk(enode, mt->ma_flags, true);
-+		mt_destroy_walk(enode, mt, true);
- 	}
- }
- 
+ 	/*
+@@ -3042,6 +3043,7 @@ void exit_mmap(struct mm_struct *mm)
+ 	 */
+ 	set_bit(MMF_OOM_SKIP, &mm->flags);
+ 	mmap_write_lock(mm);
++	mt_clear_in_rcu(&mm->mm_mt);
+ 	free_pgtables(&tlb, &mm->mm_mt, vma, FIRST_USER_ADDRESS,
+ 		      USER_PGTABLES_CEILING);
+ 	tlb_finish_mmu(&tlb);
 -- 
 2.39.1
 
