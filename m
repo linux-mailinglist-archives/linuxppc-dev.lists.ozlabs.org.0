@@ -2,51 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5311A69A830
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 10:34:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA6469A7F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 10:15:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ6981DkVz3f5Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 20:34:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ5lB2hWrz3cj1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 20:15:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LqTvLkKM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N33Csxe8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.73; helo=out-73.mta0.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LqTvLkKM;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N33Csxe8;
 	dkim-atps=neutral
-X-Greylist: delayed 398 seconds by postgrey-1.36 at boromir; Fri, 17 Feb 2023 20:16:35 AEDT
-Received: from out-73.mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ5m353Lpz2xT9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 20:16:35 +1100 (AEDT)
-Date: Fri, 17 Feb 2023 09:09:37 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1676624982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jEON53HopKt5AEJM7v2ACA7ESAHW6jokOAvOWSVy+nM=;
-	b=LqTvLkKM/ypuS79r4nGR9lPM3xij+PoUOG8Cq+CwhQzKfpvSRoBz+12/eQv+MqzQSY4gPt
-	bsGLqK0lh5RDWPJZAUZIlBVWTYZ5dJiWplOYTfL0IdvfDYI5HN5yE6yOLkV0YOt71qj3es
-	zF3iJw1pVDYu+QGb6BIC2AY51dx314s=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH mm-unstable v1 3/5] kvm/arm64: add
- kvm_arch_test_clear_young()
-Message-ID: <Y+9EUeUIS/ZUe2vw@linux.dev>
-References: <20230217041230.2417228-1-yuzhao@google.com>
- <20230217041230.2417228-4-yuzhao@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ5kD46VMz2xGL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 20:14:58 +1100 (AEDT)
+Received: by mail-ed1-x529.google.com with SMTP id ec30so2066382edb.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 01:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K51Bjs5B3NHAbD45wBFw53eNVShrx9FURGTxvHG8bmI=;
+        b=N33Csxe86TgmSFiUEClcGuaTp0xjJ6B2T4dmJYtpwfx51AJEd/QSYkmOOir04Sy+8g
+         4zVdOHQveUMqAGZWBPdvOtUSwOsrGj8UH7eOe4C7GeUx2h2IV+cmQTe22DEiuepi2Y9Y
+         /RvFBDbzIbryiqSB9pTtRiKr95HY6Kf5Dg4yO5gmp5xyAfJjaKWP4l3yRjWEDejLuSEl
+         QQXeAkWvlwWBVvrbOCYIV5y0tnS3Ec+zOLXjuQ1yiVB7LBvEkXJL/JSa/jHXZ05Y+tvV
+         iU/cASkwhV1YVH6a6yCZixhk0ox43qvhgL5V1VcZM871dhiCb6VnCOrKXdZOeSBBpWdn
+         7zBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K51Bjs5B3NHAbD45wBFw53eNVShrx9FURGTxvHG8bmI=;
+        b=SLUTnvfbFbeNRBLMEJVe8pomnngKqKtYqPDTKtTC9JqWqCF6bE+2L6neyr9912UPD/
+         LxA2xdsEnTrlvEVvaeqrNWH00dlkvZBiAaDbviBMqX2x3fiE42Kl+VZQkBuVyACj2dLK
+         kJ159/LxDLF9trWAByEbEFSUl0/bcOcM2quzhr/CTztK61LTsDp9nPjkq4/HIl0HUusz
+         eVSG2zTMB9KprcupzyyVZdKXkQjsA2HejGQxGtm2RR7Y3+q05l2WMYsYao8llr0Nw1nP
+         rvH+A4K2bes4OctjGLgdh/SC8GII1OxKYCXX7ao212TrZ1PSZyPIpYO5AHipWpQ05k94
+         opOg==
+X-Gm-Message-State: AO0yUKVLRDHfR8fXU5X1jThr3j8x4kEg26504r80JfTOp1M9SZmIYXlG
+	nonE3eRhxhTc+qkAMgz9B5Oe/A==
+X-Google-Smtp-Source: AK7set8z65bE0+M0gykNppgGWBk8TlWcsgx5DUzESwfw/Ax2XlbrCEBLdhV3Mv/HMzjJGvRob3b5gw==
+X-Received: by 2002:a17:906:6d53:b0:88e:682e:3a9e with SMTP id a19-20020a1709066d5300b0088e682e3a9emr8396987ejt.61.1676625293786;
+        Fri, 17 Feb 2023 01:14:53 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id k20-20020a170906a39400b008b14c5a82e7sm1868846ejz.127.2023.02.17.01.14.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Feb 2023 01:14:53 -0800 (PST)
+Message-ID: <6ae9af19-1d52-c31f-79be-a36f06caaf80@linaro.org>
+Date: Fri, 17 Feb 2023 10:14:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230217041230.2417228-4-yuzhao@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Mailman-Approved-At: Fri, 17 Feb 2023 20:34:04 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v5 01/10] dt-bindings: soc: fsl: cpm_qe: Add TSA
+ controller
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Qiang Zhao <qiang.zhao@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>
+References: <20230216134226.1692107-1-herve.codina@bootlin.com>
+ <20230216134226.1692107-2-herve.codina@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230216134226.1692107-2-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,267 +92,298 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Yu,
-
-scripts/get_maintainers.pl is your friend for getting the right set of
-emails for a series :) Don't know about others, but generally I would
-prefer to be Cc'ed on an entire series (to gather context) than just an
-individual patch.
-
-On Thu, Feb 16, 2023 at 09:12:28PM -0700, Yu Zhao wrote:
-> This patch adds kvm_arch_test_clear_young() for the vast majority of
-> VMs that are not pKVM and run on hardware that sets the accessed bit
-> in KVM page tables.
+On 16/02/2023 14:42, Herve Codina wrote:
+> Add support for the time slot assigner (TSA)
+> available in some PowerQUICC SoC such as MPC885
+> or MPC866.
 > 
-> It relies on two techniques, RCU and cmpxchg, to safely test and clear
-> the accessed bit without taking the MMU lock. The former protects KVM
-> page tables from being freed while the latter clears the accessed bit
-> atomically against both the hardware and other software page table
-> walkers.
-> 
-> Signed-off-by: Yu Zhao <yuzhao@google.com>
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  arch/arm64/include/asm/kvm_host.h       |  7 +++
->  arch/arm64/include/asm/kvm_pgtable.h    |  8 +++
->  arch/arm64/include/asm/stage2_pgtable.h | 43 ++++++++++++++
->  arch/arm64/kvm/arm.c                    |  1 +
->  arch/arm64/kvm/hyp/pgtable.c            | 51 ++--------------
->  arch/arm64/kvm/mmu.c                    | 77 ++++++++++++++++++++++++-
->  6 files changed, 141 insertions(+), 46 deletions(-)
+>  .../bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml | 234 ++++++++++++++++++
+>  include/dt-bindings/soc/fsl,tsa.h             |  13 +
+>  2 files changed, 247 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+>  create mode 100644 include/dt-bindings/soc/fsl,tsa.h
 > 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 35a159d131b5..572bcd321586 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -1031,4 +1031,11 @@ static inline void kvm_hyp_reserve(void) { }
->  void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
->  bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
->  
-> +/* see the comments on the generic kvm_arch_has_test_clear_young() */
-> +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
-> +static inline bool kvm_arch_has_test_clear_young(void)
-> +{
-> +	return IS_ENABLED(CONFIG_KVM) && cpu_has_hw_af() && !is_protected_kvm_enabled();
-> +}
-
-Why does the lack of FEAT_HAFDBS preclude the use of the test-and-clear
-notifier?
-
-On implementations without FEAT_HAFDBS, hardware will generate a data
-abort for software to set the access flag. Regardless of whether
-software or hardware is responsible for updating the PTE that
-information is available in the page tables.
-
-Also, I'm at a loss for why we'd need to test if CONFIG_KVM is enabled.
-My expectation is that we should provide an implementation that returns
-false if !CONFIG_KVM, avoiding the need to repeat that bit in every
-single implementation of the function.
-
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+> new file mode 100644
+> index 000000000000..bcd03f89780e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+> @@ -0,0 +1,234 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  #endif /* __ARM64_KVM_HOST_H__ */
-> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-> index 63f81b27a4e3..8c9a04388c88 100644
-> --- a/arch/arm64/include/asm/kvm_pgtable.h
-> +++ b/arch/arm64/include/asm/kvm_pgtable.h
-> @@ -105,6 +105,7 @@ static inline bool kvm_level_supports_block_mapping(u32 level)
->   * @put_page:			Decrement the refcount on a page. When the
->   *				refcount reaches 0 the page is automatically
->   *				freed.
-> + * @put_page_rcu:		RCU variant of put_page().
->   * @page_count:			Return the refcount of a page.
->   * @phys_to_virt:		Convert a physical address into a virtual
->   *				address	mapped in the current context.
-> @@ -122,6 +123,7 @@ struct kvm_pgtable_mm_ops {
->  	void		(*free_removed_table)(void *addr, u32 level);
->  	void		(*get_page)(void *addr);
->  	void		(*put_page)(void *addr);
-> +	void		(*put_page_rcu)(void *addr);
+> +title: PowerQUICC CPM Time-slot assigner (TSA) controller
+> +
+> +maintainers:
+> +  - Herve Codina <herve.codina@bootlin.com>
+> +
+> +description:
+> +  The TSA is the time-slot assigner that can be found on some PowerQUICC SoC.
+> +  Its purpose is to route some TDM time-slots to other internal serial
+> +  controllers.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - fsl,mpc885-tsa
+> +          - fsl,mpc866-tsa
+> +      - const: fsl,cpm1-tsa
+> +
+> +  reg:
+> +    items:
+> +      - description: SI (Serial Interface) register base
+> +      - description: SI RAM base
+> +
+> +  reg-names:
+> +    items:
+> +      - const: si_regs
+> +      - const: si_ram
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  '#fsl,serial-cells':
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    const: 1
+> +    description:
+> +      TSA consumers that use a phandle to TSA need to pass the serial identifier
+> +      with this phandle (defined in dt-bindings/soc/fsl,tsa.h).
+> +      For instance "fsl,tsa-serial = <&tsa FSL_CPM_TSA_SCC4>;".
+> +
+> +patternProperties:
+> +  '^tdm@[0-1]$':
+> +    description:
+> +      The TDM managed by this controller
+> +    type: object
+> +
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 1
+> +        description:
+> +          The TDM number for this TDM, 0 for TDMa and 1 for TDMb
+> +
+> +      fsl,common-rxtx-pins:
+> +        $ref: /schemas/types.yaml#/definitions/flag
+> +        description:
+> +          The hardware can use four dedicated pins for Tx clock, Tx sync, Rx
+> +          clock and Rx sync or use only two pins, Tx/Rx clock and Tx/Rx sync.
+> +          Without the 'fsl,common-rxtx-pins' property, the four pins are used.
+> +          With the 'fsl,common-rxtx-pins' property, two pins are used.
+> +
+> +      clocks:
+> +        minItems: 2
+> +        items:
+> +          - description: External clock connected to L1RSYNC pin
+> +          - description: External clock connected to L1RCLK pin
+> +          - description: External clock connected to L1TSYNC pin
+> +          - description: External clock connected to L1TCLK pin
 
-Why do we need this? We already defer dropping the last reference count
-on a page to an RCU callback. Have you observed issues with the existing
-implementation?
+Blank line
 
->  	int		(*page_count)(void *addr);
->  	void*		(*phys_to_virt)(phys_addr_t phys);
->  	phys_addr_t	(*virt_to_phys)(void *addr);
-> @@ -188,6 +190,12 @@ typedef bool (*kvm_pgtable_force_pte_cb_t)(u64 addr, u64 end,
->   *					children.
->   * @KVM_PGTABLE_WALK_SHARED:		Indicates the page-tables may be shared
->   *					with other software walkers.
-> + *
-> + * kvm_arch_test_clear_young() is a special case. It relies on two
-> + * techniques, RCU and cmpxchg, to safely test and clear the accessed
-> + * bit without taking the MMU lock. The former protects KVM page tables
-> + * from being freed while the latter clears the accessed bit atomically
-> + * against both the hardware and other software page table walkers.
->   */
->  enum kvm_pgtable_walk_flags {
->  	KVM_PGTABLE_WALK_LEAF			= BIT(0),
-> diff --git a/arch/arm64/include/asm/stage2_pgtable.h b/arch/arm64/include/asm/stage2_pgtable.h
-> index c8dca8ae359c..350437661d4b 100644
-> --- a/arch/arm64/include/asm/stage2_pgtable.h
-> +++ b/arch/arm64/include/asm/stage2_pgtable.h
-> @@ -30,4 +30,47 @@
->   */
->  #define kvm_mmu_cache_min_pages(kvm)	(kvm_stage2_levels(kvm) - 1)
->  
-> +#define KVM_PTE_TYPE			BIT(1)
-> +#define KVM_PTE_TYPE_BLOCK		0
-> +#define KVM_PTE_TYPE_PAGE		1
-> +#define KVM_PTE_TYPE_TABLE		1
+> +      clock-names:
+> +        minItems: 2
+> +        items:
+> +          - const: l1rsync
+> +          - const: l1rclk
+> +          - const: l1tsync
+> +          - const: l1tclk
 > +
-> +#define KVM_PTE_LEAF_ATTR_LO		GENMASK(11, 2)
-> +
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_ATTRIDX	GENMASK(4, 2)
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_AP	GENMASK(7, 6)
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RO	3
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RW	1
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_SH	GENMASK(9, 8)
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_SH_IS	3
-> +#define KVM_PTE_LEAF_ATTR_LO_S1_AF	BIT(10)
-> +
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_MEMATTR	GENMASK(5, 2)
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R	BIT(6)
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W	BIT(7)
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_SH	GENMASK(9, 8)
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_SH_IS	3
-> +#define KVM_PTE_LEAF_ATTR_LO_S2_AF	BIT(10)
-> +
-> +#define KVM_PTE_LEAF_ATTR_HI		GENMASK(63, 51)
-> +
-> +#define KVM_PTE_LEAF_ATTR_HI_SW		GENMASK(58, 55)
-> +
-> +#define KVM_PTE_LEAF_ATTR_HI_S1_XN	BIT(54)
-> +
-> +#define KVM_PTE_LEAF_ATTR_HI_S2_XN	BIT(54)
-> +
-> +#define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
-> +					 KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
-> +					 KVM_PTE_LEAF_ATTR_HI_S2_XN)
-> +
-> +#define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
-> +#define KVM_MAX_OWNER_ID		1
-> +
-> +/*
-> + * Used to indicate a pte for which a 'break-before-make' sequence is in
-> + * progress.
-> + */
-> +#define KVM_INVALID_PTE_LOCKED		BIT(10)
-> +
+> +      fsl,diagnostic-mode:
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        enum: [disabled, echo, internal-loopback, control-loopback]
+> +        default: disabled
+> +        description: |
+> +          The diagnostic mode can be used to diagnose some communication issues.
+> +          It should not be set (or set to 'disabled') when diagnostic is not
+> +          needed.
 
-If there is a need to do these sort of moves, please do it in a separate
-patch. It pollutes the context of the functional change you're making.
+I don't think this is property for DT. Are you going to ship devices to
+customers with diagnostic mode? As you explained: no, so this can never
+appear. You might need sysfs/debugfs knob.
 
->  #endif	/* __ARM64_S2_PGTABLE_H_ */
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 9c5573bc4614..6770bc47f5c9 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -191,6 +191,7 @@ vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
->   */
->  void kvm_arch_destroy_vm(struct kvm *kvm)
->  {
-> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
->
->  	bitmap_free(kvm->arch.pmu_filter);
->  	free_cpumask_var(kvm->arch.supported_cpus);
->  
+You already got a comment for this. Your explanation "I plan" is not an
+explanation why DT is suitable for such property. So let's make it more
+obvious: drop it.
 
-[...]
-
-> +struct test_clear_young_arg {
-> +	struct kvm_gfn_range *range;
-> +	gfn_t lsb_gfn;
-> +	unsigned long *bitmap;
-> +};
+> +          Diagnostic mode:
+> +            - disabled:
+> +                Diagnostic disabled (ie. normal operation)
+> +            - echo:
+> +                Automatic echo. Rx data is resent on Tx.
+> +            - internal-loopback:
+> +                The TDM transmitter is connected to the receiver. Data appears
+> +                on Tx pin.
+> +            - control-loopback:
+> +                The TDM transmitter is connected to the receiver. The Tx pin is
+> +                disconnected.
 > +
-> +static int stage2_test_clear_young(const struct kvm_pgtable_visit_ctx *ctx,
-> +				   enum kvm_pgtable_walk_flags flags)
-> +{
-> +	struct test_clear_young_arg *arg = ctx->arg;
-> +	gfn_t gfn = ctx->addr / PAGE_SIZE;
-> +	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
+> +      fsl,rx-frame-sync-delay-bits:
+> +        enum: [0, 1, 2, 3]
+
+maxItems: 1
+
+> +        default: 0
+> +        description: |
+> +          Receive frame sync delay in number of bits.
+> +          Indicates the delay between the Rx sync and the first bit of the Rx
+> +          frame. 0 for no bit delay. 1, 2 or 3 for 1, 2 or 3 bits delay.
 > +
-> +	VM_WARN_ON_ONCE(!page_count(virt_to_page(ctx->ptep)));
-> +	VM_WARN_ON_ONCE(gfn < arg->range->start || gfn >= arg->range->end);
+> +      fsl,tx-frame-sync-delay-bits:
+> +        enum: [0, 1, 2, 3]
 
-Do we really need to be _this_ pedantic about sanity checking?
+maxItems: 1
 
-> +	if (!kvm_pte_valid(new))
-> +		return 0;
+> +        default: 0
+> +        description: |
+> +          Transmit frame sync delay in number of bits.
+> +          Indicates the delay between the Tx sync and the first bit of the Tx
+> +          frame. 0 for no bit delay. 1, 2 or 3 for 1, 2 or 3 bits delay.
 > +
-> +	if (new == ctx->old)
-> +		return 0;
+> +      fsl,clock-falling-edge:
+> +        $ref: /schemas/types.yaml#/definitions/flag
+> +        description:
+> +          Data is sent on falling edge of the clock (and received on the rising
+> +          edge). If 'clock-falling-edge' is not present, data is sent on the
+> +          rising edge (and received on the falling edge).
 > +
-> +	/* see the comments on the generic kvm_arch_has_test_clear_young() */
-> +	if (__test_and_change_bit(arg->lsb_gfn - gfn, arg->bitmap))
-> +		cmpxchg64(ctx->ptep, ctx->old, new);
-
-Why not use stage2_try_set_pte()? Not only is it idiomatic with the rest
-of the stage-2 code, it also will 'do the right thing' according to the
-locking scheme of the caller if we decide to change it at some point.
-
-> +	return 0;
-> +}
+> +      fsl,fsync-rising-edge:
+> +        $ref: /schemas/types.yaml#/definitions/flag
+> +        description:
+> +          Frame sync pulses are sampled with the rising edge of the channel
+> +          clock. If 'fsync-rising-edge' is not present, pulses are sampled with
+> +          the falling edge.
 > +
-> +bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
-> +			       gfn_t lsb_gfn, unsigned long *bitmap)
-> +{
-> +	u64 start = range->start * PAGE_SIZE;
-> +	u64 end = range->end * PAGE_SIZE;
-> +	struct test_clear_young_arg arg = {
-> +		.range		= range,
-> +		.lsb_gfn	= lsb_gfn,
-> +		.bitmap		= bitmap,
-> +	};
-> +	struct kvm_pgtable_walker walker = {
-> +		.cb		= stage2_test_clear_young,
-> +		.arg		= &arg,
-> +		.flags		= KVM_PGTABLE_WALK_LEAF,
-> +	};
+> +      fsl,double-speed-clock:
+> +        $ref: /schemas/types.yaml#/definitions/flag
+> +        description:
+> +          The channel clock is twice the data rate.
 > +
-> +	BUILD_BUG_ON(is_hyp_code());
-
-See prior comment about sanity checking.
-
-> +	if (WARN_ON_ONCE(!kvm_arch_has_test_clear_young()))
-> +		return false;
-
-Same here...
-
-> +	/* see the comments on kvm_pgtable_walk_flags */
-> +	rcu_read_lock();
+> +    patternProperties:
+> +      '^fsl,[rt]x-ts-routes$':
+> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +        description: |
+> +          A list of tuple that indicates the Tx or Rx time-slots routes.
+> +        items:
+> +          items:
+> +            - description:
+> +                The number of time-slots
+> +              minimum: 1
+> +              maximum: 64
+> +            - description: |
+> +                The source (Tx) or destination (Rx) serial interface
+> +                (dt-bindings/soc/fsl,tsa.h defines these values)
+> +                 - 0: No destination
+> +                 - 1: SCC2
+> +                 - 2: SCC3
+> +                 - 3: SCC4
+> +                 - 4: SMC1
+> +                 - 5: SMC2
+> +              enum: [0, 1, 2, 3, 4, 5]
+> +        minItems: 1
+> +        maxItems: 64
 > +
-> +	kvm_pgtable_walk(kvm->arch.mmu.pgt, start, end - start, &walker);
+> +    allOf:
+> +      # If fsl,common-rxtx-pins is present, only 2 clocks are needed.
+> +      # Else, the 4 clocks must be present.
+> +      - if:
+> +          required:
+> +            - fsl,common-rxtx-pins
+> +        then:
+> +          properties:
+> +            clocks:
+> +              maxItems: 2
+> +            clock-names:
+> +              maxItems: 2
+> +        else:
+> +          properties:
+> +            clocks:
+> +              minItems: 4
+> +            clock-names:
+> +              minItems: 4
 > +
-> +	rcu_read_unlock();
-
-The rcu_read_{lock,unlock}() is entirely superfluous.
-
-Of course, it is somewhat hidden by the fact that we must use
-abstractions to support host and EL2 use of the page table code, but we
-already make use of RCU to protect the stage-2 of a 'regular' VM.
-
-> +	return true;
-> +}
+> +    required:
+> +      - reg
+> +      - clocks
+> +      - clock-names
 > +
->  bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->  {
->  	if (!kvm->arch.mmu.pgt)
-> @@ -1848,7 +1924,6 @@ void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen)
->  
->  void kvm_arch_flush_shadow_all(struct kvm *kvm)
->  {
-> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
->  }
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +  - '#fsl,serial-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/soc/fsl,tsa.h>
+> +
+> +    tsa@ae0 {
+> +        compatible = "fsl,mpc885-tsa", "fsl,cpm1-tsa";
+> +        reg = <0xae0 0x10>,
+> +              <0xc00 0x200>;
+> +        reg-names = "si_regs", "si_ram";
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        #fsl,serial-cells = <1>;
+> +
+> +        tdm@0 {
+> +            /* TDMa */
+> +            reg = <0>;
+> +
+> +            clocks = <&clk_l1rsynca>, <&clk_l1rclka>;
+> +            clock-names = "l1rsync", "l1rclk";
+> +
+> +            fsl,common-rxtx-pins;
+> +            fsl,fsync-rising-edge;
+> +
+> +            fsl,tx-ts-routes = < 2 0 >,             /* TS 0..1 */
 
-Doesn't this become a blatant correctness issue? This entirely fails to
-uphold the exact expectations of the call.
+No spaces after < and before >
 
--- 
-Thanks,
-Oliver
+> +                           < 24 FSL_CPM_TSA_SCC4 >, /* TS 2..25 */
+> +                           < 1 0 >,                 /* TS 26 */
+> +                           < 5 FSL_CPM_TSA_SCC3 >;  /* TS 27..31 */
+> +
+> +            fsl,rx-ts-routes = < 2 0 >,             /* TS 0..1 */
+> +                           < 24 FSL_CPM_TSA_SCC4 >, /* 2..25 */
+> +                           < 1 0 >,                 /* TS 26 */
+> +                           < 5 FSL_CPM_TSA_SCC3 >;  /* TS 27..31 */
+> +        };
+> +    };
+> diff --git a/include/dt-bindings/soc/fsl,tsa.h b/include/dt-bindings/soc/fsl,tsa.h
+> new file mode 100644
+> index 000000000000..2cc44e867dbe
+> --- /dev/null
+> +++ b/include/dt-bindings/soc/fsl,tsa.h
+
+Use same name as binding file.
+
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
+> +
+> +#ifndef __DT_BINDINGS_SOC_FSL_TSA_H
+> +#define __DT_BINDINGS_SOC_FSL_TSA_H
+
+Best regards,
+Krzysztof
+
