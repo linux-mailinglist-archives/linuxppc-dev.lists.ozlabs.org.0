@@ -1,68 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9496769B019
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 17:01:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21B969B036
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 17:08:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJGkl349Wz3fJK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 03:01:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJGtF69jnz3fQp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 03:07:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sUkblHuJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=RECpzUKP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3iatvywykdlyoawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sUkblHuJ;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=RECpzUKP;
 	dkim-atps=neutral
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJGjp6c09z2yJQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 03:00:13 +1100 (AEDT)
-Received: by mail-pg1-x549.google.com with SMTP id w18-20020a634912000000b004fb4f0424f3so780110pga.14
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 08:00:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ASrBAOfhB8V2b1UWnVkBSljvQtym3PPwSnuFL8RngU=;
-        b=sUkblHuJ9dulsxh4CZcm+FIp/qRpAAcmRtfvp6ULnSXppIvCitchjm1OUit+QXJRWj
-         fwJ7Xd7LeD3Frj7FzM+U/mMAyXTZ8R5RK0CcMGNMR8PLROcI0/4xgADL5vqH5U+/VYgG
-         dkLQqFX5fKeKJhpV5Gz8z+39KNbu/jjFTFfYD8mmFsM5kC/nK+Gp9BDhC26xn+icV0pC
-         bHQSk7Mqvc6fB6p4dz8MrdQupt1NEggpWvfcZBir6hbXow/Kay6VqXDNaQVda+8NmyZ/
-         DJpPCojT4dj2fTwoDxf+msJ00C5RYvwVAx1bbgonDLlmp6LfYVABRQ30VMxJGXDgaHEA
-         nfVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ASrBAOfhB8V2b1UWnVkBSljvQtym3PPwSnuFL8RngU=;
-        b=JCLwjrA67syY2dmIuxf73wVSAszLEr8g2WErAW6KSKiOcdulTv/Amh63jtdjWaul/Z
-         5VBzywzqj0V2JU/akimRQ5KD4rCBFNjFYX2CDcbKSBBOFIWwQCRBx5vgZQZAwiyjmZ+y
-         uktx0N6ECwiIi4tZPpS2CN9lDLiR8REzJEEbAfAtnFsF9EU65UgxrIIklmbGx52LIb6G
-         m04/ciKzDoLrtcWYg1IgrPQSTjo+5nx6ANwerTl5jG0onThcyLjkXwUN01F6nbT+bqZs
-         ANgF7DDRVz+DgiKd6PST1QIwp/gsp1vJQzCZnL0xgCRYLCCaHui/Oenuh4mCzTpZhg/r
-         eRyA==
-X-Gm-Message-State: AO0yUKXgwbpXYkO43cGx/yRsZYLn2CmoXV/9uiI8d/5oV4ZJh3G6yy8x
-	S9B/04GJWF7u5vIuIuBAMtEIe7UWoOA=
-X-Google-Smtp-Source: AK7set/TQ5moWaaNQcL8V8kGjN9B7zl+2zJIJ8kumCX3x4I/RGgInnGSIHRIAYNv9fJ3WTWtfSDyzLo0yfI=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a02:43:b0:4fd:72f3:5859 with SMTP id
- az3-20020a056a02004300b004fd72f35859mr296462pgb.2.1676649609963; Fri, 17 Feb
- 2023 08:00:09 -0800 (PST)
-Date: Fri, 17 Feb 2023 08:00:08 -0800
-In-Reply-To: <Y+9EUeUIS/ZUe2vw@linux.dev>
-Mime-Version: 1.0
-References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-4-yuzhao@google.com>
- <Y+9EUeUIS/ZUe2vw@linux.dev>
-Message-ID: <Y++kiJwUIh55jkvl@google.com>
-Subject: Re: [PATCH mm-unstable v1 3/5] kvm/arm64: add kvm_arch_test_clear_young()
-From: Sean Christopherson <seanjc@google.com>
-To: Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJGsF1zcgz3bTs
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 03:06:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=COgV16QpVFvzSyezj8sQCRnnPRGtqN7Jdmva/Sfnf6s=; b=RECpzUKPshI8Gr0TMEm4IPdtUF
+	sAEs6G2dshqrzDveO36GIvZT8g51OMfCJndtvNTg55RA8n/7m/0UG6ZAK1GFsSN8y1dk9KOTtXpl0
+	BZws7o+RrILvSQjUBE5aWHre5Tp4+zXQrNBLI68HEk8qdrB9vD5ZaX+zYj80x5aJTzc8Np5/J9hJy
+	rVHUrkhkUi0rDmWmvZWftItyP0vBb+2H4RtAzs0gycKAd9E4zBeMqNk6J+FV9oWWCrsMXg/BcRQ9i
+	lXif2mYzZUBzqknhqsTIA4YtXMWVUAZkHCXQYWJxdB0JQFT4PLIViYkXx49ykdTfXHscRIcVpAC7t
+	u2/OAI2g==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pT3F1-009RNk-2v; Fri, 17 Feb 2023 16:05:43 +0000
+Date: Fri, 17 Feb 2023 16:05:43 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 26/35] mm: fall back to mmap_lock if vma->anon_vma is
+ not yet set
+Message-ID: <Y++l181MMw+T70yt@casper.infradead.org>
+References: <20230216051750.3125598-1-surenb@google.com>
+ <20230216051750.3125598-27-surenb@google.com>
+ <Y+5Pb4hGmV1YtNQp@casper.infradead.org>
+ <CAJuCfpHR8k0GsrYPMjSBVLAbu3EZgDU081+5CnR1td0cLEyDFw@mail.gmail.com>
+ <CAJuCfpHODBAV=riSPyvcmLbZVtXSdxrw2GMy8VOjvDV9yCyX8A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpHODBAV=riSPyvcmLbZVtXSdxrw2GMy8VOjvDV9yCyX8A@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,76 +60,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@google.com, Yu Zhao <yuzhao@google.com>, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@goog
+ le.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 17, 2023, Oliver Upton wrote:
-> Hi Yu,
+On Thu, Feb 16, 2023 at 06:14:59PM -0800, Suren Baghdasaryan wrote:
+> On Thu, Feb 16, 2023 at 11:43 AM Suren Baghdasaryan <surenb@google.com> wrote:
+> >
+> > On Thu, Feb 16, 2023 at 7:44 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Wed, Feb 15, 2023 at 09:17:41PM -0800, Suren Baghdasaryan wrote:
+> > > > When vma->anon_vma is not set, page fault handler will set it by either
+> > > > reusing anon_vma of an adjacent VMA if VMAs are compatible or by
+> > > > allocating a new one. find_mergeable_anon_vma() walks VMA tree to find
+> > > > a compatible adjacent VMA and that requires not only the faulting VMA
+> > > > to be stable but also the tree structure and other VMAs inside that tree.
+> > > > Therefore locking just the faulting VMA is not enough for this search.
+> > > > Fall back to taking mmap_lock when vma->anon_vma is not set. This
+> > > > situation happens only on the first page fault and should not affect
+> > > > overall performance.
+> > >
+> > > I think I asked this before, but don't remember getting an aswer.
+> > > Why do we defer setting anon_vma to the first fault?  Why don't we
+> > > set it up at mmap time?
+> >
+> > Yeah, I remember that conversation Matthew and I could not find the
+> > definitive answer at the time. I'll look into that again or maybe
+> > someone can answer it here.
 > 
-> scripts/get_maintainers.pl is your friend for getting the right set of
-> emails for a series :) Don't know about others, but generally I would
-> prefer to be Cc'ed on an entire series (to gather context) than just an
-> individual patch.
+> After looking into it again I'm still under the impression that
+> vma->anon_vma is populated lazily (during the first page fault rather
+> than at mmap time) to avoid doing extra work for areas which are never
+> faulted. Though I might be missing some important detail here.
 
-+1
+How often does userspace call mmap() and then _never_ fault on it?
+I appreciate that userspace might mmap() gigabytes of address space and
+then only end up using a small amount of it, so populating it lazily
+makes sense.  But creating a region and never faulting on it?  The only
+use-case I can think of is loading shared libraries:
 
-> 
-> On Thu, Feb 16, 2023 at 09:12:28PM -0700, Yu Zhao wrote:
-> > This patch adds kvm_arch_test_clear_young() for the vast majority of
-> > VMs that are not pKVM and run on hardware that sets the accessed bit
-> > in KVM page tables.
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+(...)
+mmap(NULL, 1970000, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f0ce612e000
+mmap(0x7f0ce6154000, 1396736, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x26000) = 0x7f0ce6154000
+mmap(0x7f0ce62a9000, 339968, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17b000) = 0x7f0ce62a9000
+mmap(0x7f0ce62fc000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1ce000) = 0x7f0ce62fc000
+mmap(0x7f0ce6302000, 53072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f0ce6302000
 
-At least for the x86 changes, please read Documentation/process/maintainer-tip.rst
-and rewrite the changelogs.
-
-> > It relies on two techniques, RCU and cmpxchg, to safely test and clear
-> > the accessed bit without taking the MMU lock. The former protects KVM
-> > page tables from being freed while the latter clears the accessed bit
-> > atomically against both the hardware and other software page table
-> > walkers.
-> > 
-> > Signed-off-by: Yu Zhao <yuzhao@google.com>
-> > ---
-> >  arch/arm64/include/asm/kvm_host.h       |  7 +++
-> >  arch/arm64/include/asm/kvm_pgtable.h    |  8 +++
-> >  arch/arm64/include/asm/stage2_pgtable.h | 43 ++++++++++++++
-> >  arch/arm64/kvm/arm.c                    |  1 +
-> >  arch/arm64/kvm/hyp/pgtable.c            | 51 ++--------------
-> >  arch/arm64/kvm/mmu.c                    | 77 ++++++++++++++++++++++++-
-> >  6 files changed, 141 insertions(+), 46 deletions(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> > index 35a159d131b5..572bcd321586 100644
-> > --- a/arch/arm64/include/asm/kvm_host.h
-> > +++ b/arch/arm64/include/asm/kvm_host.h
-> > @@ -1031,4 +1031,11 @@ static inline void kvm_hyp_reserve(void) { }
-> >  void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
-> >  bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
-> >  
-> > +/* see the comments on the generic kvm_arch_has_test_clear_young() */
-
-Please eliminate all of these "see the comments on blah", in every case they do
-nothing more than redirect the reader to something they're likely already aware of.
-
-> > +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
-> > +static inline bool kvm_arch_has_test_clear_young(void)
-> > +{
-> > +	return IS_ENABLED(CONFIG_KVM) && cpu_has_hw_af() && !is_protected_kvm_enabled();
-> > +}
-
-...
-
-> Also, I'm at a loss for why we'd need to test if CONFIG_KVM is enabled.
-> My expectation is that we should provide an implementation that returns
-> false if !CONFIG_KVM, avoiding the need to repeat that bit in every
-> single implementation of the function.
-
-mm/vmscan.c uses kvm_arch_has_test_clear_young().  I have opinions on that, but
-I'll hold off on expressing them until there's actual justification presented
-somewhere.
-
-Yu, this series and each patch needs a big pile of "why".  I get that the goal
-is to optimize memory oversubscribe, but there needs to be justification for
-why this is KVM only, why nested VMs and !A/D hardware are out of scope, why yet
-another mmu_notifier hook is being added, etc.
+but that's a file-backed VMA, not an anon VMA.
