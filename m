@@ -2,67 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D285069A4E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 05:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B0469A4E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 05:34:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHzKL4YBSz3fcX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 15:26:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHzVC09kqz3f4j
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 15:34:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=N9QazQsc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UGKaSfAS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=N9QazQsc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UGKaSfAS;
 	dkim-atps=neutral
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHzHP4NqGz3fRf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 15:24:49 +1100 (AEDT)
-Received: by mail-vs1-xe36.google.com with SMTP id d6so1931660vsv.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 20:24:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PJu4vps/ydzm+bD68RapcHOeOMmzQwBmAiW7NmBj0zU=;
-        b=N9QazQscN5/bMrTwGxOfAtM8xQD0zg2C7V00UxsuXtYfAz5LVfV9yZkceaMx30llQS
-         MbtMbGZSrDyQ8f+5wFmT5KPHG7yoVHYuRGjV/K+K1/YBzfts3DWsIWEL2wK13NHsBONL
-         3WSw5YTZ0a5gR+5SW3CY0ht9ZWgZiEHmWxeYTUfbfTwp27jM0ayQIQmuMeH32n16zCMS
-         LlHALD1+pwPBgt3KwWvli37N4+ulQIAdwqaKEMOyIYnaNF0PxJI5iNKryPEMJ1JxgseD
-         cL+jVcKxymHBK7RZixjBM3EahjNXB2uD4wOmYf/cmuvuGiqT2+UiebhqO4obZD3C2vfh
-         jyHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PJu4vps/ydzm+bD68RapcHOeOMmzQwBmAiW7NmBj0zU=;
-        b=NCoxpJRWb1cF/wtxUAp1R0yV/mNvAeVzvfq8l330ibj9My6/284WKenhvZmPqQy8Vd
-         i+N1K8N4kmYzr32RUTV5YHQ8F0ZDAlt7Z74tinfz1tCYtYU795OeW/prvV5L+ebWBoIG
-         QYmuJkBlFTh7YPV3+ai200oUicxo8TWmwUrBn7O+oXLS/vfF7ZIhEeefN6AtQqNqVoM2
-         EmTVoJ1pTnWLFJmIicFBRA6qt96+cNuVHi//q6LWgAeda3DvrcGcFiCOiWjiQGgJyvbk
-         QvCL+GlmBa95hP77kVSvQuk/LcrXzbU0c+t9hyTIotnOHB7K3FXnu08iBOfWE6uBItZR
-         EbdA==
-X-Gm-Message-State: AO0yUKVXlkziIb9Z0bWBAP+zrRPvsLSu/35E5laJT6RmQmfJ9mpNBEgO
-	Fih0BzCLr+yYmNX1oqe3eM2tMydgc8US3sAlgjEaeA==
-X-Google-Smtp-Source: AK7set+Yem2rWelUagYff1NdlU4Jg460e39X+mAJEfXHa9zcbTd/sITo7f0UTvcIS0NfZcWWeb2tTMWiIhTxmfPdL/A=
-X-Received: by 2002:a67:cf47:0:b0:411:c1a0:c787 with SMTP id
- f7-20020a67cf47000000b00411c1a0c787mr1603908vsm.26.1676607885989; Thu, 16 Feb
- 2023 20:24:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHzTD0dpYz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 15:33:19 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31H1g17S015767;
+	Fri, 17 Feb 2023 04:32:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=r9UUHMKURkmxKLCVwKzBEbV69SRQq+2LrZt95/O5VUY=;
+ b=UGKaSfASEoaSeMZrXinF9WCQnYOlY2+1sMrmeeUNEdNwxrwsv6ybr2US4KvqcVfw+vcp
+ 9UaWxdH1Z5RLuunQ09IL4PCFCZY7iXRfwHzuwhI8CO7fDwKavW0LSJWhbY5kxIgGB2SW
+ MZ76dpa4tFkjVstuQ5jjV+pT7ja/PlkOqzgJ1XgfX1suuxpGmk1UJPxld/6DvNqZgG/T
+ zF0mBlmrlYhZAPokz7y5cKNLMgZQnpJmU2fI6UlAFHjTdhYAhYhJ8XN9UQTkX9ONzXSO
+ bxgpjz1dJBE14MrqXKkBJ4GOk1W4ALPrRq3kqKa0sTXWl+GdcbMOg+MDj6IxikZibTjD 9A== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nt050tqtg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Feb 2023 04:32:51 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31GNlE7Q002733;
+	Fri, 17 Feb 2023 04:32:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3np2n6djgp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Feb 2023 04:32:49 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31H4WlZG47514016
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Feb 2023 04:32:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0458D20040;
+	Fri, 17 Feb 2023 04:32:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D15F220043;
+	Fri, 17 Feb 2023 04:32:44 +0000 (GMT)
+Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.2.29])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Feb 2023 04:32:44 +0000 (GMT)
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: Fix unannotated intra-function call warning
+Date: Fri, 17 Feb 2023 10:02:26 +0530
+Message-Id: <20230217043226.1020041-1-sv@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-5-yuzhao@google.com>
-In-Reply-To: <20230217041230.2417228-5-yuzhao@google.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Thu, 16 Feb 2023 21:24:09 -0700
-Message-ID: <CAOUHufbjbaBtNQX-uSOUQEDoH9nAE0nC7L+ssoPF3WHpQuiwuw@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 4/5] kvm/powerpc: add kvm_arch_test_clear_young()
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qkWI472Jg-VdaCYIPjMk_PEDP8dFU0r4
+X-Proofpoint-ORIG-GUID: qkWI472Jg-VdaCYIPjMk_PEDP8dFU0r4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-17_01,2023-02-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 mlxlogscore=788 malwarescore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302170036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,34 +86,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: sfr@canb.auug.org.au, peterz@infradead.org, sv@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 16, 2023 at 9:12 PM Yu Zhao <yuzhao@google.com> wrote:
->
-> This patch adds kvm_arch_test_clear_young() for the vast majority of
-> VMs that are not nested and run on hardware with Radix MMU enabled.
->
-> It relies on two techniques, RCU and cmpxchg, to safely test and clear
-> the accessed bit without taking the MMU lock. The former protects KVM
-> page tables from being freed while the latter clears the accessed bit
-> atomically against both the hardware and other software page table
-> walkers.
->
-> Signed-off-by: Yu Zhao <yuzhao@google.com>
-> ---
->  arch/powerpc/include/asm/kvm_host.h    | 18 ++++++
->  arch/powerpc/include/asm/kvm_ppc.h     | 14 +----
->  arch/powerpc/kvm/book3s.c              |  7 +++
->  arch/powerpc/kvm/book3s.h              |  2 +
->  arch/powerpc/kvm/book3s_64_mmu_radix.c | 78 +++++++++++++++++++++++++-
->  arch/powerpc/kvm/book3s_hv.c           | 10 ++--
->  6 files changed, 110 insertions(+), 19 deletions(-)
+objtool throws the following warning:
+  arch/powerpc/kernel/head_64.o: warning: objtool: .text+0x6128:
+  unannotated intra-function call
 
-Adding Michael, Nicholas and Christophe.
+Fix the warning by annotating start_initialization_book3s symbol with the
+SYM_FUNC_START_LOCAL and SYM_FUNC_END macros.
 
-I'm not sure who I should add for this patch. Can you please add any
-interested parties that I've missed?
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+---
+ arch/powerpc/kernel/head_64.S | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thank you.
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 3a7266fa8a18..1febb56ebaeb 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -472,7 +472,7 @@ SYM_FUNC_START_LOCAL(__mmu_off)
+ 	b	.	/* prevent speculative execution */
+ SYM_FUNC_END(__mmu_off)
+ 
+-start_initialization_book3s:
++SYM_FUNC_START_LOCAL(start_initialization_book3s)
+ 	mflr	r25
+ 
+ 	/* Setup some critical 970 SPRs before switching MMU off */
+@@ -494,6 +494,7 @@ start_initialization_book3s:
+ 
+ 	mtlr	r25
+ 	blr
++SYM_FUNC_END(start_initialization_book3s)
+ #endif
+ 
+ /*
+-- 
+2.31.1
+
