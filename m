@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268FC69A4D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 05:21:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7955669A4D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 05:23:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PHzCm6ndQz3fBf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 15:21:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PHzFr2fVLz3fSY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 15:23:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gziB1Brv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=tKKqOK/4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--yuzhao.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3up7uywykdjcplq81f7ff7c5.3fdc9elogg3-45mc9jkj.fqc12j.fi7@flex--yuzhao.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--yuzhao.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3uv7uywykdjkrnsa3h9hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--yuzhao.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gziB1Brv;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=tKKqOK/4;
 	dkim-atps=neutral
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHz1R1MYnz3cMx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 15:12:43 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-50e79ffba49so44465937b3.9
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 20:12:42 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PHz1S24CTz3cM7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 15:12:44 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id a1-20020a258701000000b008e1de4c1e7dso4316844ybl.17
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Feb 2023 20:12:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6v2BS1UfItgh1K5tfej0Iq92+WtqqMzCx/cGSgmoiSg=;
-        b=gziB1BrvY9BHZS7WfBeSnKEbTJsWIJ/fFr2/PiFmwtTyfe68OsIjhQ61dZpnb87SkA
-         JE0OnpGDz5FxpkIlNn0nA2tfqnhJ3b3cHbwE9Flj2oR041XOL5Rmeeme4csAtb6QB8A7
-         1dwd6zfVUE8cwmDds621GWHJkAxZcDvbF53xftCwvOocB2lzYTkdoHlckg6k5SWObsu/
-         JnAmp96+xPUNaXs4fnLZH6LMMVGk9cwNJZuiX9VYpp8GDr7rFYU2r6amNuFL9lTtFwOC
-         0QGI/m4BCLP0eKmz8qQupuOfcUmAy+lDPbfLsyqst4coAeQie4wxcpaUJpvs3jf5QJc4
-         t1MA==
+        bh=amHoLle71o7p/XllEoZS3hif3UtpM0j0bW+cZG3KVdY=;
+        b=tKKqOK/4v9Nsl+iZ5uj+QLwvBB9/MlZmEqfeAcO65vdFUXJ2neb8OCPtRfPOaWDyxP
+         FkEFBCKiFG2TAlI4pbNOUhKBZytnLS1P7nr+a+PTPquwKNcmuXNGSPjkFUGmw29bW+Ah
+         /Da997b9GFB7bCnPYHpg2jKoZ2Y/mB2zh9Hp5FwTJeHoexE5+GN1xeuXBJXsz8C8IX5S
+         L7gcpavYRz3yYEoRWFaXHcNffqgqtABgaN3Ncgntbv/iUEBl68KG/tq6fbetIAu2dGSB
+         ToUCeR9ccz+fO4AOL2Ch/Flg7o+hMxiFfDMOP9ByuijjtcQxaoorvyhl8x0v3P6WJKBQ
+         RryA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6v2BS1UfItgh1K5tfej0Iq92+WtqqMzCx/cGSgmoiSg=;
-        b=iAcatwIoEfuaa/sfLwPbizyWEG6+Tpd9+sVYegqRv/2kBOP6CDjzPGork//PwfvP34
-         Mv/lYXTfLpCMZOCulgasM3UWqKcC9IC8Xp4qrKRKG7EQGMP/savQTmWdRd5DpR96qoDa
-         7JGKfLdc02C0mgkevwoMNH11229H6qRdYN41Ka09gr34h3MroWZpMb16kk8Ts0aGnekI
-         3kBVlGcSPUCd0Y/gBgBIVnErHLmU9ZIlSNwCdyGHRLgaxpxed+ngIyRqCk+k3PMvzTxX
-         rK1efCTz0XBJ2x4tH7EmZJe2ZIstiCKsg4oa1unHjSYmtJCks3NPiIkaltgGtQmTYAd4
-         nHPQ==
-X-Gm-Message-State: AO0yUKVIF7oExdFTiCp6Gn7Pfi7nRotFs7bIGnNIj2EdmVaJBdSv+2YO
-	q3rAmQ6g2f65nakHJsZouwT0nG/zgeo=
-X-Google-Smtp-Source: AK7set/Pxuk29uHWJwH5Tc+hpFqe2YNk4NRZV8/+4ud1blKjBerJFMDRpndxfsiGGJtM3eObeOVv77vpkZw=
+        bh=amHoLle71o7p/XllEoZS3hif3UtpM0j0bW+cZG3KVdY=;
+        b=PXaznHn2J+NjREoidrxxfxgti228/DhVn6NxJ4x1irRcLcmMWZc5l7//2QfOXhGhvq
+         k8Jiz4q9v0LZYDUvEAAMaqiX32QmwGSXvGrYybdTGe1khNcspH2Hiqqi1c1K5dHkUpzc
+         iyQV+kGFJm1HkNqOk8qV32fdkCbXwwrSC1B69+gwQXOFxAaZaiY91abzOKjg7sBm0MFM
+         En9FP6UT/IIJ8nzKG78XzRDUA+4m+I9ARAo9MRpMRVZtDpQXC0DhaDkXBkit+UOmKlIF
+         CB/cLAq3OR2L33PVXbmoC2y+MtsMT/YdEoTHsFNAw6KMqlpMD95ZAo/qyxBslS+6DWkn
+         Z6ng==
+X-Gm-Message-State: AO0yUKUuRuYlONLaDyVpq7FXtAC/8JxOs99l0LxAimdiw4BDenArA+Tw
+	uiLCoso5MrVZkK5M8YX2y/Qxyns909Y=
+X-Google-Smtp-Source: AK7set/zG1Ljp2MUiBWQb+jj+0ocG59LCXivAn6wr+nza0TKNrRHXUDRDhG90IH2RrsF7xFXRI6zxpp9jUg=
 X-Received: from yuzhao.bld.corp.google.com ([2620:15c:183:200:6fb3:61e:d31f:1ad3])
- (user=yuzhao job=sendgmr) by 2002:a25:9c83:0:b0:93c:785a:ba76 with SMTP id
- y3-20020a259c83000000b0093c785aba76mr1106910ybo.617.1676607160685; Thu, 16
- Feb 2023 20:12:40 -0800 (PST)
-Date: Thu, 16 Feb 2023 21:12:28 -0700
+ (user=yuzhao job=sendgmr) by 2002:a05:6902:3c7:b0:8dd:52a3:b3a5 with SMTP id
+ g7-20020a05690203c700b008dd52a3b3a5mr70700ybs.5.1676607162038; Thu, 16 Feb
+ 2023 20:12:42 -0800 (PST)
+Date: Thu, 16 Feb 2023 21:12:29 -0700
 In-Reply-To: <20230217041230.2417228-1-yuzhao@google.com>
-Message-Id: <20230217041230.2417228-4-yuzhao@google.com>
+Message-Id: <20230217041230.2417228-5-yuzhao@google.com>
 Mime-Version: 1.0
 References: <20230217041230.2417228-1-yuzhao@google.com>
 X-Mailer: git-send-email 2.39.2.637.g21b0678d19-goog
-Subject: [PATCH mm-unstable v1 3/5] kvm/arm64: add kvm_arch_test_clear_young()
+Subject: [PATCH mm-unstable v1 4/5] kvm/powerpc: add kvm_arch_test_clear_young()
 From: Yu Zhao <yuzhao@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -80,8 +80,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This patch adds kvm_arch_test_clear_young() for the vast majority of
-VMs that are not pKVM and run on hardware that sets the accessed bit
-in KVM page tables.
+VMs that are not nested and run on hardware with Radix MMU enabled.
 
 It relies on two techniques, RCU and cmpxchg, to safely test and clear
 the accessed bit without taking the MMU lock. The former protects KVM
@@ -91,305 +90,247 @@ walkers.
 
 Signed-off-by: Yu Zhao <yuzhao@google.com>
 ---
- arch/arm64/include/asm/kvm_host.h       |  7 +++
- arch/arm64/include/asm/kvm_pgtable.h    |  8 +++
- arch/arm64/include/asm/stage2_pgtable.h | 43 ++++++++++++++
- arch/arm64/kvm/arm.c                    |  1 +
- arch/arm64/kvm/hyp/pgtable.c            | 51 ++--------------
- arch/arm64/kvm/mmu.c                    | 77 ++++++++++++++++++++++++-
- 6 files changed, 141 insertions(+), 46 deletions(-)
+ arch/powerpc/include/asm/kvm_host.h    | 18 ++++++
+ arch/powerpc/include/asm/kvm_ppc.h     | 14 +----
+ arch/powerpc/kvm/book3s.c              |  7 +++
+ arch/powerpc/kvm/book3s.h              |  2 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 78 +++++++++++++++++++++++++-
+ arch/powerpc/kvm/book3s_hv.c           | 10 ++--
+ 6 files changed, 110 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 35a159d131b5..572bcd321586 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1031,4 +1031,11 @@ static inline void kvm_hyp_reserve(void) { }
- void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
- bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index caea15dcb91d..996850029ce0 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -886,4 +886,22 @@ static inline void kvm_arch_exit(void) {}
+ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
  
++static inline int kvmppc_radix_possible(void)
++{
++	return cpu_has_feature(CPU_FTR_ARCH_300) && radix_enabled();
++}
++
++static inline bool kvmhv_on_pseries(void)
++{
++	return IS_ENABLED(CONFIG_PPC_PSERIES) && !cpu_has_feature(CPU_FTR_HVMODE);
++}
++
 +/* see the comments on the generic kvm_arch_has_test_clear_young() */
 +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
 +static inline bool kvm_arch_has_test_clear_young(void)
 +{
-+	return IS_ENABLED(CONFIG_KVM) && cpu_has_hw_af() && !is_protected_kvm_enabled();
++	return IS_ENABLED(CONFIG_KVM) && IS_ENABLED(CONFIG_KVM_BOOK3S_HV_POSSIBLE) &&
++	       kvmppc_radix_possible() && !kvmhv_on_pseries();
 +}
 +
- #endif /* __ARM64_KVM_HOST_H__ */
-diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-index 63f81b27a4e3..8c9a04388c88 100644
---- a/arch/arm64/include/asm/kvm_pgtable.h
-+++ b/arch/arm64/include/asm/kvm_pgtable.h
-@@ -105,6 +105,7 @@ static inline bool kvm_level_supports_block_mapping(u32 level)
-  * @put_page:			Decrement the refcount on a page. When the
-  *				refcount reaches 0 the page is automatically
-  *				freed.
-+ * @put_page_rcu:		RCU variant of put_page().
-  * @page_count:			Return the refcount of a page.
-  * @phys_to_virt:		Convert a physical address into a virtual
-  *				address	mapped in the current context.
-@@ -122,6 +123,7 @@ struct kvm_pgtable_mm_ops {
- 	void		(*free_removed_table)(void *addr, u32 level);
- 	void		(*get_page)(void *addr);
- 	void		(*put_page)(void *addr);
-+	void		(*put_page_rcu)(void *addr);
- 	int		(*page_count)(void *addr);
- 	void*		(*phys_to_virt)(phys_addr_t phys);
- 	phys_addr_t	(*virt_to_phys)(void *addr);
-@@ -188,6 +190,12 @@ typedef bool (*kvm_pgtable_force_pte_cb_t)(u64 addr, u64 end,
-  *					children.
-  * @KVM_PGTABLE_WALK_SHARED:		Indicates the page-tables may be shared
-  *					with other software walkers.
-+ *
-+ * kvm_arch_test_clear_young() is a special case. It relies on two
-+ * techniques, RCU and cmpxchg, to safely test and clear the accessed
-+ * bit without taking the MMU lock. The former protects KVM page tables
-+ * from being freed while the latter clears the accessed bit atomically
-+ * against both the hardware and other software page table walkers.
-  */
- enum kvm_pgtable_walk_flags {
- 	KVM_PGTABLE_WALK_LEAF			= BIT(0),
-diff --git a/arch/arm64/include/asm/stage2_pgtable.h b/arch/arm64/include/asm/stage2_pgtable.h
-index c8dca8ae359c..350437661d4b 100644
---- a/arch/arm64/include/asm/stage2_pgtable.h
-+++ b/arch/arm64/include/asm/stage2_pgtable.h
-@@ -30,4 +30,47 @@
-  */
- #define kvm_mmu_cache_min_pages(kvm)	(kvm_stage2_levels(kvm) - 1)
+ #endif /* __POWERPC_KVM_HOST_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index eae9619b6190..0bb772fc12b1 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -277,6 +277,8 @@ struct kvmppc_ops {
+ 	bool (*unmap_gfn_range)(struct kvm *kvm, struct kvm_gfn_range *range);
+ 	bool (*age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
+ 	bool (*test_age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
++	bool (*test_clear_young)(struct kvm *kvm, struct kvm_gfn_range *range,
++				 gfn_t lsb_gfn, unsigned long *bitmap);
+ 	bool (*set_spte_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
+ 	void (*free_memslot)(struct kvm_memory_slot *slot);
+ 	int (*init_vm)(struct kvm *kvm);
+@@ -580,18 +582,6 @@ static inline bool kvm_hv_mode_active(void)		{ return false; }
  
-+#define KVM_PTE_TYPE			BIT(1)
-+#define KVM_PTE_TYPE_BLOCK		0
-+#define KVM_PTE_TYPE_PAGE		1
-+#define KVM_PTE_TYPE_TABLE		1
-+
-+#define KVM_PTE_LEAF_ATTR_LO		GENMASK(11, 2)
-+
-+#define KVM_PTE_LEAF_ATTR_LO_S1_ATTRIDX	GENMASK(4, 2)
-+#define KVM_PTE_LEAF_ATTR_LO_S1_AP	GENMASK(7, 6)
-+#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RO	3
-+#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RW	1
-+#define KVM_PTE_LEAF_ATTR_LO_S1_SH	GENMASK(9, 8)
-+#define KVM_PTE_LEAF_ATTR_LO_S1_SH_IS	3
-+#define KVM_PTE_LEAF_ATTR_LO_S1_AF	BIT(10)
-+
-+#define KVM_PTE_LEAF_ATTR_LO_S2_MEMATTR	GENMASK(5, 2)
-+#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R	BIT(6)
-+#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W	BIT(7)
-+#define KVM_PTE_LEAF_ATTR_LO_S2_SH	GENMASK(9, 8)
-+#define KVM_PTE_LEAF_ATTR_LO_S2_SH_IS	3
-+#define KVM_PTE_LEAF_ATTR_LO_S2_AF	BIT(10)
-+
-+#define KVM_PTE_LEAF_ATTR_HI		GENMASK(63, 51)
-+
-+#define KVM_PTE_LEAF_ATTR_HI_SW		GENMASK(58, 55)
-+
-+#define KVM_PTE_LEAF_ATTR_HI_S1_XN	BIT(54)
-+
-+#define KVM_PTE_LEAF_ATTR_HI_S2_XN	BIT(54)
-+
-+#define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
-+					 KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
-+					 KVM_PTE_LEAF_ATTR_HI_S2_XN)
-+
-+#define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
-+#define KVM_MAX_OWNER_ID		1
-+
-+/*
-+ * Used to indicate a pte for which a 'break-before-make' sequence is in
-+ * progress.
-+ */
-+#define KVM_INVALID_PTE_LOCKED		BIT(10)
-+
- #endif	/* __ARM64_S2_PGTABLE_H_ */
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 9c5573bc4614..6770bc47f5c9 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -191,6 +191,7 @@ vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
-  */
- void kvm_arch_destroy_vm(struct kvm *kvm)
+ #endif
+ 
+-#ifdef CONFIG_PPC_PSERIES
+-static inline bool kvmhv_on_pseries(void)
+-{
+-	return !cpu_has_feature(CPU_FTR_HVMODE);
+-}
+-#else
+-static inline bool kvmhv_on_pseries(void)
+-{
+-	return false;
+-}
+-#endif
+-
+ #ifdef CONFIG_KVM_XICS
+ static inline int kvmppc_xics_enabled(struct kvm_vcpu *vcpu)
  {
-+	kvm_free_stage2_pgd(&kvm->arch.mmu);
- 	bitmap_free(kvm->arch.pmu_filter);
- 	free_cpumask_var(kvm->arch.supported_cpus);
- 
-diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-index b11cf2c618a6..8d65ee4767f1 100644
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -12,49 +12,6 @@
- #include <asm/stage2_pgtable.h>
- 
- 
--#define KVM_PTE_TYPE			BIT(1)
--#define KVM_PTE_TYPE_BLOCK		0
--#define KVM_PTE_TYPE_PAGE		1
--#define KVM_PTE_TYPE_TABLE		1
--
--#define KVM_PTE_LEAF_ATTR_LO		GENMASK(11, 2)
--
--#define KVM_PTE_LEAF_ATTR_LO_S1_ATTRIDX	GENMASK(4, 2)
--#define KVM_PTE_LEAF_ATTR_LO_S1_AP	GENMASK(7, 6)
--#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RO	3
--#define KVM_PTE_LEAF_ATTR_LO_S1_AP_RW	1
--#define KVM_PTE_LEAF_ATTR_LO_S1_SH	GENMASK(9, 8)
--#define KVM_PTE_LEAF_ATTR_LO_S1_SH_IS	3
--#define KVM_PTE_LEAF_ATTR_LO_S1_AF	BIT(10)
--
--#define KVM_PTE_LEAF_ATTR_LO_S2_MEMATTR	GENMASK(5, 2)
--#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R	BIT(6)
--#define KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W	BIT(7)
--#define KVM_PTE_LEAF_ATTR_LO_S2_SH	GENMASK(9, 8)
--#define KVM_PTE_LEAF_ATTR_LO_S2_SH_IS	3
--#define KVM_PTE_LEAF_ATTR_LO_S2_AF	BIT(10)
--
--#define KVM_PTE_LEAF_ATTR_HI		GENMASK(63, 51)
--
--#define KVM_PTE_LEAF_ATTR_HI_SW		GENMASK(58, 55)
--
--#define KVM_PTE_LEAF_ATTR_HI_S1_XN	BIT(54)
--
--#define KVM_PTE_LEAF_ATTR_HI_S2_XN	BIT(54)
--
--#define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
--					 KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
--					 KVM_PTE_LEAF_ATTR_HI_S2_XN)
--
--#define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
--#define KVM_MAX_OWNER_ID		1
--
--/*
-- * Used to indicate a pte for which a 'break-before-make' sequence is in
-- * progress.
-- */
--#define KVM_INVALID_PTE_LOCKED		BIT(10)
--
- struct kvm_pgtable_walk_data {
- 	struct kvm_pgtable_walker	*walker;
- 
-@@ -994,8 +951,12 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
- 		mm_ops->dcache_clean_inval_poc(kvm_pte_follow(ctx->old, mm_ops),
- 					       kvm_granule_size(ctx->level));
- 
--	if (childp)
--		mm_ops->put_page(childp);
-+	if (childp) {
-+		if (mm_ops->put_page_rcu)
-+			mm_ops->put_page_rcu(childp);
-+		else
-+			mm_ops->put_page(childp);
-+	}
- 
- 	return 0;
- }
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index a3ee3b605c9b..761fffc788f5 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -171,6 +171,21 @@ static int kvm_host_page_count(void *addr)
- 	return page_count(virt_to_page(addr));
+diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+index 6d525285dbe8..f4cf330e3e81 100644
+--- a/arch/powerpc/kvm/book3s.c
++++ b/arch/powerpc/kvm/book3s.c
+@@ -877,6 +877,13 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ 	return kvm->arch.kvm_ops->test_age_gfn(kvm, range);
  }
  
-+static void kvm_s2_rcu_put_page(struct rcu_head *head)
-+{
-+	put_page(container_of(head, struct page, rcu_head));
-+}
-+
-+static void kvm_s2_put_page_rcu(void *addr)
-+{
-+	struct page *page = virt_to_page(addr);
-+
-+	if (kvm_host_page_count(addr) == 1)
-+		kvm_account_pgtable_pages(addr, -1);
-+
-+	call_rcu(&page->rcu_head, kvm_s2_rcu_put_page);
-+}
-+
- static phys_addr_t kvm_host_pa(void *addr)
- {
- 	return __pa(addr);
-@@ -684,6 +699,7 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
- 	.free_removed_table	= stage2_free_removed_table,
- 	.get_page		= kvm_host_get_page,
- 	.put_page		= kvm_s2_put_page,
-+	.put_page_rcu		= kvm_s2_put_page_rcu,
- 	.page_count		= kvm_host_page_count,
- 	.phys_to_virt		= kvm_host_va,
- 	.virt_to_phys		= kvm_host_pa,
-@@ -1624,6 +1640,66 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- 	return pte_valid(pte) && pte_young(pte);
- }
- 
-+struct test_clear_young_arg {
-+	struct kvm_gfn_range *range;
-+	gfn_t lsb_gfn;
-+	unsigned long *bitmap;
-+};
-+
-+static int stage2_test_clear_young(const struct kvm_pgtable_visit_ctx *ctx,
-+				   enum kvm_pgtable_walk_flags flags)
-+{
-+	struct test_clear_young_arg *arg = ctx->arg;
-+	gfn_t gfn = ctx->addr / PAGE_SIZE;
-+	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
-+
-+	VM_WARN_ON_ONCE(!page_count(virt_to_page(ctx->ptep)));
-+	VM_WARN_ON_ONCE(gfn < arg->range->start || gfn >= arg->range->end);
-+
-+	if (!kvm_pte_valid(new))
-+		return 0;
-+
-+	if (new == ctx->old)
-+		return 0;
-+
-+	/* see the comments on the generic kvm_arch_has_test_clear_young() */
-+	if (__test_and_change_bit(arg->lsb_gfn - gfn, arg->bitmap))
-+		cmpxchg64(ctx->ptep, ctx->old, new);
-+
-+	return 0;
-+}
-+
 +bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
 +			       gfn_t lsb_gfn, unsigned long *bitmap)
 +{
-+	u64 start = range->start * PAGE_SIZE;
-+	u64 end = range->end * PAGE_SIZE;
-+	struct test_clear_young_arg arg = {
-+		.range		= range,
-+		.lsb_gfn	= lsb_gfn,
-+		.bitmap		= bitmap,
-+	};
-+	struct kvm_pgtable_walker walker = {
-+		.cb		= stage2_test_clear_young,
-+		.arg		= &arg,
-+		.flags		= KVM_PGTABLE_WALK_LEAF,
-+	};
++	return kvm->arch.kvm_ops->test_clear_young &&
++	       kvm->arch.kvm_ops->test_clear_young(kvm, range, lsb_gfn, bitmap);
++}
 +
-+	BUILD_BUG_ON(is_hyp_code());
+ bool kvm_set_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+ 	return kvm->arch.kvm_ops->set_spte_gfn(kvm, range);
+diff --git a/arch/powerpc/kvm/book3s.h b/arch/powerpc/kvm/book3s.h
+index 58391b4b32ed..fe9cac423817 100644
+--- a/arch/powerpc/kvm/book3s.h
++++ b/arch/powerpc/kvm/book3s.h
+@@ -12,6 +12,8 @@ extern void kvmppc_core_flush_memslot_hv(struct kvm *kvm,
+ extern bool kvm_unmap_gfn_range_hv(struct kvm *kvm, struct kvm_gfn_range *range);
+ extern bool kvm_age_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range);
+ extern bool kvm_test_age_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range);
++extern bool kvmhv_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
++				   gfn_t lsb_gfn, unsigned long *bitmap);
+ extern bool kvm_set_spte_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range);
+ 
+ extern int kvmppc_mmu_init_pr(struct kvm_vcpu *vcpu);
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 9d3743ca16d5..8476646c554c 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -1083,6 +1083,78 @@ bool kvm_test_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	return ref;
+ }
+ 
++bool kvmhv_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
++			    gfn_t lsb_gfn, unsigned long *bitmap)
++{
++	bool success;
++	gfn_t gfn = range->start;
 +
 +	if (WARN_ON_ONCE(!kvm_arch_has_test_clear_young()))
 +		return false;
 +
-+	/* see the comments on kvm_pgtable_walk_flags */
++	/*
++	 * This function relies on two techniques, RCU and cmpxchg, to safely
++	 * test and clear the accessed bit without taking the MMU lock. The
++	 * former protects KVM page tables from being freed while the latter
++	 * clears the accessed bit atomically against both the hardware and
++	 * other software page table walkers.
++	 */
 +	rcu_read_lock();
 +
-+	kvm_pgtable_walk(kvm->arch.mmu.pgt, start, end - start, &walker);
++	success = kvm_is_radix(kvm);
++	if (!success)
++		goto unlock;
 +
++	/*
++	 * case 1:  this function          kvmppc_switch_mmu_to_hpt()
++	 *
++	 *          rcu_read_lock()
++	 *          test kvm_is_radix()    kvm->arch.radix = 0
++	 *          use kvm->arch.pgtable
++	 *          rcu_read_unlock()
++	 *                                 synchronize_rcu()
++	 *                                 kvmppc_free_radix()
++	 *
++	 *
++	 * case 2:  this function          kvmppc_switch_mmu_to_radix()
++	 *
++	 *                                 kvmppc_init_vm_radix()
++	 *                                 smp_wmb()
++	 *          test kvm_is_radix()    kvm->arch.radix = 1
++	 *          smp_rmb()
++	 *          use kvm->arch.pgtable
++	 */
++	smp_rmb();
++
++	while (gfn < range->end) {
++		pte_t *ptep;
++		pte_t old, new;
++		unsigned int shift;
++
++		ptep = find_kvm_secondary_pte_unlocked(kvm, gfn * PAGE_SIZE, &shift);
++		if (!ptep)
++			goto next;
++
++		VM_WARN_ON_ONCE(!page_count(virt_to_page(ptep)));
++
++		old = READ_ONCE(*ptep);
++		if (!pte_present(old) || !pte_young(old))
++			goto next;
++
++		new = pte_mkold(old);
++
++		/* see the comments on the generic kvm_arch_has_test_clear_young() */
++		if (__test_and_change_bit(lsb_gfn - gfn, bitmap))
++			pte_xchg(ptep, old, new);
++next:
++		gfn += shift ? BIT(shift - PAGE_SHIFT) : 1;
++	}
++unlock:
 +	rcu_read_unlock();
 +
-+	return true;
++	return success;
 +}
 +
- bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ /* Returns the number of PAGE_SIZE pages that are dirty */
+ static int kvm_radix_test_clear_dirty(struct kvm *kvm,
+ 				struct kvm_memory_slot *memslot, int pagenum)
+@@ -1464,13 +1536,15 @@ int kvmppc_radix_init(void)
  {
- 	if (!kvm->arch.mmu.pgt)
-@@ -1848,7 +1924,6 @@ void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen)
+ 	unsigned long size = sizeof(void *) << RADIX_PTE_INDEX_SIZE;
  
- void kvm_arch_flush_shadow_all(struct kvm *kvm)
- {
--	kvm_free_stage2_pgd(&kvm->arch.mmu);
+-	kvm_pte_cache = kmem_cache_create("kvm-pte", size, size, 0, pte_ctor);
++	kvm_pte_cache = kmem_cache_create("kvm-pte", size, size,
++					  SLAB_TYPESAFE_BY_RCU, pte_ctor);
+ 	if (!kvm_pte_cache)
+ 		return -ENOMEM;
+ 
+ 	size = sizeof(void *) << RADIX_PMD_INDEX_SIZE;
+ 
+-	kvm_pmd_cache = kmem_cache_create("kvm-pmd", size, size, 0, pmd_ctor);
++	kvm_pmd_cache = kmem_cache_create("kvm-pmd", size, size,
++					  SLAB_TYPESAFE_BY_RCU, pmd_ctor);
+ 	if (!kvm_pmd_cache) {
+ 		kmem_cache_destroy(kvm_pte_cache);
+ 		return -ENOMEM;
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 6ba68dd6190b..17b415661282 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -5242,6 +5242,8 @@ int kvmppc_switch_mmu_to_hpt(struct kvm *kvm)
+ 	spin_lock(&kvm->mmu_lock);
+ 	kvm->arch.radix = 0;
+ 	spin_unlock(&kvm->mmu_lock);
++	/* see the comments in kvmhv_test_clear_young() */
++	synchronize_rcu();
+ 	kvmppc_free_radix(kvm);
+ 
+ 	lpcr = LPCR_VPM1;
+@@ -5266,6 +5268,8 @@ int kvmppc_switch_mmu_to_radix(struct kvm *kvm)
+ 	if (err)
+ 		return err;
+ 	kvmppc_rmap_reset(kvm);
++	/* see the comments in kvmhv_test_clear_young() */
++	smp_wmb();
+ 	/* Mutual exclusion with kvm_unmap_gfn_range etc. */
+ 	spin_lock(&kvm->mmu_lock);
+ 	kvm->arch.radix = 1;
+@@ -6165,6 +6169,7 @@ static struct kvmppc_ops kvm_ops_hv = {
+ 	.unmap_gfn_range = kvm_unmap_gfn_range_hv,
+ 	.age_gfn = kvm_age_gfn_hv,
+ 	.test_age_gfn = kvm_test_age_gfn_hv,
++	.test_clear_young = kvmhv_test_clear_young,
+ 	.set_spte_gfn = kvm_set_spte_gfn_hv,
+ 	.free_memslot = kvmppc_core_free_memslot_hv,
+ 	.init_vm =  kvmppc_core_init_vm_hv,
+@@ -6225,11 +6230,6 @@ static int kvm_init_subcore_bitmap(void)
+ 	return 0;
  }
  
- void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+-static int kvmppc_radix_possible(void)
+-{
+-	return cpu_has_feature(CPU_FTR_ARCH_300) && radix_enabled();
+-}
+-
+ static int kvmppc_book3s_init_hv(void)
+ {
+ 	int r;
 -- 
 2.39.2.637.g21b0678d19-goog
 
