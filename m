@@ -2,55 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D01F69B3BE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 21:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2907769B3C1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 21:20:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJNSt0Wptz3f7p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 07:19:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJNVB6n5Rz3f8M
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 07:20:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=obYLelZ0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZAtVCPSW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::231; helo=relay11.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=obYLelZ0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZAtVCPSW;
 	dkim-atps=neutral
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [IPv6:2001:4b98:dc4:8::231])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJNRw5w8lz3cdp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 07:18:34 +1100 (AEDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 337FE100005;
-	Fri, 17 Feb 2023 20:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1676665105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E8lIhLyYZrWOGH9acO3c8AQgJcBFOpPFrurmuqfB/DU=;
-	b=obYLelZ0JpWaeHM6XQnuEUxoArkn0+207v2TingL+S5XYm+6rwdff8zRrzHgkYLJWrd+Ph
-	fMP9ByQfat3MpOUROCd8ZI/xIlRtYV5geFdbGDqh8MtLoxR46yJPFJ9uL72EsEIp7vwUdD
-	WHJe2q4dgHghfDTa3rnFerrXAS50zXfIbxGXy9LCO3avlzWJuZ0F8UvmqBdYOoJWcI1HJC
-	3jF6uf4FB6X7h8dR1SQehYPUnMlCli6LiksbHXvRNgMuKPji4vkMkQk93+nZfPPeENfMxE
-	8YknYacLfbmAreQ6q91HJ/heB2kN7gRA7RO29JggH1vCkXQdg1Pe5pEZAjz3wg==
-Date: Fri, 17 Feb 2023 21:18:20 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 00/10] Add the PowerQUICC audio support using the QMC
-Message-ID: <20230217211820.39fb47a7@bootlin.com>
-In-Reply-To: <Y+/SStm9ifszrYA1@sirena.org.uk>
-References: <20230216134226.1692107-1-herve.codina@bootlin.com>
-	<87mt5dyxph.fsf@mpe.ellerman.id.au>
-	<0606f44f-bdbb-055c-6fff-440007222ce3@csgroup.eu>
-	<Y+/SStm9ifszrYA1@sirena.org.uk>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJNTF3K76z3c3G
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 07:19:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id EBAAD61FB9;
+	Fri, 17 Feb 2023 20:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C517C433D2;
+	Fri, 17 Feb 2023 20:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676665181;
+	bh=dbB6CcifEQa8Ji/ciEHNfB6bXYW8j5MS0/6hgubfde0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZAtVCPSW/8iMRPPOnUI/NurcKSXtzlP/M6HiyWMQ+79cplQq08Rk3gkdl5oLSnIoa
+	 x3dLOL/lqqqUl7Au1JEwQqP0lWLcO1L3kpdUmnocg3DJgtlAlwFLfjrvUK2o0RDxrt
+	 5UBLpRI1vFpGpvwonMsd4QxzDPqETYhtkqkwjjjhgM7Lmrk8onxOfnIynQGJM+L/8i
+	 JD/UY/6O0Oi8IB8k8vRkb6wi4vcnJbY7UdjK3mpjOrQEfPnhV3T47ZKpRAiDG4DQi4
+	 qUjFGF/pBj6E9a/geHyXln+OrLaYw4EAUu6tOb+o6uLNFNDZ5ScXFMuNQFyyqFBe6C
+	 lR6JvPDrOuznw==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id 9D0A040025; Fri, 17 Feb 2023 17:19:38 -0300 (-03)
+Date: Fri, 17 Feb 2023 17:19:38 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Ian Rogers <irogers@google.com>
+Subject: Re: [PATCH] powerpc/perf: Add json metric events to present CPI
+ stall cycles in powerpc
+Message-ID: <Y+/hWuRFPZwjcIxh@kernel.org>
+References: <20230216061240.18067-1-atrajeev@linux.vnet.ibm.com>
+ <CAP-5=fWBb2=g82uVTkUbENThsnZyhzU+BHWVpuM7iYWDuA_TqA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP-5=fWBb2=g82uVTkUbENThsnZyhzU+BHWVpuM7iYWDuA_TqA@mail.gmail.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,25 +64,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Xiubo Li <Xiubo.Lee@gmail.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Fabio Estevam <festevam@gmail.com>, Jaroslav Kysela <perex@perex.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: ak@linux.intel.com, rnsastry@linux.ibm.com, maddy@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 17 Feb 2023 19:15:22 +0000
-Mark Brown <broonie@kernel.org> wrote:
+Em Thu, Feb 16, 2023 at 10:10:05AM -0800, Ian Rogers escreveu:
+> On Wed, Feb 15, 2023 at 10:12 PM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+> >
+> > Power10 Performance Monitoring Unit (PMU) provides events
+> > to understand stall cycles of different pipeline stages.
+> > These events along with completed instructions provides
+> > useful metrics for application tuning.
+> >
+> > Patch implements the json changes to collect counter statistics
+> > to present the high level CPI stall breakdown metrics. New metric
+> > group is named as "CPI_STALL_RATIO" and this new metric group
+> > presents these stall metrics:
+> > - DISPATCHED_CPI ( Dispatch stall cycles per insn )
+> > - ISSUE_STALL_CPI ( Issue stall cycles per insn )
+> > - EXECUTION_STALL_CPI ( Execution stall cycles per insn )
+> > - COMPLETION_STALL_CPI ( Completition stall cycles per insn )
+> >
+> > To avoid multipling of events, PM_RUN_INST_CMPL event has been
+> > modified to use PMC5(performance monitoring counter5) instead
+> > of PMC4. This change is needed, since completion stall event
+> > is using PMC4.
+> >
+> > Usage example:
+> >
+> >  ./perf stat --metric-no-group -M CPI_STALL_RATIO <workload>
+> >
+> >  Performance counter stats for 'workload':
+> >
+> >     63,056,817,982      PM_CMPL_STALL                    #     0.28 COMPLETION_STALL_CPI
+> >  1,743,988,038,896      PM_ISSUE_STALL                   #     7.73 ISSUE_STALL_CPI
+> >    225,597,495,030      PM_RUN_INST_CMPL                 #     6.18 DISPATCHED_CPI
+> >                                                   #    37.48 EXECUTION_STALL_CPI
+> >  1,393,916,546,654      PM_DISP_STALL_CYC
+> >  8,455,376,836,463      PM_EXEC_STALL
+> >
+> > "--metric-no-group" is used for forcing PM_RUN_INST_CMPL to be scheduled
+> > in all group for more accuracy.
+> >
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> 
+> Acked-by: Ian Rogers <irogers@google.com>
 
-> On Fri, Feb 17, 2023 at 06:32:03AM +0000, Christophe Leroy wrote:
->=20
-> > Mark, is that ok for you or do you expect this series to go via soc tre=
-e ?
->=20
-> Sure, that sounds good to me.  I'll give it another check and
-> then assuming everything is fine apply for -rc1.
+Thanks, applied.
 
-Thanks a lot,
-Herv=C3=A9
+- Arnaldo
 
---=20
-Herv=C3=A9 Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
