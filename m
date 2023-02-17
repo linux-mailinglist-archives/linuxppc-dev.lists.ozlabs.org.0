@@ -1,49 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7037669B5A3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 23:41:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A598C69B5E9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 00:00:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJRcV2glGz3fQv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 09:41:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJS2Q3LV8z3fG7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 10:00:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YGujZgUO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=ZdJkqJ4w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=ZdJkqJ4w;
+	dkim-atps=neutral
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJRbY4lPNz3c46
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 09:40:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YGujZgUO;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PJRbW0Vsjz4x4n;
-	Sat, 18 Feb 2023 09:40:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1676673623;
-	bh=xs/wXkAOF8KGVOLSwFeJYUalyiRca72VPv45G0xVNz0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YGujZgUO8L0ZMey+VkfQmooepOjbfPkOthEnitIYAImrP6B1WFLZekDB+iYGM3H2I
-	 hFC1C0FjWK/i4CHAHk3pZ6TqrCh/tT0VgIVqp1tsEtLTJ18kpSLFKs3OhWvh7rFVkY
-	 P+6WFKgqPw0fy3SjAwxYX6Lbpk6Pe0NQUB8aBqUdOs8qpwV57Rk/y0H9NZInJPzEaz
-	 ++mRGdUzhRf0l+4IzztS8N4+zDyw9ZJxDzrk7BHavscQrFvmrqSs4lm2xqzYOjuV2x
-	 tplOWprRJp8BDFrw1qQe8ehJc8fX3ih/2MJmYdzE6hK2g7D0S6KWTFh8iIQnpyAKbH
-	 6u3yL/7gJJCUA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.2-6 tag
-Date: Sat, 18 Feb 2023 09:40:18 +1100
-Message-ID: <87h6vjzzjh.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJS1S04jMz3cJK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 09:59:23 +1100 (AEDT)
+Received: by mail-ed1-x52e.google.com with SMTP id cn2so9881181edb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 14:59:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tEQSmYhd5lnJCtQxFzcCmvjtHrTwKOp3ygZ8THJUUCE=;
+        b=ZdJkqJ4waQDuAQJEGWyJ3hvuW/8LBVyQq/Bo2iaLWQOjLKDO7Ir0YbQyTKVjnLyaEJ
+         L136l5pyGoYnoq+SRQNSW7XcfX/Gn4wXGFRTHr5L0wolMkcFPPWX0PU9KPPebXKrs8A0
+         EiWYr287GSbz5INdOAvFqnTZ5ur67QlgITwqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tEQSmYhd5lnJCtQxFzcCmvjtHrTwKOp3ygZ8THJUUCE=;
+        b=G+eDsmbkeHD/diVJGiFsS4fN183fShh54iQH4hIRW4PVRdAZL0T23WE6XNhoGZL+j7
+         exOMB8UqrPDcARvBWNSOoqQxPC6DU0k99Mb4uNafCMuTllhOq09J8mn+fxmlutDkMn5r
+         vN3nxFOJsZkX9c/9zwDAlcpl/NtDkkkdyd7Aqn7PlBwN6lCQewP/ZT2Cyh7Si1YLnm1y
+         tXWgX6CFDsxsjZLRhhIzR+IOHjKADw96jctfFcqCIIk4Ngu+2ahauDBGGlx9jLofDjba
+         tFyzHWgcSoRt0KpR7D21fTCsXW7ssOdpd83HCN7mSNsp0MYcp3ay01v52wlalYV+YVU9
+         BHug==
+X-Gm-Message-State: AO0yUKWS7EixnIoJAGBR/iT8Ztw/CmnR2kEGahmUChyVRN8a6iP0RYcI
+	wj0o+ysqog55huFtUfXG/AD+Ucwv8hYA6C1T17c=
+X-Google-Smtp-Source: AK7set9ryawXk4nXBQapq8DV8JzG3E40HJLX7f8dFYNfwNsGzfvV7Dkb0EgQdS4ZG+CsFdoBfTXSAQ==
+X-Received: by 2002:a17:907:c297:b0:8aa:6edf:2a9 with SMTP id tk23-20020a170907c29700b008aa6edf02a9mr1862634ejc.69.1676674756914;
+        Fri, 17 Feb 2023 14:59:16 -0800 (PST)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
+        by smtp.gmail.com with ESMTPSA id w18-20020a170907271200b008710789d85fsm2641480ejk.156.2023.02.17.14.59.16
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Feb 2023 14:59:16 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id ez12so9880848edb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 14:59:16 -0800 (PST)
+X-Received: by 2002:a17:907:988c:b0:877:747e:f076 with SMTP id
+ ja12-20020a170907988c00b00877747ef076mr1226419ejc.0.1676674755989; Fri, 17
+ Feb 2023 14:59:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <87h6vjzzjh.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87h6vjzzjh.fsf@mpe.ellerman.id.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 17 Feb 2023 14:58:59 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wh=m4sr1iLbt_PMmbrWsjLmkCAbz=NkKZmfTYFWv-RA7Q@mail.gmail.com>
+Message-ID: <CAHk-=wh=m4sr1iLbt_PMmbrWsjLmkCAbz=NkKZmfTYFWv-RA7Q@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.2-6 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,52 +84,14 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, bgray@linux.ibm
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Fri, Feb 17, 2023 at 2:40 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Thanks to: Benjamin Gray, "Erhard F.".
 
-Hi Linus,
+That just looks _odd_.
 
-Please pull one more powerpc fix for 6.2:
+It's not like the full name wasn't already elsewhere in the kernel
+logs as a reporter (and at least once as patch author), so I just
+fixed it up ;)
 
-The following changes since commit 2ea31e2e62bbc4d11c411eeb36f1b02841dbcab1:
-
-  powerpc/64s/interrupt: Fix interrupt exit race with security mitigation switch (2023-02-07 10:13:33 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.2-6
-
-for you to fetch changes up to 4302abc628fc0dc08e5855f21bbfaed407a72bc3:
-
-  powerpc/64s: Prevent fallthrough to hash TLB flush when using radix (2023-02-17 12:30:56 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.2 #6
-
- - Prevent fallthrough to hash TLB flush when using radix.
-
-Thanks to: Benjamin Gray, "Erhard F.".
-
-- ------------------------------------------------------------------
-Benjamin Gray (1):
-      powerpc/64s: Prevent fallthrough to hash TLB flush when using radix
-
-
- arch/powerpc/include/asm/book3s/64/tlbflush.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmPwAU4ACgkQUevqPMjh
-pYDPjRAAlpjdeTzrSwV63jF3q9I5H9mgdmiNa2ZfRifKI7FLvHd9Yob8gs35D//x
-CLLhrQmtWL9LooFu5bx+UsLs2MuLevmUsWFWXhYPwDjEuLx12VP64i4obbugH89e
-QbGr6J9HwwHQLnwFacBWAPHl4NGO2KhRt/GEZZsWvw/1szikYDJfNlhh6M5vD5PW
-XNgkA5aJdyegkYWlYF+OsRVeE3GRzqU1dDagdc+9kzXzkqcMj4DsxVohviTLhhua
-cIdfUlZV8BDQc0F2I4376mh4O1+b/k4eGbnyIF14jd0Z/9ZOF9nAkgU7s3Z74n38
-O5gIBPMSz8bXoYKyVCO61SoDZHUGCWTn0xx14/cl0PAgGoU29xUH5/+S1miN1LdE
-N9gA3hDNagfRpXTDCWmbp5BREHItLrDzKUv125Ipf5hilV0Yzp/G7JAfun8E37wx
-3I0iHvH/Feq55fT9w1lggQ/Qt+9147xd5GyCbEQn7mJ/jolSFRkLzpAhsnec7Iwr
-qs00/n1JrRK5Owi6Ir2ds8vGZP4dFSGxnzhDMU/PaacavBpGDPP8xb2JsrvpoR6o
-rhReC7bnmYKIel7YJAaY+U3qwyCdYMBrQGpnfOb1eMXFYXK2LopP4TWfVO/LxHsp
-7fllB3nBWGQX/fCwKe5QMUS9QhAYWJ1Y/hgq3Gg1o9nmfn2VWNY=
-=/f1f
------END PGP SIGNATURE-----
+               Linus
