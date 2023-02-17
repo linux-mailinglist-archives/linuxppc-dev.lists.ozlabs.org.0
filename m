@@ -1,67 +1,138 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7C369B0E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 17:29:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CB869B0EF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 17:31:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJHMB3V9yz3f92
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 03:29:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJHPG4RRYz3fXd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 03:30:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=r6zpCgId;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=bWROf97T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3_6rvywykddooawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::630; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=r6zpCgId;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=bWROf97T;
 	dkim-atps=neutral
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20630.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::630])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJHKb3R0Gz3f8t
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 03:27:45 +1100 (AEDT)
-Received: by mail-pg1-x549.google.com with SMTP id a30-20020a631a1e000000b004fc2619ca10so268598pga.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 08:27:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4YVD4HPM/U13lNq5dcSbfCi+RC3l2lmmTDVnKk+U87I=;
-        b=r6zpCgId+uislgL2VVqaVYl20g/yj/ZxvMorG6frzYxsXigXoBoC4GaqLH/wBq4mb+
-         RejV930LZfpO7fKKbvv6E+KaaRpzxx1gY58ABOIPQwUPIjLpmmnJdDj/6rNcWmjWIJfe
-         5BzRJYORELvSFKpOvDBNnF6ZroaZ7wivI32ru2/cQ7tSgPCfLvtw6Hi/hXe3B6Bcb0GE
-         mz/LnDcQgMSJM+4MVP2nH75vjPeikaqWCWyH1R91i3VG5Vnjlqy0N0q6OL1+nzgR8J5Y
-         1z025g8HTtIwrRNKZKyGOXPAFSyWGQA6voopYCTtnT4gw3L9QejJKyTO3lJmFGnNhRRo
-         eJdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4YVD4HPM/U13lNq5dcSbfCi+RC3l2lmmTDVnKk+U87I=;
-        b=bBnNiIy68zsNywQYvfpN4eLdBZSbLwWtc8HetLvK8Gv77qBK6q/xMZKbnpkfyWTss1
-         Q/XSDVwLdytorDELJ0axAAUfGT6i/NtHnIA3X4FNBPfGsPxLtDteKMwQlpKdTqp4gS7i
-         C5nsPy21bDOfbeddSC5H+/XPxkx/ioswW+IDdydsriU/XDosB1TZi+7keF7f35+D9OxJ
-         WE8s8TNSGfXHMH5jFj0wdj6VAi9F2iG/hNSxQgvRCSG4YvrB9vh6kdmnBevn0apwiZYt
-         TH2OUBxMAi4KxBnJCcNpqeGixEZ0U7Fyd6gqm3TC7Iz3viCrwVYYPPLGBSrTXcoVH9Vi
-         tDTw==
-X-Gm-Message-State: AO0yUKVLUz2jzdMHdEli/eel+2aHTahjvTyDhkKSWU7MYhBddG2o0K5/
-	ah8yFrOnAS9xmCPFVZqIpM7GFPln8Vw=
-X-Google-Smtp-Source: AK7set/1TAAUCASnSdsSbh6GvLTlKAx3R2Pc64lwPVqnFhcILEnQ1mn6YtGj91WtZHv454ZGEIXwznWd6Lk=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:1c3:b0:199:1a40:dccc with SMTP id
- e3-20020a17090301c300b001991a40dcccmr270951plh.9.1676651263720; Fri, 17 Feb
- 2023 08:27:43 -0800 (PST)
-Date: Fri, 17 Feb 2023 08:27:42 -0800
-In-Reply-To: <20230217041230.2417228-3-yuzhao@google.com>
-Mime-Version: 1.0
-References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-3-yuzhao@google.com>
-Message-ID: <Y++q/lglE6FJBdjt@google.com>
-Subject: Re: [PATCH mm-unstable v1 2/5] kvm/x86: add kvm_arch_test_clear_young()
-From: Sean Christopherson <seanjc@google.com>
-To: Yu Zhao <yuzhao@google.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJHKf6NnRz3f6m
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 03:27:50 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fIsBqEYZ2oTBNrmmNtMMzrIr7BLT7CZNm2H2rSG807RKXIF1ODEjO/B8r+mbRhcrjZCJ/JjeixxA9EfYvpVVjvggobaKRx6njYTjCfFClutyQ115XRHo9S+/g5jDen5MxiPkgbXPItNngLifURvFGG2WMJm9aiR0w663Que46VlvYuriNTqWrkxHYNoRIuTMpEsuCygVPHf1PVViHktD9BG8vVbqaLHEF8XsLnkRmNAq1ZUI85XsWlEwAi6+X7wCzPpvvZJPudMjDIiPCYV9nwnTsRFNayaeVxBgIof6WGRXWFOw7eM9rZPoTZF70/xpYD6A5XsWg5PbKzE8KiPexA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nV1yLTJYfB1mffpaqdyLLoqs6y3zfSbghzz/ztGpkwU=;
+ b=NussVf4NDVQFZCM8lHmZtvYm5qsXeWyjeGYWVmJTxHe672IOEkmsG2Xw2jjgFT7pC7ZLf+u6v6cT6Jx429dsE3tuwEJf+tYDXM/EfmvzlIogcAyrZP0znQgfAFhRBXjxv5s96nqddEMiV7fT3wNtJ3jxCqmGf7h6vnNd2lri8GXD34nkxOEh7FwO7O0nAqsPpO1WqBSyMYEBz9nP+Xy00V15l+H4bYMqcAgrEg7J3PvZ7gQiLrzlPwakdcSyriBvU7P2uj88Rozk0oZ7gxfVos3KhWlRBN83iPYqw/jLhWzbE1+ssQl5QA5aFLP+MFpv+RUTrFyNxnuvYGoIdZePtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nV1yLTJYfB1mffpaqdyLLoqs6y3zfSbghzz/ztGpkwU=;
+ b=bWROf97T2KOMBB6akYRZu4ORjZBZlCBPnzRf7KJHYO+Yp7cdmFciOvj2QkUx5JFxfBvL6rDcW4ImKjtED7x6Wy+LAWA5mrfsEz7ZctoFMPRiojCNfaQ2hJJMMfVzLMfbMOHQ8NC8eMauphNzj+I66yvd3x/Fa394p2eO3BPZJLTtbBN4s3HBMbepsbaa/iCV/1jJ3uxqcVmVgmBA2wQM32UrSfbGO5JPJbGGAvGO9g0qFG36Ba4cdyOpqCMQhnRhpD+PSVSvI743V9ZRpzXVVDispH6Bb2AiZbSsqDoRNCIV/ZZ/VpSgH7CyMltie6jCyXDYWkk8j26NtOKv0fIhfw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.13; Fri, 17 Feb
+ 2023 16:27:47 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097%4]) with mapi id 15.20.6111.013; Fri, 17 Feb 2023
+ 16:27:47 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>, Rob
+ Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Shengjiu
+ Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
+	<festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH v6 03/10] MAINTAINERS: add the Freescale TSA controller
+ entry
+Thread-Topic: [PATCH v6 03/10] MAINTAINERS: add the Freescale TSA controller
+ entry
+Thread-Index: AQHZQuAYv7BLzP3t10+T4tyz77z/767TU8mA
+Date: Fri, 17 Feb 2023 16:27:47 +0000
+Message-ID: <332ab487-199d-9644-8c00-0e6c09152397@csgroup.eu>
+References: <20230217145645.1768659-1-herve.codina@bootlin.com>
+ <20230217145645.1768659-4-herve.codina@bootlin.com>
+In-Reply-To: <20230217145645.1768659-4-herve.codina@bootlin.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_
+x-ms-office365-filtering-correlation-id: 95a5c683-1966-44a0-9fb7-08db1103e801
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  EmEw4/mQ2+adVSwNX09oA19OUdNZLDyep0aYNyti7fPFr6GlTJE6nu6TGDGEfMGKLBfRSlUcT8Vqo3XUNtqiQ/Al61qa/hRpSboqSUJ1eRFoB+sxnUt/+GYkb8VOpJ7vL+1OT16t6n1pFyPCAjQnB9Bpfnx5dKmRxWnHbiyachFUN88iDUcJ3l7BsMwldiHwFLpKyPRbTtulbOxTwiksRppoNVCARWtYVkq1JBo4zd5xne3PNdi0R27Gl3iQaooYMg6OJ7pO/g62LiZM7CTDK8OV2qCpDF33g/t4OEO0XBYUUhxlrvIBcxBYQ5nuPBOjcHRRT7tpngRceUws1zOG3xxur2B34ykET/KP33SqOgsMr+51gLWWZTqVp/SP+btD2lzZFshJfvXw6BJQ8dnWgPT7mGZNkUQRi4/cw4z7t4EtPpPYiNrpQTDb4c6V4ExdZHmBbu8cnhWUGSFLaXeONYCLWPz7FwibiQpf2jaRBblwcHFfq8EMO1L5Y+sbGl34V7pLTJTNxMzqPGQffgS7UO6HObiHgDQXZiUo8Xz04p+Y1UctvE9BZTCcdN4I32NfwfFEUZXpiCnbqZrpW1kE9s7lUUZ9yJ0fvIi546jUZYBJcyvyTxT2vi1oi+KvYyuuGbkkybgxC1t6SxIwj0mI1KseER2fvWc6RaLvVtGF+chDIj0ee37Cs5K2evd8a/LO810peE99KFNa11RUbstFNEuem8wEFPNr7Sm+65a6WHmu+trEPxP9fXD6dWkuFc5YI6BXngEdM+aaLNIUgRZ41GaXuLyCQW+KV/X8KPAkHX8=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(39850400004)(376002)(346002)(136003)(396003)(451199018)(5660300002)(110136005)(7416002)(66946007)(71200400001)(66556008)(8936002)(316002)(44832011)(54906003)(66446008)(2906002)(4744005)(4326008)(478600001)(76116006)(91956017)(66476007)(41300700001)(8676002)(64756008)(36756003)(6506007)(2616005)(122000001)(38100700002)(31696002)(6512007)(186003)(26005)(921005)(6486002)(86362001)(38070700005)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UzdrVStwZTR3RVJiSTJFSFlodkZYWnZubzZpZDVTOUdKbEloN3U5aTJ5VWhN?=
+ =?utf-8?B?Q0xBT1VLR3UreFpCSTJTKzN5TDM1MVZyWjZZU0VxY3NoYjFGZ0I1OUNCQXVX?=
+ =?utf-8?B?ZHQvblZhcDZ2Vm9sdUNjdFdGZUMvOVpxREZGcCttOEpZRTZFL3lYQmRjT1Bk?=
+ =?utf-8?B?V2h6QjVaaWZqdG85YnlBNzNhdnhjanpNVzR2VktVVjNHZ040cG1FSlh3d1VY?=
+ =?utf-8?B?ZXYxbnVQdXZDTmhldEV6elBIenVLQkxOK0lFb3VHQ3VOSS9vUXJnNXRzNk9m?=
+ =?utf-8?B?MDhTTVVEWE1wUHJLc1NNd3dXQS9KblpEb084RzIrSEhVdUhnWkZUajNGS0pm?=
+ =?utf-8?B?aC9Wdkx3TXpXbFBsWGsvTUltbjZ1U0NzT3ZBcE1rY05zK1A1NkN1ZGg1UmdU?=
+ =?utf-8?B?amt3TElHYkxxTzE3QnU0eDQyZXgrdlA2WDhCS005N0piY2lyTit1cGxDUkZ5?=
+ =?utf-8?B?M0RjSmhZbFJuMXlTN010Q3l2U0RKa2xpM0Mramk0dnc4ZTVrV25rQ1BUTjFI?=
+ =?utf-8?B?M0dTWEJ1YytTVFZkTTlsbFZkdk90SHdqQTJoTElYWnkxVUZkMW04cFN0b0Y1?=
+ =?utf-8?B?Qk5KUXFBQWd4Ni93Tko3Q05OdDlRZktIdmRFRjJydGdLaTNVSTNwZzJPbnhI?=
+ =?utf-8?B?R3RkdXNMQ1l1bmpiZVkxSGg5NHVTNU0yaGxvTjlPcGprSWRId1dHeUxMOWh0?=
+ =?utf-8?B?TE9DczFuSytVQWdLZzV3dzlramRYbloxV2pWNUVycDNxMHpJVmZnNEl6TXhX?=
+ =?utf-8?B?c05DQWlpTm81K2U1eDMrZXgwYjIyQ1grK05FYjJKVERZTS9ERzhiL1JROW1Y?=
+ =?utf-8?B?b2xhbVVFRkpNanh4UDNWb0UwaWtGa1VEZ29jRFZOeDEwRHBVZFJuaEdIS0Rn?=
+ =?utf-8?B?ZGtLNWF1TWQrU0RWRVhJdXByOGJKZlJmbjRLb3o5eXdCNDJpdzBLRGtLLy9u?=
+ =?utf-8?B?Q2xtMGRIRGtvOTJKM21MRDdNRU1WTWIwZm0yYkpoZm9jVDlkckZPUUx2VkFI?=
+ =?utf-8?B?SSt0aVJ3bkFJbHd0Z0syUlFadHlEbjNTdmRoN1RWNmJGV3ZlRHg2ZWhxb0hT?=
+ =?utf-8?B?VXQrNFVEcDk0NDVUbWVIVG1xSjhodnB6RGdlWmc2MlJVeVN2NzBvQ3JhWHlO?=
+ =?utf-8?B?RHRRcU9KWlkrQjhRUlNmVzZYWURZWG5iVVY2azlDZ2k2a3kwajEvaDdXNTZW?=
+ =?utf-8?B?Y21Zb01pWmoyRTNPTUNFdER3dHE3dk1WTlR0eFI3WUJVRmxJajlhZW5NUmU2?=
+ =?utf-8?B?anR5MWJ0N1Q0MkF3NWRrelVXN3EvV1F4dXhUb3V1YkE1RCtMb3JqTjE5QW4x?=
+ =?utf-8?B?WS9TVDhNbmJrR1hybDVrKytBdWE1cmRycXh0OFlqbG9pRFJwWGRiaGpNa2ht?=
+ =?utf-8?B?T1VrK0pvVldDUGtMZDRGa0JsemRtc01tL3p2eEdmN0ZTamVmaGprd1lGczF2?=
+ =?utf-8?B?QWs1U0t1OVJDUEJ6QndMcFQ1dmdoYnFTWjBpS1MxbnBpVFNqMFRsSkJIdDZ2?=
+ =?utf-8?B?WEY0UDB3dEc1YzAvV25talhxcTdoeE56R201aXJTL3B2THo2MlFnZjduTFM5?=
+ =?utf-8?B?VTM0UEdKYWx2akZQUVZJaFgxNjkxaHJWNzhSREw1Y2E4b3paSTU4eFg0d3FS?=
+ =?utf-8?B?SmxhcXhJamZEL2FQWVh0N2VGbXFKdVV4RUVaMzJwMFl0SHRETFpXRTBLZklJ?=
+ =?utf-8?B?SlJKWUk0ZSsxK2J3TE5vVmltZWN4UkhTbldnWmJOcHpOTXdQbm5UbjJrQlVO?=
+ =?utf-8?B?S3JtZytqaCs5Y01kK3FlSW5iQzlyZTZGWkNOcHU4SzZnb1ArRWpUdGQ0TWtw?=
+ =?utf-8?B?Qzg3SC9GTUJqMHdRanphendkZU9SUEpmaldvUEJ5OWdDYThTUWJtcFNUK1ky?=
+ =?utf-8?B?SUJhdlo3U2VZZEkrSEUxYkR4U3VvdmFGUUdSQzhEWTZoR1krejZnZ2xleEE5?=
+ =?utf-8?B?Z1FwMzdNTjAyZHpxY3FGTXQ2Vlc2c2Q4NTA3c2diMm1lZ1V2OG9CVGdObVd6?=
+ =?utf-8?B?eUNkMUNEbTVHMVMwNnJZK09LUUlMd2RiT2lZaDZxSzBxcktUOUpyZW43VmpM?=
+ =?utf-8?B?c0ZqSWNBUzFvcWRpaEhLaThVaElPRG5SR2hGWXlkQXpDbXhGb1lIN1BxSVAz?=
+ =?utf-8?B?d2dpcC9XSE4yZ21jYkdiQnZOMC90TXUwYWNEeE9MVWdhdUdLYVU5M2RIb2wr?=
+ =?utf-8?B?Q0E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8AD168A98BB98A48A2574DA800AEC1E4@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95a5c683-1966-44a0-9fb7-08db1103e801
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Feb 2023 16:27:47.7895
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7WticCdOPp+M5VVwCGitMeOb8JLHCqF2x/FOQqrqCMkxa7UrolU4gde18VOpj8wgeKqK82ATnZ+R9pRPBSik1ssovUS0pT8zvtPx4XeLjss=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2988
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,174 +144,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 16, 2023, Yu Zhao wrote:
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 6aaae18f1854..d2995c9e8f07 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1367,6 +1367,12 @@ struct kvm_arch {
->  	 *	the MMU lock in read mode + the tdp_mmu_pages_lock or
->  	 *	the MMU lock in write mode
->  	 *
-> +	 * kvm_arch_test_clear_young() is a special case. It relies on two
-
-No, it's not.  The TDP MMU already employs on RCU and CMPXCHG.  Just drop the
-entire comment.
-
-> +	 * techniques, RCU and cmpxchg, to safely test and clear the accessed
-> +	 * bit without taking the MMU lock. The former protects KVM page tables
-> +	 * from being freed while the latter clears the accessed bit atomically
-> +	 * against both the hardware and other software page table walkers.
-> +	 *
->  	 * Roots will remain in the list until their tdp_mmu_root_count
->  	 * drops to zero, at which point the thread that decremented the
->  	 * count to zero should removed the root from the list and clean
-> @@ -2171,4 +2177,25 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
->  	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
->  	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS)
->  
-> +extern u64 __read_mostly shadow_accessed_mask;
-> +
-> +/*
-> + * Returns true if A/D bits are supported in hardware and are enabled by KVM.
-> + * When enabled, KVM uses A/D bits for all non-nested MMUs.  Because L1 can
-> + * disable A/D bits in EPTP12, SP and SPTE variants are needed to handle the
-> + * scenario where KVM is using A/D bits for L1, but not L2.
-> + */
-> +static inline bool kvm_ad_enabled(void)
-> +{
-> +	return shadow_accessed_mask;
-> +}
-
-Absolutely not.  This information is not getting directly exposed outside of KVM.
-
-> +
-> +/* see the comments on the generic kvm_arch_has_test_clear_young() */
-> +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
-> +static inline bool kvm_arch_has_test_clear_young(void)
-> +{
-> +	return IS_ENABLED(CONFIG_KVM) && IS_ENABLED(CONFIG_X86_64) &&
-> +	       (!IS_REACHABLE(CONFIG_KVM) || (kvm_ad_enabled() && tdp_enabled));
-> +}
-
-Pending the justification for why this is KVM-only, I would strongly prefer we
-find a way to have the mmu_notifier framework track whether or not any listeners
-have a test_clear_young().  E.g. have KVM nullify its hook during module load.
-
-> +
->  #endif /* _ASM_X86_KVM_HOST_H */
-> diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-> index 6f54dc9409c9..0dc7fed1f3fd 100644
-> --- a/arch/x86/kvm/mmu/spte.h
-> +++ b/arch/x86/kvm/mmu/spte.h
-> @@ -153,7 +153,6 @@ extern u64 __read_mostly shadow_mmu_writable_mask;
->  extern u64 __read_mostly shadow_nx_mask;
->  extern u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
->  extern u64 __read_mostly shadow_user_mask;
-> -extern u64 __read_mostly shadow_accessed_mask;
->  extern u64 __read_mostly shadow_dirty_mask;
->  extern u64 __read_mostly shadow_mmio_value;
->  extern u64 __read_mostly shadow_mmio_mask;
-> @@ -247,17 +246,6 @@ static inline bool is_shadow_present_pte(u64 pte)
->  	return !!(pte & SPTE_MMU_PRESENT_MASK);
->  }
->  
-> -/*
-> - * Returns true if A/D bits are supported in hardware and are enabled by KVM.
-> - * When enabled, KVM uses A/D bits for all non-nested MMUs.  Because L1 can
-> - * disable A/D bits in EPTP12, SP and SPTE variants are needed to handle the
-> - * scenario where KVM is using A/D bits for L1, but not L2.
-> - */
-> -static inline bool kvm_ad_enabled(void)
-> -{
-> -	return !!shadow_accessed_mask;
-> -}
-
-As Oliver said in the ARM patch, _if_ this is justified, please do code movement
-in a separate patch.
-
-> -
->  static inline bool sp_ad_disabled(struct kvm_mmu_page *sp)
->  {
->  	return sp->role.ad_disabled;
-> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> index d6df38d371a0..9028e09f1aab 100644
-> --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> @@ -1309,6 +1309,47 @@ bool kvm_tdp_mmu_age_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->  	return kvm_tdp_mmu_handle_gfn(kvm, range, age_gfn_range);
->  }
->  
-> +bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
-> +			       gfn_t lsb_gfn, unsigned long *bitmap)
-> +{
-> +	struct kvm_mmu_page *root;
-> +
-> +	if (WARN_ON_ONCE(!kvm_arch_has_test_clear_young()))
-> +		return false;
-> +
-> +	if (kvm_memslots_have_rmaps(kvm))
-
-This completely disables the API on VMs that have _ever_ run a nested VM.  I doubt
-that's the intended behavior.
-
-> +		return false;
-> +
-> +	/* see the comments on kvm_arch->tdp_mmu_roots */
-> +	rcu_read_lock();
-> +
-> +	list_for_each_entry_rcu(root, &kvm->arch.tdp_mmu_roots, link) {
-> +		struct tdp_iter iter;
-> +
-> +		if (kvm_mmu_page_as_id(root) != range->slot->as_id)
-> +			continue;
-
-for_each_tdp_mmu_root() does this for you.
-
-> +
-> +		tdp_root_for_each_leaf_pte(iter, root, range->start, range->end) {
-> +			u64 *sptep = rcu_dereference(iter.sptep);
-
-kvm_tdp_mmu_read_spte(), thought it's not clear to me why this doesn't test+clear
-the SPTE's accessed bit and then toggle the bitmap.
-
-> +			u64 new_spte = iter.old_spte & ~shadow_accessed_mask;
-> +
-> +			VM_WARN_ON_ONCE(!page_count(virt_to_page(sptep)));
-
-This doesn't do what I assume it's intended to do.  The sptep points at a KVM,
-a.k.a. kernel, allocated page, not at guest memory.  Assuming the intent is to
-assert that the memory being aged has an elevated refcount, this would need to
-extract the pfn out of the SPTE and get the struct page for that.  But that's
-completely unsafe because KVM supports mapping VM_PFNMAP and VM_IO memory into
-the guest.  Maybe the proposed caller only operates on struct page memory, but
-I am not willing to make that assumption in KVM.
-
-TL;DR: drop this.
-
-> +			VM_WARN_ON_ONCE(iter.gfn < range->start || iter.gfn >= range->end);
-
-This adds no value, KVM is completely hosed if tdp_root_for_each_leaf_pte() botches
-the ranges.
-
-> +
-> +			if (new_spte == iter.old_spte)
-> +				continue;
-> +
-> +			/* see the comments on the generic kvm_arch_has_test_clear_young() */
-
-No, "see xyz" for unintuitive logic is not acceptable.  Add a helper and document
-the logic there, don't splatter "see XYZ" comments everywhere.
-
-> +			if (__test_and_change_bit(lsb_gfn - iter.gfn, bitmap))
-> +				cmpxchg64(sptep, iter.old_spte, new_spte);
-
-Clearing a single bit doesn't need a CMPXCHG.  Please weigh in on a relevant series
-that is modifying the aging flows[*], I want to have exactly one helper for aging
-TDP MMU SPTEs.
-
-[*] https://lore.kernel.org/all/20230211014626.3659152-5-vipinsh@google.com
+DQoNCkxlIDE3LzAyLzIwMjMgw6AgMTU6NTYsIEhlcnZlIENvZGluYSBhIMOpY3JpdMKgOg0KPiBB
+ZnRlciBjb250cmlidXRpbmcgdGhlIGRyaXZlciwgYWRkIG15c2VsZiBhcyB0aGUgbWFpbnRhaW5l
+cg0KPiBmb3IgdGhlIEZyZWVzY2FsZSBUU0EgY29udHJvbGxlci4NCj4gDQo+IFNpZ25lZC1vZmYt
+Ynk6IEhlcnZlIENvZGluYSA8aGVydmUuY29kaW5hQGJvb3RsaW4uY29tPg0KDQpSZXZpZXdlZC1i
+eTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1Pg0KDQo+IC0t
+LQ0KPiAgIE1BSU5UQUlORVJTIHwgOSArKysrKysrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgOSBp
+bnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVS
+Uw0KPiBpbmRleCA3Zjg2ZDAyY2I0MjcuLjA5N2E4MGQ2NjIzYiAxMDA2NDQNCj4gLS0tIGEvTUFJ
+TlRBSU5FUlMNCj4gKysrIGIvTUFJTlRBSU5FUlMNCj4gQEAgLTgzNzIsNiArODM3MiwxNSBAQCBT
+OglNYWludGFpbmVkDQo+ICAgRjoJZHJpdmVycy9zb2MvZnNsL3FlLw0KPiAgIEY6CWluY2x1ZGUv
+c29jL2ZzbC9xZS8NCj4gICANCj4gK0ZSRUVTQ0FMRSBRVUlDQyBFTkdJTkUgVFNBIERSSVZFUg0K
+PiArTToJSGVydmUgQ29kaW5hIDxoZXJ2ZS5jb2RpbmFAYm9vdGxpbi5jb20+DQo+ICtMOglsaW51
+eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZw0KPiArUzoJTWFpbnRhaW5lZA0KPiArRjoJRG9jdW1l
+bnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NvYy9mc2wvY3BtX3FlL2ZzbCxjcG0xLXRzYS55
+YW1sDQo+ICtGOglkcml2ZXJzL3NvYy9mc2wvcWUvdHNhLmMNCj4gK0Y6CWRyaXZlcnMvc29jL2Zz
+bC9xZS90c2EuaA0KPiArRjoJaW5jbHVkZS9kdC1iaW5kaW5ncy9zb2MvY3BtMS1mc2wsdHNhLmgN
+Cj4gKw0KPiAgIEZSRUVTQ0FMRSBRVUlDQyBFTkdJTkUgVUNDIEVUSEVSTkVUIERSSVZFUg0KPiAg
+IE06CUxpIFlhbmcgPGxlb3lhbmcubGlAbnhwLmNvbT4NCj4gICBMOgluZXRkZXZAdmdlci5rZXJu
+ZWwub3JnDQo=
