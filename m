@@ -2,87 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBF069A746
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 09:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453B269A74D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 09:47:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ54m27hvz3f82
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 19:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ56C0Z0zz3f8k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 19:47:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gDXv6NZX;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gDXv6NZX;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMf7EBFh;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMf7EBFh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gDXv6NZX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gDXv6NZX;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMf7EBFh;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMf7EBFh;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ53s14Xzz3cH9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 19:45:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ55G5gz6z3cfl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 19:46:26 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676623509;
+	s=mimecast20190719; t=1676623584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OWPvyQo5Di8DnoAQZc3ZeTCHhUwyb2tH6aRDiwDRUPc=;
-	b=gDXv6NZXvJOPWChc0Emb08wori/SMZGRyixMevIUtyB2SvimOoAY1kOB9CdRUbiQ7PzNWA
-	ltoXGYFkcpO9rBeIAZUnW7DfZmNWEWBS/PS6HkAN1QS0n3f98I088QqmdSki3RRTw78xJ4
-	CWYUyCZ0RZQ6Ltsp3j0jP606+6bP1F4=
+	bh=Zj7ME0Zls97ljpljDJh+52JR4W0iO9sdC4iOpN3awy4=;
+	b=JMf7EBFhZjUjJD+bV91DGj1t50LNFDbJwA6WXf7n/5WCK/cDSFiKRA30qcT8qSvjTBd8WP
+	xQX9ILqoV98MuSWn3FEjUhQ17N7YEOBaFRoxPYdDLQkCMOtJ600EjqZnCayGCQcx5QZsQM
+	nf/KdGorYXAFATdp4cBhyu+Li/ORVDI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676623509;
+	s=mimecast20190719; t=1676623584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OWPvyQo5Di8DnoAQZc3ZeTCHhUwyb2tH6aRDiwDRUPc=;
-	b=gDXv6NZXvJOPWChc0Emb08wori/SMZGRyixMevIUtyB2SvimOoAY1kOB9CdRUbiQ7PzNWA
-	ltoXGYFkcpO9rBeIAZUnW7DfZmNWEWBS/PS6HkAN1QS0n3f98I088QqmdSki3RRTw78xJ4
-	CWYUyCZ0RZQ6Ltsp3j0jP606+6bP1F4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Zj7ME0Zls97ljpljDJh+52JR4W0iO9sdC4iOpN3awy4=;
+	b=JMf7EBFhZjUjJD+bV91DGj1t50LNFDbJwA6WXf7n/5WCK/cDSFiKRA30qcT8qSvjTBd8WP
+	xQX9ILqoV98MuSWn3FEjUhQ17N7YEOBaFRoxPYdDLQkCMOtJ600EjqZnCayGCQcx5QZsQM
+	nf/KdGorYXAFATdp4cBhyu+Li/ORVDI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-208-ajqY9XGGPOKRXasuLdgUYg-1; Fri, 17 Feb 2023 03:45:07 -0500
-X-MC-Unique: ajqY9XGGPOKRXasuLdgUYg-1
-Received: by mail-wm1-f70.google.com with SMTP id m7-20020a05600c090700b003e2249bd2b4so442918wmp.5
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 00:45:07 -0800 (PST)
+ us-mta-356-BChXH56API2s6gO20gdvQg-1; Fri, 17 Feb 2023 03:46:22 -0500
+X-MC-Unique: BChXH56API2s6gO20gdvQg-1
+Received: by mail-wm1-f72.google.com with SMTP id m18-20020a05600c3b1200b003dc5dec2ac6so373573wms.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 00:46:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OWPvyQo5Di8DnoAQZc3ZeTCHhUwyb2tH6aRDiwDRUPc=;
-        b=JlkQNiAAtfLaiawBoAFnnwWYE2j8B6XRKet6i/asFEK6Mq9lAI5tEP0Tt+nF8OTDp+
-         tCTEK23eYXIgzA7tAlFJNab2ThOv7U9P38ub8Z+Y+1Uuth5SXQk2qce4xcVroynys9MA
-         mskjqYnNgpEKr8O/ySsuAzjIfdQoCcpteR2S8NfnQ1feKc+PQPZtf+smYN6cFLURw427
-         oksFIR8Ct+HXBYAiCJDTw4K6BoqlyI8I/Q28uQQT0cLXpuyGBSQPiROfny1oIg6P8msO
-         bhm2kkm806CM7/zRet3aH73k0AR+gRQkGmpjyKldC5MpI5Jr/G1wqcP5M14ATz7CxlDa
-         1e8g==
-X-Gm-Message-State: AO0yUKV0muxKnyVM3UK8WyxMB2jNbLmUsdT5MGnsX/+AgasEPRGZHq7L
-	d9NSVe+ETzHROktKMr7hXyKS3ChzoNKNp1oWhOGR8a+rrZHuGBGbQNf3zubVw0qoKB6UKAnWtdv
-	/HKzUY2KBqpimLWjwC6STWVzMQw==
-X-Received: by 2002:adf:f78c:0:b0:2c5:48b9:72ff with SMTP id q12-20020adff78c000000b002c548b972ffmr6450614wrp.27.1676623506496;
-        Fri, 17 Feb 2023 00:45:06 -0800 (PST)
-X-Google-Smtp-Source: AK7set+ur2aLbFCoXfxBM8gyiXnFXtYx7YTDiuItlpgrcu7ssIQYB1jqId9yQOYwAKFhH5jVOwxbag==
-X-Received: by 2002:adf:f78c:0:b0:2c5:48b9:72ff with SMTP id q12-20020adff78c000000b002c548b972ffmr6450601wrp.27.1676623506241;
-        Fri, 17 Feb 2023 00:45:06 -0800 (PST)
+        bh=Zj7ME0Zls97ljpljDJh+52JR4W0iO9sdC4iOpN3awy4=;
+        b=CUv/I9VWoSjvd/XaU5+Wcd5JsG715W4oYiPdLEKge/J4fUYhaUed5NR9mFVSMNsxKw
+         sWTsW78o05QHB1cY2fy5OPp+QvW26jJyX4gm08O1ZfaX5Y+nuHtuKL6tOifkL7MpclRb
+         5uGtNYLSpvwHb9zbGDKgbVcWblOqWJLL/AwNcCOp8wko81np1BiAOSGAhd0ua6kvXs3f
+         NcHPu1zpIDqvy7vYdAtdLszvCamCDl35ZYAbIVRYneK/8BD2rLR1VD7a3n8OBuO6gJhj
+         dKekDQCYrPbqPpMQfWPALohQJdeN9Pp1bCHRye/3cSoZxaI+XLYfQr0mABn+cJyDYyBT
+         IzfQ==
+X-Gm-Message-State: AO0yUKU3i9mQXUoeXcXfP8qjEn0Q9qfFySoOyDW0AQ5vZAo68r/rRqs8
+	2Rr0OaL7kKQohptAgRmbm9ohTHc6aF9I5O/MKcI5uxWRcE19QowRZ6/M4ZySg8a3OJgKjQ3tvCx
+	GM00pTTp16rZJivIPvxstQdQRsg==
+X-Received: by 2002:a05:600c:4d8a:b0:3e2:115f:4052 with SMTP id v10-20020a05600c4d8a00b003e2115f4052mr3403437wmp.17.1676623581800;
+        Fri, 17 Feb 2023 00:46:21 -0800 (PST)
+X-Google-Smtp-Source: AK7set9+hq4+2Bza33qEvtq4Ut8E7x8aQSr+iMyJJkN2Oiss1vlbpJK+6bKPo4cnPxZn5QWxBOW1Dw==
+X-Received: by 2002:a05:600c:4d8a:b0:3e2:115f:4052 with SMTP id v10-20020a05600c4d8a00b003e2115f4052mr3403421wmp.17.1676623581539;
+        Fri, 17 Feb 2023 00:46:21 -0800 (PST)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id v6-20020adfedc6000000b002c5544b3a69sm3552710wro.89.2023.02.17.00.45.05
+        by smtp.gmail.com with ESMTPSA id p17-20020a05600c1d9100b003e21dcccf9fsm2587825wms.16.2023.02.17.00.46.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Feb 2023 00:45:05 -0800 (PST)
+        Fri, 17 Feb 2023 00:46:21 -0800 (PST)
 From: Javier Martinez Canillas <javierm@redhat.com>
 To: Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
  airlied@gmail.com, deller@gmx.de, maarten.lankhorst@linux.intel.com,
  mripard@kernel.org, geoff@infradead.org, mpe@ellerman.id.au,
  npiggin@gmail.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH 03/11] fbdev: Support NULL for name in option-string lookup
-In-Reply-To: <20230209135509.7786-4-tzimmermann@suse.de>
+Subject: Re: [PATCH 04/11] drivers/ps3: Read video= option with fb_get_option()
+In-Reply-To: <20230209135509.7786-5-tzimmermann@suse.de>
 References: <20230209135509.7786-1-tzimmermann@suse.de>
- <20230209135509.7786-4-tzimmermann@suse.de>
-Date: Fri, 17 Feb 2023 09:45:05 +0100
-Message-ID: <874jrky92m.fsf@minerva.mail-host-address-is-not-set>
+ <20230209135509.7786-5-tzimmermann@suse.de>
+Date: Fri, 17 Feb 2023 09:46:20 +0100
+Message-ID: <871qmoy90j.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
@@ -104,15 +104,12 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-> Ignore the per-driver video options if no driver name has been
-> specified to fb_get_option(). Return the global options in this
-> case.
+> Get the kernel's global video= parameter with fb_get_option(). Done
+> to unexport the internal fbdev state fb_mode_config. No functional
+> changes.
 >
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 > ---
-
-I think you need to update the kernel-doc as well to mention that
-@name could be NULL ?
 
 Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
