@@ -1,84 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD21069AFD7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 16:55:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9496769B019
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 17:01:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJGbw5nZnz3fQW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 02:55:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJGkl349Wz3fJK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 03:01:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b3DiNrjl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sUkblHuJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1131; helo=mail-yw1-x1131.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3iatvywykdlyoawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b3DiNrjl;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sUkblHuJ;
 	dkim-atps=neutral
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJGb15YkKz3fHD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 02:54:20 +1100 (AEDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-53657970423so15258947b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 07:54:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJGjp6c09z2yJQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 03:00:13 +1100 (AEDT)
+Received: by mail-pg1-x549.google.com with SMTP id w18-20020a634912000000b004fb4f0424f3so780110pga.14
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 08:00:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lH86Zid2dZm5bnTlKuYHBL+UBFHGqixgoyFrzinN6Ms=;
-        b=b3DiNrjlfqW1fEnQXBFb6r3/6ssYOYFmb07YdJ57aCoZgGF7z0cSlFp6LNvq0nlO9T
-         h7MQwVLJHgbKiFwZZnwcEW43LlrllCq4xINr3/5ByMHFSkzVTwD0ec1uud4lk2QUxJJf
-         S69FzFOpllxouNLN8H3PgzXaSkTdVhd46LsGMpHYh5L5MOJ97JDTrRU8MUhBzY/9ZNNz
-         GtpgFyxBGBNhqKcVmCB7lXv7APqJKgNWYk+cgBG24fA+uR7dIeiMyU1HboAIFZEnBPuP
-         ozgg4fNv6nMmWSBGnpWjhn36QNV5wp5RLqFu4rS04Uz2NPVfLutpOQHPA8Ea49wLkew+
-         ljYA==
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ASrBAOfhB8V2b1UWnVkBSljvQtym3PPwSnuFL8RngU=;
+        b=sUkblHuJ9dulsxh4CZcm+FIp/qRpAAcmRtfvp6ULnSXppIvCitchjm1OUit+QXJRWj
+         fwJ7Xd7LeD3Frj7FzM+U/mMAyXTZ8R5RK0CcMGNMR8PLROcI0/4xgADL5vqH5U+/VYgG
+         dkLQqFX5fKeKJhpV5Gz8z+39KNbu/jjFTFfYD8mmFsM5kC/nK+Gp9BDhC26xn+icV0pC
+         bHQSk7Mqvc6fB6p4dz8MrdQupt1NEggpWvfcZBir6hbXow/Kay6VqXDNaQVda+8NmyZ/
+         DJpPCojT4dj2fTwoDxf+msJ00C5RYvwVAx1bbgonDLlmp6LfYVABRQ30VMxJGXDgaHEA
+         nfVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lH86Zid2dZm5bnTlKuYHBL+UBFHGqixgoyFrzinN6Ms=;
-        b=aMPhHLbz3hUdx1/wBpLQ51Eo6qufeMKq5AhmnsN7XWAGp8LQJ+wtTUpKmuz7z2+pwU
-         uV71IlDE3YgIlTamylX27oqrwSVDd1kygEsqnd1/JAFm5n0AsXCZPZ8kznC4sdUQwBex
-         1lIcZWroIfgsxwzuAfYd2ji0jlLa1UHyR1zYWMLxnqdSLPAo+Mp7k1sbB3S1Siw3qCDy
-         yDZMKSFGNGK+b3VZ5acckf6s37qsGm8opZ/o+sIm1KC4BUMkLgpnEaJsM4CWLLcDOwps
-         Ml3kGmYMBKJkw5e7zt5WP+yW4ACe9r+jIdEZMYHEF3sIuEuKLxQLqWOWI3caLbiYSzSC
-         5IGw==
-X-Gm-Message-State: AO0yUKUFb1G7ZHPoflsiZWYIlwgDZYnjtPG+rVaw+uo4loRoi4P9j04+
-	nr6ZSO/5ysmwP6dwi6qxaaIGX4GNuatuoMG9jevJOQ==
-X-Google-Smtp-Source: AK7set8xo9es7N+pYGqxpm5ZGXh1uiEPHw0Au1RV6e1ob6blTwBLvHlxWY896OShiLQCNh8oO9NcmsY5tue+lwdwTZ8=
-X-Received: by 2002:a05:690c:c90:b0:52f:184a:da09 with SMTP id
- cm16-20020a05690c0c9000b0052f184ada09mr323598ywb.2.1676649255794; Fri, 17 Feb
- 2023 07:54:15 -0800 (PST)
-MIME-Version: 1.0
-References: <20230216051750.3125598-1-surenb@google.com> <20230216051750.3125598-22-surenb@google.com>
- <20230216153405.zo4l2lqpnc2agdzg@revolver> <CAJuCfpEkujbHNxNWcWr8bmrsMhXGcpDyraOfQaPAcOH=RQPv5A@mail.gmail.com>
- <20230217145052.y526nmjudi6t2ael@revolver>
-In-Reply-To: <20230217145052.y526nmjudi6t2ael@revolver>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 17 Feb 2023 07:54:04 -0800
-Message-ID: <CAJuCfpHJeO6L3HnsX8X=XwBSDbXfPubsWXcRdhm5SvT_u+doKg@mail.gmail.com>
-Subject: Re: [PATCH v3 21/35] mm/mmap: write-lock adjacent VMAs if they can
- grow into unmapped area
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	akpm@linux-foundation.org, michel@lespinasse.org, jglisse@google.com, 
-	mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org, 
-	mgorman@techsingularity.net, dave@stgolabs.net, willy@infradead.org, 
-	peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org, 
-	mingo@redhat.com, will@kernel.org, luto@kernel.org, songliubraving@fb.com, 
-	peterx@redhat.com, david@redhat.com, dhowells@redhat.com, hughd@google.com, 
-	bigeasy@linutronix.de, kent.overstreet@linux.dev, punit.agrawal@bytedance.com, 
-	lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com, 
-	chriscli@google.com, axelrasmussen@google.com, joelaf@google.com, 
-	minchan@google.com, rppt@kernel.org, jannh@google.com, shakeelb@google.com, 
-	tatashin@google.com, edumazet@google.com, gthelen@google.com, 
-	gurua@google.com, arjunroy@google.com, soheil@google.com, leewalsh@google.com, 
-	posk@google.com, michalechner92@googlemail.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ASrBAOfhB8V2b1UWnVkBSljvQtym3PPwSnuFL8RngU=;
+        b=JCLwjrA67syY2dmIuxf73wVSAszLEr8g2WErAW6KSKiOcdulTv/Amh63jtdjWaul/Z
+         5VBzywzqj0V2JU/akimRQ5KD4rCBFNjFYX2CDcbKSBBOFIWwQCRBx5vgZQZAwiyjmZ+y
+         uktx0N6ECwiIi4tZPpS2CN9lDLiR8REzJEEbAfAtnFsF9EU65UgxrIIklmbGx52LIb6G
+         m04/ciKzDoLrtcWYg1IgrPQSTjo+5nx6ANwerTl5jG0onThcyLjkXwUN01F6nbT+bqZs
+         ANgF7DDRVz+DgiKd6PST1QIwp/gsp1vJQzCZnL0xgCRYLCCaHui/Oenuh4mCzTpZhg/r
+         eRyA==
+X-Gm-Message-State: AO0yUKXgwbpXYkO43cGx/yRsZYLn2CmoXV/9uiI8d/5oV4ZJh3G6yy8x
+	S9B/04GJWF7u5vIuIuBAMtEIe7UWoOA=
+X-Google-Smtp-Source: AK7set/TQ5moWaaNQcL8V8kGjN9B7zl+2zJIJ8kumCX3x4I/RGgInnGSIHRIAYNv9fJ3WTWtfSDyzLo0yfI=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6a02:43:b0:4fd:72f3:5859 with SMTP id
+ az3-20020a056a02004300b004fd72f35859mr296462pgb.2.1676649609963; Fri, 17 Feb
+ 2023 08:00:09 -0800 (PST)
+Date: Fri, 17 Feb 2023 08:00:08 -0800
+In-Reply-To: <Y+9EUeUIS/ZUe2vw@linux.dev>
+Mime-Version: 1.0
+References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-4-yuzhao@google.com>
+ <Y+9EUeUIS/ZUe2vw@linux.dev>
+Message-ID: <Y++kiJwUIh55jkvl@google.com>
+Subject: Re: [PATCH mm-unstable v1 3/5] kvm/arm64: add kvm_arch_test_clear_young()
+From: Sean Christopherson <seanjc@google.com>
+To: Oliver Upton <oliver.upton@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,118 +74,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@google.com, Yu Zhao <yuzhao@google.com>, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 17, 2023 at 6:51 AM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
->
-> * Suren Baghdasaryan <surenb@google.com> [230216 14:36]:
-> > On Thu, Feb 16, 2023 at 7:34 AM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
-> > >
-> > >
-> > > First, sorry I didn't see this before v3..
-> >
-> > Feedback at any time is highly appreciated!
-> >
-> > >
-> > > * Suren Baghdasaryan <surenb@google.com> [230216 00:18]:
-> > > > While unmapping VMAs, adjacent VMAs might be able to grow into the area
-> > > > being unmapped. In such cases write-lock adjacent VMAs to prevent this
-> > > > growth.
-> > > >
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > ---
-> > > >  mm/mmap.c | 8 +++++---
-> > > >  1 file changed, 5 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/mm/mmap.c b/mm/mmap.c
-> > > > index 118b2246bba9..00f8c5798936 100644
-> > > > --- a/mm/mmap.c
-> > > > +++ b/mm/mmap.c
-> > > > @@ -2399,11 +2399,13 @@ do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> > > >        * down_read(mmap_lock) and collide with the VMA we are about to unmap.
-> > > >        */
-> > > >       if (downgrade) {
-> > > > -             if (next && (next->vm_flags & VM_GROWSDOWN))
-> > > > +             if (next && (next->vm_flags & VM_GROWSDOWN)) {
-> > > > +                     vma_start_write(next);
-> > > >                       downgrade = false;
-> > >
-> > > If the mmap write lock is insufficient to protect us from next/prev
-> > > modifications then we need to move *most* of this block above the maple
-> > > tree write operation, otherwise we have a race here.  When I say most, I
-> > > mean everything besides the call to mmap_write_downgrade() needs to be
-> > > moved.
-> >
-> > Which prior maple tree write operation are you referring to? I see
-> > __split_vma() and munmap_sidetree() which both already lock the VMAs
-> > they operate on, so page faults can't happen in those VMAs.
->
-> The write that removes the VMAs from the maple tree a few lines above..
-> /* Point of no return */
->
-> If the mmap lock is not sufficient, then we need to move the
-> vma_start_write() of prev/next to above the call to
-> vma_iter_clear_gfp() in do_vmi_align_munmap().
->
-> But I still think it IS enough.
->
-> >
-> > >
-> > > If the mmap write lock is sufficient to protect us from next/prev
-> > > modifications then we don't need to write lock the vmas themselves.
-> >
-> > mmap write lock is not sufficient because with per-VMA locks we do not
-> > take mmap lock at all.
->
-> Understood, but it also does not expand VMAs.
->
-> >
-> > >
-> > > I believe this is for expand_stack() protection, so I believe it's okay
-> > > to not vma write lock these vmas.. I don't think there are other areas
-> > > where we can modify the vmas without holding the mmap lock, but others
-> > > on the CC list please chime in if I've forgotten something.
-> > >
-> > > So, if I am correct, then you shouldn't lock next/prev and allow the
-> > > vma locking fault method on these vmas.  This will work because
-> > > lock_vma_under_rcu() uses mas_walk() on the faulting address.  That is,
-> > > your lock_vma_under_rcu() will fail to find anything that needs to be
-> > > grown and go back to mmap lock protection.  As it is written today, the
-> > > vma locking fault handler will fail and we will wait for the mmap lock
-> > > to be released even when the vma isn't going to expand.
-> >
-> > So, let's consider a case when the next VMA is not being removed (so
-> > it was neither removed nor locked by munmap_sidetree()) and it is
-> > found by lock_vma_under_rcu() in the page fault handling path.
->
-> By this point next VMA is either NULL or outside the munmap area, so
-> what you said here is always true.
->
-> >Page
-> > fault handler can now expand it and push into the area we are
-> > unmapping in unmap_region(). That is the race I'm trying to prevent
-> > here by locking the next/prev VMAs which can be expanded before
-> > unmap_region() unmaps them. Am I missing something?
->
-> Yes, I think the part you are missing (or I am missing..) is that
-> expand_stack() will never be called without the mmap lock.  We don't use
-> the vma locking to expand the stack.
+On Fri, Feb 17, 2023, Oliver Upton wrote:
+> Hi Yu,
+> 
+> scripts/get_maintainers.pl is your friend for getting the right set of
+> emails for a series :) Don't know about others, but generally I would
+> prefer to be Cc'ed on an entire series (to gather context) than just an
+> individual patch.
 
-Ah, yes, you are absolutely right. I missed that when the VMA explands
-as a result of a page fault, lock_vma_under_rcu() can't find the
-faulting VMA (the fault is outside of the area and hence the need to
-expand) and will fall back to mmap read locking. Since
-do_vmi_align_munmap() holds the mmap write lock and does not downgrade
-it, the race will be avoided and expansion will wait until we drop the
-mmap write lock.
-Good catch Liam! We can drop this patch completely from the series.
-Thanks,
-Suren.
++1
 
->
-> ...
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+> 
+> On Thu, Feb 16, 2023 at 09:12:28PM -0700, Yu Zhao wrote:
+> > This patch adds kvm_arch_test_clear_young() for the vast majority of
+> > VMs that are not pKVM and run on hardware that sets the accessed bit
+> > in KVM page tables.
+
+At least for the x86 changes, please read Documentation/process/maintainer-tip.rst
+and rewrite the changelogs.
+
+> > It relies on two techniques, RCU and cmpxchg, to safely test and clear
+> > the accessed bit without taking the MMU lock. The former protects KVM
+> > page tables from being freed while the latter clears the accessed bit
+> > atomically against both the hardware and other software page table
+> > walkers.
+> > 
+> > Signed-off-by: Yu Zhao <yuzhao@google.com>
+> > ---
+> >  arch/arm64/include/asm/kvm_host.h       |  7 +++
+> >  arch/arm64/include/asm/kvm_pgtable.h    |  8 +++
+> >  arch/arm64/include/asm/stage2_pgtable.h | 43 ++++++++++++++
+> >  arch/arm64/kvm/arm.c                    |  1 +
+> >  arch/arm64/kvm/hyp/pgtable.c            | 51 ++--------------
+> >  arch/arm64/kvm/mmu.c                    | 77 ++++++++++++++++++++++++-
+> >  6 files changed, 141 insertions(+), 46 deletions(-)
+> > 
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index 35a159d131b5..572bcd321586 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -1031,4 +1031,11 @@ static inline void kvm_hyp_reserve(void) { }
+> >  void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
+> >  bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
+> >  
+> > +/* see the comments on the generic kvm_arch_has_test_clear_young() */
+
+Please eliminate all of these "see the comments on blah", in every case they do
+nothing more than redirect the reader to something they're likely already aware of.
+
+> > +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
+> > +static inline bool kvm_arch_has_test_clear_young(void)
+> > +{
+> > +	return IS_ENABLED(CONFIG_KVM) && cpu_has_hw_af() && !is_protected_kvm_enabled();
+> > +}
+
+...
+
+> Also, I'm at a loss for why we'd need to test if CONFIG_KVM is enabled.
+> My expectation is that we should provide an implementation that returns
+> false if !CONFIG_KVM, avoiding the need to repeat that bit in every
+> single implementation of the function.
+
+mm/vmscan.c uses kvm_arch_has_test_clear_young().  I have opinions on that, but
+I'll hold off on expressing them until there's actual justification presented
+somewhere.
+
+Yu, this series and each patch needs a big pile of "why".  I get that the goal
+is to optimize memory oversubscribe, but there needs to be justification for
+why this is KVM only, why nested VMs and !A/D hardware are out of scope, why yet
+another mmu_notifier hook is being added, etc.
