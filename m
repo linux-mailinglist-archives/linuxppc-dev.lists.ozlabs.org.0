@@ -1,70 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391F469A902
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 11:22:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E8769AA41
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 12:24:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ7D517gfz3f8b
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 21:22:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJ8bq68L8z3f3f
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Feb 2023 22:24:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=myOxV9ga;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2CJIZGX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2CJIZGX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=42.hyeyoo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=myOxV9ga;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2CJIZGX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2CJIZGX;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ7C92RXwz3brJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 21:21:39 +1100 (AEDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id bw7so274605ybb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 02:21:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H9BBhPTLGGaUBxW3AOHp6ZsKFR75sYiq19lXrasIXls=;
-        b=myOxV9gamhIWyliGmdmN2/mk/L1tbECLokR9V0fsZYL+Aj/t5D9uNxFdPdzQY8b5Eb
-         thUND1gGBMTB39ipgJZf2Ql2LwujdfXsd2EzrT0IKVckNP1pDgIt9Lw3ICJtr2va/jkA
-         WiVF19oUY+8ELCnfLAH8YG5HyU9uEcJ7o4MYoepq66YAimbAXisPnHBVOsYIERKI9ViL
-         ty30kR8wtoIG+qnXXowYn0X8x22Hf3AhdUqHDULpynsgtTJmn69CgLLXR2KaH0cSsKFu
-         3jTW/4sCmj6lx99hEANBNFSMI5FxNAw7CWRBuN7NnhQp+zZF7xQg+Fa//77roL19p0Kt
-         LVlg==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJ8Zq1FcBz3btb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 22:23:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1676633022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=seb+UnT6fXFwECQkziBuKI673IsXhXzJa3B+Rdcr3n8=;
+	b=D2CJIZGXp8ohHiV17PZaxvN+DDgNmqgPizx+e31NNY0wtDq1a/xld7GlH1NHJ3FRFA22Qi
+	Xywmw0gLKim3UQtQYqA+Iw1bC4i4yyKDg0GLLxgLui3FziV3l/xJB1m/+DNgQZj4D8Uq0r
+	EX7kOfN1lv/d5kbTNFYh4jhlFARI+/8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1676633022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=seb+UnT6fXFwECQkziBuKI673IsXhXzJa3B+Rdcr3n8=;
+	b=D2CJIZGXp8ohHiV17PZaxvN+DDgNmqgPizx+e31NNY0wtDq1a/xld7GlH1NHJ3FRFA22Qi
+	Xywmw0gLKim3UQtQYqA+Iw1bC4i4yyKDg0GLLxgLui3FziV3l/xJB1m/+DNgQZj4D8Uq0r
+	EX7kOfN1lv/d5kbTNFYh4jhlFARI+/8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-294-fHba-TAxOxaZjKHLhfIKWw-1; Fri, 17 Feb 2023 06:23:41 -0500
+X-MC-Unique: fHba-TAxOxaZjKHLhfIKWw-1
+Received: by mail-wm1-f71.google.com with SMTP id bg7-20020a05600c3c8700b003e21a3f4e84so111359wmb.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Feb 2023 03:23:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H9BBhPTLGGaUBxW3AOHp6ZsKFR75sYiq19lXrasIXls=;
-        b=HYe9m6O60VEQuFfoYmKmZLT5W1XqABZmnBs1LKvVmVZBlIcY/NEMj5M+wsFtWJgTvA
-         YgW0FZqvKC5ZfvEALXNVL7cZgWwOrso/q3K1l/Kjov3qNGNCq3f4k9k1D7MIm+rp1xTP
-         CcmNqea2jyTfGxgYGRPPDmJfk8EFL1hcz+S/MV5bxiqAXgdaiH+mc26V14sAVSpyfokE
-         9iYMnPw8CzgULasnewj8fFtOYbhYTwlWdxhyMcvLkPdQ64dOKfAcVp/Scj71TCtcQRpR
-         esY/W/vgNnpEermiMZqvPXB8jqBezKcATc3xrH9nRPxTDbyRsB24aHCf9rw3odgjQrh6
-         Wp2Q==
-X-Gm-Message-State: AO0yUKUkH5ZqMHli9Z4qrfampF8AELvASp3bpaPT/CDd0wAd5tfwlelV
-	zDyDFn0FMo3vAOHUXJjcqCt0yDI+rpcqgAR7VmI=
-X-Google-Smtp-Source: AK7set9XZzct7X7WLcYp9C1YQZ54GdA3ZML/EFmNgnNLzMxsPTlkXoYn0KU+aTYkj1KX4pt6o21ZLWxWDcs5n3vh8n0=
-X-Received: by 2002:a05:6902:308:b0:969:a7c9:d7b8 with SMTP id
- b8-20020a056902030800b00969a7c9d7b8mr386954ybs.624.1676629294516; Fri, 17 Feb
- 2023 02:21:34 -0800 (PST)
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=seb+UnT6fXFwECQkziBuKI673IsXhXzJa3B+Rdcr3n8=;
+        b=Y9k7rn+ChdC89YEPwkxGUVPggE20XFAf+pSQiiNs5cfrmsVW4bimQ/EiOnVierKwYb
+         Akkt+cVmFiI9cGO42G8xlJtFOOCLcfRZHNwYHWRmmVX4wYeAxoE+uKUj6Ue8srFOpdhv
+         tJONO2y9YHLR8hMIIQkwTl/oRAdJRM39b8WaYqIP/1IrZKS0dg0AOcc2zEjs1JKqmtXa
+         N/w1yiVenoA5hJ1Gou1LiEe2nD+qBVNI8AOTBf4NLeFX2IGLn78+hxuIKzKkDBRrnEYP
+         zstzuh9DW6iLQztBDCyIvZlObIx7nOriFKNZa3aO29sGK8pNq2bEiy1DbKT/XvTtX8Lu
+         39Hg==
+X-Gm-Message-State: AO0yUKXm+PPXf19sNgXi6Z2wVh9jV5lvOwjbKJzoyXMxS5VS5EctSutv
+	paACJ+KkwiR1n5oIjFI34hiKYhP9uVuM3lKagBds8Yju56/iJDKDIYj68UiouuMH76yN2q1aBg2
+	YZoieMh5ZRsi52M+JX6RMkahQ4A==
+X-Received: by 2002:a5d:49c4:0:b0:2c5:5f95:7746 with SMTP id t4-20020a5d49c4000000b002c55f957746mr7312226wrs.56.1676633019925;
+        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
+X-Google-Smtp-Source: AK7set9EFBEl4WDoRU8Iwut2hV1mfRRFMcd1jJye0+8k8u1HqbEZwr9yUu/4Qf4uxNyoSAl+SsFhNg==
+X-Received: by 2002:a5d:49c4:0:b0:2c5:5f95:7746 with SMTP id t4-20020a5d49c4000000b002c55f957746mr7312210wrs.56.1676633019651;
+        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id n18-20020a5d6612000000b002c551f7d452sm3893041wru.98.2023.02.17.03.23.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
+ airlied@gmail.com, deller@gmx.de, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, geoff@infradead.org, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 02/11] fbdev: Transfer video= option strings to caller;
+ clarify ownership
+In-Reply-To: <2c589464-bc37-4138-d9a6-b38cd05e5f99@suse.de>
+References: <20230209135509.7786-1-tzimmermann@suse.de>
+ <20230209135509.7786-3-tzimmermann@suse.de>
+ <87a61cy9et.fsf@minerva.mail-host-address-is-not-set>
+ <2c589464-bc37-4138-d9a6-b38cd05e5f99@suse.de>
+Date: Fri, 17 Feb 2023 12:23:37 +0100
+Message-ID: <87y1ow4jt2.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-References: <20230216051750.3125598-1-surenb@google.com> <20230216051750.3125598-27-surenb@google.com>
- <Y+5Pb4hGmV1YtNQp@casper.infradead.org> <CAJuCfpHR8k0GsrYPMjSBVLAbu3EZgDU081+5CnR1td0cLEyDFw@mail.gmail.com>
- <CAJuCfpHODBAV=riSPyvcmLbZVtXSdxrw2GMy8VOjvDV9yCyX8A@mail.gmail.com>
-In-Reply-To: <CAJuCfpHODBAV=riSPyvcmLbZVtXSdxrw2GMy8VOjvDV9yCyX8A@mail.gmail.com>
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Date: Fri, 17 Feb 2023 19:21:21 +0900
-Message-ID: <CAB=+i9ToNQ-se1XWGOGbiM_0QRBYjuhCF5A8Cdvius89t8r7Ag@mail.gmail.com>
-Subject: Re: [PATCH v3 26/35] mm: fall back to mmap_lock if vma->anon_vma is
- not yet set
-To: Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +101,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, Matthew Wilcox <willy@infradead.org>, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, ak
- pm@linux-foundation.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 17, 2023 at 11:15 AM Suren Baghdasaryan <surenb@google.com> wrote:
+Thomas Zimmermann <tzimmermann@suse.de> writes:
+
+> Hi
 >
-> On Thu, Feb 16, 2023 at 11:43 AM Suren Baghdasaryan <surenb@google.com> wrote:
-> >
-> > On Thu, Feb 16, 2023 at 7:44 AM Matthew Wilcox <willy@infradead.org> wrote:
-> > >
-> > > On Wed, Feb 15, 2023 at 09:17:41PM -0800, Suren Baghdasaryan wrote:
-> > > > When vma->anon_vma is not set, page fault handler will set it by either
-> > > > reusing anon_vma of an adjacent VMA if VMAs are compatible or by
-> > > > allocating a new one. find_mergeable_anon_vma() walks VMA tree to find
-> > > > a compatible adjacent VMA and that requires not only the faulting VMA
-> > > > to be stable but also the tree structure and other VMAs inside that tree.
-> > > > Therefore locking just the faulting VMA is not enough for this search.
-> > > > Fall back to taking mmap_lock when vma->anon_vma is not set. This
-> > > > situation happens only on the first page fault and should not affect
-> > > > overall performance.
-> > >
-> > > I think I asked this before, but don't remember getting an aswer.
-> > > Why do we defer setting anon_vma to the first fault?  Why don't we
-> > > set it up at mmap time?
-> >
-> > Yeah, I remember that conversation Matthew and I could not find the
-> > definitive answer at the time. I'll look into that again or maybe
-> > someone can answer it here.
+> Am 17.02.23 um 09:37 schrieb Javier Martinez Canillas:
+>> Thomas Zimmermann <tzimmermann@suse.de> writes:
+>> 
+>>> In fb_get_options(), always duplicate the returned option string and
+>>> transfer ownership of the memory to the function's caller.
+>>>
+>>> Until now, only the global option string got duplicated and transferred
+>>> to the caller; the per-driver options were owned by fb_get_options().
+>>> In the end, it was impossible for the function's caller to detect if
+>>> it had to release the string's memory buffer. Hence, all calling drivers
+>>> leak the memory buffer. The leaks have existed ever since, but drivers
+>>> only call fb_get_option() once as part of module initialization. So the
+>>> amount of leaked memory is not significant.
+>>>
+>>> Fix the semantics of fb_get_option() by unconditionally transferring
+>>> ownership of the memory buffer to the caller. Later patches can resolve
+>>> the memory leaks in the fbdev drivers.
+>>>
+>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>> ---
+>> 
+>> [...]
+>> 
+>>> +	if (option) {
+>>> +		if (options)
+>>> +			*option = kstrdup(options, GFP_KERNEL);
+>>> +		else
+>>> +			*option = NULL;
+>>> +	}
+>>>
+>> 
+>> I know the old code wasn't checking if kstrdup() succeeded, but you should
 >
-> After looking into it again I'm still under the impression that
-> vma->anon_vma is populated lazily (during the first page fault rather
-> than at mmap time) to avoid doing extra work for areas which are never
-> faulted. Though I might be missing some important detail here.
+> Kstrdup uses kmalloc, which already warns about failed allocations. I 
+> think it's discouraged to warn again. (Wasn't there a warning in sparse 
+> or checkpatch?)  So I'd rather leave it as is.
+>
 
-I think this is because the kernel cannot merge VMAs that have
-different anon_vmas?
+I didn't mean to warn but to return an error code.
 
-Enabling lazy population of anon_vma could potentially increase the
-chances of merging VMAs.
+>> do it here and let the caller know. And same if (!options). So I guess the
+>> following check can be added (to be consistent with the rest of the code):
+>> 
+>> 	if (!*option)
+>> 		retval = 1;
+>
+> Why is that needed for consistency?
+>
+> Retval is the state of the output: enabled or not. If there are no 
+> options, retval should be 0(=enabled). 1(=disabled) is only set by 
+> video=off or that ofonly thing.
+>
 
-> > In the end rather than changing that logic I decided to skip
-> > vma->anon_vma==NULL cases because I measured them being less than
-> > 0.01% of all page faults, so ROI from changing that would be quite
-> > low. But I agree that the logic is weird and maybe we can improve
-> > that. I will have to review that again when I'm working on eliminating
-> > all these special cases we skip, like swap/userfaults/etc.
+Ah, I see. I misundertood what retval was about. Forget this comment then.
+
+Maybe while you are there could have another patch to document the return
+value in the fb_get_options() kernel-doc?
+
+And this patch looks good to me too after your explanations.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+Best regards,
+Javier
+
