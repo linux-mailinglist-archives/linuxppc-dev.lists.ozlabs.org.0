@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA4669B901
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 10:18:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D769B904
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 10:19:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJjll4sClz3fXV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 20:18:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJjmL5Wn1z3fj7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 20:18:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
@@ -14,48 +14,48 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJjjT4qBjz3fRK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 20:16:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJjjZ36z2z3fR2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 20:16:34 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4PJjjC2bC0z9scw;
-	Sat, 18 Feb 2023 10:16:15 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4PJjjD1G7bz9sd7;
+	Sat, 18 Feb 2023 10:16:16 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 7ncrDxCUZd67; Sat, 18 Feb 2023 10:16:15 +0100 (CET)
+	with ESMTP id u300RdLk2wLL; Sat, 18 Feb 2023 10:16:16 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4PJjjC1hglz9scs;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4PJjjC2gKyz9scy;
 	Sat, 18 Feb 2023 10:16:15 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A4C08B78D;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B6288B78D;
 	Sat, 18 Feb 2023 10:16:15 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id fYZNLPwJ-zed; Sat, 18 Feb 2023 10:16:15 +0100 (CET)
+	with ESMTP id QABnGsCVk__i; Sat, 18 Feb 2023 10:16:15 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.180])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DBD258B768;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DBCCA8B764;
 	Sat, 18 Feb 2023 10:16:14 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 31I9G8N4642537
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 31I9G8lG642541
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 18 Feb 2023 10:16:08 +0100
+	Sat, 18 Feb 2023 10:16:09 +0100
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 31I9G85N642528;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 31I9G8lU642540;
 	Sat, 18 Feb 2023 10:16:08 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 04/10] powerpc/47x: Split ppc47x machine in two
-Date: Sat, 18 Feb 2023 10:15:47 +0100
-Message-Id: <f8f90020c09abdeccacf6d24f0c513e9a8ad75be.1676711562.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 05/10] powerpc/gamecube|wii : Use machine_device_initcall()
+Date: Sat, 18 Feb 2023 10:15:48 +0100
+Message-Id: <62e12962341445989f1d849c26bb6c8d5aad277a.1676711562.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <6cb9865d916231c38401ba34ad1a98c249fae135.1676711562.git.christophe.leroy@csgroup.eu>
 References: <6cb9865d916231c38401ba34ad1a98c249fae135.1676711562.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1676711718; l=2584; s=20211009; h=from:subject:message-id; bh=9M0CwmB0Wm03CvlxKQyiW8+JYt1D4vMd6pODquen9Fs=; b=RvsftSdHLys0j+QrqI1vs/UTYPr0MFW+mSbi3LuwOsXcQXNXz4uIdrwT3LhYZW0TbZy3JUMyXWI3 DQ4nJUB9DX28solk8Vu+eaIvWhvi3svjHTEzyK5HF7fPYxuhulCM
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1676711719; l=1550; s=20211009; h=from:subject:message-id; bh=bp8JdY3HFIOyXcrtwHLjajTlIRxJfQDwElw/vik7hZI=; b=bnxDhgDRyDeVvH6fPLOm0JON85uHiYHYloEfQHlxakZToChjBA4MK3uje/yKzjaXxXKssUP3pCh5 1bvsE6D+B2LXos2IkWMCNjqUaSNZzfjCxZvKYzdggfIpzPTSrlEO
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -73,84 +73,51 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This machine matches two compatibles and sets .pci_irq_fixup
-on one of them.
-
-Split it into two machines, then the probe function can be dropped.
+Instead of checking machine type in the function,
+use machine_device_initcall().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Also update/duplicate machine_{device/arch}_initcall
----
- arch/powerpc/platforms/44x/ppc476.c | 37 ++++++++++++++---------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ arch/powerpc/platforms/embedded6xx/gamecube.c | 5 +----
+ arch/powerpc/platforms/embedded6xx/wii.c      | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/44x/ppc476.c b/arch/powerpc/platforms/44x/ppc476.c
-index 7c91ac5a5241..11f939ee98c4 100644
---- a/arch/powerpc/platforms/44x/ppc476.c
-+++ b/arch/powerpc/platforms/44x/ppc476.c
-@@ -114,7 +114,8 @@ static int __init ppc47x_device_probe(void)
+diff --git a/arch/powerpc/platforms/embedded6xx/gamecube.c b/arch/powerpc/platforms/embedded6xx/gamecube.c
+index 4fc84ff95b5e..60cdc2852c7a 100644
+--- a/arch/powerpc/platforms/embedded6xx/gamecube.c
++++ b/arch/powerpc/platforms/embedded6xx/gamecube.c
+@@ -83,11 +83,8 @@ static const struct of_device_id gamecube_of_bus[] = {
  
- 	return 0;
- }
--machine_device_initcall(ppc47x, ppc47x_device_probe);
-+machine_device_initcall(ppc47x_akebono, ppc47x_device_probe);
-+machine_device_initcall(ppc47x_currituck, ppc47x_device_probe);
- 
- static void __init ppc47x_init_irq(void)
+ static int __init gamecube_device_probe(void)
  {
-@@ -249,7 +250,8 @@ static int __init ppc47x_get_board_rev(void)
- 	pr_info("%s: Unable to find board revision\n", __func__);
+-	if (!machine_is(gamecube))
+-		return 0;
+-
+ 	of_platform_bus_probe(NULL, gamecube_of_bus, NULL);
  	return 0;
  }
--machine_arch_initcall(ppc47x, ppc47x_get_board_rev);
-+machine_arch_initcall(ppc47x_akebono, ppc47x_get_board_rev);
-+machine_arch_initcall(ppc47x_currituck, ppc47x_get_board_rev);
+-device_initcall(gamecube_device_probe);
++machine_device_initcall(gamecube, gamecube_device_probe);
  
- /* Use USB controller should have been hardware swizzled but it wasn't :( */
- static void ppc47x_pci_irq_fixup(struct pci_dev *dev)
-@@ -268,27 +270,24 @@ static void ppc47x_pci_irq_fixup(struct pci_dev *dev)
- 	}
+diff --git a/arch/powerpc/platforms/embedded6xx/wii.c b/arch/powerpc/platforms/embedded6xx/wii.c
+index f2cc00e6f12f..635c393d307a 100644
+--- a/arch/powerpc/platforms/embedded6xx/wii.c
++++ b/arch/powerpc/platforms/embedded6xx/wii.c
+@@ -161,13 +161,10 @@ static const struct of_device_id wii_of_bus[] = {
+ 
+ static int __init wii_device_probe(void)
+ {
+-	if (!machine_is(wii))
+-		return 0;
+-
+ 	of_platform_populate(NULL, wii_of_bus, NULL, NULL);
+ 	return 0;
  }
+-device_initcall(wii_device_probe);
++machine_device_initcall(wii, wii_device_probe);
  
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init ppc47x_probe(void)
--{
--	if (of_machine_is_compatible("ibm,akebono"))
--		return 1;
--
--	if (of_machine_is_compatible("ibm,currituck")) {
--		ppc_md.pci_irq_fixup = ppc47x_pci_irq_fixup;
--		return 1;
--	}
--
--	return 0;
--}
-+define_machine(ppc47x_akebono) {
-+	.name			= "PowerPC 47x (akebono)",
-+	.compatible		= "ibm,akebono",
-+	.probe			= ppc47x_probe,
-+	.progress		= udbg_progress,
-+	.init_IRQ		= ppc47x_init_irq,
-+	.setup_arch		= ppc47x_setup_arch,
-+	.restart		= ppc4xx_reset_system,
-+	.calibrate_decr		= generic_calibrate_decr,
-+};
- 
--define_machine(ppc47x) {
--	.name			= "PowerPC 47x",
-+define_machine(ppc47x_currituck) {
-+	.name			= "PowerPC 47x (currituck)",
-+	.compatible		= "ibm,currituck",
- 	.probe			= ppc47x_probe,
- 	.progress		= udbg_progress,
- 	.init_IRQ		= ppc47x_init_irq,
-+	.pci_irq_fixup		= ppc47x_pci_irq_fixup,
- 	.setup_arch		= ppc47x_setup_arch,
- 	.restart		= ppc4xx_reset_system,
- 	.calibrate_decr		= generic_calibrate_decr,
+ define_machine(wii) {
+ 	.name			= "wii",
 -- 
 2.39.1
 
