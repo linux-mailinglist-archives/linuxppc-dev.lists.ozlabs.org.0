@@ -2,59 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E800369B91D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 10:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C552269B9CE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 12:32:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PJk0Z5XzTz3c3W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 20:29:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PJmk34D3Nz3f8T
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Feb 2023 22:32:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tanSx/9G;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tanSx/9G;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJk022rd0z3c3N
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 20:29:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4PJjzx3JR0z9sbd;
-	Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1yBzKFv13ba2; Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4PJjzx2ZJ4z9sWY;
-	Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 451668B768;
-	Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id O_BMGtLZa0IN; Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.180])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E1C48B764;
-	Sat, 18 Feb 2023 10:29:01 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 31I9Sq3d644371
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 18 Feb 2023 10:28:53 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 31I9SpLa644369;
-	Sat, 18 Feb 2023 10:28:51 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/e500: Add missing prototype for 'relocate_init'
-Date: Sat, 18 Feb 2023 10:28:50 +0100
-Message-Id: <ac9107acf24135e1a07e8f84d2090572d43e3fe4.1676712510.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.39.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PJmc05lnLz3c9N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Feb 2023 22:26:56 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B5E37B822AB;
+	Sat, 18 Feb 2023 11:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C78C433EF;
+	Sat, 18 Feb 2023 11:26:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676719611;
+	bh=JVTiq+B7EgZuFlDHHXZ/E5jLhXy+PnF55RTV4RUP3v8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tanSx/9GIYeOkjwWxWqRA+w5iY++qN6UfgcwDjlM5t8wrhMv9LXNPHW265Bcq/b0f
+	 yAMtC3vh0/qPWJF6YpCXwqz/wucM9qPc8QvzQKaSR6wiQ2IefR8/2W6UbTLWftMHDo
+	 fsSNM5my3T/BSJ/nrZIGKZJko4cZmZpCtCxVsYk1lMwv+b5J4K3G/sG3CWZxkv/GyC
+	 mogB1sm1zBoyadOG548rnxtQDRmmFeGgp21gVqr6dElcVWOmefsBauG5WKT0Qf+FfA
+	 KPdswLDWakc5ZjXN1Ca8HUCKcCqQYkqV4q2yoasQ88XHRBFdj/qSRm4SyyVop4Q8Q4
+	 P1gM/H8dR2CiA==
+Received: by pali.im (Postfix)
+	id 7B9E371F; Sat, 18 Feb 2023 12:26:48 +0100 (CET)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Scott Wood <oss@buserror.net>,
+	Sinan Akman <sinan@writeme.com>,
+	Martin Kennedy <hurricos@gmail.com>
+Subject: [PATCH v3 0/8] powerpc/85xx: p2020: Create one unified machine description
+Date: Sat, 18 Feb 2023 12:13:57 +0100
+Message-Id: <20230218111405.27688-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1676712516; l=1217; s=20211009; h=from:subject:message-id; bh=pfVj+fGo1djC+tVecmlDArzordscRtCM4E2ms3R4K3U=; b=6OT4l93tyj8545rUYFu1CCuXDkDFOIwBCZTCy572l5zArzVPKJ6mFf5Lqe9Re/2q/QrmdRsKj5FV vPDMZSG/Af+/o+whdbcQrRI3MfiBcIWFAJsTfLU7EYX/2EJy9hn4
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,38 +65,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kernel test robot reports:
+This patch series unifies all P2020 boards and machine descriptions into
+one generic unified P2020 machine description. With this generic machine
+description, kernel can boot on any P2020-based board with correct DTS
+file.
 
- arch/powerpc/mm/nohash/e500.c:314:21: warning: no previous prototype for 'relocate_init' [-Wmissing-prototypes]
-     314 | notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
-         |                     ^~~~~~~~~~~~~
+Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
+Kernel during booting correctly detects P2020 and prints:
+[    0.000000] Using Freescale P2020 machine description
 
-Add it in mm/mmu_decl.h, close to associated is_second_reloc
-variable declaration.
+Changes in v3:
+* Use 'if (IS_ENABLED(CONFIG_PPC_I8259))' instead of '#ifdef CONFIG_PPC_I8259'
+* Simplify p2020_probe()
+* Patches generated by -M and -C git options
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202302181136.wgyCKUcs-lkp@intel.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/mmu_decl.h | 1 +
- 1 file changed, 1 insertion(+)
+Link to v2: https://lore.kernel.org/linuxppc-dev/20221224211425.14983-1-pali@kernel.org/
 
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index bd9784f77f2e..c6dccb4f06dc 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -120,6 +120,7 @@ extern int switch_to_as1(void);
- extern void restore_to_as0(int esel, int offset, void *dt_ptr, int bootcpu);
- void create_kaslr_tlb_entry(int entry, unsigned long virt, phys_addr_t phys);
- void reloc_kernel_entry(void *fdt, int addr);
-+void relocate_init(u64 dt_ptr, phys_addr_t start);
- extern int is_second_reloc;
- #endif
- extern void loadcam_entry(unsigned int index);
+Changes in v2:
+* Added patch "p2020: Move i8259 code into own function" (separated from the next one)
+* Renamed CONFIG_P2020 to CONFIG_PPC_P2020
+* Fixed descriptions
+
+Link to v1: https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@kernel.org/
+
+Pali Rohár (8):
+  powerpc/85xx: Mark mpc85xx_rdb_pic_init() as static
+  powerpc/85xx: Mark mpc85xx_ds_pic_init() as static
+  powerpc/85xx: p2020: Move all P2020 machine descriptions to p2020.c
+  powerpc/85xx: p2020: Move i8259 code into own function
+  powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
+  powerpc/85xx: p2020: Define just one machine description
+  powerpc/85xx: p2020: Enable boards by new config option
+    CONFIG_PPC_P2020
+  powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+
+ arch/powerpc/boot/dts/turris1x.dts            |   2 +-
+ arch/powerpc/platforms/85xx/Kconfig           |  22 ++-
+ arch/powerpc/platforms/85xx/Makefile          |   1 +
+ arch/powerpc/platforms/85xx/mpc85xx_ds.c      |  25 +---
+ arch/powerpc/platforms/85xx/mpc85xx_rdb.c     |  46 +-----
+ .../platforms/85xx/{mpc85xx_ds.c => p2020.c}  | 135 ++++++------------
+ 6 files changed, 68 insertions(+), 163 deletions(-)
+ copy arch/powerpc/platforms/85xx/{mpc85xx_ds.c => p2020.c} (52%)
+
 -- 
-2.39.1
+2.20.1
 
