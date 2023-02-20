@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033CC69C4A1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 04:53:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFF869C4A2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 04:53:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PKpRN5xVXz3cHm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 14:53:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PKpRy5CMSz3fWp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 14:53:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKpPm4yntz3bZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 14:51:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKpPp0dmFz3c7S
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 14:51:42 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PKpPm23NKz4x87;
-	Mon, 20 Feb 2023 14:51:40 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PKpPn6JDnz4x8Y;
+	Mon, 20 Feb 2023 14:51:41 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20230209105649.127707-1-ganeshgr@linux.ibm.com>
-References: <20230209105649.127707-1-ganeshgr@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/eeh: Set channel state after notifying the drivers
-Message-Id: <167686495538.2406274.5208914281523648348.b4-ty@ellerman.id.au>
-Date: Mon, 20 Feb 2023 14:49:15 +1100
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20230213112322.998003-1-mpe@ellerman.id.au>
+References: <20230213112322.998003-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/nohash: Fix build error with binutils >= 2.38
+Message-Id: <167686495636.2406274.3495482833734089850.b4-ty@ellerman.id.au>
+Date: Mon, 20 Feb 2023 14:49:16 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,26 +42,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dick.kennedy@broadcom.com, oohall@gmail.com, mahesh@linux.ibm.com, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 9 Feb 2023 16:26:49 +0530, Ganesh Goudar wrote:
-> When a PCI error is encountered 6th time in an hour we
-> set the channel state to perm_failure and notify the
-> driver about the permanent failure.
+On Mon, 13 Feb 2023 22:23:22 +1100, Michael Ellerman wrote:
+> With bintils >= 2.38 the ppc64_book3e_allmodconfig build fails:
 > 
-> However, after upstream commit 38ddc011478e ("powerpc/eeh:
-> Make permanently failed devices non-actionable"), EEH handler
-> stops calling any routine once the device is marked as
-> permanent failure. This issue can lead to fatal consequences
-> like kernel hang with certain PCI devices.
+>   {standard input}: Assembler messages:
+>   {standard input}:196: Error: unrecognized opcode: `lbarx'
+>   {standard input}:196: Error: unrecognized opcode: `stbcx.'
+>   make[5]: *** [scripts/Makefile.build:252: arch/powerpc/mm/nohash/e500_hugetlbpage.o] Error 1
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/eeh: Set channel state after notifying the drivers
-      https://git.kernel.org/powerpc/c/9efcdaac36e1643a1b7f5337e6143ce142d381b1
+[1/1] powerpc/nohash: Fix build error with binutils >= 2.38
+      https://git.kernel.org/powerpc/c/91360b446a5cced537d61fc2394253e8c6b9ae7b
 
 cheers
