@@ -1,118 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C568C69CADC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 13:25:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B5869CB45
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 13:46:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PL1q43917z3cfY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 23:25:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PL2Gc4RK8z3cHG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 23:46:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fARxYdZM;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fARxYdZM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=PWgSNmXd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=141586787b=paul.gortmaker@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fARxYdZM;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fARxYdZM;
+	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=PWgSNmXd;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PL0RM5skDz3c6C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 22:23:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676892216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JGvEUYyDyInAU1qTOkUUwH1+5Pn5/FfAg09zLJh1EcU=;
-	b=fARxYdZMW4tx7c2CoaN7hCdO4AvnULJFGKhKz9K3Mm1eAxfbhlOAHEX1iJ57tY31xrgqpS
-	GfBn477V8nrjWugDTHhFQ5aElUlTIx32OrYC1cO9cFMRtV6bBCNt2SyQJAjXPXB7ezbPH9
-	2Pv99MEU8WaktKeJoYmm5xrQKNg/rNY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676892216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JGvEUYyDyInAU1qTOkUUwH1+5Pn5/FfAg09zLJh1EcU=;
-	b=fARxYdZMW4tx7c2CoaN7hCdO4AvnULJFGKhKz9K3Mm1eAxfbhlOAHEX1iJ57tY31xrgqpS
-	GfBn477V8nrjWugDTHhFQ5aElUlTIx32OrYC1cO9cFMRtV6bBCNt2SyQJAjXPXB7ezbPH9
-	2Pv99MEU8WaktKeJoYmm5xrQKNg/rNY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-215-ZXP4bHT2MLCToZuZhM-4fg-1; Mon, 20 Feb 2023 06:23:33 -0500
-X-MC-Unique: ZXP4bHT2MLCToZuZhM-4fg-1
-Received: by mail-wr1-f70.google.com with SMTP id n14-20020a5d67ce000000b002bfc2f61048so318429wrw.23
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 03:23:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JGvEUYyDyInAU1qTOkUUwH1+5Pn5/FfAg09zLJh1EcU=;
-        b=ctp0OK5tS9EjG31ITbt4OSAoTXy+esNyYm5aDHP0Dm2zaMwtOZl4C4qmAcf2PCcsWj
-         IUkQTem5vacm4d5RUKCzgGKOdu11GLZZz47oxFuVVhWeZo8X5bfKhGOKFJTvXej6Ub18
-         oarIQWTpniCcVqKDrT2h6BoOo+ntCIoRvTmclBMJmVvgIEwvT2y3Jgrn851Z1hi3MpSn
-         tiJ1W2VSKljDskDIlRJNAPGbRjT2/tkbHrgJVi6dwVY1AnCpMLf5VKcK50MM0JepqM0P
-         3gto45aXZSQ33QzcCi2AA0XVH3AMIb15dABpmFkSYWC3p+0+Gf57txaNiLI4y0t8LGCX
-         TwnQ==
-X-Gm-Message-State: AO0yUKXwxi3jflVb2+UpgM57xNrYYI5xIDeU0TgNYgx5CBu3eEpi2Jah
-	xOGUo9yBaXoqPHXY6Jlc1bPMfXmR0pKQkIE/sui0F80feuRQaD2gNA4it/rM94y5nYv7gepHoEa
-	8faOZRh2DdYmWTKwBOEv8O4harw==
-X-Received: by 2002:adf:e889:0:b0:2bf:ae19:d8e4 with SMTP id d9-20020adfe889000000b002bfae19d8e4mr1431276wrm.16.1676892211958;
-        Mon, 20 Feb 2023 03:23:31 -0800 (PST)
-X-Google-Smtp-Source: AK7set8MwtYqrZBvXsoQ9yPZN/bwu32QfvZtBFBM6ley7E2vAkMmUmM+SZmaWRHMAwPacrP/Dgjyyg==
-X-Received: by 2002:adf:e889:0:b0:2bf:ae19:d8e4 with SMTP id d9-20020adfe889000000b002bfae19d8e4mr1431211wrm.16.1676892211619;
-        Mon, 20 Feb 2023 03:23:31 -0800 (PST)
-Received: from ?IPV6:2003:cb:c705:8300:e519:4218:a8b5:5bec? (p200300cbc7058300e5194218a8b55bec.dip0.t-ipconnect.de. [2003:cb:c705:8300:e519:4218:a8b5:5bec])
-        by smtp.gmail.com with ESMTPSA id u13-20020a5d434d000000b002c55ec7f661sm154441wrr.5.2023.02.20.03.23.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Feb 2023 03:23:30 -0800 (PST)
-Message-ID: <f50daeb7-7b41-0bed-73f0-b6358169521b@redhat.com>
-Date: Mon, 20 Feb 2023 12:23:28 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PL2Fj17dSz3c6V
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 23:45:27 +1100 (AEDT)
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31KBiBte016482;
+	Mon, 20 Feb 2023 11:59:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=PPS06212021;
+ bh=Q07f78IneqA79cx/QSo7AiFjh4TPKDFAMdzSo84d5/g=;
+ b=PWgSNmXdKqN6V3NEz9WIo1yfzgw80s9XYtYK4J27Gt1jUmfSNEBmieGj618TIDrPQfzJ
+ 5lk4qBQ7iXZIFzTPOh50591bX4jd+xluX3Cl31GUHDaHeRO8gSfn6SCAdD7z6BOZDbch
+ tHMKJvLJzJi/SFiZyfpcs9WEWXVFQGLfiS14MvWytiWm9+oTnttTIxe2bj5dz8oetIji
+ cWEHl4ZWm+2MJjfH5+s9lq8B/hjUNe/Xw2/H6/oOc2yBFbtX7Y4AywUzpKgyp9opJMmQ
+ e8ZAjyVuRNK7mz2l7XkprhpSVssNEfFXU14S1/wRQTWJmabKgYkJ+FHnoTWfGfg2oyu3 3w== 
+Received: from ala-exchng01.corp.ad.wrs.com (unknown-82-252.windriver.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ntpd3sntb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 20 Feb 2023 11:59:37 +0000
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 20 Feb 2023 03:59:36 -0800
+Received: from sc2600cp.wrs.com (128.224.56.77) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.17 via Frontend Transport; Mon, 20 Feb 2023 03:59:35 -0800
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+Date: Mon, 20 Feb 2023 06:59:09 -0500
+Message-ID: <20230220115913.25811-1-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org,
- linux-api@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Andy Lutomirski <luto@kernel.org>, Balbir Singh <bsingharora@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Cyrill Gorcunov <gorcunov@gmail.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Eugene Syromiatnikov <esyr@redhat.com>, Florian Weimer <fweimer@redhat.com>,
- "H . J . Lu" <hjl.tools@gmail.com>, Jann Horn <jannh@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Kees Cook <keescook@chromium.org>,
- Mike Kravetz <mike.kravetz@oracle.com>, Nadav Amit <nadav.amit@gmail.com>,
- Oleg Nesterov <oleg@redhat.com>, Pavel Machek <pavel@ucw.cz>,
- Peter Zijlstra <peterz@infradead.org>, Randy Dunlap <rdunlap@infradead.org>,
- Weijiang Yang <weijiang.yang@intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- John Allen <john.allen@amd.com>, kcc@google.com, eranian@google.com,
- rppt@kernel.org, jamorris@linux.microsoft.com, dethoma@microsoft.com,
- akpm@linux-foundation.org, Andrew.Cooper3@citrix.com,
- christina.schimpe@intel.com, debug@rivosinc.com
-References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
- <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 20 Feb 2023 23:24:30 +1100
+Content-Type: text/plain
+X-Proofpoint-GUID: hLAsScj1aMVG_Xih4yjZuVxBXnVbkuh1
+X-Proofpoint-ORIG-GUID: hLAsScj1aMVG_Xih4yjZuVxBXnVbkuh1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-20_08,2023-02-20_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=836 clxscore=1011 lowpriorityscore=0 phishscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302200107
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,135 +72,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Paul Gortmaker <paul.gortmaker@windriver.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18.02.23 22:14, Rick Edgecombe wrote:
-> The x86 Control-flow Enforcement Technology (CET) feature includes a new
-> type of memory called shadow stack. This shadow stack memory has some
-> unusual properties, which requires some core mm changes to function
-> properly.
-> 
-> One of these unusual properties is that shadow stack memory is writable,
-> but only in limited ways. These limits are applied via a specific PTE
-> bit combination. Nevertheless, the memory is writable, and core mm code
-> will need to apply the writable permissions in the typical paths that
-> call pte_mkwrite().
-> 
-> In addition to VM_WRITE, the shadow stack VMA's will have a flag denoting
-> that they are special shadow stack flavor of writable memory. So make
-> pte_mkwrite() take a VMA, so that the x86 implementation of it can know to
-> create regular writable memory or shadow stack memory.
-> 
-> Apply the same changes for pmd_mkwrite() and huge_pte_mkwrite().
-> 
-> No functional change.
-> 
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: loongarch@lists.linux.dev
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Cc: linux-mips@vger.kernel.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: xen-devel@lists.xenproject.org
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> 
-> ---
-> Hi Non-x86 Arch’s,
-> 
-> x86 has a feature that allows for the creation of a special type of
-> writable memory (shadow stack) that is only writable in limited specific
-> ways. Previously, changes were proposed to core MM code to teach it to
-> decide when to create normally writable memory or the special shadow stack
-> writable memory, but David Hildenbrand suggested[0] to change
-> pXX_mkwrite() to take a VMA, so awareness of shadow stack memory can be
-> moved into x86 code.
-> 
-> Since pXX_mkwrite() is defined in every arch, it requires some tree-wide
-> changes. So that is why you are seeing some patches out of a big x86
-> series pop up in your arch mailing list. There is no functional change.
-> After this refactor, the shadow stack series goes on to use the arch
-> helpers to push shadow stack memory details inside arch/x86.
-> 
-> Testing was just 0-day build testing.
-> 
-> Hopefully that is enough context. Thanks!
-> 
-> [0] https://lore.kernel.org/lkml/0e29a2d0-08d8-bcd6-ff26-4bea0e4037b0@redhat.com/#t
-> 
-> v6:
->   - New patch
-> ---
->   Documentation/mm/arch_pgtable_helpers.rst    |  9 ++++++---
->   arch/alpha/include/asm/pgtable.h             |  6 +++++-
->   arch/arc/include/asm/hugepage.h              |  2 +-
->   arch/arc/include/asm/pgtable-bits-arcv2.h    |  7 ++++++-
->   arch/arm/include/asm/pgtable-3level.h        |  7 ++++++-
->   arch/arm/include/asm/pgtable.h               |  2 +-
->   arch/arm64/include/asm/pgtable.h             |  4 ++--
->   arch/csky/include/asm/pgtable.h              |  2 +-
->   arch/hexagon/include/asm/pgtable.h           |  2 +-
->   arch/ia64/include/asm/pgtable.h              |  2 +-
->   arch/loongarch/include/asm/pgtable.h         |  4 ++--
->   arch/m68k/include/asm/mcf_pgtable.h          |  2 +-
->   arch/m68k/include/asm/motorola_pgtable.h     |  6 +++++-
->   arch/m68k/include/asm/sun3_pgtable.h         |  6 +++++-
->   arch/microblaze/include/asm/pgtable.h        |  2 +-
->   arch/mips/include/asm/pgtable.h              |  6 +++---
->   arch/nios2/include/asm/pgtable.h             |  2 +-
->   arch/openrisc/include/asm/pgtable.h          |  2 +-
->   arch/parisc/include/asm/pgtable.h            |  6 +++++-
->   arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
->   arch/powerpc/include/asm/book3s/64/pgtable.h |  4 ++--
->   arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +-
->   arch/powerpc/include/asm/nohash/32/pte-8xx.h |  2 +-
->   arch/powerpc/include/asm/nohash/64/pgtable.h |  2 +-
->   arch/riscv/include/asm/pgtable.h             |  6 +++---
->   arch/s390/include/asm/hugetlb.h              |  4 ++--
->   arch/s390/include/asm/pgtable.h              |  4 ++--
->   arch/sh/include/asm/pgtable_32.h             | 10 ++++++++--
->   arch/sparc/include/asm/pgtable_32.h          |  2 +-
->   arch/sparc/include/asm/pgtable_64.h          |  6 +++---
->   arch/um/include/asm/pgtable.h                |  2 +-
->   arch/x86/include/asm/pgtable.h               |  6 ++++--
->   arch/xtensa/include/asm/pgtable.h            |  2 +-
->   include/asm-generic/hugetlb.h                |  4 ++--
->   include/linux/mm.h                           |  2 +-
->   mm/debug_vm_pgtable.c                        | 16 ++++++++--------
->   mm/huge_memory.c                             |  6 +++---
->   mm/hugetlb.c                                 |  4 ++--
->   mm/memory.c                                  |  4 ++--
->   mm/migrate_device.c                          |  2 +-
->   mm/mprotect.c                                |  2 +-
->   mm/userfaultfd.c                             |  2 +-
->   42 files changed, 106 insertions(+), 69 deletions(-)
+[This RFC is proposed for v6.4 and hence is based off linux-next.]
 
-That looks painful but IMHO worth it :)
+This series removes support for four e300 (MPC83xx) Freescale processor
+family evaluation boards that were added to the kernel in the 2006 era.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+These boards were all of a very similar form factor, a largish PCI or PCI-X
+card that could also be used standalone with an external power brick, and
+all shared the Modular Development System (MDS) designation.
+
+These platforms were made in limited quantity and were generally designed
+to get early silicon into the hands of OEMs who would later develop their
+own boards/platforms.  As such, availability was limited to those who would
+be working on boards and/or BSP support.
+
+Many early revision MDS platforms used a mechanical clamping system to hold
+the BGA CPU in place to facilitate CPU updates -- something not normally
+possible for a soldered down BGA in a COTS system.
+
+The point of these details is to give context that reflects that these four
+boards were made in limited quantities, were not in a form factor that is
+really "hobbyist" friendly and hence make sense for removal 17 years later.
+
+Here, we remove the MPC8548E-MDS[1], the MPC8360E-MDS[2], the
+MPC837xE-MDS[3], and the MPC832x-MDS[4] board support from the kernel.
+
+There will still exist several e300 Freescale Reference Design System (RDS)
+boards[5] and mini-ITX boards[6] with support in the kernel.  While these
+were more of a COTS "ready to deploy" design more suited to hobbyists, it
+probably makes sense to consider removing these as well, based on age.
+
+But before we get to that, lets see how this goes -- and then we should
+look at similar early e500 evaluation platforms [MPC8540-ADS, etc] next,
+as the oldest there date back to 2002[7] -- before considering RDB/mITX.
+
+I intentionally didn't put any links in the commits, since as we all know,
+they tend not to be stable long term, so keep them here in the merge data.
+Credit to NXP for keeping around these old legacy docs this long!
+
+Paul.
+
+--
+
+[1] https://www.nxp.com/design/qoriq-developer-resources/mpc8349e-modular-development-system:MPC8349EMDS
+[2] https://www.nxp.com/docs/en/user-guide/MPC8360EMDSUM.pdf
+[3] https://www.nxp.com/products/processors-and-microcontrollers/legacy-mpu-mcus/powerquicc-processors/powerquicc-iii-mpc85xx/mpc837xe-modular-development-system:MPC837XEMDS
+[4] https://www.nxp.com/products/processors-and-microcontrollers/legacy-mpu-mcus/powerquicc-processors/powerquicc-ii-pro-mpc83xx/low-power-powerquicc-ii-pro-processor-with-ddr2-tdm-pci-security-usb-quicc-engine-with-utopia:MPC8323E
+[5] https://www.nxp.com/docs/en/fact-sheet/MPC8379ERDBFS.pdf
+[6] https://www.digikey.ca/en/products/detail/nxp-usa-inc/MPC8349E-MITX-GP/1204733
+[7] https://www.nxp.com/docs/en/reference-manual/MPC8560ADSUG.pdf
+
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Li Yang <leoyang.li@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+
+---
+
+Paul Gortmaker (4):
+  powerpc: drop MPC834x_MDS platform support
+  powerpc: drop MPC836x_MDS platform support
+  powerpc: drop MPC837x_MDS platform support
+  powerpc: drop MPC832x_MDS platform support
+
+ arch/powerpc/boot/Makefile                    |   1 -
+ arch/powerpc/boot/dts/mpc832x_mds.dts         | 436 ---------------
+ arch/powerpc/boot/dts/mpc834x_mds.dts         | 403 --------------
+ arch/powerpc/boot/dts/mpc836x_mds.dts         | 481 -----------------
+ arch/powerpc/boot/dts/mpc8377_mds.dts         | 505 ------------------
+ arch/powerpc/boot/dts/mpc8378_mds.dts         | 489 -----------------
+ arch/powerpc/boot/dts/mpc8379_mds.dts         | 455 ----------------
+ .../configs/83xx/mpc832x_mds_defconfig        |  59 --
+ .../configs/83xx/mpc834x_mds_defconfig        |  58 --
+ .../configs/83xx/mpc836x_mds_defconfig        |  64 ---
+ .../configs/83xx/mpc837x_mds_defconfig        |  58 --
+ arch/powerpc/configs/mpc83xx_defconfig        |   4 -
+ arch/powerpc/configs/ppc6xx_defconfig         |   4 -
+ arch/powerpc/platforms/83xx/Kconfig           |  32 --
+ arch/powerpc/platforms/83xx/Makefile          |   4 -
+ arch/powerpc/platforms/83xx/mpc832x_mds.c     | 110 ----
+ arch/powerpc/platforms/83xx/mpc834x_mds.c     | 101 ----
+ arch/powerpc/platforms/83xx/mpc836x_mds.c     | 210 --------
+ arch/powerpc/platforms/83xx/mpc837x_mds.c     | 103 ----
+ 19 files changed, 3577 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/mpc832x_mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc834x_mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc836x_mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc8377_mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc8378_mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc8379_mds.dts
+ delete mode 100644 arch/powerpc/configs/83xx/mpc832x_mds_defconfig
+ delete mode 100644 arch/powerpc/configs/83xx/mpc834x_mds_defconfig
+ delete mode 100644 arch/powerpc/configs/83xx/mpc836x_mds_defconfig
+ delete mode 100644 arch/powerpc/configs/83xx/mpc837x_mds_defconfig
+ delete mode 100644 arch/powerpc/platforms/83xx/mpc832x_mds.c
+ delete mode 100644 arch/powerpc/platforms/83xx/mpc834x_mds.c
+ delete mode 100644 arch/powerpc/platforms/83xx/mpc836x_mds.c
+ delete mode 100644 arch/powerpc/platforms/83xx/mpc837x_mds.c
 
 -- 
-Thanks,
-
-David / dhildenb
+2.17.1
 
