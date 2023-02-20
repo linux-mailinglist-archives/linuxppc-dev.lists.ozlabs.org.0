@@ -1,90 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04C969C78B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 10:18:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E47B69CAD2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 13:25:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PKxfP2XRgz3cFw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 20:18:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k5AZeJtF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PL1p60ZdPz3f4n
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 23:25:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k5AZeJtF;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=emlix.com (client-ip=136.243.223.33; helo=mx1.emlix.com; envelope-from=eb@emlix.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 608 seconds by postgrey-1.36 at boromir; Mon, 20 Feb 2023 19:39:24 AEDT
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKxdS4TSpz2yJQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 20:17:16 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31K7RIp6009147
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 09:17:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=FDj0bIr0cUAEsTTNqHDF4mnUO8F3EZovzUcHyR7Z9Hw=;
- b=k5AZeJtFXQ/xD63TsoOc5nif/2xMl5hkYReGMen2+5MfnFfSflA7zobJrp1qaEpnbDga
- qlwc/HYCAdNnM0nmx8nYo9OydHuRSuSI78sKMfqxooeRJsSQIGD0lFd+7aPP3x2v7iEi
- 0XRe10bIVnKhAHlgmLJq9M9NjA6D4RouvrXgfnaCKcBYFn7aB2WsK+VjvHQ4gYUZTBpe
- g78zGsZvakO0RiUF/xsX7xgVFPR3a7tFslrPF03CDEihvwXEEgWhIp+nceKY/8eqOoiT
- mvFsjFoU599zXBlVHGttAax+dP/s2l6QbAfwXPR9qNLXRxOPbLB+VX67sXisMIa3X6tz nA== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nuyk6gqss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 09:17:13 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31JBeXWN023934
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 09:17:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3ntpa69uma-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 09:17:11 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31K9H7Oc25821932
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Feb 2023 09:17:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9AD720043;
-	Mon, 20 Feb 2023 09:17:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A04B20040;
-	Mon, 20 Feb 2023 09:17:07 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.109.216.99])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 20 Feb 2023 09:17:06 +0000 (GMT)
-Date: Mon, 20 Feb 2023 14:47:04 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [PATCH 1/2] arch/powerpc/kvm: kvmppc_hv_entry: remove .global
- scope
-Message-ID: <Y/M6kFeUsLBwcbP0@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230220052355.109033-1-kconsul@linux.vnet.ibm.com>
- <20230220052355.109033-2-kconsul@linux.vnet.ibm.com>
- <2fa8dd2a-1650-4adc-de2b-0f14dca683ed@linux.ibm.com>
- <Y/MhON/N6vG8wYWq@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <9ee1f333-9cb7-d7fe-4e3f-ded4990030de@linux.ibm.com>
- <Y/MrOjca/C+bPmn1@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKwnn02BDz2xvF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 19:39:23 +1100 (AEDT)
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id 167505F997;
+	Mon, 20 Feb 2023 09:29:09 +0100 (CET)
+From: Rolf Eike Beer <eb@emlix.com>
+To: Matthew Wilcox <willy@infradead.org>, linux-arch@vger.kernel.org,
+ Alexandre Ghiti <alex@ghiti.fr>
+Subject: Re: API for setting multiple PTEs at once
+Date: Mon, 20 Feb 2023 09:29:58 +0100
+Message-ID: <5649318.DvuYhMxLoT@devpool47>
+Organization: emlix GmbH
+In-Reply-To: <0bf59207-838b-2a0b-a95e-925a6bbf1913@ghiti.fr>
+References:  <Y9wnr8SGfGGbi/bk@casper.infradead.org>
+ <Y+K0O35jNNzxiXE6@casper.infradead.org>
+ <0bf59207-838b-2a0b-a95e-925a6bbf1913@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y/MrOjca/C+bPmn1@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Tuzv1pUhK3wIBW_z_pmmcN7x_Qd1lqVL
-X-Proofpoint-ORIG-GUID: Tuzv1pUhK3wIBW_z_pmmcN7x_Qd1lqVL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-20_05,2023-02-17_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 bulkscore=0 mlxscore=0 phishscore=0
- impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302200081
+Content-Type: multipart/signed; boundary="nextPart5907765.lOV4Wx5bFT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Mailman-Approved-At: Mon, 20 Feb 2023 23:24:30 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,59 +48,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, Yin Fengwei <fengwei.yin@intel.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 20, 2023 at 01:41:38PM +0530, Kautuk Consul wrote:
-> On Mon, Feb 20, 2023 at 01:31:40PM +0530, Sathvika Vasireddy wrote:
-> > Placing SYM_FUNC_END(kvmppc_hv_entry) before kvmppc_got_guest() should do:
-> > 
-> > @@ -502,12 +500,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
-> > * *
-> > *****************************************************************************/
-> > 
-> > -.global kvmppc_hv_entry
-> > -kvmppc_hv_entry:
-> > +SYM_FUNC_START_LOCAL(kvmppc_hv_entry)
-> > 
-> >         /* Required state:
-> >          *
-> > -        * R4 = vcpu pointer (or NULL)
-> >          * MSR = ~IR|DR
-> >          * R13 = PACA
-> >          * R1 = host R1
-> > @@ -525,6 +521,8 @@ kvmppc_hv_entry:
-> >         li      r6, KVM_GUEST_MODE_HOST_HV
-> >         stb     r6, HSTATE_IN_GUEST(r13)
-> > 
-> > +       ld      r4, HSTATE_KVM_VCPU(r13)
-> > +
-> >  #ifdef CONFIG_KVM_BOOK3S_HV_P8_TIMING
-> >         /* Store initial timestamp */
-> >         cmpdi   r4, 0
-> > @@ -619,6 +617,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
-> >         /* Do we have a guest vcpu to run? */
-> >  10:    cmpdi   r4, 0
-> >         beq     kvmppc_primary_no_guest
-> > +SYM_FUNC_END(kvmppc_hv_entry)
+--nextPart5907765.lOV4Wx5bFT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Rolf Eike Beer <eb@emlix.com>
+Subject: Re: API for setting multiple PTEs at once
+Date: Mon, 20 Feb 2023 09:29:58 +0100
+Message-ID: <5649318.DvuYhMxLoT@devpool47>
+Organization: emlix GmbH
+In-Reply-To: <0bf59207-838b-2a0b-a95e-925a6bbf1913@ghiti.fr>
+MIME-Version: 1.0
 
-Just one question though. Went through the code again and I think
-that this place shouldn't be proper to insert a SYM_FUNC_END
-because we haven't entered the guest at this point and the name
-of the function is kvmppc_hv_entry which  I think implies that
-this SYM_FUNC_END should be at some place after the HRFI_TO_GUEST.
+On Dienstag, 14. Februar 2023 10:55:43 CET Alexandre Ghiti wrote:
+> Hi Matthew,
+>=20
+> On 2/7/23 21:27, Matthew Wilcox wrote:
+> > On Thu, Feb 02, 2023 at 09:14:23PM +0000, Matthew Wilcox wrote:
+> >> For those of you not subscribed, linux-mm is currently discussing
+> >> how best to handle page faults on large folios.  I simply made it work
+> >> when adding large folio support.  Now Yin Fengwei is working on
+> >> making it fast.
+> >=20
+> > OK, here's an actual implementation:
+> >=20
+> > https://lore.kernel.org/linux-mm/20230207194937.122543-3-willy@infradea=
+d.o
+> > rg/
+> >=20
+> > It survives a run of xfstests.  If your architecture doesn't store its
+> > PFNs at PAGE_SHIFT, you're going to want to implement your own set_ptes=
+(),
+> > or you'll see entirely the wrong pages mapped into userspace.  You may
+> > also wish to implement set_ptes() if it can be done more efficiently
+> > than __pte(pteval(pte) + PAGE_SIZE).
+> >=20
+> > Architectures that implement things like flush_icache_page() and
+> > update_mmu_cache() may want to propose batched versions of those.
+> > That's alpha, csky, m68k, mips, nios2, parisc, sh,
+> > arm, loongarch, openrisc, powerpc, riscv, sparc and xtensa.
+> > Maintainers BCC'd, mailing lists CC'd.
+> >=20
+> > I'm happy to collect implementations and submit them as part of a v6.
+>=20
+> Please find below the riscv implementation for set_ptes:
+>=20
+> diff --git a/arch/riscv/include/asm/pgtable.h
+> b/arch/riscv/include/asm/pgtable.h
+> index ebee56d47003..10bf812776a4 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -463,6 +463,20 @@ static inline void set_pte_at(struct mm_struct *mm,
+>          __set_pte_at(mm, addr, ptep, pteval);
+>   }
+>=20
+> +#define set_ptes set_ptes
+> +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+> +                           pte_t *ptep, pte_t pte, unsigned int nr)
+> +{
+> +       for (;;) {
+> +               set_pte_at(mm, addr, ptep, pte);
+> +               if (--nr =3D=3D 0)
+> +                       break;
+> +               ptep++;
+> +               addr +=3D PAGE_SIZE;
+> +               pte =3D __pte(pte_val(pte) + (1 << _PAGE_PFN_SHIFT));
+> +       }
+> +}
 
-What do you think ?
+Given that this is the same code as the original version (surprise!), what=
+=20
+about doing something like this in the generic code instead:
 
-> > +
-> >  kvmppc_got_guest:
-> >         /* Increment yield count if they have a VPA */
-> >         ld      r3, VCPU_VPA(r4)
-> > 
-> 
-> Thanks! Will send out a v2 after I get some response for
-> PATCH 2/2 with comments.
-> > 
-> > Thanks,
-> > Sathvika
+#ifndef PTE_PAGE_STEP
+#define PTE_PAGE_STEP PAGE_SIZE
+#endif
+
+[=E2=80=A6]
+
+> +               pte =3D __pte(pte_val(pte) + PTE_PAGE_STEP);
+
+The name of the define is an obvious candidate for bike-shedding, feel free=
+ to=20
+name it as you want.
+
+Or if that isn't sound enough maybe introduce something like:
+
+static inline pte_t
+set_ptes_next_pte(pte_t pte)
+{
+	return __pte(pte_val(pte) + (1 << _PAGE_PFN_SHIFT));
+}
+
+Greetings,
+
+Eike
+=2D-=20
+Rolf Eike Beer, emlix GmbH, http://www.emlix.com
+=46on +49 551 30664-0, Fax +49 551 30664-11
+Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
+Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 3160
+Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-IdNr=
+=2E: DE 205 198 055
+
+emlix - smart embedded open source
+
+--nextPart5907765.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iLMEAAEIAB0WIQQ/Uctzh31xzAxFCLur5FH7Xu2t/AUCY/MvhgAKCRCr5FH7Xu2t
+/E96A/9/8q/Nw4RXmkex96nOqUtHteq72XctyEiwy7GrvS5dHVEeF79ebvwfpWIc
+Q6IMXFvld2oH9gZNXFrKV13KlDICP8qZscK88++MqxHdNVgMw/o6sU5yAdaiaKEh
+/bf9Rzx9VJTkDekQ7nP4YDLaAybLYSJ3fXX9PXr+j3HfhBsJxg==
+=hoWZ
+-----END PGP SIGNATURE-----
+
+--nextPart5907765.lOV4Wx5bFT--
+
+
+
