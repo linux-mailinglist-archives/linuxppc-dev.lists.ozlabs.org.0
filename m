@@ -1,67 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB8769C649
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 09:09:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400F169C655
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 09:12:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PKw6n5y3Hz3bm9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 19:09:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PKwC56YcJz3cDc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 19:12:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IVeEXmwQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PZz2eoOx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IVeEXmwQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PZz2eoOx;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKw5p25RDz2yXL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 19:08:14 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 1776BB80AAF;
-	Mon, 20 Feb 2023 08:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE65C433EF;
-	Mon, 20 Feb 2023 08:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676880487;
-	bh=mAkRFlKPeHCUerommxb7CQ/VP+5UtqEsm2G6Fd1DH+s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IVeEXmwQNp5X/IlQWSgfIwia4Ywwi084+80ZNExpN8emciC88kkWYcrLtEgNRNVzN
-	 ruNF2kgzLUgGLzaghyDuWfPqEKOqrHIYMI+WDv8V3O1KBA6vGq+CBYjQWjO+keTy7A
-	 EOzmxzc/Fl8FV8BS3MJWS8eLWOp2is3/x7QInOX7US/eRtH/ZaY7GFYzlca3/u2/Ka
-	 W2IC//5bV+IrmOs7opcg3DUt9ygQnLcdpmSDzxuDdLfBDnnIEihIC5cG8jxY69bLGk
-	 ErqlDbMQ+69LehJvhsVwaUQ1H1wm5zfvbNf+L3cWUVNSdWOC+lyWF6F2fbq2PG7PhL
-	 oEbGjwK0f2teg==
-Received: by pali.im (Postfix)
-	id DA49E9D5; Mon, 20 Feb 2023 09:08:04 +0100 (CET)
-Date: Mon, 20 Feb 2023 09:08:04 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3] powerpc/boot: Don't always pass -mcpu=powerpc when
- building 32-bit uImage
-Message-ID: <20230220080804.vgtgx7d7qdta4r6v@pali>
-References: <e3cb2642-20e4-6c26-104d-329a04260946@csgroup.eu>
- <c8d657db-02da-7840-5b40-755e47277a2c@csgroup.eu>
- <20220828174135.rcql4uiunqbnn5gh@pali>
- <d49c5905-ff68-00e9-ddaf-d60d5e5ebe65@csgroup.eu>
- <20221208191602.diywrt3g2f6zmt4s@pali>
- <aca70dc9-2185-9def-7bc0-b415bec8a5c6@csgroup.eu>
- <20221224174452.xxlkmos7yoy3qn42@pali>
- <20230122111931.hgcsc72fk6alrmzu@pali>
- <da635f99-ce3f-18e8-cf7d-7fd5923c8451@csgroup.eu>
- <c4d5cb6c-bf8f-fbc1-78ca-475f9578c551@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PKwB56Y5zz3bTs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 19:11:57 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31K6DJf0011787
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 08:11:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=pp1;
+ bh=U3WuZFkkm8yuU+DGWGuEcVJXC06a48NA9C3goMAoEs8=;
+ b=PZz2eoOxLT3wpS+ebdG1h8uAV36Uk16BCMUMDXNxbMsLxDOido4ELx8FbxM4gHNmZSqW
+ J4y5feo48XQ9XuDP1v/yB4VlsKjPGLJ5NZdAixO5iz0DY9sXvg9a5wzy14DrehYr326x
+ O6OI4PQiqmo4kc9xjz8Dr4DJy3Nh0zopMVrak3wafQJ8yyCN042woMXgl1scxWrj0qmY
+ gPeZhexBvzeFNsyxCe2frNurnJUo28Vr3aVCH1QSOxigIpZ3+I33YwLSfdP0ais7vBt3
+ 2AJ1aM0JJwlIkdWJliQXh+Y/O2aTk7PLeFsAPwhwJiPstU+vdEHEO96llat0qHidlfaf 3g== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nv1ukcg0p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 08:11:54 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31K5aXuf003267
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 08:11:53 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3ntnxf1tbu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Feb 2023 08:11:53 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31K8BnYU39649704
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Feb 2023 08:11:49 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 282162004D;
+	Mon, 20 Feb 2023 08:11:49 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54B5820040;
+	Mon, 20 Feb 2023 08:11:48 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.109.216.99])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 20 Feb 2023 08:11:48 +0000 (GMT)
+Date: Mon, 20 Feb 2023 13:41:38 +0530
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [PATCH 1/2] arch/powerpc/kvm: kvmppc_hv_entry: remove .global
+ scope
+Message-ID: <Y/MrOjca/C+bPmn1@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+References: <20230220052355.109033-1-kconsul@linux.vnet.ibm.com>
+ <20230220052355.109033-2-kconsul@linux.vnet.ibm.com>
+ <2fa8dd2a-1650-4adc-de2b-0f14dca683ed@linux.ibm.com>
+ <Y/MhON/N6vG8wYWq@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+ <9ee1f333-9cb7-d7fe-4e3f-ded4990030de@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c4d5cb6c-bf8f-fbc1-78ca-475f9578c551@csgroup.eu>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <9ee1f333-9cb7-d7fe-4e3f-ded4990030de@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FUa6W4SEqJ-Ayvl-8P0hC6S1Xdm3wjOm
+X-Proofpoint-ORIG-GUID: FUa6W4SEqJ-Ayvl-8P0hC6S1Xdm3wjOm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-20_04,2023-02-17_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=972 spamscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ suspectscore=0 bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302200067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,37 +95,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Monday 20 February 2023 08:28:18 Christophe Leroy wrote:
-> Le 25/01/2023 Ã  08:40, Christophe Leroy a Ã©critÂ :
-> > 
-> > 
-> > Le 22/01/2023 Ã  12:19, Pali RohÃ¡r a Ã©critÂ :
-> > > On Saturday 24 December 2022 18:44:52 Pali RohÃ¡r wrote:
-> > > > On Thursday 08 December 2022 19:57:39 Christophe Leroy wrote:
-> > > > > Le 08/12/2022 Ã  20:16, Pali RohÃ¡r a Ã©critÂ :
-> > > > > > 
-> > > > > > With "[PATCH v1] powerpc/64: Set default CPU in Kconfig" patch from
-> > > > > > https://lore.kernel.org/linuxppc-dev/3fd60c2d8a28668a42b766b18362a526ef47e757.1670420281.git.christophe.leroy@csgroup.eu/
-> > > > > > this change does not throw above compile error anymore.
-> > > > > 
-> > > > > 
-> > > > > That patch should land in powerpc/next soon. When it has landed, could
-> > > > > you resent this patch so that snowpatch checks the build again ?
-> > > > 
-> > > > Yes. But I'm still waiting because patch is not in powerpc/next yet.
-> > > 
-> > > Seems that it still has not landed. Any suggestions to move forward?
-> > 
-> > Hi
-> > 
-> > I just reposted to see if it passed the CI tests this time.
+On Mon, Feb 20, 2023 at 01:31:40PM +0530, Sathvika Vasireddy wrote:
+> Placing SYM_FUNC_END(kvmppc_hv_entry) before kvmppc_got_guest() should do:
 > 
-> It is now in the tree.
+> @@ -502,12 +500,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+> * *
+> *****************************************************************************/
 > 
-> Christophe
+> -.global kvmppc_hv_entry
+> -kvmppc_hv_entry:
+> +SYM_FUNC_START_LOCAL(kvmppc_hv_entry)
+> 
+>         /* Required state:
+>          *
+> -        * R4 = vcpu pointer (or NULL)
+>          * MSR = ~IR|DR
+>          * R13 = PACA
+>          * R1 = host R1
+> @@ -525,6 +521,8 @@ kvmppc_hv_entry:
+>         li      r6, KVM_GUEST_MODE_HOST_HV
+>         stb     r6, HSTATE_IN_GUEST(r13)
+> 
+> +       ld      r4, HSTATE_KVM_VCPU(r13)
+> +
+>  #ifdef CONFIG_KVM_BOOK3S_HV_P8_TIMING
+>         /* Store initial timestamp */
+>         cmpdi   r4, 0
+> @@ -619,6 +617,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+>         /* Do we have a guest vcpu to run? */
+>  10:    cmpdi   r4, 0
+>         beq     kvmppc_primary_no_guest
+> +SYM_FUNC_END(kvmppc_hv_entry)
+> +
+>  kvmppc_got_guest:
+>         /* Increment yield count if they have a VPA */
+>         ld      r3, VCPU_VPA(r4)
+> 
 
-I see, thanks!
+Thanks! Will send out a v2 after I get some response for
+PATCH 2/2 with comments.
+> 
+> Thanks,
+> Sathvika
