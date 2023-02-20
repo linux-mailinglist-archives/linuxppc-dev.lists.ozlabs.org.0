@@ -1,190 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F36469D66F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 23:44:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28F069D669
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Feb 2023 23:42:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PLHXv6JVVz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 09:44:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PLHV542pMz3cB9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 09:42:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLScVkay;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=YbqHTODe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe1f::60b; helo=eur01-ve1-obe.outbound.protection.outlook.com; envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLScVkay;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=YbqHTODe;
 	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on060b.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe1f::60b])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLFmQ1fb1z3bTc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Feb 2023 08:24:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676928262; x=1708464262;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=K3K05a6gyOL/k11aIXAtq7ahCnYzje8Vl9Dl05sRF1o=;
-  b=FLScVkayqsdQ7RcQ9aZQZvBcaet+T2JBiAZ3YRJd3/SKu1ehdwtTiCSp
-   zYXJxaMwYvgWlOY9Jh72wJoywwDKDE+MiY50RLzt66y4kuTNb7dC80zif
-   AsiQN4MO9CR4EYPWqzzviyZmqN0hSzTqjs3Q+l2jLnL+U6yOyKfn7wmjp
-   lRUNWzokcd8PLAAXVfSQFlrw9VUUS0D/9a9GciZ2L5+1WG1TNRIpPA4gW
-   PFhLlwTtF6En/KurkVOAiGg5Xn0WAIA6vNSzFC7j+6JnW0tXU0QUq7Eak
-   nraHwTEbwUwbsBrZCVGc0Tv9DnZUqKzerPlXfLGwwqJPOfM/V/8SoZ9VW
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="331156694"
-X-IronPort-AV: E=Sophos;i="5.97,313,1669104000"; 
-   d="scan'208";a="331156694"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2023 13:24:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="673467678"
-X-IronPort-AV: E=Sophos;i="5.97,313,1669104000"; 
-   d="scan'208";a="673467678"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga007.fm.intel.com with ESMTP; 20 Feb 2023 13:24:10 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Mon, 20 Feb 2023 13:24:10 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Mon, 20 Feb 2023 13:24:10 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.173)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Mon, 20 Feb 2023 13:24:10 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLHT52VnTz3bZx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Feb 2023 09:41:10 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MMuCjnReb2Y5U/d+g/8eTSKgvWQN9xcTOOrRs7UooaLxld4LeVb5jJYpl8mO+G3gytZJnbM/tvmEACq/jUHrQ/KLaaE0sZ4TX81nbkQ1u+dxUXYs+58FOqj4IdpEXr8AczJtTpe7rDL2XydYOJGqb6uegfWvABW56eiNvA5QFH+wFus539dbJf+ivYoDXnJLukmPvlrgFcmztAfmUG4LrQiZ3B+H/v3R6/acEOhzx47ljXSYFaGXap/O1KSKpDcYU6pHrHL16crg3jWwSCDXJXRhbaeiCLTJtQbiJrXPP1vjXaGPYQsbT9My8y7LZB0M2MLFOHAYDI0SbZIQ6q7dDw==
+ b=EXA83TaH/7apoBn2zQ5sPmFWJPFva9w/ISFIPqBi6+ZyQgd9+q0ePGjwtitmCWdRfS/2hRbPO/NI7crRB6EM9CsOLPHE8KkeHBbPGuLp/WQhX7I4jSvsdeXBI+sZEamlDEhjXuLfjrsrmAdYAq4dlRzxYVlvk9Pcdch6M6gDNUvRG03UW+Wh4jlXN0dhPAFfmCid4kuf0QbuxkmLLG0ymzuv1gG9cnL6PUPhOjjZkkRI/JWc7v4Yg68cpQFPCI88zk8xl2y1aSziScjIcIQdxbbazS/f696/hpyzIaYmHAsPctI1/pDleTtGPeXBm4cga1lPv66pQx2MVnKbyD+ztQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K3K05a6gyOL/k11aIXAtq7ahCnYzje8Vl9Dl05sRF1o=;
- b=GY9AhDOX0hkGGsxQjdr75+kG2IU88QqvFtz5iWuXVinm7ot/rm+AK6cIgtoNXFXnidbn9sJeTl8nFi2FeYrFffu0qf81ehEFMgX+nF6h9Hz1V6wmjL4wUVYzGre1iUKZnwfaRBb3JGoNqZQmEcVaOq8qNc8ZBJBphQD1/V260LN6qQMJFIbf2vBi7+kCeTo42Gcs6tLNvH6nQFxe7feUoITV2xlP07JviNjuDJ+xiVKxG2Um+dnf44H8d+7EbZlsnzm/pj9NM6uZ8YcLK7L+2+d8I4n5VxBxubFpd2rJxuiEzkAazknRWNNLH1l3D7aZ/mAQ66ZZg4q04o+ZVJ0ghQ==
+ bh=eEreIFfsveqBRW1JLDnqBCDeiBqZJlbaISgID4IWYcc=;
+ b=W+Z/soN8CI2v0q4TXOdyx2EXTlY/w7ME3jx6M1xHo3dowXVpzXIiRjgz54qXT/dE7XIR8G6IePwSlXUGJNeyralo6nnJhMp9wRORf/uaI5F2lueEs14f+/nNhRsnZDfnhZzxsgfOeTGZ42JYpScnfxH9tO9cYev0hbNDlONqk//GUIkL41ehCmOaf4oyUHE9zm7mpS1H8JVym3bPvA2z2LRuVmP0dH04pjGL27c3GlY5X6aZZjW90LBoxK/AuxKcmBgI9J3sAiZUJ+UJ7KKGgWnQwuPqAkeEzMtbI/cAFkweuBqNN4w1ceaqGrmGHVlnY6Xj9Wg7sasxlpzOH0ELRg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MWHPR11MB1392.namprd11.prod.outlook.com (2603:10b6:300:24::14)
- by CH0PR11MB5218.namprd11.prod.outlook.com (2603:10b6:610:e1::16) with
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eEreIFfsveqBRW1JLDnqBCDeiBqZJlbaISgID4IWYcc=;
+ b=YbqHTODe2gqSvMGItQ/FBRevdq7IDcA5NzF1lrcjL4cpakDac7m8+U/nozZLYcC6X9rk1E/G49jwUt3W+QEvd1e2eN46YwcEnMTe/78u3/gMRfVvcYRv0srnoClAmPyuTMNTqAf8qVWl4hSpsIXEXOdoW+tMMm4fIS5TUtrngU0=
+Received: from AM0PR04MB6289.eurprd04.prod.outlook.com (2603:10a6:208:145::23)
+ by PAXPR04MB8735.eurprd04.prod.outlook.com (2603:10a6:102:21f::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.20; Mon, 20 Feb
- 2023 21:24:07 +0000
-Received: from MWHPR11MB1392.namprd11.prod.outlook.com
- ([fe80::d41f:9f07:ed56:a536]) by MWHPR11MB1392.namprd11.prod.outlook.com
- ([fe80::d41f:9f07:ed56:a536%3]) with mapi id 15.20.6111.019; Mon, 20 Feb 2023
- 21:24:07 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "david@redhat.com" <david@redhat.com>, "bsingharora@gmail.com"
-	<bsingharora@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>, "Syromiatnikov,
- Eugene" <esyr@redhat.com>, "peterz@infradead.org" <peterz@infradead.org>,
-	"rdunlap@infradead.org" <rdunlap@infradead.org>, "keescook@chromium.org"
-	<keescook@chromium.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "Eranian, Stephane" <eranian@google.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "fweimer@redhat.com"
-	<fweimer@redhat.com>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>,
-	"jannh@google.com" <jannh@google.com>, "dethoma@microsoft.com"
-	<dethoma@microsoft.com>, "linux-arch@vger.kernel.org"
-	<linux-arch@vger.kernel.org>, "kcc@google.com" <kcc@google.com>,
-	"bp@alien8.de" <bp@alien8.de>, "oleg@redhat.com" <oleg@redhat.com>,
-	"hjl.tools@gmail.com" <hjl.tools@gmail.com>, "pavel@ucw.cz" <pavel@ucw.cz>,
-	"Lutomirski, Andy" <luto@kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "arnd@arndb.de" <arnd@arndb.de>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mpe@ellerman.id.au"
-	<mpe@ellerman.id.au>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
-	"x86@kernel.org" <x86@kernel.org>, "Yang, Weijiang"
-	<weijiang.yang@intel.com>, "debug@rivosinc.com" <debug@rivosinc.com>,
-	"jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
-	"john.allen@amd.com" <john.allen@amd.com>, "rppt@kernel.org"
-	<rppt@kernel.org>, "Schimpe, Christina" <christina.schimpe@intel.com>,
-	"andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, "gorcunov@gmail.com"
-	<gorcunov@gmail.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-Thread-Topic: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-Thread-Index: AQHZQ94+cYJhrZsBjUaVUuq1nj/bS67XBcoAgAFVzAA=
-Date: Mon, 20 Feb 2023 21:24:07 +0000
-Message-ID: <d46aa53a3e7265facaaa3533b75ccd8d903cd32a.camel@intel.com>
-References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
-	 <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-	 <875ybxywu9.fsf@mpe.ellerman.id.au>
-In-Reply-To: <875ybxywu9.fsf@mpe.ellerman.id.au>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.21; Mon, 20 Feb
+ 2023 22:40:46 +0000
+Received: from AM0PR04MB6289.eurprd04.prod.outlook.com
+ ([fe80::509:96a2:4382:6b51]) by AM0PR04MB6289.eurprd04.prod.outlook.com
+ ([fe80::509:96a2:4382:6b51%4]) with mapi id 15.20.6111.021; Mon, 20 Feb 2023
+ 22:40:46 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Paul Gortmaker <paul.gortmaker@windriver.com>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: RE: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+Thread-Topic: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+Thread-Index: AQHZRSLd3/nvLydEnkiHOk+Mz5gE667YbVWA
+Date: Mon, 20 Feb 2023 22:40:46 +0000
+Message-ID:  <AM0PR04MB628956306C4E5A84ED973FCC8FA49@AM0PR04MB6289.eurprd04.prod.outlook.com>
+References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
+In-Reply-To: <20230220115913.25811-1-paul.gortmaker@windriver.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MWHPR11MB1392:EE_|CH0PR11MB5218:EE_
-x-ms-office365-filtering-correlation-id: c9f5ead7-6de7-41a3-3638-08db1388ccbf
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-traffictypediagnostic: AM0PR04MB6289:EE_|PAXPR04MB8735:EE_
+x-ms-office365-filtering-correlation-id: 47c1665c-d6ae-4941-7fe3-08db139381e4
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DUGxK4Preadv531pNjY5q3a2Jx+lCLmtVLQqroIQuyio6uCLucPpy1aolAsVnI9u6j07OJV6SYoQa0y4YrHBvaeoI6D7jemPvbIPwZ04plbHunbh1vxvi2rmi32u/c7bUXL4OhMlPIUjlloF33do4CV29bheBeBLhqccRT+CVnw1i5jGKxeDsoMnRdsLXOizMZ7zvuFO5J6zld6dv52HqqiZr4EoXB7EUTuNkI2mTDmxWggTzcNZz0j6rtJdrcmoBvjtj1xKzB3wY9fKolVz1FEk3VdUFC9lQED2Mvuq27QCbuLuCJJpISnJjnQGcPrJvGXkgAuMGtwx3H1kX8aI/6HlT/EJGTL9t2ZFbpTazvSWRtQDSKNWXA+0wpZOf3HBZs+5YKSZ3Dq5gfl4uES5lXe1KCIWhONPw0NY22IfryBgW17clWea3B3Ks+FKwW81/bLfcuYsLSur8uPiyzl4rM+ZPNrWF3Rc3p8mioIW7vfxrQXMa53wQ9JvkIncfhUMMJLP8vOClnFtfMT82VoV62ZWuEjLCJmRsppbq93hV+rfRAuKWXLYwnwiimpNz9WzPhjEc+qGsdq4p6tDGWWUCxMMBApZJR5UpuABztLWbP67ZsV+bHJ05fiUrB0i0UcIhjB73F+ExJbdAnYgGDycnlsJBQDq97cGW2lLLmlQD5LHBCD9KfghGfkD+0QWqOi3x0RCoadK7Qhgasj4xp46u/jsJfCezB2uRGyf5E/ylkoX4EYmEJt6y070SYv9uOQz
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB1392.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(376002)(396003)(136003)(39860400002)(346002)(366004)(451199018)(5660300002)(8936002)(36756003)(921005)(86362001)(38070700005)(66946007)(122000001)(558084003)(82960400001)(38100700002)(316002)(54906003)(478600001)(110136005)(41300700001)(64756008)(4326008)(66476007)(66556008)(8676002)(66446008)(76116006)(71200400001)(6512007)(2616005)(6506007)(26005)(186003)(6486002)(2906002)(7406005)(7416002)(7366002)(99106002);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info:  01YfFBq4jQ8bVmgzxcCyZPLk0qTbFwZ7XVNPDIXsQ27wJ0rdTI0CT1wmvaT7nuYXzp3koOE6BYDyOiodzpWxzEaBsXI90j5vvYUCrxy+9N15w7r/KR85/637TlZ7oQfo5AFgV/uQJ26cj7jALzxJvgcqEWghBiEwC07JeJlV1l97lWHMfsZb748BOaYki2jJbgnm7CkypHWLglqbeorq+qfwWulI0jX5jmJEotAJLlX/tfUKr4pIMZ4YTlN1yGG9TpxcAN8JGVFMQOv+Jiwkw5Qk1BvS+92oLjWk7w1PShnhFRI9ugcY/XVBMleOmvAOOZuSRw9PoUnZuHWpgAbMP9owKPvRZYQGUFz14ELAcIyNTojHjMbrzGEq2lsRTqRrKWv17lN4V41uDXbXV+PUFzM+/ItCVhg1EwwlPowScG6DUS9ZI1eJVCe1uWiKyLewFbVugL+xwgyM6GB7aDibNCHBw4vUEVs/NoiOQFLGWENd4N9yUuY2+RhFbzLp5RubOcgvx+cKhVf3IpPr29F+Agc+AyRhLkIUKt/zP8HmEjRrY+EPaLDJEM9gKFt1SDtYxAdhsaa/6+VNv8ZRm28zab0Ekm+jvveMYW878FfQ67pIHfIDb6TqhvYpTpC6LjAN1orviMB7ob/FKD9f1a6aAkm9pvGI4F0jzHWpjUGSG7L1wfrdSUYCMTfg+N/qGXdroKezMyDhn40706ctiZQfPA==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6289.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(346002)(376002)(39860400002)(366004)(136003)(451199018)(86362001)(38070700005)(33656002)(41300700001)(52536014)(5660300002)(2906002)(8936002)(38100700002)(83380400001)(122000001)(478600001)(45080400002)(64756008)(8676002)(66946007)(66446008)(66476007)(66556008)(7696005)(76116006)(110136005)(54906003)(71200400001)(966005)(26005)(186003)(9686003)(55236004)(53546011)(55016003)(4326008)(316002)(6506007);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YmZxaktsT3RsWVhjcXdWMExHYTNldDl2MXNFN1llcjF6T3BMQ2dZcnJvSFRP?=
- =?utf-8?B?NjV2eW1ZMk91alZINXdFRVphcW9IbWhlMnFJblU5MzVJbHVmRnBhQXNnOTJQ?=
- =?utf-8?B?TmkxWGNnZlB6WkJtMlRqTU12WEkzVE5vU09lajRseVZEM1g2UDIyTnUxUW8v?=
- =?utf-8?B?N2NvZkdSWEpkU2lUS0dLaEdqa3JyTHNGWHJQMzUvRjN1dmpzUmJpclBQRGl2?=
- =?utf-8?B?Yjc1c05HZm1mR1loT1o2d0F4bE9HWFJUV2NWVnVoWitnMjBuU2pJRWJ6U0Rz?=
- =?utf-8?B?SkRmenNoOHVqeWs4SEFsbjhKUkI1dEZRdXNuWWg1N0JTZEI2K00zcStJNFUy?=
- =?utf-8?B?UENrRzhad2lQbEMzNWhZN055L2FJNEIvQ0hZRGZla0RkaDlhVzROTXpWM1kw?=
- =?utf-8?B?ZDhFcXVLb1haTDl4ZXdaRGN5TGVpdEFGdC80UFcwSXhsYTZTdnczV3pyYXNW?=
- =?utf-8?B?Y2toVG11b0s1R2VJZFNVaHg5emZnQ3JxOElSclpFc3R5UzZ6SzYrc0NHcE5Q?=
- =?utf-8?B?c3N6eHlXOUo2ZU5keStIMjVIUE9Ld1YreW5Rdm0rRHdiMzVxUFpvSzFUSEp2?=
- =?utf-8?B?aEhZc2RqcDROVGVraklYaDNGcGUvTlJicXpFR09IYXZQamtUMnZSV1VCK1k2?=
- =?utf-8?B?V0VOc2UxWWQ0L1JYQ1JpRlcvZkJGRkttMFlTVkpiVnpSbnBlUXhFNUhsZ2My?=
- =?utf-8?B?Q0p0YlVBMmxFU1phQVJ5V2dKekVrK2pOclRIMmRTVDNDVWYyUHU2SnBzckwr?=
- =?utf-8?B?SzNZUTVQZUpaUFpvV2Y4YVZsYlpWQlhaSDNqZTlWd1pwcDI1dTZ6RHFiV0p5?=
- =?utf-8?B?Qm5aMktlbWh2UDhPTUJHbmh0R3QyT2R4dU9aazN0QlhsVWZHZFdvV1EyUmJ5?=
- =?utf-8?B?ZDZuTHk2aU5nWlNUMEE4Vkhkd1dnWkhJSHRPQnc1UGs3MzBZZk9MbjZwU2s2?=
- =?utf-8?B?V3pnU2dYcTRwUmpvQ2NOekNBNDJaQmc1QjByREpRQTJJaHNaTGlYWXlnNGlI?=
- =?utf-8?B?TWROSERDTTdiVjl3OCtuWDhMYjlxQ0xldVlGODV1TlBVa3cvV1JNbGs4VUZG?=
- =?utf-8?B?WE1WYUs3V2kyRG10SEVmUkc0Ni9WVHZXb1hLTlJ3NVRaeWpuV3BIQXRFNkRo?=
- =?utf-8?B?cG1VY2IwMjlwclAySldiQ24wTEdudVFmdmQxbGVCUWhTYjhnSjQ2WDFSZkIv?=
- =?utf-8?B?dHNuQktXY0hGWUJ3eEx3K1ErcHpLOFVlWWxMRDBjYURWRCtodi9PTi8rUERu?=
- =?utf-8?B?clJlbFBiajNlWFNWdUZTTVFnS1VTYkxJcFVxZHJBVExXeEpWamNJMTdXVDNF?=
- =?utf-8?B?SzJqbkY3K0cyaVZ1WW9wWC9hRUpWV1Iyb2Vwb1FUNUxGQW44MVRlUnpZb2N2?=
- =?utf-8?B?UHVEQkM5NlBJOUVScXBNbkgvOFVNQXhwaHhUdWF4aHJteU43Y0FaeWgzek1I?=
- =?utf-8?B?MGNlQmIvcURDaisrT3BHR0VJYWlZT3ljTC9kTzNNUDdBVWJObmhpYS9NelRO?=
- =?utf-8?B?ZTdtTWFab3B3MnpwSmpnQy9oQlNVb0pqU0NKSVlFNnRSNHZaSFUrTHM4RWxQ?=
- =?utf-8?B?QTBPK3hCZEVTVTVtK0VZZTVhQ2pHbWRMS0NFc1E2Ny85SmZFZEZRQXlLZ0p5?=
- =?utf-8?B?TEp3ZkxXS1p6aDJ0KzFtMC83WlBEOXhqRWVPN0dqY3NUOUJLZ3Zkb1NkUTBa?=
- =?utf-8?B?Ti9ndVRNeHlXT2xKdlpOaFVjK1VCd2dxdXRyaUFqVC81UmdOQlg2WW1vQjJy?=
- =?utf-8?B?ekVTd3lpcWc5eERmbXh1UnhHa3hBNkQ2OU8rbDJnZTNPRUhnczhjbHdYVDRN?=
- =?utf-8?B?M1hta042MUprZUhBczJLQzZpQmYvcFpjTVcwOGJRWWpQSStiR0Z5YjNUeElV?=
- =?utf-8?B?SStaSVdSWlpuc0FSc0FIeHFpbmpIUStXWm5ORTQvMDh2eHVuMldNYXMxZk5a?=
- =?utf-8?B?ZW9ST2NZRjJseFh1eXh1WnNsazlMd3M5b095K2I1c1ppZm03MU5nT1FXOXZO?=
- =?utf-8?B?OWk4aHM1UncxbXNYeWI3NEVLVXJFMkwzYy9vTjBMcjVSbjdpalJSNlBHZm0r?=
- =?utf-8?B?RndUL1RIY3BpNHBsNlg2QjlTVW51aDEzZnFrbElwbW9Gek1rR2hOb0JZUFlZ?=
- =?utf-8?B?d0s2K0RDaHNFN2ZidG9wZ1pyTkhsaGMvVTl1OW9wWmpEK284SnZya1dQOHl1?=
- =?utf-8?Q?ux/kqtH8JCpsKqOd/3TJYSA=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C87D725E738A25438365E1A8F10AD517@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?Z6SPTX58b2+odoemaHAXJeSkpDtY39abBa7PR1hdjhsV2dGpkn5PQAhHy6nT?=
+ =?us-ascii?Q?IUy4ALdau41ntzfWtKeWHze9Pq6kAs4jLIq5Sp+qCchnvV/rstiB49plh2KO?=
+ =?us-ascii?Q?J3+4T+319q22kse3syau05EELQaZrJhbxogkXAmxlqx5tTj1jJuJUwC1bDB0?=
+ =?us-ascii?Q?3oy0cq9yf+lk7ng6417mJu+LnIP+Ksq4zTDhgiUgQpQYK1TghyxgV+KSAD7v?=
+ =?us-ascii?Q?iznNGE8TxbEklkSIUf6CRKpJbemwUZj9NRP29/3bMo809W08BnNdehtAtJVA?=
+ =?us-ascii?Q?VvXX/BSPG8DUxYv4Uo11XbP06sBkoWunJexmZXa8t1w9/5L6qOQVqM56nXu/?=
+ =?us-ascii?Q?/FqG5G0rC6Q2U8JaQ5MooZQsjz4GVsK69BcTAb0gats6GYQ6rXIr50kozUEU?=
+ =?us-ascii?Q?SpaEEBRM8U7TwJ+2Z++5fheDvUuhmyFcHhJEC8UE4txFfc+7i9+45VTco/QJ?=
+ =?us-ascii?Q?7Q0HDcC8QGNNd/yCNIUORe19GJUItcKl2rwCx9hMgtkOiHbQF6wyP8ICQY2B?=
+ =?us-ascii?Q?2/4NVeG23zKod/Vy822ukTzP3Fbn4VMw3YhYL4UZK/yBY80Xy7NUPbMNdNAT?=
+ =?us-ascii?Q?ne0vAS+t3kgtHcThneaIMGKweDO7SIZuo8iVZaV37J4fl/CZW6SdXkcLUo3D?=
+ =?us-ascii?Q?/NEVio5QLtsJwKMfstWKjsv6s6f5hZQxNF4TEXWTCoDbvVAYKNiCshqrSLAU?=
+ =?us-ascii?Q?syrtg47ICxZeptzof+goL3ZJN+WKMD77lNqTk1mHWUBwRANdoQjj6ltfufmd?=
+ =?us-ascii?Q?ZbunI5kp3ru8QdKCWe9Bau7nH2FzRP69Xt98R6KQvhxnkDJTkwVAYjVQxfY/?=
+ =?us-ascii?Q?KO4993WTIEOsqWBo++xKeZYKTMO6kZ/IIvf7Jwy1VgDzZR7EBnmDvWWs4Wmb?=
+ =?us-ascii?Q?k31C4d1V0EvNewlGguwbGCifMPaDg0+oH8hqBQvebs4vUGV5DDK4Q8vTKdf/?=
+ =?us-ascii?Q?z1oRPC7nMqGikbWjTXPFcPTqpAujWmEBOBjX2e3/0SgoM45zitCossVWYOlC?=
+ =?us-ascii?Q?AJnpgndBt0GGdwimiBMF+rd4xfFiJw7BoPjHfo5+ROu9qhOCF0eMtOqZI8Y5?=
+ =?us-ascii?Q?Cv1gM4A9Qbahl/TFWOdaBRLwkNzPHZkJ5obg0C2vjZxjoWghWPzzXLjYnsrw?=
+ =?us-ascii?Q?J9X+i4mfGMjFyghbwUiqMQOZUpX4gWYoJ8SEvtFooHbfooQKPaC2Z5rrg0WG?=
+ =?us-ascii?Q?YEglxNsmUbPOQ1ANW9zYuZLHwU/YEYSG8COFXu4E7BbKiOn3eKe/JfFbR2Il?=
+ =?us-ascii?Q?YhxSsC+fbXyu+WCRbSqaqFK0g+O5R+ZOQ/TcHLVdLzfaElSL4YNUIU+YvJeQ?=
+ =?us-ascii?Q?/WwTnIFSmFRHRFatqx6c/eZInZAN5N1P+q0MAhPSOYPI2MjPx4ccmexacj3j?=
+ =?us-ascii?Q?6IPkwEp48eLztDsFFiesjUCsgTa38j440337vMREH6MbWky0zeCDbln8cf7g?=
+ =?us-ascii?Q?EywnR63cSkoRZpRvgKFHLbgoiUY3csvs6oaza50yChuLo9Ek639+38R0qeYc?=
+ =?us-ascii?Q?j18VL5AipPiUtPYS3hWsZUqMp8W6h+kdqBKCq2Ky+/GLz0cYWolY7D6aFubN?=
+ =?us-ascii?Q?c4bMYhl1Jirl1yl67wZ6ZA+SwavFRUscBKBrQTkf?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB1392.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9f5ead7-6de7-41a3-3638-08db1388ccbf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2023 21:24:07.4464
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6289.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47c1665c-d6ae-4941-7fe3-08db139381e4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2023 22:40:46.3100
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 54cgsuD1w09YcUpGG/uBlI9HwRVjLnV1XDNNgqKe59Hbm8nRBRGvj7DJWaxFIjNzEWIKUODZx5HIp4xBO/lyXB3V5avrmJ9sPAXOPDGPHzQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5218
-X-OriginatorOrg: intel.com
-X-Mailman-Approved-At: Tue, 21 Feb 2023 09:43:42 +1100
+X-MS-Exchange-CrossTenant-userprincipalname: HLnVV01Tghi9dcprjEGJRH6FB8YmYVYp/NkMyPIpSSQN3A7b/DUdlseRFOZsNzp4PEwOBSygCn1vZ1Hfgl66sQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8735
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -196,11 +121,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "monstr@monstr.eu" <monstr@monstr.eu>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lis
- ts.infradead.org>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Scott Wood <oss@buserror.net>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gTW9uLCAyMDIzLTAyLTIwIGF0IDEyOjAwICsxMTAwLCBNaWNoYWVsIEVsbGVybWFuIHdyb3Rl
-Og0KPiBBY2tlZC1ieTogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PiAocG93
-ZXJwYykNCg0KVGhhbmtzIQ0K
+
+
+> -----Original Message-----
+> From: Paul Gortmaker <paul.gortmaker@windriver.com>
+> Sent: Monday, February 20, 2023 5:59 AM
+> To: linuxppc-dev@lists.ozlabs.org
+> Cc: Leo Li <leoyang.li@nxp.com>; Claudiu Manoil <claudiu.manoil@nxp.com>;
+> Paul Gortmaker <paul.gortmaker@windriver.com>; Scott Wood
+> <oss@buserror.net>; Michael Ellerman <mpe@ellerman.id.au>; Benjamin
+> Herrenschmidt <benh@kernel.crashing.org>; Paul Mackerras
+> <paulus@samba.org>
+> Subject: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+>=20
+> [This RFC is proposed for v6.4 and hence is based off linux-next.]
+>=20
+> This series removes support for four e300 (MPC83xx) Freescale processor
+> family evaluation boards that were added to the kernel in the 2006 era.
+
+Thanks.  Let me discuss this with our marketing team to see if they have an=
+y valid reason to keep them around.
+
+>=20
+> These boards were all of a very similar form factor, a largish PCI or PCI=
+-X card
+> that could also be used standalone with an external power brick, and all
+> shared the Modular Development System (MDS) designation.
+>=20
+> These platforms were made in limited quantity and were generally designed
+> to get early silicon into the hands of OEMs who would later develop their
+> own boards/platforms.  As such, availability was limited to those who wou=
+ld
+> be working on boards and/or BSP support.
+>=20
+> Many early revision MDS platforms used a mechanical clamping system to
+> hold the BGA CPU in place to facilitate CPU updates -- something not
+> normally possible for a soldered down BGA in a COTS system.
+>=20
+> The point of these details is to give context that reflects that these fo=
+ur
+> boards were made in limited quantities, were not in a form factor that is
+> really "hobbyist" friendly and hence make sense for removal 17 years late=
+r.
+>=20
+> Here, we remove the MPC8548E-MDS[1], the MPC8360E-MDS[2], the
+> MPC837xE-MDS[3], and the MPC832x-MDS[4] board support from the kernel.
+>=20
+> There will still exist several e300 Freescale Reference Design System (RD=
+S)
+> boards[5] and mini-ITX boards[6] with support in the kernel.  While these
+> were more of a COTS "ready to deploy" design more suited to hobbyists, it
+> probably makes sense to consider removing these as well, based on age.
+>=20
+> But before we get to that, lets see how this goes -- and then we should l=
+ook
+> at similar early e500 evaluation platforms [MPC8540-ADS, etc] next, as th=
+e
+> oldest there date back to 2002[7] -- before considering RDB/mITX.
+>=20
+> I intentionally didn't put any links in the commits, since as we all know=
+, they
+> tend not to be stable long term, so keep them here in the merge data.
+> Credit to NXP for keeping around these old legacy docs this long!
+>=20
+> Paul.
+>=20
+> --
+>=20
+> [1]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fdesign%2Fqoriq-developer-resources%2Fmpc8349e-modular-
+> development-
+> system%3AMPC8349EMDS&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2
+> 820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%
+> 7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
+> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C300
+> 0%7C%7C%7C&sdata=3DQ4COgwpjsE4mHXvl9HdGo3otPCYML3z%2FR6IoCEYRE
+> wg%3D&reserved=3D0
+> [2]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fdocs%2Fen%2Fuser-
+> guide%2FMPC8360EMDSUM.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com
+> %7Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c30
+> 1635%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8ey
+> JWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
+> 7C3000%7C%7C%7C&sdata=3DJyLT0MfGAHQ8a%2FNgpLdVFtyACkwPR%2FOkB
+> yN1aW0wySs%3D&reserved=3D0
+> [3]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fproducts%2Fprocessors-and-microcontrollers%2Flegacy-mpu-
+> mcus%2Fpowerquicc-processors%2Fpowerquicc-iii-mpc85xx%2Fmpc837xe-
+> modular-development-
+> system%3AMPC837XEMDS&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2
+> 820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%
+> 7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
+> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C300
+> 0%7C%7C%7C&sdata=3D052dpEEcGmbuhRLnMDCNoOkTeguF%2BPA0oJGNvV1
+> jSjI%3D&reserved=3D0
+> [4]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fproducts%2Fprocessors-and-microcontrollers%2Flegacy-mpu-
+> mcus%2Fpowerquicc-processors%2Fpowerquicc-ii-pro-mpc83xx%2Flow-
+> power-powerquicc-ii-pro-processor-with-ddr2-tdm-pci-security-usb-quicc-
+> engine-with-
+> utopia%3AMPC8323E&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2820c1
+> e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%
+> 7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
+> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7
+> C%7C%7C&sdata=3DmZQh%2FogNgNUb0wNJV972kYIDvn61gx0TWNd1u1d7PZ
+> Q%3D&reserved=3D0
+> [5]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fdocs%2Fen%2Ffact-
+> sheet%2FMPC8379ERDBFS.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com%7
+> Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c3016
+> 35%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJ
+> WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
+> 7C3000%7C%7C%7C&sdata=3DEJmP6Regr7zpvYvHUmX64h3LZSaBT3Mb1h%2BN
+> KQT%2FUls%3D&reserved=3D0
+> [6]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .digikey.ca%2Fen%2Fproducts%2Fdetail%2Fnxp-usa-inc%2FMPC8349E-MITX-
+> GP%2F1204733&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2820c1e44264
+> 0c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C1%7
+> C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAw
+> MDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%
+> 7C&sdata=3Dhw6IQDUaXH6huQFCnCkFIbNfj1xMrq%2FanDMUU%2FXZYQg%3
+> D&reserved=3D0
+> [7]
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> .nxp.com%2Fdocs%2Fen%2Freference-
+> manual%2FMPC8560ADSUG.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com%
+> 7Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301
+> 635%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJ
+> WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
+> 7C3000%7C%7C%7C&sdata=3DEd%2BZR07y9Sp8xx5H47SAXzk9ET73creygxk%2B
+> emmbfuA%3D&reserved=3D0
+>=20
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Li Yang <leoyang.li@nxp.com>
+> Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+>=20
+> ---
+>=20
+> Paul Gortmaker (4):
+>   powerpc: drop MPC834x_MDS platform support
+>   powerpc: drop MPC836x_MDS platform support
+>   powerpc: drop MPC837x_MDS platform support
+>   powerpc: drop MPC832x_MDS platform support
+>=20
+>  arch/powerpc/boot/Makefile                    |   1 -
+>  arch/powerpc/boot/dts/mpc832x_mds.dts         | 436 ---------------
+>  arch/powerpc/boot/dts/mpc834x_mds.dts         | 403 --------------
+>  arch/powerpc/boot/dts/mpc836x_mds.dts         | 481 -----------------
+>  arch/powerpc/boot/dts/mpc8377_mds.dts         | 505 ------------------
+>  arch/powerpc/boot/dts/mpc8378_mds.dts         | 489 -----------------
+>  arch/powerpc/boot/dts/mpc8379_mds.dts         | 455 ----------------
+>  .../configs/83xx/mpc832x_mds_defconfig        |  59 --
+>  .../configs/83xx/mpc834x_mds_defconfig        |  58 --
+>  .../configs/83xx/mpc836x_mds_defconfig        |  64 ---
+>  .../configs/83xx/mpc837x_mds_defconfig        |  58 --
+>  arch/powerpc/configs/mpc83xx_defconfig        |   4 -
+>  arch/powerpc/configs/ppc6xx_defconfig         |   4 -
+>  arch/powerpc/platforms/83xx/Kconfig           |  32 --
+>  arch/powerpc/platforms/83xx/Makefile          |   4 -
+>  arch/powerpc/platforms/83xx/mpc832x_mds.c     | 110 ----
+>  arch/powerpc/platforms/83xx/mpc834x_mds.c     | 101 ----
+>  arch/powerpc/platforms/83xx/mpc836x_mds.c     | 210 --------
+>  arch/powerpc/platforms/83xx/mpc837x_mds.c     | 103 ----
+>  19 files changed, 3577 deletions(-)
+>  delete mode 100644 arch/powerpc/boot/dts/mpc832x_mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/mpc834x_mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/mpc836x_mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/mpc8377_mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/mpc8378_mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/mpc8379_mds.dts
+>  delete mode 100644 arch/powerpc/configs/83xx/mpc832x_mds_defconfig
+>  delete mode 100644 arch/powerpc/configs/83xx/mpc834x_mds_defconfig
+>  delete mode 100644 arch/powerpc/configs/83xx/mpc836x_mds_defconfig
+>  delete mode 100644 arch/powerpc/configs/83xx/mpc837x_mds_defconfig
+>  delete mode 100644 arch/powerpc/platforms/83xx/mpc832x_mds.c
+>  delete mode 100644 arch/powerpc/platforms/83xx/mpc834x_mds.c
+>  delete mode 100644 arch/powerpc/platforms/83xx/mpc836x_mds.c
+>  delete mode 100644 arch/powerpc/platforms/83xx/mpc837x_mds.c
+>=20
+> --
+> 2.17.1
+
