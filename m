@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC66269E893
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 20:51:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF3269E889
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 20:49:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PLqfw4VgLz3fRR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 06:51:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PLqbt1NNgz3c8W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 06:48:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=BRheR4WH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=EV6e4V1/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=1416e03d26=paul.gortmaker@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=BRheR4WH;
+	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=EV6e4V1/;
 	dkim-atps=neutral
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLqYw49qDz3cMt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 06:47:16 +1100 (AEDT)
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31LBXQvr022086;
-	Tue, 21 Feb 2023 19:46:56 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLqYw0hlNz3cMn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 06:47:15 +1100 (AEDT)
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31LIqeGQ007370;
+	Tue, 21 Feb 2023 19:46:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=PPS06212021;
- bh=9p56TQsHCsrS8ACl920MSS15+iPaXiSNrhopNCBk0BY=;
- b=BRheR4WHUNwToVd0a0bhQQy5T2XL1K9sJIWGwkwC6nZTfRrBm7lwzrS4nn50sbc3pclb
- NEXvatrF0XHdqz2ytaVKViR1BoFlcFY+LWlCyDzOfudH71OPPip1MJwXDirr+YiSS6Vd
- edHKmJkuAUtTdFdgPl3JvNb0Z91qbnZB/9D2BZ1wG8OpK/N8qNeCbCDsxf66+/4XNrxs
- vgcBDmh0VsP+78X3MR7e3xZfPuXN6BNXO5IUo5tA0TSm8VE3PV+IqurAMmOfV1UvXwHl
- Q0qWMWMQQGtsHb6eZNNAiU6TRRU3fDogQJzUz6qAtviGuVN7tF0tJUNLnj/scyPn74jb QA== 
-Received: from ala-exchng02.corp.ad.wrs.com (unknown-82-254.windriver.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ntpd3u145-3
+ content-type : content-transfer-encoding; s=PPS06212021;
+ bh=WwDFeIi3VU5V8eUKksqIfVJqyfehTUCqsoxUpf1ToXA=;
+ b=EV6e4V1/d2IFIL3qNzFvB2KKQGNEKG8L55mfZ/atGE3ngIDdFdgKhtWzM5OQ2Y4oEuyS
+ uTdFKcYt2Jo5vPKrTheN/g8E/3Duqo8j9fK+GD3IPn/xMa0P+wDjdzHPE5T3Z5gQf6d/
+ R1/vgIKoU3RH19dYf92tO8iZYq+bhZMP6tOQACiOqNbyo2rBoZLxNG+dtAqRGcgGkSte
+ cMXO895fqI7YkEukLzvfVMrpAWgw/MzSACqYO6l/CPgCx7caz0Pg0JeOICmFWmq1OE6A
+ YjDpCNXz+YWPlF0a3Mt4g/OLKBsRCCu5rB+aWah4aM2A5ma7pSxI5yS/6cdF83OACIIX AA== 
+Received: from ala-exchng01.corp.ad.wrs.com (unknown-82-252.windriver.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ntpem319s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 21 Feb 2023 19:46:56 +0000
+	Tue, 21 Feb 2023 19:46:58 +0000
 Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.18; Tue, 21 Feb 2023 11:46:56 -0800
+ 15.1.2507.17; Tue, 21 Feb 2023 11:46:57 -0800
 Received: from sc2600cp.wrs.com (128.224.56.77) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.17 via Frontend Transport; Tue, 21 Feb 2023 11:46:55 -0800
+ 15.1.2507.17 via Frontend Transport; Tue, 21 Feb 2023 11:46:56 -0800
 From: Paul Gortmaker <paul.gortmaker@windriver.com>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/4] powerpc: drop MPC85xx_CDS platform support
-Date: Tue, 21 Feb 2023 14:46:35 -0500
-Message-ID: <20230221194637.28436-3-paul.gortmaker@windriver.com>
+Subject: [PATCH 3/4] powerpc: drop MPC8568_MDS / P1021_MDS platform support
+Date: Tue, 21 Feb 2023 14:46:36 -0500
+Message-ID: <20230221194637.28436-4-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230221194637.28436-1-paul.gortmaker@windriver.com>
 References: <20230221194637.28436-1-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-GUID: 62yrikaH6J90agpcgOb0-Tl3fMIn7SSf
-X-Proofpoint-ORIG-GUID: 62yrikaH6J90agpcgOb0-Tl3fMIn7SSf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: WqQYzMpp1FdVu5DM4SHeJkplY8G0rWFn
+X-Proofpoint-GUID: WqQYzMpp1FdVu5DM4SHeJkplY8G0rWFn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-21_12,2023-02-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 clxscore=1015 lowpriorityscore=0 phishscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
+ bulkscore=0 spamscore=0 malwarescore=0 impostorscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2302210170
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,462 +80,377 @@ Cc: Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Paul Gortmaker 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The MPC8541/8548/8555 Configurable Development System (CDS) were the
-vehicle used to provide evaluation of the 1st e500-v2 CPUs around 2007.
+The MPC8568-MDS just might have been the 2nd last in the MDS line that
+was similar to the MPC83xx-MDS in general form factor.  However, as can
+be seen in the 8568MDS User Guide picture, the PCI/PCI-X card edge has
+been deleted.
 
-Similar to the earlier MPC83xx-MDS systems we removed, the "brains"
-exist on a PCI-X card, but additional connectors exist to the right of
-the PCI-X slot, two structural metal pins are used to provide stability
-in a vertical ATX mounting, and the CPU is now on a daughter-card vs. a
-clamped down BGA.
+A recent change in the Kconfig descriptions, in commit d20c96deb3e2
+("powerpc/85xx: Fix description of MPC85xx and P1/P2 boards options") made
+it clear some of the MPC8568-MDS support is shared/reused by the next gen
+processor family evaluation -- the QorIQ P1021/P1012 MDS platforms.
 
-Given the extra complexity and risk of connector damage, the 8548CDS
-I had access to came pre-assembled in a basic white Antec case common
-for that era, and I'm inclined to assume that was the default.
+The P1021/P1012 MDS platforms add a PCI-e card edge where the
+MPC8568-MDS had none.  But they retained the basic MDS form factor and
+overall goals of enabling hardware designs.
 
-Power was typical "Pentium4" 2005 ATX - the main 20 pin connector went
-to the PCI ATX form factor backplane, and the 4 pin black/yellow went
-to the CPU card.
+Given that, we also include the P1021/P1012 MDS removal in this commit,
+so that we can remove the MPC85xx_MDS Kconfig option and anything
+relying on it.
 
-Like previous evaluation boards, they attempted to provide break-out
-connectors for as many features as possible, and that made for a fairly
-complex looking system.
+Like previous evaluation boards, both systems attempted to provide
+break-out connectors for as many features as possible, and that made for
+a fairly complex looking system that isn't really "hobbyist" friendly.
 
-In any case, these are over 15 years old, and fairly complex systems,
-originally made for a small group of industry related people, and made
-for use where quiet fan operation wasn't important.  Given that, it
-makes sense to remove support from them in 2023.
+In any case, these are over a decade old, and originally made for a
+small group of industry related people.  Given that, it makes sense to
+remove support from them here in 2023.
 
 Cc: Scott Wood <oss@buserror.net>
+Cc: Pali Rohár <pali@kernel.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- arch/powerpc/boot/Makefile                    |   3 -
- arch/powerpc/boot/dts/fsl/mpc8541cds.dts      | 375 -----------------
- arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi     | 302 -------------
- arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts  |  82 ----
- arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts  |  82 ----
- arch/powerpc/boot/dts/fsl/mpc8555cds.dts      | 375 -----------------
- .../configs/85xx/mpc85xx_cds_defconfig        |  52 ---
- arch/powerpc/configs/mpc85xx_base.config      |   1 -
- arch/powerpc/platforms/85xx/Makefile          |   1 -
- arch/powerpc/platforms/85xx/mpc85xx_cds.c     | 397 ------------------
- 10 files changed, 1670 deletions(-)
- delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8541cds.dts
- delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi
- delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts
- delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts
- delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8555cds.dts
- delete mode 100644 arch/powerpc/configs/85xx/mpc85xx_cds_defconfig
- delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_cds.c
+ arch/powerpc/boot/dts/fsl/mpc8568mds.dts      | 310 --------------
+ arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi | 270 ------------
+ arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi  |  68 ---
+ arch/powerpc/boot/dts/fsl/p1021mds.dts        | 319 --------------
+ arch/powerpc/platforms/85xx/mpc85xx_mds.c     | 398 ------------------
+ 5 files changed, 1365 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568mds.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/fsl/p1021mds.dts
+ delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_mds.c
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 4fcaf1c3f156..e236ab395335 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -340,9 +340,6 @@ image-$(CONFIG_MPC836x_MDS)		+= cuImage.mpc836x_mds
- image-$(CONFIG_ASP834x)			+= dtbImage.asp834x-redboot
- 
- # Board ports in arch/powerpc/platform/85xx/Kconfig
--image-$(CONFIG_MPC85xx_CDS)		+= cuImage.mpc8541cds \
--					   cuImage.mpc8548cds_32b \
--					   cuImage.mpc8555cds
- image-$(CONFIG_MPC85xx_MDS)		+= cuImage.mpc8568mds
- image-$(CONFIG_MPC85xx_DS)		+= cuImage.mpc8544ds \
- 					   cuImage.mpc8572ds
-diff --git a/arch/powerpc/boot/dts/fsl/mpc8541cds.dts b/arch/powerpc/boot/dts/fsl/mpc8541cds.dts
+diff --git a/arch/powerpc/boot/dts/fsl/mpc8568mds.dts b/arch/powerpc/boot/dts/fsl/mpc8568mds.dts
 deleted file mode 100644
-index a2a6c5cf852e..000000000000
---- a/arch/powerpc/boot/dts/fsl/mpc8541cds.dts
+index 3603b5ae1230..000000000000
+--- a/arch/powerpc/boot/dts/fsl/mpc8568mds.dts
 +++ /dev/null
-@@ -1,375 +0,0 @@
+@@ -1,310 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * MPC8541 CDS Device Tree Source
+- * MPC8568E MDS Device Tree Source
 - *
-- * Copyright 2006, 2008 Freescale Semiconductor Inc.
+- * Copyright 2007, 2008 Freescale Semiconductor Inc.
 - */
 -
--/dts-v1/;
--
--/include/ "e500v1_power_isa.dtsi"
+-/include/ "mpc8568si-pre.dtsi"
 -
 -/ {
--	model = "MPC8541CDS";
--	compatible = "MPC8541CDS", "MPC85xxCDS";
--	#address-cells = <1>;
--	#size-cells = <1>;
+-	model = "MPC8568EMDS";
+-	compatible = "MPC8568EMDS", "MPC85xxMDS";
 -
 -	aliases {
--		ethernet0 = &enet0;
--		ethernet1 = &enet1;
--		serial0 = &serial0;
--		serial1 = &serial1;
 -		pci0 = &pci0;
 -		pci1 = &pci1;
--	};
--
--	cpus {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		PowerPC,8541@0 {
--			device_type = "cpu";
--			reg = <0x0>;
--			d-cache-line-size = <32>;	// 32 bytes
--			i-cache-line-size = <32>;	// 32 bytes
--			d-cache-size = <0x8000>;		// L1, 32K
--			i-cache-size = <0x8000>;		// L1, 32K
--			timebase-frequency = <0>;	//  33 MHz, from uboot
--			bus-frequency = <0>;	// 166 MHz
--			clock-frequency = <0>;	// 825 MHz, from uboot
--			next-level-cache = <&L2>;
--		};
+-		rapidio0 = &rio;
 -	};
 -
 -	memory {
 -		device_type = "memory";
--		reg = <0x0 0x8000000>;	// 128M at 0x0
+-		reg = <0x0 0x0 0x0 0x0>;
 -	};
 -
--	soc8541@e0000000 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		device_type = "soc";
--		compatible = "simple-bus";
--		ranges = <0x0 0xe0000000 0x100000>;
--		bus-frequency = <0>;
+-	lbc: localbus@e0005000 {
+-		reg = <0x0 0xe0005000 0x0 0x1000>;
+-		ranges = <0x0 0x0 0xfe000000 0x02000000
+-			  0x1 0x0 0xf8000000 0x00008000
+-			  0x2 0x0 0xf0000000 0x04000000
+-			  0x4 0x0 0xf8008000 0x00008000
+-			  0x5 0x0 0xf8010000 0x00008000>;
 -
--		ecm-law@0 {
--			compatible = "fsl,ecm-law";
--			reg = <0x0 0x1000>;
--			fsl,num-laws = <8>;
--		};
--
--		ecm@1000 {
--			compatible = "fsl,mpc8541-ecm", "fsl,ecm";
--			reg = <0x1000 0x1000>;
--			interrupts = <17 2>;
--			interrupt-parent = <&mpic>;
--		};
--
--		memory-controller@2000 {
--			compatible = "fsl,mpc8541-memory-controller";
--			reg = <0x2000 0x1000>;
--			interrupt-parent = <&mpic>;
--			interrupts = <18 2>;
--		};
--
--		L2: l2-cache-controller@20000 {
--			compatible = "fsl,mpc8541-l2-cache-controller";
--			reg = <0x20000 0x1000>;
--			cache-line-size = <32>;	// 32 bytes
--			cache-size = <0x40000>;	// L2, 256K
--			interrupt-parent = <&mpic>;
--			interrupts = <16 2>;
--		};
--
--		i2c@3000 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			cell-index = <0>;
--			compatible = "fsl-i2c";
--			reg = <0x3000 0x100>;
--			interrupts = <43 2>;
--			interrupt-parent = <&mpic>;
--			dfsrr;
--		};
--
--		dma@21300 {
+-		nor@0,0 {
 -			#address-cells = <1>;
 -			#size-cells = <1>;
--			compatible = "fsl,mpc8541-dma", "fsl,eloplus-dma";
--			reg = <0x21300 0x4>;
--			ranges = <0x0 0x21100 0x200>;
--			cell-index = <0>;
--			dma-channel@0 {
--				compatible = "fsl,mpc8541-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x0 0x80>;
--				cell-index = <0>;
--				interrupt-parent = <&mpic>;
--				interrupts = <20 2>;
+-			compatible = "cfi-flash";
+-			reg = <0x0 0x0 0x02000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-		};
+-
+-		bcsr@1,0 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "fsl,mpc8568mds-bcsr";
+-			reg = <1 0 0x8000>;
+-			ranges = <0 1 0 0x8000>;
+-
+-			bcsr5: gpio-controller@11 {
+-				#gpio-cells = <2>;
+-				compatible = "fsl,mpc8568mds-bcsr-gpio";
+-				reg = <0x5 0x1>;
+-				gpio-controller;
 -			};
--			dma-channel@80 {
--				compatible = "fsl,mpc8541-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x80 0x80>;
--				cell-index = <1>;
--				interrupt-parent = <&mpic>;
--				interrupts = <21 2>;
--			};
--			dma-channel@100 {
--				compatible = "fsl,mpc8541-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x100 0x80>;
--				cell-index = <2>;
--				interrupt-parent = <&mpic>;
--				interrupts = <22 2>;
--			};
--			dma-channel@180 {
--				compatible = "fsl,mpc8541-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x180 0x80>;
--				cell-index = <3>;
--				interrupt-parent = <&mpic>;
--				interrupts = <23 2>;
+-		};
+-
+-		pib@4,0 {
+-			compatible = "fsl,mpc8568mds-pib";
+-			reg = <4 0 0x8000>;
+-		};
+-
+-		pib@5,0 {
+-			compatible = "fsl,mpc8568mds-pib";
+-			reg = <5 0 0x8000>;
+-		};
+-	};
+-
+-	soc: soc8568@e0000000 {
+-		ranges = <0x0 0x0 0xe0000000 0x100000>;
+-
+-		i2c-sleep-nexus {
+-			i2c@3000 {
+-				rtc@68 {
+-					compatible = "dallas,ds1374";
+-					reg = <0x68>;
+-					interrupts = <3 1 0 0>;
+-				};
 -			};
 -		};
 -
 -		enet0: ethernet@24000 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			cell-index = <0>;
--			device_type = "network";
--			model = "TSEC";
--			compatible = "gianfar";
--			reg = <0x24000 0x1000>;
--			ranges = <0x0 0x24000 0x1000>;
--			local-mac-address = [ 00 00 00 00 00 00 ];
--			interrupts = <29 2 30 2 34 2>;
--			interrupt-parent = <&mpic>;
 -			tbi-handle = <&tbi0>;
--			phy-handle = <&phy0>;
+-			phy-handle = <&phy2>;
+-		};
 -
--			mdio@520 {
--				#address-cells = <1>;
--				#size-cells = <0>;
--				compatible = "fsl,gianfar-mdio";
--				reg = <0x520 0x20>;
--
--				phy0: ethernet-phy@0 {
--					interrupt-parent = <&mpic>;
--					interrupts = <5 1>;
--					reg = <0x0>;
--				};
--				phy1: ethernet-phy@1 {
--					interrupt-parent = <&mpic>;
--					interrupts = <5 1>;
--					reg = <0x1>;
--				};
--				tbi0: tbi-phy@11 {
--					reg = <0x11>;
--					device_type = "tbi-phy";
--				};
+-		mdio@24520 {
+-			phy0: ethernet-phy@7 {
+-				interrupts = <1 1 0 0>;
+-				reg = <0x7>;
+-			};
+-			phy1: ethernet-phy@1 {
+-				interrupts = <2 1 0 0>;
+-				reg = <0x1>;
+-			};
+-			phy2: ethernet-phy@2 {
+-				interrupts = <1 1 0 0>;
+-				reg = <0x2>;
+-			};
+-			phy3: ethernet-phy@3 {
+-				interrupts = <2 1 0 0>;
+-				reg = <0x3>;
+-			};
+-			tbi0: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
 -			};
 -		};
 -
 -		enet1: ethernet@25000 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			cell-index = <1>;
--			device_type = "network";
--			model = "TSEC";
--			compatible = "gianfar";
--			reg = <0x25000 0x1000>;
--			ranges = <0x0 0x25000 0x1000>;
--			local-mac-address = [ 00 00 00 00 00 00 ];
--			interrupts = <35 2 36 2 40 2>;
--			interrupt-parent = <&mpic>;
 -			tbi-handle = <&tbi1>;
+-			phy-handle = <&phy3>;
+-			sleep = <&pmc 0x00000040>;
+-		};
+-
+-		mdio@25520 {
+-			tbi1: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		par_io@e0100 {
+-			num-ports = <7>;
+-
+-			pio1: ucc_pin@1 {
+-				pio-map = <
+-			/* port  pin  dir  open_drain  assignment  has_irq */
+-					0x4  0xa  0x1  0x0  0x2  0x0 	/* TxD0 */
+-					0x4  0x9  0x1  0x0  0x2  0x0 	/* TxD1 */
+-					0x4  0x8  0x1  0x0  0x2  0x0 	/* TxD2 */
+-					0x4  0x7  0x1  0x0  0x2  0x0 	/* TxD3 */
+-					0x4  0x17  0x1  0x0  0x2  0x0 	/* TxD4 */
+-					0x4  0x16  0x1  0x0  0x2  0x0 	/* TxD5 */
+-					0x4  0x15  0x1  0x0  0x2  0x0 	/* TxD6 */
+-					0x4  0x14  0x1  0x0  0x2  0x0 	/* TxD7 */
+-					0x4  0xf  0x2  0x0  0x2  0x0 	/* RxD0 */
+-					0x4  0xe  0x2  0x0  0x2  0x0 	/* RxD1 */
+-					0x4  0xd  0x2  0x0  0x2  0x0 	/* RxD2 */
+-					0x4  0xc  0x2  0x0  0x2  0x0 	/* RxD3 */
+-					0x4  0x1d  0x2  0x0  0x2  0x0 	/* RxD4 */
+-					0x4  0x1c  0x2  0x0  0x2  0x0 	/* RxD5 */
+-					0x4  0x1b  0x2  0x0  0x2  0x0 	/* RxD6 */
+-					0x4  0x1a  0x2  0x0  0x2  0x0 	/* RxD7 */
+-					0x4  0xb  0x1  0x0  0x2  0x0 	/* TX_EN */
+-					0x4  0x18  0x1  0x0  0x2  0x0 	/* TX_ER */
+-					0x4  0x10  0x2  0x0  0x2  0x0 	/* RX_DV */
+-					0x4  0x1e  0x2  0x0  0x2  0x0 	/* RX_ER */
+-					0x4  0x11  0x2  0x0  0x2  0x0 	/* RX_CLK */
+-					0x4  0x13  0x1  0x0  0x2  0x0 	/* GTX_CLK */
+-					0x1  0x1f  0x2  0x0  0x3  0x0>;	/* GTX125 */
+-			};
+-
+-			pio2: ucc_pin@2 {
+-				pio-map = <
+-			/* port  pin  dir  open_drain  assignment  has_irq */
+-					0x5  0xa 0x1  0x0  0x2  0x0   /* TxD0 */
+-					0x5  0x9 0x1  0x0  0x2  0x0   /* TxD1 */
+-					0x5  0x8 0x1  0x0  0x2  0x0   /* TxD2 */
+-					0x5  0x7 0x1  0x0  0x2  0x0   /* TxD3 */
+-					0x5  0x17 0x1  0x0  0x2  0x0   /* TxD4 */
+-					0x5  0x16 0x1  0x0  0x2  0x0   /* TxD5 */
+-					0x5  0x15 0x1  0x0  0x2  0x0   /* TxD6 */
+-					0x5  0x14 0x1  0x0  0x2  0x0   /* TxD7 */
+-					0x5  0xf 0x2  0x0  0x2  0x0   /* RxD0 */
+-					0x5  0xe 0x2  0x0  0x2  0x0   /* RxD1 */
+-					0x5  0xd 0x2  0x0  0x2  0x0   /* RxD2 */
+-					0x5  0xc 0x2  0x0  0x2  0x0   /* RxD3 */
+-					0x5  0x1d 0x2  0x0  0x2  0x0   /* RxD4 */
+-					0x5  0x1c 0x2  0x0  0x2  0x0   /* RxD5 */
+-					0x5  0x1b 0x2  0x0  0x2  0x0   /* RxD6 */
+-					0x5  0x1a 0x2  0x0  0x2  0x0   /* RxD7 */
+-					0x5  0xb 0x1  0x0  0x2  0x0   /* TX_EN */
+-					0x5  0x18 0x1  0x0  0x2  0x0   /* TX_ER */
+-					0x5  0x10 0x2  0x0  0x2  0x0   /* RX_DV */
+-					0x5  0x1e 0x2  0x0  0x2  0x0   /* RX_ER */
+-					0x5  0x11 0x2  0x0  0x2  0x0   /* RX_CLK */
+-					0x5  0x13 0x1  0x0  0x2  0x0   /* GTX_CLK */
+-					0x1  0x1f 0x2  0x0  0x3  0x0   /* GTX125 */
+-					0x4  0x6 0x3  0x0  0x2  0x0   /* MDIO */
+-					0x4  0x5 0x1  0x0  0x2  0x0>; /* MDC */
+-			};
+-		};
+-	};
+-
+-	qe: qe@e0080000 {
+-		ranges = <0x0 0x0 0xe0080000 0x40000>;
+-		reg = <0x0 0xe0080000 0x0 0x480>;
+-
+-		spi@4c0 {
+-			mode = "cpu";
+-		};
+-
+-		spi@500 {
+-			mode = "cpu";
+-		};
+-
+-		enet2: ucc@2000 {
+-			device_type = "network";
+-			compatible = "ucc_geth";
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			rx-clock-name = "none";
+-			tx-clock-name = "clk16";
+-			pio-handle = <&pio1>;
+-			phy-handle = <&phy0>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		enet3: ucc@3000 {
+-			device_type = "network";
+-			compatible = "ucc_geth";
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			rx-clock-name = "none";
+-			tx-clock-name = "clk16";
+-			pio-handle = <&pio2>;
 -			phy-handle = <&phy1>;
--
--			mdio@520 {
--				#address-cells = <1>;
--				#size-cells = <0>;
--				compatible = "fsl,gianfar-tbi";
--				reg = <0x520 0x20>;
--
--				tbi1: tbi-phy@11 {
--					reg = <0x11>;
--					device_type = "tbi-phy";
--				};
--			};
+-			phy-connection-type = "rgmii-id";
 -		};
 -
--		serial0: serial@4500 {
--			cell-index = <0>;
--			device_type = "serial";
--			compatible = "fsl,ns16550", "ns16550";
--			reg = <0x4500 0x100>; 	// reg base, size
--			clock-frequency = <0>; 	// should we fill in in uboot?
--			interrupts = <42 2>;
--			interrupt-parent = <&mpic>;
--		};
--
--		serial1: serial@4600 {
--			cell-index = <1>;
--			device_type = "serial";
--			compatible = "fsl,ns16550", "ns16550";
--			reg = <0x4600 0x100>;	// reg base, size
--			clock-frequency = <0>; 	// should we fill in in uboot?
--			interrupts = <42 2>;
--			interrupt-parent = <&mpic>;
--		};
--
--		crypto@30000 {
--			compatible = "fsl,sec2.0";
--			reg = <0x30000 0x10000>;
--			interrupts = <45 2>;
--			interrupt-parent = <&mpic>;
--			fsl,num-channels = <4>;
--			fsl,channel-fifo-len = <24>;
--			fsl,exec-units-mask = <0x7e>;
--			fsl,descriptor-types-mask = <0x01010ebf>;
--		};
--
--		mpic: pic@40000 {
--			interrupt-controller;
--			#address-cells = <0>;
--			#interrupt-cells = <2>;
--			reg = <0x40000 0x40000>;
--			compatible = "chrp,open-pic";
--			device_type = "open-pic";
--		};
--
--		cpm@919c0 {
+-		mdio@2120 {
 -			#address-cells = <1>;
--			#size-cells = <1>;
--			compatible = "fsl,mpc8541-cpm", "fsl,cpm2";
--			reg = <0x919c0 0x30>;
--			ranges;
+-			#size-cells = <0>;
+-			reg = <0x2120 0x18>;
+-			compatible = "fsl,ucc-mdio";
 -
--			muram@80000 {
--				#address-cells = <1>;
--				#size-cells = <1>;
--				ranges = <0x0 0x80000 0x10000>;
--
--				data@0 {
--					compatible = "fsl,cpm-muram-data";
--					reg = <0x0 0x2000 0x9000 0x1000>;
--				};
--			};
--
--			brg@919f0 {
--				compatible = "fsl,mpc8541-brg",
--				             "fsl,cpm2-brg",
--				             "fsl,cpm-brg";
--				reg = <0x919f0 0x10 0x915f0 0x10>;
--			};
--
--			cpmpic: pic@90c00 {
--				interrupt-controller;
--				#address-cells = <0>;
--				#interrupt-cells = <2>;
--				interrupts = <46 2>;
+-			/* These are the same PHYs as on
+-			 * gianfar's MDIO bus */
+-			qe_phy0: ethernet-phy@7 {
 -				interrupt-parent = <&mpic>;
--				reg = <0x90c00 0x80>;
--				compatible = "fsl,mpc8541-cpm-pic", "fsl,cpm2-pic";
+-				interrupts = <1 1 0 0>;
+-				reg = <0x7>;
+-			};
+-			qe_phy1: ethernet-phy@1 {
+-				interrupt-parent = <&mpic>;
+-				interrupts = <2 1 0 0>;
+-				reg = <0x1>;
+-			};
+-			qe_phy2: ethernet-phy@2 {
+-				interrupt-parent = <&mpic>;
+-				interrupts = <1 1 0 0>;
+-				reg = <0x2>;
+-			};
+-			qe_phy3: ethernet-phy@3 {
+-				interrupt-parent = <&mpic>;
+-				interrupts = <2 1 0 0>;
+-				reg = <0x3>;
 -			};
 -		};
 -	};
 -
 -	pci0: pci@e0008000 {
--		interrupt-map-mask = <0x1f800 0x0 0x0 0x7>;
--		interrupt-map = <
--
--			/* IDSEL 0x10 */
--			0x8000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x8000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x8000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x8000 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x11 */
--			0x8800 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x8800 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x8800 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x8800 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x12 (Slot 1) */
--			0x9000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x9000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x9000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x9000 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x13 (Slot 2) */
--			0x9800 0x0 0x0 0x1 &mpic 0x1 0x1
--			0x9800 0x0 0x0 0x2 &mpic 0x2 0x1
--			0x9800 0x0 0x0 0x3 &mpic 0x3 0x1
--			0x9800 0x0 0x0 0x4 &mpic 0x0 0x1
--
--			/* IDSEL 0x14 (Slot 3) */
--			0xa000 0x0 0x0 0x1 &mpic 0x2 0x1
--			0xa000 0x0 0x0 0x2 &mpic 0x3 0x1
--			0xa000 0x0 0x0 0x3 &mpic 0x0 0x1
--			0xa000 0x0 0x0 0x4 &mpic 0x1 0x1
--
--			/* IDSEL 0x15 (Slot 4) */
--			0xa800 0x0 0x0 0x1 &mpic 0x3 0x1
--			0xa800 0x0 0x0 0x2 &mpic 0x0 0x1
--			0xa800 0x0 0x0 0x3 &mpic 0x1 0x1
--			0xa800 0x0 0x0 0x4 &mpic 0x2 0x1
--
--			/* Bus 1 (Tundra Bridge) */
--			/* IDSEL 0x12 (ISA bridge) */
--			0x19000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x19000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x19000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x19000 0x0 0x0 0x4 &mpic 0x3 0x1>;
--		interrupt-parent = <&mpic>;
--		interrupts = <24 2>;
--		bus-range = <0 0>;
--		ranges = <0x2000000 0x0 0x80000000 0x80000000 0x0 0x20000000
--			  0x1000000 0x0 0x0 0xe2000000 0x0 0x100000>;
+-		reg = <0x0 0xe0008000 0x0 0x1000>;
+-		ranges = <0x2000000 0x0 0x80000000 0x0 0x80000000 0x0 0x20000000
+-			  0x1000000 0x0 0x00000000 0x0 0xe2000000 0x0 0x800000>;
 -		clock-frequency = <66666666>;
--		#interrupt-cells = <1>;
--		#size-cells = <2>;
--		#address-cells = <3>;
--		reg = <0xe0008000 0x1000>;
--		compatible = "fsl,mpc8540-pci";
--		device_type = "pci";
+-		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
+-		interrupt-map = <
+-			/* IDSEL 0x12 AD18 */
+-			0x9000 0x0 0x0 0x1 &mpic 0x5 0x1 0 0
+-			0x9000 0x0 0x0 0x2 &mpic 0x6 0x1 0 0
+-			0x9000 0x0 0x0 0x3 &mpic 0x7 0x1 0 0
+-			0x9000 0x0 0x0 0x4 &mpic 0x4 0x1 0 0
 -
--		i8259@19000 {
--			interrupt-controller;
--			device_type = "interrupt-controller";
--			reg = <0x19000 0x0 0x0 0x0 0x1>;
--			#address-cells = <0>;
--			#interrupt-cells = <2>;
--			compatible = "chrp,iic";
--			interrupts = <1>;
--			interrupt-parent = <&pci0>;
+-			/* IDSEL 0x13 AD19 */
+-			0x9800 0x0 0x0 0x1 &mpic 0x6 0x1 0 0
+-			0x9800 0x0 0x0 0x2 &mpic 0x7 0x1 0 0
+-			0x9800 0x0 0x0 0x3 &mpic 0x4 0x1 0 0
+-			0x9800 0x0 0x0 0x4 &mpic 0x5 0x1 0 0>;
+-	};
+-
+-	/* PCI Express */
+-	pci1: pcie@e000a000 {
+-		ranges = <0x2000000 0x0 0xa0000000 0x0 0xa0000000 0x0 0x10000000
+-			  0x1000000 0x0 0x00000000 0x0 0xe2800000 0x0 0x800000>;
+-		reg = <0x0 0xe000a000 0x0 0x1000>;
+-		pcie@0 {
+-			ranges = <0x2000000 0x0 0xa0000000
+-				  0x2000000 0x0 0xa0000000
+-				  0x0 0x10000000
+-
+-				  0x1000000 0x0 0x0
+-				  0x1000000 0x0 0x0
+-				  0x0 0x800000>;
 -		};
 -	};
 -
--	pci1: pci@e0009000 {
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--		interrupt-map = <
+-	rio: rapidio@e00c00000 {
+-		reg = <0x0 0xe00c0000 0x0 0x20000>;
+-		port1 {
+-			ranges = <0x0 0x0 0x0 0xc0000000 0x0 0x20000000>;
+-		};
+-	};
 -
--			/* IDSEL 0x15 */
--			0xa800 0x0 0x0 0x1 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x2 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x3 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x4 &mpic 0xb 0x1>;
--		interrupt-parent = <&mpic>;
--		interrupts = <25 2>;
--		bus-range = <0 0>;
--		ranges = <0x2000000 0x0 0xa0000000 0xa0000000 0x0 0x20000000
--			  0x1000000 0x0 0x0 0xe3000000 0x0 0x100000>;
--		clock-frequency = <66666666>;
--		#interrupt-cells = <1>;
--		#size-cells = <2>;
--		#address-cells = <3>;
--		reg = <0xe0009000 0x1000>;
--		compatible = "fsl,mpc8540-pci";
--		device_type = "pci";
+-	leds {
+-		compatible = "gpio-leds";
+-
+-		green {
+-			gpios = <&bcsr5 1 0>;
+-		};
+-
+-		amber {
+-			gpios = <&bcsr5 2 0>;
+-		};
+-
+-		red {
+-			gpios = <&bcsr5 3 0>;
+-		};
 -	};
 -};
-diff --git a/arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi b/arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi
+-
+-/include/ "mpc8568si-post.dtsi"
+diff --git a/arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi b/arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi
 deleted file mode 100644
-index 3bc7d4711220..000000000000
---- a/arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi
+index 64e7075a9cd4..000000000000
+--- a/arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi
 +++ /dev/null
-@@ -1,302 +0,0 @@
+@@ -1,270 +0,0 @@
 -/*
-- * MPC8548CDS Device Tree Source stub (no addresses or top-level ranges)
+- * MPC8568 Silicon/SoC Device Tree Source (post include)
 - *
-- * Copyright 2012 Freescale Semiconductor Inc.
+- * Copyright 2011 Freescale Semiconductor Inc.
 - *
 - * Redistribution and use in source and binary forms, with or without
 - * modification, are permitted provided that the following conditions are met:
@@ -565,478 +481,299 @@ index 3bc7d4711220..000000000000
 - * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - */
 -
--&board_lbc {
--	nor@0,0 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "cfi-flash";
--		reg = <0x0 0x0 0x01000000>;
--		bank-width = <2>;
--		device-width = <2>;
--
--		partition@0 {
--			reg = <0x0 0x0b00000>;
--			label = "ramdisk-nor";
--		};
--
--		partition@300000 {
--			reg = <0x0b00000 0x0400000>;
--			label = "kernel-nor";
--		};
--
--		partition@700000 {
--			reg = <0x0f00000 0x060000>;
--			label = "dtb-nor";
--		};
--
--		partition@760000 {
--			reg = <0x0f60000 0x020000>;
--			label = "env-nor";
--			read-only;
--		};
--
--		partition@780000 {
--			reg = <0x0f80000 0x080000>;
--			label = "u-boot-nor";
--			read-only;
--		};
--	};
--
--	board-control@1,0 {
--		compatible = "fsl,mpc8548cds-fpga";
--		reg = <0x1 0x0 0x1000>;
--	};
+-&lbc {
+-	#address-cells = <2>;
+-	#size-cells = <1>;
+-	compatible = "fsl,mpc8568-localbus", "fsl,pq3-localbus", "simple-bus";
+-	interrupts = <19 2 0 0>;
+-	sleep = <&pmc 0x08000000>;
 -};
 -
--&board_soc {
--	i2c@3000 {
--		eeprom@50 {
--			compatible = "atmel,24c64";
--			reg = <0x50>;
--		};
--
--		eeprom@56 {
--			compatible = "atmel,24c64";
--			reg = <0x56>;
--		};
--
--		eeprom@57 {
--			compatible = "atmel,24c64";
--			reg = <0x57>;
--		};
--	};
--
--	i2c@3100 {
--		eeprom@50 {
--			compatible = "atmel,24c64";
--			reg = <0x50>;
--		};
--	};
--
--	enet0: ethernet@24000 {
--		tbi-handle = <&tbi0>;
--		phy-handle = <&phy0>;
--	};
--
--	mdio@24520 {
--		phy0: ethernet-phy@0 {
--			interrupts = <5 1 0 0>;
--			reg = <0x0>;
--		};
--		phy1: ethernet-phy@1 {
--			interrupts = <5 1 0 0>;
--			reg = <0x1>;
--		};
--		phy2: ethernet-phy@2 {
--			interrupts = <5 1 0 0>;
--			reg = <0x2>;
--		};
--		phy3: ethernet-phy@3 {
--			interrupts = <5 1 0 0>;
--			reg = <0x3>;
--		};
--		tbi0: tbi-phy@11 {
--			reg = <0x11>;
--			device_type = "tbi-phy";
--		};
--	};
--
--	enet1: ethernet@25000 {
--		tbi-handle = <&tbi1>;
--		phy-handle = <&phy1>;
--	};
--
--	mdio@25520 {
--		tbi1: tbi-phy@11 {
--			reg = <0x11>;
--			device_type = "tbi-phy";
--		};
--	};
--
--	enet2: ethernet@26000 {
--		tbi-handle = <&tbi2>;
--		phy-handle = <&phy2>;
--	};
--
--	mdio@26520 {
--		tbi2: tbi-phy@11 {
--			reg = <0x11>;
--			device_type = "tbi-phy";
--		};
--	};
--
--	enet3: ethernet@27000 {
--		tbi-handle = <&tbi3>;
--		phy-handle = <&phy3>;
--	};
--
--	mdio@27520 {
--		tbi3: tbi-phy@11 {
--			reg = <0x11>;
--			device_type = "tbi-phy";
--		};
--	};
+-/* controller at 0x8000 */
+-&pci0 {
+-	compatible = "fsl,mpc8540-pci";
+-	device_type = "pci";
+-	interrupts = <24 0x2 0 0>;
+-	bus-range = <0 0xff>;
+-	#interrupt-cells = <1>;
+-	#size-cells = <2>;
+-	#address-cells = <3>;
+-	sleep = <&pmc 0x80000000>;
 -};
 -
--&board_pci0 {
--	interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--	interrupt-map = <
--		/* IDSEL 0x4 (PCIX Slot 2) */
--		0x2000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0x2000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0x2000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0x2000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
+-/* controller at 0xa000 */
+-&pci1 {
+-	compatible = "fsl,mpc8548-pcie";
+-	device_type = "pci";
+-	#size-cells = <2>;
+-	#address-cells = <3>;
+-	bus-range = <0 255>;
+-	clock-frequency = <33333333>;
+-	interrupts = <26 2 0 0>;
+-	sleep = <&pmc 0x20000000>;
 -
--		/* IDSEL 0x5 (PCIX Slot 3) */
--		0x2800 0x0 0x0 0x1 &mpic 0x1 0x1 0 0
--		0x2800 0x0 0x0 0x2 &mpic 0x2 0x1 0 0
--		0x2800 0x0 0x0 0x3 &mpic 0x3 0x1 0 0
--		0x2800 0x0 0x0 0x4 &mpic 0x0 0x1 0 0
--
--		/* IDSEL 0x6 (PCIX Slot 4) */
--		0x3000 0x0 0x0 0x1 &mpic 0x2 0x1 0 0
--		0x3000 0x0 0x0 0x2 &mpic 0x3 0x1 0 0
--		0x3000 0x0 0x0 0x3 &mpic 0x0 0x1 0 0
--		0x3000 0x0 0x0 0x4 &mpic 0x1 0x1 0 0
--
--		/* IDSEL 0x8 (PCIX Slot 5) */
--		0x4000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0x4000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0x4000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0x4000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--		/* IDSEL 0xC (Tsi310 bridge) */
--		0x6000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0x6000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0x6000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0x6000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--		/* IDSEL 0x14 (Slot 2) */
--		0xa000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0xa000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0xa000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0xa000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--		/* IDSEL 0x15 (Slot 3) */
--		0xa800 0x0 0x0 0x1 &mpic 0x1 0x1 0 0
--		0xa800 0x0 0x0 0x2 &mpic 0x2 0x1 0 0
--		0xa800 0x0 0x0 0x3 &mpic 0x3 0x1 0 0
--		0xa800 0x0 0x0 0x4 &mpic 0x0 0x1 0 0
--
--		/* IDSEL 0x16 (Slot 4) */
--		0xb000 0x0 0x0 0x1 &mpic 0x2 0x1 0 0
--		0xb000 0x0 0x0 0x2 &mpic 0x3 0x1 0 0
--		0xb000 0x0 0x0 0x3 &mpic 0x0 0x1 0 0
--		0xb000 0x0 0x0 0x4 &mpic 0x1 0x1 0 0
--
--		/* IDSEL 0x18 (Slot 5) */
--		0xc000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0xc000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0xc000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0xc000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--		/* IDSEL 0x1C (Tsi310 bridge PCI primary) */
--		0xe000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--		0xe000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--		0xe000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--		0xe000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0>;
--
--	pci_bridge@1c {
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--		interrupt-map = <
--
--			/* IDSEL 0x00 (PrPMC Site) */
--			0000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--			0000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--			0000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--			0000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--			/* IDSEL 0x04 (VIA chip) */
--			0x2000 0x0 0x0 0x1 &mpic 0x0 0x1 0 0
--			0x2000 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--			0x2000 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--			0x2000 0x0 0x0 0x4 &mpic 0x3 0x1 0 0
--
--			/* IDSEL 0x05 (8139) */
--			0x2800 0x0 0x0 0x1 &mpic 0x1 0x1 0 0
--
--			/* IDSEL 0x06 (Slot 6) */
--			0x3000 0x0 0x0 0x1 &mpic 0x2 0x1 0 0
--			0x3000 0x0 0x0 0x2 &mpic 0x3 0x1 0 0
--			0x3000 0x0 0x0 0x3 &mpic 0x0 0x1 0 0
--			0x3000 0x0 0x0 0x4 &mpic 0x1 0x1 0 0
--
--			/* IDESL 0x07 (Slot 7) */
--			0x3800 0x0 0x0 0x1 &mpic 0x3 0x1 0 0
--			0x3800 0x0 0x0 0x2 &mpic 0x0 0x1 0 0
--			0x3800 0x0 0x0 0x3 &mpic 0x1 0x1 0 0
--			0x3800 0x0 0x0 0x4 &mpic 0x2 0x1 0 0>;
--
--		reg = <0xe000 0x0 0x0 0x0 0x0>;
+-	pcie@0 {
+-		reg = <0 0 0 0 0>;
 -		#interrupt-cells = <1>;
 -		#size-cells = <2>;
 -		#address-cells = <3>;
--		ranges = <0x2000000 0x0 0x80000000
--			  0x2000000 0x0 0x80000000
--			  0x0 0x20000000
--			  0x1000000 0x0 0x0
--			  0x1000000 0x0 0x0
--			  0x0 0x80000>;
--		clock-frequency = <33333333>;
--
--		isa@4 {
--			device_type = "isa";
--			#interrupt-cells = <2>;
--			#size-cells = <1>;
--			#address-cells = <2>;
--			reg = <0x2000 0x0 0x0 0x0 0x0>;
--			ranges = <0x1 0x0 0x1000000 0x0 0x0 0x1000>;
--			interrupt-parent = <&i8259>;
--
--			i8259: interrupt-controller@20 {
--				interrupt-controller;
--				device_type = "interrupt-controller";
--				reg = <0x1 0x20 0x2
--				       0x1 0xa0 0x2
--				       0x1 0x4d0 0x2>;
--				#address-cells = <0>;
--				#interrupt-cells = <2>;
--				compatible = "chrp,iic";
--				interrupts = <0 1 0 0>;
--				interrupt-parent = <&mpic>;
--			};
--
--			rtc@70 {
--				compatible = "pnpPNP,b00";
--				reg = <0x1 0x70 0x2>;
--			};
--		};
--	};
--};
-diff --git a/arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts b/arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts
-deleted file mode 100644
-index f6ba4a982766..000000000000
---- a/arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts
-+++ /dev/null
-@@ -1,82 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * MPC8548 CDS Device Tree Source (32-bit address map)
-- *
-- * Copyright 2006, 2008, 2011-2012 Freescale Semiconductor Inc.
-- */
--
--/include/ "mpc8548si-pre.dtsi"
--
--/ {
--	model = "MPC8548CDS";
--	compatible = "MPC8548CDS", "MPC85xxCDS";
--
--	memory {
--		device_type = "memory";
--		reg = <0 0 0x0 0x8000000>;	// 128M at 0x0
--	};
--
--	board_lbc: lbc: localbus@e0005000 {
--		reg = <0 0xe0005000 0 0x1000>;
--
--		ranges = <0x0 0x0 0x0 0xff000000 0x01000000
--			  0x1 0x0 0x0 0xf8004000 0x00001000>;
--
--	};
--
--	board_soc: soc: soc8548@e0000000 {
--		ranges = <0 0x0 0xe0000000 0x100000>;
--	};
--
--	board_pci0: pci0: pci@e0008000 {
--		reg = <0 0xe0008000 0 0x1000>;
--		ranges = <0x2000000 0x0 0x80000000 0 0x80000000 0x0 0x10000000
--			  0x1000000 0x0 0x00000000 0 0xe2000000 0x0 0x800000>;
--		clock-frequency = <66666666>;
--	};
--
--	pci1: pci@e0009000 {
--		reg = <0 0xe0009000 0 0x1000>;
--		ranges = <0x2000000 0x0 0x90000000 0 0x90000000 0x0 0x10000000
--			  0x1000000 0x0 0x00000000 0 0xe2800000 0x0 0x800000>;
--		clock-frequency = <66666666>;
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
+-		device_type = "pci";
+-		interrupts = <26 2 0 0>;
+-		interrupt-map-mask = <0xf800 0 0 7>;
 -		interrupt-map = <
+-			/* IDSEL 0x0 */
+-			0000 0x0 0x0 0x1 &mpic 0x0 0x1 0x0 0x0
+-			0000 0x0 0x0 0x2 &mpic 0x1 0x1 0x0 0x0
+-			0000 0x0 0x0 0x3 &mpic 0x2 0x1 0x0 0x0
+-			0000 0x0 0x0 0x4 &mpic 0x3 0x1 0x0 0x0
+-			>;
+-	};
+-};
 -
--			/* IDSEL 0x15 */
--			0xa800 0x0 0x0 0x1 &mpic 0xb 0x1 0 0
--			0xa800 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--			0xa800 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--			0xa800 0x0 0x0 0x4 &mpic 0x3 0x1 0 0>;
+-&rio {
+-	compatible = "fsl,srio";
+-	interrupts = <48 2 0 0>;
+-	#address-cells = <2>;
+-	#size-cells = <2>;
+-	fsl,srio-rmu-handle = <&rmu>;
+-	sleep = <&pmc 0x00080000>;
+-	ranges;
+-
+-	port1 {
+-		#address-cells = <2>;
+-		#size-cells = <2>;
+-		cell-index = <1>;
+-	};
+-};
+-
+-&soc {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	device_type = "soc";
+-	compatible = "fsl,mpc8568-immr", "simple-bus";
+-	bus-frequency = <0>;		// Filled out by uboot.
+-
+-	ecm-law@0 {
+-		compatible = "fsl,ecm-law";
+-		reg = <0x0 0x1000>;
+-		fsl,num-laws = <10>;
 -	};
 -
--	pci2: pcie@e000a000 {
--		reg = <0 0xe000a000 0 0x1000>;
--		ranges = <0x2000000 0x0 0xa0000000 0 0xa0000000 0x0 0x20000000
--			  0x1000000 0x0 0x00000000 0 0xe3000000 0x0 0x100000>;
--		pcie@0 {
--			ranges = <0x2000000 0x0 0xa0000000
--				  0x2000000 0x0 0xa0000000
--				  0x0 0x20000000
--
--				  0x1000000 0x0 0x0
--				  0x1000000 0x0 0x0
--				  0x0 0x100000>;
--		};
+-	ecm@1000 {
+-		compatible = "fsl,mpc8568-ecm", "fsl,ecm";
+-		reg = <0x1000 0x1000>;
+-		interrupts = <17 2 0 0>;
 -	};
 -
--	rio: rapidio@e00c0000 {
--		reg = <0x0 0xe00c0000 0x0 0x20000>;
--		port1 {
--			ranges = <0x0 0x0 0x0 0xc0000000 0x0 0x20000000>;
+-	memory-controller@2000 {
+-		compatible = "fsl,mpc8568-memory-controller";
+-		reg = <0x2000 0x1000>;
+-		interrupts = <18 2 0 0>;
+-	};
+-
+-	i2c-sleep-nexus {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "simple-bus";
+-		sleep = <&pmc 0x00000004>;
+-		ranges;
+-
+-/include/ "pq3-i2c-0.dtsi"
+-/include/ "pq3-i2c-1.dtsi"
+-
+-	};
+-
+-	duart-sleep-nexus {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "simple-bus";
+-		sleep = <&pmc 0x00000002>;
+-		ranges;
+-
+-/include/ "pq3-duart-0.dtsi"
+-
+-	};
+-
+-	L2: l2-cache-controller@20000 {
+-		compatible = "fsl,mpc8568-l2-cache-controller";
+-		reg = <0x20000 0x1000>;
+-		cache-line-size = <32>;	// 32 bytes
+-		cache-size = <0x80000>; // L2, 512K
+-		interrupts = <16 2 0 0>;
+-	};
+-
+-/include/ "pq3-dma-0.dtsi"
+-	dma@21300 {
+-		sleep = <&pmc 0x00000400>;
+-	};
+-
+-/include/ "pq3-etsec1-0.dtsi"
+-	ethernet@24000 {
+-		sleep = <&pmc 0x00000080>;
+-	};
+-
+-/include/ "pq3-etsec1-1.dtsi"
+-	ethernet@25000 {
+-		sleep = <&pmc 0x00000040>;
+-	};
+-
+-	par_io@e0100 {
+-		reg = <0xe0100 0x100>;
+-		device_type = "par_io";
+-	};
+-
+-/include/ "pq3-sec2.1-0.dtsi"
+-	crypto@30000 {
+-		sleep = <&pmc 0x01000000>;
+-	};
+-
+-/include/ "pq3-mpic.dtsi"
+-/include/ "pq3-rmu-0.dtsi"
+-	rmu@d3000 {
+-		sleep = <&pmc 0x00040000>;
+-	};
+-
+-	global-utilities@e0000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "fsl,mpc8568-guts", "fsl,mpc8548-guts";
+-		reg = <0xe0000 0x1000>;
+-		ranges = <0 0xe0000 0x1000>;
+-		fsl,has-rstcr;
+-
+-		pmc: power@70 {
+-			compatible = "fsl,mpc8568-pmc",
+-				     "fsl,mpc8548-pmc";
+-			reg = <0x70 0x20>;
 -		};
 -	};
 -};
 -
--/*
-- * mpc8548cds.dtsi must be last to ensure board_pci0 overrides pci0 settings
-- * for interrupt-map & interrupt-map-mask.
-- */
+-&qe {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	device_type = "qe";
+-	compatible = "fsl,qe";
+-	sleep = <&pmc 0x00000800>;
+-	brg-frequency = <0>;
+-	bus-frequency = <396000000>;
+-	fsl,qe-num-riscs = <2>;
+-	fsl,qe-num-snums = <28>;
 -
--/include/ "mpc8548si-post.dtsi"
--/include/ "mpc8548cds.dtsi"
-diff --git a/arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts b/arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts
-deleted file mode 100644
-index 32e9076375ae..000000000000
---- a/arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts
-+++ /dev/null
-@@ -1,82 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * MPC8548 CDS Device Tree Source (36-bit address map)
-- *
-- * Copyright 2012 Freescale Semiconductor Inc.
-- */
--
--/include/ "mpc8548si-pre.dtsi"
--
--/ {
--	model = "MPC8548CDS";
--	compatible = "MPC8548CDS", "MPC85xxCDS";
--
--	memory {
--		device_type = "memory";
--		reg = <0 0 0x0 0x8000000>;	// 128M at 0x0
+-	qeic: interrupt-controller@80 {
+-		interrupt-controller;
+-		compatible = "fsl,qe-ic";
+-		#address-cells = <0>;
+-		#interrupt-cells = <1>;
+-		reg = <0x80 0x80>;
+-		interrupts = <46 2 0 0 46 2 0 0>; //high:30 low:30
+-		interrupt-parent = <&mpic>;
 -	};
 -
--	board_lbc: lbc: localbus@fe0005000 {
--		reg = <0xf 0xe0005000 0 0x1000>;
--
--		ranges = <0x0 0x0 0xf 0xff000000 0x01000000
--			  0x1 0x0 0xf 0xf8004000 0x00001000>;
--
+-	spi@4c0 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		compatible = "fsl,spi";
+-		reg = <0x4c0 0x40>;
+-		cell-index = <0>;
+-		interrupts = <2>;
+-		interrupt-parent = <&qeic>;
 -	};
 -
--	board_soc: soc: soc8548@fe0000000 {
--		ranges = <0 0xf 0xe0000000 0x100000>;
+-	spi@500 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		cell-index = <1>;
+-		compatible = "fsl,spi";
+-		reg = <0x500 0x40>;
+-		interrupts = <1>;
+-		interrupt-parent = <&qeic>;
 -	};
 -
--	board_pci0: pci0: pci@fe0008000 {
--		reg = <0xf 0xe0008000 0 0x1000>;
--		ranges = <0x2000000 0x0 0xe0000000 0xc 0x00000000 0x0 0x10000000
--			  0x1000000 0x0 0x00000000 0xf 0xe2000000 0x0 0x800000>;
--		clock-frequency = <66666666>;
+-	ucc@2000 {
+-		cell-index = <1>;
+-		reg = <0x2000 0x200>;
+-		interrupts = <32>;
+-		interrupt-parent = <&qeic>;
 -	};
 -
--	pci1: pci@fe0009000 {
--		reg = <0xf 0xe0009000 0 0x1000>;
--		ranges = <0x2000000 0x0 0xe0000000 0xc 0x10000000 0x0 0x10000000
--			  0x1000000 0x0 0x00000000 0xf 0xe2800000 0x0 0x800000>;
--		clock-frequency = <66666666>;
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--		interrupt-map = <
--
--			/* IDSEL 0x15 */
--			0xa800 0x0 0x0 0x1 &mpic 0xb 0x1 0 0
--			0xa800 0x0 0x0 0x2 &mpic 0x1 0x1 0 0
--			0xa800 0x0 0x0 0x3 &mpic 0x2 0x1 0 0
--			0xa800 0x0 0x0 0x4 &mpic 0x3 0x1 0 0>;
+-	ucc@3000 {
+-		cell-index = <2>;
+-		reg = <0x3000 0x200>;
+-		interrupts = <33>;
+-		interrupt-parent = <&qeic>;
 -	};
 -
--	pci2: pcie@fe000a000 {
--		reg = <0xf 0xe000a000 0 0x1000>;
--		ranges = <0x2000000 0x0 0xe0000000 0xc 0x20000000 0x0 0x20000000
--			  0x1000000 0x0 0x00000000 0xf 0xe3000000 0x0 0x100000>;
--		pcie@0 {
--			ranges = <0x2000000 0x0 0xa0000000
--				  0x2000000 0x0 0xa0000000
--				  0x0 0x20000000
+-	muram@10000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "fsl,qe-muram", "fsl,cpm-muram";
+-		ranges = <0x0 0x10000 0x10000>;
 -
--				  0x1000000 0x0 0x0
--				  0x1000000 0x0 0x0
--				  0x0 0x100000>;
--		};
--	};
--
--	rio: rapidio@fe00c0000 {
--		reg = <0xf 0xe00c0000 0x0 0x20000>;
--		port1 {
--			ranges = <0x0 0x0 0xc 0x40000000 0x0 0x20000000>;
+-		data-only@0 {
+-			compatible = "fsl,qe-muram-data",
+-				     "fsl,cpm-muram-data";
+-			reg = <0x0 0x10000>;
 -		};
 -	};
 -};
--
--/*
-- * mpc8548cds.dtsi must be last to ensure board_pci0 overrides pci0 settings
-- * for interrupt-map & interrupt-map-mask.
-- */
--
--/include/ "mpc8548si-post.dtsi"
--/include/ "mpc8548cds.dtsi"
-diff --git a/arch/powerpc/boot/dts/fsl/mpc8555cds.dts b/arch/powerpc/boot/dts/fsl/mpc8555cds.dts
+diff --git a/arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi b/arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi
 deleted file mode 100644
-index 901b6ff06dfb..000000000000
---- a/arch/powerpc/boot/dts/fsl/mpc8555cds.dts
+index 122ca3bd0b03..000000000000
+--- a/arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi
 +++ /dev/null
-@@ -1,375 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
+@@ -1,68 +0,0 @@
 -/*
-- * MPC8555 CDS Device Tree Source
+- * MPC8568 Silicon/SoC Device Tree Source (pre include)
 - *
-- * Copyright 2006, 2008 Freescale Semiconductor Inc.
+- * Copyright 2011 Freescale Semiconductor Inc.
+- *
+- * Redistribution and use in source and binary forms, with or without
+- * modification, are permitted provided that the following conditions are met:
+- *     * Redistributions of source code must retain the above copyright
+- *       notice, this list of conditions and the following disclaimer.
+- *     * Redistributions in binary form must reproduce the above copyright
+- *       notice, this list of conditions and the following disclaimer in the
+- *       documentation and/or other materials provided with the distribution.
+- *     * Neither the name of Freescale Semiconductor nor the
+- *       names of its contributors may be used to endorse or promote products
+- *       derived from this software without specific prior written permission.
+- *
+- *
+- * ALTERNATIVELY, this software may be distributed under the terms of the
+- * GNU General Public License ("GPL") as published by the Free Software
+- * Foundation, either version 2 of that License or (at your option) any
+- * later version.
+- *
+- * THIS SOFTWARE IS PROVIDED BY Freescale Semiconductor ``AS IS'' AND ANY
+- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- * DISCLAIMED. IN NO EVENT SHALL Freescale Semiconductor BE LIABLE FOR ANY
+- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - */
 -
 -/dts-v1/;
 -
--/include/ "e500v1_power_isa.dtsi"
+-/include/ "e500v2_power_isa.dtsi"
 -
 -/ {
--	model = "MPC8555CDS";
--	compatible = "MPC8555CDS", "MPC85xxCDS";
--	#address-cells = <1>;
--	#size-cells = <1>;
+-	compatible = "fsl,MPC8568";
+-	#address-cells = <2>;
+-	#size-cells = <2>;
+-	interrupt-parent = <&mpic>;
 -
 -	aliases {
--		ethernet0 = &enet0;
--		ethernet1 = &enet1;
 -		serial0 = &serial0;
 -		serial1 = &serial1;
+-		ethernet0 = &enet0;
+-		ethernet1 = &enet1;
+-		ethernet2 = &enet2;
+-		ethernet3 = &enet3;
 -		pci0 = &pci0;
 -		pci1 = &pci1;
 -	};
@@ -1045,445 +782,359 @@ index 901b6ff06dfb..000000000000
 -		#address-cells = <1>;
 -		#size-cells = <0>;
 -
--		PowerPC,8555@0 {
+-		PowerPC,8568@0 {
 -			device_type = "cpu";
 -			reg = <0x0>;
--			d-cache-line-size = <32>;	// 32 bytes
--			i-cache-line-size = <32>;	// 32 bytes
--			d-cache-size = <0x8000>;		// L1, 32K
--			i-cache-size = <0x8000>;		// L1, 32K
--			timebase-frequency = <0>;	//  33 MHz, from uboot
--			bus-frequency = <0>;	// 166 MHz
--			clock-frequency = <0>;	// 825 MHz, from uboot
 -			next-level-cache = <&L2>;
+-			sleep = <&pmc 0x00008000	// core
+-				 &pmc 0x00004000>;	// timebase
 -		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/fsl/p1021mds.dts b/arch/powerpc/boot/dts/fsl/p1021mds.dts
+deleted file mode 100644
+index 54af8de53371..000000000000
+--- a/arch/powerpc/boot/dts/fsl/p1021mds.dts
++++ /dev/null
+@@ -1,319 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * P1021 MDS Device Tree Source
+- *
+- * Copyright 2010,2012 Freescale Semiconductor Inc.
+- */
+-
+-/include/ "p1021si-pre.dtsi"
+-/ {
+-	model = "fsl,P1021";
+-	compatible = "fsl,P1021MDS";
+-
+-	aliases {
+-		ethernet3 = &enet3;
+-		ethernet4 = &enet4;
 -	};
 -
 -	memory {
 -		device_type = "memory";
--		reg = <0x0 0x8000000>;	// 128M at 0x0
 -	};
 -
--	soc8555@e0000000 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		device_type = "soc";
--		compatible = "simple-bus";
--		ranges = <0x0 0xe0000000 0x100000>;
--		bus-frequency = <0>;
+-	lbc: localbus@ffe05000 {
+-		reg = <0x0 0xffe05000 0x0 0x1000>;
 -
--		ecm-law@0 {
--			compatible = "fsl,ecm-law";
--			reg = <0x0 0x1000>;
--			fsl,num-laws = <8>;
+-		/* NAND Flash, BCSR, PMC0/1*/
+-		ranges = <0x0 0x0 0x0 0xfc000000 0x02000000
+-			  0x1 0x0 0x0 0xf8000000 0x00008000
+-			  0x2 0x0 0x0 0xf8010000 0x00020000
+-			  0x3 0x0 0x0 0xf8020000 0x00020000>;
+-
+-		nand@0,0 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "fsl,p1021-fcm-nand",
+-				     "fsl,elbc-fcm-nand";
+-			reg = <0x0 0x0 0x40000>;
+-
+-			partition@0 {
+-				/* This location must not be altered  */
+-				/* 1MB for u-boot Bootloader Image */
+-				reg = <0x0 0x00100000>;
+-				label = "NAND (RO) U-Boot Image";
+-				read-only;
+-			};
+-
+-			partition@100000 {
+-				/* 1MB for DTB Image */
+-				reg = <0x00100000 0x00100000>;
+-				label = "NAND (RO) DTB Image";
+-				read-only;
+-			};
+-
+-			partition@200000 {
+-				/* 4MB for Linux Kernel Image */
+-				reg = <0x00200000 0x00400000>;
+-				label = "NAND (RO) Linux Kernel Image";
+-				read-only;
+-			};
+-
+-			partition@600000 {
+-				/* 5MB for Compressed Root file System Image */
+-				reg = <0x00600000 0x00500000>;
+-				label = "NAND (RO) Compressed RFS Image";
+-				read-only;
+-			};
+-
+-			partition@b00000 {
+-				/* 6MB for JFFS2 based Root file System */
+-				reg = <0x00a00000 0x00600000>;
+-				label = "NAND (RW) JFFS2 Root File System";
+-			};
+-
+-			partition@1100000 {
+-				/* 14MB for JFFS2 based Root file System */
+-				reg = <0x01100000 0x00e00000>;
+-				label = "NAND (RW) Writable User area";
+-			};
+-
+-			partition@1f00000 {
+-				/* 1MB for microcode */
+-				reg = <0x01f00000 0x00100000>;
+-				label = "NAND (RO) QE Ucode";
+-				read-only;
+-			};
 -		};
 -
--		ecm@1000 {
--			compatible = "fsl,mpc8555-ecm", "fsl,ecm";
--			reg = <0x1000 0x1000>;
--			interrupts = <17 2>;
--			interrupt-parent = <&mpic>;
+-		bcsr@1,0 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "fsl,p1021mds-bcsr";
+-			reg = <1 0 0x8000>;
+-			ranges = <0 1 0 0x8000>;
 -		};
 -
--		memory-controller@2000 {
--			compatible = "fsl,mpc8555-memory-controller";
--			reg = <0x2000 0x1000>;
--			interrupt-parent = <&mpic>;
--			interrupts = <18 2>;
+-		pib@2,0 {
+-			compatible = "fsl,p1021mds-pib";
+-			reg = <2 0 0x10000>;
 -		};
 -
--		L2: l2-cache-controller@20000 {
--			compatible = "fsl,mpc8555-l2-cache-controller";
--			reg = <0x20000 0x1000>;
--			cache-line-size = <32>;	// 32 bytes
--			cache-size = <0x40000>;	// L2, 256K
--			interrupt-parent = <&mpic>;
--			interrupts = <16 2>;
+-		pib@3,0 {
+-			compatible = "fsl,p1021mds-pib";
+-			reg = <3 0 0x10000>;
 -		};
+-	};
+-
+-	soc: soc@ffe00000 {
+-		compatible = "fsl,p1021-immr", "simple-bus";
+-		ranges = <0x0 0x0 0xffe00000 0x100000>;
 -
 -		i2c@3000 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			cell-index = <0>;
--			compatible = "fsl-i2c";
--			reg = <0x3000 0x100>;
--			interrupts = <43 2>;
--			interrupt-parent = <&mpic>;
--			dfsrr;
--		};
--
--		dma@21300 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			compatible = "fsl,mpc8555-dma", "fsl,eloplus-dma";
--			reg = <0x21300 0x4>;
--			ranges = <0x0 0x21100 0x200>;
--			cell-index = <0>;
--			dma-channel@0 {
--				compatible = "fsl,mpc8555-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x0 0x80>;
--				cell-index = <0>;
--				interrupt-parent = <&mpic>;
--				interrupts = <20 2>;
--			};
--			dma-channel@80 {
--				compatible = "fsl,mpc8555-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x80 0x80>;
--				cell-index = <1>;
--				interrupt-parent = <&mpic>;
--				interrupts = <21 2>;
--			};
--			dma-channel@100 {
--				compatible = "fsl,mpc8555-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x100 0x80>;
--				cell-index = <2>;
--				interrupt-parent = <&mpic>;
--				interrupts = <22 2>;
--			};
--			dma-channel@180 {
--				compatible = "fsl,mpc8555-dma-channel",
--						"fsl,eloplus-dma-channel";
--				reg = <0x180 0x80>;
--				cell-index = <3>;
--				interrupt-parent = <&mpic>;
--				interrupts = <23 2>;
+-			rtc@68 {
+-				compatible = "dallas,ds1374";
+-				reg = <0x68>;
 -			};
 -		};
 -
--		enet0: ethernet@24000 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			cell-index = <0>;
--			device_type = "network";
--			model = "TSEC";
--			compatible = "gianfar";
--			reg = <0x24000 0x1000>;
--			ranges = <0x0 0x24000 0x1000>;
--			local-mac-address = [ 00 00 00 00 00 00 ];
--			interrupts = <29 2 30 2 34 2>;
--			interrupt-parent = <&mpic>;
--			tbi-handle = <&tbi0>;
--			phy-handle = <&phy0>;
+-		spi@7000 {
 -
--			mdio@520 {
--				#address-cells = <1>;
--				#size-cells = <0>;
--				compatible = "fsl,gianfar-mdio";
--				reg = <0x520 0x20>;
--
--				phy0: ethernet-phy@0 {
--					interrupt-parent = <&mpic>;
--					interrupts = <5 1>;
--					reg = <0x0>;
--				};
--				phy1: ethernet-phy@1 {
--					interrupt-parent = <&mpic>;
--					interrupts = <5 1>;
--					reg = <0x1>;
--				};
--				tbi0: tbi-phy@11 {
--					reg = <0x11>;
--					device_type = "tbi-phy";
--				};
--			};
--		};
--
--		enet1: ethernet@25000 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			cell-index = <1>;
--			device_type = "network";
--			model = "TSEC";
--			compatible = "gianfar";
--			reg = <0x25000 0x1000>;
--			ranges = <0x0 0x25000 0x1000>;
--			local-mac-address = [ 00 00 00 00 00 00 ];
--			interrupts = <35 2 36 2 40 2>;
--			interrupt-parent = <&mpic>;
--			tbi-handle = <&tbi1>;
--			phy-handle = <&phy1>;
--
--			mdio@520 {
--				#address-cells = <1>;
--				#size-cells = <0>;
--				compatible = "fsl,gianfar-tbi";
--				reg = <0x520 0x20>;
--
--				tbi1: tbi-phy@11 {
--					reg = <0x11>;
--					device_type = "tbi-phy";
--				};
--			};
--		};
--
--		serial0: serial@4500 {
--			cell-index = <0>;
--			device_type = "serial";
--			compatible = "fsl,ns16550", "ns16550";
--			reg = <0x4500 0x100>; 	// reg base, size
--			clock-frequency = <0>; 	// should we fill in in uboot?
--			interrupts = <42 2>;
--			interrupt-parent = <&mpic>;
--		};
--
--		serial1: serial@4600 {
--			cell-index = <1>;
--			device_type = "serial";
--			compatible = "fsl,ns16550", "ns16550";
--			reg = <0x4600 0x100>;	// reg base, size
--			clock-frequency = <0>; 	// should we fill in in uboot?
--			interrupts = <42 2>;
--			interrupt-parent = <&mpic>;
--		};
--
--		crypto@30000 {
--			compatible = "fsl,sec2.0";
--			reg = <0x30000 0x10000>;
--			interrupts = <45 2>;
--			interrupt-parent = <&mpic>;
--			fsl,num-channels = <4>;
--			fsl,channel-fifo-len = <24>;
--			fsl,exec-units-mask = <0x7e>;
--			fsl,descriptor-types-mask = <0x01010ebf>;
--		};
--
--		mpic: pic@40000 {
--			interrupt-controller;
--			#address-cells = <0>;
--			#interrupt-cells = <2>;
--			reg = <0x40000 0x40000>;
--			compatible = "chrp,open-pic";
--			device_type = "open-pic";
--		};
--
--		cpm@919c0 {
--			#address-cells = <1>;
--			#size-cells = <1>;
--			compatible = "fsl,mpc8555-cpm", "fsl,cpm2";
--			reg = <0x919c0 0x30>;
--			ranges;
--
--			muram@80000 {
+-			flash@0 {
 -				#address-cells = <1>;
 -				#size-cells = <1>;
--				ranges = <0x0 0x80000 0x10000>;
+-				compatible = "spansion,s25sl12801", "jedec,spi-nor";
+-				reg = <0>;
+-				spi-max-frequency = <40000000>; /* input clock */
 -
--				data@0 {
--					compatible = "fsl,cpm-muram-data";
--					reg = <0x0 0x2000 0x9000 0x1000>;
+-				partition@u-boot {
+-					label = "u-boot-spi";
+-					reg = <0x00000000 0x00100000>;
+-					read-only;
+-				};
+-				partition@kernel {
+-					label = "kernel-spi";
+-					reg = <0x00100000 0x00500000>;
+-					read-only;
+-				};
+-				partition@dtb {
+-					label = "dtb-spi";
+-					reg = <0x00600000 0x00100000>;
+-					read-only;
+-				};
+-				partition@fs {
+-					label = "file system-spi";
+-					reg = <0x00700000 0x00900000>;
 -				};
 -			};
+-		};
 -
--			brg@919f0 {
--				compatible = "fsl,mpc8555-brg",
--				             "fsl,cpm2-brg",
--				             "fsl,cpm-brg";
--				reg = <0x919f0 0x10 0x915f0 0x10>;
+-		usb@22000 {
+-			phy_type = "ulpi";
+-			dr_mode = "host";
+-		};
+-
+-		mdio@24000 {
+-			phy0: ethernet-phy@0 {
+-				interrupts = <1 1 0 0>;
+-				reg = <0x0>;
+-			};
+-			phy1: ethernet-phy@1 {
+-				interrupts = <2 1 0 0>;
+-				reg = <0x1>;
+-			};
+-			phy4: ethernet-phy@4 {
+-				reg = <0x4>;
+-			};
+-			tbi-phy@5 {
+-				device_type = "tbi-phy";
+-				reg = <0x5>;
+-			};
+-		};
+-
+-		mdio@25000 {
+-			tbi0: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		ethernet@b0000 {
+-			phy-handle = <&phy0>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		ethernet@b1000 {
+-			phy-handle = <&phy4>;
+-			tbi-handle = <&tbi0>;
+-			phy-connection-type = "sgmii";
+-		};
+-
+-		ethernet@b2000 {
+-			phy-handle = <&phy1>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		par_io@e0100 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0xe0100 0x60>;
+-			ranges = <0x0 0xe0100 0x60>;
+-			device_type = "par_io";
+-			num-ports = <3>;
+-			pio1: ucc_pin@1 {
+-				pio-map = <
+-			/* port  pin  dir  open_drain  assignment  has_irq */
+-					0x1  0x13 0x1  0x0  0x1  0x0    /* QE_MUX_MDC */
+-					0x1  0x14 0x3  0x0  0x1  0x0    /* QE_MUX_MDIO */
+-					0x0  0x17 0x2  0x0  0x2  0x0    /* CLK12 */
+-					0x0  0x18 0x2  0x0  0x1  0x0    /* CLK9 */
+-					0x0  0x7  0x1  0x0  0x2  0x0    /* ENET1_TXD0_SER1_TXD0 */
+-					0x0  0x9  0x1  0x0  0x2  0x0    /* ENET1_TXD1_SER1_TXD1 */
+-					0x0  0xb  0x1  0x0  0x2  0x0    /* ENET1_TXD2_SER1_TXD2 */
+-					0x0  0xc  0x1  0x0  0x2  0x0    /* ENET1_TXD3_SER1_TXD3 */
+-					0x0  0x6  0x2  0x0  0x2  0x0    /* ENET1_RXD0_SER1_RXD0 */
+-					0x0  0xa  0x2  0x0  0x2  0x0    /* ENET1_RXD1_SER1_RXD1 */
+-					0x0  0xe  0x2  0x0  0x2  0x0    /* ENET1_RXD2_SER1_RXD2 */
+-					0x0  0xf  0x2  0x0  0x2  0x0    /* ENET1_RXD3_SER1_RXD3 */
+-					0x0  0x5  0x1  0x0  0x2  0x0    /* ENET1_TX_EN_SER1_RTS_B */
+-					0x0  0xd  0x1  0x0  0x2  0x0    /* ENET1_TX_ER */
+-					0x0  0x4  0x2  0x0  0x2  0x0    /* ENET1_RX_DV_SER1_CTS_B */
+-					0x0  0x8  0x2  0x0  0x2  0x0    /* ENET1_RX_ER_SER1_CD_B */
+-					0x0  0x11 0x2  0x0  0x2  0x0    /* ENET1_CRS */
+-					0x0  0x10 0x2  0x0  0x2  0x0>;    /* ENET1_COL */
 -			};
 -
--			cpmpic: pic@90c00 {
--				interrupt-controller;
--				#address-cells = <0>;
--				#interrupt-cells = <2>;
--				interrupts = <46 2>;
+-			pio2: ucc_pin@2 {
+-				pio-map = <
+-			/* port  pin  dir  open_drain  assignment  has_irq */
+-					0x1  0x13 0x1  0x0  0x1  0x0    /* QE_MUX_MDC */
+-					0x1  0x14 0x3  0x0  0x1  0x0    /* QE_MUX_MDIO */
+-					0x1  0xb  0x2  0x0  0x1  0x0    /* CLK13 */
+-					0x1  0x7  0x1  0x0  0x2  0x0    /* ENET5_TXD0_SER5_TXD0 */
+-					0x1  0xa  0x1  0x0  0x2  0x0    /* ENET5_TXD1_SER5_TXD1 */
+-					0x1  0x6  0x2  0x0  0x2  0x0    /* ENET5_RXD0_SER5_RXD0 */
+-					0x1  0x9  0x2  0x0  0x2  0x0    /* ENET5_RXD1_SER5_RXD1 */
+-					0x1  0x5  0x1  0x0  0x2  0x0    /* ENET5_TX_EN_SER5_RTS_B */
+-					0x1  0x4  0x2  0x0  0x2  0x0    /* ENET5_RX_DV_SER5_CTS_B */
+-					0x1  0x8  0x2  0x0  0x2  0x0>;    /* ENET5_RX_ER_SER5_CD_B */
+-			};
+-		};
+-	};
+-
+-	pci0: pcie@ffe09000 {
+-		reg = <0 0xffe09000 0 0x1000>;
+-		ranges = <0x2000000 0x0 0xa0000000 0 0xa0000000 0x0 0x20000000
+-			  0x1000000 0x0 0x00000000 0 0xffc10000 0x0 0x10000>;
+-		pcie@0 {
+-			ranges = <0x2000000 0x0 0xa0000000
+-				  0x2000000 0x0 0xa0000000
+-				  0x0 0x20000000
+-
+-				  0x1000000 0x0 0x0
+-				  0x1000000 0x0 0x0
+-				  0x0 0x100000>;
+-		};
+-	};
+-
+-	pci1: pcie@ffe0a000 {
+-		reg = <0 0xffe0a000 0 0x1000>;
+-		ranges = <0x2000000 0x0 0xc0000000 0 0xc0000000 0x0 0x20000000
+-			  0x1000000 0x0 0x00000000 0 0xffc20000 0x0 0x10000>;
+-		pcie@0 {
+-			ranges = <0x2000000 0x0 0xc0000000
+-				  0x2000000 0x0 0xc0000000
+-				  0x0 0x20000000
+-
+-				  0x1000000 0x0 0x0
+-				  0x1000000 0x0 0x0
+-				  0x0 0x100000>;
+-		};
+-	};
+-
+-	qe: qe@ffe80000 {
+-		ranges = <0x0 0x0 0xffe80000 0x40000>;
+-		reg = <0 0xffe80000 0 0x480>;
+-		brg-frequency = <0>;
+-		bus-frequency = <0>;
+-		status = "disabled"; /* no firmware loaded */
+-
+-		enet3: ucc@2000 {
+-			device_type = "network";
+-			compatible = "ucc_geth";
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			rx-clock-name = "clk12";
+-			tx-clock-name = "clk9";
+-			pio-handle = <&pio1>;
+-			phy-handle = <&qe_phy0>;
+-			phy-connection-type = "mii";
+-		};
+-
+-		mdio@2120 {
+-			qe_phy0: ethernet-phy@0 {
 -				interrupt-parent = <&mpic>;
--				reg = <0x90c00 0x80>;
--				compatible = "fsl,mpc8555-cpm-pic", "fsl,cpm2-pic";
+-				interrupts = <4 1 0 0>;
+-				reg = <0x0>;
+-			};
+-			qe_phy1: ethernet-phy@3 {
+-				interrupt-parent = <&mpic>;
+-				interrupts = <5 1 0 0>;
+-				reg = <0x3>;
+-			};
+-			tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
 -			};
 -		};
--	};
 -
--	pci0: pci@e0008000 {
--		interrupt-map-mask = <0x1f800 0x0 0x0 0x7>;
--		interrupt-map = <
--
--			/* IDSEL 0x10 */
--			0x8000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x8000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x8000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x8000 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x11 */
--			0x8800 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x8800 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x8800 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x8800 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x12 (Slot 1) */
--			0x9000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x9000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x9000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x9000 0x0 0x0 0x4 &mpic 0x3 0x1
--
--			/* IDSEL 0x13 (Slot 2) */
--			0x9800 0x0 0x0 0x1 &mpic 0x1 0x1
--			0x9800 0x0 0x0 0x2 &mpic 0x2 0x1
--			0x9800 0x0 0x0 0x3 &mpic 0x3 0x1
--			0x9800 0x0 0x0 0x4 &mpic 0x0 0x1
--
--			/* IDSEL 0x14 (Slot 3) */
--			0xa000 0x0 0x0 0x1 &mpic 0x2 0x1
--			0xa000 0x0 0x0 0x2 &mpic 0x3 0x1
--			0xa000 0x0 0x0 0x3 &mpic 0x0 0x1
--			0xa000 0x0 0x0 0x4 &mpic 0x1 0x1
--
--			/* IDSEL 0x15 (Slot 4) */
--			0xa800 0x0 0x0 0x1 &mpic 0x3 0x1
--			0xa800 0x0 0x0 0x2 &mpic 0x0 0x1
--			0xa800 0x0 0x0 0x3 &mpic 0x1 0x1
--			0xa800 0x0 0x0 0x4 &mpic 0x2 0x1
--
--			/* Bus 1 (Tundra Bridge) */
--			/* IDSEL 0x12 (ISA bridge) */
--			0x19000 0x0 0x0 0x1 &mpic 0x0 0x1
--			0x19000 0x0 0x0 0x2 &mpic 0x1 0x1
--			0x19000 0x0 0x0 0x3 &mpic 0x2 0x1
--			0x19000 0x0 0x0 0x4 &mpic 0x3 0x1>;
--		interrupt-parent = <&mpic>;
--		interrupts = <24 2>;
--		bus-range = <0 0>;
--		ranges = <0x2000000 0x0 0x80000000 0x80000000 0x0 0x20000000
--			  0x1000000 0x0 0x0 0xe2000000 0x0 0x100000>;
--		clock-frequency = <66666666>;
--		#interrupt-cells = <1>;
--		#size-cells = <2>;
--		#address-cells = <3>;
--		reg = <0xe0008000 0x1000>;
--		compatible = "fsl,mpc8540-pci";
--		device_type = "pci";
--
--		i8259@19000 {
--			interrupt-controller;
--			device_type = "interrupt-controller";
--			reg = <0x19000 0x0 0x0 0x0 0x1>;
--			#address-cells = <0>;
--			#interrupt-cells = <2>;
--			compatible = "chrp,iic";
--			interrupts = <1>;
--			interrupt-parent = <&pci0>;
+-		enet4: ucc@2400 {
+-			device_type = "network";
+-			compatible = "ucc_geth";
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			rx-clock-name = "none";
+-			tx-clock-name = "clk13";
+-			pio-handle = <&pio2>;
+-			phy-handle = <&qe_phy1>;
+-			phy-connection-type = "rmii";
 -		};
--	};
--
--	pci1: pci@e0009000 {
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--		interrupt-map = <
--
--			/* IDSEL 0x15 */
--			0xa800 0x0 0x0 0x1 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x2 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x3 &mpic 0xb 0x1
--			0xa800 0x0 0x0 0x4 &mpic 0xb 0x1>;
--		interrupt-parent = <&mpic>;
--		interrupts = <25 2>;
--		bus-range = <0 0>;
--		ranges = <0x2000000 0x0 0xa0000000 0xa0000000 0x0 0x20000000
--			  0x1000000 0x0 0x0 0xe3000000 0x0 0x100000>;
--		clock-frequency = <66666666>;
--		#interrupt-cells = <1>;
--		#size-cells = <2>;
--		#address-cells = <3>;
--		reg = <0xe0009000 0x1000>;
--		compatible = "fsl,mpc8540-pci";
--		device_type = "pci";
 -	};
 -};
-diff --git a/arch/powerpc/configs/85xx/mpc85xx_cds_defconfig b/arch/powerpc/configs/85xx/mpc85xx_cds_defconfig
+-
+-/include/ "p1021si-post.dtsi"
+diff --git a/arch/powerpc/platforms/85xx/mpc85xx_mds.c b/arch/powerpc/platforms/85xx/mpc85xx_mds.c
 deleted file mode 100644
-index cea72e85ed26..000000000000
---- a/arch/powerpc/configs/85xx/mpc85xx_cds_defconfig
+index 3a2ac410af18..000000000000
+--- a/arch/powerpc/platforms/85xx/mpc85xx_mds.c
 +++ /dev/null
-@@ -1,52 +0,0 @@
--CONFIG_PPC_85xx=y
--CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_LOG_BUF_SHIFT=14
--CONFIG_BLK_DEV_INITRD=y
--CONFIG_EXPERT=y
--# CONFIG_BLK_DEV_BSG is not set
--CONFIG_PARTITION_ADVANCED=y
--# CONFIG_MSDOS_PARTITION is not set
--CONFIG_MPC85xx_CDS=y
--CONFIG_GEN_RTC=y
--CONFIG_BINFMT_MISC=y
--CONFIG_MATH_EMULATION=y
--# CONFIG_SECCOMP is not set
--CONFIG_PCI=y
--CONFIG_NET=y
--CONFIG_PACKET=y
--CONFIG_UNIX=y
--CONFIG_XFRM_USER=y
--CONFIG_INET=y
--CONFIG_IP_MULTICAST=y
--CONFIG_IP_PNP=y
--CONFIG_IP_PNP_DHCP=y
--CONFIG_IP_PNP_BOOTP=y
--CONFIG_SYN_COOKIES=y
--# CONFIG_IPV6 is not set
--# CONFIG_FW_LOADER is not set
--CONFIG_BLK_DEV_LOOP=y
--CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_RAM_SIZE=32768
--CONFIG_ATA=y
--CONFIG_ATA_GENERIC=y
--CONFIG_PATA_VIA=y
--CONFIG_NETDEVICES=y
--CONFIG_GIANFAR=y
--CONFIG_E1000=y
--# CONFIG_INPUT_KEYBOARD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_SERIO is not set
--# CONFIG_VT is not set
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--# CONFIG_HW_RANDOM is not set
--CONFIG_EXT2_FS=y
--CONFIG_EXT4_FS=y
--CONFIG_PROC_KCORE=y
--CONFIG_TMPFS=y
--CONFIG_NFS_FS=y
--CONFIG_ROOT_NFS=y
--CONFIG_DETECT_HUNG_TASK=y
--CONFIG_DEBUG_MUTEXES=y
-diff --git a/arch/powerpc/configs/mpc85xx_base.config b/arch/powerpc/configs/mpc85xx_base.config
-index e13bcf83bd1d..a1e4d72ed39d 100644
---- a/arch/powerpc/configs/mpc85xx_base.config
-+++ b/arch/powerpc/configs/mpc85xx_base.config
-@@ -1,6 +1,5 @@
- CONFIG_MATH_EMULATION=y
- CONFIG_MPC8536_DS=y
--CONFIG_MPC85xx_CDS=y
- CONFIG_MPC85xx_DS=y
- CONFIG_MPC85xx_MDS=y
- CONFIG_MPC85xx_RDB=y
-diff --git a/arch/powerpc/platforms/85xx/Makefile b/arch/powerpc/platforms/85xx/Makefile
-index d618353b3c8c..cc4ff1ce3221 100644
---- a/arch/powerpc/platforms/85xx/Makefile
-+++ b/arch/powerpc/platforms/85xx/Makefile
-@@ -12,7 +12,6 @@ obj-y += common.o
- obj-$(CONFIG_BSC9131_RDB) += bsc913x_rdb.o
- obj-$(CONFIG_BSC9132_QDS) += bsc913x_qds.o
- obj-$(CONFIG_C293_PCIE)   += c293pcie.o
--obj-$(CONFIG_MPC85xx_CDS) += mpc85xx_cds.o
- obj-$(CONFIG_MPC8536_DS)  += mpc8536_ds.o
- obj-$(CONFIG_MPC85xx_DS)  += mpc85xx_ds.o
- obj-$(CONFIG_MPC85xx_MDS) += mpc85xx_mds.o
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_cds.c b/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-deleted file mode 100644
-index 0b8f2101c5fb..000000000000
---- a/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-+++ /dev/null
-@@ -1,397 +0,0 @@
+@@ -1,398 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * MPC85xx setup and early boot code plus other random bits.
+- * Copyright (C) 2006-2010, 2012-2013 Freescale Semiconductor, Inc.
+- * All rights reserved.
 - *
-- * Maintained by Kumar Gala (see MAINTAINERS for contact information)
+- * Author: Andy Fleming <afleming@freescale.com>
 - *
-- * Copyright 2005, 2011-2012 Freescale Semiconductor Inc.
+- * Based on 83xx/mpc8360e_pb.c by:
+- *	   Li Yang <LeoLi@freescale.com>
+- *	   Yin Olivia <Hong-hua.Yin@freescale.com>
+- *
+- * Description:
+- * MPC85xx MDS board specific routines.
 - */
 -
 -#include <linux/stddef.h>
@@ -1498,381 +1149,376 @@ index 0b8f2101c5fb..000000000000
 -#include <linux/delay.h>
 -#include <linux/seq_file.h>
 -#include <linux/initrd.h>
--#include <linux/interrupt.h>
 -#include <linux/fsl_devices.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
 -#include <linux/of_platform.h>
--#include <linux/pgtable.h>
+-#include <linux/of_device.h>
+-#include <linux/phy.h>
+-#include <linux/memblock.h>
+-#include <linux/fsl/guts.h>
 -
--#include <asm/page.h>
 -#include <linux/atomic.h>
 -#include <asm/time.h>
 -#include <asm/io.h>
 -#include <asm/machdep.h>
--#include <asm/ipic.h>
 -#include <asm/pci-bridge.h>
 -#include <asm/irq.h>
 -#include <mm/mmu_decl.h>
 -#include <asm/udbg.h>
--#include <asm/mpic.h>
--#include <asm/i8259.h>
--
 -#include <sysdev/fsl_soc.h>
 -#include <sysdev/fsl_pci.h>
+-#include <soc/fsl/qe/qe.h>
+-#include <asm/mpic.h>
+-#include <asm/swiotlb.h>
+-#include "smp.h"
 -
 -#include "mpc85xx.h"
 -
--/*
-- * The CDS board contains an FPGA/CPLD called "Cadmus", which collects
-- * various logic and performs system control functions.
-- * Here is the FPGA/CPLD register map.
+-#undef DEBUG
+-#ifdef DEBUG
+-#define DBG(fmt...) udbg_printf(fmt)
+-#else
+-#define DBG(fmt...)
+-#endif
+-
+-#if IS_BUILTIN(CONFIG_PHYLIB)
+-
+-#define MV88E1111_SCR	0x10
+-#define MV88E1111_SCR_125CLK	0x0010
+-static int mpc8568_fixup_125_clock(struct phy_device *phydev)
+-{
+-	int scr;
+-	int err;
+-
+-	/* Workaround for the 125 CLK Toggle */
+-	scr = phy_read(phydev, MV88E1111_SCR);
+-
+-	if (scr < 0)
+-		return scr;
+-
+-	err = phy_write(phydev, MV88E1111_SCR, scr & ~(MV88E1111_SCR_125CLK));
+-
+-	if (err)
+-		return err;
+-
+-	err = phy_write(phydev, MII_BMCR, BMCR_RESET);
+-
+-	if (err)
+-		return err;
+-
+-	scr = phy_read(phydev, MV88E1111_SCR);
+-
+-	if (scr < 0)
+-		return scr;
+-
+-	err = phy_write(phydev, MV88E1111_SCR, scr | 0x0008);
+-
+-	return err;
+-}
+-
+-static int mpc8568_mds_phy_fixups(struct phy_device *phydev)
+-{
+-	int temp;
+-	int err;
+-
+-	/* Errata */
+-	err = phy_write(phydev,29, 0x0006);
+-
+-	if (err)
+-		return err;
+-
+-	temp = phy_read(phydev, 30);
+-
+-	if (temp < 0)
+-		return temp;
+-
+-	temp = (temp & (~0x8000)) | 0x4000;
+-	err = phy_write(phydev,30, temp);
+-
+-	if (err)
+-		return err;
+-
+-	err = phy_write(phydev,29, 0x000a);
+-
+-	if (err)
+-		return err;
+-
+-	temp = phy_read(phydev, 30);
+-
+-	if (temp < 0)
+-		return temp;
+-
+-	temp = phy_read(phydev, 30);
+-
+-	if (temp < 0)
+-		return temp;
+-
+-	temp &= ~0x0020;
+-
+-	err = phy_write(phydev,30,temp);
+-
+-	if (err)
+-		return err;
+-
+-	/* Disable automatic MDI/MDIX selection */
+-	temp = phy_read(phydev, 16);
+-
+-	if (temp < 0)
+-		return temp;
+-
+-	temp &= ~0x0060;
+-	err = phy_write(phydev,16,temp);
+-
+-	return err;
+-}
+-
+-#endif
+-
+-/* ************************************************************************
+- *
+- * Setup the architecture
+- *
 - */
--struct cadmus_reg {
--	u8 cm_ver;		/* Board version */
--	u8 cm_csr;		/* General control/status */
--	u8 cm_rst;		/* Reset control */
--	u8 cm_hsclk;	/* High speed clock */
--	u8 cm_hsxclk;	/* High speed clock extended */
--	u8 cm_led;		/* LED data */
--	u8 cm_pci;		/* PCI control/status */
--	u8 cm_dma;		/* DMA control */
--	u8 res[248];	/* Total 256 bytes */
--};
--
--static struct cadmus_reg *cadmus;
--
--#ifdef CONFIG_PCI
--
--#define ARCADIA_HOST_BRIDGE_IDSEL	17
--#define ARCADIA_2ND_BRIDGE_IDSEL	3
--
--static int mpc85xx_exclude_device(struct pci_controller *hose,
--				  u_char bus, u_char devfn)
+-#ifdef CONFIG_QUICC_ENGINE
+-static void __init mpc85xx_mds_reset_ucc_phys(void)
 -{
--	/* We explicitly do not go past the Tundra 320 Bridge */
--	if ((bus == 1) && (PCI_SLOT(devfn) == ARCADIA_2ND_BRIDGE_IDSEL))
--		return PCIBIOS_DEVICE_NOT_FOUND;
--	if ((bus == 0) && (PCI_SLOT(devfn) == ARCADIA_2ND_BRIDGE_IDSEL))
--		return PCIBIOS_DEVICE_NOT_FOUND;
--	else
--		return PCIBIOS_SUCCESSFUL;
--}
+-	struct device_node *np;
+-	static u8 __iomem *bcsr_regs;
 -
--static int mpc85xx_cds_restart(struct notifier_block *this,
--			       unsigned long mode, void *cmd)
--{
--	struct pci_dev *dev;
--	u_char tmp;
+-	/* Map BCSR area */
+-	np = of_find_node_by_name(NULL, "bcsr");
+-	if (!np)
+-		return;
 -
--	if ((dev = pci_get_device(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C686,
--					NULL))) {
+-	bcsr_regs = of_iomap(np, 0);
+-	of_node_put(np);
+-	if (!bcsr_regs)
+-		return;
 -
--		/* Use the VIA Super Southbridge to force a PCI reset */
--		pci_read_config_byte(dev, 0x47, &tmp);
--		pci_write_config_byte(dev, 0x47, tmp | 1);
+-	if (machine_is(mpc8568_mds)) {
+-#define BCSR_UCC1_GETH_EN	(0x1 << 7)
+-#define BCSR_UCC2_GETH_EN	(0x1 << 7)
+-#define BCSR_UCC1_MODE_MSK	(0x3 << 4)
+-#define BCSR_UCC2_MODE_MSK	(0x3 << 0)
 -
--		/* Flush the outbound PCI write queues */
--		pci_read_config_byte(dev, 0x47, &tmp);
+-		/* Turn off UCC1 & UCC2 */
+-		clrbits8(&bcsr_regs[8], BCSR_UCC1_GETH_EN);
+-		clrbits8(&bcsr_regs[9], BCSR_UCC2_GETH_EN);
 -
+-		/* Mode is RGMII, all bits clear */
+-		clrbits8(&bcsr_regs[11], BCSR_UCC1_MODE_MSK |
+-					 BCSR_UCC2_MODE_MSK);
+-
+-		/* Turn UCC1 & UCC2 on */
+-		setbits8(&bcsr_regs[8], BCSR_UCC1_GETH_EN);
+-		setbits8(&bcsr_regs[9], BCSR_UCC2_GETH_EN);
+-	} else if (machine_is(mpc8569_mds)) {
+-#define BCSR7_UCC12_GETHnRST	(0x1 << 2)
+-#define BCSR8_UEM_MARVELL_RST	(0x1 << 1)
+-#define BCSR_UCC_RGMII		(0x1 << 6)
+-#define BCSR_UCC_RTBI		(0x1 << 5)
 -		/*
--		 *  At this point, the hardware reset should have triggered.
--		 *  However, if it doesn't work for some mysterious reason,
--		 *  just fall through to the default reset below.
+-		 * U-Boot mangles interrupt polarity for Marvell PHYs,
+-		 * so reset built-in and UEM Marvell PHYs, this puts
+-		 * the PHYs into their normal state.
 -		 */
+-		clrbits8(&bcsr_regs[7], BCSR7_UCC12_GETHnRST);
+-		setbits8(&bcsr_regs[8], BCSR8_UEM_MARVELL_RST);
 -
--		pci_dev_put(dev);
+-		setbits8(&bcsr_regs[7], BCSR7_UCC12_GETHnRST);
+-		clrbits8(&bcsr_regs[8], BCSR8_UEM_MARVELL_RST);
+-
+-		for_each_compatible_node(np, "network", "ucc_geth") {
+-			const unsigned int *prop;
+-			int ucc_num;
+-
+-			prop = of_get_property(np, "cell-index", NULL);
+-			if (prop == NULL)
+-				continue;
+-
+-			ucc_num = *prop - 1;
+-
+-			prop = of_get_property(np, "phy-connection-type", NULL);
+-			if (prop == NULL)
+-				continue;
+-
+-			if (strcmp("rtbi", (const char *)prop) == 0)
+-				clrsetbits_8(&bcsr_regs[7 + ucc_num],
+-					BCSR_UCC_RGMII, BCSR_UCC_RTBI);
+-		}
+-	} else if (machine_is(p1021_mds)) {
+-#define BCSR11_ENET_MICRST     (0x1 << 5)
+-		/* Reset Micrel PHY */
+-		clrbits8(&bcsr_regs[11], BCSR11_ENET_MICRST);
+-		setbits8(&bcsr_regs[11], BCSR11_ENET_MICRST);
 -	}
 -
--	/*
--	 *  If we can't find the VIA chip (maybe the P2P bridge is
--	 *  disabled) or the VIA chip reset didn't work, just return
--	 *  and let default reset sequence happen.
--	 */
--	return NOTIFY_DONE;
+-	iounmap(bcsr_regs);
 -}
 -
--static int mpc85xx_cds_restart_register(void)
+-static void __init mpc85xx_mds_qe_init(void)
 -{
--	static struct notifier_block restart_handler;
+-	struct device_node *np;
 -
--	restart_handler.notifier_call = mpc85xx_cds_restart;
--	restart_handler.priority = 192;
+-	mpc85xx_qe_par_io_init();
+-	mpc85xx_mds_reset_ucc_phys();
 -
--	return register_restart_handler(&restart_handler);
--}
--machine_arch_initcall(mpc85xx_cds, mpc85xx_cds_restart_register);
+-	if (machine_is(p1021_mds)) {
 -
+-		struct ccsr_guts __iomem *guts;
 -
--static void __init mpc85xx_cds_pci_irq_fixup(struct pci_dev *dev)
--{
--	u_char c;
--	if (dev->vendor == PCI_VENDOR_ID_VIA) {
--		switch (dev->device) {
--		case PCI_DEVICE_ID_VIA_82C586_1:
--			/*
--			 * U-Boot does not set the enable bits
--			 * for the IDE device. Force them on here.
+-		np = of_find_node_by_name(NULL, "global-utilities");
+-		if (np) {
+-			guts = of_iomap(np, 0);
+-			if (!guts)
+-				pr_err("mpc85xx-rdb: could not map global utilities register\n");
+-			else{
+-			/* P1021 has pins muxed for QE and other functions. To
+-			 * enable QE UEC mode, we need to set bit QE0 for UCC1
+-			 * in Eth mode, QE0 and QE3 for UCC5 in Eth mode, QE9
+-			 * and QE12 for QE MII management signals in PMUXCR
+-			 * register.
 -			 */
--			pci_read_config_byte(dev, 0x40, &c);
--			c |= 0x03; /* IDE: Chip Enable Bits */
--			pci_write_config_byte(dev, 0x40, c);
--
--			/*
--			 * Since only primary interface works, force the
--			 * IDE function to standard primary IDE interrupt
--			 * w/ 8259 offset
--			 */
--			dev->irq = 14;
--			pci_write_config_byte(dev, PCI_INTERRUPT_LINE, dev->irq);
--			break;
--		/*
--		 * Force legacy USB interrupt routing
--		 */
--		case PCI_DEVICE_ID_VIA_82C586_2:
--		/* There are two USB controllers.
--		 * Identify them by function number
--		 */
--			if (PCI_FUNC(dev->devfn) == 3)
--				dev->irq = 11;
--			else
--				dev->irq = 10;
--			pci_write_config_byte(dev, PCI_INTERRUPT_LINE, dev->irq);
--			break;
--		default:
--			break;
--		}
--	}
--}
--
--static void skip_fake_bridge(struct pci_dev *dev)
--{
--	/* Make it an error to skip the fake bridge
--	 * in pci_setup_device() in probe.c */
--	dev->hdr_type = 0x7f;
--}
--DECLARE_PCI_FIXUP_EARLY(0x1957, 0x3fff, skip_fake_bridge);
--DECLARE_PCI_FIXUP_EARLY(0x3fff, 0x1957, skip_fake_bridge);
--DECLARE_PCI_FIXUP_EARLY(0xff3f, 0x5719, skip_fake_bridge);
--
--#define PCI_DEVICE_ID_IDT_TSI310	0x01a7
--
--/*
-- * Fix Tsi310 PCI-X bridge resource.
-- * Force the bridge to open a window from 0x0000-0x1fff in PCI I/O space.
-- * This allows legacy I/O(i8259, etc) on the VIA southbridge to be accessed.
-- */
--void mpc85xx_cds_fixup_bus(struct pci_bus *bus)
--{
--	struct pci_dev *dev = bus->self;
--	struct resource *res = bus->resource[0];
--
--	if (dev != NULL &&
--	    dev->vendor == PCI_VENDOR_ID_IBM &&
--	    dev->device == PCI_DEVICE_ID_IDT_TSI310) {
--		if (res) {
--			res->start = 0;
--			res->end   = 0x1fff;
--			res->flags = IORESOURCE_IO;
--			pr_info("mpc85xx_cds: PCI bridge resource fixup applied\n");
--			pr_info("mpc85xx_cds: %pR\n", res);
--		}
--	}
--
--	fsl_pcibios_fixup_bus(bus);
--}
--
--#ifdef CONFIG_PPC_I8259
--static void mpc85xx_8259_cascade_handler(struct irq_desc *desc)
--{
--	unsigned int cascade_irq = i8259_irq();
--
--	if (cascade_irq)
--		/* handle an interrupt from the 8259 */
--		generic_handle_irq(cascade_irq);
--
--	/* check for any interrupts from the shared IRQ line */
--	handle_fasteoi_irq(desc);
--}
--
--static irqreturn_t mpc85xx_8259_cascade_action(int irq, void *dev_id)
--{
--	return IRQ_HANDLED;
--}
--#endif /* PPC_I8259 */
--#endif /* CONFIG_PCI */
--
--static void __init mpc85xx_cds_pic_init(void)
--{
--	struct mpic *mpic;
--	mpic = mpic_alloc(NULL, 0, MPIC_BIG_ENDIAN,
--			0, 256, " OpenPIC  ");
--	BUG_ON(mpic == NULL);
--	mpic_init(mpic);
--}
--
--#if defined(CONFIG_PPC_I8259) && defined(CONFIG_PCI)
--static int mpc85xx_cds_8259_attach(void)
--{
--	int ret;
--	struct device_node *np = NULL;
--	struct device_node *cascade_node = NULL;
--	int cascade_irq;
--
--	/* Initialize the i8259 controller */
--	for_each_node_by_type(np, "interrupt-controller")
--		if (of_device_is_compatible(np, "chrp,iic")) {
--			cascade_node = np;
--			break;
+-				setbits32(&guts->pmuxcr, MPC85xx_PMUXCR_QE(0) |
+-						  MPC85xx_PMUXCR_QE(3) |
+-						  MPC85xx_PMUXCR_QE(9) |
+-						  MPC85xx_PMUXCR_QE(12));
+-				iounmap(guts);
+-			}
+-			of_node_put(np);
 -		}
 -
--	if (cascade_node == NULL) {
--		printk(KERN_DEBUG "Could not find i8259 PIC\n");
--		return -ENODEV;
 -	}
+-}
 -
--	cascade_irq = irq_of_parse_and_map(cascade_node, 0);
--	if (!cascade_irq) {
--		printk(KERN_ERR "Failed to map cascade interrupt\n");
--		return -ENXIO;
+-#else
+-static void __init mpc85xx_mds_qe_init(void) { }
+-#endif	/* CONFIG_QUICC_ENGINE */
+-
+-static void __init mpc85xx_mds_setup_arch(void)
+-{
+-	if (ppc_md.progress)
+-		ppc_md.progress("mpc85xx_mds_setup_arch()", 0);
+-
+-	mpc85xx_smp_init();
+-
+-	mpc85xx_mds_qe_init();
+-
+-	fsl_pci_assign_primary();
+-
+-	swiotlb_detect_4g();
+-}
+-
+-#if IS_BUILTIN(CONFIG_PHYLIB)
+-
+-static int __init board_fixups(void)
+-{
+-	char phy_id[20];
+-	char *compstrs[2] = {"fsl,gianfar-mdio", "fsl,ucc-mdio"};
+-	struct device_node *mdio;
+-	struct resource res;
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(compstrs); i++) {
+-		mdio = of_find_compatible_node(NULL, NULL, compstrs[i]);
+-
+-		of_address_to_resource(mdio, 0, &res);
+-		snprintf(phy_id, sizeof(phy_id), "%llx:%02x",
+-			(unsigned long long)res.start, 1);
+-
+-		phy_register_fixup_for_id(phy_id, mpc8568_fixup_125_clock);
+-		phy_register_fixup_for_id(phy_id, mpc8568_mds_phy_fixups);
+-
+-		/* Register a workaround for errata */
+-		snprintf(phy_id, sizeof(phy_id), "%llx:%02x",
+-			(unsigned long long)res.start, 7);
+-		phy_register_fixup_for_id(phy_id, mpc8568_mds_phy_fixups);
+-
+-		of_node_put(mdio);
 -	}
--
--	i8259_init(cascade_node, 0);
--	of_node_put(cascade_node);
--
--	/*
--	 *  Hook the interrupt to make sure desc->action is never NULL.
--	 *  This is required to ensure that the interrupt does not get
--	 *  disabled when the last user of the shared IRQ line frees their
--	 *  interrupt.
--	 */
--	ret = request_irq(cascade_irq, mpc85xx_8259_cascade_action,
--			  IRQF_SHARED | IRQF_NO_THREAD, "8259 cascade",
--			  cascade_node);
--	if (ret) {
--		printk(KERN_ERR "Failed to setup cascade interrupt\n");
--		return ret;
--	}
--
--	/* Success. Connect our low-level cascade handler. */
--	irq_set_handler(cascade_irq, mpc85xx_8259_cascade_handler);
 -
 -	return 0;
 -}
--machine_device_initcall(mpc85xx_cds, mpc85xx_cds_8259_attach);
 -
--#endif /* CONFIG_PPC_I8259 */
+-machine_arch_initcall(mpc8568_mds, board_fixups);
+-machine_arch_initcall(mpc8569_mds, board_fixups);
 -
--static void __init mpc85xx_cds_pci_assign_primary(void)
--{
--#ifdef CONFIG_PCI
--	struct device_node *np;
--
--	if (fsl_pci_primary)
--		return;
--
--	/*
--	 * MPC85xx_CDS has ISA bridge but unfortunately there is no
--	 * isa node in device tree. We now looking for i8259 node as
--	 * a workaround for such a broken device tree. This routine
--	 * is for complying to all device trees.
--	 */
--	np = of_find_node_by_name(NULL, "i8259");
--	while ((fsl_pci_primary = of_get_parent(np))) {
--		of_node_put(np);
--		np = fsl_pci_primary;
--
--		if ((of_device_is_compatible(np, "fsl,mpc8540-pci") ||
--		    of_device_is_compatible(np, "fsl,mpc8548-pcie")) &&
--		    of_device_is_available(np))
--			return;
--	}
--#endif
--}
--
--/*
-- * Setup the architecture
-- */
--static void __init mpc85xx_cds_setup_arch(void)
--{
--	struct device_node *np;
--	int cds_pci_slot;
--
--	if (ppc_md.progress)
--		ppc_md.progress("mpc85xx_cds_setup_arch()", 0);
--
--	np = of_find_compatible_node(NULL, NULL, "fsl,mpc8548cds-fpga");
--	if (!np) {
--		pr_err("Could not find FPGA node.\n");
--		return;
--	}
--
--	cadmus = of_iomap(np, 0);
--	of_node_put(np);
--	if (!cadmus) {
--		pr_err("Fail to map FPGA area.\n");
--		return;
--	}
--
--	if (ppc_md.progress) {
--		char buf[40];
--		cds_pci_slot = ((in_8(&cadmus->cm_csr) >> 6) & 0x3) + 1;
--		snprintf(buf, 40, "CDS Version = 0x%x in slot %d\n",
--				in_8(&cadmus->cm_ver), cds_pci_slot);
--		ppc_md.progress(buf, 0);
--	}
--
--#ifdef CONFIG_PCI
--	ppc_md.pci_irq_fixup = mpc85xx_cds_pci_irq_fixup;
--	ppc_md.pci_exclude_device = mpc85xx_exclude_device;
 -#endif
 -
--	mpc85xx_cds_pci_assign_primary();
--	fsl_pci_assign_primary();
--}
--
--static void mpc85xx_cds_show_cpuinfo(struct seq_file *m)
+-static int __init mpc85xx_publish_devices(void)
 -{
--	uint pvid, svid, phid1;
--
--	pvid = mfspr(SPRN_PVR);
--	svid = mfspr(SPRN_SVR);
--
--	seq_printf(m, "Vendor\t\t: Freescale Semiconductor\n");
--	seq_printf(m, "Machine\t\t: MPC85xx CDS (0x%x)\n",
--			in_8(&cadmus->cm_ver));
--	seq_printf(m, "PVR\t\t: 0x%x\n", pvid);
--	seq_printf(m, "SVR\t\t: 0x%x\n", svid);
--
--	/* Display cpu Pll setting */
--	phid1 = mfspr(SPRN_HID1);
--	seq_printf(m, "PLL setting\t: 0x%x\n", ((phid1 >> 24) & 0x3f));
+-	return mpc85xx_common_publish_devices();
 -}
 -
+-machine_arch_initcall(mpc8568_mds, mpc85xx_publish_devices);
+-machine_arch_initcall(mpc8569_mds, mpc85xx_publish_devices);
+-machine_arch_initcall(p1021_mds, mpc85xx_common_publish_devices);
 -
--/*
-- * Called very early, device-tree isn't unflattened
-- */
--static int __init mpc85xx_cds_probe(void)
+-static void __init mpc85xx_mds_pic_init(void)
 -{
--	return of_machine_is_compatible("MPC85xxCDS");
+-	struct mpic *mpic = mpic_alloc(NULL, 0, MPIC_BIG_ENDIAN |
+-			MPIC_SINGLE_DEST_CPU,
+-			0, 256, " OpenPIC  ");
+-	BUG_ON(mpic == NULL);
+-
+-	mpic_init(mpic);
 -}
 -
--machine_arch_initcall(mpc85xx_cds, mpc85xx_common_publish_devices);
+-static int __init mpc85xx_mds_probe(void)
+-{
+-	return of_machine_is_compatible("MPC85xxMDS");
+-}
 -
--define_machine(mpc85xx_cds) {
--	.name		= "MPC85xx CDS",
--	.probe		= mpc85xx_cds_probe,
--	.setup_arch	= mpc85xx_cds_setup_arch,
--	.init_IRQ	= mpc85xx_cds_pic_init,
--	.show_cpuinfo	= mpc85xx_cds_show_cpuinfo,
+-define_machine(mpc8568_mds) {
+-	.name		= "MPC8568 MDS",
+-	.probe		= mpc85xx_mds_probe,
+-	.setup_arch	= mpc85xx_mds_setup_arch,
+-	.init_IRQ	= mpc85xx_mds_pic_init,
 -	.get_irq	= mpic_get_irq,
+-	.calibrate_decr	= generic_calibrate_decr,
+-	.progress	= udbg_progress,
 -#ifdef CONFIG_PCI
--	.pcibios_fixup_bus	= mpc85xx_cds_fixup_bus,
+-	.pcibios_fixup_bus	= fsl_pcibios_fixup_bus,
 -	.pcibios_fixup_phb      = fsl_pcibios_fixup_phb,
 -#endif
--	.calibrate_decr = generic_calibrate_decr,
+-};
+-
+-static int __init mpc8569_mds_probe(void)
+-{
+-	return of_machine_is_compatible("fsl,MPC8569EMDS");
+-}
+-
+-define_machine(mpc8569_mds) {
+-	.name		= "MPC8569 MDS",
+-	.probe		= mpc8569_mds_probe,
+-	.setup_arch	= mpc85xx_mds_setup_arch,
+-	.init_IRQ	= mpc85xx_mds_pic_init,
+-	.get_irq	= mpic_get_irq,
+-	.calibrate_decr	= generic_calibrate_decr,
 -	.progress	= udbg_progress,
+-#ifdef CONFIG_PCI
+-	.pcibios_fixup_bus	= fsl_pcibios_fixup_bus,
+-	.pcibios_fixup_phb      = fsl_pcibios_fixup_phb,
+-#endif
+-};
+-
+-static int __init p1021_mds_probe(void)
+-{
+-	return of_machine_is_compatible("fsl,P1021MDS");
+-
+-}
+-
+-define_machine(p1021_mds) {
+-	.name		= "P1021 MDS",
+-	.probe		= p1021_mds_probe,
+-	.setup_arch	= mpc85xx_mds_setup_arch,
+-	.init_IRQ	= mpc85xx_mds_pic_init,
+-	.get_irq	= mpic_get_irq,
+-	.calibrate_decr	= generic_calibrate_decr,
+-	.progress	= udbg_progress,
+-#ifdef CONFIG_PCI
+-	.pcibios_fixup_bus	= fsl_pcibios_fixup_bus,
+-	.pcibios_fixup_phb      = fsl_pcibios_fixup_phb,
+-#endif
 -};
 -- 
 2.17.1
