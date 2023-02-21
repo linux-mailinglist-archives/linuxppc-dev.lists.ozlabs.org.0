@@ -1,50 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A6169E0FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 14:04:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5684C69E5AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Feb 2023 18:13:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PLfd65Zm2z3cDp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 00:04:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PLm8M12Cvz3fSj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 04:13:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CYVfNbuX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=EMJBt3zy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=th8zsIYP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLfc85GZ6z3bgs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 00:03:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CYVfNbuX;
+	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=EMJBt3zy;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=th8zsIYP;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PLfc84DJSz4x7W;
-	Wed, 22 Feb 2023 00:03:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1676984616;
-	bh=/qotrgXoW+smJIhOLs8wTio2vNfwQyTcszZlM8qcwl0=;
-	h=From:To:Subject:Date:From;
-	b=CYVfNbuXULfY7Z8Bjt5KwuV+nBKovx86MArDmuZnA6LKiCQ+Xcp1fUPLxX4hw40ix
-	 miEWYqZ2MzDyHAna51kFy4Uqxtw2hydgFWRlERYgY9uEgt/iskfa0HU0DKOADfJiDx
-	 F5K9ZfjK7JLTDmx/TdU1xXw8WCBsK1mIdoU5B76ce3UC+QPUXQbCfaqOjHmxML1mUH
-	 xTuyCLZ8qOVejtqMEULq2URpNHH134ws6fLzc+3oxvFrysw4XwwASrD8a2ZgBloX2F
-	 vkDFKwAsQN/vjbN2BKCol5yvWza+7Bs0HLwGo4+PACEJE5Ew9wrezO/QATiSR5o2wj
-	 NFmsrjUSnirCQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Avoid dead code/data elimination when using recordmcount
-Date: Wed, 22 Feb 2023 00:03:31 +1100
-Message-Id: <20230221130331.2714199-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PLfRh4WBZz3byj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Feb 2023 23:56:16 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id 45DF23200929;
+	Tue, 21 Feb 2023 07:46:21 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Tue, 21 Feb 2023 07:46:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
+	 s=fm2; t=1676983580; x=1677069980; bh=o1ZGzAY+2IAq6iM9F+Xf8a1cE
+	huTp9TD8y5vFZAwf2Y=; b=EMJBt3zyvDdk72wNVD6Rp0MSRXuNpRO1l4RTro2Bm
+	Q68vwd6ylAHTjrNFljCyq/JBIn3lPPXfgc4/6kk8pQgPkHmUfQCfVhmtTjfoAUiq
+	E/1Z2y3iMjQZb/AYwTUje2WUwJPnsW8dGeROQUPzZMMapCpNieebulQ6b1s5lOgS
+	LsUuGRK/I5d2SJ4y4WrcSJPckasYkpldbLC2L/xjAJasWeEQOnOy2/fv6z6QdazG
+	0CV9dHfdja/HMB+EHvRjIXBskQYkKM8Cr3uY3SLxOq0hcNokeOxDrhxM0XZPuvTO
+	HuWtbpT/vjLX4Qq5womPSW0644hrxyBElJ44X/bD6TpwA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1676983580; x=1677069980; bh=o1ZGzAY+2IAq6iM9F+Xf8a1cEhuTp9TD8y5
+	vFZAwf2Y=; b=th8zsIYP60+WQlHRLMTjitDNcmVVDGTJ4WbmTbjgZDhRpdcEwlE
+	aCund/RrXSmSkquNlWkBr2iMp0JV5Mm+P3VNM29fo27vJM/A4nzKB4CevyDHad2J
+	djFJxRQhZHNRUSRui7eG0RgbSYGhXbPbvdKUr0VjPNaZggFS+fMolbh72aV8uyI0
+	hHatvxsKUdaK10Q7JbiQHjloeYstWVihqVySVTiuHHwHxi5ZbeiX8esoglNsHTSp
+	A+K0VLkheajhYIwiap8e8HA+U850GivU0NLEI6wpmTCGdBRiQFVW87ycfljjvf9i
+	hofR4SCjfv1ATpwx0NjJq6viCycYj/SCpsA==
+X-ME-Sender: <xms:G730YyDtoU_NWr-nX8omgYp9iWEj_Cpb88tfMFG7GUF6i_qqaeMpsg>
+    <xme:G730Y8jScgS-F_7op8B22ovm68GLn8BL6vO8AryrQRCvto2J2QuiFdFn-oTd1ADFM
+    -RIkx4qSaRWuSc4ifk>
+X-ME-Received: <xmr:G730Y1nHA8Z1dGd7OMFxUBeSeLbmsED_OBnzecdttXlDAJIOTc0UGAsii8Lx>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudejjedggeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
+    ertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghes
+    fhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhephfetuddtudevieeljeejte
+    ffheeujeduhefgffejudfhueelleduffefgfffveeknecuvehluhhsthgvrhfuihiivgep
+    tdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgoh
+    grthdrtghomh
+X-ME-Proxy: <xmx:G730YwxDpe2tLRi9YpZeLRv_SsYUczt_Urwj0V4BSAXYzA3yHIJG_w>
+    <xmx:G730Y3QY7hzjzjJ6ucBUr7Fv_xJmTC1vaxZ7xNPsrtwTXLSaCN9l0A>
+    <xmx:G730Y7Y9L98rNX2KaPH3_pmFqXa3yTp3iFs8SR4cGFrKqw-5p3Xx1Q>
+    <xmx:HL30Y8Kvm1mRR7-cnzS-00Ff_ZzvPWOsyBWtSIbb2hjIGU1m7Ec61A>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 Feb 2023 07:46:17 -0500 (EST)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+To: linux-mips@vger.kernel.org
+Subject: [PATCH 0/7] MIPS DMA coherence fixes
+Date: Tue, 21 Feb 2023 12:46:06 +0000
+Message-Id: <20230221124613.2859-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 22 Feb 2023 04:06:20 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,56 +90,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: tsbogend@alpha.franken.de, linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, robh+dt@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com, robin.murphy@arm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Although powerpc now has objtool mcount support, it's not enabled in all
-configurations due to dependencies.
 
-On those configurations, with some linkers (binutils 2.37 at least),
-it's still possible to hit the dreaded "recordmcount bug", eg. errors
-such as:
+Jiaxun Yang (7):
+  MIPS: Remove DMA_PERDEV_COHERENT
+  MIPS: Always select ARCH_HAS_SYNC_DMA_FOR_CPU for noncoherent
+    platforms
+  MIPS: c-r4k: Always install dma flush functions
+  dma-mapping: Always provide dma_default_coherent
+  dma-mapping: Provide CONFIG_ARCH_DMA_DEFAULT_COHERENT
+  riscv: Select ARCH_DMA_DEFAULT_COHERENT
+  of: address: Use dma_default_coherent to determine default coherency
 
-    CC      kernel/kexec_file.o
-  Cannot find symbol for section 10: .text.unlikely.
-  kernel/kexec_file.o: failed
-  make[1]: *** [scripts/Makefile.build:287 : kernel/kexec_file.o] Error 1
+ arch/mips/Kconfig           | 16 ++--------------
+ arch/mips/mm/c-r4k.c        | 12 +++---------
+ arch/powerpc/Kconfig        |  1 -
+ arch/riscv/Kconfig          |  2 +-
+ drivers/of/Kconfig          |  4 ----
+ drivers/of/address.c        |  2 +-
+ include/linux/dma-map-ops.h |  1 +
+ kernel/dma/Kconfig          |  3 +++
+ kernel/dma/mapping.c        |  6 +++++-
+ 9 files changed, 16 insertions(+), 31 deletions(-)
 
-Those errors are much more prevalent when building with
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION, because it places every function
-in a separate section.
-
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION is marked experimental and is not
-enabled in any powerpc defconfigs or by major distros. Although it does
-have at least some users on 32-bit where kernel size tends to be more
-important.
-
-Avoid the build errors by blocking CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-when the build is using recordmcount, rather than objtool. In practice
-that means for 64-bit big endian builds, or 64-bit clang builds - both
-because they lack CONFIG_MPROFILE_KERNEL.
-
-On 32-bit objtool is always used, so
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION is still available there.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2c9cdf1d8761..a6c4407d3ec8 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -236,7 +236,7 @@ config PPC
- 	select HAVE_KPROBES
- 	select HAVE_KPROBES_ON_FTRACE
- 	select HAVE_KRETPROBES
--	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
-+	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if HAVE_OBJTOOL_MCOUNT
- 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
 -- 
-2.39.1
+2.37.1 (Apple Git-137.1)
 
