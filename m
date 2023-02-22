@@ -1,93 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9436969EFFC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 09:17:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A728069F016
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 09:22:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PM8Cz3nQCz3c9L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 19:17:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PM8K73Pv8z3c8r
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 19:22:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O6q1rtXa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H2N7XEG0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O6q1rtXa;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H2N7XEG0;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM8C00nH0z2ynx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 19:16:59 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31M7NgfU007881;
-	Wed, 22 Feb 2023 08:16:51 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM8J90DTvz30CT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 19:21:28 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31M8EYRZ016397;
+	Wed, 22 Feb 2023 08:21:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
  subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=Bi/Gk9IAru3YSqavt4h7+P7apdAjlTboqM4aaFTM7Z4=;
- b=O6q1rtXa+YILFAg5kVQa41MdEi1PqLeibkxa1CIcHq8INhN2N9PVlFdk65CqESdk4B/t
- JTdwUQ37XZlII1UdGBYRrMiqne2lBPrD1Wo1mbCfxxLkfRUEDE0b+VRWMU+XXg5sdgd6
- gRWL5fdjBNvFVixM2ns1Oj5PAmbxI12ETyQWXYx64ENdrZcndIdowLNfENbwcta51tcp
- 2BqHRRE5/xtddI/zEzCx8f8BUYRmR67AeQCWmwet+HcwoN3SRshnoL6qkXg4S8pJHZrM
- 2sz5Sb8bBVVJk6EPu2656OQtyCTUOCSXdFxHFw59lSEJ7MVif+jywGJGwP5A1iK3/FXA eQ== 
+ in-reply-to; s=pp1; bh=hCFkbzN+LBPKbs16EEFzG/ci8XYqt4w1uZeWoTWXO2Q=;
+ b=H2N7XEG0CLHEtYXyrZ+CXH4pm2MKpTl7OhNItCHLzszicmq19/r0X2tyXE/OmUd0FwEz
+ 8tNQeqZaTrvT76stG4uTkKs0e+6SP6Hyda5TbxuBVaFFWlm3TqtMaBHsGSYrNqD+/a5N
+ cKaZ92cxlVbAJSjJ7J0UIn3LQ8IEKJv4o6UvAB2g4ynlF0z7MRyLuGS2+ar8PPq1VK4E
+ +Oq0fGkMp4jMc3qF7Dz+cwLxKoWkanDeKvpFoBCv/KbBMlXiv5kp8DYBDTs/6bdi5m1C
+ 42+o28EinV8lR5vSwJ2beepPOBw9wBUipQZQ91otXLCptahv/gusDylgTdiXZq1nhdTu eQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwemds373-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwfc207e4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Feb 2023 08:16:51 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31M88uPO011154;
-	Wed, 22 Feb 2023 08:16:50 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwemds35a-1
+	Wed, 22 Feb 2023 08:21:20 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31M8F3mF018129;
+	Wed, 22 Feb 2023 08:21:20 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwfc207bx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Feb 2023 08:16:50 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31LDE6oQ008627;
-	Wed, 22 Feb 2023 08:16:47 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3ntnxf3tx8-1
+	Wed, 22 Feb 2023 08:21:20 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31LNdnOE020473;
+	Wed, 22 Feb 2023 08:21:18 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3ntnxf5295-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Feb 2023 08:16:47 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31M8Gjtk43057582
+	Wed, 22 Feb 2023 08:21:18 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31M8LFoQ56558022
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Feb 2023 08:16:45 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3703320040;
-	Wed, 22 Feb 2023 08:16:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B6312004D;
-	Wed, 22 Feb 2023 08:16:42 +0000 (GMT)
+	Wed, 22 Feb 2023 08:21:15 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B80F720043;
+	Wed, 22 Feb 2023 08:21:15 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CD492004B;
+	Wed, 22 Feb 2023 08:21:13 +0000 (GMT)
 Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.123.148])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 22 Feb 2023 08:16:42 +0000 (GMT)
-Date: Wed, 22 Feb 2023 13:46:38 +0530
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 22 Feb 2023 08:21:13 +0000 (GMT)
+Date: Wed, 22 Feb 2023 13:51:10 +0530
 From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH] arch/powerpc/include/asm/barrier.h: redefine rmb and wmb
  to lwsync
-Message-ID: <Y/XPZl8V4/0Bjegy@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+Message-ID: <Y/XQdmeZ86Ivcy5x@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
 References: <20230222060107.70565-1-kconsul@linux.vnet.ibm.com>
  <896436d1-04e4-8019-0f89-f4d4938f9697@csgroup.eu>
+ <Y/XPZl8V4/0Bjegy@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <896436d1-04e4-8019-0f89-f4d4938f9697@csgroup.eu>
+In-Reply-To: <Y/XPZl8V4/0Bjegy@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SV5rauw6sPHFGf27U6aQqygD2KEYCTg4
-X-Proofpoint-GUID: fXg6Dg3v7ksWoesIg3xNgWMuP5ylPwIf
+X-Proofpoint-ORIG-GUID: 3vAAtRK5t3QvCP2w_rZB_G0Dr6AmD0qo
+X-Proofpoint-GUID: RjBB95zvYQ_zM4jxaEw1sFhnKXk-wVG_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-22_04,2023-02-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- bulkscore=0 phishscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302220069
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 mlxlogscore=678 bulkscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302220069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,112 +102,13 @@ Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kern
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 22, 2023 at 07:02:34AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 22/02/2023 à 07:01, Kautuk Consul a écrit :
-> > A link from ibm.com states:
-> > "Ensures that all instructions preceding the call to __lwsync
-> >   complete before any subsequent store instructions can be executed
-> >   on the processor that executed the function. Also, it ensures that
-> >   all load instructions preceding the call to __lwsync complete before
-> >   any subsequent load instructions can be executed on the processor
-> >   that executed the function. This allows you to synchronize between
-> >   multiple processors with minimal performance impact, as __lwsync
-> >   does not wait for confirmation from each processor."
+> On Wed, Feb 22, 2023 at 07:02:34AM +0000, Christophe Leroy wrote:
+> > > +/* Redefine rmb() to lwsync. */
 > > 
-> > Thats why smp_rmb() and smp_wmb() are defined to lwsync.
-> > But this same understanding applies to parallel pipeline
-> > execution on each PowerPC processor.
-> > So, use the lwsync instruction for rmb() and wmb() on the PPC
-> > architectures that support it.
+> > WHat's the added value of this comment ? Isn't it obvious in the line 
+> > below that rmb() is being defined to lwsync ? Please avoid useless comments.
+> Sure.
+Sorry, forgot to add that I wasn't adding this useless comment.
+Its just that checkpatch.pl complains that the memory barrier #define
+doesn't have a comment for it.
 > > 
-> > Also removed some useless spaces.
-> > 
-> > Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-> > ---
-> >   arch/powerpc/include/asm/barrier.h | 12 +++++++++---
-> >   1 file changed, 9 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
-> > index e80b2c0e9315..553f5a5d20bd 100644
-> > --- a/arch/powerpc/include/asm/barrier.h
-> > +++ b/arch/powerpc/include/asm/barrier.h
-> > @@ -41,11 +41,17 @@
-> >   
-> >   /* The sub-arch has lwsync */
-> >   #if defined(CONFIG_PPC64) || defined(CONFIG_PPC_E500MC)
-> > -#    define SMPWMB      LWSYNC
-> 
-> This line shouldn't be changed by your patch
-I mentioned it in the commit message.
-But if you want I'll remove this. Did this because the rest
-of the file doesn't have these spaces.
-> 
-> > +#undef rmb
-> > +#undef wmb
-> 
-> I see no point with defining something and undefining them a few lines 
-> later.
-> 
-> Instead, why not do:
-> 
-> #define mb()   __asm__ __volatile__ ("sync" : : : "memory")
-> 
-> #if defined(CONFIG_PPC64) || defined(CONFIG_PPC_E500MC)
-> #define rmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
-> #define wmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
-> #else
-> #define rmb()  __asm__ __volatile__ ("sync" : : : "memory")
-> #define wmb()  __asm__ __volatile__ ("sync" : : : "memory")
-> #endif
-> 
-I thought of doing that earlier, but there exists one more #elif
-for CONFIG_BOOKE and then the #else.
-That way we would have to put 3 different #defines for rmb and wmb
-and I wanted to avoid that.
-> By the way, why put it inside a ({ }) ?
-checkpatch.pl asks for ({}).
-> And I think nowdays we use "asm volatile" not "__asm__ __volatile__"
-I was just following what was there in the file already.
-Can change this if required.
-> 
-> Shouldn't you also consider the same for mb() ?
-My change wasn't meant to address newer usages of as volatile
-#defines. I just wanted to redefine the rmb and wmb #defines
-to lwsync.
-> 
-> Note that your series will conflict with b6e259297a6b ("powerpc/kcsan: 
-> Memory barriers semantics") in powerpc/next tree.
-I thought of defining the __rmb and __wmb macros but I decided against
-it because I didn't understand kcsan completely.
-I used the standard Linus' tree, not powerpc/next.
-Can you tell me which branch or git repo I should make this patch on ?
-> 
-> > +/* Redefine rmb() to lwsync. */
-> 
-> WHat's the added value of this comment ? Isn't it obvious in the line 
-> below that rmb() is being defined to lwsync ? Please avoid useless comments.
-Sure.
-> 
-> > +#define rmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
-> > +/* Redefine wmb() to lwsync. */
-> > +#define wmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
-> > +#define SMPWMB      LWSYNC
-> >   #elif defined(CONFIG_BOOKE)
-> > -#    define SMPWMB      mbar
-> 
-> This line shouldn't be changed by your patch
-> 
-> > +#define SMPWMB      mbar
-> >   #else
-> > -#    define SMPWMB      eieio
-Ok. Can change my patch.
-> 
-> This line shouldn't be changed by your patch
-> 
-> > +#define SMPWMB      eieio
-> >   #endif
-Sure. Will retain this too.
-> >   
-> >   /* clang defines this macro for a builtin, which will not work with runtime patching */
