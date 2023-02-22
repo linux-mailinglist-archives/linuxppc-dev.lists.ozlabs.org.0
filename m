@@ -1,133 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B947E69F213
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 10:46:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C62269F21C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 10:48:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMB9j42Vtz3cHX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 20:46:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMBD23gZfz3c7X
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 20:48:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=RhPFln+p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iuFFN3Jb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::616; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=RhPFln+p;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iuFFN3Jb;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20616.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::616])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMB8n0rHRz30CT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 20:45:12 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hkSmANhqqv+5CaV/ep44Wps7hhxVhnXwUY7FMIBY4Kro6XHtUqZUCu1BM00dJDTUKmIhS0smgSxRVrtp/tDus9HrWoACJMOPlehj99o+D2lEOaHL19RMGDBLIryscXkujaVYOXfEAICZacRSxnlBsyYEunWnqoNgwSh//ShiXkUNGo5XodkuwyYswGmvjZZXonKQzOw6S+e+bp2YuMelGwXJR9f+wub4g9SBemr4WfMZ3RmaqNYunLS++Nwy3Spx5hoh9Q8tCQcmk7hkkXLdNMeWA5dq28DAxrqCE9fA49CkTMyrjPGcKGarf/0eMxPEM3OEIij9fywIIqLlnWgd6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mwlfBhLx8v9j4iOSkQNZCs6U8qok6D/oLrEjs+yBdUE=;
- b=ArL86oD1RGzs+FkcTd9UqkkI7OqfkBsH1PWttARz9o4aUWKko+4ILEQYQLm4e6BCRvJV3GVOqM1dEKxO6TNnY88oY9XQ8DBqCO7gzxI4d+9R7+PIcqAOC8BNX0sLbVIUCe3Uue3D4kR+NX+RUPkoI+46AHKYA4Zl9wYQmHQm396Exlp6HVZg4lCU1Ks4DcxUaCBzMsZXxAns4vL0hXZhYZI05cZvuqeSb9AMxAc+6QVmHpp61tosxacx3s+ZIc55umB5OOdpSl9O6dyaJ8uVcEQJ9+Ad/INj8sv3bQNJziV9E60ehXSvKdqXf6qfZDec4UbOJqWDz/0qemuPdjpq3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mwlfBhLx8v9j4iOSkQNZCs6U8qok6D/oLrEjs+yBdUE=;
- b=RhPFln+p/7cjRLXU51XBymnFAcuKSRjZ0JPSclEuOBkXe2zzUEOLsa63Kvtl58oFYlouIhqvFbOhTxyk0daBxevDhHcPe7BokWxS934fMLI+dcOVOSYYxL3D63PPvyNj3lIRsxoMOK6eepXLryQsHDnp5Mb7NFBNbjoFF1+8XfcrKnwUPVRxeVIEa5OovWt+BvmmD9g7IUJoJV+Maks5DiOXF8kjr7rHAt8SY+un4Rpjj9bNQ5vOgihmRSzCN6U+NlpwpcTCco2SKSViSfsFmx9mlYJJZ7XfHJjeqg1GXGlyreq4PbO5hvwSfB0Fxg3pwBR4WD/jCMWAf8mnQSFLqQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1783.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:16::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.19; Wed, 22 Feb
- 2023 09:44:54 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2cfb:d4c:1932:b097%6]) with mapi id 15.20.6134.019; Wed, 22 Feb 2023
- 09:44:54 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Kautuk Consul <kconsul@linux.vnet.ibm.com>, Michael Ellerman
-	<mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Rohan McLure
-	<rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMBC65RYvz2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 20:47:14 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31M9fWkK030100;
+	Wed, 22 Feb 2023 09:47:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=Fvvcw+/bAPU7vRSEgRNSIDAcnpnbVVbqupbtRGK4M8M=;
+ b=iuFFN3Jbwj7yVPLDYva2KPPaFrkV0Mp7AGgXiokxoWOjrov0pZFUC76MiJyzfXVAvjFp
+ VI8GJ4Pjv7zmIly2AjLsHEtAV25xdCfqcGddg2w3ARNiq+EuT52BhoVDz4H5+QOcmxf1
+ ywR3D0vPUn1zVOncbBkBXdIqJd4mtt5uTfcAwU9wXD3ALQbA5pgerXv4l0Sx1wdYEDfM
+ 9luHr3KVOQdnqJ4ZX0um1Rix4SlK/2B/atsFTCznQq9Ti3J4FrP4XVWQg1dPsOOJSKdQ
+ bXxmEpJJXrZOSjImtgqQ12tfxsrYzuymZX6IPdXzYmZzagRfFgQWI99xSdmKJ1av8Ils VA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwgmtg4hr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 09:47:06 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31M9faTL030209;
+	Wed, 22 Feb 2023 09:47:05 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwgmtg4h4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 09:47:05 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31LNZrWx007301;
+	Wed, 22 Feb 2023 09:47:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3ntpa6d4ms-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 09:47:04 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31M9l19D21103332
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Feb 2023 09:47:01 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A04532004B;
+	Wed, 22 Feb 2023 09:47:01 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 23C6D20043;
+	Wed, 22 Feb 2023 09:46:59 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.123.148])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 22 Feb 2023 09:46:58 +0000 (GMT)
+Date: Wed, 22 Feb 2023 15:16:54 +0530
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH v2] arch/powerpc/include/asm/barrier.h: redefine rmb and
  wmb to lwsync
-Thread-Topic: [PATCH v2] arch/powerpc/include/asm/barrier.h: redefine rmb and
- wmb to lwsync
-Thread-Index: AQHZRqJRhRqsO1SkrUOVujnHacYAfw==
-Date: Wed, 22 Feb 2023 09:44:54 +0000
-Message-ID: <b20a6e0e-f421-6b83-dbec-c0177e60db16@csgroup.eu>
+Message-ID: <Y/XkjobvDPFErM7J@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
 References: <20230222090344.189270-1-kconsul@linux.vnet.ibm.com>
- <Y/XgrU9RhuaGCLHp@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-In-Reply-To:  <Y/XgrU9RhuaGCLHp@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1783:EE_
-x-ms-office365-filtering-correlation-id: 5f234cde-6d5e-4fdc-2339-08db14b9738c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  MHkDig/nnT42fOA7cMXpld3hWntiMjLfHUQHIMvsrGzww56+5HdG4yJJUjD6LA0ODvFUd7zvNnlNiJNtV1OHGT3CPY0xkXCy0Hote0r08f5PDbNHBnBnGbasutb67klXQiMsdjvsVcpZfl47RRGBFe3lgilYZUImA5sp5WO2nwCV9131M4f6trGY8Zzo8dxT0S3ZQpp66sfaTTmY0Q6Luv9U8z45SZN/WiE6DLJ4Z0FOQP/MrwexE8azN9BW+IVHTGzJZ5Jcs5qpxKB+7wZUfutqb2cv+zuojRzy3xkWoYDStJ0HVp6R5bJOxnnlM3OZmx5RdnuGaidfe3RFktaSVqKwXVDlbeP5ctjOuFVNW3BhiRZyUM2syqEO50Nzn+IGEMXwOL95hicBJOy2K+3Z1gaMIa4ie0Ef5+SvxOalcSxvIeaNt4kXpUW7gssvgubffAyx1cBGwOoIip51TOSSRQKwKsSDGGyn7Hs9skbco3EuIeru6xfpCZUnooQmJbKSVPJDR4r3TWGw4pIt0LGTp2Z16WZXs65EFCMToycMe6gy1+S30BD0XMkIAzcGUE1//+otdX/TuyNy22rxjAwC4KWEtKznOzwmzxkCBLrymwQfAhVP0uGDUG+V9qJQmg2LnR6ES0Il6SpV4vpXMmjcTvlBsTrOwdDjZ5A3UMdZVDF+My5p/mJLnwzLohMUOwXQhPr6VoSicXy51VFCtVp3qSM70etiCnoysPr4N0zoy0i8qPs8OGNhPFBk7Hdjci+Eju/4jSZ1FTq/YZuehiJk8w==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(396003)(346002)(39850400004)(136003)(376002)(451199018)(558084003)(36756003)(71200400001)(6506007)(186003)(6512007)(26005)(6486002)(2616005)(478600001)(31696002)(41300700001)(4326008)(91956017)(8676002)(44832011)(76116006)(66556008)(86362001)(66946007)(64756008)(66446008)(66476007)(2906002)(5660300002)(8936002)(122000001)(38100700002)(54906003)(110136005)(316002)(38070700005)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?dTVYM0svanhJdGZ2UzM0MUJMSzYzSkZUeTdiV3I3REJNVVpaME1HV2FFUEZN?=
- =?utf-8?B?Nng2Rm1ONWdXd1pBQS8wUzluLzVxTmNFdXEwbE9mTVV3dkEybjZ1R1F3UWxy?=
- =?utf-8?B?a2NWVGpBTzc3bUkyYXpyQjhMVjFJV0dmS3A2UEhra0FSemJIWHZEaUNXRzAy?=
- =?utf-8?B?aEdnd01sQ1B2UjJSSSs2VVZaUjQ1blIybWNUempadjgwbys2dXZndU0rYjFm?=
- =?utf-8?B?eHpic1hMMHdOdHUvc09ycjZJb3lQamVZeWNIUGVlSGZOTXN4ekJBb0IrNENC?=
- =?utf-8?B?RXp2U3p5V1ZPWStnN09sdTV2c0MvajZ4VTVmOEkveUUwbE9oRGhjbFNWZjVl?=
- =?utf-8?B?SGdyeUxTOFM4VitURTV4NzdZSTZ0RFJ5NEJhN05pbFBjd253TG5rUFRGaFhH?=
- =?utf-8?B?dWhpVDhXYlBTS0lZUHNaQVNoZkRDRkhLYmJJV0lmNnh4SjlhTVNpcUMyRmpw?=
- =?utf-8?B?TExlb3dlQnN3aWVOUWVDb0xBbi9wTFI0ZzlSMDM0QmoraTVRelA1bFUrSjFa?=
- =?utf-8?B?L3lnN0JYOWRpcEdTVTByaXpSNGQ3a1N2QUdWV253M0NvL0hVMXFLbEViQkNT?=
- =?utf-8?B?UnBHalpBUkpGRmMyTFZsT3pobVp3eFhRbGxsWmY1OEFuZG9SQ3FJaDdsZE1F?=
- =?utf-8?B?MHJQc0paQWZyY2tsQjFpOWZGQkhCT0U0ZThKcHkwMWFsYUFCSEFLWlUvcjNm?=
- =?utf-8?B?NGZSaGRyY3JUOWUxc005WW9iRTNMcUFSQlNpNEJSYWdEV2NHTVVlK25GRXRU?=
- =?utf-8?B?YnFJemFKYVFzSFEvRG9XcUZHZ1dzUTdKZjFCNFozMzhyYnhmeHN3UTVKRUVP?=
- =?utf-8?B?OVNYRTlJZDdkR0tlWEpxVFh5WFJrZ3ZTK0pPelNnbldrWDhES3RTZ0RuZnZ4?=
- =?utf-8?B?aGJuVTgvbE5uVlVELzl3eis2WkhYZ1lSSGkyTDZiL3BBSUdPZ2l6aThJRGsw?=
- =?utf-8?B?NkdidStWMlZMZi9GZzE2VDdpdHFVeXFKWk53a1RrM2FSVHBtQ3ZHMi92U1Jv?=
- =?utf-8?B?WVpSNXdrWVhBbytvVGxtNElISjZUNDNmVEtrU0o3K2Q0amtEK3lMQkpzNHc4?=
- =?utf-8?B?R1FwOEVrRnFhQXZEOUZma0puV0VLUlhYem45TU82bDFodFJ0RTdVSHZ3aS9L?=
- =?utf-8?B?WlpiUWhLcXJlTVExQTdHZDZ0NnpJa2ZMNlBJRWYxeWtGTnc4b01JUkt3cDk5?=
- =?utf-8?B?OFc5OHlmdCtnUWxrR3dEYy9YbTdZdXJ1TFlEQ3lxR3lZRU5KUFFBemIzLzVF?=
- =?utf-8?B?b1lnWHZsQlpBOEdHREwrOEVmbUdVTnhtaDlFMVRIamFoTWpIaDNFb3lpOEFR?=
- =?utf-8?B?blcvMzR3TWVNeGxWWUpIN1JhNldLdmh1cE1wanJzNjMrcTdaWlNRMWVjeDFj?=
- =?utf-8?B?RlYxNXdNUHdDWHFkY3RPb1kvY1MwOEdOOHJERWx3d0h6NDJMRUFHZHFWVFFt?=
- =?utf-8?B?ZDlQR1JOTSt3L3Y3OFVtSDhoT1pvL3NTMEpPL1RxdUZKb3lZbDBVNHFXb3la?=
- =?utf-8?B?UDlyM3E4YWh3VmxFeHZzZlJxSnFwelltQklnL2ZKbDhOOGxWUWlQQVl1V2xH?=
- =?utf-8?B?a3Ywakc1V2dSTTVYQlJBMzFadlJpTklGSVhac05MYzFBbk1xeUg3cVNudEow?=
- =?utf-8?B?MHBzWFQzQ0ttQ2lzQ2tRRjlaaWtjZDdNeTVTUXkrNk9qaU5lMlIxdVIrNXdG?=
- =?utf-8?B?SkZLVmJORG1pS0dHdStOZHF4TGphRlQ5V0t6VEl4K1BOckcyRVFEWml1VHR2?=
- =?utf-8?B?MVZTMXlyTG9HZXNYd2lWMlhVTkZqSGdpRmU1S2lJTGliZUtYVWo1bUd3b3M0?=
- =?utf-8?B?V3JJNHo0LzRjRTc5bzlucThleU1seUVhTWh1Z0QwSG1pS0ZuZlBmdU5YZS9M?=
- =?utf-8?B?dHVUNWlmODdYcXRTQWJwRngrN0NSam9iTzBhRVdPMmpvdHFXYkhQRDFQZ3JF?=
- =?utf-8?B?TVB2ZG9scDZ0T3JMQ2NqYkRpMWdUUVd6bkw1aE9ac1hLemFrbDVUTWZiRGxH?=
- =?utf-8?B?bzc1QzJhQm1udzFzRWluWlBPYWdGa1BVakhGOC81NUVlYjZQZDRzb0VUeUdZ?=
- =?utf-8?B?ZER6MTBpc2ZLMml6ejQ1cGRhcnVhVEtIY3FJVG96UjBkVzhybEgxRWxkUGh5?=
- =?utf-8?B?RjRkdDFjWEdhSkNEVHBnL0xIUytKeVRETGdjdmh5SkVPdUVQNEdlclFrUlVp?=
- =?utf-8?B?MkE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6363F314C168144CA6528669F5D945C5@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ <c4dcf969-0836-cc78-63d9-db83b9ebfa1d@csgroup.eu>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f234cde-6d5e-4fdc-2339-08db14b9738c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Feb 2023 09:44:54.2501
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xYhdD3y/Saw+JOqer7m6coHSEF7Ge4aEB56zRrdxkb+63ij80R68wP1w0OU8tY59M1HLEKjm5h+Rja6z/eJk0QwYFcvSQAbIhRX5Z9Ehjkw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1783
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4dcf969-0836-cc78-63d9-db83b9ebfa1d@csgroup.eu>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: K8XLO_aaFrchVsDdF_7RO03vsbPRmZNd
+X-Proofpoint-ORIG-GUID: 0Q0zMhpKo-mYBNkFeazeFDreMiSOiyTV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-22_04,2023-02-20_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 clxscore=1015 malwarescore=0 spamscore=0
+ phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302220083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,13 +97,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Rohan McLure <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIyLzAyLzIwMjMgw6AgMTA6MzAsIEthdXR1ayBDb25zdWwgYSDDqWNyaXTCoDoNCj4g
-QWdhaW4sIGNvdWxkIHNvbWUgSUJNL25vbi1JQk0gZW1wbG95ZWVzIGRvIGJhc2ljIHNhbml0eSBr
-ZXJuZWwgbG9hZA0KPiB0ZXN0aW5nIG9uIFBQQzY0IFVQIGFuZCBTTVAgc3lzdGVtcyBmb3IgdGhp
-cyBwYXRjaD8NCj4gd291bGQgZGVlcGx5IGFwcHJlY2lhdGUgaXQhIDotKQ0KDQpBbmQgY2FuICdu
-b24tSUJNJyAnbm9uIGVtcGxveWVlcycgZG8gc29tZXRoaW5nID8gOikNCg0KPiANCj4gVGhhbmtz
-IGFnYWluIQ0KPiANCg0KRGlkIHlvdSB0cnkgb24gUUVNVSA/DQo=
+> 
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Thanks!
+> 
+> > ---
+> >   arch/powerpc/include/asm/barrier.h | 7 +++++++
+> >   1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+> > index b95b666f0374..e088dacc0ee8 100644
+> > --- a/arch/powerpc/include/asm/barrier.h
+> > +++ b/arch/powerpc/include/asm/barrier.h
+> > @@ -36,8 +36,15 @@
+> >    * heavy-weight sync, so smp_wmb() can be a lighter-weight eieio.
+> >    */
+> >   #define __mb()   __asm__ __volatile__ ("sync" : : : "memory")
+> > +
+> > +/* The sub-arch has lwsync. */
+> > +#if defined(CONFIG_PPC64) || defined(CONFIG_PPC_E500MC)
+> > +#define __rmb() __asm__ __volatile__ ("lwsync" : : : "memory")
+> > +#define __wmb() __asm__ __volatile__ ("lwsync" : : : "memory")
+> 
+> I'd have preferred with 'asm volatile' though.
+Sorry about that! That wasn't the intent of this patch.
+Probably another patch series should change this manner of #defining
+assembly.
