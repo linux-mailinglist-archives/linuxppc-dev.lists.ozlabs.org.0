@@ -2,91 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4370B69FA9B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 18:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FA469FAEF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 19:23:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMP6R0lpHz3cLX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 04:58:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMPfk1XJJz3cMs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 05:23:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=jikmgFtp;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=F1WqK9/U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=okC9wkxZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=jikmgFtp;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=F1WqK9/U;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=okC9wkxZ;
 	dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMP5Q4Dllz3bTs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 04:58:01 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id 774765C0179;
-	Wed, 22 Feb 2023 12:57:58 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 22 Feb 2023 12:57:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm2; t=1677088678; x=
-	1677175078; bh=nwLpEjWmPs3D70+3STrydy7bvzs4kmjkM2HWhBxwqA4=; b=j
-	ikmgFtpuxcvGFE3qLG9zGDa67/AhicEIaxG3nROOylRG77UraKUHrKHE4w0DkqCN
-	juLgoFbkmxEUvlgTPLkhRcIfocLwQ6rYblkMYvB767KjwC2R72bJ/mntoP7Mu06U
-	01SVQ7azBcy8yh8Usc3r4O9rM+5y8iSk4FjpTjK9OUET8LAT2jgNVFhkVNd2bFpG
-	WtAHzyW3z+GpKcPVxYEwL6fKI3djbcCtCB+1407xPzdsqdCqpqo4JjTvWKTYZovZ
-	D/ynxL5ek8xImyl1sMZv1P4tydrJoM9BGbMP6AQ+90SlNhjqGx3nkxYVSvtRJaSX
-	a09azk2gcGDSrgt4qacaA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1677088678; x=
-	1677175078; bh=nwLpEjWmPs3D70+3STrydy7bvzs4kmjkM2HWhBxwqA4=; b=F
-	1WqK9/ULyFs4gxOGhyvCmiJIQB3mGUP18D7cWzo1zWxHL1pWVzaBXJQBpP2/pYVw
-	mmt2W9b6KHDtXmOC7SmwehKJO4vQKLiA8J33wetjZme0BDi6w8GTTFW6YnLp8jOv
-	Z5bvi7H8rtZDtMsGxQurQZMQzpbD6ysgyuJgbt5nRJKkmAPByAlbi249wFnGjk1e
-	st0tyo6nbYf5TAkZXd59fuvxuOUasD7yQJyMkPlI4wyvKnu/DLCt7VFJU1b15rmE
-	yzi0lZA00myG3rVP44ujENo9lFlCJMLct6pPu3EgEU84xGSdrZRPIXeeA+xnCwVC
-	WRD4q2Egwg2PXv4La+Ewg==
-X-ME-Sender: <xms:pVf2Yzx8OrQqCZ0sOnDXREkTOheOAE0JcfVq1ZutGu1XPMZnuzSGWw>
-    <xme:pVf2Y7Tpyh8Ajut76gG4bVgfgl2kyimD5FMoTAJchnC78gsU6Avt3cN9Gy62Vsu07
-    vLH7onUHnxeqj30AGo>
-X-ME-Received: <xmr:pVf2Y9WRrVgvM0qGmbtV2Tdkf6Z_FgWSLNhnBkLRdSo_LxZidN0vUJQ7fb9fGL4lF-3_>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudejledguddthecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpegtggfuhfgjffevgffkfhfvofesthhqmhdthhdtjeenucfhrhhomheplfhi
-    rgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqe
-    enucggtffrrghtthgvrhhnpedutdejffetteefkeejieehfeeuieeguedtveeijeeviefh
-    ffelvdfgudeihfdvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:pVf2Y9jhKx6uMWMcE7nOTDP86zbRG4nuGBKhwOTVk-hAypdTn0-d7A>
-    <xmx:pVf2Y1D9-gQ2sodvvOhtRVec4qTLdZ-EYxDa1iDfW1muxI-TTh9E5w>
-    <xmx:pVf2Y2JXGgWxYdnIBo1a9TApluAVvgnGtcOCiKd4dMOrAK0SEp3lZg>
-    <xmx:plf2Y56DW5KT5B5mFPh4C-TOYY2smqCXhc4nxf8Om2SRBXv__88Xxg>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Feb 2023 12:57:55 -0500 (EST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [PATCH 3/3] of: address: Use dma_default_coherent to determine
- default coherency
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <e9d882f4-d57d-f6b4-7ae0-bbfea0f5aa59@arm.com>
-Date: Wed, 22 Feb 2023 17:57:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3E55E1F7-7A34-4165-9BF4-C2AAF6A6CFC1@flygoat.com>
-References: <20230222133712.8079-1-jiaxun.yang@flygoat.com>
- <20230222133712.8079-4-jiaxun.yang@flygoat.com>
- <e9d882f4-d57d-f6b4-7ae0-bbfea0f5aa59@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-X-Mailer: Apple Mail (2.3731.300.101.1.3)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMPdq2cn7z3bWq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 05:22:39 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8B5E860C5B;
+	Wed, 22 Feb 2023 18:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57A0C433D2;
+	Wed, 22 Feb 2023 18:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1677090155;
+	bh=CzIR8pGHHiNEiEpf6Yh2H8j5zj5EVQGwTE29uy1k9eg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=okC9wkxZB+0MdfKesGUBqtFLaECvBpkOWvsCxp2//TFTiQ16yo+mukiMxWlnkSbDL
+	 HUiJ4OtDUo7R3zc1OrkS+K/uroN3BSrxCzefijQTNcCo0x/pr+cnQHU/EeIwBssz3+
+	 sPVBsxK5Esl/1m/x7rXE1J/fBu4NiquwLuNSDz3DfR/A+aivKEGK08DHDWeQA18qku
+	 aVmsK+KdGBgk6eFR2qfgx5K+46v31/97+rRFCDu/0dhJJXuej1ArcFP/exU5a9ZxSm
+	 UA9LTI3DWavrfd+Jl8VsVsGK3LNH47f3wu5OQrw3U0V26x6k9LsqZ9Hu3nKOk2jkTR
+	 XZb+lby9aS5mA==
+Received: by pali.im (Postfix)
+	id 1CD0172C; Wed, 22 Feb 2023 19:22:32 +0100 (CET)
+Date: Wed, 22 Feb 2023 19:22:32 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 00/17] powerpc/85xx: p2020: Create one unified machine
+ description
+Message-ID: <20230222182232.uiiwy5pd5n5xc5kl@pali>
+References: <cover.1677076552.git.christophe.leroy@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1677076552.git.christophe.leroy@csgroup.eu>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,57 +64,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, palmer@dabbelt.com, paul.walmsley@sifive.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, m.szyprowski@samsung.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wednesday 22 February 2023 15:42:47 Christophe Leroy wrote:
+> This patch series unifies all P2020 boards and machine descriptions into
+> one generic unified P2020 machine description. With this generic machine
+> description, kernel can boot on any P2020-based board with correct DTS
+> file.
+> 
+> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
+> Kernel during booting correctly detects P2020 and prints:
+> [    0.000000] Using Freescale P2020 machine description
+> 
+> Changes in v4:
+> * Added several preparatory cleanup patchs
+> * Minimised churn by not duplicating helpers at the first place
+> * Split main patch in two
+> * Dropped patchs 1 and 2
+> * Untested beyond basic build test
 
+Changes looks good. I'm happy with them. You can add my:
 
-> 2023=E5=B9=B42=E6=9C=8822=E6=97=A5 17:24=EF=BC=8CRobin Murphy =
-<robin.murphy@arm.com> =E5=86=99=E9=81=93=EF=BC=9A
+Reviewed-by: Pali Rohár <pali@kernel.org>
 
-[...]
-
->=20
-> AFAICS, all you should actually need is a single self-contained =
-addition here, something like:
->=20
-> + /*
-> +  * DT-based MIPS doesn't use OF_DMA_DEFAULT_COHERENT, but
-> +  * might override the system-wide default at runtime.
-> +  */
-> +#if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-> + defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
-> + defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
-> + is_coherent =3D dma_default_coherent;
-> +#endif
-
-That makes more sense, thanks.
-I=E2=80=99ll append CONFIG_MIPS as a condition here as well because it =
-may break RISC-V whose dma_default_coherent
-is not set to true from very beginning.
-
->=20
->>     node =3D of_node_get(np);
->> =20
->=20
-> Then *after* that's fixed, we can do a more comprehensive refactoring =
-to merge the two mechanisms properly. FWIW I think I'd prefer an =
-approach closer to the first one, where config options control the =
-initial value of dma_default_coherent rather than architectures having =
-to override it unconditionally (and TBH I'd also like to have a generic =
-config symbol for whether an arch supports per-device coherency or not).
-
-Ok I=E2=80=99ll try to revert to the initial way.
-Is there any reason that an arch can=E2=80=99t support per-device =
-coherency?
-
-Thanks
-- Jiaxun
-
-
->=20
-> Thanks,
-> Robin.
-
-
+> Changes in v3:
+> * Use 'if (IS_ENABLED(CONFIG_PPC_I8259))' instead of '#ifdef CONFIG_PPC_I8259'
+> * Simplify p2020_probe()
+> * Patches generated by -M and -C git options
+> 
+> Link to v2: https://lore.kernel.org/linuxppc-dev/20221224211425.14983-1-pali@kernel.org/
+> 
+> Changes in v2:
+> * Added patch "p2020: Move i8259 code into own function" (separated from the next one)
+> * Renamed CONFIG_P2020 to CONFIG_PPC_P2020
+> * Fixed descriptions
+> 
+> Link to v1: https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@kernel.org/
+> 
+> Christophe Leroy (9):
+>   powerpc/fsl_uli1575: Misc cleanup
+>   powerpc/85xx: Rename setup_arch and pic_init on p1023
+>   powerpc/85xx: Remove DBG() macro
+>   powerpc/85xx: Remove #ifdefs CONFIG_PCI in mpc85xx_ds
+>   powerpc/85xx: mpc85xx_{ds/rdb} compact the call to mpic_alloc()
+>   powerpc/85xx: mpc85xx_{ds/rdb} replace BUG_ON() by WARN_ON()
+>   powerpc/85xx: mpc85xx_{ds/rdb} replace prink by pr_xxx macro
+>   powerpc/85xx: Remove #ifdefs CONFIG_PPC_I8259 in mpc85xx_ds
+>   powerpc/85xx: Remove #ifdef CONFIG_QUICC_ENGINE in mpc85xx_rdb
+> 
+> Pali Rohár (8):
+>   powerpc/85xx: p2020: Move all P2020 DS machine descriptions to p2020.c
+>   powerpc/85xx: p2020: Move all P2020 RDB machine descriptions to
+>     p2020.c
+>   powerpc/85xx: p2020: Move i8259 code into own function
+>   powerpc/85xx: mpc85xx_ds: Move PCI code into own file
+>   powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
+>   powerpc/85xx: p2020: Define just one machine description
+>   powerpc/85xx: p2020: Enable boards by new config option
+>     CONFIG_PPC_P2020
+>   powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+> 
+>  arch/powerpc/boot/dts/turris1x.dts         |   2 +-
+>  arch/powerpc/include/asm/ppc-pci.h         |   2 +
+>  arch/powerpc/platforms/85xx/Kconfig        |  22 +++-
+>  arch/powerpc/platforms/85xx/Makefile       |   5 +-
+>  arch/powerpc/platforms/85xx/mpc85xx.h      |  12 ++
+>  arch/powerpc/platforms/85xx/mpc85xx_8259.c |  78 ++++++++++++
+>  arch/powerpc/platforms/85xx/mpc85xx_ds.c   | 133 ++-------------------
+>  arch/powerpc/platforms/85xx/mpc85xx_mds.c  |   7 --
+>  arch/powerpc/platforms/85xx/mpc85xx_rdb.c  |  79 ++----------
+>  arch/powerpc/platforms/85xx/mpc85xx_uli.c  |  64 ++++++++++
+>  arch/powerpc/platforms/85xx/p1023_rdb.c    |   8 +-
+>  arch/powerpc/platforms/85xx/p2020.c        |  95 +++++++++++++++
+>  arch/powerpc/platforms/fsl_uli1575.c       |   6 +-
+>  13 files changed, 301 insertions(+), 212 deletions(-)
+>  create mode 100644 arch/powerpc/platforms/85xx/mpc85xx_8259.c
+>  create mode 100644 arch/powerpc/platforms/85xx/mpc85xx_uli.c
+>  create mode 100644 arch/powerpc/platforms/85xx/p2020.c
+> 
+> -- 
+> 2.39.1
+> 
