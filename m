@@ -1,71 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9884769ED14
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 03:52:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B13B69EE8D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 07:01:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PM10N3tNlz3c4w
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 13:52:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PM5Bl2HNRz3blJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 17:01:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=c1xI3XHK;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=emcrCkZ4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32c; helo=mail-ot1-x32c.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=c1xI3XHK;
-	dkim-atps=neutral
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM0yR02Tcz3bWq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 13:50:37 +1100 (AEDT)
-Received: by mail-ot1-x32c.google.com with SMTP id h6-20020a9d7986000000b0068bd8c1e836so1212867otm.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Feb 2023 18:50:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=McQi89uTbN7DF8jJyCgZeVyYtI7bAf8jLzdMMiV8l3U=;
-        b=c1xI3XHKGohwQIKFk42Xysj7ExmK5WzvEV05vtimmkIeaaEzd0hMCiE/obU2RZT0Or
-         fVE+TI0pYtvIqwYTWtdw5ca8EW5qdCJ6dKI7otBYNiOkOtim/vyLA7ze80BY+4MUGWcW
-         m6oHEPFivR5zv3hS/2h/tRHTZkQmHJWIZRhgKNA4+bMY9KDfsJahZg3unsQVNu83BTPj
-         f8Lvvcovbx9rMNFB0CQeDZL/BlRlG/FlIm/U/35kCMA5h66CV/KPyaYt7OZh9iv8agF/
-         2PfXk0lI+8H1GyUEh0sPj4eeOJO7gOCDTKMC00oKioeclPwHhOGAKHoY+T25MW5kELTr
-         HGSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=McQi89uTbN7DF8jJyCgZeVyYtI7bAf8jLzdMMiV8l3U=;
-        b=CtP0ta1pzQNIMgUjR50tC36AaHoaHI3go7nZCbGkqr5D2+pGicixnSjwUCiFre9RBw
-         DdlyM/Bht/272HJMMT9SZA3LDCg+GhhARcxZ3QfsXB3+InYkc1ophQ4PR4vj2NUhwetl
-         mfwaUljI0Y/6EgLdFZ2baPdkgQrfIDs8iT1VDK8UqMEL73rNBsgAVOh0nJkVJdUxcPsB
-         BDDhRoIk//sihJ25/BzzQmU1/7IRGDtlTokwo/e1Puj8X/ukpeDOEiY4Vt9i/PELjA9R
-         SmmZvS7sFwKavYB59cW2Ih6rBJLletaZX+nAxFNx7N2xyrEnhXG6/IgLaUFkMRSPFAfA
-         TGbA==
-X-Gm-Message-State: AO0yUKXMplY98f7Ws3txTF/nRVa89RXhWeUJmmxCCkZFcMovZmRwzbyu
-	X1LgiqWwmlmaqrJHNLwyERFWsekNknk=
-X-Google-Smtp-Source: AK7set+ZgpgMCsnbEoZOPq/ABD4/QpKNx4uG/xScyv0xZvSeje/L+YyfRFjn6mXEkahnuvnyBw4Uog==
-X-Received: by 2002:a9d:60c1:0:b0:68d:53d5:f7d2 with SMTP id b1-20020a9d60c1000000b0068d53d5f7d2mr7853269otk.31.1677034234476;
-        Tue, 21 Feb 2023 18:50:34 -0800 (PST)
-Received: from localhost ([12.97.180.36])
-        by smtp.gmail.com with ESMTPSA id 90-20020a9d06e3000000b0068abc8e786fsm333298otx.10.2023.02.21.18.50.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Feb 2023 18:50:34 -0800 (PST)
-From: Yury Norov <yury.norov@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] powerpc: use node_has_cpus() instead of nr_cpus_node()
-Date: Tue, 21 Feb 2023 18:50:29 -0800
-Message-Id: <20230222025029.453834-2-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230222025029.453834-1-yury.norov@gmail.com>
-References: <20230222025029.453834-1-yury.norov@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM59n2sMmz308w
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 17:00:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=emcrCkZ4;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PM59l38Dcz4x7j;
+	Wed, 22 Feb 2023 17:00:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1677045643;
+	bh=ujTkYsGUrS6XQ/KPlAV7Z8gIGIWLzcKwgnlcZYIW7u4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=emcrCkZ4y05Gpezi+ZzwGO+rwJcpHlL8AV2OGQqqF7V4XRcAUEOmdnKnHKozSAULB
+	 h5mwiUeGv8lc6dWSktrSNPzxnhdQCXxKr3hlgf9pu8Ka/IEqe5PvlS+5Ys8Ic4bOtZ
+	 I8pf3K7MnUnTGdA8rgBH4pLjV7/R8MiZgjJoQ50vUGjvrMp+UOQDz/ZEIQLHtOKV8W
+	 r6rNHCmIdJVQk8zbM8s5tSrwAE3stzyR+25186YaE9gFA6rguQcfVXPSPSMblD7RJh
+	 qOA2sgu9RwiKncEcXFmYvIN6lc2VYHT9b2Tb1BHivwFMJVui5fi0nP2ND+Vrmk0GGw
+	 2qM6k0FR6yq3g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/vmlinux.lds: Add .text.asan/tsan sections
+Date: Wed, 22 Feb 2023 17:00:37 +1100
+Message-Id: <20230222060037.2897169-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,45 +56,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Valentin Schneider <vschneid@redhat.com>, Yury Norov <yury.norov@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Barry Song <baohua@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Jeremy Kerr <jk@ozlabs.org>
+Cc: nathan@kernel.org, ndesaulniers@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use node_has_cpus() as more efficient alternative to nr_cpus_node()
-where possible.
+When KASAN/KCSAN are enabled clang generates .text.asan/tsan sections.
+Because they are not mentioned in the linker script warnings are
+generated, and when orphan handling is set to error that becomes a build
+error, eg:
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
+  ld.lld: error: vmlinux.a(init/main.o):(.text.tsan.module_ctor) is
+  being placed in '.text.tsan.module_ctor' ld.lld: error:
+  vmlinux.a(init/version.o):(.text.tsan.module_ctor) is being placed in
+  '.text.tsan.module_ctor'
+
+Fix it by adding the sections to our linker script, similar to the
+generic change made in 848378812e40 ("vmlinux.lds.h: Handle clang's
+module.{c,d}tor sections").
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/platforms/cell/spu_priv1_mmio.c | 2 +-
- arch/powerpc/platforms/cell/spufs/sched.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/cell/spu_priv1_mmio.c b/arch/powerpc/platforms/cell/spu_priv1_mmio.c
-index d150e3987304..55b5024b256b 100644
---- a/arch/powerpc/platforms/cell/spu_priv1_mmio.c
-+++ b/arch/powerpc/platforms/cell/spu_priv1_mmio.c
-@@ -64,7 +64,7 @@ static void cpu_affinity_set(struct spu *spu, int cpu)
- 	u64 target;
- 	u64 route;
- 
--	if (nr_cpus_node(spu->node)) {
-+	if (node_has_cpus(spu->node)) {
- 		const struct cpumask *spumask = cpumask_of_node(spu->node),
- 			*cpumask = cpumask_of_node(cpu_to_node(cpu));
- 
-diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
-index 99bd027a7f7c..9d29cc2c6bcb 100644
---- a/arch/powerpc/platforms/cell/spufs/sched.c
-+++ b/arch/powerpc/platforms/cell/spufs/sched.c
-@@ -154,7 +154,7 @@ void spu_update_sched_info(struct spu_context *ctx)
- 
- static int __node_allowed(struct spu_context *ctx, int node)
- {
--	if (nr_cpus_node(node)) {
-+	if (node_has_cpus(node)) {
- 		const struct cpumask *mask = cpumask_of_node(node);
- 
- 		if (cpumask_intersects(mask, &ctx->cpus_allowed))
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 958e77a24f85..7a2209767adf 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -125,6 +125,7 @@ SECTIONS
+ 		 * included with the main text sections, so put it by itself.
+ 		 */
+ 		*(.sfpr);
++		*(.text.asan.* .text.tsan.*)
+ 		MEM_KEEP(init.text)
+ 		MEM_KEEP(exit.text)
+ 	} :text
 -- 
-2.34.1
+2.39.1
 
