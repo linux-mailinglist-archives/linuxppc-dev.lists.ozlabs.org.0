@@ -2,49 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B13B69EE8D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 07:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D3D69EE8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 07:02:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PM5Bl2HNRz3blJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 17:01:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PM5Cm5mrnz3bqw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 17:02:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=emcrCkZ4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iZvzabkZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM59n2sMmz308w
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 17:00:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=emcrCkZ4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iZvzabkZ;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PM59l38Dcz4x7j;
-	Wed, 22 Feb 2023 17:00:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1677045643;
-	bh=ujTkYsGUrS6XQ/KPlAV7Z8gIGIWLzcKwgnlcZYIW7u4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=emcrCkZ4y05Gpezi+ZzwGO+rwJcpHlL8AV2OGQqqF7V4XRcAUEOmdnKnHKozSAULB
-	 h5mwiUeGv8lc6dWSktrSNPzxnhdQCXxKr3hlgf9pu8Ka/IEqe5PvlS+5Ys8Ic4bOtZ
-	 I8pf3K7MnUnTGdA8rgBH4pLjV7/R8MiZgjJoQ50vUGjvrMp+UOQDz/ZEIQLHtOKV8W
-	 r6rNHCmIdJVQk8zbM8s5tSrwAE3stzyR+25186YaE9gFA6rguQcfVXPSPSMblD7RJh
-	 qOA2sgu9RwiKncEcXFmYvIN6lc2VYHT9b2Tb1BHivwFMJVui5fi0nP2ND+Vrmk0GGw
-	 2qM6k0FR6yq3g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/vmlinux.lds: Add .text.asan/tsan sections
-Date: Wed, 22 Feb 2023 17:00:37 +1100
-Message-Id: <20230222060037.2897169-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PM5Bp0Brbz3cKm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 17:01:37 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31M4IcPr029568;
+	Wed, 22 Feb 2023 06:01:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Wcw5U9usVW0jSpUTwgc+fcPdSplu62KQeKvS/wONcM8=;
+ b=iZvzabkZLYqbGeSj91Eh1Jf/WqSCpQcivNBWHLY72NgfwKWVCngxlkbwZz4cOrLWMNwb
+ 7cpL40tHDw/WR/SEPUmK+9HefyGuoyWCAywqEiipSE5rFHmu8wM+f+OcsneF02W/yC0D
+ 0d8J4ithG9434NhF3CPsGFwNbqJsmgENNPN40uN4A/1Ap5Yva70V0eT7aoXQmmB2Z3iq
+ rkmN9R6nOkN4vh0nsp9o5/ZtA1oCK3PhWeJPWgcX0baPfdya8RMwMAweQ28jX362eQMf
+ nUovNd2xKH3bPIJcKuHQYBdksetDpfcUPU+UV9M1qP5pnmYVMcnTJzBT/JgBdpf5JJp0 Vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwbwnhubh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 06:01:29 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31M5qe3m021618;
+	Wed, 22 Feb 2023 06:01:29 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nwbwnhuam-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 06:01:28 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31LNucj6019945;
+	Wed, 22 Feb 2023 06:01:26 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3ntnxf4wdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Feb 2023 06:01:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31M61Ori43581740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Feb 2023 06:01:24 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A4C72004B;
+	Wed, 22 Feb 2023 06:01:24 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97AD920040;
+	Wed, 22 Feb 2023 06:01:21 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.71.187])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Feb 2023 06:01:21 +0000 (GMT)
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] arch/powerpc/include/asm/barrier.h: redefine rmb and wmb to lwsync
+Date: Wed, 22 Feb 2023 11:31:07 +0530
+Message-Id: <20230222060107.70565-1-kconsul@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: W0r8gYxRXFEtXMR1yi4BZVcP4bARYp05
+X-Proofpoint-ORIG-GUID: E0OXn_0o1-iMYKLAgaVLZBrGJ6Jciv6_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-22_02,2023-02-20_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=774 phishscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302220049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,41 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathan@kernel.org, ndesaulniers@google.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kautuk Consul <kconsul@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When KASAN/KCSAN are enabled clang generates .text.asan/tsan sections.
-Because they are not mentioned in the linker script warnings are
-generated, and when orphan handling is set to error that becomes a build
-error, eg:
+A link from ibm.com states:
+"Ensures that all instructions preceding the call to __lwsync
+ complete before any subsequent store instructions can be executed
+ on the processor that executed the function. Also, it ensures that
+ all load instructions preceding the call to __lwsync complete before
+ any subsequent load instructions can be executed on the processor
+ that executed the function. This allows you to synchronize between
+ multiple processors with minimal performance impact, as __lwsync
+ does not wait for confirmation from each processor."
 
-  ld.lld: error: vmlinux.a(init/main.o):(.text.tsan.module_ctor) is
-  being placed in '.text.tsan.module_ctor' ld.lld: error:
-  vmlinux.a(init/version.o):(.text.tsan.module_ctor) is being placed in
-  '.text.tsan.module_ctor'
+Thats why smp_rmb() and smp_wmb() are defined to lwsync.
+But this same understanding applies to parallel pipeline
+execution on each PowerPC processor.
+So, use the lwsync instruction for rmb() and wmb() on the PPC
+architectures that support it.
 
-Fix it by adding the sections to our linker script, similar to the
-generic change made in 848378812e40 ("vmlinux.lds.h: Handle clang's
-module.{c,d}tor sections").
+Also removed some useless spaces.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/barrier.h | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 958e77a24f85..7a2209767adf 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -125,6 +125,7 @@ SECTIONS
- 		 * included with the main text sections, so put it by itself.
- 		 */
- 		*(.sfpr);
-+		*(.text.asan.* .text.tsan.*)
- 		MEM_KEEP(init.text)
- 		MEM_KEEP(exit.text)
- 	} :text
+diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+index e80b2c0e9315..553f5a5d20bd 100644
+--- a/arch/powerpc/include/asm/barrier.h
++++ b/arch/powerpc/include/asm/barrier.h
+@@ -41,11 +41,17 @@
+ 
+ /* The sub-arch has lwsync */
+ #if defined(CONFIG_PPC64) || defined(CONFIG_PPC_E500MC)
+-#    define SMPWMB      LWSYNC
++#undef rmb
++#undef wmb
++/* Redefine rmb() to lwsync. */
++#define rmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
++/* Redefine wmb() to lwsync. */
++#define wmb()	({__asm__ __volatile__ ("lwsync" : : : "memory"); })
++#define SMPWMB      LWSYNC
+ #elif defined(CONFIG_BOOKE)
+-#    define SMPWMB      mbar
++#define SMPWMB      mbar
+ #else
+-#    define SMPWMB      eieio
++#define SMPWMB      eieio
+ #endif
+ 
+ /* clang defines this macro for a builtin, which will not work with runtime patching */
 -- 
-2.39.1
+2.31.1
 
