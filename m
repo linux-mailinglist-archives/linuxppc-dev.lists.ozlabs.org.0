@@ -1,64 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FA369F700
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 15:47:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E197D69F72A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 15:53:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMJsm05ywz3fkP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 01:47:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMK0w5BNnz3f4b
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 01:53:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F9FnSipH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F9FnSipH;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMJnT0TwXz3cfB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 01:43:56 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4PMJn31PSJz9sTP;
-	Wed, 22 Feb 2023 15:43:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id yJmwpDiuBXHU; Wed, 22 Feb 2023 15:43:35 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4PMJmx0TM4z9sTY;
-	Wed, 22 Feb 2023 15:43:29 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id EE8A18B788;
-	Wed, 22 Feb 2023 15:43:28 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id yc2ncWCyzCVj; Wed, 22 Feb 2023 15:43:28 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FC3C8B77B;
-	Wed, 22 Feb 2023 15:43:28 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 31MEhN9K1187153
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 22 Feb 2023 15:43:24 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 31MEhNvG1187152;
-	Wed, 22 Feb 2023 15:43:23 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v4 17/17] powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
-Date: Wed, 22 Feb 2023 15:43:04 +0100
-Message-Id: <30beb56b09c3dd41b98697b9c8fcdc07855e0fda.1677076552.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1677076552.git.christophe.leroy@csgroup.eu>
-References: <cover.1677076552.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMJxK4wjhz3g28
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 01:50:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D5F696147A;
+	Wed, 22 Feb 2023 14:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4EDC433EF;
+	Wed, 22 Feb 2023 14:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1677077441;
+	bh=jECYUd++ya4ZsTEPgf+A4rG4QEZxORJ8FxqhcduO8rI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F9FnSipHjdSvaLOQeeDh5U9J3OpPg9y5rhPajM5/U+Cp3uL7ggJ33uDUPrBW8wXtY
+	 dxwQS5jPa6FBJztre9QhvYkYot55Fi8CX2LTPH6nKb+QaHFgtOU9M94nC8CFjUXJJk
+	 Yrk5Al9cxSObZat0W7cNiwTRi09vzMWVed3iGUEwaBlZsQp3G8A4wy0pZA0r8P+zZQ
+	 nf/G9mJBt+b+VjZs23yAMChRURMV6ZV9x9c29+LU/iN+ivvlqI0bsnepYkWdruSqUk
+	 UBrwNLpVtvZi/yBsTrEcL97dRHQq2n108wme856Mnn7rCYBhc/3AiIvpn2rvGr83Ea
+	 x8V/LWk7+cOPg==
+Date: Wed, 22 Feb 2023 14:50:36 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 2/3] riscv: Set dma_default_coherent to true
+Message-ID: <Y/YrvDBJcYUQt4WC@spud>
+References: <20230222133712.8079-1-jiaxun.yang@flygoat.com>
+ <20230222133712.8079-3-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1677076980; l=1150; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=bG9LC+/RzsKhMb2UtYvyKN8HbFdY0fg+4clblaWWLts=; b=oUMbxqYKE0YZJ+UkAMwzNiEutE3G7ufryEY4TSl/eWCbN88Zc5NaV2hyqFGvB1lLRx0ORAibLTz6 xw/e3Vi2CapfjHhiCleFPC5qxidT6c2+fIkdcI83F5pR6CI+tZ0I
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="mMMYT62i9d1eIRHl"
+Content-Disposition: inline
+In-Reply-To: <20230222133712.8079-3-jiaxun.yang@flygoat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,43 +61,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: tsbogend@alpha.franken.de, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, robh+dt@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com, robin.murphy@arm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Pali Rohár <pali@kernel.org>
 
-"fsl,P2020RDB-PC" compatible string was present in Turris 1.x DTS file just
-because Linux kernel required it for proper detection of P2020 processor
-during boot.
+--mMMYT62i9d1eIRHl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This was quite a hack as CZ.NIC Turris 1.x is not compatible with
-Freescale P2020-RDB-PC board.
+On Wed, Feb 22, 2023 at 01:37:11PM +0000, Jiaxun Yang wrote:
+> For riscv our assumption is unless a device states it is non-coherent,
+> we take it to be DMA coherent.
+>=20
+> For devicetree probed devices that have been true since very begining
+> with OF_DMA_DEFAULT_COHERENT selected.
+>=20
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  arch/riscv/kernel/setup.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> index 376d2827e736..34b371180976 100644
+> --- a/arch/riscv/kernel/setup.c
+> +++ b/arch/riscv/kernel/setup.c
+> @@ -300,6 +300,9 @@ void __init setup_arch(char **cmdline_p)
+>  	riscv_init_cbom_blocksize();
+>  	riscv_fill_hwcap();
+>  	apply_boot_alternatives();
+> +#ifdef CONFIG_RISCV_DMA_NONCOHERENT
+> +	dma_default_coherent =3D true;
+> +#endif
 
-Now when kernel has generic unified support for boards with P2020
-processors, there is no need to have this "hack" in turris1x.dts file.
+Do we really need to add ifdeffery for this here?
+It's always coherent by default, so why do we need to say set it in
+setup_arch() when we know that, regardless of options, it is true?
 
-So remove incorrect "fsl,P2020RDB-PC" compatible string from turris1x.dts.
+Cheers,
+Conor.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/boot/dts/turris1x.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>  	if (IS_ENABLED(CONFIG_RISCV_ISA_ZICBOM) &&
+>  	    riscv_isa_extension_available(NULL, ZICBOM))
+>  		riscv_noncoherent_supported();
+> --=20
+> 2.37.1 (Apple Git-137.1)
+>=20
 
-diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-index e9cda34a140e..a95857de6858 100644
---- a/arch/powerpc/boot/dts/turris1x.dts
-+++ b/arch/powerpc/boot/dts/turris1x.dts
-@@ -15,7 +15,7 @@
- 
- / {
- 	model = "Turris 1.x";
--	compatible = "cznic,turris1x", "fsl,P2020RDB-PC"; /* fsl,P2020RDB-PC is required for booting Linux */
-+	compatible = "cznic,turris1x";
- 
- 	aliases {
- 		ethernet0 = &enet0;
--- 
-2.39.1
+--mMMYT62i9d1eIRHl
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY/YruQAKCRB4tDGHoIJi
+0oqOAQClwxhHez3G5Ku8YKYt1QD25AwhnbdgPYGZX4nrg3jkDAEA0YEX+g+BVk6l
+KwiIMBd6nPQZSCwfvdaJvG++kv81mQU=
+=pBfa
+-----END PGP SIGNATURE-----
+
+--mMMYT62i9d1eIRHl--
