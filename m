@@ -1,77 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4BA69F471
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 13:22:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5615A69F48D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 13:30:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMFfB0Grrz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 23:22:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PO25MBZG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMFpw1bBFz3cM3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Feb 2023 23:30:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=bagasdotme@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PO25MBZG;
-	dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ghiti.fr (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMFdG1qKbz30Bp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 23:21:36 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id i31so3468239pgi.10
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 04:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J0zIsh8Bj6elQ9e9ElCXMRZbUBkH4I43/+9DyamMhIU=;
-        b=PO25MBZG0E5W+OEJqoSOY28lOrPlpC98wfgUrwfFl9o/K+CNuPRFRtbMMX1ZACCz6L
-         iCOxFx/aEj9Y54aVINJGEzirvgKl4EkoDZeus2NxpV6gH88FMHaHSHX8W9Dxf/VTEct6
-         ylwB7ByycxIJwgbXpS+D7jiZpDvlJv6nHZTwN7z1ztcnt2woaqh62RUKox96t2R4Ddj9
-         m47AT3EPv4tm9IUmhMZ5ux8J+SJzAJxpTJqV4bGsN0xrwQuUhyNMisp6OBrtwsD30fDD
-         ojaZl8rGX8YydcmY6VIPCPdSR3Mj+Us6156OWKJ2Rtbsd0lpfVAsI1f3kQggcqEStusk
-         2IgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0zIsh8Bj6elQ9e9ElCXMRZbUBkH4I43/+9DyamMhIU=;
-        b=qHS/bjhFo+nS1GsLyQJU18wnsTBo2FufdZ8Nj2CbXO3EmDb0zvHU57OZ7XXb7fQxtm
-         3p/Z25xHIYN7rndmvLrPvUF3BUs7uJ5bST9WYze+ZUMN/TsiX0AHslVoF0tJacPlJdbV
-         zpADn3GkB6OVtR/fnADDTVZ9d0Ybg5iPG6o3Jf2xbFHl8LbD3R21qfOd9eg4lR7Lp7mB
-         P/Cai5Uwzq9NMk+Rk0PYfRjzxDkB4pxTdokz4IXvpy0JCjjd9U5YTOEcyEXaXSpWig8c
-         PnQWaVJQXy/lsVzryQ25AE8eZkU99MRuIwsExrCWtXQ7y5X5upRjYB3Ouggk/lUFGEt4
-         NMrg==
-X-Gm-Message-State: AO0yUKV/tfzaXOItx7AKZkAs9GwHrf+m+WbrMXXcRz4D//K+Obt/JwgL
-	zwJLhxTHOPybzlNj9zbCR08=
-X-Google-Smtp-Source: AK7set8PxiycLre5bahVPAidCVKEo+/sb6ZGb0Kk6FEAdx0lylT2Lhxy5yALgrciJiMuqWECmJWEUQ==
-X-Received: by 2002:a62:1784:0:b0:5a8:b2a0:9b4d with SMTP id 126-20020a621784000000b005a8b2a09b4dmr7743376pfx.15.1677068491547;
-        Wed, 22 Feb 2023 04:21:31 -0800 (PST)
-Received: from [192.168.43.80] (subs02-180-214-232-68.three.co.id. [180.214.232.68])
-        by smtp.gmail.com with ESMTPSA id a20-20020aa78654000000b005a8bfe3b241sm1743795pfo.167.2023.02.22.04.21.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Feb 2023 04:21:31 -0800 (PST)
-Message-ID: <d96f1c64-a82a-afde-0ecf-3b1dab6510a8@gmail.com>
-Date: Wed, 22 Feb 2023 19:21:24 +0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMFpK2J1Hz3bbS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 23:29:27 +1100 (AEDT)
+Received: (Authenticated sender: alex@ghiti.fr)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5DDC6FF803;
+	Wed, 22 Feb 2023 12:29:12 +0000 (UTC)
+Message-ID: <4a6fc7a3-9697-a49b-0941-97f32194b0d7@ghiti.fr>
+Date: Wed, 22 Feb 2023 13:29:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: linux-next tree panic on ppc64le
-To: Murphy Zhou <jencce.kernel@gmail.com>
-References: <CADJHv_tWJKgqfXy=2mynVG0U2bJaVqYo59F_OPfdRRptNOV-WQ@mail.gmail.com>
- <c69dc6be-9642-2876-5375-d536f49d0403@gmail.com>
- <CADJHv_tzBWoGDBfNCsg-HKt8aKacXgmvY31mS47y30XkNyAw4w@mail.gmail.com>
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
 Content-Language: en-US
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <CADJHv_tzBWoGDBfNCsg-HKt8aKacXgmvY31mS47y30XkNyAw4w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, nathan@kernel.org,
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, ndesaulniers@google.com,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+ <20230215143626.453491-2-alexghiti@rivosinc.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20230215143626.453491-2-alexghiti@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,19 +51,312 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Next <linux-next@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/22/23 16:13, Murphy Zhou wrote:
-> next-20230221
-> 
-> I'll try powerpc/next.
-> 
++cc linux-kbuild, llvm, Nathan, Nick
 
-OK, but next time when you reply, don't top-post; reply inline
-with appropriate context instead.
+On 2/15/23 15:36, Alexandre Ghiti wrote:
+> From: Alexandre Ghiti <alex@ghiti.fr>
+>
+> This config allows to compile 64b kernel as PIE and to relocate it at
+> any virtual address at runtime: this paves the way to KASLR.
+> Runtime relocation is possible since relocation metadata are embedded into
+> the kernel.
+>
+> Note that relocating at runtime introduces an overhead even if the
+> kernel is loaded at the same address it was linked at and that the compiler
+> options are those used in arm64 which uses the same RELA relocation
+> format.
+>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>   arch/riscv/Kconfig              | 14 +++++++++
+>   arch/riscv/Makefile             |  7 +++--
+>   arch/riscv/kernel/efi-header.S  |  6 ++--
+>   arch/riscv/kernel/vmlinux.lds.S | 10 ++++--
+>   arch/riscv/mm/Makefile          |  4 +++
+>   arch/riscv/mm/init.c            | 54 ++++++++++++++++++++++++++++++++-
+>   6 files changed, 87 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index e2b656043abf..e0ee7ce4b2e3 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -544,6 +544,20 @@ config COMPAT
+>   
+>   	  If you want to execute 32-bit userspace applications, say Y.
+>   
+> +config RELOCATABLE
+> +	bool "Build a relocatable kernel"
+> +	depends on MMU && 64BIT && !XIP_KERNEL
+> +	help
+> +          This builds a kernel as a Position Independent Executable (PIE),
+> +          which retains all relocation metadata required to relocate the
+> +          kernel binary at runtime to a different virtual address than the
+> +          address it was linked at.
+> +          Since RISCV uses the RELA relocation format, this requires a
+> +          relocation pass at runtime even if the kernel is loaded at the
+> +          same address it was linked at.
+> +
+> +          If unsure, say N.
+> +
+>   endmenu # "Kernel features"
+>   
+>   menu "Boot options"
+> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> index 82153960ac00..97c34136b027 100644
+> --- a/arch/riscv/Makefile
+> +++ b/arch/riscv/Makefile
+> @@ -7,9 +7,12 @@
+>   #
+>   
+>   OBJCOPYFLAGS    := -O binary
+> -LDFLAGS_vmlinux :=
+> +ifeq ($(CONFIG_RELOCATABLE),y)
+> +	LDFLAGS_vmlinux += -shared -Bsymbolic -z notext -z norelro
+> +	KBUILD_CFLAGS += -fPIE
+> +endif
+>   ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
+> -	LDFLAGS_vmlinux := --no-relax
+> +	LDFLAGS_vmlinux += --no-relax
+>   	KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+>   	CC_FLAGS_FTRACE := -fpatchable-function-entry=8
+>   endif
+> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+> index 8e733aa48ba6..f7ee09c4f12d 100644
+> --- a/arch/riscv/kernel/efi-header.S
+> +++ b/arch/riscv/kernel/efi-header.S
+> @@ -33,7 +33,7 @@ optional_header:
+>   	.byte	0x02					// MajorLinkerVersion
+>   	.byte	0x14					// MinorLinkerVersion
+>   	.long	__pecoff_text_end - efi_header_end	// SizeOfCode
+> -	.long	__pecoff_data_virt_size			// SizeOfInitializedData
+> +	.long	__pecoff_data_virt_end - __pecoff_text_end	// SizeOfInitializedData
+>   	.long	0					// SizeOfUninitializedData
+>   	.long	__efistub_efi_pe_entry - _start		// AddressOfEntryPoint
+>   	.long	efi_header_end - _start			// BaseOfCode
+> @@ -91,9 +91,9 @@ section_table:
+>   		IMAGE_SCN_MEM_EXECUTE			// Characteristics
+>   
+>   	.ascii	".data\0\0\0"
+> -	.long	__pecoff_data_virt_size			// VirtualSize
+> +	.long	__pecoff_data_virt_end - __pecoff_text_end	// VirtualSize
+>   	.long	__pecoff_text_end - _start		// VirtualAddress
+> -	.long	__pecoff_data_raw_size			// SizeOfRawData
+> +	.long	__pecoff_data_raw_end - __pecoff_text_end	// SizeOfRawData
+>   	.long	__pecoff_text_end - _start		// PointerToRawData
+>   
+>   	.long	0					// PointerToRelocations
+> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+> index 4e6c88aa4d87..8be2de3be08c 100644
+> --- a/arch/riscv/kernel/vmlinux.lds.S
+> +++ b/arch/riscv/kernel/vmlinux.lds.S
+> @@ -122,9 +122,15 @@ SECTIONS
+>   		*(.sdata*)
+>   	}
+>   
+> +	.rela.dyn : ALIGN(8) {
+> +		__rela_dyn_start = .;
+> +		*(.rela .rela*)
+> +		__rela_dyn_end = .;
+> +	}
+> +
 
--- 
-An old man doll... just what I always wanted! - Clara
 
+So I realized those relocations would be better in the init section so 
+we can get rid of them at some point. So I tried the following:
+
+diff --git a/arch/riscv/kernel/vmlinux.lds.S 
+b/arch/riscv/kernel/vmlinux.lds.S
+index 7ac215467fd5..6111023a89ef 100644
+--- a/arch/riscv/kernel/vmlinux.lds.S
++++ b/arch/riscv/kernel/vmlinux.lds.S
+@@ -93,6 +93,12 @@ SECTIONS
+                 *(.rel.dyn*)
+         }
+
++       .rela.dyn : ALIGN(8) {
++               __rela_dyn_start = .;
++               *(.rela .rela*)
++               __rela_dyn_end = .;
++       }
++
+         __init_data_end = .;
+
+         . = ALIGN(8);
+@@ -119,12 +125,6 @@ SECTIONS
+                 *(.sdata*)
+         }
+
+-       .rela.dyn : ALIGN(8) {
+-               __rela_dyn_start = .;
+-               *(.rela .rela*)
+-               __rela_dyn_end = .;
+-       }
+-
+  #ifdef CONFIG_EFI
+         .pecoff_edata_padding : { BYTE(0); . = 
+ALIGN(PECOFF_FILE_ALIGNMENT); }
+         __pecoff_data_raw_end = ABSOLUTE(.);
+
+
+But then all the relocations in vmlinux end up being null:
+
+vmlinux:     file format elf64-littleriscv
+
+$ riscv64-linux-gnu-objdump -R vmlinux
+
+DYNAMIC RELOCATION RECORDS
+OFFSET           TYPE              VALUE
+0000000000000000 R_RISCV_NONE      *ABS*
+0000000000000000 R_RISCV_NONE      *ABS*
+....
+
+  I also noticed that re-linking vmlinux with the same command right 
+after works (ie, the relocations are now valid):
+
+$ riscv64-linux-gnu-objdump -R vmlinux
+
+vmlinux:     file format elf64-littleriscv
+
+DYNAMIC RELOCATION RECORDS
+OFFSET           TYPE              VALUE
+ffffffff82600718 R_RISCV_RELATIVE  *ABS*-0x000000007d9ff8e8
+ffffffff82600720 R_RISCV_RELATIVE  *ABS*-0x000000007d9ff8e8
+...
+
+Below is the command used to generate this working vmlinux:
+
+riscv64-unknown-linux-gnu-ld -melf64lriscv -z noexecstack 
+--no-warn-rwx-segments -shared -Bsymbolic -z notext -z norelro 
+--no-relax --build-id=sha1 --script=./arch/riscv/kernel/vmlinux.lds 
+-Map=vmlinux.map -o vmlinux --whole-archive vmlinux.a .vmlinux.export.o 
+init/version-timestamp.o --no-whole-archive --start-group 
+./drivers/firmware/efi/libstub/lib.a --end-group .tmp_vmlinux.kallsyms3.o
+
+I tried a lot of things, but I struggle to understand, does anyone have 
+any idea? FYI, the same problem happens with LLVM.
+
+Thanks,
+
+Alex
+
+
+>   #ifdef CONFIG_EFI
+>   	.pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
+> -	__pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
+> +	__pecoff_data_raw_end = ABSOLUTE(.);
+>   #endif
+>   
+>   	/* End of data section */
+> @@ -134,7 +140,7 @@ SECTIONS
+>   
+>   #ifdef CONFIG_EFI
+>   	. = ALIGN(PECOFF_SECTION_ALIGNMENT);
+> -	__pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
+> +	__pecoff_data_virt_end = ABSOLUTE(.);
+>   #endif
+>   	_end = .;
+>   
+> diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
+> index 2ac177c05352..b85e9e82f082 100644
+> --- a/arch/riscv/mm/Makefile
+> +++ b/arch/riscv/mm/Makefile
+> @@ -1,6 +1,10 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+>   
+>   CFLAGS_init.o := -mcmodel=medany
+> +ifdef CONFIG_RELOCATABLE
+> +CFLAGS_init.o += -fno-pie
+> +endif
+> +
+>   ifdef CONFIG_FTRACE
+>   CFLAGS_REMOVE_init.o = $(CC_FLAGS_FTRACE)
+>   CFLAGS_REMOVE_cacheflush.o = $(CC_FLAGS_FTRACE)
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 7f01c2e56efe..3862696c2ac9 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -20,6 +20,9 @@
+>   #include <linux/dma-map-ops.h>
+>   #include <linux/crash_dump.h>
+>   #include <linux/hugetlb.h>
+> +#ifdef CONFIG_RELOCATABLE
+> +#include <linux/elf.h>
+> +#endif
+>   
+>   #include <asm/fixmap.h>
+>   #include <asm/tlbflush.h>
+> @@ -146,7 +149,7 @@ static void __init print_vm_layout(void)
+>   		print_ml("kasan", KASAN_SHADOW_START, KASAN_SHADOW_END);
+>   #endif
+>   
+> -		print_ml("kernel", (unsigned long)KERNEL_LINK_ADDR,
+> +		print_ml("kernel", (unsigned long)kernel_map.virt_addr,
+>   			 (unsigned long)ADDRESS_SPACE_END);
+>   	}
+>   }
+> @@ -854,6 +857,44 @@ static __init void set_satp_mode(uintptr_t dtb_pa)
+>   #error "setup_vm() is called from head.S before relocate so it should not use absolute addressing."
+>   #endif
+>   
+> +#ifdef CONFIG_RELOCATABLE
+> +extern unsigned long __rela_dyn_start, __rela_dyn_end;
+> +
+> +static void __init relocate_kernel(void)
+> +{
+> +	Elf64_Rela *rela = (Elf64_Rela *)&__rela_dyn_start;
+> +	/*
+> +	 * This holds the offset between the linked virtual address and the
+> +	 * relocated virtual address.
+> +	 */
+> +	uintptr_t reloc_offset = kernel_map.virt_addr - KERNEL_LINK_ADDR;
+> +	/*
+> +	 * This holds the offset between kernel linked virtual address and
+> +	 * physical address.
+> +	 */
+> +	uintptr_t va_kernel_link_pa_offset = KERNEL_LINK_ADDR - kernel_map.phys_addr;
+> +
+> +	for ( ; rela < (Elf64_Rela *)&__rela_dyn_end; rela++) {
+> +		Elf64_Addr addr = (rela->r_offset - va_kernel_link_pa_offset);
+> +		Elf64_Addr relocated_addr = rela->r_addend;
+> +
+> +		if (rela->r_info != R_RISCV_RELATIVE)
+> +			continue;
+> +
+> +		/*
+> +		 * Make sure to not relocate vdso symbols like rt_sigreturn
+> +		 * which are linked from the address 0 in vmlinux since
+> +		 * vdso symbol addresses are actually used as an offset from
+> +		 * mm->context.vdso in VDSO_OFFSET macro.
+> +		 */
+> +		if (relocated_addr >= KERNEL_LINK_ADDR)
+> +			relocated_addr += reloc_offset;
+> +
+> +		*(Elf64_Addr *)addr = relocated_addr;
+> +	}
+> +}
+> +#endif /* CONFIG_RELOCATABLE */
+> +
+>   #ifdef CONFIG_XIP_KERNEL
+>   static void __init create_kernel_page_table(pgd_t *pgdir,
+>   					    __always_unused bool early)
+> @@ -1039,6 +1080,17 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+>   	BUG_ON((kernel_map.virt_addr + kernel_map.size) > ADDRESS_SPACE_END - SZ_4K);
+>   #endif
+>   
+> +#ifdef CONFIG_RELOCATABLE
+> +	/*
+> +	 * Early page table uses only one PUD, which makes it possible
+> +	 * to map PUD_SIZE aligned on PUD_SIZE: if the relocation offset
+> +	 * makes the kernel cross over a PUD_SIZE boundary, raise a bug
+> +	 * since a part of the kernel would not get mapped.
+> +	 */
+> +	BUG_ON(PUD_SIZE - (kernel_map.virt_addr & (PUD_SIZE - 1)) < kernel_map.size);
+> +	relocate_kernel();
+> +#endif
+> +
+>   	apply_early_boot_alternatives();
+>   	pt_ops_set_early();
+>   
