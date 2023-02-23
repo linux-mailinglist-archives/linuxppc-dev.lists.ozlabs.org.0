@@ -1,51 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FAB6A0443
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 09:57:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA366A044B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 09:59:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMn3H3PNmz3cNN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 19:57:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMn521KdNz3cL8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 19:59:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GicTjADw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NXGuFKE1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMn2M3zbWz3c63
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 19:56:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMn454MQwz3bZl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 19:58:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GicTjADw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NXGuFKE1;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PMn2G21kNz4x7j;
-	Thu, 23 Feb 2023 19:56:38 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PMn433fr0z4x82;
+	Thu, 23 Feb 2023 19:58:11 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1677142599;
-	bh=dVU6A67pHBa4R69qFtAyoB1kpoC8kE9avrpf4rmf5Ew=;
+	s=201909; t=1677142691;
+	bh=nCpFZnhvEThJfKDD4KV4npfc4XDyPq44O0sgRTBzi5s=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GicTjADwu19QiNQtSftsopmG71q+HnjregXjDHqBaRiWOwY7IpHAhLuNV/Sc+fUen
-	 FY2mL+7uT7zQZ6qfLprABzp2AIHQ/q81yCGh5wUR29HkTfSDhMbNfWzQhPxW6j15E5
-	 hhu8iqkEZ3OhTT6Z7QMGiScZd7IQaTcoWGWiJx5RZZ1Kv12hkm4gDxxl2q6ioJhgQ5
-	 PAKzImdO+qCNyyBYd8Ca1YZkqOboJPgbSsjmq3I6HOMTQElft40nNc0tJzI4lR1LUn
-	 fJujwmY90SX9GjWwpSATwt4uP+yu5tuu0rZEYofAh9C4UG3+Nv40jfpTuLiCxBlUqm
-	 +cTQcN+Np19Cw==
+	b=NXGuFKE1tPngr+TW6GzLjzZxnEvcSr6jtBdEtsuMSPMLlaPSI0Nx3hVo3ez2j4lLX
+	 qojUS6P3T9tXflarxK5tFbvOUYF8iWRUiODNmBNI0lhPzw0OyTnQ/BS2SQCMWtUIbM
+	 8l8Io4NJ3Xfh5glKrzLKBvje9aJ74lkEZDsLIMdS1g6n8Zqqp+cn33JZvHZUnxNQKR
+	 6VsoA/Yk1aC/PBWqDVu0l1Qe0WPKZsxsJC5UuZ90+gWz38vA+Fu47HU/hSgcT6an+t
+	 agCluqhB8qyUt7lXpDtkc2XqvLO5HIEU7JwunivyOlg7JCrOmExzDcaRZuDAMb9kZj
+	 57Ug/zokqGpNw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] macintosh: via-pmu-led: *********************************
-In-Reply-To: <20230223014151.19270-1-rdunlap@infradead.org>
-References: <20230223014151.19270-1-rdunlap@infradead.org>
-Date: Thu, 23 Feb 2023 19:56:36 +1100
-Message-ID: <877cw8bvzv.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Pali =?utf-8?Q?Roh?=
+ =?utf-8?Q?=C3=A1r?=
+ <pali@kernel.org>
+Subject: Re: [PATCH v4 00/17] powerpc/85xx: p2020: Create one unified
+ machine description
+In-Reply-To: <ad8e4adc-2efb-d93e-1221-3a829b454edf@csgroup.eu>
+References: <cover.1677076552.git.christophe.leroy@csgroup.eu>
+ <20230222182232.uiiwy5pd5n5xc5kl@pali>
+ <ad8e4adc-2efb-d93e-1221-3a829b454edf@csgroup.eu>
+Date: Thu, 23 Feb 2023 19:58:11 +1100
+Message-ID: <874jrcbvx8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,46 +63,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, Elimar Riesebieter <riesebie@lxtec.de>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Randy Dunlap <rdunlap@infradead.org> writes:
-> LEDS_TRIGGER_DISK depends on ATA, so selecting LEDS_TRIGGER_DISK
-> when ATA is not set/enabled causes a Kconfig warning:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 22/02/2023 =C3=A0 19:22, Pali Roh=C3=A1r a =C3=A9crit=C2=A0:
+>> On Wednesday 22 February 2023 15:42:47 Christophe Leroy wrote:
+>>> This patch series unifies all P2020 boards and machine descriptions into
+>>> one generic unified P2020 machine description. With this generic machine
+>>> description, kernel can boot on any P2020-based board with correct DTS
+>>> file.
+>>>
+>>> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
+>>> Kernel during booting correctly detects P2020 and prints:
+>>> [    0.000000] Using Freescale P2020 machine description
+>>>
+>>> Changes in v4:
+>>> * Added several preparatory cleanup patchs
+>>> * Minimised churn by not duplicating helpers at the first place
+>>> * Split main patch in two
+>>> * Dropped patchs 1 and 2
+>>> * Untested beyond basic build test
+>>=20
+>> Changes looks good. I'm happy with them. You can add my:
+>>=20
+>> Reviewed-by: Pali Roh=C3=A1r <pali@kernel.org>
 >
-> WARNING: unmet direct dependencies detected for LEDS_TRIGGER_DISK
->   Depends on [n]: NEW_LEDS [=y] && LEDS_TRIGGERS [=y] && ATA [=n]
->   Selected by [y]:
->   - ADB_PMU_LED_DISK [=y] && MACINTOSH_DRIVERS [=y] && ADB_PMU_LED [=y] && LEDS_CLASS [=y]
+> Thanks.
 >
-> Fix this by making ADB_PMU_LED_DISK depend on ATA.
+> However this series doesn't have the shape for getting merged yet, I've=20
+> been very quick with the additional patches descriptions and I have not=20
+> revisited the descriptions of pre-existing patches.
+>
+> I was expecting you to take over. By the way there's no hurry I guess,=20
+> we are already in the middle of the merge window, Michael usually=20
+> doesn't take any more non-fixes patches once the merge window is open,=20
+> so that series will go in 6.4
 
-Should it just depend on LEDS_TRIGGER_DISK ?
+Correct.
+
+I'll open next for new patches around 6.3-rc2, so in ~2.5 weeks from now.
 
 cheers
-
-> Seen on both PPC32 and PPC64.
->
-> Fixes: 0e865a80c135 ("macintosh: Remove dependency on IDE_GD_ATA if ADB_PMU_LED_DISK is selected")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Elimar Riesebieter <riesebie@lxtec.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> ---
->  drivers/macintosh/Kconfig |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff -- a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
-> --- a/drivers/macintosh/Kconfig
-> +++ b/drivers/macintosh/Kconfig
-> @@ -86,6 +86,7 @@ config ADB_PMU_LED
->  
->  config ADB_PMU_LED_DISK
->  	bool "Use front LED as DISK LED by default"
-> +	depends on ATA
->  	depends on ADB_PMU_LED
->  	depends on LEDS_CLASS
->  	select LEDS_TRIGGERS
