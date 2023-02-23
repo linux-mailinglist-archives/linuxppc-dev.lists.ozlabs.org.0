@@ -2,52 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9E86A019D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 04:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F176A01A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 05:00:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMfH93NtBz3cK5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 14:52:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMfSH5wQKz3cK6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 15:00:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fHTt5AnV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=V4Q5l6WL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e33; helo=mail-vs1-xe33.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=V4Q5l6WL;
+	dkim-atps=neutral
+Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMfGC4TH8z3bhH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 14:51:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fHTt5AnV;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PMfG55sTQz4x7j;
-	Thu, 23 Feb 2023 14:51:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1677124286;
-	bh=Jk12t1d/8CCUAhLuiUFLJlrM8fox37bxK3nSPYln3Jg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fHTt5AnV5s70i67q52BaKCDK25ED4ijqU7oaFL/XqxqbXHrW7SC0u37PocupIQjBQ
-	 t/bWkmDSsHBxZK9/KqXMw45i4aRRSkZkL7Nzn0THlIiSa1zr7DlRzy/fiAEVap2EF3
-	 J1yYnD+o3bP3ufaGayNeGo6YaEKLR9cOaLuKO0rqeXCuNR9d7HvFhWYUVwElkGY+y4
-	 n9XGjnGRLax8YgipEm3ZwJNHgoSxuYBpJNSV0m+5bm162sjTsbsLYe/dqrfeX/eJzN
-	 aimYhlDQivOf8/DrRo5YPhQWdOiezwV9Vc1/fUwEvDXv+gSbM1nvlGM5vYVxX8kAEg
-	 BCNqSGuV6WTMQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: paulmck@kernel.org, Kautuk Consul <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] arch/powerpc/include/asm/barrier.h: redefine rmb and
- wmb to  lwsync
-In-Reply-To: <20230222174719.GA1400185@paulmck-ThinkPad-P17-Gen-1>
-References: <20230222090344.189270-1-kconsul@linux.vnet.ibm.com>
- <20230222174719.GA1400185@paulmck-ThinkPad-P17-Gen-1>
-Date: Thu, 23 Feb 2023 14:51:25 +1100
-Message-ID: <87fsaxavk2.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMfRP0fsGz3bhH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 14:59:27 +1100 (AEDT)
+Received: by mail-vs1-xe33.google.com with SMTP id f31so13018713vsv.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Feb 2023 19:59:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1677124763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H32nxJKYLFgX94VN5oR58FHUZwCnE+gpSinuTrZzCc0=;
+        b=V4Q5l6WLAj/WwxnVZRzvheA/iOME8vS7OMCgLQWsVt/tZ1p+FehahQQjYkfBEwnn5l
+         TKqvMJ4ouOnvNtwLpkdvRKTTNQhJdK8GWjwAgSM5gu2EhnU0opER4l31mwe55domXE0w
+         Hh/RGdOf2a1K2z7Re8lyE0yCVzCTzILxkZUcQXewKdfJ3nDh+Cx8jTMdJZGQX0pZkZUY
+         4CAifutvKd9vpOwllaoBeMHWTAZ8SHL+wtWN3Q2twnpq3HAsmolU0vVpaO0k7gzLbvmc
+         s3sDmxNfwKOsOYTnd2jaudx9jqxs70BYLlpqGNm2hwnZxrqrv9nxqoKIAVBvW5yE8AKf
+         bHlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677124763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H32nxJKYLFgX94VN5oR58FHUZwCnE+gpSinuTrZzCc0=;
+        b=eXSR2n7nV4YDE9ulLeMsePQPMzHNCBxfuKXLCNQg5xcvp4+YzlJ/YzL/3mVhyaPEQE
+         +XsJNYimNzmQ1X8AEaKZ9iYy087sSGZ69FSECMM7S6U98Vg5+vV05sDGJaCWpyTB6M0Y
+         cnwxkVRly9TlmeGknnPtKqGELMr4l2uf/tuA6FiAMhdoayAbPc6HkOU2pyr3Ww2rrK0e
+         +txfyyUGy0uoTuOC63vK3RkYnm2jPnWMADLZ/wOvNpNG356m9EZ2ErZoKgZMO2cQBXNF
+         c2JD0mw7qZPOdH+ZPO3rX5eedBZPBZfEQTmgdTngS6ohV+qihYKw4s0UiibcycVHUYFD
+         NbUA==
+X-Gm-Message-State: AO0yUKWsRNSx5ldtkGfWCVkpuxIG8JMjGKMREfoJtnBvel7mHMM+Ajw3
+	CXZh/fkH5cwFZhl5DXf1wYbqUisdtyuvDPcenFcX7g==
+X-Google-Smtp-Source: AK7set8d4Kt8nwIvSPEaytrIpcGaTkhsSfI3kbZZEBvM/1NXFxRlVl/iWmVtGErpsTF5b/RMhuHUh6LwD5LpoKFSFjM=
+X-Received: by 2002:a1f:aa41:0:b0:412:948:73ff with SMTP id
+ t62-20020a1faa41000000b00412094873ffmr143108vke.13.1677124763494; Wed, 22 Feb
+ 2023 19:59:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-4-yuzhao@google.com>
+ <CAOUHufYSx-edDVCZSauOzwOJG6Av0++0TFT4ko8qWq7vLi_mjw@mail.gmail.com> <86lekwy8d7.wl-maz@kernel.org>
+In-Reply-To: <86lekwy8d7.wl-maz@kernel.org>
+From: Yu Zhao <yuzhao@google.com>
+Date: Wed, 22 Feb 2023 20:58:47 -0700
+Message-ID: <CAOUHufbbs2gG+DPvSOw_N_Kx7FWdZvpdJUvLzko-BDQ8vfd6Xg@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 3/5] kvm/arm64: add kvm_arch_test_clear_young()
+To: Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,99 +76,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Paul,
-
-"Paul E. McKenney" <paulmck@kernel.org> writes:
-> On Wed, Feb 22, 2023 at 02:33:44PM +0530, Kautuk Consul wrote:
->> A link from ibm.com states:
->> "Ensures that all instructions preceding the call to __lwsync
->>  complete before any subsequent store instructions can be executed
->>  on the processor that executed the function. Also, it ensures that
->>  all load instructions preceding the call to __lwsync complete before
->>  any subsequent load instructions can be executed on the processor
->>  that executed the function. This allows you to synchronize between
->>  multiple processors with minimal performance impact, as __lwsync
->>  does not wait for confirmation from each processor."
->> 
->> Thats why smp_rmb() and smp_wmb() are defined to lwsync.
->> But this same understanding applies to parallel pipeline
->> execution on each PowerPC processor.
->> So, use the lwsync instruction for rmb() and wmb() on the PPC
->> architectures that support it.
->> 
->> Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
->> ---
->>  arch/powerpc/include/asm/barrier.h | 7 +++++++
->>  1 file changed, 7 insertions(+)
->> 
->> diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
->> index b95b666f0374..e088dacc0ee8 100644
->> --- a/arch/powerpc/include/asm/barrier.h
->> +++ b/arch/powerpc/include/asm/barrier.h
->> @@ -36,8 +36,15 @@
->>   * heavy-weight sync, so smp_wmb() can be a lighter-weight eieio.
->>   */
->>  #define __mb()   __asm__ __volatile__ ("sync" : : : "memory")
->> +
->> +/* The sub-arch has lwsync. */
->> +#if defined(CONFIG_PPC64) || defined(CONFIG_PPC_E500MC)
->> +#define __rmb() __asm__ __volatile__ ("lwsync" : : : "memory")
->> +#define __wmb() __asm__ __volatile__ ("lwsync" : : : "memory")
+On Fri, Feb 17, 2023 at 2:00=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
+:
 >
-> Hmmm...
+> On Fri, 17 Feb 2023 04:21:28 +0000,
+> Yu Zhao <yuzhao@google.com> wrote:
+> >
+> > On Thu, Feb 16, 2023 at 9:12 PM Yu Zhao <yuzhao@google.com> wrote:
+> > >
+> > > This patch adds kvm_arch_test_clear_young() for the vast majority of
+> > > VMs that are not pKVM and run on hardware that sets the accessed bit
+> > > in KVM page tables.
 >
-> Does the lwsync instruction now order both cached and uncached accesses?
+> I'm really interested in how you can back this statement. 90% of the
+> HW I have access to is not FEAT_HWAFDB capable, either because it
+> predates the feature or because the feature is too buggy to be useful.
 
-No.
+This is my expericen too -- most devices are pre v8.2.
 
-> Or have there been changes so that smp_rmb() and smp_wmb() get this
-> definition, while rmb() and wmb() still get the sync instruction?
+> Do you have numbers?
 
-No.
+Let's do a quick market survey by segment. The following only applies
+to ARM CPUs:
 
-They come from:
+1. Phones: none of the major Android phone vendors sell phones running
+VMs; no other major Linux phone vendors.
+2. Laptops: only a very limited number of Chromebooks run VMs, namely
+ACRVM. No other major Linux laptop vendors.
+3. Desktops: no major Linux desktop vendors.
+4. Embedded/IoT/Router: no major Linux vendors run VMs (Android Auto
+can be a VM guest on QNX host).
+5. Cloud: this is where the vast majority VMs come from. Among the
+vendors available to the general public, Ampere is the biggest player.
+Here [1] is a list of its customers. The A-bit works well even on its
+EVT products (Neoverse cores).
 
-include/asm-generic/barrier.h:#define rmb()        do { kcsan_rmb(); __rmb(); } while (0)
-include/asm-generic/barrier.h:#define wmb()        do { kcsan_wmb(); __wmb(); } while (0)
+[1] https://en.wikipedia.org/wiki/Ampere_Computing
 
-> (Not seeing this, but I could easily be missing something.)
+> > > It relies on two techniques, RCU and cmpxchg, to safely test and clea=
+r
+> > > the accessed bit without taking the MMU lock. The former protects KVM
+> > > page tables from being freed while the latter clears the accessed bit
+> > > atomically against both the hardware and other software page table
+> > > walkers.
+> > >
+> > > Signed-off-by: Yu Zhao <yuzhao@google.com>
+> > > ---
+> > >  arch/arm64/include/asm/kvm_host.h       |  7 +++
+> > >  arch/arm64/include/asm/kvm_pgtable.h    |  8 +++
+> > >  arch/arm64/include/asm/stage2_pgtable.h | 43 ++++++++++++++
+> > >  arch/arm64/kvm/arm.c                    |  1 +
+> > >  arch/arm64/kvm/hyp/pgtable.c            | 51 ++--------------
+> > >  arch/arm64/kvm/mmu.c                    | 77 +++++++++++++++++++++++=
++-
+> > >  6 files changed, 141 insertions(+), 46 deletions(-)
+> >
+> > Adding Marc and Will.
+> >
+> > Can you please add other interested parties that I've missed?
+>
+> The MAINTAINERS file has it all:
+>
+> KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)
+> M:      Marc Zyngier <maz@kernel.org>
+> M:      Oliver Upton <oliver.upton@linux.dev>
+> R:      James Morse <james.morse@arm.com>
+> R:      Suzuki K Poulose <suzuki.poulose@arm.com>
+> R:      Zenghui Yu <yuzenghui@huawei.com>
+> L:      kvmarm@lists.linux.dev
+>
+> May I suggest that you repost your patch and Cc the interested
+> parties yourself? I guess most folks will want to see this in context,
+> and not as a random, isolated change with no rationale.
 
-You are correct, the patch is wrong because it fails to account for IO
-accesses.
-
-Kautuk, I'm not sure what motivated you to look at these barriers, was
-it just the documentation you linked to?
-
-Maybe we need some better documentation in the kernel explaining why we
-use the barriers we do?
-
-Although there's already a pretty decent comment above the definitions,
-but maybe it needs further clarification:
-
-  /*
-   * Memory barrier.
-   * The sync instruction guarantees that all memory accesses initiated
-   * by this processor have been performed (with respect to all other
-   * mechanisms that access memory).  The eieio instruction is a barrier
-   * providing an ordering (separately) for (a) cacheable stores and (b)
-   * loads and stores to non-cacheable memory (e.g. I/O devices).
-   *
-   * mb() prevents loads and stores being reordered across this point.
-   * rmb() prevents loads being reordered across this point.
-   * wmb() prevents stores being reordered across this point.
-   *
-   * *mb() variants without smp_ prefix must order all types of memory
-   * operations with one another. sync is the only instruction sufficient
-   * to do this.
-   *
-   * For the smp_ barriers, ordering is for cacheable memory operations
-   * only. We have to use the sync instruction for smp_mb(), since lwsync
-   * doesn't order loads with respect to previous stores.  Lwsync can be
-   * used for smp_rmb() and smp_wmb().
-
-
-cheers
+This clarified it. Thanks. (I was hesitant to spam people with the
+entire series containing changes to other architectures.)
