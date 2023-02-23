@@ -1,51 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF54D6A0548
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 10:52:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8406A0564
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 10:55:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMpGt4HB1z3cbV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 20:52:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMpLB6zMBz3cbV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 20:55:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YKN0HiTB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=6rqEsmJo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YKN0HiTB;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=6rqEsmJo;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMpG021Rzz3bZx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 20:51:52 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 666E5B8198D;
-	Thu, 23 Feb 2023 09:51:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE07EC433EF;
-	Thu, 23 Feb 2023 09:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1677145908;
-	bh=00vV012v5IGFYupEfY8cRFX6H7hj6D67NRk/FGmf4tA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YKN0HiTB8aCX3lOBp4YzZBOc2xpCFZlbfBq3sS4elxzCo2DgNpiZvRfAWw0EEZPsY
-	 1Of0ObePM7oOGZSXHavj/fw/9VtCuHNTRtjKVOIOkZsnPDjlBnZOMH/qYnzeemOMYn
-	 QCvYeMdiLvlizuKv6Sq3UBy1YChubHjmOCkJD0iI=
-Date: Thu, 23 Feb 2023 10:51:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Tom Saeger <tom.saeger@oracle.com>
-Subject: Re: [PATCH 5.15 v2 1/5] arch: fix broken BuildID for arm64 and riscv
-Message-ID: <Y/c3MSvnN4DcvzSx@kroah.com>
-References: <20230210-tsaeger-upstream-linux-stable-5-15-v2-0-6c68622745e9@oracle.com>
- <20230210-tsaeger-upstream-linux-stable-5-15-v2-1-6c68622745e9@oracle.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMpKF1K9mz3bWw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 20:54:40 +1100 (AEDT)
+Received: by mail-wm1-x331.google.com with SMTP id p26so8273194wmc.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 01:54:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mAI7GZiBb7iDC4DRNXr8MXcTGzYlBwIWTXO3a37K9fA=;
+        b=6rqEsmJobKimBOx+ObGs4Y9oYCoGGA+7PUJSCUc+XzhAJr7k8trhGNeL9l///zHG9h
+         zKi4GFdApLZMJxwwGKyAK5T4vZVP0aQ3XXyt/OWPp5oueU3BzBJzSR5QoLC+/Xx2iJgz
+         5hm79+32XzmlSgEMuCRgCF6jE20gfyjKVSWE2hFVc6aKlMZQREWTRqXyzaVmSBj/MhzH
+         AXlVDuu21E6Hjr/kwbOkk278Lu43ZitZTQ7OHZU1h8q5OpD5tJY9ufRMnPPJf2Rq79nz
+         v4bZ2eQSQps7BpX5yAyoX5mS+40xRdAoLwhab6GQ6F1yPaND58wp3xipYKvUJEcT++Q8
+         E7ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mAI7GZiBb7iDC4DRNXr8MXcTGzYlBwIWTXO3a37K9fA=;
+        b=O4gnocaB91fP7bDaG55++XRGGA6fLltOUDxR0TjLV6V/tMav2qinz3Ka9MF9BK/V/H
+         WZd7PFVUq+pq/2TRx5/j7/UgqXAUtDhktUL4sERLzTRJwehzGuX+LdRrMtHncFZ7hcI/
+         AGSkVxXTqBMCrsjOkfHRNp13QzY/rEiBs+bFIDDSVxb3Mi+hg3up6hlHIntajFrzbFPz
+         TEKq2Ik8aDiy2K4jZ/9l6aQVZtREc0lYMqjGLtjaAFeOU8MRLItB032a2zAzKrw8iEqL
+         HupKm0bne9GM1WTMFoQDGFuyXuKhFz726NrUmue+5UxsRng8lmZzep1Fyctu1nbZERCW
+         19QA==
+X-Gm-Message-State: AO0yUKV6xpWXTs89hGC5mc3bBeRoKON8Upi95At6sCJimzXDJ0vrx9HV
+	auT+5z2td91srLLuuvCTCSpOkz5oNqzbq0+wlb+oSQ==
+X-Google-Smtp-Source: AK7set+bh83ESZvs/5JP0HBfjTnQ76DE1v1RkcKyYbYV7gCfY3t7LNoC9ir4Jaga+QNOEzC6TCzSn38PMw2DLd3UjM4=
+X-Received: by 2002:a05:600c:3b9c:b0:3df:df03:45be with SMTP id
+ n28-20020a05600c3b9c00b003dfdf0345bemr826148wms.7.1677146076791; Thu, 23 Feb
+ 2023 01:54:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230210-tsaeger-upstream-linux-stable-5-15-v2-1-6c68622745e9@oracle.com>
+References: <20230214074925.228106-1-alexghiti@rivosinc.com>
+ <20230214074925.228106-4-alexghiti@rivosinc.com> <Y+zXIgwO5wteLQZ5@shell.armlinux.org.uk>
+ <f3e1585c-0d9d-4709-9b21-74a63d8cc9ac@app.fastmail.com>
+In-Reply-To: <f3e1585c-0d9d-4709-9b21-74a63d8cc9ac@app.fastmail.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+Date: Thu, 23 Feb 2023 10:54:26 +0100
+Message-ID: <CAHVXubgsvjxGbgM6AcxfsHDsHT0iL2pAemGMr5t8KVLKiqC3RA@mail.gmail.com>
+Subject: Re: [PATCH v3 03/24] arm: Remove COMMAND_LINE_SIZE from uapi
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,43 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-arch@vger.kernel.org, Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Dennis Gilmore <dennis@ausil.us>, Naresh Kamboju <naresh.kamboju@linaro.org>, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>, Nathan Chancellor <nathan@kernel.org>, linux-riscv@lists.infradead.org, stable@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Palmer Dabbelt <palmer@rivosinc.com>, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian 
+ Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 10, 2023 at 01:18:40PM -0700, Tom Saeger wrote:
-> From: Masahiro Yamada <masahiroy@kernel.org>
-> 
-> commit 99cb0d917ffa1ab628bb67364ca9b162c07699b1 upstream.
-> 
-> Dennis Gilmore reports that the BuildID is missing in the arm64 vmlinux
-> since commit 994b7ac1697b ("arm64: remove special treatment for the
-> link order of head.o").
-> 
-> The issue is that the type of .notes section, which contains the BuildID,
-> changed from NOTES to PROGBITS.
-> 
-> Ard Biesheuvel figured out that whichever object gets linked first gets
-> to decide the type of a section. The PROGBITS type is the result of the
-> compiler emitting .note.GNU-stack as PROGBITS rather than NOTE.
-> 
-> While Ard provided a fix for arm64, I want to fix this globally because
-> the same issue is happening on riscv since commit 2348e6bf4421 ("riscv:
-> remove special treatment for the link order of head.o"). This problem
-> will happen in general for other architectures if they start to drop
-> unneeded entries from scripts/head-object-list.txt.
-> 
-> Discard .note.GNU-stack in include/asm-generic/vmlinux.lds.h.
-> 
-> Link: https://lore.kernel.org/lkml/CAABkxwuQoz1CTbyb57n0ZX65eSYiTonFCU8-LCQc=74D=xE=rA@mail.gmail.com/
-> Fixes: 994b7ac1697b ("arm64: remove special treatment for the link order of head.o")
-> Fixes: 2348e6bf4421 ("riscv: remove special treatment for the link order of head.o")
+Hi Arnd,
 
-Why are we adding a commit to 5.15.y that fixes an issue that only
-showed up in 6.1.y?
+On Wed, Feb 15, 2023 at 2:05 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Wed, Feb 15, 2023, at 13:59, Russell King (Oracle) wrote:
+> > On Tue, Feb 14, 2023 at 08:49:04AM +0100, Alexandre Ghiti wrote:
+> >> From: Palmer Dabbelt <palmer@rivosinc.com>
+> >>
+> >> As far as I can tell this is not used by userspace and thus should not
+> >> be part of the user-visible API.
+> >>
+> >> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> >
+> > Looks good to me. What's the merge plan for this?
+>
+> The easiest way is probably if I merge it through the whole
+> series through the asm-generic tree. The timing is a bit
+> unfortunate as we're just ahead of the merge window, so unless
+> we really need this in 6.3, I'd suggest that Alexandre resend
+> the series to me in two weeks with the Acks added in and I'll
+> pick it up for 6.4.
 
-We need a good comment somewhere saying why this is needed...
+Sorry for the response delay, I was waiting to see if Palmer would
+merge my KASAN patchset in 6.3 (which he does): I have to admit that
+fixing the command line size + the KASAN patchset would allow 6.3 to
+run on syzkaller, which would be nice.
 
-thanks,
+If I don't see this merged in 6.3, I'll send another round as you
+suggested in 1 week now :)
 
-greg k-h
+Thanks!
+
+Alex
+
+>
+>      Arnd
