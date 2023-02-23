@@ -1,57 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA366A044B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 09:59:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A25F6A0469
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 10:04:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMn521KdNz3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 19:59:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMnBq3kZxz3cN5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 20:04:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NXGuFKE1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sxh03O33;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMn454MQwz3bZl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 19:58:13 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NXGuFKE1;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sxh03O33;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PMn433fr0z4x82;
-	Thu, 23 Feb 2023 19:58:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1677142691;
-	bh=nCpFZnhvEThJfKDD4KV4npfc4XDyPq44O0sgRTBzi5s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NXGuFKE1tPngr+TW6GzLjzZxnEvcSr6jtBdEtsuMSPMLlaPSI0Nx3hVo3ez2j4lLX
-	 qojUS6P3T9tXflarxK5tFbvOUYF8iWRUiODNmBNI0lhPzw0OyTnQ/BS2SQCMWtUIbM
-	 8l8Io4NJ3Xfh5glKrzLKBvje9aJ74lkEZDsLIMdS1g6n8Zqqp+cn33JZvHZUnxNQKR
-	 6VsoA/Yk1aC/PBWqDVu0l1Qe0WPKZsxsJC5UuZ90+gWz38vA+Fu47HU/hSgcT6an+t
-	 agCluqhB8qyUt7lXpDtkc2XqvLO5HIEU7JwunivyOlg7JCrOmExzDcaRZuDAMb9kZj
-	 57Ug/zokqGpNw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Pali =?utf-8?Q?Roh?=
- =?utf-8?Q?=C3=A1r?=
- <pali@kernel.org>
-Subject: Re: [PATCH v4 00/17] powerpc/85xx: p2020: Create one unified
- machine description
-In-Reply-To: <ad8e4adc-2efb-d93e-1221-3a829b454edf@csgroup.eu>
-References: <cover.1677076552.git.christophe.leroy@csgroup.eu>
- <20230222182232.uiiwy5pd5n5xc5kl@pali>
- <ad8e4adc-2efb-d93e-1221-3a829b454edf@csgroup.eu>
-Date: Thu, 23 Feb 2023 19:58:11 +1100
-Message-ID: <874jrcbvx8.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMn9v3x8pz3bfj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 20:03:15 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AF3B6615B5;
+	Thu, 23 Feb 2023 09:03:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE73C433EF;
+	Thu, 23 Feb 2023 09:03:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1677142991;
+	bh=A6FgptrrYUoOz1tvlLQnDnjqNkLOWOvmXcwfXX55TRM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Sxh03O33j2ejJ4jpoNj45YBc0t3nTQjBMx6/t1CIuoWEq6bq6RJ5MbkMXBaziU7XB
+	 jBiG0NPfBzCsygzhwl7U70Ww5RfkjSnt+X2BTV6rjwgAaGTiYqUcba9/0pT+io/mCD
+	 qZjDVFRaRc9HIBivB+ue1JGVXAtvvm1UbhzqMGcLED1yhWHHCkwegOuY4HGxgzRiCg
+	 f0Bo1SH/aireTElW18d3BAsiBz7JJnD51MrXyy0cHzXaSpbqcVGW4LFW+QXo/O27ev
+	 dYaWcQfX+BrgYmW9lN4LpflDeWLq0Uvns/HwiYnDQcTdPzrAi97W/g4IH1TOpboAVX
+	 U2MKuHMptf1ug==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1pV7VM-00CaNM-TI;
+	Thu, 23 Feb 2023 09:03:08 +0000
+Date: Thu, 23 Feb 2023 09:03:08 +0000
+Message-ID: <86a614ycs3.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH mm-unstable v1 3/5] kvm/arm64: add kvm_arch_test_clear_young()
+In-Reply-To: <CAOUHufbbs2gG+DPvSOw_N_Kx7FWdZvpdJUvLzko-BDQ8vfd6Xg@mail.gmail.com>
+References: <20230217041230.2417228-1-yuzhao@google.com>
+	<20230217041230.2417228-4-yuzhao@google.com>
+	<CAOUHufYSx-edDVCZSauOzwOJG6Av0++0TFT4ko8qWq7vLi_mjw@mail.gmail.com>
+	<86lekwy8d7.wl-maz@kernel.org>
+	<CAOUHufbbs2gG+DPvSOw_N_Kx7FWdZvpdJUvLzko-BDQ8vfd6Xg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: yuzhao@google.com, will@kernel.org, corbet@lwn.net, michael@michaellarabel.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mm@google.com, akpm@linux-foundation.org, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,46 +76,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Michael Larabel <michael@michaellarabel.com>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 22/02/2023 =C3=A0 19:22, Pali Roh=C3=A1r a =C3=A9crit=C2=A0:
->> On Wednesday 22 February 2023 15:42:47 Christophe Leroy wrote:
->>> This patch series unifies all P2020 boards and machine descriptions into
->>> one generic unified P2020 machine description. With this generic machine
->>> description, kernel can boot on any P2020-based board with correct DTS
->>> file.
->>>
->>> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
->>> Kernel during booting correctly detects P2020 and prints:
->>> [    0.000000] Using Freescale P2020 machine description
->>>
->>> Changes in v4:
->>> * Added several preparatory cleanup patchs
->>> * Minimised churn by not duplicating helpers at the first place
->>> * Split main patch in two
->>> * Dropped patchs 1 and 2
->>> * Untested beyond basic build test
->>=20
->> Changes looks good. I'm happy with them. You can add my:
->>=20
->> Reviewed-by: Pali Roh=C3=A1r <pali@kernel.org>
->
-> Thanks.
->
-> However this series doesn't have the shape for getting merged yet, I've=20
-> been very quick with the additional patches descriptions and I have not=20
-> revisited the descriptions of pre-existing patches.
->
-> I was expecting you to take over. By the way there's no hurry I guess,=20
-> we are already in the middle of the merge window, Michael usually=20
-> doesn't take any more non-fixes patches once the merge window is open,=20
-> so that series will go in 6.4
+On Thu, 23 Feb 2023 03:58:47 +0000,
+Yu Zhao <yuzhao@google.com> wrote:
+>=20
+> On Fri, Feb 17, 2023 at 2:00=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > On Fri, 17 Feb 2023 04:21:28 +0000,
+> > Yu Zhao <yuzhao@google.com> wrote:
+> > >
+> > > On Thu, Feb 16, 2023 at 9:12 PM Yu Zhao <yuzhao@google.com> wrote:
+> > > >
+> > > > This patch adds kvm_arch_test_clear_young() for the vast majority of
+> > > > VMs that are not pKVM and run on hardware that sets the accessed bit
+> > > > in KVM page tables.
+> >
+> > I'm really interested in how you can back this statement. 90% of the
+> > HW I have access to is not FEAT_HWAFDB capable, either because it
+> > predates the feature or because the feature is too buggy to be useful.
+>=20
+> This is my expericen too -- most devices are pre v8.2.
 
-Correct.
+And yet you have no issue writing the above. Puzzling.
 
-I'll open next for new patches around 6.3-rc2, so in ~2.5 weeks from now.
+>=20
+> > Do you have numbers?
+>=20
+> Let's do a quick market survey by segment. The following only applies
+> to ARM CPUs:
+>=20
+> 1. Phones: none of the major Android phone vendors sell phones running
+> VMs; no other major Linux phone vendors.
 
-cheers
+Maybe you should have a reality check and look at what your own
+employer is shipping.
+
+> 2. Laptops: only a very limited number of Chromebooks run VMs, namely
+> ACRVM. No other major Linux laptop vendors.
+
+Again, your employer disagree.
+
+> 3. Desktops: no major Linux desktop vendors.
+
+My desktop disagree (I send this from my arm64 desktop VM ).
+
+> 4. Embedded/IoT/Router: no major Linux vendors run VMs (Android Auto
+> can be a VM guest on QNX host).
+
+This email is brought to you via a router VM on an arm64 box.
+
+> 5. Cloud: this is where the vast majority VMs come from. Among the
+> vendors available to the general public, Ampere is the biggest player.
+> Here [1] is a list of its customers. The A-bit works well even on its
+> EVT products (Neoverse cores).
+
+Just the phone stuff dwarfs the number of cloud hosts.
+
+Hopefully your patches are better than your market analysis...
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
