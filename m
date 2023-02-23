@@ -1,73 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBEC6A0CA4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 16:12:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658DF6A0D53
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 16:52:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMxMn68Dcz3cgp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 02:12:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMyFc290dz3cdT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 02:52:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F0wxq48L;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ot7dJ9+w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F0wxq48L;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ot7dJ9+w;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMxLp3jcJz3bhH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 02:11:30 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E84FB6172A
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 15:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CA516C433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 15:11:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1677165086;
-	bh=+L7hw4S1b2ibN/wFal3hBVJHPU6yLPPiv3L9J/083og=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=F0wxq48LWVnAW18lW0FmFNR/HPCmFpRNc2octlN5m+g0+MmWVp7mjNgqYxRuZWp/5
-	 IaVYk0TlspRXgO9a3TKJvk7+7caCnKz20UAfly2a2/OM9ZXOweZXaY272HcsaIqS4A
-	 z+Zwlxs+0T+r/A59TyCR/2r2p9I167AKwOfKTRNzdThkq+mz40kRbLbtkOIqHjKDRW
-	 sjIX8FcxLH9xVLA+bFiZp/s06zC9v7fWlD0v1qOSMVGshLFsovEmRz01J108OHW+FQ
-	 7KFTsRqaDk8J6s7tYLXXxvZvjIKOsc692tEeubgohMFDOiozg53CG77D0/ypP1jN8F
-	 eHAMtUMKnHWNw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id AC94CC43142; Thu, 23 Feb 2023 15:11:26 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216095] sysfs: cannot create duplicate filename
- '/devices/platform/of-display'
-Date: Thu, 23 Feb 2023 15:11:26 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: OBSOLETE
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-216095-206035-3CO28UQhhe@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216095-206035@https.bugzilla.kernel.org/>
-References: <bug-216095-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMyDg0hwTz30hh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 02:51:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=gcaOWdjkRuwLLoyj6ZoLjXSkHlPAfZqEuB5/VEUD0fI=; b=Ot7dJ9+wvbJRfG4duiWBJQO6Oa
+	9LJgmKjMl5QrQb+AQ0DQmlwvXHBYSmEL2hkbvYXUZlxWKIaJ/GGwOcY4UZHicVUC/VU4zv4QvdJZs
+	779PJrDbLbfJlM6N2sP6Rw+j3ylct3XmdyAq4NXqp5hcpl+mSInonIDo1xaWZ/7lHcHB8zFfEqsen
+	UVY3sqGaaodSgnmFduiFHL9w1zZY8EaoWBoCYEl8rsQ099UofjDxTP2zjkeNTid0TwCdCDiBQskw/
+	z2J/tdaDa161SfEFmeYt3z+joic2U4Djt1isuaRUGUZg7VBk6uyGRGAbboHo194hRZCFOREMXFtAz
+	HSDHCsBg==;
+Received: from [2601:1c2:980:9ec0::df2f]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pVDs6-00H8rh-Eb; Thu, 23 Feb 2023 15:51:02 +0000
+Message-ID: <7e5c3c59-68c1-eb45-d462-bb093aee5da3@infradead.org>
+Date: Thu, 23 Feb 2023 07:51:01 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH] macintosh: via-pmu-led: *********************************
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
+References: <20230223014151.19270-1-rdunlap@infradead.org>
+ <877cw8bvzv.fsf@mpe.ellerman.id.au>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <877cw8bvzv.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,25 +60,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, Elimar Riesebieter <riesebie@lxtec.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216095
 
-Erhard F. (erhard_f@mailbox.org) changed:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-         Resolution|---                         |OBSOLETE
+On 2/23/23 00:56, Michael Ellerman wrote:
+> Randy Dunlap <rdunlap@infradead.org> writes:
+>> LEDS_TRIGGER_DISK depends on ATA, so selecting LEDS_TRIGGER_DISK
+>> when ATA is not set/enabled causes a Kconfig warning:
+>>
+>> WARNING: unmet direct dependencies detected for LEDS_TRIGGER_DISK
+>>   Depends on [n]: NEW_LEDS [=y] && LEDS_TRIGGERS [=y] && ATA [=n]
+>>   Selected by [y]:
+>>   - ADB_PMU_LED_DISK [=y] && MACINTOSH_DRIVERS [=y] && ADB_PMU_LED [=y] && LEDS_CLASS [=y]
+>>
+>> Fix this by making ADB_PMU_LED_DISK depend on ATA.
+> 
+> Should it just depend on LEDS_TRIGGER_DISK ?
 
---- Comment #16 from Erhard F. (erhard_f@mailbox.org) ---
-Fix landed in 6.2 and 6.1 LTS meanwhile. Thanks!
+Hmph. Yes, good idea. Thanks.
 
-Closing here.
+> 
+>> Seen on both PPC32 and PPC64.
+>>
+>> Fixes: 0e865a80c135 ("macintosh: Remove dependency on IDE_GD_ATA if ADB_PMU_LED_DISK is selected")
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Elimar Riesebieter <riesebie@lxtec.de>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> ---
+>>  drivers/macintosh/Kconfig |    1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff -- a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+>> --- a/drivers/macintosh/Kconfig
+>> +++ b/drivers/macintosh/Kconfig
+>> @@ -86,6 +86,7 @@ config ADB_PMU_LED
+>>  
+>>  config ADB_PMU_LED_DISK
+>>  	bool "Use front LED as DISK LED by default"
+>> +	depends on ATA
+>>  	depends on ADB_PMU_LED
+>>  	depends on LEDS_CLASS
+>>  	select LEDS_TRIGGERS
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+~Randy
