@@ -1,67 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D394E6A104D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 20:12:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E146A107D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 20:22:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PN2hr5QsZz3cj8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 06:12:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PN2wW397wz3cdd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 06:22:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=illZ3Rsx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=H4d0auWy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3alr3ywykdoevhdqmfjrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3xlz3ywykdemxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=illZ3Rsx;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=H4d0auWy;
 	dkim-atps=neutral
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PN2gx06wjz2xJ4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 06:11:39 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-536bfec4a66so139238917b3.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 11:11:39 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PN2vX2JLqz3cXX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 06:21:42 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-536bbaeceeaso144426157b3.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 11:21:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Lgz23S0KW/3Vuh8fPybY+EaMWzwQFtPo75lQKh/z++I=;
-        b=illZ3Rsxhz/9jljbLI+FUdfsGaNHQ+3fywMFYtiPdi4y1cf10XY7ukC5ghyLXOpRiX
-         ECKpfvO4XF3GMAEqQtGTGUg1jqO+AbRdSqGFpyrvz1Y54kJ0qEPuz3ERkD1mNPRjChGr
-         FIk8fspffno+cxbJIVBWXLSAjcURDSQfT0pVMLjA9MwRSCOas0U4UaV//I6oaWp4/jP8
-         Nedf5FJP2yTEdqt4rNWa/GGGRcnTa9xaHgSx+sUBPJmKn+5OuioGUbjEJBaVHxmxHjpR
-         JfrWlzWMnyD8o2vHK884xzIW6y4U6nk3QsjYBj1PHqc/oR+/TNHECEU3hASerxLBXfzT
-         1/Qw==
+        bh=ZopDWrZnbH+TBZHwFmu9lqsS8DLdv4K+JgWTWbyi1iU=;
+        b=H4d0auWygP+hmWPqWDO3qHOcWpnYjVNf506Kv9RG0yijBoQVPVDvpSxMBTdo4uUJGO
+         MLoFt/yVDt/rfg/KEjjWlgTsmtn2v/BJ7mcJ0tNJd/5B2yEYthUWMcP49jnHZIFS2xWD
+         PYy85xVSu7OInOx0VfGConFKXB/8dzggfBGddjwi36FY4Kr5lsfQrJsHMyzxbXSZ6ul6
+         eCrHhGBT4UNlyZ86MP+6pfLoRnP4BLJ+Xa6gqTf/lpjJRMImNB9r2JninNlL079C7W8J
+         WgAk4CnNyPXAa81eo8Y6q3j7OEpZehi0vMcVGDQwUdb/BDgWqwnBxKdZk8Lqvnm0cjJZ
+         PEtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Lgz23S0KW/3Vuh8fPybY+EaMWzwQFtPo75lQKh/z++I=;
-        b=gZ869AF8P0yn+ps4tYKqvcW2hLvZgAv8Ph5TxEuH5bYfHhjtIPIO2LZ5Zu8BzfB4T0
-         4fqoGFe711BIAl67TedlMC0JjzqMBJ/5RqlhYbFawVWTvN2WEPpVcOnCoJyAppjz4agu
-         UmirOKYErYOlTTd7FlrLZqGz8Szn/nx97oAWCrN7CPZhYdVXVAzgftoe9z0c/Kwq069f
-         jK1zKhQp5a9lzr7CGJTDOoNpcdXJGmRGILH2FjQxv5jELdzN4hk0/mu1KQI6kVmxC7Hp
-         Wn3CoKShwFpmfkRVRbmxYbzgSvAbXmdTpnmJE4YGiLuTZteqUivfY//KlE592TRIcb6m
-         gB+Q==
-X-Gm-Message-State: AO0yUKX10PJV087jVBNjgjPxOiRnz10joa2mS7DzEc2Kmkn9LdG8IScM
-	FcIEBOxZLJDmHGVCeMFXlMPYyZLJUBA=
-X-Google-Smtp-Source: AK7set9CAvBzEvzau8o9w7k/cYlwu85gWQxy7MQm2EeJKeyL2LgEayAQYJRKvwtnPY5l/Yt7cVb6SpmQxus=
+        bh=ZopDWrZnbH+TBZHwFmu9lqsS8DLdv4K+JgWTWbyi1iU=;
+        b=MR5HRNKqaLf6QEYDZJQJnBxvHzq9VY+HZR6kKll7ZPDZynkiLjkVuFcjMn098sHQFh
+         aocpQAk2upACEqSV0mnDe0mKVQCc6R89O9dsy39k8gouqDHoV74yDhrrfbFup13zg+8W
+         EATTNq3cWoopG0RT3GgJjIqcuy58PbHvcAU5C5vIVaghCyXmF7DulxyKTSv6YZ8jDTTJ
+         dqoYpXbqazcDgFzfbncFYdJf8SJv1V0ItcElaDnV1uYVKQaT6TWE3DmkTJ9Nnw55ma3R
+         OOvjnAaWJL7dUGZwgmFVWGWKXJkzfzWkuXPZnnocjEA2+zzogP3HhNHO6vT0eL18xRlL
+         D6/g==
+X-Gm-Message-State: AO0yUKVNAwxgymtGSNBbSlx53r9QG27pMdeyjgAbQnKvgdOu0w5Shz4+
+	fRen1Iwu7db7myRTuTq1XCctD9fo/aI=
+X-Google-Smtp-Source: AK7set8Y6PDK0RpzEk696ekGVhLGOajZqUcJ01xvSF46QVcIbnp7Dq+AUoIZCvKnF1H54bpA/2pnHYcG804=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a5b:50b:0:b0:a36:3875:564a with SMTP id
- o11-20020a5b050b000000b00a363875564amr1021123ybp.2.1677179496807; Thu, 23 Feb
- 2023 11:11:36 -0800 (PST)
-Date: Thu, 23 Feb 2023 11:11:35 -0800
-In-Reply-To: <CAOUHufbAKpv95k6rVedstjD_7JzP0RrbOD652gyZh2vbAjGPOg@mail.gmail.com>
+ (user=seanjc job=sendgmr) by 2002:a05:6902:11cd:b0:8a3:d147:280b with SMTP id
+ n13-20020a05690211cd00b008a3d147280bmr4056323ybu.3.1677180100192; Thu, 23 Feb
+ 2023 11:21:40 -0800 (PST)
+Date: Thu, 23 Feb 2023 11:21:38 -0800
+In-Reply-To: <CAOUHufbhKsWzXZP_VgOTVkKgZhU=LaXJBRKcaAk++d6sLk1ktA@mail.gmail.com>
 Mime-Version: 1.0
-References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-6-yuzhao@google.com>
- <Y/elw7CTvVWt0Js6@google.com> <CAOUHufbAKpv95k6rVedstjD_7JzP0RrbOD652gyZh2vbAjGPOg@mail.gmail.com>
-Message-ID: <Y/e6Z+KIl6sYJoRg@google.com>
-Subject: Re: [PATCH mm-unstable v1 5/5] mm: multi-gen LRU: use mmu_notifier_test_clear_young()
+References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-3-yuzhao@google.com>
+ <Y++q/lglE6FJBdjt@google.com> <CAOUHufaK-BHdajDZJKjn_LU-gMkUTKa_9foMB8g-u9DyrVhPwg@mail.gmail.com>
+ <Y/ed0XYAPx+7pukA@google.com> <CAOUHufYw9Mc-w1E-Jkqnt869bVJ0AxOB5_grSEMcdMdDODDdCw@mail.gmail.com>
+ <Y/evPJg9gvXxO1hs@google.com> <CAOUHufYx8JUT0T11jxuqknHzUHOYm7kLm_JfgP3LmRrFe=E20Q@mail.gmail.com>
+ <Y/e006bZOYXIFE/j@google.com> <CAOUHufbhKsWzXZP_VgOTVkKgZhU=LaXJBRKcaAk++d6sLk1ktA@mail.gmail.com>
+Message-ID: <Y/e8wgqFSr8voAto@google.com>
+Subject: Re: [PATCH mm-unstable v1 2/5] kvm/x86: add kvm_arch_test_clear_young()
 From: Sean Christopherson <seanjc@google.com>
 To: Yu Zhao <yuzhao@google.com>
 Content-Type: text/plain; charset="utf-8"
@@ -82,101 +85,104 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, Feb 23, 2023, Yu Zhao wrote:
-> On Thu, Feb 23, 2023 at 10:43=E2=80=AFAM Sean Christopherson <seanjc@goog=
+> On Thu, Feb 23, 2023 at 11:47=E2=80=AFAM Sean Christopherson <seanjc@goog=
 le.com> wrote:
 > >
-> > On Thu, Feb 16, 2023, Yu Zhao wrote:
-> > >   kswapd (MGLRU before)
-> > >     100.00%  balance_pgdat
-> > >       100.00%  shrink_node
-> > >         100.00%  shrink_one
-> > >           99.97%  try_to_shrink_lruvec
-> > >             99.06%  evict_folios
-> > >               97.41%  shrink_folio_list
-> > >                 31.33%  folio_referenced
-> > >                   31.06%  rmap_walk_file
-> > >                     30.89%  folio_referenced_one
-> > >                       20.83%  __mmu_notifier_clear_flush_young
-> > >                         20.54%  kvm_mmu_notifier_clear_flush_young
-> > >   =3D>                      19.34%  _raw_write_lock
+> > On Thu, Feb 23, 2023, Yu Zhao wrote:
+> > > On Thu, Feb 23, 2023 at 11:24=E2=80=AFAM Sean Christopherson <seanjc@=
+google.com> wrote:
+> > > >
+> > > > On Thu, Feb 23, 2023, Yu Zhao wrote:
+> > > > > On Thu, Feb 23, 2023 at 10:09=E2=80=AFAM Sean Christopherson <sea=
+njc@google.com> wrote:
+> > > > > > > I'll take a look at that series. clear_bit() probably won't c=
+ause any
+> > > > > > > practical damage but is technically wrong because, for exampl=
+e, it can
+> > > > > > > end up clearing the A-bit in a non-leaf PMD. (cmpxchg will ju=
+st fail
+> > > > > > > in this case, obviously.)
+> > > > > >
+> > > > > > Eh, not really.  By that argument, clearing an A-bit in a huge =
+PTE is also technically
+> > > > > > wrong because the target gfn may or may not have been accessed.
+> > > > >
+> > > > > Sorry, I don't understand. You mean clear_bit() on a huge PTE is
+> > > > > technically wrong? Yes, that's what I mean. (cmpxchg() on a huge =
+PTE
+> > > > > is not.)
+> > > > >
+> > > > > > The only way for
+> > > > > > KVM to clear a A-bit in a non-leaf entry is if the entry _was_ =
+a huge PTE, but was
+> > > > > > replaced between the "is leaf" and the clear_bit().
+> > > > >
+> > > > > I think there is a misunderstanding here. Let me be more specific=
+:
+> > > > > 1. Clearing the A-bit in a non-leaf entry is technically wrong be=
+cause
+> > > > > that's not our intention.
+> > > > > 2. When we try to clear_bit() on a leaf PMD, it can at the same t=
+ime
+> > > > > become a non-leaf PMD, which causes 1) above, and therefore is
+> > > > > technically wrong.
+> > > > > 3. I don't think 2) could do any real harm, so no practically no =
+problem.
+> > > > > 4. cmpxchg() can avoid 2).
+> > > > >
+> > > > > Does this make sense?
+> > > >
+> > > > I understand what you're saying, but clearing an A-bit on a non-lea=
+f PMD that
+> > > > _just_ got converted from a leaf PMD is "wrong" if and only if the =
+intented
+> > > > behavior is nonsensical.
 > > >
-> > >   kswapd (MGLRU after)
-> > >     100.00%  balance_pgdat
-> > >       100.00%  shrink_node
-> > >         100.00%  shrink_one
-> > >           99.97%  try_to_shrink_lruvec
-> > >             99.51%  evict_folios
-> > >               71.70%  shrink_folio_list
-> > >                 7.08%  folio_referenced
-> > >                   6.78%  rmap_walk_file
-> > >                     6.72%  folio_referenced_one
-> > >                       5.60%  lru_gen_look_around
-> > >   =3D>                    1.53%  __mmu_notifier_test_clear_young
+> > > Sorry, let me rephrase:
+> > > 1. Clearing the A-bit in a non-leaf entry is technically wrong becaus=
+e
+> > > we didn't make sure there is the A-bit there --  the bit we are
+> > > clearing can be something else. (Yes, we know it's not, but we didn't
+> > > define this behavior, e.g., a macro to designate that bit for non-lea=
+f
+> > > entries.
 > >
-> > Do you happen to know how much of the improvement is due to batching, a=
-nd how
-> > much is due to using a walkless walk?
+> > Heh, by that definition, anything and everything is "technically wrong"=
+.
 >=20
-> No. I have three benchmarks running at the moment:
-> 1. Windows SQL server guest on x86 host,
-> 2. Apache Spark guest on arm64 host, and
-> 3. Memcached guest on ppc64 host.
+> I really don't see how what I said, in our context,
 >=20
-> If you are really interested in that, I can reprioritize -- I need to
-> stop 1) and use that machine to get the number for you.
-
-After looking at the "MGLRU before" stack again, it's definitely worth gett=
-ing
-those numbers.  The "before" isn't just taking mmu_lock, it's taking mmu_lo=
-ck for
-write _and_ flushing remote TLBs on _every_ PTE.  I suspect the batching is=
- a
-tiny percentage of the overall win (might be larger with RETPOLINE and frie=
-nds),
-and that the bulk of the improvement comes from avoiding the insanity of
-kvm_mmu_notifier_clear_flush_young().
-
-Speaking of which, what would it take to drop mmu_notifier_clear_flush_youn=
-g()
-entirely?  I.e. why can MGLRU tolerate stale information but !MGLRU cannot?=
-  If
-we simply deleted mmu_notifier_clear_flush_young() and used mmu_notifier_cl=
-ear_young()
-instead, would anyone notice, let alone care?
-
-> > > @@ -5699,6 +5797,9 @@ static ssize_t show_enabled(struct kobject *kob=
-j, struct kobj_attribute *attr, c
-> > >       if (arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_=
-YOUNG))
-> > >               caps |=3D BIT(LRU_GEN_NONLEAF_YOUNG);
-> > >
-> > > +     if (kvm_arch_has_test_clear_young() && get_cap(LRU_GEN_SPTE_WAL=
-K))
-> > > +             caps |=3D BIT(LRU_GEN_SPTE_WALK);
-> >
-> > As alluded to in patch 1, unless batching the walks even if KVM does _n=
-ot_ support
-> > a lockless walk is somehow _worse_ than using the existing mmu_notifier=
-_clear_flush_young(),
-> > I think batching the calls should be conditional only on LRU_GEN_SPTE_W=
-ALK.  Or
-> > if we want to avoid batching when there are no mmu_notifier listeners, =
-probe
-> > mmu_notifiers.  But don't call into KVM directly.
+>   "Clearing the A-bit in a non-leaf entry is technically wrong because
+> we didn't make sure there is the A-bit there"
 >=20
-> I'm not sure I fully understand. Let's present the problem on the MM
-> side: assuming KVM supports lockless walks, batching can still be
-> worse (very unlikely), because GFNs can exhibit no memory locality at
-> all. So this option allows userspace to disable batching.
+> can infer
+>=20
+>   "anything and everything is "technically wrong"."
+>=20
+> And how what I said can be an analogy to
+>=20
+>   "An Intel CPU might support SVM, even though we know no such CPUs
+> exist, so requiring AMD or Hygon to enable SVM is technically wrong."
+>=20
+> BTW, here is a bug caused by clearing the A-bit in non-leaf entries in
+> a different scenario:
+> https://lore.kernel.org/linux-mm/20221123064510.16225-1-jgross@suse.com/
+>=20
+> Let's just agree to disagree.
 
-I'm asking the opposite.  Is there a scenario where batching+lock is worse =
-than
-!batching+lock?  If not, then don't make batching depend on lockless walks.
+No, because I don't want anyone to leave with the impression that relying o=
+n the
+Accessed bit to uniformly exist (or not) at all levels in the TDP MMU is so=
+mehow
+technically wrong.  The link you posted is about running as a Xen guest, an=
+d is
+in arch-agnostic code.  That is wildly different than what we are talking a=
+bout
+here, where the targets are strictly limited to x86-64 TDP, and the existen=
+ce of
+the Accessed bit is architecturally defined.
 
-> I fully understand why you don't want MM to call into KVM directly. No
-> acceptable ways to set up a clear interface between MM and KVM other
-> than the MMU notifier?
-
-There are several options I can think of, but before we go spend time desig=
-ning
-the best API, I'd rather figure out if we care in the first place.
+In this code, there are exactly two flavors of paging that can be in use, a=
+nd
+using clear_bit() to clear shadow_accessed_mask is safe for both, full stop=
+.
