@@ -2,88 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4396A0245
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 06:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 554086A0247
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 06:11:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PMh1n1mR8z3cLm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 16:10:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PMh2p1kQ9z3cT4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 16:11:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ve+iw/Jf;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fr5miP2v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ve+iw/Jf;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMh0p0bzTz3bjf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 16:10:01 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31N3hZ4m016412
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 05:09:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=QFTxXYwAdZ/uBDnhR++pxZRjQaYzGpd1MssC4tZGGRw=;
- b=Ve+iw/JfMLPOu3gYgHdtWZpepaEkmx+sYowREVACGuZ8rYsoURn+9kKyw2fTEruDDPW9
- TvEomOoqOec2pU1sZ82NcLqgT6SifJOWqayj6NM829Pbm/JSrWzPVQ1efEZ8qCTKJfw/
- Dw5tGuKPgncSmuV3UmEf3L6eTCqzknF3/bZKeasR0RQlyL4xYMIgmv7Vf8RgNccaZogG
- 0xDAY1u+c8FCHkcTWClxMH49tto0ksv1/2pQjmyelbhqn/P+R6L4Mb/rdWmKadz49d38
- Ecto7toPdOGRt3KA/+69eiloaMZYTA5nn2c2feQ72+5N4K9EbcJSvILc4zCX6Cz20XjE bA== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nx0g6haa3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 05:09:58 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31M9OANZ014704
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 05:09:56 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3ntpa64qc6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 05:09:56 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31N59rEf41353554
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Feb 2023 05:09:53 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C6752004B;
-	Thu, 23 Feb 2023 05:09:53 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5E90C20040;
-	Thu, 23 Feb 2023 05:09:52 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.109.216.99])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 23 Feb 2023 05:09:52 +0000 (GMT)
-Date: Thu, 23 Feb 2023 10:39:50 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [PATCH 1/2] arch/powerpc/kvm: kvmppc_hv_entry: remove .global
- scope
-Message-ID: <Y/b1Hpk8rhrR+H9I@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230220052355.109033-1-kconsul@linux.vnet.ibm.com>
- <20230220052355.109033-2-kconsul@linux.vnet.ibm.com>
- <2fa8dd2a-1650-4adc-de2b-0f14dca683ed@linux.ibm.com>
- <Y/MhON/N6vG8wYWq@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <9ee1f333-9cb7-d7fe-4e3f-ded4990030de@linux.ibm.com>
- <Y/MrOjca/C+bPmn1@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <Y/M6kFeUsLBwcbP0@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PMh161Sjzz3cMl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 16:10:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fr5miP2v;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PMh156vs7z4x5c;
+	Thu, 23 Feb 2023 16:10:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1677129018;
+	bh=0ClxPO2MRWaZ78fnygNF8fDJXF366a8dE/on5zlqMaw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Fr5miP2vrWFlACjCP0HICyY2xi+0AvyKpo899CT6BT4XV6B9XSQyfhDLup1O5Qm4h
+	 8pY3Cz0hoPeTq5uE3QG+djV3yvUFSsyR6vdPbwVnr3ErX3QFdCDk0O590lcv6xovFv
+	 F/YnTj9wlS0gUGn8E4FBetxPFMbUZwx32PE+J7ps1DFsdXRsZ26J5ZR2UcQ6dcXGuV
+	 XUa2kGc3TBl1PMuBAhXXncOrEOQ83yg5CbL5ocZKxKZN6n+uyL2uZXCiUbJxcBu9kA
+	 TuLCw61WO9M+XwMNIGfsezEEYtmB+ij1w9+eC/c5WG5auRoiI41P2mOOA3fRWb8fHo
+	 OTSFoKbxXkP4w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Murphy Zhou <jencce.kernel@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Re: linux-next tree panic on ppc64le
+In-Reply-To: <CADJHv_u7CGt9oM68YCLSmZTJvdq0rXcVu_1VMT=a9R3VNf8pKg@mail.gmail.com>
+References: <CADJHv_tWJKgqfXy=2mynVG0U2bJaVqYo59F_OPfdRRptNOV-WQ@mail.gmail.com>
+ <c69dc6be-9642-2876-5375-d536f49d0403@gmail.com>
+ <CADJHv_u7CGt9oM68YCLSmZTJvdq0rXcVu_1VMT=a9R3VNf8pKg@mail.gmail.com>
+Date: Thu, 23 Feb 2023 16:10:17 +1100
+Message-ID: <87a615arwm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y/M6kFeUsLBwcbP0@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 27eO-ONk-3zgqJxmmLrQwSaxzZve8S9r
-X-Proofpoint-ORIG-GUID: 27eO-ONk-3zgqJxmmLrQwSaxzZve8S9r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-23_02,2023-02-22_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2302230038
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,17 +59,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux-Next <linux-next@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sathvika,
-> 
-> Just one question though. Went through the code again and I think
-> that this place shouldn't be proper to insert a SYM_FUNC_END
-> because we haven't entered the guest at this point and the name
-> of the function is kvmppc_hv_entry which  I think implies that
-> this SYM_FUNC_END should be at some place after the HRFI_TO_GUEST.
-> 
-> What do you think ?
-Any updates on this ? Is there any other way to avoid this warning ?
+Murphy Zhou <jencce.kernel@gmail.com> writes:
+> On Wed, Feb 22, 2023 at 10:35 AM Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+>> On 2/22/23 07:55, Murphy Zhou wrote:
+>> > [   59.558339] ------------[ cut here ]------------
+>> > [   59.558361] kernel BUG at arch/powerpc/kernel/syscall.c:34!
+>> > [   59.558373] Oops: Exception in kernel mode, sig: 5 [#1]
+>> > [   59.558384] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
+>> > [   59.558397] Modules linked in: rfkill i2c_dev sunrpc ast
+>> > i2c_algo_bit drm_shmem_helper drm_kms_helper ext4 syscopyarea
+>> > sysfillrect sysimgblt ofpart ses powernv_flash enclosure
+>> > scsi_transport_sas ipmi_powernv at24 mbcache jbd2 ipmi_devintf
+>> > regmap_i2c opal_prd ipmi_msghandler mtd ibmpowernv drm fuse
+>> > drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi
+>> > crc64_rocksoft_generic crc64_rocksoft crc64 sg i40e aacraid vmx_crypto
+>> > [   59.558494] CPU: 29 PID: 6366 Comm: kexec Not tainted 6.2.0-next-20230221 #1
+...
+>> > [   60.564336]
+>> > [   61.564343] Kernel panic - not syncing: Fatal exception
+>>
+>> Panic on what linux-next tag? Can you test powerpc/next tree?
+
+> powerpc/next tree does not panic.
+
+Because I applied the fix last night :)
+
+Which is:
+  f82cdc37c4bd ("powerpc/pseries: Avoid hcall in plpks_is_available() on non-pseries")
+
+Thanks for the report.
+
+cheers
