@@ -1,70 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7767E6A0ED6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 18:41:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B887E6A0EDD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Feb 2023 18:44:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PN0hB20fTz3cXX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 04:41:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PN0lD4b4zz3cff
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 04:44:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GBvZr3FR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GnEFv8ZY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e29; helo=mail-vs1-xe29.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3xkx3ywykdbudzv84x19916z.x97638fiaax-yzg63ded.9k6vwd.9c1@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GBvZr3FR;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GnEFv8ZY;
 	dkim-atps=neutral
-Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PN0gH6KhSz3bjx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 04:40:58 +1100 (AEDT)
-Received: by mail-vs1-xe29.google.com with SMTP id f23so16468640vsa.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 09:40:58 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PN0kK2Dtsz2xJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 04:43:36 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id k17-20020a170902d59100b0019abcf45d75so5150785plh.8
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Feb 2023 09:43:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fo7AgQ2bct21yLgbxRinWk51c7Sq7xFh6y+K3L6/tTM=;
-        b=GBvZr3FRKM3NOesy8gVSZUY02Sq7aNLAUfDffqGDvKf740Ehqv8nBE7Oi8FsVIN6J1
-         JkZFMoh+qCPEAzymwVHG0z1bBMx/KYg6SymF2QTZuOLraOywk3TLiLhpYUErfPSbomdU
-         FdELqyo5w45/teVQSzUk24vH1+jYHCr88FiP2s8cZmTnhZ/p9c9I1VeiW+nF0kurnbWN
-         zU2trwEFNYfVM5n6sxlFHrJwWriTlH1Yux1MJGSccWSU+BwuGOcqC/WBw7sP08hDnexG
-         HURlUENH3H2vj5o3TSRbImMuccAeHy0C5gzNj/u3KE2SP/RtkjYxI2vBWBhCxO8K3UcO
-         df/g==
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uEW2x7lvcZVgNquM9X5miuc098m/bUXcKiqyROdfsvA=;
+        b=GnEFv8ZYEKJq2FLsbqFXmOIsxOoE4EVShbkz1ukBp++CxWl81cjyx0bklp6nXH3I70
+         1Dn7JrVCVuKLElNcGdQ1U6YXznFPEHlKh91jnsTXumsHU8puSiTvyoKnzjCVZbQPKnWS
+         QXdxzapoB+4T797LXxDe2I0aHK2NBTy6Rw4ivHdiib/6jaI04ABl+Dtf1ReAAkKNrGSl
+         8NHnqSqy6ru6z4leh6bzy1EQMm6tgE5IBBFzAYn+bp+FpfKImc6YedR1CZMkmMlPEp36
+         c2HXP4yjSNThuM60YRVKyVgt+SlF71LlRuX35DyTXLuiC4Od9uaQKbklKgKjNGtAO3hZ
+         O4sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fo7AgQ2bct21yLgbxRinWk51c7Sq7xFh6y+K3L6/tTM=;
-        b=kszEGB+kTS/kYrVov4hm/MpzQZrPtCU7xzSIzeSB3w6B/AaBv8c7jN+9mORr/Ugr5r
-         T3VJHSrXXDsgwKplSGLKwDxjpK3XPlaO8+yWpb0uoO7dWOJaRoaRN1YS/c7ebN91n/9a
-         33ynvJJYnqhAz6Tvwj/d1HOgSEaPiNzamUGJ5Uy55DuL6SSvFVtZ9VDniYlnkPv189n2
-         hApmIKVp7YtbRNdfV19Ie3WCjlLXmw0Jgut2If/Uo3HFQiAzDTFIx1etKYP9Kbfp1yjz
-         e7T2Zm0byQw5uKSmGx3qX7fntFmZZVcMzITdx/0GJ4SDY1NgdOrzK9tH28ER1ENUtIZE
-         pRZg==
-X-Gm-Message-State: AO0yUKUzQCuwsTsFa6+FMOetdfRewyWsl0mNbqhBLz6Sv4CF+CTF3JC1
-	6Uw3Q/IIDTryBSDEjcS8OpBG1GxVwHV+yuFwwXhaNg==
-X-Google-Smtp-Source: AK7set9wJbC1t128b6r/YElZqMz+AmeZGkkjsbu1lRieG6NYjdy/fQfX1OM7M72E6+9T9qCprQHwdxazlikgHRzNMDs=
-X-Received: by 2002:a05:6102:108f:b0:41e:d8b5:ee40 with SMTP id
- s15-20020a056102108f00b0041ed8b5ee40mr899877vsr.26.1677174055279; Thu, 23 Feb
- 2023 09:40:55 -0800 (PST)
-MIME-Version: 1.0
-References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-2-yuzhao@google.com>
- <Y/ee1s3XPGa62SFV@google.com>
-In-Reply-To: <Y/ee1s3XPGa62SFV@google.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Thu, 23 Feb 2023 10:40:19 -0700
-Message-ID: <CAOUHufZ0Ep4_Edo4OoeUVpVK4uFJF6_yVL=xSrQM8an_Vw4VKw@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 1/5] mm/kvm: add mmu_notifier_test_clear_young()
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uEW2x7lvcZVgNquM9X5miuc098m/bUXcKiqyROdfsvA=;
+        b=USUAIR5PAJZcprL7JvW2of6ZCdIwBhn46IGOrp6jhNjTjFh1TxesxtCqEvqs3oiMkX
+         PEUDuy80RH3DlEVJqs7O1AYF7mQyHV8u4P4biYHXEd+jqVMzV49FqS7YtJGa5LucmZSy
+         Ca7qH7LMBeM8Z/aAlpspkguX73LFW3ZFmViAhrJ6e7SNEPTI5blx1ESm0EPi4x2zAg8U
+         ibB19w0/c+/BTvX/guzs4a6j7qCnXvxfv3F0oFNDqXo6bbveqzgD+nnXPo9PG88fLSW+
+         x7hVwa41jqOvGv2k46H/XCEEnKiv9YGZn1Q1pMUyFkXfIGohge1yTL/zQCYTL2OW9Aab
+         Ffuw==
+X-Gm-Message-State: AO0yUKX8XMbictSGWOitwsnRhGB77bO6igmg246rIV7zt7ALB0Pu3V/7
+	sc61LbpNPs+LFZXEE5xtnorsYA/XjwY=
+X-Google-Smtp-Source: AK7set83+Pnlpt5peCqIhQBtdMvaXZZfXzsbtxsBRoLRt6jnUdFR+O/gyNEyxZMgKJ7oNYHyvpri8MhadHU=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a65:6944:0:b0:4fd:2170:b2da with SMTP id
+ w4-20020a656944000000b004fd2170b2damr1506614pgq.0.1677174212817; Thu, 23 Feb
+ 2023 09:43:32 -0800 (PST)
+Date: Thu, 23 Feb 2023 09:43:31 -0800
+In-Reply-To: <20230217041230.2417228-6-yuzhao@google.com>
+Mime-Version: 1.0
+References: <20230217041230.2417228-1-yuzhao@google.com> <20230217041230.2417228-6-yuzhao@google.com>
+Message-ID: <Y/elw7CTvVWt0Js6@google.com>
+Subject: Re: [PATCH mm-unstable v1 5/5] mm: multi-gen LRU: use mmu_notifier_test_clear_young()
+From: Sean Christopherson <seanjc@google.com>
+To: Yu Zhao <yuzhao@google.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,117 +77,60 @@ Cc: linux-mm@google.com, kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 23, 2023 at 10:14=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, Feb 16, 2023, Yu Zhao wrote:
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 9c60384b5ae0..1b465df4a93d 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -875,6 +875,63 @@ static int kvm_mmu_notifier_clear_young(struct mmu=
-_notifier *mn,
-> >       return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn)=
-;
-> >  }
-> >
-> > +static bool kvm_test_clear_young(struct kvm *kvm, unsigned long start,
-> > +                              unsigned long end, unsigned long *bitmap=
-)
-> > +{
-> > +     int i;
-> > +     int key;
-> > +     bool success =3D true;
-> > +
-> > +     trace_kvm_age_hva(start, end);
-> > +
-> > +     key =3D srcu_read_lock(&kvm->srcu);
-> > +
-> > +     for (i =3D 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
-> > +             struct interval_tree_node *node;
-> > +             struct kvm_memslots *slots =3D __kvm_memslots(kvm, i);
-> > +
-> > +             kvm_for_each_memslot_in_hva_range(node, slots, start, end=
- - 1) {
-> > +                     gfn_t lsb_gfn;
-> > +                     unsigned long hva_start, hva_end;
-> > +                     struct kvm_gfn_range range =3D {
-> > +                             .slot =3D container_of(node, struct kvm_m=
-emory_slot,
-> > +                                                  hva_node[slots->node=
-_idx]),
-> > +                     };
-> > +
-> > +                     hva_start =3D max(start, range.slot->userspace_ad=
-dr);
-> > +                     hva_end =3D min(end - 1, range.slot->userspace_ad=
-dr +
-> > +                                            range.slot->npages * PAGE_=
-SIZE - 1);
-> > +
-> > +                     range.start =3D hva_to_gfn_memslot(hva_start, ran=
-ge.slot);
-> > +                     range.end =3D hva_to_gfn_memslot(hva_end, range.s=
-lot) + 1;
-> > +
-> > +                     if (WARN_ON_ONCE(range.end <=3D range.start))
-> > +                             continue;
->
-> Extend __kvm_handle_hva_range() instead of copy-pasting.  At a very quick=
- glance,
-> I believe all that is needed is (minus sanity checks):
+On Thu, Feb 16, 2023, Yu Zhao wrote:
+> An existing selftest can quickly demonstrate the effectiveness of this
+> patch. On a generic workstation equipped with 128 CPUs and 256GB DRAM:
 
-Yes, will do.
+Not my area of maintenance, but a non-existent changelog (for all intents and
+purposes) for a change of this size and complexity is not acceptable.
 
-I do need to add one more parameter to kvm_gfn_range, because that's
-what the current kvm_arch_test_clear_young() needs, assuming that
-function is acceptable.
+>   $ sudo max_guest_memory_test -c 64 -m 250 -s 250
+> 
+>   MGLRU      run2
+>   ---------------
+>   Before    ~600s
+>   After      ~50s
+>   Off       ~250s
+> 
+>   kswapd (MGLRU before)
+>     100.00%  balance_pgdat
+>       100.00%  shrink_node
+>         100.00%  shrink_one
+>           99.97%  try_to_shrink_lruvec
+>             99.06%  evict_folios
+>               97.41%  shrink_folio_list
+>                 31.33%  folio_referenced
+>                   31.06%  rmap_walk_file
+>                     30.89%  folio_referenced_one
+>                       20.83%  __mmu_notifier_clear_flush_young
+>                         20.54%  kvm_mmu_notifier_clear_flush_young
+>   =>                      19.34%  _raw_write_lock
+> 
+>   kswapd (MGLRU after)
+>     100.00%  balance_pgdat
+>       100.00%  shrink_node
+>         100.00%  shrink_one
+>           99.97%  try_to_shrink_lruvec
+>             99.51%  evict_folios
+>               71.70%  shrink_folio_list
+>                 7.08%  folio_referenced
+>                   6.78%  rmap_walk_file
+>                     6.72%  folio_referenced_one
+>                       5.60%  lru_gen_look_around
+>   =>                    1.53%  __mmu_notifier_test_clear_young
 
-Also, just a side note, from MM's POV, the following in
-__kvm_handle_hva_range() seems to forget to handle end =3D=3D 0, if that's
-possible?
+Do you happen to know how much of the improvement is due to batching, and how
+much is due to using a walkless walk?
 
-  hva_end =3D min(range->end, slot->userspace_addr + (slot->npages <<
-PAGE_SHIFT));
+> @@ -5699,6 +5797,9 @@ static ssize_t show_enabled(struct kobject *kobj, struct kobj_attribute *attr, c
+>  	if (arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_YOUNG))
+>  		caps |= BIT(LRU_GEN_NONLEAF_YOUNG);
+>  
+> +	if (kvm_arch_has_test_clear_young() && get_cap(LRU_GEN_SPTE_WALK))
+> +		caps |= BIT(LRU_GEN_SPTE_WALK);
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index d255964ec331..3296ae2cf6fa 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -544,6 +544,7 @@ struct kvm_hva_range {
->         hva_handler_t handler;
->         on_lock_fn_t on_lock;
->         on_unlock_fn_t on_unlock;
-> +       bool lockless;
->         bool flush_on_ret;
->         bool may_block;
->  };
-> @@ -616,7 +617,7 @@ static __always_inline int __kvm_handle_hva_range(str=
-uct kvm *kvm,
->                         gfn_range.end =3D hva_to_gfn_memslot(hva_end + PA=
-GE_SIZE - 1, slot);
->                         gfn_range.slot =3D slot;
->
-> -                       if (!locked) {
-> +                       if (!range->lockless && !locked) {
->                                 locked =3D true;
->                                 KVM_MMU_LOCK(kvm);
->                                 if (!IS_KVM_NULL_FN(range->on_lock))
->
-> > +
-> > +                     /* see the comments on the generic kvm_arch_has_t=
-est_clear_young() */
-> > +                     lsb_gfn =3D hva_to_gfn_memslot(end - 1, range.slo=
-t);
-> > +
-> > +                     success =3D kvm_arch_test_clear_young(kvm, &range=
-, lsb_gfn, bitmap);
-> > +                     if (!success)
-> > +                             break;
-> > +             }
-> > +     }
-> > +
-> > +     srcu_read_unlock(&kvm->srcu, key);
-> > +
-> > +     return success;
-> > +}
+As alluded to in patch 1, unless batching the walks even if KVM does _not_ support
+a lockless walk is somehow _worse_ than using the existing mmu_notifier_clear_flush_young(),
+I think batching the calls should be conditional only on LRU_GEN_SPTE_WALK.  Or
+if we want to avoid batching when there are no mmu_notifier listeners, probe
+mmu_notifiers.  But don't call into KVM directly.
