@@ -1,52 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7C26A1550
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 04:26:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE976A15C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 05:11:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PNFgK5y1Mz3cj3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 14:26:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PNGft6Q1Tz3f3R
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 15:11:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lNQDpe+x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F8JY4jsW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNFdN18mmz3cdr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 14:25:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lNQDpe+x;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F8JY4jsW;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PNFdM6r6Fz4x7x;
-	Fri, 24 Feb 2023 14:25:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1677209112;
-	bh=/9VqHm7jT+WqQqauMLXrjukLOqUdxO0gBCzMxDE6cBY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNQDpe+xPhWVvJ6Ln+YY3R77+Ki+zPV3UZ2PhwOAv0q6cFjsr4aTmHt13iX6JcHeT
-	 iEXh6ckWZ7DE+n63hotFqB47AGfzALF+STNaQoOQc+p7x1GzqUYcyL4/oEFLbhaT2j
-	 u1GW//RIVzfoLd01lbPZ829sl7JhLymTTCNSofIc4A3XMr3SCdyoREEpATjOWbHexB
-	 caeSVg+NjpNQl+JNgp6J9hgs0HmhVTzbyajSdtLTrZgeOokkkVX/RmG5/DpmPSeade
-	 yUxqw7nuS2oHorPlwbvinIWCiSDQGYSBhZyPJd/AvF1oBztIVHyy/PZHGobVr3DWpv
-	 TIEKYbLfijZ7g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/2] powerpc/tpm: Reserve SML log when kexec'ing
-Date: Fri, 24 Feb 2023 14:25:08 +1100
-Message-Id: <20230224032508.3331281-2-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230224032508.3331281-1-mpe@ellerman.id.au>
-References: <20230224032508.3331281-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNGdv1Jcxz3bZl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 15:10:42 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31O3Nt6C029216;
+	Fri, 24 Feb 2023 04:10:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=SzAX3BTdzV8SPlo/mYpquYxmCFryn7mcXVvUZ3+hON4=;
+ b=F8JY4jsWEYqCge4uzKQwgpboFagZyX0JmsJ/MtZPc+CD7LF3bFML0VVc42s7X7MH2FHF
+ 9CxW7a3MkHWebvvbIiKR1IaMwFx8MURqPqdprGh1fHyJI28g+hp5NhLG5Dyt+Doku68i
+ rHAWkh3Tbw7uK8gDfwfICg4u1m7EjEVflMPJcT4Iku9uoCTAEBF6qK1o9jU1ybOMA4qV
+ 6DLtuJ+up/kdkxFOGhHNgrGZiiI+RZOQqCojG404HWoixD9TZ6vP//qHIGJZp/LGiHYr
+ 3zU/z5M8N69DpjiBpnKIkX6VMD9vdhP13kGZPOFxmmVLwk6un91TrnZCEvviNkNdATpv bw== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nxna00svn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Feb 2023 04:10:34 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31N7pAuY020251;
+	Fri, 24 Feb 2023 04:10:32 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ntpa65n3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Feb 2023 04:10:31 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31O4ATFQ26608264
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Feb 2023 04:10:29 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80D482004E;
+	Fri, 24 Feb 2023 04:10:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1F5520043;
+	Fri, 24 Feb 2023 04:10:28 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Feb 2023 04:10:28 +0000 (GMT)
+Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2E7FD6032C;
+	Fri, 24 Feb 2023 15:10:25 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Add FW_FEATURE_PLPKS feature flag
+Date: Fri, 24 Feb 2023 15:10:12 +1100
+Message-Id: <20230224041012.772648-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PsE8_N8RNPVOQzCpwOlhhsiNBbbzmb-J
+X-Proofpoint-GUID: PsE8_N8RNPVOQzCpwOlhhsiNBbbzmb-J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-24_01,2023-02-23_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ mlxscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302240031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,148 +91,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: eajames@linux.ibm.com, jgg@ziepe.ca, jarkko@kernel.org, yangyingliang@huawei.com, linux-integrity@vger.kernel.org, peterhuewe@gmx.de, stefanb@linux.ibm.com
+Cc: nayna@linux.ibm.com, ruscur@russell.cc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The TPM code in prom_init.c creates a small buffer of memory to store
-the TPM's SML (Stored Measurement Log). It's communicated to Linux via
-the linux,sml-base/size device tree properties of the TPM node.
+Add a firmware feature flag, FW_FEATURE_PLPKS, to indicate availability of
+Platform KeyStore related hcalls.
 
-When kexec'ing that buffer can be overwritten, or when kdump'ing it may
-not be mapped by the second kernel. The latter can lead to a crash when
-booting the second kernel such as:
+Check this flag in plpks_is_available() and pseries_plpks_init() before
+trying to make an hcall.
 
-  tpm_ibmvtpm 71000003: CRQ initialization completed
-  BUG: Unable to handle kernel data access on read at 0xc00000002ffb0000
-  Faulting instruction address: 0xc0000000200a70e0
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in:
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc2-00134-g9307ce092f5d #314
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,git-5b4c5a pSeries
-  NIP:  c0000000200a70e0 LR: c0000000203dd5dc CTR: 0000000000000800
-  REGS: c000000024543280 TRAP: 0300   Not tainted  (6.2.0-rc2-00134-g9307ce092f5d)
-  MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24002280  XER: 00000006
-  CFAR: c0000000200a70c8 DAR: c00000002ffb0000 DSISR: 40000000 IRQMASK: 0
-  ...
-  NIP memcpy_power7+0x400/0x7d0
-  LR  kmemdup+0x5c/0x80
-  Call Trace:
-    memcpy_power7+0x274/0x7d0 (unreliable)
-    kmemdup+0x5c/0x80
-    tpm_read_log_of+0xe8/0x1b0
-    tpm_bios_log_setup+0x60/0x210
-    tpm_chip_register+0x134/0x320
-    tpm_ibmvtpm_probe+0x520/0x7d0
-    vio_bus_probe+0x9c/0x460
-    really_probe+0x104/0x420
-    __driver_probe_device+0xb0/0x170
-    driver_probe_device+0x58/0x180
-    __driver_attach+0xd8/0x250
-    bus_for_each_dev+0xb4/0x140
-    driver_attach+0x34/0x50
-    bus_add_driver+0x1e8/0x2d0
-    driver_register+0xb4/0x1c0
-    __vio_register_driver+0x74/0x9c
-    ibmvtpm_module_init+0x34/0x48
-    do_one_initcall+0x80/0x320
-    kernel_init_freeable+0x304/0x3ac
-    kernel_init+0x30/0x1a0
-    ret_from_kernel_thread+0x5c/0x64
-
-To fix the crash, add the SML region to the usable memory areas for the
-kdump kernel, so that the second kernel will map the region. To avoid
-corruption of the region, add the region to the reserved memory areas,
-so that the second kernel does not use the memory for something else.
-
-Reported-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
- arch/powerpc/include/asm/kexec_ranges.h |  1 +
- arch/powerpc/kexec/file_load_64.c       | 12 ++++++++++++
- arch/powerpc/kexec/ranges.c             | 20 ++++++++++++++++++++
- 3 files changed, 33 insertions(+)
+ arch/powerpc/include/asm/firmware.h       | 4 +++-
+ arch/powerpc/platforms/pseries/firmware.c | 1 +
+ arch/powerpc/platforms/pseries/plpks.c    | 5 ++++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-index f83866a19e87..cf6a97f9113d 100644
---- a/arch/powerpc/include/asm/kexec_ranges.h
-+++ b/arch/powerpc/include/asm/kexec_ranges.h
-@@ -21,5 +21,6 @@ int add_kernel_mem_range(struct crash_mem **mem_ranges);
- int add_rtas_mem_range(struct crash_mem **mem_ranges);
- int add_opal_mem_range(struct crash_mem **mem_ranges);
- int add_reserved_mem_ranges(struct crash_mem **mem_ranges);
-+int add_sml_mem_range(struct crash_mem **mem_ranges);
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index ed6db13a1d7c..69ae9cf57d50 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -56,6 +56,7 @@
+ #define FW_FEATURE_FORM2_AFFINITY ASM_CONST(0x0000020000000000)
+ #define FW_FEATURE_ENERGY_SCALE_INFO ASM_CONST(0x0000040000000000)
+ #define FW_FEATURE_WATCHDOG	ASM_CONST(0x0000080000000000)
++#define FW_FEATURE_PLPKS	ASM_CONST(0x0000100000000000)
  
- #endif /* _ASM_POWERPC_KEXEC_RANGES_H */
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 110d28bede2a..90c10a89fcbc 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -79,6 +79,10 @@ static int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
- 	if (ret)
- 		goto out;
+ #ifndef __ASSEMBLY__
  
-+	ret = add_sml_mem_range(mem_ranges);
-+	if (ret)
-+		goto out;
-+
- 	ret = add_opal_mem_range(mem_ranges);
- 	if (ret)
- 		goto out;
-@@ -122,6 +126,10 @@ static int get_usable_memory_ranges(struct crash_mem **mem_ranges)
- 	if (ret)
- 		goto out;
+@@ -77,7 +78,8 @@ enum {
+ 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
+ 		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR |
+ 		FW_FEATURE_RPT_INVALIDATE | FW_FEATURE_FORM2_AFFINITY |
+-		FW_FEATURE_ENERGY_SCALE_INFO | FW_FEATURE_WATCHDOG,
++		FW_FEATURE_ENERGY_SCALE_INFO | FW_FEATURE_WATCHDOG |
++		FW_FEATURE_PLPKS,
+ 	FW_FEATURE_PSERIES_ALWAYS = 0,
+ 	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISOR,
+ 	FW_FEATURE_POWERNV_ALWAYS = 0,
+diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/platforms/pseries/firmware.c
+index 080108d129ed..18447e5fa17d 100644
+--- a/arch/powerpc/platforms/pseries/firmware.c
++++ b/arch/powerpc/platforms/pseries/firmware.c
+@@ -68,6 +68,7 @@ hypertas_fw_features_table[] = {
+ 	{FW_FEATURE_RPT_INVALIDATE,	"hcall-rpt-invalidate"},
+ 	{FW_FEATURE_ENERGY_SCALE_INFO,	"hcall-energy-scale-info"},
+ 	{FW_FEATURE_WATCHDOG,		"hcall-watchdog"},
++	{FW_FEATURE_PLPKS,		"hcall-pks"},
+ };
  
-+	ret = add_sml_mem_range(mem_ranges);
-+	if (ret)
-+		goto out;
-+
- 	ret = add_opal_mem_range(mem_ranges);
- 	if (ret)
- 		goto out;
-@@ -225,6 +233,10 @@ static int get_reserved_memory_ranges(struct crash_mem **mem_ranges)
- 	if (ret)
- 		goto out;
+ /* Build up the firmware features bitmask using the contents of
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 6f7bf3fc3aea..b0658ea3eccb 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -378,7 +378,7 @@ bool plpks_is_available(void)
+ {
+ 	int rc;
  
-+	ret = add_sml_mem_range(mem_ranges);
-+	if (ret)
-+		goto out;
-+
- 	ret = add_tce_mem_ranges(mem_ranges);
- 	if (ret)
- 		goto out;
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 5fc53a5fcfdf..8b01655ceb5e 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -350,6 +350,26 @@ int add_rtas_mem_range(struct crash_mem **mem_ranges)
- 	return ret;
- }
+-	if (!firmware_has_feature(FW_FEATURE_LPAR))
++	if (!firmware_has_feature(FW_FEATURE_PLPKS))
+ 		return false;
  
-+int add_sml_mem_range(struct crash_mem **mem_ranges)
-+{
-+	struct device_node *dn;
-+	int ret = 0;
-+	u64 base;
-+	u32 size;
+ 	rc = _plpks_get_config();
+@@ -690,6 +690,9 @@ static __init int pseries_plpks_init(void)
+ {
+ 	int rc;
+ 
++	if (!firmware_has_feature(FW_FEATURE_PLPKS))
++		return -ENODEV;
 +
-+	// Matches the device type in tpm_ibmvtpm.c
-+	for_each_node_by_type(dn, "IBM,vtpm") {
-+		if (of_property_read_u64(dn, "linux,sml-base", &base) == 0 &&
-+		    of_property_read_u32(dn, "linux,sml-size", &size) == 0) {
-+			ret = add_mem_range(mem_ranges, base, size);
-+			if (ret)
-+				break;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * add_opal_mem_range - Adds OPAL region to the given memory ranges list.
-  * @mem_ranges:         Range list to add the memory range to.
+ 	rc = _plpks_get_config();
+ 
+ 	if (rc) {
 -- 
-2.39.1
+2.39.2
 
