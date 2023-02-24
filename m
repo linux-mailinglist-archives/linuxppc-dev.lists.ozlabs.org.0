@@ -2,183 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479CD6A1511
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 03:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0BF6A151D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 03:56:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PNDqL54cmz3f4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 13:48:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PNDzs2rVsz3f4Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 13:56:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=1xHjAdc7;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=NuzJGcvU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=deBXuCj5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=tom.saeger@oracle.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=1xHjAdc7;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=NuzJGcvU;
-	dkim-atps=neutral
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNDpM4v0Qz3cJK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 13:47:54 +1100 (AEDT)
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31O1nIpA005085;
-	Fri, 24 Feb 2023 02:47:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2022-7-12;
- bh=nOj9l0th+lLytp2n+D3LicigJVlS0aOhK2WQsxUUoow=;
- b=1xHjAdc7Dlo6yCoBP+KfA/PccwyBrYniSQYuoElj81RJOcEBXkRSOOKn/T9fYX4zVg6z
- GU8MwkS+i9++DLK8KbhmTZkBNGMcGY1+MaulTX5HseeXWykWhpQzoBycqWdExNh9dYNY
- 5SeqxDDKtjfVAMREvD+FkRmrsdsqc4ZoGFhXOa02Ao5S9YOIqkkengOebj43WKS6aUWp
- JuNJCkbj+lzSTGy9ijNMCqOQ83x6NLnaYa4IvrhqJLrzfZ1cyD9faKyOQWlhLW+MDYtW
- kPJc5Z05WQ2c52jg+RMkGn3RPBgOEaLe6cvMAW/SvtPLXcSdp6VOVZzPkBIKMEels4J0 eg== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ntq7um037-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Feb 2023 02:47:36 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 31O0LRxF033994;
-	Fri, 24 Feb 2023 02:47:34 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2170.outbound.protection.outlook.com [104.47.57.170])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3ntn4g9ddt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Feb 2023 02:47:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q7izVHCXtFjaGz9y3ZrhlEExP/WzedBSUKTc3t/DIjfxGfEDdIKLU/FU0ZzvuQ3q8YJe0if8rySwpDjut+csRjbh6XzFCvw/SlsEoMiogSdyUOHtdD6wKpD9iRUkFktOZHWGCkTXql3ZG8MbowyGV8oVJHKkld+lFwtQxeMY4kXBRkFWZHc3DcSq8kcOl9S3EnclXNnqZSoX/ByyyNkW+ACAxwcxsZu0O1xt44OJL10/4Vlfunv3Wpf4ReHlv1Y9BZ60zat9QjSgvaF5EdKNVRoK2+1Ka2Yo/bt1rugUIVG1xjFWHIuA3rHDFTj8XvoJGt7N9vJ3qL2JGEAhSo1DiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nOj9l0th+lLytp2n+D3LicigJVlS0aOhK2WQsxUUoow=;
- b=GP3Srb+pdpWWKnulXyYsUDVJE6am7xCauEXAh7yFbBhE5P1tXyKkwPXH6WuqJDcexWwV5GBppIfvbraliGmMF5he7cM7W3p6RecO21xSUBKM3y9TjxxXPEv9pE7b6KO8aorLava+akGS3bguBZGUDRhXefAzsSpE1qsEtPfI9PivddtXeGBnGEjT2U+JNuh24I2PwgMQ4oGrxPD1Y4z75/A35mu8GvCiCKKN6D81bZLvcDdDVYI5TnDz8GzEnctDuJ506Jh4tQxG9ElcAa389SZWL0qerubhn0+GG2KlVaPCJC4aSlpKiSHypuI253zFImqZ6DZK828dscC5QSztKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nOj9l0th+lLytp2n+D3LicigJVlS0aOhK2WQsxUUoow=;
- b=NuzJGcvUScdmIwojNj5rGkeP5ncNXanF80b8RWd+SEnJNVDq5kustfzALLU0Rk8Cm6tzX429ArDXxpN7zAoAzeHtd9kipTF1/mDv8QVMmybPiRMqV3CMnh+8BgPYPcVGyBL/dyClT5+wlHpfD3RoKnYynItxZAyS0O7hKmHtyMY=
-Received: from BY5PR10MB3794.namprd10.prod.outlook.com (2603:10b6:a03:1b2::30)
- by MW4PR10MB6485.namprd10.prod.outlook.com (2603:10b6:303:221::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.11; Fri, 24 Feb
- 2023 02:47:32 +0000
-Received: from BY5PR10MB3794.namprd10.prod.outlook.com
- ([fe80::df97:c045:6f0c:974f]) by BY5PR10MB3794.namprd10.prod.outlook.com
- ([fe80::df97:c045:6f0c:974f%3]) with mapi id 15.20.6156.007; Fri, 24 Feb 2023
- 02:47:32 +0000
-Date: Thu, 23 Feb 2023 20:47:24 -0600
-From: Tom Saeger <tom.saeger@oracle.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 5.15 v2 1/5] arch: fix broken BuildID for arm64 and riscv
-Message-ID: <20230224024724.whvtsrljz5k3jpln@oracle.com>
-References: <20230210-tsaeger-upstream-linux-stable-5-15-v2-0-6c68622745e9@oracle.com>
- <20230210-tsaeger-upstream-linux-stable-5-15-v2-1-6c68622745e9@oracle.com>
- <Y/c3MSvnN4DcvzSx@kroah.com>
- <20230223175331.7tsgvkvcur6wl7h7@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230223175331.7tsgvkvcur6wl7h7@oracle.com>
-X-ClientProxiedBy: SA9P221CA0009.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:806:25::14) To BY5PR10MB3794.namprd10.prod.outlook.com
- (2603:10b6:a03:1b2::30)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNDyx1Ctrz3cJK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 13:55:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=deBXuCj5;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PNDyt50sHz4x5Q;
+	Fri, 24 Feb 2023 13:55:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1677207320;
+	bh=/2xLNg0+9yoUgCwDEfgWLF/ybcil9mGDLaS3H3wjJ7Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=deBXuCj5IFdJjqt30dq8rmNNLGe50GjAcPToXFxIO08NEDPVgTb/vDZpT+wkXak0P
+	 5SXWYcgmldCnkcDpjdLBHG6QptbQksMT/dz4bhQH/WpQKekdzYwkaFZsC3Oj/CsP+u
+	 34cNNDWByJlGzc+fOUawkfjPZ2LncKyqY0j3twjNJhYkw4ZYQV9NtQzbdYH3pxRi3l
+	 zrBHMZsiiY0yYTmX7eSCIcCiJu6P5sdGu9Jo6LFhRM+6OH9wCtF5Aj1Ke+00oFLpJC
+	 Se5SwtqnA+0Nm2Jlkc2ZuAqEk6dwYQ+45YU5tBbIaatlPiqraqoaTEd+mU0F1nIYOL
+	 LOqOp0xjyWskQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.3-1 tag
+Date: Fri, 24 Feb 2023 13:55:18 +1100
+Message-ID: <87v8jrai21.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR10MB3794:EE_|MW4PR10MB6485:EE_
-X-MS-Office365-Filtering-Correlation-Id: 830ff185-991a-4a5a-3a3c-08db161179e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	zVcbhMWXtGC/WDavb9Cxm77Wimj3E93b4PwT0hGcnIDsQ7PY7Vs5D2Ex6SbDBdgOgEvWkqDM0+MJB3VlHjkFHaLEQ1qjCUVqRrPoxlHGQf7/iIGHQs9NMNcOf3M++nKvyzQiSGoj/N5P6Aj3A9+0TSCrwNKEz0JR1Am5jdmoeAj7nGhL9wtyZ3cvZosz1lA3592Ox5GeZhC3MZ6gmdn3qYypyzjQKJxpZIaIQi+NrZbinf9I3pJfYsTYa0AQS12SaMSsr0wsWizZs4AYCvDZVK2b/NgBTx/oH292YRb+bOb9Tmd2pcpf9kTL3l2DnNc8wLJd+gD94MlXz03kZWONk5QcYvtXNIpCjBOqI12khD9u1uWlAT+KVWIb+jBCsZTG9akT0uTuyDVSStvwCTCwbbaWOXLUWcvHxQBSxTJu8k4XR1mGQGVqb4cVUfEb/DIRUFVN8dC7swLBViagIKhCgNOXYLpVr3LvA2w9t7k69rfsAooOxZcVQWWDE/cZGRmsJXQ6sQ9qrcnDc1E9MXR7+66gZ6OQ+sTlUtjTdKE0R68MNU4al1VXUjcFgublHjJsQVCdcB41SVtQijcapQ0gVNb/ZXskyQW63hD/crbm9BjUfq2Luin5sbWVUZKOSES4fxivk27AKugAIyhvvap+BrvGBE6LQnt6P8yzMUhTX9s=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3794.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(396003)(346002)(376002)(136003)(39860400002)(366004)(451199018)(8936002)(7416002)(54906003)(5660300002)(478600001)(44832011)(2906002)(6916009)(66946007)(41300700001)(8676002)(316002)(4326008)(66556008)(66476007)(6486002)(966005)(6666004)(1076003)(6506007)(6512007)(186003)(26005)(2616005)(36756003)(83380400001)(38100700002)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Nk1jQXk0SUZrTHBhVkR5T09MRGdlNUU4d21qUWx1c1ExcTVmN3FraGRURDlr?=
- =?utf-8?B?aTMzZVdkLzNsQXVHMENqVzlVMnZXaFhGNFp4UEdmZFh0K3dMNExBNXZlMHlo?=
- =?utf-8?B?Uldyakwzd2taa2pEYThYVXBhcVpGaTRCYnlvS0N2Y0Y1MHdxM1EzQjl1K0Y2?=
- =?utf-8?B?QzFkcy84UHJwY09JWXd6UTBuTkdwTEhrT05tQUI1RkpWNWZZNEtjSHhIbUZo?=
- =?utf-8?B?MWFVUHQzcG5zbUkvdzl0YWRxamN4UHBUeHgwVVBWZTFqQkxjU3ZueUdxR0lV?=
- =?utf-8?B?Q1BwblpCMGlUTjUwbDRkdVIveEJ5YXp1VXBxc3I1c0RPQUFmUExNd1RxNVpL?=
- =?utf-8?B?S1hCaDQ0VkxVZnB5OGM5bmpCTTFHRVcwZk4zMEFUUk1mQWtQd0tuMXR6R1RQ?=
- =?utf-8?B?M082dDIzZTNwY0pUYVFYOGpnOTlvVUFONk1wUTkxZm91T01lRFE5ak5JTWh0?=
- =?utf-8?B?WEszUFZDQzNFVVdobXd0SG1kdHdhZmtTZUp4UnBpOElISEZqVlo2UkxCa2Mw?=
- =?utf-8?B?Sm9ScVd0clY1WHgwQU90L3BsencrLzBMTG8rYmNZR1Zka09rVCtCM3F4bk9H?=
- =?utf-8?B?UjNZNDl6L2J1VjdIaWk1UWlSc3VsYW9SWUlRZE1hbDROQzZlaWYyQlJaeUpN?=
- =?utf-8?B?T1YzZEk3K0orbXhCSHR2K0VmQ3l6Y2QyM2JsRTQ4MVpDWHpFWGFSU25iaWV1?=
- =?utf-8?B?TVhKbjJjNWs3R0VabFRqSVRmMlNQMkJqdkZqUFdDY1NNemxrT2ZrbFZpTys4?=
- =?utf-8?B?M2dVckVtS2FoWXNSY0d0dTFDKzBCRGxGSXZnc00wbnhPbWNhZThGN1BRVG9L?=
- =?utf-8?B?TitydnV3anhkMGp5RldRdFA3UDM2R2VZMm8vR1doRWkzdzhjWTllTnFycFJM?=
- =?utf-8?B?NE56YklsOEQ0L1FkWWtYcm8yMnh3WncxOURGNEZZbkI3NTJMcHo5S09ETzdt?=
- =?utf-8?B?bnM3ZVdsbVhsMzRHSzVoT2I3amJ0aWhVN0crcVNrOFljLzQ5SDk2cXlaRVZJ?=
- =?utf-8?B?dWpOdzYybkNWNlhPa0lnaitrcDZMbzRtN3dPVlBvY2haUzJrZHF2VUdhbGQv?=
- =?utf-8?B?cnBNRnZZRG5mSW5YcmwyUHZFZUhLUHRablBiZ24zTXE3RG5aZGF6b25NMFBX?=
- =?utf-8?B?Zk0zNTBHb1JXbEhuM2ZyV09FTEdGRDNIYS9DdWJxS2F6TFJjcUN6RmE1eGxM?=
- =?utf-8?B?Yzc0Z1UxQlpkR2J2OE1CbTR2NWU1NURsVmR5TWdDUVRyaENIS3l4WG9qM3VM?=
- =?utf-8?B?UThuWnMxa1pFSW5paWN6OUN3Si80N2VOY2NaQnAyWHBIYVd0cWNzMzNvc2tW?=
- =?utf-8?B?TEZpWHRPMDR0aFV1T3NxNW1OcFAxb0VJQzFPeE5yRjU1eFJnQmtZRjk2eFRU?=
- =?utf-8?B?dkFkM0EzbnVqdk5oNW12Q1hhcHlNS2htb2Z0UjZhclAwSkpITWRydG01U1hl?=
- =?utf-8?B?RmJEMkZIZXAxZkhsc0xpL1ZQU0V0WTVuLzlGVXVGaGFieEo5TVhrdmdsYnlu?=
- =?utf-8?B?R2o2TGJzL2hEdFFHUnltd1MwZU5GRzJpa1p5SUpEc1JhUENvM3c0V3N1ZWhq?=
- =?utf-8?B?QU9zTDhhSFpQYW1TQ2FFQW9UQlN4cUJFSUVlYVp4SUlJcnVnL2J4d0IxOTkz?=
- =?utf-8?B?WkZXbWpWTFJUdzJVN3MxZUkwcEFFejlXUkFib2JHaHNyWHBtWkNicGxZTUdB?=
- =?utf-8?B?MGJ5eTBnQkV4a1JDeEdKVDJYM0JKaDRJem1EVnp0ZmRUOTFFRi80VlNmS25D?=
- =?utf-8?B?SW12RDB0elgva2JCTVNWS1hvd3U3SkJqV2MwVjBSTWNYancvNkNPdFJUYzM3?=
- =?utf-8?B?ekovVlp0TE92V2tzc2pwY2E1OTZCSmJic0tHbEpvUlZnUWwxUURubERkOEVr?=
- =?utf-8?B?RjY5dDA4bExHNW5udW40TnBzeXBwMWk3QnJDUy91RVk5NEdTVTBROC9UKzlH?=
- =?utf-8?B?bFp4VmliSVZZNXZ4UnZQUi9LalhxbVN0ZENWMTlCQkVqR0JOaXBQUGdUck9w?=
- =?utf-8?B?ZTRwbEphQUVGZVFtM3B4UEJrYmQ5MHhxRjVCS2Q1dERnZkt3QmphU1paTGNN?=
- =?utf-8?B?ZzRIS3ltSEJJNU5ZT1pDR2pvYm90UXhNMmdmOXBjRmd4K1FHTlgrcVZYbTR3?=
- =?utf-8?Q?7wCCr/u77RtrP49C1tAa88ZM5?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	=?utf-8?B?YlZnLzZqN2t5bmZRS2M1Rmk0UitLUTFUSVRBVmlsYzh5OXpDV2ZLdlZobFFJ?=
- =?utf-8?B?dnd2ZTA5djFBUEpTU1kzZGNhRlQ0Z3ZrL3d4YTNSVXdDZFQ1SXJKTkdhYjNz?=
- =?utf-8?B?TVRzcTUwazNnR1poOGhQNjdRaDY4Zlpsbmx0enBObG1FVmNseXlGU3BkZm40?=
- =?utf-8?B?dnl5SFoyQUNUbEVUYnExLzVOZTFJbXNVejRMT3dvRlNxRmZHaHlxSUtWRGtY?=
- =?utf-8?B?Y0NHRlkrQzJ0NS9Sb01oR3JHL09YRG5LR0dRRktGOFZyN3ljWWFQTTljYk9m?=
- =?utf-8?B?TmU0RWNqS25mVUUvQ05ZeGxkNGNrVGZ6L3pORVdoRXRuRUdPcjZySGU5MThz?=
- =?utf-8?B?VVdqN2tIODVSUGUvNHcwbnR6SU5UemthTGNqb05kQ1MwTGZLaDJ1NzQzWW81?=
- =?utf-8?B?RVNQN2JQdlVJM0RSOFhCdE5XZVRsR0ZqaEVEU1NzOUY0UndoNmw1S3crNDdz?=
- =?utf-8?B?MFEyR250Lzg2c2xKWFAvUGgxV3ZQcVVHZkgyNnhXS0o5VngvRVlnQ2JLdkVX?=
- =?utf-8?B?MzMwY0U5emo1cFYxRDAwYXh0WjFHRzI5cHcxMHl1Qis3MjRra1VlZVR2L2kv?=
- =?utf-8?B?aHoyNDVPa3JMZDFGdzBoblVTMVU1RUt1MGdyRWZqWjRSZmxlOTR1cWRoWUtI?=
- =?utf-8?B?NGNBYkIyTlZjMG9XTHYrY3ZzMzM3c1h6cUJzcU9nNzZITzdzYTJuQkxDaUhn?=
- =?utf-8?B?Wnc3REtxeWhpSjJYRGtRREJTTXA0UzNNYTE2akVhRU1aRnd1N3FiWnVDSllr?=
- =?utf-8?B?UFk1SEFOc0NXMGNmQlhFVlpFa0Fud202N0JSbEZTR1pvN0twK1RnSVpOMjV0?=
- =?utf-8?B?OTJZcCtseEh1SnF3dGtnM2RFZ0o0dDZkQ3ZIS1dpbG91Ynl5QTBFME5uUzNV?=
- =?utf-8?B?ZnZuMk1sZ1VNa3UwcGZ6Zmo5WVF5Zkl6K3RwMmZ5TTg3Y1NCUHEwYXBIUEtZ?=
- =?utf-8?B?UEt3TllieS9JUlNvTHNYWVY2NkhWdjdEYmNPZVpTUlFHdytLMmNBajZCeXA2?=
- =?utf-8?B?SHVXaFA5ZmhWWUpMSEpIOWF0L3BUUDZ4dE9CMUpUQWoxVmhSTkhWR0JPa3pZ?=
- =?utf-8?B?TlEzU0t0VEQrVDFOblI2QnJSa1FmUjloMElPVCtvU3BXS0hqYXdOMU9IUkI2?=
- =?utf-8?B?aXJlYlFHc3VoMHdyTjFvWEVWSjM0Q3pjUkpJMEMxZVVleHhBcWlxbWNWRVQ0?=
- =?utf-8?B?MHVJTDB3MnF1R3loODhmczJUT3l4UHpJOW1VeFhjOW9salU4S09NMllnSUNS?=
- =?utf-8?B?Z1hDMEp5K25iaElIUEhucVhnMDNhSDVHcERMMWU2NGI1VGZnaEYvL2ZuYlVG?=
- =?utf-8?B?Q3NhUUxET08zOGpkalhMNlYxaVFONmRtcXVhM2V1Zzd5aHkveUtIOVd2WUp5?=
- =?utf-8?B?N1BCWWovWk4zRWF2SWxVNTZ4Vm94TlpSNUhkL3ZNclhaSDBlemI2Rjk0cFZm?=
- =?utf-8?B?Zk1MMTQxazBKbkNDVXVPdGx1QkRLd0lXWmIrSUdyM2hrcUdpT2FET3VVOWFu?=
- =?utf-8?B?b3Yxb0FXRm41MDhIQ2E5S2pFOHhjYTh4MHBNR2dVclZHczE2ZVA2Y1NEMDNq?=
- =?utf-8?Q?ipBHbdCffIddaLrRelT1oGXlqTExO2b7NKcSkmUunHMErj?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 830ff185-991a-4a5a-3a3c-08db161179e6
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB3794.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2023 02:47:32.1880
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lnSS7CHOsN6j20EPv0wHOCy0qLZijgwztSkiUETJ0fF0lNk4SN/jnf3bzc+BtFxBZL4GKaK+Dud23ExejqpwYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6485
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-23_15,2023-02-23_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302240018
-X-Proofpoint-GUID: t3rVOMCTbiIo9MlzzPjXcRrQXyMpdnNv
-X-Proofpoint-ORIG-GUID: t3rVOMCTbiIo9MlzzPjXcRrQXyMpdnNv
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -190,68 +56,363 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-arch@vger.kernel.org, Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Dennis Gilmore <dennis@ausil.us>, Naresh Kamboju <naresh.kamboju@linaro.org>, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>, Nathan Chancellor <nathan@kernel.org>, linux-riscv@lists.infradead.org, stable@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: ruscur@russell.cc, song@kernel.org, bgray@linux.ibm.com, anders.roxell@linaro.org, nayna@linux.ibm.com, ganeshgr@linux.ibm.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, nathan@kernel.org, rmclure@linux.ibm.com, mathieu.desnoyers@efficios.com, skhan@linuxfoundation.org, jpoimboe@kernel.org, hbathini@linux.ibm.com, geoff@infradead.org, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, fbarrat@linux.ibm.com, sv@linux.ibm.com, pali@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 23, 2023 at 11:53:42AM -0600, Tom Saeger wrote:
-> On Thu, Feb 23, 2023 at 10:51:45AM +0100, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 10, 2023 at 01:18:40PM -0700, Tom Saeger wrote:
-> > > From: Masahiro Yamada <masahiroy@kernel.org>
-> > > 
-> > > commit 99cb0d917ffa1ab628bb67364ca9b162c07699b1 upstream.
-> > > 
-> > > Dennis Gilmore reports that the BuildID is missing in the arm64 vmlinux
-> > > since commit 994b7ac1697b ("arm64: remove special treatment for the
-> > > link order of head.o").
-> > > 
-> > > The issue is that the type of .notes section, which contains the BuildID,
-> > > changed from NOTES to PROGBITS.
-> > > 
-> > > Ard Biesheuvel figured out that whichever object gets linked first gets
-> > > to decide the type of a section. The PROGBITS type is the result of the
-> > > compiler emitting .note.GNU-stack as PROGBITS rather than NOTE.
-> > > 
-> > > While Ard provided a fix for arm64, I want to fix this globally because
-> > > the same issue is happening on riscv since commit 2348e6bf4421 ("riscv:
-> > > remove special treatment for the link order of head.o"). This problem
-> > > will happen in general for other architectures if they start to drop
-> > > unneeded entries from scripts/head-object-list.txt.
-> > > 
-> > > Discard .note.GNU-stack in include/asm-generic/vmlinux.lds.h.
-> > > 
-> > > Link: https://lore.kernel.org/lkml/CAABkxwuQoz1CTbyb57n0ZX65eSYiTonFCU8-LCQc=74D=xE=rA@mail.gmail.com/
-> > > Fixes: 994b7ac1697b ("arm64: remove special treatment for the link order of head.o")
-> > > Fixes: 2348e6bf4421 ("riscv: remove special treatment for the link order of head.o")
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Greg, how about something like this tacked onto backport of this commit?
+Hi Linus,
 
-[Tom: stable backport 5.15.y, 5.10.y, 5.4.y]
+Please pull powerpc updates for 6.3:
 
-Though the above "Fixes:" commits are not in this kernel, the conditions
-which lead to a missing Build ID in arm64 vmlinux are similar.
+The following changes since commit 88603b6dc419445847923fcb7fe5080067a30f98:
 
-Evidence points to these conditions:
-1. ld version > 2.36 (exact binutils commit documented in a494398bde27)
-2. first object which gets linked (head.o) has a PROGBITS .note.GNU-stack segment
+  Linux 6.2-rc2 (2023-01-01 13:53:16 -0800)
 
-These conditions can be observed when:
-- 5.15.60+ OR 5.10.136+ OR 5.4.210+
-- AND ld version > 2.36
-- AND arch=arm64
-- AND CONFIG_MODVERSIONS=y
+are available in the git repository at:
 
-This was previously bisected to the stable backport of 0d362be5b142.
-Follow-up experiments were discussed here: https://lore.kernel.org/all/20221221235413.xaisboqmr7dkqwn6@oracle.com/ 
-which strongly hints at condition 2.
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-6.3-1
+
+for you to fetch changes up to f82cdc37c4bd4ba905bf99ade9782a639b5c12e9:
+
+  powerpc/pseries: Avoid hcall in plpks_is_available() on non-pseries (2023=
+-02-22 17:01:46 +1100)
+
+- ------------------------------------------------------------------
+powerpc updates for 6.3
+
+ - Support for configuring secure boot with user-defined keys on PowerVM LP=
+ARs.
+
+ - Simplify the replay of soft-masked IRQs by making it non-recursive.
+
+ - Add support for KCSAN on 64-bit Book3S.
+
+ - Improvements to the API & code which interacts with RTAS (pseries firmwa=
+re).
+
+ - Change 32-bit powermac to assign PCI bus numbers per domain by default.
+
+ - Some improvements to the 32-bit BPF JIT.
+
+ - Various other small features and fixes.
+
+Thanks to: Anders Roxell, Andrew Donnellan, Andrew Jeffery, Benjamin Gray, =
+Christophe
+Leroy, Frederic Barrat, Ganesh Goudar, Geoff Levand, Greg Kroah-Hartman, Ja=
+n-Benedict
+Glaw, Josh Poimboeuf, Kajol Jain, Laurent Dufour, Mahesh Salgaonkar, Mathie=
+u Desnoyers,
+Mimi Zohar, Murphy Zhou, Nathan Chancellor, Nathan Lynch, Nayna Jain, Nicho=
+las Piggin,
+Pali Roh=C3=A1r, Petr Mladek, Rohan McLure, Russell Currey, Sachin Sant, Sa=
+thvika Vasireddy,
+Sourabh Jain, Stefan Berger, Stephen Rothwell, Sudhakar Kuppusamy.
+
+- ------------------------------------------------------------------
+Anders Roxell (1):
+      powerpc/mm: Rearrange if-else block to avoid clang warning
+
+Andrew Donnellan (10):
+      powerpc/pseries: Fix handling of PLPKS object flushing timeout
+      powerpc/pseries: Fix alignment of PLPKS structures and buffers
+      powerpc/secvar: Clean up init error messages
+      powerpc/secvar: Allow backend to populate static list of variable nam=
+es
+      powerpc/secvar: Warn when PAGE_SIZE is smaller than max object size
+      powerpc/secvar: Don't print error on ENOENT when reading variables
+      powerpc/pseries: Make caller pass buffer to plpks_read_var()
+      powerpc/pseries: Turn PSERIES_PLPKS into a hidden option
+      powerpc/pseries: Clarify warning when PLPKS password already set
+      powerpc/pseries: Fix endianness issue when parsing PLPKS secvar flags
+
+Benjamin Gray (5):
+      selftests/powerpc: Add generic read/write file util
+      selftests/powerpc: Add read/write debugfs file, int
+      selftests/powerpc: Parse long/unsigned long value safely
+      selftests/powerpc: Add {read,write}_{long,ulong}
+      selftests/powerpc: Add automatically allocating read_file
+
+Christophe Leroy (16):
+      powerpc/64: Set default CPU in Kconfig
+      powerpc: Check !irq instead of irq =3D=3D NO_IRQ and remove NO_IRQ
+      powerpc: Disable CPU unknown by CLANG when CC_IS_CLANG
+      powerpc: Remove __kernel_text_address() in show_instructions()
+      powerpc/bpf/32: No need to zeroise r4 when not doing tail call
+      powerpc/bpf/32: Only set a stack frame when necessary
+      powerpc/bpf/32: BPF prog is never called with more than one arg
+      powerpc/bpf: Perform complete extra passes to update addresses
+      powerpc/bpf: Only pad length-variable code at initial pass
+      powerpc/bpf/32: Optimise some particular const operations
+      powerpc/bpf/32: introduce a second source register for ALU operations
+      powerpc/bpf/32: perform three operands ALU operations
+      powerpc/64: Replace -mcpu=3De500mc64 by -mcpu=3De5500
+      powerpc: Pass correct CPU reference to assembler
+      powerpc/epapr: Don't use wrteei on non booke
+      powerpc/e500: Add missing prototype for 'relocate_init'
+
+Frederic Barrat (1):
+      powerpc/powernv/ioda: Skip unallocated resources when mapping to PE
+
+Ganesh Goudar (2):
+      powerpc/mce: log the error for all unrecoverable errors
+      powerpc/eeh: Set channel state after notifying the drivers
+
+Geoff Levand (2):
+      powerpc/ps3: Change updateboltedpp() panic to info
+      powerpc/ps3: Refresh ps3_defconfig
+
+Greg Kroah-Hartman (1):
+      powerpc/iommu: fix memory leak with using debugfs_lookup()
+
+Josh Poimboeuf (2):
+      powerpc/module_64: Improve restore_r2() return semantics
+      powerpc/module_64: Fix "expected nop" error on module re-patching
+
+Kajol Jain (1):
+      powerpc/hv-24x7: Fix pvr check when setting interface version
+
+Mathieu Desnoyers (1):
+      selftests/powerpc: Fix incorrect kernel headers search path
+
+Michael Ellerman (6):
+      Merge branch 'fixes' into next
+      powerpc/rtas: Drop unused export symbols
+      Merge branch 'fixes' into next
+      powerpc/secvar: Use u64 in secvar_operations
+      powerpc/nohash: Fix build error with binutils >=3D 2.38
+      powerpc/nohash: Fix build with llvm-as
+
+Nathan Chancellor (1):
+      macintosh: windfarm: Use unsigned type for 1-bit bitfields
+
+Nathan Lynch (25):
+      powerpc/rtas: unexport 'rtas' symbol
+      powerpc/rtas: make all exports GPL
+      powerpc/rtas: remove lock and args fields from global rtas struct
+      powerpc/rtas: upgrade internal arch spinlocks
+      powerpc/rtas: handle extended delays safely in early boot
+      powerpc/perf/hv-24x7: add missing RTAS retry status handling
+      powerpc/pseries/lpar: add missing RTAS retry status handling
+      powerpc/pseries/lparcfg: add missing RTAS retry status handling
+      powerpc/pseries/setup: add missing RTAS retry status handling
+      powerpc/rtas: ensure 4KB alignment for rtas_data_buf
+      powerpc/pseries: drop RTAS-based timebase synchronization
+      powerpc/rtas: improve function information lookups
+      powerpc/rtas: strengthen do_enter_rtas() type safety, drop inline
+      powerpc/tracing: tracepoints for RTAS entry and exit
+      powerpc/rtas: add tracepoints around RTAS entry
+      powerpc/pseries: add RTAS work area allocator
+      powerpc/pseries/dlpar: use RTAS work area API
+      powerpc/pseries: PAPR system parameter API
+      powerpc/pseries: convert CMO probe to papr_sysparm API
+      powerpc/pseries/lparcfg: convert to papr_sysparm API
+      powerpc/pseries/hv-24x7: convert to papr_sysparm API
+      powerpc/pseries/lpar: convert to papr_sysparm API
+      powerpc/rtas: introduce rtas_function_token() API
+      powerpc/rtas: arch-wide function token lookup conversions
+      powerpc/machdep: warn when machine_is() used too early
+
+Nayna Jain (2):
+      powerpc/pseries: Expose PLPKS config values, support additional fields
+      powerpc/pseries: Implement signed update for PLPKS objects
+
+Nicholas Piggin (14):
+      powerpc/64: Don't recurse irq replay
+      powerpc/64s/radix: Remove need_flush_all test from radix__tlb_flush
+      powerpc/64s/radix: mm->context.id should always be valid
+      powerpc/64s/radix: Remove TLB_FLUSH_ALL test from range flushes
+      powerpc: Consolidate 32-bit and 64-bit interrupt_enter_prepare
+      powerpc/32: implement HAVE_CONTEXT_TRACKING_USER support
+      powerpc/32: select HAVE_VIRT_CPU_ACCOUNTING_GEN
+      crypto: powerpc - Use address generation helper for asm
+      powerpc/64s: Refactor initialisation after prom
+      powerpc/64e: Simplify address calculation in secondary hold loop
+      powerpc/64s: Fix stress_hpt memblock alloc alignment
+      powerpc/64: Fix task_cpu in early boot when booting non-zero cpuid
+      powerpc/64: Move paca allocation to early_setup()
+      powerpc: Skip stack validation checking alternate stacks if they are =
+not allocated
+
+Pali Roh=C3=A1r (4):
+      powerpc/boot: Don't always pass -mcpu=3Dpowerpc when building 32-bit =
+uImage
+      powerpc/pci: Enable PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT by default
+      powerpc/pci: Add option for using pci_to_OF_bus_map
+      powerpc: dts: turris1x.dts: Set lower priority for CPLD syscon-reboot
+
+Rohan McLure (5):
+      powerpc/kcsan: Add exclusions from instrumentation
+      powerpc/kcsan: Exclude udelay to prevent recursive instrumentation
+      powerpc/kcsan: Memory barriers semantics
+      powerpc/kcsan: Prevent recursive instrumentation with IRQ save/restor=
+es
+      powerpc/kcsan: Add KCSAN Support
+
+Russell Currey (15):
+      powerpc/secvar: Fix incorrect return in secvar_sysfs_load()
+      powerpc/secvar: Warn and error if multiple secvar ops are set
+      powerpc/secvar: Use sysfs_emit() instead of sprintf()
+      powerpc/secvar: Handle format string in the consumer
+      powerpc/secvar: Handle max object size in the consumer
+      powerpc/secvar: Extend sysfs to include config vars
+      powerpc/pseries: Move plpks.h to include directory
+      powerpc/pseries: Move PLPKS constants to header file
+      powerpc/pseries: Log hcall return codes for PLPKS debug
+      powerpc/pseries: Add helper to get PLPKS password length
+      powerpc/pseries: Pass PLPKS password on kexec
+      powerpc/pseries: Implement secvars for dynamic secure boot
+      integrity/powerpc: Improve error handling & reporting when loading ce=
+rts
+      integrity/powerpc: Support loading keys from PLPKS
+      powerpc/pseries: Avoid hcall in plpks_is_available() on non-pseries
+
+Sathvika Vasireddy (1):
+      powerpc/64: Fix unannotated intra-function call warning
+
+Sourabh Jain (1):
+      powerpc/kexec_file: print error string on usable memory property upda=
+te failure
 
 
-> > 
-> > Why are we adding a commit to 5.15.y that fixes an issue that only
-> > showed up in 6.1.y?
+ Documentation/ABI/testing/sysfs-secvar                   |   75 +-
+ arch/powerpc/Kconfig                                     |   19 +-
+ arch/powerpc/Makefile                                    |   26 +-
+ arch/powerpc/boot/Makefile                               |   14 +-
+ arch/powerpc/boot/dts/turris1x.dts                       |   23 +
+ arch/powerpc/configs/ps3_defconfig                       |   39 +-
+ arch/powerpc/crypto/crc32-vpmsum_core.S                  |   13 +-
+ arch/powerpc/include/asm/barrier.h                       |   12 +-
+ arch/powerpc/include/asm/hvcall.h                        |    1 +
+ arch/powerpc/include/asm/hw_irq.h                        |    6 +-
+ arch/powerpc/include/asm/interrupt.h                     |   35 +-
+ arch/powerpc/include/asm/irq.h                           |    3 -
+ arch/powerpc/include/asm/machdep.h                       |   16 +-
+ arch/powerpc/include/asm/paca.h                          |    1 -
+ arch/powerpc/include/asm/papr-sysparm.h                  |   38 +
+ arch/powerpc/include/asm/pci-bridge.h                    |    4 +-
+ arch/powerpc/include/asm/plpks.h                         |  195 ++++
+ arch/powerpc/include/asm/rtas-types.h                    |    2 -
+ arch/powerpc/include/asm/rtas-work-area.h                |   96 ++
+ arch/powerpc/include/asm/rtas.h                          |  184 ++++
+ arch/powerpc/include/asm/secvar.h                        |   21 +-
+ arch/powerpc/include/asm/smp.h                           |    1 +
+ arch/powerpc/include/asm/trace.h                         |  103 ++
+ arch/powerpc/kernel/Makefile                             |   10 +
+ arch/powerpc/kernel/eeh_driver.c                         |    4 +-
+ arch/powerpc/kernel/epapr_hcalls.S                       |    6 +
+ arch/powerpc/kernel/head_64.S                            |   51 +-
+ arch/powerpc/kernel/iommu.c                              |    4 +-
+ arch/powerpc/kernel/irq_64.c                             |  105 +-
+ arch/powerpc/kernel/mce.c                                |   10 +-
+ arch/powerpc/kernel/module_64.c                          |   29 +-
+ arch/powerpc/kernel/pci_32.c                             |   17 +-
+ arch/powerpc/kernel/process.c                            |   14 +-
+ arch/powerpc/kernel/prom.c                               |   16 +-
+ arch/powerpc/kernel/rtas-proc.c                          |   24 +-
+ arch/powerpc/kernel/rtas-rtc.c                           |    6 +-
+ arch/powerpc/kernel/rtas.c                               | 1056 ++++++++++=
++++++-----
+ arch/powerpc/kernel/rtas_flash.c                         |   21 +-
+ arch/powerpc/kernel/rtas_pci.c                           |    8 +-
+ arch/powerpc/kernel/rtasd.c                              |    2 +-
+ arch/powerpc/kernel/secvar-ops.c                         |   10 +-
+ arch/powerpc/kernel/secvar-sysfs.c                       |  178 ++--
+ arch/powerpc/kernel/setup-common.c                       |    4 +
+ arch/powerpc/kernel/setup_64.c                           |   16 +-
+ arch/powerpc/kernel/time.c                               |    4 +-
+ arch/powerpc/kernel/trace/Makefile                       |    1 +
+ arch/powerpc/kernel/vdso/Makefile                        |    1 +
+ arch/powerpc/kexec/file_load_64.c                        |   21 +-
+ arch/powerpc/lib/Makefile                                |    2 +
+ arch/powerpc/mm/book3s64/hash_utils.c                    |    3 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c                     |   73 +-
+ arch/powerpc/mm/mmu_decl.h                               |    1 +
+ arch/powerpc/mm/nohash/e500_hugetlbpage.c                |    5 +-
+ arch/powerpc/mm/nohash/tlb_low_64e.S                     |    2 +-
+ arch/powerpc/net/bpf_jit.h                               |    2 +-
+ arch/powerpc/net/bpf_jit_comp.c                          |   91 +-
+ arch/powerpc/net/bpf_jit_comp32.c                        |  400 ++++----
+ arch/powerpc/net/bpf_jit_comp64.c                        |   16 +-
+ arch/powerpc/perf/hv-24x7.c                              |   44 +-
+ arch/powerpc/platforms/44x/fsp2.c                        |    2 +-
+ arch/powerpc/platforms/52xx/efika.c                      |    4 +-
+ arch/powerpc/platforms/Kconfig.cputype                   |   20 +-
+ arch/powerpc/platforms/cell/ras.c                        |    4 +-
+ arch/powerpc/platforms/cell/smp.c                        |    4 +-
+ arch/powerpc/platforms/chrp/nvram.c                      |    4 +-
+ arch/powerpc/platforms/chrp/pci.c                        |    4 +-
+ arch/powerpc/platforms/chrp/setup.c                      |    4 +-
+ arch/powerpc/platforms/maple/setup.c                     |    4 +-
+ arch/powerpc/platforms/powernv/opal-secvar.c             |   60 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c                |    3 +-
+ arch/powerpc/platforms/ps3/htab.c                        |    2 +-
+ arch/powerpc/platforms/pseries/Kconfig                   |   20 +-
+ arch/powerpc/platforms/pseries/Makefile                  |    6 +-
+ arch/powerpc/platforms/pseries/dlpar.c                   |   29 +-
+ arch/powerpc/platforms/pseries/eeh_pseries.c             |   22 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c             |    4 +-
+ arch/powerpc/platforms/pseries/io_event_irq.c            |    2 +-
+ arch/powerpc/platforms/pseries/lpar.c                    |   37 +-
+ arch/powerpc/platforms/pseries/lparcfg.c                 |  104 +-
+ arch/powerpc/platforms/pseries/mobility.c                |    4 +-
+ arch/powerpc/platforms/pseries/msi.c                     |    4 +-
+ arch/powerpc/platforms/pseries/nvram.c                   |    4 +-
+ arch/powerpc/platforms/pseries/papr-sysparm.c            |  151 +++
+ arch/powerpc/platforms/pseries/pci.c                     |    2 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c            |  217 ++++
+ arch/powerpc/platforms/pseries/plpks.c                   |  385 +++++--
+ arch/powerpc/platforms/pseries/plpks.h                   |   71 --
+ arch/powerpc/platforms/pseries/ras.c                     |    2 +-
+ arch/powerpc/platforms/pseries/rtas-work-area.c          |  209 ++++
+ arch/powerpc/platforms/pseries/setup.c                   |   29 +-
+ arch/powerpc/platforms/pseries/smp.c                     |   12 +-
+ arch/powerpc/purgatory/Makefile                          |    1 +
+ arch/powerpc/sysdev/xics/ics-rtas.c                      |    8 +-
+ arch/powerpc/xmon/Makefile                               |    1 +
+ arch/powerpc/xmon/xmon.c                                 |   16 +-
+ drivers/macintosh/windfarm_lm75_sensor.c                 |    4 +-
+ drivers/macintosh/windfarm_smu_sensors.c                 |    4 +-
+ security/integrity/platform_certs/load_powerpc.c         |   47 +-
+ tools/testing/selftests/powerpc/dscr/dscr.h              |   34 +-
+ tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c   |   25 +-
+ tools/testing/selftests/powerpc/include/utils.h          |   20 +-
+ tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c     |   52 +-
+ tools/testing/selftests/powerpc/pmu/lib.c                |   34 +-
+ tools/testing/selftests/powerpc/ptrace/Makefile          |    2 +-
+ tools/testing/selftests/powerpc/ptrace/core-pkey.c       |   28 +-
+ tools/testing/selftests/powerpc/security/Makefile        |    2 +-
+ tools/testing/selftests/powerpc/security/entry_flush.c   |   12 +-
+ tools/testing/selftests/powerpc/security/rfi_flush.c     |   12 +-
+ tools/testing/selftests/powerpc/security/uaccess_flush.c |   18 +-
+ tools/testing/selftests/powerpc/syscalls/Makefile        |    4 +-
+ tools/testing/selftests/powerpc/syscalls/rtas_filter.c   |   81 +-
+ tools/testing/selftests/powerpc/tm/Makefile              |    2 +-
+ tools/testing/selftests/powerpc/utils.c                  |  412 ++++++--
+ 113 files changed, 3850 insertions(+), 1582 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/papr-sysparm.h
+ create mode 100644 arch/powerpc/include/asm/plpks.h
+ create mode 100644 arch/powerpc/include/asm/rtas-work-area.h
+ create mode 100644 arch/powerpc/platforms/pseries/papr-sysparm.c
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-secvar.c
+ delete mode 100644 arch/powerpc/platforms/pseries/plpks.h
+ create mode 100644 arch/powerpc/platforms/pseries/rtas-work-area.c
+-----BEGIN PGP SIGNATURE-----
 
-If you approve - I'll send v3 for 5.15, 5.10, and 5.4 (with style fixes).
-
-Cheers,
-
---Tom
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmP4Js4ACgkQUevqPMjh
+pYD/8xAAqi1IkWjDafE8+/PKZhMEfWT5h0wg4fdNTDRVeKC92JNEtkmt1tAgz5WH
+h3oVnqPzr1B4n95rS6nIYab96IIaG0vEHdmSHsR49zwConVkcVjNN1GL0g1Sz78m
+L/jDAwDgF0oFT3IWxMzUe+/9FsY+FXOd0qbql2nzYxtmy+aERq7QBTEBMFkNUcjR
+BN05vKqYjBVGK7zdDS/XJU+sQJe7Qw+FqDzJHO4Yn8X0UanDvSRbk30zOpohh9Mh
+VMGwr31zzUTvTT5ZiBA1WHPYIjuComSSChICjlMfnyMYxaoFe5OYAOdkIpsgYHUV
+2/J1vTD3Z0iQhIPFlhFDbUCpVtjjyLSOmo7ufJeHX3xQI6iSM1ioQOVER9x+qmkw
+cyTEwzSIO0d5v2v3AxceIhWdkIIzCXvWfScRIKHf5VTa4w9VNb+kGhfGGXQdr+YS
+cyRagX43/IgodCYYSaEzHPNyEFYNgiJJDs76nZO5tVmE6uiL1trmHq+lXh2DQsvV
+a/FqOBUiljyxUcsTh9PchNRhZGt6QI98Eijq239aDO92RV5awejZtgwvliEwPfOY
+yOPsb52bwcIOfj0+Xo+gbKbR8+QgJ2WDuTd8Xq7tv7hNh8IO/wGIpv3S0xS09UP+
+xrQSLtY5NzagYAw8h4gsyZeEFmVTX4qIUgHyPezUGzlMgojdkY8=3D
+=3Dxuz9
+-----END PGP SIGNATURE-----
