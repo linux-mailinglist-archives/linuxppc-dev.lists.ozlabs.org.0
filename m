@@ -1,85 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE976A15C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 05:11:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9436B6A1C12
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 13:21:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PNGft6Q1Tz3f3R
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 15:11:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PNTWk35yRz3f4L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 23:21:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F8JY4jsW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20210112 header.b=hgXvCjii;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=googlemail.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=michalechner92@googlemail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F8JY4jsW;
+	dkim=pass (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20210112 header.b=hgXvCjii;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNGdv1Jcxz3bZl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 15:10:42 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31O3Nt6C029216;
-	Fri, 24 Feb 2023 04:10:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=SzAX3BTdzV8SPlo/mYpquYxmCFryn7mcXVvUZ3+hON4=;
- b=F8JY4jsWEYqCge4uzKQwgpboFagZyX0JmsJ/MtZPc+CD7LF3bFML0VVc42s7X7MH2FHF
- 9CxW7a3MkHWebvvbIiKR1IaMwFx8MURqPqdprGh1fHyJI28g+hp5NhLG5Dyt+Doku68i
- rHAWkh3Tbw7uK8gDfwfICg4u1m7EjEVflMPJcT4Iku9uoCTAEBF6qK1o9jU1ybOMA4qV
- 6DLtuJ+up/kdkxFOGhHNgrGZiiI+RZOQqCojG404HWoixD9TZ6vP//qHIGJZp/LGiHYr
- 3zU/z5M8N69DpjiBpnKIkX6VMD9vdhP13kGZPOFxmmVLwk6un91TrnZCEvviNkNdATpv bw== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nxna00svn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Feb 2023 04:10:34 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31N7pAuY020251;
-	Fri, 24 Feb 2023 04:10:32 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3ntpa65n3j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Feb 2023 04:10:31 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31O4ATFQ26608264
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Feb 2023 04:10:29 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80D482004E;
-	Fri, 24 Feb 2023 04:10:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F1F5520043;
-	Fri, 24 Feb 2023 04:10:28 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Feb 2023 04:10:28 +0000 (GMT)
-Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2E7FD6032C;
-	Fri, 24 Feb 2023 15:10:25 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: Add FW_FEATURE_PLPKS feature flag
-Date: Fri, 24 Feb 2023 15:10:12 +1100
-Message-Id: <20230224041012.772648-1-ajd@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNPY60zYdz3c7X
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 20:21:59 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id p23-20020a05600c1d9700b003ead4835046so1335139wms.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 01:21:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=enxa5NHwq2O6TtrXNEzJfnjaG+bP30p6bngVUy4j558=;
+        b=hgXvCjiiqmvOyIz45/LTlHQkgvsKqQh4SPYtgY1n5GLpOzmjvc/Am+HB4gHxpWDy/K
+         J1fbD9bqO/9jOJ9kww5wjj9ked1w1K7nK97Uv0o1vz804YyQDmvmdk2kuT4HgMh7u2dh
+         SKq2E9+oXUUWfmIlWHtF0QPAURDlz7/oyiRLmNdYR4lVb7L/klcnYAhAs51pbE7AP35M
+         wT2R0FgnaEQtb+3O3qfyy5o0VY/K8V5t0+CIQD8/xxwzHrSbdZDlKffBioyyxfytjc0L
+         QvmqMTA3DZDAwY1ti/5dcBQt6gXqMIi6nk6b4aVSgPkCf3w6kYMwR6Tfq5f5jVwPd5ec
+         QIOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=enxa5NHwq2O6TtrXNEzJfnjaG+bP30p6bngVUy4j558=;
+        b=1TEkBBbQZQweG/TWcHhI2pMV7lq4LoND4Xqsjs2IOJIDUICmxXNT2lDM2DLvCaRrJC
+         HDqsxFUs3gv29yvvAfc/ODDJaxtjxV77zCkCP6B+yylnceTCmor1aCvEgJRHNW+k9tEl
+         PbV2jPjupvxlVP73J254gv66Iu9Od3DHSVwiaxAXdgWi0yLjLfi2jK2Uh/WRErALPgS9
+         TaGp51l/SBe5fx3NIVMHB+FT3nLEYvReR8NN4mQi+tjs7lLMVLjjQ51h8KLm1EwsBDyo
+         caImhesUZBdqY3EXSM4iNBnIVhrUIWk5MHyGl2eCDhhhXrVFTrzwstpB3PVYSaBwfK44
+         Q9Pg==
+X-Gm-Message-State: AO0yUKUj6T6axGJksgPExGeUpQ1RmIqJs5bGvzr+vnU3OJm/oZ1KO2c7
+	YMK+A7ZxkQ4m4w==
+X-Google-Smtp-Source: AK7set+m22cQJ0Vr+IFOQBtCF3t/xEvUUsdUgXvxgBwNIU08DejTG6SPFoBC7fhpPq+6LyZy7YAtww==
+X-Received: by 2002:a05:600c:1652:b0:3e0:c75:7071 with SMTP id o18-20020a05600c165200b003e00c757071mr6588585wmn.5.1677230515541;
+        Fri, 24 Feb 2023 01:21:55 -0800 (PST)
+Received: from localhost.localdomain (ip2504e2d3.dynamic.kabel-deutschland.de. [37.4.226.211])
+        by smtp.gmail.com with ESMTPSA id l1-20020a1ced01000000b003ea57808179sm2128205wmh.38.2023.02.24.01.21.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Feb 2023 01:21:53 -0800 (PST)
+From: freak07 <michalechner92@googlemail.com>
+To: surenb@google.com
+Subject: Re: [PATCH v3 00/35] Per-VMA locks
+Date: Fri, 24 Feb 2023 10:21:34 +0100
+Message-Id: <20230224092134.30603-1-michalechner92@googlemail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
+References: <20230216051750.3125598-1-surenb@google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PsE8_N8RNPVOQzCpwOlhhsiNBbbzmb-J
-X-Proofpoint-GUID: PsE8_N8RNPVOQzCpwOlhhsiNBbbzmb-J
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-24_01,2023-02-23_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- clxscore=1015 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- mlxscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302240031
+X-Mailman-Approved-At: Fri, 24 Feb 2023 23:20:19 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,81 +80,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, ruscur@russell.cc
+Cc: joelaf@google.com, michel@lespinasse.org, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, gurua@google.com, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, paulmck@kernel.org, x86@kernel.org, hughd@google.com, willy@infradead.org, peterz@infradead.org, mingo@redhat.com, vbabka@suse.cz, rientjes@google.com, gthelen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, axelrasmussen@google.com, ldufour@linux.ibm.com, linux-arm-kernel@lists.infradead.org, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, mgorman@techsingularity.net, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linu
+ xppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a firmware feature flag, FW_FEATURE_PLPKS, to indicate availability of
-Platform KeyStore related hcalls.
 
-Check this flag in plpks_is_available() and pseries_plpks_init() before
-trying to make an hcall.
+Here are some measurements from a Pixel 7 Pro that´s running a kernel either with the Per-VMA locks patchset or without. 
+If there´s interest I can provide results of other specific apps as well.
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/include/asm/firmware.h       | 4 +++-
- arch/powerpc/platforms/pseries/firmware.c | 1 +
- arch/powerpc/platforms/pseries/plpks.c    | 5 ++++-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+Results are from consecutive cold app launches issued with "am start" command spawning the main activity of Slack Android app. 
 
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index ed6db13a1d7c..69ae9cf57d50 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -56,6 +56,7 @@
- #define FW_FEATURE_FORM2_AFFINITY ASM_CONST(0x0000020000000000)
- #define FW_FEATURE_ENERGY_SCALE_INFO ASM_CONST(0x0000040000000000)
- #define FW_FEATURE_WATCHDOG	ASM_CONST(0x0000080000000000)
-+#define FW_FEATURE_PLPKS	ASM_CONST(0x0000100000000000)
- 
- #ifndef __ASSEMBLY__
- 
-@@ -77,7 +78,8 @@ enum {
- 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
- 		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR |
- 		FW_FEATURE_RPT_INVALIDATE | FW_FEATURE_FORM2_AFFINITY |
--		FW_FEATURE_ENERGY_SCALE_INFO | FW_FEATURE_WATCHDOG,
-+		FW_FEATURE_ENERGY_SCALE_INFO | FW_FEATURE_WATCHDOG |
-+		FW_FEATURE_PLPKS,
- 	FW_FEATURE_PSERIES_ALWAYS = 0,
- 	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISOR,
- 	FW_FEATURE_POWERNV_ALWAYS = 0,
-diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/platforms/pseries/firmware.c
-index 080108d129ed..18447e5fa17d 100644
---- a/arch/powerpc/platforms/pseries/firmware.c
-+++ b/arch/powerpc/platforms/pseries/firmware.c
-@@ -68,6 +68,7 @@ hypertas_fw_features_table[] = {
- 	{FW_FEATURE_RPT_INVALIDATE,	"hcall-rpt-invalidate"},
- 	{FW_FEATURE_ENERGY_SCALE_INFO,	"hcall-energy-scale-info"},
- 	{FW_FEATURE_WATCHDOG,		"hcall-watchdog"},
-+	{FW_FEATURE_PLPKS,		"hcall-pks"},
- };
- 
- /* Build up the firmware features bitmask using the contents of
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 6f7bf3fc3aea..b0658ea3eccb 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -378,7 +378,7 @@ bool plpks_is_available(void)
- {
- 	int rc;
- 
--	if (!firmware_has_feature(FW_FEATURE_LPAR))
-+	if (!firmware_has_feature(FW_FEATURE_PLPKS))
- 		return false;
- 
- 	rc = _plpks_get_config();
-@@ -690,6 +690,9 @@ static __init int pseries_plpks_init(void)
- {
- 	int rc;
- 
-+	if (!firmware_has_feature(FW_FEATURE_PLPKS))
-+		return -ENODEV;
-+
- 	rc = _plpks_get_config();
- 
- 	if (rc) {
--- 
-2.39.2
+https://docs.google.com/spreadsheets/d/1ktujfcyDmIJoQMWsoizGIE-0A_jMS9VMw_seehUY9s0/edit?usp=sharing
 
+There´s quite a noticeable improvement, as can be seen in the graph. The results were reproducible. 
+
+If you have any questions feel free to ask. 
