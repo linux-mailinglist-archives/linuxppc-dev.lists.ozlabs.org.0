@@ -1,73 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9436B6A1C12
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 13:21:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD53D6A1C14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 13:22:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PNTWk35yRz3f4L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 23:21:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PNTXl4ptBz3f3H
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Feb 2023 23:21:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20210112 header.b=hgXvCjii;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m/VfBJIp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=googlemail.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=michalechner92@googlemail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20210112 header.b=hgXvCjii;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m/VfBJIp;
 	dkim-atps=neutral
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNPY60zYdz3c7X
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 20:21:59 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id p23-20020a05600c1d9700b003ead4835046so1335139wms.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 01:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=enxa5NHwq2O6TtrXNEzJfnjaG+bP30p6bngVUy4j558=;
-        b=hgXvCjiiqmvOyIz45/LTlHQkgvsKqQh4SPYtgY1n5GLpOzmjvc/Am+HB4gHxpWDy/K
-         J1fbD9bqO/9jOJ9kww5wjj9ked1w1K7nK97Uv0o1vz804YyQDmvmdk2kuT4HgMh7u2dh
-         SKq2E9+oXUUWfmIlWHtF0QPAURDlz7/oyiRLmNdYR4lVb7L/klcnYAhAs51pbE7AP35M
-         wT2R0FgnaEQtb+3O3qfyy5o0VY/K8V5t0+CIQD8/xxwzHrSbdZDlKffBioyyxfytjc0L
-         QvmqMTA3DZDAwY1ti/5dcBQt6gXqMIi6nk6b4aVSgPkCf3w6kYMwR6Tfq5f5jVwPd5ec
-         QIOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=enxa5NHwq2O6TtrXNEzJfnjaG+bP30p6bngVUy4j558=;
-        b=1TEkBBbQZQweG/TWcHhI2pMV7lq4LoND4Xqsjs2IOJIDUICmxXNT2lDM2DLvCaRrJC
-         HDqsxFUs3gv29yvvAfc/ODDJaxtjxV77zCkCP6B+yylnceTCmor1aCvEgJRHNW+k9tEl
-         PbV2jPjupvxlVP73J254gv66Iu9Od3DHSVwiaxAXdgWi0yLjLfi2jK2Uh/WRErALPgS9
-         TaGp51l/SBe5fx3NIVMHB+FT3nLEYvReR8NN4mQi+tjs7lLMVLjjQ51h8KLm1EwsBDyo
-         caImhesUZBdqY3EXSM4iNBnIVhrUIWk5MHyGl2eCDhhhXrVFTrzwstpB3PVYSaBwfK44
-         Q9Pg==
-X-Gm-Message-State: AO0yUKUj6T6axGJksgPExGeUpQ1RmIqJs5bGvzr+vnU3OJm/oZ1KO2c7
-	YMK+A7ZxkQ4m4w==
-X-Google-Smtp-Source: AK7set+m22cQJ0Vr+IFOQBtCF3t/xEvUUsdUgXvxgBwNIU08DejTG6SPFoBC7fhpPq+6LyZy7YAtww==
-X-Received: by 2002:a05:600c:1652:b0:3e0:c75:7071 with SMTP id o18-20020a05600c165200b003e00c757071mr6588585wmn.5.1677230515541;
-        Fri, 24 Feb 2023 01:21:55 -0800 (PST)
-Received: from localhost.localdomain (ip2504e2d3.dynamic.kabel-deutschland.de. [37.4.226.211])
-        by smtp.gmail.com with ESMTPSA id l1-20020a1ced01000000b003ea57808179sm2128205wmh.38.2023.02.24.01.21.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 01:21:53 -0800 (PST)
-From: freak07 <michalechner92@googlemail.com>
-To: surenb@google.com
-Subject: Re: [PATCH v3 00/35] Per-VMA locks
-Date: Fri, 24 Feb 2023 10:21:34 +0100
-Message-Id: <20230224092134.30603-1-michalechner92@googlemail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230216051750.3125598-1-surenb@google.com>
-References: <20230216051750.3125598-1-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PNRJp2jcfz3cJY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Feb 2023 21:41:29 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31OAFRNJ017733;
+	Fri, 24 Feb 2023 10:41:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=bt25XQYrLSxNwDQkOSnKkbwhoxJd6ZKZw9dpKyyeqgM=;
+ b=m/VfBJIpgO1uCFTZfhTxhdyBxleVZwE6vVp6y9Qd9EkAzNcD3Lar5++GqerGSYzLNAB4
+ aX3UrCu8zfsZ43cxoK9QWRs+3fyC2o2qojf+5HvFI1c5FpoT3F37URluc2tZ0RdJmz15
+ m5DBu80hOqKWflNTzscsisyPm2xOKbqG0V9vJKEyW1YLY4lyo+pAX3gutoUUR2GeW6Lq
+ GzPNV6gjueE+zEIVRpyFM+c4+z502c+Q8JYzWL2doVrFtQwl0P4sKYchqdEUXR9jcaKs
+ uWnZ4pYkG9fB9BrZ07m7uDODp88mUQdMyqX5liGIpWqbSGhBDn1HeI7SZe3qrXskYtS9 JQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nxuap8h3g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Feb 2023 10:41:09 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31OAI50q025813;
+	Fri, 24 Feb 2023 10:41:08 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nxuap8h2q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Feb 2023 10:41:08 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31NN1KEN016569;
+	Fri, 24 Feb 2023 10:41:06 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3ntpa6fudc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Feb 2023 10:41:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31OAf4LS44368162
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Feb 2023 10:41:04 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05CD320043;
+	Fri, 24 Feb 2023 10:41:04 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 57A8320040;
+	Fri, 24 Feb 2023 10:41:01 +0000 (GMT)
+Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.ibm.com.com (unknown [9.43.6.21])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Feb 2023 10:41:01 +0000 (GMT)
+From: "Nysal Jan K.A" <nysal@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/atomics: Remove unused function
+Date: Fri, 24 Feb 2023 16:09:40 +0530
+Message-Id: <20230224103940.1328725-1-nysal@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YQ5ZyqvNeE7DCvVnFBnX-f4PBjlAc0TV
+X-Proofpoint-ORIG-GUID: xz1fJeRRP9tfijdHZwPNFYxo7x5A5U5N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-24_04,2023-02-23_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ mlxlogscore=899 lowpriorityscore=0 clxscore=1011 mlxscore=0 spamscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302240086
 X-Mailman-Approved-At: Fri, 24 Feb 2023 23:20:19 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,19 +94,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joelaf@google.com, michel@lespinasse.org, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, gurua@google.com, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, paulmck@kernel.org, x86@kernel.org, hughd@google.com, willy@infradead.org, peterz@infradead.org, mingo@redhat.com, vbabka@suse.cz, rientjes@google.com, gthelen@google.com, kernel-team@android.com, soheil@google.com, minchan@google.com, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, axelrasmussen@google.com, ldufour@linux.ibm.com, linux-arm-kernel@lists.infradead.org, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, mgorman@techsingularity.net, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, tatashin@google.com, linu
- xppc-dev@lists.ozlabs.org, rppt@kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Nysal Jan K.A" <nysal@linux.ibm.com>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Remove arch_atomic_try_cmpxchg_lock function as it is no longer used
+since commit 9f61521c7a28 ("powerpc/qspinlock: powerpc qspinlock
+implementation")
 
-Here are some measurements from a Pixel 7 Pro that´s running a kernel either with the Per-VMA locks patchset or without. 
-If there´s interest I can provide results of other specific apps as well.
+Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
+---
+ arch/powerpc/include/asm/atomic.h | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-Results are from consecutive cold app launches issued with "am start" command spawning the main activity of Slack Android app. 
+diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+index 486ab7889121..b3a53830446b 100644
+--- a/arch/powerpc/include/asm/atomic.h
++++ b/arch/powerpc/include/asm/atomic.h
+@@ -130,35 +130,6 @@ ATOMIC_OPS(xor, xor, "", K)
+ #define arch_atomic_xchg_relaxed(v, new) \
+ 	arch_xchg_relaxed(&((v)->counter), (new))
+ 
+-/*
+- * Don't want to override the generic atomic_try_cmpxchg_acquire, because
+- * we add a lock hint to the lwarx, which may not be wanted for the
+- * _acquire case (and is not used by the other _acquire variants so it
+- * would be a surprise).
+- */
+-static __always_inline bool
+-arch_atomic_try_cmpxchg_lock(atomic_t *v, int *old, int new)
+-{
+-	int r, o = *old;
+-	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
+-
+-	__asm__ __volatile__ (
+-"1:	lwarx	%0,0,%2,%[eh]	# atomic_try_cmpxchg_acquire		\n"
+-"	cmpw	0,%0,%3							\n"
+-"	bne-	2f							\n"
+-"	stwcx.	%4,0,%2							\n"
+-"	bne-	1b							\n"
+-"\t"	PPC_ACQUIRE_BARRIER "						\n"
+-"2:									\n"
+-	: "=&r" (r), "+m" (v->counter)
+-	: "r" (&v->counter), "r" (o), "r" (new), [eh] "n" (eh)
+-	: "cr0", "memory");
+-
+-	if (unlikely(r != o))
+-		*old = r;
+-	return likely(r == o);
+-}
+-
+ /**
+  * atomic_fetch_add_unless - add unless the number is a given value
+  * @v: pointer of type atomic_t
+-- 
+2.39.2
 
-https://docs.google.com/spreadsheets/d/1ktujfcyDmIJoQMWsoizGIE-0A_jMS9VMw_seehUY9s0/edit?usp=sharing
-
-There´s quite a noticeable improvement, as can be seen in the graph. The results were reproducible. 
-
-If you have any questions feel free to ask. 
