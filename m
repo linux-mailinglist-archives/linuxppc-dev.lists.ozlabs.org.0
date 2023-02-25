@@ -1,61 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FC76A2B9F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Feb 2023 21:14:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D126A2BA3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Feb 2023 21:17:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PPHzc2V5Bz3f36
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Feb 2023 07:14:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PPJ2h55xXz3fBn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Feb 2023 07:17:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=Ctm2T7Se;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=b/pp8syo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=1420409688=paul.gortmaker@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=Ctm2T7Se;
+	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=b/pp8syo;
 	dkim-atps=neutral
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PPHyf17Hkz3bhL
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PPHyf2Tffz3c71
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Feb 2023 07:13:44 +1100 (AEDT)
 Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31PKDV3t002291;
-	Sat, 25 Feb 2023 20:13:31 GMT
+	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31PKDV3u002291;
+	Sat, 25 Feb 2023 20:13:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=PPS06212021;
- bh=FecT1/68NhnRt0eM1qd4YBExe+aXK0uM6tM9VWjuuG0=;
- b=Ctm2T7Se8jYaR7n5rnpUL4DmzxrEJlWa82l/9PAt5cDwS4auCTmN/2NnOibTgQJ8HmzK
- 7/RnO6BJ/CaeoXi1Bcmkpjf9aBOL9da//buHy4l7vOzh8dzs9ic6A+cQ8FtCS6f6nkqt
- SduPh3tbJ7ckyLzc/2VulXcOFzeN54E8+PZh1Ile5rpxUtUiKaa70gkkCVIsvIQ7dfSh
- BgK5yahJXRLxs9MoY/OeswLEoTJbBOBztsKminIeur+v+qLdn6wOR95r4EcXyb5WjrOB
- Wpg9+UgyFPyr6VlTqwW1Zw++B+SSRdf12vU3lcLNUFGGJ2aGyqLk/K4wEQw9df8JfzvM 4w== 
+ bh=MQCvMr/SCtZB+aLQw6Hydu8/qcMWkduc6IM9G6f5kSM=;
+ b=b/pp8syojGhadwwRucS1J0DCqVoR+0rfXUlxmp8k8CuYBSrQ4fLwaO+eCzOqwUmDw3D9
+ vYSJpWMaGuHtTBF0NjUMrnzIpwR0IxyWci6mZJMgivA7xrppOHOBLiWVlo6eQGzS8+Ig
+ tJNmDyrdhnGeqiq62/NF3O2Kl/BE9aPngcnmRx2a7YG+cKUsBcStb0qZsq5QOlBj1HFE
+ LMGoswClYNnohPg2HMAf/SrhaOCXPb/l1g4moQO8GS9dZFkUP3kCEAL0pJoNs+QuTK/8
+ TBCKwZIQeBe9FxiJfxgxau1VI5/sbk0Oi3di24p93iVxpBN1H7Hy0S8gLHUycaBN+E/S kQ== 
 Received: from ala-exchng02.corp.ad.wrs.com (unknown-82-254.windriver.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3nybmk8gs1-2
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3nybmk8gs1-3
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
 	Sat, 25 Feb 2023 20:13:31 +0000
 Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
  ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.18; Sat, 25 Feb 2023 12:13:30 -0800
+ 15.1.2507.18; Sat, 25 Feb 2023 12:13:31 -0800
 Received: from sc2600cp.wrs.com (128.224.56.77) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.17 via Frontend Transport; Sat, 25 Feb 2023 12:13:29 -0800
+ 15.1.2507.17 via Frontend Transport; Sat, 25 Feb 2023 12:13:30 -0800
 From: Paul Gortmaker <paul.gortmaker@windriver.com>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 1/3] powerpc: drop HPC II (MPC7448) evaluation platform support.
-Date: Sat, 25 Feb 2023 15:13:16 -0500
-Message-ID: <20230225201318.3682-2-paul.gortmaker@windriver.com>
+Subject: [PATCH 2/3] powerpc: drop HPC-NET/MPC8641D evaluation platform support
+Date: Sat, 25 Feb 2023 15:13:17 -0500
+Message-ID: <20230225201318.3682-3-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230225201318.3682-1-paul.gortmaker@windriver.com>
 References: <20230225201318.3682-1-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Proofpoint-GUID: C2VvIsjfzbi93XuwLD2fS9ZQEHFVlWgX
-X-Proofpoint-ORIG-GUID: C2VvIsjfzbi93XuwLD2fS9ZQEHFVlWgX
+X-Proofpoint-GUID: gJNhONwHgyqu00tZcWz5gi_60n-e2zsT
+X-Proofpoint-ORIG-GUID: gJNhONwHgyqu00tZcWz5gi_60n-e2zsT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
  definitions=2023-02-25_12,2023-02-24_01,2023-02-09_01
@@ -79,24 +79,23 @@ Cc: Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Paul Gortmaker 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This was an interesting platform - it was the 1st instance of a
-respin of earlier 130nm 74xx CPUs on 90nm and systems using MPC7448
-were positioned as a rack server platform solution.
+There is no denying that this was an interesting platform in its day.
+Access to a SMP powerpc platform became a bit more obtainable for folks
+in the the BSP industry in the 2007 era, thanks to this platform.
 
-Given that, the evaluation platform (at least the one I had) was shipped
-in a horizontal 1/2 height Antec desktop case with retro styling and
-colours, despite the fact the docs explicitly stated that the HPC II is
-not a desktop machine (noting it had no gfx or legacy PC I/O support).
+Add to that the move to the black Antec case vs. the generic white 2005
+era case of the MPC8548CDS or the retro 1950s 1/2 height horizontal case
+of the HPC II, and it was pretty interesting to people like myself then.
 
-Historic trivia aside, this was the 1st introduction of the e600
-procfam as an evolution from the earlier G4.
+However, like all the other evaluation platforms, the overall system
+was complex out of necessity, as it tried to showcase all possible
+features and use-cases.  That included an AMP option, where you could run
+two bootloaders and two kernels over two serial consoles.  Peripheral
+sharing got a bit more tricky when you got to the hard disk and similar.
 
-However even with the claim to being "1st e600" it seems the 2005+
-era was turning its attention to multicore support and from my memory
-this poor guy was quickly overshadowed by the dual core MPC8641D.
-
-All that aside, we are once again looking at 15+ year old evaluation
-platforms that were not widely distributed, so 2023 removal makes sense.
+In any case we still have the same circumstance.  A relatively rare and
+expensive evaluation platform that is now 15+ years old and not out there
+in large numbers in the general public.  Removal in 2023 just makes sense.
 
 Cc: Scott Wood <oss@buserror.net>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
@@ -104,583 +103,957 @@ Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- arch/powerpc/boot/Makefile                    |   3 +-
- arch/powerpc/boot/cuboot-mpc7448hpc2.c        |  43 ----
- arch/powerpc/boot/dts/mpc7448hpc2.dts         | 192 -----------------
- arch/powerpc/configs/mpc7448_hpc2_defconfig   |  54 -----
- arch/powerpc/platforms/embedded6xx/Kconfig    |  10 -
- arch/powerpc/platforms/embedded6xx/Makefile   |   1 -
- .../platforms/embedded6xx/mpc7448_hpc2.c      | 198 ------------------
- 7 files changed, 1 insertion(+), 500 deletions(-)
- delete mode 100644 arch/powerpc/boot/cuboot-mpc7448hpc2.c
- delete mode 100644 arch/powerpc/boot/dts/mpc7448hpc2.dts
- delete mode 100644 arch/powerpc/configs/mpc7448_hpc2_defconfig
- delete mode 100644 arch/powerpc/platforms/embedded6xx/mpc7448_hpc2.c
+ arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts    | 394 ------------------
+ .../powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts | 337 ---------------
+ arch/powerpc/configs/mpc86xx_base.config      |   1 -
+ arch/powerpc/configs/ppc6xx_defconfig         |   1 -
+ arch/powerpc/platforms/86xx/Kconfig           |  12 +-
+ arch/powerpc/platforms/86xx/Makefile          |   1 -
+ arch/powerpc/platforms/86xx/mpc86xx_hpcn.c    | 127 ------
+ 7 files changed, 1 insertion(+), 872 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts
+ delete mode 100644 arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index d386b80ce43b..ee4bc6621f2f 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -164,7 +164,7 @@ src-plat-$(CONFIG_PPC_MPC52xx) += cuboot-52xx.c
- src-plat-$(CONFIG_PPC_82xx) += cuboot-pq2.c fixed-head.S ep8248e.c cuboot-824x.c
- src-plat-$(CONFIG_PPC_83xx) += cuboot-83xx.c fixed-head.S redboot-83xx.c
- src-plat-$(CONFIG_FSL_SOC_BOOKE) += cuboot-85xx.c cuboot-85xx-cpm2.c
--src-plat-$(CONFIG_EMBEDDED6xx) += cuboot-pq2.c cuboot-mpc7448hpc2.c \
-+src-plat-$(CONFIG_EMBEDDED6xx) += cuboot-pq2.c \
- 					gamecube-head.S gamecube.c \
- 					wii-head.S wii.c holly.c \
- 					fixed-head.S mvme5100.c
-@@ -350,7 +350,6 @@ image-$(CONFIG_MVME7100)                += dtbImage.mvme7100
- 
- # Board ports in arch/powerpc/platform/embedded6xx/Kconfig
- image-$(CONFIG_STORCENTER)		+= cuImage.storcenter
--image-$(CONFIG_MPC7448HPC2)		+= cuImage.mpc7448hpc2
- image-$(CONFIG_GAMECUBE)		+= dtbImage.gamecube
- image-$(CONFIG_WII)			+= dtbImage.wii
- image-$(CONFIG_MVME5100)		+= dtbImage.mvme5100
-diff --git a/arch/powerpc/boot/cuboot-mpc7448hpc2.c b/arch/powerpc/boot/cuboot-mpc7448hpc2.c
+diff --git a/arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts b/arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts
 deleted file mode 100644
-index 335fb65212e7..000000000000
---- a/arch/powerpc/boot/cuboot-mpc7448hpc2.c
+index f7a2430d6629..000000000000
+--- a/arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts
 +++ /dev/null
-@@ -1,43 +0,0 @@
+@@ -1,394 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Copyright (C) 2007 Freescale Semiconductor, Inc. All rights reserved.
+- * MPC8641 HPCN Device Tree Source
 - *
-- * Author: Roy Zang <tie-fei.zang@freescale.com>
-- *
-- * Description:
-- * Old U-boot compatibility for mpc7448hpc2 board
-- * Based on the code of Scott Wood <scottwood@freescale.com>
-- * for 83xx and 85xx.
+- * Copyright 2006 Freescale Semiconductor Inc.
 - */
 -
--#include "ops.h"
--#include "stdio.h"
--#include "cuboot.h"
--
--#define TARGET_HAS_ETH1
--#include "ppcboot.h"
--
--static bd_t bd;
--extern char _dtb_start[], _dtb_end[];
--
--static void platform_fixups(void)
--{
--	void *tsi;
--
--	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize);
--	dt_fixup_mac_addresses(bd.bi_enetaddr, bd.bi_enet1addr);
--	dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
--	tsi = find_node_by_devtype(NULL, "tsi-bridge");
--	if (tsi)
--		setprop(tsi, "bus-frequency", &bd.bi_busfreq,
--			sizeof(bd.bi_busfreq));
--}
--
--void platform_init(unsigned long r3, unsigned long r4, unsigned long r5,
--		unsigned long r6, unsigned long r7)
--{
--	CUBOOT_INIT();
--	fdt_init(_dtb_start);
--	serial_console_init();
--	platform_ops.fixups = platform_fixups;
--}
-diff --git a/arch/powerpc/boot/dts/mpc7448hpc2.dts b/arch/powerpc/boot/dts/mpc7448hpc2.dts
-deleted file mode 100644
-index 9494af160e95..000000000000
---- a/arch/powerpc/boot/dts/mpc7448hpc2.dts
-+++ /dev/null
-@@ -1,192 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * MPC7448HPC2 (Taiga) board Device Tree Source
-- *
-- * Copyright 2006, 2008 Freescale Semiconductor Inc.
-- * 2006 Roy Zang <Roy Zang at freescale.com>.
-- */
--
--/dts-v1/;
+-/include/ "mpc8641si-pre.dtsi"
 -
 -/ {
--	model = "mpc7448hpc2";
--	compatible = "mpc74xx";
--	#address-cells = <1>;
--	#size-cells = <1>;
--
--	aliases {
--		ethernet0 = &enet0;
--		ethernet1 = &enet1;
--
--		serial0 = &serial0;
--		serial1 = &serial1;
--
--		pci0 = &pci0;
--	};
--
--	cpus {
--		#address-cells = <1>;
--		#size-cells =<0>;
--				
--		PowerPC,7448@0 {
--			device_type = "cpu";
--			reg = <0x0>;
--			d-cache-line-size = <32>;	// 32 bytes
--			i-cache-line-size = <32>;	// 32 bytes
--			d-cache-size = <0x8000>;		// L1, 32K bytes
--			i-cache-size = <0x8000>;		// L1, 32K bytes
--			timebase-frequency = <0>;	// 33 MHz, from uboot
--			clock-frequency = <0>;		// From U-Boot
--			bus-frequency = <0>;		// From U-Boot
--		};
--	};
+-	model = "MPC8641HPCN";
+-	compatible = "fsl,mpc8641hpcn";
 -
 -	memory {
 -		device_type = "memory";
--		reg = <0x0 0x20000000	// DDR2   512M at 0
--		       >;
+-		reg = <0x00000000 0x40000000>;	// 1G at 0x0
 -	};
 -
--  	tsi108@c0000000 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		device_type = "tsi-bridge";
--		ranges = <0x0 0xc0000000 0x10000>;
--		reg = <0xc0000000 0x10000>;
--		bus-frequency = <0>;
+-	lbc: localbus@ffe05000 {
+-		reg = <0xffe05000 0x1000>;
 -
--		i2c@7000 {
--			interrupt-parent = <&mpic>;
--			interrupts = <14 0>;
--			reg = <0x7000 0x400>;
--			device_type = "i2c";
--			compatible  = "tsi108-i2c";
--		};
+-		ranges = <0 0 0xef800000 0x00800000
+-			  2 0 0xffdf8000 0x00008000
+-			  3 0 0xffdf0000 0x00008000>;
 -
--		MDIO: mdio@6000 {
--			compatible = "tsi108-mdio";
--			reg = <0x6000 0x50>;
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x00800000>;
+-			bank-width = <2>;
+-			device-width = <2>;
 -			#address-cells = <1>;
--			#size-cells = <0>;
--
--			phy8: ethernet-phy@8 {
--				interrupt-parent = <&mpic>;
--				interrupts = <2 1>;
--				reg = <0x8>;
+-			#size-cells = <1>;
+-			partition@0 {
+-				label = "kernel";
+-				reg = <0x00000000 0x00300000>;
 -			};
--
--			phy9: ethernet-phy@9 {
--				interrupt-parent = <&mpic>;
--				interrupts = <2 1>;
--				reg = <0x9>;
+-			partition@300000 {
+-				label = "firmware b";
+-				reg = <0x00300000 0x00100000>;
+-				read-only;
 -			};
+-			partition@400000 {
+-				label = "fs";
+-				reg = <0x00400000 0x00300000>;
+-			};
+-			partition@700000 {
+-				label = "firmware a";
+-				reg = <0x00700000 0x00100000>;
+-				read-only;
+-			};
+-		};
+-	};
 -
+-	soc: soc8641@ffe00000 {
+-		ranges = <0x00000000 0xffe00000 0x00100000>;
+-
+-		enet0: ethernet@24000 {
+-			tbi-handle = <&tbi0>;
+-			phy-handle = <&phy0>;
+-			phy-connection-type = "rgmii-id";
 -		};
 -
--		enet0: ethernet@6200 {
--			linux,network-index = <0>;
--			#size-cells = <0>;
--			device_type = "network";
--			compatible = "tsi108-ethernet";
--			reg = <0x6000 0x200>;
--			address = [ 00 06 D2 00 00 01 ];
--			interrupts = <16 2>;
--			interrupt-parent = <&mpic>;
--			mdio-handle = <&MDIO>;
--			phy-handle = <&phy8>;
+-		mdio@24520 {
+-			phy0: ethernet-phy@0 {
+-				interrupts = <10 1 0 0>;
+-				reg = <0>;
+-			};
+-			phy1: ethernet-phy@1 {
+-				interrupts = <10 1 0 0>;
+-				reg = <1>;
+-			};
+-			phy2: ethernet-phy@2 {
+-				interrupts = <10 1 0 0>;
+-				reg = <2>;
+-			};
+-			phy3: ethernet-phy@3 {
+-				interrupts = <10 1 0 0>;
+-				reg = <3>;
+-			};
+-			tbi0: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
 -		};
 -
--		enet1: ethernet@6600 {
--			linux,network-index = <1>;
+-		enet1: ethernet@25000 {
+-			tbi-handle = <&tbi1>;
+-			phy-handle = <&phy1>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@25520 {
+-			tbi1: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-		
+-		enet2: ethernet@26000 {
+-			tbi-handle = <&tbi2>;
+-			phy-handle = <&phy2>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@26520 {
+-			tbi2: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		enet3: ethernet@27000 {
+-			tbi-handle = <&tbi3>;
+-			phy-handle = <&phy3>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@27520 {
+-			tbi3: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		rmu: rmu@d3000 {
 -			#address-cells = <1>;
--			#size-cells = <0>;
--			device_type = "network";
--			compatible = "tsi108-ethernet";
--			reg = <0x6400 0x200>;
--			address = [ 00 06 D2 00 00 02 ];
--			interrupts = <17 2>;
--			interrupt-parent = <&mpic>;
--			mdio-handle = <&MDIO>;
--			phy-handle = <&phy9>;
+-			#size-cells = <1>;
+-			compatible = "fsl,srio-rmu";
+-			reg = <0xd3000 0x500>;
+-			ranges = <0x0 0xd3000 0x500>;
+-
+-			message-unit@0 {
+-				compatible = "fsl,srio-msg-unit";
+-				reg = <0x0 0x100>;
+-				interrupts = <
+-					53 2 0 0  /* msg1_tx_irq */
+-					54 2 0 0>;/* msg1_rx_irq */
+-			};
+-			message-unit@100 {
+-				compatible = "fsl,srio-msg-unit";
+-				reg = <0x100 0x100>;
+-				interrupts = <
+-					55 2 0 0  /* msg2_tx_irq */
+-					56 2 0 0>;/* msg2_rx_irq */
+-			};
+-			doorbell-unit@400 {
+-				compatible = "fsl,srio-dbell-unit";
+-				reg = <0x400 0x80>;
+-				interrupts = <
+-					49 2 0 0  /* bell_outb_irq */
+-					50 2 0 0>;/* bell_inb_irq */
+-			};
+-			port-write-unit@4e0 {
+-				compatible = "fsl,srio-port-write-unit";
+-				reg = <0x4e0 0x20>;
+-				interrupts = <48 2 0 0>;
+-			};
+-		};
+-	};
+-
+-	pci0: pcie@ffe08000 {
+-		reg = <0xffe08000 0x1000>;
+-		ranges = <0x02000000 0x0 0x80000000 0x80000000 0x0 0x20000000
+-			  0x01000000 0x0 0x00000000 0xffc00000 0x0 0x00010000>;
+-		interrupt-map-mask = <0xff00 0 0 7>;
+-		interrupt-map = <
+-			/* IDSEL 0x11 func 0 - PCI slot 1 */
+-			0x8800 0 0 1 &mpic 2 1 0 0
+-			0x8800 0 0 2 &mpic 3 1 0 0
+-			0x8800 0 0 3 &mpic 4 1 0 0
+-			0x8800 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 1 - PCI slot 1 */
+-			0x8900 0 0 1 &mpic 2 1 0 0
+-			0x8900 0 0 2 &mpic 3 1 0 0
+-			0x8900 0 0 3 &mpic 4 1 0 0
+-			0x8900 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 2 - PCI slot 1 */
+-			0x8a00 0 0 1 &mpic 2 1 0 0
+-			0x8a00 0 0 2 &mpic 3 1 0 0
+-			0x8a00 0 0 3 &mpic 4 1 0 0
+-			0x8a00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 3 - PCI slot 1 */
+-			0x8b00 0 0 1 &mpic 2 1 0 0
+-			0x8b00 0 0 2 &mpic 3 1 0 0
+-			0x8b00 0 0 3 &mpic 4 1 0 0
+-			0x8b00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 4 - PCI slot 1 */
+-			0x8c00 0 0 1 &mpic 2 1 0 0
+-			0x8c00 0 0 2 &mpic 3 1 0 0
+-			0x8c00 0 0 3 &mpic 4 1 0 0
+-			0x8c00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 5 - PCI slot 1 */
+-			0x8d00 0 0 1 &mpic 2 1 0 0
+-			0x8d00 0 0 2 &mpic 3 1 0 0
+-			0x8d00 0 0 3 &mpic 4 1 0 0
+-			0x8d00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 6 - PCI slot 1 */
+-			0x8e00 0 0 1 &mpic 2 1 0 0
+-			0x8e00 0 0 2 &mpic 3 1 0 0
+-			0x8e00 0 0 3 &mpic 4 1 0 0
+-			0x8e00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 7 - PCI slot 1 */
+-			0x8f00 0 0 1 &mpic 2 1 0 0
+-			0x8f00 0 0 2 &mpic 3 1 0 0
+-			0x8f00 0 0 3 &mpic 4 1 0 0
+-			0x8f00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x12 func 0 - PCI slot 2 */
+-			0x9000 0 0 1 &mpic 3 1 0 0
+-			0x9000 0 0 2 &mpic 4 1 0 0
+-			0x9000 0 0 3 &mpic 1 1 0 0
+-			0x9000 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 1 - PCI slot 2 */
+-			0x9100 0 0 1 &mpic 3 1 0 0
+-			0x9100 0 0 2 &mpic 4 1 0 0
+-			0x9100 0 0 3 &mpic 1 1 0 0
+-			0x9100 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 2 - PCI slot 2 */
+-			0x9200 0 0 1 &mpic 3 1 0 0
+-			0x9200 0 0 2 &mpic 4 1 0 0
+-			0x9200 0 0 3 &mpic 1 1 0 0
+-			0x9200 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 3 - PCI slot 2 */
+-			0x9300 0 0 1 &mpic 3 1 0 0
+-			0x9300 0 0 2 &mpic 4 1 0 0
+-			0x9300 0 0 3 &mpic 1 1 0 0
+-			0x9300 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 4 - PCI slot 2 */
+-			0x9400 0 0 1 &mpic 3 1 0 0
+-			0x9400 0 0 2 &mpic 4 1 0 0
+-			0x9400 0 0 3 &mpic 1 1 0 0
+-			0x9400 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 5 - PCI slot 2 */
+-			0x9500 0 0 1 &mpic 3 1 0 0
+-			0x9500 0 0 2 &mpic 4 1 0 0
+-			0x9500 0 0 3 &mpic 1 1 0 0
+-			0x9500 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 6 - PCI slot 2 */
+-			0x9600 0 0 1 &mpic 3 1 0 0
+-			0x9600 0 0 2 &mpic 4 1 0 0
+-			0x9600 0 0 3 &mpic 1 1 0 0
+-			0x9600 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 7 - PCI slot 2 */
+-			0x9700 0 0 1 &mpic 3 1 0 0
+-			0x9700 0 0 2 &mpic 4 1 0 0
+-			0x9700 0 0 3 &mpic 1 1 0 0
+-			0x9700 0 0 4 &mpic 2 1 0 0
+-
+-			// IDSEL 0x1c  USB
+-			0xe000 0 0 1 &i8259 12 2
+-			0xe100 0 0 2 &i8259 9 2
+-			0xe200 0 0 3 &i8259 10 2
+-			0xe300 0 0 4 &i8259 11 2
+-
+-			// IDSEL 0x1d  Audio
+-			0xe800 0 0 1 &i8259 6 2
+-
+-			// IDSEL 0x1e Legacy
+-			0xf000 0 0 1 &i8259 7 2
+-			0xf100 0 0 1 &i8259 7 2
+-
+-			// IDSEL 0x1f IDE/SATA
+-			0xf800 0 0 1 &i8259 14 2
+-			0xf900 0 0 1 &i8259 5 2
+-			>;
+-
+-		pcie@0 {
+-			ranges = <0x02000000 0x0 0x80000000
+-				  0x02000000 0x0 0x80000000
+-				  0x0 0x20000000
+-
+-				  0x01000000 0x0 0x00000000
+-				  0x01000000 0x0 0x00000000
+-				  0x0 0x00010000>;
+-			uli1575@0 {
+-				reg = <0 0 0 0 0>;
+-				#size-cells = <2>;
+-				#address-cells = <3>;
+-				ranges = <0x02000000 0x0 0x80000000
+-					  0x02000000 0x0 0x80000000
+-					  0x0 0x20000000
+-					  0x01000000 0x0 0x00000000
+-					  0x01000000 0x0 0x00000000
+-					  0x0 0x00010000>;
+-				isa@1e {
+-					device_type = "isa";
+-					#size-cells = <1>;
+-					#address-cells = <2>;
+-					reg = <0xf000 0 0 0 0>;
+-					ranges = <1 0 0x01000000 0 0
+-						  0x00001000>;
+-					interrupt-parent = <&i8259>;
+-
+-					i8259: interrupt-controller@20 {
+-						reg = <1 0x20 2
+-						       1 0xa0 2
+-						       1 0x4d0 2>;
+-						interrupt-controller;
+-						device_type = "interrupt-controller";
+-						#address-cells = <0>;
+-						#interrupt-cells = <2>;
+-						compatible = "chrp,iic";
+-						interrupts = <9 2 0 0>;
+-					};
+-
+-					i8042@60 {
+-						#size-cells = <0>;
+-						#address-cells = <1>;
+-						reg = <1 0x60 1 1 0x64 1>;
+-						interrupts = <1 3 12 3>;
+-						interrupt-parent = <&i8259>;
+-
+-						keyboard@0 {
+-							reg = <0>;
+-							compatible = "pnpPNP,303";
+-						};
+-
+-						mouse@1 {
+-							reg = <1>;
+-							compatible = "pnpPNP,f03";
+-						};
+-					};
+-
+-					rtc@70 {
+-						compatible =
+-							"pnpPNP,b00";
+-						reg = <1 0x70 2>;
+-					};
+-
+-					gpio@400 {
+-						reg = <1 0x400 0x80>;
+-					};
+-				};
+-			};
 -		};
 -
--		serial0: serial@7808 {
--			device_type = "serial";
--			compatible = "ns16550";
--			reg = <0x7808 0x200>;
--			clock-frequency = <1064000000>;
--			interrupts = <12 0>;
--			interrupt-parent = <&mpic>;
--		};
+-	};
 -
--		serial1: serial@7c08 {
--			device_type = "serial";
--			compatible = "ns16550";
--			reg = <0x7c08 0x200>;
--			clock-frequency = <1064000000>;
--			interrupts = <13 0>;
--			interrupt-parent = <&mpic>;
--		};
+-	pci1: pcie@ffe09000 {
+-		reg = <0xffe09000 0x1000>;
+-		ranges = <0x02000000 0x0 0xa0000000 0xa0000000 0x0 0x20000000
+-			  0x01000000 0x0 0x00000000 0xffc10000 0x0 0x00010000>;
 -
--	  	mpic: pic@7400 {
--			interrupt-controller;
--			#address-cells = <0>;
--			#interrupt-cells = <2>;
--			reg = <0x7400 0x400>;
--			compatible = "chrp,open-pic";
--			device_type = "open-pic";
+-		pcie@0 {
+-			ranges = <0x02000000 0x0 0xa0000000
+-				  0x02000000 0x0 0xa0000000
+-				  0x0 0x20000000
+-
+-				  0x01000000 0x0 0x00000000
+-				  0x01000000 0x0 0x00000000
+-				  0x0 0x00010000>;
 -		};
--		pci0: pci@1000 {
--			compatible = "tsi108-pci";
--			device_type = "pci";
--			#interrupt-cells = <1>;
+-	};
+-/*
+- * Only one of Rapid IO or PCI can be present due to HW limitations and
+- * due to the fact that the 2 now share address space in the new memory
+- * map.  The most likely case is that we have PCI, so comment out the
+- * rapidio node.  Leave it here for reference.
+-
+-	rapidio@ffec0000 {
+-		reg = <0xffec0000 0x11000>;
+-		compatible = "fsl,srio";
+-		interrupts = <48 2 0 0>;
+-		#address-cells = <2>;
+-		#size-cells = <2>;
+-		fsl,srio-rmu-handle = <&rmu>;
+-		ranges;
+-
+-		port1 {
+-			#address-cells = <2>;
 -			#size-cells = <2>;
--			#address-cells = <3>;
--			reg = <0x1000 0x1000>;
--			bus-range = <0 0>;
--			ranges = <0x2000000 0x0 0xe0000000 0xe0000000 0x0 0x1a000000	
--				  0x1000000 0x0 0x0 0xfa000000 0x0 0x10000>;
--			clock-frequency = <133333332>;
--			interrupt-parent = <&mpic>;
--			interrupts = <23 2>;
--			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
--			interrupt-map = <
+-			cell-index = <1>;
+-			ranges = <0 0 0x80000000 0 0x20000000>;
+-		};
+-	};
+-*/
 -
--				/* IDSEL 0x11 */
--				0x800 0x0 0x0 0x1 &RT0 0x24 0x0
--				0x800 0x0 0x0 0x2 &RT0 0x25 0x0
--				0x800 0x0 0x0 0x3 &RT0 0x26 0x0
--				0x800 0x0 0x0 0x4 &RT0 0x27 0x0
+-};
 -
--				/* IDSEL 0x12 */
--				0x1000 0x0 0x0 0x1 &RT0 0x25 0x0
--				0x1000 0x0 0x0 0x2 &RT0 0x26 0x0
--				0x1000 0x0 0x0 0x3 &RT0 0x27 0x0
--				0x1000 0x0 0x0 0x4 &RT0 0x24 0x0
+-/include/ "mpc8641si-post.dtsi"
+diff --git a/arch/powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts b/arch/powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts
+deleted file mode 100644
+index 3f5f7a99b9ea..000000000000
+--- a/arch/powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts
++++ /dev/null
+@@ -1,337 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * MPC8641 HPCN Device Tree Source
+- *
+- * Copyright 2008-2009 Freescale Semiconductor Inc.
+- */
 -
--				/* IDSEL 0x13 */
--				0x1800 0x0 0x0 0x1 &RT0 0x26 0x0
--				0x1800 0x0 0x0 0x2 &RT0 0x27 0x0
--				0x1800 0x0 0x0 0x3 &RT0 0x24 0x0
--				0x1800 0x0 0x0 0x4 &RT0 0x25 0x0
+-/include/ "mpc8641si-pre.dtsi"
 -
--				/* IDSEL 0x14 */
--				0x2000 0x0 0x0 0x1 &RT0 0x27 0x0
--				0x2000 0x0 0x0 0x2 &RT0 0x24 0x0
--				0x2000 0x0 0x0 0x3 &RT0 0x25 0x0
--				0x2000 0x0 0x0 0x4 &RT0 0x26 0x0
--				>;
+-/ {
+-	model = "MPC8641HPCN";
+-	compatible = "fsl,mpc8641hpcn";
+-	#address-cells = <2>;
+-	#size-cells = <2>;
 -
--			RT0: router@1180 {
--				clock-frequency = <0>;
--				interrupt-controller;
--				device_type = "pic-router";
--				#address-cells = <0>;
--				#interrupt-cells = <2>;
--				big-endian;
--				interrupts = <23 2>;
--				interrupt-parent = <&mpic>;
+-	memory {
+-		device_type = "memory";
+-		reg = <0x0 0x00000000 0x0 0x40000000>;	// 1G at 0x0
+-	};
+-
+-	lbc: localbus@fffe05000 {
+-		reg = <0x0f 0xffe05000 0x0 0x1000>;
+-
+-		ranges = <0 0 0xf 0xef800000 0x00800000
+-			  2 0 0xf 0xffdf8000 0x00008000
+-			  3 0 0xf 0xffdf0000 0x00008000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x00800000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			partition@0 {
+-				label = "kernel";
+-				reg = <0x00000000 0x00300000>;
 -			};
+-			partition@300000 {
+-				label = "firmware b";
+-				reg = <0x00300000 0x00100000>;
+-				read-only;
+-			};
+-			partition@400000 {
+-				label = "fs";
+-				reg = <0x00400000 0x00300000>;
+-			};
+-			partition@700000 {
+-				label = "firmware a";
+-				reg = <0x00700000 0x00100000>;
+-				read-only;
+-			};
+-		};
+-	};
+-
+-	soc: soc8641@fffe00000 {
+-		ranges = <0x00000000 0x0f 0xffe00000 0x00100000>;
+-
+-		enet0: ethernet@24000 {
+-			tbi-handle = <&tbi0>;
+-			phy-handle = <&phy0>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@24520 {
+-			phy0: ethernet-phy@0 {
+-				interrupts = <10 1 0 0>;
+-				reg = <0>;
+-			};
+-			phy1: ethernet-phy@1 {
+-				interrupts = <10 1 0 0>;
+-				reg = <1>;
+-			};
+-			phy2: ethernet-phy@2 {
+-				interrupts = <10 1 0 0>;
+-				reg = <2>;
+-			};
+-			phy3: ethernet-phy@3 {
+-				interrupts = <10 1 0 0>;
+-				reg = <3>;
+-			};
+-			tbi0: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		enet1: ethernet@25000 {
+-			tbi-handle = <&tbi1>;
+-			phy-handle = <&phy1>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@25520 {
+-			tbi1: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		enet2: ethernet@26000 {
+-			tbi-handle = <&tbi2>;
+-			phy-handle = <&phy2>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@26520 {
+-			tbi2: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-
+-		enet3: ethernet@27000 {
+-			tbi-handle = <&tbi3>;
+-			phy-handle = <&phy3>;
+-			phy-connection-type = "rgmii-id";
+-		};
+-
+-		mdio@27520 {
+-			tbi3: tbi-phy@11 {
+-				reg = <0x11>;
+-				device_type = "tbi-phy";
+-			};
+-		};
+-	};
+-
+-	pci0: pcie@fffe08000 {
+-		reg = <0x0f 0xffe08000 0x0 0x1000>;
+-		ranges = <0x02000000 0x0 0xe0000000 0x0c 0x00000000 0x0 0x20000000
+-			  0x01000000 0x0 0x00000000 0x0f 0xffc00000 0x0 0x00010000>;
+-		interrupt-map-mask = <0xff00 0 0 7>;
+-		interrupt-map = <
+-			/* IDSEL 0x11 func 0 - PCI slot 1 */
+-			0x8800 0 0 1 &mpic 2 1 0 0
+-			0x8800 0 0 2 &mpic 3 1 0 0
+-			0x8800 0 0 3 &mpic 4 1 0 0
+-			0x8800 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 1 - PCI slot 1 */
+-			0x8900 0 0 1 &mpic 2 1 0 0
+-			0x8900 0 0 2 &mpic 3 1 0 0
+-			0x8900 0 0 3 &mpic 4 1 0 0
+-			0x8900 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 2 - PCI slot 1 */
+-			0x8a00 0 0 1 &mpic 2 1 0 0
+-			0x8a00 0 0 2 &mpic 3 1 0 0
+-			0x8a00 0 0 3 &mpic 4 1 0 0
+-			0x8a00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 3 - PCI slot 1 */
+-			0x8b00 0 0 1 &mpic 2 1 0 0
+-			0x8b00 0 0 2 &mpic 3 1 0 0
+-			0x8b00 0 0 3 &mpic 4 1 0 0
+-			0x8b00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 4 - PCI slot 1 */
+-			0x8c00 0 0 1 &mpic 2 1 0 0
+-			0x8c00 0 0 2 &mpic 3 1 0 0
+-			0x8c00 0 0 3 &mpic 4 1 0 0
+-			0x8c00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 5 - PCI slot 1 */
+-			0x8d00 0 0 1 &mpic 2 1 0 0
+-			0x8d00 0 0 2 &mpic 3 1 0 0
+-			0x8d00 0 0 3 &mpic 4 1 0 0
+-			0x8d00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 6 - PCI slot 1 */
+-			0x8e00 0 0 1 &mpic 2 1 0 0
+-			0x8e00 0 0 2 &mpic 3 1 0 0
+-			0x8e00 0 0 3 &mpic 4 1 0 0
+-			0x8e00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x11 func 7 - PCI slot 1 */
+-			0x8f00 0 0 1 &mpic 2 1 0 0
+-			0x8f00 0 0 2 &mpic 3 1 0 0
+-			0x8f00 0 0 3 &mpic 4 1 0 0
+-			0x8f00 0 0 4 &mpic 1 1 0 0
+-
+-			/* IDSEL 0x12 func 0 - PCI slot 2 */
+-			0x9000 0 0 1 &mpic 3 1 0 0
+-			0x9000 0 0 2 &mpic 4 1 0 0
+-			0x9000 0 0 3 &mpic 1 1 0 0
+-			0x9000 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 1 - PCI slot 2 */
+-			0x9100 0 0 1 &mpic 3 1 0 0
+-			0x9100 0 0 2 &mpic 4 1 0 0
+-			0x9100 0 0 3 &mpic 1 1 0 0
+-			0x9100 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 2 - PCI slot 2 */
+-			0x9200 0 0 1 &mpic 3 1 0 0
+-			0x9200 0 0 2 &mpic 4 1 0 0
+-			0x9200 0 0 3 &mpic 1 1 0 0
+-			0x9200 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 3 - PCI slot 2 */
+-			0x9300 0 0 1 &mpic 3 1 0 0
+-			0x9300 0 0 2 &mpic 4 1 0 0
+-			0x9300 0 0 3 &mpic 1 1 0 0
+-			0x9300 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 4 - PCI slot 2 */
+-			0x9400 0 0 1 &mpic 3 1 0 0
+-			0x9400 0 0 2 &mpic 4 1 0 0
+-			0x9400 0 0 3 &mpic 1 1 0 0
+-			0x9400 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 5 - PCI slot 2 */
+-			0x9500 0 0 1 &mpic 3 1 0 0
+-			0x9500 0 0 2 &mpic 4 1 0 0
+-			0x9500 0 0 3 &mpic 1 1 0 0
+-			0x9500 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 6 - PCI slot 2 */
+-			0x9600 0 0 1 &mpic 3 1 0 0
+-			0x9600 0 0 2 &mpic 4 1 0 0
+-			0x9600 0 0 3 &mpic 1 1 0 0
+-			0x9600 0 0 4 &mpic 2 1 0 0
+-
+-			/* IDSEL 0x12 func 7 - PCI slot 2 */
+-			0x9700 0 0 1 &mpic 3 1 0 0
+-			0x9700 0 0 2 &mpic 4 1 0 0
+-			0x9700 0 0 3 &mpic 1 1 0 0
+-			0x9700 0 0 4 &mpic 2 1 0 0
+-
+-			// IDSEL 0x1c  USB
+-			0xe000 0 0 1 &i8259 12 2
+-			0xe100 0 0 2 &i8259 9 2
+-			0xe200 0 0 3 &i8259 10 2
+-			0xe300 0 0 4 &i8259 11 2
+-
+-			// IDSEL 0x1d  Audio
+-			0xe800 0 0 1 &i8259 6 2
+-
+-			// IDSEL 0x1e Legacy
+-			0xf000 0 0 1 &i8259 7 2
+-			0xf100 0 0 1 &i8259 7 2
+-
+-			// IDSEL 0x1f IDE/SATA
+-			0xf800 0 0 1 &i8259 14 2
+-			0xf900 0 0 1 &i8259 5 2
+-			>;
+-
+-		pcie@0 {
+-			ranges = <0x02000000 0x0 0xe0000000
+-				  0x02000000 0x0 0xe0000000
+-				  0x0 0x20000000
+-
+-				  0x01000000 0x0 0x00000000
+-				  0x01000000 0x0 0x00000000
+-				  0x0 0x00010000>;
+-			uli1575@0 {
+-				reg = <0 0 0 0 0>;
+-				#size-cells = <2>;
+-				#address-cells = <3>;
+-				ranges = <0x02000000 0x0 0xe0000000
+-					  0x02000000 0x0 0xe0000000
+-					  0x0 0x20000000
+-					  0x01000000 0x0 0x00000000
+-					  0x01000000 0x0 0x00000000
+-					  0x0 0x00010000>;
+-				isa@1e {
+-					device_type = "isa";
+-					#size-cells = <1>;
+-					#address-cells = <2>;
+-					reg = <0xf000 0 0 0 0>;
+-					ranges = <1 0 0x01000000 0 0
+-						  0x00001000>;
+-					interrupt-parent = <&i8259>;
+-
+-					i8259: interrupt-controller@20 {
+-						reg = <1 0x20 2
+-						       1 0xa0 2
+-						       1 0x4d0 2>;
+-						interrupt-controller;
+-						device_type = "interrupt-controller";
+-						#address-cells = <0>;
+-						#interrupt-cells = <2>;
+-						compatible = "chrp,iic";
+-						interrupts = <9 2 0 0>;
+-					};
+-
+-					i8042@60 {
+-						#size-cells = <0>;
+-						#address-cells = <1>;
+-						reg = <1 0x60 1 1 0x64 1>;
+-						interrupts = <1 3 12 3>;
+-						interrupt-parent = <&i8259>;
+-
+-						keyboard@0 {
+-							reg = <0>;
+-							compatible = "pnpPNP,303";
+-						};
+-
+-						mouse@1 {
+-							reg = <1>;
+-							compatible = "pnpPNP,f03";
+-						};
+-					};
+-
+-					rtc@70 {
+-						compatible =
+-							"pnpPNP,b00";
+-						reg = <1 0x70 2>;
+-					};
+-
+-					gpio@400 {
+-						reg = <1 0x400 0x80>;
+-					};
+-				};
+-			};
+-		};
+-
+-	};
+-
+-	pci1: pcie@fffe09000 {
+-		reg = <0x0f 0xffe09000 0x0 0x1000>;
+-		ranges = <0x02000000 0x0 0xe0000000 0x0c 0x20000000 0x0 0x20000000
+-			  0x01000000 0x0 0x00000000 0x0f 0xffc10000 0x0 0x00010000>;
+-
+-		pcie@0 {
+-			ranges = <0x02000000 0x0 0xe0000000
+-				  0x02000000 0x0 0xe0000000
+-				  0x0 0x20000000
+-
+-				  0x01000000 0x0 0x00000000
+-				  0x01000000 0x0 0x00000000
+-				  0x0 0x00010000>;
 -		};
 -	};
 -};
-diff --git a/arch/powerpc/configs/mpc7448_hpc2_defconfig b/arch/powerpc/configs/mpc7448_hpc2_defconfig
-deleted file mode 100644
-index 19406a6c2648..000000000000
---- a/arch/powerpc/configs/mpc7448_hpc2_defconfig
-+++ /dev/null
-@@ -1,54 +0,0 @@
--CONFIG_ALTIVEC=y
--CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_LOG_BUF_SHIFT=14
--CONFIG_BLK_DEV_INITRD=y
--CONFIG_EXPERT=y
--# CONFIG_BLK_DEV_BSG is not set
--CONFIG_PARTITION_ADVANCED=y
--# CONFIG_PPC_CHRP is not set
--# CONFIG_PPC_PMAC is not set
--CONFIG_EMBEDDED6xx=y
--CONFIG_MPC7448HPC2=y
--CONFIG_GEN_RTC=y
--CONFIG_BINFMT_MISC=y
--# CONFIG_SECCOMP is not set
--CONFIG_NET=y
--CONFIG_PACKET=y
--CONFIG_UNIX=y
--CONFIG_XFRM_USER=y
--CONFIG_INET=y
--CONFIG_IP_MULTICAST=y
--CONFIG_IP_PNP=y
--CONFIG_IP_PNP_DHCP=y
--CONFIG_IP_PNP_BOOTP=y
--CONFIG_SYN_COOKIES=y
--# CONFIG_IPV6 is not set
--# CONFIG_FW_LOADER is not set
--CONFIG_BLK_DEV_LOOP=y
--CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_RAM_SIZE=131072
--CONFIG_BLK_DEV_SD=y
--CONFIG_ATA=y
--CONFIG_SATA_MV=y
--CONFIG_NETDEVICES=y
--CONFIG_E100=y
--CONFIG_8139TOO=y
--# CONFIG_8139TOO_PIO is not set
--CONFIG_TSI108_ETH=y
--CONFIG_PHYLIB=y
--# CONFIG_INPUT_KEYBOARD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_SERIO is not set
--# CONFIG_VT is not set
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--# CONFIG_HW_RANDOM is not set
--CONFIG_EXT2_FS=y
--CONFIG_EXT4_FS=y
--CONFIG_PROC_KCORE=y
--CONFIG_TMPFS=y
--CONFIG_NFS_FS=y
--CONFIG_ROOT_NFS=y
--CONFIG_CRC_T10DIF=y
-diff --git a/arch/powerpc/platforms/embedded6xx/Kconfig b/arch/powerpc/platforms/embedded6xx/Kconfig
-index c54786f8461e..a57424d6ef20 100644
---- a/arch/powerpc/platforms/embedded6xx/Kconfig
-+++ b/arch/powerpc/platforms/embedded6xx/Kconfig
-@@ -29,16 +29,6 @@ config STORCENTER
- 	  Select STORCENTER if configuring for the iomega StorCenter
- 	  with an 8241 CPU in it.
- 
--config MPC7448HPC2
--	bool "Freescale MPC7448HPC2(Taiga)"
--	depends on EMBEDDED6xx
--	select TSI108_BRIDGE
--	select DEFAULT_UIMAGE
--	select PPC_UDBG_16550
--	help
--	  Select MPC7448HPC2 if configuring for Freescale MPC7448HPC2 (Taiga)
--	  platform
 -
- config PPC_HOLLY
- 	bool "PPC750GX/CL with TSI10x bridge (Hickory/Holly)"
- 	depends on EMBEDDED6xx
-diff --git a/arch/powerpc/platforms/embedded6xx/Makefile b/arch/powerpc/platforms/embedded6xx/Makefile
-index e656ae9f23c6..7f2a8154e5a0 100644
---- a/arch/powerpc/platforms/embedded6xx/Makefile
-+++ b/arch/powerpc/platforms/embedded6xx/Makefile
-@@ -2,7 +2,6 @@
- #
- # Makefile for the 6xx/7xx/7xxxx linux kernel.
- #
--obj-$(CONFIG_MPC7448HPC2)	+= mpc7448_hpc2.o
- obj-$(CONFIG_LINKSTATION)	+= linkstation.o ls_uart.o
- obj-$(CONFIG_STORCENTER)	+= storcenter.o
- obj-$(CONFIG_PPC_HOLLY)		+= holly.o
-diff --git a/arch/powerpc/platforms/embedded6xx/mpc7448_hpc2.c b/arch/powerpc/platforms/embedded6xx/mpc7448_hpc2.c
+-/include/ "mpc8641si-post.dtsi"
+diff --git a/arch/powerpc/configs/mpc86xx_base.config b/arch/powerpc/configs/mpc86xx_base.config
+index 588870e6af3b..9f7a232c9357 100644
+--- a/arch/powerpc/configs/mpc86xx_base.config
++++ b/arch/powerpc/configs/mpc86xx_base.config
+@@ -1,5 +1,4 @@
+ CONFIG_PPC_86xx=y
+-CONFIG_MPC8641_HPCN=y
+ CONFIG_MPC8610_HPCD=y
+ CONFIG_GEF_PPC9A=y
+ CONFIG_GEF_SBC310=y
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index f6a3b87199db..57f5e62992e0 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -48,7 +48,6 @@ CONFIG_MPC836x_RDK=y
+ CONFIG_MPC837x_RDB=y
+ CONFIG_ASP834x=y
+ CONFIG_PPC_86xx=y
+-CONFIG_MPC8641_HPCN=y
+ CONFIG_MPC8610_HPCD=y
+ CONFIG_GEF_SBC610=y
+ CONFIG_CPU_FREQ=y
+diff --git a/arch/powerpc/platforms/86xx/Kconfig b/arch/powerpc/platforms/86xx/Kconfig
+index be867abebc83..4fe385f37f3b 100644
+--- a/arch/powerpc/platforms/86xx/Kconfig
++++ b/arch/powerpc/platforms/86xx/Kconfig
+@@ -10,16 +10,6 @@ menuconfig PPC_86xx
+ 
+ if PPC_86xx
+ 
+-config MPC8641_HPCN
+-	bool "Freescale MPC8641 HPCN"
+-	select PPC_I8259
+-	select DEFAULT_UIMAGE
+-	select FSL_ULI1575 if PCI
+-	select HAVE_RAPIDIO
+-	select SWIOTLB
+-	help
+-	  This option enables support for the MPC8641 HPCN board.
+-
+ config MPC8610_HPCD
+ 	bool "Freescale MPC8610 HPCD"
+ 	select DEFAULT_UIMAGE
+@@ -68,7 +58,7 @@ config MPC8641
+ 	select FSL_PCI if PCI
+ 	select PPC_UDBG_16550
+ 	select MPIC
+-	default y if MPC8641_HPCN || GEF_SBC610 || GEF_SBC310 || GEF_PPC9A \
++	default y if GEF_SBC610 || GEF_SBC310 || GEF_PPC9A \
+ 			|| MVME7100
+ 
+ config MPC8610
+diff --git a/arch/powerpc/platforms/86xx/Makefile b/arch/powerpc/platforms/86xx/Makefile
+index 5bbe1475bf26..ab2c15114228 100644
+--- a/arch/powerpc/platforms/86xx/Makefile
++++ b/arch/powerpc/platforms/86xx/Makefile
+@@ -5,7 +5,6 @@
+ 
+ obj-y				:= pic.o common.o
+ obj-$(CONFIG_SMP)		+= mpc86xx_smp.o
+-obj-$(CONFIG_MPC8641_HPCN)	+= mpc86xx_hpcn.o
+ obj-$(CONFIG_MPC8610_HPCD)	+= mpc8610_hpcd.o
+ obj-$(CONFIG_GEF_SBC610)	+= gef_sbc610.o
+ obj-$(CONFIG_GEF_SBC310)	+= gef_sbc310.o
+diff --git a/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c b/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
 deleted file mode 100644
-index ddf0c652af80..000000000000
---- a/arch/powerpc/platforms/embedded6xx/mpc7448_hpc2.c
+index 5294394c9c07..000000000000
+--- a/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
 +++ /dev/null
-@@ -1,198 +0,0 @@
+@@ -1,127 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * mpc7448_hpc2.c
+- * MPC86xx HPCN board specific routines
 - *
-- * Board setup routines for the Freescale mpc7448hpc2(taiga) platform
+- * Recode: ZHANG WEI <wei.zhang@freescale.com>
+- * Initial author: Xianghua Xiao <x.xiao@freescale.com>
 - *
-- * Author: Jacob Pan
-- *	 jacob.pan@freescale.com
-- * Author: Xianghua Xiao
-- *       x.xiao@freescale.com
-- * Maintainer: Roy Zang <tie-fei.zang@freescale.com>
-- * 	Add Flat Device Tree support fot mpc7448hpc2 board
-- *
-- * Copyright 2004-2006 Freescale Semiconductor, Inc.
+- * Copyright 2006 Freescale Semiconductor Inc.
 - */
 -
 -#include <linux/stddef.h>
 -#include <linux/kernel.h>
 -#include <linux/pci.h>
 -#include <linux/kdev_t.h>
--#include <linux/console.h>
--#include <linux/extable.h>
 -#include <linux/delay.h>
--#include <linux/irq.h>
 -#include <linux/seq_file.h>
--#include <linux/root_dev.h>
--#include <linux/serial.h>
--#include <linux/tty.h>
--#include <linux/serial_core.h>
--#include <linux/of_irq.h>
+-#include <linux/of_platform.h>
 -
 -#include <asm/time.h>
 -#include <asm/machdep.h>
--#include <asm/udbg.h>
--#include <asm/tsi108.h>
 -#include <asm/pci-bridge.h>
--#include <asm/reg.h>
 -#include <mm/mmu_decl.h>
--#include <asm/tsi108_pci.h>
--#include <asm/tsi108_irq.h>
+-#include <asm/udbg.h>
+-#include <asm/swiotlb.h>
+-
 -#include <asm/mpic.h>
 -
+-#include <sysdev/fsl_pci.h>
+-#include <sysdev/fsl_soc.h>
+-
+-#include "mpc86xx.h"
+-
 -#undef DEBUG
+-
 -#ifdef DEBUG
--#define DBG(fmt...) do { printk(fmt); } while(0)
+-#define DBG(fmt...) do { printk(KERN_ERR fmt); } while(0)
 -#else
 -#define DBG(fmt...) do { } while(0)
 -#endif
 -
--#define MPC7448HPC2_PCI_CFG_PHYS 0xfb000000
--
--int mpc7448_hpc2_exclude_device(struct pci_controller *hose,
--				u_char bus, u_char devfn)
--{
--	if (bus == 0 && PCI_SLOT(devfn) == 0)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--	else
--		return PCIBIOS_SUCCESSFUL;
--}
--
--static void __init mpc7448_hpc2_setup_pci(void)
--{
 -#ifdef CONFIG_PCI
--	struct device_node *np;
+-extern int uli_exclude_device(struct pci_controller *hose,
+-				u_char bus, u_char devfn);
+-
+-static int mpc86xx_exclude_device(struct pci_controller *hose,
+-				   u_char bus, u_char devfn)
+-{
+-	if (hose->dn == fsl_pci_primary)
+-		return uli_exclude_device(hose, bus, devfn);
+-
+-	return PCIBIOS_SUCCESSFUL;
+-}
+-#endif /* CONFIG_PCI */
+-
+-
+-static void __init
+-mpc86xx_hpcn_setup_arch(void)
+-{
 -	if (ppc_md.progress)
--		ppc_md.progress("mpc7448_hpc2_setup_pci():set_bridge", 0);
--
--	/* setup PCI host bridge */
--	for_each_compatible_node(np, "pci", "tsi108-pci")
--		tsi108_setup_pci(np, MPC7448HPC2_PCI_CFG_PHYS, 0);
--
--	ppc_md.pci_exclude_device = mpc7448_hpc2_exclude_device;
--	if (ppc_md.progress)
--		ppc_md.progress("tsi108: resources set", 0x100);
--#endif
--}
--
--static void __init mpc7448_hpc2_setup_arch(void)
--{
--	tsi108_csr_vir_base = get_vir_csrbase();
--
--	printk(KERN_INFO "MPC7448HPC2 (TAIGA) Platform\n");
--	printk(KERN_INFO
--	       "Jointly ported by Freescale and Tundra Semiconductor\n");
--	printk(KERN_INFO
--	       "Enabling L2 cache then enabling the HID0 prefetch engine.\n");
--}
--
--/*
-- * Interrupt setup and service.  Interrupts on the mpc7448_hpc2 come
-- * from the four external INT pins, PCI interrupts are routed via
-- * PCI interrupt control registers, it generates internal IRQ23
-- *
-- * Interrupt routing on the Taiga Board:
-- * TSI108:PB_INT[0] -> CPU0:INT#
-- * TSI108:PB_INT[1] -> CPU0:MCP#
-- * TSI108:PB_INT[2] -> N/C
-- * TSI108:PB_INT[3] -> N/C
-- */
--static void __init mpc7448_hpc2_init_IRQ(void)
--{
--	struct mpic *mpic;
--#ifdef CONFIG_PCI
--	unsigned int cascade_pci_irq;
--	struct device_node *tsi_pci;
--	struct device_node *cascade_node = NULL;
--#endif
--
--	mpic = mpic_alloc(NULL, 0, MPIC_BIG_ENDIAN |
--			MPIC_SPV_EOI | MPIC_NO_PTHROU_DIS | MPIC_REGSET_TSI108,
--			24, 0,
--			"Tsi108_PIC");
--
--	BUG_ON(mpic == NULL);
--
--	mpic_assign_isu(mpic, 0, mpic->paddr + 0x100);
--
--	mpic_init(mpic);
+-		ppc_md.progress("mpc86xx_hpcn_setup_arch()", 0);
 -
 -#ifdef CONFIG_PCI
--	tsi_pci = of_find_node_by_type(NULL, "pci");
--	if (tsi_pci == NULL) {
--		printk("%s: No tsi108 pci node found !\n", __func__);
--		return;
--	}
--	cascade_node = of_find_node_by_type(NULL, "pic-router");
--	if (cascade_node == NULL) {
--		printk("%s: No tsi108 pci cascade node found !\n", __func__);
--		return;
--	}
--
--	cascade_pci_irq = irq_of_parse_and_map(tsi_pci, 0);
--	DBG("%s: tsi108 cascade_pci_irq = 0x%x\n", __func__,
--	    (u32) cascade_pci_irq);
--	tsi108_pci_int_init(cascade_node);
--	irq_set_handler_data(cascade_pci_irq, mpic);
--	irq_set_chained_handler(cascade_pci_irq, tsi108_irq_cascade);
--
--	of_node_put(tsi_pci);
--	of_node_put(cascade_node);
+-	ppc_md.pci_exclude_device = mpc86xx_exclude_device;
 -#endif
--	/* Configure MPIC outputs to CPU0 */
--	tsi108_write_reg(TSI108_MPIC_OFFSET + 0x30c, 0);
+-
+-	printk("MPC86xx HPCN board from Freescale Semiconductor\n");
+-
+-#ifdef CONFIG_SMP
+-	mpc86xx_smp_init();
+-#endif
+-
+-	fsl_pci_assign_primary();
+-
+-	swiotlb_detect_4g();
 -}
 -
--void mpc7448_hpc2_show_cpuinfo(struct seq_file *m)
+-
+-static void
+-mpc86xx_hpcn_show_cpuinfo(struct seq_file *m)
 -{
--	seq_printf(m, "vendor\t\t: Freescale Semiconductor\n");
+-	uint svid = mfspr(SPRN_SVR);
+-
+-	seq_printf(m, "Vendor\t\t: Freescale Semiconductor\n");
+-
+-	seq_printf(m, "SVR\t\t: 0x%x\n", svid);
 -}
 -
--static void __noreturn mpc7448_hpc2_restart(char *cmd)
--{
--	local_irq_disable();
--
--	/* Set exception prefix high - to the firmware */
--	mtmsr(mfmsr() | MSR_IP);
--	isync();
--
--	for (;;) ;		/* Spin until reset happens */
--}
 -
 -/*
 - * Called very early, device-tree isn't unflattened
 - */
--static int __init mpc7448_hpc2_probe(void)
+-static int __init mpc86xx_hpcn_probe(void)
 -{
--	if (!of_machine_is_compatible("mpc74xx"))
--		return 0;
--	return 1;
--}
+-	if (of_machine_is_compatible("fsl,mpc8641hpcn"))
+-		return 1;	/* Looks good */
 -
--static int mpc7448_machine_check_exception(struct pt_regs *regs)
--{
--	const struct exception_table_entry *entry;
--
--	/* Are we prepared to handle this fault */
--	if ((entry = search_exception_tables(regs->nip)) != NULL) {
--		tsi108_clear_pci_cfg_error();
--		regs_set_recoverable(regs);
--		regs_set_return_ip(regs, extable_fixup(entry));
--		return 1;
--	}
 -	return 0;
 -}
 -
--define_machine(mpc7448_hpc2){
--	.name 			= "MPC7448 HPC2",
--	.probe 			= mpc7448_hpc2_probe,
--	.setup_arch 		= mpc7448_hpc2_setup_arch,
--	.discover_phbs		= mpc7448_hpc2_setup_pci,
--	.init_IRQ 		= mpc7448_hpc2_init_IRQ,
--	.show_cpuinfo 		= mpc7448_hpc2_show_cpuinfo,
--	.get_irq 		= mpic_get_irq,
--	.restart 		= mpc7448_hpc2_restart,
--	.calibrate_decr 	= generic_calibrate_decr,
--	.machine_check_exception= mpc7448_machine_check_exception,
--	.progress 		= udbg_progress,
+-static const struct of_device_id of_bus_ids[] __initconst = {
+-	{ .compatible = "fsl,srio", },
+-	{},
+-};
+-
+-static int __init declare_of_platform_devices(void)
+-{
+-	mpc86xx_common_publish_devices();
+-	of_platform_bus_probe(NULL, of_bus_ids, NULL);
+-
+-	return 0;
+-}
+-machine_arch_initcall(mpc86xx_hpcn, declare_of_platform_devices);
+-
+-define_machine(mpc86xx_hpcn) {
+-	.name			= "MPC86xx HPCN",
+-	.probe			= mpc86xx_hpcn_probe,
+-	.setup_arch		= mpc86xx_hpcn_setup_arch,
+-	.init_IRQ		= mpc86xx_init_irq,
+-	.show_cpuinfo		= mpc86xx_hpcn_show_cpuinfo,
+-	.get_irq		= mpic_get_irq,
+-	.time_init		= mpc86xx_time_init,
+-	.calibrate_decr		= generic_calibrate_decr,
+-	.progress		= udbg_progress,
+-#ifdef CONFIG_PCI
+-	.pcibios_fixup_bus	= fsl_pcibios_fixup_bus,
+-#endif
 -};
 -- 
 2.17.1
