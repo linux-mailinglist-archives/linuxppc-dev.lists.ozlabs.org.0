@@ -2,87 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E88F6A2C1E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Feb 2023 23:51:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C4A6A334C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Feb 2023 18:49:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PPMSK71XMz3chj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Feb 2023 09:51:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=exp0ZuoU;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=HFqnYYAj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PPrjN0vLpz3cdt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 04:49:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=exp0ZuoU;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=HFqnYYAj;
-	dkim-atps=neutral
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.172; helo=mail-il1-f172.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PPMRJ28qzz3bZV
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Feb 2023 09:50:18 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id CBE1C320083A;
-	Sat, 25 Feb 2023 17:50:11 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 25 Feb 2023 17:50:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm3; t=1677365411; x=1677451811; bh=tmxpZ7oIgK
-	0TkAA9mjGcktKtrG+/a/hmjd0+HlX7fns=; b=exp0ZuoUry1Z1xOcGmReG4Gh8e
-	1diYJsYq5S0cgIj66iWD5l/dB46ape5/Ky/avIIJxjnlxeUe9RVAEFg6RdCUhv4w
-	rFPTRTRSunjs885Oli2CN3GfaBUp7vYTu7GL7j98wq++uP9qbfIzQKiZZVjHp6wz
-	rF6gaKVz78qMKqjzC8JadMpPNjvPafUXlbDcqnA//NCOGToHBw6YwI35WPfeDtXm
-	VGBcSZVJeUJvaDAjH5QC+rtaAvK65eX/+OLWwjBzdSXYB3CeOVNhJhZM9OvkwsiZ
-	lmg6lki3m4hZhTO9U65bLAdxEoY0rN1HhqFYulffgV68fH/3jKQOrTd6raoQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1677365411; x=1677451811; bh=tmxpZ7oIgK0TkAA9mjGcktKtrG+/
-	a/hmjd0+HlX7fns=; b=HFqnYYAj/KraZSl94+vUbTCJrXSRzteSOO0Tj4V9Uji/
-	VkCjK3lmja2GILOehTAXbSji0huN29JUmlDhhtG4KE0EqLIX7l3GVlq1pGFrWnkf
-	g4fJ8tJA2CqEKdd5a6vvDp2fjFZ0kmJgQxXqAs3SwBqXK3IaPOi2QBFb1khuF6ZT
-	NtZopYtz96QsiHZdYEonLRes5HLDWhQYLc/Xv7EQ7fvpkh0Pkpci/XzR9ABjccB+
-	ydmEdE3U//u9hXndDczn2Gidlk0XKfGphtnRrGaKqpXkCwbZPWfyx7fPr0JzA0JL
-	SZ6snyyq6zhBxOTgP4MrUxXwVy9oIs9ZeqJpixTmZQ==
-X-ME-Sender: <xms:opD6YxpAa4s24ghx2m6p8fZvwd47zqEBioltUo9o50Ezsf-YSWcgqQ>
-    <xme:opD6YzrDL6Q2IisqAHvydgv0I8rsuTfzrrcerLFu7DVC-YQ1BBJPTx4JBVyyBED91
-    8nIM7MxxJK7tGjyisA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekjecutefuodetggdotefrodftvfcurf
-    hrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeetffen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggv
-X-ME-Proxy: <xmx:opD6Y-OTlA5OwhO4MTo2qP-Z5sOZEictDdVzC6nLcBrMaUHDTXtlgA>
-    <xmx:opD6Y85VSCYd9vegIC7w-neMcgGgDVJSbmYncYOCBS3EloHCP2NPZQ>
-    <xmx:opD6Yw5hD0QIKWoPGrDBZqCVQ1h_OFw_zVVYDXCZf7MuTbXK7iDHMQ>
-    <xmx:o5D6Y-kJ2JaQkAVmU-AW7Iy1QiHZ-2aAMas7TFeuNAsZfbxmWBP09g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id AFC3FB60086; Sat, 25 Feb 2023 17:50:10 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-172-g9a2dae1853-fm-20230213.001-g9a2dae18
-Mime-Version: 1.0
-Message-Id: <381dca28-726d-4118-81e1-9a9da4e87425@app.fastmail.com>
-In-Reply-To: <Y/o8bQz5CuRhdD8B@windriver.com>
-References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
- <AM0PR04MB6289FA528F76DDADB2BB0F958FA89@AM0PR04MB6289.eurprd04.prod.outlook.com>
- <Y/o8bQz5CuRhdD8B@windriver.com>
-Date: Sat, 25 Feb 2023 23:49:50 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Paul Gortmaker" <paul.gortmaker@windriver.com>,
- "Leo Li" <leoyang.li@nxp.com>
-Subject: Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PPrhs2jGtz30Ky
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 04:48:43 +1100 (AEDT)
+Received: by mail-il1-f172.google.com with SMTP id i4so2804741ils.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Feb 2023 09:48:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tACdGgGFajYXgjnpQBRHCU3URa1Aa3HOSGApSi6BQP0=;
+        b=qlev1kn6VCsELR4r92603S0Z7igfMZ+ZBd256vYSUq2d1wsbjQn2bQnpaswfTXyyVe
+         wjCDcbgx46+DLuy4zhf/RzCkE5tpUll4y4d3hw1xtCzogx0kWgDzExDNo5E50b5QamW1
+         cpLAgHpvaAdnU5a3s5J/plgk4If9KEQV2KzT2QO8mawczHB4s75RkSMBy3sHhzi4z1aE
+         Xron5KGe2felgO/z28PgLYYvBnLnox0sIKl3i5Kkzg35YOkUmAxb97lz8DVSl5AJorqz
+         nRgui6DxH7OlzG9qLe6yHRDqe0KdoYo9SLA/l4U2x2a8mr8SzU0qStyhxaTHqzcX+/35
+         yY+Q==
+X-Gm-Message-State: AO0yUKVXzh28q4UdUyr30Hkg86gs5j6Fdt5+ZH6yTVEOIeMPhyOFVygy
+	Hm88hPSSKlwLHeCSh3TT6w==
+X-Google-Smtp-Source: AK7set8Wd5SMOa9NAntTVq35NywdsrvS0Q2rvoUt9kZ/yG7JfyCQCXnbFwE/T/rvGtqqOhUIjqeNHg==
+X-Received: by 2002:a05:6e02:1a8c:b0:316:e793:9dba with SMTP id k12-20020a056e021a8c00b00316e7939dbamr15338967ilv.26.1677433719096;
+        Sun, 26 Feb 2023 09:48:39 -0800 (PST)
+Received: from robh_at_kernel.org ([2605:ef80:8069:8ddf:ff6b:c94c:94fd:4442])
+        by smtp.gmail.com with ESMTPSA id z19-20020a056638001300b003a9595b7e3asm1479085jao.46.2023.02.26.09.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Feb 2023 09:48:38 -0800 (PST)
+Received: (nullmailer pid 84297 invoked by uid 1000);
+	Sun, 26 Feb 2023 17:48:33 -0000
+Date: Sun, 26 Feb 2023 11:48:33 -0600
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v6 01/10] dt-bindings: soc: fsl: cpm_qe: Add TSA
+ controller
+Message-ID: <20230226174833.GA76710-robh@kernel.org>
+References: <20230217145645.1768659-1-herve.codina@bootlin.com>
+ <20230217145645.1768659-2-herve.codina@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230217145645.1768659-2-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,40 +64,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 25, 2023, at 17:50, Paul Gortmaker wrote:
-> [RE: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms] On 
-> 24/02/2023 (Fri 21:16) Leo Li wrote:
->
-> Thanks for confirming with your marketing team that they "do not
-> recommend any new design with these SoCs" -- it also confirms the
-> information I read on the web pages for the platforms.
->
-> As those of us immersed in this world all know from the 101 basics of
-> Product Life Cycle lessons, it doesn't matter if it is a phone or a
-> set-top-box/PVR or whatever else kind of non-PC consumer device --
-> kernel uprevs never happen in that product space.
->
-> So with the best interests of the mainline kernel in mind, I think we
-> are good to proceed with this for summer 2023.  And of course as I've
-> said many times before - the kernel is in git, so really you can't
-> delete anything anyway - it remains in history forever.
+On Fri, Feb 17, 2023 at 03:56:36PM +0100, Herve Codina wrote:
+> Add support for the time slot assigner (TSA)
+> available in some PowerQUICC SoC such as MPC885
+> or MPC866.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  .../bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml | 215 ++++++++++++++++++
+>  include/dt-bindings/soc/cpm1-fsl,tsa.h        |  13 ++
+>  2 files changed, 228 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+>  create mode 100644 include/dt-bindings/soc/cpm1-fsl,tsa.h
+> 
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+> new file mode 100644
+> index 000000000000..332e902bcc21
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
+> @@ -0,0 +1,215 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: PowerQUICC CPM Time-slot assigner (TSA) controller
+> +
+> +maintainers:
+> +  - Herve Codina <herve.codina@bootlin.com>
+> +
+> +description:
+> +  The TSA is the time-slot assigner that can be found on some PowerQUICC SoC.
+> +  Its purpose is to route some TDM time-slots to other internal serial
+> +  controllers.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - fsl,mpc885-tsa
+> +          - fsl,mpc866-tsa
+> +      - const: fsl,cpm1-tsa
+> +
+> +  reg:
+> +    items:
+> +      - description: SI (Serial Interface) register base
+> +      - description: SI RAM base
+> +
+> +  reg-names:
+> +    items:
+> +      - const: si_regs
+> +      - const: si_ram
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  '#fsl,serial-cells':
 
-Thanks for working on this, this is a good step towards removing
-the known unused code. One aspect I'd add from doing similar cleanups
-on arm32 is that I would prioritize removing evaluation platforms
-for SoCs that have no other supported boards, and then
-garbage-collecting the device drivers that become unused.
+#foo-cells is for when there are differing foo providers which need 
+different number of cells. That's not the case here.
 
-I'm not sure where the RDB boards fit in that, in particular if
-an unmodified kernel would work on a machine that is derived from
-the reference platform, or if it really only works on the machine
-itself. On most arm platforms, we moved to having only per-soc
-"compatible" strings, but on Freescale ppc32 it appears that
-the kernel always matches a board specific string and requires
-patches in order to support anything else.
-
-       Arnd
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    const: 1
+> +    description:
+> +      TSA consumers that use a phandle to TSA need to pass the serial identifier
+> +      with this phandle (defined in dt-bindings/soc/fsl,tsa.h).
+> +      For instance "fsl,tsa-serial = <&tsa FSL_CPM_TSA_SCC4>;".
