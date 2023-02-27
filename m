@@ -2,57 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5B16A42C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 14:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DFC6A4352
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 14:51:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQM0s1TLdz3c6P
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 00:34:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQMNC4Zlmz3c41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 00:51:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=I0RZYM2u;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pjNHlWPf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pjNHlWPf;
+	dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQLzr30B4z3bY0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 00:33:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQMMH0DB0z3bTc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 00:50:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lYtdb3OvoePD9FKa/wblmpog8oSZWnWeDVgUCfTs9As=; b=I0RZYM2uTHooxcHaCkgIjRt6S4
-	Q+Cio3xlxnE2D8zBu9EwrwmOHggoJ4gPAUNYZLjzw6o6dohV+xL162RX8FtA3I/WRk1wFdNPEm/yr
-	yrKFjbWHC1ZMcqj/0irRPq39VpTS5bCGOh+VFsbhmQUAls+W6xDUTrdPqBkP6MdJ6Rvt2Hjd19xYC
-	9leBtPob2IRbId2+FqrKY9fTkZ6D+RbZusAK7d7eGmHpRP7Hxvnw1VZqOvC4MIc5pzaGzxjDYi/yr
-	tlalojHEEtgTFimWnPIYIitNI7zGfGggSUik5O456sxE5vEq3hLP19ZxR53wd51AF/rpo5SH2HOqY
-	3ZlKpOkQ==;
+	bh=EhR9H533iLJtMrWDRv6QbWK1xC5aZF5Krew4cuVbhkY=; b=pjNHlWPfx/mT2hbu+ptXuX0Bfl
+	6zxwF35vF7M+uOcH6tkINiOev6YsMPaubnFo73g9CYU3Ll3T9vll1nI0RNIz3WNlOYgiQa0tIVuKA
+	B74bpcIknADwNfdW3qiqy/LodWENLcXyHOE5GDwPy8SDC2sGnAK8XRozKiqv3/orCAw1mdFzv6HIi
+	4Fd5+VtHusrJQM9si0oyzylM6PKjlqGcBBcB0+w8I4L93cScTcRI07ARzhig2+xcpAnwonlHY3QlK
+	3t2CJ+UJ429TvOFTkQzXQL9J1jWkm2YGGPGX0C52K8tzDWANXamImjRh/q37GBZi3LXqJmVgYbqO9
+	qyPvOYaw==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pWdcq-00EEZC-0g;
-	Mon, 27 Feb 2023 13:33:08 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pWdt1-00093q-0o; Mon, 27 Feb 2023 13:49:51 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4A9E8300293;
-	Mon, 27 Feb 2023 14:33:06 +0100 (CET)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7835530030B;
+	Mon, 27 Feb 2023 14:49:49 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2942823B24806; Mon, 27 Feb 2023 14:33:06 +0100 (CET)
-Date: Mon, 27 Feb 2023 14:33:06 +0100
+	id 56A33200AAFE3; Mon, 27 Feb 2023 14:49:49 +0100 (CET)
+Date: Mon, 27 Feb 2023 14:49:49 +0100
 From: Peter Zijlstra <peterz@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 5/5] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
-Message-ID: <Y/yxEnCcPmUk89Jp@hirez.programming.kicks-ass.net>
-References: <20230203071837.1136453-1-npiggin@gmail.com>
- <20230203071837.1136453-6-npiggin@gmail.com>
- <20230226141238.6ec5fdf7d75dcf2cd4c58ba0@linux-foundation.org>
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: Re: [Intel-gfx] [PATCH v5 0/7] Introduce __xchg, non-atomic xchg
+Message-ID: <Y/y0/VoPAVCXGKp3@hirez.programming.kicks-ass.net>
+References: <20230118153529.57695-1-andrzej.hajda@intel.com>
+ <Y/ZLH5F8LA3H10aL@hirez.programming.kicks-ass.net>
+ <17f40b7c-f98d-789d-fa19-12ec077b756a@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230226141238.6ec5fdf7d75dcf2cd4c58ba0@linux-foundation.org>
+In-Reply-To: <17f40b7c-f98d-789d-fa19-12ec077b756a@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,56 +66,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Rik van Riel <riel@redhat.com>, Will Deacon <will@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@amacapital.net>, linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Nadav Amit <nadav.amit@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, intel-gfx@lists.freedesktop.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Feb 26, 2023 at 02:12:38PM -0800, Andrew Morton wrote:
-> On Fri,  3 Feb 2023 17:18:37 +1000 Nicholas Piggin <npiggin@gmail.com> wrote:
-> 
-> > On a 16-socket 192-core POWER8 system, the context_switch1_threads
-> > benchmark from will-it-scale (see earlier changelog), upstream can
-> > achieve a rate of about 1 million context switches per second, due to
-> > contention on the mm refcount.
+On Thu, Feb 23, 2023 at 10:24:19PM +0100, Andrzej Hajda wrote:
+> On 22.02.2023 18:04, Peter Zijlstra wrote:
+> > On Wed, Jan 18, 2023 at 04:35:22PM +0100, Andrzej Hajda wrote:
 > > 
-> > 64s meets the prerequisites for CONFIG_MMU_LAZY_TLB_SHOOTDOWN, so enable
-> > the option. This increases the above benchmark to 118 million context
-> > switches per second.
-> 
-> Is that the best you can do ;)
-> 
-> > This generates 314 additional IPI interrupts on a 144 CPU system doing
-> > a kernel compile, which is in the noise in terms of kernel cycles.
+> > > Andrzej Hajda (7):
+> > >    arch: rename all internal names __xchg to __arch_xchg
+> > >    linux/include: add non-atomic version of xchg
+> > >    arch/*/uprobes: simplify arch_uretprobe_hijack_return_addr
+> > >    llist: simplify __llist_del_all
+> > >    io_uring: use __xchg if possible
+> > >    qed: use __xchg if possible
+> > >    drm/i915/gt: use __xchg instead of internal helper
 > > 
-> > ...
-> >
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -265,6 +265,7 @@ config PPC
-> >  	select MMU_GATHER_PAGE_SIZE
-> >  	select MMU_GATHER_RCU_TABLE_FREE
-> >  	select MMU_GATHER_MERGE_VMAS
-> > +	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
-> >  	select MODULES_USE_ELF_RELA
-> >  	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
-> >  	select NEED_PER_CPU_EMBED_FIRST_CHUNK	if PPC64
+> > Nothing crazy in here I suppose, I somewhat wonder why you went through
+> > the trouble, but meh.
 > 
-> Can we please have a summary of which other architectures might benefit
-> from this, and what must they do?
+> If you are asking why I have proposed this patchset, then the answer is
+> simple, 1st I've tried to find a way to move internal i915 helper to core
+> (see patch 7).
+> Then I was looking for possible other users of this helper. And apparently
+> there are many of them, patches 3-7 shows some.
 > 
-> As this is powerpc-only, I expect it won't get a lot of testing in
-> mm.git or in linux-next.  The powerpc maintainers might choose to merge
-> in the mm-stable branch at
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm if this is a
-> concern.
+> 
+> > 
+> > You want me to take this through te locking tree (for the next cycle,
+> > not this one) where I normally take atomic things or does someone else
+> > want this?
+> 
+> If you could take it I will be happy.
 
-I haven't really had time to page all of this back in, but x86 is very
-close to be able to use this, it mostly just needs cleaning up some
-accidental active_mm usage.
-
-I've got a branch here:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=x86/lazy
-
-That's mostly Nick's patches with a bunch of Andy's old patches stuck on
-top. I also have a pile of notes, but alas, not finished in any way.
+OK, I'll go queue it in tip/locking/core after -rc1. Thanks!
