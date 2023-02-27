@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050516A3477
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Feb 2023 23:13:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B186A3A58
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 06:26:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PPyZQ6kCcz3cBy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 09:13:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQ8BR62lPz3cLF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 16:26:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=UiT+0xxu;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KVFEitcL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQ89T5nPsz3bgW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 16:26:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=UiT+0xxu;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KVFEitcL;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PPyYT4766z3c5D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 09:12:44 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 52FA360C17;
-	Sun, 26 Feb 2023 22:12:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478B3C433EF;
-	Sun, 26 Feb 2023 22:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1677449559;
-	bh=58rHNWziKG5F+1xvClRR26TGR/kzgtphh1+ss0F3o1k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UiT+0xxuBn3xEDjfKMhE+S6nA/FuZ+LuP5xkiXmr+Z26p7zBTGouYiQnhVvpMNQe4
-	 72VgieV739lydXF/yzCq6+namJMMvgD8JJR9Z49ozGh6Bsy6ZoXgzNAL7cPtbQkAKe
-	 Yw2Hdqhy91RjOwm5mv0YwB7I/7qyguOod5YPTNVs=
-Date: Sun, 26 Feb 2023 14:12:38 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v7 5/5] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
-Message-Id: <20230226141238.6ec5fdf7d75dcf2cd4c58ba0@linux-foundation.org>
-In-Reply-To: <20230203071837.1136453-6-npiggin@gmail.com>
-References: <20230203071837.1136453-1-npiggin@gmail.com>
-	<20230203071837.1136453-6-npiggin@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PQ89S1gvyz4x4r;
+	Mon, 27 Feb 2023 16:26:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1677475564;
+	bh=T6QIytn9L33Q7Aw+6A+7icMEI0DxJnhlJO8jCmkh/j8=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=KVFEitcLJPxiyFCpSP6KfUPWvu9FUwNV/+hoYvvH1l2j1vvswhMgzA4Fqa/YfLTu2
+	 Ofo9OjPay9EK8L/di6xhIHfBhIxu+h0rprf7TfkFD57UP+ZJ3V86Zdast9cO2SswEE
+	 AQJlSBZGI8R3iRBn7/A3aqpaWzP9FN9z5tFdibRmszJGAEOuftArf2n08X0z9MBQXH
+	 Ql7h2eDNEttzDilSjOkRpgj1jT1/rQxwNYBsdcIFiDBoOfqOMB31dphjVVGn9IV6Le
+	 RdtvpmZVPedj75L9CXYrnP+gqR+7u3fEu+OmYwTFmVL9nKwKp7N/yWt9AXSasBqCGJ
+	 kcUPNThXs1dyg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: David Binderman <dcb314@hotmail.com>, "npiggin@gmail.com"
+ <npiggin@gmail.com>, "christophe.leroy@csgroup.eu"
+ <christophe.leroy@csgroup.eu>, "shuah@kernel.org" <shuah@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Linux
+ Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: Possible bug in
+ linux-6.2/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c
+In-Reply-To: <DB6P189MB0568CF002762C6C43AF6DF169CA89@DB6P189MB0568.EURP189.PROD.OUTLOOK.COM>
+References: <DB6P189MB0568CF002762C6C43AF6DF169CA89@DB6P189MB0568.EURP189.PROD.OUTLOOK.COM>
+Date: Mon, 27 Feb 2023 16:26:01 +1100
+Message-ID: <87ttz7vfva.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,44 +63,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Rik van Riel <riel@redhat.com>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Nadav Amit <nadav.amit@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri,  3 Feb 2023 17:18:37 +1000 Nicholas Piggin <npiggin@gmail.com> wrote:
-
-> On a 16-socket 192-core POWER8 system, the context_switch1_threads
-> benchmark from will-it-scale (see earlier changelog), upstream can
-> achieve a rate of about 1 million context switches per second, due to
-> contention on the mm refcount.
-> 
-> 64s meets the prerequisites for CONFIG_MMU_LAZY_TLB_SHOOTDOWN, so enable
-> the option. This increases the above benchmark to 118 million context
-> switches per second.
-
-Is that the best you can do ;)
-
-> This generates 314 additional IPI interrupts on a 144 CPU system doing
-> a kernel compile, which is in the noise in terms of kernel cycles.
-> 
-> ...
+David Binderman <dcb314@hotmail.com> writes:
+> Hello there,
 >
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -265,6 +265,7 @@ config PPC
->  	select MMU_GATHER_PAGE_SIZE
->  	select MMU_GATHER_RCU_TABLE_FREE
->  	select MMU_GATHER_MERGE_VMAS
-> +	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
->  	select MODULES_USE_ELF_RELA
->  	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
->  	select NEED_PER_CPU_EMBED_FIRST_CHUNK	if PPC64
+> I ran the static analyser cppcheck over the linux-6.2 source code and got this:
+>
+> linux-6.2/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c:68:10: style: Same expression '0x3' found multiple times in chain of '&' operators. [duplicateExpression]
 
-Can we please have a summary of which other architectures might benefit
-from this, and what must they do?
+Thanks.
 
-As this is powerpc-only, I expect it won't get a lot of testing in
-mm.git or in linux-next.  The powerpc maintainers might choose to merge
-in the mm-stable branch at
-git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm if this is a
-concern.
+> Source code is
+>
+>     FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample & 0x3) !=
+>             get_mmcra_sample_mode(get_reg_value(intr_regs, "MMCRA"), 4));
+>
+> but
+>
+> #define EV_CODE_EXTRACT(x, y)   \
+>     ((x >> ev_shift_##y) & ev_mask_##y)
+>
+>
+> Given the token pasting, I very much doubt an expression like "sample & 0x3"
+> will work correctly. Same thing on the line above 
+>
+>     FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample >> 2) !=
+>             get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4));
+>
+> "sample >> 2" doesn't look like a valid token to me.
+
+It expands to:
+
+ if ((((event.attr.config >> ev_shift_sample >> 2) & ev_mask_sample >> 2) != get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4))) 
+
+Which AFAICS is valid, and does compile.
+
+Whether it's what the author actually intended is less clear.
+
+And the other example with & 0x3 seems obviously wrong, it expands to:
+
+  if ((((event.attr.config >> ev_shift_sample & 0x3) & ev_mask_sample & 0x3) != get_mmcra_sample_mode(get_reg_value(intr_regs, "MMCRA"), 4)))
+
+The shift is 24, so bitwise anding it with 0x3 gets 0 which doesn't seem
+likely to be what was intended.
+
+cheers
