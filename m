@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DAE6A4C29
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 21:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FED6A4C73
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 21:43:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQX3D2Kq9z3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 07:22:00 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=aQLtru7w;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQXXN1NDVz3cHG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 07:43:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=aQLtru7w;
-	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.44; helo=mail-pj1-f44.google.com; envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQX2F3HCGz3bP1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 07:21:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=E2dr+WPpewMczIAEoyECoMJTwHYh5rKSEujDBRqJLXg=; b=aQLtru7wx3Rr1O2V6XdQGckFOV
-	FEnrPvzQq6NPqHH+iZb8rzJt0MFOpAWePYj6L8bbRB7GJ/Ss9qB9h9ss6jV1Njq3eYkZQuYkiEmkY
-	4shbZlYVaaTpj6vTmOzbst4gBNSVGiERp2sPSTIVVd6AURmtNCNWOgS9uql3L/Qxel+4AFVmviEbR
-	1gYgTS37g/3ome8G0h7JOqiz8uVezekbra8rJNsr7NEsvC+b2No2vsuWe9L5/P+hsWiyFuEDsa+GN
-	ChcZiykhQk3DB7lzWa/4Dl62d8Jpb/j9xBFckTBK0e6UB0BLoiz8ChAn5sGU1MG/CaKRgt+fYDVJW
-	DsO2dlUg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pWjzU-000NS1-2d; Mon, 27 Feb 2023 20:20:56 +0000
-Date: Mon, 27 Feb 2023 20:20:56 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 18/30] powerpc: Implement the new page table range API
-Message-ID: <Y/0QqO10jK55zHO0@casper.infradead.org>
-References: <20230227175741.71216-1-willy@infradead.org>
- <20230227175741.71216-19-willy@infradead.org>
- <ee864b97-90e6-4535-4db3-2659a2250afd@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQXWn3fcZz3bfp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 07:43:16 +1100 (AEDT)
+Received: by mail-pj1-f44.google.com with SMTP id 6-20020a17090a190600b00237c5b6ecd7so6899696pjg.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 12:43:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677530592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZC/aE2GBFP7wp6rf8fEfdlxGVt1o08UMnIKX0eniCVs=;
+        b=BzjzIU3vSFc83tR9Uz8RVJLnazzvjWw/OJxLkceSQNgjEBJqTz2/oaGvo5nvrTUg74
+         4PkDeUr72avfzmCUYiVuwcHXhWJ6Z7GDh+kBD5VEY/qf9uwSfE1/6ePyYYtEKTh+fdz5
+         3oIJjbtoMEZPAUvlmz1QgtKZWGJsQrb9jV7Y3+lOSQfBWWsVdw/Db7TFr/0AKQ+lsFyh
+         6m4LgnHtkbq2Mp8SktirZi3HUIHIjsHFAuyNhnMIke6eMk/UsNSALYgUoRZipf1+rW4D
+         RBMFeFQUnOYiyZamyTKd66LSVXWo/4Ty7GdtkV0QTT6YJlrFsFXvO0fO+UIT5VPcyhKX
+         k6uQ==
+X-Gm-Message-State: AO0yUKW9uGH/sUFiOYwSJl2x8JxKHS5qEBeO4LpIcAOX7Vs86Ts44Fnz
+	rkmDFUC3LDgVS6AZO+LpcUYbnqxks/F1bg==
+X-Google-Smtp-Source: AK7set/nzPBzwfDY8SrBPkd4oyBMkjFNQ7tL3hHS79vm6Tf8OWvtHdY0LTn0xhObZKcSihvEkLw5XQ==
+X-Received: by 2002:a17:903:2447:b0:19c:c9da:a62e with SMTP id l7-20020a170903244700b0019cc9daa62emr187912pls.54.1677530592016;
+        Mon, 27 Feb 2023 12:43:12 -0800 (PST)
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com. [209.85.216.52])
+        by smtp.gmail.com with ESMTPSA id ij15-20020a170902ab4f00b0019602274208sm5006098plb.186.2023.02.27.12.43.11
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Feb 2023 12:43:11 -0800 (PST)
+Received: by mail-pj1-f52.google.com with SMTP id k21-20020a17090aaa1500b002376652e160so7497606pjq.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 12:43:11 -0800 (PST)
+X-Received: by 2002:a17:903:2644:b0:19a:fdca:e3f1 with SMTP id
+ je4-20020a170903264400b0019afdcae3f1mr102810plb.3.1677530590900; Mon, 27 Feb
+ 2023 12:43:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ee864b97-90e6-4535-4db3-2659a2250afd@csgroup.eu>
+References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
+ <AM0PR04MB6289FA528F76DDADB2BB0F958FA89@AM0PR04MB6289.eurprd04.prod.outlook.com>
+ <Y/o8bQz5CuRhdD8B@windriver.com> <381dca28-726d-4118-81e1-9a9da4e87425@app.fastmail.com>
+In-Reply-To: <381dca28-726d-4118-81e1-9a9da4e87425@app.fastmail.com>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Mon, 27 Feb 2023 14:42:58 -0600
+X-Gmail-Original-Message-ID: <CADRPPNRvDMoN3c5XMAuvGFqZikcF9TktPWv9Nz7XjNG97U=8xQ@mail.gmail.com>
+Message-ID: <CADRPPNRvDMoN3c5XMAuvGFqZikcF9TktPWv9Nz7XjNG97U=8xQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,251 +69,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Scott Wood <oss@buserror.net>, Paul Gortmaker <paul.gortmaker@windriver.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 27, 2023 at 07:45:08PM +0000, Christophe Leroy wrote:
-> Hi,
-> 
-> Le 27/02/2023 à 18:57, Matthew Wilcox (Oracle) a écrit :
-> > Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
-> > Change the PG_arch_1 (aka PG_dcache_dirty) flag from being per-page to
-> > per-folio.
-> > 
-> > I'm unsure about my merging of flush_dcache_icache_hugepage() and
-> > flush_dcache_icache_page() into flush_dcache_icache_folio() and subsequent
-> > removal of flush_dcache_icache_phys().  Please review.
-> 
-> Not sure why you want to remove flush_dcache_icache_phys().
+On Sat, Feb 25, 2023 at 4:51=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
+>
+> On Sat, Feb 25, 2023, at 17:50, Paul Gortmaker wrote:
+> > [RE: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms] On
+> > 24/02/2023 (Fri 21:16) Leo Li wrote:
+> >
+> > Thanks for confirming with your marketing team that they "do not
+> > recommend any new design with these SoCs" -- it also confirms the
+> > information I read on the web pages for the platforms.
+> >
+> > As those of us immersed in this world all know from the 101 basics of
+> > Product Life Cycle lessons, it doesn't matter if it is a phone or a
+> > set-top-box/PVR or whatever else kind of non-PC consumer device --
+> > kernel uprevs never happen in that product space.
+> >
+> > So with the best interests of the mainline kernel in mind, I think we
+> > are good to proceed with this for summer 2023.  And of course as I've
+> > said many times before - the kernel is in git, so really you can't
+> > delete anything anyway - it remains in history forever.
+>
+> Thanks for working on this, this is a good step towards removing
+> the known unused code. One aspect I'd add from doing similar cleanups
+> on arm32 is that I would prioritize removing evaluation platforms
+> for SoCs that have no other supported boards, and then
+> garbage-collecting the device drivers that become unused.
+>
+> I'm not sure where the RDB boards fit in that, in particular if
+> an unmodified kernel would work on a machine that is derived from
+> the reference platform, or if it really only works on the machine
+> itself. On most arm platforms, we moved to having only per-soc
+> "compatible" strings, but on Freescale ppc32 it appears that
+> the kernel always matches a board specific string and requires
+> patches in order to support anything else.
 
-Well, I didn't, necessarily.  It's just that when I merged
-flush_dcache_icache_hugepage() and flush_dcache_icache_page()
-together, it was left with no callers.
+The RDB boards normally don't include the complex configuration
+mechanisms as used on the MDS platforms to support different
+configurations at the same time.  They were designed to mimic a real
+product and should be much more likely to work unmodified or with some
+minor tweaks.
 
-> Allthough that's only feasible when address bus is not wider than 32 
-> bits and cannot be done on BOOKE as you can't switch off MMU on BOOKE, 
-> flush_dcache_icache_phys() allows to flush not mapped pages without 
-> having to map them. So it is more efficient.
-
-And it was just never done for the hugepage case?
-
-> > @@ -148,17 +103,20 @@ static void __flush_dcache_icache(void *p)
-> >   	invalidate_icache_range(addr, addr + PAGE_SIZE);
-> >   }
-> >   
-> > -static void flush_dcache_icache_hugepage(struct page *page)
-> > +void flush_dcache_icache_folio(struct folio *folio)
-> >   {
-> > -	int i;
-> > -	int nr = compound_nr(page);
-> > +	unsigned int i, nr = folio_nr_pages(folio);
-> >   
-> > -	if (!PageHighMem(page)) {
-> > +	if (flush_coherent_icache())
-> > +		return;
-> > +
-> > +	if (!folio_test_highmem(folio)) {
-> > +		void *addr = folio_address(folio);
-> >   		for (i = 0; i < nr; i++)
-> > -			__flush_dcache_icache(lowmem_page_address(page + i));
-> > +			__flush_dcache_icache(addr + i * PAGE_SIZE);
-> >   	} else {
-> >   		for (i = 0; i < nr; i++) {
-> > -			void *start = kmap_local_page(page + i);
-> > +			void *start = kmap_local_folio(folio, i * PAGE_SIZE);
-> >   
-> >   			__flush_dcache_icache(start);
-> >   			kunmap_local(start);
-
-So you'd like this to be:
-
-	} else if (IS_ENABLED(CONFIG_BOOKE) || sizeof(phys_addr_t) > sizeof(void *)) {
-		for (i = 0; i < nr; i++) {
-			 void *start = kmap_local_folio(folio, i * PAGE_SIZE);
-			 __flush_dcache_icache(start);
-			 kunmap_local(start);
-		}
-	} else {
-		unsigned long pfn = folio_pfn(folio);
-		for (i = 0; i < nr; i++)
-			flush_dcache_icache_phys((pfn + i) * PAGE_SIZE;
-	}
-
-(or maybe you'd prefer a flush_dcache_icache_pfn() that doesn't need to
-worry about PAGE_MASK).
-
-> > @@ -166,27 +124,6 @@ static void flush_dcache_icache_hugepage(struct page *page)
-> >   	}
-> >   }
-> >   
-> > -void flush_dcache_icache_page(struct page *page)
-> > -{
-> > -	if (flush_coherent_icache())
-> > -		return;
-> > -
-> > -	if (PageCompound(page))
-> > -		return flush_dcache_icache_hugepage(page);
-> > -
-> > -	if (!PageHighMem(page)) {
-> > -		__flush_dcache_icache(lowmem_page_address(page));
-> > -	} else if (IS_ENABLED(CONFIG_BOOKE) || sizeof(phys_addr_t) > sizeof(void *)) {
-> > -		void *start = kmap_local_page(page);
-> > -
-> > -		__flush_dcache_icache(start);
-> > -		kunmap_local(start);
-> > -	} else {
-> > -		flush_dcache_icache_phys(page_to_phys(page));
-> > -	}
-> > -}
-> > -EXPORT_SYMBOL(flush_dcache_icache_page);
-> > -
-> >   void clear_user_page(void *page, unsigned long vaddr, struct page *pg)
-> >   {
-> >   	clear_page(page);
-> > diff --git a/arch/powerpc/mm/nohash/e500_hugetlbpage.c b/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> > index 58c8d9849cb1..f3cb91107a47 100644
-> > --- a/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> > +++ b/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> > @@ -178,7 +178,8 @@ book3e_hugetlb_preload(struct vm_area_struct *vma, unsigned long ea, pte_t pte)
-> >    *
-> >    * This must always be called with the pte lock held.
-> >    */
-> > -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
-> > +void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
-> > +		pte_t *ptep, unsigned int nr)
-> >   {
-> >   	if (is_vm_hugetlb_page(vma))
-> >   		book3e_hugetlb_preload(vma, address, *ptep);
-> > diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> > index cb2dcdb18f8e..b3c7b874a7a2 100644
-> > --- a/arch/powerpc/mm/pgtable.c
-> > +++ b/arch/powerpc/mm/pgtable.c
-> > @@ -58,7 +58,7 @@ static inline int pte_looks_normal(pte_t pte)
-> >   	return 0;
-> >   }
-> >   
-> > -static struct page *maybe_pte_to_page(pte_t pte)
-> > +static struct folio *maybe_pte_to_folio(pte_t pte)
-> >   {
-> >   	unsigned long pfn = pte_pfn(pte);
-> >   	struct page *page;
-> > @@ -68,7 +68,7 @@ static struct page *maybe_pte_to_page(pte_t pte)
-> >   	page = pfn_to_page(pfn);
-> >   	if (PageReserved(page))
-> >   		return NULL;
-> > -	return page;
-> > +	return page_folio(page);
-> >   }
-> >   
-> >   #ifdef CONFIG_PPC_BOOK3S
-> > @@ -84,12 +84,12 @@ static pte_t set_pte_filter_hash(pte_t pte)
-> >   	pte = __pte(pte_val(pte) & ~_PAGE_HPTEFLAGS);
-> >   	if (pte_looks_normal(pte) && !(cpu_has_feature(CPU_FTR_COHERENT_ICACHE) ||
-> >   				       cpu_has_feature(CPU_FTR_NOEXECUTE))) {
-> > -		struct page *pg = maybe_pte_to_page(pte);
-> > -		if (!pg)
-> > +		struct folio *folio = maybe_pte_to_folio(pte);
-> > +		if (!folio)
-> >   			return pte;
-> > -		if (!test_bit(PG_dcache_clean, &pg->flags)) {
-> > -			flush_dcache_icache_page(pg);
-> > -			set_bit(PG_dcache_clean, &pg->flags);
-> > +		if (!test_bit(PG_dcache_clean, &folio->flags)) {
-> > +			flush_dcache_icache_folio(folio);
-> > +			set_bit(PG_dcache_clean, &folio->flags);
-> >   		}
-> >   	}
-> >   	return pte;
-> > @@ -107,7 +107,7 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
-> >    */
-> >   static inline pte_t set_pte_filter(pte_t pte)
-> >   {
-> > -	struct page *pg;
-> > +	struct folio *folio;
-> >   
-> >   	if (radix_enabled())
-> >   		return pte;
-> > @@ -120,18 +120,18 @@ static inline pte_t set_pte_filter(pte_t pte)
-> >   		return pte;
-> >   
-> >   	/* If you set _PAGE_EXEC on weird pages you're on your own */
-> > -	pg = maybe_pte_to_page(pte);
-> > -	if (unlikely(!pg))
-> > +	folio = maybe_pte_to_folio(pte);
-> > +	if (unlikely(!folio))
-> >   		return pte;
-> >   
-> >   	/* If the page clean, we move on */
-> > -	if (test_bit(PG_dcache_clean, &pg->flags))
-> > +	if (test_bit(PG_dcache_clean, &folio->flags))
-> >   		return pte;
-> >   
-> >   	/* If it's an exec fault, we flush the cache and make it clean */
-> >   	if (is_exec_fault()) {
-> > -		flush_dcache_icache_page(pg);
-> > -		set_bit(PG_dcache_clean, &pg->flags);
-> > +		flush_dcache_icache_folio(folio);
-> > +		set_bit(PG_dcache_clean, &folio->flags);
-> >   		return pte;
-> >   	}
-> >   
-> > @@ -142,7 +142,7 @@ static inline pte_t set_pte_filter(pte_t pte)
-> >   static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
-> >   				     int dirty)
-> >   {
-> > -	struct page *pg;
-> > +	struct folio *folio;
-> >   
-> >   	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
-> >   		return pte;
-> > @@ -168,17 +168,17 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
-> >   #endif /* CONFIG_DEBUG_VM */
-> >   
-> >   	/* If you set _PAGE_EXEC on weird pages you're on your own */
-> > -	pg = maybe_pte_to_page(pte);
-> > -	if (unlikely(!pg))
-> > +	folio = maybe_pte_to_folio(pte);
-> > +	if (unlikely(!folio))
-> >   		goto bail;
-> >   
-> >   	/* If the page is already clean, we move on */
-> > -	if (test_bit(PG_dcache_clean, &pg->flags))
-> > +	if (test_bit(PG_dcache_clean, &folio->flags))
-> >   		goto bail;
-> >   
-> >   	/* Clean the page and set PG_dcache_clean */
-> > -	flush_dcache_icache_page(pg);
-> > -	set_bit(PG_dcache_clean, &pg->flags);
-> > +	flush_dcache_icache_folio(folio);
-> > +	set_bit(PG_dcache_clean, &folio->flags);
-> >   
-> >    bail:
-> >   	return pte_mkexec(pte);
-> > @@ -187,8 +187,8 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
-> >   /*
-> >    * set_pte stores a linux PTE into the linux page table.
-> >    */
-> > -void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> > -		pte_t pte)
-> > +void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> > +		pte_t pte, unsigned int nr)
-> >   {
-> >   	/*
-> >   	 * Make sure hardware valid bit is not set. We don't do
-> > @@ -203,7 +203,14 @@ void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> >   	pte = set_pte_filter(pte);
-> >   
-> >   	/* Perform the setting of the PTE */
-> > -	__set_pte_at(mm, addr, ptep, pte, 0);
-> > +	for (;;) {
-> > +		__set_pte_at(mm, addr, ptep, pte, 0);
-> > +		if (--nr == 0)
-> > +			break;
-> > +		ptep++;
-> > +		pte = __pte(pte_val(pte) + PAGE_SIZE);
-> > +		addr += PAGE_SIZE;
-> > +	}
-> >   }
-> >   
-> >   void unmap_kernel_page(unsigned long va)
+Regards,
+Leo
