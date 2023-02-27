@@ -1,60 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8A66A4C75
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 21:48:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9096A4CFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 22:17:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQXfK2Sbmz3c83
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 07:48:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQYGq4Q5Lz3c7s
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 08:17:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.181; helo=mail-pl1-f181.google.com; envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.215.182; helo=mail-pg1-f182.google.com; envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQXdn5gFZz3bTS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 07:48:29 +1100 (AEDT)
-Received: by mail-pl1-f181.google.com with SMTP id n6so6752020plf.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 12:48:29 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQYGG0QbNz30Ky
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 08:16:36 +1100 (AEDT)
+Received: by mail-pg1-f182.google.com with SMTP id s18so4421580pgq.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 13:16:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677530906;
+        d=1e100.net; s=20210112; t=1677532593;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e+m9KvQgsk6KX1umFXOQFHmJN94F4Y5922Swg5OIj4o=;
-        b=d1C/37ML11Hfppy0CY+qc5X0hKCG0Gn3xi8ruzwhJMeDnGAtoAmASQ2sftJIx+jTh1
-         2nliRajMdK9543h7WptRG1xnBFWz8sEiVGBolZoVqOHE1S5MlS5l4rPwUfOc70bWJ9tq
-         2ZpMJfjawUEfUwDJafpW3wcLADcYuNeh+neyGukoiMVsXyB+u5kokLvGT/hFdhDFLEwj
-         m32OloclIopzbdbJX/HLXwKBdq7iss7Y8wXuJLiaJUcSMm3XFOFpBTDMxqbGItvSCi46
-         h1P9Z+Z8+kWQYg+orQkFbQKv4nLPnGtsiWMnUN/qPweHGCJoE3nzvYKVRhK5FOtxZeQ/
-         qG7g==
-X-Gm-Message-State: AO0yUKXxIxsB8t3DLnWG8Hh1hd69IPF0HTOkRTBWA+57uMNXZZZNWeG5
-	9c/uCYxHXJ9p2wrXU0ugWUZD+SwNgF8wQw==
-X-Google-Smtp-Source: AK7set+jQ3mnnTovLzjI94YA+zLdlMJQetjwELoXY+x7IFqY7LLIx0X7ArUA5HxRnU7me2lvc6Vo2g==
-X-Received: by 2002:a17:902:8505:b0:19c:a0e6:8026 with SMTP id bj5-20020a170902850500b0019ca0e68026mr117175plb.50.1677530906064;
-        Mon, 27 Feb 2023 12:48:26 -0800 (PST)
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com. [209.85.214.179])
-        by smtp.gmail.com with ESMTPSA id v11-20020a1709029a0b00b001898ee9f723sm5034572plp.2.2023.02.27.12.48.24
+        bh=C5i/2+l6C7vo63hVcym9D0eHIni7kftv+BzjwhF/bLw=;
+        b=5+KkFZlEi8IAkgYJD0m2ChBwckSvGrzmFQy1tJnt2VR806tsbXcB6sLZpDv4xxnFIe
+         MYDpLSsthVjeg5yz44dLA8tY2o1wqMqJ+vjkXuvyZsdwQBnWsISKLiRZdZWEX4tdHowM
+         DtYySZoYY08YX1VvuL2G1OCP1XzFof/+h3Rd2Ol9p32ewY1eyjcFXFrpzUDIOk59gBBm
+         AmifCSzXhOCc3nMXa1xQgFYlgn7XFAN2+VGgMiKpL9l4JaGYsQWaBKS6e3rpJZTYqWzA
+         LR0voFlDVR6H78TUUkwyTqUxqqKscjZRrZAI8y4WVZE1alb35z0NGX5VWrdkMGjEaNN3
+         4yKQ==
+X-Gm-Message-State: AO0yUKVesgd+AsjcWAJ2t2WoNBJf9rO+SUsXbnWTbFxiyL22A4kfw0jy
+	OfUBJISI1mlc6AR4IWrF3aogc7hxbF4ZrQ==
+X-Google-Smtp-Source: AK7set/4wfSGgRAyuAQzpKvMGnxsScDt7r3/ni4APf1tF5won62OvE94jF/UeYAOOqjfqvSvOttbmA==
+X-Received: by 2002:a62:4eca:0:b0:5d6:4ef8:8c72 with SMTP id c193-20020a624eca000000b005d64ef88c72mr337464pfb.14.1677532593324;
+        Mon, 27 Feb 2023 13:16:33 -0800 (PST)
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com. [209.85.216.53])
+        by smtp.gmail.com with ESMTPSA id m3-20020aa78a03000000b005e06234e70esm4646177pfa.59.2023.02.27.13.16.32
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Feb 2023 12:48:25 -0800 (PST)
-Received: by mail-pl1-f179.google.com with SMTP id p6so7292571plf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 12:48:24 -0800 (PST)
-X-Received: by 2002:a17:90a:62c1:b0:237:9029:c29b with SMTP id
- k1-20020a17090a62c100b002379029c29bmr277929pjs.0.1677530904518; Mon, 27 Feb
- 2023 12:48:24 -0800 (PST)
+        Mon, 27 Feb 2023 13:16:32 -0800 (PST)
+Received: by mail-pj1-f53.google.com with SMTP id cp7-20020a17090afb8700b0023756229427so11509335pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 13:16:32 -0800 (PST)
+X-Received: by 2002:a17:90b:300c:b0:234:c035:7749 with SMTP id
+ hg12-20020a17090b300c00b00234c0357749mr301896pjb.0.1677532592022; Mon, 27 Feb
+ 2023 13:16:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
- <AM0PR04MB6289FA528F76DDADB2BB0F958FA89@AM0PR04MB6289.eurprd04.prod.outlook.com>
- <Y/o8bQz5CuRhdD8B@windriver.com>
-In-Reply-To: <Y/o8bQz5CuRhdD8B@windriver.com>
+References: <20230221194637.28436-1-paul.gortmaker@windriver.com>
+In-Reply-To: <20230221194637.28436-1-paul.gortmaker@windriver.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Mon, 27 Feb 2023 14:48:12 -0600
-X-Gmail-Original-Message-ID: <CADRPPNRTZmhEbS0Ts6iA7bmviT_C+caUkyFwJ5WGcN6q1rTORg@mail.gmail.com>
-Message-ID: <CADRPPNRTZmhEbS0Ts6iA7bmviT_C+caUkyFwJ5WGcN6q1rTORg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+Date: Mon, 27 Feb 2023 15:16:19 -0600
+X-Gmail-Original-Message-ID: <CADRPPNTyGPZOLwb5e20_FxwkpJ4ayt7VrgAEDgg7XqYSha3vMg@mail.gmail.com>
+Message-ID: <CADRPPNTyGPZOLwb5e20_FxwkpJ4ayt7VrgAEDgg7XqYSha3vMg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] Remove some e500/MPC85xx evaluation platforms
 To: Paul Gortmaker <paul.gortmaker@windriver.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -69,271 +67,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>
+Cc: Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 25, 2023 at 10:52=E2=80=AFAM Paul Gortmaker
+On Tue, Feb 21, 2023 at 1:52=E2=80=AFPM Paul Gortmaker
 <paul.gortmaker@windriver.com> wrote:
 >
-> [RE: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms] On 24=
-/02/2023 (Fri 21:16) Leo Li wrote:
+> [This RFC is proposed for v6.4 and hence is based off linux-next.]
 >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Paul Gortmaker <paul.gortmaker@windriver.com>
-> > > Sent: Monday, February 20, 2023 5:59 AM
-> > > To: linuxppc-dev@lists.ozlabs.org
-> > > Cc: Leo Li <leoyang.li@nxp.com>; Claudiu Manoil <claudiu.manoil@nxp.c=
-om>;
-> > > Paul Gortmaker <paul.gortmaker@windriver.com>; Scott Wood
-> > > <oss@buserror.net>; Michael Ellerman <mpe@ellerman.id.au>; Benjamin
-> > > Herrenschmidt <benh@kernel.crashing.org>; Paul Mackerras
-> > > <paulus@samba.org>
-> > > Subject: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platform=
-s
-> > >
-> > > [This RFC is proposed for v6.4 and hence is based off linux-next.]
-> > >
-> > > This series removes support for four e300 (MPC83xx) Freescale process=
-or
-> > > family evaluation boards that were added to the kernel in the 2006 er=
-a.
-> >
-> > Hi Paul,
-> >
-> > I talked with our marketing team on this.  Although we do not recommend=
- any new design with these SoCs, they are still being shipped in large amou=
-nt to customers now.  Plus it is possible for the bigger amount of existing=
- devices to be updating their software that includes a new kernel.  So we s=
-hould definitely keep all the common SoC code that might be needed to suppo=
-rt their own design.
->
-> Thanks for confirming with your marketing team that they "do not
-> recommend any new design with these SoCs" -- it also confirms the
-> information I read on the web pages for the platforms.
->
-> As those of us immersed in this world all know from the 101 basics of
-> Product Life Cycle lessons, it doesn't matter if it is a phone or a
-> set-top-box/PVR or whatever else kind of non-PC consumer device --
-> kernel uprevs never happen in that product space.
+> In a similar theme to the e300/MPC83xx evaluation platform removal[1],
+> this targets removal of some 13 --> 21 year old e500/MPC85xx evaluation
+> boards that were produced in limited numbers and primarily made available
+> to hardware/software developers to shape their own boards and BSPs.
 
-One thing is that the QorIQ platforms are not for the consumer
-devices.  They are mostly used in networking or communication
-equipment.  I think their product life cycle would be more like the
-server or data center scenario.
+These e500 platforms are similar to the e300 platforms that they are
+still being shipped, the targeting market probably caused it to have a
+longer life cycle.
 
-Regards,
-Leo
 >
-> So with the best interests of the mainline kernel in mind, I think we
-> are good to proceed with this for summer 2023.  And of course as I've
-> said many times before - the kernel is in git, so really you can't
-> delete anything anyway - it remains in history forever.
+> We start with the MPC8540-ADS[2] and MPC8560-ADS[3] -- based on the revis=
+ion
+> history in the user's guide[4], these near-identical platforms date back =
+to
+> at least 2002.  These boards are probably a part of the very small few th=
+at
+> still exist from the ppc ---> powerpc transition.  Typical of evaluation
+> boards, and as the picture[3] shows, these boards had a large footprint i=
+n
+> order to break out connectors to evaluate as many features as possible.
 >
-> Thanks,
+> While it is up to each board OEM to provide input on the EOL of support
+> for their own product, I will note that for comparison that I retired our
+> SBC8560 support over a decade ago, in v3.6 (2012, in commit b048b4e17cbb)
+> and nobody complained.
+>
+> Next, position yourself about 2007, and the MPC8548CDS (and variants)
+> appeared as a vehicle to showcase the then new e500-v2 processor family,
+> in a PCI-X card form factor with an additional backplane and the CPU on
+> yet another daughter-card.  Not very "hobbyist" friendly.  As the saying
+> goes, a picture[5] is worth 1000 words.
+>
+> Again, for comparison, and perhaps well overdue, I'd requested removal of
+> our SBC8548 support in Jan 2021 (c12adb067844, v5.15).
+>
+> Still roughly in the 2007 era, the MPC8568-MDS[6] just might have been th=
+e
+> 2nd last in the MDS line that was similar to the MPC83xx-MDS in general
+> form factor.  However, as can be seen in the User Guide picture, the
+> PCI/PCI-X card edge has been deleted.
+
+The difference here from the e300 platforms is that MPC8540ADS,
+MPC8560ADS, MPC8548CDS, MPC8568-MDS are the only reference platforms
+supplied by us for these SoCs.  We don't have a separation of
+evaluation platforms vs product-like platforms like we did later.
+That probably means even if they don't look like "hobbyist" friendly
+they are more likely to be still in use.
+
+>
+> A semi-recent change in the Kconfig descriptions, in commit d20c96deb3e2
+> ("powerpc/85xx: Fix description of MPC85xx and P1/P2 boards options") mad=
+e
+> it clear some of the MPC8568-MDS support was shared/reused by the lower
+> end of the next gen DDR3 enabled processor family -- QorIQ -- in the
+> P1021/P1012 MDS[7] platforms.  This MDS variant re-added a PCI-e card edg=
+e
+> but retained the MDS form factor and overall goal of enabling hardware
+> designs for OEM board manufacturers.
+>
+> Given that, we also include the P1021/P1012 MDS in this series, so that w=
+e
+> can then remove the MPC85xx_MDS Kconfig option and anything relying on it=
+.
+>
+> Finally, we remove some orphaned MPC85xx kernel config fragments.
+>
+> Future considerations:
+> ----------------------
+> Similar to the e300/MPC83xx series, what is NOT touched here is any of th=
+e
+> e500/MPC85xx RDS or DS platforms.
+>
+> DS platforms -- In the next MPC85xx platform evolution, the M or C was
+> dropped from MDS/CDS designation -- as the evaluation systems dropped the
+> "card+backplane" architecture and more closely resembled a typical full
+> sized PC-ATX motherboard of the era, with soldered CPU mounted high; RAM
+> sockets nearby, and ATX compliant PCI slots below that.
+>
+> However the feature rich, evaluation goal was retained in this new
+> Development System (DS) line.  Contrast that with the RDS systems which
+> were a smaller form factor and with only core/critical features exposed t=
+o
+> connectors, and a ready to deploy to market as-is for the overall goal.
+>
+> With that in mind, in the future we may want to consider looking at the
+> removal of the e500-v2 DS (MP8572DS[8], MPC8544DS[9], ...) platforms.
+> However there is now once again overlap with the newer P1/P2 procfam DS
+> systems from the same commit, and this time not under the MDS umbrella.
+>
 > Paul.
 > --
 >
-> >
-> > >
-> > > These boards were all of a very similar form factor, a largish PCI or=
- PCI-X card
-> > > that could also be used standalone with an external power brick, and =
-all
-> > > shared the Modular Development System (MDS) designation.
-> > >
-> > > These platforms were made in limited quantity and were generally desi=
-gned
-> > > to get early silicon into the hands of OEMs who would later develop t=
-heir
-> > > own boards/platforms.  As such, availability was limited to those who=
- would
-> > > be working on boards and/or BSP support.
-> > >
-> > > Many early revision MDS platforms used a mechanical clamping system t=
-o
-> > > hold the BGA CPU in place to facilitate CPU updates -- something not
-> > > normally possible for a soldered down BGA in a COTS system.
-> > >
-> > > The point of these details is to give context that reflects that thes=
-e four
-> > > boards were made in limited quantities, were not in a form factor tha=
-t is
-> > > really "hobbyist" friendly and hence make sense for removal 17 years =
-later.
-> >
-> > We would agree with you that the MDS platforms are only used by a limit=
-ed number of customers for evaluation purpose, so it should be fine to be r=
-emoved.  So for this series:
-> >
-> > Acked-by: Li Yang <leoyang.li@nxp.com>
-> >
-> > >
-> > > Here, we remove the MPC8548E-MDS[1], the MPC8360E-MDS[2], the
-> > > MPC837xE-MDS[3], and the MPC832x-MDS[4] board support from the kernel=
-.
-> > >
-> > > There will still exist several e300 Freescale Reference Design System=
- (RDS)
-> > > boards[5] and mini-ITX boards[6] with support in the kernel.  While t=
-hese
-> > > were more of a COTS "ready to deploy" design more suited to hobbyists=
-, it
-> > > probably makes sense to consider removing these as well, based on age=
-.
-> >
-> > These boards are mass market boards that sold in larger amount and are =
-much more likely to still be used.  We would suggest we keep them for now.
-> >
-> > >
-> > > But before we get to that, lets see how this goes -- and then we shou=
-ld look
-> > > at similar early e500 evaluation platforms [MPC8540-ADS, etc] next, a=
-s the
-> > > oldest there date back to 2002[7] -- before considering RDB/mITX.
-> > >
-> > > I intentionally didn't put any links in the commits, since as we all =
-know, they
-> > > tend not to be stable long term, so keep them here in the merge data.
-> > > Credit to NXP for keeping around these old legacy docs this long!
-> > >
-> > > Paul.
-> > >
-> > > --
-> > >
-> > > [1]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fdesign%2Fqoriq-developer-resources%2Fmpc8349e-modular-
-> > > development-
-> > > system%3AMPC8349EMDS&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2
-> > > 820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%
-> > > 7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
-> > > MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C300
-> > > 0%7C%7C%7C&sdata=3DQ4COgwpjsE4mHXvl9HdGo3otPCYML3z%2FR6IoCEYRE
-> > > wg%3D&reserved=3D0
-> > > [2]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fdocs%2Fen%2Fuser-
-> > > guide%2FMPC8360EMDSUM.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com
-> > > %7Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c30
-> > > 1635%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8ey
-> > > JWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
-> > > 7C3000%7C%7C%7C&sdata=3DJyLT0MfGAHQ8a%2FNgpLdVFtyACkwPR%2FOkB
-> > > yN1aW0wySs%3D&reserved=3D0
-> > > [3]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fproducts%2Fprocessors-and-microcontrollers%2Flegacy-mpu-
-> > > mcus%2Fpowerquicc-processors%2Fpowerquicc-iii-mpc85xx%2Fmpc837xe-
-> > > modular-development-
-> > > system%3AMPC837XEMDS&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2
-> > > 820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%
-> > > 7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
-> > > MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C300
-> > > 0%7C%7C%7C&sdata=3D052dpEEcGmbuhRLnMDCNoOkTeguF%2BPA0oJGNvV1
-> > > jSjI%3D&reserved=3D0
-> > > [4]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fproducts%2Fprocessors-and-microcontrollers%2Flegacy-mpu-
-> > > mcus%2Fpowerquicc-processors%2Fpowerquicc-ii-pro-mpc83xx%2Flow-
-> > > power-powerquicc-ii-pro-processor-with-ddr2-tdm-pci-security-usb-quic=
-c-
-> > > engine-with-
-> > > utopia%3AMPC8323E&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2820c1
-> > > e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%
-> > > 7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
-> > > wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7
-> > > C%7C%7C&sdata=3DmZQh%2FogNgNUb0wNJV972kYIDvn61gx0TWNd1u1d7PZ
-> > > Q%3D&reserved=3D0
-> > > [5]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fdocs%2Fen%2Ffact-
-> > > sheet%2FMPC8379ERDBFS.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com%7
-> > > Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c3016
-> > > 35%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJ
-> > > WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
-> > > 7C3000%7C%7C%7C&sdata=3DEJmP6Regr7zpvYvHUmX64h3LZSaBT3Mb1h%2BN
-> > > KQT%2FUls%3D&reserved=3D0
-> > > [6]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .digikey.ca%2Fen%2Fproducts%2Fdetail%2Fnxp-usa-inc%2FMPC8349E-MITX-
-> > > GP%2F1204733&data=3D05%7C01%7Cleoyang.li%40nxp.com%7Ca2820c1e44264
-> > > 0c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C1%7
-> > > C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAw
-> > > MDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%
-> > > 7C&sdata=3Dhw6IQDUaXH6huQFCnCkFIbNfj1xMrq%2FanDMUU%2FXZYQg%3
-> > > D&reserved=3D0
-> > > [7]
-> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fw=
-ww
-> > > .nxp.com%2Fdocs%2Fen%2Freference-
-> > > manual%2FMPC8560ADSUG.pdf&data=3D05%7C01%7Cleoyang.li%40nxp.com%
-> > > 7Ca2820c1e442640c5a39108db1339fd9f%7C686ea1d3bc2b4c6fa92cd99c5c301
-> > > 635%7C0%7C1%7C638124912025220501%7CUnknown%7CTWFpbGZsb3d8eyJ
-> > > WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
-> > > 7C3000%7C%7C%7C&sdata=3DEd%2BZR07y9Sp8xx5H47SAXzk9ET73creygxk%2B
-> > > emmbfuA%3D&reserved=3D0
-> > >
-> > > Cc: Scott Wood <oss@buserror.net>
-> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > > Cc: Paul Mackerras <paulus@samba.org>
-> > > Cc: Li Yang <leoyang.li@nxp.com>
-> > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-> > >
-> > > ---
-> > >
-> > > Paul Gortmaker (4):
-> > >   powerpc: drop MPC834x_MDS platform support
-> > >   powerpc: drop MPC836x_MDS platform support
-> > >   powerpc: drop MPC837x_MDS platform support
-> > >   powerpc: drop MPC832x_MDS platform support
-> > >
-> > >  arch/powerpc/boot/Makefile                    |   1 -
-> > >  arch/powerpc/boot/dts/mpc832x_mds.dts         | 436 ---------------
-> > >  arch/powerpc/boot/dts/mpc834x_mds.dts         | 403 --------------
-> > >  arch/powerpc/boot/dts/mpc836x_mds.dts         | 481 ----------------=
--
-> > >  arch/powerpc/boot/dts/mpc8377_mds.dts         | 505 ----------------=
---
-> > >  arch/powerpc/boot/dts/mpc8378_mds.dts         | 489 ----------------=
--
-> > >  arch/powerpc/boot/dts/mpc8379_mds.dts         | 455 ----------------
-> > >  .../configs/83xx/mpc832x_mds_defconfig        |  59 --
-> > >  .../configs/83xx/mpc834x_mds_defconfig        |  58 --
-> > >  .../configs/83xx/mpc836x_mds_defconfig        |  64 ---
-> > >  .../configs/83xx/mpc837x_mds_defconfig        |  58 --
-> > >  arch/powerpc/configs/mpc83xx_defconfig        |   4 -
-> > >  arch/powerpc/configs/ppc6xx_defconfig         |   4 -
-> > >  arch/powerpc/platforms/83xx/Kconfig           |  32 --
-> > >  arch/powerpc/platforms/83xx/Makefile          |   4 -
-> > >  arch/powerpc/platforms/83xx/mpc832x_mds.c     | 110 ----
-> > >  arch/powerpc/platforms/83xx/mpc834x_mds.c     | 101 ----
-> > >  arch/powerpc/platforms/83xx/mpc836x_mds.c     | 210 --------
-> > >  arch/powerpc/platforms/83xx/mpc837x_mds.c     | 103 ----
-> > >  19 files changed, 3577 deletions(-)
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc832x_mds.dts
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc834x_mds.dts
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc836x_mds.dts
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc8377_mds.dts
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc8378_mds.dts
-> > >  delete mode 100644 arch/powerpc/boot/dts/mpc8379_mds.dts
-> > >  delete mode 100644 arch/powerpc/configs/83xx/mpc832x_mds_defconfig
-> > >  delete mode 100644 arch/powerpc/configs/83xx/mpc834x_mds_defconfig
-> > >  delete mode 100644 arch/powerpc/configs/83xx/mpc836x_mds_defconfig
-> > >  delete mode 100644 arch/powerpc/configs/83xx/mpc837x_mds_defconfig
-> > >  delete mode 100644 arch/powerpc/platforms/83xx/mpc832x_mds.c
-> > >  delete mode 100644 arch/powerpc/platforms/83xx/mpc834x_mds.c
-> > >  delete mode 100644 arch/powerpc/platforms/83xx/mpc836x_mds.c
-> > >  delete mode 100644 arch/powerpc/platforms/83xx/mpc837x_mds.c
-> > >
-> > > --
-> > > 2.17.1
-> >
+> [1] https://lore.kernel.org/all/20230220115913.25811-1-paul.gortmaker@win=
+driver.com/
+> [2] https://www.nxp.com/products/no-longer-manufactured/application-devel=
+opment-system-for-mpc8540:MPC8540ADS
+> [3] https://www.nxp.com/products/no-longer-manufactured/application-devel=
+opment-system-for-mpc8560:MPC8560ADS
+> [4] https://www.nxp.com/docs/en/reference-manual/MPC8560ADSUG.pdf
+> [5] https://www.flickr.com/photos/daiharuki/905150424/in/photostream/
+> [6] https://www.nxp.com/docs/en/user-guide/MPC8568EMDSPBUGAD.pdf
+> [7] https://www.nxp.com/design/qoriq-developer-resources/qoriq-p1021-p101=
+2-modular-development-system:P1021MDS
+> [8] https://www.nxp.com/products/no-longer-manufactured/integrated-commun=
+ications-processor-development-system:MPC8572DS
+> [9] https://www.nxp.com/docs/en/fact-sheet/MPC8544DSFS.pdf
+>
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Li Yang <leoyang.li@nxp.com>
+> Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+> Cc: Pali Roh=C3=A1r <pali@kernel.org>
+>
+> ---
+>
+> Paul Gortmaker (4):
+>   powerpc: drop MPC8540_ADS and MPC8560_ADS platform support
+>   powerpc: drop MPC85xx_CDS platform support
+>   powerpc: drop MPC8568_MDS / P1021_MDS platform support
+>   powerpc: remove orphaned MPC85xx kernel config fragments.
+>
+>  arch/powerpc/boot/Makefile                    |   5 -
+>  arch/powerpc/boot/dts/fsl/mpc8540ads.dts      | 355 ----------------
+>  arch/powerpc/boot/dts/fsl/mpc8541cds.dts      | 375 -----------------
+>  arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi     | 302 -------------
+>  arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts  |  82 ----
+>  arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts  |  82 ----
+>  arch/powerpc/boot/dts/fsl/mpc8555cds.dts      | 375 -----------------
+>  arch/powerpc/boot/dts/fsl/mpc8560ads.dts      | 388 -----------------
+>  arch/powerpc/boot/dts/fsl/mpc8568mds.dts      | 310 --------------
+>  arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi | 270 ------------
+>  arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi  |  68 ---
+>  arch/powerpc/boot/dts/fsl/p1021mds.dts        | 319 --------------
+>  arch/powerpc/configs/85xx-32bit.config        |   5 -
+>  arch/powerpc/configs/85xx-hw.config           | 139 ------
+>  arch/powerpc/configs/85xx-smp.config          |   2 -
+>  .../configs/85xx/mpc8540_ads_defconfig        |  47 ---
+>  .../configs/85xx/mpc8560_ads_defconfig        |  50 ---
+>  .../configs/85xx/mpc85xx_cds_defconfig        |  52 ---
+>  arch/powerpc/configs/mpc85xx_base.config      |   3 -
+>  arch/powerpc/platforms/85xx/Makefile          |   3 -
+>  arch/powerpc/platforms/85xx/mpc85xx_ads.c     | 171 --------
+>  arch/powerpc/platforms/85xx/mpc85xx_cds.c     | 397 -----------------
+>  arch/powerpc/platforms/85xx/mpc85xx_mds.c     | 398 ------------------
+>  23 files changed, 4198 deletions(-)
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8540ads.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8541cds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8555cds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8560ads.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568mds.dts
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8568si-pre.dtsi
+>  delete mode 100644 arch/powerpc/boot/dts/fsl/p1021mds.dts
+>  delete mode 100644 arch/powerpc/configs/85xx-32bit.config
+>  delete mode 100644 arch/powerpc/configs/85xx-hw.config
+>  delete mode 100644 arch/powerpc/configs/85xx-smp.config
+>  delete mode 100644 arch/powerpc/configs/85xx/mpc8540_ads_defconfig
+>  delete mode 100644 arch/powerpc/configs/85xx/mpc8560_ads_defconfig
+>  delete mode 100644 arch/powerpc/configs/85xx/mpc85xx_cds_defconfig
+>  delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_ads.c
+>  delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_cds.c
+>  delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_mds.c
+>
+> --
+> 2.17.1
+>
