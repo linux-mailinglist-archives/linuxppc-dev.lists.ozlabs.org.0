@@ -2,66 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0537C6A3E9F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 10:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 320616A42AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 14:32:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQG536X9xz3cGV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 20:52:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQLyv0JmDz3cS4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 00:32:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kMaj71Vf;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ex46fXXr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ex46fXXr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--elver.bounces.google.com (client-ip=2a00:1450:4864:20::549; helo=mail-ed1-x549.google.com; envelope-from=3ln38ywukdeehoyhujrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--elver.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kMaj71Vf;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ex46fXXr;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ex46fXXr;
 	dkim-atps=neutral
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQG462RLHz309V
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 20:51:48 +1100 (AEDT)
-Received: by mail-ed1-x549.google.com with SMTP id k12-20020a50c8cc000000b004accf30f6d3so7743854edh.14
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 01:51:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vLAZSY9lX30lbRvxmgqsLOf9PyjLVjvwhzsapOvRcDY=;
-        b=kMaj71Vfi/lRJwpu2c6Y30c4GChofTS/1NAM6BSsppmd+79MVgshdAkbfwYcY+bpGs
-         CiRnRoFJalGQy06Qf6ofr6IPOrEnPsJbQXg6+U1jdMGXFVGJ1AsOf4i7MQFcQA+l8ULe
-         Mo2b8h0asHjntecxkZTvGug03tleK52dxXa25hMzrG4SNMTyU/JAHj9MR/l79zKdXHLQ
-         buM5KSHUBERdH016UmpVUqFya9R7u6amo2onMgq6s4r74lW7NUSfh3ur9xrEK7PEmm+k
-         3xZcAhDWMRii49gLrjaLUjNtFD2IuQu4WrV5DAjjdfOzUNXSCtDX0oHDPSI05CE4qHzb
-         EqWw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQLxw5gJmz3bY0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 00:31:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677504702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V+6qFC7OXniFoFqHVWKESI1xjQfVcOUspp9yumvENXI=;
+	b=ex46fXXrhKmDPYEWGcB+af8vCe1J2IzZwA/e2KmgnAYszjSYEeJRhD0SpcUuO1qPy3fF9X
+	XAUmcoTTxXm+25+CGrHsNBZUTmHTyITfycVgVEzyB9To6mrfHrZuTHv/h//7qCbivgE7jW
+	G/8xMJixjPXbKePOGt18zoDHMoIkxVA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677504702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V+6qFC7OXniFoFqHVWKESI1xjQfVcOUspp9yumvENXI=;
+	b=ex46fXXrhKmDPYEWGcB+af8vCe1J2IzZwA/e2KmgnAYszjSYEeJRhD0SpcUuO1qPy3fF9X
+	XAUmcoTTxXm+25+CGrHsNBZUTmHTyITfycVgVEzyB9To6mrfHrZuTHv/h//7qCbivgE7jW
+	G/8xMJixjPXbKePOGt18zoDHMoIkxVA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-235-yVqJUXnaOrmC2oNMDk3AIw-1; Mon, 27 Feb 2023 08:31:41 -0500
+X-MC-Unique: yVqJUXnaOrmC2oNMDk3AIw-1
+Received: by mail-wm1-f69.google.com with SMTP id x18-20020a1c7c12000000b003e1e7d3cf9fso5347464wmc.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 05:31:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vLAZSY9lX30lbRvxmgqsLOf9PyjLVjvwhzsapOvRcDY=;
-        b=g95Hh5XelcSpKYU2s7xU0OT27pN8GnY6HkcGd5LsvYcdSayfsA1w4TxUmkKGWlAKp5
-         AVF07T2UYUrjCvtC+RstLrmT9KxtfmVuU4pfFnnbTkQ+yqfgDjyyzC3JmP+iQ9AdRr3g
-         mk0QDsIIocgI6EzqZvAU6eFjACq8ylz6TwwlHVZrBul7S8UCrjVXIv/XlKOEK9QRbHH7
-         09V/XUD7DH4l9XaPdMPAOAM5Hl7UB0jYsEex8RRdEVqIm/N+x3oeprNnwemPOpP0aNUL
-         9GjR8Bz+jGfM4iv5SXraB/9lcGUZDJbJznSvJeGTXEfOvrBPBRrkxN5Ml4wJsXfdYDMt
-         RasQ==
-X-Gm-Message-State: AO0yUKWrS7WN4drKqlPBglqt7CPbP3FQ+3dXw9jNbBwLZ3CLcvZYeW7K
-	FX7XIu9iZeStK+A5XX2Sc7rF6ilJaA==
-X-Google-Smtp-Source: AK7set8hge3bNWvK5Bx6TAmYJQ6x6+ySzteQpQn1kKAYlB8+s6f2a5QBRfTeJyAYOF013isoIX53pzIcXw==
-X-Received: from elver.muc.corp.google.com ([2a00:79e0:9c:201:1a89:611d:c416:e1ee])
- (user=elver job=sendgmr) by 2002:a17:907:60cd:b0:8b1:3540:7632 with SMTP id
- hv13-20020a17090760cd00b008b135407632mr5583442ejc.2.1677491502399; Mon, 27
- Feb 2023 01:51:42 -0800 (PST)
-Date: Mon, 27 Feb 2023 10:47:27 +0100
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.39.2.637.g21b0678d19-goog
-Message-ID: <20230227094726.3833247-1-elver@google.com>
-Subject: [PATCH mm] kasan, powerpc: Don't rename memintrinsics if compiler
- adds prefixes
-From: Marco Elver <elver@google.com>
-To: elver@google.com, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V+6qFC7OXniFoFqHVWKESI1xjQfVcOUspp9yumvENXI=;
+        b=0PjQw1bMZ2QU/dDqxaPy2SEQNygJqbBpFCyMK5QoOqHUYFdY+rq5khc13ydabxCrYi
+         X44DkUhgCniJlbMR0DYota6RdBzXHyPfZ6zlJKGipZzqeO50kWdcBMfj51+R5SdF/eaP
+         9kMLMt2dzVpvSaLQkDY0jNvlrG2DMEzDprkdjcHvl9bVvzdS+cY7yYSsnPeKqdTZ/Lxd
+         7TmOyEH7o/neUnvP+411lx5PAwA0Qz9W3BaaUG1AJvBleJn5ALvViY6h457jjNTgp2qZ
+         6NBBlT/A31kKsG0yumxOg+HUy01pF1wmeddeWHO6480cCVMseY94LFzIonu94iSd4+fv
+         DYFA==
+X-Gm-Message-State: AO0yUKWUMhHCx4hz6rAUmdvT1vHz6j6vgckl770fvv8NtG2NI52e52mM
+	yroO6AWs1xsmQzp5yJCzQhBd8ZCZUh/uAmWDdpUserevTT/mqWtS/5AzrEdVXiZYZ3+ZA6puwAo
+	eBdKy48ZeWXf/YEmDViIE6tpvjw==
+X-Received: by 2002:a05:600c:3d9b:b0:3ea:f6c4:5f2a with SMTP id bi27-20020a05600c3d9b00b003eaf6c45f2amr11631389wmb.17.1677504699854;
+        Mon, 27 Feb 2023 05:31:39 -0800 (PST)
+X-Google-Smtp-Source: AK7set9k8OE3X06H0t6ffblDghDw4p6MluetLQ2Nt3K/GymnPq5PiNVd71t1cUTwSWsd1hBXO2jKVw==
+X-Received: by 2002:a05:600c:3d9b:b0:3ea:f6c4:5f2a with SMTP id bi27-20020a05600c3d9b00b003eaf6c45f2amr11631342wmb.17.1677504699482;
+        Mon, 27 Feb 2023 05:31:39 -0800 (PST)
+Received: from ?IPV6:2003:cb:c703:1f00:7816:2307:5967:2228? (p200300cbc7031f007816230759672228.dip0.t-ipconnect.de. [2003:cb:c703:1f00:7816:2307:5967:2228])
+        by smtp.gmail.com with ESMTPSA id m34-20020a05600c3b2200b003df5be8987esm14091432wms.20.2023.02.27.05.31.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Feb 2023 05:31:38 -0800 (PST)
+Message-ID: <9ed766a6-cf06-535d-3337-ea6ff25c2362@redhat.com>
+Date: Mon, 27 Feb 2023 14:31:37 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230113171026.582290-1-david@redhat.com>
+ <20230113171026.582290-12-david@redhat.com>
+ <CAMuHMdX-FDga8w=pgg1myskEx6wp+oyZifhPPPFnWrc1zW7ZpQ@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH mm-unstable v1 11/26] microblaze/mm: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+In-Reply-To: <CAMuHMdX-FDga8w=pgg1myskEx6wp+oyZifhPPPFnWrc1zW7ZpQ@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,99 +106,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Liam Howlett <liam.howlett@oracle.com>, kasan-dev@googlegroups.com, Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With appropriate compiler support [1], KASAN builds use __asan prefixed
-meminstrinsics, and KASAN no longer overrides memcpy/memset/memmove.
+On 26.02.23 21:13, Geert Uytterhoeven wrote:
+> Hi David,
 
-If compiler support is detected (CC_HAS_KASAN_MEMINTRINSIC_PREFIX),
-define memintrinsics normally (do not prefix '__').
+Hi Geert,
 
-On powerpc, KASAN is the only user of __mem functions, which are used to
-define instrumented memintrinsics. Alias the normal versions for KASAN
-to use in its implementation.
+> 
+> On Fri, Jan 13, 2023 at 6:16 PM David Hildenbrand <david@redhat.com> wrote:
+>> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE by stealing one bit
+>> from the type. Generic MM currently only uses 5 bits for the type
+>> (MAX_SWAPFILES_SHIFT), so the stolen bit is effectively unused.
+>>
+>> The shift by 2 when converting between PTE and arch-specific swap entry
+>> makes the swap PTE layout a little bit harder to decipher.
+>>
+>> While at it, drop the comment from paulus---copy-and-paste leftover
+>> from powerpc where we actually have _PAGE_HASHPTE---and mask the type in
+>> __swp_entry_to_pte() as well.
+>>
+>> Cc: Michal Simek <monstr@monstr.eu>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+> 
+> Thanks for your patch, which is now commit b5c88f21531c3457
+> ("microblaze/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE") in
+> 
 
-Link: https://lore.kernel.org/all/20230224085942.1791837-1-elver@google.com/ [1]
-Link: https://lore.kernel.org/oe-kbuild-all/202302271348.U5lvmo0S-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Marco Elver <elver@google.com>
----
- arch/powerpc/include/asm/kasan.h       |  2 +-
- arch/powerpc/include/asm/string.h      | 15 +++++++++++----
- arch/powerpc/kernel/prom_init_check.sh |  9 +++++++--
- 3 files changed, 19 insertions(+), 7 deletions(-)
+Right, it went upstream, so we can only fixup.
 
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 92a968202ba7..365d2720097c 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_KASAN_H
- #define __ASM_KASAN_H
- 
--#ifdef CONFIG_KASAN
-+#if defined(CONFIG_KASAN) && !defined(CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX)
- #define _GLOBAL_KASAN(fn)	_GLOBAL(__##fn)
- #define _GLOBAL_TOC_KASAN(fn)	_GLOBAL_TOC(__##fn)
- #define EXPORT_SYMBOL_KASAN(fn)	EXPORT_SYMBOL(__##fn)
-diff --git a/arch/powerpc/include/asm/string.h b/arch/powerpc/include/asm/string.h
-index 2aa0e31e6884..60ba22770f51 100644
---- a/arch/powerpc/include/asm/string.h
-+++ b/arch/powerpc/include/asm/string.h
-@@ -30,11 +30,17 @@ extern int memcmp(const void *,const void *,__kernel_size_t);
- extern void * memchr(const void *,int,__kernel_size_t);
- void memcpy_flushcache(void *dest, const void *src, size_t size);
- 
-+#ifdef CONFIG_KASAN
-+/* __mem variants are used by KASAN to implement instrumented meminstrinsics. */
-+#ifdef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
-+#define __memset memset
-+#define __memcpy memcpy
-+#define __memmove memmove
-+#else /* CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX */
- void *__memset(void *s, int c, __kernel_size_t count);
- void *__memcpy(void *to, const void *from, __kernel_size_t n);
- void *__memmove(void *to, const void *from, __kernel_size_t n);
--
--#if defined(CONFIG_KASAN) && !defined(__SANITIZE_ADDRESS__)
-+#ifndef __SANITIZE_ADDRESS__
- /*
-  * For files that are not instrumented (e.g. mm/slub.c) we
-  * should use not instrumented version of mem* functions.
-@@ -46,8 +52,9 @@ void *__memmove(void *to, const void *from, __kernel_size_t n);
- #ifndef __NO_FORTIFY
- #define __NO_FORTIFY /* FORTIFY_SOURCE uses __builtin_memcpy, etc. */
- #endif
--
--#endif
-+#endif /* !__SANITIZE_ADDRESS__ */
-+#endif /* CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX */
-+#endif /* CONFIG_KASAN */
- 
- #ifdef CONFIG_PPC64
- #ifndef CONFIG_KASAN
-diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
-index 311890d71c4c..f3f43a8f48cf 100644
---- a/arch/powerpc/kernel/prom_init_check.sh
-+++ b/arch/powerpc/kernel/prom_init_check.sh
-@@ -13,8 +13,13 @@
- # If you really need to reference something from prom_init.o add
- # it to the list below:
- 
--grep "^CONFIG_KASAN=y$" ${KCONFIG_CONFIG} >/dev/null
--if [ $? -eq 0 ]
-+has_renamed_memintrinsics()
-+{
-+	grep -q "^CONFIG_KASAN=y$" ${KCONFIG_CONFIG} && \
-+		! grep -q "^CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX=y" ${KCONFIG_CONFIG}
-+}
-+
-+if has_renamed_memintrinsics
- then
- 	MEM_FUNCS="__memcpy __memset"
- else
+>>   arch/m68k/include/asm/mcf_pgtable.h   |  4 +--
+> 
+> What is this m68k change doing here?
+> Sorry for not noticing this earlier.
+
+Thanks for the late review, still valuable :)
+
+That hunk should have gone into the previous patch, looks like I messed 
+that up when reworking.
+
+> 
+> Furthermore, several things below look strange to me...
+> 
+>>   arch/microblaze/include/asm/pgtable.h | 45 +++++++++++++++++++++------
+>>   2 files changed, 37 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/arch/m68k/include/asm/mcf_pgtable.h b/arch/m68k/include/asm/mcf_pgtable.h
+>> index 3f8f4d0e66dd..e573d7b649f7 100644
+>> --- a/arch/m68k/include/asm/mcf_pgtable.h
+>> +++ b/arch/m68k/include/asm/mcf_pgtable.h
+>> @@ -46,8 +46,8 @@
+>>   #define _CACHEMASK040          (~0x060)
+>>   #define _PAGE_GLOBAL040                0x400   /* 68040 global bit, used for kva descs */
+>>
+>> -/* We borrow bit 7 to store the exclusive marker in swap PTEs. */
+>> -#define _PAGE_SWP_EXCLUSIVE    0x080
+>> +/* We borrow bit 24 to store the exclusive marker in swap PTEs. */
+>> +#define _PAGE_SWP_EXCLUSIVE    CF_PAGE_NOCACHE
+> 
+> CF_PAGE_NOCACHE is 0x80, so this is still bit 7, thus the new comment
+> is wrong?
+
+You're right, it's still bit 7 (and we use LSB-0 bit numbering in that 
+file). I'll send a fixup.
+
+> 
+>>
+>>   /*
+>>    * Externally used page protection values.
+>> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
+>> index 42f5988e998b..7e3de54bf426 100644
+>> --- a/arch/microblaze/include/asm/pgtable.h
+>> +++ b/arch/microblaze/include/asm/pgtable.h
+>> @@ -131,10 +131,10 @@ extern pte_t *va_to_pte(unsigned long address);
+>>    * of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB
+>>    * miss handler.  Bit 27 is PAGE_USER, thus selecting the correct
+>>    * zone.
+>> - * - PRESENT *must* be in the bottom two bits because swap cache
+>> - * entries use the top 30 bits.  Because 4xx doesn't support SMP
+>> - * anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30
+>> - * is cleared in the TLB miss handler before the TLB entry is loaded.
+>> + * - PRESENT *must* be in the bottom two bits because swap PTEs use the top
+>> + * 30 bits.  Because 4xx doesn't support SMP anyway, M is irrelevant so we
+>> + * borrow it for PAGE_PRESENT.  Bit 30 is cleared in the TLB miss handler
+>> + * before the TLB entry is loaded.
+> 
+> So the PowerPC 4xx comment is still here?
+
+I only dropped the comment above __swp_type(). I guess you mean that we 
+could also drop the "Because 4xx doesn't support SMP anyway, M is 
+irrelevant so we borrow it for PAGE_PRESENT." sentence, correct? Not 
+sure about the "Bit 30 is cleared in the TLB miss handler" comment, if 
+that can similarly be dropped.
+
+> 
+>>    * - All other bits of the PTE are loaded into TLBLO without
+>>    *  * modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for
+>>    * software PTE bits.  We actually use bits 21, 24, 25, and
+>> @@ -155,6 +155,9 @@ extern pte_t *va_to_pte(unsigned long address);
+>>   #define _PAGE_ACCESSED 0x400   /* software: R: page referenced */
+>>   #define _PMD_PRESENT   PAGE_MASK
+>>
+>> +/* We borrow bit 24 to store the exclusive marker in swap PTEs. */
+>> +#define _PAGE_SWP_EXCLUSIVE    _PAGE_DIRTY
+> 
+> _PAGE_DIRTY is 0x80, so this is also bit 7, thus the new comment is
+> wrong?
+
+In the example, I use MSB-0 bit numbering (which I determined to be 
+correct in microblaze context eventually, but I got confused a couple a 
+times because it's very inconsistent). That should be MSB-0 bit 24.
+
+Thanks!
+
 -- 
-2.39.2.637.g21b0678d19-goog
+Thanks,
+
+David / dhildenb
 
