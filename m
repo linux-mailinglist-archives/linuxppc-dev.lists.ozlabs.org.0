@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B80C6A491F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 19:03:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664BC6A4926
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Feb 2023 19:04:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQSzL1x0Dz3fvq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 05:03:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQT0L1d1Sz3fwl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 05:04:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=S2z/SSZH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=axT7gIHS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3aur8ywykdfkjli5e27ff7c5.3fdc9elogg3-45mc9jkj.fqc12j.fi7@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3bor8ywykdfslnk7g49hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=S2z/SSZH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=axT7gIHS;
 	dkim-atps=neutral
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQSPm50lLz3cjJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 04:37:48 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id z1-20020a170902d54100b00198bc9ba4edso4003423plf.21
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 09:37:48 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQSPq1db1z3bvZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 04:37:50 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-536d63d17dbso154542847b3.22
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Feb 2023 09:37:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8qbswzDezEhzstnVvKcWG8k4mqqShtR5CvkIjaL/Ams=;
-        b=S2z/SSZHK7ga7fn7K3WxQ1Z9Tp5cfnBCSQx6U3NwmV1gsUS+bGmINQRxa2j1mxprJj
-         TlUS9zejozFI94Me4SRmYnZJhHoCJ1T/yWkWmu9QLBmKTP9UVKEKrUis4+6aHa3Th3fJ
-         h+Y+1Jmq5YaDOU6wdiux0RRTdqhbgVjK/U97ZWeloQvvOddB9ya0oDdfoI+0RwHp4MBY
-         fv4OUGk3ZqItB135iDjzRMrjgTvWp+7rVjVBq1LRXg1IvF5Kyuov7vPWbX/2nDhfcOko
-         v7S1G6CGTLyAoqFG7bUJ2+HrxmmeBgvMQ0WZGMska7TydHy4EV5ohTcRFh6YPtqaKDjC
-         j2tg==
+        bh=MLyuEeEynE8KONkERvpFgsKF3fJfrVlAamWKGgJMnRA=;
+        b=axT7gIHSM9vrvAhwKVjKksPBBorC/hEiqwRtJY/ABl81gKVCntmX74iTRhXvXgAnUV
+         Um80sGKa9BQlweiuzQTKDk//t9klBC4AuVFnP3CTk2uBlo6XhUaWjWY5Blg8c/od1wB2
+         kGKuk0XbNvhKWTaK071eLxFocsyNDE7thDMFx60EqbJKuNaJXP1uEzxTROegPPIy1HGi
+         /hu0FB66yrsQ6uwQNFSWYEafLSSxfymT27BvoyNTtd8BgVaAOG8u+Vs4WjN1pPd4fScE
+         c5yJ6zCfiGKeo2DRNILtL3E3ThjPFtXt9gJX7nMmqjJa0MWklX0CZPjvb9UiR6pRtDTU
+         u9Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8qbswzDezEhzstnVvKcWG8k4mqqShtR5CvkIjaL/Ams=;
-        b=cx1+VVq/x9apeHPdl/S5eTIrn3xXMSOpo0fWxa6SsOV7hKAdNVrJ5KtMxj9BzliKrQ
-         iWgJ4z2S28ryh8ziMo+8Cx0U06nB+1WjZcilUQoie8jj6LyQYDrqJcUiQGN5suBz256f
-         r6ume5u+XaMM1Bgyx2g/AW7gYqEWmXL1U0/MQQ4clrUqiC39oD+/byzEEqbf7TDW1HQX
-         sgcLL84wIuJpejsclSYec4hR1d950mSf4e2/kogF1MHrUMqM9LRTX+Q4KbNndRO8Ptgu
-         CA52RcVgETv/fi54xAVbL94/NX6HWsQx8BlpJvjBy0mnhwRBlzrE1XsmTT9BgIvwzlMf
-         4/8Q==
-X-Gm-Message-State: AO0yUKXcBtw6uCo6EP1SH2KJ8s5UTU5Q3yrhOu5H35YdK1W6tvHSuY8A
-	On6pos00tmL9rUdpMPHO3KMWsFPOsik=
-X-Google-Smtp-Source: AK7set9keW13BRbYPHEfojmqkqSUJl+DCAHGSXNxIKLRjiYP92gcRxEVFUNpHyaWkuSA+coR6ukP0Mdxl38=
+        bh=MLyuEeEynE8KONkERvpFgsKF3fJfrVlAamWKGgJMnRA=;
+        b=EUcHN1tj8KzP9no2amKu1PH1LJoHGRbJBSP/94oCdptEQJaKM6lgP09I4zN4jrsxAW
+         5hhPCSpa9da3AOAXx26RgTh3/GRrDY2R8vT2kHxyucWjJdGhVhXryilodX3rFU/S9JUc
+         yQ6aRLnByup1jBA3OH1vmTa8yPjiu6TWF1R+B5/faHJXPRxNSqKyUrHsHaClb+4PJhNH
+         bUocBl4XMUg0o0tVTJ7UyM41RdpNvJ/xd5UFqU7o9c8oabWT1j2WPo4rhZ26dWdabRzs
+         m21u0WIlBdEDvyhvw7/uHuswHlcGoK5SH9YV+XeJvabM6xigg6JXdLY2W/jA3Yu4EyKx
+         wIuA==
+X-Gm-Message-State: AO0yUKX5ogyaRvFWvzOo6Hr8dV0SmG5SWj0vQOiLTIHokmVKcDqSnEo1
+	C5Zdd6rV9++ntbpot9Vng3nSF1KKZNs=
+X-Google-Smtp-Source: AK7set/sV1mOrmQyWkQwKfhY9l7Yn97smkcjzbwoSpl4Lx6r+hbm0S79lHOvGLHJAd/kE6zZDkM+t31MhHQ=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:e1f6:21d1:eead:3897])
- (user=surenb job=sendgmr) by 2002:a63:7a56:0:b0:4fb:b88f:e98a with SMTP id
- j22-20020a637a56000000b004fbb88fe98amr6296782pgn.7.1677519466345; Mon, 27 Feb
- 2023 09:37:46 -0800 (PST)
-Date: Mon, 27 Feb 2023 09:36:28 -0800
+ (user=surenb job=sendgmr) by 2002:a05:6902:140c:b0:88a:f2f:d004 with SMTP id
+ z12-20020a056902140c00b0088a0f2fd004mr219395ybu.5.1677519468856; Mon, 27 Feb
+ 2023 09:37:48 -0800 (PST)
+Date: Mon, 27 Feb 2023 09:36:29 -0800
 In-Reply-To: <20230227173632.3292573-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20230227173632.3292573-1-surenb@google.com>
 X-Mailer: git-send-email 2.39.2.722.g9855ee24e9-goog
-Message-ID: <20230227173632.3292573-30-surenb@google.com>
-Subject: [PATCH v4 29/33] x86/mm: try VMA lock-based page fault handling first
+Message-ID: <20230227173632.3292573-31-surenb@google.com>
+Subject: [PATCH v4 30/33] arm64/mm: try VMA lock-based page fault handling first
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -84,51 +84,54 @@ existing mmap_lock-based handling if that fails.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- arch/x86/Kconfig    |  1 +
- arch/x86/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
+ arch/arm64/Kconfig    |  1 +
+ arch/arm64/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
  2 files changed, 37 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index a825bf031f49..df21fba77db1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -27,6 +27,7 @@ config X86_64
- 	# Options that are inherently 64-bit kernel only:
- 	select ARCH_HAS_GIGANTIC_PAGE
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 27b2592698b0..412207d789b1 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -95,6 +95,7 @@ config ARM64
  	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
 +	select ARCH_SUPPORTS_PER_VMA_LOCK
- 	select ARCH_USE_CMPXCHG_LOCKREF
- 	select HAVE_ARCH_SOFT_DIRTY
- 	select MODULES_USE_ELF_RELA
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index a498ae1fbe66..e4399983c50c 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -19,6 +19,7 @@
- #include <linux/uaccess.h>		/* faulthandler_disabled()	*/
- #include <linux/efi.h>			/* efi_crash_gracefully_on_page_fault()*/
- #include <linux/mm_types.h>
-+#include <linux/mm.h>			/* find_and_lock_vma() */
+ 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
+ 	select ARCH_WANT_DEFAULT_BPF_JIT
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index f4cb0f85ccf4..9e0db5c387e3 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -535,6 +535,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	unsigned long vm_flags;
+ 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+ 	unsigned long addr = untagged_addr(far);
++#ifdef CONFIG_PER_VMA_LOCK
++	struct vm_area_struct *vma;
++#endif
  
- #include <asm/cpufeature.h>		/* boot_cpu_has, ...		*/
- #include <asm/traps.h>			/* dotraplinkage, ...		*/
-@@ -1333,6 +1334,38 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	}
- #endif
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -585,6 +588,36 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
  
 +#ifdef CONFIG_PER_VMA_LOCK
-+	if (!(flags & FAULT_FLAG_USER))
++	if (!(mm_flags & FAULT_FLAG_USER))
 +		goto lock_mmap;
 +
-+	vma = lock_vma_under_rcu(mm, address);
++	vma = lock_vma_under_rcu(mm, addr);
 +	if (!vma)
 +		goto lock_mmap;
 +
-+	if (unlikely(access_error(error_code, vma))) {
++	if (!(vma->vm_flags & vm_flags)) {
 +		vma_end_read(vma);
 +		goto lock_mmap;
 +	}
-+	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
++	fault = handle_mm_fault(vma, addr & PAGE_MASK,
++				mm_flags | FAULT_FLAG_VMA_LOCK, regs);
 +	vma_end_read(vma);
 +
 +	if (!(fault & VM_FAULT_RETRY)) {
@@ -140,27 +143,24 @@ index a498ae1fbe66..e4399983c50c 100644
 +	/* Quick path to respond to signals */
 +	if (fault_signal_pending(fault, regs)) {
 +		if (!user_mode(regs))
-+			kernelmode_fixup_or_oops(regs, error_code, address,
-+						 SIGBUS, BUS_ADRERR,
-+						 ARCH_DEFAULT_PKEY);
-+		return;
++			goto no_context;
++		return 0;
 +	}
 +lock_mmap:
 +#endif /* CONFIG_PER_VMA_LOCK */
-+
  	/*
- 	 * Kernel-mode access to the user address space should only occur
- 	 * on well-defined single instructions listed in the exception
-@@ -1433,6 +1466,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * As per x86, we may deadlock here. However, since the kernel only
+ 	 * validly references user space from well defined areas of the code,
+@@ -628,6 +661,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
  	}
- 
  	mmap_read_unlock(mm);
+ 
 +#ifdef CONFIG_PER_VMA_LOCK
 +done:
 +#endif
- 	if (likely(!(fault & VM_FAULT_ERROR)))
- 		return;
- 
+ 	/*
+ 	 * Handle the "normal" (no error) case first.
+ 	 */
 -- 
 2.39.2.722.g9855ee24e9-goog
 
