@@ -1,72 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17C96A5C62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 16:51:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0B56A5C7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 16:56:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PR20f3VyJz3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 02:51:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PR26c55xFz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 02:56:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=B87Sz4AD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wdgp+Shp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wdgp+Shp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=B87Sz4AD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wdgp+Shp;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wdgp+Shp;
 	dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PR1zk1BYWz3c1K
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Mar 2023 02:50:39 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id c23so10264356pjo.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 07:50:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112; t=1677599437;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UryJW0EuVY8u2sW6z9mCQGQjWTzi+ldNIkpQGB8+HtU=;
-        b=B87Sz4AD1+v0XwCsrRoMpTHOfPGa5C2kWXfopmI+Go4uM/GlteH88Prr3xnOjgOBpK
-         5TXEM23YJaNZ7g9EbVYCuK/JD08Tarh0thhlMnTFFyMOEygBOFNnHXUltVMCUsr+soSV
-         N7JymoT7+eTk9L3hW6gd0jRYqCQJylQ1Sv9bK+MVkRTzPo6kpx2lySfN5ZcoLvOslGRO
-         KPapypwptYDfTKoui/kxjkto9aXQEXnB0zNI2xnF9K9K1w6AMTAlsuNOBVAzoDOh6S9m
-         XMeLlvUu7AtZRerpGExszQw24rKkktWNdf98ePl6noAkKeRplxZuYNOqKiII4Yi6n3n8
-         TCXA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PR25g5FSjz2yWN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Mar 2023 02:55:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677599746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xBghEncF8boHA8ERPg4saQyYB+zKBnxfff7p7OTCduA=;
+	b=Wdgp+ShpR8oPuIbIv1cMoHGdwz7Hnu20fhoZlHfN2R/kfNQL6IkNYln1IUd2Bi/bR82QNh
+	ZHn9DyhkhN9QAM/A8kGkbZNm2W6ssr3y9+8YxDG1QLMuewtdfcswLXSoQ2L2rcehvdI01Q
+	H1TWHUlClGhOhyU3hn3xkxlrqJSN3pE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677599746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xBghEncF8boHA8ERPg4saQyYB+zKBnxfff7p7OTCduA=;
+	b=Wdgp+ShpR8oPuIbIv1cMoHGdwz7Hnu20fhoZlHfN2R/kfNQL6IkNYln1IUd2Bi/bR82QNh
+	ZHn9DyhkhN9QAM/A8kGkbZNm2W6ssr3y9+8YxDG1QLMuewtdfcswLXSoQ2L2rcehvdI01Q
+	H1TWHUlClGhOhyU3hn3xkxlrqJSN3pE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-630-0SHY7SK4NsGp-kO1jLMY2g-1; Tue, 28 Feb 2023 10:55:44 -0500
+X-MC-Unique: 0SHY7SK4NsGp-kO1jLMY2g-1
+Received: by mail-wm1-f69.google.com with SMTP id y16-20020a1c4b10000000b003dd1b5d2a36so328009wma.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 07:55:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677599437;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UryJW0EuVY8u2sW6z9mCQGQjWTzi+ldNIkpQGB8+HtU=;
-        b=hfINXM+fURoSpB/N8grRQ155xYg5Nwy3rtVLWCriup1Mwg+FcO/nMbrAhHXEJNne/Y
-         RIbXh/fxdSMFjgnYzNGMDgedffSmcDef1iyHxj10w1BC2S7RDFFGkglUXiogCwvmsPHe
-         9DwiXWmKQTVS3ljsBKVtyv7HfCTDt7VOD2yj+EBfvthcJJ8Vq5gQmzGMCoNXUd4cPbc+
-         Xo4KVzploO1pASyW7I63RnN6dKwvDyH/A26nA/xyiLwKZWiik3rRcy/GEdK4KhYKsbpa
-         WwH74KYKQzlI8Te2JDWo63k1HxyFaDgmb4KcD265xyGilS/tXjYAnRidSobS3kP+jXhB
-         k1eg==
-X-Gm-Message-State: AO0yUKWWyHem3onKr2bqYxjEwz2CeJOLsl9oMAx9CI/ZPpNVvI3pCrW7
-	Z7l66I1hHTzzWOK4r8vIQQV9dA==
-X-Google-Smtp-Source: AK7set80NPLuAAPSgZZsRqS35byB+8nywbDP9pe24Tyk+tjImkNZjMRv8vvzE4HsisyOpmumYVDG2Q==
-X-Received: by 2002:a17:902:d2c7:b0:19c:fbdb:43cb with SMTP id n7-20020a170902d2c700b0019cfbdb43cbmr3953598plc.51.1677599436809;
-        Tue, 28 Feb 2023 07:50:36 -0800 (PST)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id h12-20020a170902f7cc00b0019d1f42b00csm3612084plw.17.2023.02.28.07.50.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Feb 2023 07:50:36 -0800 (PST)
-Date: Tue, 28 Feb 2023 07:50:36 -0800 (PST)
-X-Google-Original-Date: Tue, 28 Feb 2023 07:49:44 PST (-0800)
-Subject: Re: [PATCH mm-unstable v1 19/26] riscv/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-In-Reply-To: <20230113171026.582290-20-david@redhat.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: david@redhat.com
-Message-ID: <mhng-b8dc8a57-dde0-4995-bbb7-3948a95ba0b1@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xBghEncF8boHA8ERPg4saQyYB+zKBnxfff7p7OTCduA=;
+        b=CsMG8CUuq3TEHgsDKb0+RbP7pwTC8+keYtfDR6FjRZSfOr33ieSeg3tuzZhvdANElr
+         PR8QkiIYElQqI6PZMOFgAwQCaWgooqLb7Gm98UzZCYH8EO3yZBUaBK6vriu/7qXAxB8F
+         TNJfqQqDhzWRo++Nctu1i4nTA144KLDI/4/9D/oSf32Eqs0CtLiXG5Lk5naen0lC+O5T
+         eZMkeCyf8AwGqknROF17x9Zn2iDYqwsskv0vylhvnaubgOi9Xx9GJu8NgWY1g7L3vBg7
+         0vnfMqcoBquKkY+aAH9qivBiR+wEXjWbgzBX/3vbxdQkgkNSnP4H0lOgpNyieS3DZvgz
+         BJFQ==
+X-Gm-Message-State: AO0yUKW1NfBQkiSetBPXyn3U/92DnnB9t230RRlmQrNpWISfTXHTRQh6
+	yaHVrs6BFyLmMj6R3x3A6ULKz2orEsLvrR6Z2bSTjm8F/YU6hBiDzSOU2FCysoc4VMfjKGiCLgh
+	kSRfmuEFb+3zb97GQJDvz0EQwgA==
+X-Received: by 2002:a05:600c:350f:b0:3eb:3945:d400 with SMTP id h15-20020a05600c350f00b003eb3945d400mr2593190wmq.6.1677599743567;
+        Tue, 28 Feb 2023 07:55:43 -0800 (PST)
+X-Google-Smtp-Source: AK7set+wnf2WDMcprxngEfzcv3vYTz2vjDLBbvltb+8+t+ERFjJxQhjmdzxRvt+YBcvxcSrV4CC0jA==
+X-Received: by 2002:a05:600c:350f:b0:3eb:3945:d400 with SMTP id h15-20020a05600c350f00b003eb3945d400mr2593150wmq.6.1677599743200;
+        Tue, 28 Feb 2023 07:55:43 -0800 (PST)
+Received: from ?IPV6:2003:cb:c706:b800:3757:baed:f95e:20ac? (p200300cbc706b8003757baedf95e20ac.dip0.t-ipconnect.de. [2003:cb:c706:b800:3757:baed:f95e:20ac])
+        by smtp.gmail.com with ESMTPSA id o25-20020a05600c511900b003dfe549da4fsm18407191wms.18.2023.02.28.07.55.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Feb 2023 07:55:42 -0800 (PST)
+Message-ID: <5d99c731-c47a-c525-76e5-4578d9dfc9ee@redhat.com>
+Date: Tue, 28 Feb 2023 16:55:41 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH mm-unstable v1 11/26] microblaze/mm: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230113171026.582290-1-david@redhat.com>
+ <20230113171026.582290-12-david@redhat.com>
+ <CAMuHMdX-FDga8w=pgg1myskEx6wp+oyZifhPPPFnWrc1zW7ZpQ@mail.gmail.com>
+ <9ed766a6-cf06-535d-3337-ea6ff25c2362@redhat.com>
+ <CAMuHMdWSaoKqO1Nx7QMDCcXrRmFbqqX8uwDRezXs8g+HdEFjKA@mail.gmail.com>
+ <c145a2db-f92c-65aa-3e68-07dbb2e097a6@redhat.com>
+ <CAMuHMdX7MND++KXgTpx4jscfctQA_-zPt3EN9-+79EWE7e+OjA@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <CAMuHMdX7MND++KXgTpx4jscfctQA_-zPt3EN9-+79EWE7e+OjA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,103 +110,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, shy828301@gmail.com, david@redhat.com, peterx@redhat.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, namit@vmware.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, aarcange@redhat.com, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, hughd@google.com, linux-csky@vger.kernel.org, rppt@linux.ibm.com, vbabka@suse.cz, jgg@nvidia.com, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, aou@eecs.berkeley.edu, jhubbard@nvidia.com, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 13 Jan 2023 09:10:19 PST (-0800), david@redhat.com wrote:
-> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE by stealing one bit
-> from the offset. This reduces the maximum swap space per file: on 32bit
-> to 16 GiB (was 32 GiB).
+On 27.02.23 20:46, Geert Uytterhoeven wrote:
+> Hi David,
+> 
+> On Mon, Feb 27, 2023 at 6:01 PM David Hildenbrand <david@redhat.com> wrote:
+>>>>>>     /*
+>>>>>>      * Externally used page protection values.
+>>>>>> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
+>>>>>> index 42f5988e998b..7e3de54bf426 100644
+>>>>>> --- a/arch/microblaze/include/asm/pgtable.h
+>>>>>> +++ b/arch/microblaze/include/asm/pgtable.h
+> 
+>>>>>>      * - All other bits of the PTE are loaded into TLBLO without
+>>>>>>      *  * modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for
+>>>>>>      * software PTE bits.  We actually use bits 21, 24, 25, and
+>>>>>> @@ -155,6 +155,9 @@ extern pte_t *va_to_pte(unsigned long address);
+>>>>>>     #define _PAGE_ACCESSED 0x400   /* software: R: page referenced */
+>>>>>>     #define _PMD_PRESENT   PAGE_MASK
+>>>>>>
+>>>>>> +/* We borrow bit 24 to store the exclusive marker in swap PTEs. */
+>>>>>> +#define _PAGE_SWP_EXCLUSIVE    _PAGE_DIRTY
+>>>>>
+>>>>> _PAGE_DIRTY is 0x80, so this is also bit 7, thus the new comment is
+>>>>> wrong?
+>>>>
+>>>> In the example, I use MSB-0 bit numbering (which I determined to be
+>>>> correct in microblaze context eventually, but I got confused a couple a
+>>>> times because it's very inconsistent). That should be MSB-0 bit 24.
+>>>
+>>> Thanks, TIL microblaze uses IBM bit numbering...
+>>
+>> I assume IBM bit numbering corresponds to MSB-0 bit numbering, correct?
+> 
+> Correct, as seen in s370 and PowerPC manuals...
 
-Seems fine to me, I doubt anyone wants a huge pile of swap on rv32.
+Good, I have some solid s390x background, but thinking about the term 
+"IBM PC" made me double-check that we're talking about the same thing ;)
 
->
-> Note that this bit does not conflict with swap PMDs and could also be used
-> in swap PMD context later.
->
-> While at it, mask the type in __swp_entry().
->
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  arch/riscv/include/asm/pgtable-bits.h |  3 +++
->  arch/riscv/include/asm/pgtable.h      | 29 ++++++++++++++++++++++-----
->  2 files changed, 27 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
-> index b9e13a8fe2b7..f896708e8331 100644
-> --- a/arch/riscv/include/asm/pgtable-bits.h
-> +++ b/arch/riscv/include/asm/pgtable-bits.h
-> @@ -27,6 +27,9 @@
->   */
->  #define _PAGE_PROT_NONE _PAGE_GLOBAL
->
-> +/* Used for swap PTEs only. */
-> +#define _PAGE_SWP_EXCLUSIVE _PAGE_ACCESSED
-> +
->  #define _PAGE_PFN_SHIFT 10
->
->  /*
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 4eba9a98d0e3..03a4728db039 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -724,16 +724,18 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->
->  /*
-> - * Encode and decode a swap entry
-> + * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
-> + * are !pte_none() && !pte_present().
->   *
->   * Format of swap PTE:
->   *	bit            0:	_PAGE_PRESENT (zero)
->   *	bit       1 to 3:       _PAGE_LEAF (zero)
->   *	bit            5:	_PAGE_PROT_NONE (zero)
-> - *	bits      6 to 10:	swap type
-> - *	bits 10 to XLEN-1:	swap offset
-> + *	bit            6:	exclusive marker
-> + *	bits      7 to 11:	swap type
-> + *	bits 11 to XLEN-1:	swap offset
->   */
-> -#define __SWP_TYPE_SHIFT	6
-> +#define __SWP_TYPE_SHIFT	7
->  #define __SWP_TYPE_BITS		5
->  #define __SWP_TYPE_MASK		((1UL << __SWP_TYPE_BITS) - 1)
->  #define __SWP_OFFSET_SHIFT	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT)
-> @@ -744,11 +746,28 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
->  #define __swp_type(x)	(((x).val >> __SWP_TYPE_SHIFT) & __SWP_TYPE_MASK)
->  #define __swp_offset(x)	((x).val >> __SWP_OFFSET_SHIFT)
->  #define __swp_entry(type, offset) ((swp_entry_t) \
-> -	{ ((type) << __SWP_TYPE_SHIFT) | ((offset) << __SWP_OFFSET_SHIFT) })
-> +	{ (((type) & __SWP_TYPE_MASK) << __SWP_TYPE_SHIFT) | \
-> +	  ((offset) << __SWP_OFFSET_SHIFT) })
->
->  #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
->  #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
->
-> +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-> +static inline int pte_swp_exclusive(pte_t pte)
-> +{
-> +	return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
-> +}
-> +
-> +static inline pte_t pte_swp_mkexclusive(pte_t pte)
-> +{
-> +	return __pte(pte_val(pte) | _PAGE_SWP_EXCLUSIVE);
-> +}
-> +
-> +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
-> +{
-> +	return __pte(pte_val(pte) & ~_PAGE_SWP_EXCLUSIVE);
-> +}
-> +
->  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->  #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
->  #define __swp_entry_to_pmd(swp) __pmd((swp).val)
+> 
+>> I recall that I used the comment above "/* Definitions for MicroBlaze.
+>> */" as an orientation.
+>>
+>> 0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+>> RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G
+> 
+> Indeed, that's where I noticed the "unconventional" numbering...
+> 
+>> So ... either we adjust both or we leave it as is. (again, depends on
+>> what the right thing to to is -- which I don't know :) )
+> 
+> It depends whether you want to match the hardware documentation,
+> or the Linux BIT() macro and friends...
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+The hardware documentation, so we should be good.
+
+Thanks!
+
+-- 
+Thanks,
+
+David / dhildenb
+
