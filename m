@@ -2,102 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7366A5651
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 11:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE4E6A57AB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 12:22:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQtMW2nLkz3cHs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 21:07:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQw2D5MFHz3cLW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 22:22:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nXYFCRtl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ozDOMArD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nXYFCRtl;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQtLY1cqFz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 21:06:28 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31S9UHV0002540;
-	Tue, 28 Feb 2023 10:06:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=DC9JyX/aZ76UEG07OM6Yh20Kp+9JipCq1FCKnvIfMS8=;
- b=nXYFCRtljWpPuSTPwP4dt7aBa9tV3qvaRUjbp8EDFAKwqducPafqrGHFpRtegwtyFou3
- SXB/nHZwZ7ic4eSrbVE+bFiWyf5n9ZNZmGcxmkCOI0tHmCmTGG9AYBLTadBiwDVTiX3q
- cTsvb4MmlZIuSFxKKmvEk7108UQKNI2yeaNG/wEHzwG7BDgiuaW4t9V7cH3L9GmUq3M2
- YXWDtio/jnA2m+utf7moSn+YZliUgi/Xtuuj7TWwVQ0O55XN4MQELVGFuIeWwQOtfPSv
- E5r9AQLOBmbt5HDl1NXN6EG+tbLBpKDIHw8Oz15lr1kSRXtvTpVo5ReIVXqZXuhYYQfg mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p1f1rru05-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Feb 2023 10:06:17 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31S9kiRf008101;
-	Tue, 28 Feb 2023 10:06:16 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p1f1rrty2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Feb 2023 10:06:16 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31S4cRNl027360;
-	Tue, 28 Feb 2023 10:06:13 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3nybb4jx5b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Feb 2023 10:06:13 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31SA6BSG63111512
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Feb 2023 10:06:11 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 51C2C20078;
-	Tue, 28 Feb 2023 10:06:11 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7BBA20087;
-	Tue, 28 Feb 2023 10:06:09 +0000 (GMT)
-Received: from [9.43.45.146] (unknown [9.43.45.146])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Feb 2023 10:06:09 +0000 (GMT)
-Message-ID: <d989254a-a3c4-615e-59cb-96667d0a63b3@linux.ibm.com>
-Date: Tue, 28 Feb 2023 15:36:09 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQw1J3hbVz3bbS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 22:21:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ozDOMArD;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PQw1G094mz4wgv;
+	Tue, 28 Feb 2023 22:21:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1677583298;
+	bh=Qzkz7xSQK7QaLBmpwVbsSJkFMksdw/3aVgUvFCHphao=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ozDOMArDd9j0aGeIoLYJS/iqqbCyf2pKW2MPxKN3Me0bGwHibbwNUCV4FAJBfPS3S
+	 2V690d/yqr0a0WEg5qsu54QCt+N8FO1tr5CcjFfxkkEh58bSS8+D4O9wlgjkt5GWln
+	 SGZd56AXrl1q4TcgKDL6AHCGVs5XpvzXlFErvn/fzMYPDhYMSHkAj1AAGWSGFJPVAB
+	 DUkvRfa6kpdqAAN/qM8+cWm2RmfRWa9BuVWd39fU0g4LClLDVkfoz3MW2dz19A0PgI
+	 KvLnwWXPconXnRgXfmqEPZMVsZlYD626dKQRgo2jG8LDZKk+t+/954iqX9rbGfoxgB
+	 DqQP4ttPSCInA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/tpm: Create linux,sml-base/size as big endian
+In-Reply-To: <Y/1wm3kmsto5tzeB@kernel.org>
+References: <20230224032508.3331281-1-mpe@ellerman.id.au>
+ <c2afd163-5f23-acab-fd39-3a5593ed6257@linux.ibm.com>
+ <Y/1wm3kmsto5tzeB@kernel.org>
+Date: Tue, 28 Feb 2023 22:21:36 +1100
+Message-ID: <87r0uaujb3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: Possible bug in
- linux-6.2/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        David Binderman <dcb314@hotmail.com>,
-        "npiggin@gmail.com"
- <npiggin@gmail.com>,
-        "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <DB6P189MB0568CF002762C6C43AF6DF169CA89@DB6P189MB0568.EURP189.PROD.OUTLOOK.COM>
- <87ttz7vfva.fsf@mpe.ellerman.id.au>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <87ttz7vfva.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EMjlDNBoysmWaiMjZQp-kx9JEn3zS6dK
-X-Proofpoint-GUID: 6GEeOT3WAZFnXJYgNfezphSvxdiUCQKO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-28_06,2023-02-28_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxlogscore=999 lowpriorityscore=0 suspectscore=0 clxscore=1011 mlxscore=0
- malwarescore=0 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302280080
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,78 +59,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: eajames@linux.ibm.com, jgg@ziepe.ca, yangyingliang@huawei.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Jarkko Sakkinen <jarkko@kernel.org> writes:
+> On Mon, Feb 27, 2023 at 06:08:31PM -0500, Stefan Berger wrote:
+>> On 2/23/23 22:25, Michael Ellerman wrote:
+>> > There's code in prom_instantiate_sml() to do a "SML handover" (Stored
+>> > Measurement Log) from OF to Linux, before Linux shuts down Open
+>> > Firmware.
+>> > 
+>> > This involves creating a buffer to hold the SML, and creating two device
+>> > tree properties to record its base address and size. The kernel then
+>> > later reads those properties from the device tree to find the SML.
+>> > 
+>> > When the code was initially added in commit 4a727429abec ("PPC64: Add
+>> > support for instantiating SML from Open Firmware") the powerpc kernel
+>> > was always built big endian, so the properties were created big endian
+>> > by default.
+>> > 
+>> > However since then little endian support was added to powerpc, and now
+>> > the code lacks conversions to big endian when creating the properties.
+>> > 
+>> > This means on little endian kernels the device tree properties are
+>> > little endian, which is contrary to the device tree spec, and in
+>> > contrast to all other device tree properties.
+>> > 
+>> > To cope with that a workaround was added in tpm_read_log_of() to skip
+>> > the endian conversion if the properties were created via the SML
+>> > handover.
+>> > 
+>> > A better solution is to encode the properties as big endian as they
+>> > should be, and remove the workaround.
+>> > 
+>> > Typically changing the encoding of a property like this would present
+>> > problems for kexec. However the SML is not propagated across kexec, so
+>> > changing the encoding of the properties is a non-issue.
+>> > 
+>> > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physical TPM event log")
+>> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> 
+>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>
+> 2/2 does not have a fixes tag.
 
+True. Arguably the bug goes back to the introduction of
+kexec_file_load() support, although the patch won't backport that far
+due to code refactoring. So that would be:
 
-On 2/27/23 10:56, Michael Ellerman wrote:
-> David Binderman <dcb314@hotmail.com> writes:
->> Hello there,
->>
->> I ran the static analyser cppcheck over the linux-6.2 source code and got this:
->>
->> linux-6.2/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c:68:10: style: Same expression '0x3' found multiple times in chain of '&' operators. [duplicateExpression]
+Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
 
-Hi,
-  Thanks David for reporting it.
-
-> 
-> Thanks.
-> 
->> Source code is
->>
->>     FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample & 0x3) !=
->>             get_mmcra_sample_mode(get_reg_value(intr_regs, "MMCRA"), 4));
->>
->> but
->>
->> #define EV_CODE_EXTRACT(x, y)   \
->>     ((x >> ev_shift_##y) & ev_mask_##y)
->>
->>
->> Given the token pasting, I very much doubt an expression like "sample & 0x3"
->> will work correctly. Same thing on the line above 
->>
->>     FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample >> 2) !=
->>             get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4));
->>
->> "sample >> 2" doesn't look like a valid token to me.
-> 
-> It expands to:
-> 
->  if ((((event.attr.config >> ev_shift_sample >> 2) & ev_mask_sample >> 2) != get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4))) 
-> 
-> Which AFAICS is valid, and does compile.
-> 
-> Whether it's what the author actually intended is less clear.
-> 
-> And the other example with & 0x3 seems obviously wrong, it expands to:
-> 
->   if ((((event.attr.config >> ev_shift_sample & 0x3) & ev_mask_sample & 0x3) != get_mmcra_sample_mode(get_reg_value(intr_regs, "MMCRA"), 4)))
-> 
-> The shift is 24, so bitwise anding it with 0x3 gets 0 which doesn't seem
-> likely to be what was intended.
-> 
-
-Hi Michael,
-   Thanks for checking it. The intention is to check 3 bits of
-rand_samp_elig field and 2 bits of rand_samp_mode field from the
-sampling bits. Basically we first want to extract that sample field
-using EV_CODE_EXTRACT macro and then fetch required value of
-rand_samp_elig and rand_samp_mode, to compare it with MMCRA bits.
-
-Right approach to do that would be:
-
- FAIL_IF((EV_CODE_EXTRACT(event.attr.config, sample) >> 2) !=
-get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4));
-
- FAIL_IF((EV_CODE_EXTRACT(event.attr.config, sample) & 0x3) !=
-get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4));
-
-I will send a fix patch for same.
-
-Thanks,
-Kajol Jain
-
-> cheers
+cheers
