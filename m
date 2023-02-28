@@ -2,85 +2,130 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598296A52B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 06:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04036A5351
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 07:59:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PQmYT1T7Vz3cJn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 16:45:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PQpBt4ljxz3cJF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Feb 2023 17:59:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gOfQNnJ8;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ZvTF6R8C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::631; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gOfQNnJ8;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ZvTF6R8C;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20631.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::631])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQmXT4VW7z2ylk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 16:44:41 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31S2aR9b009182;
-	Tue, 28 Feb 2023 05:44:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=DeCS/KN8GPXwm6sRPuda/iTP+WJBeLt1wY1xqKeZc+Y=;
- b=gOfQNnJ87eQ9IhpPcqKc1OI0VKO6XW/i5EGCHQMX066wOsAppTSZuoioeQq6duOZr+lb
- Rzx4t8YF2NZCi6DFoq/N16+MXlvCsPwb4wN+AAOR2suOXsYhRzEkr+F7Bgi4CjWS+ZRY
- DnH9XDWoEP1VyFIR1Scd+rC0P0iSYvtiQml7KMQWfOCNBX5p/B85UMNYGcLjbNpwFX60
- S4dzom1HuCNHZo7+XDn3JPo8gnTyTSi/pq8WbUBpvQ+J9UMPUY+/v0Hzi1PiJ3ghri6x
- HYJuJv/TjuJ4G9Ujw6DwYHkOcRBwcnIfndmehNsVCFnjwxsGOcm7Ja0cWTY/HgbWKuGk Zg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p15ytq7bu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Feb 2023 05:44:38 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31R95Wwq013004;
-	Tue, 28 Feb 2023 05:44:36 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3nybcq2pa5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Feb 2023 05:44:35 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31S5iXwJ43712882
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Feb 2023 05:44:33 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E3FA20049;
-	Tue, 28 Feb 2023 05:44:33 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3B8B20043;
-	Tue, 28 Feb 2023 05:44:32 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Feb 2023 05:44:32 +0000 (GMT)
-Received: from nicholasmvm.. (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D3F0C60312;
-	Tue, 28 Feb 2023 16:44:30 +1100 (AEDT)
-From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc: Implement arch_within_stack_frames
-Date: Tue, 28 Feb 2023 05:43:55 +0000
-Message-Id: <20230228054355.300628-1-nicholas@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xFYppK26q0NqJvdPvmOZfaAqJ3j6M05J
-X-Proofpoint-ORIG-GUID: xFYppK26q0NqJvdPvmOZfaAqJ3j6M05J
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PQp9t5qJjz3bbS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Feb 2023 17:58:41 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nwxl3wee/iyjTLVD9cK0MYEpUnkcRdqgJWHGcLb2SgC8KtD8oDvnSW/W2yI/PtzmuvTgE00WgBYVO7arR4i9T0XktKQvdWT5k5nKFFRp5CHSdH0BLPFD/0554hTAXkUOtgdMAhAxdA6cS0zlhhsO924QG+9bdrcmEQQR+fTkYd6z1E+d9eZGsfRv55jWQBXYizwzIw64fQQRVEWVoFULZOcso2Us1y+EvCF2GM2tyzzyz663+BOJAuHuCNiG20Hy6N1Q55GJAoCYJVZaUJpo9Kwb3hGO7DzepLMSyRIem4qkufgoXC7RS9BAK0XefS69hClUxT/iAOwBgPzO37sTYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eCLAHHXF0lbmZorfRFp1BWX8qLIp+udCu8oSVxeL3eg=;
+ b=SQZmtNr+QkjvaYFY/WwfQGuVGTQNOvKfWL7TRUhIXzXLY+VgJdQ4rwmwF+GCl85V1yiNZIC5vd5bfw8CxEInn64mqf433dNx56VPpBIlqhe/PrWzzrV9KXZD/0R++QzlyXEaaVvsK2tf6BbzJFvIpbLTpRGbMy4zB6WaRXJ2zdYJHr4pfY0CQMTkrRkU2cM1Prws1ynYtJu3UVguiYSds0gqbwFGeXBOCSea8hIVf+lK+3ma6kXjsyG2LTXpzjz6xldtkEwpbOmE/xCWEdvMPRpq5tK/yDiEEYWzfRCZx4G8DHW8xdRpV4YuFMTa9Z6OdIT4nfkbZXaPxy55ms3zog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eCLAHHXF0lbmZorfRFp1BWX8qLIp+udCu8oSVxeL3eg=;
+ b=ZvTF6R8Ccrgj2mY60fe2MYMHyWswZvbrQluW7XVvh1DVafNp/nTaKUrswhnto+CeIId4RwR5dHzvRB+iTlAtCzT4pfd4mVw27DnYK4bmlu4EybBEMyPesyRKAIZmKrYZFbed/KUKNQiilvzfLMEVtp0dXDNroSP2f/44JPTiLLWSr7OPXcqmy7IIBKtRi6GEcJINbIGgKeTZqcNVV+4FBUpxpeiOoZeF7WaDNyLQ1Bn9oz4aWYvZg28VssIQOYrNYVd5OgQlhNbt2For5E9YmCsGu3jeoKgd4+lYSZmnOcpkcWOmArtT/oW8ozpR5O+Lpuu3nnzp7Z9gZj1BnNgl2w==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2940.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.30; Tue, 28 Feb
+ 2023 06:58:18 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2cfb:d4c:1932:b097%5]) with mapi id 15.20.6134.030; Tue, 28 Feb 2023
+ 06:58:18 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v2 18/30] powerpc: Implement the new page table range API
+Thread-Topic: [PATCH v2 18/30] powerpc: Implement the new page table range API
+Thread-Index: AQHZStUJBEwAYnjQzEOVusOyuXC6o67jMlKAgAAKAgCAALITgA==
+Date: Tue, 28 Feb 2023 06:58:18 +0000
+Message-ID: <9425f83a-e923-b119-cf7a-6b9a9f8dd8b7@csgroup.eu>
+References: <20230227175741.71216-1-willy@infradead.org>
+ <20230227175741.71216-19-willy@infradead.org>
+ <ee864b97-90e6-4535-4db3-2659a2250afd@csgroup.eu>
+ <Y/0QqO10jK55zHO0@casper.infradead.org>
+In-Reply-To: <Y/0QqO10jK55zHO0@casper.infradead.org>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2940:EE_
+x-ms-office365-filtering-correlation-id: 406def1a-d4d8-413c-2110-08db19592bd4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  F7+L4pLh1DG0N1GrBi0stykcuCc9TJIkTLhLFn9mEHzvx9gtBiifHmVe7aFdv2Scbfeb5ImQBGjp0UFe9d2LZDu7mj37rZG6M6I+EyQWN0KhvPgjmUt1B1Pu5n2sPkqYJAfWfcfFHI7/Mo4P4jhvUGiCHxBskgYSy+0tOBPPf0UJDhK3j+hf6FPwFDXTiMTxANn0efdVbffRAG3/9pUqfekoRmbDxmXej7nX/3wFUEpUlC2YmTDmwiVz+kbkOA6IFIbl1I7U55rl7Otg9pp5SKEcSAy55O6s/Jg0sRRPOmtxxxhKHx6SgKB9O6x36dEGFkIRCya+kIaehxdq6lnSqK3dB7Gu/uD7yHnSIKSaaYq26gXWqGvLsJGSbSFiRZkOuaHIJxf4Fe2/nBx93uCBw/OH+m9NvfEuvWRMf+scAw3DdU/KVPcqebaTg9wah+OkqwQ0mWpNJw5fIk4KEpj6EmEgGK/zyeMv8U35vIqaq1jWl34iXAsh3YSEaLc91nxMnXVCfefhVwgAZ08Pq22qVxo0cAzbE/PNWK7wubysgAJzzcg+beGSU+/hrZP7cFiD4+ixc3zYstIFqb5Wkfdrj9U+Dy4BV5XyQaqS0R711M1sQTfrGmEL2371tv3M7guAASM0gIg9deDBU0ft1kdOOOegKerwUvU7KrHR3ZKwZIF4kai+dYxZ/x5tWE841UpaY6Nv8XZ6TFMVHkOOdw+5bTCJgJiFJhMTUJZcX3hcHObXy6LWtlhnSSUOWHKA3sRov+j/EgGHY5bwEYHIaq4baw==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(39860400002)(136003)(346002)(396003)(366004)(451199018)(54906003)(8936002)(31696002)(86362001)(44832011)(5660300002)(6486002)(66946007)(316002)(122000001)(66556008)(6916009)(66476007)(64756008)(4326008)(66446008)(36756003)(8676002)(76116006)(38100700002)(41300700001)(38070700005)(91956017)(66574015)(2906002)(2616005)(71200400001)(6506007)(31686004)(26005)(186003)(6512007)(83380400001)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?eVdwdGlCRzZMc01tU2dYd2V5TkdGRU1xNmRxU0JFQmc1dm9zMHBTWnhhVmdI?=
+ =?utf-8?B?TEVFdElnM2ZuSDU0Wk9yZUFkOEJtVEVvN2M0NEZjT2F2L2x1VHBQUDNNWlpy?=
+ =?utf-8?B?MVdIdWpiS2tyUy9BUmdSTWdib0dXa0E1ZzJsVHJEYkN3K3RLdjVsQzVPQ3Q3?=
+ =?utf-8?B?WEZMQVUzbGNXbm5kY0RxWU5JSUMvQ2pCeWs5VE1KWlJ2M0lBZXJDQjhCcUl2?=
+ =?utf-8?B?WEkyRys0RE5QblduSmoyVHFMaTJTMHMydXlyOXdlWnAvM1duK2FsanA1L2Yv?=
+ =?utf-8?B?MUhuVVNOdStPQytzTytkNEtwTmNGNHdCb3EzNVAxdldwSCt6MUZQT3h3d3RV?=
+ =?utf-8?B?WnY5MzJNOVZLZUZHRVdBajNmaVhXSk80R1lCK2xJa2ZmSGM4b0VtdERnV1FS?=
+ =?utf-8?B?SjVwckJuN3V0UWhGNHE2bDZGcmJDcUp4bWNTajc4aUdmNXZFMWxOc2pyVzA5?=
+ =?utf-8?B?M21nelRmWUZTUTBnYWJpZ1FIc0JRS1FXbE4wREdaMG5qbllKS1NZSkRBR2dY?=
+ =?utf-8?B?Uy9IaTJMU1QrUENNMVdNbnc0YUUxeE1yYlY2NWhnSGtGZSt0ODhZTGZjdjdo?=
+ =?utf-8?B?TEhhQnBraldlSW5BZFlOSE5haEJETWhQWWxYdGc1VEFDTE5IQmxWb3p0ZDAr?=
+ =?utf-8?B?VzhwOG1XdWpja1MrK0FnVHNBZlZtbEt2eFpOREQ2VzBKYkozN2JZd3Z6T1lF?=
+ =?utf-8?B?Z2hhNkVucnlGYjVaUkNHcVNmK1BZLzZTZFhZcmZnQjNiWWhBUCsvR280Smhh?=
+ =?utf-8?B?N3d1dVRHbW0vWmxnelBZNHNQRlNteFovMS9FdlM1RVZLOWZHWjZCaFM5UGFY?=
+ =?utf-8?B?cVh5VlJCbTdtcmF3MUFjZ1dUN2t1bW9jWlh3Umt3R3pNbHlOUkZ2VWJKVmZq?=
+ =?utf-8?B?a1A5UTk1U2JIWFZTTFFFOWJpcFV0eGQ0MVZNdDJpQUFvU2h0c005Smk0RXNT?=
+ =?utf-8?B?bzMwWkE4c2VHOGFZWWovVWxvWXZ3MDJpK2V3dUlKeHJ0eW80QXhFdEdYalZL?=
+ =?utf-8?B?QlJ5OVBiN2F1cUtHVVZHMWc3cWkrV3puY3NDUGF2ZWRWTW5ERk9SbS9pdFM3?=
+ =?utf-8?B?aGdNT0l4RUZlL0p2WUFVOFZKOWp6RitYazRvY1FYVGRrQ3V1OENFb1RuaExs?=
+ =?utf-8?B?VXZSL002bGhSR3loQldOSWVBL2c2WFhxSEZPSk8xWnVZRDFDWkJpM2ExYkZx?=
+ =?utf-8?B?WVJXYWphV296TFhIamV0NWUyd2dycjBMemxXVEFZSUorbTRtMEJYVDl2UVBY?=
+ =?utf-8?B?OGxoS0dMQ3kra0ZoSlZ5UVZ0V29VOUN0N0t1cy9KNGttUkRsYURTU0VZU1hL?=
+ =?utf-8?B?eFEwempkTWhUTXRlOERPOHozR3E5S1JPcXZQVTJoL0VueG0yRnZMN1NvN3p1?=
+ =?utf-8?B?Y1Nwa0JIY0ZzTVVDekVuRkM2QUY0eWtQWmk3MENyMGprdEFtak9Qb25Oa2FY?=
+ =?utf-8?B?dnRuQVlFRjFUSC9EU3dTTkNEWG9tMGl6UEtONGRDZnJQQzN0eWVnZnBJK0NJ?=
+ =?utf-8?B?SEFxQ2tURStieExxQ1I1MGRuaHArNXNsSFRrTGdOaXVUNWdZRHdnN29ZRU9K?=
+ =?utf-8?B?dy9mNERSYlcyMmFFYUZFL25zSHFRQ0JGZFBGeWtISlU0RjRtTktsbGYySU1z?=
+ =?utf-8?B?MzNSWmc0M00vMzZaSFBqVU5rbHRMalZQT2s5b1hlTVpCY1RER0NTTVpOMU9B?=
+ =?utf-8?B?dTh2cjBMQ1Q5V2k1VVZDenpnUEtkVmZrSzU1NlpCOXdMajdYUzNUSVZpZXN1?=
+ =?utf-8?B?SFFFOTlJcjRsc3JsNWk4c2hnRTRKdUlxSnh6OVFEWld3QmxpT2ZRT3lYNi9y?=
+ =?utf-8?B?WHl0R3FQRDZEd1E1QzN6aVVVR1lVTGpxaDVXeGZDTkJtL0ExL3hUZjYxTlh6?=
+ =?utf-8?B?clJLakF6dlJMclJqcU8rRlM0YmN1N1kyZEN1QlAwQW1FR213ZS9majNQRytr?=
+ =?utf-8?B?SUpNbjNNcDUrMjdmZDBWWWIwUGd3Qk01b0R4WjEzNHBIY1ZiVGhyV2dVUTNa?=
+ =?utf-8?B?bnR4U21XbXNLWmpSK1pDL0VidldWVGlUbXZZeERFblNyR3lOVnVBZ09LcWlt?=
+ =?utf-8?B?aEw1eDZrVU55TFNPbGhGTmR4Umg0RGpSdmtReDVESzY4Zy9IbmRuZkxOVkUw?=
+ =?utf-8?B?Z2VVditzK0x4L00vNTE0WTZpaW8wT3dvSXZkTFVGMjQ3ejFZV1cyL0tTdlN2?=
+ =?utf-8?B?aEE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A29B386F57A33F46A12E3CDF298D7136@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-28_02,2023-02-27_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxscore=0
- clxscore=1011 adultscore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 mlxlogscore=901 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2302280039
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 406def1a-d4d8-413c-2110-08db19592bd4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2023 06:58:18.0538
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: olhKL5bbBLIehdwJL7d/EjcolVgnfF86b5/uHL/LbhO5Blvv5O6y87fPF6nsd+kFboQsYGFcizhcgaCECVPKWFE4bccNHagt5bh1KzmQqeE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2940
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,119 +137,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>, ruscur@russell.cc
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Walks the stack when copy_{to,from}_user address is in the stack to
-ensure that the object being copied is entirely a single stack frame and
-does not contain stack metadata.
-
-Substantially similar to the x86 implementation. The back chain is used
-to traverse the stack and identify stack frame boundaries.
-
-Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
----
-v3: Move STACK_FRAME_PARAMS macros to ppc_asm.h
-    Add diagram in comments to show position of pointers into the stack during execution
-
-v2: Rename PARAMETER_SAVE_OFFSET to STACK_FRAME_PARAMS
-    Add definitions of STACK_FRAME_PARAMS for PPC32 and remove dependancy on PPC64
-    Ignore the current stack frame and start with it's parent, similar to x86
-
-v1: https://lore.kernel.org/linuxppc-dev/20221214044252.1910657-1-nicholas@linux.ibm.com/
-v2: https://lore.kernel.org/linuxppc-dev/20230119053127.17782-1-nicholas@linux.ibm.com/
----
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/include/asm/ppc_asm.h     |  8 ++++++
- arch/powerpc/include/asm/thread_info.h | 38 ++++++++++++++++++++++++++
- 3 files changed, 47 insertions(+)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2c9cdf1d8761..3ce17f9aa90a 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -200,6 +200,7 @@ config PPC
- 	select HAVE_ARCH_KCSAN            	if PPC_BOOK3S_64
- 	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
- 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
-+	select HAVE_ARCH_WITHIN_STACK_FRAMES
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index d2f44612f4b0..1f1a64b780e3 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -837,4 +837,12 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
- #define BTB_FLUSH(reg)
- #endif /* CONFIG_PPC_E500 */
- 
-+#if defined(CONFIG_PPC64_ELF_ABI_V1)
-+#define STACK_FRAME_PARAMS 48
-+#elif defined(CONFIG_PPC64_ELF_ABI_V2)
-+#define STACK_FRAME_PARAMS 32
-+#elif defined(CONFIG_PPC32)
-+#define STACK_FRAME_PARAMS 8
-+#endif
-+
- #endif /* _ASM_POWERPC_PPC_ASM_H */
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index af58f1ed3952..07f1901da8fd 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -45,6 +45,7 @@
- #include <linux/cache.h>
- #include <asm/processor.h>
- #include <asm/accounting.h>
-+#include <asm/ppc_asm.h>
- 
- #define SLB_PRELOAD_NR	16U
- /*
-@@ -186,6 +187,43 @@ static inline bool test_thread_local_flags(unsigned int flags)
- #define is_elf2_task() (0)
- #endif
- 
-+/*
-+ * Walks up the stack frames to make sure that the specified object is
-+ * entirely contained by a single stack frame.
-+ *
-+ * Returns:
-+ *	GOOD_FRAME	if within a frame
-+ *	BAD_STACK	if placed across a frame boundary (or outside stack)
-+ */
-+static inline int arch_within_stack_frames(const void * const stack,
-+					   const void * const stackend,
-+					   const void *obj, unsigned long len)
-+{
-+	const void *params;
-+	const void *frame;
-+
-+	params = *(const void * const *)current_stack_pointer + STACK_FRAME_PARAMS;
-+	frame = **(const void * const * const *)current_stack_pointer;
-+
-+    /*
-+     * low -----------------------------------------------------------> high
-+     * [backchain][metadata][params][local vars][saved registers][backchain]
-+     *                      ^------------------------------------^
-+     *                      |  allows copies only in this region |
-+     *                      |                                    |
-+     *                    params                               frame
-+     * The metadata region contains the saved LR, CR etc.
-+     */
-+	while (stack <= frame && frame < stackend) {
-+		if (obj + len <= frame)
-+			return obj >= params ? GOOD_FRAME : BAD_STACK;
-+		params = frame + STACK_FRAME_PARAMS;
-+		frame = *(const void * const *)frame;
-+	}
-+
-+	return BAD_STACK;
-+}
-+
- #endif	/* !__ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
--- 
-2.34.1
-
+DQoNCkxlIDI3LzAyLzIwMjMgw6AgMjE6MjAsIE1hdHRoZXcgV2lsY294IGEgw6ljcml0wqA6DQo+
+IE9uIE1vbiwgRmViIDI3LCAyMDIzIGF0IDA3OjQ1OjA4UE0gKzAwMDAsIENocmlzdG9waGUgTGVy
+b3kgd3JvdGU6DQo+PiBIaSwNCj4+DQo+PiBMZSAyNy8wMi8yMDIzIMOgIDE4OjU3LCBNYXR0aGV3
+IFdpbGNveCAoT3JhY2xlKSBhIMOpY3JpdMKgOg0KPj4+IEFkZCBzZXRfcHRlcygpLCB1cGRhdGVf
+bW11X2NhY2hlX3JhbmdlKCkgYW5kIGZsdXNoX2RjYWNoZV9mb2xpbygpLg0KPj4+IENoYW5nZSB0
+aGUgUEdfYXJjaF8xIChha2EgUEdfZGNhY2hlX2RpcnR5KSBmbGFnIGZyb20gYmVpbmcgcGVyLXBh
+Z2UgdG8NCj4+PiBwZXItZm9saW8uDQo+Pj4NCj4+PiBJJ20gdW5zdXJlIGFib3V0IG15IG1lcmdp
+bmcgb2YgZmx1c2hfZGNhY2hlX2ljYWNoZV9odWdlcGFnZSgpIGFuZA0KPj4+IGZsdXNoX2RjYWNo
+ZV9pY2FjaGVfcGFnZSgpIGludG8gZmx1c2hfZGNhY2hlX2ljYWNoZV9mb2xpbygpIGFuZCBzdWJz
+ZXF1ZW50DQo+Pj4gcmVtb3ZhbCBvZiBmbHVzaF9kY2FjaGVfaWNhY2hlX3BoeXMoKS4gIFBsZWFz
+ZSByZXZpZXcuDQo+Pg0KPj4gTm90IHN1cmUgd2h5IHlvdSB3YW50IHRvIHJlbW92ZSBmbHVzaF9k
+Y2FjaGVfaWNhY2hlX3BoeXMoKS4NCj4gDQo+IFdlbGwsIEkgZGlkbid0LCBuZWNlc3NhcmlseS4g
+IEl0J3MganVzdCB0aGF0IHdoZW4gSSBtZXJnZWQNCj4gZmx1c2hfZGNhY2hlX2ljYWNoZV9odWdl
+cGFnZSgpIGFuZCBmbHVzaF9kY2FjaGVfaWNhY2hlX3BhZ2UoKQ0KPiB0b2dldGhlciwgaXQgd2Fz
+IGxlZnQgd2l0aCBubyBjYWxsZXJzLg0KPiANCj4+IEFsbHRob3VnaCB0aGF0J3Mgb25seSBmZWFz
+aWJsZSB3aGVuIGFkZHJlc3MgYnVzIGlzIG5vdCB3aWRlciB0aGFuIDMyDQo+PiBiaXRzIGFuZCBj
+YW5ub3QgYmUgZG9uZSBvbiBCT09LRSBhcyB5b3UgY2FuJ3Qgc3dpdGNoIG9mZiBNTVUgb24gQk9P
+S0UsDQo+PiBmbHVzaF9kY2FjaGVfaWNhY2hlX3BoeXMoKSBhbGxvd3MgdG8gZmx1c2ggbm90IG1h
+cHBlZCBwYWdlcyB3aXRob3V0DQo+PiBoYXZpbmcgdG8gbWFwIHRoZW0uIFNvIGl0IGlzIG1vcmUg
+ZWZmaWNpZW50Lg0KPiANCj4gQW5kIGl0IHdhcyBqdXN0IG5ldmVyIGRvbmUgZm9yIHRoZSBodWdl
+cGFnZSBjYXNlPw0KDQpJIHRoaW5rIG9uIFBQQzMyIGh1Z2VwYWdlcyBhcmUgYXZhaWxhYmxlIG9u
+bHkgb24gOHh4IGFuZCBCT09LRS4gOHh4IA0KZG9lc24ndCBoYXZlIEhJR0hNRU0gYW5kIEJPT0tF
+IGNhbm5vdCBzd2l0Y2ggTU1VIG9mZi4gU28gdGhlcmUgaXMgbm8gdXNlIA0KY2FzZSBmb3IgZmx1
+c2hfZGNhY2hlX2ljYWNoZV9waHlzKCkgd2l0aCBodWdlcGFnZXMuDQoNCj4gDQo+Pj4gQEAgLTE0
+OCwxNyArMTAzLDIwIEBAIHN0YXRpYyB2b2lkIF9fZmx1c2hfZGNhY2hlX2ljYWNoZSh2b2lkICpw
+KQ0KPj4+ICAgIAlpbnZhbGlkYXRlX2ljYWNoZV9yYW5nZShhZGRyLCBhZGRyICsgUEFHRV9TSVpF
+KTsNCj4+PiAgICB9DQo+Pj4gICAgDQo+Pj4gLXN0YXRpYyB2b2lkIGZsdXNoX2RjYWNoZV9pY2Fj
+aGVfaHVnZXBhZ2Uoc3RydWN0IHBhZ2UgKnBhZ2UpDQo+Pj4gK3ZvaWQgZmx1c2hfZGNhY2hlX2lj
+YWNoZV9mb2xpbyhzdHJ1Y3QgZm9saW8gKmZvbGlvKQ0KPj4+ICAgIHsNCj4+PiAtCWludCBpOw0K
+Pj4+IC0JaW50IG5yID0gY29tcG91bmRfbnIocGFnZSk7DQo+Pj4gKwl1bnNpZ25lZCBpbnQgaSwg
+bnIgPSBmb2xpb19ucl9wYWdlcyhmb2xpbyk7DQo+Pj4gICAgDQo+Pj4gLQlpZiAoIVBhZ2VIaWdo
+TWVtKHBhZ2UpKSB7DQo+Pj4gKwlpZiAoZmx1c2hfY29oZXJlbnRfaWNhY2hlKCkpDQo+Pj4gKwkJ
+cmV0dXJuOw0KPj4+ICsNCj4+PiArCWlmICghZm9saW9fdGVzdF9oaWdobWVtKGZvbGlvKSkgew0K
+Pj4+ICsJCXZvaWQgKmFkZHIgPSBmb2xpb19hZGRyZXNzKGZvbGlvKTsNCj4+PiAgICAJCWZvciAo
+aSA9IDA7IGkgPCBucjsgaSsrKQ0KPj4+IC0JCQlfX2ZsdXNoX2RjYWNoZV9pY2FjaGUobG93bWVt
+X3BhZ2VfYWRkcmVzcyhwYWdlICsgaSkpOw0KPj4+ICsJCQlfX2ZsdXNoX2RjYWNoZV9pY2FjaGUo
+YWRkciArIGkgKiBQQUdFX1NJWkUpOw0KPj4+ICAgIAl9IGVsc2Ugew0KPj4+ICAgIAkJZm9yIChp
+ID0gMDsgaSA8IG5yOyBpKyspIHsNCj4+PiAtCQkJdm9pZCAqc3RhcnQgPSBrbWFwX2xvY2FsX3Bh
+Z2UocGFnZSArIGkpOw0KPj4+ICsJCQl2b2lkICpzdGFydCA9IGttYXBfbG9jYWxfZm9saW8oZm9s
+aW8sIGkgKiBQQUdFX1NJWkUpOw0KPj4+ICAgIA0KPj4+ICAgIAkJCV9fZmx1c2hfZGNhY2hlX2lj
+YWNoZShzdGFydCk7DQo+Pj4gICAgCQkJa3VubWFwX2xvY2FsKHN0YXJ0KTsNCj4gDQo+IFNvIHlv
+dSdkIGxpa2UgdGhpcyB0byBiZToNCj4gDQo+IAl9IGVsc2UgaWYgKElTX0VOQUJMRUQoQ09ORklH
+X0JPT0tFKSB8fCBzaXplb2YocGh5c19hZGRyX3QpID4gc2l6ZW9mKHZvaWQgKikpIHsNCj4gCQlm
+b3IgKGkgPSAwOyBpIDwgbnI7IGkrKykgew0KPiAJCQkgdm9pZCAqc3RhcnQgPSBrbWFwX2xvY2Fs
+X2ZvbGlvKGZvbGlvLCBpICogUEFHRV9TSVpFKTsNCj4gCQkJIF9fZmx1c2hfZGNhY2hlX2ljYWNo
+ZShzdGFydCk7DQo+IAkJCSBrdW5tYXBfbG9jYWwoc3RhcnQpOw0KPiAJCX0NCj4gCX0gZWxzZSB7
+DQo+IAkJdW5zaWduZWQgbG9uZyBwZm4gPSBmb2xpb19wZm4oZm9saW8pOw0KPiAJCWZvciAoaSA9
+IDA7IGkgPCBucjsgaSsrKQ0KPiAJCQlmbHVzaF9kY2FjaGVfaWNhY2hlX3BoeXMoKHBmbiArIGkp
+ICogUEFHRV9TSVpFOw0KPiAJfQ0KPiANCj4gKG9yIG1heWJlIHlvdSdkIHByZWZlciBhIGZsdXNo
+X2RjYWNoZV9pY2FjaGVfcGZuKCkgdGhhdCBkb2Vzbid0IG5lZWQgdG8NCj4gd29ycnkgYWJvdXQg
+UEFHRV9NQVNLKS4NCg0KWWVzIGxvb2tzIGdvb2QuDQoNCg0KQ2hyaXN0b3BoZQ0K
