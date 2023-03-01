@@ -1,73 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F049F6A770B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 23:47:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DA46A7602
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 22:15:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRqB55Rpwz3cMN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 09:47:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PRn7x4ctKz3cMS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 08:15:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=RacUjtkK;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1drUTVAX;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5Ajx6tsc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=debug@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=RacUjtkK;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1drUTVAX;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5Ajx6tsc;
 	dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+X-Greylist: delayed 394 seconds by postgrey-1.36 at boromir; Thu, 02 Mar 2023 08:14:37 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRdkr1cKtz3bgj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 02:41:38 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id m3-20020a17090ade0300b00229eec90a7fso1525660pjv.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 07:41:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677685296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
-        b=RacUjtkKVhkSdFUBywOGho+8dt8NsK+GHdxWXdQ69WX2yCf/yYWl7r6icMXBWT/ShM
-         KzbzJEeKqlnWntlEh4Hu5sno9Ak81pDzhFum2pY94j4Sv2hldxTUvXOesOtDXjR8r6gc
-         qTgIZDS9fRsSDLNbTTTqAFsgPsTJ/DQ+0jjGE9ek1g+5UBhUcmjFAxCNoVki1FxJorhz
-         1mqoDsTuoBLwUNz+cTKmWUvmBN0WlvjuL/8NCCPe/UsZ69pgJ+6lNteW1mdicJGes/KY
-         sz2TvcyHAjAaMaJRH5/VJiCFama3PVa+Xs98E38Ow6CsZfQ4ni3p2/e/LUrMvV5jGCLw
-         yEmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677685296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
-        b=7jRAx1U8jFDFJYx/uvCF9ntqE1DUgYa3n6LduCXERvqcIwCwFC5WDe5o2aDQ9nSg1L
-         5IqTVFh+56IONXcGrGJlZvPviVIy4oboh3ioXifRo5pCMI/KfjmUaBBLkudBSCn8o7Ib
-         ZOg6WICKj7xz01YpWVvSy1ZexhBxLZcHa+tgYl0S02sOzebw1brXUiMls2DAyu2u46rX
-         8IESkfWT774LaQEX1leigZi0lWe9EDb304ww6FZrYbD325Hyj7+H49F7qCPqdG7wcZXr
-         B5khWar8HX2Ujt6KhBehO0hw9ImoYDqSIstLI0toTyCZrShsf1AT9w0letLSYbsfxL9J
-         Z2TA==
-X-Gm-Message-State: AO0yUKXMSIoBLnTOPH01XImEp92kKukWsNT33G8ynSpAOjjUF06t5nES
-	k6a4wogDynvy9VElGuNSG48j8Q==
-X-Google-Smtp-Source: AK7set89u8u7K351sr+Ck6r7PKKsfq0NxjZus48TDBYC9SmTqwP5jGqb0tSf18Db2RC/D0Tp3KOSQg==
-X-Received: by 2002:a05:6a20:2444:b0:cc:ac05:88f7 with SMTP id t4-20020a056a20244400b000ccac0588f7mr8304959pzc.34.1677685295782;
-        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id l12-20020a62be0c000000b005821c109cebsm8058970pff.199.2023.03.01.07.41.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
-Date: Wed, 1 Mar 2023 07:41:30 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-Message-ID: <20230301154130.GB3505369@debug.ba.rivosinc.com>
-References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
- <20230218211433.26859-14-rick.p.edgecombe@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRn710cDCz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 08:14:36 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1677704869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B374OxTzVS9QcjckHvkiwhr+6E3lqWByqJOzxF2qGow=;
+	b=1drUTVAXKqngwe09WrmIidH/RzxI6ZIGMbKPz/8rOfWchpWKji8v3Sd9k/iiJSrrs0Iqav
+	rbrDSJRayQwz/HBJVgZWfK4WdTEZ9ZLJ36vYw81BaHEcJEbQQ8FnZ8/CjwLJi1YHx0fioe
+	FpS8swwObQDVsKoiMAY6dQv8F4JwaAZjs4QrDFdNznCDcVxVD5LRWiE6z7+xGAYA2bVXj7
+	S9Jyrmmiu+gesDGg71KvcSeCYWfjOwaACVFvCfUsv2R1Flux+bdkbfqUQqSI/G1XHmq0uW
+	WXlWEHaA477XPYFtRUjNP8uOeSKbkX7NXdZQuCu18GBZIlqT7qUEnWqh6749wQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1677704869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B374OxTzVS9QcjckHvkiwhr+6E3lqWByqJOzxF2qGow=;
+	b=5Ajx6tscPHnH64xp+028YR2a9czj6LIZcEPYMzh0ULXNf96J2x0Dqr24aGYiU87iLVJuBC
+	Ka5YEgQGUGeS9VBg==
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [patch 05/39] genirq/msi: Remove filter from
+ msi_free_descs_free_range()
+In-Reply-To: <20230301115530.5ccea5ae@xps-13>
+References: <20221111120501.026511281@linutronix.de>
+ <20221111122013.888850936@linutronix.de> <20230301115530.5ccea5ae@xps-13>
+Date: Wed, 01 Mar 2023 22:07:48 +0100
+Message-ID: <87mt4wkwnv.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-X-Mailman-Approved-At: Thu, 02 Mar 2023 09:45:46 +1100
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,59 +66,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kcc@google.com, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, david@redhat.com, eranian@google.com, Oleg Nesterov <oleg@redhat.com>, linux-mm@kvack.org, linux-csky@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, dethoma@microsoft.com, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Eugene Syromiatnikov <esyr@redhat.com>, jamorris@linux.microsoft.com, Ingo Molnar <mingo@redhat.com>, xen-devel@lists.xenproject.org, linux-snps-arc@lists.infradead.org, "H . J . Lu" <hjl.tools@gmail.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, linux-alpha@vger.kernel.org, linux-um@lists.inf
- radead.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Florian Weimer <fweimer@redhat.com>, Michal Simek <monstr@monstr.eu>, John Allen <john.allen@amd.com>, linux-parisc@vger.kernel.org, Weijiang Yang <weijiang.yang@intel.com>, linux-api@vger.kernel.org, christina.schimpe@intel.com, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Cyrill Gorcunov <gorcunov@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, rppt@kernel.org, Andrew.Cooper3@citrix.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-pci@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Will Deacon <will@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org, Jason Gunthorpe <jgg@mellanox.com>, Allen Hubbe <allenbh@gmail.com>, Kevin Tian <kevin.tian@intel.com>, "Ahmed
+ S. Darwish" <darwi@linutronix.de>, Jon Mason <jdmason@kudzu.us>, linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>, Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 18, 2023 at 01:14:05PM -0800, Rick Edgecombe wrote:
->The x86 Control-flow Enforcement Technology (CET) feature includes a new
->type of memory called shadow stack. This shadow stack memory has some
->unusual properties, which requires some core mm changes to function
->properly.
->
->One of these unusual properties is that shadow stack memory is writable,
->but only in limited ways. These limits are applied via a specific PTE
->bit combination. Nevertheless, the memory is writable, and core mm code
->will need to apply the writable permissions in the typical paths that
->call pte_mkwrite().
->
->In addition to VM_WRITE, the shadow stack VMA's will have a flag denoting
->that they are special shadow stack flavor of writable memory. So make
->pte_mkwrite() take a VMA, so that the x86 implementation of it can know to
->create regular writable memory or shadow stack memory.
->
->Apply the same changes for pmd_mkwrite() and huge_pte_mkwrite().
->
->No functional change.
->
->Cc: linux-doc@vger.kernel.org
->Cc: linux-kernel@vger.kernel.org
->Cc: linux-alpha@vger.kernel.org
->Cc: linux-snps-arc@lists.infradead.org
->Cc: linux-arm-kernel@lists.infradead.org
->Cc: linux-csky@vger.kernel.org
->Cc: linux-hexagon@vger.kernel.org
->Cc: linux-ia64@vger.kernel.org
->Cc: loongarch@lists.linux.dev
->Cc: linux-m68k@lists.linux-m68k.org
->Cc: Michal Simek <monstr@monstr.eu>
->Cc: Dinh Nguyen <dinguyen@kernel.org>
->Cc: linux-mips@vger.kernel.org
->Cc: openrisc@lists.librecores.org
->Cc: linux-parisc@vger.kernel.org
->Cc: linuxppc-dev@lists.ozlabs.org
->Cc: linux-riscv@lists.infradead.org
->Cc: linux-s390@vger.kernel.org
->Cc: linux-sh@vger.kernel.org
->Cc: sparclinux@vger.kernel.org
->Cc: linux-um@lists.infradead.org
->Cc: xen-devel@lists.xenproject.org
->Cc: linux-arch@vger.kernel.org
->Cc: linux-mm@kvack.org
->Tested-by: Pengfei Xu <pengfei.xu@intel.com>
->Suggested-by: David Hildenbrand <david@redhat.com>
->Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
->
+Miquel!
 
-Acked-by: Deepak Gupta <debug@rivosinc.com>
+On Wed, Mar 01 2023 at 11:55, Miquel Raynal wrote:
+> tglx@linutronix.de wrote on Fri, 11 Nov 2022 14:54:22 +0100 (CET):
+>
+>> When a range of descriptors is freed then all of them are not associated to
+>> a linux interrupt. Remove the filter and add a warning to the free function.
+>> +		/* Leak the descriptor when it is still referenced */
+>> +		if (WARN_ON_ONCE(msi_desc_match(desc, MSI_DESC_ASSOCIATED)))
+>> +			continue;
+>> +		msi_free_desc(desc);
+>>  	}
+>>  }
+>
+> It looks like since this commit I am getting warnings upon EPROBE_DEFER
+> errors in the mvpp2 Marvell Ethernet driver. I looked a bit at the
+> internals to understand why this warning was shown, and it seems that
+> nothing "de-references" the descriptors, which would mean here:
+> resetting desc->irq to 0.
+
+Correct. This platform-msi ^(*&!@&^ hack really needs to die ASAP.
+
+Marc, where are we on that? Is this still in limbo?
+
+> I am wondering how useful thisd WARN_ON() is, or otherwise where the
+
+It is useful as it caught bugs already.
+
+> desc->irq entry should be zeroed (if I understand that correctly), any
+> help will be appreciated.
+
+Untested workaround below. I hate it with a passion, but *shrug*.
+
+Thanks,
+
+        tglx
+---
+ drivers/base/platform-msi.c |    1 +
+ include/linux/msi.h         |    2 ++
+ kernel/irq/msi.c            |   23 ++++++++++++++++++++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
+
+--- a/drivers/base/platform-msi.c
++++ b/drivers/base/platform-msi.c
+@@ -324,6 +324,7 @@ void platform_msi_device_domain_free(str
+ 	struct platform_msi_priv_data *data = domain->host_data;
+ 
+ 	msi_lock_descs(data->dev);
++	msi_domain_depopulate_descs(data->dev, virq, nr_irqs);
+ 	irq_domain_free_irqs_common(domain, virq, nr_irqs);
+ 	msi_free_msi_descs_range(data->dev, virq, virq + nr_irqs - 1);
+ 	msi_unlock_descs(data->dev);
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -631,6 +631,8 @@ int msi_domain_prepare_irqs(struct irq_d
+ 			    int nvec, msi_alloc_info_t *args);
+ int msi_domain_populate_irqs(struct irq_domain *domain, struct device *dev,
+ 			     int virq, int nvec, msi_alloc_info_t *args);
++void msi_domain_depopulate_descs(struct device *dev, int virq, int nvec);
++
+ struct irq_domain *
+ __platform_msi_create_device_domain(struct device *dev,
+ 				    unsigned int nvec,
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1109,14 +1109,35 @@ int msi_domain_populate_irqs(struct irq_
+ 	return 0;
+ 
+ fail:
+-	for (--virq; virq >= virq_base; virq--)
++	for (--virq; virq >= virq_base; virq--) {
++		msi_domain_depopulate_descs(dev, virq, 1);
+ 		irq_domain_free_irqs_common(domain, virq, 1);
++	}
+ 	msi_domain_free_descs(dev, &ctrl);
+ unlock:
+ 	msi_unlock_descs(dev);
+ 	return ret;
+ }
+ 
++void msi_domain_depopulate_descs(struct device *dev, int virq_base, int nvec)
++{
++	struct msi_ctrl ctrl = {
++		.domid	= MSI_DEFAULT_DOMAIN,
++		.first  = virq_base,
++		.last	= virq_base + nvec - 1,
++	};
++	struct msi_desc *desc;
++	struct xarray *xa;
++	unsigned long idx;
++
++	if (!msi_ctrl_valid(dev, &ctrl))
++		return;
++
++	xa = &dev->msi.data->__domains[ctrl.domid].store;
++	xa_for_each_range(xa, idx, desc, ctrl.first, ctrl.last)
++		desc->irq = 0;
++}
++
+ /*
+  * Carefully check whether the device can use reservation mode. If
+  * reservation mode is enabled then the early activation will assign a
