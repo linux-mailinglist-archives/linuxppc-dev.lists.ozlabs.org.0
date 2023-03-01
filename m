@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667446A7703
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 23:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F049F6A770B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 23:47:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRq936nBsz3ccn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 09:46:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PRqB55Rpwz3cMN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 09:47:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mtKxL1K1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=RacUjtkK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1131; helo=mail-yw1-x1131.google.com; envelope-from=msl0000023508@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=debug@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mtKxL1K1;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=RacUjtkK;
 	dkim-atps=neutral
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRZjH33mPz2xvL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 00:25:06 +1100 (AEDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-536be69eadfso364124837b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 05:25:06 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRdkr1cKtz3bgj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 02:41:38 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id m3-20020a17090ade0300b00229eec90a7fso1525660pjv.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 07:41:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=exR2+TqEpSlqFevQJNeEfA94A0V1nCJq85nKX6qDaLw=;
-        b=mtKxL1K1iXvX51NRMmhZlJ7hMmHivPnRS3Ube7FFi8h22uB+E0k1e9jhzPc+9TkXud
-         JTuvuGrzgcaxYL1ftWBYWP5YrslTP+xc2Ti12Pwx6pVFByy9MJCrXfYOTwg6CeTyt3KD
-         +CHaijY9m+p7BbBuArmtcWcCmFm7grWZ3fJWG0kRNFwHFzi5QbzgvF0rZIGQokw2kLxL
-         KPoc3BKDK7HQ2cNeeGjK4Ad+hF7KXk2+ZGT7AchCOp6oPi1Ok99Snc/puoOPsNjeo4vg
-         /+/rLpLxgHs9prkXTpBfF48+lVH9FHdEKLnYls6asmGaRuc8hsbbuj3mFN4tlSnSeoSm
-         H/Sw==
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677685296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
+        b=RacUjtkKVhkSdFUBywOGho+8dt8NsK+GHdxWXdQ69WX2yCf/yYWl7r6icMXBWT/ShM
+         KzbzJEeKqlnWntlEh4Hu5sno9Ak81pDzhFum2pY94j4Sv2hldxTUvXOesOtDXjR8r6gc
+         qTgIZDS9fRsSDLNbTTTqAFsgPsTJ/DQ+0jjGE9ek1g+5UBhUcmjFAxCNoVki1FxJorhz
+         1mqoDsTuoBLwUNz+cTKmWUvmBN0WlvjuL/8NCCPe/UsZ69pgJ+6lNteW1mdicJGes/KY
+         sz2TvcyHAjAaMaJRH5/VJiCFama3PVa+Xs98E38Ow6CsZfQ4ni3p2/e/LUrMvV5jGCLw
+         yEmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=exR2+TqEpSlqFevQJNeEfA94A0V1nCJq85nKX6qDaLw=;
-        b=fkIEDlbnVEJbjYrB0cWUyO/W3Z+JlpJykC/l4km4/i0gNKFAdskFovQh6wj8YDZ/pR
-         yF/ZPvxwHW6JGczqjezNAtHdTK4InRscktyS/9h1MqZSU4/HVU/oCGLyJ9GTmzZX9tJm
-         BdMYn4KJI2e1qpzdGFT11flLVnXE2VU6Y19O12fQRf3TeabNVJlVU4LTPTYr+AezK+s1
-         SxXnQ1+0IHV7vOP3pElFmOTd61/2k/WBDMG8s1mKKcHO1AaQHBXUSbdFXsiSPhMAhFdO
-         jAowuTAokkhiF6Af4Xxt7/kj9isltaOrHYA5kklMGiXm6aN5MJu0UigtLuLOKqSAmb18
-         v6XA==
-X-Gm-Message-State: AO0yUKUIM7quo1VyCxbAXoOTOEjOcemkY/hdYVi9/Eu9Rn/7qSHQvKr0
-	ea+jv0FnRI68RQM8WjpZuTF8bINfbWKD7UPsRy1YyyY7ssw=
-X-Google-Smtp-Source: AK7set8tiqLvHhgexArZdvrmT7IyXZMyr3vtYFQq7S2W/T098k3GBbIJ05CrE41Z0ifAM355eGWBJwgY5vN7Z2GilfY=
-X-Received: by 2002:a81:b65b:0:b0:53c:70c7:405b with SMTP id
- h27-20020a81b65b000000b0053c70c7405bmr1054124ywk.4.1677677102949; Wed, 01 Mar
- 2023 05:25:02 -0800 (PST)
+        d=1e100.net; s=20210112; t=1677685296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
+        b=7jRAx1U8jFDFJYx/uvCF9ntqE1DUgYa3n6LduCXERvqcIwCwFC5WDe5o2aDQ9nSg1L
+         5IqTVFh+56IONXcGrGJlZvPviVIy4oboh3ioXifRo5pCMI/KfjmUaBBLkudBSCn8o7Ib
+         ZOg6WICKj7xz01YpWVvSy1ZexhBxLZcHa+tgYl0S02sOzebw1brXUiMls2DAyu2u46rX
+         8IESkfWT774LaQEX1leigZi0lWe9EDb304ww6FZrYbD325Hyj7+H49F7qCPqdG7wcZXr
+         B5khWar8HX2Ujt6KhBehO0hw9ImoYDqSIstLI0toTyCZrShsf1AT9w0letLSYbsfxL9J
+         Z2TA==
+X-Gm-Message-State: AO0yUKXMSIoBLnTOPH01XImEp92kKukWsNT33G8ynSpAOjjUF06t5nES
+	k6a4wogDynvy9VElGuNSG48j8Q==
+X-Google-Smtp-Source: AK7set89u8u7K351sr+Ck6r7PKKsfq0NxjZus48TDBYC9SmTqwP5jGqb0tSf18Db2RC/D0Tp3KOSQg==
+X-Received: by 2002:a05:6a20:2444:b0:cc:ac05:88f7 with SMTP id t4-20020a056a20244400b000ccac0588f7mr8304959pzc.34.1677685295782;
+        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([66.220.2.162])
+        by smtp.gmail.com with ESMTPSA id l12-20020a62be0c000000b005821c109cebsm8058970pff.199.2023.03.01.07.41.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
+Date: Wed, 1 Mar 2023 07:41:30 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
+Message-ID: <20230301154130.GB3505369@debug.ba.rivosinc.com>
+References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
+ <20230218211433.26859-14-rick.p.edgecombe@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:a309:b0:480:bd65:1f87 with HTTP; Wed, 1 Mar 2023
- 05:25:02 -0800 (PST)
-In-Reply-To: <CAPge7yekNA633CiWbCftS5GRHTzYAMeraOmKKSMZL=5GdWzqfw@mail.gmail.com>
-References: <CAPge7ycxEpms_wQoDoCncz743N2BfzVCZPLmbHCVTs6ZKSp=nA@mail.gmail.com>
- <Y/27PBzfeRNEhWnA@kroah.com> <CAPge7yekNA633CiWbCftS5GRHTzYAMeraOmKKSMZL=5GdWzqfw@mail.gmail.com>
-From: =?UTF-8?B?546L5piK54S2?= <msl0000023508@gmail.com>
-Date: Wed, 1 Mar 2023 21:25:02 +0800
-Message-ID: <CAPge7ydHNFbnxT2SJYfvJAeb9K2uyG0ynTWwii74X0Tv27HADw@mail.gmail.com>
-Subject: Fwd: Symbol cpu_feature_keys should be exported to all modules on powerpc
-To: linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230218211433.26859-14-rick.p.edgecombe@intel.com>
 X-Mailman-Approved-At: Thu, 02 Mar 2023 09:45:46 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,46 +79,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kevin Hao <haokexin@gmail.com>, Paul Mackerras <paulus@samba.org>
+Cc: kcc@google.com, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, david@redhat.com, eranian@google.com, Oleg Nesterov <oleg@redhat.com>, linux-mm@kvack.org, linux-csky@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, dethoma@microsoft.com, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Eugene Syromiatnikov <esyr@redhat.com>, jamorris@linux.microsoft.com, Ingo Molnar <mingo@redhat.com>, xen-devel@lists.xenproject.org, linux-snps-arc@lists.infradead.org, "H . J . Lu" <hjl.tools@gmail.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, linux-alpha@vger.kernel.org, linux-um@lists.inf
+ radead.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Florian Weimer <fweimer@redhat.com>, Michal Simek <monstr@monstr.eu>, John Allen <john.allen@amd.com>, linux-parisc@vger.kernel.org, Weijiang Yang <weijiang.yang@intel.com>, linux-api@vger.kernel.org, christina.schimpe@intel.com, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Cyrill Gorcunov <gorcunov@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, rppt@kernel.org, Andrew.Cooper3@citrix.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
----------- Forwarded message ----------
-From: =E7=8E=8B=E6=98=8A=E7=84=B6 <msl0000023508@gmail.com>
-Date: Tue, 28 Feb 2023 18:16:14 +0800
-Subject: Re: Symbol cpu_feature_keys should be exported to all modules
-on powerpc
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
+On Sat, Feb 18, 2023 at 01:14:05PM -0800, Rick Edgecombe wrote:
+>The x86 Control-flow Enforcement Technology (CET) feature includes a new
+>type of memory called shadow stack. This shadow stack memory has some
+>unusual properties, which requires some core mm changes to function
+>properly.
+>
+>One of these unusual properties is that shadow stack memory is writable,
+>but only in limited ways. These limits are applied via a specific PTE
+>bit combination. Nevertheless, the memory is writable, and core mm code
+>will need to apply the writable permissions in the typical paths that
+>call pte_mkwrite().
+>
+>In addition to VM_WRITE, the shadow stack VMA's will have a flag denoting
+>that they are special shadow stack flavor of writable memory. So make
+>pte_mkwrite() take a VMA, so that the x86 implementation of it can know to
+>create regular writable memory or shadow stack memory.
+>
+>Apply the same changes for pmd_mkwrite() and huge_pte_mkwrite().
+>
+>No functional change.
+>
+>Cc: linux-doc@vger.kernel.org
+>Cc: linux-kernel@vger.kernel.org
+>Cc: linux-alpha@vger.kernel.org
+>Cc: linux-snps-arc@lists.infradead.org
+>Cc: linux-arm-kernel@lists.infradead.org
+>Cc: linux-csky@vger.kernel.org
+>Cc: linux-hexagon@vger.kernel.org
+>Cc: linux-ia64@vger.kernel.org
+>Cc: loongarch@lists.linux.dev
+>Cc: linux-m68k@lists.linux-m68k.org
+>Cc: Michal Simek <monstr@monstr.eu>
+>Cc: Dinh Nguyen <dinguyen@kernel.org>
+>Cc: linux-mips@vger.kernel.org
+>Cc: openrisc@lists.librecores.org
+>Cc: linux-parisc@vger.kernel.org
+>Cc: linuxppc-dev@lists.ozlabs.org
+>Cc: linux-riscv@lists.infradead.org
+>Cc: linux-s390@vger.kernel.org
+>Cc: linux-sh@vger.kernel.org
+>Cc: sparclinux@vger.kernel.org
+>Cc: linux-um@lists.infradead.org
+>Cc: xen-devel@lists.xenproject.org
+>Cc: linux-arch@vger.kernel.org
+>Cc: linux-mm@kvack.org
+>Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+>Suggested-by: David Hildenbrand <david@redhat.com>
+>Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+>
 
-2023-02-28 16:28 GMT+08:00, Greg KH <gregkh@linuxfoundation.org>:
-> On Tue, Feb 28, 2023 at 04:18:12PM +0800, =E7=8E=8B=E6=98=8A=E7=84=B6 wro=
-te:
->> Just like symbol 'mmu_feature_keys'[1], 'cpu_feature_keys' was reference=
-d
->> indirectly by many inline functions; any GPL-incompatible modules using
->> such
->> a function will be potentially broken due to 'cpu_feature_keys' being
->> exported as GPL-only.
->>
->> For example it still breaks ZFS, see
->> https://github.com/openzfs/zfs/issues/14545
->>
->> [1]:
->> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220329085709.4=
-132729-1-haokexin@gmail.com/
->
-> External modules are always on their own, sorry.  Especially ones that
-> are not released under the GPL.
->
-> good luck!
->
-> greg k-h
->
-
-Some inline functions are just powerpc implementation of some generic KPIs,
-such as flush_dcache_page, which indirectly references 'cpu_feature_keys' i=
-n
-powerpc-specific code; this essentially makes 'flush_dcache_page' GPL-only =
-in
-Linux powerpc, but not in other architectures.
+Acked-by: Deepak Gupta <debug@rivosinc.com>
