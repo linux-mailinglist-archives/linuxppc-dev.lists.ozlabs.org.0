@@ -1,60 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7A66A7348
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 19:17:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A5B6A7383
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 19:35:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRjBk6C37z3cJv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 05:17:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PRjbr5y4qz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 05:35:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jgvht4/3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sMqxKmMP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jgvht4/3;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=sMqxKmMP;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRj9r2Y8Cz2yNm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 05:16:48 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 37293B810C3;
-	Wed,  1 Mar 2023 18:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41182C433EF;
-	Wed,  1 Mar 2023 18:16:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1677694603;
-	bh=y8I+qHPjyMsWTIcZZzinTslQl9KBS0SHFE/bCto1EBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jgvht4/35VGCp62Mm0crvOWS+Q7yksEpq6+xalFSCejazQSuSFo7RkAWv8vzHB9S2
-	 zSy/z5Ss9N5OsVMpm/HzrMXHuWn7HjaEGg9AyzGemnp6Rfdd/r+gRYAGt5E/grCKaY
-	 X2FljVYzonJlRyi4MEX9i01auwqLdTducL4xcx2MIAX09cIiSGLJDeVasqEnZsN3Vo
-	 LsgtvCrNy6uIrbuQ7oURfpO6JyzJiRyDby5JhWqmOoSrGxzF3cyQh0NFHygpNf7/m9
-	 a/zuTndIX0Ftw16vWcuXp1h96arpnB/D6P/tnWRBJjLkk9cGU04BzQjtCx6PDs5EjX
-	 5Blvv0WLKwW1w==
-Date: Wed, 1 Mar 2023 10:16:39 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2.1 09/24] mips/cpu: Expose play_dead()'s prototype
- definition
-Message-ID: <20230301181639.ajqdeh7g3m3fpqhk@treble>
-References: <cover.1676358308.git.jpoimboe@kernel.org>
- <39835bc75af2e812fce56400533cb2ab41bcf0e2.1676358308.git.jpoimboe@kernel.org>
- <080a5ccb-7fa0-1a75-538f-a09dc146fc4e@linaro.org>
- <20230214181101.3a2tscbmwdnwbqpu@treble>
- <c56dc4b9-035d-7773-ecb2-0e1ac6af7abc@linaro.org>
- <20230216184249.ogaqsaykottpxtcb@treble>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRjZw4zWtz2yfq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 05:35:03 +1100 (AEDT)
+Received: by mail-yb1-xb35.google.com with SMTP id y144so1304864yby.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 10:35:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1677695700;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sf6UrJ/lIWn1fjlxCohn27ZSd8Q0TfJriVXXcU5qWAE=;
+        b=sMqxKmMPWADCyZTd0B+sCUFvSsU0xwpbUR9hz5KDANoBtXhUgELy2PB9S6CmdcPdLB
+         9DuY263Lca20XWKvkKm/VeE8UXAxbFZ7UbMDjj/GdF33ace4U+qR3SuprdJIyGlg0kh4
+         8ZY6tqKyRCrC4qSvVBH79BPeROQDCdXsUZHeJsRV9J+lzs8QF19Sft8unbL3LhV+NyMQ
+         rULPzaHubsvYpBIvwRVqUZqOtQrYMTbpInxvEOTwI44gseylO/JwJ1XsAHZVMuGFZ8ce
+         lLm3lv4Ir2Kuf2SdE943w0lXUD4jHslpCCCCxHMHmN15vxuLPQ0RJvPoRPshybRhAX6v
+         429Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677695700;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sf6UrJ/lIWn1fjlxCohn27ZSd8Q0TfJriVXXcU5qWAE=;
+        b=P8E29iedMFlAuakAyS72/axbr4Bn5JPGTpv9YlplDH60o7gusQZKwx3eCZWRVmdgBb
+         i+vZDBoznEXdmvpxDe8Jl7PKNJsfw0enTbvc6JoclS57Vw2v/gOcswW5GnjAOzxvRTQu
+         b6LvhZXJ0CyS3PnPIPXgkkQVFT80dx8fbfppS62F1LthI9/ZTFS2kGJJIQ5Axd8lxwUU
+         oUlbBwYbIDd1SLglTKPlrOsppxYHPW41SFXANHALKIhQxliz12KgZW+vJjr5xiNgHXKx
+         eFDOQCOEP+EYOIG+MNzWbR4ExvNr1NF78KswQMVmt4dT7awMTZ0CwPNwxfDPT1yUQSnL
+         klDg==
+X-Gm-Message-State: AO0yUKXTA+HckH1oBCjqaSqhFZ9ZzvuehCDFRxaYTwzXbmxsZdM2l629
+	abKlMIoGafdoUhV+ZL6X9b6wpIiJkUPg/ioB5kLX9A==
+X-Google-Smtp-Source: AK7set/vwIRLhIQIPE3GkkxKkfmhP1CRU34HRxLzx1/Rma4BTfbR6X5PIRaaOJxNUaM1YhGtm7HsF2b9hYcFbnNAeaU=
+X-Received: by 2002:a25:9704:0:b0:a30:38fb:a2e4 with SMTP id
+ d4-20020a259704000000b00a3038fba2e4mr3269439ybo.6.1677695699906; Wed, 01 Mar
+ 2023 10:34:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230216184249.ogaqsaykottpxtcb@treble>
+References: <20230227173632.3292573-1-surenb@google.com> <20230227173632.3292573-19-surenb@google.com>
+ <Y/8CJQGNuMUTdLwP@localhost> <Y/8FNM9czzPHb5eG@localhost>
+In-Reply-To: <Y/8FNM9czzPHb5eG@localhost>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 1 Mar 2023 10:34:48 -0800
+Message-ID: <CAJuCfpHYT++MBC6T-p80n_m5hHWRRC4Y1bO9J-bFFZZDqNX-BQ@mail.gmail.com>
+Subject: Re: [PATCH v4 18/33] mm: write-lock VMAs before removing them from
+ VMA tree
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,58 +77,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, x86@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com, guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, will@kernel.org, vschneid@redhat.com, f.fainelli@gmail.com, vincent.guittot@linaro.org, ysato@users.sourceforge.jp, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de, mattst88@gmail.com, linux-xtensa@linux-xtensa.org, paulmck@kernel.org, richard.henderson@linaro.org, npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org, loongarch@lists.linux.dev, tglx@linutronix.de, dietmar.eggemann@arm.com, linux-arm-kernel@lists.infradead.org, jgross@suse.com, chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com, linux-kern
- el@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundati
+ on.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 16, 2023 at 10:42:52AM -0800, Josh Poimboeuf wrote:
-> Include <asm/smp.h> to make sure play_dead() matches its prototype going
-> forward.
-> 
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+On Tue, Feb 28, 2023 at 11:57=E2=80=AFPM Hyeonggon Yoo <42.hyeyoo@gmail.com=
+> wrote:
+>
+> On Wed, Mar 01, 2023 at 07:43:33AM +0000, Hyeonggon Yoo wrote:
+> > On Mon, Feb 27, 2023 at 09:36:17AM -0800, Suren Baghdasaryan wrote:
+> > > Write-locking VMAs before isolating them ensures that page fault
+> > > handlers don't operate on isolated VMAs.
+> > >
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > ---
+> > >  mm/mmap.c  | 1 +
+> > >  mm/nommu.c | 5 +++++
+> > >  2 files changed, 6 insertions(+)
+> > >
+> > > diff --git a/mm/mmap.c b/mm/mmap.c
+> > > index 1f42b9a52b9b..f7ed357056c4 100644
+> > > --- a/mm/mmap.c
+> > > +++ b/mm/mmap.c
+> > > @@ -2255,6 +2255,7 @@ int split_vma(struct vma_iterator *vmi, struct =
+vm_area_struct *vma,
+> > >  static inline int munmap_sidetree(struct vm_area_struct *vma,
+> > >                                struct ma_state *mas_detach)
+> > >  {
+> > > +   vma_start_write(vma);
+> > >     mas_set_range(mas_detach, vma->vm_start, vma->vm_end - 1);
+> >
+> > I may be missing something, but have few questions:
+> >
+> >       1) Why does a writer need to both write-lock a VMA and mark the V=
+MA detached
+> >          when unmapping it, isn't it enough to just only write-lock a V=
+MA?
 
-The latest version of this patch triggered a new kbuild warning which is
-fixed by the below patch.  If there are no objections I'll bundle it in
-with the rest of the set for merging.
+We need to mark the VMA detached to avoid handling page fault in a
+detached VMA. The possible scenario is:
 
----8<---
+lock_vma_under_rcu
+  vma =3D mas_walk(&mas)
+                                                        munmap_sidetree
+                                                          vma_start_write(v=
+ma)
 
-Subject: [PATCH] mips/smp: Add CONFIG_SMP guard for raw_smp_processor_id()
-Content-type: text/plain
+mas_store_gfp() // remove VMA from the tree
+                                                          vma_end_write_all=
+()
+  vma_start_read(vma)
+  // we locked the VMA but it is not part of the tree anymore.
 
-Without CONFIG_SMP, raw_smp_processor_id() is not expected to be defined
-by the arch.
+So, marking the VMA locked before vma_end_write_all() and checking
+vma->detached after vma_start_read() helps us avoid handling faults in
+the detached VMA.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202302220755.HM8J8GOR-lkp@intel.com/
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
- arch/mips/include/asm/smp.h | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 4eee29b7845c..cf992b8b1e46 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -25,6 +25,7 @@ extern cpumask_t cpu_sibling_map[];
- extern cpumask_t cpu_core_map[];
- extern cpumask_t cpu_foreign_map[];
- 
-+#ifdef CONFIG_SMP
- static inline int raw_smp_processor_id(void)
- {
- #if defined(__VDSO__)
-@@ -36,6 +37,7 @@ static inline int raw_smp_processor_id(void)
- #endif
- }
- #define raw_smp_processor_id raw_smp_processor_id
-+#endif
- 
- /* Map from cpu id to sequential logical cpu number.  This will only
-    not be idempotent when cpus failed to come on-line.	*/
--- 
-2.39.1
+> >
+> >       2) as VMAs that are going to be removed are already locked in vma=
+_prepare(),
+> >          so I think this hunk could be dropped?
+>
+> After sending this just realized that I did not consider simple munmap ca=
+se :)
+> But I still think 1) and 3) are valid question.
+>
+> >
+> > >     if (mas_store_gfp(mas_detach, vma, GFP_KERNEL))
+> > >             return -ENOMEM;
+> > > diff --git a/mm/nommu.c b/mm/nommu.c
+> > > index 57ba243c6a37..2ab162d773e2 100644
+> > > --- a/mm/nommu.c
+> > > +++ b/mm/nommu.c
+> > > @@ -588,6 +588,7 @@ static int delete_vma_from_mm(struct vm_area_stru=
+ct *vma)
+> > >                    current->pid);
+> > >             return -ENOMEM;
+> > >     }
+> > > +   vma_start_write(vma);
+> > >     cleanup_vma_from_mm(vma);
+> >
+> >       3) I think this hunk could be dropped as Per-VMA lock depends on =
+MMU anyway.
 
+Ah, yes, you are right. We can safely remove the changes in nommu.c
+Andrew, should I post a fixup or you can make the removal directly in
+mm-unstable?
+Thanks,
+Suren.
+
+> >
+> > Thanks,
+> > Hyeonggon
+> >
+> > >
+> > >     /* remove from the MM's tree and list */
+> > > @@ -1519,6 +1520,10 @@ void exit_mmap(struct mm_struct *mm)
+> > >      */
+> > >     mmap_write_lock(mm);
+> > >     for_each_vma(vmi, vma) {
+> > > +           /*
+> > > +            * No need to lock VMA because this is the only mm user a=
+nd no
+> > > +            * page fault handled can race with it.
+> > > +            */
+> > >             cleanup_vma_from_mm(vma);
+> > >             delete_vma(mm, vma);
+> > >             cond_resched();
+> > > --
+> > > 2.39.2.722.g9855ee24e9-goog
+> > >
+> > >
+> >
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kernel-team+unsubscribe@android.com.
+>
