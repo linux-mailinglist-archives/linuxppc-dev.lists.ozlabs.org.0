@@ -1,91 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2FA6A769C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Mar 2023 23:06:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBBF6A7794
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 00:10:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRpHL4pgBz3cFW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 09:06:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PRqj51hH2z3cd1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 10:10:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iKe0O2Lc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P5D5QOYg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iKe0O2Lc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P5D5QOYg;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRpGK6zkMz3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 09:06:01 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 321LMTWG027826;
-	Wed, 1 Mar 2023 22:05:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=39c11Ssc1CX8s2GyMWJeHdQmYlK8L6WtbDOGfOdmh68=;
- b=iKe0O2Lc5KkXR5ERdZWkP/fQ5VATfwlWMkhls6rIzEHd0ZJJwuJZb9iwCVRqA4+8/rtv
- QTZp4mNzYlIF2y6u33DUXnmclc8fYiyCaUG8hxAaXj/7dpLeXXk04uveFv3k+cxmQttK
- VEr49CBvVtQ0XObImwmLC+uUeV9oBhngtZeH446kcgVr2nKA5WzXxhdapTVOkzLeix1v
- R3rrjpJFAfflcS5vUmLbbPe9s5JjzPI1mjAwGGMfXF0kUxk4Y+qS1iGDbWpZEYUi9tYs
- h2/8ag2cm3rO2cUYzk7hxloSM2mA7m27wUo68d0TGLncJR236WrTLtAXi/jf1iFTX9Wp 8Q== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2ejms520-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Mar 2023 22:05:55 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3210UQow009219;
-	Wed, 1 Mar 2023 22:05:53 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3nybbyumhk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Mar 2023 22:05:52 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 321M5oqU67043768
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Mar 2023 22:05:50 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F1EA20080;
-	Wed,  1 Mar 2023 22:05:50 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 217FC2007F;
-	Wed,  1 Mar 2023 22:05:50 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Mar 2023 22:05:50 +0000 (GMT)
-Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRqh744klz301F
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 10:09:59 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A5045602FD;
-	Thu,  2 Mar 2023 09:05:46 +1100 (AEDT)
-Message-ID: <5a796d43f45c86d770ee88cffaae78f4ca305103.camel@linux.ibm.com>
-Subject: Re: [PATCH 2/2] selftests/powerpc/pmu: fix including of utils.h
- when event.h is included
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-Date: Thu, 02 Mar 2023 09:05:46 +1100
-In-Reply-To: <20230301170918.69176-2-kjain@linux.ibm.com>
-References: <20230301170918.69176-1-kjain@linux.ibm.com>
-	 <20230301170918.69176-2-kjain@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E4FDE6131D;
+	Wed,  1 Mar 2023 23:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04918C433EF;
+	Wed,  1 Mar 2023 23:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1677712195;
+	bh=6xF2bS9+IFQDCx6Cz15lcI9nmFQE54LHi90Yyw/kHvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P5D5QOYgEyKNQZ9f6ppESpNkKgS5MnyG2PjBtyyalUY+ZBeKlty4L6Mzd+TMR+F95
+	 t4nvGP5IdizIJhOERO/0RHxbulT3yM+w+JWQF9Y65P7a4N83w6Wp80Ux45qlgS/fCd
+	 0XZxCl7Wm9idMSzdwiVBjElevlBebEMNfKO5JmDK2Oe7ppXS7brxo6jSLIZpLZwrDm
+	 en8+StcvKLIcX1ze3lzYJsUEe/olilY7rrMXdqqa+kpPzJpTOFhUo7s/1odVnPiupH
+	 9hUKym8mFaOgl2TB44HiLLvQ9jWyISJwad3DQpxHAOqrpYfVkheHb6ejgJTcdBdz0l
+	 LMScX42SKYdkQ==
+Date: Thu, 2 Mar 2023 01:09:53 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc/tpm: Create linux,sml-base/size as big endian
+Message-ID: <Y//bQe1Zd32bLy+J@kernel.org>
+References: <20230224032508.3331281-1-mpe@ellerman.id.au>
+ <c2afd163-5f23-acab-fd39-3a5593ed6257@linux.ibm.com>
+ <Y/1wm3kmsto5tzeB@kernel.org>
+ <87r0uaujb3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SxXqKe2oB6PNCtNcfJzA034VYeknEGws
-X-Proofpoint-ORIG-GUID: SxXqKe2oB6PNCtNcfJzA034VYeknEGws
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-01_15,2023-03-01_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- malwarescore=0 mlxlogscore=908 mlxscore=0 spamscore=0 impostorscore=0
- bulkscore=0 lowpriorityscore=0 priorityscore=1501 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303010176
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r0uaujb3.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,25 +62,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com
+Cc: eajames@linux.ibm.com, jgg@ziepe.ca, yangyingliang@huawei.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2023-03-01 at 22:39 +0530, Kajol Jain wrote:
-> From: Madhavan Srinivasan <maddy@linux.ibm.com>
->=20
-> event.h header already includes utlis.h. Avoid including
-> the same explicitly in the code when event.h included.
->=20
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+On Tue, Feb 28, 2023 at 10:21:36PM +1100, Michael Ellerman wrote:
+> Jarkko Sakkinen <jarkko@kernel.org> writes:
+> > On Mon, Feb 27, 2023 at 06:08:31PM -0500, Stefan Berger wrote:
+> >> On 2/23/23 22:25, Michael Ellerman wrote:
+> >> > There's code in prom_instantiate_sml() to do a "SML handover" (Stored
+> >> > Measurement Log) from OF to Linux, before Linux shuts down Open
+> >> > Firmware.
+> >> > 
+> >> > This involves creating a buffer to hold the SML, and creating two device
+> >> > tree properties to record its base address and size. The kernel then
+> >> > later reads those properties from the device tree to find the SML.
+> >> > 
+> >> > When the code was initially added in commit 4a727429abec ("PPC64: Add
+> >> > support for instantiating SML from Open Firmware") the powerpc kernel
+> >> > was always built big endian, so the properties were created big endian
+> >> > by default.
+> >> > 
+> >> > However since then little endian support was added to powerpc, and now
+> >> > the code lacks conversions to big endian when creating the properties.
+> >> > 
+> >> > This means on little endian kernels the device tree properties are
+> >> > little endian, which is contrary to the device tree spec, and in
+> >> > contrast to all other device tree properties.
+> >> > 
+> >> > To cope with that a workaround was added in tpm_read_log_of() to skip
+> >> > the endian conversion if the properties were created via the SML
+> >> > handover.
+> >> > 
+> >> > A better solution is to encode the properties as big endian as they
+> >> > should be, and remove the workaround.
+> >> > 
+> >> > Typically changing the encoding of a property like this would present
+> >> > problems for kexec. However the SML is not propagated across kexec, so
+> >> > changing the encoding of the properties is a non-issue.
+> >> > 
+> >> > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physical TPM event log")
+> >> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> >> 
+> >> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> >
+> > 2/2 does not have a fixes tag.
+> 
+> True. Arguably the bug goes back to the introduction of
+> kexec_file_load() support, although the patch won't backport that far
+> due to code refactoring. So that would be:
+> 
+> Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
 
-As I understand, transitive includes should not be depended upon. If
-you use a thing, and the thing is declared in a header, you should
-include _that_ header. Anything else is a recipe for weird include
-dependencies, ordering of the includes, etc.
+Hmm... IMHO, it would still make sense to document this.
 
-These files all use FAIL_IF, etc., which are declared in utils.h. So
-utils.h is a legitimate include. The fact that events.h also includes
-it (for u64) is a coincidence. If the u64 type def gets moved to, e.g.,
-types.h, and utils.h is removed from events.h, suddenly all these files
-stop compiling.
+BR, Jarkko
