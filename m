@@ -2,89 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89086A79FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 04:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59A46A7C17
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 08:50:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRxFf5TYTz3cXf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 14:20:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y0xGAuBo;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PS3F85jWBz3cLr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 18:50:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y0xGAuBo;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.46; helo=mail-oa1-f46.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRxDj0jC7z3bvZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 14:20:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3223FxkG031521;
-	Thu, 2 Mar 2023 03:19:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=MXVL1r/HFmmcDZAfZ5gzZs4Gk1cusmaGXKpuluNnsXo=;
- b=Y0xGAuBoeX5KyRki212MEE9apOsk4qYN+LeqtBEMGvVuhx2O+YNNuv9sCKkUr7LweEa1
- QnSIrA6YzNRFP1XyFnvBoQEWoVgW99UYqhiSjr0kkX0VsK/n/lZ/DYb4sdI2j+qtfx3s
- nmpVPE8UJ05l0ibl/D+BagOjQdigmuQrK/DBN+hfmdiQRL4krMxVly+Vw+F+Ocxysjy7
- LqFI0XBa7kEoAz5bvmYCoxZeo2le9D5Q13WbB2V2tapQB6CyD1fGMFvng87sBOOfGv+a
- v5Dbh345Ir5DBfyHXgXFvptNXzbQmgH6xV2B0l2AsQ1yMQs4fqNrvP8+iKmu/6Hsbmr2 5w== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2kr9028n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 03:19:59 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 321JQvUw024684;
-	Thu, 2 Mar 2023 03:19:57 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3nybdfut4h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 03:19:57 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3223JrpB36700538
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Mar 2023 03:19:53 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D6D42004B;
-	Thu,  2 Mar 2023 03:19:53 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26FC720043;
-	Thu,  2 Mar 2023 03:19:52 +0000 (GMT)
-Received: from [9.204.207.212] (unknown [9.204.207.212])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Mar 2023 03:19:51 +0000 (GMT)
-Message-ID: <5dc76d52-6b22-9108-9107-281b1cd386e4@linux.ibm.com>
-Date: Thu, 2 Mar 2023 08:49:50 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS3Db5MSkz3c2v
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 18:50:21 +1100 (AEDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1722c48a773so17249825fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 23:50:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m9NdTpfDEMV32UTE9lZbQp6kQQhUJVdsU2kqbFsl+ZA=;
+        b=wXczfoP8lcaHq3NaTZO5m/Bxi8aOgG3GaRgXGHgElr6bKJdxbJdeDPZ/MGo8Pe9ni/
+         34SvhcbdCnY4aw0qGMel8U3ycgoyImQOqcMY2KCBQmAyIjo1CR20RePEwu9ANA8X65Xi
+         mLSG5S8iadOiAqymYoNwgqi+c1dIZFq0BDKISUggPe2O1SA4MZNKhGN3UbngwhlBjT80
+         gKWJetsQKW4BE4AwlU36by8em9vbaupzg7yMmQu9uankZsOr35GNe+BKB247rNLdEytq
+         0pEiOYMwoTpwmn2ZD10eBPdfsrGLcDVtQaLtDrh990mOy5yQ7Sb9R7SVQzIdkGsZ3cMU
+         6gNA==
+X-Gm-Message-State: AO0yUKUgfxwHu4n2i8KBiBtjwC405Vo6jXJ/U9NlF0XP4qdmHIk9FPIe
+	POiyZsAQwzFa/8gIZ0H8IrJLGwD3yfPp7g==
+X-Google-Smtp-Source: AK7set9HJg5DClfCLNfXbVH1sWQVT0mBMp23X0g55Hidie8RYip9YtkoDI0JxS3qTAfq+6vUQKOHKA==
+X-Received: by 2002:a05:6870:a794:b0:171:8716:f0be with SMTP id x20-20020a056870a79400b001718716f0bemr5240999oao.59.1677743417390;
+        Wed, 01 Mar 2023 23:50:17 -0800 (PST)
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com. [209.85.161.52])
+        by smtp.gmail.com with ESMTPSA id x131-20020a4a4189000000b00517fc5fdf5bsm5827914ooa.17.2023.03.01.23.50.17
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Mar 2023 23:50:17 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id a23-20020a4ad5d7000000b005250867d3d9so2509406oot.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 23:50:17 -0800 (PST)
+X-Received: by 2002:a81:ad1b:0:b0:52f:1c23:ef1 with SMTP id
+ l27-20020a81ad1b000000b0052f1c230ef1mr5784211ywh.5.1677743396691; Wed, 01 Mar
+ 2023 23:49:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 2/2] selftests/powerpc/pmu: fix including of utils.h when
- event.h is included
-To: Benjamin Gray <bgray@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
-        mpe@ellerman.id.au
-References: <20230301170918.69176-1-kjain@linux.ibm.com>
- <20230301170918.69176-2-kjain@linux.ibm.com>
- <5a796d43f45c86d770ee88cffaae78f4ca305103.camel@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <5a796d43f45c86d770ee88cffaae78f4ca305103.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gRcAG_j54GZJWW9yMNvywpGq4mBehXPI
-X-Proofpoint-GUID: gRcAG_j54GZJWW9yMNvywpGq4mBehXPI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-01_17,2023-03-01_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- bulkscore=0 priorityscore=1501 spamscore=0 impostorscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2303020023
+References: <20230301185209.274134-1-jjhiblot@traphandler.com> <20230301185209.274134-3-jjhiblot@traphandler.com>
+In-Reply-To: <20230301185209.274134-3-jjhiblot@traphandler.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 2 Mar 2023 08:49:44 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVF337k+zyjpbzoDtWWDnYhM6eM3+As6UuZ7FCgASsMQg@mail.gmail.com>
+Message-ID: <CAMuHMdVF337k+zyjpbzoDtWWDnYhM6eM3+As6UuZ7FCgASsMQg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] of: irq: make callers of of_irq_parse_one() release
+ the device node
+To: Jean-Jacques Hiblot <jjhiblot@traphandler.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,33 +68,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
+Cc: Nishanth Menon <nm@ti.com>, zajec5@gmail.com, linux-pci@vger.kernel.org, ssantosh@kernel.org, linux-tegra@vger.kernel.org, thierry.reding@gmail.com, linux-riscv@lists.infradead.org, Frank Rowand <frowand.list@gmail.com>, saravanak@google.com, Samuel Holland <samuel@sholland.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, jonathanh@nvidia.com, Chen-Yu Tsai <wens@csie.org>, clement.leger@bootlin.com, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, mathias.nyman@intel.com, Manivannan Sadhasivam <mani@kernel.org>, linux-actions@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Claudiu 
+ Beznea <claudiu.beznea@microchip.com>, linux-renesas-soc@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Marc Zyngier <maz@kernel.org>, linuxppc-dev@lists.ozlabs.org, afaerber@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Jean-Jacques,
 
-On 3/2/23 3:35 AM, Benjamin Gray wrote:
-> On Wed, 2023-03-01 at 22:39 +0530, Kajol Jain wrote:
->> From: Madhavan Srinivasan <maddy@linux.ibm.com>
->>
->> event.h header already includes utlis.h. Avoid including
->> the same explicitly in the code when event.h included.
->>
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> As I understand, transitive includes should not be depended upon. If
-> you use a thing, and the thing is declared in a header, you should
-> include _that_ header. Anything else is a recipe for weird include
-> dependencies, ordering of the includes, etc.
->
-> These files all use FAIL_IF, etc., which are declared in utils.h. So
-> utils.h is a legitimate include. The fact that events.h also includes
-> it (for u64) is a coincidence. If the u64 type def gets moved to, e.g.,
-> types.h, and utils.h is removed from events.h, suddenly all these files
-> stop compiling.
+Thanks for your patch!
 
-thanks for the review. IIUC utils.h also carries the some test harness 
-func declarations, also some of these tests does not use type defs 
-anyway. I should have had a better commit message, my bad. But i will 
-try out the suggested case.
+On Wed, Mar 1, 2023 at 7:53=E2=80=AFPM Jean-Jacques Hiblot
+<jjhiblot@traphandler.com> wrote:
+> of_irq_parse_one() does a get() on the device node returned in out_irq->n=
+p.
+> Callers of of_irq_parse_one() must do a put() when they are done with it.
 
-Maddy
+What does "be done with it" really mean here?
+
+> Signed-off-by: Jean-Jacques Hiblot <jjhiblot@traphandler.com>
+
+> --- a/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+> +++ b/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+> @@ -184,6 +184,7 @@ static int __init rcar_gen2_regulator_quirk(void)
+>                         kfree(quirk);
+>                         continue;
+>                 }
+> +               of_node_put(argsa->np);
+
+The quirk object, which is a container of argsa, is still used below,
+and stored in a linked list.  I agree argsa->np is not dereferenced,
+but the pointer itself is still compared to other pointers.
+IIUIC, calling of_node_put() might cause the reference count to drop to
+zero, and the underlying struct node object to be deallocated.
+So when a future reference to the same DT node will be taken, a new
+struct node object will be allocated, and the pointer comparison below
+will fail?
+
+Or am I missing something?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
