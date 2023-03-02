@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48C36A871A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 17:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D51F6A88BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 19:53:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PSH4c5p3kz3cfd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 03:44:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PSKxQ16llz3ccl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 05:53:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C1V38pM6;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=BDkuvwlB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C1V38pM6;
+	dkim=pass (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=BDkuvwlB;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+X-Greylist: delayed 378 seconds by postgrey-1.36 at boromir; Thu, 02 Mar 2023 23:26:35 AEDT
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSH3l0swZz3cMJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 03:43:30 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS9MH35Tjz3cLr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 23:26:35 +1100 (AEDT)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 84F82B81223;
-	Thu,  2 Mar 2023 16:43:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDEFC4339B;
-	Thu,  2 Mar 2023 16:43:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1677775406;
-	bh=/3EG9mCgYljy/AeNWULKubu7iLxYcPdrWpi0iqQTytY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C1V38pM6W0R0c4lmN/gk2Mx8h/SqlsjawPWMlCSIv8hZ9pB/m7y0UzuDUVuLP/OFe
-	 CExGzW77LyaF8WISi8o3nE7QTvY+XLe1fx22+jLoEMI9pBSE6a3xVBqcz3xIN7WTRy
-	 YycmUDrVoA73rZeiT8jdUoh7R02yjc421jVDD+c3vPumzHioshg/naG6t/75sTQmKQ
-	 XnHhugdZq143WrmcNLLjeTfpAVC75ISekxuGCzKaHQxUTEed3l+bD6q4ofU37hXO94
-	 4QFlZgzfncjEBLKT15uWJkU0v5OjaW+KkvjMVUgWOJGxhaQEjHUxrxvE/Z/55jNt6j
-	 EQdf9k+nbJybg==
-Date: Thu, 2 Mar 2023 09:43:24 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 2/2] powerpc/64: Use -mtune=pwr10/9/8 for clang
-Message-ID: <20230302164324.GB3010526@dev-arch.thelio-3990X>
-References: <20230302131656.50626-1-mpe@ellerman.id.au>
- <20230302131656.50626-2-mpe@ellerman.id.au>
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E292B1EC04F0;
+	Thu,  2 Mar 2023 13:19:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1677759598;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=EXqRPO+1UJ/Jugo4uZb8s1y5eA/PT9L+UzCFhY6JB88=;
+	b=BDkuvwlB34QQjIUo59EDVmj7oKCVncxfi5b5gZ5JgkhU3aIBDgDeTmJNn7jbJHW3znTvCf
+	YFoHuKLNQrQyliq8pTOmjR9MRkIeF/W/wjuynsx9rHark059JR7Yp19Rw8Aocd30uUMCn6
+	EDHphDviZmnnExDRi0VvwD18ImB95dQ=
+Date: Thu, 2 Mar 2023 13:19:52 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v7 13/41] mm: Make pte_mkwrite() take a VMA
+Message-ID: <ZACUaN0NRNXMwkT2@zn.tnic>
+References: <20230227222957.24501-1-rick.p.edgecombe@intel.com>
+ <20230227222957.24501-14-rick.p.edgecombe@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230302131656.50626-2-mpe@ellerman.id.au>
+In-Reply-To: <20230227222957.24501-14-rick.p.edgecombe@intel.com>
+X-Mailman-Approved-At: Fri, 03 Mar 2023 05:52:28 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,66 +59,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
+Cc: kcc@google.com, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, david@redhat.com, eranian@google.com, Oleg Nesterov <oleg@redhat.com>, linux-mm@kvack.org, linux-csky@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, dethoma@microsoft.com, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, Eugene Syromiatnikov <esyr@redhat.com>, jamorris@linux.microsoft.com, Ingo Molnar <mingo@redhat.com>, xen-devel@lists.xenproject.org, linux-snps-arc@lists.infradead.org, "H . J . Lu" <hjl.tools@gmail.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, linux-alpha@vger.kernel.org, linux-um@lists.inf
+ radead.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, debug@rivosinc.com, Florian Weimer <fweimer@redhat.com>, Michal Simek <monstr@monstr.eu>, John Allen <john.allen@amd.com>, linux-parisc@vger.kernel.org, Weijiang Yang <weijiang.yang@intel.com>, linux-api@vger.kernel.org, christina.schimpe@intel.com, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Cyrill Gorcunov <gorcunov@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, rppt@kernel.org, Andrew.Cooper3@citrix.com, linux-openrisc@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Mon, Feb 27, 2023 at 02:29:29PM -0800, Rick Edgecombe wrote:
+> [0] https://lore.kernel.org/lkml/0e29a2d0-08d8-bcd6-ff26-4bea0e4037b0@redhat.com/#t
 
-Thanks for the workaround and sorry this has come to bite us :/
+I guess that sub-thread about how you arrived at this "pass a VMA"
+decision should be in the Link tag. But that's for the committer, I'd
+say.
 
-On Fri, Mar 03, 2023 at 12:16:56AM +1100, Michael Ellerman wrote:
-> For the -mtune option clang doesn't accept power10/9/8, instead it
-> accepts pwr10/9/8. That will be fixed in future versions of clang, but
-> the kernel must support the clang versions in the wild.
-> 
-> So add support for the "pwr" spelling if clang is in use.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
+Thx.
 
-I think that should actually be
+-- 
+Regards/Gruss,
+    Boris.
 
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> BugLink: https://github.com/ClangBuiltLinux/linux/issues/1799
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-
-> ---
->  arch/powerpc/platforms/Kconfig.cputype | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> Need to confirm the clang <= 16 statement is correct.
-
-Currently, this is indeed the case. It is possible that Nemanja's patch
-will get applied to release/16.x before 16.0.0 final but it might not.
-We can always update it later. I think we do want to push to get that
-patch applied because I forgot that it is only in 16.0.0 that '-mtune'
-starts to do something on PowerPC:
-
-https://github.com/llvm/llvm-project/commit/1dc26b80b872a94c581549a21943756a8c3448a3
-
-Prior to that change, '-mtune' was accepted but did nothing. It is only
-once it was hooked up to the backend that we got the spew of warnings. I
-think that warrants us trying to get Nemanja's patch into 16.0.0, which
-may allow us to drop this workaround altogether...
-
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 7d7477b73951..e4e0e81be7de 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -278,6 +278,10 @@ config TUNE_CPU
->  	default "-mtune=power10" if POWERPC64_CPU && CC_IS_GCC   && $(cc-option,-mtune=power10)
->  	default "-mtune=power9"  if POWERPC64_CPU && CC_IS_GCC   && $(cc-option,-mtune=power9)
->  	default "-mtune=power8"  if POWERPC64_CPU && CC_IS_GCC   && $(cc-option,-mtune=power8)
-> +	# clang <= 16 only supports the "pwr" names
-> +	default "-mtune=pwr10"   if POWERPC64_CPU && CC_IS_CLANG && $(cc-option,-mtune=pwr10)
-> +	default "-mtune=pwr9"    if POWERPC64_CPU && CC_IS_CLANG && $(cc-option,-mtune=pwr9)
-> +	default "-mtune=pwr8"    if POWERPC64_CPU && CC_IS_CLANG && $(cc-option,-mtune=pwr8)
->  
->  config PPC_BOOK3S
->  	def_bool y
-> -- 
-> 2.39.2
-> 
+https://people.kernel.org/tglx/notes-about-netiquette
