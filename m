@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA70B6A7F4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 11:00:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC976A7F61
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 11:01:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PS66M43GGz3fh0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 21:00:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PS67d0R1rz3g1K
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 21:01:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=iEFVfsrb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=Joyk5Nhr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=iEFVfsrb;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=Joyk5Nhr;
 	dkim-atps=neutral
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS65S72h6z3cMm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 20:59:24 +1100 (AEDT)
-Received: by mail-wr1-x433.google.com with SMTP id bw19so15885325wrb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Mar 2023 01:59:24 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS66h0VFNz2yJv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 21:00:27 +1100 (AEDT)
+Received: by mail-wr1-x42d.google.com with SMTP id h11so4182489wrm.5
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Mar 2023 02:00:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677751162;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677751223;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ILvb9GZC9A1qdpzGm/54DVnwfbD0aC1FwyW+Sl0y38Q=;
-        b=iEFVfsrb5OtcQreF8wlM/GwKwWXjAdiB5zFZjDGOkxsfSSW2ix9k7XafXuRFWHkNIw
-         TQUj1z5ar2C0vEVfH9chUCmNH/nteRlN1JdwyEUKTQ48/qxc5zj7lbxM6oIumNApIlqo
-         K5VLD6wVEEWQMgZjLuZL0KrTQGr9096IfMMlinEHKNGLif5eFvYvdBjXluO8Ix1w5R4U
-         RJY91d9JKU56mcqJltFuMP1hPTP3suLy9poPdP2dzMNCJAeF1wsN9BU7pj1S6IwmR5Pr
-         qxXd+GuaTvJtDc6/YI8Kl6o8vw4aO5d1givhUukt4+tiF5HMj/+lNEF0nfMftS0WTvNr
-         b4nQ==
+        bh=wjatsIL5XK1QQSQeDPGE4hkKEq8N3SCj7VakQ0NSqR4=;
+        b=Joyk5NhrHhXbmkVlsjdNjv7dcYw86m4IQXIHczn/d6XUPDtRe82TXjk6QIyr/nAcFn
+         MX2FQnoHCLHYesMqTw42aFXg8FeamIT9bJtNWCT4XKrQMXs/jktz5/Nx+swnuYN1PRth
+         GdeUYDHU8Rq2h+VUt3Z5AaXI0poDy3pXFui49SUz3kEebQhq8gsyZLkWdwQ6+seP70Nd
+         CC4VM7zZtrGV37YSvEdV6WxtBpL6mc7M0o8rXEYbsdrz8Cp7qphJJB2Eo6BdJN1Hp8LY
+         31w6Brsh9FbsVAudFSGz2JlUD2vPhmH7ibCYajgltR1FOyaPhYccx8K4QTf4rZalSKJ6
+         MX4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677751162;
+        d=1e100.net; s=20210112; t=1677751223;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ILvb9GZC9A1qdpzGm/54DVnwfbD0aC1FwyW+Sl0y38Q=;
-        b=goQaEx55SNFFqKzBnMQJhTNmDUp1lwqknzjydrNLpGFqT56Yij7Hpfh5Ptsaa9AV+J
-         SD5dxA4YZQRgEfIyWk49EQDZyOABinCaohk1nOgin8NCz5IuFUQj2Au77/mDCNoefh7D
-         phe0ofvxlEXE5c363B1oCOehrYs2e2iW7MWXeET9tIScnCQ17rNEI+fTb5pqirh4Vsp8
-         3RTRAx3tI/Yjn5eJAVaoCHszfKUHGC09Cc89lt3qoBkpDOW3m7D1WI5h1hBZE+PM0eui
-         eoJqD33OB6nyqO4WI1u0IwJ6Gf8qW9szo/PoXxostgz5j58oSWmQ601bV/ud2cmeNc5z
-         PMVg==
-X-Gm-Message-State: AO0yUKX4Lofx72Ln8tSumn8u2VsD2baoc+NH3o3qy/l8Ls5Amu+VmsD/
-	t3jpYrUTZRJKo6oG7czsgV63SQ==
-X-Google-Smtp-Source: AK7set/ZaZqc8Pqp5NMCbp2YvB641qs31ffprFtxgjh4YFRfODcsMY9Ph9awlpUQ4nOMh9NRpwbCrA==
-X-Received: by 2002:adf:db90:0:b0:2c5:8d06:75c2 with SMTP id u16-20020adfdb90000000b002c58d0675c2mr7214454wri.35.1677751161891;
-        Thu, 02 Mar 2023 01:59:21 -0800 (PST)
+        bh=wjatsIL5XK1QQSQeDPGE4hkKEq8N3SCj7VakQ0NSqR4=;
+        b=sj9B0Kwx5d3kOaz8LYg/6cvAFaCn/CAlz4ERdIpE/c/Ns/LIOE5LwfXjoB+j/mmHHG
+         g4D6Ue1I/DbJ9bo4ZjzPk++4swsg1XYSQk5W8iX2c0JRGgXfLaDnGwuSa5SFKD4MpW3p
+         6JY0iDvzG+2R/gXL5VMLIcfpLFjBGYJZ5DIgUI5HHci8rZYniGs+uWqWarBQLeGQrzUx
+         zQcQrFJNFQOxirfkO1Ndn3sB4Axfdkz1tsvtBTJuZVwatAKkV3d1Tsp0ATl0vqWwUV79
+         94MaPkKSb2Xffxrfql2oAehG7g447au0wOXOhE3w91v8Zfgq8ztlfe0YJgvnTYER3UPW
+         Epjg==
+X-Gm-Message-State: AO0yUKX1qVYjjUSK5jo3lEnARSr4SjiSPWnMvIxk0Ss8vbNX+c/nMUgK
+	wsmBkdv3UHtrGy9iNYOqGP4bUw==
+X-Google-Smtp-Source: AK7set/CkJN9ffHE13FKP+VJpVHJ02VAHrAXz8N5LmAg/BmaZS6Y4p/fBx2ye/D55AcGQcIeL/RfNg==
+X-Received: by 2002:adf:ce82:0:b0:2cb:85ba:24f9 with SMTP id r2-20020adfce82000000b002cb85ba24f9mr5152414wrn.66.1677751223633;
+        Thu, 02 Mar 2023 02:00:23 -0800 (PST)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id s17-20020adff811000000b002c758fe9689sm14771605wrp.52.2023.03.02.01.59.20
+        by smtp.gmail.com with ESMTPSA id g9-20020a056000118900b002c794495f6fsm14428724wrx.117.2023.03.02.02.00.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 01:59:21 -0800 (PST)
+        Thu, 02 Mar 2023 02:00:23 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Richard Henderson <richard.henderson@linaro.org>,
@@ -113,13 +113,14 @@ To: Jonathan Corbet <corbet@lwn.net>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v4 23/24] mips: Remove empty <uapi/asm/setup.h>
-Date: Thu,  2 Mar 2023 10:35:38 +0100
-Message-Id: <20230302093539.372962-24-alexghiti@rivosinc.com>
+Subject: [PATCH v4 24/24] s390: Remove empty <uapi/asm/setup.h>
+Date: Thu,  2 Mar 2023 10:35:39 +0100
+Message-Id: <20230302093539.372962-25-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230302093539.372962-1-alexghiti@rivosinc.com>
 References: <20230302093539.372962-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -132,29 +133,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Palmer Dabbelt <palmer@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Palmer Dabbelt <palmer@rivosinc.com>
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- arch/mips/include/uapi/asm/setup.h | 5 -----
- 1 file changed, 5 deletions(-)
- delete mode 100644 arch/mips/include/uapi/asm/setup.h
+ arch/s390/include/asm/setup.h      | 1 -
+ arch/s390/include/uapi/asm/setup.h | 1 -
+ 2 files changed, 2 deletions(-)
+ delete mode 100644 arch/s390/include/uapi/asm/setup.h
 
-diff --git a/arch/mips/include/uapi/asm/setup.h b/arch/mips/include/uapi/asm/setup.h
+diff --git a/arch/s390/include/asm/setup.h b/arch/s390/include/asm/setup.h
+index 177bf6deaa27..99c1cc97350a 100644
+--- a/arch/s390/include/asm/setup.h
++++ b/arch/s390/include/asm/setup.h
+@@ -7,7 +7,6 @@
+ #define _ASM_S390_SETUP_H
+ 
+ #include <linux/bits.h>
+-#include <uapi/asm/setup.h>
+ #include <linux/build_bug.h>
+ 
+ #define PARMAREA		0x10400
+diff --git a/arch/s390/include/uapi/asm/setup.h b/arch/s390/include/uapi/asm/setup.h
 deleted file mode 100644
-index 157c3c392fb4..000000000000
---- a/arch/mips/include/uapi/asm/setup.h
+index 598d769e76df..000000000000
+--- a/arch/s390/include/uapi/asm/setup.h
 +++ /dev/null
-@@ -1,5 +0,0 @@
+@@ -1 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _UAPI_MIPS_SETUP_H
--#define _UAPI_MIPS_SETUP_H
--
--#endif /* _UAPI_MIPS_SETUP_H */
 -- 
 2.37.2
 
