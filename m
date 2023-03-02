@@ -2,63 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CCB6A78C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 02:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD156A7976
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 03:23:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PRtXv6S2yz3cKG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 12:18:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PRvyn64WMz3cJg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 13:22:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hoIRckZP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ICNzManC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hoIRckZP;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ICNzManC;
 	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRtWv3Zv7z3cB4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 12:17:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677719884; x=1709255884;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pcj5BG3AoA6LoU5YBxMBZSG8vhQrazvemAf9EZsO3vQ=;
-  b=hoIRckZPA/uGh6ExNX+wS9ak2ZMewflz+HHo123Oa74nNjwKsEW47Cm2
-   Khq/I2CusJ/H95qFsVdLVaPwzSTybYSE81QK7MoQOs12KFhitgBWKmm5W
-   WCUhw7fB6QgGgsR3TwfwLinTwFrdG77D9PboQZa5rv8yitjbSFETIGxTV
-   I6t3SuhY88DlzxEZ7uWLHgEpjju0tq2LNc5qCnLc+/LmQCJR02zeSPKDL
-   lpQnKqyF6a1sIbh/UWdJ8sxi5QG6MY7Q8TOZ0lnyXw8v4iSqzefTes0ay
-   qDrqzuzzZyxEgQI8F6CJ04BAQkVPqRMMFr7lhqtJzbp5ceh4fZSoLe0gH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="333304063"
-X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
-   d="scan'208";a="333304063"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 17:17:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="738855885"
-X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
-   d="scan'208";a="738855885"
-Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Mar 2023 17:17:53 -0800
-Received: from kbuild by 776573491cc5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pXXZx-00002J-0Q;
-	Thu, 02 Mar 2023 01:17:53 +0000
-Date: Thu, 02 Mar 2023 09:17:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- f8b2336f15f3bc30e37ce5c052cde5b6319bb6df
-Message-ID: <63fff90d.KWtdl2O3tp8ipm5w%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PRvxs3P8sz3cDp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 13:22:08 +1100 (AEDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id v101so2303156ybi.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Mar 2023 18:22:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1677723725;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=icYcAz4iENgGguq1MUlInM5/6GsRcXFU+8O5VO7eInA=;
+        b=ICNzManCzUgms4+COGza4gk5YsyseuO5Ijt4EWhpqNEDkAg12yxO+M+x6EF7wlGyGp
+         18xfcjTQdZvnANZNl2A9rF7rCOHTU3O7UgOEldBj8JFxYXSdYiuqfdORdbYK3a8OzBha
+         GPx1R+762t651JyT8Cj6YRDfJYCZzRhsZnsEISTad9RtLN+lwUYObGJty8p+v5C9AyGP
+         3XXAHVdDVphOLPBe2/6syAoOKCOBT/gqoC22awkzHgd0AJ3EE9WzeagQuz79d2V/uPYP
+         8Lqoil99Y13JGIIeKOkn5jKR1Pgy1Y4lYmhZVpRrJLR83i3rnovCLcQAjwV4uywIdJzG
+         i4rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677723725;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=icYcAz4iENgGguq1MUlInM5/6GsRcXFU+8O5VO7eInA=;
+        b=aY/QkjnNT+xNZxfs1G+6j0SI8VIQht4A8u2Qd0RYZrnhP/f59P8AV4ic+PB8lA7h/n
+         qGsQsab9hqYFpuB1mAvpYQs3I0i15PrhAS3B8/USIIHAcjFb3ULljdrGX5wwu7we4p+S
+         +f1QKpCnmgMH5YSvdvrx/RMQG6tLASwSjl8vVUPmpxFutxkFGd90EimHHwbsbDhL1xRP
+         OehufyuUN7SE+Gp0YDqT2DqVCty469EM44WhDNOo8g8l9wa2peNxcpdFfoAQo877HfrN
+         e7rGV3Earie1tZItyB7CrSIgfwA2v7sGGs8mVe6IFrhMvl5U4IWItMgHoceK2DJcRgdN
+         B2Iw==
+X-Gm-Message-State: AO0yUKXtv5AWiwDreRQ2/tKbpkEl2oFn8lyd4suuk4kY/z62NsiXCZAS
+	2TIbPbxQWgI/cDz98co/kT7mxtevspRZI1L1qtGzwQ==
+X-Google-Smtp-Source: AK7set8f8UCPLp9V1R6/ru3EOI4J1mkBQgV1T32GNF0OvprkrFWWd8Ter81Ipe29QBKiksN2yO0CRLf6M0naPga3SGQ=
+X-Received: by 2002:a25:aa03:0:b0:a06:538f:265f with SMTP id
+ s3-20020a25aa03000000b00a06538f265fmr407354ybi.4.1677723724623; Wed, 01 Mar
+ 2023 18:22:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20230227173632.3292573-1-surenb@google.com> <20230227173632.3292573-19-surenb@google.com>
+ <Y/8CJQGNuMUTdLwP@localhost> <Y/8FNM9czzPHb5eG@localhost> <CAJuCfpHYT++MBC6T-p80n_m5hHWRRC4Y1bO9J-bFFZZDqNX-BQ@mail.gmail.com>
+ <CAJuCfpFax8LSdcq1qiz3sp0XPLaNZnkFFky2tQekG2_Azvw9_g@mail.gmail.com> <Y//zmYeu6uexiyOY@localhost>
+In-Reply-To: <Y//zmYeu6uexiyOY@localhost>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 1 Mar 2023 18:21:53 -0800
+Message-ID: <CAJuCfpEhwye9dn3eUaYE1gSHt+8M5ztBR3ZMoTYyBR7+uSL5aQ@mail.gmail.com>
+Subject: Re: [PATCH v4 18/33] mm: write-lock VMAs before removing them from
+ VMA tree
+To: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,185 +78,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundati
+ on.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: f8b2336f15f3bc30e37ce5c052cde5b6319bb6df  powerpc: Avoid dead code/data elimination when using recordmcount
+On Wed, Mar 1, 2023 at 4:54 PM Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
+>
+> On Wed, Mar 01, 2023 at 10:42:48AM -0800, Suren Baghdasaryan wrote:
+> > On Wed, Mar 1, 2023 at 10:34=E2=80=AFAM Suren Baghdasaryan <surenb@goog=
+le.com> wrote:
+> > >
+> > > On Tue, Feb 28, 2023 at 11:57=E2=80=AFPM Hyeonggon Yoo <42.hyeyoo@gma=
+il.com> wrote:
+> > > >
+> > > > On Wed, Mar 01, 2023 at 07:43:33AM +0000, Hyeonggon Yoo wrote:
+> > > > > On Mon, Feb 27, 2023 at 09:36:17AM -0800, Suren Baghdasaryan wrot=
+e:
+> > > > > > Write-locking VMAs before isolating them ensures that page faul=
+t
+> > > > > > handlers don't operate on isolated VMAs.
+> > > > > >
+> > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > > > ---
+> > > > > >  mm/mmap.c  | 1 +
+> > > > > >  mm/nommu.c | 5 +++++
+> > > > > >  2 files changed, 6 insertions(+)
+> > > > > >
+> > > > > > diff --git a/mm/mmap.c b/mm/mmap.c
+> > > > > > index 1f42b9a52b9b..f7ed357056c4 100644
+> > > > > > --- a/mm/mmap.c
+> > > > > > +++ b/mm/mmap.c
+> > > > > > @@ -2255,6 +2255,7 @@ int split_vma(struct vma_iterator *vmi, s=
+truct vm_area_struct *vma,
+> > > > > >  static inline int munmap_sidetree(struct vm_area_struct *vma,
+> > > > > >                                struct ma_state *mas_detach)
+> > > > > >  {
+> > > > > > +   vma_start_write(vma);
+> > > > > >     mas_set_range(mas_detach, vma->vm_start, vma->vm_end - 1);
+> > > > >
+> > > > > I may be missing something, but have few questions:
+> > > > >
+> > > > >       1) Why does a writer need to both write-lock a VMA and mark=
+ the VMA detached
+> > > > >          when unmapping it, isn't it enough to just only write-lo=
+ck a VMA?
+> > >
+> > > We need to mark the VMA detached to avoid handling page fault in a
+> > > detached VMA. The possible scenario is:
+> > >
+> > > lock_vma_under_rcu
+> > >   vma =3D mas_walk(&mas)
+> > >                                                         munmap_sidetr=
+ee
+> > >                                                           vma_start_w=
+rite(vma)
+> > >
+> > > mas_store_gfp() // remove VMA from the tree
+> > >                                                           vma_end_wri=
+te_all()
+> > >   vma_start_read(vma)
+> > >   // we locked the VMA but it is not part of the tree anymore.
+> > >
+> > > So, marking the VMA locked before vma_end_write_all() and checking
+> >
+> > Sorry, I should have said "marking the VMA *detached* before
+> > vma_end_write_all() and checking vma->detached after vma_start_read()
+> > helps us avoid handling faults in the detached VMA."
+> >
+> > > vma->detached after vma_start_read() helps us avoid handling faults i=
+n
+> > > the detached VMA.
+>
+> Thank you for explanation, that makes sense!
+>
+> By the way, if there are no 32bit users of Per-VMA lock (are there?),
+> "detached" bool could be a VMA flag (i.e. making it depend on 64BIT
+> and selecting ARCH_USES_HIGH_VMA_FLAGS)
 
-elapsed time: 746m
+Yeah, I thought about it but didn't want to make assumptions about
+potential users just yet. Besides, I heard there are attempts to make
+vm_flags to be always 64-bit (I think Matthew mentioned that to me
+once). If that happens, we won't need any dependencies here. Either
+way, this conversion into a flag can be done as an additional
+optimization later on. I prefer to keep the main patchset as simple as
+possible for now.
+Thanks,
+Suren.
 
-configs tested: 162
-configs skipped: 15
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230226   gcc  
-alpha                randconfig-r021-20230227   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r001-20230301   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r011-20230226   gcc  
-arc                  randconfig-r011-20230227   gcc  
-arc                  randconfig-r016-20230227   gcc  
-arc                  randconfig-r021-20230226   gcc  
-arc                  randconfig-r043-20230226   gcc  
-arc                  randconfig-r043-20230227   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r005-20230227   gcc  
-arm                  randconfig-r046-20230226   gcc  
-arm                  randconfig-r046-20230227   clang
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r001-20230302   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r031-20230227   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r001-20230226   gcc  
-csky                 randconfig-r003-20230227   gcc  
-csky                 randconfig-r006-20230226   gcc  
-csky                 randconfig-r013-20230227   gcc  
-csky                 randconfig-r014-20230227   gcc  
-csky                 randconfig-r023-20230227   gcc  
-csky                 randconfig-r036-20230226   gcc  
-hexagon      buildonly-randconfig-r005-20230302   clang
-hexagon      buildonly-randconfig-r006-20230301   clang
-hexagon              randconfig-r014-20230226   clang
-hexagon              randconfig-r024-20230227   clang
-hexagon              randconfig-r041-20230226   clang
-hexagon              randconfig-r041-20230227   clang
-hexagon              randconfig-r045-20230226   clang
-hexagon              randconfig-r045-20230227   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230227   clang
-i386                 randconfig-a002-20230227   clang
-i386                 randconfig-a003-20230227   clang
-i386                 randconfig-a004-20230227   clang
-i386                 randconfig-a005-20230227   clang
-i386                 randconfig-a006-20230227   clang
-i386                 randconfig-a011-20230227   gcc  
-i386                          randconfig-a011   clang
-i386                 randconfig-a012-20230227   gcc  
-i386                          randconfig-a012   gcc  
-i386                 randconfig-a013-20230227   gcc  
-i386                          randconfig-a013   clang
-i386                 randconfig-a014-20230227   gcc  
-i386                          randconfig-a014   gcc  
-i386                 randconfig-a015-20230227   gcc  
-i386                          randconfig-a015   clang
-i386                 randconfig-a016-20230227   gcc  
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r003-20230226   gcc  
-ia64                 randconfig-r016-20230226   gcc  
-ia64                 randconfig-r022-20230227   gcc  
-ia64                 randconfig-r023-20230302   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r002-20230227   gcc  
-loongarch            randconfig-r031-20230226   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r001-20230226   gcc  
-m68k                 randconfig-r022-20230302   gcc  
-m68k                 randconfig-r025-20230227   gcc  
-microblaze   buildonly-randconfig-r004-20230301   gcc  
-microblaze           randconfig-r006-20230227   gcc  
-microblaze           randconfig-r025-20230302   gcc  
-microblaze           randconfig-r026-20230302   gcc  
-microblaze           randconfig-r035-20230226   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r001-20230227   gcc  
-mips                 randconfig-r004-20230227   gcc  
-mips                 randconfig-r011-20230226   gcc  
-mips                 randconfig-r016-20230227   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r023-20230226   gcc  
-openrisc             randconfig-r003-20230226   gcc  
-openrisc             randconfig-r005-20230226   gcc  
-openrisc             randconfig-r005-20230227   gcc  
-openrisc             randconfig-r026-20230226   gcc  
-parisc       buildonly-randconfig-r003-20230302   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230226   gcc  
-parisc               randconfig-r005-20230226   gcc  
-parisc               randconfig-r025-20230226   gcc  
-parisc               randconfig-r034-20230226   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r002-20230302   clang
-powerpc      buildonly-randconfig-r005-20230301   gcc  
-powerpc              randconfig-r003-20230227   clang
-powerpc              randconfig-r022-20230226   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r006-20230302   clang
-riscv                               defconfig   gcc  
-riscv                randconfig-r006-20230226   gcc  
-riscv                randconfig-r024-20230302   clang
-riscv                randconfig-r034-20230227   clang
-riscv                randconfig-r036-20230227   clang
-riscv                randconfig-r042-20230226   clang
-riscv                randconfig-r042-20230227   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r012-20230226   clang
-s390                 randconfig-r012-20230227   gcc  
-s390                 randconfig-r044-20230226   clang
-s390                 randconfig-r044-20230227   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r013-20230226   gcc  
-sh                   randconfig-r021-20230302   gcc  
-sh                   randconfig-r032-20230227   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r015-20230227   gcc  
-sparc64              randconfig-r012-20230226   gcc  
-sparc64              randconfig-r012-20230227   gcc  
-sparc64              randconfig-r013-20230227   gcc  
-sparc64              randconfig-r014-20230226   gcc  
-sparc64              randconfig-r015-20230226   gcc  
-sparc64              randconfig-r033-20230227   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230227   clang
-x86_64               randconfig-a002-20230227   clang
-x86_64               randconfig-a003-20230227   clang
-x86_64               randconfig-a004-20230227   clang
-x86_64               randconfig-a005-20230227   clang
-x86_64               randconfig-a006-20230227   clang
-x86_64               randconfig-a011-20230227   gcc  
-x86_64               randconfig-a012-20230227   gcc  
-x86_64               randconfig-a013-20230227   gcc  
-x86_64               randconfig-a014-20230227   gcc  
-x86_64               randconfig-a015-20230227   gcc  
-x86_64               randconfig-a016-20230227   gcc  
-x86_64               randconfig-r004-20230227   clang
-x86_64               randconfig-r011-20230227   gcc  
-x86_64               randconfig-r035-20230227   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r002-20230226   gcc  
-xtensa               randconfig-r002-20230227   gcc  
-xtensa               randconfig-r014-20230227   gcc  
-xtensa               randconfig-r033-20230226   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+>
+> Thanks,
+> Hyeonggon
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kernel-team+unsubscribe@android.com.
+>
