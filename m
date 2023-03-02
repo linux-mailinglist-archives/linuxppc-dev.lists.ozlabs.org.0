@@ -2,97 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47DA6A8CAE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 00:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD316A8DBA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 01:07:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PSRSp3MHJz3cj6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 10:02:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jHCT19v+;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PSSvQ2xB0z3chr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 11:06:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jHCT19v+;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 2002 seconds by postgrey-1.36 at boromir; Fri, 03 Mar 2023 11:06:29 AEDT
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSRRt0hTsz3cG1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 10:01:29 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 322Mq0jx008133;
-	Thu, 2 Mar 2023 23:01:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Heyyd7Bx/WdZEwmdkmmCHSXQpBopTgEimLG4hnk4DaU=;
- b=jHCT19v+GC/3RJKHObtA7HD3aankBQA+pgeOBIqsBdht7GXGy3BgsaMk0xYmAWvm/FdW
- QyMQd/2NB0cCJkcQRhyH4HHciNnTqfxj0txiKOyEj1jdUdMau4dEuyTCSkEuHjpiGkWo
- RY1SiVQF7oieas5HZ7JywY4+/9syzXfI726xpK9T5pCQnqLLHTck/C9wTb5y1PNrsiTb
- T16ZpgOGlm4NJf05f7ycmVWIUa653h2XJQmG/J+54kYu8LDMCAMzv2z1XdlBOgYGZK1G
- qcjScHT/GwSvLsNsjaP6UYgC9UWrXlXq6toOvzW7G96nkNt4DlmYStZiu/jEvjRE6OEf vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p34yd85h4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 23:01:26 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 322MsXTO014729;
-	Thu, 2 Mar 2023 23:01:26 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p34yd85g7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 23:01:26 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 322Kw2kv028341;
-	Thu, 2 Mar 2023 23:01:24 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3nybe2mqhd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 23:01:24 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 322N1MiH65667346
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Mar 2023 23:01:22 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2605020040;
-	Thu,  2 Mar 2023 23:01:22 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D3B12004B;
-	Thu,  2 Mar 2023 23:01:21 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Mar 2023 23:01:21 +0000 (GMT)
-Received: from [9.177.66.63] (unknown [9.177.66.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id EA766600E5;
-	Fri,  3 Mar 2023 10:01:17 +1100 (AEDT)
-Message-ID: <fb0a85a1033a46235d312314d01936452c873316.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/64s: Fix __pte_needs_flush() false positive
- warning
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Fri, 03 Mar 2023 10:01:13 +1100
-In-Reply-To: <20230302225203.75685-1-bgray@linux.ibm.com>
-References: <20230302225203.75685-1-bgray@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSSts27Tcz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 11:06:29 +1100 (AEDT)
+Received: from [2601:447:c680:c050::eaf6]
+	by baldur.buserror.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <oss@buserror.net>)
+	id 1pXsNs-006371-0d; Thu, 02 Mar 2023 17:30:49 -0600
+Message-ID: <8f1b02433cbeb90fab982a0b5377e8558e4eb5d3.camel@buserror.net>
+From: Crystal Wood <oss@buserror.net>
+To: Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Paul Gortmaker
+	 <paul.gortmaker@windriver.com>
+Date: Thu, 02 Mar 2023 17:30:45 -0600
+In-Reply-To: <20230221214930.35ttgzntv2vfwlo6@pali>
+References: <20230221194637.28436-1-paul.gortmaker@windriver.com>
+	 <20230221194637.28436-5-paul.gortmaker@windriver.com>
+	 <20230221200308.gu3pwrg7layxzkpt@pali> <Y/U3vIKzkKJAc5iU@windriver.com>
+	 <20230221214930.35ttgzntv2vfwlo6@pali>
+Organization: Red Hat
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: F7L4IsjUSd3ZjtIPjBNChNKEW7FD2AeR
-X-Proofpoint-ORIG-GUID: e9f25O8VkpIhoOwgv-TUkangdPe7yeud
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-02_15,2023-03-02_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 clxscore=1015 adultscore=0 suspectscore=0 mlxlogscore=540
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303020195
+X-SA-Exim-Connect-IP: 2601:447:c680:c050::eaf6
+X-SA-Exim-Rcpt-To: pali@kernel.org, paul.gortmaker@windriver.com, linuxppc-dev@lists.ozlabs.org, leoyang.li@nxp.com, claudiu.manoil@nxp.com, mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+	*      [score: 0.0000]
+Subject: Re: [PATCH 4/4] powerpc: remove orphaned MPC85xx kernel config
+ fragments.
+X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,10 +62,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, ruscur@russell.cc
+Cc: Li Yang <leoyang.li@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Accidentally added a bad auto-import, V2 sent
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230302225947.8108=
-3-1-bgray@linux.ibm.com/
+On Tue, 2023-02-21 at 22:49 +0100, Pali Roh=C3=A1r wrote:
+> On Tuesday 21 February 2023 16:29:32 Paul Gortmaker wrote:
+> > [Re: [PATCH 4/4] powerpc: remove orphaned MPC85xx kernel config
+> > fragments.] On 21/02/2023 (Tue 21:03) Pali Roh??r wrote:
+> >=20
+> > > On Tuesday 21 February 2023 14:46:37 Paul Gortmaker wrote:
+> > > > None of these have a reference anymore anywhere, such as like this:
+> > > >=20
+> > > > =C2=A0 arch/powerpc/Makefile:=C2=A0 $(call
+> > > > merge_into_defconfig,mpc85xx_base.config,\
+> > > >=20
+> > > > As such, we probably should just clean up and remove them.
+> > > >=20
+> > > > Cc: Scott Wood <oss@buserror.net>
+> > > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > > > Cc: Paul Mackerras <paulus@samba.org>
+> > > > Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+> > > > ---
+> > > > =C2=A0arch/powerpc/configs/85xx-32bit.config |=C2=A0=C2=A0 5 -
+> > > > =C2=A0arch/powerpc/configs/85xx-hw.config=C2=A0=C2=A0=C2=A0 | 139 -=
+-----------------------
+> > > > -
+> > > > =C2=A0arch/powerpc/configs/85xx-smp.config=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 2 -
+> > > > =C2=A03 files changed, 146 deletions(-)
+> > > > =C2=A0delete mode 100644 arch/powerpc/configs/85xx-32bit.config
+> > > > =C2=A0delete mode 100644 arch/powerpc/configs/85xx-hw.config
+> > > > =C2=A0delete mode 100644 arch/powerpc/configs/85xx-smp.config
+> > >=20
+> > > This change is likely going to break mpc85xx platform because defconf=
+ig
+> > > files includes all these files which you are going to remove. For
+> > > example in arch/powerpc/Makefile is:
+> > >=20
+> > > PHONY +=3D mpc85xx_smp_defconfig
+> > > mpc85xx_smp_defconfig:
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0$(call merge_into_def=
+config,mpc85xx_base.config,\
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A085xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw)
+> >=20
+> > OK, it seems you've answered a question for me.=C2=A0 That being "why d=
+idn't
+> > grep find a reference to these fragments?"
+> >=20
+> > It seems the ".config" extension is optional?
+>=20
+> I really do not know. (And I'm not sure if I want to know answer :D)
+
+It's not optional; you have to leave it off:
+
+# Used to create 'merged defconfigs'
+# To use it $(call) it with the first argument as the base defconfig
+# and the second argument as a space separated list of .config files to mer=
+ge,
+# without the .config suffix.
+define merge_into_defconfig
+...
+
+> > This seems inconsistent at best, to reference some files with the
+> > .config extension and others without it.=C2=A0 Not blaming you for that=
+,
+> > but it is probably something that needs looking into.
+>=20
+> I agree it is inconsistent. But it was there before I looked or touched
+> any powerpc code. So it looks like something which nobody wanted to
+> cleanup because "it works" and had no motivation.
+
+No, it's intentional to reduce verbosity.  If by "inconsistent" you're
+referring to mpc85xx_base.config, that argument sometimes refers to _defcon=
+fig
+files (i.e. the pseries targets which were the initial user of
+merge_into_config) so that argument can't autoappend .config.
+
+-Crystal
+
