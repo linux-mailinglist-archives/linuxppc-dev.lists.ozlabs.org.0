@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73B56A7E85
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 10:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D906A7E9B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 10:49:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PS5rL5vhcz3fQZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 20:48:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PS5sW68Gxz3fTy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Mar 2023 20:49:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=f5l6eWLU;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=aUycDY6R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::431; helo=mail-wr1-x431.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=f5l6eWLU;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=aUycDY6R;
 	dkim-atps=neutral
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS5qF0xl5z3fRM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 20:47:04 +1100 (AEDT)
-Received: by mail-wr1-x431.google.com with SMTP id q16so15907245wrw.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Mar 2023 01:47:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PS5rQ0hgSz3fW1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Mar 2023 20:48:05 +1100 (AEDT)
+Received: by mail-wr1-x435.google.com with SMTP id l25so15905425wrb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Mar 2023 01:48:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750421;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750483;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8G1o29Ga/UNTNJtY/6LksyBwTKom5lFj7gKfXcB8h4g=;
-        b=f5l6eWLUG26Tt1766JjI6+GInzRq5lOwonJqSgSnLvYw936TWJoY/k8LCTgJ0bfkJF
-         /sik1QE/lKik4wYpmelpWwyeaSPucJJe3LtOwmdgxeOqZMifyze3wQXcaEwnVHnCP8iI
-         uhTP6oBehvNs+Cq9TAu5oyX9Vr61Hg6hkYQJhCoxh8B3x+E2tjjKNdPaBlxqsIBA6ezp
-         DZWBusm4N21C0GYVueAYiVK6ByGTSyb/OuQDlMShYL/GtXpALshSesRtnYJRb8OPxeZX
-         E33mvg7vxn/lJGdB/iNyGNTrfDviw75Ua5B9SYEXBJXNoIAFOQ2EvY0Y2b9fZZBUzwZp
-         R52Q==
+        bh=eHW49K+JXovgrHDB/sHf8iD4ZzCoi5+3r8HKHXzfaII=;
+        b=aUycDY6R5Blvxn5QrHrge2eQMzpOJGy1SQgkohH7kfZg+4nkD2I1cJv+iJjAslEy+t
+         gXHSodwCtp4lnfGBPcq5o2XKzU7Lkp+/ZPCrkKZaFbMUGkku7rQ7I5Ur/UqnMSvlyAmi
+         TkH+ViZphas3kGoEHFF2e+vCiMUueSmxTqckQY2C7JhXbeNIQVcpoQQxV5G5eVThKvYY
+         UB4EgPrhcIdWLvBH3F+DNEtRDy41o7SqNDKc7Kgiq22gYv8uf1f7SL7fyRoeQ1MpckJ/
+         rewJFCj1A6M1CpaFAsOOzMQJSrcfhc0V007iGSrHIyXHRpsoDawYa6gdKkxx701pFO/M
+         +PMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677750421;
+        d=1e100.net; s=20210112; t=1677750483;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8G1o29Ga/UNTNJtY/6LksyBwTKom5lFj7gKfXcB8h4g=;
-        b=2qpKQIbX7IRjqdZ7x4OdE19jwZ1TgBqBB1G4nNJqSYKTyvTu9SyE74J5/dEgKwRXEO
-         u3t2uljR1XQx28ykoZ1HeMoQZ67oJwRWntO0KE7nKSfn/QlmehU720VtGp0sG1efewok
-         GjGOZttFlp6mSQJ2wzzAU6QuJ/SsaNsK/Oog8SFcHxcmkUDonNwfRAx1UOA8kP5IBdTS
-         z30Kh0KjAt1Ax7RrV78ohGeVB9Xyujs5E58TZosdmDzjzYdaMZZoGDaqC2ginjmSbqeL
-         n263QLbAhCEappTJAxf33KaMnpbwixtjVr55OvomHrrxTPWe2FLHMNQuYKjxeuZ54nOd
-         QxlA==
-X-Gm-Message-State: AO0yUKW5gEagCNkER4GOJu5l6OaVyWrNx6qBMseL3VSqk7gD3zIQMLCQ
-	+X3gVnFic8zKaLWlcezamZEz5A==
-X-Google-Smtp-Source: AK7set9J3h1SdWZFjFBk1kF/VV/+0cIiLPOiFxwZAoniEed5KnNwwwJqjyvLs0/w3Ko/NwUYEOVAHw==
-X-Received: by 2002:a5d:568d:0:b0:2c7:f56:28d9 with SMTP id f13-20020a5d568d000000b002c70f5628d9mr6805976wrv.54.1677750420888;
-        Thu, 02 Mar 2023 01:47:00 -0800 (PST)
+        bh=eHW49K+JXovgrHDB/sHf8iD4ZzCoi5+3r8HKHXzfaII=;
+        b=NTE/onlL+XBP/WJNbcnLZuUmawCbQAg+lzNW5a3bgw8uSIm9tPMwd3vk1DpwaW9ay7
+         669znRk8dB9auWvTm/uFMQVkMQ8b9Tid0EWo1W08d7201YeuHEdBPYR3gt66yg8Pu57E
+         zVTqX71ONE93i6uT0Opn5DjN5l5w8D7vDfh2GZxCJ9+VxWNiBl/1kCxwTt1BRixT8ONb
+         ghyne09lvuMApe0kGE1OtIRGaVGH6mR+TLigoHQFi8XvMK+1kr+NFkMJ4AgRe5ejuq0I
+         wsfHXyhG2lBAhu5uO/lS1E1RLWMenrbCOY2qlSw4jr390zxE6qwxuGT9g8J2lWy3oLvR
+         p5VQ==
+X-Gm-Message-State: AO0yUKUp+Dty/4v6EBNMUdnW7I09jDFVvbzvgWSTYdmxS1Fgj2oYWolI
+	Z40hgMedVgArgQLzJ9K4Ia1ZMQ==
+X-Google-Smtp-Source: AK7set/MG6zZulkr1z5TBx9S++TinXOiTherZtNLIOIxMrYGlsJS/201poTNHTSHELw/PYIdOC7kDA==
+X-Received: by 2002:adf:cd02:0:b0:2c7:f2f:e47 with SMTP id w2-20020adfcd02000000b002c70f2f0e47mr7729534wrm.22.1677750482792;
+        Thu, 02 Mar 2023 01:48:02 -0800 (PST)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id v7-20020a05600c444700b003eb0d6f48f3sm2536356wmn.27.2023.03.02.01.46.59
+        by smtp.gmail.com with ESMTPSA id i13-20020adfe48d000000b002c5539171d1sm15027734wrm.41.2023.03.02.01.48.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 01:47:00 -0800 (PST)
+        Thu, 02 Mar 2023 01:48:02 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Richard Henderson <richard.henderson@linaro.org>,
@@ -113,9 +113,9 @@ To: Jonathan Corbet <corbet@lwn.net>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v4 11/24] xtensa: Remove COMMAND_LINE_SIZE from uapi
-Date: Thu,  2 Mar 2023 10:35:26 +0100
-Message-Id: <20230302093539.372962-12-alexghiti@rivosinc.com>
+Subject: [PATCH v4 12/24] asm-generic: Remove COMMAND_LINE_SIZE from uapi
+Date: Thu,  2 Mar 2023 10:35:27 +0100
+Message-Id: <20230302093539.372962-13-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230302093539.372962-1-alexghiti@rivosinc.com>
 References: <20230302093539.372962-1-alexghiti@rivosinc.com>
@@ -132,57 +132,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Palmer Dabbelt <palmerdabbelt@google.com>, Palmer Dabbelt <palmer@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Palmer Dabbelt <palmerdabbelt@google.com>
 
 As far as I can tell this is not used by userspace and thus should not
-be part of the user-visible API.
+be part of the user-visible API.  Since <uapi/asm-generic/setup.h> only
+contains COMMAND_LINE_SIZE we can just move it out of uapi to hide the
+definition and fix up the only direct use in Loongarch.
 
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Link: https://lore.kernel.org/r/20210423025545.313965-1-palmer@dabbelt.com
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
- arch/xtensa/include/asm/setup.h      | 17 +++++++++++++++++
- arch/xtensa/include/uapi/asm/setup.h |  2 --
- 2 files changed, 17 insertions(+), 2 deletions(-)
- create mode 100644 arch/xtensa/include/asm/setup.h
+ Documentation/admin-guide/kernel-parameters.rst | 2 +-
+ arch/loongarch/include/asm/setup.h              | 2 +-
+ arch/sh/include/asm/setup.h                     | 2 +-
+ include/asm-generic/Kbuild                      | 1 +
+ include/{uapi => }/asm-generic/setup.h          | 0
+ include/uapi/asm-generic/Kbuild                 | 1 -
+ 6 files changed, 4 insertions(+), 4 deletions(-)
+ rename include/{uapi => }/asm-generic/setup.h (100%)
 
-diff --git a/arch/xtensa/include/asm/setup.h b/arch/xtensa/include/asm/setup.h
-new file mode 100644
-index 000000000000..5356a5fd4d17
---- /dev/null
-+++ b/arch/xtensa/include/asm/setup.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*
-+ * include/asm-xtensa/setup.h
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2001 - 2005 Tensilica Inc.
-+ */
-+
-+#ifndef _XTENSA_SETUP_H
-+#define _XTENSA_SETUP_H
-+
-+#define COMMAND_LINE_SIZE	256
-+
-+#endif
-diff --git a/arch/xtensa/include/uapi/asm/setup.h b/arch/xtensa/include/uapi/asm/setup.h
-index 5356a5fd4d17..6f982394684a 100644
---- a/arch/xtensa/include/uapi/asm/setup.h
-+++ b/arch/xtensa/include/uapi/asm/setup.h
-@@ -12,6 +12,4 @@
- #ifndef _XTENSA_SETUP_H
- #define _XTENSA_SETUP_H
+diff --git a/Documentation/admin-guide/kernel-parameters.rst b/Documentation/admin-guide/kernel-parameters.rst
+index 19600c50277b..2b94d5a42bd6 100644
+--- a/Documentation/admin-guide/kernel-parameters.rst
++++ b/Documentation/admin-guide/kernel-parameters.rst
+@@ -207,7 +207,7 @@ The number of kernel parameters is not limited, but the length of the
+ complete command line (parameters including spaces etc.) is limited to
+ a fixed number of characters. This limit depends on the architecture
+ and is between 256 and 4096 characters. It is defined in the file
+-./include/uapi/asm-generic/setup.h as COMMAND_LINE_SIZE.
++./include/asm-generic/setup.h as COMMAND_LINE_SIZE.
  
--#define COMMAND_LINE_SIZE	256
--
- #endif
+ Finally, the [KMG] suffix is commonly described after a number of kernel
+ parameter values. These 'K', 'M', and 'G' letters represent the _binary_
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 72ead58039f3..86c99b183ea0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,7 +7,7 @@
+ #define _LOONGARCH_SETUP_H
+ 
+ #include <linux/types.h>
+-#include <uapi/asm/setup.h>
++#include <asm-generic/setup.h>
+ 
+ #define VECSIZE 0x200
+ 
+diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
+index fc807011187f..ae09b1c29fd1 100644
+--- a/arch/sh/include/asm/setup.h
++++ b/arch/sh/include/asm/setup.h
+@@ -2,7 +2,7 @@
+ #ifndef _SH_SETUP_H
+ #define _SH_SETUP_H
+ 
+-#include <uapi/asm/setup.h>
++#include <asm-generic/setup.h>
+ 
+ /*
+  * This is set up by the setup-routine at boot-time
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 941be574bbe0..0fb55a119f54 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -49,6 +49,7 @@ mandatory-y += preempt.h
+ mandatory-y += rwonce.h
+ mandatory-y += sections.h
+ mandatory-y += serial.h
++mandatory-y += setup.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+ mandatory-y += softirq_stack.h
+diff --git a/include/uapi/asm-generic/setup.h b/include/asm-generic/setup.h
+similarity index 100%
+rename from include/uapi/asm-generic/setup.h
+rename to include/asm-generic/setup.h
+diff --git a/include/uapi/asm-generic/Kbuild b/include/uapi/asm-generic/Kbuild
+index ebb180aac74e..0e7122339ee9 100644
+--- a/include/uapi/asm-generic/Kbuild
++++ b/include/uapi/asm-generic/Kbuild
+@@ -20,7 +20,6 @@ mandatory-y += posix_types.h
+ mandatory-y += ptrace.h
+ mandatory-y += resource.h
+ mandatory-y += sembuf.h
+-mandatory-y += setup.h
+ mandatory-y += shmbuf.h
+ mandatory-y += sigcontext.h
+ mandatory-y += siginfo.h
 -- 
 2.37.2
 
