@@ -2,137 +2,137 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195B76A8DD4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 01:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AFE6A8E7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 02:05:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PSTKz6kcHz3cgx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 11:26:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PSVCH2zDsz3cQk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 12:05:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=of24h+1a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=aWL3YHfX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=2426d6b7e7=paul.gortmaker@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=of24h+1a;
+	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=aWL3YHfX;
 	dkim-atps=neutral
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSTJz6gspz3bdm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 11:25:37 +1100 (AEDT)
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 322NrPbe012186;
-	Fri, 3 Mar 2023 00:25:13 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSVBJ2YYHz3c65
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 12:04:54 +1100 (AEDT)
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3230Pw4g007926;
+	Fri, 3 Mar 2023 01:04:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=date : from : to :
  cc : subject : message-id : references : content-type : in-reply-to :
  mime-version; s=PPS06212021;
- bh=dFNmAfqW/MEbA0+zUaXfKrBZVY8niKsqL3/r66gBuOU=;
- b=of24h+1auylRC01XLXsQaRuNFmGvHg0/3MA4Vw8WscFdEHX49XXKSoGYa1yFsgjYc/2s
- xLQ1s/n5bBOl6EYuTQ3sejjctYDnDEh+IHUxnk5djezSRUGVr6du6v21iN+jbjKrJAXj
- MFWsXr2YgW71PRBaQaj4x/2nCtjcyHowDqDfDS3n3Rmhus4WrFB+uwRTPbuXkkSZLcnu
- IsTFp7M9FbWOW5A16LSLAV1pXBUrHbVRP2Xg6AyaVbCL0aUbOsFiwrVEG4/1erW6vs63
- KeXhe6WblUZanqK52RdMSQBZchu12TMvRQ37+a1WBhuyU30l/T4c7D+CrQno40DNF4jC DA== 
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2171.outbound.protection.outlook.com [104.47.57.171])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3nybnwp3ay-1
+ bh=lXS+bsL9EemQkXqWwMkUCleQQ7Jw945iRk4wQybKCOs=;
+ b=aWL3YHfXANGXqvFD/n5tEiUNUv1oazgN9IphJzzxMS3GZvBsLnJRPJqxkCk0Vpi26jvC
+ bmq5RmaUfVWXZuI0Xiz3xKgBcI3BVeIz4yODfas1v/eVNDXbLbesaVBJ7Df4bz9N+StV
+ Nxu3mhnVgiyj/er29rmMy7UZaEaHXQHKXlclkQ2Uhl4VUc/emha+wMcElXc00OHWwiu5
+ kNqQbFHLvIkbRLvIy3rEWLP6sMbmn5Z4aNHwrko6+SjT8IGXHnBBzhfhpAHqkhIhSlwr
+ 7MZYxWnvlZUZxVgvMd/SkGE4IdfHRmbv/bROByjDXjD3Xpk1Qu9UTO2wTvNUnQaWxDug mg== 
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3nybmke4w2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Mar 2023 00:25:13 +0000
+	Fri, 03 Mar 2023 01:04:39 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Kc/eYm4INT1ubX/Sd+6lekDoTvuUOmletF/w87YSgat7ovqqStMT69nUV+ssbmYf5JuYDQojf/jb7pTVdilwr2hTmbkFMJhR0FmFn7uYH9FlUNI7487s4rCYOyvJVFY+IT2aFHLhHzx+lEPQ8aaUAGhq3SZWgeFCt2J7JCVCYZw3v/35Gm+qQ9ssV5Gr88bcPRpDqT2qAklTlWrqPwEjs+Se21+P6ygbPUsV3EVr++0su1bcLYyWl83ibzsBYqasds06NOgN2JuELW13JFbdbGFg6YDrhL/7+VVGSKpEQg2BQloN5NCQMg4Xm3eTtmSdMQs+y7jyuwODFUSQGEO8cA==
+ b=akM6EOng9J++Jw8kxrh3YmFlw0am77yRq18EToc7xRpcgHdRe/9FGXshL6IX5l6n8KoUZbT6vV97nwSS72XPDbXusAJO3awW3mkup0ayYlb0ZuDPbBV2Eu8vzqfkAKyvXUb7ZkinPatYo79JGmmAn0t9HqAu/ve1eO/uQRHT1qXbbXQUGl19sbPidPFmzkNA6ogiKtAKC4QUtYisMugukINZYqv86VzMpYD5acKeYZB8kxAgFuZIC9V5bqr1oRwQN/wOz2dgae8EUTRVNJdT8DDiDnEW0ecVd2elh+J4J4t37KzPlq/0oClgbHiWLeer0yB4dZGFbX2sANd2uXiwOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dFNmAfqW/MEbA0+zUaXfKrBZVY8niKsqL3/r66gBuOU=;
- b=B2qYLJ98M6GbX6U3cOaTEOg6R2hxV+WxvrUsJ01ImEJpsTvgW9iAHhKSViYOMhgrUjWa8mG7hvesSM8rlvKxmrmHIm7+lXK39l07ccKhycJbrbAej/ow584G+fmtaYIpYbOmiigI//NRC1eDPMPzkrBaqMfmRsxYx/VHmTnJ1dAQqiisZCtHMgTXCfYZd8StvnxUdYLRnqZ6xOJfQ/m3K/mvI+uhrd1muBg0ADTDfkzGmVxvNqI4UMhQ/AmhV0iiy9gPNMGj1xnlU46j4oLIZQfj681bEdj/m9nzVZ0Y/NvgCAsVsypSxQWtMS4Uu4RVt1eIW9BtRXL40ieYjst3SQ==
+ bh=lXS+bsL9EemQkXqWwMkUCleQQ7Jw945iRk4wQybKCOs=;
+ b=UfwaEPyN1nitGfHUUnRQWq7WXZtA3MpFZTMMQ79mC33kTdHbcY8IKVQHY1oSTVF3sxZIF27SaBnlryp+icCPlyVjvpLbIDh3ruucKZiiTjd/lwgXJe5UNt+Q4NYGEzN5ED1um4z0jv0zR8zm/ypyhsJAwy0UYPU1/J6+a5mPuzM6xTh+h2McSlSq/dQArAgWeDxEmqW5k3OcghUTsgcwF3Y9IDJ8LkvEWGr5KC6rWiJiIGVeVVD4bzZwDL+PQUIbmYwh8kXYbi7FOs9tb8X0QSyr49nSfK5GrksOnawcGt3q1Cyf/WFqNktdmkfpWgepJVMx5Q1yNdvoP+WHnWF1Rw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 Received: from IA0PR11MB7378.namprd11.prod.outlook.com (2603:10b6:208:432::8)
- by DS7PR11MB7783.namprd11.prod.outlook.com (2603:10b6:8:e1::17) with
+ by SA1PR11MB6944.namprd11.prod.outlook.com (2603:10b6:806:2bb::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.19; Fri, 3 Mar
- 2023 00:25:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.18; Fri, 3 Mar
+ 2023 01:04:36 +0000
 Received: from IA0PR11MB7378.namprd11.prod.outlook.com
  ([fe80::d4bc:86a0:7a8b:3899]) by IA0PR11MB7378.namprd11.prod.outlook.com
  ([fe80::d4bc:86a0:7a8b:3899%9]) with mapi id 15.20.6156.019; Fri, 3 Mar 2023
- 00:25:11 +0000
-Date: Thu, 2 Mar 2023 19:25:04 -0500
+ 01:04:36 +0000
+Date: Thu, 2 Mar 2023 20:04:29 -0500
 From: Paul Gortmaker <paul.gortmaker@windriver.com>
-To: Crystal Wood <oss@buserror.net>
-Subject: Re: [PATCH 4/4] powerpc: remove orphaned MPC85xx kernel config
- fragments.
-Message-ID: <ZAE+YBeCB8ql/qrj@windriver.com>
-References: <20230221194637.28436-1-paul.gortmaker@windriver.com>
- <20230221194637.28436-5-paul.gortmaker@windriver.com>
- <20230221200308.gu3pwrg7layxzkpt@pali>
- <Y/U3vIKzkKJAc5iU@windriver.com>
- <20230221214930.35ttgzntv2vfwlo6@pali>
- <8f1b02433cbeb90fab982a0b5377e8558e4eb5d3.camel@buserror.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+Message-ID: <ZAFHnaSN6F5ZYTO5@windriver.com>
+References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
+ <AM0PR04MB6289FA528F76DDADB2BB0F958FA89@AM0PR04MB6289.eurprd04.prod.outlook.com>
+ <Y/o8bQz5CuRhdD8B@windriver.com>
+ <CADRPPNRTZmhEbS0Ts6iA7bmviT_C+caUkyFwJ5WGcN6q1rTORg@mail.gmail.com>
+ <1b9d4d586ae7bb5cddbb97fbc9ec7de1c475afee.camel@infinera.com>
+ <83565b97-8149-492e-8f22-e3722e659b98@app.fastmail.com>
+ <a1e955cb-f48d-4630-6c9d-2fb3e2212aff@csgroup.eu>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8f1b02433cbeb90fab982a0b5377e8558e4eb5d3.camel@buserror.net>
-X-ClientProxiedBy: BYAPR08CA0065.namprd08.prod.outlook.com
- (2603:10b6:a03:117::42) To IA0PR11MB7378.namprd11.prod.outlook.com
+In-Reply-To: <a1e955cb-f48d-4630-6c9d-2fb3e2212aff@csgroup.eu>
+X-ClientProxiedBy: BY5PR20CA0014.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::27) To IA0PR11MB7378.namprd11.prod.outlook.com
  (2603:10b6:208:432::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7378:EE_|DS7PR11MB7783:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8ac2dd1-12f9-49f3-a72e-08db1b7dbfbd
+X-MS-TrafficTypeDiagnostic: IA0PR11MB7378:EE_|SA1PR11MB6944:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53930903-3238-4d6c-e01e-08db1b8341be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	RdBY6ULwslVH23lYt6ptjdPiCX4LcdcaNlmFJ0YOsN/p/lPY5AcbBt8rCGHsyj+1sfCu6LqpvSsk79/euoftnQC2eaAR46UKTx0gcTTD3RRJVX/vspUjvQt0wFYJ4RYunoHUJdFhbyJJGYgDd5GZIEkLVap4WcBRd0+INlon8uqE+xY6IWx3uwc+5espm54PUqAdbDNSHYrvlf0mM8mI2FjtJ4GBu3b/BlYRdImw4MiX5HyjzODRHi3BbxKBQhWBbWp6hTwl6qmhS3lLfnu+yqk8P0YB4IOvWg+gwAU5E24A0LF7fWI2JS3U4gxDE0Jv6aOddl14iav/8QyAS3/V6Owu1U2hNjmqcbekocpWm53y8oc+/4NLatFt2VwTrq2IRutD1t0WtIEHmHRNJLHUoNQTQcehZg6IycBEbl8L0iVHnM6K+lCq/8LOVa6OdDJy39DNNPU2fFKxSML6E3tbScJS5sK3cVQabHYWvK2P3+I53hgs0h9q3XbP1z4AP9ztpVsaTHVflc2n3nn3nx0TW0q6vE7+TwjiseKlmo4Nix3exvmEc8krlGcsRkDKjOFBIKNPZe7RPk2q3SB8ngx4/9C8OmZmWKQ2rPwAKPwiNi0ap1dBCOtykt+WVsdiF1bMUdw5FXdc60VRnEh430Imyg==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7378.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(136003)(39850400004)(366004)(376002)(396003)(451199018)(86362001)(66556008)(36756003)(2616005)(8676002)(186003)(4326008)(66476007)(66946007)(6916009)(54906003)(8936002)(41300700001)(6512007)(478600001)(6486002)(5660300002)(6506007)(26005)(6666004)(316002)(38100700002)(83380400001)(44832011)(2906002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	6G+GQhvLpwEK+NIBxuJtVsS5ALGeuttbiIFT5rUpR1davxEopDjDq2RKHStHd55tqbFYMFH5YvrhMlvj5nL+Wp/z2R4sMTQ+Fs74nDDBj4r5f4hIhyiXegqtKRckiFyd9RqxR1MJbMa8wISSRAWb2zIpuEmbKvNzHQMdUjPKWx67XHbUaMvWbuch0dxUNTaRUfzrg5miqYBor+VCb2Gh0cda3uf+emhWERnauxOckfP6nTShYKmlGPcqMmDAZYi1jpPg67Wffi4PUKbsGwc0XGrkjT5ZRnJJda50vF2ZDbx525zwZuXZJSgZ32ybIDPDWYqUUiw6xMHCz4rQpW/Cd8NeOBSpK0avwGJexf8RJ7eRccPFxWJ7Rgyq1dtbfOKbuIWDYMM75gLR3PgatecIN8PeC8SIgH1tazm6gDfsNOc5vjXO+vS95XW2sIOLX/8Cmy0PGSrP08icEHN99rL7/+sHW6/+DJka+pbC6IqVhHpZykBDcklp+7TlaKYV1EykN1wNxHK1EGmMdhjQD5lGmKzRckkr59OBMzVqIHh6y00tDm5s9rXOtQy3luGQvmLC6n1LSaGOsXbaOa3RXnTw+omo5L2MrFi2mvJLZ3slr54MYQ8EGFX6EtDn9PBl0aCUtsyaIm2P99Lr3QKrrO/RFVr8eywgaWTHq9AHQbdBPF/cIkU43RGhFPDlM6t1IndR
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7378.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(39850400004)(136003)(346002)(366004)(451199018)(6486002)(5660300002)(66476007)(4326008)(83380400001)(36756003)(8936002)(41300700001)(66946007)(2906002)(66556008)(8676002)(316002)(44832011)(38100700002)(6916009)(26005)(6506007)(6512007)(186003)(6666004)(2616005)(86362001)(54906003)(478600001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/FauhhMnPNb/nOzkX8yGlgoG5Fmrq6Qi0skYuPHKTyNaxUyYDAmxF9VBFu6Y?=
- =?us-ascii?Q?uxKN3gTjgnMbEOT27M4b7rCXPVAflQenDa6voepE/QpeNATyZYkRQ8+p7Qbm?=
- =?us-ascii?Q?X9RgD5POzGbaFae1XE5G89vCllgnYRDayZg2fLBhqwKnvCvjLbA5HqS1MKNK?=
- =?us-ascii?Q?ttan3bKQg4da9vFIqCI7poC9Hy/K2Km6ayRMEshv0+tAeYg/PzKXuhVthtXH?=
- =?us-ascii?Q?QGUWUNJI7hDaq5Gl/PwduGtbgFvj5EIvVWARfe1Mrwnx7GIzSsA7oQP8prMA?=
- =?us-ascii?Q?HfcyhO7cCkI+zXeGzHf9X8he+uG6xY3mF8pxqA+Rw6YlcpptpqmHXgDCeF/M?=
- =?us-ascii?Q?OGDUbH1SvONFyj9tT48b7iRsx5gvQhy0LWJ3SleUx0Vl8io0hrBX1awXkofO?=
- =?us-ascii?Q?GD72ygvlq7mngh8Ja7rstL5EJiokHACFF3EwnYRhQhlXEfNgJ3fmG2FWKoMC?=
- =?us-ascii?Q?LY5eDEpLbHRQm48Wtlmr/obJ6MDO4OWF/GOcJwKJNwuAEYpyqnjoHUc32j3D?=
- =?us-ascii?Q?achG+TjaDomP57G9YdVOYvDsmuBMFer+1/i9uqRYQfFcoUrjV1AJKjmMldMH?=
- =?us-ascii?Q?I6txBHFMliDFAdrfZIVIQM6IxF1O5eGqNmUHfqzq8wOnmX4QQyd4IZzCbdKr?=
- =?us-ascii?Q?/S5BBfImdnR0EguNfl41TM6vzDDFYOPyTyz+IZqpryK88lSbp1ogBAyFW/fi?=
- =?us-ascii?Q?gT64mldsrbR2MGhJUEpocahRrdaLxXgBCFTcSlC7ths9djHCPOZ2GABhzOD7?=
- =?us-ascii?Q?SP+QW1IlMYdIxotk/fjkz2H2P9bCFlxZiYDvSQfrEwRoIAESirkuVrq+lNKS?=
- =?us-ascii?Q?ouM7s/3FyAkJJFJ+gF3r82k0hga9iPOZl/2D2QH3zAQIzrikr6okUr+yYqvs?=
- =?us-ascii?Q?7HPLiqil817ZeLfqLDrEIR28trUD6QHE+vqBRQfxiSHvyiRiFxwKVYAHK81L?=
- =?us-ascii?Q?LLu2MJUk3iI/kkL3j3N+LNbYtKQldF/gVjRsWoqN/NQH1jilXBAtVWYztP7M?=
- =?us-ascii?Q?SGPNMmYlxFxcXHHAwlWaF/JoBv39ap12G8ATTmWQVCtlFpjMnkg7ncwRnGIm?=
- =?us-ascii?Q?90OVRODhR5WWChzlAAOxPu8niK4TyVL5JlcU3nlqSqjBlYOAZQYjwc32c2/4?=
- =?us-ascii?Q?pnC1dMsJp1qUUKCPeVqSg3WnbX1gsSCT4tLIqG/3pMM1zLNFTfme1e20htwB?=
- =?us-ascii?Q?jQYc9j3EsR5aQuUE3Qa5femINRSKIX8v7iu8LY6WERKZQckmN/U4nPBBYhrM?=
- =?us-ascii?Q?UF7tLo/0zo7mBVf8H3pUykjZ622+KU7+Knr9BZBaiXgcdGeaH1fJySg0h+Jy?=
- =?us-ascii?Q?3IR1HUC/EdJYEXXivMowZvRyNPmB1RxFbsoczfw8qynRmUvauc9KALxdQ62N?=
- =?us-ascii?Q?mC5jrMuE3iPKnGlBIRG56VI+6wHFSU0UK1xArvndF9ge9YHjFvbo+Ufl6DQW?=
- =?us-ascii?Q?UeDtOqBazHdMzFboOVu3wgVZa34dnn3cQPYD3Rv3sMUvagENaL7RiAByhElX?=
- =?us-ascii?Q?Qm/MnrCEZwQyJFsrXLQhhnXbzscwFQEjT0u+xEOrEmY7dkpm4AQYA36aaT34?=
- =?us-ascii?Q?d7R8s4Bn2SbiWoOLm1RyplKfJXdt2JomlO+z/IRRbYnbt4T7jW9fo6XbPaO5?=
- =?us-ascii?Q?cN5ql24ZuzY3NVRzJuKna0M=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?yhRqvYOIZMJr1gn+iNnCr1nTbi9ld8at/K4NE8yyo19xtm47E//vvyeOnttA?=
+ =?us-ascii?Q?epDdzinzkzQmT4kgxIxAIHWbY88WiLetRPhpiqccib5tP+vjbIYxp5fFeIxW?=
+ =?us-ascii?Q?COjPLWvOB5Aafnf6LdnMaShnqUmekeIH67HZpWPqQFQe3LYcLt08odpuGKQN?=
+ =?us-ascii?Q?hsFw3ymAoaZRHNHwbp7zUonnv9Ee005A2+jDJORuytsKR1hn2K48IctgcZUf?=
+ =?us-ascii?Q?RyYkihFIhgKCx52YxFS7UsfH6ceOOkg+i4odseOKt8//YaatXuRj5qrsrLLl?=
+ =?us-ascii?Q?IIkYpOycQosjFXnEUQN+wv0P1v0Y0+C4SiOA+zUkyJT1+dOOcmv61s8M/Zbo?=
+ =?us-ascii?Q?BMzAyiM8IenMjdyiUBMwSm6ifjJPLfDQ4UquIX0CniTozdkm1bjXcGe+CE0R?=
+ =?us-ascii?Q?eSd6lHrLzeL+CcziKCjBvR69eAQp8NMcTU4F5uEOU1bKOoq8wbkIFC9PGmPA?=
+ =?us-ascii?Q?zsdJQcXlGvYEQ6is6B/bTEbOIbGi0+VhCbEfo5g+pRaqg53/TGxYXeuwGahp?=
+ =?us-ascii?Q?+d88RFYkVE0vRLEnkMR5sXCi5eOGSKUszHYVJjk6rVTTZG+cLTO+uudV5SsY?=
+ =?us-ascii?Q?CaIPfeD9h2epvAhAnT3RoS9k4YnTfC5lfNoij2k/isnQb4ikutLEqSKI8Xhl?=
+ =?us-ascii?Q?tMa3i9MSg+tEukzaR2Ud7Gu2/oZjxY9URgTlefsiwiZyPZVShEPK16G55qXD?=
+ =?us-ascii?Q?qXaVQ/VybngWSNL50dzKbrLueYr6k571Wy6inW+UtTz5fdgi6lRKSC+3PJ75?=
+ =?us-ascii?Q?+RDK+nkzsd975oGv6Gwyq6wUujlitYTIDo8zYOczqdjo0QyCMMUD/bDNmrnm?=
+ =?us-ascii?Q?JSKnAtbBZRm7azlHrCtryWNQMyc7x8LUzwO9DqwgY/XSMQxZJZ3qn+dnzIDN?=
+ =?us-ascii?Q?DLYyDc2nSd/PP4B/kyANfwilSyKbCtcQmWSwNj4xb0GQA2gUQG8mSPQymQzN?=
+ =?us-ascii?Q?U2+UdDLCp1thz3n2oVRFDmGynTgAJqqaZ+45hHEcpZ8/OS3U3fgbzK0kgamA?=
+ =?us-ascii?Q?oV3z5wylNoQcQ518+gtRzwO70WGH5/iaFe6atZLn/C2a3zUE5IusxmVaCSC5?=
+ =?us-ascii?Q?gRoFLTHhMoiBgYTjjASidNWuw59itCpG54hjCWVvh7C8KpQ0QhIljAZmE877?=
+ =?us-ascii?Q?pbiEaE4AHM/WQnNAvo1RVhOVIKPUZG36G33kWmr5WMDs+vOd/+1CDnGXUpqe?=
+ =?us-ascii?Q?rir4kNpLc+NIki9fmOn7aXRKEFbbFUyPqH8zC00Sd/8k8Z67Br3D59MYR08h?=
+ =?us-ascii?Q?CKwDtQZYEwM/i36Cs4gmoJWPYKgjuiTMbeuRec7R2KQAfixH6PJo7Xfnq6NA?=
+ =?us-ascii?Q?6a1vbIHKr6+bR8b6XSlNBsvv//UX3OQKXQ8gw5joNQHwKxaQkQV4C76bq0O+?=
+ =?us-ascii?Q?B0fb3wnYR+/46qCwdt11cVgnDRGxigk9Ax/kv//ailVL5FfnRLlV7ZHyt8Q9?=
+ =?us-ascii?Q?1Koow7OkfHar8md7TtapO57l0Xwq0glWTH4lylMsrZPGH8SCv6aW1uZ0Vvgb?=
+ =?us-ascii?Q?hWr5hgZ+YsI7wmA02B+WTFAQAzk1k8U7f8d6Y/ccbfRsEgUINFmtWyTuE5m9?=
+ =?us-ascii?Q?KEur+ubOrgiOvvLowJ9bzwOE2jIatkAREvgr74GzziY9TldUixi2sDM6enCc?=
+ =?us-ascii?Q?Q9LY3UNwIHO6dgbRc+919as=3D?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8ac2dd1-12f9-49f3-a72e-08db1b7dbfbd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53930903-3238-4d6c-e01e-08db1b8341be
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7378.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2023 00:25:10.6984
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2023 01:04:36.2751
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rH3oY3eR6Qxo/QJJr01BazbKbcjuCo25ivMG23ZY+MOpNR+88MIkGf4u5YBr4sqq1Ku8XQY7DBRvkBcR3vetqC6sFAm5NY23ac53Sa2zAN4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7783
-X-Proofpoint-ORIG-GUID: rnhknrscX_ZGB0hhyDxN649ACQVmuBA_
-X-Proofpoint-GUID: rnhknrscX_ZGB0hhyDxN649ACQVmuBA_
+X-MS-Exchange-CrossTenant-UserPrincipalName: WAbUJp+QT3w43Cx8eHks+ITZDQCjBHuQcWWLXoySWgoq8xXEAdMuZcZUN48nsJCqqJpWn18A27F83h6mOLGogQO+zbhBpW4EF9+5IuGiZo8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6944
+X-Proofpoint-GUID: ixua-XVIZvC8GqEOO2nDvig4XdM9TOKH
+X-Proofpoint-ORIG-GUID: ixua-XVIZvC8GqEOO2nDvig4XdM9TOKH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-02_15,2023-03-02_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 mlxlogscore=512 mlxscore=0 phishscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303030001
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ suspectscore=0 phishscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1011 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303030005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,92 +144,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pali Roh?r <pali@kernel.org>, Li Yang <leoyang.li@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Leo Li <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[Re: [PATCH 4/4] powerpc: remove orphaned MPC85xx kernel config fragments.] On 02/03/2023 (Thu 17:30) Crystal Wood wrote:
+[Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms] On 01/03/2023 (Wed 14:23) Christophe Leroy wrote:
 
-> On Tue, 2023-02-21 at 22:49 +0100, Pali Roh??r wrote:
-> > On Tuesday 21 February 2023 16:29:32 Paul Gortmaker wrote:
-> > > [Re: [PATCH 4/4] powerpc: remove orphaned MPC85xx kernel config
-> > > fragments.] On 21/02/2023 (Tue 21:03) Pali Roh??r wrote:
-> > > 
-> > > > On Tuesday 21 February 2023 14:46:37 Paul Gortmaker wrote:
-> > > > > None of these have a reference anymore anywhere, such as like this:
-> > > > > 
-> > > > > ?? arch/powerpc/Makefile:?? $(call
-> > > > > merge_into_defconfig,mpc85xx_base.config,\
-> > > > > 
-> > > > > As such, we probably should just clean up and remove them.
-> > > > > 
-> > > > > Cc: Scott Wood <oss@buserror.net>
-> > > > > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > > > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > > > > Cc: Paul Mackerras <paulus@samba.org>
-> > > > > Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-> > > > > ---
-> > > > > ??arch/powerpc/configs/85xx-32bit.config |???? 5 -
-> > > > > ??arch/powerpc/configs/85xx-hw.config?????? | 139 ------------------------
-> > > > > -
-> > > > > ??arch/powerpc/configs/85xx-smp.config???? |???? 2 -
-> > > > > ??3 files changed, 146 deletions(-)
-> > > > > ??delete mode 100644 arch/powerpc/configs/85xx-32bit.config
-> > > > > ??delete mode 100644 arch/powerpc/configs/85xx-hw.config
-> > > > > ??delete mode 100644 arch/powerpc/configs/85xx-smp.config
-> > > > 
-> > > > This change is likely going to break mpc85xx platform because defconfig
-> > > > files includes all these files which you are going to remove. For
-> > > > example in arch/powerpc/Makefile is:
-> > > > 
-> > > > PHONY += mpc85xx_smp_defconfig
-> > > > mpc85xx_smp_defconfig:
-> > > > ????????????????$(call merge_into_defconfig,mpc85xx_base.config,\
-> > > > ????????????????????????????????85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw)
-> > > 
-> > > OK, it seems you've answered a question for me.?? That being "why didn't
-> > > grep find a reference to these fragments?"
-> > > 
-> > > It seems the ".config" extension is optional?
+> 
+> 
+> Le 28/02/2023 ?? 18:51, Arnd Bergmann a ??crit??:
+> > On Tue, Feb 28, 2023, at 11:03, Joakim Tjernlund wrote:
+> >> On Mon, 2023-02-27 at 14:48 -0600, Li Yang wrote:
+> >>>>>>
+> >>>>>> Here, we remove the MPC8548E-MDS[1], the MPC8360E-MDS[2], the
+> >>>>>> MPC837xE-MDS[3], and the MPC832x-MDS[4] board support from the kernel.
+> >>>>>>
+> >>>>>> There will still exist several e300 Freescale Reference Design System (RDS)
+> >>>>>> boards[5] and mini-ITX boards[6] with support in the kernel.  While these
+> >>>>>> were more of a COTS "ready to deploy" design more suited to hobbyists, it
+> >>>>>> probably makes sense to consider removing these as well, based on age.
+> >>>>>
+> >>>>> These boards are mass market boards that sold in larger amount and are much more likely to still be used.  We would suggest we keep them for now.
+> >>
+> >> Agreed, the RDS design is still used here.
 > > 
-> > I really do not know. (And I'm not sure if I want to know answer :D)
-> 
-> It's not optional; you have to leave it off:
-> 
-> # Used to create 'merged defconfigs'
-> # To use it $(call) it with the first argument as the base defconfig
-> # and the second argument as a space separated list of .config files to merge,
-> # without the .config suffix.
-> define merge_into_defconfig
-> ...
-> 
-> > > This seems inconsistent at best, to reference some files with the
-> > > .config extension and others without it.?? Not blaming you for that,
-> > > but it is probably something that needs looking into.
+> > Can you elaborate what the typical kernel upgrade schedule for
+> > these boards?
 > > 
-> > I agree it is inconsistent. But it was there before I looked or touched
-> > any powerpc code. So it looks like something which nobody wanted to
-> > cleanup because "it works" and had no motivation.
+> > Note that for the debate about dropping the machines from future
+> > kernels, it does not really matter how many remaining users there
+> > are or how many boards get sold. The only question is whether
+> > someone is still planning to provide upgrades to kernels later
+> > than linux-6.3 in the future.
+> > 
+> > It sounds like there are commercial requirements for validating
+> > and distributing kernel upgrades (in addition to hobbyist uses), so
+> > I would expect that whoever is paying for the upgrades has a clear
+> > plan for how much longer they are going to do that, or at least
+> > a some idea of how many of the previous LTS kernels (5.10, 5.15,
+> > 6.1) ended up actually getting shipped to users.
+> > 
+> > It may be worth pointing out that the official webpage for
+> > the MPC8313ERDB board in the example only lists a hilariously
+> > outdated BSP kernel based on a patched linux-2.6.23 release,
+> > so maybe the marketing team can change that to point to the
+> > latest validated LTS kernel instead.
 > 
-> No, it's intentional to reduce verbosity.  If by "inconsistent" you're
-> referring to mpc85xx_base.config, that argument sometimes refers to _defconfig
-> files (i.e. the pseries targets which were the initial user of
-> merge_into_config) so that argument can't autoappend .config.
+> Let me present things in a slightly different way.
+> 
+> My company has designed and manufactured and sold communication systems 
+> embedding three types of boards:
+> - First generation, with MPC 866, designed around 2002.
+> - Second generation, with MPC 885, designed around 2010.
+> - Third generation, with MPC 8321, designed around 2014.
+> 
+> When NXP announced end of life of MPC 866 and 885, we bought enough CPUs 
+> to be able to produce boards for the 10 following years so we still 
+> produce some.
+> 
+> MPC 8321 is still in production.
+> 
+> All those boards are used in critical systems where we have a customer 
+> requirement to keep all software including U-boot and Linux kernel up to 
+> date, for IT security reason mainly.
 
-Thanks for the detailed explanation.  As I believe I said elsewhere, I
-wouldn't be submitting this change once I understood the use case.  Plus
-it wasn't significant in reducing our overall maintain/build/boot kernel
-overhead in v6.4+ in linux-next etc.  --- as that was the real goal here.
+Firstly, thank you for the detailed reply - I totally appreciate how
+framing things with this detail was not without effort on your part.
 
-I deleted our various BSPs years ago because I didn't think it was fair
-or reasonable to expect other people to update/carry them on our behalf.
+And your reasons for updating u-boot and the kernel are also valid.
 
-I would hope that is a statement that everyone could get behind.
+> Until now, the boards were delivered with kernel 4.14, with is due to 
+> EOL early next year.
+> At the moment we are working on upgrading to mainline kernel with the 
+> target being to be able to upgrade our customers to next LTS kernel at 
+> the begining of 2024.
+> 
+> Note that because our kernel code is prehistoric, it is not mergeable to 
+> mainline. Not because of licence issues but because the code is just not 
+> following at all linux standard. So our boards are not in mainline. Two 
+> of them are in U-boot and the third one should soon be as well.
+> 
+> So, to come back about the RDB boards, we have a couple of MPC 885 ADS 
+> and a couple of MPC 8321 RDB. They are reference boards and we always 
+> check that a given kernel version properly runs on them before starting 
+> to port it to our hardware.
 
-Thanks,
+Just as a reminder - I only mentioned RDB "for consideration".  None of
+the RDB platforms were removed in this series.  I don't want people to
+inadvertently conflate the two.
+
+> Hope it clarifies how those reference boards are used.
+
+It was really useful input and gave an insight into how things get used.
+
+But let me put a slightly different slant on things.  If there is no
+maintainer for the platform/architecture/CPU, then where is the
+obligation for mainline to keep it up to date just for your company to
+use the code/BSP as a reference?
+
+Do they continue to do this for one more year, or three or ...  ???
+Does someone list themselves in MAINTAINERS for arch/powerpc/83xx ?
+
+Let us put that aside for now.  I've worked with linux-next for decade+
+and have a pretty good idea how all that "upstream stuff" works.
+
+If you have custom out-of-tree BSP and are interested in how upstream
+changes impact it, you should have nightly builds pulling down
+linux-next and applying your changes and finding when things break.
+
+If you see change 0123abcdef breaks boot on your platform, you have a
+legit voice to gripe about it right then and there.  Don't wait!!!
+
+If you instead try and jump from v4.14 to v6.1 in one step, and then 
+expect people to bisect on your behalf -- well good luck.
+
+The same applies to RDB boards - doesn't matter if they are in tree or
+support is applied manually.  If they are of interest to you, then track
+and test regularly.  It will save you a whole lot of bisect effort.
+
+Hope this helps,
 Paul.
 --
 
 > 
-> -Crystal
-> 
+> Christophe
