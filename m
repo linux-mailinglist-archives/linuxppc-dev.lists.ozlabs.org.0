@@ -2,88 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1876A93C1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 10:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0C96A953A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 11:29:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PSjBM2mYFz3f3Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 20:20:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PSkk30c0Cz3f3W
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Mar 2023 21:29:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j2b5M/qb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1ZSam3N;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1ZSam3N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j2b5M/qb;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1ZSam3N;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1ZSam3N;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSj9P1658z303P
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 20:19:52 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3238Jfdk019838;
-	Fri, 3 Mar 2023 09:19:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
- content-transfer-encoding : mime-version : subject : message-id : date :
- cc : to; s=pp1; bh=WT2ifIJXWR95oPt0gKQfOWQIsdk9yTznXhe7j7oYAxY=;
- b=j2b5M/qbrJJpqr9JnoFaAGZfBl/OFlrOEboCbgfT/ZUQeSo3JtFBqDBxWuFxLszPDH7x
- GuVeOETCee600bQm2CjSkdZ/3M1kbE9Dabn2UVtphiSnJjHNst9VDXtg2Rqdqg791iSL
- cTyZ5iG4neF+nGkvEVUBXTI66xKcA+qbX3uBHhFmn6u1MQi7ug4+TBuRH2E1eNl/IF6G
- bWJnRiQsODaDDjZ9UB45f8GeiWp7cGd2XDjxt+EF3bu7cawTr7lr14Opf5mSq4x8A1bT
- oGSKbgoUIxOSBVco3YkN7ruMzDUFxj0YPugAvmXhBk5gkVTpbRGN+z2/nA7FBbw/f2RA 3A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p3d9p9hr7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Mar 2023 09:19:46 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3238JnlC019963;
-	Fri, 3 Mar 2023 09:19:46 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p3d9p9hqc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Mar 2023 09:19:46 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 322GNDQU019309;
-	Fri, 3 Mar 2023 09:19:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3nybab56m3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Mar 2023 09:19:43 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3239JfXP52232698
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 3 Mar 2023 09:19:41 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1898D2004F;
-	Fri,  3 Mar 2023 09:19:41 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54F1420043;
-	Fri,  3 Mar 2023 09:19:40 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.96.50])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  3 Mar 2023 09:19:40 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
-Subject: Selftests powerpc/primitives test hangs (linux-next)
-Message-Id: <842502FB-F99C-417C-9648-A37D0ECDC9CE@linux.ibm.com>
-Date: Fri, 3 Mar 2023 14:49:29 +0530
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oBvU-ziu51cmWW7JiMXFdtYVW2I3FL9c
-X-Proofpoint-ORIG-GUID: uBRqe-uy61Dw-P32rjE8X1PDaZBhASz7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-03_01,2023-03-02_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- clxscore=1011 mlxlogscore=762 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303030081
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PSkj35MtMz3ccs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Mar 2023 21:28:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677839331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yopmX6MDTRKlcNmu9WG5Rv8YrLrJS47N2LsvKHp9hMg=;
+	b=d1ZSam3NCMUDZlRxUttTeHptzYWFxBRTBmOyWflYp0vlSlgR8w8ha0NDrQCYKVepZUskg/
+	r4FBepWXeQ1uCpYygIve4tn7KuNxB4+70qSFzQEkWOQ4Ys0izXry27b4vjdf9Fc8ZrO9Qc
+	qmzMVQxkvJsN3V9rwZK4EVtQGkDPRJU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1677839331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yopmX6MDTRKlcNmu9WG5Rv8YrLrJS47N2LsvKHp9hMg=;
+	b=d1ZSam3NCMUDZlRxUttTeHptzYWFxBRTBmOyWflYp0vlSlgR8w8ha0NDrQCYKVepZUskg/
+	r4FBepWXeQ1uCpYygIve4tn7KuNxB4+70qSFzQEkWOQ4Ys0izXry27b4vjdf9Fc8ZrO9Qc
+	qmzMVQxkvJsN3V9rwZK4EVtQGkDPRJU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-595-xP6UApinMKagTPm--UP9rw-1; Fri, 03 Mar 2023 05:28:48 -0500
+X-MC-Unique: xP6UApinMKagTPm--UP9rw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E57285A5A3;
+	Fri,  3 Mar 2023 10:28:47 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-13-150.pek2.redhat.com [10.72.13.150])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E2FBCC16900;
+	Fri,  3 Mar 2023 10:28:34 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v3 2/2] arch/*/io.h: remove ioremap_uc in some architectures
+Date: Fri,  3 Mar 2023 18:28:17 +0800
+Message-Id: <20230303102817.212148-3-bhe@redhat.com>
+In-Reply-To: <20230303102817.212148-1-bhe@redhat.com>
+References: <20230303102817.212148-1-bhe@redhat.com>
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,20 +79,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Laurent Dufour <ldufour@linux.ibm.com>, surenb@google.com
+Cc: linux-arch@vger.kernel.org, Baoquan He <bhe@redhat.com>, arnd@arndb.de, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, hch@infradead.org, linux-mm@kvack.org, mcgrof@kernel.org, geert@linux-m68k.org, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While running powerpc/primitives selftests, the test =
-(load_unaligned_zeropad)
-hangs indefinitely. This behaviour is seen with linux-next =
-6.2.0-next-20230303
-on a Power10 logical partition.
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-Git bisect points to following commit
+Here, remove the ioremap_uc() definition in architecutures other
+than x86 and ia64. These architectures all have asm-generic/io.h
+included and will have the default ioremap_uc() definition which
+returns NULL.
 
-commit 169db3bb460903443e25ac9c0737da45d6bb5402
-   powerc/mm: try VMA lock-based page fault handling first
+Note: This changes the existing behaviour and could break code
+calling ioremap_uc(). If any ARCH meets this breakage and really
+needs a specific ioremap_uc() for its own usage, one ioremap_uc()
+can be added in the ARCH.
 
-- Sachin
+Link: https://lore.kernel.org/all/20191112105507.GA7122@lst.de/#t
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+
+---
+ Documentation/driver-api/device-io.rst | 14 +++++++++-----
+ arch/alpha/include/asm/io.h            |  1 -
+ arch/hexagon/include/asm/io.h          |  3 ---
+ arch/m68k/include/asm/kmap.h           |  1 -
+ arch/mips/include/asm/io.h             |  1 -
+ arch/parisc/include/asm/io.h           |  2 --
+ arch/powerpc/include/asm/io.h          |  1 -
+ arch/sh/include/asm/io.h               |  2 --
+ arch/sparc/include/asm/io_64.h         |  1 -
+ 9 files changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/Documentation/driver-api/device-io.rst b/Documentation/driver-api/device-io.rst
+index 4d2baac0311c..12c2ebbaa41e 100644
+--- a/Documentation/driver-api/device-io.rst
++++ b/Documentation/driver-api/device-io.rst
+@@ -408,11 +408,15 @@ functions for details on the CPU side of things.
+ ioremap_uc()
+ ------------
+ 
+-ioremap_uc() behaves like ioremap() except that on the x86 architecture without
+-'PAT' mode, it marks memory as uncached even when the MTRR has designated
+-it as cacheable, see Documentation/x86/pat.rst.
+-
+-Portable drivers should avoid the use of ioremap_uc().
++ioremap_uc() will be obsoleted since it's only expected on x86 and ia64.
++X86 non-PAT system marks memory as uncached even when the MTRR has designated
++it as cacheable in ioremap_uc()(see Documentation/x86/pat.rst). Ia64 system
++need check if attributes match, otherwise fails. Other than these two
++architectures, ioremap_uc() will default to NULL. Any architectures which
++meets breakage by ioremap_uc() returning NULL should provide a specific
++implementation to override the default version.
++
++Portable drivers should avoid the use of ioremap_uc(), use ioremap() instead.
+ 
+ ioremap_cache()
+ ---------------
+diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
+index 7aeaf7c30a6f..076f0e4e7f1e 100644
+--- a/arch/alpha/include/asm/io.h
++++ b/arch/alpha/include/asm/io.h
+@@ -308,7 +308,6 @@ static inline void __iomem *ioremap(unsigned long port, unsigned long size)
+ }
+ 
+ #define ioremap_wc ioremap
+-#define ioremap_uc ioremap
+ 
+ static inline void iounmap(volatile void __iomem *addr)
+ {
+diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+index dcd9cbbf5934..b9847472f25c 100644
+--- a/arch/hexagon/include/asm/io.h
++++ b/arch/hexagon/include/asm/io.h
+@@ -176,9 +176,6 @@ static inline void writel(u32 data, volatile void __iomem *addr)
+ #define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | \
+ 		       (__HEXAGON_C_DEV << 6))
+ 
+-#define ioremap_uc(addr, size) ioremap((addr), (size))
+-
+-
+ #define __raw_writel writel
+ 
+ static inline void memcpy_fromio(void *dst, const volatile void __iomem *src,
+diff --git a/arch/m68k/include/asm/kmap.h b/arch/m68k/include/asm/kmap.h
+index 4efb3efa593a..b778f015c917 100644
+--- a/arch/m68k/include/asm/kmap.h
++++ b/arch/m68k/include/asm/kmap.h
+@@ -25,7 +25,6 @@ static inline void __iomem *ioremap(unsigned long physaddr, unsigned long size)
+ 	return __ioremap(physaddr, size, IOMAP_NOCACHE_SER);
+ }
+ 
+-#define ioremap_uc ioremap
+ #define ioremap_wt ioremap_wt
+ static inline void __iomem *ioremap_wt(unsigned long physaddr,
+ 				       unsigned long size)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 6756baadba6c..da0a625c3c6d 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -167,7 +167,6 @@ void iounmap(const volatile void __iomem *addr);
+  */
+ #define ioremap(offset, size)						\
+ 	ioremap_prot((offset), (size), _CACHE_UNCACHED)
+-#define ioremap_uc		ioremap
+ 
+ /*
+  * ioremap_cache -	map bus memory into CPU space
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 366537042465..48630c78714a 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -132,8 +132,6 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
+ 
+ #define ioremap_wc(addr, size)  \
+ 	ioremap_prot((addr), (size), _PAGE_IOREMAP)
+-#define ioremap_uc(addr, size)  \
+-	ioremap_prot((addr), (size), _PAGE_IOREMAP)
+ 
+ #define pci_iounmap			pci_iounmap
+ 
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 978d687edf32..7873fc83c82c 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -863,7 +863,6 @@ void __iomem *ioremap_wt(phys_addr_t address, unsigned long size);
+ #endif
+ 
+ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
+-#define ioremap_uc(addr, size)		ioremap((addr), (size))
+ #define ioremap_cache(addr, size) \
+ 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
+ 
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index b3a26b405c8d..12a892804082 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -278,8 +278,6 @@ unsigned long long poke_real_address_q(unsigned long long addr,
+ 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
+ #endif /* CONFIG_MMU */
+ 
+-#define ioremap_uc	ioremap
+-
+ /*
+  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+  * access
+diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
+index 9303270b22f3..d8ee1442f303 100644
+--- a/arch/sparc/include/asm/io_64.h
++++ b/arch/sparc/include/asm/io_64.h
+@@ -423,7 +423,6 @@ static inline void __iomem *ioremap(unsigned long offset, unsigned long size)
+ 	return (void __iomem *)offset;
+ }
+ 
+-#define ioremap_uc(X,Y)			ioremap((X),(Y))
+ #define ioremap_wc(X,Y)			ioremap((X),(Y))
+ #define ioremap_wt(X,Y)			ioremap((X),(Y))
+ static inline void __iomem *ioremap_np(unsigned long offset, unsigned long size)
+-- 
+2.34.1
 
