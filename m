@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7186AA932
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Mar 2023 11:37:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BA36AA935
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Mar 2023 11:38:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PTLrP1xNBz3chj
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Mar 2023 21:37:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PTLsj34Lyz3fQp
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Mar 2023 21:38:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PTLqr0y2Cz3bVD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Mar 2023 21:36:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PTLqw00zvz3cfL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Mar 2023 21:36:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PTLqq0XFXz4x7s;
-	Sat,  4 Mar 2023 21:36:55 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PTLqp4Mlbz4x5Y;
+	Sat,  4 Mar 2023 21:36:54 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20230222060037.2897169-1-mpe@ellerman.id.au>
-References: <20230222060037.2897169-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/vmlinux.lds: Add .text.asan/tsan sections
-Message-Id: <167792619634.383795.17468627291991919392.b4-ty@ellerman.id.au>
-Date: Sat, 04 Mar 2023 21:36:36 +1100
+In-Reply-To: <20230221101952.2697101-1-mpe@ellerman.id.au>
+References: <20230221101952.2697101-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Drop orphaned VAS MAINTAINERS entry
+Message-Id: <167792619711.383795.14797340874798717438.b4-ty@ellerman.id.au>
+Date: Sat, 04 Mar 2023 21:36:37 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,26 +42,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathan@kernel.org, ndesaulniers@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 Feb 2023 17:00:37 +1100, Michael Ellerman wrote:
-> When KASAN/KCSAN are enabled clang generates .text.asan/tsan sections.
-> Because they are not mentioned in the linker script warnings are
-> generated, and when orphan handling is set to error that becomes a build
-> error, eg:
+On Tue, 21 Feb 2023 21:19:52 +1100, Michael Ellerman wrote:
+> The MAINTAINERS entry for VAS (Virtual Accelerator Switchboard) no
+> longer has any maintainers, it just points to linuxppc-dev, since commit
+> 60496069d0ae ("powerpc: Update MAINTAINERS for ibmvnic and VAS").
 > 
->   ld.lld: error: vmlinux.a(init/main.o):(.text.tsan.module_ctor) is
->   being placed in '.text.tsan.module_ctor' ld.lld: error:
->   vmlinux.a(init/version.o):(.text.tsan.module_ctor) is being placed in
->   '.text.tsan.module_ctor'
+> So just drop the VAS entry, all the paths are already covered by the
+> main powerpc entry, ie. the output of get_maintainer.pl is unchanged.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/vmlinux.lds: Add .text.asan/tsan sections
-      https://git.kernel.org/powerpc/c/acd35dbab871d61021284ff06daccdc0ebb51e61
+[1/1] powerpc: Drop orphaned VAS MAINTAINERS entry
+      https://git.kernel.org/powerpc/c/d8c32853ebc4f3a49f1658ddfe0a9a42e19fc658
 
 cheers
