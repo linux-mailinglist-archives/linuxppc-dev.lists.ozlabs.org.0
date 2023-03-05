@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739E16AB03F
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 14:54:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040216AB04F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 14:54:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PV38r2Ql4z3c7t
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 00:54:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PV39q5pLYz3cjb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 00:54:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxAf56JG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNl4igqD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxAf56JG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNl4igqD;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV3775g45z3cJn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:52:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV3784Lrhz3cJv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:52:36 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5330D60B02;
-	Sun,  5 Mar 2023 13:52:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A163FC433EF;
-	Sun,  5 Mar 2023 13:52:26 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 24839B80A89;
+	Sun,  5 Mar 2023 13:52:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016A3C433D2;
+	Sun,  5 Mar 2023 13:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678024347;
-	bh=hVaj6og0LbClymWKNGcpAzAKCpHUuhLXZEtvPd4Q1VA=;
+	s=k20201202; t=1678024352;
+	bh=SIweHOSwLFh5mHa7adC3YqQ38yalzSuKcdxd8dSPmss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxAf56JGk9VRuMxP7uzurGJDtC2/3F1m+iP0Hv6UmI0OWS0By820ocrNkf/BpLtAT
-	 UUwDg+DUN5dLEX6oKdKBSisjUp4a6qVHp+bcsMaQiKAa1RlgRXfwGqVlfYtYwNT40r
-	 oKfhRBqI5NLjRp8Kmpkg+GBn27HZtpAQ9uIYEmva52z5/icuY1Az0/dR0ELaN5d0i9
-	 KkzNovzEZ+LQugP38eX99sXK988HbKRQwKkT/t1Oz3JV6IEVH+NrE2n+zd2JA6i4+J
-	 GDGC12x+gEm/9sU4gxqFjC1dae16SQfpI/c9SckyWxvYgMAWSeF5EpTdLaYhjCRZ0f
-	 RFh7kdJ1ZOqTA==
+	b=WNl4igqD4DIStFs/ybQiQ+XF8t9GYl97Krya2q/1lQIQupSjZjb1TIHYzWdalFLh6
+	 wIYNWbkMhvLchq4J2PGpwN9jhCFxORgjb/zHjvVWdfQurvzRgX5viVNsj2NuOjbjJu
+	 FsDniBIcHBtFuFXe3nkWIz5lOrjrsQWuYx5izmRG/1AAEWu+7jTXdDzxEtICFL/1O/
+	 mB+8DQWlPQNybu1LnaOOgcImCswNDai7gxyoJQX8d2uiW44QlkuGRYbz8gwyhC1dIz
+	 NUKyUXgnyPinE4UMBUCpgfPFECtCsSOpvwFHTN/11ySNrSbWF4ta3CIDsP20Xns4f5
+	 av7vAp0kHbfsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 04/16] powerpc/64: Don't recurse irq replay
-Date: Sun,  5 Mar 2023 08:51:55 -0500
-Message-Id: <20230305135207.1793266-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.2 06/16] powerpc/iommu: fix memory leak with using debugfs_lookup()
+Date: Sun,  5 Mar 2023 08:51:57 -0500
+Message-Id: <20230305135207.1793266-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230305135207.1793266-1-sashal@kernel.org>
 References: <20230305135207.1793266-1-sashal@kernel.org>
@@ -62,261 +62,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, pmladek@suse.com, arnd@arndb.de, bigeasy@linutronix.de, rmclure@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, aik@ozlabs.ru, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 5746ca131e2496ccd5bb4d7a0244d6c38070cbf5 ]
+[ Upstream commit b505063910c134778202dfad9332dfcecb76bab3 ]
 
-Interrupt handlers called by soft-pending irq replay code can run
-softirqs, softirq replay enables and disables local irqs, which allows
-interrupts to come in including soft-masked interrupts, and it can
-cause pending irqs to be replayed again. That makes the soft irq replay
-state machine and possible races more complicated and fragile than it
-needs to be.
+When calling debugfs_lookup() the result must have dput() called on it,
+otherwise the memory will leak over time.  To make things simpler, just
+call debugfs_lookup_and_remove() instead which handles all of the logic
+at once.
 
-Use irq_enter/irq_exit around irq replay to prevent softirqs running
-while interrupts are being replayed. Softirqs will now be run at the
-irq_exit() call after all the irq replaying is done. This prevents irqs
-being replayed while irqs are being replayed, and should hopefully make
-things simpler and easier to think about and debug.
-
-A new PACA_IRQ_REPLAYING is added to prevent asynchronous interrupt
-handlers hard-enabling EE while pending irqs are being replayed, because
-that causes new pending irqs to arrive which is also a complexity. This
-means pending irqs won't be profiled quite so well because perf irqs
-can't be taken.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230121102618.2824429-1-npiggin@gmail.com
+Link: https://lore.kernel.org/r/20230202141919.2298821-1-gregkh@linuxfoundation.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hw_irq.h |   6 +-
- arch/powerpc/kernel/irq_64.c      | 101 +++++++++++++++++++-----------
- 2 files changed, 70 insertions(+), 37 deletions(-)
+ arch/powerpc/kernel/iommu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index eb6d094083fd6..317659fdeacf2 100644
---- a/arch/powerpc/include/asm/hw_irq.h
-+++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -36,15 +36,17 @@
- #define PACA_IRQ_DEC		0x08 /* Or FIT */
- #define PACA_IRQ_HMI		0x10
- #define PACA_IRQ_PMI		0x20
-+#define PACA_IRQ_REPLAYING	0x40
- 
- /*
-  * Some soft-masked interrupts must be hard masked until they are replayed
-  * (e.g., because the soft-masked handler does not clear the exception).
-+ * Interrupt replay itself must remain hard masked too.
-  */
- #ifdef CONFIG_PPC_BOOK3S
--#define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE|PACA_IRQ_PMI)
-+#define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE|PACA_IRQ_PMI|PACA_IRQ_REPLAYING)
- #else
--#define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE)
-+#define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE|PACA_IRQ_REPLAYING)
- #endif
- 
- #endif /* CONFIG_PPC64 */
-diff --git a/arch/powerpc/kernel/irq_64.c b/arch/powerpc/kernel/irq_64.c
-index eb2b380e52a0d..9dc0ad3c533a8 100644
---- a/arch/powerpc/kernel/irq_64.c
-+++ b/arch/powerpc/kernel/irq_64.c
-@@ -70,22 +70,19 @@ int distribute_irqs = 1;
- 
- static inline void next_interrupt(struct pt_regs *regs)
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index caebe1431596e..ee95937bdaf14 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -67,11 +67,9 @@ static void iommu_debugfs_add(struct iommu_table *tbl)
+ static void iommu_debugfs_del(struct iommu_table *tbl)
  {
--	/*
--	 * Softirq processing can enable/disable irqs, which will leave
--	 * MSR[EE] enabled and the soft mask set to IRQS_DISABLED. Fix
--	 * this up.
--	 */
--	if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--		hard_irq_disable();
--	else
--		irq_soft_mask_set(IRQS_ALL_DISABLED);
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
-+		WARN_ON(!(local_paca->irq_happened & PACA_IRQ_HARD_DIS));
-+		WARN_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
-+	}
+ 	char name[10];
+-	struct dentry *liobn_entry;
  
- 	/*
- 	 * We are responding to the next interrupt, so interrupt-off
- 	 * latencies should be reset here.
- 	 */
-+	lockdep_hardirq_exit();
- 	trace_hardirqs_on();
- 	trace_hardirqs_off();
-+	lockdep_hardirq_enter();
- }
- 
- static inline bool irq_happened_test_and_clear(u8 irq)
-@@ -97,22 +94,11 @@ static inline bool irq_happened_test_and_clear(u8 irq)
- 	return false;
- }
- 
--void replay_soft_interrupts(void)
-+static void __replay_soft_interrupts(void)
- {
- 	struct pt_regs regs;
- 
- 	/*
--	 * Be careful here, calling these interrupt handlers can cause
--	 * softirqs to be raised, which they may run when calling irq_exit,
--	 * which will cause local_irq_enable() to be run, which can then
--	 * recurse into this function. Don't keep any state across
--	 * interrupt handler calls which may change underneath us.
--	 *
--	 * Softirqs can not be disabled over replay to stop this recursion
--	 * because interrupts taken in idle code may require RCU softirq
--	 * to run in the irq RCU tracking context. This is a hard problem
--	 * to fix without changes to the softirq or idle layer.
--	 *
- 	 * We use local_paca rather than get_paca() to avoid all the
- 	 * debug_smp_processor_id() business in this low level function.
- 	 */
-@@ -120,13 +106,20 @@ void replay_soft_interrupts(void)
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
- 		WARN_ON_ONCE(mfmsr() & MSR_EE);
- 		WARN_ON(!(local_paca->irq_happened & PACA_IRQ_HARD_DIS));
-+		WARN_ON(local_paca->irq_happened & PACA_IRQ_REPLAYING);
- 	}
- 
-+	/*
-+	 * PACA_IRQ_REPLAYING prevents interrupt handlers from enabling
-+	 * MSR[EE] to get PMIs, which can result in more IRQs becoming
-+	 * pending.
-+	 */
-+	local_paca->irq_happened |= PACA_IRQ_REPLAYING;
-+
- 	ppc_save_regs(&regs);
- 	regs.softe = IRQS_ENABLED;
- 	regs.msr |= MSR_EE;
- 
--again:
- 	/*
- 	 * Force the delivery of pending soft-disabled interrupts on PS3.
- 	 * Any HV call will have this side effect.
-@@ -175,13 +168,14 @@ void replay_soft_interrupts(void)
- 		next_interrupt(&regs);
- 	}
- 
--	/*
--	 * Softirq processing can enable and disable interrupts, which can
--	 * result in new irqs becoming pending. Must keep looping until we
--	 * have cleared out all pending interrupts.
--	 */
--	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS)
--		goto again;
-+	local_paca->irq_happened &= ~PACA_IRQ_REPLAYING;
-+}
-+
-+void replay_soft_interrupts(void)
-+{
-+	irq_enter(); /* See comment in arch_local_irq_restore */
-+	__replay_soft_interrupts();
-+	irq_exit();
- }
- 
- #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_KUAP)
-@@ -200,13 +194,13 @@ static inline void replay_soft_interrupts_irqrestore(void)
- 	if (kuap_state != AMR_KUAP_BLOCKED)
- 		set_kuap(AMR_KUAP_BLOCKED);
- 
--	replay_soft_interrupts();
-+	__replay_soft_interrupts();
- 
- 	if (kuap_state != AMR_KUAP_BLOCKED)
- 		set_kuap(kuap_state);
+ 	sprintf(name, "%08lx", tbl->it_index);
+-	liobn_entry = debugfs_lookup(name, iommu_debugfs_dir);
+-	debugfs_remove(liobn_entry);
++	debugfs_lookup_and_remove(name, iommu_debugfs_dir);
  }
  #else
--#define replay_soft_interrupts_irqrestore() replay_soft_interrupts()
-+#define replay_soft_interrupts_irqrestore() __replay_soft_interrupts()
- #endif
- 
- notrace void arch_local_irq_restore(unsigned long mask)
-@@ -219,9 +213,13 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 		return;
- 	}
- 
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		WARN_ON_ONCE(in_nmi() || in_hardirq());
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
-+		WARN_ON_ONCE(in_nmi());
-+		WARN_ON_ONCE(in_hardirq());
-+		WARN_ON_ONCE(local_paca->irq_happened & PACA_IRQ_REPLAYING);
-+	}
- 
-+again:
- 	/*
- 	 * After the stb, interrupts are unmasked and there are no interrupts
- 	 * pending replay. The restart sequence makes this atomic with
-@@ -248,6 +246,12 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
- 		WARN_ON_ONCE(!(mfmsr() & MSR_EE));
- 
-+	/*
-+	 * If we came here from the replay below, we might have a preempt
-+	 * pending (due to preempt_enable_no_resched()). Have to check now.
-+	 */
-+	preempt_check_resched();
-+
- 	return;
- 
- happened:
-@@ -261,6 +265,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 		irq_soft_mask_set(IRQS_ENABLED);
- 		local_paca->irq_happened = 0;
- 		__hard_irq_enable();
-+		preempt_check_resched();
- 		return;
- 	}
- 
-@@ -296,12 +301,38 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 	irq_soft_mask_set(IRQS_ALL_DISABLED);
- 	trace_hardirqs_off();
- 
-+	/*
-+	 * Now enter interrupt context. The interrupt handlers themselves
-+	 * also call irq_enter/exit (which is okay, they can nest). But call
-+	 * it here now to hold off softirqs until the below irq_exit(). If
-+	 * we allowed replayed handlers to run softirqs, that enables irqs,
-+	 * which must replay interrupts, which recurses in here and makes
-+	 * things more complicated. The recursion is limited to 2, and it can
-+	 * be made to work, but it's complicated.
-+	 *
-+	 * local_bh_disable can not be used here because interrupts taken in
-+	 * idle are not in the right context (RCU, tick, etc) to run softirqs
-+	 * so irq_enter must be called.
-+	 */
-+	irq_enter();
-+
- 	replay_soft_interrupts_irqrestore();
- 
-+	irq_exit();
-+
-+	if (unlikely(local_paca->irq_happened != PACA_IRQ_HARD_DIS)) {
-+		/*
-+		 * The softirq processing in irq_exit() may enable interrupts
-+		 * temporarily, which can result in MSR[EE] being enabled and
-+		 * more irqs becoming pending. Go around again if that happens.
-+		 */
-+		trace_hardirqs_on();
-+		preempt_enable_no_resched();
-+		goto again;
-+	}
-+
- 	trace_hardirqs_on();
- 	irq_soft_mask_set(IRQS_ENABLED);
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		WARN_ON(local_paca->irq_happened != PACA_IRQ_HARD_DIS);
- 	local_paca->irq_happened = 0;
- 	__hard_irq_enable();
- 	preempt_enable();
+ static void iommu_debugfs_add(struct iommu_table *tbl){}
 -- 
 2.39.2
 
