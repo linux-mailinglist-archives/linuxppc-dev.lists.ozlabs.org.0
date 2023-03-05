@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD916AB0F5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 987226AB0F7
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:15:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3cW5Tszz3fgS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:14:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3dW2yPwz3fq3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:15:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TDePuMI3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vCTPI3Po;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TDePuMI3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vCTPI3Po;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV39x3y0Sz3fCJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:55:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV3B4296fz3f7M
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:55:08 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D1D7F60B21;
-	Sun,  5 Mar 2023 13:54:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD130C433D2;
-	Sun,  5 Mar 2023 13:54:57 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 95F8C60B23;
+	Sun,  5 Mar 2023 13:55:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291C8C433AE;
+	Sun,  5 Mar 2023 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678024498;
-	bh=7xD3X6MpnJbx2RsII0tEO8wHfCTuyt13z+tHDer6SfQ=;
+	s=k20201202; t=1678024506;
+	bh=MnCXLDMbFPBJ+LFdICtYzTOFAIkvEJYeUNnVVW7X8Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDePuMI3lz60EAq51gGLwHBf/biCzJb4x1AaqZXzLyBWBjNxKck9G2+CcQvxztho0
-	 R+yqVbUpQSnCmpCZPVlvUm0u4VENunmAgL2MqgRoJT/R9pa3GbB90EkWltILZuxzjV
-	 rWRAeB28vNOXpTInBY+5g4JcOecSz8dCF9M8Aqu72A11IMlgTCI/LSGROoDCqjI3SW
-	 QqjhQQfZ/zSPlOaOcUSgUSr+01QrP6sBlarD2ubFXE7EWnUTcAPhP+pPZwpvrNY0D8
-	 6L67nkmr62YY+PEe8goepP0aiGV76ILknfuvhOvib0DAqeJuLRFueegVgAZW52hkhn
-	 N5Akg/bkIlXIw==
+	b=vCTPI3PoYtn2BMPH5o8hSZrPvR84TS00Pl6NxbXsrCBlszZGnLvkcJEV5LnZaWxMY
+	 so0JCkL3mZv7Hs/vfCTVidAp69j2Ux9itZVukuEWlpoXnyTWbZrthQfd7SEyJORkOg
+	 whKLAmvBzPT4Q627e/REF1CvTcWsM2jkg3TohNlFihj7qvAS77a1+sdgH1B7TfpDob
+	 MGIrrhOov3ToeWDWa6H2jVdHKGOCjKRrmuOZAR9utW0Stbi/cS26egY6q7MBjzTzWg
+	 mNtyyuj0taY1XNJ07IBmfDEdzB8SbdfVVeflm/DT4b1P2y+I/nWUjdZc287XNoXgYj
+	 dUf59hVnEsbJw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/7] powerpc: Check !irq instead of irq == NO_IRQ and remove NO_IRQ
-Date: Sun,  5 Mar 2023 08:54:44 -0500
-Message-Id: <20230305135449.1794083-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 5/7] macintosh: windfarm: Use unsigned type for 1-bit bitfields
+Date: Sun,  5 Mar 2023 08:54:46 -0500
+Message-Id: <20230305135449.1794083-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230305135449.1794083-1-sashal@kernel.org>
 References: <20230305135449.1794083-1-sashal@kernel.org>
@@ -62,74 +62,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, dmitry.torokhov@gmail.com, u.kleine-koenig@pengutronix.de, ndesaulniers@google.com, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, srinivas.pandruvada@linux.intel.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit bab537805a10bdbf55b31324ba4a9599e0651e5e ]
+[ Upstream commit 748ea32d2dbd813d3bd958117bde5191182f909a ]
 
-NO_IRQ is a relic from the old days. It is not used anymore in core
-functions. By the way, function irq_of_parse_and_map() returns value 0
-on error.
+Clang warns:
 
-In some drivers, NO_IRQ is erroneously used to check the return of
-irq_of_parse_and_map().
+  drivers/macintosh/windfarm_lm75_sensor.c:63:14: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
+                  lm->inited = 1;
+                             ^ ~
 
-It is not a real bug today because the only architectures using the
-drivers being fixed by this patch define NO_IRQ as 0, but there are
-architectures which define NO_IRQ as -1. If one day those
-architectures start using the non fixed drivers, there will be a
-problem.
+  drivers/macintosh/windfarm_smu_sensors.c:356:19: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
+                  pow->fake_volts = 1;
+                                  ^ ~
+  drivers/macintosh/windfarm_smu_sensors.c:368:18: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
+                  pow->quadratic = 1;
+                                 ^ ~
 
-Long time ago Linus advocated for not using NO_IRQ, see
-https://lore.kernel.org/all/Pine.LNX.4.64.0511211150040.13959@g5.osdl.org
+There is no bug here since no code checks the actual value of these
+fields, just whether or not they are zero (boolean context), but this
+can be easily fixed by switching to an unsigned type.
 
-He re-iterated the same view recently in
-https://lore.kernel.org/all/CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com
-
-So test !irq instead of tesing irq == NO_IRQ.
-
-All other usage of NO_IRQ for powerpc were removed in previous cycles so
-the time has come to remove NO_IRQ completely for powerpc.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/4b8d4f96140af01dec3a3330924dda8b2451c316.1674476798.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/20230215-windfarm-wsingle-bit-bitfield-constant-conversion-v1-1-26415072e855@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/irq.h    | 3 ---
- arch/powerpc/platforms/44x/fsp2.c | 2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/macintosh/windfarm_lm75_sensor.c | 4 ++--
+ drivers/macintosh/windfarm_smu_sensors.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
-index 814dfab7e392e..f2f952ca87c37 100644
---- a/arch/powerpc/include/asm/irq.h
-+++ b/arch/powerpc/include/asm/irq.h
-@@ -17,9 +17,6 @@
+diff --git a/drivers/macintosh/windfarm_lm75_sensor.c b/drivers/macintosh/windfarm_lm75_sensor.c
+index 1e5fa09845e77..8713e80201c07 100644
+--- a/drivers/macintosh/windfarm_lm75_sensor.c
++++ b/drivers/macintosh/windfarm_lm75_sensor.c
+@@ -34,8 +34,8 @@
+ #endif
  
- extern atomic_t ppc_n_lost_interrupts;
- 
--/* This number is used when no interrupt has been assigned */
--#define NO_IRQ			(0)
--
- /* Total number of virq in the platform */
- #define NR_IRQS		CONFIG_NR_IRQS
- 
-diff --git a/arch/powerpc/platforms/44x/fsp2.c b/arch/powerpc/platforms/44x/fsp2.c
-index 823397c802def..f8bbe05d9ef29 100644
---- a/arch/powerpc/platforms/44x/fsp2.c
-+++ b/arch/powerpc/platforms/44x/fsp2.c
-@@ -205,7 +205,7 @@ static void node_irq_request(const char *compat, irq_handler_t errirq_handler)
- 
- 	for_each_compatible_node(np, NULL, compat) {
- 		irq = irq_of_parse_and_map(np, 0);
--		if (irq == NO_IRQ) {
-+		if (!irq) {
- 			pr_err("device tree node %pOFn is missing a interrupt",
- 			      np);
- 			of_node_put(np);
+ struct wf_lm75_sensor {
+-	int			ds1775 : 1;
+-	int			inited : 1;
++	unsigned int		ds1775 : 1;
++	unsigned int		inited : 1;
+ 	struct i2c_client	*i2c;
+ 	struct wf_sensor	sens;
+ };
+diff --git a/drivers/macintosh/windfarm_smu_sensors.c b/drivers/macintosh/windfarm_smu_sensors.c
+index 3e6059eaa1380..90823b4280259 100644
+--- a/drivers/macintosh/windfarm_smu_sensors.c
++++ b/drivers/macintosh/windfarm_smu_sensors.c
+@@ -273,8 +273,8 @@ struct smu_cpu_power_sensor {
+ 	struct list_head	link;
+ 	struct wf_sensor	*volts;
+ 	struct wf_sensor	*amps;
+-	int			fake_volts : 1;
+-	int			quadratic : 1;
++	unsigned int		fake_volts : 1;
++	unsigned int		quadratic : 1;
+ 	struct wf_sensor	sens;
+ };
+ #define to_smu_cpu_power(c) container_of(c, struct smu_cpu_power_sensor, sens)
 -- 
 2.39.2
 
