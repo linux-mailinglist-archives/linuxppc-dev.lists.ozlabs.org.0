@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BA96AB0C7
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DBA6AB0D2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:04:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3M66Mdpz3fdq
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:02:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3PG48hZz3fJt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:04:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bL7WPh/M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AkflD1xs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bL7WPh/M;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AkflD1xs;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV38D4Dfcz3chK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:53:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV38L2yBkz3cJn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:53:38 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AA5C060B0A;
-	Sun,  5 Mar 2023 13:53:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FA7C433D2;
-	Sun,  5 Mar 2023 13:53:28 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 86C27CE0A1C;
+	Sun,  5 Mar 2023 13:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3710C433EF;
+	Sun,  5 Mar 2023 13:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678024409;
-	bh=SIweHOSwLFh5mHa7adC3YqQ38yalzSuKcdxd8dSPmss=;
+	s=k20201202; t=1678024412;
+	bh=W1QfcQHVZVFp9rQvEhfqJH+RvdNqkFLq8fN0NrQTBe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bL7WPh/MnsyYxRiesetUMo9Ee3CL85OKEXKzmKER0nHG0T3Ir4d5RCxXZWBjzLGV2
-	 cFnulD+9KlbGWLocLXdU2EuyEX1ck2kM8z/12FOBWRC26jLddRePf/a6E/9WhKbSFf
-	 1oyhyZGAlexY4m3DbPkaczBCL52YEd4mLUuDONWbul+BrjA0mVluxjOjJ4AUH+OqsH
-	 h6f35R8CVANuq2a+aLtOStKuMXeloYhcxRuKl10gukqbgmb/vfqdFXA9zDkCdPN0+E
-	 9sKkeC2RopOwkt0d3Bid0lVdS+t6VbEcuE0+EtCNZ24q7T24z8Wm04ncRgmxb05DJy
-	 kFZw2sC701ZuA==
+	b=AkflD1xsCM/jRo7VJgr+3LGaKpmnPiwBUKmH0AqkthHvXLm4EVE6q1OKXP/WPvMeL
+	 f0W0uq+5it/Px5mx/YIAOIsZDeyobw0ulGoXvu349u+qU5TyYdEZBjBSmuT1gr42E2
+	 cMYNxzv8twS4LswUDpchQ1rTXkWcr+tD/V8e6UBaay/se+pnW94OhJfnAwwZqhaNV1
+	 kjtiKcOmiGN+y7sx3/q0FPAj5VKy5JpwYo807Nf/yJGwt0n0sUlUVPS8Fp90/OlsMr
+	 5uoL3hotyU2TeIeXoZ6QghuSYBngV7hUdrfhxirRIDC0aeHUWXoQU/KjO8BeixcveK
+	 4EhJ5G7PLpdPg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 06/15] powerpc/iommu: fix memory leak with using debugfs_lookup()
-Date: Sun,  5 Mar 2023 08:52:57 -0500
-Message-Id: <20230305135306.1793564-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 08/15] powerpc/bpf/32: Only set a stack frame when necessary
+Date: Sun,  5 Mar 2023 08:52:59 -0500
+Message-Id: <20230305135306.1793564-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230305135306.1793564-1-sashal@kernel.org>
 References: <20230305135306.1793564-1-sashal@kernel.org>
@@ -62,44 +62,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, aik@ozlabs.ru, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, daniel@iogearbox.net, ast@kernel.org, andrii@kernel.org, naveen.n.rao@linux.ibm.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit b505063910c134778202dfad9332dfcecb76bab3 ]
+[ Upstream commit d084dcf256bc4565b4b1af9b00297ac7b51c7049 ]
 
-When calling debugfs_lookup() the result must have dput() called on it,
-otherwise the memory will leak over time.  To make things simpler, just
-call debugfs_lookup_and_remove() instead which handles all of the logic
-at once.
+Until now a stack frame was set at all time due to the need
+to keep tail call counter in the stack.
 
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But since commit 89d21e259a94 ("powerpc/bpf/32: Fix Oops on tail call
+tests") the tail call counter is passed via register r4. It is therefore
+not necessary anymore to have a stack frame for that.
+
+Just like PPC64, implement bpf_has_stack_frame() and only sets the frame
+when needed.
+
+The difference with PPC64 is that PPC32 doesn't have a redzone, so
+the stack is required as soon as non volatile registers are used or
+when tail call count is set up.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+[mpe: Fix commit reference in change log]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230202141919.2298821-1-gregkh@linuxfoundation.org
+Link: https://lore.kernel.org/r/62d7b654a3cfe73d998697cb29bbc5ffd89bfdb1.1675245773.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/iommu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/net/bpf_jit_comp32.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index caebe1431596e..ee95937bdaf14 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -67,11 +67,9 @@ static void iommu_debugfs_add(struct iommu_table *tbl)
- static void iommu_debugfs_del(struct iommu_table *tbl)
- {
- 	char name[10];
--	struct dentry *liobn_entry;
+diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+index a379b0ce19ffa..8643b2c8b76ef 100644
+--- a/arch/powerpc/net/bpf_jit_comp32.c
++++ b/arch/powerpc/net/bpf_jit_comp32.c
+@@ -79,6 +79,20 @@ static int bpf_jit_stack_offsetof(struct codegen_context *ctx, int reg)
+ #define SEEN_NVREG_FULL_MASK	0x0003ffff /* Non volatile registers r14-r31 */
+ #define SEEN_NVREG_TEMP_MASK	0x00001e01 /* BPF_REG_5, BPF_REG_AX, TMP_REG */
  
- 	sprintf(name, "%08lx", tbl->it_index);
--	liobn_entry = debugfs_lookup(name, iommu_debugfs_dir);
--	debugfs_remove(liobn_entry);
-+	debugfs_lookup_and_remove(name, iommu_debugfs_dir);
- }
- #else
- static void iommu_debugfs_add(struct iommu_table *tbl){}
++static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
++{
++	/*
++	 * We only need a stack frame if:
++	 * - we call other functions (kernel helpers), or
++	 * - we use non volatile registers, or
++	 * - we use tail call counter
++	 * - the bpf program uses its stack area
++	 * The latter condition is deduced from the usage of BPF_REG_FP
++	 */
++	return ctx->seen & (SEEN_FUNC | SEEN_TAILCALL | SEEN_NVREG_FULL_MASK) ||
++	       bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP));
++}
++
+ void bpf_jit_realloc_regs(struct codegen_context *ctx)
+ {
+ 	unsigned int nvreg_mask;
+@@ -118,7 +132,8 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
+ 
+ #define BPF_TAILCALL_PROLOGUE_SIZE	4
+ 
+-	EMIT(PPC_RAW_STWU(_R1, _R1, -BPF_PPC_STACKFRAME(ctx)));
++	if (bpf_has_stack_frame(ctx))
++		EMIT(PPC_RAW_STWU(_R1, _R1, -BPF_PPC_STACKFRAME(ctx)));
+ 
+ 	if (ctx->seen & SEEN_TAILCALL)
+ 		EMIT(PPC_RAW_STW(_R4, _R1, bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
+@@ -171,7 +186,8 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
+ 		EMIT(PPC_RAW_LWZ(_R0, _R1, BPF_PPC_STACKFRAME(ctx) + PPC_LR_STKOFF));
+ 
+ 	/* Tear down our stack frame */
+-	EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME(ctx)));
++	if (bpf_has_stack_frame(ctx))
++		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME(ctx)));
+ 
+ 	if (ctx->seen & SEEN_FUNC)
+ 		EMIT(PPC_RAW_MTLR(_R0));
 -- 
 2.39.2
 
