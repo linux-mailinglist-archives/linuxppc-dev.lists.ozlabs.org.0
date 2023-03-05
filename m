@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B716AB24E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 21:57:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB926AB257
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 21:58:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVDYm5KJ7z3cXf
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 07:57:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVDZm4TX9z3cJv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 07:58:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fYF9dMtk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=asi5utLd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fYF9dMtk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=asi5utLd;
 	dkim-atps=neutral
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVDXp6vj0z3c5D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 07:56:56 +1100 (AEDT)
-Received: by mail-ed1-x535.google.com with SMTP id i34so30761997eda.7
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Mar 2023 12:56:56 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVDXp6mvcz30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 07:56:57 +1100 (AEDT)
+Received: by mail-ed1-x52e.google.com with SMTP id a25so31040684edb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Mar 2023 12:56:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678049808;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hNEkm4zOMdJBSU8KKqreG62DLRxeXn3Xkh8biCMSrGQ=;
-        b=fYF9dMtkj1YXiWLjWXVi108GaUsP78YWiLOBcqczOwcGB1KS3hFQGdzMmnPB40ydKb
-         CJBU4IAcJ0MjxZbPRv/XnGoAjuT4JRbTP5/rspAGr1pVqCKhRoeHY3MISmOrijMZ/1Zu
-         bzRGM/41AcDVAq0R82jvDwaNabVWUjpb24UlLxEmo/ypXHTY5dkWwNInk9ZHOiAeRtfv
-         /SV5xswkUyIS+kqp65TKME9k1EuFNhsY+K7YcAsF17i/iTmekg08B/ESrHCvrUtCJFsT
-         l473Q2p3EZjGHpQi0fM7RSy1MdpNqnqxaUQ0X1U1Z9yt4tvfwyH//k4NXO64wBvCP+Pa
-         DoGA==
+        d=gmail.com; s=20210112; t=1678049814;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nVG2kgy9F760CmPn8vSVrkbNIw0KpbygTeYMJL/3wHc=;
+        b=asi5utLdWW1N1er0bksuBA8v5b1amWbTv0KOBvgiy8Iq2U+koWsRhR6IqIsB96ZzFo
+         RMdO6VENOxHuzI8q6i57ivzsrmds+Qydp0zIcueL5R8/WPuPDj9jwqzGDYz4blWiwMSf
+         /W0Z5E6D9C9cNRhuSPhtp98V3I7py6Lt7d3OmAEFtC0xVTDC5m4jYRUFC88j+LQU2U/b
+         /rY2VlSnb0DKov6ld71YIylJ++dgLrjqmYWE382OJOZPVSfs/nR5zWbNwRgfUBiF/lnX
+         uTxnaw9+jBV/4QcQgK2Dgh2w2pTgCVdFrY9WfPDrzRcXWeoA8lOM2hU2keXlcv7RSB4Q
+         ijnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678049808;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hNEkm4zOMdJBSU8KKqreG62DLRxeXn3Xkh8biCMSrGQ=;
-        b=vAlmxu48cc5aPbHFkg520uzhv7PH0vOw6BvNh0UpLVxU1w7KLqX1PkG9HLcL05QqRX
-         OAmH0GvrSu3WKDJ1a2LjjJkC0SzYDHA5G2FQCjfj0V4gwx3ucdB+6FVhusNLSktf5756
-         DRVrTtPO4UiimLefsn+esSB8H0j5XHGvrSAzC4Wgd+n4ppAJDx0w9ruYOjtMcvAGSy5K
-         GDVztjC8QpsmDsCsWoh9crGykTlO7E+Z9bxmaoCR53PsvGIYXfDUL+c2C+LCideJmJZA
-         7J6v7kPk4/9Ni1YYYrWU/PQsC4bGavri9khSQwWtN5UmUHAIAztH2rkgyhcjDqs8V2ox
-         cczQ==
-X-Gm-Message-State: AO0yUKWJCMVoSwGeyRPcS6cE7JQpk250OtwLNwFqE9Q5WWeo/vgyZ6B+
-	O9o0KioKW3+UVOcQ9RSECl0=
-X-Google-Smtp-Source: AK7set/RUb5/XHQZd/krFNbQoHv4XST5YnFdb9U8YR6v6o3hVBIJ8gVcKyFZsXQGz5Rhs9cjnpYrzA==
-X-Received: by 2002:a17:906:384a:b0:8f0:143d:ee28 with SMTP id w10-20020a170906384a00b008f0143dee28mr8887420ejc.16.1678049808165;
-        Sun, 05 Mar 2023 12:56:48 -0800 (PST)
+        d=1e100.net; s=20210112; t=1678049814;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nVG2kgy9F760CmPn8vSVrkbNIw0KpbygTeYMJL/3wHc=;
+        b=lAvZ9PDJO0bPLEmOLYJPN7Z2mJwT9thxk2pbMLgtxgtyEgVfvTIX0uiWupLf7X+19W
+         33/ayGmuj5LwaTHANH5S1CPjToDqk8Pc1RPk6qqVM8cFR5nSkdparYyK8xu+Z0baGH6w
+         MzMgG+y8akYKzcOoMAASMNynSvw0g52y8bPeUY2TcOm+CG4kAdQe1VxSMKQDW+ASaCi+
+         fU9R+QeKA3hzizC+RDjyJOv3Y27d/WFdJarxYBQoEus0R0jcZDd8P09NZz67ScUEmG00
+         XDxqBel52is4oMsgytnSzmi65xiCmWpNJMTR/B6ugoSyvNZQWXsR+NE6eb0l3FNsNR8z
+         JTMw==
+X-Gm-Message-State: AO0yUKVquRgz5KEjVGiYcWhOwsPfWwlAcTJC3+QE6DkGbZ8DZ9DOOR+J
+	dPcEFgupV2aE8+y50OSZu/s=
+X-Google-Smtp-Source: AK7set+RJQKs9QlFP/fuW0+0r4cthBgsbcujjamf/UFg8WkoC4IrOQHMZQcJaAn7QEfYYDX6cVoXeg==
+X-Received: by 2002:a17:907:3f18:b0:8f6:5a70:cccc with SMTP id hq24-20020a1709073f1800b008f65a70ccccmr11620167ejc.66.1678049814399;
+        Sun, 05 Mar 2023 12:56:54 -0800 (PST)
 Received: from localhost.localdomain ([46.248.82.114])
-        by smtp.gmail.com with ESMTPSA id ay24-20020a170906d29800b0090953b9da51sm3615436ejb.194.2023.03.05.12.56.46
+        by smtp.gmail.com with ESMTPSA id ay24-20020a170906d29800b0090953b9da51sm3615436ejb.194.2023.03.05.12.56.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Mar 2023 12:56:47 -0800 (PST)
+        Sun, 05 Mar 2023 12:56:54 -0800 (PST)
 From: Uros Bizjak <ubizjak@gmail.com>
 To: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -64,10 +65,12 @@ To: linux-alpha@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org
-Subject: [PATCH 00/10] locking: Introduce local{,64}_try_cmpxchg
-Date: Sun,  5 Mar 2023 21:56:18 +0100
-Message-Id: <20230305205628.27385-1-ubizjak@gmail.com>
+Subject: [PATCH 01/10] locking/atomic: Add missing cast to try_cmpxchg() fallbacks
+Date: Sun,  5 Mar 2023 21:56:19 +0100
+Message-Id: <20230305205628.27385-2-ubizjak@gmail.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230305205628.27385-1-ubizjak@gmail.com>
+References: <20230305205628.27385-1-ubizjak@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,104 +84,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, x86@kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, "H. Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Jun Yi <yijun@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Jiri Olsa <jolsa@kernel.org>, Borislav Petkov <bp@alien8.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Mark Rutland <mark.rutland@arm.com>, Uros Bizjak <ubizjak@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add generic and target specific support for local{,64}_try_cmpxchg
-and wire up support for all targets that use local_t infrastructure.
+Cast _oldp to the type of _ptr to avoid incompatible-pointer-types warning.
 
-The patch enables x86 targets to emit special instruction for
-local_try_cmpxchg and also local64_try_cmpxchg for x86_64.
-
-The last patch changes __perf_output_begin in events/ring_buffer
-to use new locking primitive and improves code from
-
-     4b3:	48 8b 82 e8 00 00 00 	mov    0xe8(%rdx),%rax
-     4ba:	48 8b b8 08 04 00 00 	mov    0x408(%rax),%rdi
-     4c1:	8b 42 1c             	mov    0x1c(%rdx),%eax
-     4c4:	48 8b 4a 28          	mov    0x28(%rdx),%rcx
-     4c8:	85 c0                	test   %eax,%eax
-     ...
-     4ef:	48 89 c8             	mov    %rcx,%rax
-     4f2:	48 0f b1 7a 28       	cmpxchg %rdi,0x28(%rdx)
-     4f7:	48 39 c1             	cmp    %rax,%rcx
-     4fa:	75 b7                	jne    4b3 <...>
-
-to
-
-     4b2:	48 8b 4a 28          	mov    0x28(%rdx),%rcx
-     4b6:	48 8b 82 e8 00 00 00 	mov    0xe8(%rdx),%rax
-     4bd:	48 8b b0 08 04 00 00 	mov    0x408(%rax),%rsi
-     4c4:	8b 42 1c             	mov    0x1c(%rdx),%eax
-     4c7:	85 c0                	test   %eax,%eax
-     ...
-     4d4:	48 89 c8             	mov    %rcx,%rax
-     4d7:	48 0f b1 72 28       	cmpxchg %rsi,0x28(%rdx)
-     4dc:	0f 85 d0 00 00 00    	jne    5b2 <...>
-     ...
-     5b2:	48 89 c1             	mov    %rax,%rcx
-     5b5:	e9 fc fe ff ff       	jmp    4b6 <...>
-
-Please note that in addition to removed compare, the load from
-0x28(%rdx) gets moved out of the loop and the code is rearranged
-according to likely/unlikely tags in the source.
-
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
+Fixes: 29f006fdefe6 ("asm-generic/atomic: Add try_cmpxchg() fallbacks")
 Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Jun Yi <yijun@loongson.cn>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+---
+ include/linux/atomic/atomic-arch-fallback.h | 18 +++++++++---------
+ scripts/atomic/gen-atomic-fallback.sh       |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-Uros Bizjak (10):
-  locking/atomic: Add missing cast to try_cmpxchg() fallbacks
-  locking/atomic: Add generic try_cmpxchg{,64}_local support
-  locking/alpha: Wire up local_try_cmpxchg
-  locking/loongarch: Wire up local_try_cmpxchg
-  locking/mips: Wire up local_try_cmpxchg
-  locking/powerpc: Wire up local_try_cmpxchg
-  locking/x86: Wire up local_try_cmpxchg
-  locking/generic: Wire up local{,64}_try_cmpxchg
-  locking/x86: Enable local{,64}_try_cmpxchg
-  perf/ring_buffer: use local_try_cmpxchg in __perf_output_begin
-
- arch/alpha/include/asm/local.h              |  2 ++
- arch/loongarch/include/asm/local.h          |  2 ++
- arch/mips/include/asm/local.h               |  2 ++
- arch/powerpc/include/asm/local.h            | 11 ++++++
- arch/x86/include/asm/cmpxchg.h              |  6 ++++
- arch/x86/include/asm/local.h                |  2 ++
- include/asm-generic/local.h                 |  1 +
- include/asm-generic/local64.h               |  2 ++
- include/linux/atomic/atomic-arch-fallback.h | 40 ++++++++++++++++-----
- include/linux/atomic/atomic-instrumented.h  | 20 ++++++++++-
- kernel/events/ring_buffer.c                 |  5 +--
- scripts/atomic/gen-atomic-fallback.sh       |  6 +++-
- scripts/atomic/gen-atomic-instrumented.sh   |  2 +-
- 13 files changed, 87 insertions(+), 14 deletions(-)
-
+diff --git a/include/linux/atomic/atomic-arch-fallback.h b/include/linux/atomic/atomic-arch-fallback.h
+index 77bc5522e61c..19debd501ee7 100644
+--- a/include/linux/atomic/atomic-arch-fallback.h
++++ b/include/linux/atomic/atomic-arch-fallback.h
+@@ -87,7 +87,7 @@
+ #ifndef arch_try_cmpxchg
+ #define arch_try_cmpxchg(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -98,7 +98,7 @@
+ #ifndef arch_try_cmpxchg_acquire
+ #define arch_try_cmpxchg_acquire(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg_acquire((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -109,7 +109,7 @@
+ #ifndef arch_try_cmpxchg_release
+ #define arch_try_cmpxchg_release(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg_release((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -120,7 +120,7 @@
+ #ifndef arch_try_cmpxchg_relaxed
+ #define arch_try_cmpxchg_relaxed(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg_relaxed((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -157,7 +157,7 @@
+ #ifndef arch_try_cmpxchg64
+ #define arch_try_cmpxchg64(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg64((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -168,7 +168,7 @@
+ #ifndef arch_try_cmpxchg64_acquire
+ #define arch_try_cmpxchg64_acquire(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg64_acquire((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -179,7 +179,7 @@
+ #ifndef arch_try_cmpxchg64_release
+ #define arch_try_cmpxchg64_release(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg64_release((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -190,7 +190,7 @@
+ #ifndef arch_try_cmpxchg64_relaxed
+ #define arch_try_cmpxchg64_relaxed(_ptr, _oldp, _new) \
+ ({ \
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \
+ 	___r = arch_cmpxchg64_relaxed((_ptr), ___o, (_new)); \
+ 	if (unlikely(___r != ___o)) \
+ 		*___op = ___r; \
+@@ -2456,4 +2456,4 @@ arch_atomic64_dec_if_positive(atomic64_t *v)
+ #endif
+ 
+ #endif /* _LINUX_ATOMIC_FALLBACK_H */
+-// b5e87bdd5ede61470c29f7a7e4de781af3770f09
++// 1b4d4c82ae653389cd1538d5b07170267d9b3837
+diff --git a/scripts/atomic/gen-atomic-fallback.sh b/scripts/atomic/gen-atomic-fallback.sh
+index 3a07695e3c89..39f447161108 100755
+--- a/scripts/atomic/gen-atomic-fallback.sh
++++ b/scripts/atomic/gen-atomic-fallback.sh
+@@ -171,7 +171,7 @@ cat <<EOF
+ #ifndef arch_try_${cmpxchg}${order}
+ #define arch_try_${cmpxchg}${order}(_ptr, _oldp, _new) \\
+ ({ \\
+-	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \\
++	typeof(*(_ptr)) *___op = (typeof(_ptr))(_oldp), ___o = *___op, ___r; \\
+ 	___r = arch_${cmpxchg}${order}((_ptr), ___o, (_new)); \\
+ 	if (unlikely(___r != ___o)) \\
+ 		*___op = ___r; \\
 -- 
 2.39.2
 
