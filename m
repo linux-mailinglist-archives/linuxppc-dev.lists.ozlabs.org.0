@@ -2,61 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64016AAECF
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 10:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E196AB021
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 14:53:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PTxJw4qHKz3cgR
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 20:30:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PV37r38qXz3cMR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 00:53:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFv3/TK0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.178; helo=mail-qt1-f178.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFv3/TK0;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PTxJK3X0Pz3bTc
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Mar 2023 20:30:08 +1100 (AEDT)
-Received: by mail-qt1-f178.google.com with SMTP id s12so7533084qtq.11
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Mar 2023 01:30:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678008605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vgd0m+/MCaDvNZBjSvDtubD53Qmudtg807BEeMSQ1f0=;
-        b=ZJdxu+dbyj2NTIN3Zn5ALWl/QCgdrmY3qzezkmGyfQcxFfecQl/D9+yxaKZ7kPCqov
-         VYIQkIT7C/S+1E28Uinci7NvaO0Dwzth55h67zOoWzzL1+8p5srkDg5MTVLgwzSb8Ybx
-         VlceKaSQ/fBaP3+28lymQK9SIwm8jRMM2UbO7d7x8m3ix/189Sfd7Yse3NTp3azwTo3e
-         yUSFdymedt6Zu5wxJqHUKTMT44moe5xhM9xRi80DitMKqxPlZD8qMtS/ka3b3CRybdWf
-         WqjTI4jhGJNydLBMGmd3282o7Tod7f4dSuuQmqf6p5zirHqtxCsbEHaQDFf8bM5OLaCJ
-         QkkA==
-X-Gm-Message-State: AO0yUKWwzNV0i+drxH0AlEIfhdlaR/upGRmSzTma6BbyV/y5ydNQjNzH
-	kNDa5FBBipF8cCYRmT3YHEc6I7AcFTtDMw==
-X-Google-Smtp-Source: AK7set+10h+Uj9zhgTCQp0/TLPWvHfLDKbKG8Lr2o3b1eDhQlMyraVxY+YkONrtLpIOYHReLvX/Ygg==
-X-Received: by 2002:a05:622a:87:b0:3bd:11a5:c12b with SMTP id o7-20020a05622a008700b003bd11a5c12bmr13486687qtw.5.1678008605042;
-        Sun, 05 Mar 2023 01:30:05 -0800 (PST)
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
-        by smtp.gmail.com with ESMTPSA id c133-20020ae9ed8b000000b0074280fc7bd8sm5260598qkg.60.2023.03.05.01.30.04
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Mar 2023 01:30:04 -0800 (PST)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-536bbe5f888so128271907b3.8
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Mar 2023 01:30:04 -0800 (PST)
-X-Received: by 2002:a81:af0c:0:b0:52f:1c23:ef1 with SMTP id
- n12-20020a81af0c000000b0052f1c230ef1mr4669025ywh.5.1678008604127; Sun, 05 Mar
- 2023 01:30:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV36t3Sjnz3bM7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:52:22 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 44B7AB80A89;
+	Sun,  5 Mar 2023 13:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA01C433EF;
+	Sun,  5 Mar 2023 13:52:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1678024338;
+	bh=kq3BrUowsgV/gXng+qdT32gnUa2E/oaKHyxWEtfLW2k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XFv3/TK0/uPgFjF0+4gVssb7sLIbBdlAEJhw/nV7IJ8zUqgLGYk7+/lp2PVyztpTV
+	 KbIGhG4seltuZFq/9kKnwzRg0g4siS66x+38yYo+zwYsXp3tdR0iVNjjot1ZF7LFkC
+	 ofbe2UK8rKM96ok0Z8RVEapW3z1/TLJ0/NhyfTgrLdFlPWggWJKHuAzGSwfumrgKHy
+	 MEbOstDdsYM5lP/F/oSl1l33ycTxAjB5ThAOzD7fzeHhOE9/zEOh43BpUcGtb2j1iL
+	 lwuxp2439UmIlTruznFdTzf7u0GfOaSS3YJJrPyRkMqu6NUs1L20axzdMMHwFmlhzG
+	 0ZyIh0lEazDWQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.2 03/16] powerpc: Check !irq instead of irq == NO_IRQ and remove NO_IRQ
+Date: Sun,  5 Mar 2023 08:51:54 -0500
+Message-Id: <20230305135207.1793266-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230305135207.1793266-1-sashal@kernel.org>
+References: <20230305135207.1793266-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20230303102817.212148-1-bhe@redhat.com> <20230303102817.212148-3-bhe@redhat.com>
- <87sfej1rie.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87sfej1rie.fsf@mpe.ellerman.id.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sun, 5 Mar 2023 10:29:52 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXoM24uAZGcjBtscNMOSY_+4u08PEOR7gOfCH7jvCceDg@mail.gmail.com>
-Message-ID: <CAMuHMdXoM24uAZGcjBtscNMOSY_+4u08PEOR7gOfCH7jvCceDg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] arch/*/io.h: remove ioremap_uc in some architectures
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,59 +62,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Baoquan He <bhe@redhat.com>, arnd@arndb.de, linux-sh@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, hch@infradead.org, linux-mm@kvack.org, mcgrof@kernel.org, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-On Sun, Mar 5, 2023 at 10:23=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
-> Baoquan He <bhe@redhat.com> writes:
-> > ioremap_uc() is only meaningful on old x86-32 systems with the PAT
-> > extension, and on ia64 with its slightly unconventional ioremap()
-> > behavior, everywhere else this is the same as ioremap() anyway.
-> >
-> > Here, remove the ioremap_uc() definition in architecutures other
-> > than x86 and ia64. These architectures all have asm-generic/io.h
-> > included and will have the default ioremap_uc() definition which
-> > returns NULL.
-> >
-> > Note: This changes the existing behaviour and could break code
-> > calling ioremap_uc(). If any ARCH meets this breakage and really
-> > needs a specific ioremap_uc() for its own usage, one ioremap_uc()
-> > can be added in the ARCH.
->
-> I see one use in:
->
-> drivers/video/fbdev/aty/atyfb_base.c:        par->ati_regbase =3D ioremap=
-_uc(info->fix.mmio_start, 0x1000);
->
->
-> Which isn't obviously x86/ia64 specific.
->
-> I'm pretty sure some powermacs (powerpc) use that driver.
+[ Upstream commit bab537805a10bdbf55b31324ba4a9599e0651e5e ]
 
-I originally wrote that driver for CHRP, so yes.
+NO_IRQ is a relic from the old days. It is not used anymore in core
+functions. By the way, function irq_of_parse_and_map() returns value 0
+on error.
 
-> Maybe that exact code path is only reachable on x86/ia64? But if so
-> please explain why.
->
-> Otherwise it looks like this series could break that driver on powerpc
-> at least.
+In some drivers, NO_IRQ is erroneously used to check the return of
+irq_of_parse_and_map().
 
-Indeed.
+It is not a real bug today because the only architectures using the
+drivers being fixed by this patch define NO_IRQ as 0, but there are
+architectures which define NO_IRQ as -1. If one day those
+architectures start using the non fixed drivers, there will be a
+problem.
 
-Gr{oetje,eeting}s,
+Long time ago Linus advocated for not using NO_IRQ, see
+https://lore.kernel.org/all/Pine.LNX.4.64.0511211150040.13959@g5.osdl.org
 
-                        Geert
+He re-iterated the same view recently in
+https://lore.kernel.org/all/CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+So test !irq instead of tesing irq == NO_IRQ.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+All other usage of NO_IRQ for powerpc were removed in previous cycles so
+the time has come to remove NO_IRQ completely for powerpc.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/4b8d4f96140af01dec3a3330924dda8b2451c316.1674476798.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/include/asm/irq.h    | 3 ---
+ arch/powerpc/platforms/44x/fsp2.c | 2 +-
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 5c1516a5ba8f6..deadd2149426a 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -16,9 +16,6 @@
+ 
+ extern atomic_t ppc_n_lost_interrupts;
+ 
+-/* This number is used when no interrupt has been assigned */
+-#define NO_IRQ			(0)
+-
+ /* Total number of virq in the platform */
+ #define NR_IRQS		CONFIG_NR_IRQS
+ 
+diff --git a/arch/powerpc/platforms/44x/fsp2.c b/arch/powerpc/platforms/44x/fsp2.c
+index e2e4f6d8150d6..56d91dbef5770 100644
+--- a/arch/powerpc/platforms/44x/fsp2.c
++++ b/arch/powerpc/platforms/44x/fsp2.c
+@@ -205,7 +205,7 @@ static void __init node_irq_request(const char *compat, irq_handler_t errirq_han
+ 
+ 	for_each_compatible_node(np, NULL, compat) {
+ 		irq = irq_of_parse_and_map(np, 0);
+-		if (irq == NO_IRQ) {
++		if (!irq) {
+ 			pr_err("device tree node %pOFn is missing a interrupt",
+ 			      np);
+ 			of_node_put(np);
+-- 
+2.39.2
+
