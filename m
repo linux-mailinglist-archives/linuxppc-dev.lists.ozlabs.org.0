@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C856AB0D7
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 011FC6AB0E9
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 15:08:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3SG0B6qz3cD2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:07:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PV3TF5jvzz3fWX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 01:08:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFVhP4uH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TxsnVNx/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFVhP4uH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TxsnVNx/;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV38l1K4mz3chK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:53:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PV3911m9Sz3f6H
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 00:54:13 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id D4792B80ADA;
-	Sun,  5 Mar 2023 13:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3459EC433D2;
-	Sun,  5 Mar 2023 13:53:55 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id E40FFB80ADA;
+	Sun,  5 Mar 2023 13:54:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75953C4339B;
+	Sun,  5 Mar 2023 13:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678024436;
-	bh=BpYzRbUO6+QDTYmGgfCuetgduaiwpCv1hdivX+XNe7M=;
+	s=k20201202; t=1678024449;
+	bh=TBlpEnTSCU3V6LeGvXbRTeA8LzZEfDzjzls42LkK9sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFVhP4uHQbAdimecEV2R3oCsi26Zc/M9gZducDgxsDU+9fRMXbJRpEtrxCIYiIVRa
-	 AS6f2aE9mf9b4jC51ytw+m74fhZNAqU4LdvD9AKhrl8whGfrEGEGMnx1hVJhmpzvMn
-	 bGoja31t/kko6EWV5L1yuVWufbFk75jEdmO/13T3rSfvJWzhzZBCgPs2X0oYWnS2wg
-	 2xTpeOgIoHxPpONtlceGoCsKASJIcN9q45v1p/Fxi4osue+VewL4hayHDvgBfG/G8H
-	 RBhQmS7GiThMxjyrJ+5Axv7Su62Cqbu1qIo0t9jynLcfoVdDqXgW0XjXQ/3ZnLojOQ
-	 RjtmBm3mZM1ZA==
+	b=TxsnVNx/udO707s+q1V3su42dt9i2ezxElMKpUjAJ6nce4ArbCSfl4ZGmk91p3ABv
+	 9ovXy0g0RiIdS6wCgUS/iDyGDcN31cvYm8rjvYY1JDryHcfS64N5q1igFQxFAxQQkL
+	 yYSPZFSrrzaG3veEvDyJDNjppqw10ZAQroluIqgBofYWvU+f+Ufa6VpTVCgQtQo7Nn
+	 ALtmdOo4EsVNExGZTsc2HDXbu1pM8BkoX1FY39fFWOfLH5zVVTRE2IfHifR3cpbvZ/
+	 /cXEfQwdOdcAk5f3z0uG3MTYUZZFhAENmnMY9an1IdCoh7PFt/U5yUb/LY9flBm48s
+	 4rC5TdlQAAEjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 13/15] macintosh: windfarm: Use unsigned type for 1-bit bitfields
-Date: Sun,  5 Mar 2023 08:53:04 -0500
-Message-Id: <20230305135306.1793564-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 3/9] powerpc: Check !irq instead of irq == NO_IRQ and remove NO_IRQ
+Date: Sun,  5 Mar 2023 08:53:53 -0500
+Message-Id: <20230305135359.1793830-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230305135306.1793564-1-sashal@kernel.org>
-References: <20230305135306.1793564-1-sashal@kernel.org>
+In-Reply-To: <20230305135359.1793830-1-sashal@kernel.org>
+References: <20230305135359.1793830-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,70 +62,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, cminyard@mvista.com, llvm@lists.linux.dev, ajayg@nvidia.com, u.kleine-koenig@pengutronix.de, ndesaulniers@google.com, linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>, luzmaximilian@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 748ea32d2dbd813d3bd958117bde5191182f909a ]
+[ Upstream commit bab537805a10bdbf55b31324ba4a9599e0651e5e ]
 
-Clang warns:
+NO_IRQ is a relic from the old days. It is not used anymore in core
+functions. By the way, function irq_of_parse_and_map() returns value 0
+on error.
 
-  drivers/macintosh/windfarm_lm75_sensor.c:63:14: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  lm->inited = 1;
-                             ^ ~
+In some drivers, NO_IRQ is erroneously used to check the return of
+irq_of_parse_and_map().
 
-  drivers/macintosh/windfarm_smu_sensors.c:356:19: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  pow->fake_volts = 1;
-                                  ^ ~
-  drivers/macintosh/windfarm_smu_sensors.c:368:18: error: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Werror,-Wsingle-bit-bitfield-constant-conversion]
-                  pow->quadratic = 1;
-                                 ^ ~
+It is not a real bug today because the only architectures using the
+drivers being fixed by this patch define NO_IRQ as 0, but there are
+architectures which define NO_IRQ as -1. If one day those
+architectures start using the non fixed drivers, there will be a
+problem.
 
-There is no bug here since no code checks the actual value of these
-fields, just whether or not they are zero (boolean context), but this
-can be easily fixed by switching to an unsigned type.
+Long time ago Linus advocated for not using NO_IRQ, see
+https://lore.kernel.org/all/Pine.LNX.4.64.0511211150040.13959@g5.osdl.org
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+He re-iterated the same view recently in
+https://lore.kernel.org/all/CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com
+
+So test !irq instead of tesing irq == NO_IRQ.
+
+All other usage of NO_IRQ for powerpc were removed in previous cycles so
+the time has come to remove NO_IRQ completely for powerpc.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230215-windfarm-wsingle-bit-bitfield-constant-conversion-v1-1-26415072e855@kernel.org
+Link: https://lore.kernel.org/r/4b8d4f96140af01dec3a3330924dda8b2451c316.1674476798.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/windfarm_lm75_sensor.c | 4 ++--
- drivers/macintosh/windfarm_smu_sensors.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/irq.h    | 3 ---
+ arch/powerpc/platforms/44x/fsp2.c | 2 +-
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/macintosh/windfarm_lm75_sensor.c b/drivers/macintosh/windfarm_lm75_sensor.c
-index 204661c8e918f..9dd80837a759a 100644
---- a/drivers/macintosh/windfarm_lm75_sensor.c
-+++ b/drivers/macintosh/windfarm_lm75_sensor.c
-@@ -33,8 +33,8 @@
- #endif
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 2b3278534bc14..858393f7fd7d7 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -16,9 +16,6 @@
  
- struct wf_lm75_sensor {
--	int			ds1775 : 1;
--	int			inited : 1;
-+	unsigned int		ds1775 : 1;
-+	unsigned int		inited : 1;
- 	struct i2c_client	*i2c;
- 	struct wf_sensor	sens;
- };
-diff --git a/drivers/macintosh/windfarm_smu_sensors.c b/drivers/macintosh/windfarm_smu_sensors.c
-index 00c6fe25fcba0..2bdb73b34d291 100644
---- a/drivers/macintosh/windfarm_smu_sensors.c
-+++ b/drivers/macintosh/windfarm_smu_sensors.c
-@@ -274,8 +274,8 @@ struct smu_cpu_power_sensor {
- 	struct list_head	link;
- 	struct wf_sensor	*volts;
- 	struct wf_sensor	*amps;
--	int			fake_volts : 1;
--	int			quadratic : 1;
-+	unsigned int		fake_volts : 1;
-+	unsigned int		quadratic : 1;
- 	struct wf_sensor	sens;
- };
- #define to_smu_cpu_power(c) container_of(c, struct smu_cpu_power_sensor, sens)
+ extern atomic_t ppc_n_lost_interrupts;
+ 
+-/* This number is used when no interrupt has been assigned */
+-#define NO_IRQ			(0)
+-
+ /* Total number of virq in the platform */
+ #define NR_IRQS		CONFIG_NR_IRQS
+ 
+diff --git a/arch/powerpc/platforms/44x/fsp2.c b/arch/powerpc/platforms/44x/fsp2.c
+index 823397c802def..f8bbe05d9ef29 100644
+--- a/arch/powerpc/platforms/44x/fsp2.c
++++ b/arch/powerpc/platforms/44x/fsp2.c
+@@ -205,7 +205,7 @@ static void node_irq_request(const char *compat, irq_handler_t errirq_handler)
+ 
+ 	for_each_compatible_node(np, NULL, compat) {
+ 		irq = irq_of_parse_and_map(np, 0);
+-		if (irq == NO_IRQ) {
++		if (!irq) {
+ 			pr_err("device tree node %pOFn is missing a interrupt",
+ 			      np);
+ 			of_node_put(np);
 -- 
 2.39.2
 
