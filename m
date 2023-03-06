@@ -1,87 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355396AB804
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 09:12:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88946ABA02
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 10:36:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVWWz0Fr3z3cjD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 19:12:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OUL+EeKT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVYNr5qLSz3f3h
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 20:36:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OUL+EeKT;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ghiti.fr (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVWVz5jwYz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 19:11:23 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3267dTPO032053;
-	Mon, 6 Mar 2023 08:11:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=ECwMxJ5akodVUa9VYHYTJWu375T5DLlLftB9mQeL5J0=;
- b=OUL+EeKT50PDv5JbjH3Und87y7yz5Z8HtVNlG4LhF3yTUcX7F/cO+fT1hpdfB6SI1QHF
- QizXF6qRAyNLA0bOxmOQTbMVD0WGoBH6Dd6CPzfSKmtxT6AclL8qR+D1m9trmozUJmWq
- jl55mVdQ1kf7EJTvdA9OvMkRS0LOufRCOhaWATbG8gSi8d5vskmWsEIQRY3a8e/BooY5
- QksiVIEG+2FWKqtu/vM3yQJNK8ul50APls5VvwZX+DnnMcFfy+x3Hl1s3U4gnn0pHJnF
- AqmSOrFZI7rmG8fZzp/ARuz50QAcv3tQYVpo9REMMPGAgTXg8safSqkxuKku8RK0dd24 Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4x1hf4dw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 08:11:13 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3267KP1i026215;
-	Mon, 6 Mar 2023 08:11:13 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4x1hf4d5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 08:11:12 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 325Kh4rL005890;
-	Mon, 6 Mar 2023 08:11:11 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3p418ctdbv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 08:11:11 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3268B8tA18744052
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Mar 2023 08:11:08 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3B122004B;
-	Mon,  6 Mar 2023 08:11:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EE5C20043;
-	Mon,  6 Mar 2023 08:11:07 +0000 (GMT)
-Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.41.105])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Mar 2023 08:11:07 +0000 (GMT)
-From: Sathvika Vasireddy <sv@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
-Date: Mon,  6 Mar 2023 13:40:42 +0530
-Message-Id: <20230306081042.299871-1-sv@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVYNG0y2Fz3bym
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 20:35:40 +1100 (AEDT)
+Received: (Authenticated sender: alex@ghiti.fr)
+	by mail.gandi.net (Postfix) with ESMTPSA id D7AAE60017;
+	Mon,  6 Mar 2023 09:35:17 +0000 (UTC)
+Message-ID: <caaed678-4a5a-70e5-2ee7-cb2c8042afc0@ghiti.fr>
+Date: Mon, 6 Mar 2023 10:35:17 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v3 00/24] Remove COMMAND_LINE_SIZE from uapi
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Heiko Carstens <hca@linux.ibm.com>
+References: <mhng-e8b09772-24e5-4729-a0bf-01a9e4c76636@palmer-ri-x1c9a>
+ <21F95EC4-71EA-4154-A7DC-8A5BA54F174B@zytor.com>
+ <674bc31e-e4ed-988f-820d-54213d83f9c7@ghiti.fr>
+ <c500840b-b57d-47f2-a3d9-41465b10ffae@app.fastmail.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <c500840b-b57d-47f2-a3d9-41465b10ffae@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8Rk-Ub0D3lAr4pOzjpfE5WYZPId6CE5q
-X-Proofpoint-ORIG-GUID: 7NFZrYhBKXRL58WTv0DVW8TyNhcAnQkg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-05_12,2023-03-03_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 spamscore=0 lowpriorityscore=0 suspectscore=0
- clxscore=1015 adultscore=0 phishscore=0 mlxscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2303060068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,68 +46,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.vnet.ibm.com, sv@linux.ibm.com, npiggin@gmail.com
+Cc: linux-m68k@vger.kernel.org, ysato@users.osdn.me, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, borntraeger@linux.ibm.com, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.
+ berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, gor@linux.ibm.com, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, chris@zankel.net, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit d49a0626216b95 ("arch: Introduce CONFIG_FUNCTION_ALIGNMENT")
-introduced a generic function-alignment infrastructure. Move to using
-FUNCTION_ALIGNMENT_4B on powerpc, to use the same alignment as that of the
-existing _GLOBAL macro.
 
-Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+On 3/3/23 17:40, Arnd Bergmann wrote:
+> On Fri, Mar 3, 2023, at 12:59, Alexandre Ghiti wrote:
+>> On 3/2/23 20:50, H. Peter Anvin wrote:
+>>> On March 1, 2023 7:17:18 PM PST, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>>>>>> Commit 622021cd6c560ce7 ("s390: make command line configurable"),
+>>>>>> I assume?
+>>>>> Yes, sorry for that. I got distracted while writing and used the wrong
+>>>>> branch to look this up.
+>>>> Alex: Probably worth adding that to the list in the cover letter as it looks like you were planning on a v4 anyway (which I guess you now have to do, given that I just added the issue to RISC-V).
+>>> The only use that is uapi is the *default* length of the command line if the kernel header doesn't include it (in the case of x86, it is in the bzImage header, but that is atchitecture- or even boot format-specific.)
+>> Is COMMAND_LINE_SIZE what you call the default length? Does that mean
+>> that to you the patchset is wrong?
+> On x86, the COMMAND_LINE_SIZE value is already not part of a uapi header,
+> but instead (since bzImage format version 2.06) is communicated from
+> the kernel to the boot loader, which then knows how much data the
+> kernel will read (at most) from the command line.
+>
+> Most x86 kernels these days are booted using UEFI, which I think has
+> no such interface, the firmware just passes the command line and a
+> length, but has no way of knowing if the kernel will truncate this.
+> I think that is the same as with any other architecture that passes
+> the command line through UEFI, DT or ATAGS, all of which use
+> length/value pairs.
+>
+> Russell argued on IRC that this can be considered an ABI since a
+> boot loader may use its knowledge of the kernel's command line size
+> limit to reject long command lines. On the other hand, I don't
+> think that any boot loader actually does, they just trust that it
+> fits and don't have a good way of rejecting invalid configuration
+> other than truncating and/or warning.
+>
+> One notable exception I found while looking through is the old
+> (pre-ATAGS) parameter structure on Arm, which uses COMMAND_LINE_SIZE
+> as part of the structure definition. Apparently this was deprecated
+> 22 years ago, so hopefully the remaining riscpc and footbridge
+> users have all upgraded their bootloaders.
+>
+> The only other case I could find that might go wrong is
+> m68knommu with a few files copying a COMMAND_LINE_SIZE sized
+> buffer from flash into a kernel buffer:
+>
+> arch/m68k/coldfire/m5206.c:void __init config_BSP(char *commandp, int size)
+> arch/m68k/coldfire/m5206.c-{
+> arch/m68k/coldfire/m5206.c-#if defined(CONFIG_NETtel)
+> arch/m68k/coldfire/m5206.c-     /* Copy command line from FLASH to local buffer... */
+> arch/m68k/coldfire/m5206.c-     memcpy(commandp, (char *) 0xf0004000, size);
+> arch/m68k/coldfire/m5206.c-     commandp[size-1] = 0;
+> arch/m68k/coldfire/m5206.c-#endif /* CONFIG_NETtel */
 
-Note:
-Given that alignment beyond the minimum requirement may be desirable,
-should we instead select FUNCTION_ALIGNMENT_16B for ppc64 and select
-FUNCTION_ALIGNMENT_4B/8B for ppc32?
 
-From vmlinux (pseries_le_defconfig) symbol offsets, it looks like most of
-the ppc64 symbols are being aligned to a 16B boundary, but there are a few
-which are not.
+I see, thanks your thorough explanation: I don't see this m64k issue as 
+a blocker (unless Geert disagrees but he already reviewed the m64k 
+patches),  so I'll send the v5 now.
 
-Currently, size of vmlinux (built with pseries_le_defconfig) is 47090kB.
-With FUNCTION_ALIGNMENT_4B selected, size of vmlinux is 47152kB.
-With FUNCTION_ALIGNMENT_16B selected, size of vmlinux is 47152kB.
+Thanks again,
 
-Currently, size of vmlinux (built with powernv_defconfig) is 42852kB.
-With FUNCTION_ALIGNMENT_4B selected, size of vmlinux is 42911kB.
-With FUNCTION_ALIGNMENT_16B selected, size of vmlinux is 42977kB.
+Alex
 
-I am wondering if we should use the same alignment as that of
-_GLOBAL macro or have alignment set to a 8B/16B boundary.
-Please let me know your thoughts on the same. Thanks!
----
- arch/powerpc/Kconfig               | 1 +
- arch/powerpc/include/asm/linkage.h | 3 ---
- 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a6c4407d3ec8..ac3f80c0db36 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -174,6 +174,7 @@ config PPC
- 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
- 	select EDAC_ATOMIC_SCRUB
- 	select EDAC_SUPPORT
-+	select FUNCTION_ALIGNMENT_4B
- 	select GENERIC_ATOMIC64			if PPC32
- 	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
- 	select GENERIC_CMOS_UPDATE
-diff --git a/arch/powerpc/include/asm/linkage.h b/arch/powerpc/include/asm/linkage.h
-index b88d1d2cf304..b71b9582e754 100644
---- a/arch/powerpc/include/asm/linkage.h
-+++ b/arch/powerpc/include/asm/linkage.h
-@@ -4,9 +4,6 @@
- 
- #include <asm/types.h>
- 
--#define __ALIGN		.align 2
--#define __ALIGN_STR	".align 2"
--
- #ifdef CONFIG_PPC64_ELF_ABI_V1
- #define cond_syscall(x) \
- 	asm ("\t.weak " #x "\n\t.set " #x ", sys_ni_syscall\n"		\
--- 
-2.31.1
-
+>
+>       Arnd
