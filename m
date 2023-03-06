@@ -2,83 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1446AB51D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 04:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355396AB804
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 09:12:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVPXq2fj8z3cKj
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 14:42:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVWWz0Fr3z3cjD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 19:12:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U4vzdiQg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OUL+EeKT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U4vzdiQg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OUL+EeKT;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVPTJ6x9Cz3c8F;
-	Mon,  6 Mar 2023 14:39:32 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3261wWx4011817;
-	Mon, 6 Mar 2023 03:39:26 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVWVz5jwYz2yRV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 19:11:23 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3267dTPO032053;
+	Mon, 6 Mar 2023 08:11:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=1NF3jUIvNbuKy0o88eKY31IJk46l/dAE7De4vVg4/BA=;
- b=U4vzdiQgFPuLMOgANII541scySXtd0LAnnX+09/pwhxQnll8+130U+g7xe8S505u778d
- PFMnRNwJbMyWQ34uUCAq7fsFpO1LN6OdO5Kp0iEtkKuYQfuX3WkNn7CWYGRq6kqdikQQ
- fRUPC6FbYcA5+lyRMkU24WOmrZ4QbUXc1g8uj1/GNqdsj9bDK6Q5OxdmioIwpP+GOc4z
- PqtZkTW26PtDGFrhtXD4+1im6I5OHx6p/QQ+u1gd2peCLDzef8yx+5cfZkNhgVMDCVAd
- Xqn0CozqnmZ3s19wPTpRs28BdAJ9uZHlcEu1253dNQP9QwSB+FXaBTphAbFlWPKWB0Q4 yQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4uae4bmx-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ECwMxJ5akodVUa9VYHYTJWu375T5DLlLftB9mQeL5J0=;
+ b=OUL+EeKT50PDv5JbjH3Und87y7yz5Z8HtVNlG4LhF3yTUcX7F/cO+fT1hpdfB6SI1QHF
+ QizXF6qRAyNLA0bOxmOQTbMVD0WGoBH6Dd6CPzfSKmtxT6AclL8qR+D1m9trmozUJmWq
+ jl55mVdQ1kf7EJTvdA9OvMkRS0LOufRCOhaWATbG8gSi8d5vskmWsEIQRY3a8e/BooY5
+ QksiVIEG+2FWKqtu/vM3yQJNK8ul50APls5VvwZX+DnnMcFfy+x3Hl1s3U4gnn0pHJnF
+ AqmSOrFZI7rmG8fZzp/ARuz50QAcv3tQYVpo9REMMPGAgTXg8safSqkxuKku8RK0dd24 Hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4x1hf4dw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 03:39:25 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 325KMKZN007531;
-	Mon, 6 Mar 2023 03:39:23 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3p4188a4k0-1
+	Mon, 06 Mar 2023 08:11:13 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3267KP1i026215;
+	Mon, 6 Mar 2023 08:11:13 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4x1hf4d5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 03:39:23 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3263dJiP51708222
+	Mon, 06 Mar 2023 08:11:12 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 325Kh4rL005890;
+	Mon, 6 Mar 2023 08:11:11 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3p418ctdbv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 08:11:11 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3268B8tA18744052
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Mar 2023 03:39:19 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9767220043;
-	Mon,  6 Mar 2023 03:39:19 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17CDF20040;
-	Mon,  6 Mar 2023 03:39:18 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.99.34])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Mar 2023 03:39:17 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: skiboot@lists.ozlabs.org, dan@danny.cz, mpe@ellerman.id.au,
-        maddy@linux.ibm.com
-Subject: [PATCH V4 3/3] skiboot: Update IMC PMU node names for power10
-Date: Mon,  6 Mar 2023 09:09:13 +0530
-Message-Id: <20230306033913.80524-3-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230306033913.80524-1-atrajeev@linux.vnet.ibm.com>
-References: <20230306033913.80524-1-atrajeev@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EMd5vORms02YBTYZpNQp77jvjcW9auOl
-X-Proofpoint-ORIG-GUID: EMd5vORms02YBTYZpNQp77jvjcW9auOl
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Mon, 6 Mar 2023 08:11:08 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A3B122004B;
+	Mon,  6 Mar 2023 08:11:08 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2EE5C20043;
+	Mon,  6 Mar 2023 08:11:07 +0000 (GMT)
+Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.41.105])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Mar 2023 08:11:07 +0000 (GMT)
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
+Date: Mon,  6 Mar 2023 13:40:42 +0530
+Message-Id: <20230306081042.299871-1-sv@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8Rk-Ub0D3lAr4pOzjpfE5WYZPId6CE5q
+X-Proofpoint-ORIG-GUID: 7NFZrYhBKXRL58WTv0DVW8TyNhcAnQkg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-05_12,2023-03-03_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 mlxscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303060028
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 spamscore=0 lowpriorityscore=0 suspectscore=0
+ clxscore=1015 adultscore=0 phishscore=0 mlxscore=0 bulkscore=0
+ impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2303060068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,282 +93,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
+Cc: naveen.n.rao@linux.vnet.ibm.com, sv@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The nest IMC (In Memory Collection) Performance Monitoring
-Unit(PMU) node names are saved as "struct nest_pmus_struct"
-in the "hw/imc.c" IMC code. Not all the IMC PMUs listed in
-the device tree may be available. Nest IMC PMU names along with
-their bit values is represented in imc availability vector.
-This struct is used to remove the unavailable nodes by checking
-this vector.
+Commit d49a0626216b95 ("arch: Introduce CONFIG_FUNCTION_ALIGNMENT")
+introduced a generic function-alignment infrastructure. Move to using
+FUNCTION_ALIGNMENT_4B on powerpc, to use the same alignment as that of the
+existing _GLOBAL macro.
 
-For power10, the imc_chip_avl_vector ie, imc availability vector
-( which is a part of the IMC control block structure ), has
-change in mapping of units and bit positions. Hence rename the
-existing nest_pmus array to nest_pmus_p9 and add entry for power10
-as nest_pmus_p10.
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 
-Also the avl_vector has another change in bit positions 11:34. These
-bit positions tells the availability of Xlink/Alink/CAPI. There
-are total 8 links and three bit field combination says which link
-is available. Patch implements all these change to handle
-nest_pmus_p10.
+Note:
+Given that alignment beyond the minimum requirement may be desirable,
+should we instead select FUNCTION_ALIGNMENT_16B for ppc64 and select
+FUNCTION_ALIGNMENT_4B/8B for ppc32?
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From vmlinux (pseries_le_defconfig) symbol offsets, it looks like most of
+the ppc64 symbols are being aligned to a 16B boundary, but there are a few
+which are not.
+
+Currently, size of vmlinux (built with pseries_le_defconfig) is 47090kB.
+With FUNCTION_ALIGNMENT_4B selected, size of vmlinux is 47152kB.
+With FUNCTION_ALIGNMENT_16B selected, size of vmlinux is 47152kB.
+
+Currently, size of vmlinux (built with powernv_defconfig) is 42852kB.
+With FUNCTION_ALIGNMENT_4B selected, size of vmlinux is 42911kB.
+With FUNCTION_ALIGNMENT_16B selected, size of vmlinux is 42977kB.
+
+I am wondering if we should use the same alignment as that of
+_GLOBAL macro or have alignment set to a 8B/16B boundary.
+Please let me know your thoughts on the same. Thanks!
 ---
-Changelog:
-v3 -> v4:
-- Addressed review comment from Mahesh and added his Reviewed-by
-  for patch 1.
+ arch/powerpc/Kconfig               | 1 +
+ arch/powerpc/include/asm/linkage.h | 3 ---
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-v2 -> v3:
-- After review comments from Mahesh, fixed the code
-  to consider string upto "@" for both input node name
-  as well as child node name. V2 version was comparing
-  input node name and child node name upto string length
-  of child name. But this will return wrong node if input
-  name is larger than child name. Because it will match
-  as substring for child name.
-  https://lists.ozlabs.org/pipermail/skiboot/2023-January/018596.html
-
-v1 -> v2:
-- Addressed review comment from Dan to update
-  the utility funtion to search and compare
-  upto "@". Renamed it as dt_find_by_name_substr.
-
- hw/imc.c | 195 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 185 insertions(+), 10 deletions(-)
-
-diff --git a/hw/imc.c b/hw/imc.c
-index 55f53cce..3e14b508 100644
---- a/hw/imc.c
-+++ b/hw/imc.c
-@@ -48,7 +48,7 @@ static unsigned int *htm_scom_index;
-  * imc_chip_avl_vector(in struct imc_chip_cb, look at include/imc.h).
-  * nest_pmus[] is an array containing all the possible nest IMC PMU node names.
-  */
--static char const *nest_pmus[] = {
-+static char const *nest_pmus_p9[] = {
- 	"powerbus0",
- 	"mcs0",
- 	"mcs1",
-@@ -103,6 +103,67 @@ static char const *nest_pmus[] = {
- 	/* reserved bits : 51 - 63 */
- };
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index a6c4407d3ec8..ac3f80c0db36 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -174,6 +174,7 @@ config PPC
+ 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+ 	select EDAC_ATOMIC_SCRUB
+ 	select EDAC_SUPPORT
++	select FUNCTION_ALIGNMENT_4B
+ 	select GENERIC_ATOMIC64			if PPC32
+ 	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
+ 	select GENERIC_CMOS_UPDATE
+diff --git a/arch/powerpc/include/asm/linkage.h b/arch/powerpc/include/asm/linkage.h
+index b88d1d2cf304..b71b9582e754 100644
+--- a/arch/powerpc/include/asm/linkage.h
++++ b/arch/powerpc/include/asm/linkage.h
+@@ -4,9 +4,6 @@
  
-+static char const *nest_pmus_p10[] = {
-+	"pb",
-+	"mcs0",
-+	"mcs1",
-+	"mcs2",
-+	"mcs3",
-+	"mcs4",
-+	"mcs5",
-+	"mcs6",
-+	"mcs7",
-+	"pec0",
-+	"pec1",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"NA",
-+	"phb0",
-+	"phb1",
-+	"phb2",
-+	"phb3",
-+	"phb4",
-+	"phb5",
-+	"ocmb0",
-+	"ocmb1",
-+	"ocmb2",
-+	"ocmb3",
-+	"ocmb4",
-+	"ocmb5",
-+	"ocmb6",
-+	"ocmb7",
-+	"ocmb8",
-+	"ocmb9",
-+	"ocmb10",
-+	"ocmb11",
-+	"ocmb12",
-+	"ocmb13",
-+	"ocmb14",
-+	"ocmb15",
-+	"nx",
-+};
-+
- /*
-  * Due to Nest HW/OCC restriction, microcode will not support individual unit
-  * events for these nest units mcs0, mcs1 ... mcs7 in the accumulation mode.
-@@ -370,7 +431,7 @@ static void disable_unavailable_units(struct dt_node *dev)
- 	uint64_t avl_vec;
- 	struct imc_chip_cb *cb;
- 	struct dt_node *target;
--	int i;
-+	int i, j;
- 	bool disable_all_nests = false;
- 	struct proc_chip *chip;
+ #include <asm/types.h>
  
-@@ -408,14 +469,128 @@ static void disable_unavailable_units(struct dt_node *dev)
- 			avl_vec = (0xffULL) << 56;
- 	}
- 
--	for (i = 0; i < ARRAY_SIZE(nest_pmus); i++) {
--		if (!(PPC_BITMASK(i, i) & avl_vec)) {
--			/* Check if the device node exists */
--			target = dt_find_by_name_substr(dev, nest_pmus[i]);
--			if (!target)
--				continue;
--			/* Remove the device node */
--			dt_free(target);
-+	if (proc_gen == proc_gen_p9) {
-+		for (i = 0; i < ARRAY_SIZE(nest_pmus_p9); i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p9[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+	} else if (proc_gen == proc_gen_p10) {
-+		int val;
-+		char al[8], xl[8], otl[8], phb[8];
-+		for (i = 0; i < 11; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+
-+		for (i = 35; i < 41; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists for phb */
-+				for (j = 0; j < 3; j++) {
-+					snprintf(phb, sizeof(phb), "phb%d_%d", (i-35), j);
-+					target = dt_find_by_name_substr(dev, phb);
-+					if (!target)
-+						continue;
-+					/* Remove the device node */
-+					dt_free(target);
-+				}
-+			}
-+		}
-+
-+		for (i = 41; i < 58; i++) {
-+			if (!(PPC_BITMASK(i, i) & avl_vec)) {
-+				/* Check if the device node exists */
-+				target = dt_find_by_name_substr(dev, nest_pmus_p10[i]);
-+				if (!target)
-+					continue;
-+				/* Remove the device node */
-+				dt_free(target);
-+			}
-+		}
-+
-+		for (i=0; i<8; i++) {
-+			val = ((avl_vec & (0x7ULL << (29 + (3 * i)))) >> (29 + (3 * i)));
-+			switch (val) {
-+			case 0x5: //xlink configured and functional
-+
-+				snprintf(al, sizeof(al), "alink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl, sizeof(otl),"otl%1d_0",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				break;
-+			case 0x6: //alink configured and functional
-+
-+				snprintf(xl,sizeof(xl),"xlink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_0",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+
-+			case 0x7: //CAPI configured and functional
-+				snprintf(al,sizeof(al),"alink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(xl,sizeof(xl),"xlink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+			default:
-+				snprintf(xl,sizeof(xl),"xlink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, xl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(al,sizeof(al),"alink%1d",(7-i));
-+				target = dt_find_by_name_substr(dev, al);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_0",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+
-+				snprintf(otl,sizeof(otl),"otl%1d_1",(7-i));
-+				target = dt_find_by_name_substr(dev, otl);
-+				if (target)
-+					dt_free(target);
-+				break;
-+			}
- 		}
- 	}
- 
+-#define __ALIGN		.align 2
+-#define __ALIGN_STR	".align 2"
+-
+ #ifdef CONFIG_PPC64_ELF_ABI_V1
+ #define cond_syscall(x) \
+ 	asm ("\t.weak " #x "\n\t.set " #x ", sys_ni_syscall\n"		\
 -- 
 2.31.1
 
