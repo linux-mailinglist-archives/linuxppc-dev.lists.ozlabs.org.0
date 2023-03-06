@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20E66ABB13
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:09:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5C76ABB2B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:10:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZ7S3K2Tz3f5Z
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:09:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZ8d1vgXz2yV5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:10:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=1usxcaOR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uFqyPU/K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=1usxcaOR;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uFqyPU/K;
 	dkim-atps=neutral
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZ6X5pqYz3bjk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:08:52 +1100 (AEDT)
-Received: by mail-wm1-x333.google.com with SMTP id t25-20020a1c7719000000b003eb052cc5ccso7755219wmi.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:08:52 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZ7l2zCXz2xB5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:09:55 +1100 (AEDT)
+Received: by mail-wr1-x42f.google.com with SMTP id f11so8175818wrv.8
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678097329;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678097391;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Jj1u1uhVF2sQ2RVxtjKMw18KpQKd83rLKq4resJQVxg=;
-        b=1usxcaORk4vzUD7wjdTWxPIGkmkWNgCtULONTBP34T8McDvKYGW/MpGSlcjwuDrfTn
-         PniNNii9N82GcQQ+BCwD2y2VKaJOj7+a0LBXroxQjjCWs8+c/oePRs3PD6QcNiookTy8
-         HsE0IjeoDi+OqkZiqnMPpD/Dnv195K5+bK3HsT1aS0IyJY3m+etbpjyzPHPcgf0Dblx+
-         VbsU/63YrNvC+XmZlMMMJYW/2PKq166WJKRAGBiQoXU8DYNnS8chrbImu/2FF6C7LxvM
-         q8yiCPLoCakYyn/D9iUgJvTKXSNni+Qk37+EYd0xmJ3/KxDlX2zL8FsZfHSK/drojFTO
-         lu1A==
+        bh=DZOQ1qdZsFIK5hbGOnWeLVu8XxoTb8xkf1L43beLt1s=;
+        b=uFqyPU/KfF2H0sgeJPKblQQ09z2QF+U8QLkec7GtAjnGRixcmkQQHmI7463iJRt1T/
+         rHxu0Kl4nc3nOt5MH9Ymte5dM23zyqLTRTNXtNU/pE708hNq7xfdVy9kEFY5gWKXtEwu
+         IOizVhQJrEUxmZR+iVQR/Op/EKbjLs+sDVdMJbW1oFXrIiiiohfr4Ht1NR2SXiWfV4yF
+         vCqG7L6DlmSxUldGFBQRAIoJ9f/jjDlGsHjp0/BtyE1TaiFX6kgDAhRCjZMstOl1yuBn
+         ROiJ5Ouz3oB3EdmXnuAEfAUOcog9CZw6U/stmGUU76S9rvh5HigWpSduzV3a1puQbFWA
+         f9Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678097329;
+        d=1e100.net; s=20210112; t=1678097391;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Jj1u1uhVF2sQ2RVxtjKMw18KpQKd83rLKq4resJQVxg=;
-        b=8G/vY8hN33Z8uq3fbftxzSRIFsapE16QmeTCSAWhucuWHnP0UuWSZ+fGfZpVdIfQ8B
-         HcBAYlmI+UFh7CMmwIQv3PvAnehlbtkJsgUtkpN35/daxkfqcFRV5QA4oHLRolSv9mBu
-         cKyZkGzfY04iPV0AZ0q82kMeGgSqPTeLuU6YVfXQ2HdNRwuw4gDRddvm85q7ePj0qu9H
-         5kyRDJeHg93dSBk1roY5Vo9/EIQE+UM2OZE9XLHNvNXd17wj9Muzn4k2/SYjIhCWLfgx
-         TAnq8osUBugU4L3rYGYkj4YTxl9lZZ2RwQjzuW7nm/QL2OCZlHL55Mn5R8W4zcpBQpjL
-         P5Hg==
-X-Gm-Message-State: AO0yUKU1c8MfFIgqSsXWykM4cAngiMMwCFJNJ6PcfyyAz7HPg8UD4r8K
-	MzFy0DrO9rabj/5ylgYDIo6ycg==
-X-Google-Smtp-Source: AK7set/ZePibjJOtk8oWIgABJFyRrkee7knkF+V6hkYaFn2pS6WICyq1eAFhhu5xpZsAhsUsORtBLQ==
-X-Received: by 2002:a05:600c:1990:b0:3e2:20c7:6553 with SMTP id t16-20020a05600c199000b003e220c76553mr8682179wmq.13.1678097329516;
-        Mon, 06 Mar 2023 02:08:49 -0800 (PST)
+        bh=DZOQ1qdZsFIK5hbGOnWeLVu8XxoTb8xkf1L43beLt1s=;
+        b=fdOAEVhM3ZYFcCrx/qd3jKyYcZKN+oI1ywDJ85Uij1zFocG3e4rPlxU+IMvBCU+N6U
+         Lddwy7Fz1z9kjzGpyiqLZSAQt/yt3e1JtMckHfByMNVqV6ktIkrZoowdp8ongwv+PTwA
+         pUA6qCp0dWsHJZkhjc7qc3Z21nYagGt7AXPsrsHxKkcMikBr/pASg6NJb5ongjdAc//d
+         SsW1CxPYbiGYTbb+QHtNz2Gp8WiD/DVzQz+TZnZqrsWEeFy55MDqbbWae4gCZi56UGOT
+         uAPgbVuY6FEmdXcXWmI9D+P0WRHGz0HVm/EYxs2LgANua5nTEBUXmx90yhOt2CD5zFH6
+         Mupw==
+X-Gm-Message-State: AO0yUKXfoB1VYaxriFuXR2+eRt/TmEjq9G3ZzJYa/L3qpLgZlwsLGoHF
+	6LHvkWUv1DpCZ8TQwspt6Xnjng==
+X-Google-Smtp-Source: AK7set+81v6+Tn1jgTZ0GG84ONU4lrLBfEM4VVz0EKMiaYSTRJq6zNMe3zar9b+ifVJD076yKeNEYA==
+X-Received: by 2002:adf:dd83:0:b0:2c7:148c:b054 with SMTP id x3-20020adfdd83000000b002c7148cb054mr6259157wrl.29.1678097391202;
+        Mon, 06 Mar 2023 02:09:51 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id z7-20020a05600c0a0700b003dc434b39c7sm22915060wmp.0.2023.03.06.02.08.48
+        by smtp.gmail.com with ESMTPSA id k11-20020a5d628b000000b002c707b336c9sm9267953wru.36.2023.03.06.02.09.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Mar 2023 02:08:49 -0800 (PST)
+        Mon, 06 Mar 2023 02:09:51 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Greg KH <gregkh@linuxfoundation.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -114,9 +114,9 @@ To: Greg KH <gregkh@linuxfoundation.org>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v5 03/26] arm: Remove COMMAND_LINE_SIZE from uapi
-Date: Mon,  6 Mar 2023 11:04:45 +0100
-Message-Id: <20230306100508.1171812-4-alexghiti@rivosinc.com>
+Subject: [PATCH v5 04/26] ia64: Remove COMMAND_LINE_SIZE from uapi
+Date: Mon,  6 Mar 2023 11:04:46 +0100
+Message-Id: <20230306100508.1171812-5-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230306100508.1171812-1-alexghiti@rivosinc.com>
 References: <20230306100508.1171812-1-alexghiti@rivosinc.com>
@@ -144,37 +144,43 @@ be part of the user-visible API.
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Russell King (Oracle) <linux@armlinux.org.uk>
 ---
- arch/arm/include/asm/setup.h      | 1 +
- arch/arm/include/uapi/asm/setup.h | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/ia64/include/asm/setup.h      | 10 ++++++++++
+ arch/ia64/include/uapi/asm/setup.h |  6 ++----
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+ create mode 100644 arch/ia64/include/asm/setup.h
 
-diff --git a/arch/arm/include/asm/setup.h b/arch/arm/include/asm/setup.h
-index ba0872a8dcda..8a1e4f804d1b 100644
---- a/arch/arm/include/asm/setup.h
-+++ b/arch/arm/include/asm/setup.h
-@@ -13,6 +13,7 @@
- 
- #include <uapi/asm/setup.h>
- 
-+#define COMMAND_LINE_SIZE 1024
- 
- #define __tag __used __section(".taglist.init")
- #define __tagtable(tag, fn) \
-diff --git a/arch/arm/include/uapi/asm/setup.h b/arch/arm/include/uapi/asm/setup.h
-index 25ceda63b284..87a4f4af28e1 100644
---- a/arch/arm/include/uapi/asm/setup.h
-+++ b/arch/arm/include/uapi/asm/setup.h
-@@ -17,8 +17,6 @@
- 
- #include <linux/types.h>
- 
--#define COMMAND_LINE_SIZE 1024
+diff --git a/arch/ia64/include/asm/setup.h b/arch/ia64/include/asm/setup.h
+new file mode 100644
+index 000000000000..ba57909cad4c
+--- /dev/null
++++ b/arch/ia64/include/asm/setup.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __IA64_SETUP_H
++#define __IA64_SETUP_H
++
++#include <uapi/asm/setup.h>
++
++#define COMMAND_LINE_SIZE	2048
++
++#endif
+diff --git a/arch/ia64/include/uapi/asm/setup.h b/arch/ia64/include/uapi/asm/setup.h
+index 8d13ce8fb03a..bcbb2b242ded 100644
+--- a/arch/ia64/include/uapi/asm/setup.h
++++ b/arch/ia64/include/uapi/asm/setup.h
+@@ -1,8 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef __IA64_SETUP_H
+-#define __IA64_SETUP_H
 -
- /* The list ends with an ATAG_NONE node. */
- #define ATAG_NONE	0x00000000
+-#define COMMAND_LINE_SIZE	2048
++#ifndef __UAPI_IA64_SETUP_H
++#define __UAPI_IA64_SETUP_H
  
+ extern struct ia64_boot_param {
+ 	__u64 command_line;		/* physical address of command line arguments */
 -- 
 2.37.2
 
