@@ -1,78 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B0B6AB26B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Mar 2023 22:06:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8E56AB516
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 04:40:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVDlx5yJRz3fj5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 08:06:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVPVF3x1sz3cJv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 14:40:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AzC0MtpS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OFs87k8V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AzC0MtpS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OFs87k8V;
 	dkim-atps=neutral
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVDY159Fhz3cLB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 07:57:09 +1100 (AEDT)
-Received: by mail-ed1-x52e.google.com with SMTP id a25so31042001edb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Mar 2023 12:57:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678049829;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xOf0dR/RPpY4HJc+yEr00P2lL8nnE6ZdPZ2RnMEV2qQ=;
-        b=AzC0MtpS6jzuzYUPFsrIfgSP8aZbYwDqq5a+izUb9a0flhuTk9IJhffPMtswIUk4wO
-         sg+KQDUeI1WfTBjEPCVkavJWGZOiRXkonvodFjQekv1AtQJNs5CNYgKk72i8myvpgGVe
-         K9+Gcl430QJD9AbzGRenEZ61TH0KIeWK+0iYs+J05wVbAMYgv5sIn3w1+Cwy1JerQSRC
-         KH89b71gdC8EcpGw2scdHdGW+tPap0uAwmnq+3aLE3kGWG2fm1xZDaMDvjLA9woC5Ulu
-         0/MPaQHFdc8LJgoZ7thFoEH3DKdiynUC63aS/FSnJG4o6I/92Na/lIc5Pd1rCjK+C5wU
-         iyIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678049829;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xOf0dR/RPpY4HJc+yEr00P2lL8nnE6ZdPZ2RnMEV2qQ=;
-        b=lmU88tql53HzSHEcU72hpEM8tYgPqyKmfFg5Ze3Q/g0Xw9HnOy5vM6SVfw/iymdRJr
-         i2a4ibRKxJFKR2VBusCxkEqZ6SwLQjBYu3np9xR3yyYWsmVlM5+6ykFR/vbTtlA9VSOH
-         rBNGeQY6vo2NbktZNtu8POjTS8LWGq3FcAHatgY1zEPCm8gOcDNl+FyLs+MweXA60zur
-         TxtCCCjBE0Lq8GPGIw82nAWrvm4pUwcDb1kUjFEmkEcesXZloR9mm8haUKxE8/Oh7Fnw
-         Jed6oPwstRnRgquc/iQj9ah7H0gjIMFDtU3oq/t+XETs+RXHfEFtVWIn2x48Kj07UEcB
-         P6Tg==
-X-Gm-Message-State: AO0yUKX97DmEF6CUrmTZg1SyFSmIwmBbSyWxcqvNREWiR3iP4qqZm4mp
-	ijwWOg4oOQpDpBT6+xL8BII=
-X-Google-Smtp-Source: AK7set89glUReQEBerTf3N2tzQKZj5f2Ne8jws0vz8p+B9w+amQ0mlW3rs5ChgaK3OjP1RYo4BNMlQ==
-X-Received: by 2002:a17:906:36d3:b0:8bf:e95c:467b with SMTP id b19-20020a17090636d300b008bfe95c467bmr7987952ejc.63.1678049829092;
-        Sun, 05 Mar 2023 12:57:09 -0800 (PST)
-Received: from localhost.localdomain ([46.248.82.114])
-        by smtp.gmail.com with ESMTPSA id ay24-20020a170906d29800b0090953b9da51sm3615436ejb.194.2023.03.05.12.57.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Mar 2023 12:57:08 -0800 (PST)
-From: Uros Bizjak <ubizjak@gmail.com>
-To: linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arch@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH 10/10] perf/ring_buffer: use local_try_cmpxchg in __perf_output_begin
-Date: Sun,  5 Mar 2023 21:56:28 +0100
-Message-Id: <20230305205628.27385-11-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230305205628.27385-1-ubizjak@gmail.com>
-References: <20230305205628.27385-1-ubizjak@gmail.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVPTH69XFz3c9N;
+	Mon,  6 Mar 2023 14:39:31 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3260U0B8005322;
+	Mon, 6 Mar 2023 03:39:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=M/CH+Z/9B5RPiAbj63QXBSg1Nii+I0PsizyVLxqbvjI=;
+ b=OFs87k8V3ku/4E/gtc6TyRi083BIlkdfs2rj4cloM3tUtPKp/Bo0yP1zBdnp9A8jiZ3j
+ nYRdtGFNwUZrCH2rR0mjQiQDDjGUyb0ktezXamzm56qZAa2tiRFwETKPYFauomn1nJLR
+ okC8rZ3LSEDCRxCTw9Vxrtg9bfx099e5DH26np/0vyvhZQh+qftThgM+OPfbNh769yCm
+ DRSoZO7dYeNYvIwkViaO0C/CqtWfZAKtdWOtg9AfCtvK7THHxhM/Fe9YMPKW33D/I9yR
+ ///OIJlyeKz+i7H3oh1Qf219mOygpwddQ2vRZ4NWpG8ElXHu3fKJ7bU/hOUmIJkWGv2A Tw== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p50n3qjm0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 03:39:21 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32626AEo015386;
+	Mon, 6 Mar 2023 03:39:20 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3p419k9pwn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 03:39:19 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3263dGJo54788504
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Mar 2023 03:39:16 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00BA620049;
+	Mon,  6 Mar 2023 03:39:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7874420040;
+	Mon,  6 Mar 2023 03:39:14 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.99.34])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Mar 2023 03:39:14 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: skiboot@lists.ozlabs.org, dan@danny.cz, mpe@ellerman.id.au,
+        maddy@linux.ibm.com
+Subject: [PATCH V4 1/3] core/device: Add function to return child node using name at substring "@"
+Date: Mon,  6 Mar 2023 09:09:11 +0530
+Message-Id: <20230306033913.80524-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bF8iv2qZcVdch32MKIZ9q787i8JM7vFY
+X-Proofpoint-GUID: bF8iv2qZcVdch32MKIZ9q787i8JM7vFY
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-05_12,2023-03-03_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ mlxlogscore=999 bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1011
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2303060028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,57 +88,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Peter Zijlstra <peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>
+Cc: kjain@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use local_try_cmpxchg instead of local_cmpxchg (*ptr, old, new) == old in
-__perf_output_begin.  x86 CMPXCHG instruction returns success in ZF flag,
-so this change saves a compare after cmpxchg.
+Add a function dt_find_by_name_substr() that returns the child node if
+it matches till first occurence at "@" of a given name, otherwise NULL.
+This is helpful for cases with node name like: "name@addr". In
+scenarios where nodes are added with "name@addr" format and if the
+value of "addr" is not known, that node can't be matched with node
+name or addr. Hence matching with substring as node name will return
+the expected result. Patch adds dt_find_by_name_substr() function
+and testcase for the same in core/test/run-device.c
 
-Also, local_try_cmpxchg implicitly assigns old *ptr value to "old" when
-cmpxchg fails. There is no need to re-read the value in the loop.
-
-No functional change intended.
-
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 ---
- kernel/events/ring_buffer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Changelog:
+v3 -> v4:
+- Addressed review comment from Mahesh and added his Reviewed-by.
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 273a0fe7910a..e07c10f4d141 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -191,9 +191,10 @@ __perf_output_begin(struct perf_output_handle *handle,
+v2 -> v3:
+- After review comments from Mahesh, fixed the code
+  to consider string upto "@" for both input node name
+  as well as child node name. V2 version was comparing
+  input node name and child node name upto string length
+  of child name. But this will return wrong node if input
+  name is larger than child name. Because it will match
+  as substring for child name.
+  https://lists.ozlabs.org/pipermail/skiboot/2023-January/018596.html
+
+v1 -> v2:
+- Addressed review comment from Dan to update
+  the utility funtion to search and compare
+  upto "@". Renamed it as dt_find_by_name_substr.
+
+ core/device.c          | 31 +++++++++++++++++++++++++++++++
+ core/test/run-device.c | 15 +++++++++++++++
+ include/device.h       |  3 +++
+ 3 files changed, 49 insertions(+)
+
+diff --git a/core/device.c b/core/device.c
+index b102dd97..6b457ec4 100644
+--- a/core/device.c
++++ b/core/device.c
+@@ -395,6 +395,37 @@ struct dt_node *dt_find_by_name(struct dt_node *root, const char *name)
+ }
  
- 	perf_output_get_handle(handle);
  
-+	offset = local_read(&rb->head);
- 	do {
-+		head = offset;
- 		tail = READ_ONCE(rb->user_page->data_tail);
--		offset = head = local_read(&rb->head);
- 		if (!rb->overwrite) {
- 			if (unlikely(!ring_buffer_has_space(head, tail,
- 							    perf_data_size(rb),
-@@ -217,7 +218,7 @@ __perf_output_begin(struct perf_output_handle *handle,
- 			head += size;
- 		else
- 			head -= size;
--	} while (local_cmpxchg(&rb->head, offset, head) != offset);
-+	} while (!local_try_cmpxchg(&rb->head, &offset, head));
++struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name)
++{
++	struct dt_node *child, *match;
++	char *node, *child_node = NULL;
++
++	node = strdup(name);
++	if (!node)
++		return NULL;
++	node = strtok(node, "@");
++	list_for_each(&root->children, child, list) {
++		child_node = strdup(child->name);
++		if (!child_node)
++			goto err;
++		child_node = strtok(child_node, "@");
++		if (!strcmp(child_node, node)) {
++			free(child_node);
++			free(node);
++			return child;
++		}
++
++		match = dt_find_by_name_substr(child, name);
++		if (match)
++			return match;
++	}
++
++	free(child_node);
++err:
++	free(node);
++	return NULL;
++}
++
+ struct dt_node *dt_new_check(struct dt_node *parent, const char *name)
+ {
+ 	struct dt_node *node = dt_find_by_name(parent, name);
+diff --git a/core/test/run-device.c b/core/test/run-device.c
+index 4a12382b..6997452e 100644
+--- a/core/test/run-device.c
++++ b/core/test/run-device.c
+@@ -466,6 +466,21 @@ int main(void)
+ 	new_prop_ph = dt_prop_get_u32(ut2, "something");
+ 	assert(!(new_prop_ph == ev1_ph));
+ 	dt_free(subtree);
++
++	/* Test dt_find_by_name_substr */
++	root = dt_new_root("");
++	addr1 = dt_new_addr(root, "node", 0x1);
++	addr2 = dt_new_addr(root, "node0_1", 0x2);
++	assert(dt_find_by_name(root, "node@1") == addr1);
++	assert(dt_find_by_name(root, "node0_1@2") == addr2);
++	assert(dt_find_by_name_substr(root, "node@1") == addr1);
++	assert(dt_find_by_name_substr(root, "node0_1@2") == addr2);
++	assert(dt_find_by_name_substr(root, "node0_") == NULL);
++	assert(dt_find_by_name_substr(root, "node0_1") == addr2);
++	assert(dt_find_by_name_substr(root, "node0@") == NULL);
++	assert(dt_find_by_name_substr(root, "node0_@") == NULL);
++	dt_free(root);
++
+ 	return 0;
+ }
  
- 	if (backward) {
- 		offset = head;
+diff --git a/include/device.h b/include/device.h
+index 93fb90ff..b6a1a813 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -184,6 +184,9 @@ struct dt_node *dt_find_by_path(struct dt_node *root, const char *path);
+ /* Find a child node by name */
+ struct dt_node *dt_find_by_name(struct dt_node *root, const char *name);
+ 
++/* Find a child node by name and substring */
++struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name);
++
+ /* Find a node by phandle */
+ struct dt_node *dt_find_by_phandle(struct dt_node *root, u32 phandle);
+ 
 -- 
-2.39.2
+2.31.1
 
