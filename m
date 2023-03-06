@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E266ABBD2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:22:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F676ABBE5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:23:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZPh5PlHz3fR6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:22:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZQr53m8z3f65
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:23:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=eKLpoO9A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=biuy33Bk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=eKLpoO9A;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=biuy33Bk;
 	dkim-atps=neutral
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZNp4M2Bz3fVW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:21:13 +1100 (AEDT)
-Received: by mail-wm1-x331.google.com with SMTP id p26so5260834wmc.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:21:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZPy3qDpz3cFH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:22:14 +1100 (AEDT)
+Received: by mail-wr1-x435.google.com with SMTP id g3so8223671wri.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:22:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678098070;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678098131;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d+Ect6Q4Z/51Ss7kNoue4ZgIVIoWQVVZbpFfKkrpRUw=;
-        b=eKLpoO9ARR6byQoI3KfBvzhVk6oe6tP+suH4MHwkIJcy/wnL2MWwPVlq3KLS4NJYuC
-         npg5z0T2YBn/ekgqpnS/gNer4hyqDKqYzgmIxENE3SgezTEwqliE0zYvr1fPH2GwQmt9
-         jcx1NZi01pxBQ8XJzaRbcQsUYYsPfqsPA8Xrv5yjnuSnQHXj/GpNSw6rf6ah3jgmbxsg
-         5zflN2ad7NQHZvZAnNO7AQDSJOT5MmVleuf7siqRD5syVZugGRJ+AhyVsYNsIzfeu+J7
-         VpepoXaaVFgjZInk8H50HM4y5yJKfoYFvZxa+/DInESeQ0WBP4e+4PFuGrx7eKGY+RhS
-         PH4g==
+        bh=llD45vs7BruCqN5Y6LuJ+UdeA+HWMt5VLzqATcaeE3k=;
+        b=biuy33Bk2mI4ZMPBuWVd+4iS4s3Hh5qbYt3PjTBlB6xKI3sqAN5/opSaH9Oq2FmLAj
+         /Bo+b8SV5ooGWiS/kzLE0AatJKaQQSoDImYsefz7b5oTictITyDKaFbdGHBUaody+kOH
+         Ho+ScOf9SGVsXyGS2CWJ2O+ezbS15TOBFh0MVgeTIcv93OFa65f4TG47OPXCTq07neAH
+         pPqPantWl3phD1rMQq2bMLpZlFMj7b6XLHIEPyAtb+PjzcONbalR8XfGBJufSVux/cwv
+         g/BzVUJlLgeJU7a7nSXyp6X1Dt0ohhIr8wGSwVkMa3b1H78/mrfIdl7RcOsLKEIpuH99
+         9WQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678098070;
+        d=1e100.net; s=20210112; t=1678098131;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d+Ect6Q4Z/51Ss7kNoue4ZgIVIoWQVVZbpFfKkrpRUw=;
-        b=EO5Pj1jG9/THM7/aKyAPHSNMLoQNmmADPx6I/Z6KFxqMvX2n5I6i1im+jf3rtsH7D7
-         WnYA0qnBq5raPgYS1rbpR0mdQiF//6i0s+tCLrCkZDrRYy3RkstSctVddHaie/EdTyIQ
-         c6r8aOSX2n1sevXI/+tjCUDPfSbKxQEe26vZQn2AL8sXCuVYpf04mcZYWHbmxM3Byqlz
-         vN/P72XSF0Yss/HlO2gJS5oyD5cT63H1SFeol98dP4DQ64/rGtGdYI35J0FU9FUhwNhg
-         N8UWyJI6ZMiHmdA00q90bS9VzCnYU2tLcsEl7JvPwPq9ZQkQYgs6VS0c6VYKcEA1zHBs
-         uO6Q==
-X-Gm-Message-State: AO0yUKVFHmfFfC0SNfUo7+TGMjrBoIj+RhVieddoVt/VlXfYLhsrhK5N
-	mHH3PRFt6J5jVDIhQLJfoniBjg==
-X-Google-Smtp-Source: AK7set/wPuCwO2+/CS8VAJ7eTry4Cq+2CHA4Y8YGXKD1MQFrurlRBakmEmc3JjUrX5cCPEVIcMP5rQ==
-X-Received: by 2002:a05:600c:5254:b0:3eb:432d:8279 with SMTP id fc20-20020a05600c525400b003eb432d8279mr9240197wmb.13.1678098069733;
-        Mon, 06 Mar 2023 02:21:09 -0800 (PST)
+        bh=llD45vs7BruCqN5Y6LuJ+UdeA+HWMt5VLzqATcaeE3k=;
+        b=nV6Z2WmmZAZCLVfuPbF8yGBbkNmi65bXoXJxmQxW99iIUo94tv4NOOthfcCn9Lf0jM
+         6F3y73VvLDuGvxhmx0rHq9q+9PZz3kWe5+jHz8w0+9m4c0hrJ/dbIRZ/08DLtY5Gbg51
+         U5qixH/cwzZ8CuKkWNdzVNVX3ZIwoYykyWIqM1E7uWWhBzuddcY8xwt0yjTDu8M18evT
+         UiCNu/IcBxW41HETgeNOrS+8j0Sw9YSgw51lcsbDQ20PsvH5pjL7ayyGl/iWrCrfeDSE
+         6BLNUPgzPXE7MWnC3bbReIda6hJz2Y13Zrsxs5+Ug2t4QpOeJXinZgkFGBv7bUAOtRDc
+         9rdg==
+X-Gm-Message-State: AO0yUKVnLmTaMv/6jYv8/yyvOPG5QJuA6SURpNrhTMgQsb2+RGVlnUPn
+	WhxTfvIPMkb5/bvBJ8eC6WIN+w==
+X-Google-Smtp-Source: AK7set9CKdAXw9zT5b2S7XFTgcEiN4kPjtcCTBiE006KHZWMAQkWVtXBrm+fHU347RB7cSb9V0evYw==
+X-Received: by 2002:a5d:46c8:0:b0:2c7:df1:a09d with SMTP id g8-20020a5d46c8000000b002c70df1a09dmr6147537wrs.4.1678098131430;
+        Mon, 06 Mar 2023 02:22:11 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id v18-20020a05600c15d200b003e20a6fd604sm9521693wmf.4.2023.03.06.02.21.08
+        by smtp.gmail.com with ESMTPSA id h18-20020a5d4312000000b002c7107ce17fsm9587322wrq.3.2023.03.06.02.22.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Mar 2023 02:21:09 -0800 (PST)
+        Mon, 06 Mar 2023 02:22:11 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Greg KH <gregkh@linuxfoundation.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -114,14 +114,13 @@ To: Greg KH <gregkh@linuxfoundation.org>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v5 15/26] arc: Remove empty <uapi/asm/setup.h>
-Date: Mon,  6 Mar 2023 11:04:57 +0100
-Message-Id: <20230306100508.1171812-16-alexghiti@rivosinc.com>
+Subject: [PATCH v5 16/26] m68k: Remove empty <uapi/asm/setup.h>
+Date: Mon,  6 Mar 2023 11:04:58 +0100
+Message-Id: <20230306100508.1171812-17-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230306100508.1171812-1-alexghiti@rivosinc.com>
 References: <20230306100508.1171812-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -134,7 +133,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alexandre Ghiti <alexghiti@rivosinc.com>, Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>, Palmer Dabbelt <palmer@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -142,37 +141,33 @@ From: Palmer Dabbelt <palmer@rivosinc.com>
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/arc/include/asm/setup.h      | 1 -
- arch/arc/include/uapi/asm/setup.h | 6 ------
- 2 files changed, 7 deletions(-)
- delete mode 100644 arch/arc/include/uapi/asm/setup.h
+ arch/m68k/include/uapi/asm/setup.h | 15 ---------------
+ 1 file changed, 15 deletions(-)
+ delete mode 100644 arch/m68k/include/uapi/asm/setup.h
 
-diff --git a/arch/arc/include/asm/setup.h b/arch/arc/include/asm/setup.h
-index 028a8cf76206..fe45ff4681bc 100644
---- a/arch/arc/include/asm/setup.h
-+++ b/arch/arc/include/asm/setup.h
-@@ -7,7 +7,6 @@
- 
- 
- #include <linux/types.h>
--#include <uapi/asm/setup.h>
- 
- #define COMMAND_LINE_SIZE 256
- 
-diff --git a/arch/arc/include/uapi/asm/setup.h b/arch/arc/include/uapi/asm/setup.h
+diff --git a/arch/m68k/include/uapi/asm/setup.h b/arch/m68k/include/uapi/asm/setup.h
 deleted file mode 100644
-index a6d4e44938be..000000000000
---- a/arch/arc/include/uapi/asm/setup.h
+index 005593acc7d8..000000000000
+--- a/arch/m68k/include/uapi/asm/setup.h
 +++ /dev/null
-@@ -1,6 +0,0 @@
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 -/*
-- * setup.h is part of userspace header ABI so UAPI scripts have to generate it
-- * even if there's nothing to export - causing empty <uapi/asm/setup.h>
-- * However to prevent "patch" from discarding it we add this placeholder
-- * comment
-- */
+-** asm/setup.h -- Definition of the Linux/m68k setup information
+-**
+-** Copyright 1992 by Greg Harp
+-**
+-** This file is subject to the terms and conditions of the GNU General Public
+-** License.  See the file COPYING in the main directory of this archive
+-** for more details.
+-*/
+-
+-#ifndef _UAPI_M68K_SETUP_H
+-#define _UAPI_M68K_SETUP_H
+-
+-#endif /* _UAPI_M68K_SETUP_H */
 -- 
 2.37.2
 
