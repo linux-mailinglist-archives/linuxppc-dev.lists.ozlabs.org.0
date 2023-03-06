@@ -1,56 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388546AC5BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 16:43:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CD46AC5C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 16:44:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVjXG13X0z3chx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 02:43:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVjYG5B3Qz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 02:44:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Y7pgUr7Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RwF+WS2s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::221; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Y7pgUr7Q;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RwF+WS2s;
 	dkim-atps=neutral
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVjWM3rQfz3c6V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 02:42:18 +1100 (AEDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id B37C4240009;
-	Mon,  6 Mar 2023 15:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1678117328;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4+e/cUqhhX/VA/vt11SGpFMg3F+XphXS1/Hro38i4j0=;
-	b=Y7pgUr7QHXRIZk9xlTpsJCwpUTN6J93viTIZPEPSAu5ZhECKJ2jOfMP9JFBqxLQNuei34Z
-	tKLWB7FoAqSYE1PTY6ROhpqYUfgTlToyScGeKDgIVmUER65rZTwF9S1kKKWTu/P2Wrno5b
-	fjLhWcgMRzdMyJCOtqls3mPQbmf6lgBIJJzqhScg+Vc5VY+ufSUGvRYmuaHL/vScl+JD+h
-	5iPYWJhDzoQX5TLjFPLfFYWP8nErrdcYz0KDIE1sjeJcH67gkRx79N2SEaiVlz/MkMJK4L
-	UwV37a+dm/zpn1w7yGKYoqjcPjwxlcQ7wOcVaX2spOpnPyfxvvOgD5jlmJbnAg==
-Date: Mon, 6 Mar 2023 16:41:58 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v6 01/10] dt-bindings: soc: fsl: cpm_qe: Add TSA
- controller
-Message-ID: <20230306164158.767e6420@bootlin.com>
-In-Reply-To: <20230226174833.GA76710-robh@kernel.org>
-References: <20230217145645.1768659-1-herve.codina@bootlin.com>
-	<20230217145645.1768659-2-herve.codina@bootlin.com>
-	<20230226174833.GA76710-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVjX324Msz3cgx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 02:42:59 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 326E4LLY001767;
+	Mon, 6 Mar 2023 15:42:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=gRD8JJYANQoaDeDDLwQmfnykMhkvwfwnnj9U9gA27mA=;
+ b=RwF+WS2sbs3pY6qpfiH/Mg/AiGkJtDL8Szo/CPP7ILaGTWas7c2TsmUOBH8lsq/xJoLk
+ 9hMlK1/JvSePnTiOkaPypLnXdW1ylzqjK/9AMyWCkkFpGxrMkIEeU3z+iu5G2CnV1uRw
+ ruu5QY5uc9tZ366jnawo0hd5shRT73Ps7Eesp27mOXB1aQ6ZrfHdoceqr29se8/q6H4i
+ QQo5Kc5FiH/dmfFKAFaMJuGjLiPTq/hkpkoyFJfzwQYT8YJCgvu4MX9sSAZJMTzU8eT3
+ Uh1k+v6Wfko4XGThcQ14+6LL8eyUZNJlVcuSEub/7ND/rFaV5tTJflpY/ofF0ZG8yctt 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p507nyvs5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 15:42:51 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 326Ce6F2002185;
+	Mon, 6 Mar 2023 15:42:51 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p507nyvrp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 15:42:51 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 326ChqkM030497;
+	Mon, 6 Mar 2023 15:42:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3p418ctwy5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Mar 2023 15:42:49 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 326FgjHX60948904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Mar 2023 15:42:45 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B6E5A2004B;
+	Mon,  6 Mar 2023 15:42:45 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6F73420040;
+	Mon,  6 Mar 2023 15:42:45 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.101.4.33])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Mar 2023 15:42:45 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: [PATCH] powerpc/mm: fix mmap_lock bad unlock
+Date: Mon,  6 Mar 2023 16:42:44 +0100
+Message-Id: <20230306154244.17560-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230227173632.3292573-32-surenb@google.com>
+References: <20230227173632.3292573-32-surenb@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TOFUYNI1VTUM3RFw2H_83gmSy3TZcZN8
+X-Proofpoint-ORIG-GUID: mnzNAchC0gIq82GWAbKWIQCKzlMizBE8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-06_08,2023-03-06_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2303060137
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,39 +96,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
-On Sun, 26 Feb 2023 11:48:33 -0600
-Rob Herring <robh@kernel.org> wrote:
+When page fault is tried holding the per VMA lock, bad_access_pkey() and
+bad_access() should not be called because it is assuming the mmap_lock is
+held.
+In the case a bad access is detected, fall back to the default path,
+grabbing the mmap_lock to handle the fault and report the error.
 
-[...]
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> > +  '#fsl,serial-cells': =20
->=20
-> #foo-cells is for when there are differing foo providers which need=20
-> different number of cells. That's not the case here.
->=20
+Fixes: 169db3bb4609 ("powerc/mm: try VMA lock-based page fault handling first")
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Link: https://lore.kernel.org/linux-mm/842502FB-F99C-417C-9648-A37D0ECDC9CE@linux.ibm.com
+Cc: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+ arch/powerpc/mm/fault.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-Ok, I will remove the #fsl,serial-cells property on the next iteration.
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index c7ae86b04b8a..e191b3ebd8d6 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -479,17 +479,13 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 
+ 	if (unlikely(access_pkey_error(is_write, is_exec,
+ 				       (error_code & DSISR_KEYFAULT), vma))) {
+-		int rc = bad_access_pkey(regs, address, vma);
+-
+ 		vma_end_read(vma);
+-		return rc;
++		goto lock_mmap;
+ 	}
+ 
+ 	if (unlikely(access_error(is_write, is_exec, vma))) {
+-		int rc = bad_access(regs, address);
+-
+ 		vma_end_read(vma);
+-		return rc;
++		goto lock_mmap;
+ 	}
+ 
+ 	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
+-- 
+2.39.2
 
-On the next series iteration, I will also remove the #fsl,chan-cells proper=
-ty
-present later on a patch related to the QMC binding. The #fsl,chan-cells ne=
-eds
-to be removed exactly for the same reason.
-
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    const: 1
-> > +    description:
-> > +      TSA consumers that use a phandle to TSA need to pass the serial =
-identifier
-> > +      with this phandle (defined in dt-bindings/soc/fsl,tsa.h).
-> > +      For instance "fsl,tsa-serial =3D <&tsa FSL_CPM_TSA_SCC4>;". =20
-
-Thanks for the review.
-Herv=C3=A9
