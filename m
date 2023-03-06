@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A6C6ABAD6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:07:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BDA6ABAE4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 11:08:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZ5456sWz3cDG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:07:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVZ6F69lLz3cdr
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 21:08:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=GzMxr2yR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=LVao0iO1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=GzMxr2yR;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=LVao0iO1;
 	dkim-atps=neutral
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZ4B3jqBz3c5D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:06:50 +1100 (AEDT)
-Received: by mail-wr1-x42e.google.com with SMTP id j2so8156934wrh.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:06:50 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVZ5N0XbMz3c71
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Mar 2023 21:07:51 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id j19-20020a05600c1c1300b003e9b564fae9so7773186wms.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 02:07:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678097206;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678097268;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LvcuE3NOD15vbspLQ8i+J1fU+muK56CBG8DLmUrfpXo=;
-        b=GzMxr2yRyn0pUrItv7OQBxxlp7MvVuswU+fzM1LMzGFbYRZuR5wh9SVD334RTDZGAW
-         48MUaqgcpAf2R+uUEUeOUuluXFdYq6etu7QIB4iz7yjZxaU9h0eBsUJqiH27IKG5Dvx2
-         Nxfgu2m/Z0YLZvmYF4EC+rac6DkSXECFqI32UFqa1g1sBiEcr+UZFNNYTPhtQULlrVTN
-         YhwU2VOjKYo21s/2wh1Rg/PC6i/jPfxPzxtT1FpSUglSki/BEpLby0k7NyJEdSkcHXV5
-         IJ/y15DnIJ5IbmKM21jaTQOBzpt7dTEQ68G3ILKQAvzhDrPvTGAKu0ykHMvPHxDrcfTg
-         UKHA==
+        bh=N41roIOXT8wjs7zjADqaDZNesaRyOk1MrM7jTwSq5FQ=;
+        b=LVao0iO1Sl3DmyJ0lwVU4twuicig8Om++dq8VswsbLPwSKJDUetHVKfihWnbAWQv0x
+         ImHuStiWtzJxemlAxcABAiE835r/k/myIDbQeoZLjDuvQthY6/3ESFmUMPcwhFCIAB11
+         f1zfU7NW2WGz5MT5ZNFBIdT8Uoaiv5m8seywbGygVRi2hlcxU0zfrxOi5+FUNH81Om/e
+         AvQt32TW/lCVlWRQ8Dk6xYyLtXHVhUrn0y78tz3cI+xWx2HNyrVPq1hvQR/tE454Sedg
+         XVWPvjZraFH11YVRfel3JXBcrCzQ/GPVlET5sg1V6hsha0uYzJuA2RqpRp7dMToU47LZ
+         4nZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678097206;
+        d=1e100.net; s=20210112; t=1678097268;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LvcuE3NOD15vbspLQ8i+J1fU+muK56CBG8DLmUrfpXo=;
-        b=iI/eZ4chS6TbU1+vMDvWSvY+qD00XMXi5IXSpd5gmJLd/giAMXN2xJAYfgoPNhGri6
-         6iDn2154+LQjJ/miQd/0rWbjYuKMaymL3QQaPhqguTa89+IOx04ZE0BvtOVnhxFuAFLO
-         xO56GfouHYJqBG3EUWAnMqGM7agV6gM4ziewXaJSxgrOu/DKGeGhwsTfdl2e7Dp1XPhm
-         BvGrAT80R2FHRyIz3YT0WCm75gTvRxZDrS6F614nvvN+R3rbD2/JJtffDndlqUfcorLK
-         1LgtRzPTf0EFxgl3nbB0dPx9fY20pgmpv71lMEm1xVKrzKLZHyiUSvYKTMDNGMDpN5iA
-         5Fuw==
-X-Gm-Message-State: AO0yUKXswEOh+Xw4TEVyNfw0ZWNt3IMl0ZSrk0kOLCL7GNRZqvwqZpb3
-	qCQ8t0A3LP+ZJRQ+EQy9uPheEA==
-X-Google-Smtp-Source: AK7set8I9B88OKBP6atULLTLf+lVGQejvnuz60ddU68PPN7BboGVQ7x9xON9rTOBbgBH8tLFC+u3iw==
-X-Received: by 2002:adf:da42:0:b0:2c7:16c3:175e with SMTP id r2-20020adfda42000000b002c716c3175emr6451817wrl.64.1678097206117;
-        Mon, 06 Mar 2023 02:06:46 -0800 (PST)
+        bh=N41roIOXT8wjs7zjADqaDZNesaRyOk1MrM7jTwSq5FQ=;
+        b=Tf+2rMxVarsbghZYc1TegR2qCgp/QMubHazQJwDJUit3HLV45hPnalACf3D2Zf7lUM
+         +YPsMaOanVj17LGtd7F+XkEegd6c9t6Yy04WODkNxy1t1mhnDIma7yeITQYrh702b6sr
+         6nZmXHTetzvQ/90ikBICoNnmeYHs5UqzZQKPZGb5XmKmdWl4Hfm/pOpQUdnlUL3s34kL
+         S8Jp85zvv1w38xo92zlUFxQumCAVWb1zkntISi7Au89KHnt1lGvYzm67Jovrs1AY648x
+         +GixtGL0Doxn1Ih7VawBS8eSgiQ5imhFYhrxqxOlEM37T/vEEz1FPZS0BmmCiOkq8DUr
+         f1yw==
+X-Gm-Message-State: AO0yUKXJ14w6nU5W9B+oHCbRhK5kHftrU4Ykjoc1je4zdFD5WMvK08KT
+	9BFHMkyhWFG0fvp57m3f8oZDug==
+X-Google-Smtp-Source: AK7set/9eiRJPPWXw4gzdjZ9KwO/JaDyEd97qx+9/YcLMHFR5HgOivreh1k8TEHdb6h1nuiHfC9sUg==
+X-Received: by 2002:a05:600c:444a:b0:3e0:6c4:6a38 with SMTP id v10-20020a05600c444a00b003e006c46a38mr516849wmn.33.1678097267819;
+        Mon, 06 Mar 2023 02:07:47 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id e17-20020a5d4e91000000b002c559626a50sm9596269wru.13.2023.03.06.02.06.44
+        by smtp.gmail.com with ESMTPSA id n8-20020a05600c304800b003e21f01c426sm9667577wmh.9.2023.03.06.02.07.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Mar 2023 02:06:45 -0800 (PST)
+        Mon, 06 Mar 2023 02:07:47 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Greg KH <gregkh@linuxfoundation.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -114,14 +114,13 @@ To: Greg KH <gregkh@linuxfoundation.org>,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v5 01/26] alpha: Remove COMMAND_LINE_SIZE from uapi
-Date: Mon,  6 Mar 2023 11:04:43 +0100
-Message-Id: <20230306100508.1171812-2-alexghiti@rivosinc.com>
+Subject: [PATCH v5 02/26] arm64: Remove COMMAND_LINE_SIZE from uapi
+Date: Mon,  6 Mar 2023 11:04:44 +0100
+Message-Id: <20230306100508.1171812-3-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230306100508.1171812-1-alexghiti@rivosinc.com>
 References: <20230306100508.1171812-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -134,7 +133,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alexandre Ghiti <alexghiti@rivosinc.com>, Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>, Palmer Dabbelt <palmer@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -145,45 +144,38 @@ be part of the user-visible API.
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/alpha/include/asm/setup.h      | 4 ++--
- arch/alpha/include/uapi/asm/setup.h | 2 --
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/setup.h      | 3 ++-
+ arch/arm64/include/uapi/asm/setup.h | 2 --
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/alpha/include/asm/setup.h b/arch/alpha/include/asm/setup.h
-index 262aab99e391..ea08ca45efa8 100644
---- a/arch/alpha/include/asm/setup.h
-+++ b/arch/alpha/include/asm/setup.h
-@@ -2,8 +2,6 @@
- #ifndef __ALPHA_SETUP_H
- #define __ALPHA_SETUP_H
+diff --git a/arch/arm64/include/asm/setup.h b/arch/arm64/include/asm/setup.h
+index f4af547ef54c..7ca70f883cee 100644
+--- a/arch/arm64/include/asm/setup.h
++++ b/arch/arm64/include/asm/setup.h
+@@ -4,8 +4,9 @@
+ #define __ARM64_ASM_SETUP_H
+ 
+ #include <linux/string.h>
++#include <linux/types.h>
  
 -#include <uapi/asm/setup.h>
--
- /*
-  * We leave one page for the initial stack page, and one page for
-  * the initial process structure. Also, the console eats 3 MB for
-@@ -14,6 +12,8 @@
- /* Remove when official MILO sources have ELF support: */
- #define BOOT_SIZE	(16*1024)
++#define COMMAND_LINE_SIZE	2048
  
-+#define COMMAND_LINE_SIZE	256
-+
- #ifdef CONFIG_ALPHA_LEGACY_START_ADDRESS
- #define KERNEL_START_PHYS	0x300000 /* Old bootloaders hardcoded this.  */
- #else
-diff --git a/arch/alpha/include/uapi/asm/setup.h b/arch/alpha/include/uapi/asm/setup.h
-index f881ea5947cb..9b3b5ba39b1d 100644
---- a/arch/alpha/include/uapi/asm/setup.h
-+++ b/arch/alpha/include/uapi/asm/setup.h
-@@ -2,6 +2,4 @@
- #ifndef _UAPI__ALPHA_SETUP_H
- #define _UAPI__ALPHA_SETUP_H
+ void *get_early_fdt_ptr(void);
+ void early_fdt_map(u64 dt_phys);
+diff --git a/arch/arm64/include/uapi/asm/setup.h b/arch/arm64/include/uapi/asm/setup.h
+index 5d703888f351..f9f51e5925aa 100644
+--- a/arch/arm64/include/uapi/asm/setup.h
++++ b/arch/arm64/include/uapi/asm/setup.h
+@@ -22,6 +22,4 @@
  
--#define COMMAND_LINE_SIZE	256
+ #include <linux/types.h>
+ 
+-#define COMMAND_LINE_SIZE	2048
 -
- #endif /* _UAPI__ALPHA_SETUP_H */
+ #endif
 -- 
 2.37.2
 
