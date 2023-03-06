@@ -1,94 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35476AC156
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 14:35:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28416AC1F7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Mar 2023 14:56:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVfhT4qNZz3f3J
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 00:35:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVg954gLWz3cjQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 00:56:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kz8BefZg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m6V+7NL6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kz8BefZg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m6V+7NL6;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVfgV0qFRz3bT1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 00:34:13 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 326Cp8Gd017372;
-	Mon, 6 Mar 2023 13:34:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NwSPg9Cz3LpSPdQkKFaU5KTmA6iK/rbr4tdThWYCwVA=;
- b=Kz8BefZgyWxqXi3x+NVDBlxEyD2qObMYIIY+sc1NIlmgGxoHbcgputApy5l1HgSguqyo
- 8cPW2W5oDphWySE22m1n7X3Fh7hbXz2jDIOskCEP+GaR1Wwnuw083GzpVfoDvNWZK5Wj
- KSy61oyszTVe0k4kIKVmcEBMHfCBOEUDDTVXhKiraAg9bFPluHlknJ4BrD3oHU+XXMUE
- 1OgKMtO3VDWyqRnhdnH8GEanaSWqB9fpLX8eFMJiKaDL9VKXiQtQyZmSyEeD7iNi/CcI
- 0k0w1gc0bW3c33Wh080uZ7AECH9mWwGgzfKm+QVQwpFzCyRNRDi8A91BfiH7/V0Q9bMA hg== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVg8675Vbz3c4x
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 00:55:34 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 326D59jg018320;
+	Mon, 6 Mar 2023 13:55:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=gRD8JJYANQoaDeDDLwQmfnykMhkvwfwnnj9U9gA27mA=;
+ b=m6V+7NL6ucr8BkYk9y+2W8uMUK50NAyeDGOY6X9ZF0aBaUmJDmWFE2MwDhQA6R4PFGCA
+ ogtqy8M1Ib7Ou8a5wg945i8rVgiVzzhLysZb7QUs/ll93cAPb0u0fAONqwcKcsUmzx7R
+ i/57EqO8Sr5/PgohMQ9UyEZY9EM7qYDPsby50LOH7sZEZKzr5KAh9P0q+E/4WQDXSas2
+ TbnJlyH9fXEWhjXTSt3ahyOaIhSVzt0XiPxzL6xfr1+nqlX8ALfmdTWgFQAnzb/rD8i2
+ rtrgcNS6d5f46AHO9IxBuRQ0GzfR5wAQE5+mJ2nsEBBAYzu5/X1yjLbQ8WG1vyY8DjXu Hw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p50vmc1ss-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4vp20636-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 13:34:06 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 326CuOG5030359;
-	Mon, 6 Mar 2023 13:34:06 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p50vmc1s0-1
+	Mon, 06 Mar 2023 13:55:28 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 326D9B4R024378;
+	Mon, 6 Mar 2023 13:55:28 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4vp2062g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 13:34:06 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 326BfUBa005750;
-	Mon, 6 Mar 2023 13:34:04 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3p41brarum-1
+	Mon, 06 Mar 2023 13:55:28 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3266D2uk008169;
+	Mon, 6 Mar 2023 13:55:26 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3p419ka7dv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Mar 2023 13:34:04 +0000
+	Mon, 06 Mar 2023 13:55:25 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 326DY13T58851740
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 326DtLHF19792456
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Mar 2023 13:34:02 GMT
+	Mon, 6 Mar 2023 13:55:21 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D11E320067;
-	Mon,  6 Mar 2023 13:34:01 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 28ABE2006A;
+	Mon,  6 Mar 2023 13:55:21 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F23020043;
-	Mon,  6 Mar 2023 13:34:01 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
+	by IMSVA (Postfix) with ESMTP id D4B7920067;
+	Mon,  6 Mar 2023 13:55:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.101.4.33])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Mar 2023 13:34:01 +0000 (GMT)
-Message-ID: <3ee16846-3aed-4c52-b4b7-a60a848fa06f@linux.ibm.com>
-Date: Mon, 6 Mar 2023 14:34:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: Selftests powerpc/primitives test hangs (linux-next)
-Content-Language: en-US
-To: Sachin Sant <sachinp@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <842502FB-F99C-417C-9648-A37D0ECDC9CE@linux.ibm.com>
+	Mon,  6 Mar 2023 13:55:20 +0000 (GMT)
 From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <842502FB-F99C-417C-9648-A37D0ECDC9CE@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Subject: [PATCH] powerpc/mm: fix mmap_lock bad unlock
+Date: Mon,  6 Mar 2023 14:55:20 +0100
+Message-Id: <20230306135520.4222-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Aq5SsWYDtMYfJbsoHUc9Gx2Hm_Tlq9qY
-X-Proofpoint-ORIG-GUID: jR3J0Pr3ysfMh0ddrGBrej237t8l9-_0
+X-Proofpoint-ORIG-GUID: -mfselKxpsUFz8XBPm9kLaG4aVfl3jwU
+X-Proofpoint-GUID: OchV6nD80rsjtI295AnTPoQEGnRuyelA
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-06_05,2023-03-06_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 adultscore=0 mlxscore=0 phishscore=0 spamscore=0
- clxscore=1011 malwarescore=0 lowpriorityscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2303060120
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ mlxlogscore=999 mlxscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2303060120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,22 +94,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, surenb@google.com
+Cc: Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/03/2023 10:19:29, Sachin Sant wrote:
-> While running powerpc/primitives selftests, the test (load_unaligned_zeropad)
-> hangs indefinitely. This behaviour is seen with linux-next 6.2.0-next-20230303
-> on a Power10 logical partition.
-> 
-> Git bisect points to following commit
-> 
-> commit 169db3bb460903443e25ac9c0737da45d6bb5402
->    powerc/mm: try VMA lock-based page fault handling first
-> 
-> - Sachin
-> 
+When page fault is tried holding the per VMA lock, bad_access_pkey() and
+bad_access() should not be called because it is assuming the mmap_lock is
+held.
+In the case a bad access is detected, fall back to the default path,
+grabbing the mmap_lock to handle the fault and report the error.
 
-My mistake, bad_access_pkey() and bad_access() are releasing the mmap_lock.
-Writing a fix...
+Fixes: 169db3bb4609 ("powerc/mm: try VMA lock-based page fault handling first")
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Link: https://lore.kernel.org/linux-mm/842502FB-F99C-417C-9648-A37D0ECDC9CE@linux.ibm.com
+Cc: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+ arch/powerpc/mm/fault.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index c7ae86b04b8a..e191b3ebd8d6 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -479,17 +479,13 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 
+ 	if (unlikely(access_pkey_error(is_write, is_exec,
+ 				       (error_code & DSISR_KEYFAULT), vma))) {
+-		int rc = bad_access_pkey(regs, address, vma);
+-
+ 		vma_end_read(vma);
+-		return rc;
++		goto lock_mmap;
+ 	}
+ 
+ 	if (unlikely(access_error(is_write, is_exec, vma))) {
+-		int rc = bad_access(regs, address);
+-
+ 		vma_end_read(vma);
+-		return rc;
++		goto lock_mmap;
+ 	}
+ 
+ 	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
+-- 
+2.39.2
+
