@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFED06AD683
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 05:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141956AD6A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 06:06:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PW2vv3d0vz3cNJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 15:46:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PW3Ld6Ggmz3cMb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 16:06:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XAZPC4p1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WkCNp7TS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XAZPC4p1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WkCNp7TS;
 	dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PW2ty6yMyz3bjd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 15:45:30 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id kb15so12078854pjb.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 20:45:30 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PW3Kg4SmCz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 16:05:09 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id q31-20020a17090a17a200b0023750b69614so10817362pja.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 21:05:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678164328;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20210112; t=1678165506;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7nQXlj8ZF5e19XF2bWoBX4hZUgDJ1cP2r6TZC9HO7nY=;
-        b=XAZPC4p1tJ4PczD8l0f9yhjuLov17PLNhBTheG5oWKZUhHLQVRsxKSxJWJ5QryY6Cx
-         7Fojvx42BE+CxaKVoDNPKpq7JBiXx9x0MMIA4sjyRFgrR4ZieTlMVIULVH2roUNoi4s3
-         xu48dkcs/YRuCDEUwFxvEeXGg9u2SN+aR2SXgMEcPMqn3xqgpITXdE9bwe8S2Pmt2c+e
-         GYXnQTBQXnYhKFGkHF6pPwXV8ukYS7l0Ut78RtY3vuQ+Df50r3PTA1pCSi9SEwnbL7Qc
-         SicU5Y8IhvxjTnSrr4m0ZF0vkyev1+dSDWDmw4i9ezJ/MB0EaTAJXpO33wc9MrZoHTb3
-         1NPQ==
+        bh=fAr/4rZLY/xW2VZEGvfJ9vcha1fPxJBixn7intPRfv8=;
+        b=WkCNp7TSaFq1NkStkRRYZf/7HaSOKOYxyg90uy+CWLTCGTo10DoEcaclgmrNVAmQGd
+         F0eYRS9Ept+4HdVgZ/Udc7Mu4on10dxvK4uMzKcKkSzWyei6ehYoG3+3UgQX2WiH3h7j
+         99T54plxLO+Yitet0Tq/GTHLecJfBjZQOTS2rX6j6uzXLTDJ1y/E+GMvjSx8L8uRBA/k
+         iokVfgi5827693E05NqR7ZGq7U+qB+N7fajZDPRhRKk8ZrfkY/T1ifewq0t3i9Vv/T5y
+         djXx8rqtqpmGopvsJlT5n9nMYZP7HTFXeU0FpwYbgD/dXmdN7CrqyVA9y1kuTuItMv5h
+         Lw5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678164328;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20210112; t=1678165506;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=7nQXlj8ZF5e19XF2bWoBX4hZUgDJ1cP2r6TZC9HO7nY=;
-        b=zoNlTqGUt/8n0rwpEAgpZbDsCKwvxLp54ojqzvr6EHfefdbOePnnZ3SMTm2S9IO2h0
-         QDNCjhxGxg5UYyu5NahFbv3Tj877uLKa3X5TxVhC69M2V4XXuCG3WgRjOxcy6KxVl0JZ
-         ExSlKYk0ATuBbG/Fzc8l0EEWi9IrfUsPfGU3yyVJ3fpK6jhThlC2mfjgMfxxrtyDp/zC
-         CYL71CbpsNVnm1APoM/pZo3tUDBtQC2/PSKPpGe/qsHokZGVyDuqPFuRRP5SdjnxmLS8
-         1WVj558xtYpdqPT/6Hv0hpNAYoLjOC3VxLoRdt5KR7/PE8kGB0R7WJRhw73k8sd++58x
-         EiuA==
-X-Gm-Message-State: AO0yUKXmNHnALn/5CY26KSI/IKzd6qXK10NCihZLEQsG7HtFm2GZeqZs
-	xxRJK4hju1hd/u2YlA+UCTw=
-X-Google-Smtp-Source: AK7set8A3yisZUmoSf9ivTflaiWUyVfl92KZVoXYnmMwPaWx1YPPDYxuk1t4LMEyS2q3THyQqV3KKg==
-X-Received: by 2002:a05:6a20:3caa:b0:af:7233:5bfc with SMTP id b42-20020a056a203caa00b000af72335bfcmr14454761pzj.8.1678164327957;
-        Mon, 06 Mar 2023 20:45:27 -0800 (PST)
+        bh=fAr/4rZLY/xW2VZEGvfJ9vcha1fPxJBixn7intPRfv8=;
+        b=0WzH7svqKleEvxe8uanpf/mXPcl7w/pHzeoUhmlnrtAkFvj/fHVoo93l/r6wOycSgQ
+         nsGFI+e+7P2AZZbnBWtdvz00eZNHQiKEuz/en3DyCVIIY5VWrzG/aMZRSe+3CD+h1TA6
+         EgrG2AU+iXCgGpUfokZnmTHhKJU9XeDDpymXyxdsIVTD/ld08MnewoW1srf6865aaSuD
+         1Lxdz3pPxdfB4ZOQ38TzXBxJsMboaEsmt/w2hXDCCEfEY5FbZuF96kG8iAKChly9DFLt
+         ztKaIkXhxH0IzR16/wCDDQ0O2QLt/leKVezBBvV+EvoGn96xnX5U4krzFUT2nYB+t3QR
+         2MpQ==
+X-Gm-Message-State: AO0yUKVBO4b9MOElKT/46lMTgKaTUyez6kac7j8ZMinrd33OuuaYsOyv
+	f531jryNsG6yndWuh46MEgo=
+X-Google-Smtp-Source: AK7set9xG2nILH4DDb0/bsgn5KroT2orbcWVxChMuR5XTi8NyBVoYfcVbAvq+8KCW1mCDCO4Kv/knw==
+X-Received: by 2002:a17:903:1d1:b0:19e:6947:3b27 with SMTP id e17-20020a17090301d100b0019e69473b27mr17886346plh.58.1678165506568;
+        Mon, 06 Mar 2023 21:05:06 -0800 (PST)
 Received: from localhost ([203.220.77.23])
-        by smtp.gmail.com with ESMTPSA id a4-20020aa78644000000b005a8ba70315bsm7039621pfo.6.2023.03.06.20.45.24
+        by smtp.gmail.com with ESMTPSA id e7-20020a170902cf4700b0019adfb96084sm7550173plg.36.2023.03.06.21.05.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 20:45:27 -0800 (PST)
+        Mon, 06 Mar 2023 21:05:05 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Mar 2023 14:45:22 +1000
-Message-Id: <CQZVLQQBO6K9.2A71BY640ZH5P@bobo>
-Subject: Re: [RFC PATCH 02/13] powerpc: Add initial Dynamic Execution
- Control Register (DEXCR) support
+Date: Tue, 07 Mar 2023 15:05:01 +1000
+Message-Id: <CQZW0SBFI6QM.3FW6O6LJ0PVS1@bobo>
+Subject: Re: [RFC PATCH 04/13] powerpc/dexcr: Support userspace ROP
+ protection
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Benjamin Gray" <bgray@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.13.0
 References: <20221128024458.46121-1-bgray@linux.ibm.com>
- <20221128024458.46121-3-bgray@linux.ibm.com>
-In-Reply-To: <20221128024458.46121-3-bgray@linux.ibm.com>
+ <20221128024458.46121-5-bgray@linux.ibm.com>
+In-Reply-To: <20221128024458.46121-5-bgray@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,284 +86,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Mon Nov 28, 2022 at 12:44 PM AEST, Benjamin Gray wrote:
-> ISA 3.1B introduces the Dynamic Execution Control Register (DEXCR). It
-> is a per-cpu register that allows control over various CPU behaviours
-> including branch hint usage, indirect branch speculation, and
-> hashst/hashchk support.
+> The ISA 3.1B hashst and hashchk instructions use a per-cpu SPR HASHKEYR
+> to hold a key used in the hash calculation. This key should be different
+> for each process to make it harder for a malicious process to recreate
+> valid hash values for a victim process.
 >
-> Though introduced in 3.1B, no CPUs using 3.1 were released, so
-> CPU_FTR_ARCH_31 is used to determine support for the register itself.
-> Support for each DEXCR bit (aspect) is reported separately by the
-> firmware.
+> Add support for storing a per-thread hash key, and setting/clearing
+> HASHKEYR appropriately.
 >
-> Add various definitions and basic support for the DEXCR in the kernel.
-> Right now it just initialises and maintains the DEXCR on process
-> creation/swap, and clears it in reset_sprs().
->
-
-A couple of comments below, but it looks good:
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
 > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 > ---
 >  arch/powerpc/include/asm/book3s/64/kexec.h |  3 +++
->  arch/powerpc/include/asm/cputable.h        |  8 ++++++-
->  arch/powerpc/include/asm/processor.h       | 13 +++++++++++
->  arch/powerpc/include/asm/reg.h             |  6 ++++++
->  arch/powerpc/kernel/Makefile               |  1 +
->  arch/powerpc/kernel/dexcr.c                | 25 ++++++++++++++++++++++
->  arch/powerpc/kernel/dt_cpu_ftrs.c          |  4 ++++
->  arch/powerpc/kernel/process.c              | 13 ++++++++++-
->  arch/powerpc/kernel/prom.c                 |  4 ++++
->  9 files changed, 75 insertions(+), 2 deletions(-)
->  create mode 100644 arch/powerpc/kernel/dexcr.c
+>  arch/powerpc/include/asm/processor.h       |  1 +
+>  arch/powerpc/include/asm/reg.h             |  1 +
+>  arch/powerpc/kernel/process.c              | 12 ++++++++++++
+>  4 files changed, 17 insertions(+)
 >
 > diff --git a/arch/powerpc/include/asm/book3s/64/kexec.h b/arch/powerpc/in=
 clude/asm/book3s/64/kexec.h
-> index d4b9d476ecba..563baf94a962 100644
+> index 563baf94a962..163de935df28 100644
 > --- a/arch/powerpc/include/asm/book3s/64/kexec.h
 > +++ b/arch/powerpc/include/asm/book3s/64/kexec.h
-> @@ -21,6 +21,9 @@ static inline void reset_sprs(void)
->  			plpar_set_ciabr(0);
->  	}
+> @@ -24,6 +24,9 @@ static inline void reset_sprs(void)
+>  	if (cpu_has_feature(CPU_FTR_ARCH_31))
+>  		mtspr(SPRN_DEXCR, 0);
 > =20
-> +	if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +		mtspr(SPRN_DEXCR, 0);
+> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
+> +		mtspr(SPRN_HASHKEYR, 0);
 > +
 >  	/*  Do we need isync()? We are going via a kexec reset */
 >  	isync();
 >  }
-> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/a=
-sm/cputable.h
-> index 757dbded11dc..03bc192f2d8b 100644
-> --- a/arch/powerpc/include/asm/cputable.h
-> +++ b/arch/powerpc/include/asm/cputable.h
-> @@ -192,6 +192,10 @@ static inline void cpu_feature_keys_init(void) { }
->  #define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
->  #define CPU_FTR_ARCH_31			LONG_ASM_CONST(0x0004000000000000)
->  #define CPU_FTR_DAWR1			LONG_ASM_CONST(0x0008000000000000)
-> +#define CPU_FTR_DEXCR_SBHE		LONG_ASM_CONST(0x0010000000000000)
-> +#define CPU_FTR_DEXCR_IBRTPD		LONG_ASM_CONST(0x0020000000000000)
-> +#define CPU_FTR_DEXCR_SRAPD		LONG_ASM_CONST(0x0040000000000000)
-> +#define CPU_FTR_DEXCR_NPHIE		LONG_ASM_CONST(0x0080000000000000)
-
-We potentially don't need to use CPU_FTR bits for each of these. We
-only really want them to use instruction patching and make feature
-tests fast. But we have been a bit liberal with using them and they
-are kind of tied into cpu feature parsing code so maybe it's easier
-to go with them for now.
-
-> =20
->  #ifndef __ASSEMBLY__
-> =20
-> @@ -451,7 +455,9 @@ static inline void cpu_feature_keys_init(void) { }
->  	    CPU_FTR_CFAR | CPU_FTR_HVMODE | CPU_FTR_VMX_COPY | \
->  	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
->  	    CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
-> -	    CPU_FTR_DAWR | CPU_FTR_DAWR1)
-> +	    CPU_FTR_DAWR | CPU_FTR_DAWR1 | \
-> +	    CPU_FTR_DEXCR_SBHE | CPU_FTR_DEXCR_IBRTPD | CPU_FTR_DEXCR_SRAPD | \
-> +	    CPU_FTR_DEXCR_NPHIE)
->  #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
->  	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
->  	    CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
 > diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/=
 asm/processor.h
-> index 631802999d59..0a8a793b8b8b 100644
+> index c17ec1e44c86..2381217c95dc 100644
 > --- a/arch/powerpc/include/asm/processor.h
 > +++ b/arch/powerpc/include/asm/processor.h
-> @@ -446,6 +446,19 @@ int exit_vmx_usercopy(void);
->  int enter_vmx_ops(void);
->  void *exit_vmx_ops(void *dest);
+> @@ -264,6 +264,7 @@ struct thread_struct {
+>  	unsigned long   mmcr3;
+>  	unsigned long   sier2;
+>  	unsigned long   sier3;
+> +	unsigned long	hashkeyr;
 > =20
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +
-> +unsigned long get_thread_dexcr(struct thread_struct const *t);
-> +
-> +#else
-> +
-> +static inline unsigned long get_thread_dexcr(struct thread_struct const =
-*t)
-> +{
-> +	return 0;
-> +}
-> +
-> +#endif /* CONFIG_PPC_BOOK3S_64 */
-> +
->  #endif /* __KERNEL__ */
->  #endif /* __ASSEMBLY__ */
->  #endif /* _ASM_POWERPC_PROCESSOR_H */
+>  #endif
+>  };
 > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
 g.h
-> index 1e8b2e04e626..cdd1f174c399 100644
+> index cdd1f174c399..854664cf844f 100644
 > --- a/arch/powerpc/include/asm/reg.h
 > +++ b/arch/powerpc/include/asm/reg.h
-> @@ -385,6 +385,12 @@
+> @@ -384,6 +384,7 @@
+>  #define SPRN_HRMOR	0x139	/* Real mode offset register */
 >  #define SPRN_HSRR0	0x13A	/* Hypervisor Save/Restore 0 */
 >  #define SPRN_HSRR1	0x13B	/* Hypervisor Save/Restore 1 */
+> +#define SPRN_HASHKEYR	0x1D4	/* Non-privileged hashst/hashchk key registe=
+r */
 >  #define SPRN_ASDR	0x330	/* Access segment descriptor register */
-> +#define SPRN_DEXCR	0x33C	/* Dynamic execution control register */
-> +#define   DEXCR_PRO_MASK(aspect)	__MASK(63 - (32 + (aspect)))	/* Aspect =
+>  #define SPRN_DEXCR	0x33C	/* Dynamic execution control register */
+>  #define   DEXCR_PRO_MASK(aspect)	__MASK(63 - (32 + (aspect)))	/* Aspect =
 number to problem state aspect mask */
-
-I think PR is a better shorthand for problem state than PRO. It's just
-more commonly used.
-
-We also have PPC_BIT and PPC_BITMASK, _BIT being used for single-bit
-mask. So this could be -
-
-#define DEXCR_PR_BIT(aspect) PPC_BIT(32 + (aspect))
-
-Or maybe DEXCR_PR_ASPECT_BIT.
-
-> +#define   DEXCR_PRO_SBHE		DEXCR_PRO_MASK(0)	/* Speculative Branch Hint E=
-nable */
-> +#define   DEXCR_PRO_IBRTPD		DEXCR_PRO_MASK(3)	/* Indirect Branch Recurre=
-nt Target Prediction Disable */
-> +#define   DEXCR_PRO_SRAPD		DEXCR_PRO_MASK(4)	/* Subroutine Return Addres=
-s Prediction Disable */
-> +#define   DEXCR_PRO_NPHIE		DEXCR_PRO_MASK(5)	/* Non-Privileged Hash Inst=
-ruction Enable */
->  #define SPRN_IC		0x350	/* Virtual Instruction Count */
->  #define SPRN_VTB	0x351	/* Virtual Time Base */
->  #define SPRN_LDBAR	0x352	/* LD Base Address Register */
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index 9b6146056e48..b112315cfdc2 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -79,6 +79,7 @@ obj-$(CONFIG_VDSO32)		+=3D vdso32_wrapper.o
->  obj-$(CONFIG_PPC_WATCHDOG)	+=3D watchdog.o
->  obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+=3D hw_breakpoint.o
->  obj-$(CONFIG_PPC_DAWR)		+=3D dawr.o
-> +obj-$(CONFIG_PPC_BOOK3S_64)	+=3D dexcr.o
->  obj-$(CONFIG_PPC_BOOK3S_64)	+=3D cpu_setup_ppc970.o cpu_setup_pa6t.o
->  obj-$(CONFIG_PPC_BOOK3S_64)	+=3D cpu_setup_power.o
->  obj-$(CONFIG_PPC_BOOK3S_64)	+=3D mce.o mce_power.o
-> diff --git a/arch/powerpc/kernel/dexcr.c b/arch/powerpc/kernel/dexcr.c
-> new file mode 100644
-> index 000000000000..32a0a69ff638
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/dexcr.c
-> @@ -0,0 +1,25 @@
-> +#include <linux/cache.h>
-> +#include <linux/init.h>
-> +
-> +#include <asm/cpu_has_feature.h>
-> +#include <asm/cputable.h>
-> +#include <asm/processor.h>
-> +#include <asm/reg.h>
-> +
-> +#define DEFAULT_DEXCR	0
-> +
-> +static int __init dexcr_init(void)
-> +{
-> +	if (!early_cpu_has_feature(CPU_FTR_ARCH_31))
-> +		return 0;
-> +
-> +	mtspr(SPRN_DEXCR, DEFAULT_DEXCR);
-> +
-> +	return 0;
-> +}
-> +early_initcall(dexcr_init);
-> +
-> +unsigned long get_thread_dexcr(struct thread_struct const *t)
-> +{
-> +	return DEFAULT_DEXCR;
-> +}
-> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_c=
-pu_ftrs.c
-> index c3fb9fdf5bd7..896a48211a37 100644
-> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> @@ -661,6 +661,10 @@ static struct dt_cpu_feature_match __initdata
->  	{"prefix-instructions", feat_enable, 0},
->  	{"matrix-multiply-assist", feat_enable_mma, 0},
->  	{"debug-facilities-v31", feat_enable, CPU_FTR_DAWR1},
-> +	{"dexcr-speculative-branch-hint-enable", feat_enable, CPU_FTR_DEXCR_SBH=
-E},
-> +	{"dexcr-indirect-branch-recurrent-target-prediction-disable", feat_enab=
-le, CPU_FTR_DEXCR_IBRTPD},
-> +	{"dexcr-subroutine-return-address-prediction-disable", feat_enable, CPU=
-_FTR_DEXCR_SRAPD},
-> +	{"dexcr-non-privileged-hash-instruction-enable", feat_enable, CPU_FTR_D=
-EXCR_NPHIE},
->  };
-> =20
->  static bool __initdata using_dt_cpu_ftrs;
 > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.=
 c
-> index 67da147fe34d..17d26f652b80 100644
+> index 17d26f652b80..4d7b0c7641d0 100644
 > --- a/arch/powerpc/kernel/process.c
 > +++ b/arch/powerpc/kernel/process.c
-> @@ -1228,6 +1228,13 @@ static inline void restore_sprs(struct thread_stru=
-ct *old_thread,
->  	if (cpu_has_feature(CPU_FTR_P9_TIDR) &&
+> @@ -1229,6 +1229,9 @@ static inline void restore_sprs(struct thread_struc=
+t *old_thread,
 >  	    old_thread->tidr !=3D new_thread->tidr)
 >  		mtspr(SPRN_TIDR, new_thread->tidr);
+> =20
+> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
+> +		mtspr(SPRN_HASHKEYR, new_thread->hashkeyr);
+
+I wonder if we'd want to avoid switching it when switching to kernel
+threads, and from kernel thread back to the same user thread. Might
+want to optimise it to do that in future but for an initial enablement
+patch this is okay.
+
 > +
-> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-> +		unsigned long new_dexcr =3D get_thread_dexcr(new_thread);
-> +
-> +		if (new_dexcr !=3D get_thread_dexcr(old_thread))
-> +			mtspr(SPRN_DEXCR, new_dexcr);
-> +	}
->  #endif
+>  	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+>  		unsigned long new_dexcr =3D get_thread_dexcr(new_thread);
 > =20
->  }
-> @@ -1802,7 +1809,7 @@ int copy_thread(struct task_struct *p, const struct=
- kernel_clone_args *args)
+> @@ -1818,6 +1821,10 @@ int copy_thread(struct task_struct *p, const struc=
+t kernel_clone_args *args)
+>  		childregs->ppr =3D DEFAULT_PPR;
 > =20
->  	setup_ksp_vsid(p, sp);
-> =20
-> -#ifdef CONFIG_PPC64=20
-> +#ifdef CONFIG_PPC64
->  	if (cpu_has_feature(CPU_FTR_DSCR)) {
->  		p->thread.dscr_inherit =3D current->thread.dscr_inherit;
->  		p->thread.dscr =3D mfspr(SPRN_DSCR);
-> @@ -1939,6 +1946,10 @@ void start_thread(struct pt_regs *regs, unsigned l=
-ong start, unsigned long sp)
->  	current->thread.tm_tfiar =3D 0;
->  	current->thread.load_tm =3D 0;
->  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+>  	p->thread.tidr =3D 0;
+> +#endif
 > +#ifdef CONFIG_PPC_BOOK3S_64
-> +	if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +		mtspr(SPRN_DEXCR, get_thread_dexcr(&current->thread));
-> +#endif /* CONFIG_PPC_BOOK3S_64 */
+> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
+> +		p->thread.hashkeyr =3D current->thread.hashkeyr;
+>  #endif
 
-You possibly don't need the ifdef here because CPU_FTR_ARCH_31 should
-fold away. Some of the others do because they're using open-coded
-access to struct members, but if you're using accessor functions to
-get and set such things, there may be no need to.
+Similar comment about your accessor style, if we had get/set_thread_hashkey=
+r()
+functions then no ifdef required.
 
-I think my preference is for your style.
+I think it is not quite per-process? I don't actually know how the user
+toolchain side is put together, but I'm thinking we can not give it a new
+salt on fork(), but we could on exec(). I think we could actually give
+each thread their own salt within a process too, right?
+
+I don't know off the top of my head whether that can be translated into
+a simple test at the copy_thread level. For now you're giving out a new
+salt on exec I think, which should be fine at least to start with.
 
 Thanks,
 Nick
 
->  }
->  EXPORT_SYMBOL(start_thread);
-> =20
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 1eed87d954ba..eff250e1ae9a 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -180,6 +180,10 @@ static struct ibm_feature ibm_pa_features[] __initda=
-ta =3D {
->  	  .cpu_user_ftrs2 =3D PPC_FEATURE2_HTM_COMP | PPC_FEATURE2_HTM_NOSC_COM=
-P },
-> =20
->  	{ .pabyte =3D 64, .pabit =3D 0, .cpu_features =3D CPU_FTR_DAWR1 },
-> +	{ .pabyte =3D 68, .pabit =3D 0, .cpu_features =3D CPU_FTR_DEXCR_SBHE },
-> +	{ .pabyte =3D 68, .pabit =3D 3, .cpu_features =3D CPU_FTR_DEXCR_IBRTPD =
-},
-> +	{ .pabyte =3D 68, .pabit =3D 4, .cpu_features =3D CPU_FTR_DEXCR_SRAPD }=
-,
-> +	{ .pabyte =3D 68, .pabit =3D 5, .cpu_features =3D CPU_FTR_DEXCR_NPHIE }=
-,
->  };
-> =20
->  /*
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+>  	/*
+>  	 * Run with the current AMR value of the kernel
+> @@ -1947,6 +1954,11 @@ void start_thread(struct pt_regs *regs, unsigned l=
+ong start, unsigned long sp)
+>  	current->thread.load_tm =3D 0;
+>  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+>  #ifdef CONFIG_PPC_BOOK3S_64
+> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE)) {
+> +		current->thread.hashkeyr =3D get_random_long();
+> +		mtspr(SPRN_HASHKEYR, current->thread.hashkeyr);
+> +	}
+> +
+>  	if (cpu_has_feature(CPU_FTR_ARCH_31))
+>  		mtspr(SPRN_DEXCR, get_thread_dexcr(&current->thread));
+>  #endif /* CONFIG_PPC_BOOK3S_64 */
 > --=20
 > 2.38.1
 
