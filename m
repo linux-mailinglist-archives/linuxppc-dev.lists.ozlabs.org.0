@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDCF46AEA38
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 18:31:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C52C86AEA54
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 18:32:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWMvH5YM4z3cgv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 04:31:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWMwH4Htnz3fJt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 04:32:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=HXEaqvf0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=gOAskOO3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=HXEaqvf0;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=gOAskOO3;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWMsN4kr2z3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 04:30:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWMt01w9hz3f48
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 04:30:48 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AE6586150F;
-	Tue,  7 Mar 2023 17:30:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D11C433EF;
-	Tue,  7 Mar 2023 17:30:13 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3A5B16151B;
+	Tue,  7 Mar 2023 17:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F379DC433D2;
+	Tue,  7 Mar 2023 17:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1678210214;
-	bh=dxFSj10K1gAdGhzhQE+cReJR7o4SDTExojXack2sgcc=;
+	s=korg; t=1678210245;
+	bh=SibYQp57NS7jPG0XJfh0C067YW6BJeRZPyxGP2VFcxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXEaqvf03OH2uPj+tPGeha0503KVIR7SdBAj8nZKWpsvOcw4t35pyPgTsN0Kv+GET
-	 UbHCz+DK6HxXEOGuoZbtLOTDzrhRuYIo2TaO13RWBIsRQ8ItMjJehv3l+UKzmaRVko
-	 l+CRTZZ0hJ3BDR0V2goGVrl0WwCKR0+eIndElVw4=
+	b=gOAskOO3pfYyR7f0zS/FVjZRKwusQPj2JGa8+Ru1uhAAGD1la4Bn1LzXMU82rE7VH
+	 8n7OBapIcUBzMh6jb9TjEe0HnVXCk4LfOHiNM8jkziiMWUUmXjGctZyj4BwzhF6yHi
+	 yJbkec5aGsNDayFqMUuKWy058VItnGieGbhc5Hqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.2 0470/1001] perf test bpf: Skip test if kernel-debuginfo is not present
-Date: Tue,  7 Mar 2023 17:54:02 +0100
-Message-Id: <20230307170041.792183851@linuxfoundation.org>
+Subject: [PATCH 6.2 0479/1001] perf tests stat_all_metrics: Change true workload to sleep workload for system wide check
+Date: Tue,  7 Mar 2023 17:54:11 +0100
+Message-Id: <20230307170042.194193521@linuxfoundation.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230307170022.094103862@linuxfoundation.org>
 References: <20230307170022.094103862@linuxfoundation.org>
@@ -58,111 +58,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, Wang Nan <wangnan0@huawei.com>, Disha Goel <disgoel@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 34266f904abd45731bdade2e92d0536c092ee9bc ]
+[ Upstream commit f9fa0778ee7349a9aa3d2ea10e9f2ab843a0b44e ]
 
-Perf BPF filter test fails in environment where "kernel-debuginfo"
-is not installed.
+Testcase stat_all_metrics.sh fails in powerpc:
 
-Test failure logs:
+98: perf all metrics test : FAILED!
 
-  <<>>
-  42: BPF filter                            :
-  42.1: Basic BPF filtering                 : Ok
-  42.2: BPF pinning                         : Ok
-  42.3: BPF prologue generation             : FAILED!
-  <<>>
+Logs with verbose:
 
-Enabling verbose option provided debug logs, which says debuginfo
-needs to be installed. Snippet of verbose logs:
+  [command]# ./perf test 98 -vv
+   98: perf all metrics test                                           :
+   --- start ---
+  test child forked, pid 13262
+  Testing BRU_STALL_CPI
+  Testing COMPLETION_STALL_CPI
+   ----
+  Testing TOTAL_LOCAL_NODE_PUMPS_P23
+  Metric 'TOTAL_LOCAL_NODE_PUMPS_P23' not printed in:
+  Error:
+  Invalid event (hv_24x7/PM_PB_LNS_PUMP23,chip=3/) in per-thread mode, enable system wide with '-a'.
+  Testing TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01
+  Metric 'TOTAL_LOCAL_NODE_PUMPS_RETRIES_P01' not printed in:
+  Error:
+  Invalid event (hv_24x7/PM_PB_RTY_LNS_PUMP01,chip=3/) in per-thread mode, enable system wide with '-a'.
+   ----
 
-  <<>>
-  42.3: BPF prologue generation                                       :
-  --- start ---
-  test child forked, pid 28218
-  <<>>
-  Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo
-  package.
-  bpf_probe: failed to convert perf probe events
-  Failed to add events selected by BPF
-  test child finished with -1
-  ---- end ----
-  BPF filter subtest 3: FAILED!
-  <<>>
+Based on above logs, we could see some of the hv-24x7 metric events
+fails, and logs suggest to run the metric event with -a option.  This
+change happened after the commit a4b8cfcabb1d90ec ("perf stat: Delay
+metric parsing"), which delayed the metric parsing phase and now before
+metric parsing phase perf tool identifies, whether target is system-wide
+or not. With this change, perf_event_open will fails with workload
+monitoring for uncore events as expected.
 
-Here the subtest "BPF prologue generation" failed and logs shows
-debuginfo is needed. After installing kernel-debuginfo package, testcase
-passes.
+The perf all metric test case fails as some of the hv-24x7 metric events
+may need bigger workload with system wide monitoring to get the data.
+Fix this issue by changing current system wide check from true workload
+to sleep 0.01 workload.
 
-The "BPF prologue generation" subtest failed because, the do_test()
-returns TEST_FAIL without checking the error type returned by
-parse_events_load_bpf_obj().
+Result with the patch changes in powerpc:
 
-parse_events_load_bpf_obj() can also return error of type -ENODATA
-incase kernel-debuginfo package is not installed. Fix this by adding
-check for -ENODATA error.
+  98: perf all metrics test : Ok
 
-Test result after the patch changes:
-
-Test failure logs:
-
-  <<>>
-  42: BPF filter                 :
-  42.1: Basic BPF filtering      : Ok
-  42.2: BPF pinning              : Ok
-  42.3: BPF prologue generation  : Skip (clang/debuginfo isn't installed or environment missing BPF support)
-  <<>>
-
-Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: a4b8cfcabb1d90ec ("perf stat: Delay metric parsing")
+Suggested-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Wang Nan <wangnan0@huawei.com>
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/linux-perf-users/Y7bIk77mdE4j8Jyi@kernel.org
+Link: https://lore.kernel.org/r/20230215093827.124921-1-kjain@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/bpf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/perf/tests/shell/stat_all_metrics.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
-index 17c023823713d..6a4235a9cf57e 100644
---- a/tools/perf/tests/bpf.c
-+++ b/tools/perf/tests/bpf.c
-@@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
- 
- 	err = parse_events_load_bpf_obj(&parse_state, &parse_state.list, obj, NULL);
- 	parse_events_error__exit(&parse_error);
-+	if (err == -ENODATA) {
-+		pr_debug("Failed to add events selected by BPF, debuginfo package not installed\n");
-+		return TEST_SKIP;
-+	}
- 	if (err || list_empty(&parse_state.list)) {
- 		pr_debug("Failed to add events selected by BPF\n");
- 		return TEST_FAIL;
-@@ -368,7 +372,7 @@ static struct test_case bpf_tests[] = {
- 			"clang isn't installed or environment missing BPF support"),
- #ifdef HAVE_BPF_PROLOGUE
- 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
--			"clang isn't installed or environment missing BPF support"),
-+			"clang/debuginfo isn't installed or environment missing BPF support"),
- #else
- 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
- #endif
+diff --git a/tools/perf/tests/shell/stat_all_metrics.sh b/tools/perf/tests/shell/stat_all_metrics.sh
+index 6e79349e42bef..22e9cb294b40e 100755
+--- a/tools/perf/tests/shell/stat_all_metrics.sh
++++ b/tools/perf/tests/shell/stat_all_metrics.sh
+@@ -11,7 +11,7 @@ for m in $(perf list --raw-dump metrics); do
+     continue
+   fi
+   # Failed so try system wide.
+-  result=$(perf stat -M "$m" -a true 2>&1)
++  result=$(perf stat -M "$m" -a sleep 0.01 2>&1)
+   if [[ "$result" =~ "${m:0:50}" ]]
+   then
+     continue
 -- 
 2.39.2
 
