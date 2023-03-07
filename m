@@ -2,76 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D5D6AD37C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 01:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7816AD387
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 01:57:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PVxk70LdLz3bjj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 11:52:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PVxqJ6Xrzz3f4v
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 11:57:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=muySL/Vh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MkrQyG+C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=muySL/Vh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MkrQyG+C;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVxjD2gJGz3bbX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 11:51:40 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id ce7so7049743pfb.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 16:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ozlabs-ru.20210112.gappssmtp.com; s=20210112; t=1678150297;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wsioy8YQ3ef0OYXv0f7Vnj0EbcAmvBSGfdorprLbJW4=;
-        b=muySL/VhVKsYAWt04ZF9CGXG6QTc6kss3k6hWPN+YONdDLxY+5fKCqpCpwsJh5bi9W
-         JoeIL7rOVrgLgtgZltzKJSzd+sY9hDcfRRcTBqlxVBp/QMHMCyMFpKiAY1IrmY1TOPyX
-         IFGKXJ9s50VLQfgiQKdIKkAvw5WyNjE44HIm/FQ0SN7JUVlD3bxztPdcyzj2+zF2SRsm
-         X8f4nscd/PPw3FCqDo2cjR1SyE0DRKDYgxumcjrwR5GSWdAD2vteiS4lzh1QSqXZUw1r
-         VWDrBgSMyeCIdWusyZfMHtAvmq26OSpWHz0gSJP77GFiCk7drT5vdR6k9PG1+54tVuVr
-         eIaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678150297;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wsioy8YQ3ef0OYXv0f7Vnj0EbcAmvBSGfdorprLbJW4=;
-        b=lGGAiVkHivNV6jYEhJU80KbsiBzt/pRyxizl8KiUV8t+TcfL/c+Jow1Q2Ty2U1sS+8
-         vYg8xolO9RQU7yHXnUFORpz/UsY2dWgUDGxvklTgUCurw7RHJqRN9xhlGC+ccXHyz4Cb
-         lM2MIIYj4ewzfXDJohfCXx3sZmmVP6IMJHjRtFFOkT7cEBUxdKleotznTcrnpjJeNG+9
-         tDAeBGFZTQrzgeiC/NKnJS/eel2xTrz+5fT1tkpokc7fGF0E3mkrL0hjaCFHw1P+zi8p
-         TZBTrkUAit5EH/FGYXS/j41CInj+tesOv55JHSNbQ6A7CTlCtq0BqIMWXiAYWUTzu14E
-         dAbA==
-X-Gm-Message-State: AO0yUKXugtU6ytiHJV33I7mw6mHJev6Fa1JT2D0cQ4+t7r+HC8lq6LrF
-	rwMTKoTiSgzhXYKcHEykjiNiag==
-X-Google-Smtp-Source: AK7set+uFltOs1KHmf9btICVwkCk7dCtXIeaSLBg5SFcZ+fSVx0nzri/1pV4bqayxV2ChQKguhCCIA==
-X-Received: by 2002:a62:5251:0:b0:619:b116:d1f5 with SMTP id g78-20020a625251000000b00619b116d1f5mr8597698pfb.7.1678150297304;
-        Mon, 06 Mar 2023 16:51:37 -0800 (PST)
-Received: from [192.168.10.153] (ppp118-208-169-253.cbr-trn-nor-bras39.tpg.internode.on.net. [118.208.169.253])
-        by smtp.gmail.com with ESMTPSA id v15-20020a62a50f000000b005b02ddd852dsm6992618pfm.142.2023.03.06.16.51.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 16:51:36 -0800 (PST)
-Message-ID: <04c9ac5e-cd1b-034a-2c97-01a376e9564c@ozlabs.ru>
-Date: Tue, 7 Mar 2023 11:51:31 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PVxpN2RMCz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 11:56:12 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3270Xgd8031028
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Mar 2023 00:56:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=VhYYDTOjbQrlseMHf5glivED0hnTa/CKJUL8J3ggipU=;
+ b=MkrQyG+Ckp+ew2DtOfB+3H5vpGvTOuQtUlZyQPiTlMBahCuVXNn+wnWb3RCTLx/izqPd
+ KxJq1CQceFgChPNW1Q0DQYzDWQHm8s5Mg35P2ud7ATXiUJiO7Xpapqw9juXzu2bJArV+
+ tsSp6fPoworEghkq+RrZklqsphM46vXe0LsPIIypWs/T8SpYHuWz8ffKzngOcN/g6ico
+ c7zF+doMfR5ZKJJ9/1l7srEizgylTwKSZrIV4e9n2LI1SaCBOvKYhs5nc4OqkjdXZ+6+
+ pkWAjafMpMUCe0MbRcNpfbs3cgfJ7FS5uGhqM0j4mBVBvbGuzrij/dOH/L+cwTe/1rUO PQ== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p4yhrda4r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Mar 2023 00:56:09 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 326BqTQv007330
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Mar 2023 00:56:07 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3p4188bg2n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Mar 2023 00:56:07 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3270u5Js62456312
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Mar 2023 00:56:05 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 638C92004F
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 00:56:05 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D872C2004D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 00:56:04 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 00:56:04 +0000 (GMT)
+Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9951060235;
+	Tue,  7 Mar 2023 11:56:02 +1100 (AEDT)
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] Update DSCR tests
+Date: Tue,  7 Mar 2023 11:55:10 +1100
+Message-Id: <20230307005515.174362-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101
- Thunderbird/108.0
-Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>,
- Timothy Pearson <tpearson@raptorengineering.com>
-References: <8398361.16996856.1678123793664.JavaMail.zimbra@raptorengineeringinc.com>
- <20230306164607.1455ee81.alex.williamson@redhat.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20230306164607.1455ee81.alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5EgghorQDynWIjMM2vG0ykD36XRMWneV
+X-Proofpoint-ORIG-GUID: 5EgghorQDynWIjMM2vG0ykD36XRMWneV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-06_14,2023-03-06_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=937 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303070003
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,56 +91,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm <kvm@vger.kernel.org>
+Cc: Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The randomness based DSCR tests currently have a low probability of doing
+any writes to the DSCR, making them inefficient in uncovering bugs.
+
+This series adds lockstep variants to these RNG tests, to ensure the happy
+path is always tested, and improves the randomness and size of the RNG
+tests.
+
+It also removes many iterations of the sysfs DSCR test, allowing the default
+timeout to be re-enabled.
+
+Benjamin Gray (5):
+  selftests/powerpc/dscr: Correct typos
+  selftests/powerpc/dscr: Add lockstep test cases to DSCR explicit tests
+  selftests/powerpc/dscr: Improve DSCR explicit random test case
+  selftests/powerpc/dscr: Speed up DSCR sysfs tests
+  selftests/powerpc/dscr: Restore timeout to DSCR selftests
+
+ tools/testing/selftests/powerpc/dscr/Makefile |   3 +-
+ tools/testing/selftests/powerpc/dscr/dscr.h   |  22 +-
+ .../powerpc/dscr/dscr_default_test.c          | 223 +++++++++++-------
+ .../powerpc/dscr/dscr_explicit_test.c         | 173 +++++++++++---
+ .../powerpc/dscr/dscr_inherit_test.c          |   4 +-
+ .../selftests/powerpc/dscr/dscr_sysfs_test.c  |  11 +-
+ .../selftests/powerpc/dscr/dscr_user_test.c   |   4 +-
+ tools/testing/selftests/powerpc/dscr/settings |   1 -
+ 8 files changed, 300 insertions(+), 141 deletions(-)
+ delete mode 100644 tools/testing/selftests/powerpc/dscr/settings
 
 
-On 07/03/2023 10:46, Alex Williamson wrote:
-> On Mon, 6 Mar 2023 11:29:53 -0600 (CST)
-> Timothy Pearson <tpearson@raptorengineering.com> wrote:
-> 
->> This patch series reenables VFIO support on POWER systems.  It
->> is based on Alexey Kardashevskiys's patch series, rebased and
->> successfully tested under QEMU with a Marvell PCIe SATA controller
->> on a POWER9 Blackbird host.
->>
->> Alexey Kardashevskiy (3):
->>    powerpc/iommu: Add "borrowing" iommu_table_group_ops
->>    powerpc/pci_64: Init pcibios subsys a bit later
->>    powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
->>      domains
->>
->> Timothy Pearson (1):
->>    Add myself to MAINTAINERS for Power VFIO support
->>
->>   MAINTAINERS                               |   5 +
->>   arch/powerpc/include/asm/iommu.h          |   6 +-
->>   arch/powerpc/include/asm/pci-bridge.h     |   7 +
->>   arch/powerpc/kernel/iommu.c               | 246 +++++++++++++++++++++-
->>   arch/powerpc/kernel/pci_64.c              |   2 +-
->>   arch/powerpc/platforms/powernv/pci-ioda.c |  36 +++-
->>   arch/powerpc/platforms/pseries/iommu.c    |  27 +++
->>   arch/powerpc/platforms/pseries/pseries.h  |   4 +
->>   arch/powerpc/platforms/pseries/setup.c    |   3 +
->>   drivers/vfio/vfio_iommu_spapr_tce.c       |  96 ++-------
->>   10 files changed, 338 insertions(+), 94 deletions(-)
->>
-> 
-> For vfio and MAINTAINERS portions,
-> 
-> Acked-by: Alex Williamson <alex.williamson@redhat.com>
-> 
-> I'll note though that spapr_tce_take_ownership() looks like it copied a
-> bug from the old tce_iommu_take_ownership() where tbl and tbl->it_map
-> are tested before calling iommu_take_ownership() but not in the unwind
-> loop, ie. tables we might have skipped on setup are unconditionally
-> released on unwind.  Thanks,
-
-
-Ah, true, a bug. Thanks for pointing out.
-
-
--- 
-Alexey
+base-commit: 422fbcbf91303706823bc3babceb1df1a42112bf
+--
+2.39.2
