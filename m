@@ -2,47 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21C26AF7C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 22:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53426AF7D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 22:42:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWTL75kQDz3ccl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 08:37:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWTSs3V7Dz3bg8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 08:42:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256 header.s=201811 header.b=a6aam4Vc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=3d0i9L9f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=3d0i9L9f;
+	dkim-atps=neutral
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWTKF6JxYz3bg8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 08:36:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256 header.s=201811 header.b=a6aam4Vc;
-	dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4PWTKD6xm3z4wgq;
-	Wed,  8 Mar 2023 08:36:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=neuling.org;
-	s=201811; t=1678224977;
-	bh=VwAG701VJhfBAeGwArR2E8H95o1UcDJPGxpr7UYbSOA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a6aam4VcgtDrJ9ubiAKbB3tPqfOSROh78SJpnUnmgjyWxC/shDO1o7cHJ3xiAewPQ
-	 8Bo4v08tGEIWb7/d4Wto11F/UtQJixhNPUuWi3CHvfLdODFuz6ASNhO9ZLH4xC8bOr
-	 NZHaw2IIHIatzv6qwYWv6qirVnUXFqgFPUCtsJjND1G+g6G6DYSHjcea50VdQ0Hdk2
-	 M0INX1k2fUXZj0N54PFFbF2ZiIZt1PGpkFUzU4CgTcjcObD6Qm6olX9IMLGfCv5sWE
-	 df9e3bQMgAut4y2STHky4UcQuP9K9hFjMTkXHXkjMRGO7vL2cQfGxdhqgnZXvsXLiG
-	 fF0ePCoSIsrTw==
-Received: by neuling.org (Postfix, from userid 1000)
-	id CB24C2C1BAB; Wed,  8 Mar 2023 08:36:16 +1100 (AEDT)
-From: Michael Neuling <mikey@neuling.org>
-To: mpe@ellerman.id.au
-Subject: [PATCH] selftests/powerpc: Increase timeout for vsx_signal test
-Date: Wed,  8 Mar 2023 08:36:14 +1100
-Message-Id: <20230307213614.2652059-1-mikey@neuling.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWTRt5ZQSz3bg8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 08:42:00 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id i10so15608543plr.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Mar 2023 13:42:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112; t=1678225318;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h0UBWEzua7mI1E3a/+R1pzklpJ+RGJpYFy9mijom/UM=;
+        b=3d0i9L9fgsM6wfDV6SgEVPe2doCmA84h8dgaHpMbejZeZuQRklJuURRf6PhkCN7ukc
+         w/n+8nbuC+OW0mQWtjtERbzb9wBvkWnsuB3UcR0sH2Ba3g7FDMT+jDol43sV0ZSapUuU
+         afFVzDtGs7qaCnWpNgGUvXPCI9VeRCtjLQt1T3AcBXMLT19wGawFny88dkq7b+SM519J
+         izcWM0iUW0/Sac/AVhLneLvdpP7x0olNKc4YqRIWvevDICe0+qs1ypmIQEYjXt6H2n6Q
+         PGyqmNUpfeGmcTALJ+qCkHjqjpTn7tbuCsOrFtOo3YqXRw3n/PRxx6fcIN5oBf8fOwBc
+         hPrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678225318;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h0UBWEzua7mI1E3a/+R1pzklpJ+RGJpYFy9mijom/UM=;
+        b=gLQUh+DfjBuB4BPzwh4zSyyLcUZy/1NMds+f2PpS0yIgZLTC5JhFcgvKtaNT6RTYHT
+         gF2mzI+ZKjVgGYgzHoO8zupxbbCtIb8wBiU4NRK5QzoDfg9WU3ytP284ieHGREQBoKI3
+         W0WwrJx7wq4Wl4r/QNDy1iHGKxToVE6LxrN8xuXn8zTO/tNUeXFdct+zDWgUVz6Q7gw1
+         wfUIO1kCTTeL3IfZCq+GeCuqAnpegYo4SpnWffhB7O7mS02mDdqVDAadiOGCvgqwjanC
+         L3f4droBEFI+gcsMS8vRTJB86lpqBWGnlIrGBgqHpORWrFSFRv6+Hgme+56s7aZz9oUm
+         QpuQ==
+X-Gm-Message-State: AO0yUKXLJwfxbln4k/cFVlqBFxKVa86GDtreJuimaZWWYIOZrqVkmJqX
+	a6iSMzXyO93QgpIYVWBVXH22xw==
+X-Google-Smtp-Source: AK7set/K6eJAQf/eSbaq269PoSBswE0gsDc5h7lzSW9lr2zauw1plinMmCGHpVyR/4qKnDR1/eXDIg==
+X-Received: by 2002:a17:902:ce90:b0:19a:9434:af30 with SMTP id f16-20020a170902ce9000b0019a9434af30mr18505363plg.18.1678225318377;
+        Tue, 07 Mar 2023 13:41:58 -0800 (PST)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id km12-20020a17090327cc00b0019e30e3068bsm8866509plb.168.2023.03.07.13.41.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 13:41:57 -0800 (PST)
+Date: Tue, 07 Mar 2023 13:41:57 -0800 (PST)
+X-Google-Original-Date: Tue, 07 Mar 2023 13:40:59 PST (-0800)
+Subject: Re: [PATCH v5 12/26] riscv: Remove COMMAND_LINE_SIZE from uapi
+In-Reply-To: <20230306100508.1171812-13-alexghiti@rivosinc.com>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: alexghiti@rivosinc.com
+Message-ID: <mhng-d4be5bb5-f0ad-4e76-9b11-83732d233a45@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,36 +78,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org, cyrilbur@gmail.com
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, dave.hansen@linux.intel.com, x86@kernel.org, linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, kernel@xen0n.name, Will Deacon <will@kernel.org>, agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>, ysato@users.sourceforge.jp, corbet@lwn.net, linux-sh@vger.kernel.org, deller@gmx.de, chenhuacai@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, geert@linux-m68k.org, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, linux-xtensa@linux-xtensa.org, aou@eecs.berkeley.edu, alexghiti@rivosinc.com, gor@linux.ibm.com, hca@linux.ibm.com, Richard Henderson <richard.henderson@linaro.org>, npiggin@gmail.com, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, loongarch@lists.linux.dev,
+  Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, svens@linux.ibm.com, linux-alpha@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On the max config P10 machine (1920 threads and 64TB) this test fails
-with a timeout:
+On Mon, 06 Mar 2023 02:04:54 PST (-0800), alexghiti@rivosinc.com wrote:
+> As far as I can tell this is not used by userspace and thus should not
+> be part of the user-visible API.
+>
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>  arch/riscv/include/asm/setup.h      | 7 +++++++
+>  arch/riscv/include/uapi/asm/setup.h | 2 --
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/riscv/include/asm/setup.h
+>
+> diff --git a/arch/riscv/include/asm/setup.h b/arch/riscv/include/asm/setup.h
+> new file mode 100644
+> index 000000000000..f165a14344e2
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/setup.h
+> @@ -0,0 +1,7 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef _ASM_RISCV_SETUP_H
+> +#define _ASM_RISCV_SETUP_H
+> +
+> +#define COMMAND_LINE_SIZE       1024
+> +
+> +#endif /* _ASM_RISCV_SETUP_H */
+> diff --git a/arch/riscv/include/uapi/asm/setup.h b/arch/riscv/include/uapi/asm/setup.h
+> index 66b13a522880..17fcecd4a2f8 100644
+> --- a/arch/riscv/include/uapi/asm/setup.h
+> +++ b/arch/riscv/include/uapi/asm/setup.h
+> @@ -3,6 +3,4 @@
+>  #ifndef _UAPI_ASM_RISCV_SETUP_H
+>  #define _UAPI_ASM_RISCV_SETUP_H
+>
+> -#define COMMAND_LINE_SIZE	1024
+> -
+>  #endif /* _UAPI_ASM_RISCV_SETUP_H */
 
-    Sending signals to all threads 10 times...!! killing vmx_signal
-    !! child died by signal 15
-    failure: vmx_signal
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-The default timeout is 120sec so increase this 3x to 360sec. With this
-change the test passes on these large machines.
-
-Signed-off-by: Michael Neuling <mikey@neuling.org>
----
- tools/testing/selftests/powerpc/math/vmx_signal.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/powerpc/math/vmx_signal.c b/tools/testing/selftests/powerpc/math/vmx_signal.c
-index b340a5c4e79d..c307dff19c12 100644
---- a/tools/testing/selftests/powerpc/math/vmx_signal.c
-+++ b/tools/testing/selftests/powerpc/math/vmx_signal.c
-@@ -151,5 +151,6 @@ int test_signal_vmx(void)
- 
- int main(int argc, char *argv[])
- {
-+	test_harness_set_timeout(360);
- 	return test_harness(test_signal_vmx, "vmx_signal");
- }
--- 
-2.39.2
-
+Thanks!
