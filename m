@@ -2,71 +2,127 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A644A6AF73A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 22:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C457E6AF740
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 22:10:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWSk14Krxz3blY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 08:09:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWSl24twdz3fRZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 08:10:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=CielTI4C;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=joceivhg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=microchip.com (client-ip=68.232.153.233; helo=esa.microchip.iphmx.com; envelope-from=claudiu.beznea@microchip.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:fe5a::60b; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=amit.kumar-mahapatra@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=CielTI4C;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=joceivhg;
 	dkim-atps=neutral
-X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir; Tue, 07 Mar 2023 21:32:00 AEDT
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2060b.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::60b])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWBZm2pVKz3bjx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 21:32:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1678185120; x=1709721120;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SLl1OqBXiMS0Tw8+D/cIywKGd+YIZF1lMtVXvkNLbQo=;
-  b=CielTI4Cfperv5iySiAHZ/RVfFzb40L1HdpCj/yxMGGqb471wwxCxGhs
-   d0dAAupQkhgxNYviK9ZCko+r80dpSNVRcu2cGiz4a/kzChtSrt9UogtCn
-   fOKdl0fNv5DK9QnAqyO8ga7L8YOtWbkHo1h/0eZ8vmfvwmCerQPNw44qZ
-   UFTm4vclWmBIiTiT+sFsN+fNN9wSFTnaVRPGrxUgnUFIdO4Yn8l/DLZtU
-   Bj1g1uEQpioSn898i/bSIKmsmHhd6L1DE+/n4gCcek0El5G3PMu86P5Uv
-   EtvRUHXiJnEVUPXrjQFvZlyUX955oLGsqfFU6NRfn0WJZBuw9AOFEHmgc
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.98,240,1673938800"; 
-   d="scan'208";a="215129817"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Mar 2023 03:30:51 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Tue, 7 Mar 2023 03:30:50 -0700
-Received: from m18063-ThinkPad-T460p.mchp-main.com (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.16 via Frontend Transport; Tue, 7 Mar 2023 03:30:40 -0700
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
-To: <perex@perex.cz>, <tiwai@suse.com>, <lgirdwood@gmail.com>,
-	<broonie@kernel.org>, <james.schulman@cirrus.com>, <david.rhodes@cirrus.com>,
-	<tanureal@opensource.cirrus.com>, <rf@opensource.cirrus.com>,
-	<oder_chiou@realtek.com>, <shengjiu.wang@gmail.com>, <Xiubo.Lee@gmail.com>,
-	<festevam@gmail.com>, <nicoleotsuka@gmail.com>, <shawnguo@kernel.org>,
-	<s.hauer@pengutronix.de>, <kernel@pengutronix.de>, <linux-imx@nxp.com>,
-	<cezary.rojewski@intel.com>, <pierre-louis.bossart@linux.intel.com>,
-	<peter.ujfalusi@linux.intel.com>, <yung-chuan.liao@linux.intel.com>,
-	<ranjani.sridharan@linux.intel.com>, <kai.vehmanen@linux.intel.com>,
-	<matthias.bgg@gmail.com>, <srinivas.kandagatla@linaro.org>,
-	<bgoswami@quicinc.com>, <vkoul@kernel.org>, <daniel.baluta@nxp.com>,
-	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-	<jarkko.nikula@bitmer.com>
-Subject: [PATCH] ASoC: do not include pm_runtime.h if not used
-Date: Tue, 7 Mar 2023 12:30:22 +0200
-Message-ID: <20230307103022.1007420-1-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWCQj5DXkz3bjY;
+	Tue,  7 Mar 2023 22:10:02 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=F5d+bSdHFz/WeDt6E9+NDkFLikvRUsXBQvaxH1J/riSWfx7rIgLUZ4u5pBtHM+jccBGdwwi+vCo4tV/u7a/GRHCSp4jnplhyhkRwDzdEYCyfQyJ9NaUEBHhC8MVTovXLRJKFACe0CD4XxkGtzyL8wvNSH2uE7bA1lPjzHvr3SSSz5OqAnsDtxV0kyudgFVOiwljugPaN8ImPlY9bQmj83b8fH/v24xt7JsqP+htX+iCjRfy5pX00+lDIRyeSb2hhT/AhyMbNGxqhDKoyQXT9EPgHqNmMtyGGrkXlLV5huV+mEWBm5gXh3J0YTPV15c1uwtjLMSgH2W4m93D0WBDi1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EHD+Vpjd5tNcCRoTDGhd35+SqFCuCTXSYA7mtdan5gM=;
+ b=E9mfIoKObSlypkaamGJLOe2KkTaKytl69bloILm9EkroVHyClEGeaBSIe6T2QnoZxGXOua3CunKwblTdIR2awoNBqe+TYVk69Pd/RiB4tXQfD8pkh1s/xvaxaXgFy1AkdCGdt+AvcmIpp+kIhPTjfuGftQl3WKh6Lsl+fymhlKeWLt3s8GirUi/YfhUwTvwyZLLJzygFH+VHr55oInXxmZFgHR5wcvuxysh7iBAHEuozU22oEghAAbHECrideXe4HG/+MBXtb0o15I3IMRR5wbQnOxSzOeO9blTzBQfJOCvEDosoC032JBwepnYKZZ3vrXA4yGuTsqTvxMsT/g6UAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EHD+Vpjd5tNcCRoTDGhd35+SqFCuCTXSYA7mtdan5gM=;
+ b=joceivhgLnBA0XHPJkEeZ6b/zH/BCTdOVfLYCnVU4U8i6kGUU2fdaYx9yk+FHUnSfPlDCIB6xrq26zkWBHq018BHb2kNNtOtEOlg4SxRq5MCQLLeNR8A2tZovCoMLYIUPNKcB8eC5zDofsgTAOOidXIQEQL4KbXe6NB731cHi58=
+Received: from BN7PR12MB2802.namprd12.prod.outlook.com (2603:10b6:408:25::33)
+ by DS0PR12MB8318.namprd12.prod.outlook.com (2603:10b6:8:f6::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.28; Tue, 7 Mar
+ 2023 11:09:41 +0000
+Received: from BN7PR12MB2802.namprd12.prod.outlook.com
+ ([fe80::96c6:f419:e49a:1785]) by BN7PR12MB2802.namprd12.prod.outlook.com
+ ([fe80::96c6:f419:e49a:1785%7]) with mapi id 15.20.6156.029; Tue, 7 Mar 2023
+ 11:09:41 +0000
+From: "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Subject: RE: [PATCH V5 09/15] spi: Add stacked and parallel memories support
+ in SPI core
+Thread-Topic: [PATCH V5 09/15] spi: Add stacked and parallel memories support
+ in SPI core
+Thread-Index: AQHZUFDgolfpAHzRAEiHg/XQpMwU3q7uLAkAgAD9XyA=
+Date: Tue, 7 Mar 2023 11:09:41 +0000
+Message-ID:  <BN7PR12MB2802A2E7A193B8BC0073812BDCB79@BN7PR12MB2802.namprd12.prod.outlook.com>
+References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+ <20230306172109.595464-10-amit.kumar-mahapatra@amd.com>
+ <CAOiHx=nmsAh3ADL3s0eZKpEZJqCB_POi=8YjfxrHYLEbjRfwHg@mail.gmail.com>
+In-Reply-To:  <CAOiHx=nmsAh3ADL3s0eZKpEZJqCB_POi=8YjfxrHYLEbjRfwHg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN7PR12MB2802:EE_|DS0PR12MB8318:EE_
+x-ms-office365-filtering-correlation-id: 1be36a93-277a-4750-8061-08db1efc72de
+x-ld-processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  QQaRLzqTHAb+4iQlNZ/EPpKZwnDn2N5Nqw5yAuQJMozDjX9xxgQOpiqBwwEWAH6+IcPkPi78O/3/ftB/OZkNCRQ2ZPlhSWFwnQq+JhwLLaNobJVJPi7yPbZK0R6JWriRP9vF2kDZvtloJPHWjVWyOm4C2QUfF8d/j50sxw2mHL/YHqaPmD6MmiD17uCTJFcXm3zIW+Px5jk9aw3EgEKVs2mHm1gBbd5/nwRiGdRkTGAVgYACHU3UGJoBQSvGjRibN7AFNSgYocbmc2YP3xiCxMa1Vi6gXVf5l8Fcj0p4aF/FefEsF3Ym7U3Y9cNYElzspdlRncBPgtrii7fjhg+wtH4n9/oLTuYnFAxgHiAyCWGRD3KqKDlUT8fWjVVSR3QdgFvy6L24gSM6RiKS0RvM/1/I5kWBuw2HUlsFbjNBI8JOAx74YRJAAAIhFquxNvS/DtY+5J1LlK5WaAXzAAgBCpYGs5Crhcemazdn5Q2hlntmL9IKYq1oi+/d73ruKf8UBYTvX1eIyhZV3C+nspDSEaRVqTpV+7sCRZ8wWulbU56Y1vsRvjy1NJE33yol/9BIBTOxo0veK3mFt+718G3aGZwaOtJj/19qnxeMLz4UAm1Hqhv+XDVkk+/2sbXHqgRX3Rbf5BIUUoLc/T93pXod4e/6NyPpARdjDPU6pjasB92e9O0Mcub/sM60/OhSfRavInkCmKlr+NeSkG92w3xJP6nGWFY169nkFjIi6xEpk84jFM+J4LpvDfRo99sPPeyyHdUckV0kQYa5MA17KicoAg==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR12MB2802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(136003)(376002)(366004)(346002)(39860400002)(451199018)(7406005)(7366002)(7336002)(8936002)(2906002)(7416002)(7276002)(5660300002)(52536014)(41300700001)(76116006)(83380400001)(4326008)(66476007)(66946007)(6916009)(66446008)(66556008)(8676002)(64756008)(54906003)(33656002)(7696005)(45426003)(71200400001)(53546011)(6506007)(478600001)(55016003)(86362001)(9686003)(316002)(186003)(122000001)(38100700002)(26005)(38070700005)(15866825006)(41080700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?QU1oODMvWGhVMEZlY3VzL3czb0M0N0J4aHp5V3FraGlMZUFCSEVRRWVjR25o?=
+ =?utf-8?B?ei9EbFdRMDc4WE9oOHBpd3g0aktLNGdtNDdYR1FDYzIrcmJKWVRTWEFmeTlO?=
+ =?utf-8?B?UHgyM1F1OXh3eXJpZ0gxL1FFRmlnY2dTSCtCUWYxN3JRSFBnZ0JxekMxOEhX?=
+ =?utf-8?B?clRVM3gwQTRoWFpCZWdpUFhGVUdSR3IxNkx2Qi8wSk9zTmJsYnZBK1gwSmYx?=
+ =?utf-8?B?MDBSK1I2VDF6Z2ZGOFJpcmQ0N2ovVGNNUFJZS2JyaDZoU0t4T1lWVytUenNT?=
+ =?utf-8?B?VUF1ZitJaUIxUW5Md3F6bzg4S2V6MkFTR3dJK1ZrdERNRWF1TTlyUTk0MFJ1?=
+ =?utf-8?B?WnYvVnNUSFRNMDdOd3dxT1p1ZDlZRmhNMHpTQjhReERad1U2dTliTUtsbm1C?=
+ =?utf-8?B?RmRENys0TmJGaFo5dk9RNzl3c0g3R2UxKzBLQXhZbUROV1FKa0E3ZkRHUEgv?=
+ =?utf-8?B?Q0pobFBoWkRyZjZVanp0MzgxM0ZnMGFBQWMrZlY3SENOaE1FWitpZVZQVENI?=
+ =?utf-8?B?bW5tdGg0RTRKRG1BK2hVVjFQMnk5NnEzZlRjbUlUdGpoUi9NTDFWTFE4bElu?=
+ =?utf-8?B?a2lZL2FTRTFQV0hGSi9lYmUrVGorNHN1U01PbWV6aCsxU0FZajhsWCtzTHdZ?=
+ =?utf-8?B?N3NsdytwYjNDNU83L1NicWNrekdQNEV2TldXc3pRM2ZkMUwwUFNxU0gzVnNl?=
+ =?utf-8?B?Qm9wSnUzTHJtSUlkZU5tUFVtMEIyWE94Nm80clMrNkZrN3BIK3VLYzZYOEp6?=
+ =?utf-8?B?SFMzeE9yNC84UXVVTzJQSXNieW1YZTNxa05ORXZCTWxlZFdlWjRQaWZGWGxS?=
+ =?utf-8?B?SzhiWUxqMnIvZXhMcEhhcSt5amJ6cThxNUhhTjV0dlBvK1J6MnhBWXZ6Z3I5?=
+ =?utf-8?B?NEd6QXdVQlRQMERJWnU5aGRPZ0JybS83aXpYN3g1aXU3ekhJdkVIbmhLZXRh?=
+ =?utf-8?B?c3pQcnFLalYwbWdNV1dBOFB2TE0vQUpidXRQbkg5akZxYllJa2gwQ1g2d1Nh?=
+ =?utf-8?B?eEEwYU5qTXc0YzRETEttd3hrUE40cFJKdCtLN0t6STM0YWR5R1BpL2NiMi9q?=
+ =?utf-8?B?NDViK3VhVTNxZHFDN2JEVlZnZHBiOUFQRmV0SHllY1pGTE94QmhOeFYzdk5U?=
+ =?utf-8?B?MWEwSmhWOGNIa0x3czFDRG9ac1VWOWtMR3JpQSsrbFZjMGZXeEVpbFU4ZHQr?=
+ =?utf-8?B?NWNvMFFRTmlJejV2dk00T3V6S0FSc3NMSkNLRW9yODZTaVBEMTRKcGhac3J2?=
+ =?utf-8?B?SFNnR3A1Y3hXZUNweit4MEU5WDJNSzRsRG0wVysrZi9pWVRXSGhhTmR2aUNk?=
+ =?utf-8?B?ZnJaQ2Y1UWYxL0g2OHFYSDVwclJkakkyOElPUmhXMks0RG9vQXhjQk8xeW16?=
+ =?utf-8?B?TFkyTmxscEo0SEE2QUxoa2lEZXhULytQaHV1Zm1iS3VqR1ZTbmQ0NW9laSt6?=
+ =?utf-8?B?RzBORUordWNLcEV4cXBkR0dWVDFQRHE3dndhQkRBdU9SUGRWMERCckw5cjAy?=
+ =?utf-8?B?OVM0R09jSDYvWlZxSXd0YmdMeURsSTdIdUFycDVQNWdNTGkrMzZtWUVpa2p5?=
+ =?utf-8?B?bUxTMnhRby85NXUyNWgrNHdmMnNXeVhFb1JzLzJaMmNBZmorVzNPU25WU1hE?=
+ =?utf-8?B?Sk9rNFNQVnlHcnZOUGZkdEpncGJ6M1hBYTJwWThmRlZ1b0RnWHBhTEJMRzVv?=
+ =?utf-8?B?eGpldG1ZTlJVMXkySGlwbU9CanpneVcyb1pMOXNmc0o1alZvY295d2JoRngy?=
+ =?utf-8?B?YjR2cEtwRnR0Zml2d2E3L3Y1eGp2ZDg5cjg5VkxwaDJIaWJtU0hpbklILzl1?=
+ =?utf-8?B?TWhZWnJKQ0RVUGVONW9DdGhvZ1lrM2VGTC9zVVh5RmxBV0VzRXRKVWpBbXVC?=
+ =?utf-8?B?ZUNwem9mUEdXSnpCVHphSHU1V1FNMS9OYm94SFAxRVNtR1E2WE1DdlVVMTB3?=
+ =?utf-8?B?OGVZb0NITFFON2RZWTlnZThwdlEvVS9BSVdoUUtCcnErL0FFTElMRFJid3BP?=
+ =?utf-8?B?SWExWFNNS2VyZ2FVZ0dlUkI5S2VoZUFLdkUxelRCeFNZL2lpQkxlZDJHMm1v?=
+ =?utf-8?B?d2gyUldCQ1hJZXlqWkhsYkpkcjIwM25lZTdURmVGc2prMENjZVR1NHJYcTZC?=
+ =?utf-8?Q?LF6w=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR12MB2802.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1be36a93-277a-4750-8061-08db1efc72de
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2023 11:09:41.0364
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YedORTt2l+HqYNCBBqjw4hda4bFuH8pd+9se3nq0kqbenONdmM7e0u/HmesZntBjnGiCvAJphxIrvgbPAmibaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8318
 X-Mailman-Approved-At: Wed, 08 Mar 2023 08:08:27 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,486 +135,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, patches@opensource.cirrus.com, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org, sound-open-firmware@alsa-project.org
+Cc: "kursad.oney@broadcom.com" <kursad.oney@broadcom.com>, "heiko@sntech.de" <heiko@sntech.de>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>, "eajames@linux.ibm.com" <eajames@linux.ibm.com>, "perex@perex.cz" <perex@perex.cz>, "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>, "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>, "rafal@milecki.pl" <rafal@milecki.pl>, "linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>, "stefan@datenfreihafen.org" <stefan@datenfreihafen.org>, "tmaimon77@gmail.com" <tmaimon77@gmail.com>, "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>, "samuel@sholland.org" <samuel@sholland.org>, "tiwai@suse.com" <tiwai@suse.com>, "haibo.chen@nxp.com" <haibo.chen@nxp.com>, "mingo@redhat.com" <mingo@redhat.com>, "linux-imx@nxp.com" <linux-imx@nxp.com>, "linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>, "anand.gore@broadcom.com" <anand.gore@broadcom.com>, "s.hauer@pengutronix.de" <s.hauer@p
+ engutronix.de>, "l.stelmach@samsung.com" <l.stelmach@samsung.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "james.schulman@cirrus.com" <james.schulman@cirrus.com>, "Mehta, Sanju" <Sanju.Mehta@amd.com>, "sbranden@broadcom.com" <sbranden@broadcom.com>, "andrew@aj.id.au" <andrew@aj.id.au>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, "yogeshgaur.83@gmail.com" <yogeshgaur.83@gmail.com>, "michael@walle.cc" <michael@walle.cc>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "olteanv@gmail.com" <olteanv@gmail.com>, "linux-wpan@vger.kernel.org" <linux-wpan@vger.kernel.org>, "claudiu.beznea@microchip.com" <claudiu.beznea@microchip.com>, "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>, "tanureal@opensource.cirrus.com" <tanureal@opensource.cirrus.com>, "david.rhodes@cirrus.com" <david.rhodes@cirrus.com>, "edumazet@google.com" <edumazet@
+ google.com>, "ldewangan@nvidia.com" <ldewangan@nvidia.com>, "windhl@126.com" <windhl@126.com>, "lars@metafoo.de" <lars@metafoo.de>, "jonathanh@nvidia.com" <jonathanh@nvidia.com>, "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>, "jbrunet@baylibre.com" <jbrunet@baylibre.com>, "andi@etezian.org" <andi@etezian.org>, "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>, "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>, "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>, "radu_nicolae.pirea@upb.ro" <radu_nicolae.pirea@upb.ro>, "haojian.zhuang@gmail.com" <haojian.zhuang@gmail.com>, "jaswinder.singh@linaro.org" <jaswinder.singh@linaro.org>, "clg@kaod.org" <clg@kaod.org>, "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>, "Simek, Michal" <michal.simek@amd.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "libertas-dev@lists.infradead.org" <libertas-dev@lists.infra
+ dead.org>, "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>, "khilman@baylibre.com" <khilman@baylibre.com>, "jic23@kernel.org" <jic23@kernel.org>, "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>, "narmstrong@baylibre.com" <narmstrong@baylibre.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>, "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "masahisa.kojima@linaro.org" <masahisa.kojima@linaro.org>, "festevam@gmail.com" <festevam@gmail.com>, "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>, "git \(AMD-Xilinx\)" <git@amd.com>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, "benjaminfair@google.com" <benjaminfair@google.com>, "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>, "yuenn@google.com" <yuenn@google.com>, "wens
+ @csie.org" <wens@csie.org>, "bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>, "joel@jms.id.au" <joel@jms.id.au>, "yangyingliang@huawei.com" <yangyingliang@huawei.com>, "pabeni@redhat.com" <pabeni@redhat.com>, "amitrkcian2002@gmail.com" <amitrkcian2002@gmail.com>, "william.zhang@broadcom.com" <william.zhang@broadcom.com>, "rjui@broadcom.com" <rjui@broadcom.com>, "john.garry@huawei.com" <john.garry@huawei.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "rf@opensource.cirrus.com" <rf@opensource.cirrus.com>, "broonie@kernel.org" <broonie@kernel.org>, "tali.perry1@gmail.com" <tali.perry1@gmail.com>, "avifishman70@gmail.com" <avifishman70@gmail.com>, "thierry.reding@gmail.com" <thierry.reding@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, "davem@davemloft.net" <davem@davemloft.net>, "alex.aring@gmail.com" <alex.aring@gmail.com>, "vigneshr@ti.com" <vigneshr@ti.com>, "konrad.dybcio@somainline.org"
+  <konrad.dybcio@somainline.org>, "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>, "bjorn.andersson@linaro.org" <bjorn.andersson@linaro.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "robert.jarzmik@free.fr" <robert.jarzmik@free.fr>, "kdasu.kdev@gmail.com" <kdasu.kdev@gmail.com>, "richard@nod.at" <richard@nod.at>, "chin-ting_kuo@aspeedtech.com" <chin-ting_kuo@aspeedtech.com>, "agross@kernel.org" <agross@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>, "kvalo@kernel.org" <kvalo@kernel.org>, "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, "han.xu@nxp.com" <han.xu@nxp.com>, "oss@buserror.net" <oss@buserror.net>, "venture@google.com" <venture@google.com>, "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>, "fancer.lancer@gmail.com" <fancer.lancer@gmail.com>, "krzysztof.kozlowski@linaro.org" <krzyszto
+ f.kozlowski@linaro.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "pratyush@kernel.org" <pratyush@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>, "daniel@zonque.org" <daniel@zonque.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Do not include pm_runtime.h header in files where runtime PM support is
-not implemented.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- sound/hda/hdac_regmap.c                                   | 1 -
- sound/pci/hda/hda_bind.c                                  | 1 -
- sound/soc/amd/acp/acp-pci.c                               | 1 -
- sound/soc/amd/acp/acp-platform.c                          | 1 -
- sound/soc/codecs/cs35l45.h                                | 1 -
- sound/soc/codecs/max98090.c                               | 1 -
- sound/soc/codecs/max98373-i2c.c                           | 1 -
- sound/soc/codecs/pcm186x.c                                | 1 -
- sound/soc/codecs/rk3328_codec.c                           | 1 -
- sound/soc/codecs/rt5682-i2c.c                             | 1 -
- sound/soc/codecs/rt5682s.c                                | 1 -
- sound/soc/codecs/tas2562.c                                | 1 -
- sound/soc/codecs/tas5720.c                                | 1 -
- sound/soc/codecs/tas6424.c                                | 1 -
- sound/soc/codecs/wm_adsp.c                                | 1 -
- sound/soc/fsl/imx-audmix.c                                | 1 -
- sound/soc/intel/atom/sst/sst_acpi.c                       | 1 -
- sound/soc/intel/atom/sst/sst_ipc.c                        | 1 -
- sound/soc/intel/atom/sst/sst_loader.c                     | 1 -
- sound/soc/intel/atom/sst/sst_pci.c                        | 1 -
- sound/soc/intel/atom/sst/sst_stream.c                     | 1 -
- sound/soc/mediatek/mt8186/mt8186-afe-control.c            | 1 -
- sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c | 1 -
- sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c  | 1 -
- sound/soc/mediatek/mt8192/mt8192-afe-control.c            | 2 --
- sound/soc/qcom/lpass-sc7180.c                             | 1 -
- sound/soc/qcom/lpass-sc7280.c                             | 1 -
- sound/soc/soc-compress.c                                  | 1 -
- sound/soc/soc-pcm.c                                       | 1 -
- sound/soc/sof/intel/hda-loader-skl.c                      | 1 -
- sound/soc/sof/intel/hda-stream.c                          | 1 -
- sound/soc/sof/intel/skl.c                                 | 1 -
- sound/soc/sof/mediatek/mt8186/mt8186-clk.c                | 1 -
- sound/soc/sof/mediatek/mt8195/mt8195-clk.c                | 1 -
- sound/soc/tegra/tegra20_ac97.c                            | 1 -
- sound/soc/ti/omap-mcbsp-st.c                              | 1 -
- 36 files changed, 37 deletions(-)
-
-diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
-index fe3587547cfe..7cfaa908ff57 100644
---- a/sound/hda/hdac_regmap.c
-+++ b/sound/hda/hdac_regmap.c
-@@ -17,7 +17,6 @@
- #include <linux/regmap.h>
- #include <linux/export.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <sound/core.h>
- #include <sound/hdaudio.h>
- #include <sound/hda_regmap.h>
-diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
-index 1a868dd9dc4b..323c388b1219 100644
---- a/sound/pci/hda/hda_bind.c
-+++ b/sound/pci/hda/hda_bind.c
-@@ -10,7 +10,6 @@
- #include <linux/module.h>
- #include <linux/export.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <sound/core.h>
- #include <sound/hda_codec.h>
- #include "hda_local.h"
-diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
-index a0c84cd07fde..8154fbfd1229 100644
---- a/sound/soc/amd/acp/acp-pci.c
-+++ b/sound/soc/amd/acp/acp-pci.c
-@@ -15,7 +15,6 @@
- #include <linux/interrupt.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
- #include <linux/module.h>
- 
- #include "amd.h"
-diff --git a/sound/soc/amd/acp/acp-platform.c b/sound/soc/amd/acp/acp-platform.c
-index 447612a7a762..f220378ec20e 100644
---- a/sound/soc/amd/acp/acp-platform.c
-+++ b/sound/soc/amd/acp/acp-platform.c
-@@ -18,7 +18,6 @@
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dai.h>
--#include <linux/pm_runtime.h>
- #include <linux/dma-mapping.h>
- 
- #include "amd.h"
-diff --git a/sound/soc/codecs/cs35l45.h b/sound/soc/codecs/cs35l45.h
-index 53fe9d2b7b15..0555702eac03 100644
---- a/sound/soc/codecs/cs35l45.h
-+++ b/sound/soc/codecs/cs35l45.h
-@@ -11,7 +11,6 @@
- #ifndef CS35L45_H
- #define CS35L45_H
- 
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
-index 06ed2a938108..508086e6e39f 100644
---- a/sound/soc/codecs/max98090.c
-+++ b/sound/soc/codecs/max98090.c
-@@ -10,7 +10,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-diff --git a/sound/soc/codecs/max98373-i2c.c b/sound/soc/codecs/max98373-i2c.c
-index ec0905df65d1..0ef33404252d 100644
---- a/sound/soc/codecs/max98373-i2c.c
-+++ b/sound/soc/codecs/max98373-i2c.c
-@@ -9,7 +9,6 @@
- #include <linux/mod_devicetable.h>
- #include <linux/of.h>
- #include <linux/of_gpio.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/cdev.h>
-diff --git a/sound/soc/codecs/pcm186x.c b/sound/soc/codecs/pcm186x.c
-index dd21803ba13c..451a8fd8fac5 100644
---- a/sound/soc/codecs/pcm186x.c
-+++ b/sound/soc/codecs/pcm186x.c
-@@ -12,7 +12,6 @@
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-diff --git a/sound/soc/codecs/rk3328_codec.c b/sound/soc/codecs/rk3328_codec.c
-index 1d523bfd9d84..9697aefc6e03 100644
---- a/sound/soc/codecs/rk3328_codec.c
-+++ b/sound/soc/codecs/rk3328_codec.c
-@@ -11,7 +11,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/mfd/syscon.h>
- #include <sound/dmaengine_pcm.h>
-diff --git a/sound/soc/codecs/rt5682-i2c.c b/sound/soc/codecs/rt5682-i2c.c
-index 2935c1bb81f3..05d1d8ef0b9c 100644
---- a/sound/soc/codecs/rt5682-i2c.c
-+++ b/sound/soc/codecs/rt5682-i2c.c
-@@ -11,7 +11,6 @@
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <linux/i2c.h>
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
-diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
-index f5e5dbc3b0f0..8dc63a81d1e0 100644
---- a/sound/soc/codecs/rt5682s.c
-+++ b/sound/soc/codecs/rt5682s.c
-@@ -11,7 +11,6 @@
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <linux/i2c.h>
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
-diff --git a/sound/soc/codecs/tas2562.c b/sound/soc/codecs/tas2562.c
-index b486d0bd86c9..a788a5412000 100644
---- a/sound/soc/codecs/tas2562.c
-+++ b/sound/soc/codecs/tas2562.c
-@@ -8,7 +8,6 @@
- #include <linux/errno.h>
- #include <linux/device.h>
- #include <linux/i2c.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/gpio/consumer.h>
-diff --git a/sound/soc/codecs/tas5720.c b/sound/soc/codecs/tas5720.c
-index 3885c0bf0b01..4ada42d04ee9 100644
---- a/sound/soc/codecs/tas5720.c
-+++ b/sound/soc/codecs/tas5720.c
-@@ -11,7 +11,6 @@
- #include <linux/errno.h>
- #include <linux/device.h>
- #include <linux/i2c.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/regulator/consumer.h>
-diff --git a/sound/soc/codecs/tas6424.c b/sound/soc/codecs/tas6424.c
-index f8ff69fa2549..f8398cbef11a 100644
---- a/sound/soc/codecs/tas6424.c
-+++ b/sound/soc/codecs/tas6424.c
-@@ -11,7 +11,6 @@
- #include <linux/errno.h>
- #include <linux/device.h>
- #include <linux/i2c.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/regulator/consumer.h>
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index ea0dbc634ecf..84b0ab461074 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -15,7 +15,6 @@
- #include <linux/firmware.h>
- #include <linux/list.h>
- #include <linux/pm.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 1292a845c424..54383c489c62 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -15,7 +15,6 @@
- #include <linux/clk.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/pm_runtime.h>
- #include "fsl_sai.h"
- #include "fsl_audmix.h"
- 
-diff --git a/sound/soc/intel/atom/sst/sst_acpi.c b/sound/soc/intel/atom/sst/sst_acpi.c
-index 3be64430c256..abddcf6687f5 100644
---- a/sound/soc/intel/atom/sst/sst_acpi.c
-+++ b/sound/soc/intel/atom/sst/sst_acpi.c
-@@ -15,7 +15,6 @@
- #include <linux/io.h>
- #include <linux/platform_device.h>
- #include <linux/firmware.h>
--#include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/dmi.h>
- #include <linux/acpi.h>
-diff --git a/sound/soc/intel/atom/sst/sst_ipc.c b/sound/soc/intel/atom/sst/sst_ipc.c
-index 4e039c7173d8..3fc2c9a6c44d 100644
---- a/sound/soc/intel/atom/sst/sst_ipc.c
-+++ b/sound/soc/intel/atom/sst/sst_ipc.c
-@@ -15,7 +15,6 @@
- #include <linux/firmware.h>
- #include <linux/sched.h>
- #include <linux/delay.h>
--#include <linux/pm_runtime.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
-diff --git a/sound/soc/intel/atom/sst/sst_loader.c b/sound/soc/intel/atom/sst/sst_loader.c
-index eea889001c24..bf4ba6bcc429 100644
---- a/sound/soc/intel/atom/sst/sst_loader.c
-+++ b/sound/soc/intel/atom/sst/sst_loader.c
-@@ -20,7 +20,6 @@
- #include <linux/sched.h>
- #include <linux/firmware.h>
- #include <linux/dmaengine.h>
--#include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
-diff --git a/sound/soc/intel/atom/sst/sst_pci.c b/sound/soc/intel/atom/sst/sst_pci.c
-index 5862fe968083..4058b4f80a0c 100644
---- a/sound/soc/intel/atom/sst/sst_pci.c
-+++ b/sound/soc/intel/atom/sst/sst_pci.c
-@@ -15,7 +15,6 @@
- #include <linux/pci.h>
- #include <linux/fs.h>
- #include <linux/firmware.h>
--#include <linux/pm_runtime.h>
- #include <sound/core.h>
- #include <sound/soc.h>
- #include <asm/platform_sst_audio.h>
-diff --git a/sound/soc/intel/atom/sst/sst_stream.c b/sound/soc/intel/atom/sst/sst_stream.c
-index ea1ef8a61fa6..862a19ae5429 100644
---- a/sound/soc/intel/atom/sst/sst_stream.c
-+++ b/sound/soc/intel/atom/sst/sst_stream.c
-@@ -15,7 +15,6 @@
- #include <linux/firmware.h>
- #include <linux/sched.h>
- #include <linux/delay.h>
--#include <linux/pm_runtime.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
-diff --git a/sound/soc/mediatek/mt8186/mt8186-afe-control.c b/sound/soc/mediatek/mt8186/mt8186-afe-control.c
-index d714e9641571..55edf6374578 100644
---- a/sound/soc/mediatek/mt8186/mt8186-afe-control.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-afe-control.c
-@@ -6,7 +6,6 @@
- // Author: Jiaxin Yu <jiaxin.yu@mediatek.com>
- 
- #include "mt8186-afe-common.h"
--#include <linux/pm_runtime.h>
- 
- enum {
- 	MTK_AFE_RATE_8K = 0,
-diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c b/sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c
-index 970b980a81e6..f21c904e2981 100644
---- a/sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c
-@@ -10,7 +10,6 @@
- #include <linux/input.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
--#include <linux/pm_runtime.h>
- #include <sound/jack.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
-diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-index 8f77a0bc1dc8..ab5a9ae90d9c 100644
---- a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-@@ -12,7 +12,6 @@
- #include <linux/input.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
--#include <linux/pm_runtime.h>
- #include <sound/jack.h>
- #include <sound/pcm_params.h>
- #include <sound/rt5682.h>
-diff --git a/sound/soc/mediatek/mt8192/mt8192-afe-control.c b/sound/soc/mediatek/mt8192/mt8192-afe-control.c
-index 9163e05e54e1..d01b62e10088 100644
---- a/sound/soc/mediatek/mt8192/mt8192-afe-control.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-afe-control.c
-@@ -6,8 +6,6 @@
- // Author: Shane Chien <shane.chien@mediatek.com>
- //
- 
--#include <linux/pm_runtime.h>
--
- #include "mt8192-afe-common.h"
- 
- enum {
-diff --git a/sound/soc/qcom/lpass-sc7180.c b/sound/soc/qcom/lpass-sc7180.c
-index 41db6617e2ed..dc892fac4baa 100644
---- a/sound/soc/qcom/lpass-sc7180.c
-+++ b/sound/soc/qcom/lpass-sc7180.c
-@@ -12,7 +12,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
- #include <dt-bindings/sound/sc7180-lpass.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
-diff --git a/sound/soc/qcom/lpass-sc7280.c b/sound/soc/qcom/lpass-sc7280.c
-index d43f480cbae3..ee4a4b553e74 100644
---- a/sound/soc/qcom/lpass-sc7280.c
-+++ b/sound/soc/qcom/lpass-sc7280.c
-@@ -8,7 +8,6 @@
- #include <linux/module.h>
- #include <sound/pcm.h>
- #include <sound/soc.h>
--#include <linux/pm_runtime.h>
- 
- #include <dt-bindings/sound/sc7180-lpass.h>
- 
-diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
-index 870f13e1d389..843ae2b4ecb1 100644
---- a/sound/soc/soc-compress.c
-+++ b/sound/soc/soc-compress.c
-@@ -20,7 +20,6 @@
- #include <sound/initval.h>
- #include <sound/soc-dpcm.h>
- #include <sound/soc-link.h>
--#include <linux/pm_runtime.h>
- 
- static int snd_soc_compr_components_open(struct snd_compr_stream *cstream)
- {
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 579a44d81d9a..808a243a4a5a 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -14,7 +14,6 @@
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/pinctrl/consumer.h>
--#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/workqueue.h>
- #include <linux/export.h>
-diff --git a/sound/soc/sof/intel/hda-loader-skl.c b/sound/soc/sof/intel/hda-loader-skl.c
-index 69fdef8f89ae..1e77ca936f80 100644
---- a/sound/soc/sof/intel/hda-loader-skl.c
-+++ b/sound/soc/sof/intel/hda-loader-skl.c
-@@ -15,7 +15,6 @@
- #include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/pci.h>
--#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <sound/hdaudio_ext.h>
- #include <sound/sof.h>
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 7f0fd05a96e6..7968173c19c6 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -15,7 +15,6 @@
-  * Hardware interface for generic Intel audio DSP HDA IP
-  */
- 
--#include <linux/pm_runtime.h>
- #include <sound/hdaudio_ext.h>
- #include <sound/hda_register.h>
- #include <sound/sof.h>
-diff --git a/sound/soc/sof/intel/skl.c b/sound/soc/sof/intel/skl.c
-index 13efdb94d071..d24e64e71b58 100644
---- a/sound/soc/sof/intel/skl.c
-+++ b/sound/soc/sof/intel/skl.c
-@@ -19,7 +19,6 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/pci.h>
--#include <linux/pm_runtime.h>
- #include <sound/hdaudio_ext.h>
- #include <sound/pcm_params.h>
- #include <sound/sof.h>
-diff --git a/sound/soc/sof/mediatek/mt8186/mt8186-clk.c b/sound/soc/sof/mediatek/mt8186/mt8186-clk.c
-index 2df3b7ae1c6f..cb2ab5884b8c 100644
---- a/sound/soc/sof/mediatek/mt8186/mt8186-clk.c
-+++ b/sound/soc/sof/mediatek/mt8186/mt8186-clk.c
-@@ -8,7 +8,6 @@
- // Hardware interface for mt8186 DSP clock
- 
- #include <linux/clk.h>
--#include <linux/pm_runtime.h>
- #include <linux/io.h>
- 
- #include "../../sof-audio.h"
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195-clk.c b/sound/soc/sof/mediatek/mt8195/mt8195-clk.c
-index 9ef08e43aa38..7cffcad00f9b 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195-clk.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195-clk.c
-@@ -7,7 +7,6 @@
- // Hardware interface for mt8195 DSP clock
- 
- #include <linux/clk.h>
--#include <linux/pm_runtime.h>
- #include <linux/io.h>
- #include "mt8195.h"
- #include "mt8195-clk.h"
-diff --git a/sound/soc/tegra/tegra20_ac97.c b/sound/soc/tegra/tegra20_ac97.c
-index 87facfbcdd11..23c066ec636c 100644
---- a/sound/soc/tegra/tegra20_ac97.c
-+++ b/sound/soc/tegra/tegra20_ac97.c
-@@ -19,7 +19,6 @@
- #include <linux/of.h>
- #include <linux/of_gpio.h>
- #include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
-diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
-index 8163f453bf36..b047add5d887 100644
---- a/sound/soc/ti/omap-mcbsp-st.c
-+++ b/sound/soc/ti/omap-mcbsp-st.c
-@@ -19,7 +19,6 @@
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/slab.h>
--#include <linux/pm_runtime.h>
- 
- #include "omap-mcbsp.h"
- #include "omap-mcbsp-priv.h"
--- 
-2.34.1
-
+SGVsbG8sDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uYXMgR29y
+c2tpIDxqb25hcy5nb3Jza2lAZ21haWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBNYXJjaCA3LCAy
+MDIzIDE6MzEgQU0NCj4gVG86IE1haGFwYXRyYSwgQW1pdCBLdW1hciA8YW1pdC5rdW1hci1tYWhh
+cGF0cmFAYW1kLmNvbT4NCj4gQ2M6IGJyb29uaWVAa2VybmVsLm9yZzsgbWlxdWVsLnJheW5hbEBi
+b290bGluLmNvbTsgcmljaGFyZEBub2QuYXQ7DQo+IHZpZ25lc2hyQHRpLmNvbTsgamljMjNAa2Vy
+bmVsLm9yZzsgdHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tOw0KPiBwcmF0eXVzaEBrZXJuZWwu
+b3JnOyBNZWh0YSwgU2FuanUgPFNhbmp1Lk1laHRhQGFtZC5jb20+OyBjaGluLQ0KPiB0aW5nX2t1
+b0Bhc3BlZWR0ZWNoLmNvbTsgY2xnQGthb2Qub3JnOyBrZGFzdS5rZGV2QGdtYWlsLmNvbTsNCj4g
+Zi5mYWluZWxsaUBnbWFpbC5jb207IHJqdWlAYnJvYWRjb20uY29tOyBzYnJhbmRlbkBicm9hZGNv
+bS5jb207DQo+IGVhamFtZXNAbGludXguaWJtLmNvbTsgb2x0ZWFudkBnbWFpbC5jb207IGhhbi54
+dUBueHAuY29tOw0KPiBqb2huLmdhcnJ5QGh1YXdlaS5jb207IHNoYXduZ3VvQGtlcm5lbC5vcmc7
+IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU7DQo+IG5hcm1zdHJvbmdAYmF5bGlicmUuY29tOyBraGls
+bWFuQGJheWxpYnJlLmNvbTsNCj4gbWF0dGhpYXMuYmdnQGdtYWlsLmNvbTsgaGFpYm8uY2hlbkBu
+eHAuY29tOyBsaW51cy53YWxsZWlqQGxpbmFyby5vcmc7DQo+IGRhbmllbEB6b25xdWUub3JnOyBo
+YW9qaWFuLnpodWFuZ0BnbWFpbC5jb207IHJvYmVydC5qYXJ6bWlrQGZyZWUuZnI7DQo+IGFncm9z
+c0BrZXJuZWwub3JnOyBiam9ybi5hbmRlcnNzb25AbGluYXJvLm9yZzsgaGVpa29Ac250ZWNoLmRl
+Ow0KPiBrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc7IGFuZGlAZXRlemlhbi5vcmc7DQo+
+IG1jb3F1ZWxpbi5zdG0zMkBnbWFpbC5jb207IGFsZXhhbmRyZS50b3JndWVAZm9zcy5zdC5jb207
+DQo+IHdlbnNAY3NpZS5vcmc7IGplcm5lai5za3JhYmVjQGdtYWlsLmNvbTsgc2FtdWVsQHNob2xs
+YW5kLm9yZzsNCj4gbWFzYWhpc2Eua29qaW1hQGxpbmFyby5vcmc7IGphc3dpbmRlci5zaW5naEBs
+aW5hcm8ub3JnOw0KPiByb3N0ZWR0QGdvb2RtaXMub3JnOyBtaW5nb0ByZWRoYXQuY29tOyBsLnN0
+ZWxtYWNoQHNhbXN1bmcuY29tOw0KPiBkYXZlbUBkYXZlbWxvZnQubmV0OyBlZHVtYXpldEBnb29n
+bGUuY29tOyBrdWJhQGtlcm5lbC5vcmc7DQo+IHBhYmVuaUByZWRoYXQuY29tOyBhbGV4LmFyaW5n
+QGdtYWlsLmNvbTsgc3RlZmFuQGRhdGVuZnJlaWhhZmVuLm9yZzsNCj4ga3ZhbG9Aa2VybmVsLm9y
+ZzsgamFtZXMuc2NodWxtYW5AY2lycnVzLmNvbTsgZGF2aWQucmhvZGVzQGNpcnJ1cy5jb207DQo+
+IHRhbnVyZWFsQG9wZW5zb3VyY2UuY2lycnVzLmNvbTsgcmZAb3BlbnNvdXJjZS5jaXJydXMuY29t
+Ow0KPiBwZXJleEBwZXJleC5jejsgdGl3YWlAc3VzZS5jb207IG5waWdnaW5AZ21haWwuY29tOw0K
+PiBjaHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU7IG1wZUBlbGxlcm1hbi5pZC5hdTsgb3NzQGJ1
+c2Vycm9yLm5ldDsNCj4gd2luZGhsQDEyNi5jb207IHlhbmd5aW5nbGlhbmdAaHVhd2VpLmNvbTsN
+Cj4gd2lsbGlhbS56aGFuZ0Bicm9hZGNvbS5jb207IGt1cnNhZC5vbmV5QGJyb2FkY29tLmNvbTsN
+Cj4gYW5hbmQuZ29yZUBicm9hZGNvbS5jb207IHJhZmFsQG1pbGVja2kucGw7IGdpdCAoQU1ELVhp
+bGlueCkNCj4gPGdpdEBhbWQuY29tPjsgbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgbGludXgt
+a2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gam9lbEBqbXMuaWQuYXU7IGFuZHJld0Bhai5pZC5h
+dTsgcmFkdV9uaWNvbGFlLnBpcmVhQHVwYi5ybzsNCj4gbmljb2xhcy5mZXJyZUBtaWNyb2NoaXAu
+Y29tOyBhbGV4YW5kcmUuYmVsbG9uaUBib290bGluLmNvbTsNCj4gY2xhdWRpdS5iZXpuZWFAbWlj
+cm9jaGlwLmNvbTsgYmNtLWtlcm5lbC1mZWVkYmFjay1saXN0QGJyb2FkY29tLmNvbTsNCj4gZmFu
+Y2VyLmxhbmNlckBnbWFpbC5jb207IGtlcm5lbEBwZW5ndXRyb25peC5kZTsgZmVzdGV2YW1AZ21h
+aWwuY29tOw0KPiBsaW51eC1pbXhAbnhwLmNvbTsgamJydW5ldEBiYXlsaWJyZS5jb207DQo+IG1h
+cnRpbi5ibHVtZW5zdGluZ2xAZ29vZ2xlbWFpbC5jb207IGF2aWZpc2htYW43MEBnbWFpbC5jb207
+DQo+IHRtYWltb243N0BnbWFpbC5jb207IHRhbGkucGVycnkxQGdtYWlsLmNvbTsgdmVudHVyZUBn
+b29nbGUuY29tOw0KPiB5dWVubkBnb29nbGUuY29tOyBiZW5qYW1pbmZhaXJAZ29vZ2xlLmNvbTsg
+eW9nZXNoZ2F1ci44M0BnbWFpbC5jb207DQo+IGtvbnJhZC5keWJjaW9Ac29tYWlubGluZS5vcmc7
+IGFsaW0uYWtodGFyQHNhbXN1bmcuY29tOw0KPiBsZGV3YW5nYW5AbnZpZGlhLmNvbTsgdGhpZXJy
+eS5yZWRpbmdAZ21haWwuY29tOyBqb25hdGhhbmhAbnZpZGlhLmNvbTsNCj4gU2ltZWssIE1pY2hh
+bCA8bWljaGFsLnNpbWVrQGFtZC5jb20+OyBsaW51eC1hc3BlZWRAbGlzdHMub3psYWJzLm9yZzsN
+Cj4gb3BlbmJtY0BsaXN0cy5vemxhYnMub3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJh
+ZGVhZC5vcmc7IGxpbnV4LXJwaS0NCj4ga2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4
+LWFtbG9naWNAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgtDQo+IG1lZGlhdGVrQGxpc3RzLmlu
+ZnJhZGVhZC5vcmc7IGxpbnV4LWFybS1tc21Admdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gcm9j
+a2NoaXBAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgtc2Ftc3VuZy1zb2NAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC0NCj4gc3RtMzJAc3QtbWQtbWFpbG1hbi5zdG9ybXJlcGx5LmNvbTsgbGludXgt
+c3VueGlAbGlzdHMubGludXguZGV2OyBsaW51eC0NCj4gdGVncmFAdmdlci5rZXJuZWwub3JnOyBu
+ZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gd3BhbkB2Z2VyLmtlcm5lbC5vcmc7IGxp
+YmVydGFzLWRldkBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC0NCj4gd2lyZWxlc3NAdmdlci5r
+ZXJuZWwub3JnOyBsaW51eC1tdGRAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGFyc0BtZXRhZm9vLmRl
+Ow0KPiBNaWNoYWVsLkhlbm5lcmljaEBhbmFsb2cuY29tOyBsaW51eC1paW9Admdlci5rZXJuZWwu
+b3JnOw0KPiBtaWNoYWVsQHdhbGxlLmNjOyBwYWxtZXJAZGFiYmVsdC5jb207IGxpbnV4LXJpc2N2
+QGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGFsc2EtZGV2ZWxAYWxzYS1wcm9qZWN0Lm9yZzsgcGF0
+Y2hlc0BvcGVuc291cmNlLmNpcnJ1cy5jb207IGxpbnV4cHBjLQ0KPiBkZXZAbGlzdHMub3psYWJz
+Lm9yZzsgYW1pdHJrY2lhbjIwMDJAZ21haWwuY29tDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjUg
+MDkvMTVdIHNwaTogQWRkIHN0YWNrZWQgYW5kIHBhcmFsbGVsIG1lbW9yaWVzDQo+IHN1cHBvcnQg
+aW4gU1BJIGNvcmUNCj4gDQo+IEhpLA0KPiANCj4gT24gTW9uLCA2IE1hciAyMDIzIGF0IDE4OjI2
+LCBBbWl0IEt1bWFyIE1haGFwYXRyYSA8YW1pdC5rdW1hci0NCj4gbWFoYXBhdHJhQGFtZC5jb20+
+IHdyb3RlOg0KPiA+DQo+ID4gRm9yIHN1cHBvcnRpbmcgbXVsdGlwbGUgQ1MgdGhlIFNQSSBkZXZp
+Y2UgbmVlZCB0byBiZSBhd2FyZSBvZiBhbGwgdGhlDQo+ID4gQ1MgdmFsdWVzLiBTbywgdGhlICJj
+aGlwX3NlbGVjdCIgbWVtYmVyIGluIHRoZSBzcGlfZGV2aWNlIHN0cnVjdHVyZSBpcw0KPiA+IG5v
+dyBhbiBhcnJheSB0aGF0IGhvbGRzIGFsbCB0aGUgQ1MgdmFsdWVzLg0KPiA+DQo+ID4gc3BpX2Rl
+dmljZSBzdHJ1Y3R1cmUgbm93IGhhcyBhICJjc19pbmRleF9tYXNrIiBtZW1iZXIuIFRoaXMgYWN0
+cyBhcyBhbg0KPiA+IGluZGV4IHRvIHRoZSBjaGlwX3NlbGVjdCBhcnJheS4gSWYgbnRoIGJpdCBv
+ZiBzcGktPmNzX2luZGV4X21hc2sgaXMNCj4gPiBzZXQgdGhlbiB0aGUgZHJpdmVyIHdvdWxkIGFz
+c2VydCBzcGktPmNoaXBfc2VsZWN0W25dLg0KPiA+DQo+ID4gSW4gcGFyYWxsZWwgbW9kZSBhbGwg
+dGhlIGNoaXAgc2VsZWN0cyBhcmUgYXNzZXJ0ZWQvZGUtYXNzZXJ0ZWQNCj4gPiBzaW11bHRhbmVv
+dXNseSBhbmQgZWFjaCBieXRlIG9mIGRhdGEgaXMgc3RvcmVkIGluIGJvdGggZGV2aWNlcywgdGhl
+DQo+ID4gZXZlbiBiaXRzIGluIG9uZSwgdGhlIG9kZCBiaXRzIGluIHRoZSBvdGhlci4gVGhlIHNw
+bGl0IGlzDQo+ID4gYXV0b21hdGljYWxseSBoYW5kbGVkIGJ5IHRoZSBHUVNQSSBjb250cm9sbGVy
+LiBUaGUgR1FTUEkgY29udHJvbGxlcg0KPiA+IHN1cHBvcnRzIGEgbWF4aW11bSBvZiB0d28gZmxh
+c2hlcyBjb25uZWN0ZWQgaW4gcGFyYWxsZWwgbW9kZS4gQQ0KPiA+ICJtdWx0aS1jcy1jYXAiIGZs
+YWcgaXMgYWRkZWQgaW4gdGhlIHNwaSBjb250cm9udHJvbGxlciBkYXRhLCB0aHJvdWdoDQo+ID4g
+Y3Rsci0+bXVsdGktY3MtY2FwIHRoZSBzcGkgY29yZSB3aWxsIG1ha2Ugc3VyZSB0aGF0IHRoZSBj
+b250cm9sbGVyIGlzDQo+ID4gY2FwYWJsZSBvZiBoYW5kbGluZyBtdWx0aXBsZSBjaGlwIHNlbGVj
+dHMgYXQgb25jZS4NCj4gPg0KPiA+IEZvciBzdXBwb3J0aW5nIG11bHRpcGxlIENTIHZpYSBHUElP
+IHRoZSBjc19ncGlvZCBtZW1iZXIgb2YgdGhlDQo+ID4gc3BpX2RldmljZSBzdHJ1Y3R1cmUgaXMg
+bm93IGFuIGFycmF5IHRoYXQgaG9sZHMgdGhlIGdwaW8gZGVzY3JpcHRvcg0KPiA+IGZvciBlYWNo
+IGNoaXBzZWxlY3QuDQo+ID4NCj4gPiBNdWx0aSBDUyBzdXBwb3J0IHVzaW5nIEdQSU8gaXMgbm90
+IHRlc3RlZCBkdWUgdG8gdW5hdmFpbGFiaWxpdHkgb2YNCj4gPiBuZWNlc3NhcnkgaGFyZHdhcmUg
+c2V0dXAuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbWl0IEt1bWFyIE1haGFwYXRyYSA8YW1p
+dC5rdW1hci0NCj4gbWFoYXBhdHJhQGFtZC5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvc3Bp
+L3NwaS5jICAgICAgIHwgMjEzICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0t
+LS0NCj4gPiAgaW5jbHVkZS9saW51eC9zcGkvc3BpLmggfCAgMzQgKysrKystLQ0KPiA+ICAyIGZp
+bGVzIGNoYW5nZWQsIDE3MyBpbnNlcnRpb25zKCspLCA3NCBkZWxldGlvbnMoLSkNCj4gPg0KPiA+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS5jIGluZGV4
+DQo+ID4gNTg2NmJmNTgxM2E0Li44ZWM3ZjU4ZmExMTEgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVy
+cy9zcGkvc3BpLmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGkuYw0KPiA+IEBAIC02MTMsNyAr
+NjEzLDggQEAgc3RhdGljIGludCBzcGlfZGV2X2NoZWNrKHN0cnVjdCBkZXZpY2UgKmRldiwgdm9p
+ZA0KPiAqZGF0YSkNCj4gPiAgICAgICAgIHN0cnVjdCBzcGlfZGV2aWNlICpuZXdfc3BpID0gZGF0
+YTsNCj4gPg0KPiA+ICAgICAgICAgaWYgKHNwaS0+Y29udHJvbGxlciA9PSBuZXdfc3BpLT5jb250
+cm9sbGVyICYmDQo+ID4gLSAgICAgICAgICAgc3BpX2dldF9jaGlwc2VsZWN0KHNwaSwgMCkgPT0g
+c3BpX2dldF9jaGlwc2VsZWN0KG5ld19zcGksIDApKQ0KPiA+ICsgICAgICAgICAgIHNwaV9nZXRf
+Y2hpcHNlbGVjdChzcGksIDApID09IHNwaV9nZXRfY2hpcHNlbGVjdChuZXdfc3BpLCAwKSAmJg0K
+PiA+ICsgICAgICAgICAgIHNwaV9nZXRfY2hpcHNlbGVjdChzcGksIDEpID09IHNwaV9nZXRfY2hp
+cHNlbGVjdChuZXdfc3BpLA0KPiA+ICsgMSkpDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiAt
+RUJVU1k7DQo+IA0KPiBUaGlzIHdpbGwgb25seSByZWplY3QgbmV3IGRldmljZXMgaWYgYm90aCBj
+aGlwIHNlbGVjdHMgYXJlIGlkZW50aWNhbCwgYnV0IG5vdCBpZg0KPiB0aGV5IG9ubHkgc2hhcmUg
+b25lLCBlLmcuIENTIDEgKyAyIHZzIDEgKyAzLCBvciAxICsgMiB2cyBvbmx5IDIsIG9yIGlmIHRo
+ZSBvcmRlciBpcw0KPiBkaWZmZXJlbnQgKDEgKyAyIHZzIDIgKyAxIC0gaGF2ZW4ndCByZWFkIHRo
+ZSBjb2RlIHRvbyBjbG9zZSB0byBrbm93IGlmIHRoaXMgaXMNCj4gYWxsb3dlZC9wb3NzaWJsZSku
+DQoNCkFncmVlZCwgIHdpbGwgYWRkIGluIHRoZSBuZXh0IHNlcmllcy4NCg0KUmVnYXJkcywNCkFt
+aXQNCj4gDQo+IFJlZ2FyZHMsDQo+IEpvbmFzDQo=
