@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141956AD6A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 06:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E146AD6AF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 06:08:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PW3Ld6Ggmz3cMb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 16:06:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PW3Pr66mXz3f3M
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 16:08:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WkCNp7TS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jVS7t3pw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WkCNp7TS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jVS7t3pw;
 	dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PW3Kg4SmCz2xjw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 16:05:09 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id q31-20020a17090a17a200b0023750b69614so10817362pja.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 21:05:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PW3Nx0sX6z300C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 16:08:00 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id i3so12893312plg.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Mar 2023 21:08:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678165506;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20210112; t=1678165678;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fAr/4rZLY/xW2VZEGvfJ9vcha1fPxJBixn7intPRfv8=;
-        b=WkCNp7TSaFq1NkStkRRYZf/7HaSOKOYxyg90uy+CWLTCGTo10DoEcaclgmrNVAmQGd
-         F0eYRS9Ept+4HdVgZ/Udc7Mu4on10dxvK4uMzKcKkSzWyei6ehYoG3+3UgQX2WiH3h7j
-         99T54plxLO+Yitet0Tq/GTHLecJfBjZQOTS2rX6j6uzXLTDJ1y/E+GMvjSx8L8uRBA/k
-         iokVfgi5827693E05NqR7ZGq7U+qB+N7fajZDPRhRKk8ZrfkY/T1ifewq0t3i9Vv/T5y
-         djXx8rqtqpmGopvsJlT5n9nMYZP7HTFXeU0FpwYbgD/dXmdN7CrqyVA9y1kuTuItMv5h
-         Lw5w==
+        bh=2cerkYXVbu0URi9ccp6U7ta2fpAAN/38HhqncKXgEBM=;
+        b=jVS7t3pwHdqAgiQzs/Eu5b3JG44b3/JFrhGyZYuNnfhrmRXE1PfSb8CgZpfDdBQdLH
+         1ukxnimSq4CQgqzekXoi5t0rrc4XOXdoTZVCDJFgvv+08bbw8Bn8zDqTjTruvgHLfA+L
+         NFZ68BDs5Gxn8aqy7xpbTkVpwfhPBxyVXUNh2Rx1rKKrBZyhJDYMevKRtFVLg8ddwm5X
+         8UHPMKiFow2EoSLqcU3bCNu9ZVyZliWEUEDBOWSKOmxt4djxOqqjZH4n3J4+hkVlHQov
+         eSAyffmufebu8u7iSamu1b05DYduKq22yrMCXpxkiSxbgaYB4447m9Qjr0QDep/qD3V2
+         2vkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678165506;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20210112; t=1678165678;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=fAr/4rZLY/xW2VZEGvfJ9vcha1fPxJBixn7intPRfv8=;
-        b=0WzH7svqKleEvxe8uanpf/mXPcl7w/pHzeoUhmlnrtAkFvj/fHVoo93l/r6wOycSgQ
-         nsGFI+e+7P2AZZbnBWtdvz00eZNHQiKEuz/en3DyCVIIY5VWrzG/aMZRSe+3CD+h1TA6
-         EgrG2AU+iXCgGpUfokZnmTHhKJU9XeDDpymXyxdsIVTD/ld08MnewoW1srf6865aaSuD
-         1Lxdz3pPxdfB4ZOQ38TzXBxJsMboaEsmt/w2hXDCCEfEY5FbZuF96kG8iAKChly9DFLt
-         ztKaIkXhxH0IzR16/wCDDQ0O2QLt/leKVezBBvV+EvoGn96xnX5U4krzFUT2nYB+t3QR
-         2MpQ==
-X-Gm-Message-State: AO0yUKVBO4b9MOElKT/46lMTgKaTUyez6kac7j8ZMinrd33OuuaYsOyv
-	f531jryNsG6yndWuh46MEgo=
-X-Google-Smtp-Source: AK7set9xG2nILH4DDb0/bsgn5KroT2orbcWVxChMuR5XTi8NyBVoYfcVbAvq+8KCW1mCDCO4Kv/knw==
-X-Received: by 2002:a17:903:1d1:b0:19e:6947:3b27 with SMTP id e17-20020a17090301d100b0019e69473b27mr17886346plh.58.1678165506568;
-        Mon, 06 Mar 2023 21:05:06 -0800 (PST)
+        bh=2cerkYXVbu0URi9ccp6U7ta2fpAAN/38HhqncKXgEBM=;
+        b=blgO4HsyIQ4ox1cvOQyjzdIYOsokHk+GNmfEvIzkBRB/bePiF1PHAtooTPPRLY3tRe
+         31uCM/58hgP3doNW52YUUIF1+bdpag5F4nxIeBIqZw+JYwdd4UMwVyYVUvPF9i956faK
+         7lWg5dgwprFpHnueX6EORmLCwB2edbaqdsqQLvD1KPQ7LVUcmg+H1759gsy1S59YjbHi
+         k15swpltU3aOm1s4odl2A1bmVUGH5AmjFMMMxtak3UHRdTHkpVUK7k9nQ8GgWr/uv8fB
+         7R+yAguDreJ+VrH2TlDmYLVoeTh0/rmAIbAFBkePQk6POKitJ5HHgf5AWHTvsC1kmo9z
+         xjPA==
+X-Gm-Message-State: AO0yUKV2u0rpeUquAfj0vZWvsOrMfKbEwS7/djoXPaiBS00MvSK68+XV
+	WJF7FbjymEFbF0zE4hju5rA=
+X-Google-Smtp-Source: AK7set9NP9z/POyu5+TRI/IlQrppY7U7cLGZI1NUtpVypi/csY/TTejBi6pizXd8hkgDvyO55PA4Jg==
+X-Received: by 2002:a17:902:c407:b0:19e:21d0:5b90 with SMTP id k7-20020a170902c40700b0019e21d05b90mr19936752plk.4.1678165678155;
+        Mon, 06 Mar 2023 21:07:58 -0800 (PST)
 Received: from localhost ([203.220.77.23])
-        by smtp.gmail.com with ESMTPSA id e7-20020a170902cf4700b0019adfb96084sm7550173plg.36.2023.03.06.21.05.03
+        by smtp.gmail.com with ESMTPSA id a8-20020a170902900800b0019a70a42b0asm7542949plp.169.2023.03.06.21.07.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 21:05:05 -0800 (PST)
+        Mon, 06 Mar 2023 21:07:57 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Mar 2023 15:05:01 +1000
-Message-Id: <CQZW0SBFI6QM.3FW6O6LJ0PVS1@bobo>
-Subject: Re: [RFC PATCH 04/13] powerpc/dexcr: Support userspace ROP
- protection
-From: "Nicholas Piggin" <npiggin@gmail.com>
+Date: Tue, 07 Mar 2023 15:07:52 +1000
+Message-Id: <CQZW2Z6JU55U.2M24IU59IQZ4D@bobo>
 To: "Benjamin Gray" <bgray@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [RFC PATCH 05/13] prctl: Define PowerPC DEXCR interface
+From: "Nicholas Piggin" <npiggin@gmail.com>
 X-Mailer: aerc 0.13.0
 References: <20221128024458.46121-1-bgray@linux.ibm.com>
- <20221128024458.46121-5-bgray@linux.ibm.com>
-In-Reply-To: <20221128024458.46121-5-bgray@linux.ibm.com>
+ <20221128024458.46121-6-bgray@linux.ibm.com>
+In-Reply-To: <20221128024458.46121-6-bgray@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,131 +85,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Mon Nov 28, 2022 at 12:44 PM AEST, Benjamin Gray wrote:
-> The ISA 3.1B hashst and hashchk instructions use a per-cpu SPR HASHKEYR
-> to hold a key used in the hash calculation. This key should be different
-> for each process to make it harder for a malicious process to recreate
-> valid hash values for a victim process.
->
-> Add support for storing a per-thread hash key, and setting/clearing
-> HASHKEYR appropriately.
->
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/kexec.h |  3 +++
->  arch/powerpc/include/asm/processor.h       |  1 +
->  arch/powerpc/include/asm/reg.h             |  1 +
->  arch/powerpc/kernel/process.c              | 12 ++++++++++++
->  4 files changed, 17 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/book3s/64/kexec.h b/arch/powerpc/in=
-clude/asm/book3s/64/kexec.h
-> index 563baf94a962..163de935df28 100644
-> --- a/arch/powerpc/include/asm/book3s/64/kexec.h
-> +++ b/arch/powerpc/include/asm/book3s/64/kexec.h
-> @@ -24,6 +24,9 @@ static inline void reset_sprs(void)
->  	if (cpu_has_feature(CPU_FTR_ARCH_31))
->  		mtspr(SPRN_DEXCR, 0);
-> =20
-> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
-> +		mtspr(SPRN_HASHKEYR, 0);
-> +
->  	/*  Do we need isync()? We are going via a kexec reset */
->  	isync();
->  }
-> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/=
-asm/processor.h
-> index c17ec1e44c86..2381217c95dc 100644
-> --- a/arch/powerpc/include/asm/processor.h
-> +++ b/arch/powerpc/include/asm/processor.h
-> @@ -264,6 +264,7 @@ struct thread_struct {
->  	unsigned long   mmcr3;
->  	unsigned long   sier2;
->  	unsigned long   sier3;
-> +	unsigned long	hashkeyr;
-> =20
->  #endif
->  };
-> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
-g.h
-> index cdd1f174c399..854664cf844f 100644
-> --- a/arch/powerpc/include/asm/reg.h
-> +++ b/arch/powerpc/include/asm/reg.h
-> @@ -384,6 +384,7 @@
->  #define SPRN_HRMOR	0x139	/* Real mode offset register */
->  #define SPRN_HSRR0	0x13A	/* Hypervisor Save/Restore 0 */
->  #define SPRN_HSRR1	0x13B	/* Hypervisor Save/Restore 1 */
-> +#define SPRN_HASHKEYR	0x1D4	/* Non-privileged hashst/hashchk key registe=
-r */
->  #define SPRN_ASDR	0x330	/* Access segment descriptor register */
->  #define SPRN_DEXCR	0x33C	/* Dynamic execution control register */
->  #define   DEXCR_PRO_MASK(aspect)	__MASK(63 - (32 + (aspect)))	/* Aspect =
-number to problem state aspect mask */
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.=
-c
-> index 17d26f652b80..4d7b0c7641d0 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1229,6 +1229,9 @@ static inline void restore_sprs(struct thread_struc=
-t *old_thread,
->  	    old_thread->tidr !=3D new_thread->tidr)
->  		mtspr(SPRN_TIDR, new_thread->tidr);
-> =20
-> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
-> +		mtspr(SPRN_HASHKEYR, new_thread->hashkeyr);
+> Adds the definitions and generic handler for prctl control of the
+> PowerPC Dynamic Execution Control Register (DEXCR).
 
-I wonder if we'd want to avoid switching it when switching to kernel
-threads, and from kernel thread back to the same user thread. Might
-want to optimise it to do that in future but for an initial enablement
-patch this is okay.
-
-> +
->  	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->  		unsigned long new_dexcr =3D get_thread_dexcr(new_thread);
-> =20
-> @@ -1818,6 +1821,10 @@ int copy_thread(struct task_struct *p, const struc=
-t kernel_clone_args *args)
->  		childregs->ppr =3D DEFAULT_PPR;
-> =20
->  	p->thread.tidr =3D 0;
-> +#endif
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
-> +		p->thread.hashkeyr =3D current->thread.hashkeyr;
->  #endif
-
-Similar comment about your accessor style, if we had get/set_thread_hashkey=
-r()
-functions then no ifdef required.
-
-I think it is not quite per-process? I don't actually know how the user
-toolchain side is put together, but I'm thinking we can not give it a new
-salt on fork(), but we could on exec(). I think we could actually give
-each thread their own salt within a process too, right?
-
-I don't know off the top of my head whether that can be translated into
-a simple test at the copy_thread level. For now you're giving out a new
-salt on exec I think, which should be fine at least to start with.
-
-Thanks,
-Nick
+Assuming we'd go with the later prctl patches, this prep patch
+is nice way to split out some of the mechanism.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
->  	/*
->  	 * Run with the current AMR value of the kernel
-> @@ -1947,6 +1954,11 @@ void start_thread(struct pt_regs *regs, unsigned l=
-ong start, unsigned long sp)
->  	current->thread.load_tm =3D 0;
->  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
->  #ifdef CONFIG_PPC_BOOK3S_64
-> +	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE)) {
-> +		current->thread.hashkeyr =3D get_random_long();
-> +		mtspr(SPRN_HASHKEYR, current->thread.hashkeyr);
-> +	}
+>
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> ---
+>  include/uapi/linux/prctl.h | 14 ++++++++++++++
+>  kernel/sys.c               | 16 ++++++++++++++++
+>  2 files changed, 30 insertions(+)
+>
+> diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
+> index a5e06dcbba13..b4720e8de6f3 100644
+> --- a/include/uapi/linux/prctl.h
+> +++ b/include/uapi/linux/prctl.h
+> @@ -281,6 +281,20 @@ struct prctl_mm_map {
+>  # define PR_SME_VL_LEN_MASK		0xffff
+>  # define PR_SME_VL_INHERIT		(1 << 17) /* inherit across exec */
+> =20
+> +/* PowerPC Dynamic Execution Control Register (DEXCR) controls */
+> +#define PR_PPC_GET_DEXCR		65
+> +#define PR_PPC_SET_DEXCR		66
+> +/* DEXCR aspect to act on */
+> +# define PR_PPC_DEXCR_SBHE		0 /* Speculative branch hint enable */
+> +# define PR_PPC_DEXCR_IBRTPD		1 /* Indirect branch recurrent target pred=
+iction disable */
+> +# define PR_PPC_DEXCR_SRAPD		2 /* Subroutine return address prediction d=
+isable */
+> +# define PR_PPC_DEXCR_NPHIE		3 /* Non-privileged hash instruction enable=
+ */
+> +/* Action to apply / return */
+> +# define PR_PPC_DEXCR_PRCTL		(1 << 0)
+> +# define PR_PPC_DEXCR_SET_ASPECT	(1 << 1)
+> +# define PR_PPC_DEXCR_FORCE_SET_ASPECT	(1 << 2)
+> +# define PR_PPC_DEXCR_CLEAR_ASPECT	(1 << 3)
 > +
->  	if (cpu_has_feature(CPU_FTR_ARCH_31))
->  		mtspr(SPRN_DEXCR, get_thread_dexcr(&current->thread));
->  #endif /* CONFIG_PPC_BOOK3S_64 */
+>  #define PR_SET_VMA		0x53564d41
+>  # define PR_SET_VMA_ANON_NAME		0
+> =20
+> diff --git a/kernel/sys.c b/kernel/sys.c
+> index 5fd54bf0e886..55b8f7369059 100644
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@ -139,6 +139,12 @@
+>  #ifndef GET_TAGGED_ADDR_CTRL
+>  # define GET_TAGGED_ADDR_CTRL()		(-EINVAL)
+>  #endif
+> +#ifndef PPC_GET_DEXCR_ASPECT
+> +# define PPC_GET_DEXCR_ASPECT(a, b)	(-EINVAL)
+> +#endif
+> +#ifndef PPC_SET_DEXCR_ASPECT
+> +# define PPC_SET_DEXCR_ASPECT(a, b, c)	(-EINVAL)
+> +#endif
+> =20
+>  /*
+>   * this is where the system-wide overflow UID and GID are defined, for
+> @@ -2623,6 +2629,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long,=
+ arg2, unsigned long, arg3,
+>  		error =3D sched_core_share_pid(arg2, arg3, arg4, arg5);
+>  		break;
+>  #endif
+> +	case PR_PPC_GET_DEXCR:
+> +		if (arg3 || arg4 || arg5)
+> +			return -EINVAL;
+> +		error =3D PPC_GET_DEXCR_ASPECT(me, arg2);
+> +		break;
+> +	case PR_PPC_SET_DEXCR:
+> +		if (arg4 || arg5)
+> +			return -EINVAL;
+> +		error =3D PPC_SET_DEXCR_ASPECT(me, arg2, arg3);
+> +		break;
+>  	case PR_SET_VMA:
+>  		error =3D prctl_set_vma(arg2, arg3, arg4, arg5);
+>  		break;
 > --=20
 > 2.38.1
 
