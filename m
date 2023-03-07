@@ -1,53 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CB46ADB3F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 11:00:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151716ADE44
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 13:03:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PW9tN5KYPz3f3N
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 21:00:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWDc01SPHz3cMN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 23:03:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mhZOA6o/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=RLWayBHY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PW9sR5q01z3bjY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 20:59:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.149.25; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=8430349259=ckeepax@opensource.cirrus.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mhZOA6o/;
+	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=RLWayBHY;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+X-Greylist: delayed 1896 seconds by postgrey-1.36 at boromir; Tue, 07 Mar 2023 23:02:24 AEDT
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PW9sR4kYbz4x5Q;
-	Tue,  7 Mar 2023 20:59:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1678183179;
-	bh=7THoEtvn29Kb6nDK1Wq/6asVM/F4bcBIraAld5OwZd4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mhZOA6o/5MwL7qdkEZhudtoHgR5yygoR1vh8yJNnTSAweQDIHBx80N+6AD+UIxqnp
-	 IbFOg0pAaZF5TcDmcKvYlhnjXQNomXIOSDrA/1qa0mEHLUszQ5kvktA+LYRjpstcjs
-	 u91zyHX9zJPPcAj5CuEXSQnelcLLb62PYzVQCM+JyiaDLCwd4VMPU4LXYHf68H0xI1
-	 z7XVeK8Pd8h6bF7BEGMfL39pEqDqXh8e22/lhII8F14/qdtX9IxDn82XOUgNue1cUo
-	 pSFKpo+5uN/rZq4PlAsGY7JTbKFdDA76DBfgEhTLSm+Dxq3l0Wbo5aLJOMk8RESAFc
-	 g423WKAO4oE1w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/5] selftests/powerpc/dscr: Add lockstep test cases to
- DSCR explicit tests
-In-Reply-To: <20230307005515.174362-3-bgray@linux.ibm.com>
-References: <20230307005515.174362-1-bgray@linux.ibm.com>
- <20230307005515.174362-3-bgray@linux.ibm.com>
-Date: Tue, 07 Mar 2023 20:59:37 +1100
-Message-ID: <87h6uw286u.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWDb40VX8z3cC1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Mar 2023 23:02:22 +1100 (AEDT)
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3277tv94022730;
+	Tue, 7 Mar 2023 05:30:19 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=8Gw+hMjGj1I9H2fg3ljNbnH8D9RaMuxw0VHL6fBZJv4=;
+ b=RLWayBHYAC3WRv9HPpNTERg+r3oTqRoc1PhTaiH7YBIi+g27pmBKE71aOiAvS27S3N07
+ +QHcy5hOfjEbFGHVcXXvt9qIN3WGOS3Bqlri7NiCAQhOhMOgUcVD/jtynzPS4OAO8V4x
+ y0soTVGFyQ8h0rjtQN8pahOoaJaEwQF+b1XRYG7PlC2fH/BI33BVKPohDXEuq+sfwinQ
+ st9ocuKEdqcae/7gnnLT1gkEC3NHxNf2+QnaoIAl+yku5tDVskg+wvMD2woy7I197Y8b
+ atlA+qMh5usVUKVHiqBqRp3egA8oAV2JdrRPRQRVEwGGY4zU2uz2Qv/12AeFgHJufFHL 1A== 
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3p4497427y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Mar 2023 05:30:19 -0600
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.25; Tue, 7 Mar
+ 2023 05:30:16 -0600
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Tue, 7 Mar 2023 05:30:16 -0600
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id C72ED11D3;
+	Tue,  7 Mar 2023 11:30:16 +0000 (UTC)
+Date: Tue, 7 Mar 2023 11:30:16 +0000
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: Re: [PATCH] ASoC: do not include pm_runtime.h if not used
+Message-ID: <20230307113016.GS68926@ediswmail.ad.cirrus.com>
+References: <20230307103022.1007420-1-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230307103022.1007420-1-claudiu.beznea@microchip.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-GUID: 8AhJH_Etb0kWl8-U4QDOKiyr044l28y7
+X-Proofpoint-ORIG-GUID: 8AhJH_Etb0kWl8-U4QDOKiyr044l28y7
+X-Proofpoint-Spam-Reason: safe
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,60 +73,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
+Cc: daniel.baluta@nxp.com, cezary.rojewski@intel.com, tanureal@opensource.cirrus.com, Xiubo.Lee@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, linux-tegra@vger.kernel.org, thierry.reding@gmail.com, srinivas.kandagatla@linaro.org, festevam@gmail.com, sound-open-firmware@alsa-project.org, shengjiu.wang@gmail.com, linux-omap@vger.kernel.org, yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com, pierre-louis.bossart@linux.intel.com, jonathanh@nvidia.com, linux-imx@nxp.com, bgoswami@quicinc.com, s.hauer@pengutronix.de, linuxppc-dev@lists.ozlabs.org, james.schulman@cirrus.com, nicoleotsuka@gmail.com, rf@opensource.cirrus.com, broonie@kernel.org, linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com, perex@perex.cz, peter.ujfalusi@linux.intel.com, linux-arm-kernel@lists.infradead.org, oder_chiou@realtek.com, kai.vehmanen@linux.intel.com, patches@opensource.cirrus.com, david.rhodes@cirrus.com, tiwai@suse.com, linux-kernel@vger.kernel.org, vkoul@kernel.org, ke
+ rnel@pengutronix.de, shawnguo@kernel.org, jarkko.nikula@bitmer.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin Gray <bgray@linux.ibm.com> writes:
-> Add new cases to the relevant tests that use explicitly synchronized
-> threads to test the behaviour across context switches with less
-> randomness. By locking the participants to the same CPU we guarantee a
-> context switch occurs each time they make progress, which is a likely
-> failure point if the kernel is not tracking the thread local DSCR
-> correctly.
->
-> The random case is left in to keep exercising potential edge cases.
->
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+On Tue, Mar 07, 2023 at 12:30:22PM +0200, Claudiu Beznea wrote:
+> Do not include pm_runtime.h header in files where runtime PM support is
+> not implemented.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 > ---
->  tools/testing/selftests/powerpc/dscr/Makefile |  1 +
->  tools/testing/selftests/powerpc/dscr/dscr.h   | 23 +++++
->  .../powerpc/dscr/dscr_default_test.c          | 87 ++++++++++++++++---
->  .../powerpc/dscr/dscr_explicit_test.c         | 87 ++++++++++++++++++-
->  4 files changed, 183 insertions(+), 15 deletions(-)
-...
-> diff --git a/tools/testing/selftests/powerpc/dscr/dscr.h b/tools/testing/selftests/powerpc/dscr/dscr.h
-> index 2c54998d4715..903ee0c83fac 100644
-> --- a/tools/testing/selftests/powerpc/dscr/dscr.h
-> +++ b/tools/testing/selftests/powerpc/dscr/dscr.h
-> @@ -90,4 +92,25 @@ double uniform_deviate(int seed)
->  {
->  	return seed * (1.0 / (RAND_MAX + 1.0));
->  }
-> +
-> +int restrict_to_one_cpu(void)
-> +{
-> +	cpu_set_t cpus;
-> +	int cpu;
-> +
-> +	FAIL_IF(sched_getaffinity(0, sizeof(cpu_set_t), &cpus));
-> +
-> +	for (cpu = 0; cpu < CPU_SETSIZE; cpu++)
-> +		if (CPU_ISSET(cpu, &cpus))
-> +			break;
-> +
-> +	FAIL_IF(cpu == CPU_SETSIZE);
-> +
-> +	CPU_ZERO(&cpus);
-> +	CPU_SET(cpu, &cpus);
-> +	FAIL_IF(sched_setaffinity(0, sizeof(cpu_set_t), &cpus));
-> +
-> +	return 0;
-> +}
+>  sound/soc/codecs/cs35l45.h                                | 1 -
+> diff --git a/sound/soc/codecs/cs35l45.h b/sound/soc/codecs/cs35l45.h
+> index 53fe9d2b7b15..0555702eac03 100644
+> --- a/sound/soc/codecs/cs35l45.h
+> +++ b/sound/soc/codecs/cs35l45.h
+> @@ -11,7 +11,6 @@
+>  #ifndef CS35L45_H
+>  #define CS35L45_H
+>  
+> -#include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+>  
 
-We have pick_online_cpu() in utils.c, can you use that?
+cs35l45 does already make use of some functions from that header,
+and more support is in the process of being upstreamed. So this
+part should be dropped.
 
-You probably also need to move bind_to_cpu() from pmu/lib.c to utils.c
-so you can use it.
-
-cheers
+Thanks,
+Charles
