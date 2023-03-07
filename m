@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DF86AE2D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 15:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EB46AE2E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Mar 2023 15:41:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWJ565vV3z3fSt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 01:40:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWJ664YFcz3fBH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 01:41:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PlWEd2kJ;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PlWEd2kJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ao4QbwWb;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ao4QbwWb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PlWEd2kJ;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PlWEd2kJ;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ao4QbwWb;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ao4QbwWb;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWJ1F71mQz3cdG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 01:36:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWJ1S5qxQz3cdC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 01:37:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1678199807;
+	s=mimecast20190719; t=1678199818;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EP4LqydUSiQVulPj8M4fIZioGJfqcQn9EHXEOk9M9cI=;
-	b=PlWEd2kJ4bW7E3YRrg4h7O514ku91OU9huA5oldmIz0YREGhYqEecnwoPukOMztkXDyI/c
-	z9i/QemGrCZkfUNbcI6OVXJaGXm4IkVPsRA9j1XOLAs3eRMm5L643v5zsC9CfLcfQh6An0
-	MiF6KGF0BgKTaJpBH6+ojsHok2fA+J0=
+	bh=6o4aDoMnOyw6oIKqxXD/63VXzreRgu7lohjEhFx0NNg=;
+	b=Ao4QbwWbSktSybuDY39U+gpdGB++k5B8E30vf6RrJwkdeEKBYzoy6+gg4jrLkdpMblBsiE
+	uHwumVbW0WXigKK/ZeSE0zaDbXcocEP5Im2JQxVe2i+Y+td5hthJsoyHTLu19mGuhGhGov
+	xWgeNP05MEv5vxD7pj+CSFP/EFPg1/w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1678199807;
+	s=mimecast20190719; t=1678199818;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EP4LqydUSiQVulPj8M4fIZioGJfqcQn9EHXEOk9M9cI=;
-	b=PlWEd2kJ4bW7E3YRrg4h7O514ku91OU9huA5oldmIz0YREGhYqEecnwoPukOMztkXDyI/c
-	z9i/QemGrCZkfUNbcI6OVXJaGXm4IkVPsRA9j1XOLAs3eRMm5L643v5zsC9CfLcfQh6An0
-	MiF6KGF0BgKTaJpBH6+ojsHok2fA+J0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6o4aDoMnOyw6oIKqxXD/63VXzreRgu7lohjEhFx0NNg=;
+	b=Ao4QbwWbSktSybuDY39U+gpdGB++k5B8E30vf6RrJwkdeEKBYzoy6+gg4jrLkdpMblBsiE
+	uHwumVbW0WXigKK/ZeSE0zaDbXcocEP5Im2JQxVe2i+Y+td5hthJsoyHTLu19mGuhGhGov
+	xWgeNP05MEv5vxD7pj+CSFP/EFPg1/w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-609-pvm_78mlN3uZ4lMOoHRrTA-1; Tue, 07 Mar 2023 09:36:43 -0500
-X-MC-Unique: pvm_78mlN3uZ4lMOoHRrTA-1
+ us-mta-649-XW0v8MhWNSK-ZY1Om8P6aA-1; Tue, 07 Mar 2023 09:36:54 -0500
+X-MC-Unique: XW0v8MhWNSK-ZY1Om8P6aA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E2991C0419A;
-	Tue,  7 Mar 2023 14:36:40 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F8D0183B3C1;
+	Tue,  7 Mar 2023 14:36:52 +0000 (UTC)
 Received: from vschneid.remote.csb (unknown [10.33.37.13])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 7DFE840B40E4;
-	Tue,  7 Mar 2023 14:36:36 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id A2870400DFA1;
+	Tue,  7 Mar 2023 14:36:40 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -76,9 +76,9 @@ To: linux-alpha@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	x86@kernel.org
-Subject: [PATCH v5 3/7] smp: Trace IPIs sent via arch_send_call_function_ipi_mask()
-Date: Tue,  7 Mar 2023 14:35:54 +0000
-Message-Id: <20230307143558.294354-4-vschneid@redhat.com>
+Subject: [PATCH v5 4/7] irq_work: Trace self-IPIs sent via arch_irq_work_raise()
+Date: Tue,  7 Mar 2023 14:35:55 +0000
+Message-Id: <20230307143558.294354-5-vschneid@redhat.com>
 In-Reply-To: <20230307143558.294354-1-vschneid@redhat.com>
 References: <20230307143558.294354-1-vschneid@redhat.com>
 MIME-Version: 1.0
@@ -99,42 +99,55 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, Dav
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This simply wraps around the arch function and prepends it with a
-tracepoint, similar to send_call_function_single_ipi().
+IPIs sent to remote CPUs via irq_work_queue_on() are now covered by
+trace_ipi_send_cpumask(), add another instance of the tracepoint to cover
+self-IPIs.
 
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/smp.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/irq_work.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index e2ca1e2f31274..93b4386cd3096 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -160,6 +160,13 @@ void __init call_function_init(void)
- 	smpcfd_prepare_cpu(smp_processor_id());
+diff --git a/kernel/irq_work.c b/kernel/irq_work.c
+index 7afa40fe5cc43..c33e88e32a67a 100644
+--- a/kernel/irq_work.c
++++ b/kernel/irq_work.c
+@@ -22,6 +22,8 @@
+ #include <asm/processor.h>
+ #include <linux/kasan.h>
+ 
++#include <trace/events/ipi.h>
++
+ static DEFINE_PER_CPU(struct llist_head, raised_list);
+ static DEFINE_PER_CPU(struct llist_head, lazy_list);
+ static DEFINE_PER_CPU(struct task_struct *, irq_workd);
+@@ -74,6 +76,16 @@ void __weak arch_irq_work_raise(void)
+ 	 */
  }
  
-+static __always_inline void
-+send_call_function_ipi_mask(const struct cpumask *mask)
++static __always_inline void irq_work_raise(struct irq_work *work)
 +{
-+	trace_ipi_send_cpumask(mask, _RET_IP_, NULL);
-+	arch_send_call_function_ipi_mask(mask);
++	if (trace_ipi_send_cpumask_enabled() && arch_irq_work_has_interrupt())
++		trace_ipi_send_cpumask(cpumask_of(smp_processor_id()),
++				       _RET_IP_,
++				       work->func);
++
++	arch_irq_work_raise();
 +}
 +
- #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
+ /* Enqueue on current CPU, work must already be claimed and preempt disabled */
+ static void __irq_work_queue_local(struct irq_work *work)
+ {
+@@ -99,7 +111,7 @@ static void __irq_work_queue_local(struct irq_work *work)
  
- static DEFINE_STATIC_KEY_FALSE(csdlock_debug_enabled);
-@@ -970,7 +977,7 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
- 		if (nr_cpus == 1)
- 			send_call_function_single_ipi(last_cpu);
- 		else if (likely(nr_cpus > 1))
--			arch_send_call_function_ipi_mask(cfd->cpumask_ipi);
-+			send_call_function_ipi_mask(cfd->cpumask_ipi);
+ 	/* If the work is "lazy", handle it from next tick if any */
+ 	if (!lazy_work || tick_nohz_tick_stopped())
+-		arch_irq_work_raise();
++		irq_work_raise(work);
+ }
  
- 		cfd_seq_store(this_cpu_ptr(&cfd_seq_local)->pinged, this_cpu, CFD_SEQ_NOCPU, CFD_SEQ_PINGED);
- 	}
+ /* Enqueue the irq work @work on the current CPU */
 -- 
 2.31.1
 
