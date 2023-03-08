@@ -1,66 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4115F6B0CA4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 16:28:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EB86B10D8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 19:15:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWx621G4xz3ccw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 02:28:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PX0pV4bSrz3cf4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 05:14:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYmQz5nl;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Z3HWQqX4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GPeTbRNi;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GPeTbRNi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYmQz5nl;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Z3HWQqX4;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GPeTbRNi;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GPeTbRNi;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWx524QSxz3bgT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 02:27:18 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 7F4081FE47;
-	Wed,  8 Mar 2023 15:27:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1678289226; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PX0nX4XwHz3bck
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 05:14:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1678299241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZGjH5COgVdP8437ejGbqbCLhP6qbEkoX1bMEbmXg6s8=;
-	b=ZYmQz5nlHTN0xS9mbciT79+soTvuQE30ot9nFoBK+YhirN7CQ6VlyRudO0INMDTd4jsPr2
-	AUHH4gdGUc9qeSydyeYaWujgN1rPllpTHCRwTPCTcNzj3nIp4jQ6AwZXyVzUzTQcdB92XS
-	4vvChGrt0yR5g9dGPq0EXpRXmzm59zI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1678289226;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=oqVUMBgLdWuWEkEiWBuCdYbN5kgycGc8p0MkzJipZw8=;
+	b=GPeTbRNinbIQjNht+2WkSJvZjMljWhc3tvMCLobN+t7xTVl0036sptF60yhErT4VnZzL8u
+	TWY0d7l2ZGdyKKdjVmZScWt2N6mpnNhizTIsG3QiDXWVg/aJRLUUGA3T5dwphREjcUjpu0
+	OjZxZq/JVQhsNjMeEZsc4Q4970A8Org=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1678299241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZGjH5COgVdP8437ejGbqbCLhP6qbEkoX1bMEbmXg6s8=;
-	b=Z3HWQqX4PISkUhZTkMUt+ftG9Z2fQfTBHHQMt8QOmAXIJqJcWliSQR0gTzEe1vWIiUUFWW
-	mxjCE658vsJgLIAA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id DADEE2C141;
-	Wed,  8 Mar 2023 15:27:03 +0000 (UTC)
-Date: Wed, 8 Mar 2023 16:27:02 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v4 1/2] powerpc/mm: Support execute-only memory on the
- Radix MMU
-Message-ID: <20230308152702.GR19419@kitsune.suse.cz>
-References: <20220817050640.406017-1-ruscur@russell.cc>
- <166195163958.45984.15308325694886524412.b4-ty@ellerman.id.au>
+	bh=oqVUMBgLdWuWEkEiWBuCdYbN5kgycGc8p0MkzJipZw8=;
+	b=GPeTbRNinbIQjNht+2WkSJvZjMljWhc3tvMCLobN+t7xTVl0036sptF60yhErT4VnZzL8u
+	TWY0d7l2ZGdyKKdjVmZScWt2N6mpnNhizTIsG3QiDXWVg/aJRLUUGA3T5dwphREjcUjpu0
+	OjZxZq/JVQhsNjMeEZsc4Q4970A8Org=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-mEPAvL59OiOII3TuwdVfHg-1; Wed, 08 Mar 2023 13:14:00 -0500
+X-MC-Unique: mEPAvL59OiOII3TuwdVfHg-1
+Received: by mail-wm1-f69.google.com with SMTP id t1-20020a7bc3c1000000b003dfe223de49so1258059wmj.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Mar 2023 10:13:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678299239;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oqVUMBgLdWuWEkEiWBuCdYbN5kgycGc8p0MkzJipZw8=;
+        b=XXsEUWiT9Nod8/puGS1nhCsGuZTl8WL3GP0FVFODfvzBPTXxiocBInu0DEFDV2/Ieg
+         mDnvcDDQWboLWwJwlhCm7z9mrcp5LOb2Cbon58sdGS9WgvYx8ogMUeNFsRoyMqBYwFW0
+         Js05VsW7JkFiPf2J2DCiGQtEynWTvWbe0CtLqbGeVdPmKAy1Nfmzd0j8Z8OLhaNSGS+J
+         7zLWw1hDqNxzH0bkJf/Qji+12K3XFHdBwPxCo5fylL01eE1p6DgyJxxX6ECftv4AkqhJ
+         gZFps3zUussbb0BiODp3HxEb0PjmgXxQFdxuTunFCc9U7cm61zsSCzLJR4EMe4ZskTXW
+         JXpQ==
+X-Gm-Message-State: AO0yUKUWIoTiDbdwovmPQ/myRwScBSzA2BJ6H/boSjOrxrn++ay9y76Q
+	dFh2ooP7CorkCp8iX7JeGnXHI2o8xWHWmNUvnz0nUcW71DSIo71ffV8aBBVQVzvISZepZJhM4Dn
+	WKpx5OFEMEaP0cyPNTIIBW9omdg==
+X-Received: by 2002:a05:600c:1e8d:b0:3e2:669:757 with SMTP id be13-20020a05600c1e8d00b003e206690757mr16617461wmb.10.1678299238875;
+        Wed, 08 Mar 2023 10:13:58 -0800 (PST)
+X-Google-Smtp-Source: AK7set+WPqgI4NzGQjNxiuwyUBe8i9sylAhAstDgZK0opmz/cBRzcC+hzIeoGWHq+f4Os0qszuvRgQ==
+X-Received: by 2002:a05:600c:1e8d:b0:3e2:669:757 with SMTP id be13-20020a05600c1e8d00b003e206690757mr16617435wmb.10.1678299238573;
+        Wed, 08 Mar 2023 10:13:58 -0800 (PST)
+Received: from ?IPV6:2003:cb:c71b:cb00:d372:1da8:9e9e:422d? (p200300cbc71bcb00d3721da89e9e422d.dip0.t-ipconnect.de. [2003:cb:c71b:cb00:d372:1da8:9e9e:422d])
+        by smtp.gmail.com with ESMTPSA id n4-20020a05600c4f8400b003e20fa01a86sm201680wmq.13.2023.03.08.10.13.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Mar 2023 10:13:58 -0800 (PST)
+Message-ID: <a5c9b925-57ac-eeab-6258-0ff9fed16af7@redhat.com>
+Date: Wed, 8 Mar 2023 19:13:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <166195163958.45984.15308325694886524412.b4-ty@ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] mm: add PTE pointer parameter to
+ flush_tlb_fix_spurious_fault()
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20230306161548.661740-1-gerald.schaefer@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230306161548.661740-1-gerald.schaefer@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,56 +105,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com, linux-hardening@vger.kernel.org, Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org, nicholas@linux.ibm.com
+Cc: linux-x86 <x86@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips <linux-mips@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, linux-power <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Wed, Aug 31, 2022 at 11:13:59PM +1000, Michael Ellerman wrote:
-> On Wed, 17 Aug 2022 15:06:39 +1000, Russell Currey wrote:
-> > Add support for execute-only memory (XOM) for the Radix MMU by using an
-> > execute-only mapping, as opposed to the RX mapping used by powerpc's
-> > other MMUs.
-> > 
-> > The Hash MMU already supports XOM through the execute-only pkey,
-> > which is a separate mechanism shared with x86.  A PROT_EXEC-only mapping
-> > will map to RX, and then the pkey will be applied on top of it.
-> > 
-> > [...]
+On 06.03.23 17:15, Gerald Schaefer wrote:
+> s390 can do more fine-grained handling of spurious TLB protection faults,
+> when there also is the PTE pointer available.
 > 
-> Applied to powerpc/next.
+> Therefore, pass on the PTE pointer to flush_tlb_fix_spurious_fault() as
+> an additional parameter.
 > 
-> [1/2] powerpc/mm: Support execute-only memory on the Radix MMU
->       https://git.kernel.org/powerpc/c/395cac7752b905318ae454a8b859d4c190485510
+> This will add no functional change to other architectures, but those with
+> private flush_tlb_fix_spurious_fault() implementations need to be made
+> aware of the new parameter.
+> 
+> Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> ---
 
-This breaks libaio tests (on POWER9 hash PowerVM):
-https://pagure.io/libaio/blob/master/f/harness/cases/5.t#_43
+Acked-by: David Hildenbrand <david@redhat.com>
 
-cases/5.p
-expect   512: (w), res =   512 [Success]
-expect   512: (r), res =   512 [Success]
-expect   512: (r), res =   512 [Success]
-expect   512: (w), res =   512 [Success]
-expect   512: (w), res =   512 [Success]
-expect   -14: (r), res =   -14 [Bad address]
-expect   512: (r), res =   512 [Success]
-expect   512: (w), res =   512 [Success]
-test cases/5.t completed PASSED.
+-- 
+Thanks,
 
-cases/5.p
-expect   512: (w), res =   512 [Success]
-expect   512: (r), res =   512 [Success]
-expect   512: (r), res =   512 [Success]
-expect   512: (w), res =   512 [Success]
-expect   512: (w), res =   512 [Success]
-expect   -14: (r), res =   -14 [Bad address]
-expect   512: (r), res =   512 [Success]
-expect   -14: (w), res =   512 [Success] -- FAILED
-test cases/5.t completed FAILED.
+David / dhildenb
 
-Can you have a look if that test assumption is OK?
-
-Thanks
-
-Michal
