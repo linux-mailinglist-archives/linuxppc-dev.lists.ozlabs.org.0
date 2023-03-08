@@ -1,52 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EA86AFF02
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 07:38:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755CA6B01FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 09:49:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PWjLL727fz3f5N
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 17:38:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PWmFy2JW0z3cLx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Mar 2023 19:49:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=pnTk4/Gq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=fWi10K1W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=fWi10K1W;
+	dkim-atps=neutral
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWjJS2dDhz3bhY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 17:36:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=pnTk4/Gq;
-	dkim-atps=neutral
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4PWjJS25Wtz4xFM; Wed,  8 Mar 2023 17:36:24 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
-	id 4PWjJS1vqHz4xDq; Wed,  8 Mar 2023 17:36:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1678257384;
-	bh=n9I012yV3RIBQ7Uy0VNcPdIQyI03gj8SpBBjx68o6ao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pnTk4/Gqg0WAShNPxeYrCXCYpeq+fKdm//Ac7dwpWfWz+/Qr90l23A9uynefMUDvF
-	 qEN7V4no8QJPvJsUzjJOHY/xIr2oiKwPwoyzoPEZ7bbO9IbEN9ZXeRFhHIFpQxMNkX
-	 wBO45N5RcIDPa7ix4qXG9hl5ErvwCY+JTx3YvP59/UQDVNpl2Q1MADWbRBniCFeQMa
-	 mEUdFZKyDBrTOIyUmDlbPImDebYOxi/lv0zHb4Pgd2UPPy8PCxOGKqusvivSWLVAVg
-	 f7t34G4Lrkoo6NAC6gDalAaFfSImbEFmyYPYxpur82cP0g9+ZdNZ14bzbIpZUtDIOc
-	 UoOwjQH9nIYFA==
-Date: Wed, 8 Mar 2023 17:36:11 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: linuxppc-dev@ozlabs.org, kvm@vger.kernel.org
-Subject: [PATCH 3/3] powerpc/kvm: Enable prefixed instructions for HV KVM and
- disable for PR KVM
-Message-ID: <ZAgs25dCmLrVkBdU@cleo>
-References: <ZAgsR04beDcARCiw@cleo>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWmF05cClz30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Mar 2023 19:48:34 +1100 (AEDT)
+Received: by mail-ed1-x534.google.com with SMTP id u9so62748544edd.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Mar 2023 00:48:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678265307;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1IW/RS0aLSSxBgB22OqTCxBSr+YdxHtk+0LFWe36vG8=;
+        b=fWi10K1WTyMK+4gDA9j0bPprPuyGTBeu+XpocgR0cj+w9BYHj8UpNgU5t7v3PylQf4
+         wY74bZ0VgPsmZ8GVnLZyawG4vExQk4VcpD8Sy0ZZgjLsoHTB/p4JGasSRwFQVP8ViAYf
+         WHpwv0Mg5L+yjUF3WBMF54f2a2kM7teDdMKvcEZ8x1/hxlvMOJa3ayKvTtSdw6XnOinN
+         42qPZITrCQ9SggMQB/mIKJWFKZbdt8OCZwawYh2mDlhPjzhsD2B27DiZmPzywHUBFkmE
+         JZqgDm/dydu/Ju6adDOlnoDIvWPGAZEA9meFjPpRMZWO92uiHM2/um7Ka996PE42nENe
+         VcMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678265307;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1IW/RS0aLSSxBgB22OqTCxBSr+YdxHtk+0LFWe36vG8=;
+        b=t+cB0Yi8WunIYm80Lm4UcT+gv7H8bpVJJw/JRqU5f+gdYrbTyk5nJTDNuHl8Z12O/f
+         zOyJ4aRLqtBrIEjNPeUXGySzrKjh2iaNVTDF0JIRc9Okt2zuSfFU0sKakFOTnNM8sYzJ
+         5EcidXUsWcRAlIj2NclSJ/wVOaU1PKuE+bJ+5kR0FMKIQZmG4xDJTShDUTYxfQ9JYX8k
+         QERiAUfDDSbEwDZVxoEJNF7WGe8rySSEhcnxuyxaMoRw3m2uBaZ3B3/BU80PCjVNMnbk
+         c/FrUumG0sz7JrTpPJAo7iPV4+0+k36gH1GCbUUJjjuwy25Lwq6Ilt7kHA4zTDw/nRb7
+         rY9w==
+X-Gm-Message-State: AO0yUKU+06LN7lNMOtjPncZGj4HtEZhmJbgL+B5bRhPziRylslqsF34A
+	Zae24i8tqDzWMqE49NFuxCkneA==
+X-Google-Smtp-Source: AK7set+/a5vYatHyXTm+A6Q49AO+MfL5eXvY6zaULzOwyp5e47XvyDA35K8uivkmDjkP8sa9O9411w==
+X-Received: by 2002:a17:906:1846:b0:8b8:c06e:52d8 with SMTP id w6-20020a170906184600b008b8c06e52d8mr16121027eje.36.1678265306937;
+        Wed, 08 Mar 2023 00:48:26 -0800 (PST)
+Received: from ?IPV6:2a02:810d:15c0:828:bba:fbfa:8aec:a133? ([2a02:810d:15c0:828:bba:fbfa:8aec:a133])
+        by smtp.gmail.com with ESMTPSA id a4-20020a17090682c400b008d4b6f086c9sm7141528ejy.185.2023.03.08.00.48.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Mar 2023 00:48:26 -0800 (PST)
+Message-ID: <0013ce4d-d4a8-2a82-c72b-042dd4d9779c@linaro.org>
+Date: Wed, 8 Mar 2023 09:48:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZAgsR04beDcARCiw@cleo>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v10 03/13] dt-bindings: Convert gpio-mmio to yaml
+To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, linux-phy@lists.infradead.org,
+ Niall Leonard <nl250060@ncr.com>
+References: <20230306191535.1917656-1-sean.anderson@seco.com>
+ <20230306191535.1917656-4-sean.anderson@seco.com>
+ <4c039e53-e3ca-29d7-e5ea-f24e385d28b0@linaro.org>
+ <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,92 +86,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, kvm-ppc@vger.kernel.org, Nick Piggin <npiggin@gmail.com>
+Cc: devicetree@vger.kernel.org, =?UTF-8?Q?Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Linus Walleij <linus.walleij@linaro.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we can read prefixed instructions from a HV KVM guest and
-emulate prefixed load/store instructions to emulated MMIO locations,
-we can add HFSCR_PREFIXED into the set of bits that are set in the
-HFSCR for a HV KVM guest on POWER10, allowing the guest to use
-prefixed instructions.
+On 07/03/2023 16:35, Sean Anderson wrote:
+> Hi Krzysztof,
+> 
+> On 3/7/23 03:42, Krzysztof Kozlowski wrote:
+>> On 06/03/2023 20:15, Sean Anderson wrote:
+>>> This is a generic binding for simple MMIO GPIO controllers. Although we
+>>> have a single driver for these controllers, they were previously spread
+>>> over several files. Consolidate them. The register descriptions are
+>>> adapted from the comments in the source. There is no set order for the
+>>> registers, so I have not specified one.
+>>>
+>>> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+>>> ---
+>>>
+>>> Changes in v10:
+>>> - New
+>>>
+>>>  .../bindings/gpio/brcm,bcm6345-gpio.yaml      |  16 +--
+>>>  .../devicetree/bindings/gpio/gpio-mmio.yaml   | 136 ++++++++++++++++++
+>>>  .../bindings/gpio/ni,169445-nand-gpio.txt     |  38 -----
+>>>  .../devicetree/bindings/gpio/wd,mbl-gpio.txt  |  38 -----
+>>>  4 files changed, 137 insertions(+), 91 deletions(-)
+>>>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+>>>  delete mode 100644 Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+>>>  delete mode 100644 Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+>>
+>> https://lore.kernel.org/all/20230126-gpio-mmio-fix-v2-1-38397aace340@ncr.com/
+> 
+> Thanks for linking to that.
+> 
+> I believe this patch should be applied instead of that one because
+> 
+> - It documents all the registers, which were previously only documented
+>   in the driver
+> - It handles the endianness properties.
+> - It consolidates the various descriptions of this binding into one
+>   schema.
 
-PR KVM has not yet been extended to handle prefixed instructions in
-all situations where we might need to emulate them, so prevent the
-guest from enabling prefixed instructions in the FSCR for now.
+Sure, sounds reasonable. You can just quickly check if my other comments
+apply here as well (but seems not):
+https://lore.kernel.org/all/4df3ec7a-e4af-89bc-9eda-21150395a935@linaro.org/
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
----
- arch/powerpc/include/asm/reg.h       | 1 +
- arch/powerpc/kvm/book3s_hv.c         | 9 +++++++--
- arch/powerpc/kvm/book3s_pr.c         | 2 ++
- arch/powerpc/kvm/book3s_rmhandlers.S | 1 +
- 4 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1e8b2e04e626..7434a3300d84 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -417,6 +417,7 @@
- #define   FSCR_DSCR	__MASK(FSCR_DSCR_LG)
- #define   FSCR_INTR_CAUSE (ASM_CONST(0xFF) << 56)	/* interrupt cause */
- #define SPRN_HFSCR	0xbe	/* HV=1 Facility Status & Control Register */
-+#define   HFSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
- #define   HFSCR_MSGP	__MASK(FSCR_MSGP_LG)
- #define   HFSCR_TAR	__MASK(FSCR_TAR_LG)
- #define   HFSCR_EBB	__MASK(FSCR_EBB_LG)
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 0d17f4443021..c5b24ab90fb2 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2921,13 +2921,18 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 
- 	/*
- 	 * Set the default HFSCR for the guest from the host value.
--	 * This value is only used on POWER9.
--	 * On POWER9, we want to virtualize the doorbell facility, so we
-+	 * This value is only used on POWER9 and later.
-+	 * On >= POWER9, we want to virtualize the doorbell facility, so we
- 	 * don't set the HFSCR_MSGP bit, and that causes those instructions
- 	 * to trap and then we emulate them.
- 	 */
- 	vcpu->arch.hfscr = HFSCR_TAR | HFSCR_EBB | HFSCR_PM | HFSCR_BHRB |
- 		HFSCR_DSCR | HFSCR_VECVSX | HFSCR_FP;
-+
-+	/* On POWER10 and later, allow prefixed instructions */
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		vcpu->arch.hfscr |= HFSCR_PREFIX;
-+
- 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
- 		vcpu->arch.hfscr &= mfspr(SPRN_HFSCR);
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index 940ab010a471..fa010d92a8d2 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -1044,6 +1044,8 @@ void kvmppc_set_fscr(struct kvm_vcpu *vcpu, u64 fscr)
- {
- 	if (fscr & FSCR_SCV)
- 		fscr &= ~FSCR_SCV; /* SCV must not be enabled */
-+	/* Prohibit prefixed instructions for now */
-+	fscr &= ~FSCR_PREFIX;
- 	if ((vcpu->arch.fscr & FSCR_TAR) && !(fscr & FSCR_TAR)) {
- 		/* TAR got dropped, drop it in shadow too */
- 		kvmppc_giveup_fac(vcpu, FSCR_TAR_LG);
-diff --git a/arch/powerpc/kvm/book3s_rmhandlers.S b/arch/powerpc/kvm/book3s_rmhandlers.S
-index 03886ca24498..0a557ffca9fe 100644
---- a/arch/powerpc/kvm/book3s_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_rmhandlers.S
-@@ -123,6 +123,7 @@ INTERRUPT_TRAMPOLINE	BOOK3S_INTERRUPT_ALTIVEC
- kvmppc_handler_skip_ins:
- 
- 	/* Patch the IP to the next instruction */
-+	/* Note that prefixed instructions are disabled in PR KVM for now */
- 	mfsrr0	r12
- 	addi	r12, r12, 4
- 	mtsrr0	r12
--- 
-2.37.3
+Best regards,
+Krzysztof
 
