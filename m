@@ -1,79 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E956B16C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 00:44:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654006B16C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 00:45:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PX86n6Bb3z3cd4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 10:44:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PX87p1b4Hz3cGr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 10:45:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RUMNjnJk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=lX1A4/ZM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=devnull+arbab.linux.ibm.com@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=maskray@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RUMNjnJk;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=lX1A4/ZM;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PWzl80LKFz3bgT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 04:26:59 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id F27F9B81C13;
-	Wed,  8 Mar 2023 17:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A302CC433EF;
-	Wed,  8 Mar 2023 17:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678296414;
-	bh=9bFZbeCJ+IXMUICe8k7A5Vm/02IJPU1Wkc3m6M+dmo0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=RUMNjnJkYV47zwUNIX3Z+2RZLXdp69ngug4qlg4yLr3MILgmSTMc5P6xnBNbK+LZx
-	 n35RUs2XF6bJpLd27LK42+YREh/H72q279INZYgGzMsb0OGktN1cdu2RLqMEW4pl/K
-	 01MQQMy8zgY9f5awIfcx6UPY1Qe7jvSQ2+0O++ZHlIX6aTkBpbSKz2mj0BeCtjiSYu
-	 ZHVCO6TenFieKU1wiR7SHsBPSo3Fi0/xC9RuSNmwZOW6g0n8CkGsQXiwdz4ftBzpqT
-	 jneaDzX7xE1BHjMZrQGeYULMTNo+wqBulylTgoJ7VY0Qyfb8SFBGszkz6wwUJvtxHE
-	 Iwh1wcm77ObmA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 826D9C6FD1C;
-	Wed,  8 Mar 2023 17:26:54 +0000 (UTC)
-From: Reza Arbab via B4 Relay <devnull+arbab.linux.ibm.com@kernel.org>
-Date: Wed, 08 Mar 2023 11:26:47 -0600
-Subject: [PATCH] powerpc: Remove TM XER[SO] bug workaround on POWER9 v2.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PX6fM4p1jz3bWq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 09:38:18 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id h17-20020a17090aea9100b0023739b10792so354276pjz.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Mar 2023 14:38:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1678315095;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FAcwnbK13i71pathy++AZi84F/RpABdU81RViXCXju0=;
+        b=lX1A4/ZMbFYTJckZNlZKP4+iYQYa/WKr9Er1qGz6wqzmhIs7eVmgPDJ7X0XHx8WzKC
+         U5r59/GAVGTnah9WB/78zy4QJbxpyIjr3nQ++bh/ZhgdGxQBK9CDf1flBHqrDjxyJyYX
+         PI7ebuIlQ+Wx7ijTcb7h+AhEASCB8DTFQVD9xSPW1T/ZU3EAMCdfoHkOr5S9+nCzK4Qb
+         VeoG48jwOtxJFwxfxabZEz9mpID7Ce9NAvHpz3hoDk3cp7mTutDmtYSKfJCdMEMKm76/
+         d9jJTkwEYpN0gtr3E2HFhQO4YgBAGwj0ahoKmEl5L5s7CIxF4fk2VyYKlmCHuHJ7WTw0
+         Udcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678315095;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FAcwnbK13i71pathy++AZi84F/RpABdU81RViXCXju0=;
+        b=4RmtBp7nxLVfRdQZPPYZT8s8yV9clu0UsBwTGXOS37c5mb+4/q8HQT9nWl7MVbK8q9
+         Jkz9uLnQTHYUFR9481eoc3Y3XLahnLb3QY7JmMZ407lL9pkHKlcrp9aecTli22S8e/iQ
+         oa0cpErUDGeXANYskeVPJ7+Qc1YqaAc5RKhva75kuNNZPiD6QhttNKB3fT77QSViXZPb
+         i46iBawj4CTnaJOqkq5f+aRjwqj2288WcJeM0qKiCx0mK2r/uh/tBu4j23U3WQO19Qq+
+         s7nj9MtWt0G3K+NpDCNiWj61zqXLicEuWTbuUa+UVeVRrJDiGM5tgY2qUGVwzz5v9q8t
+         ZUqQ==
+X-Gm-Message-State: AO0yUKWfPHxzs+xk9eSzKSEd//ZDRzatv3wJp4o5AFu5bUjOk/dW3UzY
+	jZplYqcAQL6SDiXtSPHXfIRPgQRQYzQH0tlHHHJRMw==
+X-Google-Smtp-Source: AK7set9oey5j91nnoukjyb6gWQhNSHcKmBdVBDoNIyvJxgia8/lkIzlxGC+qCvZlvtCeueomGcgSDz8v9HjesOOWOh0=
+X-Received: by 2002:a17:903:2c1:b0:199:1aba:b1d7 with SMTP id
+ s1-20020a17090302c100b001991abab1d7mr7959879plk.5.1678315095153; Wed, 08 Mar
+ 2023 14:38:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id:  <20230308-cpu_ftr_p9_tm_xer_so_bug-v1-1-75e4c53c026a@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAFbFCGQC/x2NQQqDMBBFryKzbmBU2mqvUmRI0lGzMIaZWATx7
- o1dPj7vvwOUJbDCqzpA+Bs0rLFAfavAzzZObMKnMDTYtNhiZ3zaaMxCqae80M5CupLbJsP+3jl
- E2z/rBxTdWWXjxEY/XweL1cxyDUl4DPu/+R7O8weAvdfkgwAAAA==
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1833; i=arbab@linux.ibm.com;
- h=from:subject:message-id; bh=YY0g8Df5qjX6rJn6WmSARM9BAtsZyWTzfiGLnFG1Vnw=;
- b=owEBzQIy/ZANAwAKAdAlkqhpa2bdAcsmYgBkCMVdrTHkwCd44WVG04LfAi0LQWaygx2ucP4Ga
- PuzsAjQntOJApMEAAEKAH0WIQT1XwGdMQOjW/syvwXQJZKoaWtm3QUCZAjFXV8UgAAAAAAuAChp
- c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0RjU1RjAxOUQzMTA
- zQTM1QkZCMzJCRjA1RDAyNTkyQTg2OTZCNjZERAAKCRDQJZKoaWtm3W3QD/9/GDY4/Lr5gHTJmi
- M+RRu7NlGYQhLGUtK+Z1U4BQ7W4b5p/qJtDZw7mVoI9TF38dvhLYhS14QJUr+NnQL0yh/kcVbSY
- pF64ucQXT5rnd0M32YHJKv5n/Y6CltBzjKfBvS0SYj8rmLWbI1e18hz9nA+5r9kD7xadd8A4fxL
- slgzM+aEv8fLm/2Xat7AYvAhg7qiwTSo3LLabE6tF+p6qCeQEjA6vNhIxX3CmvTkYa3q6snzx9x
- aMIALxV26WCu03swEI+8lAeWJaM+LXBMXCh6/jJNOMb8pR8K8qWl2H7HrMc0pB2gW9WmlQkYfJe
- jBpkuDIswQu4br0D5Bo4jw73uU8GbQHT3V7g7ehG2CKBcIcQvKePooZu1NnWUUog8OV7PIjsH4v
- fgRzG5kwnzwlY6kl4ZMBzXQa8ThE1KryiDnAVlo1dJ1tYiCx+jH6hpbkSODlDVj+UkE6EmrTZ0b
- GtjYDe9140ZDGzZzl/PoeS1JcVmUpeTsI3mxAfaBnKA1xDGyAVRB3h3kO6aRV6c9r4ssL2E6BOQ
- yL62JNX8nP3W7Yy5fGXdIOrI0yYBMqzhyPar6BgImJ0TnAA8/Vf8Da01EspV91o2BGQaUFe2+Hx
- rG1kaQS+weagoVHFE7U4xH6/AZ3J6Q2t8sGn9vvNtEqB2Fp15wpg/8Za6bjfMfaYMW+Q==
-X-Developer-Key: i=arbab@linux.ibm.com; a=openpgp;
- fpr=F55F019D3103A35BFB32BF05D02592A8696B66DD
-X-Endpoint-Received:  by B4 Relay for arbab@linux.ibm.com/default with auth_id=37
-X-Original-From: Reza Arbab <arbab@linux.ibm.com>
+References: <20221221235147.45lkqmosndritfpe@google.com> <mhng-17d41c33-7f33-4a1c-8af2-ae7d07134e8c@palmer-ri-x1c9>
+ <CAFP8O3J1Pn+_BMKXtxB+avtYyZ+bBKffHfNOXoJPMD5QHv5obQ@mail.gmail.com>
+In-Reply-To: <CAFP8O3J1Pn+_BMKXtxB+avtYyZ+bBKffHfNOXoJPMD5QHv5obQ@mail.gmail.com>
+From: Fangrui Song <maskray@google.com>
+Date: Wed, 8 Mar 2023 14:38:03 -0800
+Message-ID: <CAFP8O3+KXk3NRev6c25kVWCFv8Hg3bdAa6VZVd2wFKc3baHg5w@mail.gmail.com>
+Subject: Re: [PATCH v2] vdso: Improve cmd_vdso_check to check all dynamic relocations
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: multipart/alternative; boundary="00000000000011c46d05f66b2f9c"
 X-Mailman-Approved-At: Thu, 09 Mar 2023 10:43:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,54 +75,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: arbab@linux.ibm.com
-Cc: Reza Arbab <arbab@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-csky@vger.kernel.org, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Reza Arbab <arbab@linux.ibm.com>
+--00000000000011c46d05f66b2f9c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When creating the CPU feature bits for DD2.3, I should not have carried
-forward CPU_FTR_P9_TM_XER_SO_BUG. That bug is fixed in DD2.3, so remove
-the flag.
+On Fri, Jan 27, 2023 at 3:19=E2=80=AFPM Fangrui Song <maskray@google.com> w=
+rote:
 
-Fixes: 26b78c81e84c ("powerpc: Enable the DAWR on POWER9 DD2.3 and above")
-Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
----
- arch/powerpc/include/asm/cputable.h | 1 -
- arch/powerpc/kernel/dt_cpu_ftrs.c   | 1 -
- 2 files changed, 2 deletions(-)
+> On Thu, Dec 29, 2022 at 11:22 AM Palmer Dabbelt <palmer@dabbelt.com>
+> wrote:
+> >
+> > On Wed, 21 Dec 2022 15:51:47 PST (-0800), maskray@google.com wrote:
+> > > The actual intention is that no dynamic relocation exists. However,
+> some
+> > > GNU ld ports produce unneeded R_*_NONE. (If a port fails to determine
+> > > the exact .rel[a].dyn size, the trailing zeros become R_*_NONE
+> > > relocations. E.g. ld's powerpc port recently fixed
+> > > https://sourceware.org/bugzilla/show_bug.cgi?id=3D29540) R_*_NONE are
+> > > generally no-op in the dynamic loaders. So just ignore them.
+> > >
+> > > With the change, we can remove ARCH_REL_TYPE_ABS. ARCH_REL_TYPE_ABS i=
+s
+> a
+> > > bit misnomer as ports may check RELAVETIVE/GLOB_DAT/JUMP_SLOT which a=
+re
+> > > not called "absolute relocations". (The patch is motivated by the arm=
+64
+> > > port missing R_AARCH64_RELATIVE.)
+> > >
+> > > Signed-off-by: Fangrui Song <maskray@google.com>
+> > > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > > ---
+> > > Change from v1:
+> > > * rebase after 8ac3b5cd3e0521d92f9755e90d140382fc292510 (lib/vdso: us=
+e
+> "grep -E" instead of "egrep")
+> > > * change the commit message to mention an example GNU ld bug; no
+> longer say the patch fixes a deprecated egrep use
+> > > ---
+> > >   arch/arm/vdso/Makefile            |  3 ---
+> > >   arch/arm64/kernel/vdso/Makefile   |  3 ---
+> > >   arch/arm64/kernel/vdso32/Makefile |  3 ---
+> > >   arch/csky/kernel/vdso/Makefile    |  3 ---
+> > >   arch/loongarch/vdso/Makefile      |  3 ---
+> > >   arch/mips/vdso/Makefile           |  3 ---
+> > >   arch/powerpc/kernel/vdso/Makefile |  1 -
+> > >   arch/riscv/kernel/vdso/Makefile   |  3 ---
+> > >   arch/s390/kernel/vdso32/Makefile  |  2 --
+> > >   arch/s390/kernel/vdso64/Makefile  |  2 --
+> > >   arch/x86/entry/vdso/Makefile      |  4 ----
+> > >   lib/vdso/Makefile                 | 13 ++++---------
+> > >   12 files changed, 4 insertions(+), 39 deletions(-)
+> >
+> > [snip]
+> >
+> > > diff --git a/arch/riscv/kernel/vdso/Makefile
+> b/arch/riscv/kernel/vdso/Makefile
+> > > index 06e6b27f3bcc..d85c37e11b21 100644
+> > > --- a/arch/riscv/kernel/vdso/Makefile
+> > > +++ b/arch/riscv/kernel/vdso/Makefile
+> > > @@ -1,9 +1,6 @@
+> > >   # SPDX-License-Identifier: GPL-2.0-only
+> > >   # Copied from arch/tile/kernel/vdso/Makefile
+> > >
+> > > -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined
+> before
+> > > -# the inclusion of generic Makefile.
+> > > -ARCH_REL_TYPE_ABS :=3D R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
+> > >   include $(srctree)/lib/vdso/Makefile
+> > >   # Symbols present in the vdso
+> > >   vdso-syms  =3D rt_sigreturn
+> >
+> > Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
+> >
+> > Thanks!
+>
+> Looks like this patch hasn't been picked yet...
+>
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index 757dbded11dc..5dc6906498ef 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -439,7 +439,6 @@ static inline void cpu_feature_keys_init(void) { }
- 			       CPU_FTR_P9_TM_XER_SO_BUG)
- #define CPU_FTRS_POWER9_DD2_3 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
- 			       CPU_FTR_P9_TM_HV_ASSIST | \
--			       CPU_FTR_P9_TM_XER_SO_BUG | \
- 			       CPU_FTR_DAWR)
- #define CPU_FTRS_POWER10 (CPU_FTR_LWSYNC | \
- 	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | CPU_FTR_ARCH_206 |\
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index c3fb9fdf5bd7..afcdbeed8b44 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -782,7 +782,6 @@ static __init void cpufeatures_cpu_quirks(void)
- 		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
- 	} else if ((version & 0xffffefff) == 0x004e0203) {
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
--		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
- 	} else if ((version & 0xffff0000) == 0x004e0000) {
- 		/* DD2.1 and up have DD2_1 */
+Ping:)
 
----
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-change-id: 20230308-cpu_ftr_p9_tm_xer_so_bug-ec58b00a9716
 
-Best regards,
--- 
-Reza Arbab
+--=20
+=E5=AE=8B=E6=96=B9=E7=9D=BF
 
+--00000000000011c46d05f66b2f9c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">On Fri, Jan 27, 2023 at 3:19=E2=80=AFPM F=
+angrui Song &lt;<a href=3D"mailto:maskray@google.com">maskray@google.com</a=
+>&gt; wrote:<br></div><div class=3D"gmail_quote"><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">On Thu, Dec 29, 2022 at 11:22 AM Palmer Dabbelt &lt=
+;<a href=3D"mailto:palmer@dabbelt.com" target=3D"_blank">palmer@dabbelt.com=
+</a>&gt; wrote:<br>
+&gt;<br>
+&gt; On Wed, 21 Dec 2022 15:51:47 PST (-0800), <a href=3D"mailto:maskray@go=
+ogle.com" target=3D"_blank">maskray@google.com</a> wrote:<br>
+&gt; &gt; The actual intention is that no dynamic relocation exists. Howeve=
+r, some<br>
+&gt; &gt; GNU ld ports produce unneeded R_*_NONE. (If a port fails to deter=
+mine<br>
+&gt; &gt; the exact .rel[a].dyn size, the trailing zeros become R_*_NONE<br=
+>
+&gt; &gt; relocations. E.g. ld&#39;s powerpc port recently fixed<br>
+&gt; &gt; <a href=3D"https://sourceware.org/bugzilla/show_bug.cgi?id=3D2954=
+0" rel=3D"noreferrer" target=3D"_blank">https://sourceware.org/bugzilla/sho=
+w_bug.cgi?id=3D29540</a>) R_*_NONE are<br>
+&gt; &gt; generally no-op in the dynamic loaders. So just ignore them.<br>
+&gt; &gt;<br>
+&gt; &gt; With the change, we can remove ARCH_REL_TYPE_ABS. ARCH_REL_TYPE_A=
+BS is a<br>
+&gt; &gt; bit misnomer as ports may check RELAVETIVE/GLOB_DAT/JUMP_SLOT whi=
+ch are<br>
+&gt; &gt; not called &quot;absolute relocations&quot;. (The patch is motiva=
+ted by the arm64<br>
+&gt; &gt; port missing R_AARCH64_RELATIVE.)<br>
+&gt; &gt;<br>
+&gt; &gt; Signed-off-by: Fangrui Song &lt;<a href=3D"mailto:maskray@google.=
+com" target=3D"_blank">maskray@google.com</a>&gt;<br>
+&gt; &gt; Reviewed-by: Christophe Leroy &lt;<a href=3D"mailto:christophe.le=
+roy@csgroup.eu" target=3D"_blank">christophe.leroy@csgroup.eu</a>&gt;<br>
+&gt; &gt; ---<br>
+&gt; &gt; Change from v1:<br>
+&gt; &gt; * rebase after 8ac3b5cd3e0521d92f9755e90d140382fc292510 (lib/vdso=
+: use &quot;grep -E&quot; instead of &quot;egrep&quot;)<br>
+&gt; &gt; * change the commit message to mention an example GNU ld bug; no =
+longer say the patch fixes a deprecated egrep use<br>
+&gt; &gt; ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/arm/vdso/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 |=C2=A0 3 ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/arm64/kernel/vdso/Makefile=C2=A0 =C2=A0|=C2=A0 3=
+ ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/arm64/kernel/vdso32/Makefile |=C2=A0 3 ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/csky/kernel/vdso/Makefile=C2=A0 =C2=A0 |=C2=A0 3=
+ ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/loongarch/vdso/Makefile=C2=A0 =C2=A0 =C2=A0 |=C2=
+=A0 3 ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/mips/vdso/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 3 ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/powerpc/kernel/vdso/Makefile |=C2=A0 1 -<br>
+&gt; &gt;=C2=A0 =C2=A0arch/riscv/kernel/vdso/Makefile=C2=A0 =C2=A0|=C2=A0 3=
+ ---<br>
+&gt; &gt;=C2=A0 =C2=A0arch/s390/kernel/vdso32/Makefile=C2=A0 |=C2=A0 2 --<b=
+r>
+&gt; &gt;=C2=A0 =C2=A0arch/s390/kernel/vdso64/Makefile=C2=A0 |=C2=A0 2 --<b=
+r>
+&gt; &gt;=C2=A0 =C2=A0arch/x86/entry/vdso/Makefile=C2=A0 =C2=A0 =C2=A0 |=C2=
+=A0 4 ----<br>
+&gt; &gt;=C2=A0 =C2=A0lib/vdso/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0| 13 ++++---------<br>
+&gt; &gt;=C2=A0 =C2=A012 files changed, 4 insertions(+), 39 deletions(-)<br=
+>
+&gt;<br>
+&gt; [snip]<br>
+&gt;<br>
+&gt; &gt; diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/=
+vdso/Makefile<br>
+&gt; &gt; index 06e6b27f3bcc..d85c37e11b21 100644<br>
+&gt; &gt; --- a/arch/riscv/kernel/vdso/Makefile<br>
+&gt; &gt; +++ b/arch/riscv/kernel/vdso/Makefile<br>
+&gt; &gt; @@ -1,9 +1,6 @@<br>
+&gt; &gt;=C2=A0 =C2=A0# SPDX-License-Identifier: GPL-2.0-only<br>
+&gt; &gt;=C2=A0 =C2=A0# Copied from arch/tile/kernel/vdso/Makefile<br>
+&gt; &gt;<br>
+&gt; &gt; -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defi=
+ned before<br>
+&gt; &gt; -# the inclusion of generic Makefile.<br>
+&gt; &gt; -ARCH_REL_TYPE_ABS :=3D R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT<b=
+r>
+&gt; &gt;=C2=A0 =C2=A0include $(srctree)/lib/vdso/Makefile<br>
+&gt; &gt;=C2=A0 =C2=A0# Symbols present in the vdso<br>
+&gt; &gt;=C2=A0 =C2=A0vdso-syms=C2=A0 =3D rt_sigreturn<br>
+&gt;<br>
+&gt; Acked-by: Palmer Dabbelt &lt;<a href=3D"mailto:palmer@rivosinc.com" ta=
+rget=3D"_blank">palmer@rivosinc.com</a>&gt; # RISC-V<br>
+&gt;<br>
+&gt; Thanks!<br>
+<br>
+Looks like this patch hasn&#39;t been picked yet...<br>
+</blockquote></div><br clear=3D"all"><div>Ping:)</div><div><br></div><div><=
+br></div><span class=3D"gmail_signature_prefix">-- </span><br><div dir=3D"l=
+tr" class=3D"gmail_signature"><div dir=3D"ltr">=E5=AE=8B=E6=96=B9=E7=9D=BF<=
+/div></div></div>
+
+--00000000000011c46d05f66b2f9c--
