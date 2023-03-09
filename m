@@ -1,71 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3614D6B1FB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 10:17:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F5E6B21B3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 11:42:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PXNqt0lPmz3cLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 20:17:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PXQjL0YZDz3cMh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 21:41:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l62t2ivl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ABfIku5n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l62t2ivl;
-	dkim-atps=neutral
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXNpm0b7vz3cd1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 20:16:31 +1100 (AEDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-53d277c1834so23072237b3.10
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Mar 2023 01:16:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678353388;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4oOjO1iZqHHqppZpeEVZpEKQdPcmPUQRfadcX5/5t0=;
-        b=l62t2ivlUxilMsIapwCQyovxHKcjFK0D4LIQAKwW2mD7FsZY4aDwDtSxJ7m/K8NmKU
-         AJdQyIoT9ZWXji9+bD5ZurYVNpOiHzkB+kyAceWN/C+vqyHBsqWxFBIz0gIcXEU26XYP
-         bGq+xR7SNxzStcFc98oMENNMTFUqLRv00f4ca3YRP9hrFQ5iiAGTyWbVDmTPcBjDcaLh
-         IlfoxCyIw1UDxoTylhClVL/Kg3AcCk5cE9JmnflkYohAdEeI3uKYp9tbvftu+zZg/O4l
-         GFOJ7buxjOQ4QXp7E5LpS0pj8Nl26YP6QkXVQFvGPTiT3bw4KmkTs3rpR4wxRJBlc8UZ
-         KlQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678353388;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4oOjO1iZqHHqppZpeEVZpEKQdPcmPUQRfadcX5/5t0=;
-        b=LDhdgLEzOSZhQd3bmF1F0SNIOQVL+QONh9/H/wseCUXSgR3CGZuXfv+lpZKJakA2Ym
-         wdZZV7Ama9ii6q+JAd37RiP4p5lS6dhfRBXBm6kysoDDlALbCL0yGMWbLJPgaALj8BJH
-         GbzcDqWGjDwWd0dVvn9oc+J0H9n7iyJlWVcZK8OvhQDmvNFsPsjQMk2RL99Nk9dCUg3t
-         17JJi9cbLUwHmPcImsnOI9E7lmMOqjLxtOdu5CUFtoOv7/bsB4BlquSajLska/BkdqyV
-         fWcAIN2d1v599hLLaWS3l/WKzAySD0D1qPr/67yGpspTSMXy1pzd3fZfchW6QsI82XnS
-         FGWg==
-X-Gm-Message-State: AO0yUKXiPvQLwjdqVVYyqHRCLZgalUvrCIkckOrvUsYAztoGPio4dSyI
-	5A1bwxO/Mh4m//gAmB3FMeCiblgEBwEf7u5rkQxWhQ==
-X-Google-Smtp-Source: AK7set/xO9yLZW6FEwts8sv8BrRfJLxSKPDPCskVFgtuZJ0c4xCwq7UwoYUvM1OKfG5y166F1nne9p8uWnZAcO2Kp/8=
-X-Received: by 2002:a81:4312:0:b0:52e:b718:24d5 with SMTP id
- q18-20020a814312000000b0052eb71824d5mr13578418ywa.9.1678353387956; Thu, 09
- Mar 2023 01:16:27 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXQhN1hL9z3c8b
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 21:41:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ABfIku5n;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PXQhJ1rbwz4xDl;
+	Thu,  9 Mar 2023 21:41:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1678358467;
+	bh=JOranWlQUxdKWTryAeghnE9mf9wFbHpxiW71/MODDJk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ABfIku5n1XU2ta3bxpnxk/d2MB/7uffzEEyB001lSwDlIqtEpJOTGaf6xqpVDYEiW
+	 fK9JBxp4QBohdDgueJUUYU8t1P8cGbCX++DHsg+98Gg8Xvrbvz9Aiz7IaHaGa7bNpw
+	 yIEzSCDZeI68oRzAsvwxByjZ7R3TmicCenr4LXbDKi6QRWyVltPsYIYkzwI97AUHkO
+	 VUoI/4EKxsDzGm7TJBgxqMnu5vXB+XhbvCZwN969uonrzayZjGFo2UhKayv+lrjYaY
+	 pnEHs97IvZo9R9YtTAKpLUz1vz7/H90lWNwRSXhBUG1qgy6HlBsx3wGNJgIgrz2oxv
+	 bWnYPIQss+3Lw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Arnd Bergmann <arnd@arndb.de>, Paul Gortmaker
+ <paul.gortmaker@windriver.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 0/4] Remove some e300/MPC83xx evaluation platforms
+In-Reply-To: <3efa1e29-3be9-4047-beef-eb02762ae8db@app.fastmail.com>
+References: <20230220115913.25811-1-paul.gortmaker@windriver.com>
+ <AM0PR04MB6289FA528F76DDADB2BB0F958FA89@AM0PR04MB6289.eurprd04.prod.outlook.com>
+ <Y/o8bQz5CuRhdD8B@windriver.com>
+ <CADRPPNRTZmhEbS0Ts6iA7bmviT_C+caUkyFwJ5WGcN6q1rTORg@mail.gmail.com>
+ <1b9d4d586ae7bb5cddbb97fbc9ec7de1c475afee.camel@infinera.com>
+ <83565b97-8149-492e-8f22-e3722e659b98@app.fastmail.com>
+ <a1e955cb-f48d-4630-6c9d-2fb3e2212aff@csgroup.eu>
+ <ZAFHnaSN6F5ZYTO5@windriver.com>
+ <3efa1e29-3be9-4047-beef-eb02762ae8db@app.fastmail.com>
+Date: Thu, 09 Mar 2023 21:41:01 +1100
+Message-ID: <87edpy1a2q.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20230306191535.1917656-1-sean.anderson@seco.com>
- <20230306191535.1917656-4-sean.anderson@seco.com> <4c039e53-e3ca-29d7-e5ea-f24e385d28b0@linaro.org>
- <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
-In-Reply-To: <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 9 Mar 2023 10:16:16 +0100
-Message-ID: <CACRpkdaj-0dyqWdSbQbjyUed+khDLi-awgan1BnuDvuY2JBzFQ@mail.gmail.com>
-Subject: Re: [PATCH v10 03/13] dt-bindings: Convert gpio-mmio to yaml
-To: Sean Anderson <sean.anderson@seco.com>, Niall Leonard <nl250060@ncr.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,29 +67,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, =?UTF-8?Q?Fern=C3=A1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Jonas Gorski <jonas.gorski@gmail.com>, Vinod Koul <vkoul@kernel.org>, linux-gpio@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Leo Li <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 7, 2023 at 4:35=E2=80=AFPM Sean Anderson <sean.anderson@seco.co=
-m> wrote:
-> On 3/7/23 03:42, Krzysztof Kozlowski wrote:
-
-> > https://lore.kernel.org/all/20230126-gpio-mmio-fix-v2-1-38397aace340@nc=
-r.com/
+"Arnd Bergmann" <arnd@arndb.de> writes:
+> On Fri, Mar 3, 2023, at 02:04, Paul Gortmaker wrote:
+>> 01/03/2023 (Wed 14:23) Christophe Leroy wrote:
+>>> Le 28/02/2023 ?? 18:51, Arnd Bergmann a ??crit??:
+>>> Hope it clarifies how those reference boards are used.
+>>
+>> It was really useful input and gave an insight into how things get used.
+>>
+>> But let me put a slightly different slant on things.  If there is no
+>> maintainer for the platform/architecture/CPU, then where is the
+>> obligation for mainline to keep it up to date just for your company to
+>> use the code/BSP as a reference?
+>>
+>> Do they continue to do this for one more year, or three or ...  ???
+>> Does someone list themselves in MAINTAINERS for arch/powerpc/83xx ?
+> ...
+>>
+>> If you see change 0123abcdef breaks boot on your platform, you have a
+>> legit voice to gripe about it right then and there.  Don't wait!!!
 >
-> Thanks for linking to that.
->
-> I believe this patch should be applied instead of that one because
->
-> - It documents all the registers, which were previously only documented
->   in the driver
-> - It handles the endianness properties.
-> - It consolidates the various descriptions of this binding into one
->   schema.
+> I think the answer here is that Christophe is already the only person
+> that does this, so he is the de-facto maintainer for ppc32 regardless
+> of whether he wants himself listed in the file or not:
 
-Niall are you sending a v3 of this patch soon?
-Include Sean on the reviewer list!
+Yes he is the de-facto 32-bit maintainer :)
 
-Yours,
-Linus Walleij
+He's listed as a reviewer on the converged 64-bit/32-bit maintainers
+entry which is meant to reflect that:
+
+LINUX FOR POWERPC (32-BIT AND 64-BIT)
+M:	Michael Ellerman <mpe@ellerman.id.au>
+R:	Nicholas Piggin <npiggin@gmail.com>
+R:	Christophe Leroy <christophe.leroy@csgroup.eu>
+L:	linuxppc-dev@lists.ozlabs.org
+
+But we could add a separate 32-bit entry if people think that would make
+things clearer.
+
+Although I don't think we could run separate trees for 64-bit and
+32-bit, there'd be too many conflicts, so in that way I think one entry
+makes sense.
+
+cheers
