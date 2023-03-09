@@ -1,56 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732786B1C58
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 08:31:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3614D6B1FB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 10:17:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PXLTG1zFjz3ccr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 18:31:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PXNqt0lPmz3cLB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 20:17:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LMA0ITtU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l62t2ivl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LMA0ITtU;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l62t2ivl;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXLSK08vmz3c6X
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 18:30:24 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4954061A3E;
-	Thu,  9 Mar 2023 07:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8FAA3C4339B;
-	Thu,  9 Mar 2023 07:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678347020;
-	bh=mu4O7Pvq1VNZVGOZLBf7dz+hLxR8Z6QVu2isJcMcwxE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LMA0ITtUNNBu9wowRtgErO4EczJ4X7ten37Ue68OJD9Bz32rM6EaOy3OiAzRrbgjW
-	 7pEd6FOwuluGqJsjhIRJNsK8+kEu3VIWjdr3sSk+XwrHFq4I3fleGJGDEJao17cW+h
-	 kjQr0PcY0ykrIaFfUoMM8MklPFFJaOWZOPwmEcOOjmNaejXw3lKx+9hIx8kKtnchoI
-	 8DTocUmhaf+S/krh2SXsiExaOZjNnJtV8N+3ENQt6jSYW4IJvJnyFAINWjXETFW2pI
-	 KlW7JXceHr2kevBsycJYyQMF0mzVatau6qB9vL2/540hDKToPB36nz3BScErRIENaP
-	 Zqtg6wtmBcILg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 72B64E68C00;
-	Thu,  9 Mar 2023 07:30:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXNpm0b7vz3cd1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Mar 2023 20:16:31 +1100 (AEDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-53d277c1834so23072237b3.10
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Mar 2023 01:16:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678353388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O4oOjO1iZqHHqppZpeEVZpEKQdPcmPUQRfadcX5/5t0=;
+        b=l62t2ivlUxilMsIapwCQyovxHKcjFK0D4LIQAKwW2mD7FsZY4aDwDtSxJ7m/K8NmKU
+         AJdQyIoT9ZWXji9+bD5ZurYVNpOiHzkB+kyAceWN/C+vqyHBsqWxFBIz0gIcXEU26XYP
+         bGq+xR7SNxzStcFc98oMENNMTFUqLRv00f4ca3YRP9hrFQ5iiAGTyWbVDmTPcBjDcaLh
+         IlfoxCyIw1UDxoTylhClVL/Kg3AcCk5cE9JmnflkYohAdEeI3uKYp9tbvftu+zZg/O4l
+         GFOJ7buxjOQ4QXp7E5LpS0pj8Nl26YP6QkXVQFvGPTiT3bw4KmkTs3rpR4wxRJBlc8UZ
+         KlQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678353388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O4oOjO1iZqHHqppZpeEVZpEKQdPcmPUQRfadcX5/5t0=;
+        b=LDhdgLEzOSZhQd3bmF1F0SNIOQVL+QONh9/H/wseCUXSgR3CGZuXfv+lpZKJakA2Ym
+         wdZZV7Ama9ii6q+JAd37RiP4p5lS6dhfRBXBm6kysoDDlALbCL0yGMWbLJPgaALj8BJH
+         GbzcDqWGjDwWd0dVvn9oc+J0H9n7iyJlWVcZK8OvhQDmvNFsPsjQMk2RL99Nk9dCUg3t
+         17JJi9cbLUwHmPcImsnOI9E7lmMOqjLxtOdu5CUFtoOv7/bsB4BlquSajLska/BkdqyV
+         fWcAIN2d1v599hLLaWS3l/WKzAySD0D1qPr/67yGpspTSMXy1pzd3fZfchW6QsI82XnS
+         FGWg==
+X-Gm-Message-State: AO0yUKXiPvQLwjdqVVYyqHRCLZgalUvrCIkckOrvUsYAztoGPio4dSyI
+	5A1bwxO/Mh4m//gAmB3FMeCiblgEBwEf7u5rkQxWhQ==
+X-Google-Smtp-Source: AK7set/xO9yLZW6FEwts8sv8BrRfJLxSKPDPCskVFgtuZJ0c4xCwq7UwoYUvM1OKfG5y166F1nne9p8uWnZAcO2Kp/8=
+X-Received: by 2002:a81:4312:0:b0:52e:b718:24d5 with SMTP id
+ q18-20020a814312000000b0052eb71824d5mr13578418ywa.9.1678353387956; Thu, 09
+ Mar 2023 01:16:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] eth: fealnx: bring back this old driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <167834701946.22182.5252646764368734052.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Mar 2023 07:30:19 +0000
-References: <20230307171930.4008454-1-kuba@kernel.org>
-In-Reply-To: <20230307171930.4008454-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
+References: <20230306191535.1917656-1-sean.anderson@seco.com>
+ <20230306191535.1917656-4-sean.anderson@seco.com> <4c039e53-e3ca-29d7-e5ea-f24e385d28b0@linaro.org>
+ <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
+In-Reply-To: <42ccbac0-53e2-f599-fb3d-064b896bde4a@seco.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 9 Mar 2023 10:16:16 +0100
+Message-ID: <CACRpkdaj-0dyqWdSbQbjyUed+khDLi-awgan1BnuDvuY2JBzFQ@mail.gmail.com>
+Subject: Re: [PATCH v10 03/13] dt-bindings: Convert gpio-mmio to yaml
+To: Sean Anderson <sean.anderson@seco.com>, Niall Leonard <nl250060@ncr.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,34 +77,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: petrm@nvidia.com, tsbogend@alpha.franken.de, leon@kernel.org, geoff@infradead.org, netdev@vger.kernel.org, linux-mips@vger.kernel.org, stable@vger.kernel.org, stephen@networkplumber.org, wsa+renesas@sang-engineering.com, edumazet@google.com, npiggin@gmail.com, lukas.bulwahn@gmail.com, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, =?UTF-8?Q?Fern=C3=A1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Jonas Gorski <jonas.gorski@gmail.com>, Vinod Koul <vkoul@kernel.org>, linux-gpio@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+On Tue, Mar 7, 2023 at 4:35=E2=80=AFPM Sean Anderson <sean.anderson@seco.co=
+m> wrote:
+> On 3/7/23 03:42, Krzysztof Kozlowski wrote:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> > https://lore.kernel.org/all/20230126-gpio-mmio-fix-v2-1-38397aace340@nc=
+r.com/
+>
+> Thanks for linking to that.
+>
+> I believe this patch should be applied instead of that one because
+>
+> - It documents all the registers, which were previously only documented
+>   in the driver
+> - It handles the endianness properties.
+> - It consolidates the various descriptions of this binding into one
+>   schema.
 
-On Tue,  7 Mar 2023 09:19:30 -0800 you wrote:
-> This reverts commit d5e2d038dbece821f1af57acbeded3aa9a1832c1.
-> 
-> We have a report of this chip being used on a
-> 
->   SURECOM EP-320X-S 100/10M Ethernet PCI Adapter
-> 
-> which could still have been purchased in some parts
-> of the world 3 years ago.
-> 
-> [...]
+Niall are you sending a v3 of this patch soon?
+Include Sean on the reviewer list!
 
-Here is the summary with links:
-  - [net] eth: fealnx: bring back this old driver
-    https://git.kernel.org/netdev/net/c/8f1482080104
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yours,
+Linus Walleij
