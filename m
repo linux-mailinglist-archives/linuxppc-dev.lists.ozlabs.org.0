@@ -2,62 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9E26B2A74
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 17:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561616B2C86
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Mar 2023 19:01:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PXZ0c65DWz3cjC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 03:10:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PXcSv1xTHz3f7T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 05:01:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=alKJkV+T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V6C054JG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=alKJkV+T;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V6C054JG;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXYzj5m5Gz2ynf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 03:09:53 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id DF253B81F63;
-	Thu,  9 Mar 2023 16:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5104C4339B;
-	Thu,  9 Mar 2023 16:09:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678378188;
-	bh=Vs5yR73fwenbspC7Hc7MZqjQddF+NqnLXNP8Zyl3t5I=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=alKJkV+TfvLPRdueZ1xcZnxDkXUBPNyJmhNvaOyn3Yko+Z8MknKt40SxrToOw1lmT
-	 NMcYCCb/dLiF1ZAZghf5v/Zi+KW1vcCojkX9dmPVsDAmSpeEIdFMzetdk5YTk4WtyZ
-	 XPrDwHV5LsZqIZiS30nYkAMsQ3G2/jQPJhpOyyUccduBTRWAKtSkgcHaqgJnIJ2dO+
-	 bP42RdWk5zO+VNLw9uU2V5iPJDhjZX5T0qpsDnHuRRE6t110JuPu+wDvuzDehAgCA3
-	 tGmCWZax8mMqz8v3XzNOZDrZisMXFA7KegDEBmyWWRGSNYqJyABTqEfWdlvDY9ygFr
-	 C7r8+LxONRvxw==
-From: Mark Brown <broonie@kernel.org>
-To: Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Qiang Zhao <qiang.zhao@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, 
- Herve Codina <herve.codina@bootlin.com>
-In-Reply-To: <20230307141503.159766-1-herve.codina@bootlin.com>
-References: <20230307141503.159766-1-herve.codina@bootlin.com>
-Subject: Re: [PATCH 0/3] Fix the PowerQUICC audio support using the QMC
-Message-Id: <167837818442.37742.7557223272230360155.b4-ty@kernel.org>
-Date: Thu, 09 Mar 2023 16:09:44 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXcRv4sd7z3cLs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 05:00:59 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 329HP7FQ029698;
+	Thu, 9 Mar 2023 18:00:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=f2YtmbBo/XIPEk+DAobJEAfO4YCF48VXlkBCn3DMtMQ=;
+ b=V6C054JGLG4fYd8N4OvI+qAuYm4wyVsXYqzc/Nut4flUJ035E9HlWNhA4FSVvUsGtG4A
+ N8TDG0Wf6AxNRIiZWEcgC62m9UbOOa8XGtiFPytkR4DSrGVc3HYuGjCqo8qbcVMJN1ZX
+ 202wi3JfOzrfEG7hdpFPH5QH3rkjYf0ZJyjJEgxkkMCbYJDE3azeKDu9Bx2TseH2HK36
+ 13HnCoeimvms7CgNYzzYN/q/BNY6xmoVXbG+0n8CkWIhK9GQim19+vojPnhlbmzZ7UrB
+ upKOFeRpzeAYowKmDQrewvOjttwgE5EmCxb4oa+sQsm2h2O1k+2WRi9fdZj+02yA9xng 1A== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p6qyquygn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Mar 2023 18:00:35 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 329GVgqm019995;
+	Thu, 9 Mar 2023 18:00:33 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3p6ftvjr65-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Mar 2023 18:00:33 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 329I0VeQ1442404
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Mar 2023 18:00:31 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D8A420040;
+	Thu,  9 Mar 2023 18:00:31 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A12512004D;
+	Thu,  9 Mar 2023 18:00:29 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.13.46])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Mar 2023 18:00:29 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Subject: [PATCH v2 0/4] enable bpf_prog_pack allocator for powerpc
+Date: Thu,  9 Mar 2023 23:30:24 +0530
+Message-Id: <20230309180028.180200-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5YOAAPNMIwN_Pcd9ev-R56cnpKrZlwDe
+X-Proofpoint-ORIG-GUID: 5YOAAPNMIwN_Pcd9ev-R56cnpKrZlwDe
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bd1bf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-09_09,2023-03-09_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 clxscore=1011 phishscore=0 suspectscore=0 mlxlogscore=999
+ adultscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303090141
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,51 +87,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 07 Mar 2023 15:15:00 +0100, Herve Codina wrote:
-> A previous series added the PowerQUICC audio support using the QMC.
-> The v6 version of this previous series was applied but some feedbacks
-> lead to a v7 version.
-> 
-> The v6 can be found here:
->  https://lore.kernel.org/linux-kernel/20230217145645.1768659-1-herve.codina@bootlin.com/
-> and the v7, here:
->  https://lore.kernel.org/linux-kernel/20230306161754.89146-1-herve.codina@bootlin.com/
-> 
-> [...]
+Most BPF programs are small, but they consume a page each. For systems
+with busy traffic and many BPF programs, this may also add significant
+pressure on instruction TLB. High iTLB pressure usually slows down the
+whole system causing visible performance degradation for production
+workloads.
 
-Applied to
+bpf_prog_pack, a customized allocator that packs multiple bpf programs
+into preallocated memory chunks, was proposed [1] to address it. This
+series extends this support on powerpc.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The first patch introduces patch_instructions() function to enable
+patching more than one instruction at a time. This change showed
+around 5X improvement in the time taken to run test_bpf test cases.
+Patches 2 & 3 add the arch specific functions needed to support this
+feature. Patch 4 enables the support for powerpc and ensures cleanup
+is handled racefully. Tested the changes successfully.
 
-Thanks!
+[1] https://lore.kernel.org/bpf/20220204185742.271030-1-song@kernel.org/
+[2] https://lore.kernel.org/all/20221110184303.393179-1-hbathini@linux.ibm.com/ 
 
-[1/3] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Remove unneeded property
-      commit: 33a33005b2db0966c00d4f58dd2a36e5a44217db
-[2/3] dt-bindings: soc: fsl: cpm_qe: cpm1-tsa: Remove unneeded property
-      commit: 0fb6f518cb46cf8bac7c30c29171050e355cd738
-[3/3] soc: fsl: cpm1: qmc: Fix assigned timeslot masks
-      commit: f37acbde076d8dbf5e4c694f29760e608fdffe11
+Changes in v2:
+* Introduced patch_instructions() to help with patching bpf programs.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Hari Bathini (4):
+  powerpc/code-patching: introduce patch_instructions()
+  powerpc/bpf: implement bpf_arch_text_copy
+  powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_pack
+  powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|free]
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+ arch/powerpc/include/asm/code-patching.h |   1 +
+ arch/powerpc/lib/code-patching.c         | 151 ++++++++++++++++-------
+ arch/powerpc/net/bpf_jit.h               |   7 +-
+ arch/powerpc/net/bpf_jit_comp.c          | 142 ++++++++++++++++-----
+ arch/powerpc/net/bpf_jit_comp32.c        |   4 +-
+ arch/powerpc/net/bpf_jit_comp64.c        |   6 +-
+ 6 files changed, 226 insertions(+), 85 deletions(-)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+2.39.2
 
