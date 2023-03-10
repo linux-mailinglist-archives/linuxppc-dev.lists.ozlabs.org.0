@@ -2,63 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBBA6B3418
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 03:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 108186B35F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 06:10:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PXqPj009pz3f3v
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 13:14:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PXvJg6Hmbz3f3Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 16:10:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bSJ3qyOm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=AsdLta9x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=INrp/FZY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bSJ3qyOm;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=AsdLta9x;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=INrp/FZY;
 	dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXqNl0mqgz3bgX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 13:13:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678414439; x=1709950439;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=c/9s1XTEPfyHw2Zy3DNqzvmBGc+Cm6CjsYPSly7h0sU=;
-  b=bSJ3qyOmSs9POc6kNi+jpYb7bxBPxDZisF3UybFmt3SwewoQLMs6nvOk
-   mXnH9V0umTtQiUfdgpdtg2uusiGwbZ5masyQtT1BluDYFf/sk813AXdjV
-   op5xZW65LUpSh3/dB8nLdPXbTjZcXnjBEsQsQG+9bkLir+JKL4da0LuSj
-   nDuHJvkp5+W8yArpOifuXH0rtKpPMFmYdyf7GQpXRYHpU9w/p6OzQcjZl
-   DhjYAHo6jVknPgZdEjxU6VWNPOUjPkL0jvPGe8Ib/C7POZkTNQamFs0dX
-   NEim4PxvDqpx1T9xTWY5fSip/O+DX5J+6gwPGDvEvy9k9DnvMZP7NqH6G
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="399224891"
-X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
-   d="scan'208";a="399224891"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 18:13:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="1006958109"
-X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
-   d="scan'208";a="1006958109"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 09 Mar 2023 18:13:48 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1paSGR-0003NE-1E;
-	Fri, 10 Mar 2023 02:13:47 +0000
-Date: Fri, 10 Mar 2023 10:13:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- f3358336042bbcf24a0b916c283559133717bbb2
-Message-ID: <640a9239.zfVh7Fr2Wjpwcxwd%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PXvHf41K8z308w
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 16:09:49 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id 42955320094D;
+	Fri, 10 Mar 2023 00:09:42 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Fri, 10 Mar 2023 00:09:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:sender:subject:subject:to:to; s=fm2; t=1678424981; x=
+	1678511381; bh=yg4hZIdFlMZK0mgVdpDBjn6FmVecYs1a0U9KUTPtVMk=; b=A
+	sdLta9xrjaOfWsik6qdW6gYR1Uz1R81dpJu7Hp+7ptV1D3cAp0Id9mVDdgGr4fKx
+	1xTd0Judvl1Y5mFA4D9ZsGbxGPyo+Ui7KFQLNqVeFeE+Tdx6VuL9KvViuY22rN9o
+	yW8j24376r1+DHsVOTlzfDeXKmsLC+Alhz6QSl539W1LeU0RvWFQMXtHAFQBg4Pg
+	FmYO1JV6cwJ4OXbVf4M1rd8bh6SQbFxAG7zQBqTFNUynjmP5VkDs5YWnX5AGboz/
+	fBmEgfek0I9iuOA3nGhELXveRIFXWqK4vBg4yjMQQ+iFhDyDi8oQs5UtDz9/ZLut
+	u42rvF+eP5MD+lXegbDiA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:sender
+	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1678424981; x=1678511381; bh=y
+	g4hZIdFlMZK0mgVdpDBjn6FmVecYs1a0U9KUTPtVMk=; b=INrp/FZYxiDAKLV2z
+	8ESr9yJu0a5avTNi96bo4Ao0M9SeZFHSMftAonMNbQcfoTlPmFUSN7IWGIyYEYdR
+	tn7x7zUsXYqZK/axoNydDHrOYcQPXRD3GlycZZAGzJ+BxuROJL3NPPFiDyaN6bY6
+	JnCQTmQ1IwP1owDleRrFagoyctRVMcZtH63lwvXVNRkgY+HhaD1IJOYpJQEggoSI
+	0HQ+SUlxcZqj4DLx0pVA3TSP7BOBmWcBiKGiHeKs9inlbdeu0Vb1fSm85GtWXT4h
+	3pl4Mgi/NRlBCHmCzyJ9DJQ1xKOa0Lemwodkm8ad9U7ULLfwgOMME3GhrJ/YzXNZ
+	318ew==
+X-ME-Sender: <xms:lbsKZF2Paw8j-RuMr8tUMhGLf34stVwRf2F4cvN0ukQrFaV41mxmRQ>
+    <xme:lbsKZMG0S0sw7hiodials0o8MoWz78TpJGfNK04Y93tdjuvcyw4kWJGWQtsL0I9JR
+    qOZHrZ0XFI7fednWA>
+X-ME-Received: <xmr:lbsKZF607QpnUP5dIPaeSXxdQEkxymR5-rNWdpSwUDxd80XfiksrepogkWVO9CCCEpvYX8On3qSjeXaChtkwh98mMCW72nho9zPROP7LJz8lTg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddujedgjeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdluddtmdenucfjughrpefhvfevufffkffogggtgfesthekredtredt
+    jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+    gvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepgeehvddugeetvdeluedukeeileeivddt
+    heffhfegfeejleduudfgheevvdefgffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:lbsKZC2szUYZRH6UZzCAEKnvHPksEW7i__LLKxGSybu-TZMziqmjaA>
+    <xmx:lbsKZIGBAuoDBeAtO6N3t2nqn6fN15lcBNFlVGQsUWHhNoDEj24_hg>
+    <xmx:lbsKZD-mPaV-pgaFPT2fXdJTaJFRG8G7rI9omWHzXD6eUmcDSihXOA>
+    <xmx:lbsKZMD09qRiq3La7L7QXTkc4I7EhGFp_Tel8lXNwVmvlo8lLJdjAg>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Mar 2023 00:09:39 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/mm: Fix false detection of read faults
+Date: Fri, 10 Mar 2023 16:08:34 +1100
+Message-Id: <20230310050834.63105-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,120 +92,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>, Benjamin Gray <bgray@linux.ibm.com>, Russell Currey <ruscur@russell.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: f3358336042bbcf24a0b916c283559133717bbb2  powerpc: Add myself to MAINTAINERS for Power VFIO support
+To support detection of read faults with Radix execute-only memory, the
+vma_is_accessible() check in access_error() (which checks for PROT_NONE)
+was replaced with a check to see if VM_READ was missing, and if so,
+returns true to assert the fault was caused by a bad read.
 
-elapsed time: 830m
+This is incorrect, as it ignores that both VM_WRITE and VM_EXEC imply
+read on powerpc, as defined in protection_map[].  This causes mappings
+containing VM_WRITE or VM_EXEC without VM_READ to misreport the cause of
+page faults, since the MMU is still allowing reads.
 
-configs tested: 97
-configs skipped: 9
+Correct this by restoring the original vma_is_accessible() check for
+PROT_NONE mappings, and adding a separate check for Radix PROT_EXEC-only
+mappings.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: 395cac7752b9 ("powerpc/mm: Support execute-only memory on the Radix MMU")
+Reported-by: Michal Suchánek <msuchanek@suse.de>
+Tested-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+ arch/powerpc/mm/fault.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r003-20230308   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r023-20230308   gcc  
-arc                  randconfig-r043-20230308   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r012-20230308   gcc  
-arm                  randconfig-r046-20230308   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r005-20230309   clang
-arm64                randconfig-r013-20230308   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r026-20230308   gcc  
-csky                 randconfig-r036-20230308   gcc  
-hexagon              randconfig-r041-20230308   clang
-hexagon              randconfig-r045-20230308   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r006-20230309   gcc  
-microblaze           randconfig-r002-20230309   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r004-20230308   clang
-mips                 randconfig-r001-20230309   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r014-20230308   gcc  
-nios2                randconfig-r016-20230308   gcc  
-nios2                randconfig-r035-20230308   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r031-20230308   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r034-20230308   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230308   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r032-20230308   gcc  
-s390                 randconfig-r044-20230308   clang
-sh                               allmodconfig   gcc  
-sparc        buildonly-randconfig-r005-20230308   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r004-20230309   gcc  
-sparc64              randconfig-r021-20230308   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r015-20230308   gcc  
-xtensa               randconfig-r022-20230308   gcc  
-xtensa               randconfig-r025-20230308   gcc  
-xtensa               randconfig-r033-20230308   gcc  
-
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index c7ae86b04b8a..d0710ecc1fc7 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -271,11 +271,16 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
+ 	}
+ 
+ 	/*
+-	 * Check for a read fault.  This could be caused by a read on an
+-	 * inaccessible page (i.e. PROT_NONE), or a Radix MMU execute-only page.
++	 * VM_READ, VM_WRITE and VM_EXEC all imply read permissions, as
++	 * defined in protection_map[].  Read faults can only be caused by
++	 * a PROT_NONE mapping, or with a PROT_EXEC-only mapping on Radix.
+ 	 */
+-	if (unlikely(!(vma->vm_flags & VM_READ)))
++	if (unlikely(!vma_is_accessible(vma)))
+ 		return true;
++
++	if (unlikely(radix_enabled() && ((vma->vm_flags & VM_ACCESS_FLAGS) == VM_EXEC)))
++		return true;
++
+ 	/*
+ 	 * We should ideally do the vma pkey access check here. But in the
+ 	 * fault path, handle_mm_fault() also does the same check. To avoid
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+
