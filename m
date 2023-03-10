@@ -1,59 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FCE6B53DC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 23:10:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44A36B53E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 23:10:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PYKwr0Q1Gz3g0V
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 09:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PYKxq3Ltvz3fR4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 09:10:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xry2bQDF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RCCxkqU8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xry2bQDF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RCCxkqU8;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYKpD44F9z3fht
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 09:04:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYKrq2rKNz3ftB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 09:06:35 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C1EFB61CC9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 22:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1653C4339E
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 22:04:16 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 42D5561D78
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 22:06:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CC0C433A0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 22:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678485856;
-	bh=X+V1obY9k9q5Lqak9f20lCniJONGHDWm3UfEXRBKy3k=;
+	s=k20201202; t=1678485992;
+	bh=N9aHt9sxD+NNlh7IW6KfQ3IxapaUbKGJbqaYoa8yrcM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Xry2bQDF2Psv9UQ0fSHPIBZPx8PoKZBCW+8jbuJgRjT3/ik8sScblqYBFlF62y4Jb
-	 QdBz6BNFoU7ifw7ITmCexI3C8KCQSm3SLcz4d/E5bvNmsftHWk7LzlMhZWB0D4jOqV
-	 sWAjVEpLj+7aKlENZ2JeixUf0BJXaOfCrrWfWSR4bv/PRIhED6KyJboZhBCF3Fb3UQ
-	 qawYBvlvi0wj8hXBEP3MkKMWjIZ+/rnfhNsj5xh3h+41oFV9FipZv44Lfw7ijEGB32
-	 JauFl49F+snrXGThS3mWKpmVhrDgqzvLwtgtbgTdz/bbbq1ISBWnOFUPkNQmYTnIqs
-	 aE7SB+wBkrNrQ==
-Received: by mail-lf1-f41.google.com with SMTP id k14so8485206lfj.7
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 14:04:16 -0800 (PST)
-X-Gm-Message-State: AO0yUKXuiP5sI8LEDepvBwkcNEDETnxQD4FHO5q4cq0YsZFvrZ5o2vot
-	wDATPCUh7BgCUAgdSVqE+SGOGYHW46VwlDakJzs=
-X-Google-Smtp-Source: AK7set/Gf3Y2SAywkERyf8wbQ7IxYD4QzZr7tNhfTElRC0kHLCpAZvrxVel8DA5dL1b7PM0RIIKWkR63fXwXAelyw9Q=
-X-Received: by 2002:a19:e019:0:b0:4d8:86c2:75ea with SMTP id
- x25-20020a19e019000000b004d886c275eamr1664591lfg.3.1678485854943; Fri, 10 Mar
- 2023 14:04:14 -0800 (PST)
+	b=RCCxkqU8YZ6hS/jMFoVCDR4Zn2NDpsXhdyJ4ilFe8r/gEacLYvpkfvLVyiy1NIoZD
+	 uQQ0kXbhobIUWP8WXRmX4Gu8sPOE1twIqu8xQ2LzCaGA7GINkeI3WKxb7jYNmlED9Y
+	 6OwDOUiHsAqh0ccFVaa5UwK5iOHNA21CNoQLsf09PKiEvaeIvoeMIcOVB95RdT99/T
+	 wdfmqzYQzV8pi05qa9/PEobvJJcTKh3PIYu/mdPWeFdZdMsZU4nDBpsyhM1QSWO4/d
+	 v8eBtt4tDtACFjmgP9ZAQn9qBQRsy6HW6ruWeNs8XA+Grnyxw6YM7vc6Em2nW3eaSg
+	 0VtQTVjahzARw==
+Received: by mail-lj1-f170.google.com with SMTP id y14so6841636ljq.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 14:06:31 -0800 (PST)
+X-Gm-Message-State: AO0yUKUzX2jBIykdMO8SzNUYeXeJet72NCkoA4CNA/RcRZ/0W657SJg5
+	T1Vb9o8nh+poJJ11plPcr5Tu2W/RJ1bOhN1YJ7g=
+X-Google-Smtp-Source: AK7set8CSSl6Jn60lqJ3BwRCi1XAuwD9uNxFpvCfRGoNCsAfjI4WNjPTLPj8UV4+BLLitZF/4q2nQ1s1uHeqdl3lfrU=
+X-Received: by 2002:a05:651c:124e:b0:295:c458:da98 with SMTP id
+ h14-20020a05651c124e00b00295c458da98mr8444428ljh.5.1678485990139; Fri, 10 Mar
+ 2023 14:06:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20230309180213.180263-1-hbathini@linux.ibm.com> <20230309180213.180263-3-hbathini@linux.ibm.com>
-In-Reply-To: <20230309180213.180263-3-hbathini@linux.ibm.com>
+References: <20230309180213.180263-1-hbathini@linux.ibm.com> <20230309180213.180263-4-hbathini@linux.ibm.com>
+In-Reply-To: <20230309180213.180263-4-hbathini@linux.ibm.com>
 From: Song Liu <song@kernel.org>
-Date: Fri, 10 Mar 2023 14:04:01 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW4pNHJ428Qf19Le=uuBFMRRmhF7r71ncsURvcpKvLZN_w@mail.gmail.com>
-Message-ID: <CAPhsuW4pNHJ428Qf19Le=uuBFMRRmhF7r71ncsURvcpKvLZN_w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] powerpc/bpf: implement bpf_arch_text_copy
+Date: Fri, 10 Mar 2023 14:06:17 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW7ChFn8Q38-Y76NBDVAoP=WnWOmZEyBN76ifnriTbF1tQ@mail.gmail.com>
+Message-ID: <CAPhsuW7ChFn8Q38-Y76NBDVAoP=WnWOmZEyBN76ifnriTbF1tQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] powerpc/bpf: implement bpf_arch_text_invalidate
+ for bpf_prog_pack
 To: Hari Bathini <hbathini@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -75,74 +76,45 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu, Mar 9, 2023 at 10:02=E2=80=AFAM Hari Bathini <hbathini@linux.ibm.co=
 m> wrote:
 >
-> bpf_arch_text_copy is used to dump JITed binary to RX page, allowing
-> multiple BPF programs to share the same page. Use the newly introduced
-> patch_instructions() to implement it. Around 5X improvement in speed
-> of execution observed, using the new patch_instructions() function
-> over patch_instruction(), while running the tests from test_bpf.ko.
+> Implement bpf_arch_text_invalidate and use it to fill unused part of
+> the bpf_prog_pack with trap instructions when a BPF program is freed.
 >
 > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 > ---
->  arch/powerpc/net/bpf_jit_comp.c | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
+>  arch/powerpc/net/bpf_jit_comp.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 >
 > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_c=
 omp.c
-> index e93aefcfb83f..0a70319116d1 100644
+> index 0a70319116d1..d1794d9f0154 100644
 > --- a/arch/powerpc/net/bpf_jit_comp.c
 > +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -13,9 +13,12 @@
->  #include <linux/netdevice.h>
->  #include <linux/filter.h>
->  #include <linux/if_vlan.h>
-> -#include <asm/kprobes.h>
-> +#include <linux/memory.h>
->  #include <linux/bpf.h>
+> @@ -293,3 +293,18 @@ void *bpf_arch_text_copy(void *dst, void *src, size_=
+t len)
 >
-> +#include <asm/kprobes.h>
-> +#include <asm/code-patching.h>
-> +
->  #include "bpf_jit.h"
->
->  static void bpf_jit_fill_ill_insns(void *area, unsigned int size)
-> @@ -272,3 +275,21 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *=
-image, int pass, struct code
->         ctx->exentry_idx++;
->         return 0;
+>         return ret;
 >  }
 > +
-> +void *bpf_arch_text_copy(void *dst, void *src, size_t len)
+> +int bpf_arch_text_invalidate(void *dst, size_t len)
 > +{
-> +       void *ret =3D ERR_PTR(-EINVAL);
-> +       int err;
+> +       u32 inst =3D BREAKPOINT_INSTRUCTION;
+> +       int ret =3D -EINVAL;
+
+No need to set to -EINVAL here.
+
 > +
 > +       if (WARN_ON_ONCE(core_kernel_text((unsigned long)dst)))
 > +               return ret;
+
+Just return -EINVAL instead.
+
 > +
-> +       ret =3D dst;
 > +       mutex_lock(&text_mutex);
-> +       err =3D patch_instructions(dst, src, false, len);
-> +       if (err)
-> +               ret =3D ERR_PTR(err);
+> +       ret =3D patch_instructions(dst, &inst, true, len);
 > +       mutex_unlock(&text_mutex);
 > +
 > +       return ret;
 > +}
-
-It seems we don't really need "ret". How about something like:
-
-+void *bpf_arch_text_copy(void *dst, void *src, size_t len)
-+{
-+       int err;
-+
-+       if (WARN_ON_ONCE(core_kernel_text((unsigned long)dst)))
-+               return ERR_PTR(-EINVAL);
-+
-+       mutex_lock(&text_mutex);
-+       err =3D patch_instructions(dst, src, false, len);
-+       mutex_unlock(&text_mutex);
-+
-+       return err ? ERR_PTR(err) : dst;
-+}
-
-Song
+> --
+> 2.39.2
+>
