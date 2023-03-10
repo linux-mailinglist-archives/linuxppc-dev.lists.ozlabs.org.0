@@ -1,47 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3186B55A4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 00:31:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD1F6B55A0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 00:30:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PYMl66qSdz3fS1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 10:31:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PYMj90Hxkz3f7m
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 10:30:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ICn+4H1G;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=t0gjE6EC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ICn+4H1G;
-	dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYMh96LhCz30NN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 10:29:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYMh8707Hz308w
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 10:29:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=vxh+5loJXr3QOkEBXraKRrSEsoLxyjcuI0B+WEdhvrc=; b=ICn+4H1Gid6ISIQtmA0dRRbsb8
-	TA5WsB7AvOCX+EZG9pAFvNij/xCRcRVffQ8DW1eKISqZhVdSweKez4Ce4x6bNBbtzrxAb3g/QEuQY
-	Tgr2QdR77Rqua6uRpaqyFTZqzSdIsVTrMeEb8BmWcxEHuLzpriCVgZUTuzips3XFyZibgMPeH/JJG
-	7AHXtJJ84yqwS7cGnh2ZAZre7hmo0fkKTYShqUS1WzB3bJkjmaooFmGGSreXLsWcb5IK6592fhuCN
-	NLUCBWdbzyfO99+sFR9jKYhNMMC+dlHEnIFt5rF3WEDeMKkGshOoxh1DZjxsHRCEEpSrV6uM7y73S
-	ls83Dbxw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=SD1ieuBB125zMGdksrzDPRIQXff3+i91moAFOeOqJ9o=; b=t0gjE6ECv+RuYMMxdo687dGQwg
+	rUuAqEL8BS4ufYj0nj2Owt17YHA7krkRaJKpaAfDpmK8rGM1SBa8xN131ZucPBytAZtvECBxrI0WZ
+	1+dylZIy2WQaYYuAaS9+UhZ6xFb/FIKFtPtqcfWHPzbeupN7fXZ43hcfFzcd5sS2eantFNO5WcnHw
+	EQJEvVLfeNLpNsDkuWrET6kFk6XebXa1a6B1oHu/ex6Bl9aLDux29hKV7PoMdr3PcWkVj1eckXEtq
+	L9PhWujRIwPIns84tBzlrmDvVkPF7AePfyRo3M6XBKeM9l0jBOJgDntXGDOFUdclj9znaWiJE05Kd
+	J6ZfweKg==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pamAN-00GcM6-0Y; Fri, 10 Mar 2023 23:28:51 +0000
+	id 1pamAN-00GcM8-1m; Fri, 10 Mar 2023 23:28:51 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: mpe@ellerman.id.au,
 	npiggin@gmail.com,
 	christophe.leroy@csgroup.eu
-Subject: [PATCH 0/2] ppc: simplify sysctl registration
-Date: Fri, 10 Mar 2023 15:28:48 -0800
-Message-Id: <20230310232850.3960676-1-mcgrof@kernel.org>
+Subject: [PATCH 1/2] ppc: simplify one-level sysctl registration for powersave_nap_ctl_table
+Date: Fri, 10 Mar 2023 15:28:49 -0800
+Message-Id: <20230310232850.3960676-2-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230310232850.3960676-1-mcgrof@kernel.org>
+References: <20230310232850.3960676-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,23 +58,41 @@ Cc: j.granados@samsung.com, keescook@chromium.org, patches@lists.linux.dev, linu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We can simplify the way we do sysctl registration both by
-reducing the number of lines and also avoiding calllers which
-could do recursion. The docs are being updated to help reflect
-this better [0].
+There is no need to declare an extra tables to just create directory,
+this can be easily be done with a prefix path with register_sysctl().
 
-[0] https://lore.kernel.org/all/20230310223947.3917711-1-mcgrof@kernel.org/T/#u     
+Simplify this registration.
 
-Luis Chamberlain (2):
-  ppc: simplify one-level sysctl registration for
-    powersave_nap_ctl_table
-  ppc: simplify one-level sysctl registration for
-    nmi_wd_lpm_factor_ctl_table
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+---
+ arch/powerpc/kernel/idle.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
- arch/powerpc/kernel/idle.c                | 10 +---------
- arch/powerpc/platforms/pseries/mobility.c | 10 +---------
- 2 files changed, 2 insertions(+), 18 deletions(-)
-
+diff --git a/arch/powerpc/kernel/idle.c b/arch/powerpc/kernel/idle.c
+index b9a725abc596..b1c0418b25c8 100644
+--- a/arch/powerpc/kernel/idle.c
++++ b/arch/powerpc/kernel/idle.c
+@@ -107,19 +107,11 @@ static struct ctl_table powersave_nap_ctl_table[] = {
+ 	},
+ 	{}
+ };
+-static struct ctl_table powersave_nap_sysctl_root[] = {
+-	{
+-		.procname	= "kernel",
+-		.mode		= 0555,
+-		.child		= powersave_nap_ctl_table,
+-	},
+-	{}
+-};
+ 
+ static int __init
+ register_powersave_nap_sysctl(void)
+ {
+-	register_sysctl_table(powersave_nap_sysctl_root);
++	register_sysctl("kernel", powersave_nap_ctl_table);
+ 
+ 	return 0;
+ }
 -- 
 2.39.1
 
