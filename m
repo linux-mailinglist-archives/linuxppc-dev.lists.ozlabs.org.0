@@ -1,132 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C246B5011
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 19:27:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9514D6B50AF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 20:08:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PYF0L2Jclz3f4h
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 05:27:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PYFvl31gyz3f8t
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 06:08:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=r5GQFObs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LxEH6iUV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::605; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--maskray.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3dyalzackdgimaskraygoogle.comlinuxppc-devlists.ozlabs.org@flex--maskray.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=r5GQFObs;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LxEH6iUV;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20605.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::605])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYDzK6RLmz3f3f
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 05:26:52 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C7Itvey3Ky2uV5RIHMa8Bw/k/jWSOKlWxcqVhXAnzY7d+bbaJOKbFWce52SDr021RkItSm6zIQLrvuEgKVpFFOP16F9UigGbMPGx/N6ZADmPjPzUBwrS2bJ86dbiqKmmyZKVwb2feLkPl5kY2zE2YAtdK18nR3F0hgfzPjNlol1++PfCX0ynWJfTIVviCd/dKQqxJSsDe8mcmllznCDuQJBeCRbtGYSYoBQSGESM+bvtoNkuyD411Y3U5v31SHuU7w1x+ndieDxL7gfEnA3Ws/gXflV/khrQ8v8jXgc7t2P39Tjg4SLaqgUI5wriFRB3VAnRoBxSmLGYkBVjKcn9zQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YaG2a/v2yLxTSix5FNqZvtN791cvLBglDuv9wScAE6U=;
- b=f0Z52FtcywuVdUagMwKLkuMWMAmEuLONmrdOuFfjfSExXGv78q6WohkVe1N9sSeTardTBgYzdWLmoDzS0lfEj1wMqEbvq6XrMZ8UUZwPha0OM+bawhr73F9ZlhXIUPClUMjSDn6m24TckIMX0byZDsf2Fa0SHua5ZYImEmRJbq1pG8ztPQoIvyMKFVUX36GO2Ae0+SWCUtmujMtM31tkpvXllp+AT6Rx+sUYHjDyoaFiaGRzd+98Nzywdfz4S8/yB6Ev2vkRpqpdXkCqg82EXxjtoioNpw3S7Z8wZnoP6SwDyytNIiLZY9bdJMGs4KR7WFO2IxkkFggsMHn3vpLkSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YaG2a/v2yLxTSix5FNqZvtN791cvLBglDuv9wScAE6U=;
- b=r5GQFObs1jScVoK4U/DCZ8aacEgOjoKONnH/zohJTrE5nOyxD09vtpvGm/Sk47fFftrdPafHz6Vm4vNGMhCG6MK7UwFh3sBzCJPYNclINebK5MLMIIW7d4R2vgmFPr6ifdRmK9yfTXbjfiojbNHtHtXklBOVi1mGBYU8jpEogKEmEP04gkGJUKh8+nLwhB1yfyYNDZx03L2jje2K060sE5Qx18LS2lVxk68ZH5ZC253tfe9jALJCPSmRD0mw7Jq6nV7L6KZqpO7XAl3MQqyyu/EOBXn7+PuI7ZTRrL1ufHzDs9h5BxLX6hjTXsz7Jy6xKOO5zQOfmChwmw7cgRy9HA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB2245.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b1::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.19; Fri, 10 Mar
- 2023 18:26:31 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a%9]) with mapi id 15.20.6178.019; Fri, 10 Mar 2023
- 18:26:31 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
-	<linuxppc-dev@lists.ozlabs.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: Re: [PATCH v2 1/4] powerpc/code-patching: introduce
- patch_instructions()
-Thread-Topic: [PATCH v2 1/4] powerpc/code-patching: introduce
- patch_instructions()
-Thread-Index: AQHZUrFQDrsIHyWY3ESw1VPTGTv4cK70VkgA
-Date: Fri, 10 Mar 2023 18:26:31 +0000
-Message-ID: <6bf2ec65-485e-afd4-13af-75ff24f2649a@csgroup.eu>
-References: <20230309180213.180263-1-hbathini@linux.ibm.com>
- <20230309180213.180263-2-hbathini@linux.ibm.com>
-In-Reply-To: <20230309180213.180263-2-hbathini@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB2245:EE_
-x-ms-office365-filtering-correlation-id: eabc9961-c91c-4c0b-e813-08db2194f8c8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  D7F5w8ovzu2u0nFZBt9pONl+Ju1+LAQi0DsaJ8lUfcNTlFwTj4wVt2b72CuiEGEmcTqsfkrVSjsR/eBbca0hBKBM1sPHUmzAnLgbuMNOjOTfM2btAkP0v0T0GSFiHrrd6LqMvlCjzObI8OodSx2QVyBxGRD50xpHSL/o4+e57qI/RTGyjynsbv7F/mnf2ANjlR78Ty6KoduQ5Ofmh90CpaUYGbffTWhToJPn69rkV1J6g4/m53gteeEBgHQYWXa+dWHAUDl3QxTHZevXMwrnzJarsgdC4XFG48NtyyW/Wkh1e4fy+ktsmCdUz55IiUrejEaqilKg83f3lNMW0vX5nO8bwfMogUWNgRT49d0yTw4kvFsU6zZbF7dFgcHMnV9xACMu3bmmxamk1LnjyBTpOEDmfsq7mlqCPSNF7406/myM4NfoFA/vHPl6Ym2prdlUMCbV16Xr+2QtOb1QN3TBtxVHGc/aAX2RQJKSB/OS+ME07wmgC6zbBxRuiUrnD24QpaTKF/yPy4/24x1t5Ntuz3iUR0loJxM/vHhswnXPBwIC4CLI0kkMhdM7Y4cxpfDI95OynWN712l/3IeWVbb2+3Arw+NcYBeg1LvsA5lM4m9krG/bNXLdSjpR7tt0dGOz+/Ej1JMMSndrSPxNw0+0/qBjibO3H6h2muM4y+6HgFRXj8YjMr/3/YA8gWYhY1nVt0AhK3So7K8OPBJVgAUhYCabUXHHEnjWh/qT9Y1m0RnauBjFfijfP/Hbikg2/2KI
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(39860400002)(376002)(346002)(396003)(366004)(451199018)(91956017)(76116006)(66556008)(8676002)(66476007)(66446008)(64756008)(4326008)(31686004)(66946007)(316002)(54906003)(41300700001)(71200400001)(110136005)(5660300002)(44832011)(6486002)(2906002)(6512007)(26005)(6506007)(2616005)(186003)(66574015)(8936002)(478600001)(38070700005)(36756003)(86362001)(31696002)(122000001)(83380400001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UlJqQnZoRnUxcXdzRGlrQWJZYlRsUlppSGtCeUNNR3J6QWFBS3QzMWFTeEVm?=
- =?utf-8?B?bGZsalBScURvRlhDaXgxNnJHaVVBNTNUODkray9CTmlReHBOQ0xOdnJjNGY5?=
- =?utf-8?B?bUZEdFlMaEFTR2lYM2lGSDdGVVlqdmdPbWhBVlM0V3VQWkYzZS9oakIvRThH?=
- =?utf-8?B?RkpJWXdhYk42emRoYkFRQmVyZDZ6UVAxS24yZEZVK1dyRDVNSEtBYVdqZk1r?=
- =?utf-8?B?Vk05SnZON3FHTUQrVWs2blpDc09iZGRaK1pIZk9WZjE5cVdsRTFhMUhIbUVx?=
- =?utf-8?B?VG5ndFRLRUoyWGlzeW5RUEZBc2ovVjBPQng1bHZTUjNFTVp0eHhtUzVuMDIv?=
- =?utf-8?B?VzZhMk93VVJTeGVrYzVjZUhlVktsKzk4cnhTL005Um1uRVNKWi9ZeUt3a2Rt?=
- =?utf-8?B?ck9mYUNJUXRHRytpbjFvWmNsTU1lcXZmQ2xINmdBaHhmdzFyS0l0TThoZzZZ?=
- =?utf-8?B?R08yQmE5NEpDUjJhQnVlSDFNWHJXVk1JMlpSMTk3TFl2ZDJVUitIRjdFQWRO?=
- =?utf-8?B?UjJmTTMrT1BxTVdGRytGRkdEdkhURkNiaXpCTlo1aTdPZ1JUc3lZY3cyLzIz?=
- =?utf-8?B?aVh1TFpZYnpRcVgyRmtYOVFjdUM2YW1CUEpFQ0FEUFZWaXptaUQ0V2ZUazZ1?=
- =?utf-8?B?R0hqU0ttaFB5TVJQT1hIZmZ5c0Z2YlQxUXhvanpiQ0VaLy9wN2tlSWMveDV4?=
- =?utf-8?B?YnJSNFZ1Zk1PeUhmK0tiaDlESHZoQnRUQzRod29LSHFDODYyQit5ZVNUeGYv?=
- =?utf-8?B?NW5JdjBDVzdBaVNqV281Skx5V2xJOTM3SjZLUDg4ZSs5dHlNNk0vZ1BZS2Q4?=
- =?utf-8?B?cWN5cUJjNE5oZEl5eHcyaHp4c1JiWUpUM2wxSEp6QkFzdFV3bXRkakdFemw0?=
- =?utf-8?B?Mk12V0w0aGxpTFBCVUFGTlZyTTlwUytFUGUvTHdRWDVFSkxoenBJOEkvQzk3?=
- =?utf-8?B?Ty91QWkvRjV0UzN2Y3Q1bUp4ZXZscFVkNExYT0U5T2RKcXN2ZG03NG1hdU0y?=
- =?utf-8?B?ODg2bkRVVXducXhteUUyZzBRdk1GczNzUmMxd01RWEFxNVlrVXRuT292QjFa?=
- =?utf-8?B?S0pHNGxqL0J5ZjRXcDNqOC9EVUovd0hXVVFCQUpIZy9PNGJjcWg5YzVpSlQ0?=
- =?utf-8?B?azZLNUNINSs3Zm9BRndLbWNDSkFMNFJXT1dYSGdCRjJQNEhJdEtTNnlOMnV1?=
- =?utf-8?B?WEFPbWRIRFZkZU8zenZCSUVNRENXUTU4VnpBbkpzb1gzeUhwYnY1cWg3ZTA2?=
- =?utf-8?B?VFBMZldURWxEcU1yVkwxNys2Y3pLRWI3bTAwbDJQemdxOFRadzNDN2hYbzhP?=
- =?utf-8?B?Y20xMDhSNUdQMWhvd1J3WlczdUd4b3RDWUp3Z1BzS3EzM0V3NmdYYzVSMmlx?=
- =?utf-8?B?eFVBS3F5R0lhR2NnU3d6dzMzcGZjUkh5RnlIQytOWVNFS0FoRFZtQWRjTzM4?=
- =?utf-8?B?WDdGK1dCWm8wN1diMENyZW1FWlJzNXp4cDNQRkNKTHpFKzE1cWk5VkZRYTRm?=
- =?utf-8?B?VUQ5eHBiVmEydS9NcGVwcjlsbmcySXcreUk4RDU2ck0rOUkvOHBrYlRTSTQ1?=
- =?utf-8?B?VkxQdDNpVENldmhHZFN4VDlFVXMxVXdGU0tYYlRoN0dGTFBZZ2Z6YXV0Ymw4?=
- =?utf-8?B?SmxOdmo1RmJxbTlScG84MHI3bXdqK001LzlxTzQySVh6cnpYQ0E5OU8rM2ph?=
- =?utf-8?B?Sm5KL1dYcE51NHA0VURmQ3BLY1JobFMyV3Y5R2hvaVhGcU9QTFBsT2Uza0p3?=
- =?utf-8?B?UWZyelY0WEEzcXNaNkJadVJ3ZzlpODVHTUU2a0ZVTFQ0SFhDMTRqU2ZWdlVH?=
- =?utf-8?B?djRWR1dJSUpuM01sNDQ2SGZGYWZ2ZU0zTDFGSFIyUmUybHhTRzcwcCtHcVor?=
- =?utf-8?B?Y1dXRmZtcGw5TE94bmZqeGU0WGVobVptNkFMVmtNdlVaOXNOdmxOeTFqYk1j?=
- =?utf-8?B?VDRVaDdyTE9MWTdiWUhrckZxWHQ5OEJoSEgybmsxbFBqQUtLa0pPcTlZSEti?=
- =?utf-8?B?YS9MbnFnZkxWVlpzY3hwU3hzRis2VjdtZzV5NGJCaWkrNEFSUWg0N2daRUhi?=
- =?utf-8?B?WjM0Rm1LVmptdC9YcTk1Zjh1MnIxMUllMEtVZjNsNHpnSktPNkdQcVNxT0Fy?=
- =?utf-8?B?TXNxb1AwMEdoV01TTzYyWXBmQlNlTXRra0lpcTJXMjdHSllMMVF2bmd2Y1JO?=
- =?utf-8?B?N2c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <482B5A3793027C4FB3754975B70B4A2F@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: eabc9961-c91c-4c0b-e813-08db2194f8c8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2023 18:26:31.5537
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xtzmdc4VjaIgqceLRKz1ojBlfnD5lE0G1yjt8RxqaSG1zpWS5ufda3DhRDuSBf4kR1aOmNR3GdrMdqOevM9O+vw8R8Qcw3regN5Mys3eorU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2245
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYFtq4Qp8z3f3n
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 06:08:01 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id e195-20020a25e7cc000000b00a1e59ba7ed9so6663763ybh.11
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 11:08:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1678475277;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fK32HCA5CEK3I1OSPAFiJP4orExE4ivImV9o1+O5Pgs=;
+        b=LxEH6iUVJ8Ud+MSbSJ1bywctAFUXlXrIod3JRCgJ46Edv9Oe8Ve20gFj4XvBZFYnaB
+         astsvOG4c/RdJci0z23qVYsPo5sK5r1Xbc5EpRQrU1h2CBYEzaZqbIM4nhiJ+FCJxCx0
+         JXXXxUF+h6Ee4DH4hL4EsBDfF5Cq45cpT8+RNjYPO0b5/xehUckR0i1XTqMrXdre+eVz
+         hNmc3VuXk6I7mlBynowuwBRs4qmhqBylCP7/WQ+cwA8FgTlEbAm611HSd++833GdExnZ
+         SoEAimePtX0mL9JUWGWtYz0tGNbLBJYVr2N17rNhBrZZbcAY0u0HShnIOkAy/aJS+wvK
+         FmMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678475277;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fK32HCA5CEK3I1OSPAFiJP4orExE4ivImV9o1+O5Pgs=;
+        b=1IZmnB/2Uyjz5gO8R2KilsgHCrNvx5S8yvpTlT5L/bwtu8Ylx/rFDOgRiKtxSn7S+y
+         Bkhy6gJydPeBHZfNayR8mjgnxBnxK8D1ZoAnQu+gEipDMJsxWLCMkegBO+5tFJvjvhEl
+         JDyx58b3/SSMi2LUtBR37XwEAYYc6Wggai6yhj8wkhMAcBYSX3qpoQzbe5y6OWIWXyxt
+         HR0qhtzXsT/wnnYeVSsdBS2vVQq+5rHNjKddR6S1J1OUQkvBE88MMHTy3PLOuLRMYeHE
+         v3FSujZvV72EhQM9fxhtOcZcjtLuCrYr06/jn8iWdyKqAmDznUendgjBy6B1EfVedeJU
+         J4Eg==
+X-Gm-Message-State: AO0yUKXQfBeSoQgAhFo0X2jhg/4NLx6HjZFr0Ji+bC1YI342B4inIwfg
+	onEMavTh/s9MT8lUPbjnz71+kmx4V6q4
+X-Google-Smtp-Source: AK7set+EM8BzLBCwhTK0DWxwYdJHC/bm5m06bpWqpMb4VNF5gVdI36SpJH1I+JB+DIYaAC09X62RCqRdJSoJ
+X-Received: from meowing-l.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:3eba])
+ (user=maskray job=sendgmr) by 2002:a05:6902:145:b0:ac2:a7a7:23c3 with SMTP id
+ p5-20020a056902014500b00ac2a7a723c3mr11393476ybh.12.1678475277206; Fri, 10
+ Mar 2023 11:07:57 -0800 (PST)
+Date: Fri, 10 Mar 2023 19:07:50 +0000
+Mime-Version: 1.0
+Message-ID: <20230310190750.3323802-1-maskray@google.com>
+Subject: [PATCH v3] vdso: Improve cmd_vdso_check to check all dynamic relocations
+From: Fangrui Song <maskray@google.com>
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,161 +73,235 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, Fangrui Song <maskray@google.com>, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA5LzAzLzIwMjMgw6AgMTk6MDIsIEhhcmkgQmF0aGluaSBhIMOpY3JpdMKgOg0KPiBw
-YXRjaF9pbnN0cnVjdGlvbigpIGVudGFpbHMgc2V0dGluZyB1cCBwdGUsIHBhdGNoaW5nIHRoZSBp
-bnN0cnVjdGlvbiwNCj4gY2xlYXJpbmcgdGhlIHB0ZSBhbmQgZmx1c2hpbmcgdGhlIHRsYi4gSWYg
-bXVsdGlwbGUgaW5zdHJ1Y3Rpb25zIG5lZWQNCj4gdG8gYmUgcGF0Y2hlZCwgZXZlcnkgaW5zdHJ1
-Y3Rpb24gd291bGQgaGF2ZSB0byBnbyB0aHJvdWdoIHRoZSBhYm92ZQ0KPiBkcmlsbCB1bm5lY2Vz
-c2FyaWx5LiBJbnN0ZWFkLCBpbnRyb2R1Y2UgZnVuY3Rpb24gcGF0Y2hfaW5zdHJ1Y3Rpb25zKCkN
-Cj4gdGhhdCBwYXRjaGVzIG11bHRpcGxlIGluc3RydWN0aW9ucyBhdCBvbmUgZ28gd2hpbGUgc2V0
-dGluZyB1cCB0aGUgcHRlLA0KPiBjbGVhcmluZyB0aGUgcHRlIGFuZCBmbHVzaGluZyB0aGUgdGxi
-IG9ubHkgb25jZSBwZXIgcGFnZSByYW5nZSBvZg0KPiBpbnN0cnVjdGlvbnMuIE9ic2VydmVkIH41
-WCBpbXByb3ZlbWVudCBpbiBzcGVlZCBvZiBleGVjdXRpb24gdXNpbmcNCj4gcGF0Y2hfaW5zdHJ1
-Y3Rpb25zKCkgb3ZlciBwYXRjaF9pbnN0cnVjdGlvbnMoKSwgd2hlbiBtb3JlIGluc3RydWN0aW9u
-cw0KPiBhcmUgdG8gYmUgcGF0Y2hlZC4NCg0KSSBnZXQgYSAxMyUgZGVncmFkYXRpb24gb24gdGhl
-IHRpbWUgbmVlZGVkIHRvIGFjdGl2YXRlIGZ0cmFjZSBvbiBhIA0KcG93ZXJwYyA4eHguDQoNCkJl
-Zm9yZSB5b3VyIHBhdGNoLCBhY3RpdmF0aW9uIGZ0cmFjZSB0YWtlcyA1NTBrIHRpbWViYXNlIHRp
-Y2tzLiBBZnRlciANCnlvdXIgcGF0Y2ggaXQgdGFrZXMgNjIwayB0aW1lYmFzZSB0aWNrcy4NCg0K
-Q2hyaXN0b3BoZQ0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBIYXJpIEJhdGhpbmkgPGhiYXRoaW5p
-QGxpbnV4LmlibS5jb20+DQo+IC0tLQ0KPiAgIGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9jb2Rl
-LXBhdGNoaW5nLmggfCAgIDEgKw0KPiAgIGFyY2gvcG93ZXJwYy9saWIvY29kZS1wYXRjaGluZy5j
-ICAgICAgICAgfCAxNTEgKysrKysrKysrKysrKysrKy0tLS0tLS0NCj4gICAyIGZpbGVzIGNoYW5n
-ZWQsIDEwNiBpbnNlcnRpb25zKCspLCA0NiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQg
-YS9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vY29kZS1wYXRjaGluZy5oIGIvYXJjaC9wb3dlcnBj
-L2luY2x1ZGUvYXNtL2NvZGUtcGF0Y2hpbmcuaA0KPiBpbmRleCAzZjg4MTU0OGZiNjEuLjA1OWZj
-NGZlNzAwZSAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2NvZGUtcGF0
-Y2hpbmcuaA0KPiArKysgYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vY29kZS1wYXRjaGluZy5o
-DQo+IEBAIC03NCw2ICs3NCw3IEBAIGludCBjcmVhdGVfY29uZF9icmFuY2gocHBjX2luc3RfdCAq
-aW5zdHIsIGNvbnN0IHUzMiAqYWRkciwNCj4gICBpbnQgcGF0Y2hfYnJhbmNoKHUzMiAqYWRkciwg
-dW5zaWduZWQgbG9uZyB0YXJnZXQsIGludCBmbGFncyk7DQo+ICAgaW50IHBhdGNoX2luc3RydWN0
-aW9uKHUzMiAqYWRkciwgcHBjX2luc3RfdCBpbnN0cik7DQo+ICAgaW50IHJhd19wYXRjaF9pbnN0
-cnVjdGlvbih1MzIgKmFkZHIsIHBwY19pbnN0X3QgaW5zdHIpOw0KPiAraW50IHBhdGNoX2luc3Ry
-dWN0aW9ucyh1MzIgKmFkZHIsIHUzMiAqY29kZSwgYm9vbCBmaWxsX2luc3QsIHNpemVfdCBsZW4p
-Ow0KPiAgIA0KPiAgIHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyBwYXRjaF9zaXRlX2FkZHIo
-czMyICpzaXRlKQ0KPiAgIHsNCj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9saWIvY29kZS1w
-YXRjaGluZy5jIGIvYXJjaC9wb3dlcnBjL2xpYi9jb2RlLXBhdGNoaW5nLmMNCj4gaW5kZXggYjAw
-MTEyZDdhZDQ2Li4zMzg1N2I5YjUzZGUgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvcG93ZXJwYy9saWIv
-Y29kZS1wYXRjaGluZy5jDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9saWIvY29kZS1wYXRjaGluZy5j
-DQo+IEBAIC0yNzgsNzcgKzI3OCwxMTcgQEAgc3RhdGljIHZvaWQgdW5tYXBfcGF0Y2hfYXJlYSh1
-bnNpZ25lZCBsb25nIGFkZHIpDQo+ICAgCWZsdXNoX3RsYl9rZXJuZWxfcmFuZ2UoYWRkciwgYWRk
-ciArIFBBR0VfU0laRSk7DQo+ICAgfQ0KPiAgIA0KPiAtc3RhdGljIGludCBfX2RvX3BhdGNoX2lu
-c3RydWN0aW9uX21tKHUzMiAqYWRkciwgcHBjX2luc3RfdCBpbnN0cikNCj4gK3N0YXRpYyBpbnQg
-X19kb19wYXRjaF9pbnN0cnVjdGlvbnNfbW0odTMyICphZGRyLCB1MzIgKmNvZGUsIGJvb2wgZmls
-bF9pbnN0LCBzaXplX3QgbGVuKQ0KPiAgIHsNCj4gLQlpbnQgZXJyOw0KPiAtCXUzMiAqcGF0Y2hf
-YWRkcjsNCj4gLQl1bnNpZ25lZCBsb25nIHRleHRfcG9rZV9hZGRyOw0KPiAtCXB0ZV90ICpwdGU7
-DQo+IC0JdW5zaWduZWQgbG9uZyBwZm4gPSBnZXRfcGF0Y2hfcGZuKGFkZHIpOw0KPiAtCXN0cnVj
-dCBtbV9zdHJ1Y3QgKnBhdGNoaW5nX21tOw0KPiAtCXN0cnVjdCBtbV9zdHJ1Y3QgKm9yaWdfbW07
-DQo+ICsJc3RydWN0IG1tX3N0cnVjdCAqcGF0Y2hpbmdfbW0sICpvcmlnX21tOw0KPiArCXVuc2ln
-bmVkIGxvbmcgdGV4dF9wb2tlX2FkZHIsIHBmbjsNCj4gKwl1MzIgKnBhdGNoX2FkZHIsICplbmQs
-ICpwZW5kOw0KPiArCXBwY19pbnN0X3QgaW5zdHI7DQo+ICAgCXNwaW5sb2NrX3QgKnB0bDsNCj4g
-KwlpbnQgaWxlbiwgZXJyOw0KPiArCXB0ZV90ICpwdGU7DQo+ICAgDQo+ICAgCXBhdGNoaW5nX21t
-ID0gX190aGlzX2NwdV9yZWFkKGNwdV9wYXRjaGluZ19jb250ZXh0Lm1tKTsNCj4gICAJdGV4dF9w
-b2tlX2FkZHIgPSBfX3RoaXNfY3B1X3JlYWQoY3B1X3BhdGNoaW5nX2NvbnRleHQuYWRkcik7DQo+
-IC0JcGF0Y2hfYWRkciA9ICh1MzIgKikodGV4dF9wb2tlX2FkZHIgKyBvZmZzZXRfaW5fcGFnZShh
-ZGRyKSk7DQo+ICAgDQo+ICAgCXB0ZSA9IGdldF9sb2NrZWRfcHRlKHBhdGNoaW5nX21tLCB0ZXh0
-X3Bva2VfYWRkciwgJnB0bCk7DQo+ICAgCWlmICghcHRlKQ0KPiAgIAkJcmV0dXJuIC1FTk9NRU07
-DQo+ICAgDQo+IC0JX19zZXRfcHRlX2F0KHBhdGNoaW5nX21tLCB0ZXh0X3Bva2VfYWRkciwgcHRl
-LCBwZm5fcHRlKHBmbiwgUEFHRV9LRVJORUwpLCAwKTsNCj4gKwllbmQgPSAodm9pZCAqKWFkZHIg
-KyBsZW47DQo+ICsJZG8gew0KPiArCQlwZm4gPSBnZXRfcGF0Y2hfcGZuKGFkZHIpOw0KPiArCQlf
-X3NldF9wdGVfYXQocGF0Y2hpbmdfbW0sIHRleHRfcG9rZV9hZGRyLCBwdGUsIHBmbl9wdGUocGZu
-LCBQQUdFX0tFUk5FTCksIDApOw0KPiAgIA0KPiAtCS8qIG9yZGVyIFBURSB1cGRhdGUgYmVmb3Jl
-IHVzZSwgYWxzbyBzZXJ2ZXMgYXMgdGhlIGh3c3luYyAqLw0KPiAtCWFzbSB2b2xhdGlsZSgicHRl
-c3luYyI6IDogOiJtZW1vcnkiKTsNCj4gLQ0KPiAtCS8qIG9yZGVyIGNvbnRleHQgc3dpdGNoIGFm
-dGVyIGFyYml0cmFyeSBwcmlvciBjb2RlICovDQo+IC0JaXN5bmMoKTsNCj4gLQ0KPiAtCW9yaWdf
-bW0gPSBzdGFydF91c2luZ190ZW1wX21tKHBhdGNoaW5nX21tKTsNCj4gLQ0KPiAtCWVyciA9IF9f
-cGF0Y2hfaW5zdHJ1Y3Rpb24oYWRkciwgaW5zdHIsIHBhdGNoX2FkZHIpOw0KPiArCQkvKiBvcmRl
-ciBQVEUgdXBkYXRlIGJlZm9yZSB1c2UsIGFsc28gc2VydmVzIGFzIHRoZSBod3N5bmMgKi8NCj4g
-KwkJYXNtIHZvbGF0aWxlKCJwdGVzeW5jIjogOiA6Im1lbW9yeSIpOw0KPiAgIA0KPiAtCS8qIGh3
-c3luYyBwZXJmb3JtZWQgYnkgX19wYXRjaF9pbnN0cnVjdGlvbiAoc3luYykgaWYgc3VjY2Vzc2Z1
-bCAqLw0KPiAtCWlmIChlcnIpDQo+IC0JCW1iKCk7ICAvKiBzeW5jICovDQo+ICsJCS8qIG9yZGVy
-IGNvbnRleHQgc3dpdGNoIGFmdGVyIGFyYml0cmFyeSBwcmlvciBjb2RlICovDQo+ICsJCWlzeW5j
-KCk7DQo+ICsNCj4gKwkJb3JpZ19tbSA9IHN0YXJ0X3VzaW5nX3RlbXBfbW0ocGF0Y2hpbmdfbW0p
-Ow0KPiArDQo+ICsJCXBhdGNoX2FkZHIgPSAodTMyICopKHRleHRfcG9rZV9hZGRyICsgb2Zmc2V0
-X2luX3BhZ2UoYWRkcikpOw0KPiArCQlwZW5kID0gKHZvaWQgKilhZGRyICsgUEFHRV9TSVpFIC0g
-b2Zmc2V0X2luX3BhZ2UoYWRkcik7DQo+ICsJCWlmIChlbmQgPCBwZW5kKQ0KPiArCQkJcGVuZCA9
-IGVuZDsNCj4gKw0KPiArCQl3aGlsZSAoYWRkciA8IHBlbmQpIHsNCj4gKwkJCWluc3RyID0gcHBj
-X2luc3RfcmVhZChjb2RlKTsNCj4gKwkJCWlsZW4gPSBwcGNfaW5zdF9sZW4oaW5zdHIpOw0KPiAr
-CQkJZXJyID0gX19wYXRjaF9pbnN0cnVjdGlvbihhZGRyLCBpbnN0ciwgcGF0Y2hfYWRkcik7DQo+
-ICsJCQkvKiBod3N5bmMgcGVyZm9ybWVkIGJ5IF9fcGF0Y2hfaW5zdHJ1Y3Rpb24gKHN5bmMpIGlm
-IHN1Y2Nlc3NmdWwgKi8NCj4gKwkJCWlmIChlcnIpIHsNCj4gKwkJCQltYigpOyAgLyogc3luYyAq
-Lw0KPiArCQkJCWJyZWFrOw0KPiArCQkJfQ0KPiArDQo+ICsJCQlwYXRjaF9hZGRyID0gKHZvaWQg
-KilwYXRjaF9hZGRyICsgaWxlbjsNCj4gKwkJCWFkZHIgPSAodm9pZCAqKWFkZHIgKyBpbGVuOw0K
-PiArCQkJaWYgKCFmaWxsX2luc3QpDQo+ICsJCQkJY29kZSA9ICh2b2lkICopY29kZSArIGlsZW47
-DQo+ICsJCX0NCj4gICANCj4gLQkvKiBjb250ZXh0IHN5bmNocm9uaXNhdGlvbiBwZXJmb3JtZWQg
-YnkgX19wYXRjaF9pbnN0cnVjdGlvbiAoaXN5bmMgb3IgZXhjZXB0aW9uKSAqLw0KPiAtCXN0b3Bf
-dXNpbmdfdGVtcF9tbShwYXRjaGluZ19tbSwgb3JpZ19tbSk7DQo+ICsJCS8qIGNvbnRleHQgc3lu
-Y2hyb25pc2F0aW9uIHBlcmZvcm1lZCBieSBfX3BhdGNoX2luc3RydWN0aW9uIChpc3luYyBvciBl
-eGNlcHRpb24pICovDQo+ICsJCXN0b3BfdXNpbmdfdGVtcF9tbShwYXRjaGluZ19tbSwgb3JpZ19t
-bSk7DQo+ICAgDQo+IC0JcHRlX2NsZWFyKHBhdGNoaW5nX21tLCB0ZXh0X3Bva2VfYWRkciwgcHRl
-KTsNCj4gLQkvKg0KPiAtCSAqIHB0ZXN5bmMgdG8gb3JkZXIgUFRFIHVwZGF0ZSBiZWZvcmUgVExC
-IGludmFsaWRhdGlvbiBkb25lDQo+IC0JICogYnkgcmFkaXhfX2xvY2FsX2ZsdXNoX3RsYl9wYWdl
-X3BzaXplIChpbiBfdGxiaWVsX3ZhKQ0KPiAtCSAqLw0KPiAtCWxvY2FsX2ZsdXNoX3RsYl9wYWdl
-X3BzaXplKHBhdGNoaW5nX21tLCB0ZXh0X3Bva2VfYWRkciwgbW11X3ZpcnR1YWxfcHNpemUpOw0K
-PiArCQlwdGVfY2xlYXIocGF0Y2hpbmdfbW0sIHRleHRfcG9rZV9hZGRyLCBwdGUpOw0KPiArCQkv
-Kg0KPiArCQkgKiBwdGVzeW5jIHRvIG9yZGVyIFBURSB1cGRhdGUgYmVmb3JlIFRMQiBpbnZhbGlk
-YXRpb24gZG9uZQ0KPiArCQkgKiBieSByYWRpeF9fbG9jYWxfZmx1c2hfdGxiX3BhZ2VfcHNpemUg
-KGluIF90bGJpZWxfdmEpDQo+ICsJCSAqLw0KPiArCQlsb2NhbF9mbHVzaF90bGJfcGFnZV9wc2l6
-ZShwYXRjaGluZ19tbSwgdGV4dF9wb2tlX2FkZHIsIG1tdV92aXJ0dWFsX3BzaXplKTsNCj4gKwkJ
-aWYgKGVycikNCj4gKwkJCWJyZWFrOw0KPiArCX0gd2hpbGUgKGFkZHIgPCBlbmQpOw0KPiAgIA0K
-PiAgIAlwdGVfdW5tYXBfdW5sb2NrKHB0ZSwgcHRsKTsNCj4gICANCj4gICAJcmV0dXJuIGVycjsN
-Cj4gICB9DQo+ICAgDQo+IC1zdGF0aWMgaW50IF9fZG9fcGF0Y2hfaW5zdHJ1Y3Rpb24odTMyICph
-ZGRyLCBwcGNfaW5zdF90IGluc3RyKQ0KPiArc3RhdGljIGludCBfX2RvX3BhdGNoX2luc3RydWN0
-aW9ucyh1MzIgKmFkZHIsIHUzMiAqY29kZSwgYm9vbCBmaWxsX2luc3QsIHNpemVfdCBsZW4pDQo+
-ICAgew0KPiAtCWludCBlcnI7DQo+IC0JdTMyICpwYXRjaF9hZGRyOw0KPiAtCXVuc2lnbmVkIGxv
-bmcgdGV4dF9wb2tlX2FkZHI7DQo+ICsJdW5zaWduZWQgbG9uZyB0ZXh0X3Bva2VfYWRkciwgcGZu
-Ow0KPiArCXUzMiAqcGF0Y2hfYWRkciwgKmVuZCwgKnBlbmQ7DQo+ICsJcHBjX2luc3RfdCBpbnN0
-cjsNCj4gKwlpbnQgaWxlbiwgZXJyOw0KPiAgIAlwdGVfdCAqcHRlOw0KPiAtCXVuc2lnbmVkIGxv
-bmcgcGZuID0gZ2V0X3BhdGNoX3BmbihhZGRyKTsNCj4gICANCj4gICAJdGV4dF9wb2tlX2FkZHIg
-PSAodW5zaWduZWQgbG9uZylfX3RoaXNfY3B1X3JlYWQoY3B1X3BhdGNoaW5nX2NvbnRleHQuYWRk
-cikgJiBQQUdFX01BU0s7DQo+IC0JcGF0Y2hfYWRkciA9ICh1MzIgKikodGV4dF9wb2tlX2FkZHIg
-KyBvZmZzZXRfaW5fcGFnZShhZGRyKSk7DQo+IC0NCj4gICAJcHRlID0gX190aGlzX2NwdV9yZWFk
-KGNwdV9wYXRjaGluZ19jb250ZXh0LnB0ZSk7DQo+IC0JX19zZXRfcHRlX2F0KCZpbml0X21tLCB0
-ZXh0X3Bva2VfYWRkciwgcHRlLCBwZm5fcHRlKHBmbiwgUEFHRV9LRVJORUwpLCAwKTsNCj4gLQkv
-KiBTZWUgcHRlc3luYyBjb21tZW50IGluIHJhZGl4X19zZXRfcHRlX2F0KCkgKi8NCj4gLQlpZiAo
-cmFkaXhfZW5hYmxlZCgpKQ0KPiAtCQlhc20gdm9sYXRpbGUoInB0ZXN5bmMiOiA6IDoibWVtb3J5
-Iik7DQo+ICAgDQo+IC0JZXJyID0gX19wYXRjaF9pbnN0cnVjdGlvbihhZGRyLCBpbnN0ciwgcGF0
-Y2hfYWRkcik7DQo+ICsJZW5kID0gKHZvaWQgKilhZGRyICsgbGVuOw0KPiArCWRvIHsNCj4gKwkJ
-cGZuID0gZ2V0X3BhdGNoX3BmbihhZGRyKTsNCj4gKwkJX19zZXRfcHRlX2F0KCZpbml0X21tLCB0
-ZXh0X3Bva2VfYWRkciwgcHRlLCBwZm5fcHRlKHBmbiwgUEFHRV9LRVJORUwpLCAwKTsNCj4gKwkJ
-LyogU2VlIHB0ZXN5bmMgY29tbWVudCBpbiByYWRpeF9fc2V0X3B0ZV9hdCgpICovDQo+ICsJCWlm
-IChyYWRpeF9lbmFibGVkKCkpDQo+ICsJCQlhc20gdm9sYXRpbGUoInB0ZXN5bmMiOiA6IDoibWVt
-b3J5Iik7DQo+ICsNCj4gKwkJcGF0Y2hfYWRkciA9ICh1MzIgKikodGV4dF9wb2tlX2FkZHIgKyBv
-ZmZzZXRfaW5fcGFnZShhZGRyKSk7DQo+ICsJCXBlbmQgPSAodm9pZCAqKWFkZHIgKyBQQUdFX1NJ
-WkUgLSBvZmZzZXRfaW5fcGFnZShhZGRyKTsNCj4gKwkJaWYgKGVuZCA8IHBlbmQpDQo+ICsJCQlw
-ZW5kID0gZW5kOw0KPiArDQo+ICsJCXdoaWxlIChhZGRyIDwgcGVuZCkgew0KPiArCQkJaW5zdHIg
-PSBwcGNfaW5zdF9yZWFkKGNvZGUpOw0KPiArCQkJaWxlbiA9IHBwY19pbnN0X2xlbihpbnN0cik7
-DQo+ICsJCQllcnIgPSBfX3BhdGNoX2luc3RydWN0aW9uKGFkZHIsIGluc3RyLCBwYXRjaF9hZGRy
-KTsNCj4gKwkJCWlmIChlcnIpDQo+ICsJCQkJYnJlYWs7DQo+ICsNCj4gKwkJCXBhdGNoX2FkZHIg
-PSAodm9pZCAqKXBhdGNoX2FkZHIgKyBpbGVuOw0KPiArCQkJYWRkciA9ICh2b2lkICopYWRkciAr
-IGlsZW47DQo+ICsJCQlpZiAoIWZpbGxfaW5zdCkNCj4gKwkJCQljb2RlID0gKHZvaWQgKiljb2Rl
-ICsgaWxlbjsNCj4gKwkJfQ0KPiAgIA0KPiAtCXB0ZV9jbGVhcigmaW5pdF9tbSwgdGV4dF9wb2tl
-X2FkZHIsIHB0ZSk7DQo+IC0JZmx1c2hfdGxiX2tlcm5lbF9yYW5nZSh0ZXh0X3Bva2VfYWRkciwg
-dGV4dF9wb2tlX2FkZHIgKyBQQUdFX1NJWkUpOw0KPiArCQlwdGVfY2xlYXIoJmluaXRfbW0sIHRl
-eHRfcG9rZV9hZGRyLCBwdGUpOw0KPiArCQlmbHVzaF90bGJfa2VybmVsX3JhbmdlKHRleHRfcG9r
-ZV9hZGRyLCB0ZXh0X3Bva2VfYWRkciArIFBBR0VfU0laRSk7DQo+ICsJCWlmIChlcnIpDQo+ICsJ
-CQlicmVhazsNCj4gKwl9IHdoaWxlIChhZGRyIDwgZW5kKTsNCj4gICANCj4gICAJcmV0dXJuIGVy
-cjsNCj4gICB9DQo+IEBAIC0zNjksMTUgKzQwOSwzNCBAQCBpbnQgcGF0Y2hfaW5zdHJ1Y3Rpb24o
-dTMyICphZGRyLCBwcGNfaW5zdF90IGluc3RyKQ0KPiAgIA0KPiAgIAlsb2NhbF9pcnFfc2F2ZShm
-bGFncyk7DQo+ICAgCWlmIChtbV9wYXRjaF9lbmFibGVkKCkpDQo+IC0JCWVyciA9IF9fZG9fcGF0
-Y2hfaW5zdHJ1Y3Rpb25fbW0oYWRkciwgaW5zdHIpOw0KPiArCQllcnIgPSBfX2RvX3BhdGNoX2lu
-c3RydWN0aW9uc19tbShhZGRyLCAodTMyICopJmluc3RyLCBmYWxzZSwgcHBjX2luc3RfbGVuKGlu
-c3RyKSk7DQo+ICAgCWVsc2UNCj4gLQkJZXJyID0gX19kb19wYXRjaF9pbnN0cnVjdGlvbihhZGRy
-LCBpbnN0cik7DQo+ICsJCWVyciA9IF9fZG9fcGF0Y2hfaW5zdHJ1Y3Rpb25zKGFkZHIsICh1MzIg
-KikmaW5zdHIsIGZhbHNlLCBwcGNfaW5zdF9sZW4oaW5zdHIpKTsNCj4gICAJbG9jYWxfaXJxX3Jl
-c3RvcmUoZmxhZ3MpOw0KPiAgIA0KPiAgIAlyZXR1cm4gZXJyOw0KPiAgIH0NCj4gICBOT0tQUk9C
-RV9TWU1CT0wocGF0Y2hfaW5zdHJ1Y3Rpb24pOw0KPiAgIA0KPiArLyoNCj4gKyAqIFBhdGNoICdh
-ZGRyJyB3aXRoICdsZW4nIGJ5dGVzIG9mIGluc3RydWN0aW9ucyBmcm9tICdjb2RlJy4NCj4gKyAq
-Lw0KPiAraW50IHBhdGNoX2luc3RydWN0aW9ucyh1MzIgKmFkZHIsIHUzMiAqY29kZSwgYm9vbCBm
-aWxsX2luc3QsIHNpemVfdCBsZW4pDQo+ICt7DQo+ICsJdW5zaWduZWQgbG9uZyBmbGFnczsNCj4g
-KwlpbnQgZXJyOw0KPiArDQo+ICsJbG9jYWxfaXJxX3NhdmUoZmxhZ3MpOw0KPiArCWlmIChtbV9w
-YXRjaF9lbmFibGVkKCkpDQo+ICsJCWVyciA9IF9fZG9fcGF0Y2hfaW5zdHJ1Y3Rpb25zX21tKGFk
-ZHIsIGNvZGUsIGZpbGxfaW5zdCwgbGVuKTsNCj4gKwllbHNlDQo+ICsJCWVyciA9IF9fZG9fcGF0
-Y2hfaW5zdHJ1Y3Rpb25zKGFkZHIsIGNvZGUsIGZpbGxfaW5zdCwgbGVuKTsNCj4gKwlsb2NhbF9p
-cnFfcmVzdG9yZShmbGFncyk7DQo+ICsNCj4gKwlyZXR1cm4gZXJyOw0KPiArfQ0KPiArTk9LUFJP
-QkVfU1lNQk9MKHBhdGNoX2luc3RydWN0aW9ucyk7DQo+ICsNCj4gICBpbnQgcGF0Y2hfYnJhbmNo
-KHUzMiAqYWRkciwgdW5zaWduZWQgbG9uZyB0YXJnZXQsIGludCBmbGFncykNCj4gICB7DQo+ICAg
-CXBwY19pbnN0X3QgaW5zdHI7DQo=
+The actual intention is that no dynamic relocation exists. However, some
+GNU ld ports produce unneeded R_*_NONE. (If a port fails to determine
+the exact .rel[a].dyn size, the trailing zeros become R_*_NONE
+relocations. E.g. ld's powerpc port recently fixed
+https://sourceware.org/bugzilla/show_bug.cgi?id=29540) R_*_NONE are
+generally no-op in the dynamic loaders. So just ignore them.
+
+With the change, we can remove ARCH_REL_TYPE_ABS. ARCH_REL_TYPE_ABS is a
+bit misnomer as ports may check RELAVETIVE/GLOB_DAT/JUMP_SLOT which are
+not called "absolute relocations". (The patch is motivated by the arm64
+port missing R_AARCH64_RELATIVE.)
+
+Signed-off-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for vDSO, aarch64
+Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for aarch64
+---
+Changes from v2:
+* rebase
+
+Changes from v3:
+* Add a comment before `include $(srctree)/lib/vdso/Makefile` in every touched arch Makefile
+---
+ arch/arm/vdso/Makefile            |  4 +---
+ arch/arm64/kernel/vdso/Makefile   |  4 +---
+ arch/arm64/kernel/vdso32/Makefile |  3 ---
+ arch/csky/kernel/vdso/Makefile    |  4 +---
+ arch/loongarch/vdso/Makefile      |  4 +---
+ arch/mips/vdso/Makefile           |  4 +---
+ arch/powerpc/kernel/vdso/Makefile |  2 +-
+ arch/riscv/kernel/vdso/Makefile   |  4 +---
+ arch/s390/kernel/vdso32/Makefile  |  3 +--
+ arch/s390/kernel/vdso64/Makefile  |  3 +--
+ arch/x86/entry/vdso/Makefile      |  5 +----
+ lib/vdso/Makefile                 | 13 ++++---------
+ 12 files changed, 14 insertions(+), 39 deletions(-)
+
+diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
+index a7ec06ce3785..515ca33b854c 100644
+--- a/arch/arm/vdso/Makefile
++++ b/arch/arm/vdso/Makefile
+@@ -1,8 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ hostprogs := vdsomunge
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index beaf9586338f..fe7a53c6781f 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -6,9 +6,7 @@
+ # Heavily based on the vDSO Makefiles for other archs.
+ #
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_AARCH64_JUMP_SLOT|R_AARCH64_GLOB_DAT|R_AARCH64_ABS64
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso := vgettimeofday.o note.o sigreturn.o
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index f59bd1a4ead6..d014162c5c71 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -3,9 +3,6 @@
+ # Makefile for vdso32
+ #
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Same as cc-*option, but using CC_COMPAT instead of CC
+diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
+index 0b6909f10667..299e4e41ebc5 100644
+--- a/arch/csky/kernel/vdso/Makefile
++++ b/arch/csky/kernel/vdso/Makefile
+@@ -1,8 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_CKCORE_ADDR32|R_CKCORE_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Symbols present in the vdso
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index d89e2ac75f7b..461240ab4436 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -1,9 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Objects to go into the VDSO.
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_LARCH_32|R_LARCH_64|R_LARCH_MARK_LA|R_LARCH_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso-y := elf.o vgetcpu.o vgettimeofday.o sigreturn.o
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 18af9474ed0e..eb56581f6d73 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -4,9 +4,7 @@
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+  KCSAN_SANITIZE			:= n
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_MIPS_JUMP_SLOT|R_MIPS_GLOB_DAT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso-y := elf.o vgettimeofday.o sigreturn.o
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 66f723f53be2..4c3f34485f08 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -2,7 +2,7 @@
+ 
+ # List of files in the vdso, has to be asm only for now
+ 
+-ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_PPC_ADDR16|R_PPC_ADDR16_LO|R_PPC_ADDR16_HI|R_PPC_ADDR16_HA|R_PPC_ADDR14|R_PPC_ADDR14_BRTAKEN|R_PPC_ADDR14_BRNTAKEN|R_PPC_REL24
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o note-32.o getcpu-32.o
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index 06e6b27f3bcc..a04b3bc35ca2 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -1,9 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ # Copied from arch/tile/kernel/vdso/Makefile
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ # Symbols present in the vdso
+ vdso-syms  = rt_sigreturn
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 245bddfe9bc0..bafd3147eb4e 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -2,9 +2,8 @@
+ # List of files in the vdso
+ 
+ KCOV_INSTRUMENT := n
+-ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
+-ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
+ 
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ obj-vdso32 = vdso_user_wrapper-32.o note-32.o
+ 
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index 34f9542636e9..a766d286e15f 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -2,9 +2,8 @@
+ # List of files in the vdso
+ 
+ KCOV_INSTRUMENT := n
+-ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
+-ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
+ 
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ obj-vdso64 = vdso_user_wrapper.o note.o
+ obj-cvdso64 = vdso64_generic.o getcpu.o
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 1506a22a4fb6..6a1821bd7d5e 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -3,10 +3,7 @@
+ # Building vDSO images for x86.
+ #
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_X86_64_JUMP_SLOT|R_X86_64_GLOB_DAT|R_X86_64_RELATIVE|
+-ARCH_REL_TYPE_ABS += R_386_GLOB_DAT|R_386_JMP_SLOT|R_386_RELATIVE
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+diff --git a/lib/vdso/Makefile b/lib/vdso/Makefile
+index e814061d6aa0..9f031eafc465 100644
+--- a/lib/vdso/Makefile
++++ b/lib/vdso/Makefile
+@@ -5,18 +5,13 @@ GENERIC_VDSO_DIR := $(dir $(GENERIC_VDSO_MK_PATH))
+ 
+ c-gettimeofday-$(CONFIG_GENERIC_GETTIMEOFDAY) := $(addprefix $(GENERIC_VDSO_DIR), gettimeofday.c)
+ 
+-# This cmd checks that the vdso library does not contain absolute relocation
++# This cmd checks that the vdso library does not contain dynamic relocations.
+ # It has to be called after the linking of the vdso library and requires it
+ # as a parameter.
+ #
+-# $(ARCH_REL_TYPE_ABS) is defined in the arch specific makefile and corresponds
+-# to the absolute relocation types printed by "objdump -R" and accepted by the
+-# dynamic linker.
+-ifndef ARCH_REL_TYPE_ABS
+-$(error ARCH_REL_TYPE_ABS is not set)
+-endif
+-
++# As a workaround for some GNU ld ports which produce unneeded R_*_NONE
++# dynamic relocations, ignore R_*_NONE.
+ quiet_cmd_vdso_check = VDSOCHK $@
+-      cmd_vdso_check = if $(OBJDUMP) -R $@ | grep -E -h "$(ARCH_REL_TYPE_ABS)"; \
++      cmd_vdso_check = if $(READELF) -rW $@ | grep -v _NONE | grep -q " R_\w*_"; \
+ 		       then (echo >&2 "$@: dynamic relocations are not supported"; \
+ 			     rm -f $@; /bin/false); fi
+-- 
+2.40.0.rc1.284.g88254d51c5-goog
+
