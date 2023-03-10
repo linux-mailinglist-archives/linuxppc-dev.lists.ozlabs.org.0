@@ -2,47 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401296B45B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 15:36:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F5B6B46E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 15:47:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PY7sV6xMTz3f5l
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 01:36:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PY86K4GxPz3f4b
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 01:47:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PY7rt1ky7z2xBF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 01:35:54 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F6E1C14;
-	Fri, 10 Mar 2023 06:36:06 -0800 (PST)
-Received: from [192.168.4.21] (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F143F3F71A;
-	Fri, 10 Mar 2023 06:35:20 -0800 (PST)
-Message-ID: <ecd41da2-d986-8890-a519-3dfc83019593@arm.com>
-Date: Fri, 10 Mar 2023 14:35:09 +0000
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.179; helo=mail-oi1-f179.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PY85l5PPTz3bgy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 01:47:07 +1100 (AEDT)
+Received: by mail-oi1-f179.google.com with SMTP id bg11so4398286oib.5
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 06:47:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678459623;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OU4f74//gf53K1vpd3AhvqfwdLrPYxnig4GEUDiaPjU=;
+        b=lf2PyLpiI3y4nKENVPiTZ3VljAyDtsbakzrY67Jlnnaxjv3/GQd+2fXZPQRC9by2xx
+         oWcY8E0Gk/noOip90Xs8rbyLT9Rd3LJtzd9U7Wg8irlF1C8KnFXuLnAIhhFFZNwqbtme
+         z86BjfSlR9Zc3LDjNfdDYXYHMt9pWoHqv8ZHSAKzmB2a75vpkOrGQ4gZ2s+luxN/VegW
+         VeDwUHTbaz33uNnBkz3EaPnnhUkNfcBdgzlXs76GPwZP2pX6hNfu6E36QnD27XSnoHVK
+         bBxsf1kHQ0sXxziZT9n6dL+mnt3oAYB19tlk3FpQfMYAgxdjx+FaTSZLDjBGj7+AwndL
+         cMSw==
+X-Gm-Message-State: AO0yUKW8m+9e7tJp3fIsEHyG5flcUJJ9Kzl3AD9GPB7MtV2FuQzVKBzz
+	YcEBzS5qqORUFJCixHnsvQ==
+X-Google-Smtp-Source: AK7set8g5ChVrvUrZVHWfS/XFQBwmKXT9a/z9iAqAnF49+v0LC/ZY5BRlngv8dMqE01moV4WJ/Ypwg==
+X-Received: by 2002:a05:6808:357:b0:378:9fca:e5da with SMTP id j23-20020a056808035700b003789fcae5damr12060606oie.53.1678459623345;
+        Fri, 10 Mar 2023 06:47:03 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id bl14-20020a056808308e00b00383e12bedebsm961933oib.9.2023.03.10.06.47.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Mar 2023 06:47:02 -0800 (PST)
+Received: (nullmailer pid 1541066 invoked by uid 1000);
+	Fri, 10 Mar 2023 14:46:57 -0000
+From: Rob Herring <robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann <arnd@arndb.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH] powerpc: Use of_property_present() for testing DT property presence
+Date: Fri, 10 Mar 2023 08:46:56 -0600
+Message-Id: <20230310144657.1541039-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2] vdso: Improve cmd_vdso_check to check all dynamic
- relocations
-Content-Language: en-US
-To: Fangrui Song <maskray@google.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>
-References: <20220830193701.1702962-1-maskray@google.com>
- <20220910075316.no72fdyqjvunomwm@google.com>
- <CAFP8O3+OwanSJdzd5V3oGJ_MOJOSVdbn+4iBJJKm2LCR8mCA0Q@mail.gmail.com>
- <9ce45cd2-dcd8-11f8-e496-7efe3649e241@csgroup.eu>
- <20221115004625.x4wl6zbg4iiuxl5t@google.com>
- <CAFP8O3LdSJCChGEwT57e=iZopceYkBFuW9XD=yhO1ZszVZGm4g@mail.gmail.com>
- <3ec9737e-3d1a-c014-b91a-0e2d406a3b3d@csgroup.eu>
- <CAFP8O3KZTkSbxXJ2yWt4w-F3xWHY_owCs03wN3Bhss57O-E_JQ@mail.gmail.com>
- <20221221235147.45lkqmosndritfpe@google.com>
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-In-Reply-To: <20221221235147.45lkqmosndritfpe@google.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,247 +60,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Fangrui,
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties. As
+part of this, convert of_get_property/of_find_property calls to the
+recently added of_property_present() helper when we just want to test
+for presence of a property and nothing more.
 
-Apologize for the delay, I totally missed that you had a new version of your
-patch since it was threaded with the old one.
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ arch/powerpc/kernel/legacy_serial.c          | 8 ++++----
+ arch/powerpc/platforms/44x/iss4xx.c          | 2 +-
+ arch/powerpc/platforms/44x/ppc476.c          | 2 +-
+ arch/powerpc/platforms/4xx/pci.c             | 2 +-
+ arch/powerpc/platforms/cell/spu_manage.c     | 2 +-
+ arch/powerpc/platforms/powermac/pic.c        | 2 +-
+ arch/powerpc/platforms/powernv/opal-lpc.c    | 2 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 2 +-
+ arch/powerpc/platforms/pseries/vio.c         | 2 +-
+ arch/powerpc/sysdev/mpic_msgr.c              | 2 +-
+ 10 files changed, 13 insertions(+), 13 deletions(-)
 
-On 12/21/22 23:51, Fangrui Song wrote:
-> The actual intention is that no dynamic relocation exists. However, some
-> GNU ld ports produce unneeded R_*_NONE. (If a port fails to determine
-> the exact .rel[a].dyn size, the trailing zeros become R_*_NONE
-> relocations. E.g. ld's powerpc port recently fixed
-> https://sourceware.org/bugzilla/show_bug.cgi?id=29540) R_*_NONE are
-> generally no-op in the dynamic loaders. So just ignore them.
-> 
-> With the change, we can remove ARCH_REL_TYPE_ABS. ARCH_REL_TYPE_ABS is a
-> bit misnomer as ports may check RELAVETIVE/GLOB_DAT/JUMP_SLOT which are
-> not called "absolute relocations". (The patch is motivated by the arm64
-> port missing R_AARCH64_RELATIVE.)
-
-It makes sense to update the name, it started as "absolute relocations" but then
-it evolved into something else.
-
-A part that, did you perform any testing with the generated vDSO libraries?
-
-> 
-> Signed-off-by: Fangrui Song <maskray@google.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> Change from v1:
-> * rebase after 8ac3b5cd3e0521d92f9755e90d140382fc292510 (lib/vdso: use "grep -E"
-> instead of "egrep")
-> * change the commit message to mention an example GNU ld bug; no longer say the
-> patch fixes a deprecated egrep use
-> ---
->  arch/arm/vdso/Makefile            |  3 ---
->  arch/arm64/kernel/vdso/Makefile   |  3 ---
->  arch/arm64/kernel/vdso32/Makefile |  3 ---
->  arch/csky/kernel/vdso/Makefile    |  3 ---
->  arch/loongarch/vdso/Makefile      |  3 ---
->  arch/mips/vdso/Makefile           |  3 ---
->  arch/powerpc/kernel/vdso/Makefile |  1 -
->  arch/riscv/kernel/vdso/Makefile   |  3 ---
->  arch/s390/kernel/vdso32/Makefile  |  2 --
->  arch/s390/kernel/vdso64/Makefile  |  2 --
->  arch/x86/entry/vdso/Makefile      |  4 ----
->  lib/vdso/Makefile                 | 13 ++++---------
->  12 files changed, 4 insertions(+), 39 deletions(-)
-> 
-> diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
-> index a7ec06ce3785..e58197bba776 100644
-> --- a/arch/arm/vdso/Makefile
-> +++ b/arch/arm/vdso/Makefile
-> @@ -1,8 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
-
-I would still add a comment here to say why we are including the generic
-Makefile to prevent that it gets accidentally removed (similar thing for every
-architecture touched by this patch).
-
-With that:
-
-Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for vDSO, aarch64
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for aarch64
-
->  include $(srctree)/lib/vdso/Makefile
->  
->  hostprogs := vdsomunge
-> diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
-> index beaf9586338f..1f2427b13410 100644
-> --- a/arch/arm64/kernel/vdso/Makefile
-> +++ b/arch/arm64/kernel/vdso/Makefile
-> @@ -6,9 +6,6 @@
->  # Heavily based on the vDSO Makefiles for other archs.
->  #
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_AARCH64_JUMP_SLOT|R_AARCH64_GLOB_DAT|R_AARCH64_ABS64
->  include $(srctree)/lib/vdso/Makefile
->  
->  obj-vdso := vgettimeofday.o note.o sigreturn.o
-> diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
-> index f59bd1a4ead6..d014162c5c71 100644
-> --- a/arch/arm64/kernel/vdso32/Makefile
-> +++ b/arch/arm64/kernel/vdso32/Makefile
-> @@ -3,9 +3,6 @@
->  # Makefile for vdso32
->  #
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
->  include $(srctree)/lib/vdso/Makefile
->  
->  # Same as cc-*option, but using CC_COMPAT instead of CC
-> diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
-> index 0b6909f10667..86c8c4de1b0f 100644
-> --- a/arch/csky/kernel/vdso/Makefile
-> +++ b/arch/csky/kernel/vdso/Makefile
-> @@ -1,8 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_CKCORE_ADDR32|R_CKCORE_JUMP_SLOT
->  include $(srctree)/lib/vdso/Makefile
->  
->  # Symbols present in the vdso
-> diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-> index d89e2ac75f7b..1b2e0f149f55 100644
-> --- a/arch/loongarch/vdso/Makefile
-> +++ b/arch/loongarch/vdso/Makefile
-> @@ -1,9 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Objects to go into the VDSO.
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_LARCH_32|R_LARCH_64|R_LARCH_MARK_LA|R_LARCH_JUMP_SLOT
->  include $(srctree)/lib/vdso/Makefile
->  
->  obj-vdso-y := elf.o vgetcpu.o vgettimeofday.o sigreturn.o
-> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-> index 1f7d5c6c10b0..c060f3596304 100644
-> --- a/arch/mips/vdso/Makefile
-> +++ b/arch/mips/vdso/Makefile
-> @@ -4,9 +4,6 @@
->  # Sanitizer runtimes are unavailable and cannot be linked here.
->   KCSAN_SANITIZE            := n
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_MIPS_JUMP_SLOT|R_MIPS_GLOB_DAT
->  include $(srctree)/lib/vdso/Makefile
->  
->  obj-vdso-y := elf.o vgettimeofday.o sigreturn.o
-> diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-> index 6a977b0d8ffc..83c347e9136f 100644
-> --- a/arch/powerpc/kernel/vdso/Makefile
-> +++ b/arch/powerpc/kernel/vdso/Makefile
-> @@ -2,7 +2,6 @@
->  
->  # List of files in the vdso, has to be asm only for now
->  
-> -ARCH_REL_TYPE_ABS :=
-> R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_PPC_ADDR16|R_PPC_ADDR16_LO|R_PPC_ADDR16_HI|R_PPC_ADDR16_HA|R_PPC_ADDR14|R_PPC_ADDR14_BRTAKEN|R_PPC_ADDR14_BRNTAKEN|R_PPC_REL24
->  include $(srctree)/lib/vdso/Makefile
->  
->  obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o
-> note-32.o getcpu-32.o
-> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-> index 06e6b27f3bcc..d85c37e11b21 100644
-> --- a/arch/riscv/kernel/vdso/Makefile
-> +++ b/arch/riscv/kernel/vdso/Makefile
-> @@ -1,9 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  # Copied from arch/tile/kernel/vdso/Makefile
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
->  include $(srctree)/lib/vdso/Makefile
->  # Symbols present in the vdso
->  vdso-syms  = rt_sigreturn
-> diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-> index 245bddfe9bc0..e795fdbbf484 100644
-> --- a/arch/s390/kernel/vdso32/Makefile
-> +++ b/arch/s390/kernel/vdso32/Makefile
-> @@ -2,8 +2,6 @@
->  # List of files in the vdso
->  
->  KCOV_INSTRUMENT := n
-> -ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
-> -ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
->  
->  include $(srctree)/lib/vdso/Makefile
->  obj-vdso32 = vdso_user_wrapper-32.o note-32.o
-> diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-> index 9e2b95a222a9..47dbbfdfad68 100644
-> --- a/arch/s390/kernel/vdso64/Makefile
-> +++ b/arch/s390/kernel/vdso64/Makefile
-> @@ -2,8 +2,6 @@
->  # List of files in the vdso
->  
->  KCOV_INSTRUMENT := n
-> -ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
-> -ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
->  
->  include $(srctree)/lib/vdso/Makefile
->  obj-vdso64 = vdso_user_wrapper.o note.o
-> diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-> index 838613ac15b8..b292c24acb8e 100644
-> --- a/arch/x86/entry/vdso/Makefile
-> +++ b/arch/x86/entry/vdso/Makefile
-> @@ -3,10 +3,6 @@
->  # Building vDSO images for x86.
->  #
->  
-> -# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-> -# the inclusion of generic Makefile.
-> -ARCH_REL_TYPE_ABS := R_X86_64_JUMP_SLOT|R_X86_64_GLOB_DAT|R_X86_64_RELATIVE|
-> -ARCH_REL_TYPE_ABS += R_386_GLOB_DAT|R_386_JMP_SLOT|R_386_RELATIVE
->  include $(srctree)/lib/vdso/Makefile
->  
->  # Sanitizer runtimes are unavailable and cannot be linked here.
-> diff --git a/lib/vdso/Makefile b/lib/vdso/Makefile
-> index e814061d6aa0..9f031eafc465 100644
-> --- a/lib/vdso/Makefile
-> +++ b/lib/vdso/Makefile
-> @@ -5,18 +5,13 @@ GENERIC_VDSO_DIR := $(dir $(GENERIC_VDSO_MK_PATH))
->  
->  c-gettimeofday-$(CONFIG_GENERIC_GETTIMEOFDAY) := $(addprefix
-> $(GENERIC_VDSO_DIR), gettimeofday.c)
->  
-> -# This cmd checks that the vdso library does not contain absolute relocation
-> +# This cmd checks that the vdso library does not contain dynamic relocations.
->  # It has to be called after the linking of the vdso library and requires it
->  # as a parameter.
->  #
-> -# $(ARCH_REL_TYPE_ABS) is defined in the arch specific makefile and corresponds
-> -# to the absolute relocation types printed by "objdump -R" and accepted by the
-> -# dynamic linker.
-> -ifndef ARCH_REL_TYPE_ABS
-> -$(error ARCH_REL_TYPE_ABS is not set)
-> -endif
-> -
-> +# As a workaround for some GNU ld ports which produce unneeded R_*_NONE
-> +# dynamic relocations, ignore R_*_NONE.
->  quiet_cmd_vdso_check = VDSOCHK $@
-> -      cmd_vdso_check = if $(OBJDUMP) -R $@ | grep -E -h "$(ARCH_REL_TYPE_ABS)"; \
-> +      cmd_vdso_check = if $(READELF) -rW $@ | grep -v _NONE | grep -q " R_\w*_"; \
->                 then (echo >&2 "$@: dynamic relocations are not supported"; \
->                   rm -f $@; /bin/false); fi
-
+diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
+index f048c424c525..1a3b7f3513b4 100644
+--- a/arch/powerpc/kernel/legacy_serial.c
++++ b/arch/powerpc/kernel/legacy_serial.c
+@@ -171,11 +171,11 @@ static int __init add_legacy_soc_port(struct device_node *np,
+ 	/* We only support ports that have a clock frequency properly
+ 	 * encoded in the device-tree.
+ 	 */
+-	if (of_get_property(np, "clock-frequency", NULL) == NULL)
++	if (!of_property_present(np, "clock-frequency"))
+ 		return -1;
+ 
+ 	/* if reg-offset don't try to use it */
+-	if ((of_get_property(np, "reg-offset", NULL) != NULL))
++	if (of_property_present(np, "reg-offset"))
+ 		return -1;
+ 
+ 	/* if rtas uses this device, don't try to use it as well */
+@@ -237,7 +237,7 @@ static int __init add_legacy_isa_port(struct device_node *np,
+ 	 * Note: Don't even try on P8 lpc, we know it's not directly mapped
+ 	 */
+ 	if (!of_device_is_compatible(isa_brg, "ibm,power8-lpc") ||
+-	    of_get_property(isa_brg, "ranges", NULL)) {
++	    of_property_present(isa_brg, "ranges")) {
+ 		taddr = of_translate_address(np, reg);
+ 		if (taddr == OF_BAD_ADDR)
+ 			taddr = 0;
+@@ -268,7 +268,7 @@ static int __init add_legacy_pci_port(struct device_node *np,
+ 	 * compatible UARTs on PCI need all sort of quirks (port offsets
+ 	 * etc...) that this code doesn't know about
+ 	 */
+-	if (of_get_property(np, "clock-frequency", NULL) == NULL)
++	if (!of_property_present(np, "clock-frequency"))
+ 		return -1;
+ 
+ 	/* Get the PCI address. Assume BAR 0 */
+diff --git a/arch/powerpc/platforms/44x/iss4xx.c b/arch/powerpc/platforms/44x/iss4xx.c
+index c5f82591408c..812765cf0632 100644
+--- a/arch/powerpc/platforms/44x/iss4xx.c
++++ b/arch/powerpc/platforms/44x/iss4xx.c
+@@ -52,7 +52,7 @@ static void __init iss4xx_init_irq(void)
+ 
+ 	/* Find top level interrupt controller */
+ 	for_each_node_with_property(np, "interrupt-controller") {
+-		if (of_get_property(np, "interrupts", NULL) == NULL)
++		if (!of_property_present(np, "interrupts"))
+ 			break;
+ 	}
+ 	if (np == NULL)
+diff --git a/arch/powerpc/platforms/44x/ppc476.c b/arch/powerpc/platforms/44x/ppc476.c
+index 7c91ac5a5241..70556fd10f6b 100644
+--- a/arch/powerpc/platforms/44x/ppc476.c
++++ b/arch/powerpc/platforms/44x/ppc476.c
+@@ -122,7 +122,7 @@ static void __init ppc47x_init_irq(void)
+ 
+ 	/* Find top level interrupt controller */
+ 	for_each_node_with_property(np, "interrupt-controller") {
+-		if (of_get_property(np, "interrupts", NULL) == NULL)
++		if (!of_property_present(np, "interrupts"))
+ 			break;
+ 	}
+ 	if (np == NULL)
+diff --git a/arch/powerpc/platforms/4xx/pci.c b/arch/powerpc/platforms/4xx/pci.c
+index ca5dd7a5842a..70a055f76e5a 100644
+--- a/arch/powerpc/platforms/4xx/pci.c
++++ b/arch/powerpc/platforms/4xx/pci.c
+@@ -348,7 +348,7 @@ static void __init ppc4xx_probe_pci_bridge(struct device_node *np)
+ 	}
+ 
+ 	/* Check if primary bridge */
+-	if (of_get_property(np, "primary", NULL))
++	if (of_property_present(np, "primary"))
+ 		primary = 1;
+ 
+ 	/* Get bus range if any */
+diff --git a/arch/powerpc/platforms/cell/spu_manage.c b/arch/powerpc/platforms/cell/spu_manage.c
+index f1ac4c742069..74567b32c48c 100644
+--- a/arch/powerpc/platforms/cell/spu_manage.c
++++ b/arch/powerpc/platforms/cell/spu_manage.c
+@@ -402,7 +402,7 @@ static int __init of_has_vicinity(void)
+ 	struct device_node *dn;
+ 
+ 	for_each_node_by_type(dn, "spe") {
+-		if (of_find_property(dn, "vicinity", NULL))  {
++		if (of_property_present(dn, "vicinity"))  {
+ 			of_node_put(dn);
+ 			return 1;
+ 		}
+diff --git a/arch/powerpc/platforms/powermac/pic.c b/arch/powerpc/platforms/powermac/pic.c
+index 8c8d8e0a7d13..3425065ab22e 100644
+--- a/arch/powerpc/platforms/powermac/pic.c
++++ b/arch/powerpc/platforms/powermac/pic.c
+@@ -476,7 +476,7 @@ static int __init pmac_pic_probe_mpic(void)
+ 	/* We can have up to 2 MPICs cascaded */
+ 	for_each_node_by_type(np, "open-pic") {
+ 		if (master == NULL &&
+-		    of_get_property(np, "interrupts", NULL) == NULL)
++		    !of_property_present(np, "interrupts"))
+ 			master = of_node_get(np);
+ 		else if (slave == NULL)
+ 			slave = of_node_get(np);
+diff --git a/arch/powerpc/platforms/powernv/opal-lpc.c b/arch/powerpc/platforms/powernv/opal-lpc.c
+index d129d6d45a50..a16f07cdab26 100644
+--- a/arch/powerpc/platforms/powernv/opal-lpc.c
++++ b/arch/powerpc/platforms/powernv/opal-lpc.c
+@@ -403,7 +403,7 @@ void __init opal_lpc_init(void)
+ 		return;
+ 
+ 	/* Does it support direct mapping ? */
+-	if (of_get_property(np, "ranges", NULL)) {
++	if (of_property_present(np, "ranges")) {
+ 		pr_info("OPAL: Found memory mapped LPC bus on chip %d\n",
+ 			opal_lpc_chip_id);
+ 		isa_bridge_init_non_pci(np);
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 982e5e4b5e06..1a3cb313976a 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -493,7 +493,7 @@ static bool valid_cpu_drc_index(struct device_node *parent, u32 drc_index)
+ 	bool found = false;
+ 	int rc, index;
+ 
+-	if (of_find_property(parent, "ibm,drc-info", NULL))
++	if (of_property_present(parent, "ibm,drc-info"))
+ 		return drc_info_valid_index(parent, drc_index);
+ 
+ 	/* Note that the format of the ibm,drc-indexes array is
+diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+index 770df9351aaa..d54306a936d5 100644
+--- a/arch/powerpc/platforms/pseries/vio.c
++++ b/arch/powerpc/platforms/pseries/vio.c
+@@ -1440,7 +1440,7 @@ struct vio_dev *vio_register_device_node(struct device_node *of_node)
+ 	viodev->dev.bus = &vio_bus_type;
+ 	viodev->dev.release = vio_dev_release;
+ 
+-	if (of_get_property(viodev->dev.of_node, "ibm,my-dma-window", NULL)) {
++	if (of_property_present(viodev->dev.of_node, "ibm,my-dma-window")) {
+ 		if (firmware_has_feature(FW_FEATURE_CMO))
+ 			vio_cmo_set_dma_ops(viodev);
+ 		else
+diff --git a/arch/powerpc/sysdev/mpic_msgr.c b/arch/powerpc/sysdev/mpic_msgr.c
+index d75064fb7d12..1a3ac0b5dd89 100644
+--- a/arch/powerpc/sysdev/mpic_msgr.c
++++ b/arch/powerpc/sysdev/mpic_msgr.c
+@@ -116,7 +116,7 @@ static unsigned int mpic_msgr_number_of_blocks(void)
+ 
+ 		for (;;) {
+ 			snprintf(buf, sizeof(buf), "mpic-msgr-block%d", count);
+-			if (!of_find_property(aliases, buf, NULL))
++			if (!of_property_present(aliases, buf))
+ 				break;
+ 
+ 			count += 1;
 -- 
-Regards,
-Vincenzo
+2.39.2
+
