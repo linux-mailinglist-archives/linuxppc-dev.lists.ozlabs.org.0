@@ -2,53 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4819A6B4794
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 15:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7366B4B17
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Mar 2023 16:30:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PY8CC1NJMz3ftt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 01:51:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PY93s1s2cz3fJt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 02:30:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.181; helo=mail-oi1-f181.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PY87f5zxhz3fWl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 01:48:46 +1100 (AEDT)
-Received: by mail-oi1-f181.google.com with SMTP id c11so4412398oiw.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Mar 2023 06:48:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678459724;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZSlcrAdOk2ZHbJaFPGHkD2mhUxcO2+0jdOc1ehU4BF0=;
-        b=do+XO4Ibk45tOoCb2ZUm65UIu377n+zZIJs1iPR3h1Vy/aYVa717qGzIM8gBVlMFWs
-         CRE3C2lZ2LfzalNUR/Xz9swFPsVoidfTAcCBPdjTUjKAVIH2fHdcTkomQTfpLbtLD8YV
-         47m2yflELDNXVXoBOoMvFGTN65WoQ7CIT6h/7QRDvjYn7dCjJOSbmSBaF+nYXv0+dTQS
-         c4Uz0KlMrzYs49kP3kwjjckmG6dQkmh+w9plMj/IvLhSVlQOXoouFQ5NCa7RpZ7xEjGr
-         pI3Rw05+hboUtM3e7TuQAQhDkK0OAgydaQQZptZiCgQqiPXngbB+hRjCYG3Sm99XIImt
-         AvTQ==
-X-Gm-Message-State: AO0yUKV3JIB2SleNYrVSbw7JKoIYxd0XvbLGiUR6k3gqlaUcjtEQip+T
-	zTfjvNCcT3PM/VS1nYXaD7rBbgzPfQ==
-X-Google-Smtp-Source: AK7set81+R7SptvFiU1mElhgKcbUszs0JCXieCGbcvg5GrDnQizYVUU/z1OANIDVszl1Z9u1lrX8nw==
-X-Received: by 2002:aca:2210:0:b0:384:ea9:237d with SMTP id b16-20020aca2210000000b003840ea9237dmr11076654oic.36.1678459724416;
-        Fri, 10 Mar 2023 06:48:44 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id y129-20020acae187000000b0038476262f65sm967368oig.33.2023.03.10.06.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 06:48:43 -0800 (PST)
-Received: (nullmailer pid 1546844 invoked by uid 1000);
-	Fri, 10 Mar 2023 14:47:35 -0000
-From: Rob Herring <robh@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Colin Leroy <colin@colino.net>
-Subject: [PATCH] macintosh: Use of_property_present() for testing DT property presence
-Date: Fri, 10 Mar 2023 08:47:35 -0600
-Message-Id: <20230310144735.1546817-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PY93G5GCzz2xJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 02:30:00 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1paege-0005hj-UM; Fri, 10 Mar 2023 16:29:40 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1paegc-003Cqr-Km; Fri, 10 Mar 2023 16:29:38 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1paegb-003pM3-UU; Fri, 10 Mar 2023 16:29:37 +0100
+Date: Fri, 10 Mar 2023 16:29:36 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] serial: Use of_property_read_bool() for boolean
+ properties
+Message-ID: <20230310152936.2tnlkvxku5scmzas@pengutronix.de>
+References: <20230310144727.1545699-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="moa2k34gvhpherg2"
+Content-Disposition: inline
+In-Reply-To: <20230310144727.1545699-1-robh@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,49 +55,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Timur Tabi <timur@kernel.org>, Jiri Slaby <jirislaby@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, linux-serial@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties. As
-part of this, convert of_get_property/of_find_property calls to the
-recently added of_property_present() helper when we just want to test
-for presence of a property and nothing more.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- drivers/macintosh/rack-meter.c    | 2 +-
- drivers/macintosh/therm_adt746x.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+--moa2k34gvhpherg2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/macintosh/rack-meter.c b/drivers/macintosh/rack-meter.c
-index c28893e41a8b..40240bce77b0 100644
---- a/drivers/macintosh/rack-meter.c
-+++ b/drivers/macintosh/rack-meter.c
-@@ -387,7 +387,7 @@ static int rackmeter_probe(struct macio_dev* mdev,
- 	       if (of_node_name_eq(np, "lightshow"))
- 		       break;
- 	       if (of_node_name_eq(np, "sound") &&
--		   of_get_property(np, "virtual", NULL) != NULL)
-+		   of_property_present(np, "virtual"))
- 		       break;
- 	}
- 	if (np == NULL) {
-diff --git a/drivers/macintosh/therm_adt746x.c b/drivers/macintosh/therm_adt746x.c
-index 8f5db9093c9a..384b87d661e1 100644
---- a/drivers/macintosh/therm_adt746x.c
-+++ b/drivers/macintosh/therm_adt746x.c
-@@ -483,7 +483,7 @@ static int probe_thermostat(struct i2c_client *client)
- 	if (vers != 1)
- 		return -ENXIO;
- 
--	if (of_get_property(np, "hwsensor-location", NULL)) {
-+	if (of_property_present(np, "hwsensor-location")) {
- 		for (i = 0; i < 3; i++) {
- 			sensor_location[i] = of_get_property(np,
- 					"hwsensor-location", NULL) + offset;
--- 
-2.39.2
+On Fri, Mar 10, 2023 at 08:47:27AM -0600, Rob Herring wrote:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties.
+> Convert reading boolean properties to to of_property_read_bool().
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Thanks
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--moa2k34gvhpherg2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmQLTN0ACgkQwfwUeK3K
+7AlMWQf/Zm20f4rcaPFvA8qfhp+Yp2jpASyGHUgc6kgHLie5qVh5Bf2how/DE/mE
+kkGN1bDZkJQApqOKDpjmaJE+HXDsfxzV5I8xaNQ3pFrC4tnwnLHnVREyB+iQrXJD
+g5+ZX3bGoz691c4y0Kbb7q6mjcjefR9+GWZyOVuHnUxeR23Vi5Jt1imJcmdPpD0i
+oCDFScZatYUSuApeVuviFQ96RLQ7BkPnsue+AjAkyrWlBPM74lDzbNbiLyzjRNre
+mcYBlOQEdGL5QMFi0z61cRJsHEWbgRJyXAxMRxvDkyIZqM2PIiAhwoHUWwF0IMZN
+aA0NykBHEIRpeAiznrNCeElFHp61mA==
+=hz+L
+-----END PGP SIGNATURE-----
+
+--moa2k34gvhpherg2--
