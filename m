@@ -1,114 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1447C6B5B5C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 12:52:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA7A6B5C87
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 14:55:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PYh9C4Ztdz3cgy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Mar 2023 22:51:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PYkvn1VmMz3f4b
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Mar 2023 00:55:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=EzmX2aDL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EgpADp9m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=corigine.com (client-ip=2a01:111:f400:fe5a::72f; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=simon.horman@corigine.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32d; helo=mail-wm1-x32d.google.com; envelope-from=error27@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=EzmX2aDL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EgpADp9m;
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2072f.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::72f])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYh8C4cKxz3c8F
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 22:51:05 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kag6z5Uirzciws4nEQJd3TgbkOJBNaXYN+gR/XCcfbwLGVBwRaOTTuNhqRuTPONhxpbfNnJ1SIerNhgVEhm9b9MPjgseasjpqO+iV41XhWjlaqy5zb/R/44QkBzlMwB7gigflahdSD/6eQ7oFaQZV20DO7MIPYMa8+zPC2oM8vaXMLfB8kPZZv65caN5GJxjG2vcy2U84kGY+gdTFbi6x9CEOEa9Gs63Pk4uoETUs45WX3YYU+Vj6eFyLozwMx9uZYdfAbEcg2xcVYhy+8p3BFYi3lvc9CfqCoPAlEJABAly/XHsopmlU60fe7tPldlMIhlsJMoctkFMexmjn5/91A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LAPuUMNN/pyrWUcMpJ1tl15Jt0/Lq5Jnz65GeyrtiCI=;
- b=VkDN+9bv4EyMcaYxV8cso8mqO9Wkzx8lcugFEwkw+zQ+/KtHABXqxkygnyBk3OV+Sb12/J2c4fFfS0jRhG5euGPnpE/TZFiZOtkPD82ctJXXx0FRVKHDCsVIgNrGNEmNCdGGNezjjEjprLfLVo/TAukn/vJzftwreHVRtwr2Oqd+0U4GhLkBRlW4t1Eqh1W8V+kf2wJkUDr6VwDsPRbKuPZqaMEre2hGxeJ5xeqAQdfHh84USfNDGDiO43yXfZQtDLSMeZuzvCL9rIVHYD8fndj6SnOx+qNpbMKaqe4G5oQk0wThVNWhOOUm1CORm7j0UTZa3XbPci//ct/4dFG6Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PYktr3n5Hz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Mar 2023 00:54:43 +1100 (AEDT)
+Received: by mail-wm1-x32d.google.com with SMTP id o38-20020a05600c512600b003e8320d1c11so5699720wms.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Mar 2023 05:54:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LAPuUMNN/pyrWUcMpJ1tl15Jt0/Lq5Jnz65GeyrtiCI=;
- b=EzmX2aDL9uRDpeHOQ547gRxk73ietKvb68t/jGf+KMcbsUsLPtEJn6vjIG63V54mnX695o+9qGNYBDPdMzHg2QNK/TZzADRhfCpOIzu3AXxudFzeYZPk8OuaOqojfGiFgdEcakItmBnYAPjjTKoHkDlcdxjV+e6pk6CdomgCiPk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BL3PR13MB5121.namprd13.prod.outlook.com (2603:10b6:208:350::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.20; Sat, 11 Mar
- 2023 11:50:42 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6178.020; Sat, 11 Mar 2023
- 11:50:42 +0000
-Date: Sat, 11 Mar 2023 12:50:30 +0100
-From: Simon Horman <simon.horman@corigine.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] net: Use of_property_read_bool() for boolean properties
-Message-ID: <ZAxrBtNdou28yPPB@corigine.com>
-References: <20230310144718.1544169-1-robh@kernel.org>
+        d=gmail.com; s=20210112; t=1678542877;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w6VNgsWjX3Wuvimz8g5dmkPK1Cy/m4ikAbDoLw6beJQ=;
+        b=EgpADp9mPyWPriOHQHt/ftRejPRpNulP0dfOXzeleBhIPgj1NGQIJbytBzJ2k1iF4R
+         CyITUZOvJLHKAPxgRdheh7BTJmNg+LH8xo7nE4cpnK/TrtstTxkyuMZEe6QB0uKZbsho
+         bha6cNC4l0ab+HfNrdxjVgcV4nNCXjrWHLvd5AgmtK0unzXSSZWpk338fqWEaWfbfDXc
+         gS8s4MTSvK5KviuS4DzupSZgdAs7GDKSC97xY/DJNQkr+LExD4sU3rKuRX3/o8kJ1rWj
+         n5Cc6BbMqxbQX9xXF/Ai+zkDgJk3y+PUHE9rOyhjFvIaxai7o22SnhvFxKXJxhQbJB/I
+         C2Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678542877;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w6VNgsWjX3Wuvimz8g5dmkPK1Cy/m4ikAbDoLw6beJQ=;
+        b=rg1PstoWsSyx0YMI50VRMErfb+4aSwu8e/n+uUbzDEnzdl/YKKwWRjayNCoDJ7vzV+
+         qWQPsZoYK0D0T8XNNCoLerULEIpfLD1dp8DD53Y9w0a39Jcq9ziuy/KjxNHED/sfetOr
+         EjsgiuNAjDCYUsCcyS2GuM0ilija8VxGZ/48ylRBFrrc2qaIxeBwj/yWcDWrWMrJb8R9
+         SSR9njEYMhK0eXD/LaPOGfWyO3dFsp2lDiy/Ci+q2BtPwGmnai6x/PWbRraJWzVXRhBB
+         XLhvGmT51ClZLwXm5JSBzbDmWl2W63aHoWCddfInepfIZuPrVWawYmrZnuPblGttTmen
+         eVcA==
+X-Gm-Message-State: AO0yUKUItmbIvtR3K2A4OI5lOCl54u3cYsgDCM6njFMFWN5FEBGY4gY4
+	5C3+JDdz9mb63rkCcIhLoH8=
+X-Google-Smtp-Source: AK7set8Q/kmI9mpEEdXrr7E14surqp2hrZc9WFbOGPYrv2F11V19h1lecKjCq/bjwK7VwWka+od15A==
+X-Received: by 2002:a05:600c:4e8c:b0:3eb:4cb5:dfa with SMTP id f12-20020a05600c4e8c00b003eb4cb50dfamr5440417wmq.31.1678542877399;
+        Sat, 11 Mar 2023 05:54:37 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id hn4-20020a05600ca38400b003dc1d668866sm2899772wmb.10.2023.03.11.05.54.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 05:54:37 -0800 (PST)
+Date: Sat, 11 Mar 2023 16:54:32 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: oe-kbuild@lists.linux.dev,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Randy Dunlap <rdunlap@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Juergen Gross <jgross@suse.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <d057ac5c-5947-41e1-abc7-9428fbd2fbe2@kili.mountain>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230310144718.1544169-1-robh@kernel.org>
-X-ClientProxiedBy: AM0PR01CA0098.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:10e::39) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BL3PR13MB5121:EE_
-X-MS-Office365-Filtering-Correlation-Id: 300f51b5-03a4-4d69-f2f7-08db2226d74a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	YxKzWDfaCiJLc++Qw0BB2RYxLP+p3eh2jp+z/O1JGmtteZXktxSta8AB8WqhCCFE6qdTtfEyPxkOz//bEEK5T85vdi4eM3eZdco+wieWFnhd3jBh9rfbV9MS4PmE8D6KHaYfPIJr6Cvk/Gb6/b8Mryo/Dm18XGa+ymPPNy4Ei1J/GZ89tRIXHxZSkDOKMrptgDfNIl0a+2xXZTkY9Q8ruwarBQvNL/WhF/INuozhdO/iJYltR/dT5x8wFM72qQhYbtSe1Uh1m+nhVFm4/2EXVzumLuMDq7/yYlLkiYiatRTusbb1BICQbHvfQQhxbYAbxdqWJvwoO12l3bcGCtXS4PLWtSbbZ61x/Q9TrYdwKxEXamyMzXWc5SUdPFlS9W1bsUcxcVZ5/JlcEtlfzafMmpTxyt36uCwm67k0gnRDeDfxWN5KOeOWeyKm/YtgBB6FIjdHXESlONr1RtSwMmQmW64vvpw8HR4xSEkjgDTfl9ELY6FIkK2afHb3vPntn2aHGSTvQoVA0+h9mnBDxIVSZrrweYuQL8d9ivw3TBQM7ma7AAOF/wpTyITHdqh2wWjOaEVC5lg9IH5XdFM81Dha+UgMU3M74A2i+emcTMoNfTT4/5Lw5YMxXaPcoa90M+Nnm/YxZewV3N0cfM8ZP47d16SyIHjUUZ4NVFqwClKgXC9WW3j0EG+PNw1hNEJX0auF
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(346002)(136003)(39840400004)(396003)(376002)(451199018)(36756003)(86362001)(83380400001)(38100700002)(8936002)(478600001)(41300700001)(7416002)(2906002)(5660300002)(7406005)(6486002)(44832011)(6916009)(66556008)(66946007)(66476007)(8676002)(316002)(4326008)(54906003)(186003)(2616005)(6666004)(6512007)(6506007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?pzN5DVG29kX2M9Xa9Ub6RXXfUKSzW+Bfvk3cGi1Kh/KzqPt6a5GLgNqPQ2mY?=
- =?us-ascii?Q?rKBHHKUy8Uzob9I4VbOON8CU/N3WP2xE5JEtnjAVKqCg1q30C4V9/XJS5zH+?=
- =?us-ascii?Q?Byvam1h112E58yu+KfmrwFuAuHFNqhc15QOt37BCFVjfOIRBxhHMLXmJBftC?=
- =?us-ascii?Q?9bWVvDYYIkDD4Ws8dx2BhthFx643uaSnZ7mfcGRyrrxeURrfnwx3zSZVeLS/?=
- =?us-ascii?Q?gajnTXcMj/Ysi8yjoTg7IXhIo86V3ojSfyh1U49XwZR9QGVczr3ZBnTGJBcu?=
- =?us-ascii?Q?qgaU4iwQh1e+nOK0OyPpi38unk2q3hjcjF2cZ0bJDqI3Zu3vNIOZZWJaqO2I?=
- =?us-ascii?Q?feRdE7q1lkFFxwxf+KuGu2/UfR3JnQ2bnmFN2xkyzoIQ0NIT3oVZe7J0TR2I?=
- =?us-ascii?Q?viHt+JhRrlajTosuPpmfz0S5vsY8ax9mqFCwqDi7r4TPePTfPBcZhaYDGSL/?=
- =?us-ascii?Q?oVW+5aW2yNRMzh1aaADgaF+D3eQXFizQ34M1UU/mF/SipvF3kDPjhHB474HU?=
- =?us-ascii?Q?96mIXHme80LJPEs/AO490ZA8Shud/PaxjVWQetv8neulmWpOF/3UeUcc+seb?=
- =?us-ascii?Q?bbRImFU1LP+Lp4LRrJNCK2pQt/nxzUa161+X83iQ35gSEt3iFh9XgTU0Pphz?=
- =?us-ascii?Q?tBUUR29izugrA3jZZU9cU1j97gjKKyKt4MhA+2YYPtdumppPCYP6hhkdTIPo?=
- =?us-ascii?Q?8htHou63Sh+d3K2e3um8IImd6OuK07gRbrVS+uAYh53dooBn6K85X0UmLuhf?=
- =?us-ascii?Q?2TcKqgBCBKyrjKLsJzPjJVIqz3i2PIz/PN4XAFt7pHKPqsNrpaPKZsq3A97s?=
- =?us-ascii?Q?RhvoVM5wtx8E6/VDFttI6gOZ6wxP1+85H97PTvQUkuFTIFso0Nn/Vz39geYf?=
- =?us-ascii?Q?X9j2Tb9Plu46+AL+BaWIz/xzslZsJ1yiH6K90vGsOMjKo+cX3/ug5HoerAni?=
- =?us-ascii?Q?XUrrrckohB2Y9QjOy1OsUWBvEyT87YLVjM8ot8xOU7x1/gbx/wkS2LK3SpIj?=
- =?us-ascii?Q?Y/y5LL7XtVkCrAUbua1/6Hu9mN1mKOpEQ4KJ5mRmPtHt5YvU31+svygGn4BT?=
- =?us-ascii?Q?BKANpk2zJT9RqGQW466z1T8gtlxRw7o1UV8YrUlGxaMbLii/nU+si1umeqQQ?=
- =?us-ascii?Q?MZClcPe+Pc0h9FI8Vax04tjvbsk3VADdNUIX+B0c5dFYtKZvdOkHx9tI6dFN?=
- =?us-ascii?Q?SBMruHbZMF5WG/6S+3+zL1f8sx9HgVqd8MZa/NCzwdI/+x0V7Lv3dMadY/d6?=
- =?us-ascii?Q?yozjtriVWQkudT86xUHLs0TC+EaC4ak/YvcE60SbyemNjhdQqtt3KDD1BplS?=
- =?us-ascii?Q?DCjrsONVbdPqYUxoPxW0YYf7yTtZxYRsQwuboCP3Tu59zgIu4PpNQZeCZAMj?=
- =?us-ascii?Q?1tktAySmxTfmfun4aVBngxncmcnlaZz8/w771PphV0mQcEICvqxnTz+hYkmY?=
- =?us-ascii?Q?1hBb3RP8jW7IJJUW2mUp3y4FhHPf+vyMVaaxYX9JJxhZ3NvlUzEw3nwdQxcD?=
- =?us-ascii?Q?WCRVqUFtHMtKZR844sGP9R6woik6/3821Ov1AmLJNm/fzodmU2bW7SjGAGdH?=
- =?us-ascii?Q?RnDSRlwZC77oEBCL/aCm2zIBXB2bzbens56imOQFeezuc6g3ceePmRXxsyUp?=
- =?us-ascii?Q?wtKsRsR2XXdeJxet0hFNvvhhbAVKXWV2AEX3hwJx4sNU2U5dIXixo/lexmpC?=
- =?us-ascii?Q?QiEo6w=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 300f51b5-03a4-4d69-f2f7-08db2226d74a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2023 11:50:42.3702
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +bZDklU53lRpr3xCoY58QZy7nlMvpDDoaMZm507OpZ+skdhpHsSdZhisf3vMwwVNmXm+ALGT1o9AFPjoOHbSWZSeYM+bfqdI4kd7W1CTA4g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR13MB5121
+In-Reply-To: <20230310171416.23356-2-andriy.shevchenko@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,70 +94,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Shenwei Wang <shenwei.wang@nxp.com>, Fabio Estevam <festevam@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Zhao Qiang <qiang.zhao@nxp.com>, Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>, Clark Wang <xiaoning.wang@nxp.com>, NXP Linux Team <linux-imx@nxp.com>, Francois Romieu <romieu@fr.zoreil.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>, Wolfgang Grandegger <wg@grandegger.com>, devicetree@vger.kernel.org, Grygorii Strashko <grygorii.strashko@ti.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, linux-can@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradea
- d.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Wei Fang <wei.fang@nxp.com>, Samuel Mendoza-Jonas <sam@mendozajonas.com>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, lkp@intel.com, Richard Henderson <richard.henderson@linaro.org>, Russell King <linux@armlinux.org.uk>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, oe-kbuild-all@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, Matt Turner <mattst88@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 10, 2023 at 08:47:16AM -0600, Rob Herring wrote:
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties.
-> Convert reading boolean properties to to of_property_read_bool().
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+Hi Andy,
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-...
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230311-011642
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20230310171416.23356-2-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
+config: x86_64-randconfig-m001 (https://download.01.org/0day-ci/archive/20230311/202303112149.xD47qKOY-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
 
-> diff --git a/drivers/net/ethernet/via/via-velocity.c b/drivers/net/ethernet/via/via-velocity.c
-> index a502812ac418..86f7843b4591 100644
-> --- a/drivers/net/ethernet/via/via-velocity.c
-> +++ b/drivers/net/ethernet/via/via-velocity.c
-> @@ -2709,8 +2709,7 @@ static int velocity_get_platform_info(struct velocity_info *vptr)
->  	struct resource res;
->  	int ret;
->  
-> -	if (of_get_property(vptr->dev->of_node, "no-eeprom", NULL))
-> -		vptr->no_eeprom = 1;
-> +	vptr->no_eeprom = of_property_read_bool(vptr->dev->of_node, "no-eeprom");
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <error27@gmail.com>
+| Link: https://lore.kernel.org/r/202303112149.xD47qKOY-lkp@intel.com/
 
-As per my comment on "[PATCH] nfc: mrvl: Use of_property_read_bool() for
-boolean properties".
+smatch warnings:
+drivers/pnp/quirks.c:248 quirk_system_pci_resources() warn: was && intended here instead of ||?
 
-I'm not that enthusiastic about assigning a bool value to a field
-with an integer type. But that is likely a topic for another patch.
+vim +248 drivers/pnp/quirks.c
 
->  	ret = of_address_to_resource(vptr->dev->of_node, 0, &res);
->  	if (ret) {
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  229  static void quirk_system_pci_resources(struct pnp_dev *dev)
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  230  {
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  231  	struct pci_dev *pdev = NULL;
+059b4a086017fb Mika Westerberg 2023-03-10  232  	struct resource *res, *r;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  233  	int i, j;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  234  
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  235  	/*
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  236  	 * Some BIOSes have PNP motherboard devices with resources that
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  237  	 * partially overlap PCI BARs.  The PNP system driver claims these
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  238  	 * motherboard resources, which prevents the normal PCI driver from
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  239  	 * requesting them later.
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  240  	 *
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  241  	 * This patch disables the PNP resources that conflict with PCI BARs
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  242  	 * so they won't be claimed by the PNP system driver.
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  243  	 */
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  244  	for_each_pci_dev(pdev) {
+059b4a086017fb Mika Westerberg 2023-03-10  245  		pci_dev_for_each_resource(pdev, r, i) {
+059b4a086017fb Mika Westerberg 2023-03-10  246  			unsigned long type = resource_type(r);
+999ed65ad12e37 Rene Herman     2008-07-25  247  
+059b4a086017fb Mika Westerberg 2023-03-10 @248  			if (type != IORESOURCE_IO || type != IORESOURCE_MEM ||
+                                                                                                  ^^
+This || needs to be &&.  This loop will always hit the continue path
+without doing anything.
 
-...
+059b4a086017fb Mika Westerberg 2023-03-10  249  			    resource_size(r) == 0)
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  250  				continue;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  251  
+059b4a086017fb Mika Westerberg 2023-03-10  252  			if (r->flags & IORESOURCE_UNSET)
+f7834c092c4299 Bjorn Helgaas   2015-03-03  253  				continue;
+f7834c092c4299 Bjorn Helgaas   2015-03-03  254  
+95ab3669f78306 Bjorn Helgaas   2008-04-28  255  			for (j = 0;
+999ed65ad12e37 Rene Herman     2008-07-25  256  			     (res = pnp_get_resource(dev, type, j)); j++) {
+aee3ad815dd291 Bjorn Helgaas   2008-06-27  257  				if (res->start == 0 && res->end == 0)
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  258  					continue;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  259  
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  260  				/*
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  261  				 * If the PNP region doesn't overlap the PCI
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  262  				 * region at all, there's no problem.
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  263  				 */
+059b4a086017fb Mika Westerberg 2023-03-10  264  				if (!resource_overlaps(res, r))
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  265  					continue;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  266  
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  267  				/*
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  268  				 * If the PNP region completely encloses (or is
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  269  				 * at least as large as) the PCI region, that's
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  270  				 * also OK.  For example, this happens when the
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  271  				 * PNP device describes a bridge with PCI
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  272  				 * behind it.
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  273  				 */
+059b4a086017fb Mika Westerberg 2023-03-10  274  				if (res->start <= r->start && res->end >= r->end)
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  275  					continue;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  276  
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  277  				/*
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  278  				 * Otherwise, the PNP region overlaps *part* of
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  279  				 * the PCI region, and that might prevent a PCI
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  280  				 * driver from requesting its resources.
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  281  				 */
+c7dabef8a2c59e Bjorn Helgaas   2009-10-27  282  				dev_warn(&dev->dev,
+059b4a086017fb Mika Westerberg 2023-03-10  283  					 "disabling %pR because it overlaps %s BAR %d %pR\n",
+059b4a086017fb Mika Westerberg 2023-03-10  284  					 res, pci_name(pdev), i, r);
+4b34fe156455d2 Bjorn Helgaas   2008-06-02  285  				res->flags |= IORESOURCE_DISABLED;
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  286  			}
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  287  		}
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  288  	}
+0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  289  }
 
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-> index 1c53b5546927..47c2ad7a3e42 100644
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-> @@ -1177,14 +1177,9 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
->  	uhdlc_priv->dev = &pdev->dev;
->  	uhdlc_priv->ut_info = ut_info;
->  
-> -	if (of_get_property(np, "fsl,tdm-interface", NULL))
-> -		uhdlc_priv->tsa = 1;
-> -
-> -	if (of_get_property(np, "fsl,ucc-internal-loopback", NULL))
-> -		uhdlc_priv->loopback = 1;
-> -
-> -	if (of_get_property(np, "fsl,hdlc-bus", NULL))
-> -		uhdlc_priv->hdlc_bus = 1;
-> +	uhdlc_priv->tsa = of_property_read_bool(np, "fsl,tdm-interface");
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
 
-Here too.
-
-> +	uhdlc_priv->loopback = of_property_read_bool(np, "fsl,ucc-internal-loopback");
-> +	uhdlc_priv->hdlc_bus = of_property_read_bool(np, "fsl,hdlc-bus");
->  
->  	if (uhdlc_priv->tsa == 1) {
->  		utdm = kzalloc(sizeof(*utdm), GFP_KERNEL);
-
-...
