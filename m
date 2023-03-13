@@ -1,54 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8258C6B7442
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 11:38:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26E26B765C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 12:44:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PZtRH29fYz3f8b
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 21:38:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PZvv25Wptz3cJn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 22:43:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gCrSGv+p;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab; helo=madras.collabora.co.uk; envelope-from=angelogioacchino.delregno@collabora.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gCrSGv+p;
+	dkim-atps=neutral
+X-Greylist: delayed 448 seconds by postgrey-1.36 at boromir; Mon, 13 Mar 2023 19:51:26 AEDT
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PZtQ70LQDz308w
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 21:37:15 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pbfY3-0008UR-LJ; Mon, 13 Mar 2023 11:36:59 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pbfY2-003pL4-Fi; Mon, 13 Mar 2023 11:36:58 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pbfY1-004W3z-GI; Mon, 13 Mar 2023 11:36:57 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Li Yang <leoyang.li@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 9/9] net: ucc_geth: Convert to platform remove callback returning void
-Date: Mon, 13 Mar 2023 11:36:53 +0100
-Message-Id: <20230313103653.2753139-10-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230313103653.2753139-1-u.kleine-koenig@pengutronix.de>
-References: <20230313103653.2753139-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PZr3y2dH0z3bjy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 19:51:26 +1100 (AEDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 901456602F64;
+	Mon, 13 Mar 2023 08:43:41 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1678697022;
+	bh=4665rYemk6A2Xust8XxLzgdzG2cxoWIBxqr5W23dBBU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gCrSGv+pa3FO7jv7lAjrOcRNNwZOhG8bnVPxVcMAZV3jbVupV2eD23h7+xM5UqZKq
+	 yIFrUAQpgZPrQXJPWQ2RFLfEftrGAy4qlZzCnQzI2CffgTmAbylpOxjEby0sKHIkgx
+	 X21RB9a4WBM4zQnnwGQ8H6eObyuYDcE+e29GQJhU/l1syW31ydi1sCab54psgqSK49
+	 SzKU25O5AzqhcHcmAuU4EH/4+uOO4Fv8/WJJ7cHNE2p3/uyB0JFITvnz9cMkxRw4Oa
+	 CQZUPWa6x3vmdim8mSJTPEIiZ9jPW9E6ZMWg9gOyShmzJRunuRFwEJ24aqDDWvQDCr
+	 CiN7YlGwWzXLg==
+Message-ID: <ffaf4d60-f8d1-2456-88eb-8c91ed4a6b4a@collabora.com>
+Date: Mon, 13 Mar 2023 09:43:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1861; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=hiPfQ6LuVEv3fcOfxf1fooE2/sTKihR8xeGbsyguKpE=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkDvy+zOYR8NtOaP8TlwSO+iN4rUOWLMakd6JyL ljJuPMgBreJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZA78vgAKCRDB/BR4rcrs CSGmB/sEXrdkvsfxvj/SPIlDEPwwzN68YX5VDNIO1CG5oeoLAFFfaaKkGS3HUEBdlSF26a6jOYu /JmgBNDiVtvp4NAo1n586V2i/5e7dqqjZqaSGGiwHVozRBh5KnIfMbEbQ4WphWzprP/232Zlfzr C/WkGG3jPKexIRm7wD8WTMUR52NK3nAuWols7AED7z+EQ2bQ/NQYetBa3GTeBG6q7oLPbu8Ummw Oqw6PsHVwjtiGU6q/0dCNteNJ/IOZLfzOIx0eLobgvbBDVmZMmEOqa2nmhvZgFkZpdjQnBJHYRo pJVXrJ3aS/8zcUj2KpbC6gXutJsyb2jxS2O4eBZh1lnZ5XJ+
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] PCI: Use of_property_present() for testing DT property
+ presence
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>, Thierry Reding <thierry.reding@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Ryder Lee <ryder.lee@mediatek.com>, Jianjun Wang
+ <jianjun.wang@mediatek.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Matthias Brugger <matthias.bgg@gmail.com>
+References: <20230310144719.1544443-1-robh@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230310144719.1544443-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Mon, 13 Mar 2023 22:43:12 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,57 +74,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de
+Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Il 10/03/23 15:47, Rob Herring ha scritto:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties. As
+> part of this, convert of_get_property/of_find_property calls to the
+> recently added of_property_present() helper when we just want to test
+> for presence of a property and nothing more.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/net/ethernet/freescale/ucc_geth.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 7a4cb4f07c32..2b3a15f24e7c 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3753,7 +3753,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	return err;
- }
- 
--static int ucc_geth_remove(struct platform_device* ofdev)
-+static void ucc_geth_remove(struct platform_device* ofdev)
- {
- 	struct net_device *dev = platform_get_drvdata(ofdev);
- 	struct ucc_geth_private *ugeth = netdev_priv(dev);
-@@ -3767,8 +3767,6 @@ static int ucc_geth_remove(struct platform_device* ofdev)
- 	of_node_put(ugeth->ug_info->phy_node);
- 	kfree(ugeth->ug_info);
- 	free_netdev(dev);
--
--	return 0;
- }
- 
- static const struct of_device_id ucc_geth_match[] = {
-@@ -3787,7 +3785,7 @@ static struct platform_driver ucc_geth_driver = {
- 		.of_match_table = ucc_geth_match,
- 	},
- 	.probe		= ucc_geth_probe,
--	.remove		= ucc_geth_remove,
-+	.remove_new	= ucc_geth_remove,
- 	.suspend	= ucc_geth_suspend,
- 	.resume		= ucc_geth_resume,
- };
--- 
-2.39.1
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> # 
+pcie-mediatek
 
