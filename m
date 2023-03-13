@@ -2,124 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CB16B7D2A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 17:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF5B6B7D38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 17:16:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pb1w83MXPz3c7X
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 03:15:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pb1xC2GGHz3fHL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 03:16:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=wrFQfRFy;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=wrFQfRFy;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=xfdYKeYp;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=xfdYKeYp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=2a01:111:f400:7e1b::31a; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=2a01:111:f400:fe1e::301; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=wrFQfRFy;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=wrFQfRFy;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=xfdYKeYp;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=xfdYKeYp;
 	dkim-atps=neutral
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05hn2031a.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::31a])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01hn0301.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe1e::301])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pb1s403Cfz3bjW
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pb1s401CGz3bh9
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 03:12:39 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Iie0Bl1raO6MNQbx9dABBRV7HF/h/2HGK/e4/Sj3ooA=;
- b=wrFQfRFyOFtUzK+lEV57Vki0KgPbszS9KeiUKNyUoJGLeYAexb4t8rHFH6jEuGYJgjS/5NQpSqu/meK69aw62vE/+R1Lgr9I01hi82JAY61BcKNYZTOTbwKdX7nNpeUWyYiqWLY1++9ZVoC/BDih6XX9pKtiUrOLiO9ggojgRXeS1AbcremYGWYILnNpCYVTu3JT+vB+d9a/qQuOyetyIXXr2fhqdyRtAiyB/AKfzlft8GvzX3YqR71Q1qfZteDDe70CZegL8xG15s1wLehkIaOSI6vFiotkLmPeb0EJR3cGmlqEeACI8XjWCP/qISnkyAIfLt8VcdPFItU4llXvUQ==
-Received: from FR3P281CA0097.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:a1::15)
- by GVXPR03MB8330.eurprd03.prod.outlook.com (2603:10a6:150:6f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Mon, 13 Mar
- 2023 16:12:19 +0000
-Received: from VI1EUR05FT011.eop-eur05.prod.protection.outlook.com
- (2603:10a6:d10:a1:cafe::7) by FR3P281CA0097.outlook.office365.com
- (2603:10a6:d10:a1::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.25 via Frontend
- Transport; Mon, 13 Mar 2023 16:12:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.84)
+ bh=+fLamCowzh1nTRXh7I/5z1XXvWh5IU5iHNNPU0E1Cgg=;
+ b=xfdYKeYptQ/cRB36t4xEAjTuZ/YEbRfkVuOBL9MaHvjCtbiq2PF3SaCu+iSnDG7WVV+PVXAWinOogfiY4PTD7tRAR5Fxat2QDYINjeP8zDVJhoXEQruUVXP54g2Pe8J9JufLr3Mz20rkdhYwoS9qcS/7yZv1udcBGV6usw3i5ourGrpjRgVlDorPTnDhKC49Dbf4jo/dr8kG1ITRMF8HStxUBB9QJMUNAhUp/tTfkjXEJdrcUk5DJrGJJz7dM2VLdO0XO9sTBvmvvzJOsWp1IVVTLtGx0TlhFZQCPyIIkZnss5DAO+jdXFpEvQUNFXmxgt+LizppAgqN4QnjW6Xr8Q==
+Received: from DB6PR07CA0058.eurprd07.prod.outlook.com (2603:10a6:6:2a::20) by
+ VI1PR03MB6463.eurprd03.prod.outlook.com (2603:10a6:800:193::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6178.24; Mon, 13 Mar 2023 16:12:18 +0000
+Received: from DB8EUR05FT004.eop-eur05.prod.protection.outlook.com
+ (2603:10a6:6:2a:cafe::58) by DB6PR07CA0058.outlook.office365.com
+ (2603:10a6:6:2a::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.19 via Frontend
+ Transport; Mon, 13 Mar 2023 16:12:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.83)
  smtp.mailfrom=seco.com; dkim=pass (signature was verified)
  header.d=seco.com;dmarc=pass action=none header.from=seco.com;
 Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
- 20.160.56.84 as permitted sender) receiver=protection.outlook.com;
- client-ip=20.160.56.84; helo=inpost-eu.tmcas.trendmicro.com; pr=C
-Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.84) by
- VI1EUR05FT011.mail.protection.outlook.com (10.233.242.148) with Microsoft
+ 20.160.56.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.83; helo=inpost-eu.tmcas.trendmicro.com; pr=C
+Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.83) by
+ DB8EUR05FT004.mail.protection.outlook.com (10.233.238.106) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6199.10 via Frontend Transport; Mon, 13 Mar 2023 16:12:16 +0000
-Received: from outmta (unknown [192.168.82.132])
-	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 6C87820080270;
+ 15.20.6199.11 via Frontend Transport; Mon, 13 Mar 2023 16:12:16 +0000
+Received: from outmta (unknown [192.168.82.133])
+	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 91BB22008088F;
 	Mon, 13 Mar 2023 16:12:16 +0000 (UTC)
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (unknown [104.47.14.56])
-	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 0DBFC20080077;
-	Mon, 13 Mar 2023 16:10:30 +0000 (UTC)
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (unknown [104.47.14.57])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 3A54320080075;
+	Mon, 13 Mar 2023 16:03:25 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dUH5QZM6mnIdhAPYEaiR9RCQ/Ubg6DHaMlv615vCTouRKP2ht4TsGJoQpxQoLTGG3W2RHMnUgDWdTi9WlrR1+0CYcNwABuU3J/ASNbMdv4+JVvgtkL1hDgy69G3H0IS9AVF9dzpk5JjtHnJrI5X47x9zHNAGRjoe4/PgO42nTFvTQXymYvvE7VVGZD0KvpCsDKZVxe0pEeRECZyXueyHKPRsmiPWi1GbuQ2h75zLhaOvkKmbeHc2EqhM/ZgQdhYZWUJp3fT0Upy+ukXhJM/KAW7AemhVR84CCUDABub0rRm/DoqaL4rKL2O51/j4c8lcVgpjBXaGBTfjxFv/mMwIZQ==
+ b=JHMaAFJaINHIc1YHv+TVsk9F45arXcT6eCzlpFSbQEp62V4LYpGElyxOtY3s/KonifTBUmgWg1HYzzCWEYi9vC7OoZZ56X+d9xcof5XCjoZwsj4hznDbUmmLfLgw0vQpJpnCkQXqqUjf1QCe9iQFziblJuL9Rkh1hWYIrtsIwIfuzMFRtInKr+BX5+7iV48Ev+GkBpUHNs1cGl/7a/0n32v2/rHrjc7HuKUYwIE5m1EK/T9H+AL7HyOUypQqwDYRNTq9qnr8+575w6ayGqUHH6O46u5rsBeADMLiAnQIrXdxV81QiHAaumAYK7LWmDvt8cFu8+t0P529oEK9dRiDoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Iie0Bl1raO6MNQbx9dABBRV7HF/h/2HGK/e4/Sj3ooA=;
- b=ThGPTGmOtZliXdPbhuTKLArukCZGtmJ8TbI8v/56nOEQH4sPgLwSkBBc7SsH6CSb5MZCiSBrG2Vd1RemWk3vTQFITGLPDzFohFcBnolWE7LHDIsOzuISt3bsa736wHzjFttTwExisAtRtKx/UnZ62HodFQCJi7tAPM5V6mg7EMotlVRC8Zh5E52Xxr+tQFNCnD+koDuhuF7BA6UVquNrdRE1He1/S/wMZWrCZB3lIQhKmHsLS63LzwEgDr/EsXELQjyHMLvXzNoy6YJgVACZ0lWKEEYnt1Y3c0OgtFNaFLv8YmDGFcjYpYrqAwxEULKDQwHZnaWXvrkAKyroPwzghA==
+ bh=+fLamCowzh1nTRXh7I/5z1XXvWh5IU5iHNNPU0E1Cgg=;
+ b=ioT2W3qDcDSvtpm6zrO3GN6eNQPt2FAwtdNc1fNNuTRg1riZqYDdBkrd1maXCHyKuJs6pAsruiHdGXR0BbKzTtfGlfYy2tFj/lBD4nAIvC6QOJWPsqsQ4w41b5ish6tgZfqljX2GLgl0dZ+hqxPGuYrT7KgUe60eUUi3baOzDX0egmMXaLGbvS4EdFVpavXemsg9YMDr7sEk2gOX/O/k/JQ/qCG3NglYtjMP/0gUaYqMTw8eYyNxzRCcOiXpxPIo7SJH11BDqx45V/hFH6xI7Ik1PYaWBhzMo4V6NgvFYv+uJWe83Hf6J7ZEVr62661Da/MoCQganViiG6fHtLcGFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
  dkim=pass header.d=seco.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Iie0Bl1raO6MNQbx9dABBRV7HF/h/2HGK/e4/Sj3ooA=;
- b=wrFQfRFyOFtUzK+lEV57Vki0KgPbszS9KeiUKNyUoJGLeYAexb4t8rHFH6jEuGYJgjS/5NQpSqu/meK69aw62vE/+R1Lgr9I01hi82JAY61BcKNYZTOTbwKdX7nNpeUWyYiqWLY1++9ZVoC/BDih6XX9pKtiUrOLiO9ggojgRXeS1AbcremYGWYILnNpCYVTu3JT+vB+d9a/qQuOyetyIXXr2fhqdyRtAiyB/AKfzlft8GvzX3YqR71Q1qfZteDDe70CZegL8xG15s1wLehkIaOSI6vFiotkLmPeb0EJR3cGmlqEeACI8XjWCP/qISnkyAIfLt8VcdPFItU4llXvUQ==
+ bh=+fLamCowzh1nTRXh7I/5z1XXvWh5IU5iHNNPU0E1Cgg=;
+ b=xfdYKeYptQ/cRB36t4xEAjTuZ/YEbRfkVuOBL9MaHvjCtbiq2PF3SaCu+iSnDG7WVV+PVXAWinOogfiY4PTD7tRAR5Fxat2QDYINjeP8zDVJhoXEQruUVXP54g2Pe8J9JufLr3Mz20rkdhYwoS9qcS/7yZv1udcBGV6usw3i5ourGrpjRgVlDorPTnDhKC49Dbf4jo/dr8kG1ITRMF8HStxUBB9QJMUNAhUp/tTfkjXEJdrcUk5DJrGJJz7dM2VLdO0XO9sTBvmvvzJOsWp1IVVTLtGx0TlhFZQCPyIIkZnss5DAO+jdXFpEvQUNFXmxgt+LizppAgqN4QnjW6Xr8Q==
 Authentication-Results-Original: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=seco.com;
 Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
  by AS8PR03MB7781.eurprd03.prod.outlook.com (2603:10a6:20b:405::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Mon, 13 Mar
- 2023 16:12:09 +0000
+ 2023 16:12:11 +0000
 Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
  ([fe80::dbcf:1089:3242:614e]) by DB9PR03MB8847.eurprd03.prod.outlook.com
  ([fe80::dbcf:1089:3242:614e%4]) with mapi id 15.20.6178.024; Mon, 13 Mar 2023
- 16:12:09 +0000
+ 16:12:11 +0000
 From: Sean Anderson <sean.anderson@seco.com>
 To: Vinod Koul <vkoul@kernel.org>,
 	Kishon Vijay Abraham I <kishon@kernel.org>,
 	linux-phy@lists.infradead.org
-Subject: [PATCH v11 02/13] dt-bindings: phy: Add Lynx 10G phy binding
-Date: Mon, 13 Mar 2023 12:11:26 -0400
-Message-Id: <20230313161138.3598068-3-sean.anderson@seco.com>
+Subject: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
+Date: Mon, 13 Mar 2023 12:11:27 -0400
+Message-Id: <20230313161138.3598068-4-sean.anderson@seco.com>
 X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
 In-Reply-To: <20230313161138.3598068-1-sean.anderson@seco.com>
 References: <20230313161138.3598068-1-sean.anderson@seco.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ClientProxiedBy: BL1P221CA0013.NAMP221.PROD.OUTLOOK.COM
  (2603:10b6:208:2c5::11) To DB9PR03MB8847.eurprd03.prod.outlook.com
  (2603:10a6:10:3dd::13)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|AS8PR03MB7781:EE_|VI1EUR05FT011:EE_|GVXPR03MB8330:EE_
-X-MS-Office365-Filtering-Correlation-Id: e88adec8-54e9-4927-10b1-08db23ddb706
+X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|AS8PR03MB7781:EE_|DB8EUR05FT004:EE_|VI1PR03MB6463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 391649e2-7f07-43b0-e835-08db23ddb724
 X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original:  2fWJV7+S5FFhNOn5BNLpLqq3aJmm1H1E4YaWdG7CMZcpz36nrtoReGaZDiJwBK1OWseEOPiNVGRghoBPvfR+KcY86KpqZQOExQ6HMONdIMl5VKpfwTVcUGr7WcuFHWMzGyIseT3xVgagbmXFLC3OCGVD3YHdzXamHgMOJHR30lHromuJQn/EN8QN2k5b8xgRckMOefvN+BR3SLOne47LmqQ5eV84+nx4K9VaIW4eLe6dGw5AXK1jhdjowg5iRtEck75EJW2EuZLTx+AgUgt/ZPHWlmTkxAPOLpG8ewWYyYSnS+P2voYPk2BOAcbsDSGGmo4JnkvQqsbT8n9i7nt92t1hM92UtGqibIhwDZlAd4Sjyrj7jRcOn+i98Aulz3rZkcgzmcaP8MCNBaI/t6OmV/KRJxXFkDxSbjh42LCgJvfSzN4iNnq5iGtXsnNKj5hXri4Czo+zhtwZKOECIc3Z7VC5kJXOWDtppp2i+aVcjEUXM9oPBLNGldFvHBkYvwegoq1n9YrE4fODZfPiHEixYPQPX+Rs86I6wCY+3RmCjn/CDwgzz9qvj3v1Kb+WH3b7+fcabf8f0lB/YUnAq04cx01TGTcWHrbY5QgFVuxkkXo95mNtG7odIM1JCC1WGYGWZ4tBHzSYiWrni2QwFUqBznnyM7q+m0lpnt9Idu7wy2uvkZ/csnHh2aYs3RPLHd6L
-X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(366004)(39850400004)(346002)(396003)(376002)(136003)(451199018)(110136005)(41300700001)(54906003)(478600001)(8676002)(4326008)(66556008)(66476007)(66946007)(8936002)(36756003)(86362001)(38350700002)(38100700002)(26005)(6512007)(1076003)(966005)(6486002)(6666004)(186003)(52116002)(44832011)(5660300002)(7416002)(2906002)(316002)(6506007)(83380400001)(2616005);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info-Original:  dUWY0VD7b4CNWdqmm9IwwRR90WD9+ifnyhbXHbSdwkEqSzm2sVuualu/+PhbsFajKfJOHWY+IDLk/vlh9ngUK05qsCA2h4jthDRKgPUtQMCJLcik9QTad4/twQWwlV/6M31iT6J7qhIlMOvAwc14IrKov+hxl/NmyzDjRl56+KLzCY3A0b7WwaIPXzsN81iaZ453w520MBufmVR84cGelAHq5WA47saZJlwZJS8HRQY1fjc/qolNcWo6V0ZcxeGGCBsfOQ/nuXP5hhRrOr0KExPg0tFRAHMUHTtkLF4ZF7/OT6E9zv0SfrtReQRPxQxc/KqpeXHKimelNCDfjbHjj1wfyD7OkUUbKuV6Km5/8hhr7+fzUsw6A04azJJHsnWLy1bTnsEvFsb4rh3IS65rC+GmUl874AbSa8UzO10xyf50reMQi3pVNLPau2EhId+aoquP3oDOJIOjc91/O4K7Jhx3yS1KQ1gFHNyzH2gbjCgz6bvCCXGuJ6TQp7thjQOX0H6zqV48P8jZeV+lA8GIW5fuR68H2nwPzSFgpNwMPHMeTh/WXDkwoVewpyaeoCpIcnwApzwq4RX5mgQNIx1rh1FTAqZtfaCnDiXqmo+MvK8LsnTguI13/3pHmtKVZsyKpG7KMPU6cYRa3fnY+pOoyBdgnOrR0dzSC7GH7GH+Jix0XgsIPGMaZ1q98MOJTsau
+X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(366004)(39850400004)(346002)(396003)(376002)(136003)(451199018)(110136005)(41300700001)(54906003)(478600001)(8676002)(4326008)(66556008)(66476007)(66946007)(8936002)(36756003)(86362001)(38350700002)(38100700002)(26005)(6512007)(1076003)(966005)(6486002)(6666004)(186003)(52116002)(44832011)(5660300002)(7416002)(2906002)(66574015)(316002)(6506007)(83380400001)(2616005);DIR:OUT;SFP:1101;
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB7781
 X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:  VI1EUR05FT011.eop-eur05.prod.protection.outlook.com
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:  DB8EUR05FT004.eop-eur05.prod.protection.outlook.com
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 	bc293c93-f4b2-4e3f-61e9-08db23ddb2c1
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 	c213a612-e3df-480e-5fff-08db23ddb3e4
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	CL/yuRhzFOVlp+uX1KYPtUOmBX74PYsw9Ff9PyIL9THAgFRIAq1Nxhg1wMZd2o8iNJNQZc5YJyss0aoRKns0FMzmvGHByGPw9fYFq/ljAr5ndcHjki0hZIXXAHoTeC7wlsFkb/j4E/D6wbxKHI3MCLuoz1zFuD0hm9aNqWFQl5+zkw+2zC3D/CrsuEvoucfv0KS3fDzNsXEnyhRzkWTAxpfTDmgsGmb8Ni2bkKT37fi/aeFQ2oWg6a3/Nf+DTT7ubsrcMRVjD1410z8/i3MA+L3Ps4AEfEfQG+HXN606rKJ1aKRAD4AWm1sqkKlH+xPDjw2Au0yZxDRHmNtQJmgEa2EquB1vG90hAZKi6rIYpVoSNsHGS7EW/1BsTiChVhz6x1ZSTVDh9A7kjg53w3lnxH7BWenDrKQ2XOrE5fFKX3poR3+1yDFN2Ou09eyH5+O910vZCgbdLPVxfl16iAaCg8D5wgpGBAKpdFZz4hmEPDq3kHUOxXe9xrW46NyEFSuO7zTwsF2OHmDY/MqQHdFFuvcEW4IzV5bw4yAPlErVPwEEfhT4jvIGS44K9QEct2pOc+Vpr8yAuTbX/GT+MT+JXoTHkNnqv/C4YQzacF/8TLJ29WSGS9s3vGsJ0+qF0P+gjMoW0ny6TPqgMO9hUqJYezDVemKt5J4goBf5iQsK6wUgZRel9vhclVPgWCsT+mgBivhe0a6G3TEhVVALX99AZLFu7RM7Q2o2rKaR0vLlhzNAMgS27gjhUlqXUsFeUbJq
-X-Forefront-Antispam-Report: 	CIP:20.160.56.84;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230025)(376002)(136003)(39850400004)(346002)(396003)(451199018)(5400799012)(36840700001)(46966006)(40470700004)(2906002)(82740400003)(7596003)(7636003)(41300700001)(83380400001)(36756003)(44832011)(40460700003)(7416002)(5660300002)(8676002)(70586007)(8936002)(356005)(4326008)(70206006)(316002)(34020700004)(40480700001)(36860700001)(54906003)(86362001)(110136005)(82310400005)(478600001)(47076005)(186003)(336012)(2616005)(26005)(6666004)(6512007)(1076003)(6506007)(966005)(6486002)(12100799021);DIR:OUT;SFP:1501;
+X-Microsoft-Antispam-Message-Info: 	UEHTiVdsm2vnSJ+v0U6ddnrJfcyWe0mX/vtVT05Rg8whoGp9E4jybbpz3HW7WIXcD5K8x8sOFm7sVTwM5a3MyLIamm7Gi8Joy1COgko+G0H0Zry+irgNnq9hUhGS7x2tCnyRSwUky98WPRR0ixmAaLd8a9guBEL0QHpjABrkfkCl38CVRyiHY+0/YDLUOxaoa2TNvIHf4y0PeijAPPgBHDYXrJcwvfYrnHPh8v0WfkN/0OSpwKl4dXlf7GVfBehqiOfzP4qPhjk26yU3yoWS476Jcvy2Q4oIqdZ4QJCK7FxFz5h1sUGf07GU+pe7Ish+cR3wYzrScoXauWqim6bb2EICw1YWG7cVr1hBTKUHyLQ3yZuqIwt5N9sDjrU44b+OwngkvOIPfEiDk2f9YmFSCoTuMAASL4n9hrF/xvujJWw8j5elvYE76S+r+z2KFqiILre2MFReC0zmpBv1ENPgTql3mOKh+Re0gKMyTviYAX7BsUyB6TjdTNu8YQQU/8ISeuKaaXpNSAgqgOcQWJnRqWNL7cthxbFpKUcSCRYW8AnEEAEk/YryWKXnBtEBlTxJDEJgDl/sJQ6B5TIC9rfxeYFU49g+to0ScB3f2ZgnObc3RY/Zjr0yHEeSTnC+ULXqva3oMAIaf+zq31c56U4vsx9nUjgslEPUuWmUe4KoATWDtzlO58F0sF92V3MB5r8RNWbSYMMP0zUYDhXzJzuBa5+k0XOU8inc2YYUrS9IUf0=
+X-Forefront-Antispam-Report: 	CIP:20.160.56.83;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230025)(39850400004)(346002)(396003)(376002)(136003)(5400799012)(451199018)(46966006)(36840700001)(110136005)(41300700001)(54906003)(478600001)(8676002)(4326008)(8936002)(70586007)(70206006)(36756003)(82310400005)(356005)(86362001)(40480700001)(34020700004)(36860700001)(82740400003)(7636003)(7596003)(26005)(6512007)(1076003)(966005)(6486002)(6666004)(186003)(44832011)(5660300002)(7416002)(2906002)(66574015)(316002)(6506007)(83380400001)(336012)(47076005)(2616005)(12100799021);DIR:OUT;SFP:1501;
 X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 16:12:16.7336
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 16:12:16.9669
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e88adec8-54e9-4927-10b1-08db23ddb706
+X-MS-Exchange-CrossTenant-Network-Message-Id: 391649e2-7f07-43b0-e835-08db23ddb724
 X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.84];Helo=[inpost-eu.tmcas.trendmicro.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	VI1EUR05FT011.eop-eur05.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.83];Helo=[inpost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	DB8EUR05FT004.eop-eur05.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR03MB8330
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR03MB6463
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,326 +130,323 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Rob Herring <robh@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, =?UTF-8?q?Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds a binding for the SerDes module found on QorIQ processors.
-Each phy is a subnode of the top-level device, possibly supporting
-multiple lanes and protocols. This "thick" #phy-cells is used due to
-allow for better organization of parameters. Note that the particular
-parameters necessary to select a protocol-controller/lane combination
-vary across different SoCs, and even within different SerDes on the same
-SoC.
+This is a generic binding for simple MMIO GPIO controllers. Although we
+have a single driver for these controllers, they were previously spread
+over several files. Consolidate them. The register descriptions are
+adapted from the comments in the source. There is no set order for the
+registers, so I have not specified one.
 
-The driver is designed to be able to completely reconfigure lanes at
-runtime. Generally, the phy consumer can select the appropriate
-protocol using set_mode.
-
-There are two PLLs, each of which can be used as the master clock for
-each lane. Each PLL has its own reference. For the moment they are
-required, because it simplifies the driver implementation. Absent
-reference clocks can be modeled by a fixed-clock with a rate of 0.
+Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
+has moved.
 
 Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
+Linus or Bartosz, feel free to pick this up as the rest of this series
+may not be merged any time soon.
 
-(no changes since v9)
+Changes in v11:
+- Keep empty (or almost-empty) properties on a single line
+- Don't use | unnecessarily
+- Use gpio as the node name for examples
+- Rename brcm,bcm6345-gpio.yaml to brcm,bcm63xx-gpio.yaml
 
-Changes in v9:
-- Add fsl,unused-lanes-reserved to allow for a gradual transition
-  between firmware and Linux control of the SerDes
-- Change phy-type back to fsl,type, as I was getting the error
-    '#phy-cells' is a dependency of 'phy-type'
+Changes in v10:
+- New
 
-Changes in v7:
-- Use double quotes everywhere in yaml
+ ...m6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} |  16 +--
+ .../devicetree/bindings/gpio/gpio-mmio.yaml   | 134 ++++++++++++++++++
+ .../bindings/gpio/ni,169445-nand-gpio.txt     |  38 -----
+ .../devicetree/bindings/gpio/wd,mbl-gpio.txt  |  38 -----
+ 4 files changed, 135 insertions(+), 91 deletions(-)
+ rename Documentation/devicetree/bindings/gpio/{brcm,bcm6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} (78%)
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+ delete mode 100644 Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+ delete mode 100644 Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
 
-Changes in v6:
-- fsl,type -> phy-type
-
-Changes in v4:
-- Use subnodes to describe lane configuration, instead of describing
-  PCCRs. This is the same style used by phy-cadence-sierra et al.
-
-Changes in v3:
-- Manually expand yaml references
-- Add mode configuration to device tree
-
-Changes in v2:
-- Rename to fsl,lynx-10g.yaml
-- Refer to the device in the documentation, rather than the binding
-- Move compatible first
-- Document phy cells in the description
-- Allow a value of 1 for phy-cells. This allows for compatibility with
-  the similar (but according to Ioana Ciornei different enough) lynx-28g
-  binding.
-- Remove minItems
-- Use list for clock-names
-- Fix example binding having too many cells in regs
-- Add #clock-cells. This will allow using assigned-clocks* to configure
-  the PLLs.
-- Document the structure of the compatible strings
-
- .../devicetree/bindings/phy/fsl,lynx-10g.yaml | 248 ++++++++++++++++++
- 1 file changed, 248 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
-
-diff --git a/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml b/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
+diff --git a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+similarity index 78%
+rename from Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+rename to Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+index 4d69f79df859..e11f4af49c52 100644
+--- a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: Broadcom BCM6345 GPIO controller
++title: Broadcom BCM63xx GPIO controller
+ 
+ maintainers:
+   - Álvaro Fernández Rojas <noltari@gmail.com>
+@@ -18,8 +18,6 @@ description: |+
+ 
+   BCM6338 have 8-bit data and dirout registers, where GPIO state can be read
+   and/or written, and the direction changed from input to output.
+-  BCM6345 have 16-bit data and dirout registers, where GPIO state can be read
+-  and/or written, and the direction changed from input to output.
+   BCM6318, BCM6328, BCM6358, BCM6362, BCM6368 and BCM63268 have 32-bit data
+   and dirout registers, where GPIO state can be read and/or written, and the
+   direction changed from input to output.
+@@ -29,7 +27,6 @@ properties:
+     enum:
+       - brcm,bcm6318-gpio
+       - brcm,bcm6328-gpio
+-      - brcm,bcm6345-gpio
+       - brcm,bcm6358-gpio
+       - brcm,bcm6362-gpio
+       - brcm,bcm6368-gpio
+@@ -63,17 +60,6 @@ required:
+ additionalProperties: false
+ 
+ examples:
+-  - |
+-    gpio@fffe0406 {
+-      compatible = "brcm,bcm6345-gpio";
+-      reg-names = "dirout", "dat";
+-      reg = <0xfffe0406 2>, <0xfffe040a 2>;
+-      native-endian;
+-
+-      gpio-controller;
+-      #gpio-cells = <2>;
+-    };
+-
+   - |
+     gpio@0 {
+       compatible = "brcm,bcm63268-gpio";
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml b/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
 new file mode 100644
-index 000000000000..7c364f7de85c
+index 000000000000..10a93a92ed78
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
-@@ -0,0 +1,248 @@
++++ b/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+@@ -0,0 +1,134 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/phy/fsl,lynx-10g.yaml#
++$id: http://devicetree.org/schemas/gpio/gpio-mmio.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: NXP Lynx 10G SerDes
++title: Generic MMIO GPIO
 +
 +maintainers:
-+  - Sean Anderson <sean.anderson@seco.com>
++  - Linus Walleij <linus.walleij@linaro.org>
++  - Bartosz Golaszewski <brgl@bgdev.pl>
 +
-+description: |
-+  These Lynx "SerDes" devices are found in NXP's QorIQ line of processors. The
-+  SerDes provides up to eight lanes. Each lane may be configured individually,
-+  or may be combined with adjacent lanes for a multi-lane protocol. The SerDes
-+  supports a variety of protocols, including up to 10G Ethernet, PCIe, SATA, and
-+  others. The specific protocols supported for each lane depend on the
-+  particular SoC.
++description:
++  Some simple GPIO controllers may consist of a single data register or a pair
++  of set/clear-bit registers. Such controllers are common for glue logic in
++  FPGAs or ASICs. Commonly, these controllers are accessed over memory-mapped
++  NAND-style parallel busses.
 +
 +properties:
++  big-endian: true
++
 +  compatible:
-+    items:
-+      - enum:
-+          - fsl,ls1046a-serdes
-+          - fsl,ls1088a-serdes
-+      - const: fsl,lynx-10g
++    enum:
++      - brcm,bcm6345-gpio # Broadcom BCM6345 GPIO controller
++      - wd,mbl-gpio # Western Digital MyBook Live memory-mapped GPIO controller
++      - ni,169445-nand-gpio # National Instruments 169445 GPIO NAND controller
 +
-+  "#address-cells":
-+    const: 1
++  '#gpio-cells':
++    const: 2
 +
-+  "#size-cells":
-+    const: 0
-+
-+  "#clock-cells":
-+    const: 1
-+    description: |
-+      The cell contains an ID as described in dt-bindings/clock/fsl,lynx-10g.h.
-+      Note that when assigning a rate to a PLL, the PLL's rate is divided by
-+      1000 to avoid overflow. A rate of 5000000 corresponds to 5GHz.
-+
-+  clocks:
-+    maxItems: 2
-+    description: |
-+      Clock for each PLL reference clock input.
-+
-+  clock-names:
-+    minItems: 2
-+    maxItems: 2
-+    items:
-+      enum:
-+        - ref0
-+        - ref1
-+
-+  fsl,unused-lanes-reserved:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: |
-+      Unused lanes are reserved for firmware use, and should not be disabled.
-+      Normally, groups containing unused lanes may be reconfigured or disabled
-+      to save power. However, when this property is present, unused lanes will
-+      not be touched until they are used by another driver. This allows
-+      migrating from firmware control of lanes to driver control.
-+
-+      Lanes not present in any group will never be modified, regardless of the
-+      presence of this property.
++  gpio-controller:
++    true
 +
 +  reg:
-+    maxItems: 1
++    minItems: 1
++    description:
++      A list of registers in the controller. The width of each register is
++      determined by its size. All registers must have the same width. The number
++      of GPIOs is set by the width, with bit 0 corresponding to GPIO 0.
++    items:
++      - description:
++          Register to READ the value of the GPIO lines. If GPIO line is high,
++          the bit will be set. If the GPIO line is low, the bit will be cleared.
++          This register may also be used to drive GPIOs if the SET register is
++          omitted.
++      - description:
++          Register to SET the value of the GPIO lines. Setting a bit in this
++          register will drive the GPIO line high.
++      - description:
++          Register to CLEAR the value of the GPIO lines. Setting a bit in this
++          register will drive the GPIO line low. If this register is omitted,
++          the SET register will be used to clear the GPIO lines as well, by
++          actively writing the line with 0.
++      - description:
++          Register to set the line as OUTPUT. Setting a bit in this register
++          will turn that line into an output line. Conversely, clearing a bit
++          will turn that line into an input.
++      - description:
++          Register to set this line as INPUT. Setting a bit in this register
++          will turn that line into an input line. Conversely, clearing a bit
++          will turn that line into an output.
 +
-+patternProperties:
-+  "^phy@":
-+    type: object
++  reg-names:
++    minItems: 1
++    maxItems: 5
++    items:
++      enum:
++        - dat
++        - set
++        - clr
++        - dirout
++        - dirin
 +
-+    description: |
-+      A contiguous group of lanes which will be configured together. Each group
-+      corresponds to one phy device. Lanes not described by any group will be
-+      left as-is.
++  native-endian: true
 +
-+    properties:
-+      "#phy-cells":
-+        const: 0
-+
-+      reg:
-+        minItems: 1
-+        maxItems: 8
-+        description:
-+          The lanes in the group. These must be listed in order. The first lane
-+          will have the FIRST_LANE bit set in GCR0. The order of lanes also
-+          determines the reset order (TRSTDIR).
-+
-+    patternProperties:
-+      "^(q?sgmii|xfi)":
-+        type: object
-+
-+        description: |
-+          A protocol controller which may control the group of lanes. Each
-+          controller is selected through the PCCRs. In addition to protocols
-+          desired for use by the OS, protocols which may have been configured
-+          by the bootloader must also be described. This ensures that only one
-+          protocol controller is attached to a group of lanes at once.
-+
-+        properties:
-+          fsl,pccr:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            description: |
-+              The index of the PCCR which configures this protocol controller.
-+              This is the same as the register name suffix. For example, PCCR8
-+              would use a value of 8 for an offset of 0x220 (0x200 + 4 * 8).
-+
-+          fsl,index:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            description: |
-+              The index of the protocol controller. This corresponds to the
-+              suffix in the documentation. For example, PEXa would be 0, PEXb
-+              1, etc. Generally, higher fields occupy lower bits.
-+
-+          fsl,cfg:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            minimum: 1
-+            description: |
-+              The configuration value to program into the protocol controller
-+              field.
-+
-+          fsl,type:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            enum:
-+              - 8 # PHY_TYPE_SGMII
-+              - 9 # PHY_TYPE_QSGMII
-+              - 13 # PHY_TYPE_2500BASEX
-+              - 14 # PHY_TYPE_10GBASER
-+            description: |
-+              The category of protocols supported by this controller. See
-+              "dt-bindings/phy/phy.h" for the relevant definitions. Individual
-+              protocols are selected by the phy consumer. The availability of
-+              1000BASE-KX and 10GBASE-KR depends on the SoC.
-+
-+              - PHY_TYPE_SGMII: 1000BASE-X, SGMII, and 1000BASE-KX
-+              - PHY_TYPE_2500BASEX: 2500BASE-X, 1000BASE-X, SGMII, and
-+                                    1000BASE-KX
-+              - PHY_TYPE_QSGMII: QSGMII
-+              - PHY_TYPE_10GBASER: 10GBASE-R and 10GBASE-KR
-+
-+        required:
-+          - fsl,pccr
-+          - fsl,index
-+          - fsl,cfg
-+          - fsl,type
-+
-+        additionalProperties: false
-+
-+    required:
-+      - "#phy-cells"
-+      - reg
-+
-+    additionalProperties: false
++  no-output:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If this property is present, the controller cannot drive the GPIO lines.
 +
 +required:
-+  - "#address-cells"
-+  - "#clock-cells"
-+  - "#size-cells"
 +  - compatible
-+  - clocks
-+  - clock-names
 +  - reg
++  - reg-names
++  - '#gpio-cells'
++  - gpio-controller
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/phy/phy.h>
-+
-+    serdes1: serdes@1ea0000 {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      #clock-cells = <1>;
-+      compatible = "fsl,ls1046a-serdes", "fsl,lynx-10g";
-+      reg = <0x1ea0000 0x2000>;
-+      clocks = <&clk_100mhz>, <&clk_156mhz>;
-+      clock-names = "ref0", "ref1";
-+
-+      serdes1_0: phy@0 {
-+        #phy-cells = <0>;
-+        reg = <0>;
-+
-+        /* SGMII.6 */
-+        sgmii-0 {
-+          fsl,pccr = <0x8>;
-+          fsl,index = <0>;
-+          fsl,cfg = <0x1>;
-+          fsl,type = <PHY_TYPE_SGMII>;
-+        };
-+      };
-+
-+      serdes1_1: phy@1 {
-+        #phy-cells = <0>;
-+        reg = <1>;
-+
-+        /* SGMII.5 */
-+        sgmii-1 {
-+          fsl,pccr = <0x8>;
-+          fsl,index = <1>;
-+          fsl,cfg = <0x1>;
-+          fsl,type = <PHY_TYPE_2500BASEX>;
-+        };
-+      };
-+
-+      serdes1_2: phy@2 {
-+        #phy-cells = <0>;
-+        reg = <2>;
-+
-+        /* SGMII.10 */
-+        sgmii-2 {
-+          fsl,pccr = <0x8>;
-+          fsl,index = <2>;
-+          fsl,cfg = <0x1>;
-+          fsl,type = <PHY_TYPE_2500BASEX>;
-+        };
-+
-+        /* XFI.10 */
-+        xfi-0 {
-+          fsl,pccr = <0xb>;
-+          fsl,index = <0>;
-+          fsl,cfg = <0x2>;
-+          fsl,type = <PHY_TYPE_10GBASER>;
-+        };
-+      };
-+
-+      serdes1_3: phy@3 {
-+        #phy-cells = <0>;
-+        reg = <3>;
-+
-+        /* SGMII.9 */
-+        sgmii-3 {
-+          fsl,pccr = <0x8>;
-+          fsl,index = <3>;
-+          fsl,cfg = <0x1>;
-+          fsl,type = <PHY_TYPE_2500BASEX>;
-+        };
-+
-+        /* XFI.9 */
-+        xfi-1 {
-+          fsl,pccr = <0xb>;
-+          fsl,index = <1>;
-+          fsl,cfg = <0x1>;
-+          fsl,type = <PHY_TYPE_10GBASER>;
-+        };
-+      };
++    gpio@1f300010 {
++      compatible = "ni,169445-nand-gpio";
++      reg = <0x1f300010 0x4>;
++      reg-names = "dat";
++      gpio-controller;
++      #gpio-cells = <2>;
 +    };
-+...
++
++    gpio@1f300014 {
++      compatible = "ni,169445-nand-gpio";
++      reg = <0x1f300014 0x4>;
++      reg-names = "dat";
++      gpio-controller;
++      #gpio-cells = <2>;
++      no-output;
++    };
++
++    gpio@e0000000 {
++      compatible = "wd,mbl-gpio";
++      reg-names = "dat";
++      reg = <0xe0000000 0x1>;
++      #gpio-cells = <2>;
++      gpio-controller;
++    };
++
++    gpio@e0100000 {
++      compatible = "wd,mbl-gpio";
++      reg-names = "dat";
++      reg = <0xe0100000 0x1>;
++      #gpio-cells = <2>;
++      gpio-controller;
++      no-output;
++    };
++
++    gpio@fffe0406 {
++      compatible = "brcm,bcm6345-gpio";
++      reg-names = "dirout", "dat";
++      reg = <0xfffe0406 2>, <0xfffe040a 2>;
++      native-endian;
++
++      gpio-controller;
++      #gpio-cells = <2>;
++    };
+diff --git a/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt b/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+deleted file mode 100644
+index ca2f8c745a27..000000000000
+--- a/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
++++ /dev/null
+@@ -1,38 +0,0 @@
+-Bindings for the National Instruments 169445 GPIO NAND controller
+-
+-The 169445 GPIO NAND controller has two memory mapped GPIO registers, one
+-for input (the ready signal) and one for output (control signals).  It is
+-intended to be used with the GPIO NAND driver.
+-
+-Required properties:
+-	- compatible: should be "ni,169445-nand-gpio"
+-	- reg-names: must contain
+-		"dat" - data register
+-	- reg: address + size pairs describing the GPIO register sets;
+-		order must correspond with the order of entries in reg-names
+-	- #gpio-cells: must be set to 2. The first cell is the pin number and
+-			the second cell is used to specify the gpio polarity:
+-			0 = active high
+-			1 = active low
+-	- gpio-controller: Marks the device node as a gpio controller.
+-
+-Optional properties:
+-	- no-output: disables driving output on the pins
+-
+-Examples:
+-	gpio1: nand-gpio-out@1f300010 {
+-		compatible = "ni,169445-nand-gpio";
+-		reg = <0x1f300010 0x4>;
+-		reg-names = "dat";
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-	};
+-
+-	gpio2: nand-gpio-in@1f300014 {
+-		compatible = "ni,169445-nand-gpio";
+-		reg = <0x1f300014 0x4>;
+-		reg-names = "dat";
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-		no-output;
+-	};
+diff --git a/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt b/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+deleted file mode 100644
+index 038c3a6a1f4d..000000000000
+--- a/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
++++ /dev/null
+@@ -1,38 +0,0 @@
+-Bindings for the Western Digital's MyBook Live memory-mapped GPIO controllers.
+-
+-The Western Digital MyBook Live has two memory-mapped GPIO controllers.
+-Both GPIO controller only have a single 8-bit data register, where GPIO
+-state can be read and/or written.
+-
+-Required properties:
+-	- compatible: should be "wd,mbl-gpio"
+-	- reg-names: must contain
+-		"dat" - data register
+-	- reg: address + size pairs describing the GPIO register sets;
+-		order must correspond with the order of entries in reg-names
+-	- #gpio-cells: must be set to 2. The first cell is the pin number and
+-			the second cell is used to specify the gpio polarity:
+-			0 = active high
+-			1 = active low
+-	- gpio-controller: Marks the device node as a gpio controller.
+-
+-Optional properties:
+-	- no-output: GPIOs are read-only.
+-
+-Examples:
+-	gpio0: gpio0@e0000000 {
+-		compatible = "wd,mbl-gpio";
+-		reg-names = "dat";
+-		reg = <0xe0000000 0x1>;
+-		#gpio-cells = <2>;
+-		gpio-controller;
+-	};
+-
+-	gpio1: gpio1@e0100000 {
+-		compatible = "wd,mbl-gpio";
+-		reg-names = "dat";
+-		reg = <0xe0100000 0x1>;
+-		#gpio-cells = <2>;
+-		gpio-controller;
+-		no-output;
+-	};
 -- 
 2.35.1.1320.gc452695387.dirty
 
