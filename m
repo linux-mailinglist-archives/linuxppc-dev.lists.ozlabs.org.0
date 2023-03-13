@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1086B80A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 19:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A73B6B80C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 19:33:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pb4x23wyYz3f4T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 05:31:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pb4z134MWz3cB4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 05:33:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OeCZUVqp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0EqNGbMl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OeCZUVqp;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0EqNGbMl;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pb4v90ZKxz3bjY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 05:29:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pb4vC21Hpz3brQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 05:29:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CEF6B61468;
-	Mon, 13 Mar 2023 18:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7583C433D2;
-	Mon, 13 Mar 2023 18:29:37 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9669461468;
+	Mon, 13 Mar 2023 18:29:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8753C433EF;
+	Mon, 13 Mar 2023 18:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1678732178;
-	bh=Pe0/hNNaMoU0gM+93u/XR+fgNuZd3OVKlbnEDdjzewc=;
+	s=korg; t=1678732181;
+	bh=KGCzZ+imnvEdkljNiLcYF+bxrlXNtuGGw3dcz4zdHvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OeCZUVqpSJff9VP+DW9jFNHP3D6bViNOBeHt4CUyGJvvU7OCa6RIm78891LP9xQz7
-	 8yZkNNQ+e1qH+Uem/4Honp0okUzvw/kfI5VcCknWxDwcKw0TcL2lCQsPOgwjQnjOc9
-	 DwUmr8BGMFwrepQxn1GemY6tmvKPe5fMBe6RDIAs=
+	b=0EqNGbMlKRwDuQj2dv0OxR31F1eYi9XirJZNBzLWeQT0SJ0Tyj0MKz5pKs+mZRJL6
+	 7PzwqYLKmtqYNSlx7l7k9SAXBmifeT86dP89Uc4zHFLEFEmYy7uqMCbm7BRtuBkXxk
+	 DJVr/GVlGmC5Yf0GFy2QmfbwsvE9ZrJXOT4tlcHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 14/36] powerpc/pseries: move to use bus_get_dev_root()
-Date: Mon, 13 Mar 2023 19:28:56 +0100
-Message-Id: <20230313182918.1312597-14-gregkh@linuxfoundation.org>
+Subject: [PATCH 15/36] powerpc/fsl: move to use bus_get_dev_root()
+Date: Mon, 13 Mar 2023 19:28:57 +0100
+Message-Id: <20230313182918.1312597-15-gregkh@linuxfoundation.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230313182918.1312597-1-gregkh@linuxfoundation.org>
 References: <20230313182918.1312597-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3929; i=gregkh@linuxfoundation.org; h=from:subject; bh=Pe0/hNNaMoU0gM+93u/XR+fgNuZd3OVKlbnEDdjzewc=; b=owGbwMvMwCRo6H6F97bub03G02pJDCn82RXZKQEzrFPtAtj+X3h7e5d64drtd1yuCEeKHLii9 8/9zIeCjhgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZhIUDvDfJctHGsOFU1n5xUW kdguExvkeDYkiGF6TL621vL83jeZU8IYMq78nJtmyQoA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2249; i=gregkh@linuxfoundation.org; h=from:subject; bh=KGCzZ+imnvEdkljNiLcYF+bxrlXNtuGGw3dcz4zdHvo=; b=owGbwMvMwCRo6H6F97bub03G02pJDCn82RXRPonuPMsPTv2Q7DfVuXbJ92m3+Qucvn7XsV38a 9bU45e8OmJZGASZGGTFFFm+bOM5ur/ikKKXoe1pmDmsTCBDGLg4BWAi9Z8ZZrO+cE3qCChKUzi2 /fKlb7ckbGazRjLMM3HMyHx1alexjd3s80oJZTt7JW8xAwA=
 X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,94 +79,51 @@ design mistakes.  It will build and apply cleanly on top of 6.3-rc2 on
 its own, but I'd prefer if I could take it through my driver-core tree
 so that the driver core changes can be taken through there for 6.4-rc1.
 
- .../platforms/pseries/pseries_energy.c        | 28 +++++++++++--------
- arch/powerpc/platforms/pseries/suspend.c      | 10 +++++--
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ arch/powerpc/sysdev/fsl_mpic_timer_wakeup.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/pseries_energy.c b/arch/powerpc/platforms/pseries/pseries_energy.c
-index 09e98d301db0..2c661b798235 100644
---- a/arch/powerpc/platforms/pseries/pseries_energy.c
-+++ b/arch/powerpc/platforms/pseries/pseries_energy.c
-@@ -300,20 +300,22 @@ static struct device_attribute attr_percpu_deactivate_hint =
- static int __init pseries_energy_init(void)
- {
- 	int cpu, err;
--	struct device *cpu_dev;
-+	struct device *cpu_dev, *dev_root;
+diff --git a/arch/powerpc/sysdev/fsl_mpic_timer_wakeup.c b/arch/powerpc/sysdev/fsl_mpic_timer_wakeup.c
+index c2baa283e624..147b5d8bb904 100644
+--- a/arch/powerpc/sysdev/fsl_mpic_timer_wakeup.c
++++ b/arch/powerpc/sysdev/fsl_mpic_timer_wakeup.c
+@@ -116,6 +116,7 @@ static struct device_attribute mpic_attributes = __ATTR(timer_wakeup, 0644,
  
- 	if (!firmware_has_feature(FW_FEATURE_BEST_ENERGY))
- 		return 0; /* H_BEST_ENERGY hcall not supported */
- 
- 	/* Create the sysfs files */
--	err = device_create_file(cpu_subsys.dev_root,
--				&attr_cpu_activate_hint_list);
--	if (!err)
--		err = device_create_file(cpu_subsys.dev_root,
--				&attr_cpu_deactivate_hint_list);
-+	dev_root = bus_get_dev_root(&cpu_subsys);
-+	if (dev_root) {
-+		err = device_create_file(dev_root, &attr_cpu_activate_hint_list);
-+		if (!err)
-+			err = device_create_file(dev_root, &attr_cpu_deactivate_hint_list);
-+		put_device(dev_root);
-+		if (err)
-+			return err;
-+	}
- 
--	if (err)
--		return err;
- 	for_each_possible_cpu(cpu) {
- 		cpu_dev = get_cpu_device(cpu);
- 		err = device_create_file(cpu_dev,
-@@ -337,14 +339,18 @@ static int __init pseries_energy_init(void)
- static void __exit pseries_energy_cleanup(void)
- {
- 	int cpu;
--	struct device *cpu_dev;
-+	struct device *cpu_dev, *dev_root;
- 
- 	if (!sysfs_entries)
- 		return;
- 
- 	/* Remove the sysfs files */
--	device_remove_file(cpu_subsys.dev_root, &attr_cpu_activate_hint_list);
--	device_remove_file(cpu_subsys.dev_root, &attr_cpu_deactivate_hint_list);
-+	dev_root = bus_get_dev_root(&cpu_subsys);
-+	if (dev_root) {
-+		device_remove_file(dev_root, &attr_cpu_activate_hint_list);
-+		device_remove_file(dev_root, &attr_cpu_deactivate_hint_list);
-+		put_device(dev_root);
-+	}
- 
- 	for_each_possible_cpu(cpu) {
- 		cpu_dev = get_cpu_device(cpu);
-diff --git a/arch/powerpc/platforms/pseries/suspend.c b/arch/powerpc/platforms/pseries/suspend.c
-index 1b902cbf85c5..5c43435472cc 100644
---- a/arch/powerpc/platforms/pseries/suspend.c
-+++ b/arch/powerpc/platforms/pseries/suspend.c
-@@ -143,6 +143,7 @@ static const struct platform_suspend_ops pseries_suspend_ops = {
-  **/
- static int pseries_suspend_sysfs_register(struct device *dev)
+ static int __init fsl_wakeup_sys_init(void)
  {
 +	struct device *dev_root;
- 	int rc;
+ 	int ret;
  
- 	if ((rc = subsys_system_register(&suspend_subsys, NULL)))
-@@ -151,8 +152,13 @@ static int pseries_suspend_sysfs_register(struct device *dev)
- 	dev->id = 0;
- 	dev->bus = &suspend_subsys;
+ 	fsl_wakeup = kzalloc(sizeof(struct fsl_mpic_timer_wakeup), GFP_KERNEL);
+@@ -124,16 +125,26 @@ static int __init fsl_wakeup_sys_init(void)
  
--	if ((rc = device_create_file(suspend_subsys.dev_root, &dev_attr_hibernate)))
--		goto subsys_unregister;
-+	dev_root = bus_get_dev_root(&suspend_subsys);
+ 	INIT_WORK(&fsl_wakeup->free_work, fsl_free_resource);
+ 
+-	ret = device_create_file(mpic_subsys.dev_root, &mpic_attributes);
+-	if (ret)
+-		kfree(fsl_wakeup);
++	dev_root = bus_get_dev_root(&mpic_subsys);
 +	if (dev_root) {
-+		rc = device_create_file(dev_root, &dev_attr_hibernate);
++		ret = device_create_file(dev_root, &mpic_attributes);
 +		put_device(dev_root);
-+		if (rc)
-+			goto subsys_unregister;
++		if (ret)
++			kfree(fsl_wakeup);
 +	}
  
- 	return 0;
+ 	return ret;
+ }
+ 
+ static void __exit fsl_wakeup_sys_exit(void)
+ {
+-	device_remove_file(mpic_subsys.dev_root, &mpic_attributes);
++	struct device *dev_root;
++
++	dev_root = bus_get_dev_root(&mpic_subsys);
++	if (dev_root) {
++		device_remove_file(dev_root, &mpic_attributes);
++		put_device(dev_root);
++	}
+ 
+ 	mutex_lock(&sysfs_lock);
  
 -- 
 2.39.2
