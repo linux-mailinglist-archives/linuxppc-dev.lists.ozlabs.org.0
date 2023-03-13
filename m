@@ -1,67 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26E26B765C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 12:44:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4F76B7664
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 12:44:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PZvv25Wptz3cJn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 22:43:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PZvw36N3pz3cCy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Mar 2023 22:44:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gCrSGv+p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=u4NObk0m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab; helo=madras.collabora.co.uk; envelope-from=angelogioacchino.delregno@collabora.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=andrea.righi@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gCrSGv+p;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=u4NObk0m;
 	dkim-atps=neutral
-X-Greylist: delayed 448 seconds by postgrey-1.36 at boromir; Mon, 13 Mar 2023 19:51:26 AEDT
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PZr3y2dH0z3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 19:51:26 +1100 (AEDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PZrSJ4WZ9z3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 20:09:02 +1100 (AEDT)
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 901456602F64;
-	Mon, 13 Mar 2023 08:43:41 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1678697022;
-	bh=4665rYemk6A2Xust8XxLzgdzG2cxoWIBxqr5W23dBBU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gCrSGv+pa3FO7jv7lAjrOcRNNwZOhG8bnVPxVcMAZV3jbVupV2eD23h7+xM5UqZKq
-	 yIFrUAQpgZPrQXJPWQ2RFLfEftrGAy4qlZzCnQzI2CffgTmAbylpOxjEby0sKHIkgx
-	 X21RB9a4WBM4zQnnwGQ8H6eObyuYDcE+e29GQJhU/l1syW31ydi1sCab54psgqSK49
-	 SzKU25O5AzqhcHcmAuU4EH/4+uOO4Fv8/WJJ7cHNE2p3/uyB0JFITvnz9cMkxRw4Oa
-	 CQZUPWa6x3vmdim8mSJTPEIiZ9jPW9E6ZMWg9gOyShmzJRunuRFwEJ24aqDDWvQDCr
-	 CiN7YlGwWzXLg==
-Message-ID: <ffaf4d60-f8d1-2456-88eb-8c91ed4a6b4a@collabora.com>
-Date: Mon, 13 Mar 2023 09:43:38 +0100
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 18E113F18C
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 09:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1678698537;
+	bh=+zLoqF6BfOdUSle6q2rHxZJA0reMzMkFf8cRs0TMdRQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type;
+	b=u4NObk0mBe5anmHno4p1kOA1LCd0VO0DtY6vrcB9bzBjLeth4JWOgaWt4ZluKQfdH
+	 wa/wX/K1yxG8iQZD1NhyroCmXC90uvp8iUJi4cxbewXbDhQ8czgwtbRk6S+rdIjhBU
+	 F4oXz+4mIZMCcEXdUOoAYYAY29Xec0atmAV0iqYIFY8oMmz6A/3oA9rHnoIY8nVWg3
+	 J8ZM0MopCtRPTxW7LZjw8oDJPzSNSISVL8HtGHLCSFROxaMf9TvZaM5ic/HUCgNXnb
+	 G4PKqyFL4p1H+xpolew8EHMCgFQQXQozofXGqOxCMSRdZoQLyXC2XmOT4Ltxxh+RJI
+	 8dH8pSYzrNVDg==
+Received: by mail-ed1-f72.google.com with SMTP id h15-20020a056402280f00b004bf9e193c23so16101812ede.11
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Mar 2023 02:08:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678698535;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+zLoqF6BfOdUSle6q2rHxZJA0reMzMkFf8cRs0TMdRQ=;
+        b=M8Fb8R+/JA0HBmHJqkrRXBimpQt8JTGb+kY4cl2qCM9DyYO4JXg3bSyhHHjtNEcU+h
+         ZdgtOi2GbpuI+kPTcMpMwYd+rnX6L03i8dAXpImZi40RZ/9i+G5TwiRPBvRqz70cnu9E
+         HYjsQqgLYdfS79Q8290wKvZuOofy97K2Vu9C6Z14A0i884l0SIprvxQYkEw84df44jhy
+         P9+wOaSO3vQJkpHGnYIPlVpvRy9e0wHsLKtZAnCx+Y60VngtGFV4SClabmAIhPkAaIUO
+         MZxHDbuLZJ05DMBL+zE0S1vOrNOhaaNfL5fL6l7Yoz1lKONpFOv5dpXi39HV9b52fHZm
+         8YJg==
+X-Gm-Message-State: AO0yUKWW4YBfhLSK17X2Gos2qQ1DVB4HE5bhk0yKIvkNf423DId2wErR
+	hkSNphR8mOvhFb0SLsYG78URMnvM9sXC7cdkf6qtQDKAsvqQFgkKiUiQndmYY8edj8piRGIAuyK
+	fEEiQ1vyT6kGpb2ja4jjv6fWbjNKwfQS6oHzwQ4KJhXc=
+X-Received: by 2002:a17:907:3fa6:b0:877:a9d2:e5e9 with SMTP id hr38-20020a1709073fa600b00877a9d2e5e9mr43351031ejc.42.1678698535564;
+        Mon, 13 Mar 2023 02:08:55 -0700 (PDT)
+X-Google-Smtp-Source: AK7set8zaIoGIKt5CAbGfpbiLF+2JUW2fmQCY3xX2N3r1L5GI3QhgID5iSiMfAUqw3n4GDt4lI95/w==
+X-Received: by 2002:a17:907:3fa6:b0:877:a9d2:e5e9 with SMTP id hr38-20020a1709073fa600b00877a9d2e5e9mr43350998ejc.42.1678698535272;
+        Mon, 13 Mar 2023 02:08:55 -0700 (PDT)
+Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
+        by smtp.gmail.com with ESMTPSA id ox29-20020a170907101d00b008e53874f8d8sm3157668ejb.180.2023.03.13.02.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Mar 2023 02:08:55 -0700 (PDT)
+Date: Mon, 13 Mar 2023 10:08:54 +0100
+From: Andrea Righi <andrea.righi@canonical.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: boot regression on ppc64 with linux 6.2
+Message-ID: <ZA7oJr1/Z4vzWy4N@righiandr-XPS-13-7390>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] PCI: Use of_property_present() for testing DT property
- presence
-Content-Language: en-US
-To: Rob Herring <robh@kernel.org>, Thierry Reding <thierry.reding@gmail.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jonathan Hunter <jonathanh@nvidia.com>,
- Ryder Lee <ryder.lee@mediatek.com>, Jianjun Wang
- <jianjun.wang@mediatek.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Matthias Brugger <matthias.bgg@gmail.com>
-References: <20230310144719.1544443-1-robh@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230310144719.1544443-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Mailman-Approved-At: Mon, 13 Mar 2023 22:43:12 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,21 +85,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Il 10/03/23 15:47, Rob Herring ha scritto:
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties. As
-> part of this, convert of_get_property/of_find_property calls to the
-> recently added of_property_present() helper when we just want to test
-> for presence of a property and nothing more.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+I'm triggering the following bug when booting my qemu powerpc VM:
 
+event-sources: Unable to request interrupt 23 for /event-sources/hot-plug-events
+WARNING: CPU: 0 PID: 1 at arch/powerpc/platforms/pseries/event_sources.c:26 request_event_sources_irqs+0xbc/0xf0
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.2.2-kc #1
+Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
+NIP:  c000000002022eec LR: c000000002022ee8 CTR: 0000000000000000
+REGS: c000000003483910 TRAP: 0700   Tainted: G        W           (6.2.2-kc)
+MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24483200  XER: 00000000
+CFAR: c000000000180838 IRQMASK: 0 
+GPR00: c000000002022ee8 c000000003483bb0 c000000001a5ce00 0000000000000050 
+GPR04: c000000002437d78 c000000002437e28 0000000000000001 0000000000000001 
+GPR08: c000000002437d00 0000000000000001 0000000000000000 0000000044483200 
+GPR12: 0000000000000000 c000000002720000 c000000000012758 0000000000000000 
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+GPR24: 0000000000000000 c0000000020033fc cccccccccccccccd c0000000000e07f0 
+GPR28: c000000000db0520 0000000000000000 c0000000fff92ac0 0000000000000017 
+NIP [c000000002022eec] request_event_sources_irqs+0xbc/0xf0
+LR [c000000002022ee8] request_event_sources_irqs+0xb8/0xf0
+Call Trace:
+[c000000003483bb0] [c000000002022ee8] request_event_sources_irqs+0xb8/0xf0 (unreliable)
+[c000000003483c40] [c000000002022fa0] __machine_initcall_pseries_init_ras_hotplug_IRQ+0x80/0xb0
+[c000000003483c70] [c0000000000121b8] do_one_initcall+0x98/0x300
+[c000000003483d50] [c000000002004b28] kernel_init_freeable+0x2ec/0x370
+[c000000003483df0] [c000000000012780] kernel_init+0x30/0x190
+[c000000003483e50] [c00000000000cf5c] ret_from_kernel_thread+0x5c/0x64
+--- interrupt: 0 at 0x0
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> # 
-pcie-mediatek
+I did a bisect it and it seems that the offending commit is:
+baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")
 
+Reverting that and also dfecd06bc552 ("powerpc: remove
+STACK_FRAME_OVERHEAD"), because we need to re-introduce
+STACK_FRAME_OVERHEAD, seems to fix everything.
+
+-Andrea
