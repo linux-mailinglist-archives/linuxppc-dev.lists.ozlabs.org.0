@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7AA6B9FB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 20:28:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B256B9FBD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 20:29:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pbk8t0K4Wz3cjP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 06:28:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PbkB21hDfz3fQv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 06:29:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gtQLf0i9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KHfH4oc+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gtQLf0i9;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KHfH4oc+;
 	dkim-atps=neutral
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbk5y2dKWz3cKn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 06:26:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbk5z25VKz3cKn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 06:26:15 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678821974; x=1710357974;
+  t=1678821975; x=1710357975;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pKBg2DWRtjN/3o0GQ+Gz1Jmqpx4HtRyfpegHo4oOuDE=;
-  b=gtQLf0i9tZAE5XYXQMjYi/tGnadBVcqhVWIYlvB1CdeOWSHOfRL9BZug
-   UysPHjpWZC3jRzA9/LppyR+LGlPj8wRiAzkoZ0bSmig8CDdo66l/GaLDR
-   5o+utbyAxkgfzSU65ycNVN6cEAvbkIpf1yqL6N2Jv5ekwKgUBTddWIojn
-   BiObC34IIfAJGRexN/JpGsHH/Lqg7nSR4hU2koQSD2ahzx26O2M19NqvD
-   pv3lJ7Sjd6ml0m7LTSl0ONwwUDcHW0xvYW42w9hC5xS8xnNEYKssxegJZ
-   ngEmcQ8QpOGrFqL+Fi3+6KRU7drtzFnDfEAd7Xb/ovSoq7sR86RBA2Twa
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="402389771"
+  bh=w+YdvYGhoz+V3BkfBUt2y8DW6u+jmfOhlK0R9Fvr/bI=;
+  b=KHfH4oc+20wn5OQxZljMkg2LEgbzNEJL3EkTELs29iBXRQLK1IG7BRNp
+   VwiwKm5cLARArKF9ZMKdQe86pE75Lp5BVidmKGi6UKfI+1P6FTKI4zxcZ
+   OVF7ihY5pcg/BB08WKynaNx1rT+cW9iGGP9zpDf3uZytmBgzHuWY/Bmu2
+   r0TFA24fTOReGO88LIkyIIm6HX1BCgsFuXu8GIr6IwTEu18C5+PVPHJ1o
+   gxdmLkVrLxC9ho/STrg4we4b9rfbxiKZ3SXF7xGBiprFPPFJ02zZbGC2n
+   UuqZu/9MsXiurhMOyFvY8jXr4xXqtyaQRnwmIhBAVD2StlUOCJAToYKfE
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="402389800"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="402389771"
+   d="scan'208";a="402389800"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
   by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 12:26:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="656474979"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="656474982"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="656474979"
+   d="scan'208";a="656474982"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga006.jf.intel.com with ESMTP; 14 Mar 2023 12:25:52 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 98A8B365; Tue, 14 Mar 2023 21:26:37 +0200 (EET)
+	id A3CFB93; Tue, 14 Mar 2023 21:26:37 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -72,9 +72,9 @@ To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	linux-pci@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH v5 2/4] PCI: Split pci_bus_for_each_resource_p() out of pci_bus_for_each_resource()
-Date: Tue, 14 Mar 2023 21:26:32 +0200
-Message-Id: <20230314192634.63531-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v5 3/4] EISA: Convert to use pci_bus_for_each_resource_p()
+Date: Tue, 14 Mar 2023 21:26:33 +0200
+Message-Id: <20230314192634.63531-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230314192634.63531-1-andriy.shevchenko@linux.intel.com>
 References: <20230314192634.63531-1-andriy.shevchenko@linux.intel.com>
@@ -96,217 +96,39 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Refactor pci_bus_for_each_resource() in the same way as it's done in
-pci_dev_for_each_resource() case. This will allow to hide iterator
-inside the loop, where it's not used otherwise.
-
-No functional changes intended.
+The pci_bus_for_each_resource_p() hides the iterator loop since
+it may be not used otherwise. With this, we may drop that iterator
+variable definition.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- .clang-format                      |  1 +
- drivers/pci/bus.c                  |  7 +++----
- drivers/pci/hotplug/shpchp_sysfs.c |  8 ++++----
- drivers/pci/pci.c                  |  5 ++---
- drivers/pci/probe.c                |  2 +-
- drivers/pci/setup-bus.c            | 10 ++++------
- include/linux/pci.h                | 14 ++++++++++----
- 7 files changed, 25 insertions(+), 22 deletions(-)
+ drivers/eisa/pci_eisa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/.clang-format b/.clang-format
-index 266abb843654..81c9f055086f 100644
---- a/.clang-format
-+++ b/.clang-format
-@@ -520,6 +520,7 @@ ForEachMacros:
-   - 'of_property_for_each_string'
-   - 'of_property_for_each_u32'
-   - 'pci_bus_for_each_resource'
-+  - 'pci_bus_for_each_resource_p'
-   - 'pci_dev_for_each_resource'
-   - 'pci_dev_for_each_resource_p'
-   - 'pci_doe_for_each_off'
-diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index 549c4bd5caec..b0789d332d36 100644
---- a/drivers/pci/bus.c
-+++ b/drivers/pci/bus.c
-@@ -182,13 +182,13 @@ static int pci_bus_alloc_from_region(struct pci_bus *bus, struct resource *res,
- 		void *alignf_data,
- 		struct pci_bus_region *region)
+diff --git a/drivers/eisa/pci_eisa.c b/drivers/eisa/pci_eisa.c
+index 930c2332c3c4..907b86384396 100644
+--- a/drivers/eisa/pci_eisa.c
++++ b/drivers/eisa/pci_eisa.c
+@@ -20,8 +20,8 @@ static struct eisa_root_device pci_eisa_root;
+ 
+ static int __init pci_eisa_init(struct pci_dev *pdev)
  {
--	int i, ret;
- 	struct resource *r, avail;
- 	resource_size_t max;
-+	int ret;
+-	int rc, i;
+ 	struct resource *res, *bus_res = NULL;
++	int rc;
  
- 	type_mask |= IORESOURCE_TYPE_BITS;
- 
--	pci_bus_for_each_resource(bus, r, i) {
-+	pci_bus_for_each_resource_p(bus, r) {
- 		resource_size_t min_used = min;
- 
- 		if (!r)
-@@ -289,9 +289,8 @@ bool pci_bus_clip_resource(struct pci_dev *dev, int idx)
- 	struct resource *res = &dev->resource[idx];
- 	struct resource orig_res = *res;
- 	struct resource *r;
--	int i;
- 
--	pci_bus_for_each_resource(bus, r, i) {
-+	pci_bus_for_each_resource_p(bus, r) {
- 		resource_size_t start, end;
- 
- 		if (!r)
-diff --git a/drivers/pci/hotplug/shpchp_sysfs.c b/drivers/pci/hotplug/shpchp_sysfs.c
-index 64beed7a26be..ff04f0c5e7c3 100644
---- a/drivers/pci/hotplug/shpchp_sysfs.c
-+++ b/drivers/pci/hotplug/shpchp_sysfs.c
-@@ -24,16 +24,16 @@
- static ssize_t show_ctrl(struct device *dev, struct device_attribute *attr, char *buf)
- {
- 	struct pci_dev *pdev;
--	int index, busnr;
- 	struct resource *res;
- 	struct pci_bus *bus;
- 	size_t len = 0;
-+	int busnr;
- 
- 	pdev = to_pci_dev(dev);
- 	bus = pdev->subordinate;
- 
- 	len += sysfs_emit_at(buf, len, "Free resources: memory\n");
--	pci_bus_for_each_resource(bus, res, index) {
-+	pci_bus_for_each_resource_p(bus, res) {
- 		if (res && (res->flags & IORESOURCE_MEM) &&
- 				!(res->flags & IORESOURCE_PREFETCH)) {
- 			len += sysfs_emit_at(buf, len,
-@@ -43,7 +43,7 @@ static ssize_t show_ctrl(struct device *dev, struct device_attribute *attr, char
- 		}
- 	}
- 	len += sysfs_emit_at(buf, len, "Free resources: prefetchable memory\n");
--	pci_bus_for_each_resource(bus, res, index) {
-+	pci_bus_for_each_resource_p(bus, res) {
- 		if (res && (res->flags & IORESOURCE_MEM) &&
- 			       (res->flags & IORESOURCE_PREFETCH)) {
- 			len += sysfs_emit_at(buf, len,
-@@ -53,7 +53,7 @@ static ssize_t show_ctrl(struct device *dev, struct device_attribute *attr, char
- 		}
- 	}
- 	len += sysfs_emit_at(buf, len, "Free resources: IO\n");
--	pci_bus_for_each_resource(bus, res, index) {
-+	pci_bus_for_each_resource_p(bus, res) {
+ 	if ((rc = pci_enable_device (pdev))) {
+ 		dev_err(&pdev->dev, "Could not enable device\n");
+@@ -38,7 +38,7 @@ static int __init pci_eisa_init(struct pci_dev *pdev)
+ 	 * eisa_root_register() can only deal with a single io port resource,
+ 	*  so we use the first valid io port resource.
+ 	 */
+-	pci_bus_for_each_resource(pdev->bus, res, i)
++	pci_bus_for_each_resource_p(pdev->bus, res)
  		if (res && (res->flags & IORESOURCE_IO)) {
- 			len += sysfs_emit_at(buf, len,
- 					     "start = %8.8llx, length = %8.8llx\n",
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 7a67611dc5f4..2f8915ab41ef 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -779,9 +779,8 @@ struct resource *pci_find_parent_resource(const struct pci_dev *dev,
- {
- 	const struct pci_bus *bus = dev->bus;
- 	struct resource *r;
--	int i;
- 
--	pci_bus_for_each_resource(bus, r, i) {
-+	pci_bus_for_each_resource_p(bus, r) {
- 		if (!r)
- 			continue;
- 		if (resource_contains(r, res)) {
-@@ -799,7 +798,7 @@ struct resource *pci_find_parent_resource(const struct pci_dev *dev,
- 			 * be both a positively-decoded aperture and a
- 			 * subtractively-decoded region that contain the BAR.
- 			 * We want the positively-decoded one, so this depends
--			 * on pci_bus_for_each_resource() giving us those
-+			 * on pci_bus_for_each_resource_p() giving us those
- 			 * first.
- 			 */
- 			return r;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index a3f68b6ba6ac..5ada4c155d3c 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -533,7 +533,7 @@ void pci_read_bridge_bases(struct pci_bus *child)
- 	pci_read_bridge_mmio_pref(child);
- 
- 	if (dev->transparent) {
--		pci_bus_for_each_resource(child->parent, res, i) {
-+		pci_bus_for_each_resource_p(child->parent, res) {
- 			if (res && res->flags) {
- 				pci_bus_add_resource(child, res,
- 						     PCI_SUBTRACTIVE_DECODE);
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index d4fc7665f70a..d6ead027255f 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -770,9 +770,8 @@ static struct resource *find_bus_resource_of_type(struct pci_bus *bus,
- 						  unsigned long type)
- {
- 	struct resource *r, *r_assigned = NULL;
--	int i;
- 
--	pci_bus_for_each_resource(bus, r, i) {
-+	pci_bus_for_each_resource_p(bus, r) {
- 		if (r == &ioport_resource || r == &iomem_resource)
- 			continue;
- 		if (r && (r->flags & type_mask) == type && !r->parent)
-@@ -1204,7 +1203,7 @@ void __pci_bus_size_bridges(struct pci_bus *bus, struct list_head *realloc_head)
- 			additional_mmio_pref_size = 0;
- 	struct resource *pref;
- 	struct pci_host_bridge *host;
--	int hdr_type, i, ret;
-+	int hdr_type, ret;
- 
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
- 		struct pci_bus *b = dev->subordinate;
-@@ -1228,7 +1227,7 @@ void __pci_bus_size_bridges(struct pci_bus *bus, struct list_head *realloc_head)
- 		host = to_pci_host_bridge(bus->bridge);
- 		if (!host->size_windows)
- 			return;
--		pci_bus_for_each_resource(bus, pref, i)
-+		pci_bus_for_each_resource_p(bus, pref)
- 			if (pref && (pref->flags & IORESOURCE_PREFETCH))
- 				break;
- 		hdr_type = -1;	/* Intentionally invalid - not a PCI device. */
-@@ -1333,12 +1332,11 @@ EXPORT_SYMBOL(pci_bus_size_bridges);
- 
- static void assign_fixed_resource_on_bus(struct pci_bus *b, struct resource *r)
- {
--	int i;
- 	struct resource *parent_r;
- 	unsigned long mask = IORESOURCE_IO | IORESOURCE_MEM |
- 			     IORESOURCE_PREFETCH;
- 
--	pci_bus_for_each_resource(b, parent_r, i) {
-+	pci_bus_for_each_resource_p(b, parent_r) {
- 		if (!parent_r)
- 			continue;
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index a97f026afaed..f0be961fcd7e 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1445,10 +1445,16 @@ int devm_request_pci_bus_resources(struct device *dev,
- /* Temporary until new and working PCI SBR API in place */
- int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
- 
--#define pci_bus_for_each_resource(bus, res, i)				\
--	for (i = 0;							\
--	    (res = pci_bus_resource_n(bus, i)) || i < PCI_BRIDGE_RESOURCE_NUM; \
--	     i++)
-+#define __pci_bus_for_each_resource(bus, res, __i, vartype)			\
-+	for (vartype __i = 0;							\
-+	     res = pci_bus_resource_n(bus, __i), __i < PCI_BRIDGE_RESOURCE_NUM;	\
-+	     __i++)
-+
-+#define pci_bus_for_each_resource(bus, res, i)					\
-+	__pci_bus_for_each_resource(bus, res, i, )
-+
-+#define pci_bus_for_each_resource_p(bus, res)					\
-+	__pci_bus_for_each_resource(bus, res, __i, unsigned int)
- 
- int __must_check pci_bus_alloc_resource(struct pci_bus *bus,
- 			struct resource *res, resource_size_t size,
+ 			bus_res = res;
+ 			break;
 -- 
 2.39.2
 
