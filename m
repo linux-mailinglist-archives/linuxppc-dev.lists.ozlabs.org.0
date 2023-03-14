@@ -2,61 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45336B94D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 13:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B03F6B9590
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 14:09:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PbYJC51ljz3cf8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 23:49:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PbYkz6jRSz3cdZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 00:09:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=SSLmaeHS;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.181; helo=mail-il1-f181.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sipsolutions.net (client-ip=2a01:4f8:191:4433::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=SSLmaeHS;
+	dkim-atps=neutral
+X-Greylist: delayed 1681 seconds by postgrey-1.36 at boromir; Wed, 15 Mar 2023 00:08:25 AEDT
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PbYHd3MSLz3cDt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 23:49:00 +1100 (AEDT)
-Received: by mail-il1-f181.google.com with SMTP id y12so4355282ilq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 05:49:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678798137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gBpmO88aubLNx5ds9k4LYpaw6LJjHZV6232nWb27C40=;
-        b=8Fxs8ZR+xFg7ECbY5LRA5CRIT5UWiLszp65cINWlZx0lbBtAYn7aQfHltCJHG+O+TA
-         Kxjf2HaRzFvNgz1bLEuCMKFxBMzdvrHlGFWEh49sV5DFkfk60ROBR/QzBH/Jf0087VWU
-         gvA/EBWXeX3oSyHNA/oAmSUQxJZACNZTFL/a1S0E5FXpwFEJRiTuq+r9uMmZLD7TDvo4
-         oJ1mE4BEXiF3mMnIHhNWQFc787gqAID2qo73RscV0Mrw7YivKimPk7xKRENmC963Ez9Q
-         U6N6TblKxL5b1tGVbamXqghZJRV+id739HoMOCdU1VKfu5DJNnKdvWTdpLKUHdCeNnou
-         iRRw==
-X-Gm-Message-State: AO0yUKWBf6AaomRlKUwDMui6TTINY5b1FxjnItNFS4nLyCb3yO01QAnp
-	bP0SBhbUoUsVA4NqIaqygCe9u4bT7bUAOA==
-X-Google-Smtp-Source: AK7set/HCCLwzeDhWh5Z8OPFYZ8HxJwV6vNnukIkDaDyKlu3pNT8nJreVBhGNRngsmoxsya9xJ3GZw==
-X-Received: by 2002:a05:6e02:1ca8:b0:322:fe79:8141 with SMTP id x8-20020a056e021ca800b00322fe798141mr2895125ill.1.1678798137347;
-        Tue, 14 Mar 2023 05:48:57 -0700 (PDT)
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com. [209.85.166.42])
-        by smtp.gmail.com with ESMTPSA id r7-20020a92c5a7000000b0030314a7f039sm788257ilt.10.2023.03.14.05.48.55
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Mar 2023 05:48:56 -0700 (PDT)
-Received: by mail-io1-f42.google.com with SMTP id bf15so6337232iob.7
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 05:48:55 -0700 (PDT)
-X-Received: by 2002:a05:6902:1002:b0:b48:1359:4e28 with SMTP id
- w2-20020a056902100200b00b4813594e28mr461087ybt.12.1678798114483; Tue, 14 Mar
- 2023 05:48:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230314121216.413434-1-schnelle@linux.ibm.com> <20230314121216.413434-2-schnelle@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PbYk128Nfz3byj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 00:08:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=pOg2+UYpTygnBlX1RyGCO9nWu9fsmXuoawMaiLoDXLo=;
+	t=1678799305; x=1680008905; b=SSLmaeHS0yWqN7gYdZZ55es7gHpbdsuQZxJ909m2oKS78Rl
+	AH4n3YDZ2hcyKQg+Z3rr4L6Fji4vFmIBGzfVwsrveKFrKJ2nwf/3IyjRckVG/cr+z7RieBa32dnyE
+	DSnMZ/JtWKtwFNjmI595ruI2HMjC3pPwxHb2Ja225OEuQd1McQlCLERQd69Zz3sSmtf4ZeXM6HY/F
+	sDsiPySz/BirdOxWTvfw6v7VpQINKId6KWLBDpmmYAA0vG137iq1pU3qi2Q9dNBKHddaTBvonebNq
+	mJSWi2MydgFRz9zmSvNRZDje6kFEeM/0VKdtOgzzco5j7XaUR/8ih2Vza6FPT/pg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1pc3uU-003AIF-1Y;
+	Tue, 14 Mar 2023 13:37:46 +0100
+Message-ID: <21a828bae06b97b8ca806a6b76d867902b1e0e1f.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 01/38] Kconfig: introduce HAS_IOPORT option and
+ select it as necessary
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Niklas Schnelle <schnelle@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+  Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky
+ <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Michal
+ Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>,  Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Walmsley <paul.walmsley@sifive.com>,  Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller"
+ <davem@davemloft.net>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>
+Date: Tue, 14 Mar 2023 13:37:43 +0100
 In-Reply-To: <20230314121216.413434-2-schnelle@linux.ibm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 14 Mar 2023 13:48:22 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV9ZoB5XNiiVEG-zBzB9eN5RJSC42WMDD-RZfcg=2tr4g@mail.gmail.com>
-Message-ID: <CAMuHMdV9ZoB5XNiiVEG-zBzB9eN5RJSC42WMDD-RZfcg=2tr4g@mail.gmail.com>
-Subject: Re: [PATCH v3 01/38] Kconfig: introduce HAS_IOPORT option and select
- it as necessary
-To: Niklas Schnelle <schnelle@linux.ibm.com>
+References: <20230314121216.413434-1-schnelle@linux.ibm.com>
+	 <20230314121216.413434-2-schnelle@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,41 +80,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Alan Stern <stern@rowland.harvard.edu>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Matt Turner <mattst88@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.
- de>, linux-um@lists.infradead.org, linux-alpha@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@kernel.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Borislav Petkov <bp@alien8.de>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, "Rafael J.
+ Wysocki" <rafael@kernel.org>, linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-alpha@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-um@lists.infradead.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Alan Stern <stern@rowland.harvard.edu>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, linux-riscv@lists.infradead.org, Mauro Carvalho Chehab <mchehab@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 14, 2023 at 1:13=E2=80=AFPM Niklas Schnelle <schnelle@linux.ibm=
-.com> wrote:
-> We introduce a new HAS_IOPORT Kconfig option to indicate support for I/O
-> Port access. In a future patch HAS_IOPORT=3Dn will disable compilation of
-> the I/O accessor functions inb()/outb() and friends on architectures
-> which can not meaningfully support legacy I/O spaces such as s390. Also
-> add dependencies on HAS_IOPORT for the ISA and HAVE_EISA config options
-> as these busses always go along with HAS_IOPORT.
->
-> The "depends on" relations on HAS_IOPORT in drivers as well as ifdefs
-> for HAS_IOPORT specific sections will be added in subsequent patches on
-> a per subsystem basis.
->
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+On Tue, 2023-03-14 at 13:11 +0100, Niklas Schnelle wrote:
+> --- a/arch/um/Kconfig
+> +++ b/arch/um/Kconfig
+> @@ -56,6 +56,7 @@ config NO_IOPORT_MAP
+> =20
+>  config ISA
+>  	bool
+> +	depends on HAS_IOPORT
+>=20
 
->  arch/m68k/Kconfig       | 1 +
+config ISA here is already unselectable, and nothing ever does "select
+ISA" (only in some other architectures), so is there much point in this?
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I'm not even sure why this exists at all.
 
-Gr{oetje,eeting}s,
+But anyway, adding a dependency to a always-false symbol doesn't make it
+less always-false :-)
 
-                        Geert
+Acked-by: Johannes Berg <johannes@sipsolutions.net> # for ARCH=3Dum
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Certainly will be nice to get rid of this cruft for architectures that
+don't have it.
+
+johannes
