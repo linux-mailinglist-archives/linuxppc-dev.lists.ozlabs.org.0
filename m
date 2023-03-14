@@ -1,54 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09CE6B8BBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 08:10:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 244786B8BDC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 08:23:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PbPmd48gBz3chV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 18:10:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PbQ3Q0VJXz3Wtr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 18:22:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q6GdfbTC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kJZ480Ki;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=shawnguo@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q6GdfbTC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kJZ480Ki;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PbPlh1B70z3c9Q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 18:09:20 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 1D7AAB818A0;
-	Tue, 14 Mar 2023 07:09:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA01C433EF;
-	Tue, 14 Mar 2023 07:09:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678777753;
-	bh=dJiDwvlKwnk919Dv4H3AXKo5uOs1Vovj49gT6cb/jxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q6GdfbTC2MbHRDbOnIBC/47DzX2vfiiY7SZlSEZW+hiM2YhvOyhixQfDAkI2v2P97
-	 +99h3BL7fcoY5hbHjneA8iRmoi8pagpgl3P4f6ygcY+ewbJ9UjEcU43kJG8C1SIn1F
-	 7rpif6nuy+vhCSKruzIqhwstfPZV4dcZaRng2853tLxw8pE3bhbPFQ23eJGvA5jaDh
-	 HoKFo1WW/n3xgZ9OJPfwqQ5+TfoSiWw4dX5td7+3je0WvSAm9Iihl2hgQFwYwbk8cj
-	 zwddUmQ/o3m5/PLXLBcblZ8SgEXfX9w0SymDtPJVBUDAcVcMCnuaBwQi77+AwRHVFk
-	 o8YYiA/mM4HLw==
-Date: Tue, 14 Mar 2023 15:08:48 +0800
-From: Shawn Guo <shawnguo@kernel.org>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v11 09/13] arm64: dts: ls1046a: Add serdes nodes
-Message-ID: <20230314070848.GA143566@dragon>
-References: <20230313161138.3598068-1-sean.anderson@seco.com>
- <20230313161138.3598068-10-sean.anderson@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PbQ2W0djsz30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 18:22:09 +1100 (AEDT)
+Received: by mail-ed1-x536.google.com with SMTP id fd5so24181577edb.7
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 00:22:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678778522;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9krYtYgrFfB+EZxwYgYFLH4M2qRAdQv9i48TyNn/Zvw=;
+        b=kJZ480KiLGQMVSncOnZGVRRx4P0N7HZDE5tLslc8GyW3aA7WqL3XWUTKlXJ+hJOarg
+         lOwW+YKeXPziRZZOYmtFTnQACP8mW49W/o7JddTQ1kGS6bDHRI5lWnrFvUxEHW1f9Ed1
+         +TwWFNcQQEo5VwIlH6DD4/S0b8GsYP45529MACcObqbIDjyc86kGBdSxpSCQ1GZHVOfY
+         VvzSvDxfcXqL/FCyvISuyWRWI0/28jqkpSQyrP8N3161bhOSCH3RGhX1s2EsMv/+m5DN
+         M3WMJtbpQyDtwE0VOU01sTF9xqIIPxFtkARdZ581774I2NtRORQMkG/dci42SXs5oDMG
+         80QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678778522;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9krYtYgrFfB+EZxwYgYFLH4M2qRAdQv9i48TyNn/Zvw=;
+        b=XbJTeg1zrCu4gKNCq3Eb17acu1SlVtmynqYMx6VaN1yNCVpWX3bi2GXW7Ue3y54PUe
+         IFZb+ZRkTeTNLgP25w2AERfthPuiQm/aCrJpuj3jAhWgqxCj8TBPH7duKzNFrVLtouAF
+         kPlz8L5AgzT3LNbRXwQqaOTD0lvZF7DaS13c5rMPEDAndtVfq4NS61h3xabq3oDqB/vQ
+         h8K4z8s6RGq1uElnvuzBm1B3FEWPTAZDgAvu862Rryea22Uft9fokj/9icIu4Bu9znzQ
+         lRhSJ3LHM1X2zUkkdrvi+3iEEtyRtpm3IoYL0oDAvV904edKrKSXQhTH2yfdiysSxkag
+         RPEA==
+X-Gm-Message-State: AO0yUKXrDQEvJED5uSLsUnrc3anbuDFyuC8DYAi2Ia9bHm3QwIZ4rZ7x
+	KFNX5A3A3gddl3WB7lqUl0co5T3ggso/m0CntWA=
+X-Google-Smtp-Source: AK7set8w7RHwJaqXqkb0zNbF2TQM1bbv1FN1z99erE9S9U8EuBbiRbq6QJAK5jLQk8p6wLGQEkDGieMxhqcQw/ObnTk=
+X-Received: by 2002:a17:907:e91:b0:924:32b2:e3d1 with SMTP id
+ ho17-20020a1709070e9100b0092432b2e3d1mr747785ejc.3.1678778521709; Tue, 14 Mar
+ 2023 00:22:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230313161138.3598068-10-sean.anderson@seco.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Tue, 14 Mar 2023 08:21:50 +0100
+Message-ID: <CAKXUXMwwQuwssyzBrOXHOz__YRpa1Rjgqmwn5rRFjDVLBbabPA@mail.gmail.com>
+Subject: Question about the dependency on the config SOC_FSL in CPM_QMC
+To: Herve Codina <herve.codina@bootlin.com>, Li Yang <leoyang.li@nxp.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Mark Brown <broonie@kernel.org>, 
+	Qiang Zhao <qiang.zhao@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,17 +72,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: kernel-janitors <kernel-janitors@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 13, 2023 at 12:11:33PM -0400, Sean Anderson wrote:
-> This adds nodes for the SerDes devices. They are disabled by default
-> to prevent any breakage on existing boards.
-> 
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Dear Herve,
 
-The DTS patches look good to me.  Let me know if they are ready to be
-applied.
+In your patch below, you added the config CPM_QMC which depends on the
+non-existing config SOC_FSL:
 
-Shawn
+https://lore.kernel.org/r/20230217145645.1768659-7-herve.codina@bootlin.com
+
+Up to my knowledge, the config SOC_FSL never existed in the mainline
+tree. Is this dependency really required or can the expression simply
+be reduced to COMPILE_TEST and we drop the dependency to SOC_FSL?
+
+Note: This patch has now shown up in linux-next with commit
+3178d58e0b97. Currently, it would not be possible to compile test this
+driver, as the dependency on SOC_FSL is never met.
+
+
+Best regards,
+
+Lukas
