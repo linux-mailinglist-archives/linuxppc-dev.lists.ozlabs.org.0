@@ -2,79 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AAD6B9C00
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 17:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694126B9DAB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Mar 2023 18:57:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PbfXj6vj4z3cS4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 03:45:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pbh7q59ncz3cfj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 04:57:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oc3hh3nT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IQfJITGI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nnac123@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oc3hh3nT;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IQfJITGI;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PbfWn38dxz30QS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 03:44:51 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32EFGIuu021650
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 16:44:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=3QEBcPwUznOmKh9HVxll2eWQx4NcJl2ekTzejDcnnds=;
- b=Oc3hh3nTzN+FJLtda7E+jP5x5NSIQ8jyli7jJKDcGBqPtKZDfWP1lVCqj7NCQSzGx1ho
- g/Hp6MnvoHHugHe/ZaGSkdZfQQx6I3cReRXiNmI6j1rV1lC4p3RVBvVDgJMh+XjmTMWS
- K00ETHfXQ87q+8DGbFcaLtH9W08NSiaJaaOeQyhiZPEd1JZldQIAq2kBkHngM5O4h+/K
- 54riLF/eLmN1qbq6aiQIoy2TrQPcJKfa6zGFj4MoMDJTqgVs4DIE8dHa4ctquK5tRreV
- fgPdNWyzaYYjEn8B0upnH4vBkI8Zh5PnhhR+p7XQZAC5Ah2NW+7Nvm1k0If1mXuwGXJF 9A== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pau6m32k8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 16:44:49 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32EEiQme020044
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 16:44:48 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3p8h96vr5r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 16:44:48 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32EGil2A33948322
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Mar 2023 16:44:47 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F7D658056;
-	Tue, 14 Mar 2023 16:44:47 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC1CB5803F;
-	Tue, 14 Mar 2023 16:44:46 +0000 (GMT)
-Received: from li-8d37cfcc-31b9-11b2-a85c-83226d7135c9.ibm.com.com (unknown [9.160.191.59])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Mar 2023 16:44:46 +0000 (GMT)
-From: Nick Child <nnac123@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v1] powerpc: Add version to install filenames
-Date: Tue, 14 Mar 2023 11:44:42 -0500
-Message-Id: <20230314164442.124929-1-nnac123@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbh6r45xDz3cKm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 04:56:50 +1100 (AEDT)
+Received: by mail-ed1-x52b.google.com with SMTP id z21so133862edb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 10:56:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678816602;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BBAdudaa5OwS68f0uZK/unstmFHq5M3zw+2tcO53Zq8=;
+        b=IQfJITGI5ZNI33OajIaXutN5rC2BX75h5a7QWvvS7cs+Bsd6qzJI8DIKrMv3iICbBL
+         VgyYu6jTKZedQHe3vQ7bXK9gqO/IT5LkTGA/lSNTLq8Vwtb9qJyAaChDD8v3vTBF3EkZ
+         fqY3FSWFi3DyJDtzlNjMcrZgHq6ohEC50aePxaHLZr9VDf/jdMGadDQKaRZ7s95sSxDR
+         ohvTlInGPaHJjFal0b6r/nRn+ezWiYRAyQV8b0yup8DjXt266T16rPY1w+hhs6Z+mYnh
+         LUUIs5HOzI2rT84gq0uu395D9OjbnmRgTRfB6OR4GthfN4uesaxKIqVSp/sIJkmToc21
+         ryzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678816602;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BBAdudaa5OwS68f0uZK/unstmFHq5M3zw+2tcO53Zq8=;
+        b=B2OmORL9VCcPrlfybLmCvn2sO7xdak1MjAc85Lq1nBfMj5usHyPEHhBkskBjjKLvsf
+         Rw/WpTwOEh9unEP2cUFbAO+pmX3CNKPHoQ5P8u0ki+MPsl1bwghmxNk111tU53Y7d9cz
+         +yTYzIZd98eOJ/i5i9tpEMzbuTJJ+hClA1X6ffTNk4aSJFuaKb5sVcNH3PUZ3odDvbvv
+         TI2FwRjzplhsyU0fFJhYpa2zSabq2n9fdGEVa2LNNFs9oKykigP3BldfjeqqPNKqLunL
+         AEn5EHLxEbs+rldT6WcU4pbXviDrmh5dN+NWoE95g+MZDMqUzURugO94nHi8+Ar1MICn
+         AHrw==
+X-Gm-Message-State: AO0yUKVUsGt/zTRMnFkLMLB0bVcJbtT6C/Sx6aNgyMYcT311auXIhG2g
+	opAy8rpGVxcnsZg9AqKI3jJezw==
+X-Google-Smtp-Source: AK7set/VmYsgH6FiXcXVlsj6D3W7RyTlZ0vFACe6rXBooAVbxkCIYcdML6pkyiokc3OU1DDaaYwUAg==
+X-Received: by 2002:aa7:c508:0:b0:4ad:7a9f:a9f0 with SMTP id o8-20020aa7c508000000b004ad7a9fa9f0mr35568684edq.22.1678816602556;
+        Tue, 14 Mar 2023 10:56:42 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:59be:4b3f:994b:e78c? ([2a02:810d:15c0:828:59be:4b3f:994b:e78c])
+        by smtp.gmail.com with ESMTPSA id i19-20020a508713000000b004af62273b66sm1392473edb.18.2023.03.14.10.56.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Mar 2023 10:56:42 -0700 (PDT)
+Message-ID: <684eb04d-aeaa-07e1-34d6-783e85e379f0@linaro.org>
+Date: Tue, 14 Mar 2023 18:56:40 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _F-cL9MPVGyLv142f6-X3WBJpP-XscKV
-X-Proofpoint-GUID: _F-cL9MPVGyLv142f6-X3WBJpP-XscKV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-14_10,2023-03-14_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- spamscore=0 suspectscore=0 impostorscore=0 mlxscore=0 clxscore=1011
- mlxlogscore=999 adultscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303140137
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
+Content-Language: en-US
+To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, linux-phy@lists.infradead.org
+References: <20230313161138.3598068-1-sean.anderson@seco.com>
+ <20230313161138.3598068-4-sean.anderson@seco.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230313161138.3598068-4-sean.anderson@seco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,75 +83,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Child <nnac123@linux.ibm.com>
+Cc: devicetree@vger.kernel.org, =?UTF-8?Q?Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than replacing the versionless vmlinux and System.map files,
-copy to files with the version info appended.
+On 13/03/2023 17:11, Sean Anderson wrote:
+> This is a generic binding for simple MMIO GPIO controllers. Although we
+> have a single driver for these controllers, they were previously spread
+> over several files. Consolidate them. The register descriptions are
+> adapted from the comments in the source. There is no set order for the
+> registers, so I have not specified one.
+> 
+> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
+> has moved.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Linus or Bartosz, feel free to pick this up as the rest of this series
+> may not be merged any time soon.
+> 
+> Changes in v11:
+> - Keep empty (or almost-empty) properties on a single line
+> - Don't use | unnecessarily
+> - Use gpio as the node name for examples
+> - Rename brcm,bcm6345-gpio.yaml to brcm,bcm63xx-gpio.yaml
+> 
+> Changes in v10:
+> - New
+> 
+>  ...m6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} |  16 +--
+>  .../devicetree/bindings/gpio/gpio-mmio.yaml   | 134 ++++++++++++++++++
+>  .../bindings/gpio/ni,169445-nand-gpio.txt     |  38 -----
+>  .../devicetree/bindings/gpio/wd,mbl-gpio.txt  |  38 -----
+>  4 files changed, 135 insertions(+), 91 deletions(-)
+>  rename Documentation/devicetree/bindings/gpio/{brcm,bcm6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} (78%)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+> similarity index 78%
+> rename from Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+> rename to Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+> index 4d69f79df859..e11f4af49c52 100644
+> --- a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
 
-Additionally, since executing the script is a last resort option,
-inform the user about the missing `installkernel` command and the
-location of the installation.
 
-This work is adapted from `arch/s390/boot/install.sh`.
+> +
+> +description:
+> +  Some simple GPIO controllers may consist of a single data register or a pair
+> +  of set/clear-bit registers. Such controllers are common for glue logic in
+> +  FPGAs or ASICs. Commonly, these controllers are accessed over memory-mapped
+> +  NAND-style parallel busses.
+> +
+> +properties:
+> +  big-endian: true
+> +
+> +  compatible:
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
----
+Keep compatible as first property.
 
-Hoping I am not breaking someones dependency on targeting /boot/vmlinux
-so RFC'ing.
+> +    enum:
+> +      - brcm,bcm6345-gpio # Broadcom BCM6345 GPIO controller
+> +      - wd,mbl-gpio # Western Digital MyBook Live memory-mapped GPIO controller
+> +      - ni,169445-nand-gpio # National Instruments 169445 GPIO NAND controller
 
-I typically have kernelinstall on my LPARs and installing and rebooting
-goes peacefully.
+I think you got comment that these comments are making things
+unreadable. I don't see here improvement.
 
-Recently, I did not have kernelinstall and `make install` seemed to behave
-differently. I got very little output but a succeful return code. After
-initramfs issues during boot I dug into the makefiles a bit to figure out
-where execution was differing. When `kernelinstall` cannot be found, we
-invoke `arch/powerpc/boot/install.sh` instead. I am primarily interested
-in getting more information relayed to the user about what is going on.
+For example first comment is useless - you say the same as compatible.
+Same with last one. So only remaining WD comment should be made in new
+line so everything is nicely readable.
 
-The changes to installing with the version appended are more of an afterthought
-that makes sense to me but could understand why someone may depend on consistent
-filenames.
-
-Opening as RFC for opinions/rejections/concerns.
-
-Thanks!
+BTW, order the enum by name.
 
 
- arch/powerpc/boot/install.sh | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+> +
+> +  '#gpio-cells':
+> +    const: 2
+> +
+> +  gpio-controller:
+> +    true
 
-diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
-index 461902c8a46d..101fcb397a0f 100755
---- a/arch/powerpc/boot/install.sh
-+++ b/arch/powerpc/boot/install.sh
-@@ -21,13 +21,17 @@ set -e
- # this should work for both the pSeries zImage and the iSeries vmlinux.sm
- image_name=`basename $2`
- 
--if [ -f $4/$image_name ]; then
--	mv $4/$image_name $4/$image_name.old
-+
-+echo "Warning: '${INSTALLKERNEL}' command not available... Copying" \
-+     "directly to $4/$image_name-$1" >&2
-+
-+if [ -f $4/$image_name-$1 ]; then
-+	mv $4/$image_name-$1 $4/$image_name-$1.old
- fi
- 
--if [ -f $4/System.map ]; then
--	mv $4/System.map $4/System.old
-+if [ -f $4/System.map-$1 ]; then
-+	mv $4/System.map-$1 $4/System-$1.old
- fi
- 
--cat $2 > $4/$image_name
--cp $3 $4/System.map
-+cat $2 > $4/$image_name-$1
-+cp $3 $4/System.map-$1
--- 
-2.31.1
+I am sure I saw comments here...
+
+https://lore.kernel.org/all/20230308231018.GA4039466-robh@kernel.org/
+
+> +
+> +  reg:
+> +    minItems: 1
+> +    description:
+> +      A list of registers in the controller. The width of each register is
+> +      determined by its size.
+
+I don't understand this comment. Aren't you describing now what 'reg' is
+in DT spec? If so, drop. If not, please share more.
+
+>  All registers must have the same width. The number
+> +      of GPIOs is set by the width, with bit 0 corresponding to GPIO 0.
+> +    items:
+> +      - description:
+> +          Register to READ the value of the GPIO lines. If GPIO line is high,
+> +          the bit will be set. If the GPIO line is low, the bit will be cleared.
+> +          This register may also be used to drive GPIOs if the SET register is
+> +          omitted.
+> +      - description:
+> +          Register to SET the value of the GPIO lines. Setting a bit in this
+> +          register will drive the GPIO line high.
+> +      - description:
+> +          Register to CLEAR the value of the GPIO lines. Setting a bit in this
+> +          register will drive the GPIO line low. If this register is omitted,
+> +          the SET register will be used to clear the GPIO lines as well, by
+> +          actively writing the line with 0.
+> +      - description:
+> +          Register to set the line as OUTPUT. Setting a bit in this register
+> +          will turn that line into an output line. Conversely, clearing a bit
+> +          will turn that line into an input.
+> +      - description:
+> +          Register to set this line as INPUT. Setting a bit in this register
+> +          will turn that line into an input line. Conversely, clearing a bit
+> +          will turn that line into an output.
+> +
+> +  reg-names:
+> +    minItems: 1
+> +    maxItems: 5
+> +    items:
+> +      enum:
+
+Why this is in any order? Other bindings were here specific, your 'reg'
+is also specific/fixed.
+
+> +        - dat
+> +        - set
+> +        - clr
+> +        - dirout
+> +        - dirin
+> +
+> +  native-endian: true
+> +
+> +  no-output:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      If this property is present, the controller cannot drive the GPIO lines.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - '#gpio-cells'
+> +  - gpio-controller
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    gpio@1f300010 {
+> +      compatible = "ni,169445-nand-gpio";
+> +      reg = <0x1f300010 0x4>;
+> +      reg-names = "dat";
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +    };
+> +
+> +    gpio@1f300014 {
+> +      compatible = "ni,169445-nand-gpio";
+> +      reg = <0x1f300014 0x4>;
+> +      reg-names = "dat";
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +      no-output;
+> +    };
+
+No need to duplicate examples. Keep only one. Everything is the same.
+
+
+Best regards,
+Krzysztof
 
