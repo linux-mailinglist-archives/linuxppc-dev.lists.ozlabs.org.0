@@ -1,66 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999266BB128
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 13:25:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CAC6BB463
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 14:20:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc8jX3pyMz30Lt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 23:25:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc9xJ1cvMz308w
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 00:20:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BFoU/Bpi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OUirE43Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BFoU/Bpi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OUirE43Q;
 	dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc8hc0Fywz3bh3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 23:24:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678883056; x=1710419056;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sqa5ETRPA8mWWtxvPChxrgVub4MEZRvt0xOoJBar2EI=;
-  b=BFoU/BpiT6lXjvlehuW2yjHyA0tnE11JLRMB1b1GYVAqHBaRZKL8vDlx
-   43RMRSOYhhKnk+pKtyxnTuHCtjYfytR2P0JtpncoZJnnWvn0di82HozNP
-   62mfo4Wy+tjuuD/dZKewvfgtgbIw5/fImkFhHngZklJJ6cJma0N8mfSkQ
-   DMn11FX742XzwKbbG9P4bhOePuw40mpKDYljZQ8w1zSmAELrvdNm1vDi/
-   WqDKTleQcbwbL5f6bbvzbVPA6UJM27Af2MdagxAn7kCQdw7CjlYFXp/3U
-   4+NV7c7/AolWkW1lz6o0txrbpjkEE3keQE5+5FG0cPi2PGG60dtYRFEHY
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="335171857"
-X-IronPort-AV: E=Sophos;i="5.98,262,1673942400"; 
-   d="scan'208";a="335171857"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2023 05:23:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768464686"
-X-IronPort-AV: E=Sophos;i="5.98,262,1673942400"; 
-   d="scan'208";a="768464686"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 15 Mar 2023 05:23:46 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pcQAT-0007f8-0r;
-	Wed, 15 Mar 2023 12:23:45 +0000
-Date: Wed, 15 Mar 2023 20:23:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-phy@lists.infradead.org
-Subject: Re: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
-Message-ID: <202303152008.kxRjSW73-lkp@intel.com>
-References: <20230313161138.3598068-4-sean.anderson@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc9wM344Jz3c6C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 00:19:31 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 92F2DB81E0B;
+	Wed, 15 Mar 2023 13:19:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911B4C433EF;
+	Wed, 15 Mar 2023 13:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1678886365;
+	bh=sga3q+scIZvfNK/6EdO/zdT6nG8pr/gf9L75QKEyXLE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=OUirE43Qzm0pBNiCEdWb7jM+cVNqa603CO3Zzp7vsSbCJCbgLFTl1u5uL7NlQSUcQ
+	 OhbHwNlLmMWGEo9vYEZeeSsKOU2X7l8xkhVu5WhAF+llat0rVrwL2rB3el0OWAFebx
+	 QT09DZvyQymTRSTzKmZpr2jwXXsVFt98ejUeRMcecOPOJZCZAMxiTKq7fPo00qsGj5
+	 AuyAMwi7zgAKYm/MwOyTN6bcOXlWX7vW07Vss6xo+auD1hQf3zABe2DilAK6KLvLCH
+	 Otu5p+bPtC973v3j7H8jOjwnsPe9Nn5dqKNF/LhPBAhOvOs5IVMNWmrndwkPuKWSuo
+	 X9oySDgyUtEjQ==
+From: Mark Brown <broonie@kernel.org>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>, 
+ Herve Codina <herve.codina@bootlin.com>
+In-Reply-To: <20230314082157.137176-1-herve.codina@bootlin.com>
+References: <20230314082157.137176-1-herve.codina@bootlin.com>
+Subject: Re: [PATCH] soc: fsl: cpm1: qmc: Fix test dependency
+Message-Id: <167888636330.25434.5728670450975508265.b4-ty@kernel.org>
+Date: Wed, 15 Mar 2023 13:19:23 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230313161138.3598068-4-sean.anderson@seco.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bd1bf
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,46 +63,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, =?iso-8859-1?Q?Fern=E1ndez?= Rojas <noltari@gmail.com>, Jonas Gorski <jonas.gorski@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Linus Walleij <linus.walleij@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
+Cc: kernel-janitors <kernel-janitors@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sean,
+On Tue, 14 Mar 2023 09:21:57 +0100, Herve Codina wrote:
+> The QMC depends on (SOC_FSL && COMPILE_TEST). SOC_FSL does not exist.
+> 
+> Fix the dependency using the correct one: FSL_SOC.
+> 
+> 
 
-I love your patch! Perhaps something to improve:
+Applied to
 
-[auto build test WARNING on shawnguo/for-next]
-[also build test WARNING on brgl/gpio/for-next clk/clk-next linus/master v6.3-rc2 next-20230315]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/dt-bindings-phy-Add-2500BASE-X-and-10GBASE-R/20230314-001522
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20230313161138.3598068-4-sean.anderson%40seco.com
-patch subject: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
-reproduce:
-        # https://github.com/intel-lab-lkp/linux/commit/2d1e86be168e32ea3d3f11325881f7cb1e5492f8
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Sean-Anderson/dt-bindings-phy-Add-2500BASE-X-and-10GBASE-R/20230314-001522
-        git checkout 2d1e86be168e32ea3d3f11325881f7cb1e5492f8
-        make menuconfig
-        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
-        make htmldocs
+Thanks!
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303152008.kxRjSW73-lkp@intel.com/
+[1/1] soc: fsl: cpm1: qmc: Fix test dependency
+      commit: 6ffa0da5c63f8408101d01075709981005eb66ec
 
-All warnings (new ones prefixed by >>):
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm63268-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6328-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6358-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6362-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
->> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6368-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
