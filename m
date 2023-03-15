@@ -2,53 +2,130 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0796BAD25
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 11:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2976BAD75
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 11:19:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc5kj61Tjz3chm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 21:10:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc5wl0gFVz3cd5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 21:19:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fwtpHJG8;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=3GuzOK8R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::614; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fwtpHJG8;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=3GuzOK8R;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20614.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::614])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc5jl4bCHz3bW0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 21:10:03 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 601FC61CBD;
-	Wed, 15 Mar 2023 10:10:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510E4C433EF;
-	Wed, 15 Mar 2023 10:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1678874999;
-	bh=j/F1jTT0xpH0p51trZmdAMJLTWkcUmTaOZtOcHA7nhw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fwtpHJG8IqvzpPZtOVgQWfVfR+fJYIupM4q63vFGSk7Wr+xLmDxcZpHr9wTEvcjTL
-	 YkHafSOLwbj5uogQZIPycOatnvtR3w+tENjopSyhyY5j3vZvKlmnqRdIYUlTqkhG3e
-	 WathY5jN3g+DxiAFbFSscOyxiFX8HszxYKJdQaIMtXOpj1DcxR8eDU7JRdUzh3nYYd
-	 kXacFahQOjDWurEcixhLUvUyPdJ9cIp6lGs8IKvDdUjV3PGDLGsS0nC5M26e2aFtH0
-	 yAdbzoxCze8SgVDgA6XPJl9MOdBwd+18P5MwyfV2mwu5lBmwTOWrAPmkaEedNg8qXj
-	 +FL8enZ9kdvCg==
-Date: Wed, 15 Mar 2023 12:09:47 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc5vm3qPCz3bZj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 21:18:43 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nflIrsrEFuXyWpFOhmVtDZU28CUs98Ea9sbKc/36dXPGDivI4C2NXyFDPomk05uuYgRplFqbEySnm8IGoppztSHhJkKBo4k1jXa3rOx1czfvTL+RgTsCo1oSN2eFO0V539U96KR4mkYlMrLKYETm+L2923QLMUtvdgoniWaOh5kLNBfdk3Zmd1e61MH+nSBMdKZ8xKefn7iBGqHbCnNQg2Wc2B7+otk7KLlDgQxfzY/SWSdkgfzxxKg7FVZVMXvd7JkR7z6ETGr2wGNnnFocDLRz9hjqs8tyfx8PobrTRaetzD8u7alWQWT/P9Liv14uCB+VdDTC9fbenc4A22TsqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NGubZEUNBfdLkgmycInfwezwxHfXMP4zTgFbkNw7F3Q=;
+ b=MrG7cMdpBlbpBiVDvg4yBkEtcaBroVSBoUsEwAw0hREoqcSWck/yoUiSSkleI9Gxi+KuCZnIJb0yesOnga+nYw/4OGcT4KSfzhriBe9/0KbjPdMxWDe3rOSL7+a7Ive4KcfGmIsGveXHtin3AOo4klWzZeyPfefjXsxwWqxYJ7wMiFNRW+QC2Mxq52V9b19MLXX/GgUwOCwQW14R21pJNt5yPgbI49K08RHJAHM3hdS5pALIWvXDCTi6kGLK5iN6VirogkVHOQ9Oga2296AJspzr3DvN6HF3mTl/Hpin6b1S1QuKk/8IHIItnG4bUPLnRiMkp6+gwPnHvwLt2jwUXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NGubZEUNBfdLkgmycInfwezwxHfXMP4zTgFbkNw7F3Q=;
+ b=3GuzOK8RKlhj5+NnyQH073GhPFYusuVjmbvmYXBVgiUFa0jShSEJQwCMSTq93H96Fj3gz80OuqRXTkU0jcPK19HAa8z7DOQ7MxtaQfcwJAsIGZCqasjbDu0imhbBpFQ9rCKJtgjyx4Fher0mba5P4DBIyAt3xItovz/hlfrdz9gVha2SSQxh8kYSuMv6ncnJ5sHadG5tPUOiCKv5uYuMbvg2iLbo856mI16vCuLOvqO5yPQ7wgPJa0yPeBb4fM8tTU/+ROhV/b3grTCJ3nRZ1IY1QUiuiNo8V5kQPX7joO1qmAbPS0gVnwbwoG5Ku7XvmRPCzUr3w5PtIs9J7D9k7A==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PAZP264MB2333.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e4::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.29; Wed, 15 Mar
+ 2023 10:18:22 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::3943:154a:eccc:fe3a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::3943:154a:eccc:fe3a%7]) with mapi id 15.20.6178.029; Wed, 15 Mar 2023
+ 10:18:22 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
 Subject: Re: [PATCH v4 20/36] powerpc: Implement the new page table range API
-Message-ID: <ZBGZa08KX3pIuAXt@kernel.org>
+Thread-Topic: [PATCH v4 20/36] powerpc: Implement the new page table range API
+Thread-Index: AQHZVv0YjMzoz9l+LU6zj9tdkgq+2a77l0WAgAAJsQA=
+Date: Wed, 15 Mar 2023 10:18:22 +0000
+Message-ID: <c7f08247-8bcd-184c-5e06-91f91257f1f6@csgroup.eu>
 References: <20230315051444.3229621-1-willy@infradead.org>
  <20230315051444.3229621-21-willy@infradead.org>
+ <1743d96f-8efe-0127-2cae-7368ce0eb2e6@csgroup.eu>
+In-Reply-To: <1743d96f-8efe-0127-2cae-7368ce0eb2e6@csgroup.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB2333:EE_
+x-ms-office365-filtering-correlation-id: 836bc186-c09e-4ef3-9ee1-08db253e9b6b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  Zw6csyt8Tig+97L9lZvW4MBur7eGd3KvUjMeFLr64Oph6DtP2AOSi7TOMpxRCpQ4VW+Ms56ij9NK8iYVg7WzMmvTRa/VLDue282t2eb5HKj6qcr+O+jN8ahPgKaB8rfHI5b5G0UAXx0VYuybl1Xphuhpp+KpO6t9tPZyWpzXG+vDMbdujI636gDAxJNmECmUgarecXhqCuuT8rNP/QG5g3YC0oR3tKAYWgRmjm6/JMExO//KA8kVkfDfxJ3DEGfbrGWrAGckElODMjmFF0D8U/wCzBVY+kjls7Yc5Ea/S1cgEN7i/95ZkelRw4TUufPlqYo8sTGQricozL6i7EQxP2FJrNlVj4eMYIw6OzEzqmj+75AcWKM2Hx9Wj0GTbE1GMDPl7S0mGIiSgnEL0/m2Lg2B/8CS8RdbLpE5sBYlplwey3FrzWu88+/fIcsjM6yRqRqfI/PBYBFo102s2FnSbNyLWenxHAuMyatsNNDcwkHhjdcf+QAFEIrHpLDrEI46yCEREXS8SpxgkOlZQ7S+8kjQzc9AU7kZTQwXxf3BiDlvj08AnnjAMlgCd6hFVw8O8hI6k0ZH1i9Zl+DIwg65yVL+YvKh5WuzE/GxILjDZUWA77HeaUDuzCRQh0MSeDKTJJt0UcqurbFBBNz7k1QU7l0PKJR/UY3WUUDMwyciNAWgaye/L/LrxhwhSzeutf/r0kno6o2QOst23je1Bp1PYYmdBM1s2NInAqXHe0h7fQCm475jKNwBGUenx7MTaonf
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(396003)(346002)(366004)(376002)(136003)(451199018)(38070700005)(86362001)(31696002)(36756003)(38100700002)(122000001)(44832011)(2906002)(41300700001)(8936002)(5660300002)(4326008)(6512007)(186003)(2616005)(26005)(66574015)(6506007)(316002)(54906003)(83380400001)(110136005)(66556008)(66446008)(64756008)(8676002)(91956017)(66476007)(76116006)(66946007)(6486002)(966005)(71200400001)(478600001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?d2ttRi93R1lqQ3dzNFFDNE1jbDVmM294QnNIVU4xc25rUkY2Yi9nblZhK3pB?=
+ =?utf-8?B?aHpyMXB5WXVyNjkvS0kvYWFtVEZiMGpmaXozSFppeVFjQjdzS2dFcWZmMUN4?=
+ =?utf-8?B?V0xOZ0NsNktkOVRKbXlBN0Y2U0NUUjhock9WTmUrT3hJNDhKNFMzdHpiSTdG?=
+ =?utf-8?B?ejFTMDFLVFJVZThGUmhQVDNONjd5OE9CME9jUnBuMEFSajFEQ25IMURPRXFz?=
+ =?utf-8?B?U1hOSFNkbVZ4VHNzTjJpaEdldHFDZnFIODdtck8vRmZZMFlnMGREeklKeWFQ?=
+ =?utf-8?B?YkJGT3c3N2dnVms1V0JndEZZRksvY3NkYlE0dFp2NmZ3dmozTDZUQ1RXNUxC?=
+ =?utf-8?B?eGlDRUcvSEMrd2FWU0RDWnVJTlpPdFNnR1BwcjJkSW43dXRlV1o5NmxmWU1K?=
+ =?utf-8?B?RE1KdzZmRkVMaG84d1BUZnRCRU1tSHIvbVY0WTl4ams1NGlwYmxqNFZXZDVt?=
+ =?utf-8?B?dDR1QUNOMXl6cUZqVGFzZytFNVNxNU1KdDRNTUJ2UWl6OGlPcGdBc3RYcEhx?=
+ =?utf-8?B?N0srYm9YZHFJeit0eFFuczI2cEdDS2oxWndETVBDVjNhMHZRcVJhcVBtMXFi?=
+ =?utf-8?B?ckZhVFR2YldGSnEzZmlJZWxEYjFheHBnTTRCVEVZV09zNTFKWU51VE9LTDlK?=
+ =?utf-8?B?SmkvYmxoZE84QldSVVpicWF1K1JFY0NiNVB4Y1JUNSt5NzBsaFdWbkxXMEZN?=
+ =?utf-8?B?elJ0bHZjYnM2TDZKaFdyZ3g0ZHgvalpXQ25HVmc2QmkxdlFJVkVRV2VINzVn?=
+ =?utf-8?B?YWpjMkYvT1Z1ekcwaW5WRzNQbjNWWXBOZmN2R3A0OXk2SWl6Qk1DSStzRmlU?=
+ =?utf-8?B?eGc2V08vRnVTUUs3bEZqTGVidURiZHljUmF2MWlVa2xjOTBUcC94Q1E2SzFm?=
+ =?utf-8?B?d1gwUStreVNKUCtQV29adHJBTFc0VHZCQno3anU4VmJOeWhobzR6U0tBTFJB?=
+ =?utf-8?B?SE4wNVVYVGkzN011QXFBdkoydWV0NndXdGYzREY2Sm5SV2lqMFdpYWZudEVV?=
+ =?utf-8?B?OHNNRHN5KzByUTlrRTBWYnhDc2doV3o5ZnlGREcrbVNRdjAyWUN5RWk4SkY4?=
+ =?utf-8?B?Tkt6NVAzdGJqWVhVSnNMS0o4NW9TbWxZaUdRM3VRSGRTTXozemhTK0FObE95?=
+ =?utf-8?B?S3NEQ01ZNHErRk5ZTy9zNzZtaWJNUjVzaGt3cmRqQ1IwUnVIT01CUG9PZ1pS?=
+ =?utf-8?B?bFNQTXVUeE5vZlNGNTJMU3RtSmFoN3E0QkNNckU1K0pkMExCWC9QSlBsN2Rq?=
+ =?utf-8?B?d0F4ZEdjYVJrTGdSMlRpSUJvSzZIRGlFUWlucW1ZTWhWQXBkaktQK09CRmZ2?=
+ =?utf-8?B?aVViWU5BZHM4ZUhBYUpNWVJ1S29yTEJmRkJFTGRqZ3hKa1g2VXhBR29YSTNT?=
+ =?utf-8?B?dS9qV2lLQWtyS0R3WUVZSFptUy95RUdQTHpXT2ZsbXFJYk9MNWg5TWMvcjhn?=
+ =?utf-8?B?dHREZFJJTjZybldHTGcrSElDYXlUc201dGdRdVdBNm9xRWRLMVhlMmNKL2tj?=
+ =?utf-8?B?U0pReVc1VEE5ek1SemwwQzFHblJtbGFsWUVCMXhqZlF6MXFyUC8wZEdvNFM0?=
+ =?utf-8?B?TGYzVVNxNzRUQjFOYWJkUTQzSENEUjV2MC84OE9zRFRUSG9QMWJOdEdzbVcw?=
+ =?utf-8?B?enRRQlhHcGJxRGRHVlVqK1BmSW5ZRm9vQ3B5b0hodHlIcy9EMmQ4WnVCMU5H?=
+ =?utf-8?B?bFNYYUlTM2Qzbm5vSlBQaGRNOEIyVVNJeDRsWFRPUUJwQmEvOTN6TFpwNG1W?=
+ =?utf-8?B?NVB3L0loTXNyTUt4cjhBWTIzeFJMQW1mK3R2Qy9WZjJJazNjSExKckhYdit3?=
+ =?utf-8?B?ZGlDRUV0TW8zTUxmZzgxcnBVZHFBUlAyVU5URDNvR2FlZm5wWmNFRS9WaWtW?=
+ =?utf-8?B?dENGN2prUmFPWHlsNFBJQ21ldzN6VldMRjM3VWNWS1VsN05GRnF2ZnZMVkhF?=
+ =?utf-8?B?Y253N0lORFhmMFZMK2orUWw1VHhieTFjclA0L1ppYmhHQU00SjVIRjZzVXJ5?=
+ =?utf-8?B?YjhGQ3FBRWVZTjR1bGJuaHM5d0RPMGJ6SVl6ZG4xdnNjWFlZMURQVStCYUlZ?=
+ =?utf-8?B?V2VnOEpLYTdPWndEaXAvMWtxZ0NaYmJacVM0eHNtZkVjSVVSaUZKVGpEYXd6?=
+ =?utf-8?B?T3lsQXpCMFN1WXlUd3dtMlpJL2ZCS1N5Wk9YdWVpZ2psWmFLbmZGQUJoZVVr?=
+ =?utf-8?B?ZkE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BCA731677E505A4BA93AA92626E85C11@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230315051444.3229621-21-willy@infradead.org>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 836bc186-c09e-4ef3-9ee1-08db253e9b6b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Mar 2023 10:18:22.8310
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1vtqiP90W4A5AtQkWCXPF4EnFaDVlCyMfgGjW3zCkJ6xdRWJsiTNC7YN5iEnrv1u3dfWJjvxpkeYVZNNAgu+fTZSRIXk0U5ytx2+OswfmG4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2333
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,418 +137,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 15, 2023 at 05:14:28AM +0000, Matthew Wilcox (Oracle) wrote:
-> Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
-> Change the PG_arch_1 (aka PG_dcache_dirty) flag from being per-page to
-> per-folio.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: linuxppc-dev@lists.ozlabs.org
-
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-
-> ---
->  arch/powerpc/include/asm/book3s/pgtable.h | 10 +----
->  arch/powerpc/include/asm/cacheflush.h     | 14 +++++--
->  arch/powerpc/include/asm/kvm_ppc.h        | 10 ++---
->  arch/powerpc/include/asm/nohash/pgtable.h | 13 ++----
->  arch/powerpc/include/asm/pgtable.h        |  6 +++
->  arch/powerpc/mm/book3s64/hash_utils.c     | 11 ++---
->  arch/powerpc/mm/cacheflush.c              | 40 ++++++------------
->  arch/powerpc/mm/nohash/e500_hugetlbpage.c |  3 +-
->  arch/powerpc/mm/pgtable.c                 | 51 +++++++++++++----------
->  9 files changed, 77 insertions(+), 81 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/pgtable.h b/arch/powerpc/include/asm/book3s/pgtable.h
-> index d18b748ea3ae..c2ef811505b0 100644
-> --- a/arch/powerpc/include/asm/book3s/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/pgtable.h
-> @@ -9,13 +9,6 @@
->  #endif
->  
->  #ifndef __ASSEMBLY__
-> -/* Insert a PTE, top-level function is out of line. It uses an inline
-> - * low level function in the respective pgtable-* files
-> - */
-> -extern void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> -		       pte_t pte);
-> -
-> -
->  #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
->  extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->  				 pte_t *ptep, pte_t entry, int dirty);
-> @@ -36,7 +29,8 @@ void __update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t
->   * corresponding HPTE into the hash table ahead of time, instead of
->   * waiting for the inevitable extra hash-table miss exception.
->   */
-> -static inline void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
-> +static inline void update_mmu_cache_range(struct vm_area_struct *vma,
-> +		unsigned long address, pte_t *ptep, unsigned int nr)
->  {
->  	if (IS_ENABLED(CONFIG_PPC32) && !mmu_has_feature(MMU_FTR_HPTE_TABLE))
->  		return;
-> diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
-> index 7564dd4fd12b..ef7d2de33b89 100644
-> --- a/arch/powerpc/include/asm/cacheflush.h
-> +++ b/arch/powerpc/include/asm/cacheflush.h
-> @@ -35,13 +35,19 @@ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
->   * It just marks the page as not i-cache clean.  We do the i-cache
->   * flush later when the page is given to a user process, if necessary.
->   */
-> -static inline void flush_dcache_page(struct page *page)
-> +static inline void flush_dcache_folio(struct folio *folio)
->  {
->  	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE))
->  		return;
->  	/* avoid an atomic op if possible */
-> -	if (test_bit(PG_dcache_clean, &page->flags))
-> -		clear_bit(PG_dcache_clean, &page->flags);
-> +	if (test_bit(PG_dcache_clean, &folio->flags))
-> +		clear_bit(PG_dcache_clean, &folio->flags);
-> +}
-> +#define flush_dcache_folio flush_dcache_folio
-> +
-> +static inline void flush_dcache_page(struct page *page)
-> +{
-> +	flush_dcache_folio(page_folio(page));
->  }
->  
->  void flush_icache_range(unsigned long start, unsigned long stop);
-> @@ -51,7 +57,7 @@ void flush_icache_user_page(struct vm_area_struct *vma, struct page *page,
->  		unsigned long addr, int len);
->  #define flush_icache_user_page flush_icache_user_page
->  
-> -void flush_dcache_icache_page(struct page *page);
-> +void flush_dcache_icache_folio(struct folio *folio);
->  
->  /**
->   * flush_dcache_range(): Write any modified data cache blocks out to memory and
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 6bef23d6d0e3..e91dd8e88bb7 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -868,7 +868,7 @@ void kvmppc_init_lpid(unsigned long nr_lpids);
->  
->  static inline void kvmppc_mmu_flush_icache(kvm_pfn_t pfn)
->  {
-> -	struct page *page;
-> +	struct folio *folio;
->  	/*
->  	 * We can only access pages that the kernel maps
->  	 * as memory. Bail out for unmapped ones.
-> @@ -877,10 +877,10 @@ static inline void kvmppc_mmu_flush_icache(kvm_pfn_t pfn)
->  		return;
->  
->  	/* Clear i-cache for new pages */
-> -	page = pfn_to_page(pfn);
-> -	if (!test_bit(PG_dcache_clean, &page->flags)) {
-> -		flush_dcache_icache_page(page);
-> -		set_bit(PG_dcache_clean, &page->flags);
-> +	folio = page_folio(pfn_to_page(pfn));
-> +	if (!test_bit(PG_dcache_clean, &folio->flags)) {
-> +		flush_dcache_icache_folio(folio);
-> +		set_bit(PG_dcache_clean, &folio->flags);
->  	}
->  }
->  
-> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-> index a6caaaab6f92..69a7dd47a9f0 100644
-> --- a/arch/powerpc/include/asm/nohash/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
-> @@ -166,12 +166,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->  	return __pte(pte_val(pte) & ~_PAGE_SWP_EXCLUSIVE);
->  }
->  
-> -/* Insert a PTE, top-level function is out of line. It uses an inline
-> - * low level function in the respective pgtable-* files
-> - */
-> -extern void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> -		       pte_t pte);
-> -
->  /* This low level function performs the actual PTE insertion
->   * Setting the PTE depends on the MMU type and other factors. It's
->   * an horrible mess that I'm not going to try to clean up now but
-> @@ -282,10 +276,11 @@ static inline int pud_huge(pud_t pud)
->   * for the page which has just been mapped in.
->   */
->  #if defined(CONFIG_PPC_E500) && defined(CONFIG_HUGETLB_PAGE)
-> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep);
-> +void update_mmu_cache_range(struct vm_area_struct *vma, unsigned long address,
-> +		pte_t *ptep, unsigned int nr);
->  #else
-> -static inline
-> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep) {}
-> +static inline void update_mmu_cache(struct vm_area_struct *vma,
-> +		unsigned long address, pte_t *ptep, unsigned int nr) {}
->  #endif
->  
->  #endif /* __ASSEMBLY__ */
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index 9972626ddaf6..656ecf2b10cd 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -41,6 +41,12 @@ struct mm_struct;
->  
->  #ifndef __ASSEMBLY__
->  
-> +void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> +		pte_t pte, unsigned int nr);
-> +#define set_ptes set_ptes
-> +#define update_mmu_cache(vma, addr, ptep) \
-> +	update_mmu_cache_range(vma, addr, ptep, 1)
-> +
->  #ifndef MAX_PTRS_PER_PGD
->  #define MAX_PTRS_PER_PGD PTRS_PER_PGD
->  #endif
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-> index fedffe3ae136..ad2afa08e62e 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -1307,18 +1307,19 @@ void hash__early_init_mmu_secondary(void)
->   */
->  unsigned int hash_page_do_lazy_icache(unsigned int pp, pte_t pte, int trap)
->  {
-> -	struct page *page;
-> +	struct folio *folio;
->  
->  	if (!pfn_valid(pte_pfn(pte)))
->  		return pp;
->  
-> -	page = pte_page(pte);
-> +	folio = page_folio(pte_page(pte));
->  
->  	/* page is dirty */
-> -	if (!test_bit(PG_dcache_clean, &page->flags) && !PageReserved(page)) {
-> +	if (!test_bit(PG_dcache_clean, &folio->flags) &&
-> +	    !folio_test_reserved(folio)) {
->  		if (trap == INTERRUPT_INST_STORAGE) {
-> -			flush_dcache_icache_page(page);
-> -			set_bit(PG_dcache_clean, &page->flags);
-> +			flush_dcache_icache_folio(folio);
-> +			set_bit(PG_dcache_clean, &folio->flags);
->  		} else
->  			pp |= HPTE_R_N;
->  	}
-> diff --git a/arch/powerpc/mm/cacheflush.c b/arch/powerpc/mm/cacheflush.c
-> index 0e9b4879c0f9..8760d2223abe 100644
-> --- a/arch/powerpc/mm/cacheflush.c
-> +++ b/arch/powerpc/mm/cacheflush.c
-> @@ -148,44 +148,30 @@ static void __flush_dcache_icache(void *p)
->  	invalidate_icache_range(addr, addr + PAGE_SIZE);
->  }
->  
-> -static void flush_dcache_icache_hugepage(struct page *page)
-> +void flush_dcache_icache_folio(struct folio *folio)
->  {
-> -	int i;
-> -	int nr = compound_nr(page);
-> +	unsigned int i, nr = folio_nr_pages(folio);
->  
-> -	if (!PageHighMem(page)) {
-> +	if (flush_coherent_icache())
-> +		return;
-> +
-> +	if (!folio_test_highmem(folio)) {
-> +		void *addr = folio_address(folio);
->  		for (i = 0; i < nr; i++)
-> -			__flush_dcache_icache(lowmem_page_address(page + i));
-> -	} else {
-> +			__flush_dcache_icache(addr + i * PAGE_SIZE);
-> +	} else if (IS_ENABLED(CONFIG_BOOKE) || sizeof(phys_addr_t) > sizeof(void *)) {
->  		for (i = 0; i < nr; i++) {
-> -			void *start = kmap_local_page(page + i);
-> +			void *start = kmap_local_folio(folio, i * PAGE_SIZE);
->  
->  			__flush_dcache_icache(start);
->  			kunmap_local(start);
->  		}
-> -	}
-> -}
-> -
-> -void flush_dcache_icache_page(struct page *page)
-> -{
-> -	if (flush_coherent_icache())
-> -		return;
-> -
-> -	if (PageCompound(page))
-> -		return flush_dcache_icache_hugepage(page);
-> -
-> -	if (!PageHighMem(page)) {
-> -		__flush_dcache_icache(lowmem_page_address(page));
-> -	} else if (IS_ENABLED(CONFIG_BOOKE) || sizeof(phys_addr_t) > sizeof(void *)) {
-> -		void *start = kmap_local_page(page);
-> -
-> -		__flush_dcache_icache(start);
-> -		kunmap_local(start);
->  	} else {
-> -		flush_dcache_icache_phys(page_to_phys(page));
-> +		unsigned long pfn = folio_pfn(folio);
-> +		for (i = 0; i < nr; i++)
-> +			flush_dcache_icache_phys((pfn + i) * PAGE_SIZE);
->  	}
->  }
-> -EXPORT_SYMBOL(flush_dcache_icache_page);
->  
->  void clear_user_page(void *page, unsigned long vaddr, struct page *pg)
->  {
-> diff --git a/arch/powerpc/mm/nohash/e500_hugetlbpage.c b/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> index 58c8d9849cb1..f3cb91107a47 100644
-> --- a/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> +++ b/arch/powerpc/mm/nohash/e500_hugetlbpage.c
-> @@ -178,7 +178,8 @@ book3e_hugetlb_preload(struct vm_area_struct *vma, unsigned long ea, pte_t pte)
->   *
->   * This must always be called with the pte lock held.
->   */
-> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
-> +void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
-> +		pte_t *ptep, unsigned int nr)
->  {
->  	if (is_vm_hugetlb_page(vma))
->  		book3e_hugetlb_preload(vma, address, *ptep);
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index cb2dcdb18f8e..b3c7b874a7a2 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -58,7 +58,7 @@ static inline int pte_looks_normal(pte_t pte)
->  	return 0;
->  }
->  
-> -static struct page *maybe_pte_to_page(pte_t pte)
-> +static struct folio *maybe_pte_to_folio(pte_t pte)
->  {
->  	unsigned long pfn = pte_pfn(pte);
->  	struct page *page;
-> @@ -68,7 +68,7 @@ static struct page *maybe_pte_to_page(pte_t pte)
->  	page = pfn_to_page(pfn);
->  	if (PageReserved(page))
->  		return NULL;
-> -	return page;
-> +	return page_folio(page);
->  }
->  
->  #ifdef CONFIG_PPC_BOOK3S
-> @@ -84,12 +84,12 @@ static pte_t set_pte_filter_hash(pte_t pte)
->  	pte = __pte(pte_val(pte) & ~_PAGE_HPTEFLAGS);
->  	if (pte_looks_normal(pte) && !(cpu_has_feature(CPU_FTR_COHERENT_ICACHE) ||
->  				       cpu_has_feature(CPU_FTR_NOEXECUTE))) {
-> -		struct page *pg = maybe_pte_to_page(pte);
-> -		if (!pg)
-> +		struct folio *folio = maybe_pte_to_folio(pte);
-> +		if (!folio)
->  			return pte;
-> -		if (!test_bit(PG_dcache_clean, &pg->flags)) {
-> -			flush_dcache_icache_page(pg);
-> -			set_bit(PG_dcache_clean, &pg->flags);
-> +		if (!test_bit(PG_dcache_clean, &folio->flags)) {
-> +			flush_dcache_icache_folio(folio);
-> +			set_bit(PG_dcache_clean, &folio->flags);
->  		}
->  	}
->  	return pte;
-> @@ -107,7 +107,7 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
->   */
->  static inline pte_t set_pte_filter(pte_t pte)
->  {
-> -	struct page *pg;
-> +	struct folio *folio;
->  
->  	if (radix_enabled())
->  		return pte;
-> @@ -120,18 +120,18 @@ static inline pte_t set_pte_filter(pte_t pte)
->  		return pte;
->  
->  	/* If you set _PAGE_EXEC on weird pages you're on your own */
-> -	pg = maybe_pte_to_page(pte);
-> -	if (unlikely(!pg))
-> +	folio = maybe_pte_to_folio(pte);
-> +	if (unlikely(!folio))
->  		return pte;
->  
->  	/* If the page clean, we move on */
-> -	if (test_bit(PG_dcache_clean, &pg->flags))
-> +	if (test_bit(PG_dcache_clean, &folio->flags))
->  		return pte;
->  
->  	/* If it's an exec fault, we flush the cache and make it clean */
->  	if (is_exec_fault()) {
-> -		flush_dcache_icache_page(pg);
-> -		set_bit(PG_dcache_clean, &pg->flags);
-> +		flush_dcache_icache_folio(folio);
-> +		set_bit(PG_dcache_clean, &folio->flags);
->  		return pte;
->  	}
->  
-> @@ -142,7 +142,7 @@ static inline pte_t set_pte_filter(pte_t pte)
->  static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
->  				     int dirty)
->  {
-> -	struct page *pg;
-> +	struct folio *folio;
->  
->  	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
->  		return pte;
-> @@ -168,17 +168,17 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
->  #endif /* CONFIG_DEBUG_VM */
->  
->  	/* If you set _PAGE_EXEC on weird pages you're on your own */
-> -	pg = maybe_pte_to_page(pte);
-> -	if (unlikely(!pg))
-> +	folio = maybe_pte_to_folio(pte);
-> +	if (unlikely(!folio))
->  		goto bail;
->  
->  	/* If the page is already clean, we move on */
-> -	if (test_bit(PG_dcache_clean, &pg->flags))
-> +	if (test_bit(PG_dcache_clean, &folio->flags))
->  		goto bail;
->  
->  	/* Clean the page and set PG_dcache_clean */
-> -	flush_dcache_icache_page(pg);
-> -	set_bit(PG_dcache_clean, &pg->flags);
-> +	flush_dcache_icache_folio(folio);
-> +	set_bit(PG_dcache_clean, &folio->flags);
->  
->   bail:
->  	return pte_mkexec(pte);
-> @@ -187,8 +187,8 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
->  /*
->   * set_pte stores a linux PTE into the linux page table.
->   */
-> -void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> -		pte_t pte)
-> +void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> +		pte_t pte, unsigned int nr)
->  {
->  	/*
->  	 * Make sure hardware valid bit is not set. We don't do
-> @@ -203,7 +203,14 @@ void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
->  	pte = set_pte_filter(pte);
->  
->  	/* Perform the setting of the PTE */
-> -	__set_pte_at(mm, addr, ptep, pte, 0);
-> +	for (;;) {
-> +		__set_pte_at(mm, addr, ptep, pte, 0);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		pte = __pte(pte_val(pte) + PAGE_SIZE);
-> +		addr += PAGE_SIZE;
-> +	}
->  }
->  
->  void unmap_kernel_page(unsigned long va)
-> -- 
-> 2.39.2
-> 
-> 
-
--- 
-Sincerely yours,
-Mike.
+DQoNCkxlIDE1LzAzLzIwMjMgw6AgMTA6NDMsIENocmlzdG9waGUgTGVyb3kgYSDDqWNyaXTCoDoN
+Cj4gDQo+IA0KPiBMZSAxNS8wMy8yMDIzIMOgIDA2OjE0LCBNYXR0aGV3IFdpbGNveCAoT3JhY2xl
+KSBhIMOpY3JpdMKgOg0KPj4gQWRkIHNldF9wdGVzKCksIHVwZGF0ZV9tbXVfY2FjaGVfcmFuZ2Uo
+KSBhbmQgZmx1c2hfZGNhY2hlX2ZvbGlvKCkuDQo+PiBDaGFuZ2UgdGhlIFBHX2FyY2hfMSAoYWth
+IFBHX2RjYWNoZV9kaXJ0eSkgZmxhZyBmcm9tIGJlaW5nIHBlci1wYWdlIHRvDQo+PiBwZXItZm9s
+aW8uDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogTWF0dGhldyBXaWxjb3ggKE9yYWNsZSkgPHdpbGx5
+QGluZnJhZGVhZC5vcmc+DQo+PiBDYzogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlk
+LmF1Pg0KPj4gQ2M6IE5pY2hvbGFzIFBpZ2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+PiBDYzog
+Q2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1Pg0KPj4gQ2M6IGxp
+bnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnDQo+PiAtLS0NCg0KPj4gQEAgLTIwMyw3ICsyMDMs
+MTQgQEAgdm9pZCBzZXRfcHRlX2F0KHN0cnVjdCBtbV9zdHJ1Y3QgKm1tLCB1bnNpZ25lZCANCj4+
+IGxvbmcgYWRkciwgcHRlX3QgKnB0ZXAsDQo+PiDCoMKgwqDCoMKgIHB0ZSA9IHNldF9wdGVfZmls
+dGVyKHB0ZSk7DQo+PiDCoMKgwqDCoMKgIC8qIFBlcmZvcm0gdGhlIHNldHRpbmcgb2YgdGhlIFBU
+RSAqLw0KPj4gLcKgwqDCoCBfX3NldF9wdGVfYXQobW0sIGFkZHIsIHB0ZXAsIHB0ZSwgMCk7DQo+
+PiArwqDCoMKgIGZvciAoOzspIHsNCj4+ICvCoMKgwqDCoMKgwqDCoCBfX3NldF9wdGVfYXQobW0s
+IGFkZHIsIHB0ZXAsIHB0ZSwgMCk7DQo+PiArwqDCoMKgwqDCoMKgwqAgaWYgKC0tbnIgPT0gMCkN
+Cj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHB0
+ZXArKzsNCj4+ICvCoMKgwqDCoMKgwqDCoCBwdGUgPSBfX3B0ZShwdGVfdmFsKHB0ZSkgKyBQQUdF
+X1NJWkUpOw0KPiANCj4gSSBkb24ndCBsaWtlIHRoYXQgbWF0aCB0b28gbXVjaCwgYnV0IEkgaGF2
+ZSBubyBiZXR0ZXIgaWRlYSBhdCB0aGUgbW9tZW50Lg0KPiANCj4gTWF5YmUgc2V0X3B0ZXMoKSBz
+aG91bGQgdGFrZSBhIHBncHJvdF90IGFuZCByZWJ1aWxkIHRoZSBwdGUgd2l0aCANCj4gbWtfcHRl
+KCkgb3Igc2ltaWxhciA/DQo+IA0KPj4gK8KgwqDCoMKgwqDCoMKgIGFkZHIgKz0gUEFHRV9TSVpF
+Ow0KPj4gK8KgwqDCoCB9DQo+PiDCoCB9DQo+PiDCoCB2b2lkIHVubWFwX2tlcm5lbF9wYWdlKHVu
+c2lnbmVkIGxvbmcgdmEpDQoNCkkgaW52ZXN0aWdhdGVkIGEgYml0IGZ1cnRoZXIgYW5kIGNhbiBj
+b25maXJtIG5vdyB0aGF0IHRoZSBhYm92ZSB3b24ndCANCmFsd2F5cyB3b3JrLCBzZWUgY29tbWVu
+dCANCmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjMtcmMyL3NvdXJjZS9hcmNo
+L3Bvd2VycGMvaW5jbHVkZS9hc20vbm9oYXNoLzMyL3BndGFibGUuaCNMMTQ3DQoNCkFuZCB0aGVu
+IHlvdSBzZWUgDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4zLXJjMi9zb3Vy
+Y2UvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL25vaGFzaC9wdGUtZTUwMC5oI0w2Mw0KDQpDaHJp
+c3RvcGhlDQo=
