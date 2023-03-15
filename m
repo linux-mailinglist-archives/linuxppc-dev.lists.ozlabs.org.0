@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F136BA4F8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 03:01:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCED6BA502
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 03:08:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pbtsd2vpSz3cjF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 13:01:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pbv2c28KMz3chJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 13:08:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=D0rK86Nm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=aHXf6zaU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbtrl3Wtjz30NN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 13:00:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=D0rK86Nm;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=aHXf6zaU;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pbtrk2zHtz4xDp;
-	Wed, 15 Mar 2023 13:00:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1678845623;
-	bh=zUCpIP8eMjrN8etQOwCOEXDVZhq5NHF0PZNHwLjUDmU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=D0rK86NmKbcJ+X9Ku6Qdk07mr2ceuEl3hAvcGnMcECSO6GxPRP3ecOPMCzlsq0mQY
-	 WdN0CgkfEyVb58TsHWzE/UPY6HlmpCBIDlInImAEKREsP9QpnSQUdjipzGlZ8SA7b0
-	 MWuGx1T/dgc3UUr2XgZWDByJ13OJm0n6afDOyyfv9dddJfGxwKB3iyubb3xMCU0GdD
-	 giZ9ccXRwEzJptULR60dRmDVlFV7jrldUlRcLX1rhA9aHJDmNqGzuItVGHVXjL6gvN
-	 fEHONjOfqwMaHRqoT8eOJ17MgOCAb4e90HqU/qvLxku9/GU27DAv4jtoDwIL26NMQy
-	 LP3HRf+O19XZw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/36] powerpc/pseries: move to use bus_get_dev_root()
-In-Reply-To: <20230313182918.1312597-14-gregkh@linuxfoundation.org>
-References: <20230313182918.1312597-1-gregkh@linuxfoundation.org>
- <20230313182918.1312597-14-gregkh@linuxfoundation.org>
-Date: Wed, 15 Mar 2023 13:00:21 +1100
-Message-ID: <87bkkuojt6.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbv1d28Kcz3bbX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 13:08:02 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id y15-20020a17090aa40f00b00237ad8ee3a0so367717pjp.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 19:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112; t=1678846079;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UqJu2BEDPepML92DLQ5OvgUAstRMzlQ9eysHMa3CrAA=;
+        b=aHXf6zaUqySAf91usVWsf/WPytJ4oo/lfPrjMEou8J7jlCioJJeomAO3TJ0SF+P2/j
+         qsCSNUhsTR/Z2z030RVnKEFmTuo0uTA3ussyQY+I/iEvHM+AdQdQRPxsd7+joss3SxvX
+         7s1xa2PoRXTmeO9NJLI7tapu+jtfRK74DUiMc+33O3nhyTWPQUYtBVUs6hsTwgG3K5Bd
+         sBRRA8JIkvIQ40yMTQ4RAz7yHXH2+KBETJHXuXjm1asXSDM02eKCMNFV9r9vJ8fqhS3B
+         Lvw6Q0GmvlDhElQXD1UKYjST0kh/VoRQ8ufQ4YZqly44ZaISBLXOPjSE0cXB+yNTk88x
+         N2Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678846079;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UqJu2BEDPepML92DLQ5OvgUAstRMzlQ9eysHMa3CrAA=;
+        b=1HGBTnhwHPxN6X683SOrdnDHesRjQogywKyRFqvjt9FQoGyGN53o0kw4b+EITv2RcH
+         aKvaeqVyIhonrOK/ScuEBEkX71+uXsWfB/o/9EsqSNatO+qmo/MqqJDxMbWibzLPPhum
+         RtDX6sHMEZearrTf7z/17EDsOFQs5+iY2B3hGgrQZQfu/HX/v8WyLAogSShtw9pv5Sxr
+         16V5GfFE7OD+vK+DWHG5YFTfgYph+2gS4EOM2EoIsa6mus/Pvm2x+u+VceqhGytU2EtX
+         /uW1ARzXfpTejtQu8Tv2FbB+PTB0JWCeAEw8gppSAvyVbFpzgAKk5mH0/e4byG7hW+vl
+         JNJQ==
+X-Gm-Message-State: AO0yUKWjmEVHJP6OwmkVWQhIKi5iMksHdLU60/DwhHo5E9bNtNLup0dY
+	/jifYHr0KWDFPtmtmEnmk9Sj7Q==
+X-Google-Smtp-Source: AK7set/4d4meE0FaW+MSNz3OomO/EWSt91fL4Ho/JVwVfKyJpvpuMlf/6fPVmbw8HNSfdZgm+emhBQ==
+X-Received: by 2002:a17:902:e54c:b0:1a0:428b:d8c5 with SMTP id n12-20020a170902e54c00b001a0428bd8c5mr1055599plf.45.1678846078774;
+        Tue, 14 Mar 2023 19:07:58 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id a23-20020a170902b59700b00192aa53a7d5sm2400503pls.8.2023.03.14.19.07.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Mar 2023 19:07:58 -0700 (PDT)
+Date: Tue, 14 Mar 2023 19:07:58 -0700 (PDT)
+X-Google-Original-Date: Tue, 14 Mar 2023 19:07:05 PDT (-0700)
+Subject: Re: [PATCH v2 4/5] riscv: Select ARCH_DMA_DEFAULT_COHERENT
+In-Reply-To: <Y/fmqwboOv/JhWf/@spud>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: Conor Dooley <conor@kernel.org>
+Message-ID: <mhng-9bf3f6be-12f9-466e-90b8-50f2d96971fe@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,34 +78,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, rafael@kernel.org
+Cc: tsbogend@alpha.franken.de, linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, robin.murphy@arm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> Direct access to the struct bus_type dev_root pointer is going away soon
-> so replace that with a call to bus_get_dev_root() instead, which is what
-> it is there for.
+On Thu, 23 Feb 2023 14:20:27 PST (-0800), Conor Dooley wrote:
+> On Thu, Feb 23, 2023 at 11:36:43AM +0000, Jiaxun Yang wrote:
+>> For riscv our assumption is unless a device states it is non-coherent,
+>> we take it to be DMA coherent.
+>> 
+>> Select ARCH_DMA_DEFAULT_COHERENT to ensure dma_default_coherent
+>> is always initialized to true.
+>> 
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>>  arch/riscv/Kconfig | 1 +
+>>  1 file changed, 1 insertion(+)
+>> 
+>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>> index 1d46a268ce16..b71ce992c0c0 100644
+>> --- a/arch/riscv/Kconfig
+>> +++ b/arch/riscv/Kconfig
+>> @@ -233,6 +233,7 @@ config LOCKDEP_SUPPORT
+>>  
+>>  config RISCV_DMA_NONCOHERENT
+>>  	bool
+>> +	select ARCH_DMA_DEFAULT_COHERENT
 >
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
-> Note, this is a patch that is a prepatory cleanup as part of a larger
-> series of patches that is working on resolving some old driver core
-> design mistakes.  It will build and apply cleanly on top of 6.3-rc2 on
-> its own, but I'd prefer if I could take it through my driver-core tree
-> so that the driver core changes can be taken through there for 6.4-rc1.
+> Since we are always coherent by default, I feel like you should put this
+> in the main "config RISCV" section, where OF_DMA_DEFAULT_COHERENT
+> currently is, no?
+
+Seems reasonable to me.  With that
+
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+as I'm assuming these should all stay together.
+
+Thanks!
+
 >
->  .../platforms/pseries/pseries_energy.c        | 28 +++++++++++--------
->  arch/powerpc/platforms/pseries/suspend.c      | 10 +++++--
->  2 files changed, 25 insertions(+), 13 deletions(-)
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-The other powerpc changes look OK too.
-
-cheers
+> Wouldn't bother respinning for that unless the dma folk have comments
+> for you.
+>
+>>  	select ARCH_HAS_DMA_PREP_COHERENT
+>>  	select ARCH_HAS_SETUP_DMA_OPS
+>>  	select ARCH_HAS_SYNC_DMA_FOR_CPU
+>> -- 
+>> 2.37.1 (Apple Git-137.1)
+>> 
