@@ -1,85 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237826BBA28
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 17:49:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67AD6BBA2F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 17:50:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PcGZL0Q9yz3cjR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 03:49:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PcGbL5Cx3z3f8t
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 03:50:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FQSiS9fd;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FQSiS9fd;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IARnD03W;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IARnD03W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FQSiS9fd;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FQSiS9fd;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IARnD03W;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IARnD03W;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcGYL5Wk2z3c8x
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 03:48:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcGYS6Lg3z3cCD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 03:48:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1678898898;
+	s=mimecast20190719; t=1678898905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nm5gfruTLsdagm9njmR29/Ig/a6aY+NuRLyWyFUeNqo=;
-	b=FQSiS9fdfUyaG1punQWH9LZA1+RfMd2cNJ5xsSQWz4yr1SqzdJzwjeJk3CzHqpGOPcdHcb
-	wXMlog5vwafcEpMz7RW41+nwhiKjjVKfatODIxalzyuwzenfWPnBDqwTPfDFx3fjJRGH08
-	CqeYrwW6HcbE4mC3s9oQHaZZUtH5X3E=
+	bh=jN7gBsIIz2o+DPuOLs3beGrkWCBpTBuHN9nwm3qigXs=;
+	b=IARnD03WVmI1sLxO6H0lZGc0Pp0cBFfQFjLnGAYg3rcL2GReL/JWnfYMBJPs+mrG5DyU0G
+	ioNwBDG+LRkMcz9bqlYl4x1xPSZt3V82A758/JgfUmALE31yATtgiTOAUdQx/X+vsPjylv
+	lKjHAq6SJupzSuQJDlP6y98WgJI+wkA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1678898898;
+	s=mimecast20190719; t=1678898905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nm5gfruTLsdagm9njmR29/Ig/a6aY+NuRLyWyFUeNqo=;
-	b=FQSiS9fdfUyaG1punQWH9LZA1+RfMd2cNJ5xsSQWz4yr1SqzdJzwjeJk3CzHqpGOPcdHcb
-	wXMlog5vwafcEpMz7RW41+nwhiKjjVKfatODIxalzyuwzenfWPnBDqwTPfDFx3fjJRGH08
-	CqeYrwW6HcbE4mC3s9oQHaZZUtH5X3E=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jN7gBsIIz2o+DPuOLs3beGrkWCBpTBuHN9nwm3qigXs=;
+	b=IARnD03WVmI1sLxO6H0lZGc0Pp0cBFfQFjLnGAYg3rcL2GReL/JWnfYMBJPs+mrG5DyU0G
+	ioNwBDG+LRkMcz9bqlYl4x1xPSZt3V82A758/JgfUmALE31yATtgiTOAUdQx/X+vsPjylv
+	lKjHAq6SJupzSuQJDlP6y98WgJI+wkA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-X0SlLsC7Ol-gYa53rlmS7g-1; Wed, 15 Mar 2023 12:48:16 -0400
-X-MC-Unique: X0SlLsC7Ol-gYa53rlmS7g-1
-Received: by mail-wm1-f71.google.com with SMTP id bd26-20020a05600c1f1a00b003ed23f09060so979337wmb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 09:48:16 -0700 (PDT)
+ us-mta-310-gkXQa7U6MU-jBbLk1DhYsA-1; Wed, 15 Mar 2023 12:48:21 -0400
+X-MC-Unique: gkXQa7U6MU-jBbLk1DhYsA-1
+Received: by mail-wm1-f69.google.com with SMTP id l17-20020a05600c1d1100b003ed29ba093cso977402wms.6
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 09:48:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678898896;
+        d=1e100.net; s=20210112; t=1678898900;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nm5gfruTLsdagm9njmR29/Ig/a6aY+NuRLyWyFUeNqo=;
-        b=QEmv+rhGW8BXN3EX4taqt57lYFzetrXbgzp4sam/nJ4KHMz70fPS7qFqjoV0pkVpXQ
-         3GvmRzZtA6MQKO6B3HTQbzvZGvCOE67XKGH/oWGo5+eQG1fbrOPupamfcw3OH92lte04
-         uPDD2YCVCZJDKhQk8SclopYYASGa3fXZwyLW/gZ2B0KBGgJUHCPmbZwcP2ydvM8K6rP2
-         O8TytvWTNi7rAdYq19TE3RiB7k8PqD2F4S0IItQnInRxwrv+s20plC3R5/+ruYL9qBou
-         gRDTx9VOLw/OMuQ4JZowTiKeJBEKsSjDqeDTNnwy93z7ll84aqPcwYGYqOegRgz1ci/m
-         kGSg==
-X-Gm-Message-State: AO0yUKVW7iI74JFCwZT03VG3m7JTBojcLIU3GxAcSU7YX/gB9rdMOAUf
-	90YBMi4MbnUZiPvls029PLApp/Cfc0xiz+3oizUyZelYPdLXoOLKVdqumeWFOESNecQGkIkErJH
-	5XaaY+QzF0lwbYgdwDQ1tKbeH8w==
-X-Received: by 2002:adf:f209:0:b0:2d0:27dd:9c40 with SMTP id p9-20020adff209000000b002d027dd9c40mr2037105wro.26.1678898895903;
-        Wed, 15 Mar 2023 09:48:15 -0700 (PDT)
-X-Google-Smtp-Source: AK7set9jfn/9WqJrQVlsKAuBzHsI/W7q2SC2Q1SzV+VIJZiJybGCBhMLfTelmL18XXOCJLm0rYHCmQ==
-X-Received: by 2002:adf:f209:0:b0:2d0:27dd:9c40 with SMTP id p9-20020adff209000000b002d027dd9c40mr2037086wro.26.1678898895600;
-        Wed, 15 Mar 2023 09:48:15 -0700 (PDT)
+        bh=jN7gBsIIz2o+DPuOLs3beGrkWCBpTBuHN9nwm3qigXs=;
+        b=MHGaJ2TNMpjhBYNZ3TcyR7fmx5VfJ+RuY3/uWGc09xA83qmHkMt+qYGTC3dVBMhimc
+         wMdP3bCrAOaemxcmCzSzK6QxnAnOlsnGSw7CHJXQwUFPmitBfX+VOpqQPuH3U22eg2RL
+         hds1c2RtsURHmTGUUfy32ZLjk8g6RmhvpbqrGCOHOu2l2yqL5DV3271LdJkdPHJSlfZm
+         B04AbReN2sUk36TlxG3OYfT2d65EojTOj2IRvMjvkshosBxc4lRFU1/MvtYsfp25oheD
+         Q9Ez9ydrvFSTMI84d8x0wTGuAWbnJTiSyThR8AtXRCPa/YvReH+n6L0Y8kftpAXomip5
+         z1Pg==
+X-Gm-Message-State: AO0yUKUfjbK+uICNQDc/zF/FHD8/3907iJsZc1Mr9QgKfdwijTrtrku1
+	JrlI9LFp8BJgUZ+7PvsXnAos6M9gCESefE8FUF05bKeb7ktlN/fPxl/ej53taOyzN6lq433H9Il
+	OyhQCzY19Qj7Xsqr1rM6avmExjQ==
+X-Received: by 2002:a5d:5090:0:b0:2ce:a8d6:5427 with SMTP id a16-20020a5d5090000000b002cea8d65427mr2284845wrt.15.1678898900832;
+        Wed, 15 Mar 2023 09:48:20 -0700 (PDT)
+X-Google-Smtp-Source: AK7set/7yCT9DzLtDjuAkonvARDw7EiuzZU1jup24r5YSYMqq3/If+0deo0/FhmbO4gSj7aLlCTntw==
+X-Received: by 2002:a5d:5090:0:b0:2ce:a8d6:5427 with SMTP id a16-20020a5d5090000000b002cea8d65427mr2284831wrt.15.1678898900561;
+        Wed, 15 Mar 2023 09:48:20 -0700 (PDT)
 Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id h13-20020a056000000d00b002cfec8b7f89sm4560610wrx.77.2023.03.15.09.48.13
+        by smtp.gmail.com with ESMTPSA id a11-20020a5d508b000000b002c55b0e6ef1sm5210847wrt.4.2023.03.15.09.48.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Mar 2023 09:48:15 -0700 (PDT)
+        Wed, 15 Mar 2023 09:48:19 -0700 (PDT)
 From: Valentin Schneider <vschneid@redhat.com>
 To: Yury Norov <yury.norov@gmail.com>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] sched/topology: introduce node_has_cpus() macro
-In-Reply-To: <20230222025029.453834-1-yury.norov@gmail.com>
+Subject: Re: [PATCH 2/2] powerpc: use node_has_cpus() instead of nr_cpus_node()
+In-Reply-To: <20230222025029.453834-2-yury.norov@gmail.com>
 References: <20230222025029.453834-1-yury.norov@gmail.com>
-Date: Wed, 15 Mar 2023 16:48:12 +0000
-Message-ID: <xhsmhbkkum04z.mognet@vschneid.remote.csb>
+ <20230222025029.453834-2-yury.norov@gmail.com>
+Date: Wed, 15 Mar 2023 16:48:17 +0000
+Message-ID: <xhsmha60em04u.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
@@ -100,12 +101,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 21/02/23 18:50, Yury Norov wrote:
-> Currently, to check if NUMA node has CPUs, one has to use the
-> nr_cpus_node() macro, which ends up with cpumask_weight. We can do it
-> better with cpumask_empty(), because the latter can potentially return
-> earlier - as soon as 1st set bit found.
->
-> This patch adds a node_has_cpus() macro to implement that.
+> Use node_has_cpus() as more efficient alternative to nr_cpus_node()
+> where possible.
 >
 > Signed-off-by: Yury Norov <yury.norov@gmail.com>
 
