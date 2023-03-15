@@ -2,130 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2976BAD75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 11:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 999266BB128
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 13:25:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc5wl0gFVz3cd5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 21:19:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pc8jX3pyMz30Lt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 23:25:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=3GuzOK8R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BFoU/Bpi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::614; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=3GuzOK8R;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BFoU/Bpi;
 	dkim-atps=neutral
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20614.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::614])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc5vm3qPCz3bZj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 21:18:43 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nflIrsrEFuXyWpFOhmVtDZU28CUs98Ea9sbKc/36dXPGDivI4C2NXyFDPomk05uuYgRplFqbEySnm8IGoppztSHhJkKBo4k1jXa3rOx1czfvTL+RgTsCo1oSN2eFO0V539U96KR4mkYlMrLKYETm+L2923QLMUtvdgoniWaOh5kLNBfdk3Zmd1e61MH+nSBMdKZ8xKefn7iBGqHbCnNQg2Wc2B7+otk7KLlDgQxfzY/SWSdkgfzxxKg7FVZVMXvd7JkR7z6ETGr2wGNnnFocDLRz9hjqs8tyfx8PobrTRaetzD8u7alWQWT/P9Liv14uCB+VdDTC9fbenc4A22TsqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NGubZEUNBfdLkgmycInfwezwxHfXMP4zTgFbkNw7F3Q=;
- b=MrG7cMdpBlbpBiVDvg4yBkEtcaBroVSBoUsEwAw0hREoqcSWck/yoUiSSkleI9Gxi+KuCZnIJb0yesOnga+nYw/4OGcT4KSfzhriBe9/0KbjPdMxWDe3rOSL7+a7Ive4KcfGmIsGveXHtin3AOo4klWzZeyPfefjXsxwWqxYJ7wMiFNRW+QC2Mxq52V9b19MLXX/GgUwOCwQW14R21pJNt5yPgbI49K08RHJAHM3hdS5pALIWvXDCTi6kGLK5iN6VirogkVHOQ9Oga2296AJspzr3DvN6HF3mTl/Hpin6b1S1QuKk/8IHIItnG4bUPLnRiMkp6+gwPnHvwLt2jwUXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NGubZEUNBfdLkgmycInfwezwxHfXMP4zTgFbkNw7F3Q=;
- b=3GuzOK8RKlhj5+NnyQH073GhPFYusuVjmbvmYXBVgiUFa0jShSEJQwCMSTq93H96Fj3gz80OuqRXTkU0jcPK19HAa8z7DOQ7MxtaQfcwJAsIGZCqasjbDu0imhbBpFQ9rCKJtgjyx4Fher0mba5P4DBIyAt3xItovz/hlfrdz9gVha2SSQxh8kYSuMv6ncnJ5sHadG5tPUOiCKv5uYuMbvg2iLbo856mI16vCuLOvqO5yPQ7wgPJa0yPeBb4fM8tTU/+ROhV/b3grTCJ3nRZ1IY1QUiuiNo8V5kQPX7joO1qmAbPS0gVnwbwoG5Ku7XvmRPCzUr3w5PtIs9J7D9k7A==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PAZP264MB2333.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e4::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.29; Wed, 15 Mar
- 2023 10:18:22 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a%7]) with mapi id 15.20.6178.029; Wed, 15 Mar 2023
- 10:18:22 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH v4 20/36] powerpc: Implement the new page table range API
-Thread-Topic: [PATCH v4 20/36] powerpc: Implement the new page table range API
-Thread-Index: AQHZVv0YjMzoz9l+LU6zj9tdkgq+2a77l0WAgAAJsQA=
-Date: Wed, 15 Mar 2023 10:18:22 +0000
-Message-ID: <c7f08247-8bcd-184c-5e06-91f91257f1f6@csgroup.eu>
-References: <20230315051444.3229621-1-willy@infradead.org>
- <20230315051444.3229621-21-willy@infradead.org>
- <1743d96f-8efe-0127-2cae-7368ce0eb2e6@csgroup.eu>
-In-Reply-To: <1743d96f-8efe-0127-2cae-7368ce0eb2e6@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB2333:EE_
-x-ms-office365-filtering-correlation-id: 836bc186-c09e-4ef3-9ee1-08db253e9b6b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  Zw6csyt8Tig+97L9lZvW4MBur7eGd3KvUjMeFLr64Oph6DtP2AOSi7TOMpxRCpQ4VW+Ms56ij9NK8iYVg7WzMmvTRa/VLDue282t2eb5HKj6qcr+O+jN8ahPgKaB8rfHI5b5G0UAXx0VYuybl1Xphuhpp+KpO6t9tPZyWpzXG+vDMbdujI636gDAxJNmECmUgarecXhqCuuT8rNP/QG5g3YC0oR3tKAYWgRmjm6/JMExO//KA8kVkfDfxJ3DEGfbrGWrAGckElODMjmFF0D8U/wCzBVY+kjls7Yc5Ea/S1cgEN7i/95ZkelRw4TUufPlqYo8sTGQricozL6i7EQxP2FJrNlVj4eMYIw6OzEzqmj+75AcWKM2Hx9Wj0GTbE1GMDPl7S0mGIiSgnEL0/m2Lg2B/8CS8RdbLpE5sBYlplwey3FrzWu88+/fIcsjM6yRqRqfI/PBYBFo102s2FnSbNyLWenxHAuMyatsNNDcwkHhjdcf+QAFEIrHpLDrEI46yCEREXS8SpxgkOlZQ7S+8kjQzc9AU7kZTQwXxf3BiDlvj08AnnjAMlgCd6hFVw8O8hI6k0ZH1i9Zl+DIwg65yVL+YvKh5WuzE/GxILjDZUWA77HeaUDuzCRQh0MSeDKTJJt0UcqurbFBBNz7k1QU7l0PKJR/UY3WUUDMwyciNAWgaye/L/LrxhwhSzeutf/r0kno6o2QOst23je1Bp1PYYmdBM1s2NInAqXHe0h7fQCm475jKNwBGUenx7MTaonf
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(396003)(346002)(366004)(376002)(136003)(451199018)(38070700005)(86362001)(31696002)(36756003)(38100700002)(122000001)(44832011)(2906002)(41300700001)(8936002)(5660300002)(4326008)(6512007)(186003)(2616005)(26005)(66574015)(6506007)(316002)(54906003)(83380400001)(110136005)(66556008)(66446008)(64756008)(8676002)(91956017)(66476007)(76116006)(66946007)(6486002)(966005)(71200400001)(478600001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?d2ttRi93R1lqQ3dzNFFDNE1jbDVmM294QnNIVU4xc25rUkY2Yi9nblZhK3pB?=
- =?utf-8?B?aHpyMXB5WXVyNjkvS0kvYWFtVEZiMGpmaXozSFppeVFjQjdzS2dFcWZmMUN4?=
- =?utf-8?B?V0xOZ0NsNktkOVRKbXlBN0Y2U0NUUjhock9WTmUrT3hJNDhKNFMzdHpiSTdG?=
- =?utf-8?B?ejFTMDFLVFJVZThGUmhQVDNONjd5OE9CME9jUnBuMEFSajFEQ25IMURPRXFz?=
- =?utf-8?B?U1hOSFNkbVZ4VHNzTjJpaEdldHFDZnFIODdtck8vRmZZMFlnMGREeklKeWFQ?=
- =?utf-8?B?YkJGT3c3N2dnVms1V0JndEZZRksvY3NkYlE0dFp2NmZ3dmozTDZUQ1RXNUxC?=
- =?utf-8?B?eGlDRUcvSEMrd2FWU0RDWnVJTlpPdFNnR1BwcjJkSW43dXRlV1o5NmxmWU1K?=
- =?utf-8?B?RE1KdzZmRkVMaG84d1BUZnRCRU1tSHIvbVY0WTl4ams1NGlwYmxqNFZXZDVt?=
- =?utf-8?B?dDR1QUNOMXl6cUZqVGFzZytFNVNxNU1KdDRNTUJ2UWl6OGlPcGdBc3RYcEhx?=
- =?utf-8?B?N0srYm9YZHFJeit0eFFuczI2cEdDS2oxWndETVBDVjNhMHZRcVJhcVBtMXFi?=
- =?utf-8?B?ckZhVFR2YldGSnEzZmlJZWxEYjFheHBnTTRCVEVZV09zNTFKWU51VE9LTDlK?=
- =?utf-8?B?SmkvYmxoZE84QldSVVpicWF1K1JFY0NiNVB4Y1JUNSt5NzBsaFdWbkxXMEZN?=
- =?utf-8?B?elJ0bHZjYnM2TDZKaFdyZ3g0ZHgvalpXQ25HVmc2QmkxdlFJVkVRV2VINzVn?=
- =?utf-8?B?YWpjMkYvT1Z1ekcwaW5WRzNQbjNWWXBOZmN2R3A0OXk2SWl6Qk1DSStzRmlU?=
- =?utf-8?B?eGc2V08vRnVTUUs3bEZqTGVidURiZHljUmF2MWlVa2xjOTBUcC94Q1E2SzFm?=
- =?utf-8?B?d1gwUStreVNKUCtQV29adHJBTFc0VHZCQno3anU4VmJOeWhobzR6U0tBTFJB?=
- =?utf-8?B?SE4wNVVYVGkzN011QXFBdkoydWV0NndXdGYzREY2Sm5SV2lqMFdpYWZudEVV?=
- =?utf-8?B?OHNNRHN5KzByUTlrRTBWYnhDc2doV3o5ZnlGREcrbVNRdjAyWUN5RWk4SkY4?=
- =?utf-8?B?Tkt6NVAzdGJqWVhVSnNMS0o4NW9TbWxZaUdRM3VRSGRTTXozemhTK0FObE95?=
- =?utf-8?B?S3NEQ01ZNHErRk5ZTy9zNzZtaWJNUjVzaGt3cmRqQ1IwUnVIT01CUG9PZ1pS?=
- =?utf-8?B?bFNQTXVUeE5vZlNGNTJMU3RtSmFoN3E0QkNNckU1K0pkMExCWC9QSlBsN2Rq?=
- =?utf-8?B?d0F4ZEdjYVJrTGdSMlRpSUJvSzZIRGlFUWlucW1ZTWhWQXBkaktQK09CRmZ2?=
- =?utf-8?B?aVViWU5BZHM4ZUhBYUpNWVJ1S29yTEJmRkJFTGRqZ3hKa1g2VXhBR29YSTNT?=
- =?utf-8?B?dS9qV2lLQWtyS0R3WUVZSFptUy95RUdQTHpXT2ZsbXFJYk9MNWg5TWMvcjhn?=
- =?utf-8?B?dHREZFJJTjZybldHTGcrSElDYXlUc201dGdRdVdBNm9xRWRLMVhlMmNKL2tj?=
- =?utf-8?B?U0pReVc1VEE5ek1SemwwQzFHblJtbGFsWUVCMXhqZlF6MXFyUC8wZEdvNFM0?=
- =?utf-8?B?TGYzVVNxNzRUQjFOYWJkUTQzSENEUjV2MC84OE9zRFRUSG9QMWJOdEdzbVcw?=
- =?utf-8?B?enRRQlhHcGJxRGRHVlVqK1BmSW5ZRm9vQ3B5b0hodHlIcy9EMmQ4WnVCMU5H?=
- =?utf-8?B?bFNYYUlTM2Qzbm5vSlBQaGRNOEIyVVNJeDRsWFRPUUJwQmEvOTN6TFpwNG1W?=
- =?utf-8?B?NVB3L0loTXNyTUt4cjhBWTIzeFJMQW1mK3R2Qy9WZjJJazNjSExKckhYdit3?=
- =?utf-8?B?ZGlDRUV0TW8zTUxmZzgxcnBVZHFBUlAyVU5URDNvR2FlZm5wWmNFRS9WaWtW?=
- =?utf-8?B?dENGN2prUmFPWHlsNFBJQ21ldzN6VldMRjM3VWNWS1VsN05GRnF2ZnZMVkhF?=
- =?utf-8?B?Y253N0lORFhmMFZMK2orUWw1VHhieTFjclA0L1ppYmhHQU00SjVIRjZzVXJ5?=
- =?utf-8?B?YjhGQ3FBRWVZTjR1bGJuaHM5d0RPMGJ6SVl6ZG4xdnNjWFlZMURQVStCYUlZ?=
- =?utf-8?B?V2VnOEpLYTdPWndEaXAvMWtxZ0NaYmJacVM0eHNtZkVjSVVSaUZKVGpEYXd6?=
- =?utf-8?B?T3lsQXpCMFN1WXlUd3dtMlpJL2ZCS1N5Wk9YdWVpZ2psWmFLbmZGQUJoZVVr?=
- =?utf-8?B?ZkE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BCA731677E505A4BA93AA92626E85C11@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pc8hc0Fywz3bh3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 23:24:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678883056; x=1710419056;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sqa5ETRPA8mWWtxvPChxrgVub4MEZRvt0xOoJBar2EI=;
+  b=BFoU/BpiT6lXjvlehuW2yjHyA0tnE11JLRMB1b1GYVAqHBaRZKL8vDlx
+   43RMRSOYhhKnk+pKtyxnTuHCtjYfytR2P0JtpncoZJnnWvn0di82HozNP
+   62mfo4Wy+tjuuD/dZKewvfgtgbIw5/fImkFhHngZklJJ6cJma0N8mfSkQ
+   DMn11FX742XzwKbbG9P4bhOePuw40mpKDYljZQ8w1zSmAELrvdNm1vDi/
+   WqDKTleQcbwbL5f6bbvzbVPA6UJM27Af2MdagxAn7kCQdw7CjlYFXp/3U
+   4+NV7c7/AolWkW1lz6o0txrbpjkEE3keQE5+5FG0cPi2PGG60dtYRFEHY
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="335171857"
+X-IronPort-AV: E=Sophos;i="5.98,262,1673942400"; 
+   d="scan'208";a="335171857"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2023 05:23:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768464686"
+X-IronPort-AV: E=Sophos;i="5.98,262,1673942400"; 
+   d="scan'208";a="768464686"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 Mar 2023 05:23:46 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pcQAT-0007f8-0r;
+	Wed, 15 Mar 2023 12:23:45 +0000
+Date: Wed, 15 Mar 2023 20:23:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-phy@lists.infradead.org
+Subject: Re: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
+Message-ID: <202303152008.kxRjSW73-lkp@intel.com>
+References: <20230313161138.3598068-4-sean.anderson@seco.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 836bc186-c09e-4ef3-9ee1-08db253e9b6b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Mar 2023 10:18:22.8310
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1vtqiP90W4A5AtQkWCXPF4EnFaDVlCyMfgGjW3zCkJ6xdRWJsiTNC7YN5iEnrv1u3dfWJjvxpkeYVZNNAgu+fTZSRIXk0U5ytx2+OswfmG4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2333
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230313161138.3598068-4-sean.anderson@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,37 +72,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: devicetree@vger.kernel.org, =?iso-8859-1?Q?Fern=E1ndez?= Rojas <noltari@gmail.com>, Jonas Gorski <jonas.gorski@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Linus Walleij <linus.walleij@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE1LzAzLzIwMjMgw6AgMTA6NDMsIENocmlzdG9waGUgTGVyb3kgYSDDqWNyaXTCoDoN
-Cj4gDQo+IA0KPiBMZSAxNS8wMy8yMDIzIMOgIDA2OjE0LCBNYXR0aGV3IFdpbGNveCAoT3JhY2xl
-KSBhIMOpY3JpdMKgOg0KPj4gQWRkIHNldF9wdGVzKCksIHVwZGF0ZV9tbXVfY2FjaGVfcmFuZ2Uo
-KSBhbmQgZmx1c2hfZGNhY2hlX2ZvbGlvKCkuDQo+PiBDaGFuZ2UgdGhlIFBHX2FyY2hfMSAoYWth
-IFBHX2RjYWNoZV9kaXJ0eSkgZmxhZyBmcm9tIGJlaW5nIHBlci1wYWdlIHRvDQo+PiBwZXItZm9s
-aW8uDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogTWF0dGhldyBXaWxjb3ggKE9yYWNsZSkgPHdpbGx5
-QGluZnJhZGVhZC5vcmc+DQo+PiBDYzogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlk
-LmF1Pg0KPj4gQ2M6IE5pY2hvbGFzIFBpZ2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+PiBDYzog
-Q2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1Pg0KPj4gQ2M6IGxp
-bnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnDQo+PiAtLS0NCg0KPj4gQEAgLTIwMyw3ICsyMDMs
-MTQgQEAgdm9pZCBzZXRfcHRlX2F0KHN0cnVjdCBtbV9zdHJ1Y3QgKm1tLCB1bnNpZ25lZCANCj4+
-IGxvbmcgYWRkciwgcHRlX3QgKnB0ZXAsDQo+PiDCoMKgwqDCoMKgIHB0ZSA9IHNldF9wdGVfZmls
-dGVyKHB0ZSk7DQo+PiDCoMKgwqDCoMKgIC8qIFBlcmZvcm0gdGhlIHNldHRpbmcgb2YgdGhlIFBU
-RSAqLw0KPj4gLcKgwqDCoCBfX3NldF9wdGVfYXQobW0sIGFkZHIsIHB0ZXAsIHB0ZSwgMCk7DQo+
-PiArwqDCoMKgIGZvciAoOzspIHsNCj4+ICvCoMKgwqDCoMKgwqDCoCBfX3NldF9wdGVfYXQobW0s
-IGFkZHIsIHB0ZXAsIHB0ZSwgMCk7DQo+PiArwqDCoMKgwqDCoMKgwqAgaWYgKC0tbnIgPT0gMCkN
-Cj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHB0
-ZXArKzsNCj4+ICvCoMKgwqDCoMKgwqDCoCBwdGUgPSBfX3B0ZShwdGVfdmFsKHB0ZSkgKyBQQUdF
-X1NJWkUpOw0KPiANCj4gSSBkb24ndCBsaWtlIHRoYXQgbWF0aCB0b28gbXVjaCwgYnV0IEkgaGF2
-ZSBubyBiZXR0ZXIgaWRlYSBhdCB0aGUgbW9tZW50Lg0KPiANCj4gTWF5YmUgc2V0X3B0ZXMoKSBz
-aG91bGQgdGFrZSBhIHBncHJvdF90IGFuZCByZWJ1aWxkIHRoZSBwdGUgd2l0aCANCj4gbWtfcHRl
-KCkgb3Igc2ltaWxhciA/DQo+IA0KPj4gK8KgwqDCoMKgwqDCoMKgIGFkZHIgKz0gUEFHRV9TSVpF
-Ow0KPj4gK8KgwqDCoCB9DQo+PiDCoCB9DQo+PiDCoCB2b2lkIHVubWFwX2tlcm5lbF9wYWdlKHVu
-c2lnbmVkIGxvbmcgdmEpDQoNCkkgaW52ZXN0aWdhdGVkIGEgYml0IGZ1cnRoZXIgYW5kIGNhbiBj
-b25maXJtIG5vdyB0aGF0IHRoZSBhYm92ZSB3b24ndCANCmFsd2F5cyB3b3JrLCBzZWUgY29tbWVu
-dCANCmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjMtcmMyL3NvdXJjZS9hcmNo
-L3Bvd2VycGMvaW5jbHVkZS9hc20vbm9oYXNoLzMyL3BndGFibGUuaCNMMTQ3DQoNCkFuZCB0aGVu
-IHlvdSBzZWUgDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4zLXJjMi9zb3Vy
-Y2UvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL25vaGFzaC9wdGUtZTUwMC5oI0w2Mw0KDQpDaHJp
-c3RvcGhlDQo=
+Hi Sean,
+
+I love your patch! Perhaps something to improve:
+
+[auto build test WARNING on shawnguo/for-next]
+[also build test WARNING on brgl/gpio/for-next clk/clk-next linus/master v6.3-rc2 next-20230315]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/dt-bindings-phy-Add-2500BASE-X-and-10GBASE-R/20230314-001522
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20230313161138.3598068-4-sean.anderson%40seco.com
+patch subject: [PATCH v11 03/13] dt-bindings: Convert gpio-mmio to yaml
+reproduce:
+        # https://github.com/intel-lab-lkp/linux/commit/2d1e86be168e32ea3d3f11325881f7cb1e5492f8
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Sean-Anderson/dt-bindings-phy-Add-2500BASE-X-and-10GBASE-R/20230314-001522
+        git checkout 2d1e86be168e32ea3d3f11325881f7cb1e5492f8
+        make menuconfig
+        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
+        make htmldocs
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303152008.kxRjSW73-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm63268-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6328-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6358-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6362-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+>> Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6368-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
