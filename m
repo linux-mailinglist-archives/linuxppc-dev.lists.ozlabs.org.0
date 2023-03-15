@@ -1,66 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8660E6BA406
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 01:25:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DF96BA4EB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 02:55:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pbrll2zgDz3cfZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 11:25:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PbtkY62lCz3f3c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 12:55:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZiLxIon1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pEMdQTdr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::336; helo=mail-wm1-x336.google.com; envelope-from=grundler@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZiLxIon1;
-	dkim-atps=neutral
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbrkp05LYz3c7S
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 11:25:04 +1100 (AEDT)
-Received: by mail-wm1-x336.google.com with SMTP id k25-20020a7bc419000000b003ed23114fa7so88183wmi.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Mar 2023 17:25:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1678839901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PBNqRKvFHgPqqskaybm027VBSueaOqeOTv7uwJBWtdQ=;
-        b=ZiLxIon1u+rmZiqod8EddJ1NTtYuick9y4S5J3gIzNVwzhoPs8cNYgm0UcpTqZd4GC
-         WXyLUpKm39+drChF4demvnBD117++Ok1xOZEphRRiTuqZJAZGaXrEFYLbNHbNkMZefuo
-         ULsB9cCkVr8xwkt81Ow4eHlVoH0pkdxniF+lc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678839901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PBNqRKvFHgPqqskaybm027VBSueaOqeOTv7uwJBWtdQ=;
-        b=wB9Ut4VFhjX/280cz2xVCq6iVfhTWEVaLHHlNj0drV/jJh76+8esooVDuN9c1nl4lY
-         c1sPknF+tfb88CakdZV4RaA1CrUJKDhfXtzqSoUuV6od9DLWKQVJykeVuJnLL+e0Q3+G
-         GHkTkO3uyOevBaVxzs433d1aBkmRTagocoQkXn1LccX+vlQchsW6T2PviLw0rKssCQuy
-         wF9j3UIfJgHfhNEzDGORz3XvNFcdraiu4vfxdP/ZNimYk+sI6eVos1E728fBsQ4nhBx0
-         3Kt1/y2DI12c+csWJ6P8iQ+euSnPv5ue8E1J5w28H1350Xxmut3MZEui3Ghy1BpS/TTu
-         /RaQ==
-X-Gm-Message-State: AO0yUKWwGPCISnzDe01/zCSo2MqlHRoEfyNyAukQDpIL3eMDVrsR6LZ4
-	Gy8N8pXul7toWb6ycDWgrVBi8hfRr704JDWjZOohyg==
-X-Google-Smtp-Source: AK7set/m4nESElQsgLmaw1biuRQY8j6mcZEJlWhUB+r9v2P1fMoQCuNEmhEy6d2bWp46oRQ6Y14VPSx4Kv3vqwW2Crw=
-X-Received: by 2002:a05:600c:512a:b0:3ed:26fa:6ee5 with SMTP id
- o42-20020a05600c512a00b003ed26fa6ee5mr2238902wms.4.1678839901419; Tue, 14 Mar
- 2023 17:25:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pbtjd0c74z3c6Z
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Mar 2023 12:54:13 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pEMdQTdr;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pbtjc6JzQz4x84;
+	Wed, 15 Mar 2023 12:54:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1678845252;
+	bh=Yopb6U17LAWbhJiYVS5Y0FAVkJR1WAusT9HFfXsuug4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pEMdQTdrbNOpL7nY3LVYUCoTyZO4iy44A6sY3MHiFMvkGKD6KBMy+kjTY8qUY3wZk
+	 a3mkjVR1liYsejtuRLwm4yWfSL38YcNktXQb0E0fw9mMP08IBvcgNiomq9prWpNcZV
+	 izXXTqB6f1Ue76O6j8TgDbmfu17AN++MhemYg33esPGusDrf7E4AUCTuhifmkMrVwi
+	 05zPG+EJ8lDi1jxATBBeJvb3+claeGTthFT4bCcIT2FQ1KoGij5TR7PecmlwdfyoPd
+	 nyNBOwTrrFsUqH3VtdX9D6AJc0lm0jZ44GQRPFnVM75677E21zQy+lEPV097FAviul
+	 nD5cLLBVN2Zkw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nick Child <nnac123@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH v1] powerpc: Add version to install filenames
+In-Reply-To: <20230314164442.124929-1-nnac123@linux.ibm.com>
+References: <20230314164442.124929-1-nnac123@linux.ibm.com>
+Date: Wed, 15 Mar 2023 12:54:09 +1100
+Message-ID: <87edpqok3i.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20230301060453.4031503-1-grundler@chromium.org> <20230314193836.GA1667748@bhelgaas>
-In-Reply-To: <20230314193836.GA1667748@bhelgaas>
-From: Grant Grundler <grundler@chromium.org>
-Date: Tue, 14 Mar 2023 17:24:49 -0700
-Message-ID: <CANEJEGtxn79+weGWVuF+Ytw789Smxv-2vGaM_qes1hfzg7qeYw@mail.gmail.com>
-Subject: Re: [PATCH] PCI/AER: correctable error message as KERN_INFO
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,96 +57,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Oliver O 'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nick Child <nnac123@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 14, 2023 at 12:38=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
- wrote:
+Nick Child <nnac123@linux.ibm.com> writes:
+> Rather than replacing the versionless vmlinux and System.map files,
+> copy to files with the version info appended.
 >
-> On Tue, Feb 28, 2023 at 10:04:53PM -0800, Grant Grundler wrote:
-> > Since correctable errors have been corrected (and counted), the dmesg o=
-utput
-> > should not be reported as a warning, but rather as "informational".
-> >
-> > Otherwise, using a certain well known vendor's PCIe parts in a USB4 doc=
-king
-> > station, the dmesg buffer can be spammed with correctable errors, 717 b=
-ytes
-> > per instance, potentially many MB per day.
-> >
-> > Given the "WARN" priority, these messages have already confused the typ=
-ical
-> > user that stumbles across them, support staff (triaging feedback report=
-s),
-> > and more than a few linux kernel devs. Changing to INFO will hide these
-> > messages from most audiences.
-> >
-> > Signed-off-by: Grant Grundler <grundler@chromium.org>
-> > ---
-> > This patch will likely conflict with:
-> >   https://lore.kernel.org/all/20230103165548.570377-1-rajat.khandelwal@=
-linux.intel.com/
-> >
-> > which I'd also like to see upstream. Please let me know to resubmit
-> > mine if Rajat's patch lands first. Or feel free to fix up this one.
+> Additionally, since executing the script is a last resort option,
+> inform the user about the missing `installkernel` command and the
+> location of the installation.
 >
-> Yes.  I think it makes sense to separate this into two patches:
+> This work is adapted from `arch/s390/boot/install.sh`.
 >
->   1) Log correctable errors as KERN_INFO instead of KERN_WARNING, and
->   2) Rate-limit correctable error logging.
-
-I'm going to look into your comment below. I'll port Rajat's patch on
-top of mine to follow the order you've listed above.
-
-> >  drivers/pci/pcie/aer.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index f6c24ded134c..e4cf3ec40d66 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -692,7 +692,7 @@ static void __aer_print_error(struct pci_dev *dev,
-> >
-> >       if (info->severity =3D=3D AER_CORRECTABLE) {
-> >               strings =3D aer_correctable_error_string;
-> > -             level =3D KERN_WARNING;
-> > +             level =3D KERN_INFO;
-> >       } else {
-> >               strings =3D aer_uncorrectable_error_string;
-> >               level =3D KERN_ERR;
-> > @@ -724,7 +724,7 @@ void aer_print_error(struct pci_dev *dev, struct ae=
-r_err_info *info)
-> >       layer =3D AER_GET_LAYER_ERROR(info->severity, info->status);
-> >       agent =3D AER_GET_AGENT(info->severity, info->status);
-> >
-> > -     level =3D (info->severity =3D=3D AER_CORRECTABLE) ? KERN_WARNING =
-: KERN_ERR;
-> > +     level =3D (info->severity =3D=3D AER_CORRECTABLE) ? KERN_INFO : K=
-ERN_ERR;
-> >
-> >       pci_printk(level, dev, "PCIe Bus Error: severity=3D%s, type=3D%s,=
- (%s)\n",
-> >                  aer_error_severity_string[info->severity],
+> Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+> ---
 >
-> Shouldn't we do the same in the cper_print_aer() path?  That path
-> currently uses pci_err() and then calls __aer_print_error(), so the
-> initial message will always be KERN_ERR, and the decoding done by
-> __aer_print_error() will be KERN_INFO (for correctable) or KERN_ERR.
+> Hoping I am not breaking someones dependency on targeting /boot/vmlinux
+> so RFC'ing.
 
-I was completely unaware of this since it's not causing me any
-immediate problems. But I agree the message priority should be
-consistent for correctable errors.
+It will probably break *someone*'s workflow :)
 
-> Seems like a shame to do the same test in three places, but would
-> require a little more refactoring to avoid that.
-
-I don't mind doing the same test in multiple places. If refactoring
-this isn't straight forward, I'll leave the refactoring for someone
-more ambitious. :D
-
-cheers,
-grant
-
+> I typically have kernelinstall on my LPARs and installing and rebooting
+> goes peacefully.
 >
-> Bjorn
+> Recently, I did not have kernelinstall and `make install` seemed to behave
+> differently. I got very little output but a succeful return code. After
+> initramfs issues during boot I dug into the makefiles a bit to figure out
+> where execution was differing. When `kernelinstall` cannot be found, we
+> invoke `arch/powerpc/boot/install.sh` instead. I am primarily interested
+> in getting more information relayed to the user about what is going on.
+>
+> The changes to installing with the version appended are more of an afterthought
+> that makes sense to me but could understand why someone may depend on consistent
+> filenames.
+>
+> Opening as RFC for opinions/rejections/concerns.
+
+TIL arch/powerpc/boot/install.sh even exists :)
+
+I generally netboot kernels, so I don't really use `make install` that
+much. But I know some folks do, though they probably have
+`installkernel` installed as a rule.
+
+Still this change seems sensible, and putting the version in the file
+names matches what arm, s390, arm64 and riscv do.
+
+See if anyone else has an opinion.
+
+cheers
