@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685956BB722
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 16:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E856BB72F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Mar 2023 16:12:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PcDNm2SKGz3f6s
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 02:10:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PcDQV24Qzz3fXt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 02:12:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
@@ -14,20 +14,20 @@ Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcDKz0yqkz3ccl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 02:08:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcDL02JLFz2xKS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 02:08:24 +1100 (AEDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1pcSje-0007k6-I8; Wed, 15 Mar 2023 16:08:14 +0100
+	id 1pcSjf-0007mN-A0; Wed, 15 Mar 2023 16:08:15 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1pcSjc-004KYx-MY; Wed, 15 Mar 2023 16:08:12 +0100
+	id 1pcSjd-004KZ7-4v; Wed, 15 Mar 2023 16:08:13 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1pcSjc-0057gJ-2n; Wed, 15 Mar 2023 16:08:12 +0100
+	id 1pcSjc-0057gO-90; Wed, 15 Mar 2023 16:08:12 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Shengjiu Wang <shengjiu.wang@gmail.com>,
 	Xiubo Li <Xiubo.Lee@gmail.com>,
@@ -35,15 +35,15 @@ To: Shengjiu Wang <shengjiu.wang@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH 070/173] ASoC: fsl: fsl_mqs: Convert to platform remove callback returning void
-Date: Wed, 15 Mar 2023 16:06:02 +0100
-Message-Id: <20230315150745.67084-71-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 071/173] ASoC: fsl: fsl_rpmsg: Convert to platform remove callback returning void
+Date: Wed, 15 Mar 2023 16:06:03 +0100
+Message-Id: <20230315150745.67084-72-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
 References: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1482; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=iKAaVVxOf7lkZ7V5ze5WCctnJM8IctRpFOwS/9Y0IyM=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkEd4BMf3TI/WQHJSyWvAcll0fBswed0xdEhhKa hIcZ1ta/xCJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBHeAQAKCRDB/BR4rcrs CSTqCACK7rgbB40bywWv6gpJ6k6MERqBKvI2XsLkFby6yuP0Izhvzb72/SKO1cH/HBtpzIKJq1y 7q1KCC2cmUaOUx6eqO3rPhaPBqVvo+o7OFcaUSHnjR76wwE19k9LURfwD/8+fb8uCUbWwGypqQO KRr1t7MksiW944RHdkqY7nnyOvjm+w2WtElA/Pt5hbXdc33qZQjC44AANOW6q2dn2wKL9PZQ/TR 5hqUOmM6PcE184DRarIOzel7EtUksD6K5RJguguRKdESL6kx+nZ80oBleTwBNM/jJYE6KCeBO1O usaE6LSVaD0GeZ6W6EOPpmHOPohUBdKjKD9NO9/DMOHplZdX
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1611; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=dDnW86Gv49lCBe7mcignad6VQa0+Mv+vJCSTI6E/ApA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkEd4E3hZje9ZrldUwq37J/08EqTMfAuvM9Ri0o d+opEQENRaJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZBHeBAAKCRDB/BR4rcrs CXcRB/wKAxpo1T8zKiYbnRw0OHFAATABwRDpVypmmzre3YQA2J7b0ByHtJA3GrfhaA9Oj8wzUXV B79hrNwI33HRYbYeQWPI23mxiTsFMicb6O53flu+15mEWORrWFxm3UPxsut/yjrmT5ub1rWi7WP DqANNJe1MvGIK4Oos/5bfcvb0jZnMHXPxzkTEzm8ZezIiUR+xj5oAemn0mrKhqIvd4LJpdNfXo3 QfHdd/GxC/I6ROwGzdQ/0B8wbFXQlwMrlXZbZIyQJti8J3iyB3ZrvHs9eOSuUgXlnw7/ByhOTMe /I4QYIHvsuTG2E/jXP/EDUI+p9Msly6jMkBT+eKVdSw+bEV+
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -78,34 +78,38 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- sound/soc/fsl/fsl_mqs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_rpmsg.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index 4922e6795b73..3fb3d3e4d09a 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -261,10 +261,9 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 	return ret;
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index 46c7868a2653..15b48b5ea856 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -247,14 +247,12 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
+ 	return 0;
  }
  
--static int fsl_mqs_remove(struct platform_device *pdev)
-+static void fsl_mqs_remove(struct platform_device *pdev)
+-static int fsl_rpmsg_remove(struct platform_device *pdev)
++static void fsl_rpmsg_remove(struct platform_device *pdev)
  {
- 	pm_runtime_disable(&pdev->dev);
+ 	struct fsl_rpmsg *rpmsg = platform_get_drvdata(pdev);
+ 
+ 	if (rpmsg->card_pdev)
+ 		platform_device_unregister(rpmsg->card_pdev);
+-
 -	return 0;
  }
  
  #ifdef CONFIG_PM
-@@ -360,7 +359,7 @@ MODULE_DEVICE_TABLE(of, fsl_mqs_dt_ids);
+@@ -302,7 +300,7 @@ static const struct dev_pm_ops fsl_rpmsg_pm_ops = {
  
- static struct platform_driver fsl_mqs_driver = {
- 	.probe		= fsl_mqs_probe,
--	.remove		= fsl_mqs_remove,
-+	.remove_new	= fsl_mqs_remove,
- 	.driver		= {
- 		.name	= "fsl-mqs",
- 		.of_match_table = fsl_mqs_dt_ids,
+ static struct platform_driver fsl_rpmsg_driver = {
+ 	.probe  = fsl_rpmsg_probe,
+-	.remove = fsl_rpmsg_remove,
++	.remove_new = fsl_rpmsg_remove,
+ 	.driver = {
+ 		.name = "fsl_rpmsg",
+ 		.pm = &fsl_rpmsg_pm_ops,
 -- 
 2.39.2
 
