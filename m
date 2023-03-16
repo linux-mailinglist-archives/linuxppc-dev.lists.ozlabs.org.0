@@ -2,80 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4BD6BD88D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 20:04:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CD36BDA13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 21:23:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PcxXG1nmwz3f5L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 06:04:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PczGd1mNYz3chQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 07:23:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFtJU3VG;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=vFo0hpZf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFtJU3VG;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=vFo0hpZf;
 	dkim-atps=neutral
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 824 seconds by postgrey-1.36 at boromir; Fri, 17 Mar 2023 07:22:17 AEDT
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcxWJ3F1Xz3cKG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 06:03:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678993436; x=1710529436;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zUzkGxrqKDPR6SroJseKwSx7MVAGnpL/Grdhlw6b7UE=;
-  b=QFtJU3VGP4l9HK2s7GvDUm+lpnHl/WDpL1FUrwtq3aBVK8HRS5j7uRFF
-   poeVtavTCwM2nni+I9KWlELpe3Zy8YWw0venxLV5Gmc9zjH7GrYZA20eL
-   +1eO3o3shrHuC1lnwECakb3ITE3tJDJjIjAfVtoV2c1k6Z0e7CuXbQfiz
-   MJpY3E4bYucKQDm8fj5rK/fNFUhmU4afDMiHgJsXkWabdpwucFFygzpRt
-   IPR6Pyb4L5+FoGGFAFlMpubYP/WCMAiN2jBKlldi9myt5A82WXDNZeJIX
-   bLu7g7GHtpsj818SsveIcJSE1jBzidLZqLmXIhtJfrBorl+2WoLrZ+xdY
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="321944559"
-X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="321944559"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 12:03:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="925864625"
-X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="925864625"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 16 Mar 2023 12:03:40 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pcst1-0008hW-1B;
-	Thu, 16 Mar 2023 19:03:39 +0000
-Date: Fri, 17 Mar 2023 03:03:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Randy Dunlap <rdunlap@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Juergen Gross <jgross@suse.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 1/4] PCI: Introduce pci_dev_for_each_resource()
-Message-ID: <202303170223.V0xQhs1V-lkp@intel.com>
-References: <20230314192634.63531-2-andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PczFj4xGMz3cdD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 07:22:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1678998128; i=markus.elfring@web.de;
+	bh=ZyUqUgJ712sd7hB/1hJRuDlfBU9H2cZJd5fAh/yVhFg=;
+	h=X-UI-Sender-Class:Date:Subject:From:To:References:Cc:In-Reply-To;
+	b=vFo0hpZflliS1Gg7LDB/L2T9UJHx+1LUgpZz6Yiem3gRrR3qGbkaipzPHV9K0E2XJ
+	 YDuiLUI9dNXE6WDtxyf8lACGniJ/mwoqroSX9GfKUfIYyvHOgDyKOrXUnGroGoGy+s
+	 3gLbMwebxX4Lf6ZUcO7bMakd5fVyBFZsp/Xndq2CssmVa9UN9z70XH4FRgRCKeqUEZ
+	 XNes3CW6tbQgWHxrWrUy6EndYhAPJp14mHA5N3n7LMaOPiGciqe4p96Izi9dr/kTd+
+	 ka6LpftpXaGWy4SDdN132A5rynWLtSMspzFYV6bHe9EDhzBnHNnZT+gQ7vmYmmFIrX
+	 E2zyiED0/4s4g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.81.83]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N45xz-1qcFv32GmH-0108fu; Thu, 16
+ Mar 2023 21:07:56 +0100
+Message-ID: <72a7bfe2-6051-01b0-6c51-a0f8cc0c93a5@web.de>
+Date: Thu, 16 Mar 2023 21:07:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230314192634.63531-2-andriy.shevchenko@linux.intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: [PATCH 0/4] powerpc/4xx: Adjustments for four function
+ implementations
+From: Markus Elfring <Markus.Elfring@web.de>
+To: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Josh Boyer <jwboyer@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Stefan Roese <sr@denx.de>
+References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+Content-Language: en-GB
+In-Reply-To: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0MEbJGSaiyScfOPZPwBBwq16kgkXOyIY0aAfBsztRRnxoUUPn3g
+ n8eysQigjFkEvBs1lZrdO8gK8HRwlxKf6sJJZwA3xbYr0nEDM9PojZkN1qfYsHsGH2iegpp
+ Lha8Bsm09JnNM/ls7TrGJWUc/olDduS8u2KFbBKiDmy3BZmu9U4x3sos4z2fUVb3ZQvCetA
+ Y78l+uf0bzpj1NcsLxfiw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:41VSI+1+rDg=;ULXzuPxQsnqq9dx77DOJExaESc1
+ Heyvm6ibJTKwU8Azos30zrFjvdRJUjT9UtDT+qN5GCQOHMmYacPZoOlMQJnTbNeHOuyE5wT+P
+ mzG6zTqMBb9b4qzppZvOSm3sopnsthiz3500o3NnKyKweadLrpl947ExTb52TW8SbE9Qym9rz
+ g2XFv4YUNKc7FtCws2ECYdrSHNriRxVDsiCab6hvSkWBJvpEOTIKy8nf3+e5cVD9kOo2xlwF5
+ 4bCbRB5vbqW85OhC+sSg9Rik3ew66FeKaBI6hz2FhICy35vLpt+FQUz+wXi68UqB2pqmGl6Cv
+ 0FILl10so21JGidgUB45mqPxLud1AQ96VQukHZyHxPCBs/Tcu+D54R+sKwHPTXl6jFp03ecNN
+ 0rvPkqmfuI9diiFIwbkOFoxAwa7MBU1ktQfTv6qYPGkOj3YexBHpI5JnZPOh9dgeSz4CSuK6M
+ aqGsy1X2h7AkKW6ULblyl8Mr6s3xzTea/tXHtHuc/9AgKY5BXC/BP6fhfLOH3+RWxR0pETEWV
+ N6Dce/6m/w06GQs7lzE0onvKQSGuHJA9wusIyUxiYa4qJ6edmelOCOhBEo9KndusmXOU11HYK
+ NtUVS9zZyU5FmIZKRdBPcW1Uqt4S328kmMRlpSPOlYcIXCZkOLg9NIyrvnPqFSdFrNWNVnQKy
+ o27vwAOAlDjIf1mktokkw4zTbKTvVVh863H0DNHoz5VHIJ7oqWRsBxMcfRa4ZlhKcbzqqIsSQ
+ DNppNmNi7lV3LbTvscm895kz1pbRyMdqXCxN5qkIh2urAU1wXj+c9bMBgAWb8u9O4t0BP6ZGW
+ iIxcD9Up1DsWCxWndBqMU2nfy5/HQvnkE/hTBoh/dCZaxoB9FbyQ6tsfBVm2SiGTdNlgzoD9C
+ SBH2hR+OgU7CMRr3HYr7J50N2ZdTBJUQDWTx0FCVaNch3aiBam35mItkYWF8HcTSnIBEjIlBd
+ lj6lcw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,85 +87,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, llvm@lists.linux.dev, Richard Henderson <richard.henderson@linaro.org>, Russell King <linux@armlinux.org.uk>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, oe-kbuild-all@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, Matt Turner <mattst88@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
+Date: Thu, 16 Mar 2023 20:15:43 +0100
 
-I love your patch! Yet something to improve:
+Some update suggestions were taken into account
+from static source code analysis.
 
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus powerpc/next powerpc/fixes linus/master v6.3-rc2 next-20230316]
-[cannot apply to soc/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Markus Elfring (4):
+=C2=A0 Fix exception handling in ppc4xx_pciex_port_setup_hose()
+=C2=A0 Fix exception handling in ppc4xx_probe_pcix_bridge()
+=C2=A0 Fix exception handling in ppc4xx_probe_pci_bridge()
+=C2=A0 Delete unnecessary variable initialisations in four functions
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230315-032821
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20230314192634.63531-2-andriy.shevchenko%40linux.intel.com
-patch subject: [PATCH v5 1/4] PCI: Introduce pci_dev_for_each_resource()
-config: powerpc-randconfig-r032-20230312 (https://download.01.org/0day-ci/archive/20230317/202303170223.V0xQhs1V-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc cross compiling tool for clang build
-        # apt-get install binutils-powerpc-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/85cdf4746b716f7b6c14d7dc5cd907c3c2a1fb0c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230315-032821
-        git checkout 85cdf4746b716f7b6c14d7dc5cd907c3c2a1fb0c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+=C2=A0arch/powerpc/platforms/4xx/pci.c | 69 ++++++++++++++----------------=
+--
+=C2=A01 file changed, 31 insertions(+), 38 deletions(-)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303170223.V0xQhs1V-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> arch/powerpc/platforms/52xx/mpc52xx_pci.c:331:6: error: unused variable 'i' [-Werror,-Wunused-variable]
-           int i;
-               ^
-   1 error generated.
+=2D-
+2.39.2
 
 
-vim +/i +331 arch/powerpc/platforms/52xx/mpc52xx_pci.c
-
-f42963f8646540 Grant Likely    2006-12-12  326  
-f42963f8646540 Grant Likely    2006-12-12  327  static void
-f42963f8646540 Grant Likely    2006-12-12  328  mpc52xx_pci_fixup_resources(struct pci_dev *dev)
-f42963f8646540 Grant Likely    2006-12-12  329  {
-85cdf4746b716f Mika Westerberg 2023-03-14  330  	struct resource *res;
-f42963f8646540 Grant Likely    2006-12-12 @331  	int i;
-f42963f8646540 Grant Likely    2006-12-12  332  
-59510820fff76f Randy Dunlap    2021-04-28  333  	pr_debug("%s() %.4x:%.4x\n", __func__, dev->vendor, dev->device);
-f42963f8646540 Grant Likely    2006-12-12  334  
-f42963f8646540 Grant Likely    2006-12-12  335  	/* We don't rely on boot loader for PCI and resets all
-f42963f8646540 Grant Likely    2006-12-12  336  	   devices */
-85cdf4746b716f Mika Westerberg 2023-03-14  337  	pci_dev_for_each_resource_p(dev, res) {
-f42963f8646540 Grant Likely    2006-12-12  338  		if (res->end > res->start) {	/* Only valid resources */
-f42963f8646540 Grant Likely    2006-12-12  339  			res->end -= res->start;
-f42963f8646540 Grant Likely    2006-12-12  340  			res->start = 0;
-f42963f8646540 Grant Likely    2006-12-12  341  			res->flags |= IORESOURCE_UNSET;
-f42963f8646540 Grant Likely    2006-12-12  342  		}
-f42963f8646540 Grant Likely    2006-12-12  343  	}
-f42963f8646540 Grant Likely    2006-12-12  344  
-f42963f8646540 Grant Likely    2006-12-12  345  	/* The PCI Host bridge of MPC52xx has a prefetch memory resource
-f42963f8646540 Grant Likely    2006-12-12  346  	   fixed to 1Gb. Doesn't fit in the resource system so we remove it */
-f42963f8646540 Grant Likely    2006-12-12  347  	if ( (dev->vendor == PCI_VENDOR_ID_MOTOROLA) &&
-f42963f8646540 Grant Likely    2006-12-12  348  	     (   dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200
-f42963f8646540 Grant Likely    2006-12-12  349  	      || dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200B) ) {
-f42963f8646540 Grant Likely    2006-12-12  350  		struct resource *res = &dev->resource[1];
-f42963f8646540 Grant Likely    2006-12-12  351  		res->start = res->end = res->flags = 0;
-f42963f8646540 Grant Likely    2006-12-12  352  	}
-f42963f8646540 Grant Likely    2006-12-12  353  }
-f42963f8646540 Grant Likely    2006-12-12  354  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
