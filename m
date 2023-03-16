@@ -1,51 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A071B6BCEC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 12:54:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C276BCFA3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 13:38:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pclzf4bBNz3cj5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 22:54:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PcmyL67HWz3cd5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Mar 2023 23:38:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qIzjIba+;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ZzfCLHEj;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=KFvm+kL7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pclyj1mS7z3bvH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 22:53:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qIzjIba+;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ZzfCLHEj;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=KFvm+kL7;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Thu, 16 Mar 2023 23:37:27 AEDT
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pclyg6cyLz4x7s;
-	Thu, 16 Mar 2023 22:53:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1678967612;
-	bh=b/pQ2wE5S7nHv3es7WZVEfLm9S28WgiyyZ+VQ07K+Ks=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qIzjIba+mLcN086XIllglaE3vpNgjSbNqfTWiHDhkQI/yDg9IRVyGDcDRkvLrgBm9
-	 w686YLSGO77RfMqR0D0LaJKZBKz0cMIEkBLpasaVnjoC2N/CMSCm/T3V2wZFufdsAh
-	 +ag39Zz2ywZP5NTmBUZQ2cTXvvSG1H1GxsylB3DiO9IYE4Hdc+ZhYPRyataH7ZvVy8
-	 Z84sTgzD3Ooomk2dJ+phz1hOWkWILTW6fJrz5zPhB19Bvc/G21W+5nfZawGNyvx1xH
-	 5/wSSVYKPsa9Y78wVDOWkf3lYWaolMNfklGMxMCMdRMpzuevSkuMJtYYmIFWGhb4SX
-	 o6YTUUoRp+XAw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 0/2] KVM: PPC: support kvm selftests
-In-Reply-To: <20230316031732.3591455-1-npiggin@gmail.com>
-References: <20230316031732.3591455-1-npiggin@gmail.com>
-Date: Thu, 16 Mar 2023 22:53:26 +1100
-Message-ID: <87ilf0nc95.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PcmxM6tGXz3cKG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 23:37:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1678970248; x=1710506248;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=srkpdC+yB+EdyLTj0WhGzLGs6EFRQ5wKwgJvE5nC0hQ=;
+  b=ZzfCLHEjxPhIX5GSlzzVYDR288k6YmGViWn9kOYSUzbUNdRdPOEloAkg
+   4sI+dVxSnrFpOlEeZL3AIEBWU9+U/5D8KEnl70lC0lu99yJE8l51s52fo
+   CPiNS23x5wvesLIWB92sD0eLuuO9147Bzb8jEUtfp1wHDyMccBMXCOzej
+   6znZOrka5IuPoJkwWG2aQqIs5CtJ7sMJX5MZWVsV+g5Vrg8GfR4VTQdQ/
+   eRbZkcsBGayJ51XCWUtlEzTGaCpkwfUTSIGf/U+OhjPzprQy1R+EHpwyW
+   FCmiWf/H68Zf59U5mgQwWz3EEzUgM94qIEcPh0YBx8OAH91Imgy3ul1at
+   A==;
+X-IronPort-AV: E=Sophos;i="5.98,265,1673910000"; 
+   d="scan'208";a="29738028"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 16 Mar 2023 13:36:16 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Thu, 16 Mar 2023 13:36:16 +0100
+X-PGP-Universal: processed;
+	by tq-pgp-pr1.tq-net.de on Thu, 16 Mar 2023 13:36:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1678970176; x=1710506176;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=srkpdC+yB+EdyLTj0WhGzLGs6EFRQ5wKwgJvE5nC0hQ=;
+  b=KFvm+kL7CHuuM5/eAedvnG/nJcC2LiZLSDpCSK88WRZsbyOx7zzCGCW5
+   BAQ4la6/E2QWkMSkXLgttnUCGcEL489cIHHw4Rm7a2ZOWumY+HVC5xlM5
+   MRBWc1QyHNCJioC0e8O675RiD5IKWZD0B3PxLo3sKzab2gnZtzvoouRz/
+   cnUa2y7sR1LcMBeokficFCpBoDqRN48YRXPJcPAPZtxewbSeRR0IevjFh
+   YPnwFZMwaVvzXjqPPOTuriMF8Qb7STRzd/KAlJ8MvkYvLb0uxnumhU7DM
+   ap2Iuwnv3UbBfNA5sPCrnFa+frhtfRGx5O7hMKMrBaAZ4FGfEonNbB0ly
+   g==;
+X-IronPort-AV: E=Sophos;i="5.98,265,1673910000"; 
+   d="scan'208";a="29738026"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 16 Mar 2023 13:36:16 +0100
+Received: from steina-w.tq-net.de (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 50D81280056;
+	Thu, 16 Mar 2023 13:36:16 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH 1/2] ASoC: fsl: define a common DRIVER_NAME
+Date: Thu, 16 Mar 2023 13:36:10 +0100
+Message-Id: <20230316123611.3495597-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,28 +94,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Hi,
->
-> This series adds initial KVM selftests support for powerpc
-> (64-bit, BookS).
+Instead of copying the driver name manually, use a common define.
+No functional change.
 
-Awesome.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ sound/soc/fsl/fsl-asoc-card.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index cdfca9fd1eb0..e956abfd50f8 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -28,6 +28,8 @@
+ #include "../codecs/wm8994.h"
+ #include "../codecs/tlv320aic31xx.h"
  
-> It spans 3 maintainers but it does not really
-> affect arch/powerpc, and it is well contained in selftests
-> code, just touches some makefiles and a tiny bit headers so
-> conflicts should be unlikely and trivial.
->
-> I guess Paolo is the best point to merge these, if no comments
-> or objections?
++#define DRIVER_NAME "fsl-asoc-card"
++
+ #define CS427x_SYSCLK_MCLK 0
+ 
+ #define RX 0
+@@ -915,7 +917,7 @@ MODULE_DEVICE_TABLE(of, fsl_asoc_card_dt_ids);
+ static struct platform_driver fsl_asoc_card_driver = {
+ 	.probe = fsl_asoc_card_probe,
+ 	.driver = {
+-		.name = "fsl-asoc-card",
++		.name = DRIVER_NAME,
+ 		.pm = &snd_soc_pm_ops,
+ 		.of_match_table = fsl_asoc_card_dt_ids,
+ 	},
+@@ -924,5 +926,5 @@ module_platform_driver(fsl_asoc_card_driver);
+ 
+ MODULE_DESCRIPTION("Freescale Generic ASoC Sound Card driver with ASRC");
+ MODULE_AUTHOR("Nicolin Chen <nicoleotsuka@gmail.com>");
+-MODULE_ALIAS("platform:fsl-asoc-card");
++MODULE_ALIAS("platform:" DRIVER_NAME);
+ MODULE_LICENSE("GPL");
+-- 
+2.34.1
 
-Yeah. If it helps:
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
