@@ -2,74 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6496BDD41
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 00:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8FD6BDD5D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 01:07:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pd44g0479z3cf1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 10:59:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pd4Ft4dRWz3f4D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 11:07:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=H9aXq6XW;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vrFmJJMH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o41p3n4g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=H9aXq6XW;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vrFmJJMH;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pchqg0z84z3c34
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Mar 2023 20:32:14 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pd4Dx3PbZz3bgT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 11:06:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o41p3n4g;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E58EF21852;
-	Thu, 16 Mar 2023 09:32:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1678959130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LgQ6KC2ybaQuhcxvNbj5yWV84Hdg07Eok3qBPbbxY94=;
-	b=H9aXq6XWzgXy3V6gUMaMgKEQOC4u2wwCwuM31XT6epw3vcSavDTpG7v1DmpLitT3aAzvrb
-	Uij7YtTtCMzKsnoVFyM4P36fE8radT/BVqUmJO5oz33vf5WRPcRwuHN+AiCd+tOxzXuyQp
-	7HO6F55yqLXCARRi8VELwLEQafIfemA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1678959130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LgQ6KC2ybaQuhcxvNbj5yWV84Hdg07Eok3qBPbbxY94=;
-	b=vrFmJJMHnJyGAG4vQo3kBbAm10wkR+7Kjjsf57BxURiziFHRuM5x12k5OToJ7bvAHK8XWM
-	BGwhhqI50dx0VBCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DE806133E0;
-	Thu, 16 Mar 2023 09:32:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 9o+MNRjiEmRkRAAAMHmgww
-	(envelope-from <tiwai@suse.de>); Thu, 16 Mar 2023 09:32:08 +0000
-Date: Thu, 16 Mar 2023 10:32:08 +0100
-Message-ID: <87ttylhwiv.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 000/173] ALSA/ASoC: Convert to platform remove callback returning void
-In-Reply-To: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
-References: <20230315150745.67084-1-u.kleine-koenig@pengutronix.de>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 17 Mar 2023 10:59:01 +1100
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pd4Dm6VRWz4x1d;
+	Fri, 17 Mar 2023 11:06:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1679011613;
+	bh=FemQ0r+ZrnNoov3LxFCLx/ucheRNYuW9mVDhtcSxxkw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=o41p3n4gHlMH1a6O9sa4u2HDueAdy5L+DmaZHS1IwqrwxoPhT13FQBLodLJzHVVqc
+	 qhOP51lQcsVmk73MKlketjZpGz7XjFL++bNbE47gggZVtv//t1eODaSXr5NUL9SdpK
+	 yZifaVcAy9OHTjk5ey2hiEsPy5izdTkldv/T7ENsboOJ3eTlCa1hLIAOEAs2EILUvL
+	 voHBq1QiquJC1G7brtNvVtb6SQtDp6M4mM5EGJUOOEbAwD1I+2BYEAji3ZgkuJJ7au
+	 xgv+jVNKOziNoQzSnfSiEs7Apr29/bAHZqThZfq0J1UrTgdxaMlX2SuArCznJ2kxjX
+	 EfMz7D1FTU+xQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ira Weiny <ira.weiny@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dave
+ Hansen <dave.hansen@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H.
+ Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH 0/3] COVER: Remove memcpy_page_flushcache()
+In-Reply-To: <641340e2998b4_2695182944f@iweiny-mobl.notmuch>
+References: <20221230-kmap-x86-v1-0-15f1ecccab50@intel.com>
+ <3523ddf9-03f5-3179-9f39-cec09f79aa97@intel.com>
+ <64126d113d163_2595222942@iweiny-mobl.notmuch>
+ <87lejxmax8.fsf@mpe.ellerman.id.au>
+ <641340e2998b4_2695182944f@iweiny-mobl.notmuch>
+Date: Fri, 17 Mar 2023 11:06:44 +1100
+Message-ID: <87fsa4meaz.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,48 +67,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiko Stuebner <heiko@sntech.de>, Xiubo Li <Xiubo.Lee@gmail.com>, Moises Cardona <moisesmcardona@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Liam Girdwood <liam.r.girdwood@linux.intel.com>, Muralidhar Reddy <muralidhar.reddy@intel.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Gongjun Song <gongjun.song@intel.com>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Samuel Holland <samuel@sholland.org>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, NXP Linux Team <linux-imx@nxp.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Martin =?ISO-8859-2?Q?Povi=B9er?= <povik+lin@cutebit.org>, Linus Walleij <linus.walleij@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>, Nicholas Piggin <npiggin@gmail.com>, James Schulman <james.schulman@cirrus.com>, syed saba kareem <syed.sabakareem@amd.com>, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
- Allison Randal <allison@lohutok.net>, Scott Branden <sbranden@broadcom.com>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Qilong <zhangqilong3@huawei.com>, linux-stm32@st-md-mailman.stormreply.com, Shang XiaoJing <shangxiaojing@huawei.com>, Masami Hiramatsu <mhiramat@kernel.org>, kernel@pengutronix.de, Li Chen <lchen@ambarella.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Jarkko Nikula <jarkko.nikula@bitmer.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Lucas Tanure <tanureal@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Max Filippov <jcmvbkbc@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Mario Limonciello <mario.limonciello@amd.com>, Liang He <windhl@126.com>, Ban Tao <fengzheng923@gmail.com>, Hezi Shahmoon <hezi@marvell.com>, Chunyan Zhang <zhang.lyra@gmail.com>, YueHaibing <yuehaibing@huawei.com>, Pierre-Louis Bossart <pierre-louis.bossar
- t@linux.intel.com>, Minghao Chi <chi.minghao@zte.com.cn>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, Vijendar Mukunda <Vijendar.Mukunda@amd.com>, Jerome Brunet <jbrunet@baylibre.com>, Colin Ian King <colin.i.king@gmail.com>, linux-xtensa@linux-xtensa.org, Charles Keepax <ckeepax@opensource.cirrus.com>, Aidan MacDonald <aidanmacdonald.0x0@gmail.com>, alsa-devel@alsa-project.org, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Haojian Zhuang <haojian.zhuang@gmail.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Meng Tang <tangmeng@uniontech.com>, Banajit Goswami <bgoswami@quicinc.com>, Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?= <amadeuszx.slawinski@linux.intel.com>, linux-mediatek@lists.infradead.org, linux-sunxi@lists.linux.dev, Cezary Rojewski <c
- ezary.rojewski@intel.com>, Dan Carpenter <error27@gmail.com>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Sameer Pujar <spujar@nvidia.com>, Li kunyu <kunyu@nfschina.com>, Miaoqian Lin <linmq006@gmail.com>, Michal Simek <michal.simek@xilinx.com>, linux-tegra@vger.kernel.org, Neta Zur Hershkovits <neta@marvell.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Marcin Wojtas <mw@semihalf.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Kevin Hilman <khilman@baylibre.com>, Yang Yingliang <yangyingliang@huawei.com>, Orson Zhai <orsonzhai@gmail.com>, Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrey Turkin <andrey.turkin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Ray Jui <rjui@broadcom.com>, Jiasheng Jiang <jiasheng@iscas.ac.cn>, Richard Fitzge
- rald <rf@opensource.cirrus.com>, Mark Brown <broonie@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, Shuming Fan <shumingf@realtek.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Mohan Kumar <mkumard@nvidia.com>, Zhen Ni <nizhen@uniontech.com>, Liam Girdwood <lgirdwood@gmail.com>, Takashi Sakamoto <o-takashi@sakamocchi.jp>, Linh Phung <linh.phung.jy@renesas.com>, asahi@lists.linux.dev, Akihiko Odaki <akihiko.odaki@gmail.com>, Ricardo Ribalda <ribalda@chromium.org>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, Peter Rosin <peda@axentia.se>, Lior Amsalem <alior@marvell.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com>, Robert Jarzmik <robert.jarzmik@free.fr>, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Zhu Ning <zhuning0077@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, Trevor 
- Wu <trevor.wu@mediatek.com>, Yong Zhi <yong.zhi@intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Hans de Goede <hdegoede@redhat.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Fabio Estevam <festevam@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Mikhail Rudenko <mike.rudenko@gmail.com>, patches@opensource.cirrus.com, Takashi Iwai <tiwai@suse.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linuxppc-dev@lists.ozlabs.org, Daniel Mack <daniel@zonque.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org, Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Mar 2023 16:04:52 +0100,
-Uwe Kleine-König wrote:
-> 
-> Hello,
-> 
-> this series adapts the platform drivers below sound/ to use the .remove_new()
-> callback. Compared to the traditional .remove() callback .remove_new() returns
-> no value. This is a good thing because the driver core doesn't (and cannot)
-> cope for errors during remove. The only effect of a non-zero return value in
-> .remove() is that the driver core emits a warning. The device is removed anyhow
-> and an early return from .remove() usually yields a resource leak.
-> 
-> By changing the remove callback to return void driver authors cannot
-> reasonably assume any more that there is some kind of cleanup later.
-> 
-> The first two patches simplify a driver each to return zero unconditionally,
-> and then all drivers are trivially converted to .remove_new().
-> 
-> There are nearly no interdependencies in this patch set---only 1 <- 11 and
-> 2 <- 16. So even if some individual problems are found (I don't expect that),
-> the other patches can (and from my POV should) still be applied.
-> 
-> Best regards
-> Uwe
-> 
-> Uwe Kleine-König (173):
-(snip)
+Ira Weiny <ira.weiny@intel.com> writes:
+> + Konstantin
+>
+> Michael Ellerman wrote:
+>> Ira Weiny <ira.weiny@intel.com> writes:
+>> > Dave Hansen wrote:
+>> >> On 3/15/23 16:20, Ira Weiny wrote:
+>> >> > Commit 21b56c847753 ("iov_iter: get rid of separate bvec and xarray 
+>> >> > callbacks") removed the calls to memcpy_page_flushcache().
+>> >> > 
+>> >> > kmap_atomic() is deprecated and used in the x86 version of
+>> >> > memcpy_page_flushcache().
+>> >> > 
+>> >> > Remove the unnecessary memcpy_page_flushcache() call from all arch's.
+>> >> 
+>> >> Hi Ira,
+>> >> 
+>> >> Since the common code user is already gone these three patches seem
+>> >> quite independent.  It seems like the right thing to do is have
+>> >> individual arch maintainers cherry pick their arch patch and carry it
+>> >> independently.
+>> >
+>> > Yes.
+>> >
+>> >> 
+>> >> Is there a compelling reason to have someone pick up and carry these all
+>> >> together that I'm missing?
+>> >
+>> > No reason.  Would you like me to submit them individually?
+>> 
+>> I'll just grab the powerpc one from the thread, no need to resend.
+>
+> Thanks.
+>
+>> 
+>> > Sorry, submitting them separately crossed my mind when I wrote them but I
+>> > kind of forgot as they were all on the same branch and I was waiting for
+>> > after the merge window to submit them.
+>> 
+>> It's also much easier to run git-send-email HEAD^^^, rather than running
+>> it three separate times, let alone if it's a 20 patch series.
+>
+> Exactly.  And I'm using b4 which would have forced me to create a separate
+> branch for each of the patches to track.  So I was keeping them around in
+> a single branch to let 0day run after the merge window.  Then I forgot
+> about the idea of splitting them because b4 had it all packaged up nice!
+>
+>> 
+>> I wonder if we could come up with some convention to indicate that a
+>> series is made up of independent patches, and maintainers are free to
+>> pick them individually - but still sent as a single series.
+>
+> Maybe.  But perhaps b4 could have a send option which would split them
+> out?  I'll see about adding an option to b4 but I've Cc'ed Konstantin as
+> well for the idea.
 
-For the whole series,
+Yes you're right that's probably a better idea. b4 to the rescue!
 
-Acked-by: Takashi Iwai <tiwai@suse.de>
-
-
-thanks,
-
-Takashi
+cheers
