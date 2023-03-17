@@ -2,59 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735B56BEFE8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 18:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9DA6BF02A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 18:52:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PdWbb25Yyz3f4X
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Mar 2023 04:39:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PdWt30jkGz3f4K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Mar 2023 04:52:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kFNDvXlU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=at5KvBs/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=grundler@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kFNDvXlU;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=at5KvBs/;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PdWZh6DTJz3bgk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Mar 2023 04:38:52 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9235860E03;
-	Fri, 17 Mar 2023 17:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 06754C433EF;
-	Fri, 17 Mar 2023 17:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679074729;
-	bh=/GK69WOmeFghWy5LWrJHJwnxaWh9cZwuMfkbrUepWxw=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=kFNDvXlU5VtbHAfyLcWMmu+jmc8mJdnKFszhLncZZIXSyxHvXaTmFKP3DU3J/HSkb
-	 LeMfyy9PJ0WUE5Mt3OlVYjZCR03Ggo1pBqL9nmqtTftIwo9tlAlQtkkRkxMkatYvZG
-	 jghOY3hGjRKf2pDLh8/ZUUKOiqefMWi3bouhNZJbsbYx/fFfO8iv2LO7WbzvZO2PZt
-	 Gt1pBTOtAsivYBaXXldWmlz3JvHGps2Glbm7DCJAQ2D0MZT0V+shLjvkAHpE2YTXjQ
-	 nhoQ6VQ3HgulMKWFjLWDqs3Cw4ZBLM8y5XJd0G9oqqvFqmud9gb1xjpIuDPiJPZp8u
-	 jgaOsZJOS60gw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EA26BE66CBF;
-	Fri, 17 Mar 2023 17:38:48 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.3-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87cz58m54s.fsf@mpe.ellerman.id.au>
-References: <87cz58m54s.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87cz58m54s.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.3-3
-X-PR-Tracked-Commit-Id: f2c7e3562b4c4f1699acc1538ebf3e75f5cced35
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 17adaeaed05b879964b1a72e4db87ebf3b2a38ba
-Message-Id: <167907472895.9394.3576308926534908749.pr-tracker-bot@kernel.org>
-Date: Fri, 17 Mar 2023 17:38:48 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PdWs46DmCz3chZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Mar 2023 04:51:18 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id h14so3152047pgj.7
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 10:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1679075475;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=43JEK5+W42TYEVE1MBp+nwf6FlyScDxxoIeOAiKETT4=;
+        b=at5KvBs/SsIFLhrCajDj+2ic58nt7EptrKDtknXhQyBiYh/rAUI3ogSmrYqt6r3Gzn
+         bHrDDY5UIhKRqNAowpUUTxn0EYu+FC9AqeqqAFiQKIDeAas23IEFiA67dTSaXCdSBU9l
+         ItdKt7AaQIyuqKDwisBPlp2zCArEIOipSriZA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679075475;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=43JEK5+W42TYEVE1MBp+nwf6FlyScDxxoIeOAiKETT4=;
+        b=JoxQrZf5EMvhW+uThJlaCv4Z9R/yZl1TuPjkbGguIZnu1LrUbOYMieypAL4hKobN3f
+         3xadt+N/ymTGv9V7JMrTWcaY99onmQGj8YNQcQ+j61z+ZhjpzAOXZ3azjrLoR30oxkDT
+         IuOUis6Ptxoc2tqPnn0SaqPcownvzDvIIztWmcdLaQVrXca9vu9SoqL2F3QaSHs/Ewzw
+         BOt3QBbu+fSLLJRDcSEy5NsYFaPEs18N8pU8XvfQX096gEF7ZIOTzYyFwRIOXZir5TGt
+         H6cXU6OeF5EPBpSzPovHEtb0jDdr1xmYysqUYt13PBgdVPsleWz6rSil13M10TV6oSuL
+         dWpw==
+X-Gm-Message-State: AO0yUKUzzW2+0+9YRV7XXB2eZyMrrNb4llAfRDEYsunWa8jO63duKKwf
+	yq1IU82JLtD6C2R7SQDPtu6MvA==
+X-Google-Smtp-Source: AK7set/sYgh4Viredkz8vxjuTOp+i2zpVLHfDM0VoUKo3EbkAWqX4wGgB33MW0KiGOp4ARCopur8Ew==
+X-Received: by 2002:a62:6105:0:b0:626:237c:bcfe with SMTP id v5-20020a626105000000b00626237cbcfemr3032153pfb.8.1679075475442;
+        Fri, 17 Mar 2023 10:51:15 -0700 (PDT)
+Received: from grundler-glapstation.lan ([70.134.62.80])
+        by smtp.gmail.com with ESMTPSA id q20-20020a62e114000000b0061949fe3beasm1848113pfh.22.2023.03.17.10.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Mar 2023 10:51:15 -0700 (PDT)
+From: Grant Grundler <grundler@chromium.org>
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O \ 'Halloran" <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCHv2 pci-next 1/2] PCI/AER: correctable error message as KERN_INFO
+Date: Fri, 17 Mar 2023 10:51:08 -0700
+Message-Id: <20230317175109.3859943-1-grundler@chromium.org>
+X-Mailer: git-send-email 2.40.0.rc1.284.g88254d51c5-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +74,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, rdunlap@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, ruscur@russell.cc
+Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Fri, 17 Mar 2023 14:24:51 +1100:
+Since correctable errors have been corrected (and counted), the dmesg output
+should not be reported as a warning, but rather as "informational".
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.3-3
+Otherwise, using a certain well known vendor's PCIe parts in a USB4 docking
+station, the dmesg buffer can be spammed with correctable errors, 717 bytes
+per instance, potentially many MB per day.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/17adaeaed05b879964b1a72e4db87ebf3b2a38ba
+Given the "WARN" priority, these messages have already confused the typical
+user that stumbles across them, support staff (triaging feedback reports),
+and more than a few linux kernel devs. Changing to INFO will hide these
+messages from most audiences.
 
-Thank you!
+Signed-off-by: Grant Grundler <grundler@chromium.org>
+---
+ drivers/pci/pcie/aer.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index f6c24ded134c..cb6b96233967 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -687,23 +687,29 @@ static void __aer_print_error(struct pci_dev *dev,
+ {
+ 	const char **strings;
+ 	unsigned long status = info->status & ~info->mask;
+-	const char *level, *errmsg;
+ 	int i;
+ 
+ 	if (info->severity == AER_CORRECTABLE) {
+ 		strings = aer_correctable_error_string;
+-		level = KERN_WARNING;
++		pci_info(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n",
++			info->status, info->mask);
+ 	} else {
+ 		strings = aer_uncorrectable_error_string;
+-		level = KERN_ERR;
++		pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n",
++			info->status, info->mask);
+ 	}
+ 
+ 	for_each_set_bit(i, &status, 32) {
+-		errmsg = strings[i];
++		const char *errmsg = strings[i];
++
+ 		if (!errmsg)
+ 			errmsg = "Unknown Error Bit";
+ 
+-		pci_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
++		if (info->severity == AER_CORRECTABLE)
++			pci_info(dev, "   [%2d] %-22s%s\n", i, errmsg,
++				info->first_error == i ? " (First)" : "");
++		else
++			pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+ 				info->first_error == i ? " (First)" : "");
+ 	}
+ 	pci_dev_aer_stats_incr(dev, info);
+@@ -724,7 +730,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+ 	agent = AER_GET_AGENT(info->severity, info->status);
+ 
+-	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
++	level = (info->severity == AER_CORRECTABLE) ? KERN_INFO : KERN_ERR;
+ 
+ 	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+ 		   aer_error_severity_string[info->severity],
+@@ -797,14 +803,17 @@ void cper_print_aer(struct pci_dev *dev, int aer_severity,
+ 	info.mask = mask;
+ 	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
+ 
+-	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
+ 	__aer_print_error(dev, &info);
+-	pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
+-		aer_error_layer[layer], aer_agent_string[agent]);
+ 
+-	if (aer_severity != AER_CORRECTABLE)
++	if (aer_severity == AER_CORRECTABLE) {
++		pci_info(dev, "aer_layer=%s, aer_agent=%s\n",
++			aer_error_layer[layer], aer_agent_string[agent]);
++	} else {
++		pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
++			aer_error_layer[layer], aer_agent_string[agent]);
+ 		pci_err(dev, "aer_uncor_severity: 0x%08x\n",
+ 			aer->uncor_severity);
++	}
+ 
+ 	if (tlp_header_valid)
+ 		__print_tlp_header(dev, &aer->header_log);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.40.0.rc1.284.g88254d51c5-goog
+
