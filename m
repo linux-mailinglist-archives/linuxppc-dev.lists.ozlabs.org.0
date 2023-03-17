@@ -1,60 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0E16BDF27
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 04:05:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F1B6BDF40
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 04:07:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pd8Br37FGz3f3y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 14:05:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pd8Dl5qr0z3chk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 14:07:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WYU5MOQQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZWWRNbp9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WYU5MOQQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZWWRNbp9;
 	dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pd89s6C9Vz3bjw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 14:04:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pd8Cq5D52z2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 14:06:15 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679022274; x=1710558274;
+  t=1679022375; x=1710558375;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=Hho8rjmHcKD6XQzfJ3VxyTdsXudFqJTHrW2uxm1/Bj4=;
-  b=WYU5MOQQA7qZYJ8r5yMShpdKVugPgpTaMM/Rvx1Ba4+zMnfb9gT4a/KA
-   Ufo2IH7nOTSeD33ofq7UfITJfFwBNgpZKFTzcinBnP3whZn5T5c0QqAjM
-   YSGXuBgEspxPmdfZitkRvCO6tmQLdWVVHIuVjoGvYpWAX/9jXMUyybewr
-   dBzYrw8f004IApE7Ir8/cPag2iZ2nzDT/EqMbJHlhW8CqKzwaGV4L//dd
-   XmpVB5iAI4ytRG69d6xI2r9kPay/hvFEnAtRLQo/eCEygQZFRlOuP1x78
-   Tlop/p9hTIaimkoKpWNDI/TvWx6Obji+6k3HTsEZsCQj5L4myqZ+KL6mI
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="335658985"
+  bh=zq6ADZ84qnOGYul7FkW92gqgPgKrP3nVpRH1OTTTZAY=;
+  b=ZWWRNbp9KNc8nGwwEuXNbLOAsqBoOCahhf6fTfVnLbuNQBKpSu1aOqBS
+   ++WtLngc4N+IE1nRsoYtH92o4xnoMVeX26GH6LtkCpohKoau6sAC3POOv
+   9HprTPPP3CkdPJeCGwMv+aJ0pORK4/NLKoFODbjIow4C8xnLFNy4p8F3W
+   r+81HH/KV8xrY/VV750qeCAgZEFzKJbDql0+tyoslt0qLuFTb/JMIHepb
+   x+S2hDz1+Kla6F2jS/vgJQ3BwEqNSrZ5FcjFakfD9WjmkvgI5RJgCBCm1
+   yQ3ZlKfyXadabWZtuJZdZWul6lxOJ/JUfCZRtdKSnMmcUGBta25v5yDwo
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="339710447"
 X-IronPort-AV: E=Sophos;i="5.98,267,1673942400"; 
-   d="scan'208";a="335658985"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 20:03:54 -0700
+   d="scan'208";a="339710447"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 20:04:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="769198998"
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="673405978"
 X-IronPort-AV: E=Sophos;i="5.98,267,1673942400"; 
-   d="scan'208";a="769198998"
+   d="scan'208";a="673405978"
 Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 16 Mar 2023 20:03:53 -0700
+  by orsmga007.jf.intel.com with ESMTP; 16 Mar 2023 20:04:53 -0700
 Received: from kbuild by b613635ddfff with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1pd0Nk-00091O-2B;
-	Fri, 17 Mar 2023 03:03:52 +0000
-Date: Fri, 17 Mar 2023 11:03:49 +0800
+	id 1pd0Oi-00091k-2j;
+	Fri, 17 Mar 2023 03:04:52 +0000
+Date: Fri, 17 Mar 2023 11:03:58 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 3c1d9f36e985af84b9ba31b850d683c81ae96e8d
-Message-ID: <6413d895.agsIAkcEkCupFvD5%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ e760955c9f285eb8fec0d83ae001fae7714e5121
+Message-ID: <6413d89e.nmRavGWQBsyXhRY+%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,8 +74,8 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 3c1d9f36e985af84b9ba31b850d683c81ae96e8d  powerpc: Simplify sysctl registration for nmi_wd_lpm_factor_ctl_table
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: e760955c9f285eb8fec0d83ae001fae7714e5121  powerpc: Remove memcpy_page_flushcache()
 
 elapsed time: 732m
 
