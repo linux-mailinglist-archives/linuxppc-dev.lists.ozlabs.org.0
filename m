@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F9F6BE985
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 13:42:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CA46BE988
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 13:43:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PdP0H5HSYz3f5Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 23:42:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PdP1S21m3z3fCj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Mar 2023 23:43:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NfGn0gSV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CTc43NnK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NfGn0gSV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CTc43NnK;
 	dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PdNtH2WVCz3cd8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 23:36:55 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id k2so5133650pll.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 05:36:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PdNtN09Ztz3f3q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 23:36:59 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id y2so4938679pjg.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Mar 2023 05:36:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679056615;
+        d=gmail.com; s=20210112; t=1679056618;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q5GaYgdhktF8TYNBWSQyuRZrMerFrhgeB6K29Y/bo4c=;
-        b=NfGn0gSVQIIK7W/MvVQvB0ERfmSTuqBskqiWyfFiuGnSQfeK/xvnUOCul1CBSDKRyl
-         klzj3bbuufpgfpm6Hs9G7jk5lOjIO/fOuvxns4rnITqIbCYhgXXs2p9M5dYzcZqOF+9t
-         XKStNdpx14/jJfqEstq+luT1nFHPTdJwcQlVRrpGIWyO15Khn2LHz0zepyQOtieZ2n0J
-         CN74IvNFPo3LksPAgcUo0znFuXeHLDOGxijw8zwlh99VJCkdafDCDkWnhAeMbUKD5HCL
-         Du7Fl1FiF08v304U3Pp9PqhDKXK/pnWVw4fr6srsT20IJ1ctQfcIPLrsXQF6bJjywIA1
-         /hKg==
+        bh=rnlFwsBqmpRmF2UIJI7+HJpv77h1Cu+aYPp5qdoB/DM=;
+        b=CTc43NnKkrb5KMC7HsrEXEZLG76a3Do0la8POD5xoQc29NzAp8AQhREaStOZvOdPL8
+         6DVI+jUid0Mdggs3W2OAr1ED3OLSaad8fUI5qBVICvI3Cv58c/mVBXxS0b5Utod5jnKO
+         cKCYI7zBkJqY+JKSc/5WH23mAPLkSM7QO/5SRQNq7Pfu7cXlO6YYbdyPniGpz11skQ7h
+         zRoxl/0+5JXUKbjA3GrBcCoXdqzGLNCcAUNqrpLZnPK74XxYDCoCkWiXJlRIgq4foeBW
+         IMfpOdRrijmNR+W6vOT434BIzVmDPyZq3tgbHvYxO6PdEWkv8dSZL7uF7aKbrwnSo9iw
+         TKjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679056615;
+        d=1e100.net; s=20210112; t=1679056618;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q5GaYgdhktF8TYNBWSQyuRZrMerFrhgeB6K29Y/bo4c=;
-        b=qealzG22qRD4B8pmL8jpoV2MbuXvvpDcNrwtm0NbSNtyBA8wVhclI/1X4C4hA8u4L8
-         fdnwR+Tlev50c9k3KDgQ5+hD0F9BHc50Ig8a+MUxrO/DyRdq5dpfaKchQtBSBbDneOeZ
-         grlDBG06uZMvfChLFy6UPGM7aUk5NIWFRFo1QZ7rGhQn+wW86k2HrtoaWSICmWTt84kO
-         fuHR+oodgIPyOHCdOxchdhMTlZVnZK/wQZWmY7hxAaidWQ7M7qXZfCI/yJ95stoG4e9s
-         kD18t7PmU7Bt2Zb4syrgAJ2D50yIjmv3gtXhA9MYA2WE8+SlJKYtOWTaX4wgSXrVDKMo
-         3CNw==
-X-Gm-Message-State: AO0yUKWJu2E73rwJ5pVRC4wYaKitCaFI3hQTD8Z4j/39Baop4ygRJNBt
-	UX3SqPUVnYbEIuyqVOmoxKM=
-X-Google-Smtp-Source: AK7set/7hpdUMBIg9Dlq45A7buY5yeTNA4aE2OXrHG/ErUrAhwf4QzdXJ0aU4Xz+wBIkJ5jrrjD3Bw==
-X-Received: by 2002:a17:90b:1d06:b0:230:af67:b847 with SMTP id on6-20020a17090b1d0600b00230af67b847mr8309543pjb.31.1679056614724;
-        Fri, 17 Mar 2023 05:36:54 -0700 (PDT)
+        bh=rnlFwsBqmpRmF2UIJI7+HJpv77h1Cu+aYPp5qdoB/DM=;
+        b=nRe8fKuZTqPAOexIYk15WwckzGDY7mZpfaWx2cifFPJhojeimsWwyiAC2MSKgABlUd
+         rMWhlI8hv6QZ5YfzZjwYrFAEEhp5H/ow7j4LZ5oSHd/D0ZQBoWMaoHbek6IkwwIfP62f
+         hDo3WKBuB0zKI6u22HtySB++Czb1v+KAjmcTiw8m3eUuhgkvC4GCyQTgY9JO80NR84fr
+         1/9QBKBGnz6gRtlkAcsbj1GaLylRMCd6NcAU04ifE/Jtfj5Kclrs6XzgTtUhX3/BTGfr
+         kL3oqYMJ0hUr+U2rD33Omg5BquaDBdoYtrRuL0tjTLYG4pC9W2jZ3z5ziFRgV70zlumB
+         ncUA==
+X-Gm-Message-State: AO0yUKVbv18nctoWGOVEjRi73NE3Abju7AhfnWDElYn5oML/WNQ/Yr60
+	+H6bRndybVJ67IR4MEzLt5k=
+X-Google-Smtp-Source: AK7set8siPI5N9JOwn9bcCm1VrgcgZM1WtkEV7BuX0YYjBBpdCsdUefgBS32TSMhso6MTUlfuwkDXg==
+X-Received: by 2002:a17:902:ce81:b0:1a0:7602:589e with SMTP id f1-20020a170902ce8100b001a07602589emr9144173plg.40.1679056617849;
+        Fri, 17 Mar 2023 05:36:57 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id u4-20020a170902b28400b001a19d4592e1sm1430990plr.282.2023.03.17.05.36.51
+        by smtp.gmail.com with ESMTPSA id u4-20020a170902b28400b001a19d4592e1sm1430990plr.282.2023.03.17.05.36.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Mar 2023 05:36:54 -0700 (PDT)
+        Fri, 17 Mar 2023 05:36:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH 6/7] powerpc/sprs: Specify SPRs with data rather than code
-Date: Fri, 17 Mar 2023 22:36:13 +1000
-Message-Id: <20230317123614.3687163-6-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 7/7] powerpc/spapr_vpa: Add basic VPA tests
+Date: Fri, 17 Mar 2023 22:36:14 +1000
+Message-Id: <20230317123614.3687163-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230317123614.3687163-1-npiggin@gmail.com>
 References: <20230317123614.3687163-1-npiggin@gmail.com>
@@ -82,685 +82,224 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A significant rework that builds an array of 'struct spr', where each
-element describes an SPR. This makes various metadata about the SPR
-like name and access type easier to carry and use.
-
-Hypervisor privileged registers are described despite not being used
-at the moment for completeness, but also the code might one day be
-reused for a hypervisor-privileged test.
+The VPA is a(n optional) memory structure shared between the hypervisor
+and operating system, defined by PAPR. This test defines the structure
+and adds registration, deregistration, and a few simple sanity tests.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-This ended up a little over-engineered perhaps, but there are lots of
-SPRs, lots of access types, lots of changes between processor and ISA
-versions, and lots of places they are implemented and used, so lots of
-room for mistakes. There is not a good system in place to easily
-see that userspace, supervisor, etc., switches perform all the right
-SPR context switching so this is a nice test case to have.
+ lib/linux/compiler.h    |  2 +
+ lib/powerpc/asm/hcall.h |  1 +
+ lib/ppc64/asm/vpa.h     | 62 ++++++++++++++++++++++++++++
+ powerpc/Makefile.ppc64  |  2 +-
+ powerpc/spapr_vpa.c     | 90 +++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 156 insertions(+), 1 deletion(-)
+ create mode 100644 lib/ppc64/asm/vpa.h
+ create mode 100644 powerpc/spapr_vpa.c
 
-The sprs test quickly caught a few QEMU TCG SPR bugs which really
-demonstrates its value and motivated me to improve the SPR coverage
-a little.
-
-Thanks,
-Nick
----
- powerpc/sprs.c | 586 +++++++++++++++++++++++++++++++++----------------
- 1 file changed, 391 insertions(+), 195 deletions(-)
-
-diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-index b633ea8..257903a 100644
---- a/powerpc/sprs.c
-+++ b/powerpc/sprs.c
-@@ -82,231 +82,404 @@ static void mtspr(unsigned spr, uint64_t val)
- 	: "lr", "ctr", "xer");
- }
+diff --git a/lib/linux/compiler.h b/lib/linux/compiler.h
+index 6f565e4..c9d205e 100644
+--- a/lib/linux/compiler.h
++++ b/lib/linux/compiler.h
+@@ -45,7 +45,9 @@
  
--uint64_t before[1024], after[1024];
-+static uint64_t before[1024], after[1024];
+ #define barrier()	asm volatile("" : : : "memory")
  
--/* Common SPRs for all PowerPC CPUs */
--static void set_sprs_common(uint64_t val)
--{
--	// mtspr(9, val);	/* CTR */ /* Used by mfspr/mtspr */
--	// mtspr(273, val);	/* SPRG1 */  /* Used by our exception handler */
--	mtspr(274, val);	/* SPRG2 */
--	mtspr(275, val);	/* SPRG3 */
--}
-+#define SPR_PR_READ	0x0001
-+#define SPR_PR_WRITE	0x0002
-+#define SPR_OS_READ	0x0010
-+#define SPR_OS_WRITE	0x0020
-+#define SPR_HV_READ	0x0100
-+#define SPR_HV_WRITE	0x0200
++#ifndef __always_inline
+ #define __always_inline	inline __attribute__((always_inline))
++#endif
+ #define noinline __attribute__((noinline))
+ #define __unused __attribute__((__unused__))
+ 
+diff --git a/lib/powerpc/asm/hcall.h b/lib/powerpc/asm/hcall.h
+index 1173fea..e0f5009 100644
+--- a/lib/powerpc/asm/hcall.h
++++ b/lib/powerpc/asm/hcall.h
+@@ -18,6 +18,7 @@
+ #define H_SET_SPRG0		0x24
+ #define H_SET_DABR		0x28
+ #define H_PAGE_INIT		0x2c
++#define H_REGISTER_VPA		0xDC
+ #define H_CEDE			0xE0
+ #define H_GET_TERM_CHAR		0x54
+ #define H_PUT_TERM_CHAR		0x58
+diff --git a/lib/ppc64/asm/vpa.h b/lib/ppc64/asm/vpa.h
+new file mode 100644
+index 0000000..11dde01
+--- /dev/null
++++ b/lib/ppc64/asm/vpa.h
+@@ -0,0 +1,62 @@
++#ifndef _ASMPOWERPC_VPA_H_
++#define _ASMPOWERPC_VPA_H_
++/*
++ * This work is licensed under the terms of the GNU LGPL, version 2.
++ */
 +
-+#define RW		0x333
-+#define RO		0x111
-+#define WO		0x222
-+#define OS_RW		0x330
-+#define OS_RO		0x110
-+#define OS_WO		0x220
-+#define HV_RW		0x300
-+#define HV_RO		0x100
-+#define HV_WO		0x200
++#ifndef __ASSEMBLY__
 +
-+#define SPR_ASYNC	0x1000	/* May be updated asynchronously */
-+#define SPR_INT		0x2000	/* May be updated by synchronous interrupt */
-+#define SPR_HARNESS	0x4000	/* Test harness uses the register */
-+
-+struct spr {
-+	const char	*name;
-+	uint8_t		width;
-+	uint16_t	access;
-+	uint16_t	type;
++struct vpa {
++	uint32_t	descriptor;
++	uint16_t	size;
++	uint8_t		reserved1[3];
++	uint8_t		status;
++	uint8_t		reserved2[14];
++	uint32_t	fru_node_id;
++	uint32_t	fru_proc_id;
++	uint8_t		reserved3[56];
++	uint8_t		vhpn_change_counters[8];
++	uint8_t		reserved4[80];
++	uint8_t		cede_latency;
++	uint8_t		maintain_ebb;
++	uint8_t		reserved5[6];
++	uint8_t		dtl_enable_mask;
++	uint8_t		dedicated_cpu_donate;
++	uint8_t		maintain_fpr;
++	uint8_t		maintain_pmc;
++	uint8_t		reserved6[28];
++	uint64_t	idle_estimate_purr;
++	uint8_t		reserved7[28];
++	uint16_t	maintain_nr_slb;
++	uint8_t		idle;
++	uint8_t		maintain_vmx;
++	uint32_t	vp_dispatch_count;
++	uint32_t	vp_dispatch_dispersion;
++	uint64_t	vp_fault_count;
++	uint64_t	vp_fault_tb;
++	uint64_t	purr_exprop_idle;
++	uint64_t	spurr_exprop_idle;
++	uint64_t	purr_exprop_busy;
++	uint64_t	spurr_exprop_busy;
++	uint64_t	purr_donate_idle;
++	uint64_t	spurr_donate_idle;
++	uint64_t	purr_donate_busy;
++	uint64_t	spurr_donate_busy;
++	uint64_t	vp_wait3_tb;
++	uint64_t	vp_wait2_tb;
++	uint64_t	vp_wait1_tb;
++	uint64_t	purr_exprop_adjunct_busy;
++	uint64_t	spurr_exprop_adjunct_busy;
++	uint32_t	supervisor_pagein_count;
++	uint8_t		reserved8[4];
++	uint64_t	purr_exprop_adjunct_idle;
++	uint64_t	spurr_exprop_adjunct_idle;
++	uint64_t	adjunct_insns_executed;
++	uint8_t		reserved9[120];
++	uint64_t	dtl_index;
++	uint8_t		reserved10[96];
 +};
 +
-+/* SPRs common denominator back to PowerPC Operating Environment Architecture */
-+static const struct spr sprs_common[1024] = {
-+  [1] = {"XER",		64,	RW,		SPR_HARNESS, }, /* Compiler */
-+  [8] = {"LR", 		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
-+  [9] = {"CTR",		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
-+ [18] = {"DSISR",	32,	OS_RW,		SPR_INT, },
-+ [19] = {"DAR",		64,	OS_RW,		SPR_INT, },
-+ [26] = {"SRR0",	64,	OS_RW,		SPR_INT, },
-+ [27] = {"SRR1",	64,	OS_RW,		SPR_INT, },
-+[268] = {"TB",		64,	RO	,	SPR_ASYNC, },
-+[269] = {"TBU",		32,	RO,		SPR_ASYNC, },
-+[272] = {"SPRG0",	64,	OS_RW,		SPR_HARNESS, }, /* Int stack */
-+[273] = {"SPRG1",	64,	OS_RW,		SPR_HARNESS, }, /* Scratch */
-+[274] = {"SPRG2",	64,	OS_RW, },
-+[275] = {"SPRG3",	64,	OS_RW, },
-+[287] = {"PVR",		32,	OS_RO, },
-+};
- 
- /* SPRs from PowerPC Operating Environment Architecture, Book III, Vers. 2.01 */
--static void set_sprs_book3s_201(uint64_t val)
--{
--	mtspr(18, val);		/* DSISR */
--	mtspr(19, val);		/* DAR */
--	mtspr(152, val);	/* CTRL */
--	mtspr(256, val);	/* VRSAVE */
--	mtspr(786, val);	/* MMCRA */
--	mtspr(795, val);	/* MMCR0 */
--	mtspr(798, val);	/* MMCR1 */
--}
-+static const struct spr sprs_201[1024] = {
-+ [22] = {"DEC",		32,	OS_RW,		SPR_ASYNC, },
-+ [25] = {"SDR1",	64,	HV_RW | OS_RO, },
-+ [29] = {"ACCR",	64,	OS_RW, },
-+[136] = {"CTRL",	32,	RO, },
-+[152] = {"CTRL",	32,	OS_WO, },
-+[259] = {"SPRG3",	64,	RO, },
-+/* ASR, EAR omitted */
-+[268] = {"TB",		64,	RO, },
-+[269] = {"TBU",		32,	RO, },
-+[284] = {"TBL",		32,	HV_WO, },
-+[285] = {"TBU",		32,	HV_WO, },
-+[310] = {"HDEC",	32,	HV_RW, },
-+[1013]= {"DABR",	64,	HV_RW | OS_RO, },
-+[1023]= {"PIR",		32,	OS_RO, },
-+};
++#endif /* __ASSEMBLY__ */
 +
-+static const struct spr sprs_970_pmu[1024] = {
-+/* POWER4+ PMU, should find PPC970 and confirm */
-+[770] = {"MMCRA",	64,	RO, },
-+[771] = {"PMC1",	32,	RO, },
-+[772] = {"PMC2",	32,	RO, },
-+[773] = {"PMC3",	32,	RO, },
-+[774] = {"PMC4",	32,	RO, },
-+[775] = {"PMC5",	32,	RO, },
-+[776] = {"PMC6",	32,	RO, },
-+[777] = {"PMC7",	32,	RO, },
-+[778] = {"PMC8",	32,	RO, },
-+[779] = {"MMCR0",	64,	RO, },
-+[780] = {"SIAR",	64,	RO, },
-+[781] = {"SDAR",	64,	RO, },
-+[782] = {"MMCR1",	64,	RO, },
-+[786] = {"MMCRA",	64,	OS_RW, },
-+[787] = {"PMC1",	32,	OS_RW, },
-+[788] = {"PMC2",	32,	OS_RW, },
-+[789] = {"PMC3",	32,	OS_RW, },
-+[790] = {"PMC4",	32,	OS_RW, },
-+[791] = {"PMC5",	32,	OS_RW, },
-+[792] = {"PMC6",	32,	OS_RW, },
-+[793] = {"PMC7",	32,	OS_RW, },
-+[794] = {"PMC8",	32,	OS_RW, },
-+[795] = {"MMCR0",	64,	OS_RW, },
-+[796] = {"SIAR",	64,	OS_RW, },
-+[797] = {"SDAR",	64,	OS_RW, },
-+[798] = {"MMCR1",	64,	OS_RW, },
-+};
++#endif /* _ASMPOWERPC_VPA_H_ */
+diff --git a/powerpc/Makefile.ppc64 b/powerpc/Makefile.ppc64
+index ea68447..b0ed2b1 100644
+--- a/powerpc/Makefile.ppc64
++++ b/powerpc/Makefile.ppc64
+@@ -19,7 +19,7 @@ reloc.o  = $(TEST_DIR)/reloc64.o
+ OBJDIRS += lib/ppc64
+ 
+ # ppc64 specific tests
+-tests =
++tests = $(TEST_DIR)/spapr_vpa.elf
+ 
+ include $(SRCDIR)/$(TEST_DIR)/Makefile.common
+ 
+diff --git a/powerpc/spapr_vpa.c b/powerpc/spapr_vpa.c
+new file mode 100644
+index 0000000..a5047f1
+--- /dev/null
++++ b/powerpc/spapr_vpa.c
+@@ -0,0 +1,90 @@
++/*
++ * Test sPAPR hypervisor calls (aka. h-calls)
++ *
++ * This work is licensed under the terms of the GNU LGPL, version 2.
++ */
++#include <libfdt/libfdt.h>
++#include <devicetree.h>
++#include <libcflat.h>
++#include <util.h>
++#include <alloc.h>
++#include <asm/processor.h>
++#include <asm/hcall.h>
++#include <asm/vpa.h>
++#include <asm/io.h> /* for endian accessors */
 +
-+/* These are common SPRs from 2.07S onward (POWER CPUs that support KVM HV) */
-+static const struct spr sprs_power_common[1024] = {
-+  [3] = {"DSCR",	64,	RW, },
-+ [13] = {"AMR",		64,	RW, },
-+ [17] = {"DSCR",	64,	OS_RW, },
-+ [28] = {"CFAR",	64,	OS_RW,		SPR_ASYNC, }, /* Effectively async */
-+ [29] = {"AMR",		64,	OS_RW, },
-+ [61] = {"IAMR",	64,	OS_RW, },
-+[136] = {"CTRL",	32,	RO, },
-+[152] = {"CTRL",	32,	OS_WO, },
-+[153] = {"FSCR",	64,	OS_RW, },
-+[157] = {"UAMOR",	64,	OS_RW, },
-+[159] = {"PSPB",	32,	OS_RW, },
-+[176] = {"DPDES",	64,	HV_RW | OS_RO, },
-+[180] = {"DAWR0",	64,	HV_RW, },
-+[186] = {"RPR",		64,	HV_RW, },
-+[187] = {"CIABR",	64,	HV_RW, },
-+[188] = {"DAWRX0",	32,	HV_RW, },
-+[190] = {"HFSCR",	64,	HV_RW, },
-+[256] = {"VRSAVE",	32,	RW, },
-+[259] = {"SPRG3",	64,	RO, },
-+[284] = {"TBL",		32,	HV_WO, },
-+[285] = {"TBU",		32,	HV_WO, },
-+[286] = {"TBU40",	64,	HV_WO, },
-+[304] = {"HSPRG0",	64,	HV_RW, },
-+[305] = {"HSPRG1",	64,	HV_RW, },
-+[306] = {"HDSISR",	32,	HV_RW,		SPR_INT, },
-+[307] = {"HDAR",	64,	HV_RW,		SPR_INT, },
-+[308] = {"SPURR",	64,	HV_RW | OS_RO,	SPR_ASYNC, },
-+[309] = {"PURR",	64,	HV_RW | OS_RO,	SPR_ASYNC, },
-+[313] = {"HRMOR",	64,	HV_RW, },
-+[314] = {"HSRR0",	64,	HV_RW,		SPR_INT, },
-+[315] = {"HSRR1",	64,	HV_RW,		SPR_INT, },
-+[318] = {"LPCR",	64,	HV_RW, },
-+[319] = {"LPIDR",	32,	HV_RW, },
-+[336] = {"HMER",	64,	HV_RW, },
-+[337] = {"HMEER",	64,	HV_RW, },
-+[338] = {"PCR",		64,	HV_RW, },
-+[349] = {"AMOR",	64,	HV_RW, },
-+[446] = {"TIR",		64,	OS_RO, },
-+[800] = {"BESCRS",	64,	RW, },
-+[801] = {"BESCRSU",	32,	RW, },
-+[802] = {"BESCRR",	64,	RW, },
-+[803] = {"BESCRRU",	32,	RW, },
-+[804] = {"EBBHR",	64,	RW, },
-+[805] = {"EBBRR",	64,	RW, },
-+[806] = {"BESCR",	64,	RW, },
-+[815] = {"TAR",		64,	RW, },
-+[848] = {"IC",		64,	HV_RW | OS_RO,	SPR_ASYNC, },
-+[849] = {"VTB",		64,	HV_RW | OS_RO,	SPR_ASYNC, },
-+[896] = {"PPR",		64,	RW, },
-+[898] = {"PPR32",	32,	RW, },
-+[1023]= {"PIR",		32,	OS_RO, },
-+};
++static void print_vpa(struct vpa *vpa)
++{
++	printf("VPA\n");
++	printf("descriptor:			0x%08x\n", be32_to_cpu(vpa->descriptor));
++	printf("size:				    0x%04x\n", be16_to_cpu(vpa->size));
++	printf("status:				      0x%02x\n", vpa->status);
++	printf("fru_node_id:			0x%08x\n", be32_to_cpu(vpa->fru_node_id));
++	printf("fru_proc_id:			0x%08x\n", be32_to_cpu(vpa->fru_proc_id));
++	printf("vhpn_change_counters:		0x%02x %02x %02x %02x %02x %02x %02x %02x\n", vpa->vhpn_change_counters[0], vpa->vhpn_change_counters[1], vpa->vhpn_change_counters[2], vpa->vhpn_change_counters[3], vpa->vhpn_change_counters[4], vpa->vhpn_change_counters[5], vpa->vhpn_change_counters[6], vpa->vhpn_change_counters[7]);
++	printf("vp_dispatch_count:		0x%08x\n", be32_to_cpu(vpa->vp_dispatch_count));
++	printf("vp_dispatch_dispersion:		0x%08x\n", be32_to_cpu(vpa->vp_dispatch_dispersion));
++	printf("vp_fault_count:			0x%08lx\n", be64_to_cpu(vpa->vp_fault_count));
++	printf("vp_fault_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_fault_tb));
++	printf("purr_exprop_idle:		0x%08lx\n", be64_to_cpu(vpa->purr_exprop_idle));
++	printf("spurr_exprop_idle:		0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_idle));
++	printf("purr_exprop_busy:		0x%08lx\n", be64_to_cpu(vpa->purr_exprop_busy));
++	printf("spurr_exprop_busy:		0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_busy));
++	printf("purr_donate_idle:		0x%08lx\n", be64_to_cpu(vpa->purr_donate_idle));
++	printf("spurr_donate_idle:		0x%08lx\n", be64_to_cpu(vpa->spurr_donate_idle));
++	printf("purr_donate_busy:		0x%08lx\n", be64_to_cpu(vpa->purr_donate_busy));
++	printf("spurr_donate_busy:		0x%08lx\n", be64_to_cpu(vpa->spurr_donate_busy));
++	printf("vp_wait3_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait3_tb));
++	printf("vp_wait2_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait2_tb));
++	printf("vp_wait1_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait1_tb));
++	printf("purr_exprop_adjunct_busy:	0x%08lx\n", be64_to_cpu(vpa->purr_exprop_adjunct_busy));
++	printf("spurr_exprop_adjunct_busy:	0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_adjunct_busy));
++	printf("purr_exprop_adjunct_idle:	0x%08lx\n", be64_to_cpu(vpa->purr_exprop_adjunct_idle));
++	printf("spurr_exprop_adjunct_idle:	0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_adjunct_idle));
++	printf("adjunct_insns_executed:		0x%08lx\n", be64_to_cpu(vpa->adjunct_insns_executed));
++	printf("dtl_index:			0x%08lx\n", be64_to_cpu(vpa->dtl_index));
++}
 +
-+static const struct spr sprs_tm[1024] = {
-+[128] = {"TFHAR",	64,	RW, },
-+[129] = {"TFIAR",	64,	RW, },
-+[130] = {"TEXASR",	64,	RW, },
-+[131] = {"TEXASRU",	32,	RW, },
-+};
- 
- /* SPRs from PowerISA 2.07 Book III-S */
--static void set_sprs_book3s_207(uint64_t val)
--{
--	mtspr(3, val);		/* DSCR */
--	mtspr(13, val);		/* AMR */
--	mtspr(17, val);		/* DSCR */
--	mtspr(18, val);		/* DSISR */
--	mtspr(19, val);		/* DAR */
--	mtspr(29, val);		/* AMR */
--	mtspr(61, val);		/* IAMR */
--	// mtspr(152, val);	/* CTRL */  /* TODO: Needs a fix in KVM */
--	mtspr(153, val);	/* FSCR */
--	mtspr(157, val);	/* UAMOR */
--	mtspr(159, val);	/* PSPB */
--	mtspr(256, val);	/* VRSAVE */
--	// mtspr(272, val);	/* SPRG0 */ /* Used by our exception handler */
--	mtspr(769, val);	/* MMCR2 */
--	mtspr(770, val);	/* MMCRA */
--	mtspr(771, val);	/* PMC1 */
--	mtspr(772, val);	/* PMC2 */
--	mtspr(773, val);	/* PMC3 */
--	mtspr(774, val);	/* PMC4 */
--	mtspr(775, val);	/* PMC5 */
--	mtspr(776, val);	/* PMC6 */
--	mtspr(779, (val & 0xfffffffffbab3fffULL) | 0xfa0b2070);	/* MMCR0 */
--	mtspr(784, val);	/* SIER */
--	mtspr(785, val);	/* MMCR2 */
--	mtspr(786, val);	/* MMCRA */
--	mtspr(787, val);	/* PMC1 */
--	mtspr(788, val);	/* PMC2 */
--	mtspr(789, val);	/* PMC3 */
--	mtspr(790, val);	/* PMC4 */
--	mtspr(791, val);	/* PMC5 */
--	mtspr(792, val);	/* PMC6 */
--	mtspr(795, (val & 0xfffffffffbab3fffULL) | 0xfa0b2070);	/* MMCR0 */
--	mtspr(796, val);	/* SIAR */
--	mtspr(797, val);	/* SDAR */
--	mtspr(798, val);	/* MMCR1 */
--	mtspr(800, val);	/* BESCRS */
--	mtspr(801, val);	/* BESCCRSU */
--	mtspr(802, val);	/* BESCRR */
--	mtspr(803, val);	/* BESCRRU */
--	mtspr(804, val);	/* EBBHR */
--	mtspr(805, val);	/* EBBRR */
--	mtspr(806, val);	/* BESCR */
--	mtspr(815, val);	/* TAR */
--}
-+static const struct spr sprs_207[1024] = {
-+ [22] = {"DEC",		32,	OS_RW,		SPR_ASYNC, },
-+ [25] = {"SDR1",	64,	HV_RW, },
-+[177] = {"DHDES",	64,	HV_RW, },
-+[283] = {"CIR",		32,	OS_RO, },
-+[310] = {"HDEC",	32,	HV_RW,		SPR_ASYNC, },
-+[312] = {"RMOR",	64,	HV_RW, },
-+[339] = {"HEIR",	32,	HV_RW, },
-+};
- 
- /* SPRs from PowerISA 3.00 Book III */
--static void set_sprs_book3s_300(uint64_t val)
--{
--	set_sprs_book3s_207(val);
--	mtspr(48, val);		/* PIDR */
--	mtspr(144, val);	/* TIDR */
--	mtspr(823, val);	/* PSSCR */
--}
-+static const struct spr sprs_300[1024] = {
-+ [22] = {"DEC",		64,	OS_RW,		SPR_ASYNC, },
-+ [48] = {"PIDR",	32,	OS_RW, },
-+[144] = {"TIDR",	64,	OS_RW, },
-+[283] = {"CIR",		32,	OS_RO, },
-+[310] = {"HDEC",	64,	HV_RW,		SPR_ASYNC, },
-+[339] = {"HEIR",	32,	HV_RW, },
-+[464] = {"PTCR",	64,	HV_RW, },
-+[816] = {"ASDR",	64,	HV_RW,		SPR_INT},
-+[823] = {"PSSCR",	64,	OS_RW, },
-+[855] = {"PSSCR",	64,	HV_RW, },
-+};
- 
--/* SPRs from Power ISA Version 3.1B */
--static void set_sprs_book3s_31(uint64_t val)
--{
--	set_sprs_book3s_207(val);
--	mtspr(48, val);		/* PIDR */
--	/* 3.1 removes TIDR */
--	mtspr(823, val);	/* PSSCR */
--}
-+/* SPRs from PowerISA 3.1B Book III */
-+static const struct spr sprs_31[1024] = {
-+ [22] = {"DEC",		64,	OS_RW,		SPR_ASYNC, },
-+ [48] = {"PIDR",	32,	OS_RW, },
-+[181] = {"DAWR1",	64,	HV_RW, },
-+[189] = {"DAWRX1",	32,	HV_RW, },
-+[310] = {"HDEC",	64,	HV_RW,		SPR_ASYNC, },
-+[339] = {"HEIR",	64,	HV_RW, },
-+[455] = {"HDEXCR",	32,	RO, },
-+[464] = {"PTCR",	64,	HV_RW, },
-+[468] = {"HASHKEYR",	64,	OS_RW, },
-+[469] = {"HASHPKEYR",	64,	HV_RW, },
-+[471] = {"HDEXCR",	64,	HV_RW, },
-+[812] = {"DEXCR",	32,	RO, },
-+[816] = {"ASDR",	64,	HV_RW,		SPR_INT},
-+[823] = {"PSSCR",	64,	OS_RW, },
-+[828] = {"DEXCR",	64,	OS_RW, },
-+[855] = {"PSSCR",	64,	HV_RW, },
-+};
- 
--static void set_sprs(uint64_t val)
-+/* SPRs POWER10 User Manual */
-+static const struct spr sprs_power10[1024] = {
-+[276] = {"SPRC",	64,	HV_RW, },
-+[266] = {"SPRD",	64,	HV_RW, },
-+[317] = {"TFMR",	64,	HV_RW, },
-+[799] = {"IMC",		64,	HV_RW, },
-+[850] = {"LDBAR",	64,	HV_RO, },
-+[851] = {"MMCRC",	32,	HV_RW, },
-+[853] = {"PMSR",	32,	HV_RO, },
-+[861] = {"L2QOSR",	64,	HV_WO, },
-+[881] = {"TRIG1",	64,	OS_WO, },
-+[882] = {"TRIG2",	64,	OS_WO, },
-+[884] = {"PMCR",	64,	HV_RW, },
-+[885] = {"RWMR",	64,	HV_RW, },
-+[895] = {"WORT",	64,	OS_RW, }, /* UM says 18-bits! */
-+[921] = {"TSCR",	32,	HV_RW, },
-+[922] = {"TTR",		64,	HV_RW, },
-+[1006]= {"TRACE",	64,	WO, },
-+[1008]= {"HID",		64,	HV_RW, },
-+};
++/**
++ * Test the H_REGISTER_VPA h-call register/deregister.
++ */
++static void register_vpa(struct vpa *vpa)
++{
++	uint32_t cpuid = fdt_boot_cpuid_phys(dt_fdt());
++	int disp_count1, disp_count2;
++	int rc;
 +
-+/* This covers POWER8 and POWER9 PMUs */
-+static const struct spr sprs_power_common_pmu[1024] = {
-+[768] = {"SIER",	64,	RO, },
-+[769] = {"MMCR2",	64,	RW, },
-+[770] = {"MMCRA",	64,	RW, },
-+[771] = {"PMC1",	32,	RW, },
-+[772] = {"PMC2",	32,	RW, },
-+[773] = {"PMC3",	32,	RW, },
-+[774] = {"PMC4",	32,	RW, },
-+[775] = {"PMC5",	32,	RW, },
-+[776] = {"PMC6",	32,	RW, },
-+[779] = {"MMCR0",	64,	RW, },
-+[780] = {"SIAR",	64,	RO, },
-+[781] = {"SDAR",	64,	RO, },
-+[782] = {"MMCR1",	64,	RO, },
-+[784] = {"SIER",	64,	OS_RW, },
-+[785] = {"MMCR2",	64,	OS_RW, },
-+[786] = {"MMCRA",	64,	OS_RW, },
-+[787] = {"PMC1",	32,	OS_RW, },
-+[788] = {"PMC2",	32,	OS_RW, },
-+[789] = {"PMC3",	32,	OS_RW, },
-+[790] = {"PMC4",	32,	OS_RW, },
-+[791] = {"PMC5",	32,	OS_RW, },
-+[792] = {"PMC6",	32,	OS_RW, },
-+[795] = {"MMCR0",	64,	OS_RW, },
-+[796] = {"SIAR",	64,	OS_RW, },
-+[797] = {"SDAR",	64,	OS_RW, },
-+[798] = {"MMCR1",	64,	OS_RW, },
-+};
++	rc = hcall(H_REGISTER_VPA, 1ULL << 45, cpuid, vpa);
++	report(rc == H_SUCCESS, "VPA registered");
 +
-+static const struct spr sprs_power10_pmu[1024] = {
-+[736] = {"SEIR2",	64,	RO, },
-+[737] = {"SEIR3",	64,	RO, },
-+[738] = {"MMCR3",	64,	RO, },
-+[752] = {"SEIR2",	64,	OS_RW, },
-+[753] = {"SEIR3",	64,	OS_RW, },
-+[754] = {"MMCR3",	64,	OS_RW, },
-+};
++	print_vpa(vpa);
 +
-+static struct spr sprs[1024];
++	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
++	report(disp_count1 % 2 == 0, "Dispatch count is even while running");
++	sleep(0x1000000);
++	disp_count2 = be32_to_cpu(vpa->vp_dispatch_count);
++	report(disp_count1 != disp_count2, "Dispatch count increments");
 +
-+static void setup_sprs(void)
- {
- 	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-+	int i;
- 
--	set_sprs_common(val);
-+	for (i = 0; i < 1024; i++) {
-+		if (sprs_common[i].name) {
-+			memcpy(&sprs[i], &sprs_common[i], sizeof(struct spr));
-+		}
-+	}
- 
- 	switch (pvr >> 16) {
- 	case 0x39:			/* PPC970 */
- 	case 0x3C:			/* PPC970FX */
- 	case 0x44:			/* PPC970MP */
--		set_sprs_book3s_201(val);
-+		for (i = 0; i < 1024; i++) {
-+			if (sprs_power_common[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common[i], sizeof(struct spr));
-+			}
-+			if (sprs_201[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_201[i], sizeof(struct spr));
-+			}
-+			if (sprs_970_pmu[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common_pmu[i], sizeof(struct spr));
-+			}
-+		}
- 		break;
++	rc = hcall(H_REGISTER_VPA, 5ULL << 45, cpuid, vpa);
++	report(rc == H_SUCCESS, "VPA deregistered");
 +
- 	case 0x4b:			/* POWER8E */
- 	case 0x4c:			/* POWER8NVL */
- 	case 0x4d:			/* POWER8 */
--		set_sprs_book3s_207(val);
-+		for (i = 0; i < 1024; i++) {
-+			if (sprs_power_common[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common[i], sizeof(struct spr));
-+			}
-+			if (sprs_207[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_207[i], sizeof(struct spr));
-+			}
-+			if (sprs_tm[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_tm[i], sizeof(struct spr));
-+			}
-+			if (sprs_power_common_pmu[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common_pmu[i], sizeof(struct spr));
-+			}
-+		}
- 		break;
++	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
++	report(disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
++}
 +
- 	case 0x4e:			/* POWER9 */
--		set_sprs_book3s_300(val);
-+		for (i = 0; i < 1024; i++) {
-+			if (sprs_power_common[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common[i], sizeof(struct spr));
-+			}
-+			if (sprs_300[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_300[i], sizeof(struct spr));
-+			}
-+			if (sprs_tm[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_tm[i], sizeof(struct spr));
-+			}
-+			if (sprs_power_common_pmu[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common_pmu[i], sizeof(struct spr));
-+			}
-+		}
- 		break;
--	case 0x80:                      /* POWER10 */
--		set_sprs_book3s_31(val);
++int main(int argc, char **argv)
++{
++	struct vpa *vpa;
 +
-+	case 0x80:			/* POWER10 */
-+		for (i = 0; i < 1024; i++) {
-+			if (sprs_power_common[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common[i], sizeof(struct spr));
-+			}
-+			if (sprs_31[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_31[i], sizeof(struct spr));
-+			}
-+			if (sprs_power10[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power10[i], sizeof(struct spr));
-+			}
-+			if (sprs_power_common_pmu[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power_common_pmu[i], sizeof(struct spr));
-+			}
-+			if (sprs_power10_pmu[i].name) {
-+				assert(!sprs[i].name);
-+				memcpy(&sprs[i], &sprs_power10_pmu[i], sizeof(struct spr));
-+			}
-+		}
- 		break;
++	vpa = memalign(4096, sizeof(*vpa));
 +
- 	default:
--		puts("Warning: Unknown processor version!\n");
-+		memcpy(sprs, sprs_common, sizeof(sprs));
-+		puts("Warning: Unknown processor version, falling back to common SPRs!\n");
-+		break;
- 	}
- }
- 
--static void get_sprs_common(uint64_t *v)
--{
--	v[9] = mfspr(9);	/* CTR */ /* Used by mfspr/mtspr */
--	// v[273] = mfspr(273);	/* SPRG1 */ /* Used by our exception handler */
--	v[274] = mfspr(274);	/* SPRG2 */
--	v[275] = mfspr(275);	/* SPRG3 */
--}
--
--static void get_sprs_book3s_201(uint64_t *v)
--{
--	v[18] = mfspr(18);	/* DSISR */
--	v[19] = mfspr(19);	/* DAR */
--	v[136] = mfspr(136);	/* CTRL */
--	v[256] = mfspr(256);	/* VRSAVE */
--	v[786] = mfspr(786);	/* MMCRA */
--	v[795] = mfspr(795);	/* MMCR0 */
--	v[798] = mfspr(798);	/* MMCR1 */
--}
--
--static void get_sprs_book3s_207(uint64_t *v)
--{
--	v[3] = mfspr(3);	/* DSCR */
--	v[13] = mfspr(13);	/* AMR */
--	v[17] = mfspr(17);	/* DSCR */
--	v[18] = mfspr(18);	/* DSISR */
--	v[19] = mfspr(19);	/* DAR */
--	v[29] = mfspr(29);	/* AMR */
--	v[61] = mfspr(61);	/* IAMR */
--	// v[136] = mfspr(136);	/* CTRL */  /* TODO: Needs a fix in KVM */
--	v[153] = mfspr(153);	/* FSCR */
--	v[157] = mfspr(157);	/* UAMOR */
--	v[159] = mfspr(159);	/* PSPB */
--	v[256] = mfspr(256);	/* VRSAVE */
--	v[259] = mfspr(259);	/* SPRG3 (read only) */
--	// v[272] = mfspr(272);	/* SPRG0 */  /* Used by our exception handler */
--	v[769] = mfspr(769);	/* MMCR2 */
--	v[770] = mfspr(770);	/* MMCRA */
--	v[771] = mfspr(771);	/* PMC1 */
--	v[772] = mfspr(772);	/* PMC2 */
--	v[773] = mfspr(773);	/* PMC3 */
--	v[774] = mfspr(774);	/* PMC4 */
--	v[775] = mfspr(775);	/* PMC5 */
--	v[776] = mfspr(776);	/* PMC6 */
--	v[779] = mfspr(779);	/* MMCR0 */
--	v[780] = mfspr(780);	/* SIAR (read only) */
--	v[781] = mfspr(781);	/* SDAR (read only) */
--	v[782] = mfspr(782);	/* MMCR1 (read only) */
--	v[784] = mfspr(784);	/* SIER */
--	v[785] = mfspr(785);	/* MMCR2 */
--	v[786] = mfspr(786);	/* MMCRA */
--	v[787] = mfspr(787);	/* PMC1 */
--	v[788] = mfspr(788);	/* PMC2 */
--	v[789] = mfspr(789);	/* PMC3 */
--	v[790] = mfspr(790);	/* PMC4 */
--	v[791] = mfspr(791);	/* PMC5 */
--	v[792] = mfspr(792);	/* PMC6 */
--	v[795] = mfspr(795);	/* MMCR0 */
--	v[796] = mfspr(796);	/* SIAR */
--	v[797] = mfspr(797);	/* SDAR */
--	v[798] = mfspr(798);	/* MMCR1 */
--	v[800] = mfspr(800);	/* BESCRS */
--	v[801] = mfspr(801);	/* BESCCRSU */
--	v[802] = mfspr(802);	/* BESCRR */
--	v[803] = mfspr(803);	/* BESCRRU */
--	v[804] = mfspr(804);	/* EBBHR */
--	v[805] = mfspr(805);	/* EBBRR */
--	v[806] = mfspr(806);	/* BESCR */
--	v[815] = mfspr(815);	/* TAR */
--}
--
--static void get_sprs_book3s_300(uint64_t *v)
-+static void get_sprs(uint64_t *v)
- {
--	get_sprs_book3s_207(v);
--	v[48] = mfspr(48);	/* PIDR */
--	v[144] = mfspr(144);	/* TIDR */
--	v[823] = mfspr(823);	/* PSSCR */
--}
-+	int i;
- 
--static void get_sprs_book3s_31(uint64_t *v)
--{
--	get_sprs_book3s_207(v);
--	v[48] = mfspr(48);	/* PIDR */
--	v[823] = mfspr(823);	/* PSSCR */
-+	for (i = 0; i < 1024; i++) {
-+		if (!(sprs[i].access & SPR_OS_READ))
-+			continue;
-+		v[i] = mfspr(i);
-+	}
- }
- 
--static void get_sprs(uint64_t *v)
-+static void set_sprs(uint64_t val)
- {
--	uint32_t pvr = mfspr(287);	/* Processor Version Register */
--
--	get_sprs_common(v);
-+	int i;
- 
--	switch (pvr >> 16) {
--	case 0x39:			/* PPC970 */
--	case 0x3C:			/* PPC970FX */
--	case 0x44:			/* PPC970MP */
--		get_sprs_book3s_201(v);
--		break;
--	case 0x4b:			/* POWER8E */
--	case 0x4c:			/* POWER8NVL */
--	case 0x4d:			/* POWER8 */
--		get_sprs_book3s_207(v);
--		break;
--	case 0x4e:			/* POWER9 */
--		get_sprs_book3s_300(v);
--		break;
--	case 0x80:                      /* POWER10 */
--		get_sprs_book3s_31(v);
--		break;
-+	for (i = 0; i < 1024; i++) {
-+		if (!(sprs[i].access & SPR_OS_WRITE))
-+			continue;
-+		if (sprs[i].type & SPR_HARNESS)
-+			continue;
-+		if (!strcmp(sprs[i].name, "MMCR0")) {
-+			/* XXX: could use a comment or better abstraction! */
-+			mtspr(i, (val & 0xfffffffffbab3fffULL) | 0xfa0b2070);
-+		} else {
-+			mtspr(i, val);
-+		}
- 	}
- }
- 
-@@ -343,7 +516,9 @@ int main(int argc, char **argv)
- 		}
- 	}
- 
--	printf("Settings SPRs to %#lx...\n", pat);
-+	setup_sprs();
++	memset(vpa, 0, sizeof(*vpa));
 +
-+	printf("Setting SPRs to 0x%lx...\n", pat);
- 	set_sprs(pat);
- 
- 	memset(before, 0, sizeof(before));
-@@ -355,16 +530,37 @@ int main(int argc, char **argv)
- 		migrate_once();
- 	} else {
- 		sleep(0x10000000);
++	vpa->size = cpu_to_be16(sizeof(*vpa));
 +
-+		/* Taking a dec updates SRR0, SRR1, SPRG1, so don't fail. */
-+		sprs[26].type |= SPR_ASYNC;
-+		sprs[27].type |= SPR_ASYNC;
-+		sprs[273].type |= SPR_ASYNC;
- 	}
- 
- 	get_sprs(after);
- 
- 	puts("Checking SPRs...\n");
- 	for (i = 0; i < 1024; i++) {
--		if (before[i] != 0 || after[i] != 0)
--			report(before[i] == after[i],
--			       "SPR %d:\t%#018lx <==> %#018lx", i, before[i],
--			       after[i]);
-+		bool pass = true;
++	report_prefix_push("vpa");
 +
-+		if (!(sprs[i].access & SPR_OS_READ))
-+			continue;
++	register_vpa(vpa);
 +
-+		if (sprs[i].width == 32) {
-+			if (before[i] >> 32)
-+				pass = false;
-+		}
-+		if (!(sprs[i].type & SPR_ASYNC) && (before[i] != after[i]))
-+			pass = false;
-+
-+		if (sprs[i].width == 32)
-+			report(pass, "%-10s(%4d):\t        0x%010lx <==>         0x%010lx",
-+				sprs[i].name, i,
-+				before[i], after[i]);
-+		else
-+			report(pass, "%-10s(%4d):\t0x%018lx <==> 0x%018lx",
-+				sprs[i].name, i,
-+				before[i], after[i]);
- 	}
- 
- 	return report_summary();
++	return report_summary();
++}
 -- 
 2.37.2
 
