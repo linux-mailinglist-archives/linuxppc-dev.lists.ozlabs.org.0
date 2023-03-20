@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7396C0B15
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FBD6C0B17
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:06:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Nc3RT0z3cC1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:05:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Pc6mbwz3ccw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:06:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kh1EYrYa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gS7qrRrq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kh1EYrYa;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gS7qrRrq;
 	dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5Lg1fpXz3bm6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:03:54 +1100 (AEDT)
-Received: by mail-pj1-x102b.google.com with SMTP id qe8-20020a17090b4f8800b0023f07253a2cso11341143pjb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:03:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5Lj3S0fz3bYW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:03:57 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id iw3so11448120plb.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679295832;
+        d=gmail.com; s=20210112; t=1679295835;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E5PF3sqkFmxXngJQJQHQ0RIO725f9lA9+mqcaHUiq3c=;
-        b=Kh1EYrYamt/CU/BWMDEotcNXoaE3D8KsDeFv2RPQxsT1dCLE0RIQVuu7qHd1yRQhKY
-         yR0htgul6y3HUSxgbEa1lZ1o6S2p9g6nEAa5WP0xxtquOwqW9O9IkpLVmQqNSiQzW+l+
-         eYwhPLa6ZKWTRMjU6ZYQDdZNBzI/dKuJjpcdvUmlLdY4ZLYFUzxGjXIhyA82YyqEf/B2
-         B2Wb9i5Q/kgaio8yioK3tEoXfclrT+71zMffp2jVwM2ICj5KA5YdCZIHLJb9ECe53I6Z
-         4P4niikC9zG3fOCDTagQ5q0wVCZweU7Ged1W8cCNd/CpkpVE7YbAA95nU26Jyghb1Te4
-         aJtg==
+        bh=dIWY2LmAYAKCX0X90e1eTyFfSUAt3YEGtck6kHvirNk=;
+        b=gS7qrRrqDq9qaoQtkXcKK7pK215yAtZn8WaF9oNZmAozAsFFIthRfko3R60iN1xLvF
+         nSxnb2hTRNoDhYtW4OfnEgEaUQEc4hzOUP0/Wa3RSMWDulBoymhgYS228uVW2Bf0mzZV
+         urboUDVMhQ7v+hboL3TjcMqnTnxA2TayOf2aOzpxGbT9+zSW8zo8TIAdicRRHcc/Xwy8
+         IlXx1LleYUdU3Tu7rzoO2VDhNWoEdFCT1ix+Ab7uk3cH3zAzLaXUVl1PgrtdD4kJxKpg
+         4e/CYZZNCaxbR0ilPDzZFFNMPitKEGtnlOkfGxS7ggi77SS2sMSWMq/QWtKasmuVrX+R
+         tmfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679295832;
+        d=1e100.net; s=20210112; t=1679295835;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E5PF3sqkFmxXngJQJQHQ0RIO725f9lA9+mqcaHUiq3c=;
-        b=o16aaqtMNR6oweNhJ8dvir3ZThvtx9sWby+09UDt5Uv8oPw1W9bf2uJ/3aq8uFY33N
-         H97PL7zN9YcvXelADAo8+8pKQ+OpR5qPgDYUhoVQR3eqioQODgmGklWX+rrzsLLTaIRS
-         XqU2PVzF4J/XzepKPDzr+wBP/W+rdG8jequF3TnmBcdb0QYKIgj/SW225KKZt3cnjnTh
-         z22YC7TNMSVLyYhrN+BK+UkiU75hB3wymGic5/t3etCN1gm6Un3TYus4HLxMxgcUuKCU
-         o0ccsol/u7/IIKkH5B88TTpAcynFEivkLO965rBSMvjWV1pcaNlwhUlclViKUXaCYedA
-         iyDg==
-X-Gm-Message-State: AO0yUKV/nFDDZP+Foku/ujy4XwfRzuGO4poum6VJfLx4j+Aee/1zcs8q
-	1CsmaQdXEfKObWwVQKdi4ZRrUAlALfs=
-X-Google-Smtp-Source: AK7set8ITskZVGXO4N98vL/NAW3CoS9AAbk6UAN1ecdRjB3Myxm+U2Cn0p5sO+iUsxrX8gtzowstFw==
-X-Received: by 2002:a05:6a20:609:b0:d3:c972:9a83 with SMTP id 9-20020a056a20060900b000d3c9729a83mr13550453pzl.56.1679295832063;
-        Mon, 20 Mar 2023 00:03:52 -0700 (PDT)
+        bh=dIWY2LmAYAKCX0X90e1eTyFfSUAt3YEGtck6kHvirNk=;
+        b=PX4l4FOrFHr24iu3XVdux0h4vQUAvCfSdNNDVocvEmSAYCY3GMop8Us35Kp94DKIba
+         SQkU58gNMcu647wdWgieNRbrUFPjg0THO1tnWatb7Q3Ii4oerKuWca5DUaMsAjDL1xoo
+         h6GLaRG2aoTtoEuy7EvGVQAdl421lfrrucq2y3cNGkM9ZPqeH4jnGDc250ld2I4SDfFR
+         r0gou5riWe8FRF+eUVcUt86SceGmds8tMPqaeCb/pmuPIpgEXs/6ajVw89PZPJLaqrjQ
+         dXs5l2Up311JcJxc9GuhGMGTu/Qj4ODyML0R0VFXdKigjOSwTzPO/fkdj1/xwcYqO5Gx
+         sXtA==
+X-Gm-Message-State: AO0yUKW1bOZ48h3VFDYh7Dx9/L1MvhAzLm39ChXaAdMta2mpHCYHKI4Z
+	rZ56FnYYvpqs+hJf3XwMTdo=
+X-Google-Smtp-Source: AK7set80VvNHpr7RdDIyXTdK5iNN0SrMj76F2SEmfeacDKttsSBDoOBYBQjHltZXByAun+9uYVs7Uw==
+X-Received: by 2002:a05:6a20:cd5d:b0:d5:1863:fe5f with SMTP id hn29-20020a056a20cd5d00b000d51863fe5fmr10506331pzb.2.1679295835154;
+        Mon, 20 Mar 2023 00:03:55 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.03.49
+        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.03.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 00:03:51 -0700 (PDT)
+        Mon, 20 Mar 2023 00:03:54 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests v2 01/10] MAINTAINERS: Update powerpc list
-Date: Mon, 20 Mar 2023 17:03:30 +1000
-Message-Id: <20230320070339.915172-2-npiggin@gmail.com>
+Subject: [kvm-unit-tests v2 02/10] powerpc: add local variant of SPR test
+Date: Mon, 20 Mar 2023 17:03:31 +1000
+Message-Id: <20230320070339.915172-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230320070339.915172-1-npiggin@gmail.com>
 References: <20230320070339.915172-1-npiggin@gmail.com>
@@ -82,28 +82,29 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM development on powerpc has moved to the Linux on Power mailing list,
-as per linux.git commit 19b27f37ca97d ("MAINTAINERS: Update powerpc KVM
-entry").
+This adds the non-migration variant of the SPR test to the matrix,
+which can be simpler to run and debug.
 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ powerpc/unittests.cfg | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 649de50..b545a45 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -79,7 +79,7 @@ M: Laurent Vivier <lvivier@redhat.com>
- M: Thomas Huth <thuth@redhat.com>
- S: Maintained
- L: kvm@vger.kernel.org
--L: kvm-ppc@vger.kernel.org
-+L: linuxppc-dev@lists.ozlabs.org
- F: powerpc/
- F: lib/powerpc/
- F: lib/ppc64/
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index 1e74948..3e41598 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -68,5 +68,9 @@ groups = h_cede_tm
+ 
+ [sprs]
+ file = sprs.elf
++groups = sprs
++
++[sprs-migration]
++file = sprs.elf
+ extra_params = -append '-w'
+ groups = migration
 -- 
 2.37.2
 
