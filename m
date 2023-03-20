@@ -2,75 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632AB6C266A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 01:39:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 168356C2710
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 02:12:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PgXn01PLGz3ccl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 11:39:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgYVy4lc2z3cM6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 12:12:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hlX+WuWF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TDLldTic;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hlX+WuWF;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TDLldTic;
 	dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgXm3752nz3byj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 11:38:59 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id s8so7919605pfk.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 17:38:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5c805s5z3c6V
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:15:35 +1100 (AEDT)
+Received: by mail-wr1-x432.google.com with SMTP id t15so9298004wrz.7
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:15:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679359135;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fLfNMIdfmWa7uxic4s3XFQUgdy9GXPiHgpuDGt8m5xw=;
-        b=hlX+WuWF7iamBEHMLyEdDQrY1f8O96E9dvQT8w3R57CdTQ0u12saWrnuYqx2CDoJou
-         dnUUgEIgNqx3L6YkufrRp2vopty/zRsucsVaA9ef7rP0PPRWkGxs37nBZ5se8b2Gh6bm
-         Kb41wkj5f88nWFRb/0hO8WRGoHnLA+ZSp91p6qbujiljmucqgDwTMJ51sQCkSk64/pkn
-         DxJcH/Kctvn4j3q7Ssmy9bFSyeDZYmfj5R6sjrNS4DDvWuvNR27vOlnOS4ol9YsyQkVc
-         nAsow+J3/lwjWKYvyklhL+1aegOdz7P1lxysA5vHUHFM4NFHOxpvE/9y5+ewNNCxUpoW
-         mKfQ==
+        d=gmail.com; s=20210112; t=1679296530;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dY92vEzHOiV+rG421ld252/xmXBkyzgS2OHqebmaw2Y=;
+        b=TDLldTicqspc9s1Psp4WFXM8D1A71UjYcc3DBGVJ8aJLJVzaffglVufgUdf93s0Lcq
+         6Mhyjsg5miExtKZtuIXP6xYILZ5YBNWrhnVHD7bkfnWQxZ9/e0x0tvlf96KppEpGhIQB
+         wJJBRoDGe9Pptc+dbY6caRmGejyJJJHlS/kVnGxP7enYui5mONkTHqWllfUKE0Yij/EY
+         tmB6j3vxRwi2kwYT4D+QokKuGoMFIYi4yxJb0OjxDxfxeFUF1wfkpY13HnCqwPgA7pd1
+         rcGg/ADwMUPM+hXSaYQC+loTBcAtI7ak+FmdwpmxHDPhJUjFyPkNirlQRKtcX7rAPv0W
+         OXKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679359135;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fLfNMIdfmWa7uxic4s3XFQUgdy9GXPiHgpuDGt8m5xw=;
-        b=moG3F1jWVeppupyWj8WUcWAsQTkZ8L3FrCFFc+gpmiZzZRdXwmeK8eJY7ny9zAnnxm
-         9kEubol5XyA+AhMFvJC5q+ImfHh/JNeBVUb5MZNPJJcRI/k8gv5Ksf9zYu0lvONxffZH
-         QXHCfjQ5wN7xUi4g2zeyPrB0nIUjsUH6nvD3dalhzAoRYqmqMCDAPxC3AAzlX4dlsnQn
-         ApPFlB5V/jGHu62E3vHuzcDOy9lybMUm13sPJ/MRxUq83rxGxgCtG0YP+kyczTrXu7Wi
-         nEe6VtX+5UOVNH/dnx5eIHoQQCHKGp+dQJNOoBiTa8z3BzkiZ26VOmDFrTme1IXz+eaO
-         Vpzw==
-X-Gm-Message-State: AO0yUKXq3K1UIclHEXzxXQRGQ/ILzmWsh/0Ws5U6uC+bfAHSg12SwXr9
-	NlzvEK4ikllzt5DycLJqk9M=
-X-Google-Smtp-Source: AK7set/NLIOTg6o36oQto++fvyXfjMMmrz/WAktHFWcJd1CpavWF+Ld/7hpo/VPy0VYbXkzossulPA==
-X-Received: by 2002:a05:6a00:4e:b0:626:2199:7bca with SMTP id i14-20020a056a00004e00b0062621997bcamr624238pfk.31.1679359135524;
-        Mon, 20 Mar 2023 17:38:55 -0700 (PDT)
-Received: from localhost (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id c27-20020a634e1b000000b0050be57d7ec0sm6558964pgb.67.2023.03.20.17.38.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Mar 2023 17:38:54 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Mar 2023 10:38:49 +1000
-Message-Id: <CRBN4LSJ14G2.6N0CI165ZTJN@bobo>
-Subject: Re: [kvm-unit-tests v2 09/10] powerpc: Support powernv machine with
- QEMU TCG
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <kvm@vger.kernel.org>
-X-Mailer: aerc 0.13.0
-References: <20230320070339.915172-1-npiggin@gmail.com>
- <20230320070339.915172-10-npiggin@gmail.com>
- <62fc117d-45a2-9aea-1a2f-973181395430@kaod.org>
-In-Reply-To: <62fc117d-45a2-9aea-1a2f-973181395430@kaod.org>
+        d=1e100.net; s=20210112; t=1679296530;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dY92vEzHOiV+rG421ld252/xmXBkyzgS2OHqebmaw2Y=;
+        b=hm+JNz0PdT8yJTaVzeEsmCStXsLDqQjXPrsg/9cbSkRnm7leVN5dBpflTqxqB+/Oo9
+         ZeJA/gaMy6E+Pey2d56yNSeeuJMp7yn560/rw4FUfJk0ofyzTI3KtZl+HTiP7IbZDMLE
+         eZl22GyQv+bdsbc9IqvX83XBu2c9WmMzqf2n56GxgVDYyRBzQrs+o1LByrDacUv4/Vj4
+         eESt8QwOTwinAuRxOwSWQn+pksmY7dSBHTejpFp1GpC2PWp8Wu5qU+cnp9pYGi6jmEEi
+         cdtjc9mhOzXdkQoc7cv8N3uTVrPGRrma2Gku2K0g0VeswhFs/1lK/RKeAVzAizj5rLti
+         pVHA==
+X-Gm-Message-State: AO0yUKVTFDSef6RwBAjBmEfLDTOx89yiwMECIBs/CbKlkurn2jEmv1lD
+	0i0yDXqqFZ5k6n7GGFxDdEVoDg4fAy8h6dyXC+s=
+X-Google-Smtp-Source: AK7set8bjiLJmu3eUzsHxI8KBE9iHVveKhlY4rBBQM8zc10nf1T3fnhAqGB41UEVlQTJakshmB93LPsWh9KA8n+x5Vs=
+X-Received: by 2002:a5d:588c:0:b0:2cf:e75a:eaf0 with SMTP id
+ n12-20020a5d588c000000b002cfe75aeaf0mr3099156wrf.0.1679296530304; Mon, 20 Mar
+ 2023 00:15:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230316123611.3495597-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20230316123611.3495597-1-alexander.stein@ew.tq-group.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 20 Mar 2023 15:15:18 +0800
+Message-ID: <CAA+D8AMrzi7_ZBV57emtosfRVUTXzmu3KtiMaxXBRtY3G66O4w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ASoC: fsl: define a common DRIVER_NAME
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Content-Type: multipart/alternative; boundary="00000000000029534405f74fb180"
+X-Mailman-Approved-At: Tue, 21 Mar 2023 12:11:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,55 +74,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Mar 20, 2023 at 7:47 PM AEST, C=C3=A9dric Le Goater wrote:
-> Hello Nick,
+--00000000000029534405f74fb180
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Mar 16, 2023 at 8:36=E2=80=AFPM Alexander Stein <
+alexander.stein@ew.tq-group.com> wrote:
+
+> Instead of copying the driver name manually, use a common define.
+> No functional change.
 >
-> On 3/20/23 08:03, Nicholas Piggin wrote:
-> > This is a basic first pass at powernv support using OPAL (skiboot)
-> > firmware.
-> >=20
-> > The ACCEL is a bit clunky, now defaulting to tcg for powernv machine.
-> > It also does not yet run in the run_tests.sh batch process, more work
-> > is needed to exclude certain tests (e.g., rtas) and adjust parameters
-> > (e.g., increase memory size) to allow powernv to work. For now it
-> > can run single test cases.
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 >
-> Why do you need to load OPAL ? for the shutdown ? because the UART ops
-> could be done directly using MMIOs on the LPC IO space.
 
-Don't really need it but I thought it would be easier to begin with, and
-then I thought actually it's nice to have this kind of test harness for
-skiboot as well. So I would hope to keep the skiboot bios option even if
-a no-bios version was done.
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-[...]
+Best regards
+wang shengjiu
 
-> >   void io_init(void)
-> >   {
-> > -	rtas_init();
-> > +	if (machine_is_powernv())
-> > +		opal_init();
-> > +	else
-> > +		rtas_init();
-> >   }
-
-[...]
-
-> > @@ -195,6 +197,8 @@ void setup(const void *fdt)
-> >   		freemem +=3D initrd_size;
-> >   	}
-> >  =20
-> > +	opal_init();
-> > +
+> ---
+>  sound/soc/fsl/fsl-asoc-card.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> This opal_init() call seems redundant with io_init().
+> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.=
+c
+> index cdfca9fd1eb0..e956abfd50f8 100644
+> --- a/sound/soc/fsl/fsl-asoc-card.c
+> +++ b/sound/soc/fsl/fsl-asoc-card.c
+> @@ -28,6 +28,8 @@
+>  #include "../codecs/wm8994.h"
+>  #include "../codecs/tlv320aic31xx.h"
+>
+> +#define DRIVER_NAME "fsl-asoc-card"
+> +
+>  #define CS427x_SYSCLK_MCLK 0
+>
+>  #define RX 0
+> @@ -915,7 +917,7 @@ MODULE_DEVICE_TABLE(of, fsl_asoc_card_dt_ids);
+>  static struct platform_driver fsl_asoc_card_driver =3D {
+>         .probe =3D fsl_asoc_card_probe,
+>         .driver =3D {
+> -               .name =3D "fsl-asoc-card",
+> +               .name =3D DRIVER_NAME,
+>                 .pm =3D &snd_soc_pm_ops,
+>                 .of_match_table =3D fsl_asoc_card_dt_ids,
+>         },
+> @@ -924,5 +926,5 @@ module_platform_driver(fsl_asoc_card_driver);
+>
+>  MODULE_DESCRIPTION("Freescale Generic ASoC Sound Card driver with ASRC")=
+;
+>  MODULE_AUTHOR("Nicolin Chen <nicoleotsuka@gmail.com>");
+> -MODULE_ALIAS("platform:fsl-asoc-card");
+> +MODULE_ALIAS("platform:" DRIVER_NAME);
+>  MODULE_LICENSE("GPL");
+> --
+> 2.34.1
+>
+>
 
-Oh you're right good catch, that might be an old piece before I cleaned
-it up. I'll have to fix that and re-test it.
+--00000000000029534405f74fb180
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Nick
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 16, 2023 at 8:36=E2=80=AF=
+PM Alexander Stein &lt;<a href=3D"mailto:alexander.stein@ew.tq-group.com">a=
+lexander.stein@ew.tq-group.com</a>&gt; wrote:<br></div><blockquote class=3D=
+"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
+04,204,204);padding-left:1ex">Instead of copying the driver name manually, =
+use a common define.<br>
+No functional change.<br>
+<br>
+Signed-off-by: Alexander Stein &lt;<a href=3D"mailto:alexander.stein@ew.tq-=
+group.com" target=3D"_blank">alexander.stein@ew.tq-group.com</a>&gt;<br></b=
+lockquote><div><br></div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto=
+:shengjiu.wang@gmail.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br></d=
+iv><div>Best regards</div><div>wang shengjiu=C2=A0</div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0sound/soc/fsl/fsl-asoc-card.c | 6 ++++--<br>
+=C2=A01 file changed, 4 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c<=
+br>
+index cdfca9fd1eb0..e956abfd50f8 100644<br>
+--- a/sound/soc/fsl/fsl-asoc-card.c<br>
++++ b/sound/soc/fsl/fsl-asoc-card.c<br>
+@@ -28,6 +28,8 @@<br>
+=C2=A0#include &quot;../codecs/wm8994.h&quot;<br>
+=C2=A0#include &quot;../codecs/tlv320aic31xx.h&quot;<br>
+<br>
++#define DRIVER_NAME &quot;fsl-asoc-card&quot;<br>
++<br>
+=C2=A0#define CS427x_SYSCLK_MCLK 0<br>
+<br>
+=C2=A0#define RX 0<br>
+@@ -915,7 +917,7 @@ MODULE_DEVICE_TABLE(of, fsl_asoc_card_dt_ids);<br>
+=C2=A0static struct platform_driver fsl_asoc_card_driver =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .probe =3D fsl_asoc_card_probe,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .driver =3D {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.name =3D &quot;fsl=
+-asoc-card&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.name =3D DRIVER_NA=
+ME,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .pm =3D &amp;snd_so=
+c_pm_ops,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .of_match_table =3D=
+ fsl_asoc_card_dt_ids,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
+@@ -924,5 +926,5 @@ module_platform_driver(fsl_asoc_card_driver);<br>
+<br>
+=C2=A0MODULE_DESCRIPTION(&quot;Freescale Generic ASoC Sound Card driver wit=
+h ASRC&quot;);<br>
+=C2=A0MODULE_AUTHOR(&quot;Nicolin Chen &lt;<a href=3D"mailto:nicoleotsuka@g=
+mail.com" target=3D"_blank">nicoleotsuka@gmail.com</a>&gt;&quot;);<br>
+-MODULE_ALIAS(&quot;platform:fsl-asoc-card&quot;);<br>
++MODULE_ALIAS(&quot;platform:&quot; DRIVER_NAME);<br>
+=C2=A0MODULE_LICENSE(&quot;GPL&quot;);<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div></div>
+
+--00000000000029534405f74fb180--
