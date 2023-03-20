@@ -1,56 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1086C070F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 01:54:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388E66C08C7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 03:00:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pfx893pnrz3cTk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 11:54:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pfycq0SqVz3cct
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 13:00:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d2T/btNr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SNcJ+0V8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d2T/btNr;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SNcJ+0V8;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pfx7B6HNBz300C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 11:53:26 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 953D5611DE;
-	Mon, 20 Mar 2023 00:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95958C433EF;
-	Mon, 20 Mar 2023 00:53:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679273603;
-	bh=ymHo4xqSlXI+y30Wq1XO9baK0xek3CKTl4Oe3cPo/Ks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2T/btNrq2Wj3/sywSmTC9zHKsJ+Ki1bl50OYgVREYSv/7OuHmAcr0E1jWfPzoQjK
-	 WpoLLxtAV53BZsyN+h4L0vvYxsp0TVyn43Q+k8paX+ne43WFoHjfJM2ZBx/1K5krGS
-	 Gchb8nq69dtgveO7WLqkERFehRssqI4kQPQB3J+ycOn4uo6Zzk7qZQdfPjZPHnzBuJ
-	 Y7It0yXqGlZ0FIMAsBXNaNj8C0xGKgYafilUHANKLmIgQM/nkj4Ixr/3nNBbjim4Jz
-	 l20NKLIX8Nqd/uJA8M40oXGuL6gFdS4NiwJs1CiE87EawLjd+xhu1s+8CGZBxgD47C
-	 gS55hnXJRI2cQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 09/30] cpumask: fix incorrect cpumask scanning result checks
-Date: Sun, 19 Mar 2023 20:52:34 -0400
-Message-Id: <20230320005258.1428043-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230320005258.1428043-1-sashal@kernel.org>
-References: <20230320005258.1428043-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pfybs4s83z30Lt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 12:59:51 +1100 (AEDT)
+Received: by mail-lf1-x12b.google.com with SMTP id s8so12796176lfr.8
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Mar 2023 18:59:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1679277585;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=veHR4OeBVdmMM7ZoMMD2LEaF+ZQb01kUcsthEQZ+G8o=;
+        b=SNcJ+0V8W1TJ4MntzJ+tWV7MHo4J3GQzdu8n70Frwh9hfIq8QJeAepOPu8iQN8X+PI
+         718jEIJg59mxJDYCZRplEWtR5a0GmEVRh4EPAtJkC6Hq5jJlDEALE1binS+iGalKfCmv
+         EGPciyy8uyBqEs3OImQsnGjVKl5PsCY2jrNl8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679277585;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=veHR4OeBVdmMM7ZoMMD2LEaF+ZQb01kUcsthEQZ+G8o=;
+        b=o2NHgpv4rcW5BCatKLYhphlbltC8bKeqySBir2U5akyY3eCATZrnGWX1PxrbVd4M90
+         cFA69l2+7VioD7JDM+eotIPvYBvmaIwV5Keq9eGc7mrdni2Q2UULzBwUJNW0paT+UrZQ
+         hyP8VDDMtfkafj+3kYvoqsB8ObqaTktqGvmzHVoXD9BE8lEppAKS/L1mUE5/LsujAduG
+         7Zz1dCJ9IAO53dSeU//OnIeWDVD13oz5FZgtf1+JafbfQPj9zpPO5NPdxH8e/b+/NSwb
+         g5H7ytKmlxmfQNe+TVi9CM0VWMoMJ5YWuKPusEPxlOrOUdsq55JxEuLX84kunJ3jQDDi
+         SLrw==
+X-Gm-Message-State: AO0yUKWMUQa3OjaBjcUMpU59QOPRrPzl7JCK2nGjzbE4dH7Sz4PzzJou
+	0fOkjGTFBT1pp2Hw/jTkoeceG70EfKLCoo6xPtIKlg==
+X-Google-Smtp-Source: AK7set9NoIcL0WdBeRjjWi+Eemr31s2Ux2qoNV0NglRZoPAScBMI6RdBJzw3qUfBEDf++kagSdEhLg==
+X-Received: by 2002:ac2:5628:0:b0:4de:8588:b57c with SMTP id b8-20020ac25628000000b004de8588b57cmr5670511lff.28.1679277585393;
+        Sun, 19 Mar 2023 18:59:45 -0700 (PDT)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
+        by smtp.gmail.com with ESMTPSA id w7-20020ac24427000000b004db4f2f08f7sm1483825lfl.28.2023.03.19.18.59.45
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Mar 2023 18:59:45 -0700 (PDT)
+Received: by mail-lf1-f42.google.com with SMTP id f18so13085622lfa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Mar 2023 18:59:45 -0700 (PDT)
+X-Received: by 2002:a17:906:2294:b0:927:912:6baf with SMTP id
+ p20-20020a170906229400b0092709126bafmr2817236eja.15.1679277564111; Sun, 19
+ Mar 2023 18:59:24 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20230320005258.1428043-1-sashal@kernel.org> <20230320005258.1428043-9-sashal@kernel.org>
+In-Reply-To: <20230320005258.1428043-9-sashal@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 19 Mar 2023 18:59:07 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgpK-Gm-nOybRKs1LTD5yb7rPHQ4+=PCDvq61mUpBskYw@mail.gmail.com>
+Message-ID: <CAHk-=wgpK-Gm-nOybRKs1LTD5yb7rPHQ4+=PCDvq61mUpBskYw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.2 09/30] cpumask: fix incorrect cpumask scanning
+ result checks
+To: Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,191 +83,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vernon Yang <vernon2gm@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, "Jason A . Donenfeld" <Jason@zx2c4.com>, edumazet@google.com, Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org, james.smart@broadcom.com, joel@jms.id.au, dmitry.osipenko@collabora.com, kuba@kernel.org, naveen.n.rao@linux.vnet.ibm.com, pabeni@redhat.com, Guenter Roeck <linux@roeck-us.net>, nathanl@linux.ibm.com, dick.kennedy@broadcom.com, Yury Norov <yury.norov@gmail.com>, jejb@linux.ibm.com, npiggin@gmail.com, tytso@mit.edu, martin.petersen@oracle.com, linuxppc-dev@lists.ozlabs.org, gustavoars@kernel.org, netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, davem@davemloft.net, wireguard@lists.zx2c4.com
+Cc: Vernon Yang <vernon2gm@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, "Jason A . Donenfeld" <Jason@zx2c4.com>, gustavoars@kernel.org, edumazet@google.com, linux-scsi@vger.kernel.org, james.smart@broadcom.com, joel@jms.id.au, dmitry.osipenko@collabora.com, kuba@kernel.org, naveen.n.rao@linux.vnet.ibm.com, pabeni@redhat.com, Guenter Roeck <linux@roeck-us.net>, nathanl@linux.ibm.com, dick.kennedy@broadcom.com, Yury Norov <yury.norov@gmail.com>, jejb@linux.ibm.com, npiggin@gmail.com, tytso@mit.edu, martin.petersen@oracle.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+On Sun, Mar 19, 2023 at 5:53=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> [ Upstream commit 8ca09d5fa3549d142c2080a72a4c70ce389163cd ]
 
-[ Upstream commit 8ca09d5fa3549d142c2080a72a4c70ce389163cd ]
+These are technically real fixes, but they are really just "documented
+behavior" fixes, and don't actually matter unless you also have
+596ff4a09b89 ("cpumask: re-introduce constant-sized cpumask
+optimizations"), which doesn't look like stable material.
 
-It turns out that commit 596ff4a09b89 ("cpumask: re-introduce
-constant-sized cpumask optimizations") exposed a number of cases of
-drivers not checking the result of "cpumask_next()" and friends
-correctly.
+And if somebody *does* decide to backport commit 596ff4a09b89, you
+should then backport all of
 
-The documented correct check for "no more cpus in the cpumask" is to
-check for the result being equal or larger than the number of possible
-CPU ids, exactly _because_ we've always done those constant-sized
-cpumask scans using a widened type before.  So the return value of a
-cpumask scan should be checked with
+  6015b1aca1a2 sched_getaffinity: don't assume 'cpumask_size()' is
+fully initialized
+  e7304080e0e5 cpumask: relax sanity checking constraints
+  63355b9884b3 cpumask: be more careful with 'cpumask_setall()'
+  8ca09d5fa354 cpumask: fix incorrect cpumask scanning result checks
 
-	if (cpu >= nr_cpu_ids)
-		...
+but again, none of these matter as long as the constant-sized cpumask
+optimized case doesn't exist.
 
-because the cpumask scan did not necessarily stop exactly *at* that
-maximum CPU id.
+(Technically, FORCE_NR_CPUS also does the constant-size optimizations
+even before, but that will complain loudly if that constant size then
+doesn't match nr_cpu_ids, so ..).
 
-But a few cases ended up instead using checks like
-
-	if (cpu == nr_cpumask_bits)
-		...
-
-which used that internal "widened" number of bits.  And that used to
-work pretty much by accident (ok, in this case "by accident" is simply
-because it matched the historical internal implementation of the cpumask
-scanning, so it was more of a "intentionally using implementation
-details rather than an accident").
-
-But the extended constant-sized optimizations then did that internal
-implementation differently, and now that code that did things wrong but
-matched the old implementation no longer worked at all.
-
-Which then causes subsequent odd problems due to using what ends up
-being an invalid CPU ID.
-
-Most of these cases require either unusual hardware or special uses to
-hit, but the random.c one triggers quite easily.
-
-All you really need is to have a sufficiently small CONFIG_NR_CPUS value
-for the bit scanning optimization to be triggered, but not enough CPUs
-to then actually fill that widened cpumask.  At that point, the cpumask
-scanning will return the NR_CPUS constant, which is _not_ the same as
-nr_cpumask_bits.
-
-This just does the mindless fix with
-
-   sed -i 's/== nr_cpumask_bits/>= nr_cpu_ids/'
-
-to fix the incorrect uses.
-
-The ones in the SCSI lpfc driver in particular could probably be fixed
-more cleanly by just removing that repeated pattern entirely, but I am
-not emptionally invested enough in that driver to care.
-
-Reported-and-tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/lkml/481b19b5-83a0-4793-b4fd-194ad7b978c3@roeck-us.net/
-Reported-and-tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/lkml/CAMuHMdUKo_Sf7TjKzcNDa8Ve+6QrK+P8nSQrSQ=6LTRmcBKNww@mail.gmail.com/
-Reported-by: Vernon Yang <vernon2gm@gmail.com>
-Link: https://lore.kernel.org/lkml/20230306160651.2016767-1-vernon2gm@gmail.com/
-Cc: Yury Norov <yury.norov@gmail.com>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/xmon/xmon.c         |  2 +-
- drivers/char/random.c            |  2 +-
- drivers/net/wireguard/queueing.h |  2 +-
- drivers/scsi/lpfc/lpfc_init.c    | 14 +++++++-------
- 4 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 0da66bc4823d4..3b4e2475fc4ef 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1277,7 +1277,7 @@ static int xmon_batch_next_cpu(void)
- 	while (!cpumask_empty(&xmon_batch_cpus)) {
- 		cpu = cpumask_next_wrap(smp_processor_id(), &xmon_batch_cpus,
- 					xmon_batch_start_cpu, true);
--		if (cpu == nr_cpumask_bits)
-+		if (cpu >= nr_cpu_ids)
- 			break;
- 		if (xmon_batch_start_cpu == -1)
- 			xmon_batch_start_cpu = cpu;
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index ce3ccd172cc86..253f2ddb89130 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -1311,7 +1311,7 @@ static void __cold try_to_generate_entropy(void)
- 			/* Basic CPU round-robin, which avoids the current CPU. */
- 			do {
- 				cpu = cpumask_next(cpu, &timer_cpus);
--				if (cpu == nr_cpumask_bits)
-+				if (cpu >= nr_cpu_ids)
- 					cpu = cpumask_first(&timer_cpus);
- 			} while (cpu == smp_processor_id() && num_cpus > 1);
- 
-diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
-index 583adb37ee1e3..125284b346a77 100644
---- a/drivers/net/wireguard/queueing.h
-+++ b/drivers/net/wireguard/queueing.h
-@@ -106,7 +106,7 @@ static inline int wg_cpumask_choose_online(int *stored_cpu, unsigned int id)
- {
- 	unsigned int cpu = *stored_cpu, cpu_index, i;
- 
--	if (unlikely(cpu == nr_cpumask_bits ||
-+	if (unlikely(cpu >= nr_cpu_ids ||
- 		     !cpumask_test_cpu(cpu, cpu_online_mask))) {
- 		cpu_index = id % cpumask_weight(cpu_online_mask);
- 		cpu = cpumask_first(cpu_online_mask);
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 25ba20e428255..3fbd3bec26fc1 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -12507,7 +12507,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 					goto found_same;
- 				new_cpu = cpumask_next(
- 					new_cpu, cpu_present_mask);
--				if (new_cpu == nr_cpumask_bits)
-+				if (new_cpu >= nr_cpu_ids)
- 					new_cpu = first_cpu;
- 			}
- 			/* At this point, we leave the CPU as unassigned */
-@@ -12521,7 +12521,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 			 * selecting the same IRQ.
- 			 */
- 			start_cpu = cpumask_next(new_cpu, cpu_present_mask);
--			if (start_cpu == nr_cpumask_bits)
-+			if (start_cpu >= nr_cpu_ids)
- 				start_cpu = first_cpu;
- 
- 			lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
-@@ -12557,7 +12557,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 					goto found_any;
- 				new_cpu = cpumask_next(
- 					new_cpu, cpu_present_mask);
--				if (new_cpu == nr_cpumask_bits)
-+				if (new_cpu >= nr_cpu_ids)
- 					new_cpu = first_cpu;
- 			}
- 			/* We should never leave an entry unassigned */
-@@ -12575,7 +12575,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 			 * selecting the same IRQ.
- 			 */
- 			start_cpu = cpumask_next(new_cpu, cpu_present_mask);
--			if (start_cpu == nr_cpumask_bits)
-+			if (start_cpu >= nr_cpu_ids)
- 				start_cpu = first_cpu;
- 
- 			lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
-@@ -12648,7 +12648,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 				goto found_hdwq;
- 			}
- 			new_cpu = cpumask_next(new_cpu, cpu_present_mask);
--			if (new_cpu == nr_cpumask_bits)
-+			if (new_cpu >= nr_cpu_ids)
- 				new_cpu = first_cpu;
- 		}
- 
-@@ -12663,7 +12663,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
- 				goto found_hdwq;
- 
- 			new_cpu = cpumask_next(new_cpu, cpu_present_mask);
--			if (new_cpu == nr_cpumask_bits)
-+			if (new_cpu >= nr_cpu_ids)
- 				new_cpu = first_cpu;
- 		}
- 
-@@ -12674,7 +12674,7 @@ lpfc_cpu_affinity_check(struct lpfc_hba *phba, int vectors)
-  found_hdwq:
- 		/* We found an available entry, copy the IRQ info */
- 		start_cpu = cpumask_next(new_cpu, cpu_present_mask);
--		if (start_cpu == nr_cpumask_bits)
-+		if (start_cpu >= nr_cpu_ids)
- 			start_cpu = first_cpu;
- 		cpup->hdwq = new_cpup->hdwq;
-  logit:
--- 
-2.39.2
-
+                   Linus
