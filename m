@@ -2,66 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A688D6C2719
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 02:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A29D6C271D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 02:14:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PgYWz3Rlzz3f89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 12:13:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgYXz378hz3fQV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 12:14:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PMXRutyh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tsUDZOPW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=lorenzo@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PMXRutyh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tsUDZOPW;
 	dkim-atps=neutral
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5f30HNBz2ym7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:17:14 +1100 (AEDT)
-Received: by mail-wm1-x329.google.com with SMTP id p13-20020a05600c358d00b003ed346d4522so6825081wmq.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679296630;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPfksq9HcHZfOW713EHJPP4EqV5hzLLqhdQlnIpNQ4w=;
-        b=PMXRutyhQFx1KU9gPiiDMqyuz2dvA92bTRqogWM4OB4usYcokfKFO13vIDzfzAXNeU
-         qKHvl5c1d9tk4TCbPT3R/zca2Dhle0sxmuYyCp8h52n1LZWspQQQbmeYX0xpFI0Pm7r2
-         ebxxMqKSwc9xGFdUQvyx7eepNit6IMhsjRx3rC9AquJbcIgRMbgj7fTli8FnKhMALz9a
-         HBKHMRMaf9lBufOCNRkVQ+Lp+g9ELub7Pq52voEkfp13ainxAk6BdejDKUKHEHdwE8Nq
-         IZXgulMujh932zf7F+uOS4gh2iT8rL2R5X5NJ/QBxkyjGU6KmL8akyuGNLPcjecTU3rz
-         lFEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679296630;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CPfksq9HcHZfOW713EHJPP4EqV5hzLLqhdQlnIpNQ4w=;
-        b=LPwUiKF/WxNVWfI/kSrBQ/GLg10Woc4JDYj1XZttIcoJIdT8PqhaGvoW1tTnYhrbTQ
-         np0Q1LS9gRTnE1LzNn0Cz6CXHWuwzxvTKJo5zwG2QgIAdWDrUf7QPF0gluYEdVxfmnXO
-         GlPZfT8MbFL1au/7Q4mhzZvzegADS+6dVptAcSyeCKlcfCtNl/fm8W79QlCzMv/hlw2B
-         pEH+9TL6ZjAmP6LUEfGMb/F2d2kZfp/zdkXtHsZLPkNJXyqceUjoK5k31Ttt4KlFe5oR
-         ome4gGczE9AaCrZXqM8XIDSn+o93E0DIpdwlbcfLbMiTu/MViqo2qy5W5NhevIqr8tYU
-         S7vA==
-X-Gm-Message-State: AO0yUKU5i7FliQW2t/73vWgVfBp6o7MkaElISrpnyqqW0oGBk2lBxLoc
-	L9X/id9+ftMoCBo3+45nHDRuctGrufvhFOLGnbM=
-X-Google-Smtp-Source: AK7set/OBiFs7Xg2IWUgP/EwAtFtEoS5w1aGmFF2v9Tj2CD2CdHIr6sfWK/qn/FwI6ulg5h/4/qGKVw4GVQbr7pNspc=
-X-Received: by 2002:a7b:c398:0:b0:3ed:f221:9a49 with SMTP id
- s24-20020a7bc398000000b003edf2219a49mr549201wmj.7.1679296630506; Mon, 20 Mar
- 2023 00:17:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgFpr58V1z3cGr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 00:25:24 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 871DC61245;
+	Mon, 20 Mar 2023 13:25:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E84C433EF;
+	Mon, 20 Mar 2023 13:25:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679318721;
+	bh=UeZMrJPYit2H6JQDbNqKYT/xHNGfkb0l6hG4u2sVNTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tsUDZOPWN+/gURT53qoxbgTGzlRCItwc9ET4fXPeJWEypvPWQn/OmuGHFs3t0grIj
+	 o82Z7dmBL9ynomFmKnKn++bDLIXgHuU4tBYnxkoGT1zIcHpXcq67mFMLbo2eSx/A72
+	 KxI8atK1HXSI5RG+ZA7uSDEklYV0sLHjuSRyFriGcVAh3G/V7RygXeaQjqI7z/EhGr
+	 VBFSWZ3hfWeS865lIb7s1zQmpRXw4YpvX4vQGcsvs5sOJNU3cnMkr0/7Kmqtn9/DGf
+	 jjUPJUjWm6vS4MR3/u6AvquYNlusBnScitIOfVJjIsQQOkEtgZ1LT8Kr1I/qOsBrY2
+	 80iLS9I6BkdVA==
+Date: Mon, 20 Mar 2023 14:25:17 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+Subject: Re: [next-20230317][PPC/MLX5][bisected 4d5ab0a] Boot WARNING: CPU: 0
+ PID: 9 at net/core/dev.c:1928 call_netdevice_notifiers_info
+Message-ID: <ZBheva8pJ3VJq/pO@lore-desk>
+References: <7fe9d0b0-7d77-79cc-405d-3ca38b552782@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20230316123611.3495597-1-alexander.stein@ew.tq-group.com> <20230316123611.3495597-2-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20230316123611.3495597-2-alexander.stein@ew.tq-group.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 20 Mar 2023 15:16:59 +0800
-Message-ID: <CAA+D8AMUd0JSKipzY+7tc4ihpYApg0yrLHjYgeAn0gVL11phKA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ASoC: fsl: Specify driver name in ASoC card
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Content-Type: multipart/alternative; boundary="000000000000224a0805f74fb7ce"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VPexZZeqZEVbmK5a"
+Content-Disposition: inline
+In-Reply-To: <7fe9d0b0-7d77-79cc-405d-3ca38b552782@linux.vnet.ibm.com>
 X-Mailman-Approved-At: Tue, 21 Mar 2023 12:11:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,104 +62,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: Brian King <brking@linux.vnet.ibm.com>, netdev <netdev@vger.kernel.org>, linux-next <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000224a0805f74fb7ce
-Content-Type: text/plain; charset="UTF-8"
+
+--VPexZZeqZEVbmK5a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 16, 2023 at 8:36=E2=80=AFPM Alexander Stein <
-alexander.stein@ew.tq-group.com> wrote:
+> Greeting's
+>=20
+> Warning is seen while booting kernels from 6.3.0-rc3-next-20230317 on my
+> powerpc Power 10 LPAR
+>=20
+> Boots fine without warnings when below patch is reverted
+>=20
+> commit 4d5ab0ad964df178beba031b89429a601893ff61
+> Author: Lorenzo Bianconi <lorenzo@kernel.org>
+> Date:   Thu Mar 9 13:25:31 2023 +0100
+>=20
+>     net/mlx5e: take into account device reconfiguration for xdp_features
+> flag
+>=20
+>     Take into account LRO and GRO configuration setting device xdp_featur=
+es
+>     flag. Consider channel rq_wq_type enabling rx scatter-gatter support =
+in
+>     xdp_features flag and disable NETDEV_XDP_ACT_NDO_XMIT_SG since it is =
+not
+>     supported yet by the driver.
+>     Moreover always enable NETDEV_XDP_ACT_NDO_XMIT as the ndo_xdp_xmit
+>=20
+> 4d5ab0ad got introduced in next-20230314
+>=20
+> @Lorenzo Could you please look into this
 
-> Set the snd_soc_card driver name which fixes the warning:
-> fsl-asoc-card sound: ASoC: driver name too long 'imx-audio-tlv320aic32x4'
-> -> 'imx-audio-tlv32'
->
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->
+I would say this issue has been already fixed by Jakub here:
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/net/c=
+ore/xdp.c?id=3D769639c1fe8a98129aa97c8ee981639db1e8955c
 
-Best regards
-wang shengjiu
+Regards,
+Lorenzo
 
-> ---
-> These patches could be squashed, but I opted for separation this patch
-> is the actual functional change. Patch 1 is just preparation.
->
->  sound/soc/fsl/fsl-asoc-card.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.=
-c
-> index e956abfd50f8..bffa1048d31e 100644
-> --- a/sound/soc/fsl/fsl-asoc-card.c
-> +++ b/sound/soc/fsl/fsl-asoc-card.c
-> @@ -609,6 +609,7 @@ static int fsl_asoc_card_probe(struct platform_device
-> *pdev)
->
->         priv->card.dapm_routes =3D audio_map;
->         priv->card.num_dapm_routes =3D ARRAY_SIZE(audio_map);
-> +       priv->card.driver_name =3D DRIVER_NAME;
->         /* Diversify the card configurations */
->         if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
->                 codec_dai_name =3D "cs42888";
-> --
-> 2.34.1
->
->
+>=20
+> Boot console logs
+>=20
+> sd 0:0:1:0: [sdb] Preferred minimum I/O size 32768 bytes
+>  sdb: sdb1 sdb2 sdb3
+> sd 0:0:1:0: [sdb] Attached SCSI disk
+> mlx5_core 4001:01:00.0: enabling device (0000 -> 0002)
+> mlx5_core 4001:01:00.0: firmware version: 14.32.1010
+> ------------[ cut here ]------------
+> RTNL: assertion failed at net/core/dev.c (1928)
+> WARNING: CPU: 0 PID: 9 at net/core/dev.c:1928
+> call_netdevice_notifiers_info+0xd8/0xe0
+> Modules linked in: mlx5_core(+) sd_mod t10_pi crc64_rocksoft crc64 sg ibm=
+vfc
+> mlxfw scsi_transport_fc ibmveth ptp pps_core dm_multipath dm_mirror
+> dm_region_hash dm_log dm_mod fuse
+> CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.3.0-rc2-next-20230317-autot=
+est
+> #1
+> Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006
+> of:IBM,FW1030.00 (NH1030_029) hv:phyp pSeries
+> Workqueue: events work_for_cpu_fn
+> NIP:  c000000000aca1f8 LR: c000000000aca1f4 CTR: 0000000000725d40
+> REGS: c0000000038230a0 TRAP: 0700   Not tainted
+> (6.3.0-rc2-next-20230317-autotest)
+> MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48228824 XE=
+R:
+> 00000010
+> CFAR: c000000000154c40 IRQMASK: 0
+> GPR00: c000000000aca1f4 c000000003823340 c0000000011ccb00 000000000000002f
+> GPR04: 00000000ffff7fff c000000003823110 c000000003823108 0000000000000027
+> GPR08: c000000c7cc07e90 0000000000000001 0000000000000027 c0000000028f7c30
+> GPR12: 0000000048228824 c000000002d10000 c000000000191b58 c0000000032f1000
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR20: 0000000000000000 c0000000032f9200 fffffffffffff000 0000000000000000
+> GPR24: c000000076c001a0 c00800000042c588 c000000008d06c00 c000000008d069a0
+> GPR28: c000000076c301a0 c000000002d01780 0000000000000028 c0000000038233e8
+> NIP [c000000000aca1f8] call_netdevice_notifiers_info+0xd8/0xe0
+> LR [c000000000aca1f4] call_netdevice_notifiers_info+0xd4/0xe0
+> Call Trace:
+> [c000000003823340] [c000000000aca1f4]
+> call_netdevice_notifiers_info+0xd4/0xe0 (unreliable)
+> [c0000000038233c0] [c000000000aca23c] call_netdevice_notifiers+0x3c/0x70
+> [c000000003823400] [c000000000b1f64c] xdp_set_features_flag+0x3c/0x50
+> [c000000003823420] [c008000000c56db0] mlx5e_set_xdp_feature+0x48/0x90
+> [mlx5_core]
+> [c000000003823440] [c008000000c59414] mlx5e_probe+0x3cc/0x880 [mlx5_core]
+> [c000000003823500] [c00000000088561c] auxiliary_bus_probe+0x6c/0xf0
+> [c000000003823580] [c0000000008725e8] really_probe+0x108/0x530
+> [c000000003823610] [c000000000872ac4] __driver_probe_device+0xb4/0x230
+> [c000000003823690] [c000000000872c98] driver_probe_device+0x58/0x120
+> [c0000000038236d0] [c000000000872e7c] __device_attach_driver+0x11c/0x1e0
+> [c000000003823750] [c00000000086e994] bus_for_each_drv+0xb4/0x130
+> [c0000000038237b0] [c0000000008723cc] __device_attach+0x15c/0x250
+> [c000000003823850] [c0000000008704e8] bus_probe_device+0xf8/0x100
+> [c0000000038238a0] [c00000000086c258] device_add+0x798/0x9e0
+> [c000000003823960] [c0000000008857d8] __auxiliary_device_add+0x58/0xe0
+> [c0000000038239d0] [c008000000c35350] add_adev+0xb8/0x180 [mlx5_core]
+> [c000000003823a10] [c008000000c35614]
+> mlx5_rescan_drivers_locked.part.11+0x1fc/0x260 [mlx5_core]
+> [c000000003823ad0] [c008000000c35d88] mlx5_register_device+0xb0/0x100
+> [mlx5_core]
+> [c000000003823b10] [c008000000c02aa8] mlx5_init_one+0x340/0x680 [mlx5_cor=
+e]
+> [c000000003823ba0] [c008000000c03e10] probe_one+0x258/0x540 [mlx5_core]
+> [c000000003823c30] [c00000000077c2bc] local_pci_probe+0x6c/0x110
+> [c000000003823cb0] [c00000000017f9b8] work_for_cpu_fn+0x38/0x60
+> [c000000003823ce0] [c0000000001853d4] process_one_work+0x284/0x550
+> [c000000003823d80] [c0000000001858f0] worker_thread+0x250/0x5d0
+> [c000000003823e00] [c000000000191c88] kthread+0x138/0x140
+> [c000000003823e50] [c00000000000cf5c] ret_from_kernel_thread+0x5c/0x64
+> --- interrupt: 0 at 0x0
+> NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
+> REGS: c000000003823e80 TRAP: 0000   Not tainted
+> (6.3.0-rc2-next-20230317-autotest)
+> MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
+> CFAR: 0000000000000000 IRQMASK: 0
+> GPR00: 0000000000000000 c000000003824000 0000000000000000 0000000000000000
+> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR12: 0000000000000000 0000000000000000 c000000000191b58 c0000000032f1000
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> NIP [0000000000000000] 0x0
+> LR [0000000000000000] 0x0
+> --- interrupt: 0
+> Code: 2f890000 409eff9c 39200001 3c82fff1 3c62fff1 3d42017d 38a00788
+> 3884b3c8 3863b3d8 992a2141 4b68a969 60000000 <0fe00000> 60000000 3c4c0070
+> 38422900
+>=20
+> --=20
+> Regard's
+>=20
+> Abdul Haleem
+> IBM Linux Technology Center
 
---000000000000224a0805f74fb7ce
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--VPexZZeqZEVbmK5a
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 16, 2023 at 8:36=E2=80=AF=
-PM Alexander Stein &lt;<a href=3D"mailto:alexander.stein@ew.tq-group.com">a=
-lexander.stein@ew.tq-group.com</a>&gt; wrote:<br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">Set the snd_soc_card driver name which fixes =
-the warning:<br>
-fsl-asoc-card sound: ASoC: driver name too long &#39;imx-audio-tlv320aic32x=
-4&#39;<br>
--&gt; &#39;imx-audio-tlv32&#39;<br>
-<br>
-Signed-off-by: Alexander Stein &lt;<a href=3D"mailto:alexander.stein@ew.tq-=
-group.com" target=3D"_blank">alexander.stein@ew.tq-group.com</a>&gt;<br></b=
-lockquote><div><br></div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto=
-:shengjiu.wang@gmail.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br></d=
-iv><div>Best regards</div><div>wang shengjiu=C2=A0</div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">
----<br>
-These patches could be squashed, but I opted for separation this patch<br>
-is the actual functional change. Patch 1 is just preparation.<br>
-<br>
-=C2=A0sound/soc/fsl/fsl-asoc-card.c | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c<=
-br>
-index e956abfd50f8..bffa1048d31e 100644<br>
---- a/sound/soc/fsl/fsl-asoc-card.c<br>
-+++ b/sound/soc/fsl/fsl-asoc-card.c<br>
-@@ -609,6 +609,7 @@ static int fsl_asoc_card_probe(struct platform_device *=
-pdev)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;card.dapm_routes =3D audio_map;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;card.num_dapm_routes =3D ARRAY_SIZE(au=
-dio_map);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0priv-&gt;card.driver_name =3D DRIVER_NAME;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Diversify the card configurations */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (of_device_is_compatible(np, &quot;fsl,imx-a=
-udio-cs42888&quot;)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 codec_dai_name =3D =
-&quot;cs42888&quot;;<br>
--- <br>
-2.34.1<br>
-<br>
-</blockquote></div></div>
+-----BEGIN PGP SIGNATURE-----
 
---000000000000224a0805f74fb7ce--
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZBhevQAKCRA6cBh0uS2t
+rHC1AP9464q9G7eiWdMYp9r0kTxoNmjn3XCE4+gZ0jAh1Dbx8QD/adB7MLFCBoEy
+H7IeCfpCjz4ZShdGWlS9uCJXUnD+kAs=
+=EuqL
+-----END PGP SIGNATURE-----
+
+--VPexZZeqZEVbmK5a--
