@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A556C0B19
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 985076C0B1A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:09:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Rn4rD1z3fCJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:08:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Sp38x3z3fJk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:09:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CjkhLNm5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fZbQsbBQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CjkhLNm5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fZbQsbBQ;
 	dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5Lq5VRnz3cJF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:04:03 +1100 (AEDT)
-Received: by mail-pl1-x62f.google.com with SMTP id le6so11426191plb.12
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:04:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5Lt3Fg9z3cDp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:04:06 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id h12-20020a17090aea8c00b0023d1311fab3so11355875pjz.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679295841;
+        d=gmail.com; s=20210112; t=1679295844;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YgtM7TlxgAIoKdfgC+k38fH5tECmZ4bBfgi2cHLlGS0=;
-        b=CjkhLNm5CeCG8XIRiBF6PK3VJ+SY/fLQd3hDXzjE9Qkd/SBHlfqRWYND38NZoJ+U/Y
-         MRyI9kx66QpfyeO0GmdZOUhSSLQdHFusM6JFr/SNc+jY4FS7iQnypXy7HWS6qFnbPOly
-         BWMiJvynKcIG6EciSMq6gLUQIwK5Eldvr6W2Ck5qkyKvo5QyUp+6A1ahbj5oxNZKukXP
-         JcRysbmdfgrCJ+a05z/S3ccdfGgIktSrdl4HCKDGojUpu/Tct21492gmxD4K6hil4u3W
-         xCj/511k9sDRrMa4hRniaAa34Mc95NC85KNT7pJshQq2WPt5Xp+c7myU+SmByG0z970D
-         BkDg==
+        bh=DK9dLTAGrMpm0BQxyn19vYjH0cboReyEkRdHItdBxGQ=;
+        b=fZbQsbBQUoIFGp1JnZnU8ZMXqH//p630M3/9raEE6NDwYmA620sxEBj7wHOb9irD3v
+         V9Rygp+hyp5eU1vPmMFuL90zbpU9bwD6xKVDRwrpWU365Egfsdq0ebn97+QYZUATFh80
+         vbu5VtjK+70JeV4EcmrTVS77jHMoDRYEa8BwrqLoZJEPHLq/iJ8qUZ37CgFFlN7fs3sh
+         yls7W7GklBk1cgd24hKISfBAUKBPhsKA/DwP9fEemZ+UYNGFDDzh9OxTXKcHHlNGtlBO
+         ATG7wf1NsR+43zq31V/F5Ek335Y0IxHOjKjMQK1OueBezhKio7lgsn/nc0v+wyUhszXP
+         dMxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679295841;
+        d=1e100.net; s=20210112; t=1679295844;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YgtM7TlxgAIoKdfgC+k38fH5tECmZ4bBfgi2cHLlGS0=;
-        b=XTOzC4DPW/KNBNyYvF1u3iN+QJk/0mxigCYgfAjn2EJPVyagnd+7tc7TKN2vasAS7C
-         F7zUzxuH/YaQCf9z6+gq5a3WUxSupjKvtZDbSnSzgdGvp5TNVfPucjpGRRM0acQJzppm
-         gORiOunmHTkqDHOQNVo6rhq8088czW9PNyc7z5y/vtL4a7BUu+BYX0h8Tjsf3ApM7GHS
-         p82RwFC50FeaFRD/9XUP4dXMClvlfgD4MQVqtmk8wKwjRZXpqsIqZG3ehUuqVxnRuGJh
-         xe9xqdS7uvutXJz2o/HWcY9zmMaclCITupVHPf6tA17nXI4jMB0WMvaaQzhTrbf74hD+
-         geWg==
-X-Gm-Message-State: AO0yUKV11SHBKYEtRfzfKfgELNJZNPKDYLIBPuVBUOJb4u8zdBTvc4un
-	e8+LY49TYSJc+DxmF9hqBF0=
-X-Google-Smtp-Source: AK7set8l8LttOuDE9xEiqTXs3Aficc6Zhwou2AU693HO7yweDxG65R3m3lrsFWiUkoUSeupE+nh+nA==
-X-Received: by 2002:a17:90a:4041:b0:23f:9445:318c with SMTP id k1-20020a17090a404100b0023f9445318cmr5460462pjg.38.1679295841474;
-        Mon, 20 Mar 2023 00:04:01 -0700 (PDT)
+        bh=DK9dLTAGrMpm0BQxyn19vYjH0cboReyEkRdHItdBxGQ=;
+        b=Ea+u/KogXhInrFTqsXF2LfjIAdCVIMuFKM+lOUIJwBKinredLU3T3rn7Cp3o8EmlhA
+         CVza9UafHNhCv+yuHyLdHcS3uFPUKc28sIHKWQmPgGioE9EqqHvWEe8BV6FP4slp79ci
+         Ug7sCUjuidJzKTnsTAtj5M4d31FTUGDEe429Jl2YxttoKxF4/9hN3m+AcJ23n3+QxHJk
+         1dx3i0heeZDz9X4RDoWbbSHxlnLxPUjfSL63nKL5y+r0X3rAeXJU39fFqvJUGwkR+eMq
+         AAWeSyJ/pzLv0M2dAfj3poYXqx66lxJH5pl9txbNfm9DsyfnwzSzgqum7zPdud4Ge4tL
+         4zUA==
+X-Gm-Message-State: AO0yUKW3MROApxip0g4KYvavk5IzklGbE6PTVEkNhpdyXgoVKHkFCiWw
+	gbiC+K4W7zgWw5Z5UTVHFWH3NGUCF60=
+X-Google-Smtp-Source: AK7set+gdr5NPSUQ2wzxNeH+vdLlvghZATI1sJX3v/UIzP9/k3N8tvJADvmM4eoF5n3lucA95ncVDA==
+X-Received: by 2002:a17:90b:1bc8:b0:237:a174:ce54 with SMTP id oa8-20020a17090b1bc800b00237a174ce54mr17408446pjb.21.1679295844637;
+        Mon, 20 Mar 2023 00:04:04 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.03.58
+        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.04.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 00:04:00 -0700 (PDT)
+        Mon, 20 Mar 2023 00:04:04 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests v2 04/10] powerpc: Add ISA v3.1 (POWER10) support to SPR test
-Date: Mon, 20 Mar 2023 17:03:33 +1000
-Message-Id: <20230320070339.915172-5-npiggin@gmail.com>
+Subject: [kvm-unit-tests v2 05/10] powerpc: Indirect SPR accessor functions
+Date: Mon, 20 Mar 2023 17:03:34 +1000
+Message-Id: <20230320070339.915172-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230320070339.915172-1-npiggin@gmail.com>
 References: <20230320070339.915172-1-npiggin@gmail.com>
@@ -82,67 +82,103 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a very basic detection that does not include all new SPRs.
+Make overly-clever SPR accessor functions that allow a non-constant
+SPR number to be specified. This will be used to restructure test
+in the next change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/sprs.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ powerpc/sprs.c | 63 ++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 54 insertions(+), 9 deletions(-)
 
 diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-index ba4ddee..6ee6dba 100644
+index 6ee6dba..db341a9 100644
 --- a/powerpc/sprs.c
 +++ b/powerpc/sprs.c
-@@ -117,6 +117,15 @@ static void set_sprs_book3s_300(uint64_t val)
- 	mtspr(823, val);	/* PSSCR */
- }
+@@ -28,21 +28,66 @@
+ #include <asm/processor.h>
+ #include <asm/barrier.h>
  
-+/* SPRs from Power ISA Version 3.1B */
-+static void set_sprs_book3s_31(uint64_t val)
+-#define mfspr(nr) ({ \
+-	uint64_t ret; \
+-	asm volatile("mfspr %0,%1" : "=r"(ret) : "i"(nr)); \
+-	ret; \
+-})
++/* "Indirect" mfspr/mtspr which accept a non-constant spr number */
++static uint64_t mfspr(unsigned spr)
 +{
-+	set_sprs_book3s_207(val);
-+	mtspr(48, val);		/* PIDR */
-+	/* 3.1 removes TIDR */
-+	mtspr(823, val);	/* PSSCR */
-+}
++	uint64_t tmp;
++	uint64_t ret;
 +
- static void set_sprs(uint64_t val)
- {
- 	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-@@ -137,6 +146,9 @@ static void set_sprs(uint64_t val)
- 	case 0x4e:			/* POWER9 */
- 		set_sprs_book3s_300(val);
- 		break;
-+	case 0x80:                      /* POWER10 */
-+		set_sprs_book3s_31(val);
-+		break;
- 	default:
- 		puts("Warning: Unknown processor version!\n");
- 	}
-@@ -220,6 +232,13 @@ static void get_sprs_book3s_300(uint64_t *v)
- 	v[823] = mfspr(823);	/* PSSCR */
- }
++	asm volatile(
++"	bcl	20, 31, 1f		\n"
++"1:	mflr	%0			\n"
++"	addi	%0, %0, (2f-1b)		\n"
++"	add	%0, %0, %2		\n"
++"	mtctr	%0			\n"
++"	bctr				\n"
++"2:					\n"
++".LSPR=0				\n"
++".rept 1024				\n"
++"	mfspr	%1, .LSPR		\n"
++"	b	3f			\n"
++"	.LSPR=.LSPR+1			\n"
++".endr					\n"
++"3:					\n"
++	: "=&r"(tmp),
++	  "=r"(ret)
++	: "r"(spr*8) /* 8 bytes per 'mfspr ; b' block */
++	: "lr", "ctr");
++
++	return ret;
++}
  
-+static void get_sprs_book3s_31(uint64_t *v)
+-#define mtspr(nr, val) \
+-	asm volatile("mtspr %0,%1" : : "i"(nr), "r"(val))
++static void mtspr(unsigned spr, uint64_t val)
 +{
-+	get_sprs_book3s_207(v);
-+	v[48] = mfspr(48);	/* PIDR */
-+	v[823] = mfspr(823);	/* PSSCR */
-+}
++	uint64_t tmp;
 +
- static void get_sprs(uint64_t *v)
- {
- 	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-@@ -240,6 +259,9 @@ static void get_sprs(uint64_t *v)
- 	case 0x4e:			/* POWER9 */
- 		get_sprs_book3s_300(v);
- 		break;
-+	case 0x80:                      /* POWER10 */
-+		get_sprs_book3s_31(v);
-+		break;
- 	}
- }
++	asm volatile(
++"	bcl	20, 31, 1f		\n"
++"1:	mflr	%0			\n"
++"	addi	%0, %0, (2f-1b)		\n"
++"	add	%0, %0, %2		\n"
++"	mtctr	%0			\n"
++"	bctr				\n"
++"2:					\n"
++".LSPR=0				\n"
++".rept 1024				\n"
++"	mtspr	.LSPR, %1		\n"
++"	b	3f			\n"
++"	.LSPR=.LSPR+1			\n"
++".endr					\n"
++"3:					\n"
++	: "=&r"(tmp)
++	: "r"(val),
++	  "r"(spr*8) /* 8 bytes per 'mfspr ; b' block */
++	: "lr", "ctr", "xer");
++}
  
+ uint64_t before[1024], after[1024];
+ 
+ /* Common SPRs for all PowerPC CPUs */
+ static void set_sprs_common(uint64_t val)
+ {
+-	mtspr(9, val);		/* CTR */
++	// mtspr(9, val);	/* CTR */ /* Used by mfspr/mtspr */
+ 	// mtspr(273, val);	/* SPRG1 */  /* Used by our exception handler */
+ 	mtspr(274, val);	/* SPRG2 */
+ 	mtspr(275, val);	/* SPRG3 */
+@@ -156,7 +201,7 @@ static void set_sprs(uint64_t val)
+ 
+ static void get_sprs_common(uint64_t *v)
+ {
+-	v[9] = mfspr(9);	/* CTR */
++	v[9] = mfspr(9);	/* CTR */ /* Used by mfspr/mtspr */
+ 	// v[273] = mfspr(273);	/* SPRG1 */ /* Used by our exception handler */
+ 	v[274] = mfspr(274);	/* SPRG2 */
+ 	v[275] = mfspr(275);	/* SPRG3 */
 -- 
 2.37.2
 
