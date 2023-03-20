@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92976C0B1F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:11:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98336C0B20
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 08:12:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Vz3WFYz3fSM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:11:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pg5Wz55J8z3fTg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:11:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U3fDHASp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bj4wqpwM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U3fDHASp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bj4wqpwM;
 	dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5M12v22z3cFx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:04:13 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id d13so11186993pjh.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:04:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pg5M42psJz3cKm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 18:04:16 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id bc12so10846601plb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 00:04:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679295851;
+        d=gmail.com; s=20210112; t=1679295854;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VLn62fnhVYcTKroEi44rWRTC6DFRLihoZVooCHLndOU=;
-        b=U3fDHASpmwKd2JjpnYqTR+NSzPu7vrxAEEye3SxghX8OdKT4SFle3WZwPl7Fs1ujQn
-         YOCgNUacpAkDN6VTqZZmMywphe4OWZJqxYEqvo0rQlYkUQ30vm5JC95rJBLjA8JvjUXH
-         U4q580oMLj0Ts7eudShxciF92J+gSJSDgk3Nzuhye2OZ9gtS6+VBS7+1rsjwBeNzug7d
-         Ty+LBbnsIw5vhe8kwdhBO5XDvhO4oXiQAT0ZpmhnPB/wzNTwQ8EUg5bqtV443weVrm93
-         zbNB2SP7QdbTBO9vBKYc1FGv+cDRNusSrtc6i/TNfTU0so4jRNEEYPvWOTiutMuvy4/s
-         JN5g==
+        bh=SqlkjyUKQxB6TQQy7KpPSlK+JSEQcfav06u1BzOX0U4=;
+        b=bj4wqpwM66zXaJ3R+fyYbsI/SDBm+rnA5NQLtMlofd9eDchM1O6W90Nx9LEUvjjvrm
+         KPgPf0hUjK0p1BN30u74IdWka/9xfalFHYkkhZF7Wh1KOs2MnK8QdYYpSgxCRPM9x//r
+         EjFXj7LoihB74B/Do7aQF672wbipH6yvkRGqgRTKwPtvGSWkYZ8QMrjzVTyDsoXpf4II
+         SFAVa9F258pctg4AJZa9/nehLLaotlA4GzzL/2IIGFj3YTYtAzFflKt5KfoiXzJ3WQ4Y
+         +K+5+4yedhppz9pXFdLG9QHmp1x217LMSem4QkrU6pblnVevvgUcbms+wUNn/hjh72O7
+         n7cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679295851;
+        d=1e100.net; s=20210112; t=1679295854;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VLn62fnhVYcTKroEi44rWRTC6DFRLihoZVooCHLndOU=;
-        b=usGq14Ju3tNPAcSPILgmEBWfzsdYyO4heS5bxPvYlB7rJNZ1XBL4Tv66G9DilpblDs
-         lzkV/28kAAPM5CWYyk+W7CFd1QQ2C9E+H7U9akfIp1F/ZmgHEcu3Ptkvj0jAQSPMgO/f
-         Cw4zGVGval35WlRy87b9TT6XPxV3ng29iKBaB/iNVQLya0aauNIwSUxC/AHIV3V8ceBM
-         8re+830lBQqSORosKKCXObrL5Rgf01dT3PD27sNYgMRJvact6eVymPPBcW+ghUYp4wNM
-         yAQyZXsn1lScKHvFPGZ3XZBOtBP6clMyIF7+0txy2L+a5GJuGI4zetfyjGm8xGheQwho
-         k2HA==
-X-Gm-Message-State: AO0yUKVNBrodd2PQMcbQvrtLTScC6sxO++5j42kDViaGYdjp7tAZwo4H
-	bngOHY8Q97QE4aYoFq2Q2FPOw5lwRXA=
-X-Google-Smtp-Source: AK7set+XcP5XN5+445/zo+zYoxEt+kkxIVDFsPLqllhrJk7DbqRPB9va4Ej2pTS2l/Y6W2B6WzMyHQ==
-X-Received: by 2002:a05:6a20:a111:b0:d3:76e0:89fd with SMTP id q17-20020a056a20a11100b000d376e089fdmr22450678pzk.50.1679295851055;
-        Mon, 20 Mar 2023 00:04:11 -0700 (PDT)
+        bh=SqlkjyUKQxB6TQQy7KpPSlK+JSEQcfav06u1BzOX0U4=;
+        b=05ixFYOgozCpP9bOkz8t1ro+CMfcsbxb/e7nDa6ancyJ7tpc2ViUIi9pyGkva+XR71
+         0of6MMM5e1W7GVIXYsM11N9DYdjmGyvK5IjCAeRRg2/xBROR29+3KgLeg9fllsUxl4sF
+         hl8410ANCWT2e8EIuPVmQELpFuLNDLmwzb8QwCCDT6/0YR2DBgRg4Xh4RsclY8H7X6nL
+         9xAOISs5TjhuSuLvHfiti1ekzKrD5vJDIr03gRKDthYeWCmhABvZ6LNCvstnSsfYgJvf
+         u0u43BMHEhRyXUY8SlUwg4pc0UAew4Sya426bp4IdzmLvdCl1yzaAmcid6SpRDj5Ww6P
+         AqSg==
+X-Gm-Message-State: AO0yUKWTCWSx6suaqs9k0QOIcIDkI6IzDKd1ZtAnkGSstBnT2baZnDJ/
+	wcKa8HjSp97NjOqo5vhhy9Qas/NG/FI=
+X-Google-Smtp-Source: AK7set/KKpYGH+TEF/9H97G0b4oPND3h1P209ewvOlM7bgEWSOGOwHH5ImeRdqIV6hpMQeiLygwhUg==
+X-Received: by 2002:a05:6a20:66a1:b0:d9:5bb0:5714 with SMTP id o33-20020a056a2066a100b000d95bb05714mr3472692pzh.13.1679295854177;
+        Mon, 20 Mar 2023 00:04:14 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.04.08
+        by smtp.gmail.com with ESMTPSA id r17-20020a632b11000000b0050f7f783ff0sm1039414pgr.76.2023.03.20.00.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 00:04:10 -0700 (PDT)
+        Mon, 20 Mar 2023 00:04:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests v2 07/10] powerpc/spapr_vpa: Add basic VPA tests
-Date: Mon, 20 Mar 2023 17:03:36 +1000
-Message-Id: <20230320070339.915172-8-npiggin@gmail.com>
+Subject: [kvm-unit-tests v2 08/10] powerpc: Discover runtime load address dynamically
+Date: Mon, 20 Mar 2023 17:03:37 +1000
+Message-Id: <20230320070339.915172-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230320070339.915172-1-npiggin@gmail.com>
 References: <20230320070339.915172-1-npiggin@gmail.com>
@@ -82,224 +82,62 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The VPA is a(n optional) memory structure shared between the hypervisor
-and operating system, defined by PAPR. This test defines the structure
-and adds registration, deregistration, and a few simple sanity tests.
+The next change will load the kernels at different addresses depending
+on test options, so this needs to be reverted back to dynamic
+discovery.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/linux/compiler.h    |  2 +
- lib/powerpc/asm/hcall.h |  1 +
- lib/ppc64/asm/vpa.h     | 62 ++++++++++++++++++++++++++++
- powerpc/Makefile.ppc64  |  2 +-
- powerpc/spapr_vpa.c     | 90 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 156 insertions(+), 1 deletion(-)
- create mode 100644 lib/ppc64/asm/vpa.h
- create mode 100644 powerpc/spapr_vpa.c
+ powerpc/cstart64.S | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/lib/linux/compiler.h b/lib/linux/compiler.h
-index 6f565e4..c9d205e 100644
---- a/lib/linux/compiler.h
-+++ b/lib/linux/compiler.h
-@@ -45,7 +45,9 @@
+diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
+index 34e3934..069d991 100644
+--- a/powerpc/cstart64.S
++++ b/powerpc/cstart64.S
+@@ -33,9 +33,14 @@ start:
+ 	 * We were loaded at QEMU's kernel load address, but we're not
+ 	 * allowed to link there due to how QEMU deals with linker VMAs,
+ 	 * so we just linked at zero. This means the first thing to do is
+-	 * to find our stack and toc, and then do a relocate.
++	 * to find our stack and toc, and then do a relocate. powernv and
++	 * pseries load addreses are not the same, so find the address
++	 * dynamically:
+ 	 */
+-	LOAD_REG_IMMEDIATE(r31, SPAPR_KERNEL_LOAD_ADDR)
++	bl	0f
++0:	mflr	r31
++	subi	r31, r31, 0b - start	/* QEMU's kernel load address */
++
+ 	ld	r1, (p_stack - start)(r31)
+ 	ld	r2, (p_toc - start)(r31)
+ 	add	r1, r1, r31
+@@ -114,8 +119,11 @@ p_toc:		.llong  tocptr
+ p_dyn:		.llong  dynamic_start
  
- #define barrier()	asm volatile("" : : : "memory")
+ .text
++start_text:
+ .align 3
++p_toc_text:	.llong	tocptr
  
-+#ifndef __always_inline
- #define __always_inline	inline __attribute__((always_inline))
-+#endif
- #define noinline __attribute__((noinline))
- #define __unused __attribute__((__unused__))
++.align 3
+ .globl hcall
+ hcall:
+ 	sc	1
+@@ -193,9 +201,10 @@ call_handler:
+ 	std	r0, _MSR(r1)
  
-diff --git a/lib/powerpc/asm/hcall.h b/lib/powerpc/asm/hcall.h
-index 1173fea..e0f5009 100644
---- a/lib/powerpc/asm/hcall.h
-+++ b/lib/powerpc/asm/hcall.h
-@@ -18,6 +18,7 @@
- #define H_SET_SPRG0		0x24
- #define H_SET_DABR		0x28
- #define H_PAGE_INIT		0x2c
-+#define H_REGISTER_VPA		0xDC
- #define H_CEDE			0xE0
- #define H_GET_TERM_CHAR		0x54
- #define H_PUT_TERM_CHAR		0x58
-diff --git a/lib/ppc64/asm/vpa.h b/lib/ppc64/asm/vpa.h
-new file mode 100644
-index 0000000..11dde01
---- /dev/null
-+++ b/lib/ppc64/asm/vpa.h
-@@ -0,0 +1,62 @@
-+#ifndef _ASMPOWERPC_VPA_H_
-+#define _ASMPOWERPC_VPA_H_
-+/*
-+ * This work is licensed under the terms of the GNU LGPL, version 2.
-+ */
-+
-+#ifndef __ASSEMBLY__
-+
-+struct vpa {
-+	uint32_t	descriptor;
-+	uint16_t	size;
-+	uint8_t		reserved1[3];
-+	uint8_t		status;
-+	uint8_t		reserved2[14];
-+	uint32_t	fru_node_id;
-+	uint32_t	fru_proc_id;
-+	uint8_t		reserved3[56];
-+	uint8_t		vhpn_change_counters[8];
-+	uint8_t		reserved4[80];
-+	uint8_t		cede_latency;
-+	uint8_t		maintain_ebb;
-+	uint8_t		reserved5[6];
-+	uint8_t		dtl_enable_mask;
-+	uint8_t		dedicated_cpu_donate;
-+	uint8_t		maintain_fpr;
-+	uint8_t		maintain_pmc;
-+	uint8_t		reserved6[28];
-+	uint64_t	idle_estimate_purr;
-+	uint8_t		reserved7[28];
-+	uint16_t	maintain_nr_slb;
-+	uint8_t		idle;
-+	uint8_t		maintain_vmx;
-+	uint32_t	vp_dispatch_count;
-+	uint32_t	vp_dispatch_dispersion;
-+	uint64_t	vp_fault_count;
-+	uint64_t	vp_fault_tb;
-+	uint64_t	purr_exprop_idle;
-+	uint64_t	spurr_exprop_idle;
-+	uint64_t	purr_exprop_busy;
-+	uint64_t	spurr_exprop_busy;
-+	uint64_t	purr_donate_idle;
-+	uint64_t	spurr_donate_idle;
-+	uint64_t	purr_donate_busy;
-+	uint64_t	spurr_donate_busy;
-+	uint64_t	vp_wait3_tb;
-+	uint64_t	vp_wait2_tb;
-+	uint64_t	vp_wait1_tb;
-+	uint64_t	purr_exprop_adjunct_busy;
-+	uint64_t	spurr_exprop_adjunct_busy;
-+	uint32_t	supervisor_pagein_count;
-+	uint8_t		reserved8[4];
-+	uint64_t	purr_exprop_adjunct_idle;
-+	uint64_t	spurr_exprop_adjunct_idle;
-+	uint64_t	adjunct_insns_executed;
-+	uint8_t		reserved9[120];
-+	uint64_t	dtl_index;
-+	uint8_t		reserved10[96];
-+};
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* _ASMPOWERPC_VPA_H_ */
-diff --git a/powerpc/Makefile.ppc64 b/powerpc/Makefile.ppc64
-index ea68447..b0ed2b1 100644
---- a/powerpc/Makefile.ppc64
-+++ b/powerpc/Makefile.ppc64
-@@ -19,7 +19,7 @@ reloc.o  = $(TEST_DIR)/reloc64.o
- OBJDIRS += lib/ppc64
+ 	/* restore TOC pointer */
+-
+-	LOAD_REG_IMMEDIATE(r31, SPAPR_KERNEL_LOAD_ADDR)
+-	ld	r2, (p_toc - start)(r31)
++	bl	0f
++0:	mflr	r31
++	subi	r31, r31, 0b - start_text
++	ld	r2, (p_toc_text - start_text)(r31)
  
- # ppc64 specific tests
--tests =
-+tests = $(TEST_DIR)/spapr_vpa.elf
+ 	/* FIXME: build stack frame */
  
- include $(SRCDIR)/$(TEST_DIR)/Makefile.common
- 
-diff --git a/powerpc/spapr_vpa.c b/powerpc/spapr_vpa.c
-new file mode 100644
-index 0000000..45688fe
---- /dev/null
-+++ b/powerpc/spapr_vpa.c
-@@ -0,0 +1,90 @@
-+/*
-+ * Test sPAPR hypervisor calls (aka. h-calls)
-+ *
-+ * This work is licensed under the terms of the GNU LGPL, version 2.
-+ */
-+#include <libfdt/libfdt.h>
-+#include <devicetree.h>
-+#include <libcflat.h>
-+#include <util.h>
-+#include <alloc.h>
-+#include <asm/processor.h>
-+#include <asm/hcall.h>
-+#include <asm/vpa.h>
-+#include <asm/io.h> /* for endian accessors */
-+
-+static void print_vpa(struct vpa *vpa)
-+{
-+	printf("VPA\n");
-+	printf("descriptor:			0x%08x\n", be32_to_cpu(vpa->descriptor));
-+	printf("size:				    0x%04x\n", be16_to_cpu(vpa->size));
-+	printf("status:				      0x%02x\n", vpa->status);
-+	printf("fru_node_id:			0x%08x\n", be32_to_cpu(vpa->fru_node_id));
-+	printf("fru_proc_id:			0x%08x\n", be32_to_cpu(vpa->fru_proc_id));
-+	printf("vhpn_change_counters:		0x%02x %02x %02x %02x %02x %02x %02x %02x\n", vpa->vhpn_change_counters[0], vpa->vhpn_change_counters[1], vpa->vhpn_change_counters[2], vpa->vhpn_change_counters[3], vpa->vhpn_change_counters[4], vpa->vhpn_change_counters[5], vpa->vhpn_change_counters[6], vpa->vhpn_change_counters[7]);
-+	printf("vp_dispatch_count:		0x%08x\n", be32_to_cpu(vpa->vp_dispatch_count));
-+	printf("vp_dispatch_dispersion:		0x%08x\n", be32_to_cpu(vpa->vp_dispatch_dispersion));
-+	printf("vp_fault_count:			0x%08lx\n", be64_to_cpu(vpa->vp_fault_count));
-+	printf("vp_fault_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_fault_tb));
-+	printf("purr_exprop_idle:		0x%08lx\n", be64_to_cpu(vpa->purr_exprop_idle));
-+	printf("spurr_exprop_idle:		0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_idle));
-+	printf("purr_exprop_busy:		0x%08lx\n", be64_to_cpu(vpa->purr_exprop_busy));
-+	printf("spurr_exprop_busy:		0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_busy));
-+	printf("purr_donate_idle:		0x%08lx\n", be64_to_cpu(vpa->purr_donate_idle));
-+	printf("spurr_donate_idle:		0x%08lx\n", be64_to_cpu(vpa->spurr_donate_idle));
-+	printf("purr_donate_busy:		0x%08lx\n", be64_to_cpu(vpa->purr_donate_busy));
-+	printf("spurr_donate_busy:		0x%08lx\n", be64_to_cpu(vpa->spurr_donate_busy));
-+	printf("vp_wait3_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait3_tb));
-+	printf("vp_wait2_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait2_tb));
-+	printf("vp_wait1_tb:			0x%08lx\n", be64_to_cpu(vpa->vp_wait1_tb));
-+	printf("purr_exprop_adjunct_busy:	0x%08lx\n", be64_to_cpu(vpa->purr_exprop_adjunct_busy));
-+	printf("spurr_exprop_adjunct_busy:	0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_adjunct_busy));
-+	printf("purr_exprop_adjunct_idle:	0x%08lx\n", be64_to_cpu(vpa->purr_exprop_adjunct_idle));
-+	printf("spurr_exprop_adjunct_idle:	0x%08lx\n", be64_to_cpu(vpa->spurr_exprop_adjunct_idle));
-+	printf("adjunct_insns_executed:		0x%08lx\n", be64_to_cpu(vpa->adjunct_insns_executed));
-+	printf("dtl_index:			0x%08lx\n", be64_to_cpu(vpa->dtl_index));
-+}
-+
-+/**
-+ * Test the H_REGISTER_VPA h-call register/deregister.
-+ */
-+static void register_vpa(struct vpa *vpa)
-+{
-+	uint32_t cpuid = fdt_boot_cpuid_phys(dt_fdt());
-+	int disp_count1, disp_count2;
-+	int rc;
-+
-+	rc = hcall(H_REGISTER_VPA, 1ULL << 45, cpuid, vpa);
-+	report(rc == H_SUCCESS, "VPA registered");
-+
-+	print_vpa(vpa);
-+
-+	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
-+	report(disp_count1 % 2 == 0, "Dispatch count is even while running");
-+	msleep(100);
-+	disp_count2 = be32_to_cpu(vpa->vp_dispatch_count);
-+	report(disp_count1 != disp_count2, "Dispatch count increments over H_CEDE");
-+
-+	rc = hcall(H_REGISTER_VPA, 5ULL << 45, cpuid, vpa);
-+	report(rc == H_SUCCESS, "VPA deregistered");
-+
-+	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
-+	report(disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	struct vpa *vpa;
-+
-+	vpa = memalign(4096, sizeof(*vpa));
-+
-+	memset(vpa, 0, sizeof(*vpa));
-+
-+	vpa->size = cpu_to_be16(sizeof(*vpa));
-+
-+	report_prefix_push("vpa");
-+
-+	register_vpa(vpa);
-+
-+	return report_summary();
-+}
 -- 
 2.37.2
 
