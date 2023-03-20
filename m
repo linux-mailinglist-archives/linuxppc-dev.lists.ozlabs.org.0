@@ -2,84 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1746C1260
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 13:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E856C131D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 14:19:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PgF6V0fbpz3f43
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 23:53:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgFhN1fCrz3fFr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 00:19:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YMItdal3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nggc20gZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YMItdal3;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nggc20gZ;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgF5R4QcBz3cMN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 23:52:59 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32KCbYAa026848;
-	Mon, 20 Mar 2023 12:52:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : to : cc : from : subject : content-type :
- content-transfer-encoding; s=pp1;
- bh=BIvJiCznPDNbzaZBl9HbW1hjJQmUsDhiqqJwSnDiS64=;
- b=YMItdal3B+ARTXjWv9wdPhykOuDa7oYIQwVgtSRXgpXLvHc15DxsjXsUaGV9TVslMPYl
- BmXnkjQ6Yo8yaCHzpSJga7iXvbPLPMsySvEsHoVx2dTBZIfRN/MoCMGHIST/V/XDIHEi
- jO8PJb4g9nSUKTkwMJRm5YiZnbZipkTJSgvXilVxJyYMr9f7QGADB6qJ+2VSffdCexLq
- IBSiHrRmE65c2II60WIiguCRepNC826lnxPHUecCQ/2Gmtg6LUxklC1+2it+4teK8Kob
- c4lyjS3g2MXQljrk1CwTz1ZakzHve5YAsr4eUVZa5kGacaMe2/GgJZgll5zoQ7RRknYF RA== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pdpvs0qmd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Mar 2023 12:52:47 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32KB2SkQ019467;
-	Mon, 20 Mar 2023 12:52:46 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x6vsjg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Mar 2023 12:52:46 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32KCqj1O13894344
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Mar 2023 12:52:45 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54BEF5804E;
-	Mon, 20 Mar 2023 12:52:45 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA71B5803F;
-	Mon, 20 Mar 2023 12:52:42 +0000 (GMT)
-Received: from [9.43.7.238] (unknown [9.43.7.238])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Mar 2023 12:52:42 +0000 (GMT)
-Message-ID: <7fe9d0b0-7d77-79cc-405d-3ca38b552782@linux.vnet.ibm.com>
-Date: Mon, 20 Mar 2023 18:22:40 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgFd91KD9z3ch6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 00:17:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679318221; x=1710854221;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KxlXRVH7N+45zvim8tIjdmWaRb89rG1+XDN/qvGgUbg=;
+  b=Nggc20gZ1GCVU5HLlagrY4orFX9jTCAmmb7kNAq8bKHn+Pg0qJorb9pI
+   RekUhNP9AanUb8gMu3G+tpP69iXRkD5ldGEIVUXPAQyEBCXezLnAqpQIx
+   nnL4RYwxasHZ1y6fMVMjVgNFB3mV1P2um87ipcu5um4g7zNnUvut5BCiO
+   iajdvT6SOSmccqD7/UfgyUDVDZE94Jqs8yuaLPU5SsYUDXozcu6mv388D
+   UqbDsqgIguqxQqN0XriaI+AVNgpI1uGyLlR8NqtESFz3jgf75+A4KpHtu
+   MSCbhX+wWjBKbpUT6Z2QcamMZ20SNKzb46xJQ7UKBUFLmEQF9V8Jh9lRE
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="424932292"
+X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
+   d="scan'208";a="424932292"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 06:16:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="674382652"
+X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
+   d="scan'208";a="674382652"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 20 Mar 2023 06:15:58 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id E4F3A4FF; Mon, 20 Mar 2023 15:16:43 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Juergen Gross <jgross@suse.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	linux-kernel@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH v6 0/4] Add pci_dev_for_each_resource() helper and update users
+Date: Mon, 20 Mar 2023 15:16:29 +0200
+Message-Id: <20230320131633.61680-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US
-To: linux-next <linux-next@vger.kernel.org>, lorenzo@kernel.org
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Subject: [next-20230317][PPC/MLX5][bisected 4d5ab0a] Boot WARNING: CPU: 0 PID:
- 9 at net/core/dev.c:1928 call_netdevice_notifiers_info
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZJhaSpgbDPlcWzJgHVl3u4Cp8FgOcnB_
-X-Proofpoint-GUID: ZJhaSpgbDPlcWzJgHVl3u4Cp8FgOcnB_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-20_08,2023-03-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- malwarescore=0 impostorscore=0 mlxlogscore=949 lowpriorityscore=0
- adultscore=0 clxscore=1011 spamscore=0 suspectscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303200107
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,124 +90,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian King <brking@linux.vnet.ibm.com>, netdev <netdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Gregory Clement <gregory.clement@bootlin.com>, Richard Henderson <richard.henderson@linaro.org>, Russell King <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Rich Felker <dalias@libc.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Miguel Ojeda <ojeda@kernel.org>, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, "David S. Miller" <davem@davemloft.net>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greeting's
+Provide two new helper macros to iterate over PCI device resources and
+convert users.
 
-Warning is seen while booting kernels from 6.3.0-rc3-next-20230317 on my 
-powerpc Power 10 LPAR
+Looking at it, refactor existing pci_bus_for_each_resource() and convert
+users accordingly.
 
-Boots fine without warnings when below patch is reverted
+Changelog v6:
+- dropped unused variable in PPC code (LKP)
 
-commit 4d5ab0ad964df178beba031b89429a601893ff61
-Author: Lorenzo Bianconi <lorenzo@kernel.org>
-Date:   Thu Mar 9 13:25:31 2023 +0100
+Changelog v5:
+- renamed loop variable to minimize the clash (Keith)
+- addressed smatch warning (Dan)
+- addressed 0-day bot findings (LKP)
 
-     net/mlx5e: take into account device reconfiguration for 
-xdp_features flag
+Changelog v4:
+- rebased on top of v6.3-rc1
+- added tag (Krzysztof)
 
-     Take into account LRO and GRO configuration setting device xdp_features
-     flag. Consider channel rq_wq_type enabling rx scatter-gatter support in
-     xdp_features flag and disable NETDEV_XDP_ACT_NDO_XMIT_SG since it 
-is not
-     supported yet by the driver.
-     Moreover always enable NETDEV_XDP_ACT_NDO_XMIT as the ndo_xdp_xmit
+Changelog v3:
+- rebased on top of v2 by Mika, see above
+- added tag to pcmcia patch (Dominik)
 
-4d5ab0ad got introduced in next-20230314
+Changelog v2:
+- refactor to have two macros
+- refactor existing pci_bus_for_each_resource() in the same way and
+  convert users
 
-@Lorenzo Could you please look into this
+Andy Shevchenko (3):
+  PCI: Split pci_bus_for_each_resource_p() out of
+    pci_bus_for_each_resource()
+  EISA: Convert to use pci_bus_for_each_resource_p()
+  pcmcia: Convert to use pci_bus_for_each_resource_p()
 
-Boot console logs
+Mika Westerberg (1):
+  PCI: Introduce pci_dev_for_each_resource()
 
-sd 0:0:1:0: [sdb] Preferred minimum I/O size 32768 bytes
-  sdb: sdb1 sdb2 sdb3
-sd 0:0:1:0: [sdb] Attached SCSI disk
-mlx5_core 4001:01:00.0: enabling device (0000 -> 0002)
-mlx5_core 4001:01:00.0: firmware version: 14.32.1010
-------------[ cut here ]------------
-RTNL: assertion failed at net/core/dev.c (1928)
-WARNING: CPU: 0 PID: 9 at net/core/dev.c:1928 
-call_netdevice_notifiers_info+0xd8/0xe0
-Modules linked in: mlx5_core(+) sd_mod t10_pi crc64_rocksoft crc64 sg 
-ibmvfc mlxfw scsi_transport_fc ibmveth ptp pps_core dm_multipath 
-dm_mirror dm_region_hash dm_log dm_mod fuse
-CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 
-6.3.0-rc2-next-20230317-autotest #1
-Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 
-of:IBM,FW1030.00 (NH1030_029) hv:phyp pSeries
-Workqueue: events work_for_cpu_fn
-NIP:  c000000000aca1f8 LR: c000000000aca1f4 CTR: 0000000000725d40
-REGS: c0000000038230a0 TRAP: 0700   Not tainted 
-(6.3.0-rc2-next-20230317-autotest)
-MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48228824 
-XER: 00000010
-CFAR: c000000000154c40 IRQMASK: 0
-GPR00: c000000000aca1f4 c000000003823340 c0000000011ccb00 000000000000002f
-GPR04: 00000000ffff7fff c000000003823110 c000000003823108 0000000000000027
-GPR08: c000000c7cc07e90 0000000000000001 0000000000000027 c0000000028f7c30
-GPR12: 0000000048228824 c000000002d10000 c000000000191b58 c0000000032f1000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 c0000000032f9200 fffffffffffff000 0000000000000000
-GPR24: c000000076c001a0 c00800000042c588 c000000008d06c00 c000000008d069a0
-GPR28: c000000076c301a0 c000000002d01780 0000000000000028 c0000000038233e8
-NIP [c000000000aca1f8] call_netdevice_notifiers_info+0xd8/0xe0
-LR [c000000000aca1f4] call_netdevice_notifiers_info+0xd4/0xe0
-Call Trace:
-[c000000003823340] [c000000000aca1f4] 
-call_netdevice_notifiers_info+0xd4/0xe0 (unreliable)
-[c0000000038233c0] [c000000000aca23c] call_netdevice_notifiers+0x3c/0x70
-[c000000003823400] [c000000000b1f64c] xdp_set_features_flag+0x3c/0x50
-[c000000003823420] [c008000000c56db0] mlx5e_set_xdp_feature+0x48/0x90 
-[mlx5_core]
-[c000000003823440] [c008000000c59414] mlx5e_probe+0x3cc/0x880 [mlx5_core]
-[c000000003823500] [c00000000088561c] auxiliary_bus_probe+0x6c/0xf0
-[c000000003823580] [c0000000008725e8] really_probe+0x108/0x530
-[c000000003823610] [c000000000872ac4] __driver_probe_device+0xb4/0x230
-[c000000003823690] [c000000000872c98] driver_probe_device+0x58/0x120
-[c0000000038236d0] [c000000000872e7c] __device_attach_driver+0x11c/0x1e0
-[c000000003823750] [c00000000086e994] bus_for_each_drv+0xb4/0x130
-[c0000000038237b0] [c0000000008723cc] __device_attach+0x15c/0x250
-[c000000003823850] [c0000000008704e8] bus_probe_device+0xf8/0x100
-[c0000000038238a0] [c00000000086c258] device_add+0x798/0x9e0
-[c000000003823960] [c0000000008857d8] __auxiliary_device_add+0x58/0xe0
-[c0000000038239d0] [c008000000c35350] add_adev+0xb8/0x180 [mlx5_core]
-[c000000003823a10] [c008000000c35614] 
-mlx5_rescan_drivers_locked.part.11+0x1fc/0x260 [mlx5_core]
-[c000000003823ad0] [c008000000c35d88] mlx5_register_device+0xb0/0x100 
-[mlx5_core]
-[c000000003823b10] [c008000000c02aa8] mlx5_init_one+0x340/0x680 [mlx5_core]
-[c000000003823ba0] [c008000000c03e10] probe_one+0x258/0x540 [mlx5_core]
-[c000000003823c30] [c00000000077c2bc] local_pci_probe+0x6c/0x110
-[c000000003823cb0] [c00000000017f9b8] work_for_cpu_fn+0x38/0x60
-[c000000003823ce0] [c0000000001853d4] process_one_work+0x284/0x550
-[c000000003823d80] [c0000000001858f0] worker_thread+0x250/0x5d0
-[c000000003823e00] [c000000000191c88] kthread+0x138/0x140
-[c000000003823e50] [c00000000000cf5c] ret_from_kernel_thread+0x5c/0x64
---- interrupt: 0 at 0x0
-NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
-REGS: c000000003823e80 TRAP: 0000   Not tainted 
-(6.3.0-rc2-next-20230317-autotest)
-MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
-CFAR: 0000000000000000 IRQMASK: 0
-GPR00: 0000000000000000 c000000003824000 0000000000000000 0000000000000000
-GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR12: 0000000000000000 0000000000000000 c000000000191b58 c0000000032f1000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-NIP [0000000000000000] 0x0
-LR [0000000000000000] 0x0
---- interrupt: 0
-Code: 2f890000 409eff9c 39200001 3c82fff1 3c62fff1 3d42017d 38a00788 
-3884b3c8 3863b3d8 992a2141 4b68a969 60000000 <0fe00000> 60000000 
-3c4c0070 38422900
+ .clang-format                             |  3 ++
+ arch/alpha/kernel/pci.c                   |  5 ++-
+ arch/arm/kernel/bios32.c                  | 16 +++++-----
+ arch/arm/mach-dove/pcie.c                 | 10 +++---
+ arch/arm/mach-mv78xx0/pcie.c              | 10 +++---
+ arch/arm/mach-orion5x/pci.c               | 10 +++---
+ arch/mips/pci/ops-bcm63xx.c               |  8 ++---
+ arch/mips/pci/pci-legacy.c                |  3 +-
+ arch/powerpc/kernel/pci-common.c          | 21 +++++++------
+ arch/powerpc/platforms/4xx/pci.c          |  8 ++---
+ arch/powerpc/platforms/52xx/mpc52xx_pci.c |  5 ++-
+ arch/powerpc/platforms/pseries/pci.c      | 16 +++++-----
+ arch/sh/drivers/pci/pcie-sh7786.c         | 10 +++---
+ arch/sparc/kernel/leon_pci.c              |  5 ++-
+ arch/sparc/kernel/pci.c                   | 10 +++---
+ arch/sparc/kernel/pcic.c                  |  5 ++-
+ drivers/eisa/pci_eisa.c                   |  4 +--
+ drivers/pci/bus.c                         |  7 ++---
+ drivers/pci/hotplug/shpchp_sysfs.c        |  8 ++---
+ drivers/pci/pci.c                         |  5 ++-
+ drivers/pci/probe.c                       |  2 +-
+ drivers/pci/remove.c                      |  5 ++-
+ drivers/pci/setup-bus.c                   | 37 +++++++++--------------
+ drivers/pci/setup-res.c                   |  4 +--
+ drivers/pci/vgaarb.c                      | 17 +++--------
+ drivers/pci/xen-pcifront.c                |  4 +--
+ drivers/pcmcia/rsrc_nonstatic.c           |  9 ++----
+ drivers/pcmcia/yenta_socket.c             |  3 +-
+ drivers/pnp/quirks.c                      | 29 ++++++------------
+ include/linux/pci.h                       | 29 ++++++++++++++----
+ 30 files changed, 142 insertions(+), 166 deletions(-)
 
 -- 
-Regard's
+2.39.2
 
-Abdul Haleem
-IBM Linux Technology Center
