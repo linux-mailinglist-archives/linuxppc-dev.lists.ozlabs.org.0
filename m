@@ -1,96 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0276C19EC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 16:39:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E126C1D48
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Mar 2023 18:07:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PgJp465gMz3cfB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 02:39:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgLkj4k7Yz3cMc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 04:07:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H4ehmhdJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SE/hkZak;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H4ehmhdJ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SE/hkZak;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgJn53gMzz2xHK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 02:39:04 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32KFHSFe022310;
-	Mon, 20 Mar 2023 15:38:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=tF9DPR4BziRpIYNIxnHYz1rUjU1J1WPHeaPCtVN4Vy0=;
- b=H4ehmhdJR7vvqAhDkTDpDUy6pvdFwBfibNmi9y8msPYVIt6vt5PKMwfY2qgEkibBgjpV
- T054dBChtf7ChrcrxZttx/NZ3+0C8YB1hBetfc/+kr0tqm6A0N7sD7y2+3ZsBUcADfJN
- Vxl7AMy+EKN/JEuT6edr0R/wgjBvZ3GiIAfzpW1AB0cgnCBvAWM4Gp4z5WIAWilxKmW/
- KCakSYDRuuOiktmqvAoWjjGbtcN06/y6UybPhN260gFFE/OG/sNEDAaJ728BINJBPKXv
- Blu2Ekiz1sCWNaM+9bSDQ6jKX6hJkXAtR1j3Xc4aONug65o3JLselHC/4f66AItLXTb1 xA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pdqf3546u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Mar 2023 15:38:54 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32KENu8h008070;
-	Mon, 20 Mar 2023 15:38:54 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pdqf3546m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Mar 2023 15:38:54 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32KF8i3C024217;
-	Mon, 20 Mar 2023 15:38:53 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([9.208.129.116])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3pd4x70x2a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Mar 2023 15:38:52 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32KFcppB63504820
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Mar 2023 15:38:51 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 87D7058043;
-	Mon, 20 Mar 2023 15:38:51 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EA375805D;
-	Mon, 20 Mar 2023 15:38:51 +0000 (GMT)
-Received: from localhost (unknown [9.211.100.146])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Mar 2023 15:38:51 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Subject: Re: powerpc/pseries: Fix exception handling in
- pSeries_reconfig_add_node()
-In-Reply-To: <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de>
-References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
- <0981dc33-95d0-4a1b-51d9-168907da99e6@web.de>
- <871qln8quw.fsf@linux.ibm.com>
- <a01643fd-1e4a-1183-2fa6-000465bc81f3@web.de>
- <87v8iz75ck.fsf@linux.ibm.com>
- <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de>
-Date: Mon, 20 Mar 2023 10:38:50 -0500
-Message-ID: <87pm9377qt.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgLjk6J1dz3cFt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 04:06:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679331979; x=1710867979;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nMpguQBfxSul1dNNY2Z2RHUaVPhMvz/6HPsmceIZJxk=;
+  b=SE/hkZakmOtvSn1p2velmCUsNLErHOVD1hdjHuUBlBJ6JxAwzDTN0F45
+   Ihv3RsJgzWEdElfrAmmbNLtRDePdAb903ww6klM6dQIaRs+hrsuV+eYLP
+   VJ6FpDeE7uLSV+K07xzJzQvvlUTpcFDyved+8WYC25+YuRbC7vWKWpywE
+   lC50UTePtXGNVg4owx5FQ2uWMqh1gHmyU2CKkyfza1EdAnK0bonLQcbwU
+   PchLq8GdHQTYA1GeiilUaxe8CZNhA4kd7jrVvhS8NWCtzA5cZSsUB6SQz
+   0FskaJ0yKSPJdPZPRLT9T27Jr9B2KEidC/U8AsII9apAf3l0kuFaRBvrR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="318370788"
+X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
+   d="scan'208";a="318370788"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 10:05:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="711426322"
+X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
+   d="scan'208";a="711426322"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 20 Mar 2023 10:05:50 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1peIxB-000BAv-1B;
+	Mon, 20 Mar 2023 17:05:49 +0000
+Date: Tue, 21 Mar 2023 01:05:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 73f2c2a7e1d2b31fdd5faa6dfa151c437a6c0a5a
+Message-ID: <6418924f.3FGLqXsUadcfPipX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: F9folt-ke6hPsK5kwyUnxRyoAE_QFa5l
-X-Proofpoint-ORIG-GUID: oHG_wXOFkuavUcnxh9y4s7Bxzj34q6ny
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-20_10,2023-03-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=587 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303200128
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,61 +70,284 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Moore <paul@paul-moore.com>, kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, cocci@inria.fr
+Cc: Linux Memory Management List <linux-mm@kvack.org>, linux-wireless@vger.kernel.org, amd-gfx@lists.freedesktop.org, rcu@vger.kernel.org, linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, io-uring@vger.kernel.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Markus Elfring <Markus.Elfring@web.de> writes:
->>>>> The label =E2=80=9Cout_err=E2=80=9D was used to jump to another point=
-er check despite of
->>>>> the detail in the implementation of the function =E2=80=9CpSeries_rec=
-onfig_add_node=E2=80=9D
->>>>> that it was determined already that the corresponding variable contai=
-ned
->>>>> a null pointer (because of a failed function call in two cases).
->>>>>
->>>>> 1. Thus return directly after a call of the function =E2=80=9Ckzalloc=
-=E2=80=9D failed.
->>>>>
->>>>> 2. Use more appropriate labels instead.
->>>>>
->>>>> 3. Delete a redundant check.
->>>>>
->>>>> 4. Omit an explicit initialisation for the local variable =E2=80=9Cer=
-r=E2=80=9D.
->>>>>
->>>>> This issue was detected by using the Coccinelle software.
->>>> Is there a correctness or safety issue here?
->>> I got the impression that the application of only a single label like =
-=E2=80=9Cout_err=E2=80=9D
->>> resulted in improvable implementation details.
->> I don't understand what you're trying to say here.
->
-> What does hinder you to understand the presented change description better
-> at the moment?
->
->
->> It doesn't seem to answer my question.
->
->
-> I hope that my answer will trigger further helpful considerations.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 73f2c2a7e1d2b31fdd5faa6dfa151c437a6c0a5a  Add linux-next specific files for 20230320
 
-I don't consider this response constructive, but I want to get this back
-on track. It's been brought to my attention that there is in fact a
-crash bug in this function's error path:
+Error/Warning reports:
 
-	np->parent =3D pseries_of_derive_parent(path);
-	if (IS_ERR(np->parent)) {
-		err =3D PTR_ERR(np->parent);
-		goto out_err;
-	}
-...
-out_err:
-	if (np) {
-		of_node_put(np->parent);
+https://lore.kernel.org/oe-kbuild-all/202303081807.lBLWKmpX-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303151409.por0SBf7-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161404.OrmfCy09-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303171300.g6uEM0X9-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303171506.Af2gNUDA-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303190142.TjYYpbba-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303201615.Qfu18nWV-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303202113.O9pAgJGQ-lkp@intel.com
 
-np->parent can be an encoded error value, we don't want to of_node_put()
-that.
+Error/Warning: (recently discovered and may have been fixed)
 
-I believe the patch as written happens to fix the issue. Will you please
-write it up as a bug fix and resubmit?
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_mst_types.c:211:6: warning: no previous prototype for 'is_synaptics_cascaded_panamera' [-Wmissing-prototypes]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:258:10: warning: no previous prototype for 'link_timing_bandwidth_kbps' [-Wmissing-prototypes]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_capability.c:2184: warning: expecting prototype for Check if there is a native DP or passive DP(). Prototype was for dp_is_sink_present() instead
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:411:11: error: call to undeclared function 'devm_drm_of_get_bridge'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:411:9: error: incompatible integer to pointer conversion assigning to 'struct drm_bridge *' from 'int' [-Wint-conversion]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:61: error: use of undeclared identifier 'DRM_BRIDGE_ATTACH_NO_CONNECTOR'
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:8: error: call to undeclared function 'drm_bridge_attach'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+include/linux/compiler_types.h:338:27: error: expression in static assertion is not an integer
+include/linux/compiler_types.h:340:27: error: expression in static assertion is not an integer
+include/linux/container_of.h:20:54: error: invalid use of undefined type 'struct module'
+include/linux/mmzone.h:1749:2: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE
+include/linux/rculist.h:392:21: error: invalid use of undefined type 'struct module'
+include/linux/stddef.h:16:33: error: invalid use of undefined type 'struct module'
+kernel/bpf/../module/internal.h:205:2: error: assigning to 'struct module *' from incompatible type 'void'
+kernel/bpf/../module/internal.h:205:2: error: incomplete definition of type 'struct module'
+kernel/bpf/../module/internal.h:205:2: error: offsetof of incomplete type 'typeof (*mod)' (aka 'struct module')
+kernel/bpf/../module/internal.h:205:2: error: operand of type 'void' where arithmetic or pointer type is required
+kernel/bpf/../module/internal.h:212:2: error: assigning to 'struct module *' from incompatible type 'void'
+kernel/bpf/../module/internal.h:212:2: error: incomplete definition of type 'struct module'
+kernel/bpf/../module/internal.h:212:2: error: offsetof of incomplete type 'typeof (*mod)' (aka 'struct module')
+kernel/bpf/../module/internal.h:212:2: error: operand of type 'void' where arithmetic or pointer type is required
+loongarch64-linux-ld: clk-mt8173-apmixedsys.c:(.text+0x104): undefined reference to `mtk_clk_register_pllfhs'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:189:26: sparse: sparse: dereference of noderef expression
+drivers/soc/fsl/qe/tsa.c:663:22: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/soc/fsl/qe/tsa.c:673:21: sparse: sparse: incorrect type in assignment (different address spaces)
+include/linux/gpio/consumer.h: linux/err.h is included more than once.
+include/linux/gpio/driver.h: asm/bug.h is included more than once.
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- alpha-buildonly-randconfig-r001-20230319
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- alpha-buildonly-randconfig-r004-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- alpha-buildonly-randconfig-r005-20230320
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arc-randconfig-r043-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- arc-randconfig-r043-20230320
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm-randconfig-r046-20230319
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm_mst_types.c:warning:no-previous-prototype-for-is_synaptics_cascaded_panamera
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- csky-randconfig-r026-20230319
+clang_recent_errors
+|-- arm-randconfig-r046-20230320
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- hexagon-buildonly-randconfig-r006-20230319
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- hexagon-randconfig-r022-20230319
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- hexagon-randconfig-r041-20230320
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- hexagon-randconfig-r045-20230320
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- mips-buildonly-randconfig-r002-20230319
+|   `-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|-- mips-randconfig-r001-20230319
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-devm_drm_of_get_bridge-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-drm_bridge_attach-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:incompatible-integer-to-pointer-conversion-assigning-to-struct-drm_bridge-from-int
+|   `-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:use-of-undeclared-identifier-DRM_BRIDGE_ATTACH_NO_CONNECTOR
+`-- s390-randconfig-r044-20230319
+    |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-devm_drm_of_get_bridge-ISO-C99-and-later-do-not-support-implicit-function-declarations
+    |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-drm_bridge_attach-ISO-C99-and-later-do-not-support-implicit-function-declarations
+    |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:incompatible-integer-to-pointer-conversion-assigning-to-struct-drm_bridge-from-int
+    `-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:use-of-undeclared-identifier-DRM_BRIDGE_ATTACH_NO_CONNECTOR
+
+elapsed time: 730m
+
+configs tested: 122
+configs skipped: 8
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r001-20230319   gcc  
+alpha        buildonly-randconfig-r002-20230319   gcc  
+alpha        buildonly-randconfig-r004-20230319   gcc  
+alpha        buildonly-randconfig-r005-20230320   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r024-20230320   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r012-20230319   gcc  
+arc                  randconfig-r016-20230319   gcc  
+arc                  randconfig-r043-20230319   gcc  
+arc                  randconfig-r043-20230320   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230319   gcc  
+arm                  randconfig-r046-20230320   clang
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r005-20230319   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r006-20230319   gcc  
+csky                 randconfig-r026-20230319   gcc  
+hexagon      buildonly-randconfig-r006-20230319   clang
+hexagon              randconfig-r041-20230319   clang
+hexagon              randconfig-r041-20230320   clang
+hexagon              randconfig-r045-20230319   clang
+hexagon              randconfig-r045-20230320   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r003-20230320   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230320   clang
+i386                 randconfig-a002-20230320   clang
+i386                 randconfig-a003-20230320   clang
+i386                 randconfig-a004-20230320   clang
+i386                 randconfig-a005-20230320   clang
+i386                 randconfig-a006-20230320   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r011-20230320   gcc  
+ia64                 randconfig-r024-20230319   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r002-20230320   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r021-20230320   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze   buildonly-randconfig-r003-20230319   gcc  
+microblaze           randconfig-r032-20230319   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r001-20230320   gcc  
+mips         buildonly-randconfig-r004-20230320   gcc  
+mips                 randconfig-r001-20230319   clang
+mips                 randconfig-r036-20230319   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r012-20230320   gcc  
+nios2                randconfig-r014-20230319   gcc  
+nios2                randconfig-r025-20230319   gcc  
+nios2                randconfig-r031-20230319   gcc  
+nios2                randconfig-r034-20230319   gcc  
+openrisc             randconfig-r016-20230320   gcc  
+openrisc             randconfig-r035-20230319   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r022-20230319   gcc  
+parisc               randconfig-r025-20230320   gcc  
+parisc               randconfig-r033-20230319   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r002-20230319   gcc  
+powerpc              randconfig-r013-20230320   gcc  
+powerpc              randconfig-r015-20230320   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r005-20230319   gcc  
+riscv                randconfig-r042-20230319   clang
+riscv                randconfig-r042-20230320   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230319   clang
+s390                 randconfig-r044-20230320   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r013-20230319   gcc  
+sh                   randconfig-r014-20230320   gcc  
+sh                   randconfig-r023-20230319   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r015-20230319   gcc  
+sparc64              randconfig-r026-20230320   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230320   clang
+x86_64               randconfig-a002-20230320   clang
+x86_64               randconfig-a003-20230320   clang
+x86_64               randconfig-a004-20230320   clang
+x86_64               randconfig-a005-20230320   clang
+x86_64               randconfig-a006-20230320   clang
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64               randconfig-r023-20230320   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r006-20230320   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
