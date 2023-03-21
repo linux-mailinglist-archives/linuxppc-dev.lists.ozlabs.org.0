@@ -1,63 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E64F6C3276
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 14:19:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADCD6C3675
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:01:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pgsd50kH4z3ccl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 00:19:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgxDl1C5Nz3ch5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 03:01:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=c/ZTxiCC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jfO5RFkQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=c/ZTxiCC;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jfO5RFkQ;
 	dkim-atps=neutral
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pgsc407Dpz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 00:18:11 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 77A6D37E3D7EC2;
-	Tue, 21 Mar 2023 08:18:08 -0500 (CDT)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id q9EhFVho0S_M; Tue, 21 Mar 2023 08:18:07 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 0B1E437E3D7EBF;
-	Tue, 21 Mar 2023 08:18:07 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 0B1E437E3D7EBF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1679404687; bh=d+KfiuQw+r2aVQd5zwPmHFR3Xq9EQlwdzvw0iuxwCG4=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=c/ZTxiCCMknCafA7ZPWQI/z6h+SoBvkaLqQPimZ+26pdDlJkF/qxnIQtGBQmwAYfZ
-	 fjEH9UwX+XRsdRe1D+7cL5FwT3a9nJmVJ1wleLFUzG31rHR6l7b+UsXJmONa1rCfTM
-	 JwuZtTh7yI47N5Lt6OCMvA4PkKq+p6iKKGaf7sY8=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id F938flSUgb61; Tue, 21 Mar 2023 08:18:06 -0500 (CDT)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id D899E37E3D7EBC;
-	Tue, 21 Mar 2023 08:18:06 -0500 (CDT)
-Date: Tue, 21 Mar 2023 08:18:05 -0500 (CDT)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Message-ID: <1328231683.26510466.1679404685113.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <877cvav1ey.fsf@mpe.ellerman.id.au>
-References: <8398361.16996856.1678123793664.JavaMail.zimbra@raptorengineeringinc.com> <87bkl2ywz2.fsf@mpe.ellerman.id.au> <1816556668.17777469.1678390100763.JavaMail.zimbra@raptorengineeringinc.com> <2099448392.25626899.1679166370571.JavaMail.zimbra@raptorengineeringinc.com> <877cvav1ey.fsf@mpe.ellerman.id.au>
-Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgxCp2XnWz3cD2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 03:00:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679414454; x=1710950454;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wR+qOUFezBzfBJcOKdG10nv4u1T4zv+Wyk0SxjOOgKo=;
+  b=jfO5RFkQIgXEvsrdN2zKOuc2Eo5vm5SXANBVsg0FKNrxpr/lCm2ZObzY
+   laYCDIA+rncb1KafepHhipqJGBHCVDvnNAIeM/uw6WyCqDnEPLsWIB6TH
+   OmNPa86uNyZwf0mmnqXkf6Of5dly0UaHpyTlBgJ4fsDQjNR11h9Dn3pex
+   TOvuErcqGOVXmSfk82NC9MqvfEpWK3Ve9/dV1pe62/+HDhcwZVgZ50yrI
+   Zil+cH/Zkx0jA7cycaf4cZUv0LU+qqkXDV02NC9K8TqEJz5jy8vSr4ylZ
+   5wALm3DuFpLDcFx4VZktcGsMXwGgDdBbKYbpEzOre8XSDrJ75EK8fyXzV
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="339018619"
+X-IronPort-AV: E=Sophos;i="5.98,279,1673942400"; 
+   d="scan'208";a="339018619"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2023 09:00:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="825003199"
+X-IronPort-AV: E=Sophos;i="5.98,279,1673942400"; 
+   d="scan'208";a="825003199"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Mar 2023 09:00:43 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1peePd-000C79-1U;
+	Tue, 21 Mar 2023 16:00:37 +0000
+Date: Wed, 22 Mar 2023 00:00:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ f3594f0204b756638267242e26d9de611435c3ba
+Message-ID: <6419d481.N8bGPVo0VkImpoue%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC111 (Linux)/8.5.0_GA_3042)
-Thread-Topic: Reenable VFIO support on POWER systems
-Thread-Index: u+SAJfydOwJ5efzlqhkmEisVoqlIvg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,65 +70,282 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timothy Pearson <tpearson@raptorengineering.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm <kvm@vger.kernel.org>
+Cc: linux-watchdog@vger.kernel.org, linux-wireless@vger.kernel.org, amd-gfx@lists.freedesktop.org, rcu@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, io-uring@vger.kernel.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: f3594f0204b756638267242e26d9de611435c3ba  Add linux-next specific files for 20230321
 
+Error/Warning reports:
 
------ Original Message -----
-> From: "Michael Ellerman" <mpe@ellerman.id.au>
-> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Timothy Pearson" <tpearson@raptorengineering.com>
-> Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> Sent: Tuesday, March 21, 2023 5:33:57 AM
-> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
+https://lore.kernel.org/oe-kbuild-all/202303082135.NjdX1Bij-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303190142.TjYYpbba-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303211332.MILzGUKQ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303212204.3G5mRatJ-lkp@intel.com
 
-> Timothy Pearson <tpearson@raptorengineering.com> writes:
->> ----- Original Message -----
->>> From: "Timothy Pearson" <tpearson@raptorengineering.com>
->>> To: "Michael Ellerman" <mpe@ellerman.id.au>
->>> Cc: "Timothy Pearson" <tpearson@raptorengineering.com>, "kvm"
->>> <kvm@vger.kernel.org>, "linuxppc-dev"
->>> <linuxppc-dev@lists.ozlabs.org>
->>> Sent: Thursday, March 9, 2023 1:28:20 PM
->>> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
->>
->>> ----- Original Message -----
->>>> From: "Michael Ellerman" <mpe@ellerman.id.au>
->>>> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "kvm"
->>>> <kvm@vger.kernel.org>
->>>> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
->>>> Sent: Thursday, March 9, 2023 5:40:01 AM
->>>> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
->>> 
->>>> Timothy Pearson <tpearson@raptorengineering.com> writes:
->>>>> This patch series reenables VFIO support on POWER systems.  It
->>>>> is based on Alexey Kardashevskiys's patch series, rebased and
->>>>> successfully tested under QEMU with a Marvell PCIe SATA controller
->>>>> on a POWER9 Blackbird host.
->>>>>
->>>>> Alexey Kardashevskiy (3):
->>>>>   powerpc/iommu: Add "borrowing" iommu_table_group_ops
->>>>>   powerpc/pci_64: Init pcibios subsys a bit later
->>>>>   powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
->>>>>     domains
->>>> 
->>>> As sent the patches had lost Alexey's authorship (no From: line), I
->>>> fixed it up when applying so the first 3 are authored by Alexey.
->>>> 
->>>> cheers
->>> 
->>> Thanks for catching that, it wasn't intentional.  Probably used a wrong Git
->>> command...
->>
->> Just wanted to touch base on the patches, since they're still listed as Under
->> Review on patchwork.  Are we good to go for the 6.4 merge window?
-> 
-> They've been in my next (and so linux-next), since last week. I just
-> haven't updated patchwork yet.
-> 
-> So yeah they are on track to go into mainline during the v6.4 merge window.
-> 
-> cheers
+Error/Warning: (recently discovered and may have been fixed)
 
-Sounds great, thanks!  Saw them in the next tree but wasn't sure if the patchwork status was more reflective of overall status.
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/ABI/obsolete/sysfs-selinux-checkreqprot
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/ABI/obsolete/sysfs-selinux-disable
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    int
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    void
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:411:11: error: call to undeclared function 'devm_drm_of_get_bridge'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:411:18: error: implicit declaration of function 'devm_drm_of_get_bridge' [-Werror=implicit-function-declaration]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:411:9: error: incompatible integer to pointer conversion assigning to 'struct drm_bridge *' from 'int' [-Wint-conversion]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:15: error: implicit declaration of function 'drm_bridge_attach' [-Werror=implicit-function-declaration]
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:61: error: use of undeclared identifier 'DRM_BRIDGE_ATTACH_NO_CONNECTOR'
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:68: error: 'DRM_BRIDGE_ATTACH_NO_CONNECTOR' undeclared (first use in this function)
+drivers/gpu/drm/imx/lcdc/imx-lcdc.c:449:8: error: call to undeclared function 'drm_bridge_attach'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+include/linux/compiler_types.h:338:27: error: expression in static assertion is not an integer
+include/linux/container_of.h:20:54: error: invalid use of undefined type 'struct module'
+include/linux/rculist.h:392:21: error: invalid use of undefined type 'struct module'
+include/linux/stddef.h:16:33: error: invalid use of undefined type 'struct module'
+kernel/bpf/../module/internal.h:205:2: error: assigning to 'struct module *' from incompatible type 'void'
+kernel/bpf/../module/internal.h:205:2: error: incomplete definition of type 'struct module'
+kernel/bpf/../module/internal.h:205:2: error: offsetof of incomplete type 'typeof (*mod)' (aka 'struct module')
+kernel/bpf/../module/internal.h:205:2: error: operand of type 'void' where arithmetic or pointer type is required
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/iommu/iommufd/selftest.c:295:21: sparse: sparse: symbol 'mock_iommu_device' was not declared. Should it be static?
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:189:26: sparse: sparse: dereference of noderef expression
+drivers/soc/fsl/qe/tsa.c:663:22: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/soc/fsl/qe/tsa.c:673:21: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- arc-randconfig-r043-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- arm64-randconfig-r035-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- ia64-allmodconfig
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- m68k-randconfig-r026-20230319
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:DRM_BRIDGE_ATTACH_NO_CONNECTOR-undeclared-(first-use-in-this-function)
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:implicit-declaration-of-function-devm_drm_of_get_bridge
+|   `-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:implicit-declaration-of-function-drm_bridge_attach
+|-- nios2-randconfig-r025-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- openrisc-randconfig-r031-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- parisc-randconfig-r022-20230319
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- parisc64-allmodconfig
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- powerpc-randconfig-r013-20230320
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- powerpc-randconfig-r015-20230320
+|   |-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
+|   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-module
+|   |-- include-linux-rculist.h:error:invalid-use-of-undefined-type-struct-module
+|   `-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-module
+|-- powerpc-randconfig-s033-20230319
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:dereference-of-noderef-expression
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-const-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-noderef-si_ram-got-void-noderef-__iomem
+clang_recent_errors
+|-- arm-randconfig-r003-20230319
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- hexagon-buildonly-randconfig-r006-20230319
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- mips-randconfig-r005-20230319
+|   |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+|   |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+|   |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+|   `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+|-- s390-randconfig-r044-20230319
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-devm_drm_of_get_bridge-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:call-to-undeclared-function-drm_bridge_attach-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   |-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:incompatible-integer-to-pointer-conversion-assigning-to-struct-drm_bridge-from-int
+|   `-- drivers-gpu-drm-imx-lcdc-imx-lcdc.c:error:use-of-undeclared-identifier-DRM_BRIDGE_ATTACH_NO_CONNECTOR
+`-- x86_64-buildonly-randconfig-r001-20230320
+    |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+    |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+    |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+    `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+
+elapsed time: 728m
+
+configs tested: 138
+configs skipped: 11
+
+tested configs:
+alpha                            alldefconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r024-20230320   gcc  
+alpha                randconfig-r032-20230319   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r005-20230319   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r012-20230319   gcc  
+arc                  randconfig-r016-20230319   gcc  
+arc                  randconfig-r043-20230319   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                      integrator_defconfig   gcc  
+arm                         orion5x_defconfig   clang
+arm                  randconfig-r003-20230319   clang
+arm                  randconfig-r046-20230319   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230320   clang
+arm64                randconfig-r035-20230319   gcc  
+csky         buildonly-randconfig-r003-20230319   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r002-20230320   gcc  
+csky                 randconfig-r026-20230319   gcc  
+hexagon      buildonly-randconfig-r006-20230319   clang
+hexagon              randconfig-r041-20230319   clang
+hexagon              randconfig-r045-20230319   clang
+i386                             allyesconfig   gcc  
+i386                         debian-10.3-func   gcc  
+i386                   debian-10.3-kselftests   gcc  
+i386                        debian-10.3-kunit   gcc  
+i386                          debian-10.3-kvm   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                 randconfig-a011-20230320   gcc  
+i386                 randconfig-a012-20230320   gcc  
+i386                 randconfig-a013-20230320   gcc  
+i386                 randconfig-a014-20230320   gcc  
+i386                 randconfig-a015-20230320   gcc  
+i386                 randconfig-a016-20230320   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r011-20230320   gcc  
+ia64                 randconfig-r024-20230319   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r006-20230319   gcc  
+loongarch            randconfig-r021-20230320   gcc  
+loongarch            randconfig-r034-20230319   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r003-20230320   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r001-20230319   clang
+mips                            gpr_defconfig   gcc  
+mips                 randconfig-r005-20230319   clang
+mips                 randconfig-r005-20230320   gcc  
+mips                           xway_defconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r012-20230320   gcc  
+nios2                randconfig-r014-20230319   gcc  
+nios2                randconfig-r025-20230319   gcc  
+nios2                randconfig-r033-20230319   gcc  
+nios2                randconfig-r036-20230319   gcc  
+openrisc     buildonly-randconfig-r004-20230319   gcc  
+openrisc             randconfig-r016-20230320   gcc  
+openrisc             randconfig-r031-20230319   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r022-20230319   gcc  
+parisc               randconfig-r025-20230320   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r006-20230320   gcc  
+powerpc                        fsp2_defconfig   clang
+powerpc                mpc7448_hpc2_defconfig   gcc  
+powerpc              randconfig-r013-20230320   gcc  
+powerpc              randconfig-r015-20230320   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r001-20230320   clang
+riscv                randconfig-r042-20230319   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r004-20230320   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r004-20230320   clang
+s390                 randconfig-r006-20230320   clang
+s390                 randconfig-r044-20230319   clang
+sh                               alldefconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                         ecovec24_defconfig   gcc  
+sh                   randconfig-r013-20230319   gcc  
+sh                   randconfig-r014-20230320   gcc  
+sh                   randconfig-r023-20230319   gcc  
+sh                          rsk7269_defconfig   gcc  
+sh                          sdk7786_defconfig   gcc  
+sh                             sh03_defconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r002-20230319   gcc  
+sparc64              randconfig-r015-20230319   gcc  
+sparc64              randconfig-r026-20230320   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230320   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230320   clang
+x86_64               randconfig-a002-20230320   clang
+x86_64               randconfig-a003-20230320   clang
+x86_64               randconfig-a004-20230320   clang
+x86_64               randconfig-a005-20230320   clang
+x86_64               randconfig-a006-20230320   clang
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                        randconfig-k001   clang
+x86_64               randconfig-r023-20230320   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r001-20230319   gcc  
+xtensa                    smp_lx200_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
