@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654746C3CF3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 22:44:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 704AB6C3DBF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 23:34:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ph4qq5Clfz3chb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 08:44:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TN3gsWuq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ph5xd2jzYz3f6k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 09:34:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.169; helo=mail-oi1-f169.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ph4pv0QC9z3bZx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 08:43:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TN3gsWuq;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ph4pt1JcLz4x7s;
-	Wed, 22 Mar 2023 08:43:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1679434998;
-	bh=DQoCdq+b2bx9rdvtk6umenZDmjKooijaQcEpaO+ZVco=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TN3gsWuqoyfbIswbKDnAiHOxB/3KPhhBs08nA9tVAUEtpyNuWyi+TTcVaSIrDMSiS
-	 OCyZKbniaffCwecPYoRxnKpQ0aVF5XEi8nQ+p3/s2EPbJAcW9gTfllFteXp+Vn/qo1
-	 u/I47TJGStKY+7lsMBL2yydOPHx+aRwbfPH/q4ycShw1Xe+XS4dQH3XRhxsPXAhISM
-	 i7Ass30bVS4Ly9gA2Owf+e4L1nLhwjPNXrWog4Zhp1AQPURHurdZPq43fK9Z+dN7eu
-	 qrg+2ZymSC6h2uOg1H1o9L7apLVZIFTkeYpQBN5C6pkUrFjEiUOMteYrZcMYyd6D+L
-	 C/sH8/2pALKmA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
-In-Reply-To: <1328231683.26510466.1679404685113.JavaMail.zimbra@raptorengineeringinc.com>
-References: <8398361.16996856.1678123793664.JavaMail.zimbra@raptorengineeringinc.com>
- <87bkl2ywz2.fsf@mpe.ellerman.id.au>
- <1816556668.17777469.1678390100763.JavaMail.zimbra@raptorengineeringinc.com>
- <2099448392.25626899.1679166370571.JavaMail.zimbra@raptorengineeringinc.com>
- <877cvav1ey.fsf@mpe.ellerman.id.au>
- <1328231683.26510466.1679404685113.JavaMail.zimbra@raptorengineeringinc.com>
-Date: Wed, 22 Mar 2023 08:43:15 +1100
-Message-ID: <874jqdvkzw.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Ph5x30Vhkz3c6X
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 09:33:41 +1100 (AEDT)
+Received: by mail-oi1-f169.google.com with SMTP id e4so5478138oiy.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 15:33:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679438018;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lq5IHN4ky6w3nFPQn7CkTtEA1+7XZPAY5dbicjXStOc=;
+        b=ayadv+7KiqJmSQ15hcpik41d0Qn2v94yFgYvtMXVycgXTA/dEWqTR1f6RKCV1pszbf
+         BolIvAzwmOByRCiE4FbhFJMF8w+oZ0zrMv+Ki9HdZyRkNxJx0wOiOjUdQrVnbTHLjwtx
+         0hiFDJctbK3xGRG0eXFjeEgMj48PlMVGDyiloWhBPNEMEAceEBJarPS6QluJljNRswqN
+         9HeefZGieFsrfYzukVjzNXsHaGPZpXhBFSG+IeOGZzm+6MZqsawXrAjyHE7TagJGP2VO
+         Xr8D4QpGE+Wln7oms/jcmDRhx5IzZuzZ7R4Ih3yJp0RRLUAoTyzt5d0+M77poz8tW8/7
+         QoLA==
+X-Gm-Message-State: AO0yUKV4JIykusnKxNM87mOpwzPN+gtaCtzW0Ri0zZSoLD7eq7t0ekEk
+	TkjFQuTjNGh95TGV1MwNVA==
+X-Google-Smtp-Source: AK7set+RTgO3GuSot4uEnORzZq3leOTPVHBZNtYNYKqkygCniCpnwFTc8h7YWpTGdM34MeQJSF3ztA==
+X-Received: by 2002:aca:1a09:0:b0:387:1e2d:f28c with SMTP id a9-20020aca1a09000000b003871e2df28cmr328398oia.40.1679438017104;
+        Tue, 21 Mar 2023 15:33:37 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id b20-20020a056870d1d400b001768b4759e5sm4681974oac.14.2023.03.21.15.33.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Mar 2023 15:33:36 -0700 (PDT)
+Received: (nullmailer pid 1784094 invoked by uid 1000);
+	Tue, 21 Mar 2023 22:33:35 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Rob Herring <robh@kernel.org>
+To: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <20230321201313.2507539-4-sean.anderson@seco.com>
+References: <20230321201313.2507539-1-sean.anderson@seco.com>
+ <20230321201313.2507539-4-sean.anderson@seco.com>
+Message-Id: <167943790379.1778436.6467675853920923217.robh@kernel.org>
+Subject: Re: [PATCH v12 03/13] dt-bindings: Convert gpio-mmio to yaml
+Date: Tue, 21 Mar 2023 17:33:35 -0500
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,73 +63,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timothy Pearson <tpearson@raptorengineering.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm <kvm@vger.kernel.org>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Fernández Rojas <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Timothy Pearson <tpearson@raptorengineering.com> writes:
-> ----- Original Message -----
->> From: "Michael Ellerman" <mpe@ellerman.id.au>
->> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Timothy Pearson" <tpearson@raptorengineering.com>
->> Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
->> Sent: Tuesday, March 21, 2023 5:33:57 AM
->> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
->
->> Timothy Pearson <tpearson@raptorengineering.com> writes:
->>> ----- Original Message -----
->>>> From: "Timothy Pearson" <tpearson@raptorengineering.com>
->>>> To: "Michael Ellerman" <mpe@ellerman.id.au>
->>>> Cc: "Timothy Pearson" <tpearson@raptorengineering.com>, "kvm"
->>>> <kvm@vger.kernel.org>, "linuxppc-dev"
->>>> <linuxppc-dev@lists.ozlabs.org>
->>>> Sent: Thursday, March 9, 2023 1:28:20 PM
->>>> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
->>>
->>>> ----- Original Message -----
->>>>> From: "Michael Ellerman" <mpe@ellerman.id.au>
->>>>> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "kvm"
->>>>> <kvm@vger.kernel.org>
->>>>> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
->>>>> Sent: Thursday, March 9, 2023 5:40:01 AM
->>>>> Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
->>>> 
->>>>> Timothy Pearson <tpearson@raptorengineering.com> writes:
->>>>>> This patch series reenables VFIO support on POWER systems.  It
->>>>>> is based on Alexey Kardashevskiys's patch series, rebased and
->>>>>> successfully tested under QEMU with a Marvell PCIe SATA controller
->>>>>> on a POWER9 Blackbird host.
->>>>>>
->>>>>> Alexey Kardashevskiy (3):
->>>>>>   powerpc/iommu: Add "borrowing" iommu_table_group_ops
->>>>>>   powerpc/pci_64: Init pcibios subsys a bit later
->>>>>>   powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
->>>>>>     domains
->>>>> 
->>>>> As sent the patches had lost Alexey's authorship (no From: line), I
->>>>> fixed it up when applying so the first 3 are authored by Alexey.
->>>>> 
->>>>> cheers
->>>> 
->>>> Thanks for catching that, it wasn't intentional.  Probably used a wrong Git
->>>> command...
->>>
->>> Just wanted to touch base on the patches, since they're still listed as Under
->>> Review on patchwork.  Are we good to go for the 6.4 merge window?
->> 
->> They've been in my next (and so linux-next), since last week. I just
->> haven't updated patchwork yet.
->> 
->> So yeah they are on track to go into mainline during the v6.4 merge window.
->> 
->> cheers
->
-> Sounds great, thanks!  Saw them in the next tree but wasn't sure if the patchwork status was more reflective of overall status.
 
-Yeah I guess patchwork is more reflective.
+On Tue, 21 Mar 2023 16:13:02 -0400, Sean Anderson wrote:
+> This is a generic binding for simple MMIO GPIO controllers. Although we
+> have a single driver for these controllers, they were previously spread
+> over several files. Consolidate them. The register descriptions are
+> adapted from the comments in the source. There is no set order for the
+> registers, and some registers may be omitted. Because of this, reg-names
+> is mandatory, and no order is specified.
+> 
+> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
+> has moved.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Linus or Bartosz, feel free to pick this up as the rest of this series
+> may not be merged any time soon.
+> 
+> Changes in v12:
+> - Put compatible first
+> - Keep gpio-controller to one line
+> - Add little-endian property
+> - Alphabetize compatibles
+> - Remove some comments
+> - Remove some examples with insufficient novelty
+> 
+> Changes in v11:
+> - Keep empty (or almost-empty) properties on a single line
+> - Don't use | unnecessarily
+> - Use gpio as the node name for examples
+> - Rename brcm,bcm6345-gpio.yaml to brcm,bcm63xx-gpio.yaml
+> 
+> Changes in v10:
+> - New
+> 
+>  ...m6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} |  16 +--
+>  .../devicetree/bindings/gpio/gpio-mmio.yaml   | 117 ++++++++++++++++++
+>  .../bindings/gpio/ni,169445-nand-gpio.txt     |  38 ------
+>  .../devicetree/bindings/gpio/wd,mbl-gpio.txt  |  38 ------
+>  4 files changed, 118 insertions(+), 91 deletions(-)
+>  rename Documentation/devicetree/bindings/gpio/{brcm,bcm6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} (78%)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+> 
 
-I sometimes put things in next for a few days to see if any issues shake
-out, before I update patchwork. Mainly because it's a pain to un-update
-patchwork if the patch needs to be backed out, but also as a signal that
-the patch isn't quite locked into next yet.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-cheers
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/gpio/brcm,bcm63xx-gpio.yaml#
+./Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+./Documentation/devicetree/bindings/mfd/brcm,bcm63268-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+./Documentation/devicetree/bindings/mfd/brcm,bcm6362-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+./Documentation/devicetree/bindings/mfd/brcm,bcm6368-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+./Documentation/devicetree/bindings/mfd/brcm,bcm6328-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+./Documentation/devicetree/bindings/mfd/brcm,bcm6358-gpio-sysctl.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml
+
+doc reference errors (make refcheckdocs):
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm63268-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6328-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6358-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6362-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Warning: Documentation/devicetree/bindings/mfd/brcm,bcm6368-gpio-sysctl.yaml references a file that doesn't exist: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm63268-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm6328-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm6358-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm6362-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+Documentation/devicetree/bindings/mfd/brcm,bcm6368-gpio-sysctl.yaml: Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230321201313.2507539-4-sean.anderson@seco.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
