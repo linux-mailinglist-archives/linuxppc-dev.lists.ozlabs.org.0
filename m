@@ -1,73 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EDA6C2A47
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 07:15:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55856C2AE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 07:56:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PghDC0bZKz3chr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:15:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pgj794jh7z3cP0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:56:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jcLtPjox;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=Ct+7pVgm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jcLtPjox;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=Ct+7pVgm;
 	dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PghCF1HsNz3bm6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 17:14:32 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id kq3so2602868plb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 23:14:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679379269;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1Hv33fIuyzWrpPNOhwXyMnK2Osr5j5jrVm6wuMJwEGo=;
-        b=jcLtPjox8yaJKvcik6ldfPraHUAFu0NRxgtNszsuTrcnUnhZU4oG+hKwiJdhpQfktE
-         olxzuQb4UNZlDg5L4truU8y24PypOUAsdXbXCWkQMZc8uC+n0Iweh2f+/i0Jt4GCewBg
-         85+Lo4FhBzRK0MYTex/PdwZIRDCF1llW4z7IE4JcJgCiBEz5uNPo45WlodfdGzvuSZVB
-         gaQypJmfW0R5Xt9bq/UNYZVjFwtrgVlNiHpc2sCbq0lFZYEsA1224E0C8z/+1YFP5vV6
-         qhVCT68sV1kOEUXqntJL2n+6lUfYI0e1pmcEUczRrXJGYbXXZMpWl7rqZM2WZ+Q7z69S
-         MslQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679379269;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1Hv33fIuyzWrpPNOhwXyMnK2Osr5j5jrVm6wuMJwEGo=;
-        b=PC4Oar4D7b2tNW9zjzqaGrYf6g/kmr2EMvgTTQvrGvqcxPA4177MYBLZp6jWPv3t23
-         aF+Jyi03XjVqdlYyZmKi1Uc+vY4DMexUeL0fYFQRhCp+Q5BmqIbYlNkak2f0H4xOwX5x
-         wfuYWfM2IxkSl40g/ivejbeU8d9BpiFH+7r8SywvlY/xWCXR9n+YjeGLsS6ji1yUTIdd
-         vZbc9v/flSGDL+isXXjRxHPB62pQnGw5+2A8y9tv42Hjgqp6Fcg6bSTzWHHNJDEfs0SA
-         N+Z4+8FnTme3g0pSW7K0jjP9vDO77xbE6IdrXSDkavonn7OINxyfd7eu1IMU1C1/708l
-         iUKQ==
-X-Gm-Message-State: AO0yUKUtdLeXK/IA0MPJgA0/XUiyPuww8QvKOPV71MEwWrPI4KZEJuWo
-	TvUPa0q5ED6rdlAn0qGurs0=
-X-Google-Smtp-Source: AK7set+IGQr/Gyi3tCMdxzG5V3SGiniaHiXhH64UIDad+ZC4DjuZeAWIh0gUu6vatmMI8uZM6qeB0w==
-X-Received: by 2002:a17:903:246:b0:19c:be0c:738 with SMTP id j6-20020a170903024600b0019cbe0c0738mr1265226plh.59.1679379269274;
-        Mon, 20 Mar 2023 23:14:29 -0700 (PDT)
-Received: from localhost (121-44-69-75.tpgi.com.au. [121.44.69.75])
-        by smtp.gmail.com with ESMTPSA id u19-20020a170902a61300b001a1dc2be791sm1746933plq.259.2023.03.20.23.14.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Mar 2023 23:14:28 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pgj6959lyz2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 17:55:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1679381687; i=markus.elfring@web.de;
+	bh=XXleG++6MeURy/E/vOgvu/1108sao7Di03RTgqbkGWA=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ct+7pVgmenY5Jwo9XuK+OiUmU+eysI50+S87bPkTnQxzAhIyHT+G8h2vA7YaBhvwJ
+	 ZrLUS9GIcanoIbmGbjDmuLXwicnl5QD54BLwFPGtwQArL1NCjlJ1cGFZt6l34VCjtI
+	 P8CjzMqEJQ/v4uncLJlteTrDcSzi047HeJfRYrMXSy154fPKlVbsLegVCgOfZ7d+sN
+	 Z0qrI988CU7gPGZoSftA0zROXL4I3wTZrepnM3BpouxWAVO19iuLl77jKhWGM74fFC
+	 aKslXn2aI9oHVdic2fg8enOEp1oOtwegtveN1mJGLzqFnca17tTtHSL9i2UZQAY8Dy
+	 8HhV8fzvZblPQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.81.83]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mtgub-1qUYqe1PMV-00v9Ns; Tue, 21
+ Mar 2023 07:54:47 +0100
+Message-ID: <afb528f2-5960-d107-c3ba-42a3356ffc65@web.de>
+Date: Tue, 21 Mar 2023 07:54:29 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: powerpc/pseries: Fix exception handling in
+ pSeries_reconfig_add_node()
+Content-Language: en-GB
+To: Nathan Lynch <nathanl@linux.ibm.com>
+References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+ <0981dc33-95d0-4a1b-51d9-168907da99e6@web.de> <871qln8quw.fsf@linux.ibm.com>
+ <a01643fd-1e4a-1183-2fa6-000465bc81f3@web.de> <87v8iz75ck.fsf@linux.ibm.com>
+ <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de> <87pm9377qt.fsf@linux.ibm.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <87pm9377qt.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Mar 2023 16:14:24 +1000
-Message-Id: <CRBU9JHY52KF.1RQWXLU6SPDIR@bobo>
-Subject: Re: [kvm-unit-tests v2 00/10] powerpc: updates, P10, PNV support
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, <kvm@vger.kernel.org>
-X-Mailer: aerc 0.13.0
-References: <20230320070339.915172-1-npiggin@gmail.com>
-In-Reply-To: <20230320070339.915172-1-npiggin@gmail.com>
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:7Kuxt/8RJeURdT0ekwdlRTjO+znwTwfklysqtixQNqfsAEVZXCm
+ 37TgaXMOOE+ST41juFnzukMWOtaFhrpoTCMvamNmvTLy5TFJ4F0JEX7VG70u0M8umU9Ejxx
+ WjcwIpdJy6Ak/yNJz7cAd85rIkSWjp15mS++Xqw3jlrZkUHBvxgOlUiuyiG1/gECncwgKEW
+ 9/tuJih+uV9Oa7OH2/WWA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:vDaPWzYeOp8=;WBSZDpG4NMLE0ZKPLVAjK13ag4S
+ xvAOonxBcha1mdjqJU8DPaakQ+ufdXKmD/XnNrRyfTTUwgXLeg52hbeFr+HjcbPdUuF4jlZqa
+ fEmfD5mwIoey/X+T0aGfgEIq0/IG4ONFGraA6IFffqLd1RaMgwQ7dkB/Cd/83mzSbpZIjxhJj
+ CX2luKPeC8283bfxtCOMXAX1m+yFI5Dq98j3mVBt+lF31ac35a9JLB9e7w5WeScy3IbEvIXvI
+ x0FKYQc3qCUe39d3258zYltTJOPxf8FoOqWrCmzwxgvqcfRjm/C5zihmqp//lo7yYSabpV5GV
+ c+WAxZIz90g8qmb/4W+BNd7cDY+SJI/nR3SJgCTi+bOK0mF9jFtPQPWoPLCsj5I3IZ3OK7Oqt
+ q2jh4fq91HddShijl37Z9+sxAsSDYHiPjW1UxrhWdFPoTRe1Gm5FxGOHP+Fw4Jl21GSvXMkF2
+ wwpKpOhpiNdpT2y8NcN3DoNBjuZmYuNBbjRWcbnWIwbykBPAoIxkh6xcBWe9dfpvWA6KGy94b
+ D/gLhibYYcUISSIkSQLzmrfYP96jvGOmkyYJ+wUuAHuHHSdir9JP9AtJid99L2BMHdHRGerK9
+ rverVzFGr84LtAs0E3Y5Ern2DsX85HZxaGk6aR+7ShG4tgHrOqO841mARS07f0d8C60HWn8HB
+ lcIh8XoVKzVzsdfa4JdNAIF5GMRar/BcesJPLhr0kAu0Fws9TMKGYjKBjis1P0pPeUXwPvTBm
+ iwgr9b1BuwGFFPhzUz9IyCrCs6t+X0gc8IwkFaVuu4NcIkQAvAAz8N0B4iJDZ9hHiADgkPbir
+ QzXQInbT2qCAPzioe+46GgVdjJNwnmNA1EseAShICGizIFLbq7qzXVfmbWyLfgYSfr2BI6DdM
+ n/okfeDE0KlJwFvTsyc8nUiDHfJfPdHlK7oekO7PivRI/VYO5hKx15tWn5lofFPt8dupGQezH
+ txNxrw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +84,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Moore <paul@paul-moore.com>, kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Mar 20, 2023 at 5:03 PM AEST, Nicholas Piggin wrote:
-> Since v1 series, I fixed the sleep API and implementation in patch 2
-> as noted by Thomas. Added usleep and msleep variants to match [um]delay
-> we already have.
->
-> Also some minor tidy ups and fixes mainly with reporting format in the
-> sprs test rework.
->
-> And added PowerNV support to the harness with the 3 new patches at the
-> end because it didn't turn out to be too hard. We could parse the dt to
-> get a console UART directly for a really minimal firmware, but it is
-> better for us to have a test harness like this that can also be used for
-> skiboot testing.
+> It's been brought to my attention that there is in fact a crash bug
+> in this function's error path:
 
-I'll send out one more series, I have a couple of fixes for PowerNV code
-(I didn't make the OPAL call to set interrupts little endian for LE
-builds, for one). I'll wait for a week or so for more feedback though.
+How do you think about to mention any other contributors for attribution
+according to this issue?
 
-Thanks,
-Nick
+
+> np->parent can be an encoded error value, we don't want to of_node_put() that.
+
+Will the development attention grow for any more cases?
+
+
+> I believe the patch as written happens to fix the issue.
+
+Is it interesting how many details can still be improved (by my change suggestion)
+also for the discussed function implementation?
+
+
+> Will you please write it up as a bug fix and resubmit?
+
+Another proposal will follow.
+
+Regards,
+Markus
