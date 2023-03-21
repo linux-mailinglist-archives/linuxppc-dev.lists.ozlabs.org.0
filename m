@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24EB86C2F04
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 11:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F6A6C2F25
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 11:36:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pgnwb023Rz3cdJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 21:32:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pgp130gMTz3chn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 21:36:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=q8Ner4fy;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=A89V0Kgn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=82.165.159.45; helo=mout-xforward.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=q8Ner4fy;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=A89V0Kgn;
 	dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from mout-xforward.web.de (mout-xforward.web.de [82.165.159.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pgnvg12vHz2xdw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 21:31:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pgp070YQNz2yPD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 21:35:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1679394657; i=markus.elfring@web.de;
-	bh=CT7xHXG8JhBeOVufCmoBkVwuGJ+QQcGx0Cjdf+u/rjo=;
+	t=1679394837; i=markus.elfring@web.de;
+	bh=vndjNXkPmTxF0BPBkraC9oszufUtdq4WgZMkzAOxXDo=;
 	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=q8Ner4fyHjhZM3MaiXKTZ6CilhhyzZJc/gyP7RQ+qmNKPyAPDxEkRP78nX7DvGouE
-	 HWFI9yJfxr3xFXmponEhY/MDX+Ho+g4ZwU2tup3mDJkD3w6ixzMhI/n0Kle8/Z7mXq
-	 HpUswXEVz0a00QZycvx/hiAi6fluX7OfaKd/y/k2uz7/M4s38Q45j826csJMjL6+YN
-	 7IMAmcTXfeZO1W3Zv0uKu7ui+SUtJ6tTeo1Izy9a3JgjwyQNntgu+7Jz9QXYQwPgtb
-	 nQU16R67FX30cWu9dFRWsf08fi0iBUf06mWtSbTgSdB2erDznE1NXf9dY9L4GncUwS
-	 h9ZwGXY4WAyyA==
+	b=A89V0KgngrmZZofv5QrNSfXK25TfNFNj5/6zVZYhKdHjLIg60vGUb7l+RQAWmykpt
+	 8cN4Rh9/xL94Z6rlGmvffTUf5gfsR1JV9Mu+0VrVuPpezQki1W2ye7XsCRmuFW6fv8
+	 znG1oYQIS7Kk9EW9SRAa18mb2WLrJ3tpX83H2i9vDkhJ9rhLedEFB1ie8bfZ22aeZw
+	 /c+IwI+Oymj+RNM1rX8OlslC95M84pXnbgIq0I8hzx4ZMutgx9HZAN7gO9sqfncPSt
+	 PE957TZlPqPD+Rz9FWE6kESBJLJgb0AbOXrgGgkAB4fa/1bHlNLIopwvn34JpABSPR
+	 WlUdSGEqzJeGg==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from [192.168.178.21] ([94.31.81.83]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MQ8Wg-1prqvg3li4-00MGg8; Tue, 21
- Mar 2023 11:30:56 +0100
-Message-ID: <d4bcde15-b4f1-0e98-9072-3153d1bd21bc@web.de>
-Date: Tue, 21 Mar 2023 11:30:54 +0100
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MnX5T-1qNIGW3LUb-00jO3m; Tue, 21
+ Mar 2023 11:33:57 +0100
+Message-ID: <8949eefb-30d3-3c51-4f03-4a3c6f1b15dc@web.de>
+Date: Tue, 21 Mar 2023 11:33:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: [PATCH v2 0/2] powerpc/pseries: Fixes for exception handling in
- pSeries_reconfig_add_node()
+Subject: [PATCH v2 1/2] powerpc/pseries: Do not pass an error pointer to
+ of_node_put() in pSeries_reconfig_add_node()
 Content-Language: en-GB
 From: Markus Elfring <Markus.Elfring@web.de>
 To: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -54,29 +54,31 @@ References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
  <a01643fd-1e4a-1183-2fa6-000465bc81f3@web.de> <87v8iz75ck.fsf@linux.ibm.com>
  <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de> <87pm9377qt.fsf@linux.ibm.com>
  <afb528f2-5960-d107-c3ba-42a3356ffc65@web.de>
-In-Reply-To: <afb528f2-5960-d107-c3ba-42a3356ffc65@web.de>
+ <d4bcde15-b4f1-0e98-9072-3153d1bd21bc@web.de>
+In-Reply-To: <d4bcde15-b4f1-0e98-9072-3153d1bd21bc@web.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SLleS0P+H73Nybkhw8BxrdfS/dXDDovlM3aLN+oPSrpwr76OOc+
- rzdxlaYdZ57zLjQzG7CKlLloAPFukKnt2yYW76WvVOdL3cPE8aIutleaC45LyLxrx1YB+og
- BxdHjHpbRU1hL+PxsHPg8XNvQBoJGko6AI3HXHGZjgCwWJlS2QmdkAfVlia/IKOVWLJdFw4
- cHIRCAgnsYKWInFirH7gg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:WVBGSyKNTaE=;9fsatsBPW+TcfwzouDdkJeHRc1R
- al4qDFd2oRGDmBC629xDeyNEmF/sn5NAVVNvJSxg6PJ5gSR8JNpYFekonxmdrshPCCgFny/mD
- uALTIunjwdIKTG1gAh1b5GLa3izxUvlxyxG/gXUhjb/EonxMjCXNUTPZQPMiioSaD0RlpSljv
- FsZiihEG5CsB1NKYhD7VENLjX4qjwJ1Jcj1kRVZFdOh7dToJiWtXZzVtBgBqm6QwJU6Y8rvsQ
- IHTrA6l6kWL9PXHeoIXfNs7fkuygxOaacsqyiFAfuayfn9rn67pW8WInGO0ysBtIQ14D4uE+t
- Td/PrQCclxZcCzi4DgcSP8c8qBGJDu85uTZF+6ef8pBZX9hQr5HcRh91gh2112gp32o+IsFTo
- 4hJ24VZ3MaO59ydXcbYxZZ2L9dZytNik00cKpNWYlDZCW1iokA7absyvqsmbvPE7Mk/3B9dP8
- 69wOVaPQJCXZn0LvrjlNxM/Jn86DLiqOfIeBKSlHpZ2zKdKG1DUj8szIFUKNYcINZH+fDgFum
- AYppCg+9CRpetQLVf1CwKakGrkB0OagCjxm8hR1yJZvVHid5rQdHbF8itfJ9eR9Iu6654Dvss
- eZT7STk6I7C1e6c+w8aL+7Mg93EXEHS/quspwTZIphtbDx9u8/6QqOzlxh3U7EbA5/GTbwVaE
- OBWzqErLeTvzGa0CWjs1WJGr+JSpgsPGta8zMzqhd6Gz+cFrKERiXMQH5Vud61yFjtelAOShv
- +t4cO71EgqFrIa96IvskQj9PZ50zV2NfOrF/SSC3FvMu/sE/eXo2KrVJTW49/V9fZJzBU3EZ/
- wktEy7hNbXVymtU15qahGNip6LeXwZCCIWgHi+FFcew2uK5mlNp3Cv38TTXtXRwOOSSTfWejf
- lwKtsBpAK4iOAc5Sh6QcdeI/tB1x6y48Wi/o7StIawKo0BANuC8Sqp70ctVBc7GC1+mFwCjQF
- kSjnJw==
+X-Provags-ID: V03:K1:cUS+tA463HYUlb/iUpPOArqy6VeUFp3JFsh/x1olBn4hTXcKng3
+ vXYjvYRNl5OrT5wPkTpA5S7RFY1GKu/TSn7FBzeOL8e639SR2iaaWB3Fb2x4HC2u89sjsf6
+ miv3T206bbdiH2QQpC5bBzSYFyDp1qTdKZwJggwZhGdb9x5SxBQl9UVlTaPJf8wqG42/JQV
+ 2BqvRnNJ7sz0FRY++A4qQ==
+X-Spam-Flag: YES
+UI-OutboundReport: junk:10;M01:P0:Gr2jsBBO1Go=;liunclFFJopIqm5hKq6VgGlpa4tMs
+ m/0CGPlgoSqPq4w4vbvfkPANp3Pb7FoaVcpTNlMm5dGWlurf8Tl4P3GzOGhQBeTm8dLPoLDh/
+ atFnBFHMn9ba9S/S59/tlT1s4AdXmgL4P0GKDETiwW2T106q0QqlvmikTOjkV6+M071TttNDF
+ 1njSj4O7HZbL77vzuF2zblNA0+AtY9mYIOY0SWSpddXqtjVmZIoG6hRsK9tO1KuxZKqKAjhwp
+ vQaxGXSpyabe27seFiE1kyvKWjat9PNO3vYgmPbBTJYbWrqmtuIpNBCMw6fN5JHhNbP7WNUMt
+ LYawuT3AOCJLhP1i2X8c8T7Uiu3oV96XjHZbzPFbz6ikv90QquRvo/hQ6S/RGArXNfJDeztY/
+ 81onrXM9SWgGvSLmKaSLDCWvr1UTWoMCX2ifNYFcMxx1hxHplWQkHxyHTXkOloqF0QEXw1YYB
+ MAHMh7gyBJD+xT1WO/xNM8Rzn+LyCDlH84wPjBDnGmlrNV7jy+YB68efJcmPE3n6qWFf8aDI/
+ tCknHbsyLlYzLoYtbQ5o/CQtaV6RpJAbUwWUy2Jni6FhLDVUSnBtcJbm+ZJ0s0t59wLVqzyu6
+ p9syNUdjH2aUim/YTcqIdgy/P6qLRpDDKlehdJeqrTS5Fm2if+1bWcBrdo0Pw4WlImWzuAZFn
+ /GXxZakCedLq47Vr6ruwmhwVA8orKN2mDRFKrPjRZJdtPFWFfk6YvR8PMnJ5REPHj1LkssUwe
+ VLG/tWUY5rsJaRCTW7lq5DC5NY2RzWEvgztx5NznJ/r9yTZVod3wPhZzEA7KcaTeNhz33lcYH
+ K2Hz1FOiEmPj5bEYnGvMD7BcVMfGt9QAxAxtqAMpbiSR1R+Kf+j/4AQkJwsYn1GJ2jUx+UiPe
+ M8DAytK5pELoT9x9aHTqqcTDmE5sIW6DsPLr8+6tqpNmP6JQ7zSIshh2Hoyw6Bpzt53HjV8oM
+ Hm3l/YtdEdlOjL+wkkB9Z4XDVhPB/5J8w5soo/neI4bako5HkW2PJj2WotvusxaNmPhpgDnFu
+ M2I4zvmU9+xY7OwM=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,19 +94,55 @@ Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Date: Tue, 21 Mar 2023 11:26:32 +0100
+Date: Tue, 21 Mar 2023 10:30:23 +0100
 
-A few update suggestions were taken into account
-from static source code analysis.
+It can be determined in the implementation of the function
+=E2=80=9CpSeries_reconfig_add_node=E2=80=9D that an error code would occas=
+ionally
+be provided by a call of a function like pseries_of_derive_parent().
+This error indication was passed to an of_node_put() call according to
+an attempt for exception handling so far.
 
-Markus Elfring (2):
-=C2=A0 Do not pass an error pointer to of_node_put()
-=C2=A0 Fix exception handling
+Thus fix the risk for undesirable software behaviour by using
+an additional label for this error case.
 
-=C2=A0arch/powerpc/platforms/pseries/reconfig.c | 26 ++++++++++++---------=
---
-=C2=A01 file changed, 14 insertions(+), 12 deletions(-)
+Link: https://lists.ozlabs.org/pipermail/linuxppc-dev/2023-March/256025.ht=
+ml
+Link: https://lore.kernel.org/lkml/87pm9377qt.fsf@linux.ibm.com/
+Reported-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+V2:
+This update step was added according to another change request.
 
+=C2=A0arch/powerpc/platforms/pseries/reconfig.c | 3 ++-
+=C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/plat=
+forms/pseries/reconfig.c
+index 599bd2c78514..44f8ebc2ec0d 100644
+=2D-- a/arch/powerpc/platforms/pseries/reconfig.c
++++ b/arch/powerpc/platforms/pseries/reconfig.c
+@@ -40,7 +40,7 @@ static int pSeries_reconfig_add_node(const char *path, s=
+truct property *proplist
+=C2=A0=C2=A0=C2=A0 =C2=A0np->parent =3D pseries_of_derive_parent(path);
+=C2=A0=C2=A0=C2=A0 =C2=A0if (IS_ERR(np->parent)) {
+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0err =3D PTR_ERR(np->parent);
+-=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0goto out_err;
++=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0goto free_name;
+=C2=A0=C2=A0=C2=A0 =C2=A0}
+=C2=A0
+=C2=A0=C2=A0=C2=A0 =C2=A0err =3D of_attach_node(np);
+@@ -56,6 +56,7 @@ static int pSeries_reconfig_add_node(const char *path, s=
+truct property *proplist
+=C2=A0out_err:
+=C2=A0=C2=A0=C2=A0 =C2=A0if (np) {
+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0of_node_put(np->parent);
++free_name:
+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0kfree(np->full_name);
+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0kfree(np);
+=C2=A0=C2=A0=C2=A0 =C2=A0}
 =2D-
 2.40.0
 
