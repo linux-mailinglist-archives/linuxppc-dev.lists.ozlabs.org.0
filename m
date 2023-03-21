@@ -2,67 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5AF6C2A41
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 07:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EDA6C2A47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 07:15:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PghC41zMYz3cfS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:14:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PghDC0bZKz3chr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:15:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbe1AhW+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jcLtPjox;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbe1AhW+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jcLtPjox;
 	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PghB61lbnz307T
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 17:13:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679379214; x=1710915214;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hnBlNT0JYpHA6OdQF99prdk7E/49EUK1i8+eAnrjHcQ=;
-  b=fbe1AhW+E4lBAVW8+0OZJtvbgb2SZrJJYHhGfX2GccUqkEuFEfi4tj5v
-   ZEXftvaU4S5bVCOZ0AJcqIbkwQkeNWvjB1d3cJswOig0jFHBvoxRFk3oC
-   wrow2axXfCshf3BmwVfCTXcQ2ImgF1zQ80gCCQzH9TkkKPXAKrTuP5Ctd
-   8xKQW5ZABKvTyjQP5DdLpRVHP1zDu1T251yM54XByO+vcB2FvO2dI+SKh
-   x8ti7TAm+FR2hNN3ZGg85hHc3BdWhwQGO1Mz/py47qMfp0rRMW+3II80N
-   Ad0EyXmNJCmgTTxrDr7CCXmqtVJClbvSAgVHJjnxYVOd21F0Mpz5IQPcl
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="340401973"
-X-IronPort-AV: E=Sophos;i="5.98,278,1673942400"; 
-   d="scan'208";a="340401973"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 23:13:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="713858685"
-X-IronPort-AV: E=Sophos;i="5.98,278,1673942400"; 
-   d="scan'208";a="713858685"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 20 Mar 2023 23:13:21 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1peVFD-000BfE-38;
-	Tue, 21 Mar 2023 06:13:15 +0000
-Date: Tue, 21 Mar 2023 14:12:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rob Herring <robh@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Anatolij Gustschin <agust@denx.de>, Arnd Bergmann <arnd@arndb.de>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc: Use of_address_to_resource()
-Message-ID: <202303211421.Vzx1L2QW-lkp@intel.com>
-References: <20230319163154.225597-1-robh@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230319163154.225597-1-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PghCF1HsNz3bm6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 17:14:32 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id kq3so2602868plb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Mar 2023 23:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679379269;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Hv33fIuyzWrpPNOhwXyMnK2Osr5j5jrVm6wuMJwEGo=;
+        b=jcLtPjox8yaJKvcik6ldfPraHUAFu0NRxgtNszsuTrcnUnhZU4oG+hKwiJdhpQfktE
+         olxzuQb4UNZlDg5L4truU8y24PypOUAsdXbXCWkQMZc8uC+n0Iweh2f+/i0Jt4GCewBg
+         85+Lo4FhBzRK0MYTex/PdwZIRDCF1llW4z7IE4JcJgCiBEz5uNPo45WlodfdGzvuSZVB
+         gaQypJmfW0R5Xt9bq/UNYZVjFwtrgVlNiHpc2sCbq0lFZYEsA1224E0C8z/+1YFP5vV6
+         qhVCT68sV1kOEUXqntJL2n+6lUfYI0e1pmcEUczRrXJGYbXXZMpWl7rqZM2WZ+Q7z69S
+         MslQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679379269;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1Hv33fIuyzWrpPNOhwXyMnK2Osr5j5jrVm6wuMJwEGo=;
+        b=PC4Oar4D7b2tNW9zjzqaGrYf6g/kmr2EMvgTTQvrGvqcxPA4177MYBLZp6jWPv3t23
+         aF+Jyi03XjVqdlYyZmKi1Uc+vY4DMexUeL0fYFQRhCp+Q5BmqIbYlNkak2f0H4xOwX5x
+         wfuYWfM2IxkSl40g/ivejbeU8d9BpiFH+7r8SywvlY/xWCXR9n+YjeGLsS6ji1yUTIdd
+         vZbc9v/flSGDL+isXXjRxHPB62pQnGw5+2A8y9tv42Hjgqp6Fcg6bSTzWHHNJDEfs0SA
+         N+Z4+8FnTme3g0pSW7K0jjP9vDO77xbE6IdrXSDkavonn7OINxyfd7eu1IMU1C1/708l
+         iUKQ==
+X-Gm-Message-State: AO0yUKUtdLeXK/IA0MPJgA0/XUiyPuww8QvKOPV71MEwWrPI4KZEJuWo
+	TvUPa0q5ED6rdlAn0qGurs0=
+X-Google-Smtp-Source: AK7set+IGQr/Gyi3tCMdxzG5V3SGiniaHiXhH64UIDad+ZC4DjuZeAWIh0gUu6vatmMI8uZM6qeB0w==
+X-Received: by 2002:a17:903:246:b0:19c:be0c:738 with SMTP id j6-20020a170903024600b0019cbe0c0738mr1265226plh.59.1679379269274;
+        Mon, 20 Mar 2023 23:14:29 -0700 (PDT)
+Received: from localhost (121-44-69-75.tpgi.com.au. [121.44.69.75])
+        by smtp.gmail.com with ESMTPSA id u19-20020a170902a61300b001a1dc2be791sm1746933plq.259.2023.03.20.23.14.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Mar 2023 23:14:28 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Mar 2023 16:14:24 +1000
+Message-Id: <CRBU9JHY52KF.1RQWXLU6SPDIR@bobo>
+Subject: Re: [kvm-unit-tests v2 00/10] powerpc: updates, P10, PNV support
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, <kvm@vger.kernel.org>
+X-Mailer: aerc 0.13.0
+References: <20230320070339.915172-1-npiggin@gmail.com>
+In-Reply-To: <20230320070339.915172-1-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,72 +79,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+On Mon Mar 20, 2023 at 5:03 PM AEST, Nicholas Piggin wrote:
+> Since v1 series, I fixed the sleep API and implementation in patch 2
+> as noted by Thomas. Added usleep and msleep variants to match [um]delay
+> we already have.
+>
+> Also some minor tidy ups and fixes mainly with reporting format in the
+> sprs test rework.
+>
+> And added PowerNV support to the harness with the 3 new patches at the
+> end because it didn't turn out to be too hard. We could parse the dt to
+> get a console UART directly for a really minimal firmware, but it is
+> better for us to have a test harness like this that can also be used for
+> skiboot testing.
 
-I love your patch! Yet something to improve:
+I'll send out one more series, I have a couple of fixes for PowerNV code
+(I didn't make the OPAL call to set interrupts little endian for LE
+builds, for one). I'll wait for a week or so for more feedback though.
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on powerpc/fixes linus/master v6.3-rc3 next-20230321]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/powerpc-Use-of_address_to_resource/20230320-003601
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20230319163154.225597-1-robh%40kernel.org
-patch subject: [PATCH] powerpc: Use of_address_to_resource()
-config: powerpc-mpc7448_hpc2_defconfig (https://download.01.org/0day-ci/archive/20230321/202303211421.Vzx1L2QW-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/f382770f629740b86b433db077440e9b5059628a
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Rob-Herring/powerpc-Use-of_address_to_resource/20230320-003601
-        git checkout f382770f629740b86b433db077440e9b5059628a
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/sysdev/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303211421.Vzx1L2QW-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   arch/powerpc/sysdev/tsi108_dev.c: In function 'get_csrbase':
->> arch/powerpc/sysdev/tsi108_dev.c:50:38: error: invalid type argument of '->' (have 'struct resource')
-      50 |                 tsi108_csr_base = res->start;
-         |                                      ^~
-
-
-vim +50 arch/powerpc/sysdev/tsi108_dev.c
-
-    38	
-    39	phys_addr_t get_csrbase(void)
-    40	{
-    41		struct device_node *tsi;
-    42	
-    43		if (tsi108_csr_base != -1)
-    44			return tsi108_csr_base;
-    45	
-    46		tsi = of_find_node_by_type(NULL, "tsi-bridge");
-    47		if (tsi) {
-    48			struct resource res;
-    49			of_address_to_resource(tsi, 0, &res);
-  > 50			tsi108_csr_base = res->start;
-    51			of_node_put(tsi);
-    52		}
-    53		return tsi108_csr_base;
-    54	}
-    55	EXPORT_SYMBOL(get_csrbase);
-    56	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Thanks,
+Nick
