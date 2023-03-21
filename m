@@ -1,78 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55856C2AE2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 07:56:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2456C2CA0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 09:38:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pgj794jh7z3cP0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 17:56:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PglPT6pYFz3cgy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 19:38:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=Ct+7pVgm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pgFK8sUi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=Ct+7pVgm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pgFK8sUi;
 	dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pgj6959lyz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 17:55:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1679381687; i=markus.elfring@web.de;
-	bh=XXleG++6MeURy/E/vOgvu/1108sao7Di03RTgqbkGWA=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ct+7pVgmenY5Jwo9XuK+OiUmU+eysI50+S87bPkTnQxzAhIyHT+G8h2vA7YaBhvwJ
-	 ZrLUS9GIcanoIbmGbjDmuLXwicnl5QD54BLwFPGtwQArL1NCjlJ1cGFZt6l34VCjtI
-	 P8CjzMqEJQ/v4uncLJlteTrDcSzi047HeJfRYrMXSy154fPKlVbsLegVCgOfZ7d+sN
-	 Z0qrI988CU7gPGZoSftA0zROXL4I3wTZrepnM3BpouxWAVO19iuLl77jKhWGM74fFC
-	 aKslXn2aI9oHVdic2fg8enOEp1oOtwegtveN1mJGLzqFnca17tTtHSL9i2UZQAY8Dy
-	 8HhV8fzvZblPQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.81.83]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mtgub-1qUYqe1PMV-00v9Ns; Tue, 21
- Mar 2023 07:54:47 +0100
-Message-ID: <afb528f2-5960-d107-c3ba-42a3356ffc65@web.de>
-Date: Tue, 21 Mar 2023 07:54:29 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PglNW2RBzz2ynD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 19:37:46 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32L7eWsi007793;
+	Tue, 21 Mar 2023 08:37:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=R2svW98PKPPTPmyvuzhpN7NRgC7Vw1gFSZZjUIWXmj4=;
+ b=pgFK8sUi6u2Sy5RO9+gl5X2ekUeeg1QcP4E+XZSjMWyv/C5LJfHc3cMflFbilouqFeJh
+ 6rORHm3Ha4Lj/FKI+WiTuX+9Ra7CjGvJ+cQAiYFlyips5C8cXlhuXm6cuXgF9/2oLqe6
+ 6js/+epkzGgXOWAWGZXgDUs52mIKky7zoKYAwQQc3yqoy4CNtVFGBkNSPVS86rfNyDvZ
+ I1Ngj+1WRiQmUuwOOVRGpsAixQ+CJpoP8NsoJ21CFiw+OAstiA3i/izXPo8AUkY+qIxe
+ HnUIEfAlFRTEcNxYtpLK3VWUQaAWjT15tdYEn260lUHf8XWve+HEDKgq5Z9e3eDQ308B lQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pf85xs7ue-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Mar 2023 08:37:37 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32L7f8O5009760;
+	Tue, 21 Mar 2023 08:37:37 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pf85xs7ts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Mar 2023 08:37:37 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32KH4SMA022346;
+	Tue, 21 Mar 2023 08:37:35 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3pd4x6cd0j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Mar 2023 08:37:34 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32L8bVXM14222052
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Mar 2023 08:37:31 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F4442004E;
+	Tue, 21 Mar 2023 08:37:31 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 41D5F20040;
+	Tue, 21 Mar 2023 08:37:27 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.88.148])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Mar 2023 08:37:26 +0000 (GMT)
+Date: Tue, 21 Mar 2023 14:07:22 +0530
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 2/2] arch/powerpc/kvm: kvmppc_hv_entry: remove r4
+ argument
+Message-ID: <ZBlswnN7RJHn8gFz@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+References: <20230316051025.1424093-1-kconsul@linux.vnet.ibm.com>
+ <20230316051025.1424093-3-kconsul@linux.vnet.ibm.com>
+ <CRBRQAXJRZZW.28LH58EV3T8AL@bobo>
+ <ZBk4hCGFqBE+c8+g@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: powerpc/pseries: Fix exception handling in
- pSeries_reconfig_add_node()
-Content-Language: en-GB
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
- <0981dc33-95d0-4a1b-51d9-168907da99e6@web.de> <871qln8quw.fsf@linux.ibm.com>
- <a01643fd-1e4a-1183-2fa6-000465bc81f3@web.de> <87v8iz75ck.fsf@linux.ibm.com>
- <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de> <87pm9377qt.fsf@linux.ibm.com>
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <87pm9377qt.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:7Kuxt/8RJeURdT0ekwdlRTjO+znwTwfklysqtixQNqfsAEVZXCm
- 37TgaXMOOE+ST41juFnzukMWOtaFhrpoTCMvamNmvTLy5TFJ4F0JEX7VG70u0M8umU9Ejxx
- WjcwIpdJy6Ak/yNJz7cAd85rIkSWjp15mS++Xqw3jlrZkUHBvxgOlUiuyiG1/gECncwgKEW
- 9/tuJih+uV9Oa7OH2/WWA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:vDaPWzYeOp8=;WBSZDpG4NMLE0ZKPLVAjK13ag4S
- xvAOonxBcha1mdjqJU8DPaakQ+ufdXKmD/XnNrRyfTTUwgXLeg52hbeFr+HjcbPdUuF4jlZqa
- fEmfD5mwIoey/X+T0aGfgEIq0/IG4ONFGraA6IFffqLd1RaMgwQ7dkB/Cd/83mzSbpZIjxhJj
- CX2luKPeC8283bfxtCOMXAX1m+yFI5Dq98j3mVBt+lF31ac35a9JLB9e7w5WeScy3IbEvIXvI
- x0FKYQc3qCUe39d3258zYltTJOPxf8FoOqWrCmzwxgvqcfRjm/C5zihmqp//lo7yYSabpV5GV
- c+WAxZIz90g8qmb/4W+BNd7cDY+SJI/nR3SJgCTi+bOK0mF9jFtPQPWoPLCsj5I3IZ3OK7Oqt
- q2jh4fq91HddShijl37Z9+sxAsSDYHiPjW1UxrhWdFPoTRe1Gm5FxGOHP+Fw4Jl21GSvXMkF2
- wwpKpOhpiNdpT2y8NcN3DoNBjuZmYuNBbjRWcbnWIwbykBPAoIxkh6xcBWe9dfpvWA6KGy94b
- D/gLhibYYcUISSIkSQLzmrfYP96jvGOmkyYJ+wUuAHuHHSdir9JP9AtJid99L2BMHdHRGerK9
- rverVzFGr84LtAs0E3Y5Ern2DsX85HZxaGk6aR+7ShG4tgHrOqO841mARS07f0d8C60HWn8HB
- lcIh8XoVKzVzsdfa4JdNAIF5GMRar/BcesJPLhr0kAu0Fws9TMKGYjKBjis1P0pPeUXwPvTBm
- iwgr9b1BuwGFFPhzUz9IyCrCs6t+X0gc8IwkFaVuu4NcIkQAvAAz8N0B4iJDZ9hHiADgkPbir
- QzXQInbT2qCAPzioe+46GgVdjJNwnmNA1EseAShICGizIFLbq7qzXVfmbWyLfgYSfr2BI6DdM
- n/okfeDE0KlJwFvTsyc8nUiDHfJfPdHlK7oekO7PivRI/VYO5hKx15tWn5lofFPt8dupGQezH
- txNxrw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBk4hCGFqBE+c8+g@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I8_aaEKM_kySWpCI9307viXd4qB123ye
+X-Proofpoint-GUID: zUmpRGKA7RV5su5V6AFg72GI7LHWWSq8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-21_06,2023-03-20_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303210065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,31 +99,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Moore <paul@paul-moore.com>, kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, cocci@inria.fr
+Cc: Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> It's been brought to my attention that there is in fact a crash bug
-> in this function's error path:
-
-How do you think about to mention any other contributors for attribution
-according to this issue?
-
-
-> np->parent can be an encoded error value, we don't want to of_node_put() that.
-
-Will the development attention grow for any more cases?
-
-
-> I believe the patch as written happens to fix the issue.
-
-Is it interesting how many details can still be improved (by my change suggestion)
-also for the discussed function implementation?
-
-
-> Will you please write it up as a bug fix and resubmit?
-
-Another proposal will follow.
-
-Regards,
-Markus
+On 2023-03-21 10:24:36, Kautuk Consul wrote:
+> > Is r4 there only used for CONFIG_KVM_BOOK3S_HV_P8_TIMING? Could put it
+> > under there. Although you then lose the barrier if it's disabled, that
+> > is okay if you're sure that's the only memory operation being ordered.
+> r4 is also used by the secondary_too_late label. So I decided against
+> moving it inside the CONFIG_KVM_BOOK3S_HV_P8_TIMING #ifdef as then I
+> would need to again load from HSTATE_KVM_VCPU(r13) in secondary_too_late.
+> > 
+Sorry, forgot to mention, r4 is also being used in the 10f label.
+Thats one more reason to not shift the r4 load into the #ifdef.
+> > I'm not sure how much new work we want to put into changing this asm
+> > code, since it's POWER7/8 only. I would love to move this (and the
+> > other) KVM implementations to C like we did with P9. It's a pretty big
+> > job though.
+> Yeah. I was just reviewing this code and decided to send this small
+> improvement to the mailing list. I will check with my team and ask
+> them if we could move this implementation to C.
+> > 
+> > Thanks,
+> > Nick
+> > 
+> > >
+> > > Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+> > > ---
+> > >  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 11 ++++++-----
+> > >  1 file changed, 6 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > > index b81ba4ee0521..b61f0b2c677b 100644
+> > > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > > @@ -85,7 +85,7 @@ _GLOBAL_TOC(kvmppc_hv_entry_trampoline)
+> > >  	RFI_TO_KERNEL
+> > >  
+> > >  kvmppc_call_hv_entry:
+> > > -	ld	r4, HSTATE_KVM_VCPU(r13)
+> > > +	/* Enter guest. */
+> > >  	bl	kvmppc_hv_entry
+> > >  
+> > >  	/* Back from guest - restore host state and return to caller */
+> > > @@ -352,9 +352,7 @@ kvm_secondary_got_guest:
+> > >  	mtspr	SPRN_LDBAR, r0
+> > >  	isync
+> > >  63:
+> > > -	/* Order load of vcpu after load of vcore */
+> > > -	lwsync
+> > > -	ld	r4, HSTATE_KVM_VCPU(r13)
+> > > +	/* Enter guest. */
+> > >  	bl	kvmppc_hv_entry
+> > >  
+> > >  	/* Back from the guest, go back to nap */
+> > > @@ -506,7 +504,6 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
+> > >  
+> > >  	/* Required state:
+> > >  	 *
+> > > -	 * R4 = vcpu pointer (or NULL)
+> > >  	 * MSR = ~IR|DR
+> > >  	 * R13 = PACA
+> > >  	 * R1 = host R1
+> > > @@ -524,6 +521,10 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
+> > >  	li	r6, KVM_GUEST_MODE_HOST_HV
+> > >  	stb	r6, HSTATE_IN_GUEST(r13)
+> > >  
+> > > +	/* Order load of vcpu after load of vcore */
+> > > +	lwsync
+> > > +	ld	r4, HSTATE_KVM_VCPU(r13)
+> > > +
+> > >  #ifdef CONFIG_KVM_BOOK3S_HV_P8_TIMING
+> > >  	/* Store initial timestamp */
+> > >  	cmpdi	r4, 0
+> > > -- 
+> > > 2.39.2
+> > 
