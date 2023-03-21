@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FBA6C2FDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 12:11:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6D86C2FDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 12:12:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PgpnN4FS8z3f4Y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 22:11:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PgppQ2Fn8z3fHL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Mar 2023 22:11:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=YK+9dSwi;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=WOwhmSW5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=0UoPN+QG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=J/xvX8RL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=66.111.4.28; helo=out4-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=YK+9dSwi;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=WOwhmSW5;
+	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=0UoPN+QG;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=J/xvX8RL;
 	dkim-atps=neutral
 Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgpkP6RzVz303h
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 22:08:29 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id DBDC25C01B6;
-	Tue, 21 Mar 2023 07:08:27 -0400 (EDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PgpkR5ZYpz303h
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Mar 2023 22:08:31 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id D49AA5C0100;
+	Tue, 21 Mar 2023 07:08:29 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 21 Mar 2023 07:08:27 -0400
+  by compute5.internal (MEProxy); Tue, 21 Mar 2023 07:08:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm3; t=1679396907; x=
-	1679483307; bh=34g1rJ4eKpg7Mv3jK1Pi5YCKoRtvBAJ5vAexAPGkFH0=; b=Y
-	K+9dSwiWN5z6O7qjaYxoOOE1GCx05bPaiar5IBe0GjOE2Gg72p2f1IvsY/C//OWx
-	p7gSbGBNOoVVoloLCrHjB4SPaKQarMqBkqpg1FkmXpAYD0a9QUllqA+t/Zo5vaI/
-	laKToT9DVbZp+Aq6xcH5Dn2+4uzMuFhnBzMzTRW/uvE7iuDXF228IBsD5u9Iz+e3
-	bS96ZBzP00NWoXYZYiFBMW4xzi1+TMNAxsn81ZvIpwBF73jmbDczEyDK1jCTteAm
-	KMqVvasp6Ub2ZXkViwPfjvitj4I2bu6zgxR7/5uZngv9z+Yg2ynUTvo7zOglVgc6
-	v4fvrc5XV5TUVhAUuYVig==
+	:reply-to:sender:subject:subject:to:to; s=fm3; t=1679396909; x=
+	1679483309; bh=xty1DMHWS21lQRmeSpDxl+4CCE4XjxtL7XjtmR8nqy0=; b=0
+	UoPN+QG7C1bqGiTWN8M+gr2WGRS9F29y8aRdjCzMMr4yroyCFAZG+3MTqNzR0ZiD
+	S5ZLJFo9KL+t+u8PKbkIVsx3ak4xpwSWvQQRg1VYt1W6NcGczki7zgIrvcimQp8p
+	9s5Rkgi5hSWw3EPYLaV7Lbz8mKoLcBw0TTGbKfDmWaaEqH+TcG2FPF7YZgpjx/TH
+	jrCbjUuXnd1a+a2M4ajjoiEtGQA2XslZUI0kuLIGHgwYGY8y/0FB0Gb+/FFL6R7g
+	koUe24E/go/e2UMVTGupP15fJKi4vG748BlibyW678ACI/AM5SbKyxBoWH6Qr2TL
+	gHAbNgdQCvsx6UBdajAog==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1679396907; x=
-	1679483307; bh=34g1rJ4eKpg7Mv3jK1Pi5YCKoRtvBAJ5vAexAPGkFH0=; b=W
-	OwhmSW5w8OdUB4dg8PnaHDyMCfwhHm5a8sgXyqO0PVSFhO1MDiYQADBuCXpN7zk5
-	pIYVpmA+kPdwRYhzhrn8dVTWB8GyioN19BZ5CxJu67Gs+EE0H0KFo7qWXHCmQ/vr
-	vGGMnfuYBiOQKw2h5lSL8yQmvxH+IgJRd2JBa8bPLNI/6ucTd2xKPdK6vPai++Ex
-	s7soBPUCCq5+8cZGQcgskcxjWoFOcykPujeauciWTd/oIA+gpah/wLNbT3e/BUBI
-	zzhjGOmJ97oV+jghV+2ihL/1QGxZt3gex5MxlL5qMK0QXYhcmg3n+Jc82s2Dp2VR
-	tK+HB0so+lUgPj9tsFPzA==
-X-ME-Sender: <xms:K5AZZCCeDevojgzHlmqOuVkf0WVt3kA2sIdIMRFuR3L-rQB4PkHqZg>
-    <xme:K5AZZMgvUx5G849LWNfilyZB8sYDAP2vMelYCjuzvxvrVrMQhjLzbCM8epM2kPjpK
-    Cd0uiK-BnSzINKYBaY>
-X-ME-Received: <xmr:K5AZZFlgGRribAerj9e29wl1EP7-_rCyXAz8VYm36-8_coo_poDgESEpHOb-1A9yu7wlIloJE48>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1679396909; x=
+	1679483309; bh=xty1DMHWS21lQRmeSpDxl+4CCE4XjxtL7XjtmR8nqy0=; b=J
+	/xvX8RLujujOWnzb+wQhi5Se8NK6SvZKbknGTlOKa9Hn1evkACp/eE8IcSOasdjK
+	L5w2qJZT/3HR2K2jTo5sN+M2wDJb052lIa/Fo8+3vqSr7TE4ZvLR62BAYfxBnTc4
+	Q1lehIrPcgzjCk/6Jam7FveyPtiOe6jaFVKifg1TwBhhy82f4ITbBCIUG/mhFria
+	nuZUqcpTGUu4Lc+0Q1NpnIETBbphoho604rRbfYAAnyE6gOCkRS+SelycvO1D+Je
+	Zw0VToQ7dKx3WEIhuv2DwStbf8w8Ahvv6wEYt+jEEIRFqeJ5kRC+TuB0BEciEw3F
+	GnG6lYsfURMLW3Trx+f4A==
+X-ME-Sender: <xms:LZAZZLTwezUflS6T1EDsRtAHF0s12HJ1gLwdMgedmSGGMY_KSQVmPA>
+    <xme:LZAZZMxQ7WXycx4HBEiGI_ZzjmDbnc4dO8L8utRhxzmWav4nbP4LuQYQdcL6WM40r
+    FmTlkJ8VY_KEefFGnI>
+X-ME-Received: <xmr:LZAZZA0HE_gGtxuA3DKeP235tA15-npR20iqsKfH5hhWSHUGj5FZM-RkZfCB5ALDMGuny-l6dAU>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegtddgvdegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
@@ -65,18 +65,18 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegtddgvdegucetufdoteggod
     dvgeekgfdvtdettdelieeihfegtedugeekhfdvhfejfedtnecuvehluhhsthgvrhfuihii
     vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhi
     hgohgrthdrtghomh
-X-ME-Proxy: <xmx:K5AZZAxoTS4-Enr_LRenIV52tFK6fIf_OlFHQKHSpzkW1nSPiWJZjA>
-    <xmx:K5AZZHTZw9GZ5wTscsriCuRaKtYrgA4YYHdEZ21X3aLPYcZOP8gksw>
-    <xmx:K5AZZLZqmNXh8ihQi4efRYoI2-OCE32nFzBH6-eU5rYU-dDQGRvD8A>
-    <xmx:K5AZZPaWlkVxBcFthA1CvCe63W6mpgde3lTCQwQhvk2iCfxxleGwFg>
+X-ME-Proxy: <xmx:LZAZZLAaT8PtN8RNAd953nnVvjtsqrtH3MUuai3ib9h97uUmUX91Gg>
+    <xmx:LZAZZEhBLLH-mrASDpc4ujeA4bbFM6e1pNj3uAJMfLtwvSUV-ANo1Q>
+    <xmx:LZAZZPoXxVEcaYCL0lnMwGqofAMs0P5ZAv51vTntPoTXcZ-NXjgaoA>
+    <xmx:LZAZZDodGSm9u9AHM7SdGxmJnfGoidUeMzvceHFmj0V_69UtguE0Nw>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Mar 2023 07:08:26 -0400 (EDT)
+ 21 Mar 2023 07:08:28 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 To: linux-mips@vger.kernel.org
-Subject: [PATCH v3 2/4] dma-mapping: Provide a fallback dma_default_coherent
-Date: Tue, 21 Mar 2023 11:08:11 +0000
-Message-Id: <20230321110813.26808-3-jiaxun.yang@flygoat.com>
+Subject: [PATCH v3 3/4] dma-mapping: Provide CONFIG_ARCH_DMA_DEFAULT_COHERENT
+Date: Tue, 21 Mar 2023 11:08:12 +0000
+Message-Id: <20230321110813.26808-4-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20230321110813.26808-1-jiaxun.yang@flygoat.com>
 References: <20230321110813.26808-1-jiaxun.yang@flygoat.com>
@@ -97,50 +97,48 @@ Cc: tsbogend@alpha.franken.de, linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-dma_default_coherent was decleared unconditionally at kernel/dma/mapping.c
-but only decleared when any of non-coherent options is enabled in
-dma-map-ops.h.
-
-Guard the declaration in mapping.c with non-coherent options and provide
-a fallback definition.
+Provide a kconfig option to allow arches to manipulate default
+value of dma_default_coherent in Kconfig.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-v3: Style fix
+v3: Add comments
 ---
- include/linux/dma-map-ops.h | 2 ++
- kernel/dma/mapping.c        | 4 ++++
- 2 files changed, 6 insertions(+)
+ kernel/dma/Kconfig   | 7 +++++++
+ kernel/dma/mapping.c | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index 41bf4bdb117a..31f114f486c4 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -269,6 +269,8 @@ static inline bool dev_is_dma_coherent(struct device *dev)
- 	return dev->dma_coherent;
- }
- #else
-+#define dma_default_coherent true
+diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+index 56866aaa2ae1..6677d0e64d27 100644
+--- a/kernel/dma/Kconfig
++++ b/kernel/dma/Kconfig
+@@ -76,6 +76,13 @@ config ARCH_HAS_DMA_PREP_COHERENT
+ config ARCH_HAS_FORCE_DMA_UNENCRYPTED
+ 	bool
+ 
++#
++# Select this option if the architecture assumes DMA devices are coherent
++# by default.
++#
++config ARCH_DMA_DEFAULT_COHERENT
++	bool
 +
- static inline bool dev_is_dma_coherent(struct device *dev)
- {
- 	return true;
+ config SWIOTLB
+ 	bool
+ 	select NEED_DMA_MAP_STATE
 diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 68106e3791f6..80f9663ffe26 100644
+index 80f9663ffe26..9a4db5cce600 100644
 --- a/kernel/dma/mapping.c
 +++ b/kernel/dma/mapping.c
-@@ -17,7 +17,11 @@
- #include "debug.h"
- #include "direct.h"
- 
-+#if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-+	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
-+	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
- bool dma_default_coherent;
-+#endif
+@@ -20,7 +20,7 @@
+ #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
+ 	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
+ 	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
+-bool dma_default_coherent;
++bool dma_default_coherent = IS_ENABLED(CONFIG_ARCH_DMA_DEFAULT_COHERENT);
+ #endif
  
  /*
-  * Managed DMA API
 -- 
 2.37.1 (Apple Git-137.1)
 
