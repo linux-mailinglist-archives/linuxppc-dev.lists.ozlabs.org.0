@@ -1,71 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B716C53BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 19:26:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C876C54E7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 20:29:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhcPd4ZtTz3cjW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 05:26:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhdnT6nmYz3chw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 06:29:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Nc7bqPWv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kI7PD7oK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Nc7bqPWv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kI7PD7oK;
 	dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhcNm1pd1z3bgr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:25:59 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id f6-20020a17090ac28600b0023b9bf9eb63so19993650pjt.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 11:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1679509557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xai25ViACOhtMbP/9A/HIC69Te+6jb14im4nmgBreX0=;
-        b=Nc7bqPWvvVP0Fh9GRUREatEuPhbNWcj8ydyJq6p7WhnKTmZsmINp40U8jm2U/D3eOh
-         GiADNrvpDW1src3wBD86k8hybLw++0LHdLBlze0Q290ZO1ycLMYXpjqhF0bC849Amhtk
-         Uy0gNTTczAqnmq7Ne1eUnCmgjRAczfqeQ58RKE9Z1Dbo8WYhXCE+35mHwpNTZjinRv7Z
-         SvFY91A1LyC+CNVJab3PMehak5rGBLhjGTsCzg52VkGZ8uMK06Y5GA1JlP2dh0NN6NWH
-         L5Jzlk3GH1BS4NTePFlNBmFvEFZSn5SfhLcK85z0+yzixjDvudD4Wt6pqVVnBBIsUYXI
-         dcEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679509557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xai25ViACOhtMbP/9A/HIC69Te+6jb14im4nmgBreX0=;
-        b=0eGLuL94hs/mmJUcBEQhfG02ck4C+hW6PNVZO3Qw7U8PI0LNlDUy4sgM6/7yrvbAKC
-         SdwR8k9uNEvswLk/7yqu9vEgi7R3s7wlKkpnRYfwOEy858E1OFPJzD2IQY8QMBzpMo0M
-         Q45DQqPc41rdM/Sh7+bdUsXuhKMkHP4fnGQlU4cm9YaaiVK3Q/SzSBqkN1i+r9yJfEgc
-         25/cyxDqU3D1tTg+v7xLbdJcuxilnEmUaXj5covN4VHUmYXvdbd0gR4nXXr1o1C8Rj1m
-         MJcp7AxwwNHe0uD4j2jc8NCKYQlkfc8lTdtxmj/SztuvmGnVe8CLBjvB9agwoMdKwF2J
-         xf4A==
-X-Gm-Message-State: AO0yUKWaSF/80cR2e5uww6EJFv3A3jxXmYhWtqC5nii1pxdUTct/QFbU
-	P6SvOfwPuVEN4MEjzgF14mL4yCRXY+pWH0vu1m2fEw==
-X-Google-Smtp-Source: AK7set/ZMXJixIFC4D/KWjt5E7Yb69EPs9KtjzG+BYb//151Eeugg7QbDH72EBo41HILsUMiYkKai/KWyETz2jWK8JA=
-X-Received: by 2002:a17:902:7b8b:b0:19a:82a2:fcf9 with SMTP id
- w11-20020a1709027b8b00b0019a82a2fcf9mr1399015pll.2.1679509556719; Wed, 22 Mar
- 2023 11:25:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhdmW022dz3bgX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 06:28:10 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D6684621BD;
+	Wed, 22 Mar 2023 19:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E40C433EF;
+	Wed, 22 Mar 2023 19:28:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679513286;
+	bh=QIwrcxSinbm192yIC5GYq8pmRiEZXatEfhuZCKvaZVA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=kI7PD7oKOFUaqAGxpAEV1J4pqcq5sYqOlE6tZdI8XvLDftVUW7xBLrIm39EDMCeew
+	 YbY7ekOsQ8pk2imeaozqedO08eUYORwgATq+PR72VZKK9Z+xSe875Jwime72E5sujt
+	 OKX3MZ05HrUnh6VUWqiK4KPTgw44b5/A4+dvjU5eUJO6DS6BfQZ05ojXQDveuaCfbR
+	 6kmoRGkL8zdl0AgEDHh0jZJq5WemnXINfkZV2PRGtY6aFlS4evcy50ZkNqbrgQ5Ywt
+	 FkmgtOO8ISwsbbhE86dRqqKL+QyXR15+6PMXkOeNiqH/SJXrUqlZdQCXic7R1fgBC0
+	 vZjopyk7ipwkQ==
+Date: Wed, 22 Mar 2023 14:28:04 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <20230322192804.GA2485349@bhelgaas>
 MIME-Version: 1.0
-References: <20230215143626.453491-1-alexghiti@rivosinc.com>
- <20230215143626.453491-2-alexghiti@rivosinc.com> <4a6fc7a3-9697-a49b-0941-97f32194b0d7@ghiti.fr>
- <877cw7dphf.fsf@all.your.base.are.belong.to.us>
-In-Reply-To: <877cw7dphf.fsf@all.your.base.are.belong.to.us>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 22 Mar 2023 11:25:45 -0700
-Message-ID: <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230320131633.61680-2-andriy.shevchenko@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,38 +58,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, nathan@kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@
+ physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 24, 2023 at 7:58=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
-.org> wrote:
->
-> Alexandre Ghiti <alex@ghiti.fr> writes:
->
-> > +cc linux-kbuild, llvm, Nathan, Nick
-> >
-> > On 2/15/23 15:36, Alexandre Ghiti wrote:
-> >> From: Alexandre Ghiti <alex@ghiti.fr>
-> >>
-> > I tried a lot of things, but I struggle to understand, does anyone have
-> > any idea? FYI, the same problem happens with LLVM.
+Hi Andy and Mika,
 
-Off the top of my head, no idea.
+I really like the improvements here.  They make the code read much
+better.
 
-(Maybe as a follow up to this series, I wonder if pursuing
-ARCH_HAS_RELR for ARCH=3Driscv is worthwhile?)
+On Mon, Mar 20, 2023 at 03:16:30PM +0200, Andy Shevchenko wrote:
+> From: Mika Westerberg <mika.westerberg@linux.intel.com>
+> ...
 
->
-> Don't ask me *why*, but adding --emit-relocs to your linker flags solves
-> "the NULL .rela.dyn" both for GCC and LLVM.
->
-> The downside is that you end up with a bunch of .rela cruft in your
-> vmlinux.
+>  static void fixup_winbond_82c105(struct pci_dev* dev)
+>  {
+> -	int i;
+> +	struct resource *r;
+>  	unsigned int reg;
+>  
+>  	if (!machine_is(pseries))
+> @@ -251,14 +251,14 @@ static void fixup_winbond_82c105(struct pci_dev* dev)
+>  	/* Enable LEGIRQ to use INTC instead of ISA interrupts */
+>  	pci_write_config_dword(dev, 0x40, reg | (1<<11));
+>  
+> -	for (i = 0; i < DEVICE_COUNT_RESOURCE; ++i) {
+> +	pci_dev_for_each_resource_p(dev, r) {
+>  		/* zap the 2nd function of the winbond chip */
+> -		if (dev->resource[i].flags & IORESOURCE_IO
+> -		    && dev->bus->number == 0 && dev->devfn == 0x81)
+> -			dev->resource[i].flags &= ~IORESOURCE_IO;
+> -		if (dev->resource[i].start == 0 && dev->resource[i].end) {
+> -			dev->resource[i].flags = 0;
+> -			dev->resource[i].end = 0;
+> +		if (dev->bus->number == 0 && dev->devfn == 0x81 &&
+> +		    r->flags & IORESOURCE_IO)
 
-There was a patch just this week to use $(OBJCOPY) to strip these from
-vmlinux (for x86). Looks like x86 uses --emit-relocs for KASLR:
-https://lore.kernel.org/lkml/20230320121006.4863-1-petr.pavlu@suse.com/
---=20
-Thanks,
-~Nick Desaulniers
+This is a nice literal conversion, but it's kind of lame to test
+bus->number and devfn *inside* the loop here, since they can't change
+inside the loop.
+
+> +			r->flags &= ~IORESOURCE_IO;
+> +		if (r->start == 0 && r->end) {
+> +			r->flags = 0;
+> +			r->end = 0;
+>  		}
+>  	}
+
+>  #define pci_resource_len(dev,bar) \
+>  	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+>  							\
+> -	 (pci_resource_end((dev), (bar)) -		\
+> -	  pci_resource_start((dev), (bar)) + 1))
+> +	 resource_size(pci_resource_n((dev), (bar))))
+
+I like this change, but it's unrelated to pci_dev_for_each_resource()
+and unmentioned in the commit log.
+
+> +#define __pci_dev_for_each_resource(dev, res, __i, vartype)		\
+> +	for (vartype __i = 0;						\
+> +	     res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;	\
+> +	     __i++)
+> +
+> +#define pci_dev_for_each_resource(dev, res, i)				\
+> +       __pci_dev_for_each_resource(dev, res, i, )
+> +
+> +#define pci_dev_for_each_resource_p(dev, res)				\
+> +	__pci_dev_for_each_resource(dev, res, __i, unsigned int)
+
+This series converts many cases to drop the iterator variable ("i"),
+which is fantastic.
+
+Several of the remaining places need the iterator variable only to
+call pci_claim_resource(), which could be converted to take a "struct
+resource *" directly without much trouble.
+
+We don't have to do that pci_claim_resource() conversion now, but
+since we're converging on the "(dev, res)" style, I think we should
+reverse the names so we have something like:
+
+  pci_dev_for_each_resource(dev, res)
+  pci_dev_for_each_resource_idx(dev, res, i)
+
+Not sure __pci_dev_for_each_resource() is worthwhile since it only
+avoids repeating that single "for" statement, and passing in "vartype"
+(sometimes empty to implicitly avoid the declaration) is a little
+complicated to read.  I think it'd be easier to read like this:
+
+  #define pci_dev_for_each_resource(dev, res)                      \
+    for (unsigned int __i = 0;                                     \
+         res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;  \
+         __i++)
+
+  #define pci_dev_for_each_resource_idx(dev, res, idx)             \
+    for (idx = 0;                                                  \
+         res = pci_resource_n(dev, idx), idx < PCI_NUM_RESOURCES;  \
+         idx++)
+
+Bjorn
