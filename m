@@ -2,51 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C876C54E7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 20:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F30E6C5510
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 20:36:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhdnT6nmYz3chw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 06:29:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Phdxs7225z3f3x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 06:36:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kI7PD7oK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZXj21Ne;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kI7PD7oK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZXj21Ne;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhdmW022dz3bgX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 06:28:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phdwy5DWmz3cLx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 06:35:30 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D6684621BD;
-	Wed, 22 Mar 2023 19:28:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E40C433EF;
-	Wed, 22 Mar 2023 19:28:05 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 7326A62276;
+	Wed, 22 Mar 2023 19:35:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3CC433D2;
+	Wed, 22 Mar 2023 19:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679513286;
-	bh=QIwrcxSinbm192yIC5GYq8pmRiEZXatEfhuZCKvaZVA=;
+	s=k20201202; t=1679513726;
+	bh=FhntRrT8ocoSuGXxtLHKzHWzymmkrlLBWHmrPDDVUUo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=kI7PD7oKOFUaqAGxpAEV1J4pqcq5sYqOlE6tZdI8XvLDftVUW7xBLrIm39EDMCeew
-	 YbY7ekOsQ8pk2imeaozqedO08eUYORwgATq+PR72VZKK9Z+xSe875Jwime72E5sujt
-	 OKX3MZ05HrUnh6VUWqiK4KPTgw44b5/A4+dvjU5eUJO6DS6BfQZ05ojXQDveuaCfbR
-	 6kmoRGkL8zdl0AgEDHh0jZJq5WemnXINfkZV2PRGtY6aFlS4evcy50ZkNqbrgQ5Ywt
-	 FkmgtOO8ISwsbbhE86dRqqKL+QyXR15+6PMXkOeNiqH/SJXrUqlZdQCXic7R1fgBC0
-	 vZjopyk7ipwkQ==
-Date: Wed, 22 Mar 2023 14:28:04 -0500
+	b=TZXj21NeIUkUZZar7VNMqh3dVSuN3o8smKLoGeKlxFM4u9gfOpaC3kuIEPrC8theJ
+	 EjPJVc9oufTxzPD7G4Hc8hmuSNFg5ASYHNUqVWj4Pm/PAM0cm4Y0hL/TmGR1vF7cRJ
+	 ghHYAN2nzfJSugY4ZFFucSttfz82MaXOPTFpw736rSuhY7yG3U/x5krQWe30aNyfH3
+	 TpCuc9D3+sHvl4qsdpIcmDaIEydMxpzHx8G9wZuc/iInxcv8qZuNxXLKv+GJGD4EfH
+	 DaiPCrrrg2VbKAwdhc5c78r9UJzE633kYTaRwA7Xko4oXiDWsAIH0RPGJpwYNqkaDa
+	 lXTFXlUZ+LxhA==
+Date: Wed, 22 Mar 2023 14:35:25 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
-Message-ID: <20230322192804.GA2485349@bhelgaas>
+Subject: Re: [PATCH v6 2/4] PCI: Split pci_bus_for_each_resource_p() out of
+ pci_bus_for_each_resource()
+Message-ID: <20230322193525.GA2487882@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230320131633.61680-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230320131633.61680-3-andriy.shevchenko@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,97 +64,27 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy and Mika,
-
-I really like the improvements here.  They make the code read much
-better.
-
-On Mon, Mar 20, 2023 at 03:16:30PM +0200, Andy Shevchenko wrote:
-> From: Mika Westerberg <mika.westerberg@linux.intel.com>
+On Mon, Mar 20, 2023 at 03:16:31PM +0200, Andy Shevchenko wrote:
 > ...
 
->  static void fixup_winbond_82c105(struct pci_dev* dev)
->  {
-> -	int i;
-> +	struct resource *r;
->  	unsigned int reg;
->  
->  	if (!machine_is(pseries))
-> @@ -251,14 +251,14 @@ static void fixup_winbond_82c105(struct pci_dev* dev)
->  	/* Enable LEGIRQ to use INTC instead of ISA interrupts */
->  	pci_write_config_dword(dev, 0x40, reg | (1<<11));
->  
-> -	for (i = 0; i < DEVICE_COUNT_RESOURCE; ++i) {
-> +	pci_dev_for_each_resource_p(dev, r) {
->  		/* zap the 2nd function of the winbond chip */
-> -		if (dev->resource[i].flags & IORESOURCE_IO
-> -		    && dev->bus->number == 0 && dev->devfn == 0x81)
-> -			dev->resource[i].flags &= ~IORESOURCE_IO;
-> -		if (dev->resource[i].start == 0 && dev->resource[i].end) {
-> -			dev->resource[i].flags = 0;
-> -			dev->resource[i].end = 0;
-> +		if (dev->bus->number == 0 && dev->devfn == 0x81 &&
-> +		    r->flags & IORESOURCE_IO)
-
-This is a nice literal conversion, but it's kind of lame to test
-bus->number and devfn *inside* the loop here, since they can't change
-inside the loop.
-
-> +			r->flags &= ~IORESOURCE_IO;
-> +		if (r->start == 0 && r->end) {
-> +			r->flags = 0;
-> +			r->end = 0;
->  		}
->  	}
-
->  #define pci_resource_len(dev,bar) \
->  	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
->  							\
-> -	 (pci_resource_end((dev), (bar)) -		\
-> -	  pci_resource_start((dev), (bar)) + 1))
-> +	 resource_size(pci_resource_n((dev), (bar))))
-
-I like this change, but it's unrelated to pci_dev_for_each_resource()
-and unmentioned in the commit log.
-
-> +#define __pci_dev_for_each_resource(dev, res, __i, vartype)		\
-> +	for (vartype __i = 0;						\
-> +	     res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;	\
+> -#define pci_bus_for_each_resource(bus, res, i)				\
+> -	for (i = 0;							\
+> -	    (res = pci_bus_resource_n(bus, i)) || i < PCI_BRIDGE_RESOURCE_NUM; \
+> -	     i++)
+> +#define __pci_bus_for_each_resource(bus, res, __i, vartype)			\
+> +	for (vartype __i = 0;							\
+> +	     res = pci_bus_resource_n(bus, __i), __i < PCI_BRIDGE_RESOURCE_NUM;	\
 > +	     __i++)
 > +
-> +#define pci_dev_for_each_resource(dev, res, i)				\
-> +       __pci_dev_for_each_resource(dev, res, i, )
+> +#define pci_bus_for_each_resource(bus, res, i)					\
+> +	__pci_bus_for_each_resource(bus, res, i, )
 > +
-> +#define pci_dev_for_each_resource_p(dev, res)				\
-> +	__pci_dev_for_each_resource(dev, res, __i, unsigned int)
+> +#define pci_bus_for_each_resource_p(bus, res)					\
+> +	__pci_bus_for_each_resource(bus, res, __i, unsigned int)
 
-This series converts many cases to drop the iterator variable ("i"),
-which is fantastic.
+I like these changes a lot, too!
 
-Several of the remaining places need the iterator variable only to
-call pci_claim_resource(), which could be converted to take a "struct
-resource *" directly without much trouble.
+Same comments about _p vs _idx and __pci_bus_for_each_resource(...,
+vartype).
 
-We don't have to do that pci_claim_resource() conversion now, but
-since we're converging on the "(dev, res)" style, I think we should
-reverse the names so we have something like:
-
-  pci_dev_for_each_resource(dev, res)
-  pci_dev_for_each_resource_idx(dev, res, i)
-
-Not sure __pci_dev_for_each_resource() is worthwhile since it only
-avoids repeating that single "for" statement, and passing in "vartype"
-(sometimes empty to implicitly avoid the declaration) is a little
-complicated to read.  I think it'd be easier to read like this:
-
-  #define pci_dev_for_each_resource(dev, res)                      \
-    for (unsigned int __i = 0;                                     \
-         res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;  \
-         __i++)
-
-  #define pci_dev_for_each_resource_idx(dev, res, idx)             \
-    for (idx = 0;                                                  \
-         res = pci_resource_n(dev, idx), idx < PCI_NUM_RESOURCES;  \
-         idx++)
-
-Bjorn
+Also would prefer 80 char max instead of 81.
