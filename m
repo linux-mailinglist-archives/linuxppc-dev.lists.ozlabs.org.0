@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC7E6C4A7A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:29:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D086C4A72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:27:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSTL4Xx9z3fY2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:29:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSRT61gsz3fCp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:27:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR34fNlz3cf1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR045gNz3cCn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:24 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR33nrnz4xFb;
-	Wed, 22 Mar 2023 23:27:27 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR02bcJz4xDq;
+	Wed, 22 Mar 2023 23:27:24 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Michael Neuling <mikey@neuling.org>
-In-Reply-To: <20230307213614.2652059-1-mikey@neuling.org>
-References: <20230307213614.2652059-1-mikey@neuling.org>
-Subject: Re: [PATCH] selftests/powerpc: Increase timeout for vsx_signal test
-Message-Id: <167948793436.559204.15635521716389386877.b4-ty@ellerman.id.au>
+To: Pali Rohár <pali@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <6cb9865d916231c38401ba34ad1a98c249fae135.1676711562.git.christophe.leroy@csgroup.eu>
+References: <6cb9865d916231c38401ba34ad1a98c249fae135.1676711562.git.christophe.leroy@csgroup.eu>
+Subject: Re: (subset) [PATCH v2 01/10] powerpc/machdep: Make machine name const
+Message-Id: <167948793443.559204.11323646799927591600.b4-ty@ellerman.id.au>
 Date: Wed, 22 Mar 2023 23:25:34 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, cyrilbur@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 08 Mar 2023 08:36:14 +1100, Michael Neuling wrote:
-> On the max config P10 machine (1920 threads and 64TB) this test fails
-> with a timeout:
+On Sat, 18 Feb 2023 10:15:44 +0100, Christophe Leroy wrote:
+> Machine name in struct machdep_calls should never be modified.
 > 
->     Sending signals to all threads 10 times...!! killing vmx_signal
->     !! child died by signal 15
->     failure: vmx_signal
+> Mark it const.
 > 
-> [...]
+> 
 
-Applied to powerpc/next.
+Patches 1-7 applied to powerpc/next.
 
-[1/1] selftests/powerpc: Increase timeout for vsx_signal test
-      https://git.kernel.org/powerpc/c/493648d6795f00b6dcd6295b2b4221871bc1b25b
+[01/10] powerpc/machdep: Make machine name const
+        https://git.kernel.org/powerpc/c/0aafbdf35c75cbfec82636d01e6dc7950bc1507c
+[02/10] powerpc/machdep: Define 'compatible' property in ppc_md and use it
+        https://git.kernel.org/powerpc/c/2fc39acfcacf3dc1392d8062f6d7b7d94eb2537c
+[03/10] powerpc/platforms: Use 'compatible' property for simple cases
+        https://git.kernel.org/powerpc/c/1c96fcdef8c7492ecf34ed70102a1ae5253ef9d1
+[04/10] powerpc/47x: Split ppc47x machine in two
+        https://git.kernel.org/powerpc/c/357f82395cd8a0279067805841e5968f4e6dc932
+[05/10] powerpc/gamecube|wii : Use machine_device_initcall()
+        https://git.kernel.org/powerpc/c/f47b17d51997cd47e0e6fb1b90145d516ebe6b3e
+[06/10] powerpc/85xx: Fix function naming for p1023_rdb platform
+        https://git.kernel.org/powerpc/c/5a81c02d0cc5067170e49452d55a4dfd21333257
+[07/10] powerpc: Make generic_calibrate_decr() the default
+        https://git.kernel.org/powerpc/c/0aafbdf35c75cbfec82636d01e6dc7950bc1507c
 
 cheers
