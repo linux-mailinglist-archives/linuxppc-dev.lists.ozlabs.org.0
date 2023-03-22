@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F526C4A7F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:29:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467A06C4A9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:31:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSTw0Kz5z3fdH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:29:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSXB1Wfwz3fq6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:31:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR473twz3chZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR73Qtsz3f3t
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:31 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR374XHz4xFc;
-	Wed, 22 Mar 2023 23:27:27 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR72JStz4xFR;
+	Wed, 22 Mar 2023 23:27:31 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Nathan Chancellor <nathan@kernel.org>
-In-Reply-To: <20230118-ppc64-elfv2-llvm-v1-0-b9e2ec9da11d@kernel.org>
-References: <20230118-ppc64-elfv2-llvm-v1-0-b9e2ec9da11d@kernel.org>
-Subject: Re: [PATCH 0/3] Allow CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 with ld.lld 15+
-Message-Id: <167948793442.559204.2964050663889516909.b4-ty@ellerman.id.au>
+To: kvm <kvm@vger.kernel.org>, Timothy Pearson <tpearson@raptorengineering.com>
+In-Reply-To: <2000135730.16998523.1678123860135.JavaMail.zimbra@raptorengineeringinc.com>
+References: <2000135730.16998523.1678123860135.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: Re: [PATCH v2 3/4] powerpc/iommu: Add iommu_ops to report capabilities and
+Message-Id: <167948793435.559204.9498535193091997320.b4-ty@ellerman.id.au>
 Date: Wed, 22 Mar 2023 23:25:34 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,30 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: erhard_f@mailbox.org, trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@google.com, linux-kernel@vger.kernel.org, patches@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Feb 2023 11:41:14 -0700, Nathan Chancellor wrote:
-> Currently, CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not selectable with
-> ld.lld because of an explicit dependency on GNU ld, due to lack of
-> testing with LLVM.
+On Mon, 6 Mar 2023 11:31:00 -0600 (CST), Timothy Pearson wrote:
+>  allow blocking domains
 > 
-> Erhard was kind enough to test this option on his hardware with LLVM 15,
-> which ran without any issues. This should not be too surprising, as
-> ld.lld does not have support for the ELFv1 ABI, only ELFv2, so it should
-> have decent support. With this series, big endian kernels can be built
-> with LLVM=1.
+> Up until now PPC64 managed to avoid using iommu_ops. The VFIO driver
+> uses a SPAPR TCE sub-driver and all iommu_ops uses were kept in
+> the Type1 VFIO driver. Recent development added 2 uses of iommu_ops to
+> the generic VFIO which broke POWER:
+> - a coherency capability check;
+> - blocking IOMMU domain - iommu_group_dma_owner_claimed()/...
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc/boot: Only use '-mabi=elfv2' with CONFIG_PPC64_BOOT_WRAPPER
-      https://git.kernel.org/powerpc/c/d1c5accacb234c3a9f1609a73b4b2eaa4ef07d1a
-[2/3] powerpc: Fix use of '-mabi=elfv2' with clang
-      https://git.kernel.org/powerpc/c/7c3bd8362b06cff0a4044a4975adb7d71db2dfba
-[3/3] powerpc: Allow CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 with ld.lld 15+
-      https://git.kernel.org/powerpc/c/a11334d8327b3fd7987cbfb38e956a44c722d88f
+[3/4] powerpc/iommu: Add iommu_ops to report capabilities and
+      https://git.kernel.org/powerpc/c/a940904443e432623579245babe63e2486ff327b
 
 cheers
