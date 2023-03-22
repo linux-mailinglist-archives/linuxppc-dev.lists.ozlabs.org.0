@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5B46C4A9A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:31:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3EE6C4A78
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:28:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSWc3VjVz3fpt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:31:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSSm5JHQz3fW7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:28:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR66Xyvz3cCn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR32HjWz3ccw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR65jqSz4xFW;
-	Wed, 22 Mar 2023 23:27:30 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR23Twmz4xFZ;
+	Wed, 22 Mar 2023 23:27:26 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: kvm <kvm@vger.kernel.org>, Timothy Pearson <tpearson@raptorengineering.com>
-In-Reply-To: <12303156.16998521.1678123842049.JavaMail.zimbra@raptorengineeringinc.com>
-References: <12303156.16998521.1678123842049.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: Re: [PATCH v2 2/4] powerpc/pci_64: Init pcibios subsys a bit later
-Message-Id: <167948793435.559204.2135142042488392469.b4-ty@ellerman.id.au>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, Luis Chamberlain <mcgrof@kernel.org>
+In-Reply-To: <20230310232850.3960676-1-mcgrof@kernel.org>
+References: <20230310232850.3960676-1-mcgrof@kernel.org>
+Subject: Re: [PATCH 0/2] ppc: simplify sysctl registration
+Message-Id: <167948793444.559204.3802967683451092052.b4-ty@ellerman.id.au>
 Date: Wed, 22 Mar 2023 23:25:34 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: j.granados@samsung.com, keescook@chromium.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, ebiederm@xmission.com, linux-fsdevel@vger.kernel.org, yzaikin@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 6 Mar 2023 11:30:42 -0600 (CST), Timothy Pearson wrote:
-> The following patches are going to add dependency/use of iommu_ops which
-> is initialized in subsys_initcall as well.
+On Fri, 10 Mar 2023 15:28:48 -0800, Luis Chamberlain wrote:
+> We can simplify the way we do sysctl registration both by
+> reducing the number of lines and also avoiding calllers which
+> could do recursion. The docs are being updated to help reflect
+> this better [0].
 > 
-> This moves pciobios_init() to the next initcall level.
-> 
-> This should not cause behavioral change.
+> [0] https://lore.kernel.org/all/20230310223947.3917711-1-mcgrof@kernel.org/T/#u
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[2/4] powerpc/pci_64: Init pcibios subsys a bit later
-      https://git.kernel.org/powerpc/c/76f351096c4516f38b9c901a21797fa958588e3a
+[1/2] ppc: simplify one-level sysctl registration for powersave_nap_ctl_table
+      https://git.kernel.org/powerpc/c/bfedee5dc406ddcd70d667be1501659f1b232b7f
+[2/2] ppc: simplify one-level sysctl registration for nmi_wd_lpm_factor_ctl_table
+      https://git.kernel.org/powerpc/c/3a713753d3cb52e4e3039cdb906ef00f0b574219
 
 cheers
