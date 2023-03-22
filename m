@@ -2,93 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E6C6C53A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 19:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B716C53BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 19:26:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhcL03MGWz3cj0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 05:23:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhcPd4ZtTz3cjW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 05:26:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FIpgouFy;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPtx305e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Nc7bqPWv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FIpgouFy;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPtx305e;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Nc7bqPWv;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhcK13fqDz3cF7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:22:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679509360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AQmTyEbfymjzRNtIW6wpo43MqQOqbzqrZwvZwgWkUpU=;
-	b=FIpgouFyNulTTtWvxU0mBaBLGH9BSm/yRB7mURQ5fswmrJXd4zbTO8pEwWHxdRoP8CbpDr
-	c2GwZ/e8yx46V2h8tq38tOpXiY2ePXvs4qYumUUek1NwsMoUdcqM43x0SVv757mTzSAOIV
-	9v8LMdI7tA7v4jQB3Ll3dYsKdK1GV70=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679509361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AQmTyEbfymjzRNtIW6wpo43MqQOqbzqrZwvZwgWkUpU=;
-	b=PPtx305e66KvkvD28XRQxH2yujwWhwev75fmdZc91pIwHuG9HkJ40j69a3Rt3+y52z1jU6
-	oCtg9dBKY3iY5rwbH4aowdeYpihUju/7iLsS3A4kimCNmHiP723htL1gM0aW/GUzY+FI32
-	4xbzli76ReBHg1t3rUfEkl5g/RsKGdY=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-247-m8JtXg8kP1S-AWKo_HP00w-1; Wed, 22 Mar 2023 14:22:37 -0400
-X-MC-Unique: m8JtXg8kP1S-AWKo_HP00w-1
-Received: by mail-qk1-f197.google.com with SMTP id b34-20020a05620a272200b007460c05a463so9147032qkp.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 11:22:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhcNm1pd1z3bgr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:25:59 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id f6-20020a17090ac28600b0023b9bf9eb63so19993650pjt.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 11:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1679509557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xai25ViACOhtMbP/9A/HIC69Te+6jb14im4nmgBreX0=;
+        b=Nc7bqPWvvVP0Fh9GRUREatEuPhbNWcj8ydyJq6p7WhnKTmZsmINp40U8jm2U/D3eOh
+         GiADNrvpDW1src3wBD86k8hybLw++0LHdLBlze0Q290ZO1ycLMYXpjqhF0bC849Amhtk
+         Uy0gNTTczAqnmq7Ne1eUnCmgjRAczfqeQ58RKE9Z1Dbo8WYhXCE+35mHwpNTZjinRv7Z
+         SvFY91A1LyC+CNVJab3PMehak5rGBLhjGTsCzg52VkGZ8uMK06Y5GA1JlP2dh0NN6NWH
+         L5Jzlk3GH1BS4NTePFlNBmFvEFZSn5SfhLcK85z0+yzixjDvudD4Wt6pqVVnBBIsUYXI
+         dcEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679509357;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AQmTyEbfymjzRNtIW6wpo43MqQOqbzqrZwvZwgWkUpU=;
-        b=2kSL5skTgxUD9vylhpyf9m4zo4gDw3XRXuMSUxRkZZmmOfklw1CsusLupX/mslUL46
-         4Ovl5zCtmstHVlCnjZpfd6KjRRbXYrsREmIGChuLGxKGXGsPYkOMcDRFpRAk8HWWZsWW
-         ARKkPBiCWYczYOpGxXuciIjPUJ77FpgcsBw2vtC8Z2O25rzt5eyjhx9lzvmtKw5fkiio
-         lBpZBvOMk5CMlzKyJf9+60qLnc1ncGbag3dlWfuwlqvGQHuCGz52ajgZT+G63SwHVoLV
-         amzTe3FwXAC5gDbD/OGLzgq77lwrTENUuAOakRbtOOUztiKhEoRrSdtoBEpfBISZd0SL
-         cNtg==
-X-Gm-Message-State: AO0yUKXfCjHfDto/ME9lI5eDVc6amsGIy42EbXRyeYmL0E3Hkup9+c4F
-	c1EYyKqKe218yRNw9Pn4K8t7qhGdRzNdUm3a7GAOlnnA1/88WBBNpbkJRMOiX+g9qBd42v3D6VU
-	aKNYZhzJF2KYIRJLEyy+FuVPD+w==
-X-Received: by 2002:ac8:594a:0:b0:3e3:7e53:9a8f with SMTP id 10-20020ac8594a000000b003e37e539a8fmr7511733qtz.50.1679509356914;
-        Wed, 22 Mar 2023 11:22:36 -0700 (PDT)
-X-Google-Smtp-Source: AK7set+t7wmz3/x7URy1IAcP9apu1JV9+38nhf9A/nHJ2ae3E1Cp8z62mk26+NWh6ExaxyxmUk07Nw==
-X-Received: by 2002:ac8:594a:0:b0:3e3:7e53:9a8f with SMTP id 10-20020ac8594a000000b003e37e539a8fmr7511693qtz.50.1679509356631;
-        Wed, 22 Mar 2023 11:22:36 -0700 (PDT)
-Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id j23-20020ac86657000000b003e0c29112b6sm6351465qtp.7.2023.03.22.11.22.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 11:22:36 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v5 7/7] sched, smp: Trace smp callback causing an IPI
-In-Reply-To: <20230322172242.GH2357380@hirez.programming.kicks-ass.net>
-References: <20230307143558.294354-1-vschneid@redhat.com>
- <20230307143558.294354-8-vschneid@redhat.com>
- <20230322095329.GS2017917@hirez.programming.kicks-ass.net>
- <xhsmhmt45c703.mognet@vschneid.remote.csb>
- <20230322140434.GC2357380@hirez.programming.kicks-ass.net>
- <xhsmhjzz8d8km.mognet@vschneid.remote.csb>
- <20230322172242.GH2357380@hirez.programming.kicks-ass.net>
-Date: Wed, 22 Mar 2023 18:22:28 +0000
-Message-ID: <xhsmhh6ucd4t7.mognet@vschneid.remote.csb>
+        d=1e100.net; s=20210112; t=1679509557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xai25ViACOhtMbP/9A/HIC69Te+6jb14im4nmgBreX0=;
+        b=0eGLuL94hs/mmJUcBEQhfG02ck4C+hW6PNVZO3Qw7U8PI0LNlDUy4sgM6/7yrvbAKC
+         SdwR8k9uNEvswLk/7yqu9vEgi7R3s7wlKkpnRYfwOEy858E1OFPJzD2IQY8QMBzpMo0M
+         Q45DQqPc41rdM/Sh7+bdUsXuhKMkHP4fnGQlU4cm9YaaiVK3Q/SzSBqkN1i+r9yJfEgc
+         25/cyxDqU3D1tTg+v7xLbdJcuxilnEmUaXj5covN4VHUmYXvdbd0gR4nXXr1o1C8Rj1m
+         MJcp7AxwwNHe0uD4j2jc8NCKYQlkfc8lTdtxmj/SztuvmGnVe8CLBjvB9agwoMdKwF2J
+         xf4A==
+X-Gm-Message-State: AO0yUKWaSF/80cR2e5uww6EJFv3A3jxXmYhWtqC5nii1pxdUTct/QFbU
+	P6SvOfwPuVEN4MEjzgF14mL4yCRXY+pWH0vu1m2fEw==
+X-Google-Smtp-Source: AK7set/ZMXJixIFC4D/KWjt5E7Yb69EPs9KtjzG+BYb//151Eeugg7QbDH72EBo41HILsUMiYkKai/KWyETz2jWK8JA=
+X-Received: by 2002:a17:902:7b8b:b0:19a:82a2:fcf9 with SMTP id
+ w11-20020a1709027b8b00b0019a82a2fcf9mr1399015pll.2.1679509556719; Wed, 22 Mar
+ 2023 11:25:56 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+ <20230215143626.453491-2-alexghiti@rivosinc.com> <4a6fc7a3-9697-a49b-0941-97f32194b0d7@ghiti.fr>
+ <877cw7dphf.fsf@all.your.base.are.belong.to.us>
+In-Reply-To: <877cw7dphf.fsf@all.your.base.are.belong.to.us>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Wed, 22 Mar 2023 11:25:45 -0700
+Message-ID: <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,79 +77,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
- org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, nathan@kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/03/23 18:22, Peter Zijlstra wrote:
-> On Wed, Mar 22, 2023 at 05:01:13PM +0000, Valentin Schneider wrote:
+On Fri, Feb 24, 2023 at 7:58=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
+.org> wrote:
 >
->> > So I was thinking something like this:
+> Alexandre Ghiti <alex@ghiti.fr> writes:
 >
->> Hm, this does get rid of the func being passed down the helpers, but this
->> means the trace events are now stateful, i.e. I need the first and last
->> events in a CSD stack to figure out which one actually caused the IPI.
->
-> Isn't much of tracing stateful? I mean, why am I always writing awk
-> programs to parse trace output?
->
-> The one that is directly followed by
-> generic_smp_call_function_single_interrupt() (horrible name that), is
-> the one that tripped the IPI.
->
+> > +cc linux-kbuild, llvm, Nathan, Nick
+> >
+> > On 2/15/23 15:36, Alexandre Ghiti wrote:
+> >> From: Alexandre Ghiti <alex@ghiti.fr>
+> >>
+> > I tried a lot of things, but I struggle to understand, does anyone have
+> > any idea? FYI, the same problem happens with LLVM.
 
-Right.
+Off the top of my head, no idea.
 
->> It also requires whoever is looking at the trace to be aware of which IPIs
->> are attached to a CSD, and which ones aren't. ATM that's only the resched
->> IPI, but per the cover letter there's more to come (e.g. tick_broadcast()
->> for arm64/riscv and a few others). For instance:
->> 
->>        hackbench-157   [001]    10.894320: ipi_send_cpu:         cpu=3 callsite=check_preempt_curr+0x37 callback=0x0
+(Maybe as a follow up to this series, I wonder if pursuing
+ARCH_HAS_RELR for ARCH=3Driscv is worthwhile?)
+
 >
-> Arguably we should be setting callback to scheduler_ipi(), except
-> ofcourse, that's not an actual function...
+> Don't ask me *why*, but adding --emit-relocs to your linker flags solves
+> "the NULL .rela.dyn" both for GCC and LLVM.
 >
-> Maybe we can do "extern inline" for the actual users and provide a dummy
-> function for the symbol when tracing.
->
+> The downside is that you end up with a bunch of .rela cruft in your
+> vmlinux.
 
-Huh, I wasn't aware that was an option, I'll look into that. I did scribble
-down a comment next to smp_send_reschedule(), but having a decodable
-function name would be better!
-
->>        hackbench-157   [001]    10.895068: ipi_send_cpu:         cpu=3 callsite=try_to_wake_up+0x29e callback=sched_ttwu_pending+0x0
->>        hackbench-157   [001]    10.895068: ipi_send_cpu:         cpu=3 callsite=try_to_wake_up+0x29e callback=generic_smp_call_function_single_interrupt+0x0
->> 
->> That first one sent a RESCHEDULE IPI, the second one a CALL_FUNCTION one,
->> but you really have to know what you're looking at...
->
-> But you have to know that anyway, you can't do tracing and not know wtf
-> you're doing. Or rather, if you do, I don't give a crap and you can keep
-> the pieces :-)
->
-> Grepping the callback should be pretty quick resolution at to what trips
-> it, no?
->
-> (also, if you *realllllly* can't manage, we can always add yet another
-> argument that gives a type thingy)
->
-
-Ah, I was a bit unclear here - I don't care too much about the IPI type
-being used, but rather being able to figure out on IRQ entry where that IPI
-came from - thinking some more about now, I don't think logging *all* CSDs
-causes an issue there, as you'd look at the earliest-not-seen-yet event
-targeting this CPU anyway.
-
-That'll be made easy once I get to having cpumask filters for ftrace, so
-I can just issue something like:
-
-  trace-cmd record -e 'ipi_send_cpu' -f "cpu == 3" -e 'ipi_send_cpumask' -f "cpus \in {3}" -T hackbench 
-
-(it's somewhere on the todolist...)
-
-TL;DR: I *think* I've convinced myself logging all of them isn't an issue -
-I'm going to play with this on something "smarter" than just hackbench
-under QEMU just to drill it in.
-
+There was a patch just this week to use $(OBJCOPY) to strip these from
+vmlinux (for x86). Looks like x86 uses --emit-relocs for KASLR:
+https://lore.kernel.org/lkml/20230320121006.4863-1-petr.pavlu@suse.com/
+--=20
+Thanks,
+~Nick Desaulniers
