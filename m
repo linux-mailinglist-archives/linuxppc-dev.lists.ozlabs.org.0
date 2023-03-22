@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528756C4A96
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952616C4A75
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:28:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSW318zJz3fl7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:30:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSS339l3z3cL0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:28:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR66NGbz3cdK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSR21mYcz3cL0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:27:26 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR06HqHz4xDr;
-	Wed, 22 Mar 2023 23:27:24 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSR12tddz4xFT;
+	Wed, 22 Mar 2023 23:27:25 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Kajol Jain <kjain@linux.ibm.com>
-In-Reply-To: <20230301170918.69176-1-kjain@linux.ibm.com>
-References: <20230301170918.69176-1-kjain@linux.ibm.com>
-Subject: Re: (subset) [PATCH 1/2] selftests/powerpc/pmu: Fix sample field check in the mmcra_thresh_marked_sample_test
-Message-Id: <167948793440.559204.9338504502632395334.b4-ty@ellerman.id.au>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, Jason@zx2c4.com, gregkh@linuxfoundation.org, ebiederm@xmission.com, naveen.n.rao@linux.vnet.ibm.com, Bo Liu <liubo03@inspur.com>
+In-Reply-To: <20221101015452.3216-1-liubo03@inspur.com>
+References: <20221101015452.3216-1-liubo03@inspur.com>
+Subject: Re: [PATCH] powerpc: Fix some kernel-doc warnings
+Message-Id: <167948793439.559204.11260632595393457332.b4-ty@ellerman.id.au>
 Date: Wed, 22 Mar 2023 23:25:34 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: disgoel@linux.vnet.ibm.com, atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, David Binderman <dcb314@hotmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 01 Mar 2023 22:39:17 +0530, Kajol Jain wrote:
-> The testcase verifies the setting of different fields in Monitor Mode
-> Control Register A (MMCRA). In the current code, EV_CODE_EXTRACT macro
-> is used to extract the "sample" field, which then needs to be further
-> processed to fetch rand_samp_elig and rand_samp_mode bits. But the
-> current code is not passing valid sample field to EV_CODE_EXTRACT
-> macro. Patch addresses this by fixing the input for EV_CODE_EXTRACT.
+On Mon, 31 Oct 2022 21:54:52 -0400, Bo Liu wrote:
+> The current code provokes some kernel-doc warnings:
+> 	arch/powerpc/kernel/process.c:1606: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
 > 
-> [...]
+> 
 
-Patch 1 applied to powerpc/next.
+Applied to powerpc/next.
 
-[1/2] selftests/powerpc/pmu: Fix sample field check in the mmcra_thresh_marked_sample_test
-      https://git.kernel.org/powerpc/c/8a32341cf04ba05974931b4664683c2c9fb84e56
+[1/1] powerpc: Fix some kernel-doc warnings
+      https://git.kernel.org/powerpc/c/be994293544f1c0b032dabfe0832d9c1dfcea14b
 
 cheers
