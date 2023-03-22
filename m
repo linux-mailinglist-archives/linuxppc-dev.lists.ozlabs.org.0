@@ -2,52 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F30E6C5510
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 20:36:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA5F6C572D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 21:14:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Phdxs7225z3f3x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 06:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhfnS13W5z3f4N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 07:14:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZXj21Ne;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mnkraf3S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZXj21Ne;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mnkraf3S;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phdwy5DWmz3cLx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 06:35:30 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7326A62276;
-	Wed, 22 Mar 2023 19:35:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3CC433D2;
-	Wed, 22 Mar 2023 19:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679513726;
-	bh=FhntRrT8ocoSuGXxtLHKzHWzymmkrlLBWHmrPDDVUUo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=TZXj21NeIUkUZZar7VNMqh3dVSuN3o8smKLoGeKlxFM4u9gfOpaC3kuIEPrC8theJ
-	 EjPJVc9oufTxzPD7G4Hc8hmuSNFg5ASYHNUqVWj4Pm/PAM0cm4Y0hL/TmGR1vF7cRJ
-	 ghHYAN2nzfJSugY4ZFFucSttfz82MaXOPTFpw736rSuhY7yG3U/x5krQWe30aNyfH3
-	 TpCuc9D3+sHvl4qsdpIcmDaIEydMxpzHx8G9wZuc/iInxcv8qZuNxXLKv+GJGD4EfH
-	 DaiPCrrrg2VbKAwdhc5c78r9UJzE633kYTaRwA7Xko4oXiDWsAIH0RPGJpwYNqkaDa
-	 lXTFXlUZ+LxhA==
-Date: Wed, 22 Mar 2023 14:35:25 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v6 2/4] PCI: Split pci_bus_for_each_resource_p() out of
- pci_bus_for_each_resource()
-Message-ID: <20230322193525.GA2487882@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhfmS3fcqz3cHX;
+	Thu, 23 Mar 2023 07:13:11 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32MJJ8E1012032;
+	Wed, 22 Mar 2023 20:13:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=FciNJ0nlhEuhbNNd4Y4FlzEWcMa/awWjFs5vbFg8cSE=;
+ b=mnkraf3S8f+OMEax5E91eTE4yy1Ui6l5COXgyYd94WBXRtZMuhwCsWhSnmrfsxU0Gmob
+ JQ561Y6FgvUguDfCgnTO0ZNpNIs5hvTuDq4d7o+BJniycwTBuuJep/sXZF0dlCmQAtmr
+ nmBUXjC5VLDFHak5Qkt5YdtcGvF6uCajmAR0MfHNV4WK3tS8fhjxRH7FmxeY0DUp3WWL
+ e2wKJn6cK35wJ+YR7Ttt5RxIQzg8wBn7WYKaeGztxmP20BACSjfGSTMgiLhLzouEIbrL
+ CV6DpPLbIsD2dSh6qn7kwc1Yqu0x4JM6m875tKatDKWVaSIBgcFyriI4jJsShRX5njL2 3w== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pg6w9tgb7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Mar 2023 20:13:03 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MHmIXE019567;
+	Wed, 22 Mar 2023 20:13:02 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x7250p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Mar 2023 20:13:02 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32MKD1TG47383274
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Mar 2023 20:13:02 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A48C458065;
+	Wed, 22 Mar 2023 20:13:01 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 906705804B;
+	Wed, 22 Mar 2023 20:13:01 +0000 (GMT)
+Received: from arbab-laptop.localdomain (unknown [9.53.178.221])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 22 Mar 2023 20:13:01 +0000 (GMT)
+Received: from arbab-laptop.austin.ibm.com (localhost [IPv6:::1])
+	by arbab-laptop.localdomain (Postfix) with ESMTPS id CA88C1756DF;
+	Wed, 22 Mar 2023 15:13:00 -0500 (CDT)
+Date: Wed, 22 Mar 2023 15:12:59 -0500
+From: Reza Arbab <arbab@linux.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [Skiboot] [PATCH V4 1/3] core/device: Add function to return
+ child node using name at substring "@"
+Message-ID: <ZBthS3BUmzKha8jZ@arbab-laptop.austin.ibm.com>
+References: <20230306033913.80524-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20230320131633.61680-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230306033913.80524-1-atrajeev@linux.vnet.ibm.com>
+Organization: IBM Linux Technology Center
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eiZRsbRNugl8bLmMCC-I8UQ1ilXPTUbx
+X-Proofpoint-ORIG-GUID: eiZRsbRNugl8bLmMCC-I8UQ1ilXPTUbx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_17,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 spamscore=0 clxscore=1011 impostorscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303220141
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,32 +93,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@
- physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: maddy@linux.ibm.com, dan@danny.cz, kjain@linux.ibm.com, skiboot@lists.ozlabs.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 20, 2023 at 03:16:31PM +0200, Andy Shevchenko wrote:
-> ...
+Hi Athira,
 
-> -#define pci_bus_for_each_resource(bus, res, i)				\
-> -	for (i = 0;							\
-> -	    (res = pci_bus_resource_n(bus, i)) || i < PCI_BRIDGE_RESOURCE_NUM; \
-> -	     i++)
-> +#define __pci_bus_for_each_resource(bus, res, __i, vartype)			\
-> +	for (vartype __i = 0;							\
-> +	     res = pci_bus_resource_n(bus, __i), __i < PCI_BRIDGE_RESOURCE_NUM;	\
-> +	     __i++)
-> +
-> +#define pci_bus_for_each_resource(bus, res, i)					\
-> +	__pci_bus_for_each_resource(bus, res, i, )
-> +
-> +#define pci_bus_for_each_resource_p(bus, res)					\
-> +	__pci_bus_for_each_resource(bus, res, __i, unsigned int)
+On Mon, Mar 06, 2023 at 09:09:11AM +0530, Athira Rajeev wrote:
+>Add a function dt_find_by_name_substr() that returns the child node if
+>it matches till first occurence at "@" of a given name, otherwise NULL.
 
-I like these changes a lot, too!
+Given this summary, I don't understand the following:
 
-Same comments about _p vs _idx and __pci_bus_for_each_resource(...,
-vartype).
+>+	assert(dt_find_by_name_substr(root, "node@1") == addr1);
+>+	assert(dt_find_by_name_substr(root, "node0_1@2") == addr2);
 
-Also would prefer 80 char max instead of 81.
+Is this behavior required? I don't think it makes sense to call this 
+function with a second argument containing '@', so I wouldn't expect it 
+to match anything in these cases. The function seems to specifically 
+enable it:
+
+>+struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name)
+>+{
+[snip]
+>+      node = strdup(name);
+>+      if (!node)
+>+              return NULL;
+>+      node = strtok(node, "@");
+
+Seems like you could get rid of this and just use name as-is.
+
+I was curious about something else; say we have 'node@1' and 'node@2'.  
+Is there an expectation of which it should match?
+
+     addr1 = dt_new_addr(root, "node", 0x1);
+     addr2 = dt_new_addr(root, "node", 0x2);
+     assert(dt_find_by_name_substr(root, "node") == ???????);
+                                                    ^^^^^^^
+
+>+/* Find a child node by name and substring */
+>+struct dt_node *dt_find_by_name_substr(struct dt_node *root, const char *name);
+
+I think this name fit better in previous versions of the patch, but 
+since you're specifically looking for '@' now, maybe call it something 
+like dt_find_by_name_before_addr?
+
+-- 
+Reza Arbab
