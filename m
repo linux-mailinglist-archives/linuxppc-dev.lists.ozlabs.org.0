@@ -1,55 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53DB6C4A31
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:18:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F756C4A44
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 13:21:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSDl4l6Sz3cj1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:18:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhSJC5Dfdz3f3n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Mar 2023 23:21:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=G59iFYI3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PnTNyyTt;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PnTNyyTt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PnTNyyTt;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PnTNyyTt;
+	dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSCp5NXWz3bby
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:17:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=G59iFYI3;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PhSCk5TsSz4xDj;
-	Wed, 22 Mar 2023 23:17:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1679487461;
-	bh=ufR99BEAK4No/lNAuV96Y+u4crBQmDihY2XvtfGDO78=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=G59iFYI30uqnlkTsYDvDNmS35pg0t3ED6bwLLG65LRotjV/h8AL3LYwKVf/kd78PP
-	 l4g7o3fz/hrkPgHDsGAHP7Y2f81TeP8SwXjXElpTCj/yrfGr/nUz5Lqq/H7Arhg5Gi
-	 TOE+XZtX7i0VbAr1kb+Z204ukjpThT1q7DJJFF+p3iCYOnBj/72XQvLf/NAJp3HPlC
-	 oQyS1GLw1DXHY6SqPt1s9igAjHqc95OFAO5WQ6X27cLRbgBHMjjd7DxAa0L4sohgJM
-	 IHrXuZ2vcJEUmGTX+9950n7Vi73/QJNKeCWNHdjkkJ8VrpAZ6RV8W7QqyDH8abY8u8
-	 tTHgfABHg0jJA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kautuk Consul <kconsul@linux.vnet.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Fabiano Rosas <farosas@linux.ibm.com>, Sathvika Vasireddy
- <sv@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH v3 2/2] arch/powerpc/kvm: kvmppc_hv_entry: remove r4
- argument
-In-Reply-To: <20230316051025.1424093-3-kconsul@linux.vnet.ibm.com>
-References: <20230316051025.1424093-1-kconsul@linux.vnet.ibm.com>
- <20230316051025.1424093-3-kconsul@linux.vnet.ibm.com>
-Date: Wed, 22 Mar 2023 23:17:35 +1100
-Message-ID: <87v8itt1y8.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhSHF2nBVz3bby
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 23:20:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679487638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hPXFCTl8qif3OA4s3YNypS2WhS0XvH7qdHBOusQ/gQI=;
+	b=PnTNyyTtmjPpSksKWycfVn6N7wbXIRnxRFaje+gf18Yr79F1OaIakI5unT18OEYD0T3l8H
+	AiO5qZ+Jv+pbdR4zudblWmbE7d+AgL6vdBt/n6a5D7l3A+jWXuQxd2C0700t/UXnCHiZcO
+	6GvLoqY8aF5DmZ0VKlPW0IbASlGit9E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679487638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hPXFCTl8qif3OA4s3YNypS2WhS0XvH7qdHBOusQ/gQI=;
+	b=PnTNyyTtmjPpSksKWycfVn6N7wbXIRnxRFaje+gf18Yr79F1OaIakI5unT18OEYD0T3l8H
+	AiO5qZ+Jv+pbdR4zudblWmbE7d+AgL6vdBt/n6a5D7l3A+jWXuQxd2C0700t/UXnCHiZcO
+	6GvLoqY8aF5DmZ0VKlPW0IbASlGit9E=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-Oau3dkFzPrOP_irmVa88VQ-1; Wed, 22 Mar 2023 08:20:36 -0400
+X-MC-Unique: Oau3dkFzPrOP_irmVa88VQ-1
+Received: by mail-qt1-f199.google.com with SMTP id y10-20020a05622a164a00b003e38e0a3cc3so479787qtj.14
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Mar 2023 05:20:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679487636;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPXFCTl8qif3OA4s3YNypS2WhS0XvH7qdHBOusQ/gQI=;
+        b=gdXbd4s1r4H2AaFvt1DhrTXCN/pwCiRJDmwQqit4IVNgqdnJ1n8d5gkdwNRM0rZJW1
+         B7vJGlAn7XW9iHYMroxHSjnW+aJD6tuG5Cim2ksoyQDxRssk09DIA6Rv0h0TQYfYUfZd
+         0RKyH3oo8M9Vig/TT4kTjpHQB2AnHXcQoQPErbjiWtvbCwQcPHW4qPZ19YgkxHpywXp8
+         wt7BiQM/K2UKh+RAGDlvMCDsRK9R/9RZbaiF/5eJJU05096uIhHd9y+FSqKVeUVn82cI
+         tFZJ5XBDY51gghyMIQVCV7q6MKOqro7a3dKC7SuCib7xmC+h+S3gSOacTFr5MW/biDHK
+         KrRQ==
+X-Gm-Message-State: AO0yUKWj35ZZC0GOeF9NlO2QdegC5R2G8Rzlk4Lz1yckSqZ6Qikm4Hk1
+	cco71Rzy+tt9uNxaNpoGCJBh4CS4CVPEd9mJZMD38zoZw5+lEDUEu/Y3cg1MS+LtqYk0sR3liBc
+	d+4f2ihCMo3RjGzr296PWpUvJUQ==
+X-Received: by 2002:a05:6214:e6e:b0:5c5:95db:858a with SMTP id jz14-20020a0562140e6e00b005c595db858amr5249083qvb.31.1679487636118;
+        Wed, 22 Mar 2023 05:20:36 -0700 (PDT)
+X-Google-Smtp-Source: AK7set+c4qgqaBQUslatTuVuP/CBQYeSmWHcWFFuVnFTR+yoMggQM+H4NTuj8PmuW7zmUDZ2oj+NWg==
+X-Received: by 2002:a05:6214:e6e:b0:5c5:95db:858a with SMTP id jz14-20020a0562140e6e00b005c595db858amr5249039qvb.31.1679487635822;
+        Wed, 22 Mar 2023 05:20:35 -0700 (PDT)
+Received: from vschneid.remote.csb ([154.57.232.159])
+        by smtp.gmail.com with ESMTPSA id d185-20020a37b4c2000000b007425ef4cbc2sm11175799qkf.100.2023.03.22.05.20.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Mar 2023 05:20:35 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v5 7/7] sched, smp: Trace smp callback causing an IPI
+In-Reply-To: <20230322095329.GS2017917@hirez.programming.kicks-ass.net>
+References: <20230307143558.294354-1-vschneid@redhat.com>
+ <20230307143558.294354-8-vschneid@redhat.com>
+ <20230322095329.GS2017917@hirez.programming.kicks-ass.net>
+Date: Wed, 22 Mar 2023 12:20:28 +0000
+Message-ID: <xhsmhmt45c703.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,86 +96,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kautuk Consul <kconsul@linux.vnet.ibm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
+ org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> kvmppc_hv_entry is called from only 2 locations within
-> book3s_hv_rmhandlers.S. Both of those locations set r4
-> as HSTATE_KVM_VCPU(r13) before calling kvmppc_hv_entry.
-> So, shift the r4 load instruction to kvmppc_hv_entry and
-> thus modify the calling convention of this function.
+On 22/03/23 10:53, Peter Zijlstra wrote:
+> On Tue, Mar 07, 2023 at 02:35:58PM +0000, Valentin Schneider wrote:
 >
-> Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+>> @@ -477,6 +490,25 @@ static __always_inline void csd_unlock(struct __call_single_data *csd)
+>>      smp_store_release(&csd->node.u_flags, 0);
+>>  }
+>>
+>> +static __always_inline void
+>> +raw_smp_call_single_queue(int cpu, struct llist_node *node, smp_call_func_t func)
+>> +{
+>> +	/*
+>> +	 * The list addition should be visible to the target CPU when it pops
+>> +	 * the head of the list to pull the entry off it in the IPI handler
+>> +	 * because of normal cache coherency rules implied by the underlying
+>> +	 * llist ops.
+>> +	 *
+>> +	 * If IPIs can go out of order to the cache coherency protocol
+>> +	 * in an architecture, sufficient synchronisation should be added
+>> +	 * to arch code to make it appear to obey cache coherency WRT
+>> +	 * locking and barrier primitives. Generic code isn't really
+>> +	 * equipped to do the right thing...
+>> +	 */
+>> +	if (llist_add(node, &per_cpu(call_single_queue, cpu)))
+>> +		send_call_function_single_ipi(cpu, func);
+>> +}
+>> +
+>>  static DEFINE_PER_CPU_SHARED_ALIGNED(call_single_data_t, csd_data);
+>>
+>>  void __smp_call_single_queue(int cpu, struct llist_node *node)
+>> @@ -493,21 +525,25 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
+>>              }
+>>      }
+>>  #endif
+>>      /*
+>> +	 * We have to check the type of the CSD before queueing it, because
+>> +	 * once queued it can have its flags cleared by
+>> +	 *   flush_smp_call_function_queue()
+>> +	 * even if we haven't sent the smp_call IPI yet (e.g. the stopper
+>> +	 * executes migration_cpu_stop() on the remote CPU).
+>>       */
+>> +	if (trace_ipi_send_cpumask_enabled()) {
+>> +		call_single_data_t *csd;
+>> +		smp_call_func_t func;
+>> +
+>> +		csd = container_of(node, call_single_data_t, node.llist);
+>> +		func = CSD_TYPE(csd) == CSD_TYPE_TTWU ?
+>> +			sched_ttwu_pending : csd->func;
+>> +
+>> +		raw_smp_call_single_queue(cpu, node, func);
+>> +	} else {
+>> +		raw_smp_call_single_queue(cpu, node, NULL);
+>> +	}
+>>  }
 >
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index b81ba4ee0521..b61f0b2c677b 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -85,7 +85,7 @@ _GLOBAL_TOC(kvmppc_hv_entry_trampoline)
->  	RFI_TO_KERNEL
->  
->  kvmppc_call_hv_entry:
-> -	ld	r4, HSTATE_KVM_VCPU(r13)
-> +	/* Enter guest. */
->  	bl	kvmppc_hv_entry
->  
->  	/* Back from guest - restore host state and return to caller */
-> @@ -352,9 +352,7 @@ kvm_secondary_got_guest:
->  	mtspr	SPRN_LDBAR, r0
->  	isync
->  63:
-> -	/* Order load of vcpu after load of vcore */
-> -	lwsync
-> -	ld	r4, HSTATE_KVM_VCPU(r13)
-> +	/* Enter guest. */
->  	bl	kvmppc_hv_entry
->  
->  	/* Back from the guest, go back to nap */
-> @@ -506,7 +504,6 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
->  
->  	/* Required state:
->  	 *
-> -	 * R4 = vcpu pointer (or NULL)
->  	 * MSR = ~IR|DR
->  	 * R13 = PACA
->  	 * R1 = host R1
-> @@ -524,6 +521,10 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
->  	li	r6, KVM_GUEST_MODE_HOST_HV
->  	stb	r6, HSTATE_IN_GUEST(r13)
->  
-> +	/* Order load of vcpu after load of vcore */
+> Hurmph... so we only really consume @func when we IPI. Would it not be
+> more useful to trace this thing for *every* csd enqeued?
 
-Just copying the comment here doesn't work. It doesn't make sense on its
-own here, because the VCORE is loaded (again) a few lines below (536).
-So as written this comment seems backward vs the code.
+It's true that any CSD enqueued on that CPU's call_single_queue in the
+[first CSD llist_add()'ed, IPI IRQ hits] timeframe is a potential source of
+interference.
 
-The comment would need to expand to explain that the barrier is for the
-case where we came from kvm_secondary_got_guest.
+However, can we be sure that first CSD isn't an indirect cause for the
+following ones? say the target CPU exits RCU EQS due to the IPI, there's a
+bit of time before it gets to flush_smp_call_function_queue() where some other CSD
+could be enqueued *because* of that change in state.
 
-> +	lwsync
-> +	ld	r4, HSTATE_KVM_VCPU(r13)
-> +
->  #ifdef CONFIG_KVM_BOOK3S_HV_P8_TIMING
->  	/* Store initial timestamp */
->  	cmpdi	r4, 0
+I couldn't find a easy example of that, I might be biased as this is where
+I'd like to go wrt IPI'ing isolated CPUs in usermode. But regardless, when
+correlating an IPI IRQ with its source, we'd always have to look at the
+first CSD in that CSD stack.
 
-
-But as Nick says I don't think it's worth investing effort in small
-tweaks to this code. The risk of introducing bugs is too high for such a
-small improvement to the code.
-
-Thanks for trying, but I think this asm code is best left more or less
-alone unless we find actual bugs in it - or unless we can make
-substantial improvements to it, which would be rewriting in C, or at
-least converting to a fully call/return style rather than the current
-forest of labels.
-
-I will take patch 1 though, as that's an obvious cleanup and poses no
-risk (famous last words :D).
-
-cheers
