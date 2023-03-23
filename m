@@ -1,92 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEF16C6D6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:26:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212696C6DC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:36:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9hL4Hjzz3f8D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:26:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WtAcDI5L;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yv1j5KZ9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9vz07Zhz3fS6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:36:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WtAcDI5L;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yv1j5KZ9;
-	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.179; helo=mail-qt1-f179.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9gM59B4z3cj9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:25:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679588731;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rf1EargHhjBzXfO07IgMLtInuWGSM9rCL6OoPVE8vbA=;
-	b=WtAcDI5Li9QEuKB6ODiSX0jbpDGrOdDIqwDU2vDXzdQwZ4qWnByqG4ED6i+CW3k0/Gt+V+
-	SVdKQ2jON8/0A7itlPWthpIyCtnBE9lSlxelDZpNicneCJ0cDdPReRYWbuxzJPXW1v+V1a
-	wK0EDzKZaf+WDd+bqZnKQXTlkS1uyOQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679588732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rf1EargHhjBzXfO07IgMLtInuWGSM9rCL6OoPVE8vbA=;
-	b=Yv1j5KZ9npGgkOhmsonRh7yVkFGx+qvFcWuu4HV5xDbie6ISSOjJHPtXUxqss8NP1Ohf0Y
-	atE43w/TAHJClbILu60Aq+DT7IwPv7vrsfgeaN9LzQPTIFn/T6K3BX2mFOmej/iCpR4fri
-	a9cnrxzwTpiruJFOgXNRzvxjnKBVjZQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-NgWkUOm3M_WR7Cf0B5YQmw-1; Thu, 23 Mar 2023 12:25:30 -0400
-X-MC-Unique: NgWkUOm3M_WR7Cf0B5YQmw-1
-Received: by mail-wm1-f70.google.com with SMTP id m5-20020a05600c4f4500b003ee8db23ef9so1076419wmq.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 09:25:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9vN0dTXz3f4X
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:35:59 +1100 (AEDT)
+Received: by mail-qt1-f179.google.com with SMTP id s12so27212831qtq.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 09:35:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679588728;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rf1EargHhjBzXfO07IgMLtInuWGSM9rCL6OoPVE8vbA=;
-        b=5WPTtk9qWx1I/zzFYx6ZwN0GgDBz80Dwxld9IbSZI6mUrPhupYumTpqU9MaFakoa+2
-         DIPzRGpO6Td0ztw9AIar3wxMiR0Zas0CJuyLesqhASvZUHGdT3RY4JnlheIHf1YEBh3S
-         Vj9SOM1YeIWU0sIQO9201v7fqtbO+vvHKDVynciMFH2p8FHaN4Aa3Ti1ROqWD6h6pxBH
-         30rAe03jREpO+SJyyhkR7WSq+3Fu02YJWrhIxxG7wo1jJcT+HRawEYYPMARVNgNLaNrl
-         E3O3PRdh8EL5pCO99LkktqC2tgXcf6eERn6WV6IwJWDArDEnmi+w+OAOMwKTSBGN+JA+
-         COLg==
-X-Gm-Message-State: AAQBX9f0I3MYFp5BJenm+Xu5F1GqrvxpFDxVeLAkZ5H/6D1XDwZxqoty
-	nExCADkl5k1zaZLApEFUz494xNgGahcU1Ag4nFWbX7oiiya/8hwkh+NgVsyNOMVgJi1tuE07nYw
-	7CIjX4qFEcAlaypITV0JoJGjuLA==
-X-Received: by 2002:a5d:4568:0:b0:2c7:e5f:e0e0 with SMTP id a8-20020a5d4568000000b002c70e5fe0e0mr2967368wrc.65.1679588728477;
-        Thu, 23 Mar 2023 09:25:28 -0700 (PDT)
-X-Google-Smtp-Source: AKy350Z2pOP19Ooh7wiG9F4iyBZnUcLGOtnlVl1iiXTySJV6QCXnwRVxEdgZiRrRO9IHVKHT4hkvPQ==
-X-Received: by 2002:a5d:4568:0:b0:2c7:e5f:e0e0 with SMTP id a8-20020a5d4568000000b002c70e5fe0e0mr2967333wrc.65.1679588728212;
-        Thu, 23 Mar 2023 09:25:28 -0700 (PDT)
-Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id d10-20020adfe88a000000b002c70e60abd4sm16586783wrm.2.2023.03.23.09.25.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Mar 2023 09:25:27 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v5 7/7] sched, smp: Trace smp callback causing an IPI
-In-Reply-To: <20230322140434.GC2357380@hirez.programming.kicks-ass.net>
-References: <20230307143558.294354-1-vschneid@redhat.com>
- <20230307143558.294354-8-vschneid@redhat.com>
- <20230322095329.GS2017917@hirez.programming.kicks-ass.net>
- <xhsmhmt45c703.mognet@vschneid.remote.csb>
- <20230322140434.GC2357380@hirez.programming.kicks-ass.net>
-Date: Thu, 23 Mar 2023 16:25:25 +0000
-Message-ID: <xhsmhbkkjcu4q.mognet@vschneid.remote.csb>
+        d=1e100.net; s=20210112; t=1679589357;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UL3/4GqvmmUqfCC6k4K5nIi6sLrnnlUEco09johNyxg=;
+        b=aDDq4TyYsXL9MCvuIL4huVH9sNUbT86z3X5H0XJduSnN9hqUSg5gvzPEq1PH4FzIaw
+         ItH9PJWUtcfHdisRrBXresBcas3wlf+DM4EmmVMosVFtAEd1TzHM5AI7TgygbaynVyRh
+         h9veVYYoirujXkdAVcKr+rxTQAOAz8KHEt6IQhKtvX/tIuJrm5ErVXvsGJbY5bfTH5mX
+         x7Gv7ixUk5wMUE0IsmTKonBO9LVh+bXnMJHw8RWGrOifrU8XD0n6O15mM02d54Vjwe7Q
+         O3i86WWKK2sbAOUYggfdXBdFP4KrIrJDtK18epXcBwR8E/Mg3DE5LBcV9ZNbrlJMpSk/
+         2QuQ==
+X-Gm-Message-State: AO0yUKUK4zzJITrc0ogjmtfql+Y6XOnDqawKrifitOgiClZvPBeChQP6
+	uEOwpbiofJaX3LAi96WzIOesQvnN0GBeSA==
+X-Google-Smtp-Source: AK7set9Iq1ciwaPBxs2fTwzA7bohcAE+9LhSWNc2IIn9CPBFp05WqoYXJ6bkL75TWnFyY9dTaHy8BA==
+X-Received: by 2002:ac8:4e42:0:b0:3bf:e415:5cc3 with SMTP id e2-20020ac84e42000000b003bfe4155cc3mr14496699qtw.58.1679589356686;
+        Thu, 23 Mar 2023 09:35:56 -0700 (PDT)
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com. [209.85.160.179])
+        by smtp.gmail.com with ESMTPSA id w2-20020ac87182000000b003b9a6d54b6csm11868126qto.59.2023.03.23.09.35.56
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Mar 2023 09:35:56 -0700 (PDT)
+Received: by mail-qt1-f179.google.com with SMTP id s12so27212743qtq.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 09:35:56 -0700 (PDT)
+X-Received: by 2002:a05:6902:728:b0:a09:314f:a3ef with SMTP id
+ l8-20020a056902072800b00a09314fa3efmr2603297ybt.12.1679588947338; Thu, 23 Mar
+ 2023 09:29:07 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+References: <ZBxiaflGTeK8Jlgx@smile.fi.intel.com> <20230323150238.GA2550157@bhelgaas>
+ <ZBxrfy83MRjnReAs@smile.fi.intel.com>
+In-Reply-To: <ZBxrfy83MRjnReAs@smile.fi.intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 23 Mar 2023 17:28:55 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWkavUwZrfuJ5YSsb2kkHVZ0TCzcme5o6CkYGcSDVt+jw@mail.gmail.com>
+Message-ID: <CAMuHMdWkavUwZrfuJ5YSsb2kkHVZ0TCzcme5o6CkYGcSDVt+jw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,54 +68,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
- org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/03/23 15:04, Peter Zijlstra wrote:
-> @@ -798,14 +794,20 @@ static void smp_call_function_many_cond(
->  		}
->  
->  		/*
-> +		 * Trace each smp_function_call_*() as an IPI, actual IPIs
-> +		 * will be traced with func==generic_smp_call_function_single_ipi().
-> +		 */
-> +		trace_ipi_send_cpumask(cfd->cpumask_ipi, _RET_IP_, func);
+Hi Andy,
 
-I just got a trace pointing out this can emit an event even though no IPI
-is sent if e.g. the cond_func predicate filters all CPUs in the argument
-mask:
+On Thu, Mar 23, 2023 at 4:15=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Thu, Mar 23, 2023 at 10:02:38AM -0500, Bjorn Helgaas wrote:
+> > I poked around looking for similar patterns elsewhere with:
+> >   git grep "#define.*for_each_.*_p("
+> >   git grep "#define.*for_each_.*_idx("
+> >
+> > I didn't find any other "_p" iterators and just a few "_idx" ones, so
+> > my hope is to follow what little precedent there is, as well as
+> > converge on the basic "*_for_each_resource()" iterators and remove the
+> > "_idx()" versions over time by doing things like the
+> > pci_claim_resource() change.
+>
+> The p is heavily used in the byte order conversion helpers.
 
-  ipi_send_cpumask:     cpumask= callsite=on_each_cpu_cond_mask+0x3c callback=flush_tlb_func+0x0
+I can't seem to find them. Example?
 
-Maybe something like so on top?
+Or do you mean cpu_to_be32p()? There "p" means pointer,
+which is something completely different.
 
----
-diff --git a/kernel/smp.c b/kernel/smp.c
-index ba5478814e677..1dc452017d000 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -791,6 +791,8 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
- 			}
- 		}
- 
-+		if (!nr_cpus)
-+			goto local;
- 		/*
- 		 * Trace each smp_function_call_*() as an IPI, actual IPIs
- 		 * will be traced with func==generic_smp_call_function_single_ipi().
-@@ -804,10 +806,10 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
- 		 */
- 		if (nr_cpus == 1)
- 			send_call_function_single_ipi(last_cpu);
--		else if (likely(nr_cpus > 1))
-+		else
- 			send_call_function_ipi_mask(cfd->cpumask_ipi);
- 	}
--
-+local:
- 	if (run_local && (!cond_func || cond_func(this_cpu, info))) {
- 		unsigned long flags;
- 
+> > What do you think?  If it seems like excessive churn, we can do it
+> > as-is and still try to reduce the use of the index variable over time.
+>
+> I think _p has a precedent as well. But I can think about it a bit, maybe
+> we can come up with something smarter.
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
