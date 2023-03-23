@@ -1,52 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B1A6C652E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 11:35:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B296C6542
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 11:38:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj1v04z61z3f4y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 21:35:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj1yX3QSzz2yNX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 21:38:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=D2FtiVTL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sPKSP02i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj1t74VJzz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 21:34:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=D2FtiVTL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sPKSP02i;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pj1t73GjZz4x4r;
-	Thu, 23 Mar 2023 21:34:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1679567663;
-	bh=JpYlVx2BrhBiehk4yTgdDqRqVrEWFGQfjpLrNYIlQGI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=D2FtiVTLRy0cVbKfD4zvz41QmlFyneegFjT+niFaszzOehJ9Sx36phxFIDYQtZ8OO
-	 gGaja8gOixXcggvYOeEoiqEpQJYGaugpNvXaW9CHNHC88io2A+DvAEILSEH90D53EU
-	 zeiQcbMlzjrrIueZMSjPPHltG/zzEeZZb8wXurW6BNA2C1AUhGtCTFP56l3XjeZFD4
-	 XpH//CO6HI5IGngg5TUYqujxR2/CO5dd86RETaFgAIhQQsH0yYjwsP5ulg/2Hg/4HP
-	 t330K3gH0q8muwKr3AWyuxcaHYBc8khwu8fGsEJjAnVXA11zoenYlX+4Hbjo7zFAS7
-	 785z6aLakK7tA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/9] powerpc/dexcr: Support userspace ROP protection
-In-Reply-To: <20230322054612.1340573-5-bgray@linux.ibm.com>
-References: <20230322054612.1340573-1-bgray@linux.ibm.com>
- <20230322054612.1340573-5-bgray@linux.ibm.com>
-Date: Thu, 23 Mar 2023 21:34:20 +1100
-Message-ID: <87mt43u577.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj1xf5Ptyz2yNX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 21:37:26 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 98F7D62100;
+	Thu, 23 Mar 2023 10:37:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F9CC4339B;
+	Thu, 23 Mar 2023 10:37:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679567844;
+	bh=7HVmHyHcaSnCmEQ9wvlGS5D2gJIf2hovuJXSyaCaqdA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sPKSP02iJA6KAFPv7bGM4/Se81vulHnHqt8qfWTUhZFZfE1s7yfVR1WI2haHPg+A3
+	 jWzVvRFZzkglSwote3myrlA5TUDE+Mjiy60hA/JC5FTriwEUlR/LYSMkz7fsTaldFc
+	 oMQlw0WTXs+ktUIZkgxUF4A7BhNREJZy9IC+pPvHI8Vsp+m2dbErDE2naZmB571znT
+	 Fxiq15cRjtHrw73FO6Y3VXmv90htiJ2rNj1RicLa12inWDP9wSpUycX7R7yd2Kgx+7
+	 vrbS8fMpVelSjMFK/gnOL3tvAHj3UliwBTODwab575ZgUsXBaJnqCJoJygIlhUcZOE
+	 OSTuDUXtdmoRA==
+Date: Thu, 23 Mar 2023 12:37:05 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH 02/14] arm64: drop ranges in definition of
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <ZBwr0bXdtOtKKila@kernel.org>
+References: <20230323092156.2545741-1-rppt@kernel.org>
+ <20230323092156.2545741-3-rppt@kernel.org>
+ <ZBwmxbRJrF8RxZEp@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBwmxbRJrF8RxZEp@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +62,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin Gray <bgray@linux.ibm.com> writes:
-> The ISA 3.1B hashst and hashchk instructions use a per-cpu SPR HASHKEYR
-> to hold a key used in the hash calculation. This key should be different
-> for each process to make it harder for a malicious process to recreate
-> valid hash values for a victim process.
->
-> Add support for storing a per-thread hash key, and setting/clearing
-> HASHKEYR appropriately.
->
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
->
-> ---
->
-> v1:	* Guard HASHKEYR update behind change check
-> 	* HASHKEYR reset moved earlier to patch 2
-> ---
->  arch/powerpc/include/asm/processor.h |  1 +
->  arch/powerpc/kernel/process.c        | 17 +++++++++++++++++
->  2 files changed, 18 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-> index bad64d6a5d36..666d4e9804a8 100644
-> --- a/arch/powerpc/include/asm/processor.h
-> +++ b/arch/powerpc/include/asm/processor.h
-> @@ -264,6 +264,7 @@ struct thread_struct {
->  	unsigned long   mmcr3;
->  	unsigned long   sier2;
->  	unsigned long   sier3;
-> +	unsigned long	hashkeyr;
-  
-hashkeyr is part of the thread state, so we should save it in core dumps.
+On Thu, Mar 23, 2023 at 10:15:33AM +0000, Catalin Marinas wrote:
+> On Thu, Mar 23, 2023 at 11:21:44AM +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > 
+> > It is not a good idea to change fundamental parameters of core memory
+> > management. Having predefined ranges suggests that the values within
+> > those ranges are sensible, but one has to *really* understand
+> > implications of changing MAX_ORDER before actually amending it and
+> > ranges don't help here.
+> > 
+> > Drop ranges in definition of ARCH_FORCE_MAX_ORDER
+> > 
+> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > ---
+> >  arch/arm64/Kconfig | 2 --
+> >  1 file changed, 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > index e60baf7859d1..bab6483e4317 100644
+> > --- a/arch/arm64/Kconfig
+> > +++ b/arch/arm64/Kconfig
+> > @@ -1489,9 +1489,7 @@ config XEN
+> >  config ARCH_FORCE_MAX_ORDER
+> >  	int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+> >  	default "13" if ARM64_64K_PAGES
+> > -	range 11 13 if ARM64_16K_PAGES
+> >  	default "11" if ARM64_16K_PAGES
+> > -	range 10 15 if ARM64_4K_PAGES
+> >  	default "10"
+> 
+> I don't mind rewriting the help text as in the subsequent patch but I'd
+> keep the ranges as a safety measure. It's less wasted time explaining to
+> people why some random max order doesn't work. Alternatively, we can
+> drop the ranges but make this option configurable only if EXPERT.
 
-The DEXCR also influences the threads behaviour, at least by
-enabling/disabling hashst/chk, so I think we should also include it in
-core dumps.
+I like the EXPERT alternative more. I'll add it in v2.
+ 
+> -- 
+> Catalin
 
-Adding regs to the core dump is done by adding eg. a new NT_PPC_HASHKEY
-entry in include/uapi/linux/elf.h and wiring it up in ptrace.
-
-But those are a non-renewable resource, so if we're going to add
-HASHKEYR and DEXCR it would be better to group them as a single note. I
-think given that HASHKEYR doesn't exist without the DEXCR, grouping them
-is OK. Could be called NT_PPC_DEXCF (F for facility) ?
-
-See NT_PPC_PKEY for an example.
-
-I know HASHKEYR is security sensitive, but I think the existing ptrace
-checks should be sufficient. A ptracer has more or less full control of
-the tracee anyway.
-
-To support checkpoint/restore we'd need to support setting NPHIE in the
-DEXCR via ptrace. I think for starters we can just fail the ->set() if
-the DEXCR doesn't match the current SPR value.
-
-cheers
+-- 
+Sincerely yours,
+Mike.
