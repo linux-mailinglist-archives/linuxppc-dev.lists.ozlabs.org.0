@@ -2,95 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08BE6C6D13
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F9F6C6D93
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:31:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9Nw4DTwz3f7T
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:13:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oKkYeaYF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9pM1xdTz3f6n
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:31:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oKkYeaYF;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.53; helo=mail-oa1-f53.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9Mx2xJwz3cjM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:12:13 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NF80lH022777;
-	Thu, 23 Mar 2023 16:12:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=oSJEVLwEKqQwTZPvAIjerxVBtlI2bT9tUq/P1hkllzw=;
- b=oKkYeaYFpdQzukV79DS0LyuS2Vz3Oa1Z+CXoVABqn6mS+ZYa/O+wwUxLoiySZ+SwLpEc
- stZoBW0xdiQ8LMUXUwB3t6jY3gPGxYdeeDo+capF5mbLXlUXr83WclwelOvr0yFzmfww
- INhNaLIUp86bPBD5YzFTSjv6UD3tnxcIkxEQRkCtLDcBmkE/Itfe59n/n+OtdW3BEE/f
- 8Q48Wyl6CM1ADUUSk4x7nbAZI+ayc+cB6cN62Rxwt3qqHsqqTHpL2QIFh5wlbEdriPex
- TzNMvKcjR3Fx9yFbNh3FE0Cn41CWtXDw1j/SM6REUr37A1WTn5zub2k5HNkZTcIZa0cB 5w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77tm84-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:12:02 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NEVKUs036320;
-	Thu, 23 Mar 2023 16:12:02 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77tm7k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:12:02 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32ND8nVD012813;
-	Thu, 23 Mar 2023 16:12:01 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x76tds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:12:00 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NGBxhp53674396
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 16:11:59 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 37C4658062;
-	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1695D5805D;
-	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman
- <mpe@ellerman.id.au>,
-        Nicholas
-	Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 5/8] powerpc/rtas: rename va_rtas_call_unlocked() to
- va_rtas_call()
-In-Reply-To: <84edcbaacd87e84997cd77664048799a3f93d169.camel@linux.ibm.com>
-References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
- <20230220-rtas-queue-for-6-4-v1-5-010e4416f13f@linux.ibm.com>
- <84edcbaacd87e84997cd77664048799a3f93d169.camel@linux.ibm.com>
-Date: Thu, 23 Mar 2023 11:11:58 -0500
-Message-ID: <87h6ub78hd.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9nl5y4jz3cj9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:31:05 +1100 (AEDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-17aeb49429eso22940393fac.6
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 09:31:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679589063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j7GNIdZ5wgfU6KCXGbmsavLHJtcjfO2exto0gDOFK7Q=;
+        b=qoyy/1SRIb6/qZSkoxYffFtl4AzWUpGU3FyVrC2dQHXqgWAX9p04cScyY2oafcb9m9
+         lA4zqoEiwvEY5nETVb1IAw8NJyVvTC2YNjMXWj0YTVEGb0iwsuESyYAaP1u93TkeqhO6
+         s8bgt/dzi6N1KulC4s+BUH03sYt40om5ogPRJ/BHZ4Zugm4Z0t1bxzTDfrfzoDfD9iS3
+         O4+Ung2UdXowCKVQ2i4PwqbvZPM7GJoeXF63o4wyh/4hrGL6WCA5Izvgd4eObpH8lIsL
+         XzE2VQcT/9pO8fB6guqQeyUarM+pD0EkiiczsNS0zTz5vVMhCMFxk1PEMacYs7RS6Hx3
+         g/Tw==
+X-Gm-Message-State: AAQBX9cZa7GnZnQ5MS+M7AHGaqQwrpPEueoJl1Ca+IqCCRFVyT6iKO2T
+	ToZNXQjWyeVof6H48r4uQWVGcnt8bGASU131
+X-Google-Smtp-Source: AKy350YWb9Qp6ZZgxTkl2VY1EY9kWrGHeQjgddYEM86sdlABTE3vtQ8QAq4dDy/bD56q9sNyRonzag==
+X-Received: by 2002:a05:6870:d207:b0:177:9b62:6b7e with SMTP id g7-20020a056870d20700b001779b626b7emr2887472oac.24.1679589062719;
+        Thu, 23 Mar 2023 09:31:02 -0700 (PDT)
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com. [209.85.160.48])
+        by smtp.gmail.com with ESMTPSA id z14-20020a54458e000000b0037b6f5d6309sm646725oib.2.2023.03.23.09.31.02
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Mar 2023 09:31:02 -0700 (PDT)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-17ac5ee3f9cso23200607fac.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 09:31:02 -0700 (PDT)
+X-Received: by 2002:a05:6902:728:b0:a09:314f:a3ef with SMTP id
+ l8-20020a056902072800b00a09314fa3efmr2593946ybt.12.1679588687557; Thu, 23 Mar
+ 2023 09:24:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XuqutOKwDFKnOpofaluIEvXYKAgzoI7r
-X-Proofpoint-ORIG-GUID: kuK9mClv2bRC-EwoPnt69zynvp22elSu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-22_21,2023-03-23_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 suspectscore=0 mlxlogscore=859
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230118
+References: <20230323092156.2545741-1-rppt@kernel.org> <20230323092156.2545741-7-rppt@kernel.org>
+In-Reply-To: <20230323092156.2545741-7-rppt@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 23 Mar 2023 17:24:35 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWSE1OzYQfNx=cbP+yKZLkgv=nUS-Ddqk2ORv9qdWFahw@mail.gmail.com>
+Message-ID: <CAMuHMdWSE1OzYQfNx=cbP+yKZLkgv=nUS-Ddqk2ORv9qdWFahw@mail.gmail.com>
+Subject: Re: [PATCH 06/14] m68k: reword ARCH_FORCE_MAX_ORDER prompt and help text
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,30 +67,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-
-> On Mon, 2023-03-06 at 15:33 -0600, Nathan Lynch via B4 Relay wrote:
->> From: Nathan Lynch <nathanl@linux.ibm.com>
->> 
->> The function name va_rtas_call_unlocked() is confusing: it may be
->> called with or without rtas_lock held. Rename it to va_rtas_call().
->> 
->> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+On Thu, Mar 23, 2023 at 10:23=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
+ote:
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 >
-> Not a huge fan of the name, the va_ suggests that the only difference
-> between this function and rtas_call() is the varargs handling. Perhaps
-> something like __rtas_call()?
+> The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
+> describe this configuration option.
+>
+> Update both to actually describe what this option does.
+>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-I would be more inclined to agree if va_rtas_call() were a public API,
-like rtas_call().
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-But it's not, so the convention you're appealing to shouldn't inform the
-expectations of external users of the rtas_* APIs, at least.
+Gr{oetje,eeting}s,
 
-__rtas_call() conveys strictly less information than va_rtas_call()
-IMO. Most functions in the kernel that take a va_list have a "v" worked
-into their name somehow.
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
