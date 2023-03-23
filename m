@@ -1,100 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811CA6C729D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 22:52:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94FE6C744B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 00:58:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjJx42vXRz3f8X
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 08:52:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjMjm13nbz3fL0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 10:58:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjGFBeDU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BeZDBk10;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nnmlinux@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjGFBeDU;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BeZDBk10;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjJw70GSjz3cdX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 08:52:06 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NLW3bM025477;
-	Thu, 23 Mar 2023 21:51:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=PjFeBO5a8NgjVi0hamlYgvtmMCtvdU0G5ONnEB5Vl0U=;
- b=YjGFBeDUfXsX7LL0q0YqVtSQ2Hr9uCKwmD8ci7W4AkuutjnaBCDp9c8jNXcw5/r5zqLG
- 7JQ3vqrZdylbazgYfytWa8sDZXtdmLrvQcVK6HMWWw2qk3rAAoUp3vKLrnkXDbQD0D4p
- 2EduoQ0eq+YDfD02F7KCFncO6Jg7MpOXyNgGyIGguJ5GQZMAW+PAbH+MMxfwdRqR9vCW
- ftKOyvzha1H1gIh6q0LhpWPLLY347BTit66isTOu0hICVPmXZ8xVa9YhoQSXFDKsBKRo
- nY6ItIKdg95xjM1OI1/Mepx00ELx2009LwhF4QQGJoUUDL/2CECBkmSwxTVsqPY9jfl3 Lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgxs1rfrd-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phwtz22Hpz2xZp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 17:49:46 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N6DOkN019335;
+	Thu, 23 Mar 2023 06:49:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=0a9LAvzonueI0MupVIGSyowgzowsVlewk6znxeKrZZE=;
+ b=BeZDBk10+BuHC8YGylSIAbiYP6SZSlhOXDTE4eBWIn3rfZfmvQoIcGtOYxYm/5BlJO0Y
+ MssWUgW1KScP5Q7gsHRMlzaX+VAQQUqHM5Ybhan+EJgtSoxWZ2M+s6jhHnedzYoz1dA2
+ Yq8ESOc8tVEgCtEOvYgi3yJZysdeKWGWBbWuIRDvMwDsreYe24evXx/pnAcXOVRXNT27
+ YVKWbwgkOne3gNSFisGLoeID5yv6Tsn/CMSsy/a4F+4Jooe2una/B3x/oC7P5kjveuLY
+ v2iNzNP43M8NyJURFxnWY4pcLfRn3vGnQ81z4RgS6djyaufT1VbeOA7hllsurZoIQnPq Eg== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgha88n5a-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 21:51:43 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NLoCeu016695;
-	Thu, 23 Mar 2023 21:51:42 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgxs1rfqp-1
+	Thu, 23 Mar 2023 06:49:44 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MGZCgE017149;
+	Thu, 23 Mar 2023 06:49:41 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3pd4x6ex16-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 21:51:42 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32NLL6tW014154;
-	Thu, 23 Mar 2023 21:51:40 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3pgxksr0k0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 21:51:40 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NLpbTo22807262
+	Thu, 23 Mar 2023 06:49:41 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32N6nd6r34472472
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 21:51:37 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9D9920043;
-	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 397BF2004D;
-	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
-Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 064DE600A5;
-	Fri, 24 Mar 2023 08:51:32 +1100 (AEDT)
-Message-ID: <ee39474effb15c0a82e8ae115caf77fe8a1d1d33.camel@linux.ibm.com>
-Subject: Re: perf tools power9 JSON files build breakage on ubuntu 18.04
- cross build
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo
- <acme@kernel.org>
-Date: Fri, 24 Mar 2023 08:51:31 +1100
-In-Reply-To: <CAP-5=fX-0giZxATOVXO5PmCD6yfhoGMb4_vMcWAQLnSq=+DMhQ@mail.gmail.com>
-References: <ZBxP77deq7ikTxwG@kernel.org>
-	 <CAP-5=fX-0giZxATOVXO5PmCD6yfhoGMb4_vMcWAQLnSq=+DMhQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+	Thu, 23 Mar 2023 06:49:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D9AF20040;
+	Thu, 23 Mar 2023 06:49:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54A7C20043;
+	Thu, 23 Mar 2023 06:49:38 +0000 (GMT)
+Received: from li-2f07f74c-278c-11b2-a85c-b11db323798e.ibm.com (unknown [9.43.46.250])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Mar 2023 06:49:38 +0000 (GMT)
+Date: Thu, 23 Mar 2023 12:19:09 +0530
+From: Narayana Murty <nnmlinux@linux.vnet.ibm.com>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Re: [PATCH v2 0/4] Reenable VFIO support on POWER systems
+Message-ID: <ZBv2ZQyF36dJueYY@li-2f07f74c-278c-11b2-a85c-b11db323798e.ibm.com>
+References: <8398361.16996856.1678123793664.JavaMail.zimbra@raptorengineeringinc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8398361.16996856.1678123793664.JavaMail.zimbra@raptorengineeringinc.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GV87z2IIGbFcpkx1J0ZXZv9IFIJZyW4p
-X-Proofpoint-GUID: DW58xbobw5jycRQXmITClSHj_mYuGpa6
+X-Proofpoint-ORIG-GUID: H0GqXic8qRkRTMfeGsrahGrikhmhkH-0
+X-Proofpoint-GUID: H0GqXic8qRkRTMfeGsrahGrikhmhkH-0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-23_13,2023-03-23_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 clxscore=1011 malwarescore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303230156
+ definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1011 suspectscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 spamscore=0 mlxlogscore=788 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303230050
+X-Mailman-Approved-At: Fri, 24 Mar 2023 10:57:34 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,57 +89,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm <kvm@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2023-03-23 at 08:50 -0700, Ian Rogers wrote:
-> On Thu, Mar 23, 2023 at 6:11=E2=80=AFAM Arnaldo Carvalho de Melo
-> <acme@kernel.org> wrote:
-> >=20
-> > Exception processing pmu-events/arch/powerpc/power9/other.json
-> > Traceback (most recent call last):
-> > =C2=A0 File "pmu-events/jevents.py", line 997, in <module>
-> > =C2=A0=C2=A0=C2=A0 main()
-> > =C2=A0 File "pmu-events/jevents.py", line 979, in main
-> > =C2=A0=C2=A0=C2=A0 ftw(arch_path, [], preprocess_one_file)
-> > =C2=A0 File "pmu-events/jevents.py", line 935, in ftw
-> > =C2=A0=C2=A0=C2=A0 ftw(item.path, parents + [item.name], action)
-> > =C2=A0 File "pmu-events/jevents.py", line 933, in ftw
-> > =C2=A0=C2=A0=C2=A0 action(parents, item)
-> > =C2=A0 File "pmu-events/jevents.py", line 514, in preprocess_one_file
-> > =C2=A0=C2=A0=C2=A0 for event in read_json_events(item.path, topic):
-> > =C2=A0 File "pmu-events/jevents.py", line 388, in read_json_events
-> > =C2=A0=C2=A0=C2=A0 events =3D json.load(open(path), object_hook=3DJsonE=
-vent)
-> > =C2=A0 File "/usr/lib/python3.6/json/__init__.py", line 296, in load
-> > =C2=A0=C2=A0=C2=A0 return loads(fp.read(),
-> > =C2=A0 File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
-> > =C2=A0=C2=A0=C2=A0 return codecs.ascii_decode(input, self.errors)[0]
-> > UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in
-> > position 55090: ordinal not in range(128)
-> > =C2=A0 CC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /tmp/build/perf/tests/expr.o
-> > pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-
-> > events/pmu-events.c' failed
-> > make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
-> > make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-
-> > events.c'
-> > Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-
-> > events/pmu-events-in.o' failed
-> > make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
-> > make[2]: *** Waiting for unfinished jobs....
-> >=20
-> >=20
-> > Now jevents is an opt-out feature so I'm noticing these problems.
-> >=20
-> > A similar fix for s390 was accepted today:
->=20
-> The JEVENTS_ARCH=3Dall make option builds the s390 files even on x86.
-> I'm confused as to why that's been working before these fixes.
+On Mon, Mar 06, 2023 at 11:29:53AM -0600, Timothy Pearson wrote:
+> This patch series reenables VFIO support on POWER systems.  It
+> is based on Alexey Kardashevskiys's patch series, rebased and
+> successfully tested under QEMU with a Marvell PCIe SATA controller
+> on a POWER9 Blackbird host.
+> 
+> Alexey Kardashevskiy (3):
+>   powerpc/iommu: Add "borrowing" iommu_table_group_ops
+>   powerpc/pci_64: Init pcibios subsys a bit later
+>   powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
+>     domains
+> 
+> Timothy Pearson (1):
+>   Add myself to MAINTAINERS for Power VFIO support
+> 
+>  MAINTAINERS                               |   5 +
+>  arch/powerpc/include/asm/iommu.h          |   6 +-
+>  arch/powerpc/include/asm/pci-bridge.h     |   7 +
+>  arch/powerpc/kernel/iommu.c               | 246 +++++++++++++++++++++-
+>  arch/powerpc/kernel/pci_64.c              |   2 +-
+>  arch/powerpc/platforms/powernv/pci-ioda.c |  36 +++-
+>  arch/powerpc/platforms/pseries/iommu.c    |  27 +++
+>  arch/powerpc/platforms/pseries/pseries.h  |   4 +
+>  arch/powerpc/platforms/pseries/setup.c    |   3 +
+>  drivers/vfio/vfio_iommu_spapr_tce.c       |  96 ++-------
+>  10 files changed, 338 insertions(+), 94 deletions(-)
+> 
+> -- 
+> 2.30.2
+The Alexey Kardashevskiy (3) patchs  series tested on powerNV denali power9 system with 
+NetXtreme BCM5719 Gigabit Ethernet PCIe  card.The vfio passthrough 
+is working fine 
 
-This is the non-breaking space in the file (UTF8 C2 A0). Telling Python
-to decode with UTF8 would work (note it's breaking with the 'ascii'
-codec). Setting the environment variable LC_CTYPE=3D"C.UTF-8" sets the
-default, or the script can specify explicitly.
-
-But I also doubt the NBS was intentional in the first place.
+Tested-by : Narayana Murty <nnmlinux@linux.vnet.ibm.com>
