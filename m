@@ -1,72 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBE46C7291
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 22:49:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811CA6C729D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 22:52:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjJry0tC7z3fRf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 08:49:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjJx42vXRz3f8X
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 08:52:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cqeHvhPD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjGFBeDU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=lstoakes@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cqeHvhPD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjGFBeDU;
 	dkim-atps=neutral
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjJr30Rg2z3ccg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 08:48:32 +1100 (AEDT)
-Received: by mail-wm1-x32b.google.com with SMTP id p34so64210wms.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 14:48:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679608110;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5UFnlQ0HXGyesKlAwwKVRU7O4P5Pf230XDi0wR0aLbw=;
-        b=cqeHvhPDJmN1I/ln71Ad/bPY2Zr426QHAKplpmzF2quRSp66nFo6hUhutBMUcVJLaw
-         Gzlp/LnKY41WK7KsHW+gFqvB6aTa7upfE84MHE2LJ7QW0NODSaKDEy78xhMU+jZLrKk1
-         inOnlDM9/8sVf2gPBFCVY1Tx/zwIfkQBw3BDfg6d8HB7PsqtAaGkHK+ukTgWnc+VSK0D
-         K1A3TOxT78mqjFSa8XxUcmu5PO4fb46upoEogZ02LnlAK1agEql2M5yr4rYWd1KX+/qC
-         fdZuBAOkU+tz3tR6iXRt3LhnyhJVrAsJl5fg6myv+1ZWBzfg8id7I6QDmbH64rl6XL7H
-         glQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679608110;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5UFnlQ0HXGyesKlAwwKVRU7O4P5Pf230XDi0wR0aLbw=;
-        b=azmsO4F1pGlAzuh2eGHmOgeDwZX9Xpl3lno2WlxiptyY618wyoVSwJdvppF8MdOxM0
-         8pN5xI7i/KqcHFF0G8zXtE+NF7mTbomgh8f5gPQHuP+oNTkHuK3j5O3GHp298AFY+MXb
-         TMVvKY3WoXSd6nGhL7LMbShktnSSCMTyFqlRzlh7LMM+hvMjqfjjNfjAmpccS6ENVy55
-         gAocTLR492pnX/JL8jNqhR0fobrO6W4D/yE/3chp6n8lcC3354iku0tSyj4KWvYyeYKP
-         yMnXUuXRz7YB9lWyRoUl4i+e9YFSvyc2FBJ5dv6XlW3uWXBCbIphqdOJ3c709mr6rpzV
-         gAYA==
-X-Gm-Message-State: AO0yUKWscN1WWjKbZ6zYyUAywZolt4+mBbFW/D3HrTPvCeRXUNvkoFP9
-	q7HemHOTV4UPAvpUJrJ/QkQ=
-X-Google-Smtp-Source: AK7set/xYqu9CrMptZGCvAXMd+l1DRA4YKriDiX3qGR0Fh0x7aQU7d1XCjUlcakR6pnWbGx6COQYQQ==
-X-Received: by 2002:a7b:ce8a:0:b0:3ea:d620:570a with SMTP id q10-20020a7bce8a000000b003ead620570amr738439wmj.38.1679608109671;
-        Thu, 23 Mar 2023 14:48:29 -0700 (PDT)
-Received: from localhost (host86-156-84-164.range86-156.btcentralplus.com. [86.156.84.164])
-        by smtp.gmail.com with ESMTPSA id 23-20020a05600c229700b003ee53e3e98asm2974110wmf.47.2023.03.23.14.48.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Mar 2023 14:48:28 -0700 (PDT)
-Date: Thu, 23 Mar 2023 21:48:28 +0000
-From: Lorenzo Stoakes <lstoakes@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 7c4a254d78f89546d0e74a40617ef24c6151c8d1
-Message-ID: <8c6b19b7-5059-472d-a56d-eb4f49f1c170@lucifer.local>
-References: <641cc5da.LRhzzaC4RvFK5EH/%lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjJw70GSjz3cdX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 08:52:06 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NLW3bM025477;
+	Thu, 23 Mar 2023 21:51:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=PjFeBO5a8NgjVi0hamlYgvtmMCtvdU0G5ONnEB5Vl0U=;
+ b=YjGFBeDUfXsX7LL0q0YqVtSQ2Hr9uCKwmD8ci7W4AkuutjnaBCDp9c8jNXcw5/r5zqLG
+ 7JQ3vqrZdylbazgYfytWa8sDZXtdmLrvQcVK6HMWWw2qk3rAAoUp3vKLrnkXDbQD0D4p
+ 2EduoQ0eq+YDfD02F7KCFncO6Jg7MpOXyNgGyIGguJ5GQZMAW+PAbH+MMxfwdRqR9vCW
+ ftKOyvzha1H1gIh6q0LhpWPLLY347BTit66isTOu0hICVPmXZ8xVa9YhoQSXFDKsBKRo
+ nY6ItIKdg95xjM1OI1/Mepx00ELx2009LwhF4QQGJoUUDL/2CECBkmSwxTVsqPY9jfl3 Lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgxs1rfrd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 21:51:43 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NLoCeu016695;
+	Thu, 23 Mar 2023 21:51:42 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgxs1rfqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 21:51:42 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32NLL6tW014154;
+	Thu, 23 Mar 2023 21:51:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3pgxksr0k0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 21:51:40 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NLpbTo22807262
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Mar 2023 21:51:37 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9D9920043;
+	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 397BF2004D;
+	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Mar 2023 21:51:37 +0000 (GMT)
+Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 064DE600A5;
+	Fri, 24 Mar 2023 08:51:32 +1100 (AEDT)
+Message-ID: <ee39474effb15c0a82e8ae115caf77fe8a1d1d33.camel@linux.ibm.com>
+Subject: Re: perf tools power9 JSON files build breakage on ubuntu 18.04
+ cross build
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo
+ <acme@kernel.org>
+Date: Fri, 24 Mar 2023 08:51:31 +1100
+In-Reply-To: <CAP-5=fX-0giZxATOVXO5PmCD6yfhoGMb4_vMcWAQLnSq=+DMhQ@mail.gmail.com>
+References: <ZBxP77deq7ikTxwG@kernel.org>
+	 <CAP-5=fX-0giZxATOVXO5PmCD6yfhoGMb4_vMcWAQLnSq=+DMhQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <641cc5da.LRhzzaC4RvFK5EH/%lkp@intel.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GV87z2IIGbFcpkx1J0ZXZv9IFIJZyW4p
+X-Proofpoint-GUID: DW58xbobw5jycRQXmITClSHj_mYuGpa6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-23_13,2023-03-23_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 clxscore=1011 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2303230156
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,177 +106,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, sound-open-firmware@alsa-project.org
+Cc: Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 24, 2023 at 05:34:18AM +0800, kernel test robot wrote:
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> branch HEAD: 7c4a254d78f89546d0e74a40617ef24c6151c8d1  Add linux-next specific files for 20230323
->
-> Error/Warning reports:
->
-> https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
-> https://lore.kernel.org/oe-kbuild-all/202303231302.iY6qIfXA-lkp@intel.com
-> https://lore.kernel.org/oe-kbuild-all/202303232154.aXOXAWhg-lkp@intel.com
->
-> Error/Warning: (recently discovered and may have been fixed)
->
-> drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-> drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-> gpio.c:(.init.text+0xec): undefined reference to `of_mm_gpiochip_add_data'
-> include/linux/mmzone.h:1749:2: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE
->
-> Unverified Error/Warning (likely false positive, please contact us if interested):
->
-> drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
-> drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
-> mm/mmap.c:962 vma_merge() error: uninitialized symbol 'next'.
+On Thu, 2023-03-23 at 08:50 -0700, Ian Rogers wrote:
+> On Thu, Mar 23, 2023 at 6:11=E2=80=AFAM Arnaldo Carvalho de Melo
+> <acme@kernel.org> wrote:
+> >=20
+> > Exception processing pmu-events/arch/powerpc/power9/other.json
+> > Traceback (most recent call last):
+> > =C2=A0 File "pmu-events/jevents.py", line 997, in <module>
+> > =C2=A0=C2=A0=C2=A0 main()
+> > =C2=A0 File "pmu-events/jevents.py", line 979, in main
+> > =C2=A0=C2=A0=C2=A0 ftw(arch_path, [], preprocess_one_file)
+> > =C2=A0 File "pmu-events/jevents.py", line 935, in ftw
+> > =C2=A0=C2=A0=C2=A0 ftw(item.path, parents + [item.name], action)
+> > =C2=A0 File "pmu-events/jevents.py", line 933, in ftw
+> > =C2=A0=C2=A0=C2=A0 action(parents, item)
+> > =C2=A0 File "pmu-events/jevents.py", line 514, in preprocess_one_file
+> > =C2=A0=C2=A0=C2=A0 for event in read_json_events(item.path, topic):
+> > =C2=A0 File "pmu-events/jevents.py", line 388, in read_json_events
+> > =C2=A0=C2=A0=C2=A0 events =3D json.load(open(path), object_hook=3DJsonE=
+vent)
+> > =C2=A0 File "/usr/lib/python3.6/json/__init__.py", line 296, in load
+> > =C2=A0=C2=A0=C2=A0 return loads(fp.read(),
+> > =C2=A0 File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+> > =C2=A0=C2=A0=C2=A0 return codecs.ascii_decode(input, self.errors)[0]
+> > UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in
+> > position 55090: ordinal not in range(128)
+> > =C2=A0 CC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /tmp/build/perf/tests/expr.o
+> > pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-
+> > events/pmu-events.c' failed
+> > make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
+> > make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-
+> > events.c'
+> > Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-
+> > events/pmu-events-in.o' failed
+> > make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
+> > make[2]: *** Waiting for unfinished jobs....
+> >=20
+> >=20
+> > Now jevents is an opt-out feature so I'm noticing these problems.
+> >=20
+> > A similar fix for s390 was accepted today:
+>=20
+> The JEVENTS_ARCH=3Dall make option builds the s390 files even on x86.
+> I'm confused as to why that's been working before these fixes.
 
-I hate to add noise, but just for completeness and clarity, this is an
-issue that was resolved in the patchset already whose fixes will be ported
-to -next on the next go around.
+This is the non-breaking space in the file (UTF8 C2 A0). Telling Python
+to decode with UTF8 would work (note it's breaking with the 'ascii'
+codec). Setting the environment variable LC_CTYPE=3D"C.UTF-8" sets the
+default, or the script can specify explicitly.
 
-https://lore.kernel.org/all/cover.1679516210.git.lstoakes@gmail.com has the
-latest version (v5), fix came in v3.
-
-> sound/soc/sof/ipc4-pcm.c:391 sof_ipc4_pcm_dai_link_fixup_rate() error: uninitialized symbol 'be_rate'.
-> sound/soc/sof/ipc4-topology.c:1132 ipc4_copier_set_capture_fmt() error: uninitialized symbol 'sample_valid_bits'.
->
-> Error/Warning ids grouped by kconfigs:
->
-> gcc_recent_errors
-> |-- alpha-allyesconfig
-> |   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-> |-- arm-allmodconfig
-> |   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-> |   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-> |-- i386-randconfig-m021
-> |   `-- mm-mmap.c-vma_merge()-error:uninitialized-symbol-next-.
-> |-- ia64-allmodconfig
-> |   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-> |-- loongarch-randconfig-r006-20230322
-> |   `-- include-linux-mmzone.h:error:error-Allocator-MAX_ORDER-exceeds-SECTION_SIZE
-> |-- m68k-randconfig-s041-20230323
-> |   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-const-noderef-__iomem-got-void-noderef-__iomem-addr
-> |   `-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-noderef-__iomem-got-void-noderef-__iomem-addr
-> |-- microblaze-buildonly-randconfig-r003-20230323
-> |   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-> |   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-> |-- powerpc-allmodconfig
-> |   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-> |   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-> |-- powerpc-randconfig-s041-20230322
-> |   `-- gpio.c:(.init.text):undefined-reference-to-of_mm_gpiochip_add_data
-> |-- s390-randconfig-m031-20230321
-> |   |-- sound-soc-sof-ipc4-pcm.c-sof_ipc4_pcm_dai_link_fixup_rate()-error:uninitialized-symbol-be_rate-.
-> |   `-- sound-soc-sof-ipc4-topology.c-ipc4_copier_set_capture_fmt()-error:uninitialized-symbol-sample_valid_bits-.
-> `-- sparc-allyesconfig
->     `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
->
-> elapsed time: 1022m
->
-> configs tested: 95
-> configs skipped: 4
->
-> tested configs:
-> alpha                            allyesconfig   gcc
-> alpha                               defconfig   gcc
-> alpha                randconfig-r026-20230322   gcc
-> arc                              allyesconfig   gcc
-> arc                                 defconfig   gcc
-> arc                  randconfig-r033-20230322   gcc
-> arc                  randconfig-r043-20230322   gcc
-> arm                              allmodconfig   gcc
-> arm                              allyesconfig   gcc
-> arm                                 defconfig   gcc
-> arm                  randconfig-r023-20230322   clang
-> arm                  randconfig-r046-20230322   clang
-> arm                         vf610m4_defconfig   gcc
-> arm64                            allyesconfig   gcc
-> arm64                               defconfig   gcc
-> csky                                defconfig   gcc
-> hexagon              randconfig-r041-20230322   clang
-> hexagon              randconfig-r045-20230322   clang
-> i386                             allyesconfig   gcc
-> i386                              debian-10.3   gcc
-> i386                                defconfig   gcc
-> i386                          randconfig-a001   gcc
-> i386                          randconfig-a002   clang
-> i386                          randconfig-a003   gcc
-> i386                          randconfig-a004   clang
-> i386                          randconfig-a005   gcc
-> i386                          randconfig-a006   clang
-> i386                          randconfig-a011   clang
-> i386                          randconfig-a012   gcc
-> i386                          randconfig-a013   clang
-> i386                          randconfig-a014   gcc
-> i386                          randconfig-a015   clang
-> i386                          randconfig-a016   gcc
-> ia64                             allmodconfig   gcc
-> ia64                                defconfig   gcc
-> ia64                 randconfig-r015-20230322   gcc
-> loongarch                        allmodconfig   gcc
-> loongarch                         allnoconfig   gcc
-> loongarch                           defconfig   gcc
-> loongarch            randconfig-r032-20230322   gcc
-> m68k                             allmodconfig   gcc
-> m68k                                defconfig   gcc
-> m68k                       m5208evb_defconfig   gcc
-> m68k                 randconfig-r012-20230322   gcc
-> mips                             allmodconfig   gcc
-> mips                             allyesconfig   gcc
-> mips                 randconfig-r021-20230322   clang
-> nios2                               defconfig   gcc
-> nios2                randconfig-r016-20230322   gcc
-> openrisc             randconfig-r024-20230322   gcc
-> parisc                              defconfig   gcc
-> parisc               randconfig-r031-20230322   gcc
-> parisc               randconfig-r034-20230322   gcc
-> parisc64                            defconfig   gcc
-> powerpc                          allmodconfig   gcc
-> powerpc                           allnoconfig   gcc
-> powerpc                     mpc83xx_defconfig   gcc
-> powerpc                      obs600_defconfig   clang
-> riscv                            allmodconfig   gcc
-> riscv                             allnoconfig   gcc
-> riscv                               defconfig   gcc
-> riscv                randconfig-r022-20230322   gcc
-> riscv                randconfig-r042-20230322   gcc
-> riscv                          rv32_defconfig   gcc
-> s390                             allmodconfig   gcc
-> s390                             allyesconfig   gcc
-> s390                                defconfig   gcc
-> s390                 randconfig-r014-20230322   gcc
-> s390                 randconfig-r035-20230322   clang
-> s390                 randconfig-r044-20230322   gcc
-> sh                               allmodconfig   gcc
-> sparc                               defconfig   gcc
-> sparc                randconfig-r011-20230322   gcc
-> um                             i386_defconfig   gcc
-> um                           x86_64_defconfig   gcc
-> x86_64                            allnoconfig   gcc
-> x86_64                           allyesconfig   gcc
-> x86_64                              defconfig   gcc
-> x86_64                                  kexec   gcc
-> x86_64                        randconfig-a001   clang
-> x86_64                        randconfig-a002   gcc
-> x86_64                        randconfig-a003   clang
-> x86_64                        randconfig-a004   gcc
-> x86_64                        randconfig-a005   clang
-> x86_64                        randconfig-a006   gcc
-> x86_64                        randconfig-a011   gcc
-> x86_64                        randconfig-a012   clang
-> x86_64                        randconfig-a013   gcc
-> x86_64                        randconfig-a014   clang
-> x86_64                        randconfig-a015   gcc
-> x86_64                        randconfig-a016   clang
-> x86_64                               rhel-8.3   gcc
-> xtensa                  nommu_kc705_defconfig   gcc
-> xtensa               randconfig-r013-20230322   gcc
-> xtensa               randconfig-r025-20230322   gcc
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests
+But I also doubt the NBS was intentional in the first place.
