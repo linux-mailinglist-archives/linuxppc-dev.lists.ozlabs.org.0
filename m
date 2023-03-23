@@ -2,90 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9536C67FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B086C6884
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:37:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj49m5R9sz3f7m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:18:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj4bz0kZvz3f7m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:37:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhGrmVGV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AAAhVbam;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KRQCNT9x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhGrmVGV;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AAAhVbam;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KRQCNT9x;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj48s1GDHz3cJY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:17:16 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NBtMer005459;
-	Thu, 23 Mar 2023 12:17:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=fjtbWGSxvlY/uRmlcmWvGjZmek9sfYVeHGNSd5Tmx1A=;
- b=UhGrmVGVnxskCgeH52Vfeke/HrEfgPabN7upged2+NDk/xQNFyviUEFyaGv0IwxqLty+
- CyyF567omaN/VG0EErOgp8z9Vn7z2qEuzY+CegskrZfMUeoCeIjftAda9VWm4piEmF7l
- UTSDGI6tvaWqyEj6HJrBTPWwXMAoyraYaqeLJdilRvfE5Sizfzf1Ncq4Rem5SpK9gDkZ
- DE+IKP4/reNJduthCW3MYNhJI3FPSt1+O36rPNhg3gRTNXIElkWIU54IkS9AgbuYbZxc
- of8F6a1fMvgIL2pkCdcA5ivhFCmhYC+jOkQ/GXsrfJBJk+x2LHQNHEbcSPjJ3lwcXvRz Jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgkxuv4v1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 12:17:08 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NBVmsP007244;
-	Thu, 23 Mar 2023 12:17:08 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgkxuv4uv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 12:17:08 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32N8e9sp012015;
-	Thu, 23 Mar 2023 12:17:07 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x75sfr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 12:17:07 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NCH5DY15794712
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 12:17:05 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BCFDF58059;
-	Thu, 23 Mar 2023 12:17:05 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 966BA58058;
-	Thu, 23 Mar 2023 12:17:05 +0000 (GMT)
-Received: from localhost (unknown [9.211.90.228])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 12:17:05 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Subject: Re: [PATCH 7/8] powerpc/rtas: warn on unsafe argument to
- rtas_call_unlocked()
-In-Reply-To: <e0f8c82707dce0300fc5a2bc5f0a3ab90a83cee0.camel@linux.ibm.com>
-References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
- <20230220-rtas-queue-for-6-4-v1-7-010e4416f13f@linux.ibm.com>
- <e0f8c82707dce0300fc5a2bc5f0a3ab90a83cee0.camel@linux.ibm.com>
-Date: Thu, 23 Mar 2023 07:17:05 -0500
-Message-ID: <87mt437jcu.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj4Zz2XPPz3chd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:36:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679574982;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
+	b=AAAhVbamgnbXMGpvILnESVBWJfC13tdALhhR/u3fHYlaYPcp238NOYGg4k6HLm/9YIeMZK
+	Zz4BkySToZYE3qLRap7Pa7jgAhTTvy5OxC76fzaF3zF/MLNWVYs2yZ99kIMUSNHyB7sAy9
+	AUdFHzD4RwlrKNqf3eBbofqBMdpfy0s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679574983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
+	b=KRQCNT9xbLcQ2pIjQhnJGzkj9pC4cE/ah59J88gU6Lg+TY4KIbsWs6abamzJS4JDbqX6bI
+	WX4rMLpn7v10n/jSvSOyrN2zn5Gvcoh2iKHkAZkRrsIjmjZOmTnWNn7rHR2ef8ALesVerG
+	PncazaRsW3yYpwdMv4n1OKhkrF/Wz+Y=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-ALXhIx2sP-GNYKIS64wXaQ-1; Thu, 23 Mar 2023 08:36:21 -0400
+X-MC-Unique: ALXhIx2sP-GNYKIS64wXaQ-1
+Received: by mail-wm1-f72.google.com with SMTP id bi27-20020a05600c3d9b00b003e9d0925341so10229468wmb.8
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:36:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679574980;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
+        b=vaKT+jxRTU9pMPMIYIQBY0JgCStUh00XHL1fHxwTauu5bBeiLsQUmWu8SwDDzorI2Q
+         1bztPdh+w1+A1Qgv+GoPku+OT9y0PoN1hxSbUU5Q9vDvcfhtNmMw6TiNuyHFGzByt3jA
+         72yUj9nbVlba+Z35MUllnYQI2nB1YId0XaDsTq7l0ftZufOb3FYbcnEeGILfn1iUZTuS
+         IU3tSFqiY9S8IU+DlqbnpTbF5/NNAICXe4elq/rElvWisnJ4GQntD7DcOeZigGkzY9QN
+         35QUdtCymDSrX5iul0/WlSk5/YBrSMRdV6hJKyxQmWUMyxKPWaYjc27gTnTapTc8kGMw
+         ehDw==
+X-Gm-Message-State: AO0yUKWT6hbZt2n1oFMFa/OQRKbl62Yjv4Umzb2EmVAtwUfnVAr5OBV9
+	U+ga50EghvAbVpautwJfmxSmVMaf6iV/THO+MYh58fO4b5IoKcRfKSJS9o4MKyEZsz8jAGB5LGe
+	BJKU5vfyU4NCTvmNHNftmjA2o0g==
+X-Received: by 2002:a7b:c7c6:0:b0:3ed:c84c:7efe with SMTP id z6-20020a7bc7c6000000b003edc84c7efemr2405807wmk.7.1679574980325;
+        Thu, 23 Mar 2023 05:36:20 -0700 (PDT)
+X-Google-Smtp-Source: AK7set8oDnR+hiI0SXiFClKDLDWGr6LPzKLAvyQijtGW1h8/zF2dqcPY+2ZH3SbZTb15LmBbQxnPpA==
+X-Received: by 2002:a7b:c7c6:0:b0:3ed:c84c:7efe with SMTP id z6-20020a7bc7c6000000b003edc84c7efemr2405798wmk.7.1679574980073;
+        Thu, 23 Mar 2023 05:36:20 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-179-146.web.vodafone.de. [109.43.179.146])
+        by smtp.gmail.com with ESMTPSA id s12-20020a1cf20c000000b003ed1f111fdesm1754301wmc.20.2023.03.23.05.36.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Mar 2023 05:36:19 -0700 (PDT)
+Message-ID: <f03084cc-8ac6-b2cb-b2e8-39bc73843ab7@redhat.com>
+Date: Thu, 23 Mar 2023 13:36:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FXbSmraFhTQRCjn8E6ZiO9znHstvnCtJ
-X-Proofpoint-ORIG-GUID: bFnEAx_FmvGAvG67aNkCaxVifIGbUFmf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
- phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230091
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [kvm-unit-tests v2 06/10] powerpc/sprs: Specify SPRs with data
+ rather than code
+To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
+References: <20230320070339.915172-1-npiggin@gmail.com>
+ <20230320070339.915172-7-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230320070339.915172-7-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,43 +103,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
+On 20/03/2023 08.03, Nicholas Piggin wrote:
+> A significant rework that builds an array of 'struct spr', where each
+> element describes an SPR. This makes various metadata about the SPR
+> like name and access type easier to carry and use.
+> 
+> Hypervisor privileged registers are described despite not being used
+> at the moment for completeness, but also the code might one day be
+> reused for a hypervisor-privileged test.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> 
+> This ended up a little over-engineered perhaps, but there are lots of
+> SPRs, lots of access types, lots of changes between processor and ISA
+> versions, and lots of places they are implemented and used, so lots of
+> room for mistakes. There is not a good system in place to easily
+> see that userspace, supervisor, etc., switches perform all the right
+> SPR context switching so this is a nice test case to have. The sprs test
+> quickly caught a few QEMU TCG SPR bugs which really motivated me to
+> improve the SPR coverage.
+> ---
+>   powerpc/sprs.c | 589 +++++++++++++++++++++++++++++++++----------------
+>   1 file changed, 394 insertions(+), 195 deletions(-)
+> 
+> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
+> index db341a9..dd83dac 100644
+> --- a/powerpc/sprs.c
+> +++ b/powerpc/sprs.c
+> @@ -82,231 +82,407 @@ static void mtspr(unsigned spr, uint64_t val)
+>   	: "lr", "ctr", "xer");
+>   }
+>   
+> -uint64_t before[1024], after[1024];
+> +static uint64_t before[1024], after[1024];
+>   
+> -/* Common SPRs for all PowerPC CPUs */
+> -static void set_sprs_common(uint64_t val)
+> -{
+> -	// mtspr(9, val);	/* CTR */ /* Used by mfspr/mtspr */
+> -	// mtspr(273, val);	/* SPRG1 */  /* Used by our exception handler */
+> -	mtspr(274, val);	/* SPRG2 */
+> -	mtspr(275, val);	/* SPRG3 */
+> -}
+> +#define SPR_PR_READ	0x0001
+> +#define SPR_PR_WRITE	0x0002
+> +#define SPR_OS_READ	0x0010
+> +#define SPR_OS_WRITE	0x0020
+> +#define SPR_HV_READ	0x0100
+> +#define SPR_HV_WRITE	0x0200
+> +
+> +#define RW		0x333
+> +#define RO		0x111
+> +#define WO		0x222
+> +#define OS_RW		0x330
+> +#define OS_RO		0x110
+> +#define OS_WO		0x220
+> +#define HV_RW		0x300
+> +#define HV_RO		0x100
+> +#define HV_WO		0x200
+> +
+> +#define SPR_ASYNC	0x1000	/* May be updated asynchronously */
+> +#define SPR_INT		0x2000	/* May be updated by synchronous interrupt */
+> +#define SPR_HARNESS	0x4000	/* Test harness uses the register */
+> +
+> +struct spr {
+> +	const char	*name;
+> +	uint8_t		width;
+> +	uint16_t	access;
+> +	uint16_t	type;
+> +};
+> +
+> +/* SPRs common denominator back to PowerPC Operating Environment Architecture */
+> +static const struct spr sprs_common[1024] = {
+> +  [1] = {"XER",		64,	RW,		SPR_HARNESS, }, /* Compiler */
+> +  [8] = {"LR", 		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
+> +  [9] = {"CTR",		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
+> + [18] = {"DSISR",	32,	OS_RW,		SPR_INT, },
+> + [19] = {"DAR",		64,	OS_RW,		SPR_INT, },
+> + [26] = {"SRR0",	64,	OS_RW,		SPR_INT, },
+> + [27] = {"SRR1",	64,	OS_RW,		SPR_INT, },
+> +[268] = {"TB",		64,	RO	,	SPR_ASYNC, },
+> +[269] = {"TBU",		32,	RO,		SPR_ASYNC, },
+> +[272] = {"SPRG0",	64,	OS_RW,		SPR_HARNESS, }, /* Int stack */
+> +[273] = {"SPRG1",	64,	OS_RW,		SPR_HARNESS, }, /* Scratch */
+> +[274] = {"SPRG2",	64,	OS_RW, },
+> +[275] = {"SPRG3",	64,	OS_RW, },
+> +[287] = {"PVR",		32,	OS_RO, },
+> +};
 
-> On Mon, 2023-03-06 at 15:33 -0600, Nathan Lynch via B4 Relay wrote:
->> From: Nathan Lynch <nathanl@linux.ibm.com>
->> 
->> Any caller of rtas_call_unlocked() must provide an rtas_args
->> parameter
->> block distinct from the core rtas_args buffer used by the rtas_call()
->> path. It's an unlikely error to make, but the potential consequences
->> are grim, and it's trivial to check.
->> 
->> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
->
-> call_rtas_display_status() seems to do exactly this, or am I missing
-> something?
+Using a size of 1024 for each of these arrays looks weird. Why don't you add 
+a "nr" field to struct spr and specify the register number via that field 
+instead of using the index into the array as register number?
 
-No you're right, the warning would be spurious in that case. May need to
-drop this one, or refactor rtas_call():
+  Thomas
 
-  4456f4524604be2558e5f6a8e0f7cc9ed17c783e
-  Author:     Michael Ellerman <mpe@ellerman.id.au>
-  AuthorDate: Tue Nov 24 22:26:11 2015 +1100
-
-  powerpc/rtas: Use rtas_call_unlocked() in call_rtas_display_status()
-
-  Although call_rtas_display_status() does actually want to use the
-  regular RTAS locking, it doesn't want the extra logic that is in
-  rtas_call(), so currently it open codes the logic.
-
-  Instead we can use rtas_call_unlocked(), after taking the RTAS lock.
-
-aside: does anyone know if the display_status() code is worth keeping?
-It looks like it is used to drive the 16-character wide physical LCD I
-remember seeing on P4-era and older machines. Is it a vestige of
-non-LPAR pseries that should be dropped, or is it perhaps useful for
-chrp or cell?
