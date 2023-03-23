@@ -2,65 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239356C5A2D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 00:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E766C5B4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 01:18:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Phkqx6qnYz3cdG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:16:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PhmCw3P55z3cjR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 11:18:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=k4/hIANB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MGK2HBfs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=k4/hIANB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MGK2HBfs;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phkq01GZ2z3c6v
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 10:15:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hKMA4pE4ZC1WEjwlMS0oahB5WbuLzi761bi+OVXv/X8=; b=k4/hIANBdxC2Z8c++HmkBPk16F
-	hq1n4vi1aFY7d/izKMGpm0/zkTd++0c77IZs+Q5bV257Gjkiy34yMSDd8L7TKq46+CV0zDSHb27H+
-	4KSIRSylcgYZ2OMei78Bb1gC7STjWled8MJkcwhhG29tpOAa6HtPIFWPyA9seeGrRiJr3vWUYPsTp
-	3Vu3FPyPpiLcCMVxhaxuIGSboSf1mmZy7nxDek09nDmg/P6bBJA5M4EMw//9ErW/pvBC1TxeGCDAY
-	4DGmD2DpR96GbtKoxaTV3TYyxFMIuFbNKoIU/LaGvb2xuytoT+Rk3V4s2DX53haN44indyDWk1fXo
-	N1G/mBcw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pf7f5-004hB6-38;
-	Wed, 22 Mar 2023 23:14:32 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9046D30035F;
-	Thu, 23 Mar 2023 00:14:28 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 73D47202F7F60; Thu, 23 Mar 2023 00:14:28 +0100 (CET)
-Date: Thu, 23 Mar 2023 00:14:28 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [PATCH v5 7/7] sched, smp: Trace smp callback causing an IPI
-Message-ID: <20230322231428.GV2017917@hirez.programming.kicks-ass.net>
-References: <20230307143558.294354-1-vschneid@redhat.com>
- <20230307143558.294354-8-vschneid@redhat.com>
- <20230322095329.GS2017917@hirez.programming.kicks-ass.net>
- <xhsmhmt45c703.mognet@vschneid.remote.csb>
- <20230322140434.GC2357380@hirez.programming.kicks-ass.net>
- <xhsmhjzz8d8km.mognet@vschneid.remote.csb>
- <20230322172242.GH2357380@hirez.programming.kicks-ass.net>
- <xhsmhh6ucd4t7.mognet@vschneid.remote.csb>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhmC10Vj9z3bjx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 11:18:04 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N02qvj027789;
+	Thu, 23 Mar 2023 00:17:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=bKkDPxicMN7lqvHtLIxe3rMAXNhbr7akv3ICHyBGfkc=;
+ b=MGK2HBfsuG27i49SP0UTMhBtEvbvSmRuUakXTOM9Xbh5dh5CMHG+ixp6x6H1/BNBu63Y
+ Q08ptJyAZ2dyQ7NhngbR7o2/bIkEZ74Ak/XaVzURRDRq5FkPkGmXb6atmayOjxhzqh0p
+ heMCypk6Wd35d+42Lx7sF8DK6EG4iOdl8hZyiUzE85s34CxExoRWXIx5lkYrhY3ANJ9l
+ A0UojycHrDuFDjkpiDnxCYrfaQab/lgnCvGv5TbZksUB2bzbmPLrIOsJehzrCqueOcRT
+ Zu291n+J644fbekAl7SPGtHptaNw3eqd5JqTjKV34ImFYIEervWYuO5qE2Bf98YrbdqC Hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgbvtg8bq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 00:17:54 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32N0HsLI013377;
+	Thu, 23 Mar 2023 00:17:54 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgbvtg8b4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 00:17:53 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MGQ0OK015074;
+	Thu, 23 Mar 2023 00:17:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3pd4jfejxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 00:17:51 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32N0Hn1C27853366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Mar 2023 00:17:49 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22A1B20049;
+	Thu, 23 Mar 2023 00:17:49 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96B0620040;
+	Thu, 23 Mar 2023 00:17:48 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Mar 2023 00:17:48 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DA5D1602EB;
+	Thu, 23 Mar 2023 11:17:46 +1100 (AEDT)
+Message-ID: <c2dbe0a17af1c2816ac038715ec76ff96be2b633.camel@linux.ibm.com>
+Subject: Re: [PATCH 4/8] powerpc/rtas: fix miswording in rtas_function
+ kerneldoc
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: nathanl@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas
+	Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Thu, 23 Mar 2023 11:17:46 +1100
+In-Reply-To: <20230220-rtas-queue-for-6-4-v1-4-010e4416f13f@linux.ibm.com>
+References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
+	 <20230220-rtas-queue-for-6-4-v1-4-010e4416f13f@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xhsmhh6ucd4t7.mognet@vschneid.remote.csb>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 2fNS7oUArwU-DBmqCXhnSxxwR8j__f3A
+X-Proofpoint-ORIG-GUID: SfLqmFSYWFy4mxT7KdJfPQaDkfwxROnv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_18,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 clxscore=1015 mlxscore=0 adultscore=0
+ suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2303150002 definitions=main-2303220175
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,72 +107,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
- org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 22, 2023 at 06:22:28PM +0000, Valentin Schneider wrote:
-> On 22/03/23 18:22, Peter Zijlstra wrote:
+T24gTW9uLCAyMDIzLTAzLTA2IGF0IDE1OjMzIC0wNjAwLCBOYXRoYW4gTHluY2ggdmlhIEI0IFJl
+bGF5IHdyb3RlOgo+IEZyb206IE5hdGhhbiBMeW5jaCA8bmF0aGFubEBsaW51eC5pYm0uY29tPgo+
+IAo+IFRoZSAnZmlsdGVyJyBtZW1iZXIgaXMgYSBwb2ludGVyLCBub3QgYSBib29sOyBmaXggdGhl
+IHdvcmRpbmcKPiBhY2NvcmRpbmdseS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBOYXRoYW4gTHluY2gg
+PG5hdGhhbmxAbGludXguaWJtLmNvbT4KClJldmlld2VkLWJ5OiBBbmRyZXcgRG9ubmVsbGFuIDxh
+amRAbGludXguaWJtLmNvbT4KCj4gLS0tCj4gwqBhcmNoL3Bvd2VycGMva2VybmVsL3J0YXMuYyB8
+IDIgKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+
+IAo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMva2VybmVsL3J0YXMuYyBiL2FyY2gvcG93ZXJw
+Yy9rZXJuZWwvcnRhcy5jCj4gaW5kZXggYzczYjAxZDcyMmY2Li5jMjljMzhiMWE1NWEgMTAwNjQ0
+Cj4gLS0tIGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9ydGFzLmMKPiArKysgYi9hcmNoL3Bvd2VycGMv
+a2VybmVsL3J0YXMuYwo+IEBAIC02OCw3ICs2OCw3IEBAIHN0cnVjdCBydGFzX2ZpbHRlciB7Cj4g
+wqAgKsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBmdW5jdGlvbnMgYXJlIGJlbGlldmVkIHRvIGhhdmUgbm8KPiB1c2VycyBvbgo+IMKgICrCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcHBjNjRs
+ZSwgYW5kIHdlIHdhbnQgdG8ga2VlcCBpdCB0aGF0Cj4gd2F5LiBJdCBkb2VzCj4gwqAgKsKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBub3QgbWFr
+ZSBzZW5zZSBmb3IgdGhpcyB0byBiZSBzZXQgd2hlbgo+IEBmaWx0ZXIKPiAtICrCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaXMgZmFsc2UuCj4g
+KyAqwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IGlzIE5VTEwuCj4gwqAgKi8KPiDCoHN0cnVjdCBydGFzX2Z1bmN0aW9uIHsKPiDCoMKgwqDCoMKg
+wqDCoMKgczMyIHRva2VuOwo+IAoKLS0gCkFuZHJldyBEb25uZWxsYW4gICAgT3pMYWJzLCBBREwg
+Q2FuYmVycmEKYWpkQGxpbnV4LmlibS5jb20gICBJQk0gQXVzdHJhbGlhIExpbWl0ZWQK
 
-> >>        hackbench-157   [001]    10.894320: ipi_send_cpu:         cpu=3 callsite=check_preempt_curr+0x37 callback=0x0
-> >
-> > Arguably we should be setting callback to scheduler_ipi(), except
-> > ofcourse, that's not an actual function...
-> >
-> > Maybe we can do "extern inline" for the actual users and provide a dummy
-> > function for the symbol when tracing.
-> >
-> 
-> Huh, I wasn't aware that was an option, I'll look into that. I did scribble
-> down a comment next to smp_send_reschedule(), but having a decodable
-> function name would be better!
-
-So clang-15 builds the below (and generates the expected code), but
-gcc-12 vomits nonsense about a non-static inline calling a static inline
-or somesuch bollocks :-/
-
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1991,7 +1991,7 @@ extern char *__get_task_comm(char *to, s
- })
- 
- #ifdef CONFIG_SMP
--static __always_inline void scheduler_ipi(void)
-+extern __always_inline void scheduler_ipi(void)
- {
- 	/*
- 	 * Fold TIF_NEED_RESCHED into the preempt_count; anybody setting
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -130,9 +130,9 @@ extern void arch_smp_send_reschedule(int
-  * scheduler_ipi() is inline so can't be passed as callback reason, but the
-  * callsite IP should be sufficient for root-causing IPIs sent from here.
-  */
--#define smp_send_reschedule(cpu) ({		  \
--	trace_ipi_send_cpu(cpu, _RET_IP_, NULL);  \
--	arch_smp_send_reschedule(cpu);		  \
-+#define smp_send_reschedule(cpu) ({				\
-+	trace_ipi_send_cpu(cpu, _RET_IP_, &scheduler_ipi);	\
-+	arch_smp_send_reschedule(cpu);				\
- })
- 
- /*
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3790,6 +3790,15 @@ static int ttwu_runnable(struct task_str
- }
- 
- #ifdef CONFIG_SMP
-+void scheduler_ipi(void)
-+{
-+	/*
-+	 * Actual users should end up using the extern inline, this is only
-+	 * here for the symbol.
-+	 */
-+	BUG();
-+}
-+
- void sched_ttwu_pending(void *arg)
- {
- 	struct llist_node *llist = arg;
