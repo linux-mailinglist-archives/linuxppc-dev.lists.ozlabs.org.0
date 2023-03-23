@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6B26C6387
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A67F6C638A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:28:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Ny5C0fz3fY5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:27:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Py2pW1z3fSN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:28:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vRT1J299;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GE5krmZ0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vRT1J299;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GE5krmZ0;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0Hg2vBxz3f4w
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:22:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0Hp5lJfz3f4Y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:23:02 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 10BE1B82023;
-	Thu, 23 Mar 2023 09:22:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0E1C433AE;
-	Thu, 23 Mar 2023 09:22:44 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 6EC01B81EB8;
+	Thu, 23 Mar 2023 09:23:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26655C4339E;
+	Thu, 23 Mar 2023 09:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679563371;
-	bh=Taw/mVGmMzfFA4/zjWlz+sOR+xqfdhkwF0DQ85nhoys=;
+	s=k20201202; t=1679563379;
+	bh=qM1kqSfFKpsE4xKrdSQW7DvR4rxMPF3in5qEieKPeA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRT1J299K8QpI00sxZv59CyczO6p0SWP1wcHAQk8mghcdKjhLznndromKwnUtlkrM
-	 SRWyev3rVk+6CoxTsdqVockaQN2ib+Nl4FHOvmR+E/SjJe1acNEz6Z4GFuyF6GLjfd
-	 NuLmQu+LCOGDTIOxUdJKu3y2Kol4WBMAdYu5dp+Zj49J79N9Gzs8fUFCVhMdAWtkR8
-	 Ee5XTvH/Aq3cY4DQROJ2COFMOABNcorPOEkkywcg034jyqoHf/3OREMiGZ7q6+/cP7
-	 pO8gCgPnpv6P2h41m6iFg7ve1OatfexcxvMd110cY4RS/B3xhHDbjx1NZErU4piC14
-	 QCF+7aV9m+NqQ==
+	b=GE5krmZ0gXB70ofGbcBeOPtXQDLzzCQ6IeYGZ14v4R8jeHsrKel/M382hm7G8CAyY
+	 WSwNliNppBUKyln1dzxYxIiPKolESMW5XFmY5rNfSGZQQAt/ZPlFgjRt4zvvPNMsP1
+	 btLklwizse4VYyFA8wBmdsJI/2Afc3xukaqL3fOqKJ4dUoiBP3w6a2I+4ipO2eYE6a
+	 If3yoskjdPy/OtjijJmM4uHLXAA675hSKZsojEik+P1JYu5Qdg0vJ0C2kUNi6SOZRO
+	 1wa49ymgOshm7pgeknQKGF2zZjq0eXa0FzDHC5jxAfI6l1tXu9ebX6MaBUej00yf7+
+	 86ZKAZJa2UAfA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 05/14] ia64: don't allow users to override ARCH_FORCE_MAX_ORDER
-Date: Thu, 23 Mar 2023 11:21:47 +0200
-Message-Id: <20230323092156.2545741-6-rppt@kernel.org>
+Subject: [PATCH 06/14] m68k: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Thu, 23 Mar 2023 11:21:48 +0200
+Message-Id: <20230323092156.2545741-7-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230323092156.2545741-1-rppt@kernel.org>
 References: <20230323092156.2545741-1-rppt@kernel.org>
@@ -65,30 +65,51 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-It is enough to keep default values for base and huge pages without
-letting users to override ARCH_FORCE_MAX_ORDER.
+The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
+describe this configuration option.
 
-Drop the prompt to make the option unvisible in *config.
+Update both to actually describe what this option does.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/ia64/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/m68k/Kconfig.cpu | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 0d2f41fa56ee..b61437cae162 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -202,8 +202,7 @@ config IA64_CYCLONE
- 	  If you're unsure, answer N.
+diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
+index c9df6572133f..e530bc8f240f 100644
+--- a/arch/m68k/Kconfig.cpu
++++ b/arch/m68k/Kconfig.cpu
+@@ -398,21 +398,23 @@ config SINGLE_MEMORY_CHUNK
+ 	  Say N if not sure.
  
  config ARCH_FORCE_MAX_ORDER
--	int "MAX_ORDER (10 - 16)"  if !HUGETLB_PAGE
--	range 10 16  if !HUGETLB_PAGE
-+	int
- 	default "16" if HUGETLB_PAGE
+-	int "Maximum zone order" if ADVANCED
++	int "Order of maximal physically contiguous allocations" if ADVANCED
+ 	depends on !SINGLE_MEMORY_CHUNK
  	default "10"
+ 	help
+-	  The kernel memory allocator divides physically contiguous memory
+-	  blocks into "zones", where each zone is a power of two number of
+-	  pages.  This option selects the largest power of two that the kernel
+-	  keeps in the memory allocator.  If you need to allocate very large
+-	  blocks of physically contiguous memory, then you may need to
+-	  increase this value.
++	  The kernel page allocator limits the size of maximal physically
++	  contiguous allocations. The limit is called MAX_ORDER and it
++	  defines the maximal power of two of number of pages that can be
++	  allocated as a single contiguous block. This option allows
++	  overriding the default setting when ability to allocate very
++	  large blocks of physically contiguous memory is required.
  
+ 	  For systems that have holes in their physical address space this
+ 	  value also defines the minimal size of the hole that allows
+ 	  freeing unused memory map.
+ 
++	  Don't change if unsure.
++
+ config 060_WRITETHROUGH
+ 	bool "Use write-through caching for 68060 supervisor accesses"
+ 	depends on ADVANCED && M68060
 -- 
 2.35.1
 
