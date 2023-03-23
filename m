@@ -1,117 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883806C675E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 12:58:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1716C6777
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:02:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj3lD2TPQz3f8m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 22:58:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj3qF0ZZCz3f7T
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:02:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=di1GojWF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MImzOq3g;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cyoMAlm7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e8a::628; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=di1GojWF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MImzOq3g;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cyoMAlm7;
 	dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20628.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e8a::628])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj3kH1SRCz30Ky
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 22:57:40 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MKEXOuve3wrQZxek8Ll9ZT/rzcuoaLSWT5DYNWW8DgXK1UXK0+B8JiR4YHHglXKkcPFLB/4/8w1NjzQSkx6wFqgXW07HyavJWzLhlY8NlnIl5jsU5kbzn9ZgyuTRVuHdcAu7Z7AEH9E/aoplsA11Z66om8afGXg+JeLPM9icjK+8g8Dk7fGYuXtr19tKeFUSJ6NyUoACTJxpa/WFqEKX7IcfKHMSMDBJ/hyxIf6wFhGpbeiRh8ZHdcPXC5nsl20aGv4qAOu3xU6opmXuFGUuZy+80suQbfhA89u4jm/FAasYfQsiUz+YhrSlymisX3zVls5zOO4Me0HbcrbgsBgw+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IhezvfbvljyqjR/WIEkceKdPBbqTdjVj9sWf3/vb8N0=;
- b=IXkwwH9gbfDl1YDgpmxHXFymsvrQcBXJSSWcPRtohYdXF0n7NBwC1UnlmFUYFCiva4aSU7BWLkLFzy5nG8VO9fIFR6yGU3gGI9O9lRij5nZ/X3z5hfcE1zLLJtmSEI4pMfeEyS/EENVzCY2iiDDoGzAs7dNxjwl9zbelUasa5jzslbxvpeZH2WzIqsvpRyWTDiGY/kqkZqXlIU0ZPc8fMkwxCnjp8EeLjGiivLxyptZjhpg+WuAq+rhmlsjKrxN0+OgIPg6TBi0UplvAjmjOj7KOO9wxCrWvyT1olQVnvG67RK3gzVOUd3tQoRypsFT5CAFBwfC2LgsW9VzVy3ZcqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IhezvfbvljyqjR/WIEkceKdPBbqTdjVj9sWf3/vb8N0=;
- b=di1GojWFBOXUeZKYoWUgZzQVaG0dvQ1ErgK2sK8V+Ym9sp85xm6GKXiZ4oQ9hZY7EDFEroe5bpqVxQugapjiz6EhaC7O0tr7pZeVRzpUHs4BBqjMpwtlWzxPFdLzv1m7QmgJhT2uWyPmlQtcM9jKpl82rkpSIkMfsKqOSx96y9McYlO2vqg9g+nEPd7ANd0LwtYNpv3ufDloiNBaGzRxMqtA6ody7OLE23PLbwcBydVb/57h3teQQMqLzMlWyz30snwPEUIhQMOHXBlmFUcyjr7lsyr4hB65vK5N76wZAaHLsxvSzPhTIxmUJqSAaJhfL9FvCAFNgDnVHxm/BdAXFw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com (2603:10b6:8:73::18) by
- MW4PR12MB6684.namprd12.prod.outlook.com (2603:10b6:303:1ee::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.38; Thu, 23 Mar
- 2023 11:57:18 +0000
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::bb0b:f14a:c49a:9cd7]) by DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::bb0b:f14a:c49a:9cd7%4]) with mapi id 15.20.6178.037; Thu, 23 Mar 2023
- 11:57:18 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 02/14] arm64: drop ranges in definition of
- ARCH_FORCE_MAX_ORDER
-Date: Thu, 23 Mar 2023 07:57:13 -0400
-X-Mailer: MailMate (1.14r5937)
-Message-ID: <0A14E221-C078-4EFF-84FA-8E326685D8D5@nvidia.com>
-In-Reply-To: <ZBwr0bXdtOtKKila@kernel.org>
-References: <20230323092156.2545741-1-rppt@kernel.org>
- <20230323092156.2545741-3-rppt@kernel.org> <ZBwmxbRJrF8RxZEp@arm.com>
- <ZBwr0bXdtOtKKila@kernel.org>
-Content-Type: multipart/signed;
- boundary="=_MailMate_C0B9CB2B-1F3E-4990-8124-8C2C5E7E129D_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: MN2PR19CA0063.namprd19.prod.outlook.com
- (2603:10b6:208:19b::40) To DS7PR12MB5744.namprd12.prod.outlook.com
- (2603:10b6:8:73::18)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj3pH5KHrz3ccq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:01:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679572865;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
+	b=MImzOq3gG4iYqVdyJtr7+DxKkwNyhoC94AesT3/+byIM9jRrmD356y4+nrWKWngFFnjmdm
+	bB2pn8Ea7NbHwDb5UQPaaZK5tfcXha/UidW2IXv751m6tsR7O2/a0DZDLe5WTBoQUrQ6fG
+	9INop8CDC8VodkRHrVxhbD+uk5LKDYY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679572866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
+	b=cyoMAlm70klR0GW8zT1nMBNsddEtbFo5J9ACn+N9AK8GY3ak/lSQ1DgqETesUL2F8j9gHd
+	ixug6XXl0n9/h3tuaXh/GnnTCLBCCXr6YE5B8ExG6iE9LtwZAJRgULO5rfudLKsrIKXbeb
+	GtrKAqitjwv9CVSgvDStCJcbqzN6nkA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-15-0AmAgqtEOB6dwTk25iEBPQ-1; Thu, 23 Mar 2023 08:01:04 -0400
+X-MC-Unique: 0AmAgqtEOB6dwTk25iEBPQ-1
+Received: by mail-wr1-f71.google.com with SMTP id d5-20020adfa345000000b002d716fc080fso1363869wrb.22
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:01:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679572863;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
+        b=tE891uF2bdjJK0GB7nCV+J9SLaq7uBGm8dCQd7o3DgV5bjAvWE3Jaj3UZ31XPKNiV+
+         x1pMPhbM4i7RSMYEkYs7GiL/ZiWglYy8YziFjO96cT+csIEazOPnQzbxWo8mvXj9M5fH
+         Q9UX9TPv3ADi4f5WKYw6b8rnTfNQe9Aqd17PPv2WlBIKkeHHsC+crTFn55V1lfOYRr0f
+         tKf5uaSgeFusplZzdkKbFjJKEPBKtuK1xsQLOy27Y3OpulaehlfCAC/4Tkzwjoef7w+1
+         at7NoZDe6lRMUglURnKSkUpzvIUZJBeUhRAlLaYeYOoKTazwmwEtbMHHjlov6/igyvQP
+         GfRA==
+X-Gm-Message-State: AO0yUKVuVowQuFP3A3EQ0BDSaIGjYjjdpTrJ7h4NJgpvSfrKLpA7CDY9
+	aJs4QZmNzfYzrNvEL0gIo7ZQIV4Vd6PbpNpk66Z6r5em9Na6oJmS0hJwYtsrdXEKpXY5MovDLl7
+	oLjwIAJo3iEuOmUwoAfRNYwJgDA==
+X-Received: by 2002:a1c:4b1a:0:b0:3ed:a82d:dfe2 with SMTP id y26-20020a1c4b1a000000b003eda82ddfe2mr2025663wma.29.1679572863040;
+        Thu, 23 Mar 2023 05:01:03 -0700 (PDT)
+X-Google-Smtp-Source: AK7set9MyJMT/nYCBtz9tt9u0w+Cvx8tCG2gYM0Zl7gZFp2GCTxdj8RQVMZCS7m7wBDqJwRfnkzkqw==
+X-Received: by 2002:a1c:4b1a:0:b0:3ed:a82d:dfe2 with SMTP id y26-20020a1c4b1a000000b003eda82ddfe2mr2025649wma.29.1679572862779;
+        Thu, 23 Mar 2023 05:01:02 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-179-146.web.vodafone.de. [109.43.179.146])
+        by smtp.gmail.com with ESMTPSA id f20-20020a1c6a14000000b003edcc2223c6sm1682498wmc.28.2023.03.23.05.01.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Mar 2023 05:01:02 -0700 (PDT)
+Message-ID: <82e48016-90d4-0097-67b1-31f2c5668918@redhat.com>
+Date: Thu, 23 Mar 2023 13:01:00 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB5744:EE_|MW4PR12MB6684:EE_
-X-MS-Office365-Filtering-Correlation-Id: a72a7b43-bedc-43b6-5156-08db2b95c06e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	6daAaho0uxEjGqSjlOgqngxZXD/eu8S4YbWLOLpqSVMM2TBm5pb9ivLuuJael4nHpzYWDT9qvWx8dyLCAwxmbdPdZ3AqN1eXfJZ5fSlFx8PsPcdDhGjZ4ErgUPIXYV9Gjp1WMtEwcQHtTECwM4aNNOMdgOPb03gYQmh8FwhbN+WBb6uMESZZ+Sq2NO3smshbPuVn1aeEdon2R0uVBSFc3nCW9oJxe807xuVTR0dLY7pg9PcT57oaKcCSlPnyqo3sYef50KH9SPGdBo5wMei0RoN1cN2tmnLUV7xCetEtuTsK9mWOfQrrYP4U5M25oem/r+egafYsY4RY97lgvBz3NXIXOM+x6cmE1Q4Yj4RJSRfL+pfMUADSIvyBYz25LroGXFpoGa6JoWdM0mWib6XnLmh4pAepFHbOMZmEaeWkHKrpy8F8cDMsGDnoFe+LdKfaHPLgpkTKVAh5I+7TL20IB74Jd5gbV6fDTvPOQQ21l4NGREpd9vTvtnbLuppfqRM/epV5rBjIdxffbDgGGpORBoTJTepXZK/HJt8JBPuLcXYx/VyMVd6iw0ewAE/jGtiJnETMUa6NOU6nlsFSwZe/JcZS0u+m2rRthfWF3XBFRpywpNuBJA7O767KVZtr3VIkQujaXKnskaGh6FHe8VpKhd6Iu6bDaouaglGxtiEPXK1TIiFZ6wm9+CR/dhhYKAHWNWfCmcWetQFEayoaIPPuFD2DTAsHPumf53SVCiEDKW1BCoa/DbCyBd2OsyvhDb73XnC5/Q6mAyrsxTkicrp9Xw==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB5744.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(376002)(39860400002)(396003)(136003)(346002)(451199018)(53546011)(6506007)(6512007)(26005)(5660300002)(7416002)(6666004)(235185007)(83380400001)(41300700001)(2906002)(316002)(2616005)(33656002)(54906003)(38100700002)(66946007)(66476007)(66556008)(36756003)(8936002)(186003)(4326008)(6916009)(478600001)(6486002)(966005)(86362001)(8676002)(45980500001)(72826004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?BHfFNfRO9aaz3Cn0SehS2uK6mxbPsqicJlsxZ4EEdYHqG44tm99d+Z9UdorR?=
- =?us-ascii?Q?NZV7f6ZT1gbjwMZVH2DKeMLR3XqN1bokZnPCvpZkOOSLLvn67HPZ4XBVWHiD?=
- =?us-ascii?Q?J2hrKilMAAA7fIiVU+LIQlaJb+uTPm2/pTLIBoxYBicG0VfOtBND10ERGW1e?=
- =?us-ascii?Q?PeG9S/lTD+hH3GKnYWY226WFgM+H4RMTWUFMwAd+5QA67XodLqRCtSK2x2Up?=
- =?us-ascii?Q?SGzEG0FjxBLaK5bGhIZ/HVtu7XrOCbpSDJKW7orAU/OqjUlJHBlsxrs7V87d?=
- =?us-ascii?Q?3Y+hpIGml8fUpSQskHaYCnAnzWVFLr8FpFLV+2ZhszHRFmpNbs1n63NHCfju?=
- =?us-ascii?Q?bTWBTnPKDWxbdCcYd1umzWH3N5xPeRBftLzy9uwjjDbM9rn+wtg3PfcKnPJj?=
- =?us-ascii?Q?tbai1wAiPhaCiavcesODeR6B4O6NJ47yfK/aBZDzcdGui4VN7NE17sMwnaGT?=
- =?us-ascii?Q?dZtQWjlspiGLc1A5KwvNo55+a3SmTgkMfFb3EJOR/rZBQSE4z/PlpaEJAlzE?=
- =?us-ascii?Q?XGKmEBLkef7YoTlTWhLjY1foDCGnxBdPIAiIO3RzPgRhRRqJgZagPeJokyVe?=
- =?us-ascii?Q?Cqle4zaS1dso5UN8NgWy7LqxbpoZeUp2ZEN7mCQ7exbCevA5sbZkDV2y2zwX?=
- =?us-ascii?Q?jpxq3lHdBLxfR253rpiuJy90wjiGke8x1bs3y8Tav20SvY+mntlP92P3sKiB?=
- =?us-ascii?Q?wUbofiHdq/RBTsubYE0v83eM+pnfmK8hzvV5TDegKgzoMEyRDGM97UVkwjnd?=
- =?us-ascii?Q?HmbYp2BXPiqVO4HnST64bt+5nOkNi8WvRpeWWO5FaM1WIAkZEv1QKes47RjF?=
- =?us-ascii?Q?d41nFeevIS8nxfr3WQ7ge4n9hPSIRzYOlvrcyYAI2hOrR/ivYTru0Ct97Kio?=
- =?us-ascii?Q?pPWdbe4Ed8DoNcYiRktv1k16dGZU602AaBRXP/7Et89fy0pEslCgZbLTyioE?=
- =?us-ascii?Q?c0Ft935qJ6z9FHuRLQjWokBRwMXqMCqfuQRwz63YfB1RKJR4Ao3NXAgikZDh?=
- =?us-ascii?Q?skSm345LMplgpHvY5yB5wHJVZmO+xXa7kCU36NguPvIJ2+RwkacsAtt34dgZ?=
- =?us-ascii?Q?8mtzloQ17AgJQ/lIme7dNKTgIrEZq3ygp/ogThoqxjVuhFkytW2o8YJLdFDK?=
- =?us-ascii?Q?ItMILmTISHCPGKk+H5ZZebd1mZmoWJbht4lU6xCvskegNpu9yYq0bYo7oPrh?=
- =?us-ascii?Q?N+3IJuPztNV7f+4aI+mhA6awcseu0ABeLFfZBIQdgUiV5c9+A7q7S7ovkHFI?=
- =?us-ascii?Q?R2DhdcZUbO4R8948ggH39EMLkSJ2huvsZRa4PaLbcC5OO7E3J+WkQg5BHmY8?=
- =?us-ascii?Q?92zlgULsmGQP+XaxTCgd9o8gY+0rxpaHG6OwlhTJxIan0ELbg9FWxVjCn6Xg?=
- =?us-ascii?Q?r4KltsrHdOsa7WCLjEHuvl+wc9Pit+tLFhq3eRL/7ftQqFFaUKg2ktF+oI1G?=
- =?us-ascii?Q?fOf7oOWX3RzPNN96Kna2zK7bYkAuqx6GyQTlLPlxIsZcI5gOdkd3Nvvx4lfb?=
- =?us-ascii?Q?oo9hLSmV9BPIgmuN+ekwV5AeAFBCSKTbb6MBniHN1Mo4U27txDDm3KNnvlZp?=
- =?us-ascii?Q?dR0jE10uqzaq16NT/7UQs/q1NnMvfiCREa/bM7em?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a72a7b43-bedc-43b6-5156-08db2b95c06e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB5744.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2023 11:57:18.2883
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 87bgU0V8bYcFk/2/HtSZuiZjO/r4PHTMp98USqB1FFkti+RM0889AFUG70/XSfo1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6684
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [kvm-unit-tests v2 04/10] powerpc: Add ISA v3.1 (POWER10) support
+ to SPR test
+To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
+References: <20230320070339.915172-1-npiggin@gmail.com>
+ <20230320070339.915172-5-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230320070339.915172-5-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,93 +103,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_MailMate_C0B9CB2B-1F3E-4990-8124-8C2C5E7E129D_=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On 20/03/2023 08.03, Nicholas Piggin wrote:
+> This is a very basic detection that does not include all new SPRs.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   powerpc/sprs.c | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
+> index ba4ddee..6ee6dba 100644
+> --- a/powerpc/sprs.c
+> +++ b/powerpc/sprs.c
+> @@ -117,6 +117,15 @@ static void set_sprs_book3s_300(uint64_t val)
+>   	mtspr(823, val);	/* PSSCR */
+>   }
+>   
+> +/* SPRs from Power ISA Version 3.1B */
+> +static void set_sprs_book3s_31(uint64_t val)
+> +{
+> +	set_sprs_book3s_207(val);
+> +	mtspr(48, val);		/* PIDR */
+> +	/* 3.1 removes TIDR */
+> +	mtspr(823, val);	/* PSSCR */
+> +}
+> +
+>   static void set_sprs(uint64_t val)
+>   {
+>   	uint32_t pvr = mfspr(287);	/* Processor Version Register */
+> @@ -137,6 +146,9 @@ static void set_sprs(uint64_t val)
+>   	case 0x4e:			/* POWER9 */
+>   		set_sprs_book3s_300(val);
+>   		break;
+> +	case 0x80:                      /* POWER10 */
+> +		set_sprs_book3s_31(val);
+> +		break;
+>   	default:
+>   		puts("Warning: Unknown processor version!\n");
+>   	}
+> @@ -220,6 +232,13 @@ static void get_sprs_book3s_300(uint64_t *v)
+>   	v[823] = mfspr(823);	/* PSSCR */
+>   }
+>   
+> +static void get_sprs_book3s_31(uint64_t *v)
+> +{
+> +	get_sprs_book3s_207(v);
+> +	v[48] = mfspr(48);	/* PIDR */
+> +	v[823] = mfspr(823);	/* PSSCR */
+> +}
+> +
+>   static void get_sprs(uint64_t *v)
+>   {
+>   	uint32_t pvr = mfspr(287);	/* Processor Version Register */
+> @@ -240,6 +259,9 @@ static void get_sprs(uint64_t *v)
+>   	case 0x4e:			/* POWER9 */
+>   		get_sprs_book3s_300(v);
+>   		break;
+> +	case 0x80:                      /* POWER10 */
+> +		get_sprs_book3s_31(v);
+> +		break;
+>   	}
+>   }
 
-On 23 Mar 2023, at 6:37, Mike Rapoport wrote:
+Looks like I accidentally replied to v1 a couple of minutes ago... I meant 
+to reply here:
 
-> On Thu, Mar 23, 2023 at 10:15:33AM +0000, Catalin Marinas wrote:
->> On Thu, Mar 23, 2023 at 11:21:44AM +0200, Mike Rapoport wrote:
->>> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
->>>
->>> It is not a good idea to change fundamental parameters of core memory=
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
->>> management. Having predefined ranges suggests that the values within
->>> those ranges are sensible, but one has to *really* understand
->>> implications of changing MAX_ORDER before actually amending it and
->>> ranges don't help here.
->>>
->>> Drop ranges in definition of ARCH_FORCE_MAX_ORDER
->>>
->>> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
->>> ---
->>>  arch/arm64/Kconfig | 2 --
->>>  1 file changed, 2 deletions(-)
->>>
->>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->>> index e60baf7859d1..bab6483e4317 100644
->>> --- a/arch/arm64/Kconfig
->>> +++ b/arch/arm64/Kconfig
->>> @@ -1489,9 +1489,7 @@ config XEN
->>>  config ARCH_FORCE_MAX_ORDER
->>>  	int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
->>>  	default "13" if ARM64_64K_PAGES
->>> -	range 11 13 if ARM64_16K_PAGES
->>>  	default "11" if ARM64_16K_PAGES
->>> -	range 10 15 if ARM64_4K_PAGES
->>>  	default "10"
->>
->> I don't mind rewriting the help text as in the subsequent patch but I'=
-d
->> keep the ranges as a safety measure. It's less wasted time explaining =
-to
->> people why some random max order doesn't work. Alternatively, we can
->> drop the ranges but make this option configurable only if EXPERT.
->
-> I like the EXPERT alternative more. I'll add it in v2.
-
-I got an error report from kernel test robot, which set -1 to ARCH_FORCE_=
-MAX_ORDER
-via random config generator[1].
-
-Does the EXPERT option prevent kernel test robot from generating such con=
-fig?
-Or we should fix random config generator?
-
-[1] https://lore.kernel.org/linux-mm/91E887E4-0867-421F-9C75-FB9CFF15C33A=
-@nvidia.com/
-
-
---
-Best Regards,
-Yan, Zi
-
---=_MailMate_C0B9CB2B-1F3E-4990-8124-8C2C5E7E129D_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename=signature.asc
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQJDBAEBCgAtFiEE6rR4j8RuQ2XmaZol4n+egRQHKFQFAmQcPpkPHHppeUBudmlk
-aWEuY29tAAoJEOJ/noEUByhU9EYP/R6RuN1pPr5jRFyo4D+2nLzmk6uOP2JexQ6T
-6fnLGGr4kraIULDhfR1OqB9bJl25FyMrS6GpsJckpg7FQkXxffvVmdAFFv8MHhyF
-/Yag0WuKNuozliOMeL2WW4qLrlk+wS41ipvi5s1vqJQKjfvjB4bNrL4ELh+wAso3
-6mVTpnad6XsJJxZ70i2QMD0hOOA/GnSTyFw7/h4Wm0BS+sTV3amC7DvIE3Tx1XVG
-uFxBHjOsSe0UXUuo+Z5ZQZSqdkmfvzzY35/NzOBYx1v0aVWUueXsdTLFrukWEPJu
-AQA1NIqcxz+p7+OxgNrNiyGQIr9aroJb5jgfjenXjcat8lsiTFqW6lZmKviaQ+w+
-Bpur3EgYyQOiZFf6ox99WXbJONqPhSwVG36+Vsu9ACj/oCzmBNwlUtOuQn62Q50M
-Ct2k4j/UmhDPBCXZpHWLwqGTwhvqs3uSIOMPqZe0qaXAd6MJw1sPqa8h6MV5+Vf9
-mWBApZod3ekSrRR8GKuKortn8Wm0Lh/KtdxAn5vWRV6UKq3wgSJTHwPwJjKVsa/Q
-q02bSlYj3SgmnbkFbHK4S0x6Bf8p1R6XreCW5nLnv5NuPiKeG9yLkqOJk5d7uqmY
-Z8gVdSyn1DAQ98Qs+VXDP6uYrt0Sq3/uqEdHgwWSYaCA0vmzzlQoRcheTh+n9Cq2
-F6T7/BJg
-=WfgP
------END PGP SIGNATURE-----
-
---=_MailMate_C0B9CB2B-1F3E-4990-8124-8C2C5E7E129D_=--
