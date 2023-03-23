@@ -1,71 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF80F6C717C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 21:02:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4A86C7221
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 22:09:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjGTP4lgcz3fQg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 07:02:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjHy81Dsxz3cMf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 08:08:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IPZIkew3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=XQhz4LBI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=cpEQNvbE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=maskray@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IPZIkew3;
+	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=XQhz4LBI;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=cpEQNvbE;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjGSW08HPz3cfg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 07:01:29 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id u20so13544012pfk.12
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 13:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1679601687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+55oTh7z8IE/JgYLIE37w82gPzf2I2OB6Ia2/zSR7Vs=;
-        b=IPZIkew3dFtjmZdaViTjyD0HscLUwPXqPripmrMsr3WTFFmpjru7uOEiW5MdR0VV95
-         3AkjKWS+SSGR66Z2HcB5pk7YSGalu08/hGwoMnkFnDkE2qoAQbU1GvgUd6upSXxx5s2P
-         WgA85mghqIhhEYMtWiZMDw6eVS30vmwumoj8UFiy4jXPgOQpsvTsmsWOaQLIrepOjNLG
-         23PQbOvHd/lWhmQ57R9lQXqXoeGABGhKFPHzTLsKICBt+2gzhqsz8P/8SexMqUTFcc6H
-         UOF5X9dx/gsFR66RqsvJo3OswMwtQs/bMnp7PF1XkJIv33y55T3bQzLy+NDa36XNhCpS
-         +QIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679601687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+55oTh7z8IE/JgYLIE37w82gPzf2I2OB6Ia2/zSR7Vs=;
-        b=nP+ZaZv/k7AEbtAfJI6XlgTV2pOcsQM5rinuggqVRwsaTV/PXqHLLg4l3uHD2zpLSR
-         XPd5Cd0eIKybpSMUJ5HLard2qYNtH0rBpyPO3WjlgavPGDQS4d9ms0FbprVslkxWL7sY
-         cEeljXNap0WaQLnR4VpQGST1PVAdTj4fuTzKtPnOOQgIjLkSW/KMP3Hcf6Wl642pWUno
-         1hHZyYg0dz+2s7YcNcJ4Pmnm5TykozobiznwSct6SqmWQxFx5f4Eo/gzU8LZsAzV5SSD
-         FhWxF/nChypLyaFB8Uz+k2mtWp0X5pxzH/o0Fj0Eo2Iq8Yf6I5DoQEujPqsvAZNBZ28x
-         mguQ==
-X-Gm-Message-State: AO0yUKVZff8Zwr7XUSSOEjQKIUUbxFbZstYzFo0SW0cv8gSQEdTQzJiM
-	hlsekQ123jA8t3UWRdaGuLPM2wTsAmQZDV4YxhEiOw==
-X-Google-Smtp-Source: AK7set+ozY4YViDqnsSitk2Wr074yCOGB0DUpWwEKn9HjfwuqHnY07bD2pSglnB1LUnHagdMFzX9OQx8JdW2HNZ3kOw=
-X-Received: by 2002:a65:484d:0:b0:503:354c:41ad with SMTP id
- i13-20020a65484d000000b00503354c41admr2238413pgs.11.1679601686525; Thu, 23
- Mar 2023 13:01:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230215143626.453491-1-alexghiti@rivosinc.com>
- <20230215143626.453491-2-alexghiti@rivosinc.com> <4a6fc7a3-9697-a49b-0941-97f32194b0d7@ghiti.fr>
- <877cw7dphf.fsf@all.your.base.are.belong.to.us> <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
-In-Reply-To: <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
-From: Fangrui Song <maskray@google.com>
-Date: Thu, 23 Mar 2023 13:01:15 -0700
-Message-ID: <CAFP8O3+UO0x9aETSnOkL7=473mX0wrt+ueuB9UgOJaf+N0p7gw@mail.gmail.com>
-Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
-To: Nick Desaulniers <ndesaulniers@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjHx70x5pz3bgk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 08:07:54 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.west.internal (Postfix) with ESMTP id 12B373200928;
+	Thu, 23 Mar 2023 17:07:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Thu, 23 Mar 2023 17:07:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+	1679605665; x=1679692065; bh=LXh8RcHlRytWdP5giYX5SGps2z/loe7CAU6
+	6Co3XisY=; b=XQhz4LBIVZPTu92lzWNdTkm4qB9wdOsltzzZLdkPOoLlT6yYGHc
+	XN+a5SM0Ihkz/5bLUHj/Orxabp2j/sV+kZH6+YdVRSJ/TB3nsiDih/6LGXOJyIut
+	scSWSFuqnoAUiPGYM4GF8f5cOI3q7DvJI+n3hz4UpqfXqnCO9Z5FEI9hGxPvjHXw
+	8RLhgGA9j8VwdrsvctXuQVLQi6l6NnYDqvTuAJAASSUanS0+7NT6pdPMt/D3pTbO
+	IyYPK34bdbsOl0HeQFBFDzpNXH4uWPj9PuDRhce1dAPFcr0uZAbzn0LMClpfqIHZ
+	n9ysRHghK6cMsQpUHYrzK1NfkDaotsHGVuA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1679605665; x=1679692065; bh=LXh8RcHlRytWdP5giYX5SGps2z/loe7CAU6
+	6Co3XisY=; b=cpEQNvbE5hLlP++gVezAgQEgbsiuhx6dRxwW7PKr83NBB+M7pFV
+	eWwmjkCMKqOuE6V0mkV4PZXhwwNBLMfSbiMGZgSvLl7Wx4Ek1yh2KGfMfvc6lgcu
+	uza5xL4ZO0rb163/9UcZyhpaTHdM8mseUgFh4TLEDrwqFQH0jjNRcfgwiRpg4Kwf
+	nFOEoI0fBXH8AmU8zaJvZfvA1Qa74h449BuBqH/sBi78tg5yJzS1tSG1FHq0xzyK
+	oGXMGWr7CS3ZbUYBsBoRUtl/sDmiVrAl+jn54xCxRVNsjHrirMX9ls/IM1cYGBlw
+	lhYHb+J+YgWbG/kuaHG+0DGtBsa1c+0hBmw==
+X-ME-Sender: <xms:oL8cZN0DgW3OLroYtCxDwFYqR7FHjzuYwiKht8HgHLPt4iSzaR4Ucw>
+    <xme:oL8cZEFPGQclA8D3sCjgsO36VS_L7VmSCKBos1QIQYSiIIJKeezmqrqD0z8qLMUZ4
+    MWdTgQ-R8YdU5ADIAc>
+X-ME-Received: <xmr:oL8cZN58RyjaUsF1u28KDWgrDi66e2-wg8EW4H5jF0MBq7igueVmfuRoGYZiElOEAz2D>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeggedgudeghecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpegtggfuhfgjffevgffkfhfvofesthhqmhdthhdtjeenucfhrhhomheplfhi
+    rgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqe
+    enucggtffrrghtthgvrhhnpedutdejffetteefkeejieehfeeuieeguedtveeijeeviefh
+    ffelvdfgudeihfdvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:oL8cZK0KK0apa41-Seog06lFkBh2mBy9jsHVnabkuaNzgqKbl_8_IQ>
+    <xmx:oL8cZAG-qqU2-r1ZYwACu7bNCoumI1Ha6e0XWnQ5zoKsdDYXtHa1-Q>
+    <xmx:oL8cZL9oOnha_c0iuCXL5YPwF-QLzMrQSR5RnR8eXNTrXPAa5PyIXw>
+    <xmx:ob8cZI_SsG43gGf1L1mme11VE_CPTfEGk5dB_B0LoRHR7VXurq9SqA>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 Mar 2023 17:07:42 -0400 (EDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
+Subject: Re: [PATCH v3 0/4] Use dma_default_coherent for devicetree default
+ coherency
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+In-Reply-To: <20230323072944.GA18524@lst.de>
+Date: Thu, 23 Mar 2023 21:07:31 +0000
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <60D7FE31-D708-4495-949F-3F64DDC11377@flygoat.com>
+References: <20230321110813.26808-1-jiaxun.yang@flygoat.com>
+ <20230323072944.GA18524@lst.de>
+To: Christoph Hellwig <hch@lst.de>
+X-Mailer: Apple Mail (2.3731.400.51.1.1)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,54 +97,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, nathan@kernel.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, palmer@dabbelt.com, paul.walmsley@sifive.com, Robin Murphy <robin.murphy@arm.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 22, 2023 at 11:26=E2=80=AFAM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> On Fri, Feb 24, 2023 at 7:58=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kern=
-el.org> wrote:
-> >
-> > Alexandre Ghiti <alex@ghiti.fr> writes:
-> >
-> > > +cc linux-kbuild, llvm, Nathan, Nick
-> > >
-> > > On 2/15/23 15:36, Alexandre Ghiti wrote:
-> > >> From: Alexandre Ghiti <alex@ghiti.fr>
-> > >>
-> > > I tried a lot of things, but I struggle to understand, does anyone ha=
-ve
-> > > any idea? FYI, the same problem happens with LLVM.
->
-> Off the top of my head, no idea.
->
-> (Maybe as a follow up to this series, I wonder if pursuing
-> ARCH_HAS_RELR for ARCH=3Driscv is worthwhile?)
-
-(I had thought about this for my own fun, but the currently only
-implementation arch/arm64/kernel/head.S uses assembly.
-Every port needs to write some assembly for the same task, which is a pity.
-In FreeBSD rtld, glibc, and musl, DT_RELR code is target-independent.)
 
 
-> >
-> > Don't ask me *why*, but adding --emit-relocs to your linker flags solve=
-s
-> > "the NULL .rela.dyn" both for GCC and LLVM.
-> >
-> > The downside is that you end up with a bunch of .rela cruft in your
-> > vmlinux.
->
-> There was a patch just this week to use $(OBJCOPY) to strip these from
-> vmlinux (for x86). Looks like x86 uses --emit-relocs for KASLR:
-> https://lore.kernel.org/lkml/20230320121006.4863-1-petr.pavlu@suse.com/
-> --
-> Thanks,
-> ~Nick Desaulniers
->
+> 2023=E5=B9=B43=E6=9C=8823=E6=97=A5 07:29=EF=BC=8CChristoph Hellwig =
+<hch@lst.de> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> The series looks fine to me.  How should we merge it?
+
+Perhaps go through dma-mapping tree?
+
+Thanks
+- Jiaxun
 
 
---=20
-=E5=AE=8B=E6=96=B9=E7=9D=BF
