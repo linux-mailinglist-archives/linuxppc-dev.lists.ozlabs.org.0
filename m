@@ -1,111 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE06C6C6DCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:37:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458DE6C6E7B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 18:13:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9ww4bTKz3fS7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:37:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjBl06zvlz3fRH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 04:13:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YNEDGxiO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HPG34v2v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YNEDGxiO;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HPG34v2v;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9vp1MVpz3fHC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:36:21 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NF1iUH025741;
-	Thu, 23 Mar 2023 16:34:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=acT/02utXawoH32mC8Zfy9FEHVZb3pNDgW9UY75G1Wk=;
- b=YNEDGxiOxwLIs2VW3/0EbLBpym/lbOGIAmIEe4boIucMp2OKupdarp2JDuWrpCRgddaf
- HSQ3e7ZQtspdf2U1PBjnkrtgOtrEN5AwFrC2yf0OZIkuzPUmbkppjb7f25tWefMFf06m
- HD3Lde7dxytPVRgDyW9xdn5fQHuFfTtwH06174Ygtdr4fektfdJkgSzq5hX3qEwLg+eS
- MEsSnTj18e+MnBAZ+A1d33fua28arpuz+Sh9A0s/c5ohGO3ADQCDf2FEFomDZgY/kCo1
- +OZG1ftII9VUAwlt0DJSJV7Zs+MAWxjQcPRl82UUwIH0FtG1szSBLC1tqYBnjakUQ32Z /Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgn871bqb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:34:03 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NDr2iH023038;
-	Thu, 23 Mar 2023 16:34:02 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pgn871bp5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:34:02 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32N4XR1f018070;
-	Thu, 23 Mar 2023 16:33:59 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3pd4x6eefv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 16:33:58 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NGXuTF27525836
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 16:33:56 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B3E02004B;
-	Thu, 23 Mar 2023 16:33:56 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0D5020040;
-	Thu, 23 Mar 2023 16:33:54 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 16:33:54 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v4] Kconfig: introduce HAS_IOPORT option and select it as necessary
-Date: Thu, 23 Mar 2023 17:33:52 +0100
-Message-Id: <20230323163354.1454196-1-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.37.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OEQpOuYuicyDPRN5V_qRfK7Yk5Yc5L6E
-X-Proofpoint-ORIG-GUID: 3APFiBEOa4qTbFQTDE9ca29AX4ixw-8u
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjBk12lVJz3f4X
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 04:12:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679591577; x=1711127577;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bOk/bK3iytGpOoPzSN/P3lMEMqW4rV3s8Am9+KQ4/Qo=;
+  b=HPG34v2vN9hrkcY6N8V1fdNo1RVzczcAMz0uuKGoWj9uEiw/ZivzBijZ
+   WnGQvVBxRLgM7hO05+T/e78FE6JyIzHrheCMpU6XUrTSj+6qfU8AuVfyU
+   C62emDpkDJHuj/JTpxtvRnyAxOoHgRkfJSOlwliy1uZZaEOUuyaIWhDyj
+   af84V99AdrFeLGTx9M8oZkwVnymHnrnoWgEMqJrYFag2eS569Nfc2RmMj
+   LLrmyUM6nVT/U/PxPbVlmPvOeuMteuBeVHYOMo/KoWFzIr6IMQCskI08r
+   GbtXP7NQHS3wXSP8Z/jbPbNXWZhlhhXIUJPDS8vu5CjHQLpliBMwxvBSy
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="338283368"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="338283368"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 10:12:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="825909467"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="825909467"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 23 Mar 2023 10:12:41 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pfOUO-000EZ8-0H;
+	Thu, 23 Mar 2023 17:12:36 +0000
+Date: Fri, 24 Mar 2023 01:11:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 02/14] arm64: drop ranges in definition of
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <202303240155.01y6T6Fj-lkp@intel.com>
+References: <20230323092156.2545741-3-rppt@kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-22_21,2023-03-23_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=774 adultscore=0 spamscore=0 clxscore=1011 suspectscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303150002
- definitions=main-2303230120
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230323092156.2545741-3-rppt@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,296 +72,219 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-sh@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@kernel.org>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, llvm@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, oe-kbuild-all@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, Linux Memory Management List <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We introduce a new HAS_IOPORT Kconfig option to indicate support for I/O
-Port access. In a future patch HAS_IOPORT=n will disable compilation of
-the I/O accessor functions inb()/outb() and friends on architectures
-which can not meaningfully support legacy I/O spaces such as s390.
+Hi Mike,
 
-The following architectures do not select HAS_IOPORT:
+Thank you for the patch! Yet something to improve:
 
-* ARC
-* C-SKY
-* Hexagon
-* Nios II
-* OpenRISC
-* s390
-* User-Mode Linux
-* Xtensa
+[auto build test ERROR on 51551d71edbc998fd8c8afa7312db3d270f5998e]
 
-All other architectures select HAS_IOPORT at least conditionally.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Rapoport/arm-reword-ARCH_FORCE_MAX_ORDER-prompt-and-help-text/20230323-172512
+base:   51551d71edbc998fd8c8afa7312db3d270f5998e
+patch link:    https://lore.kernel.org/r/20230323092156.2545741-3-rppt%40kernel.org
+patch subject: [PATCH 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+config: arm64-randconfig-r031-20230322 (https://download.01.org/0day-ci/archive/20230324/202303240155.01y6T6Fj-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install arm64 cross compiling tool for clang build
+        # apt-get install binutils-aarch64-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/0522f943c071abf1610651ea40405b7489c50987
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Mike-Rapoport/arm-reword-ARCH_FORCE_MAX_ORDER-prompt-and-help-text/20230323-172512
+        git checkout 0522f943c071abf1610651ea40405b7489c50987
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/iommu/ kernel/dma/ mm/
 
-The "depends on" relations on HAS_IOPORT in drivers as well as ifdefs
-for HAS_IOPORT specific sections will be added in subsequent patches on
-a per subsystem basis.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303240155.01y6T6Fj-lkp@intel.com/
 
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Acked-by: Johannes Berg <johannes@sipsolutions.net> # for ARCH=um
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Note: This patch is the initial patch of a larger series[0]. This patch
-introduces the HAS_IOPORT config option while the rest of the series adds
-driver dependencies and the final patch removes inb() / outb() and friends on
-platforms that don't support them. 
+All error/warnings (new ones prefixed by >>):
 
-Thus each of the per-subsystem patches is independent from each other but
-depends on this patch while the final patch depends on the whole series. Thus
-splitting this initial patch off allows the per-subsytem HAS_IOPORT dependency
-addition be merged separately via different trees without breaking the build.
+>> mm/memory.c:5791:37: warning: shift count is negative [-Wshift-count-negative]
+           if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
+                                              ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/compiler.h:48:41: note: expanded from macro 'unlikely'
+   #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+                                             ^
+   include/linux/compiler.h:33:34: note: expanded from macro '__branch_check__'
+                           ______r = __builtin_expect(!!(x), expect);      \
+                                                         ^
+>> mm/memory.c:5791:37: warning: shift count is negative [-Wshift-count-negative]
+           if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
+                                              ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/compiler.h:48:68: note: expanded from macro 'unlikely'
+   #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+                                                                        ^
+   include/linux/compiler.h:35:19: note: expanded from macro '__branch_check__'
+                                                expect, is_constant);      \
+                                                        ^~~~~~~~~~~
+   mm/memory.c:5843:37: warning: shift count is negative [-Wshift-count-negative]
+           if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
+                                              ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/compiler.h:48:41: note: expanded from macro 'unlikely'
+   #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+                                             ^
+   include/linux/compiler.h:33:34: note: expanded from macro '__branch_check__'
+                           ______r = __builtin_expect(!!(x), expect);      \
+                                                         ^
+   mm/memory.c:5843:37: warning: shift count is negative [-Wshift-count-negative]
+           if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
+                                              ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/compiler.h:48:68: note: expanded from macro 'unlikely'
+   #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+                                                                        ^
+   include/linux/compiler.h:35:19: note: expanded from macro '__branch_check__'
+                                                expect, is_constant);      \
+                                                        ^~~~~~~~~~~
+   4 warnings generated.
+--
+>> drivers/iommu/dma-iommu.c:739:16: error: anonymous bit-field has negative width (-1)
+           order_mask &= GENMASK(MAX_ORDER, 0);
+                         ^
+   include/linux/bits.h:37:3: note: expanded from macro 'GENMASK'
+           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+            ^
+   include/linux/bits.h:23:3: note: expanded from macro 'GENMASK_INPUT_CHECK'
+           (BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
+            ^
+   include/linux/build_bug.h:16:53: note: expanded from macro 'BUILD_BUG_ON_ZERO'
+   #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
+                                                       ^
+>> drivers/iommu/dma-iommu.c:739:16: warning: shift count >= width of type [-Wshift-count-overflow]
+           order_mask &= GENMASK(MAX_ORDER, 0);
+                         ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/bits.h:37:31: note: expanded from macro 'GENMASK'
+           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+                                        ^~~~~~~~~~~~~~~
+   include/linux/bits.h:35:11: note: expanded from macro '__GENMASK'
+            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
+                    ^  ~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning and 1 error generated.
+--
+>> kernel/dma/pool.c:197:39: warning: shift count is negative [-Wshift-count-negative]
+                   pages = min_t(unsigned long, pages, MAX_ORDER_NR_PAGES);
+                                                       ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/minmax.h:126:59: note: expanded from macro 'min_t'
+   #define min_t(type, x, y)       __careful_cmp((type)(x), (type)(y), <)
+                                                                   ^
+   include/linux/minmax.h:37:12: note: expanded from macro '__careful_cmp'
+                   __cmp(x, y, op), \
+                            ^
+   include/linux/minmax.h:28:34: note: expanded from macro '__cmp'
+   #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
+                                    ^
+>> kernel/dma/pool.c:197:39: warning: shift count is negative [-Wshift-count-negative]
+                   pages = min_t(unsigned long, pages, MAX_ORDER_NR_PAGES);
+                                                       ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/minmax.h:126:59: note: expanded from macro 'min_t'
+   #define min_t(type, x, y)       __careful_cmp((type)(x), (type)(y), <)
+                                                                   ^
+   include/linux/minmax.h:37:12: note: expanded from macro '__careful_cmp'
+                   __cmp(x, y, op), \
+                            ^
+   include/linux/minmax.h:28:46: note: expanded from macro '__cmp'
+   #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
+                                                ^
+>> kernel/dma/pool.c:197:39: warning: shift count is negative [-Wshift-count-negative]
+                   pages = min_t(unsigned long, pages, MAX_ORDER_NR_PAGES);
+                                                       ^~~~~~~~~~~~~~~~~~
+   include/linux/mmzone.h:33:31: note: expanded from macro 'MAX_ORDER_NR_PAGES'
+   #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
+                                 ^  ~~~~~~~~~
+   include/linux/minmax.h:126:59: note: expanded from macro 'min_t'
+   #define min_t(type, x, y)       __careful_cmp((type)(x), (type)(y), <)
+                                                                   ^
+   include/linux/minmax.h:38:17: note: expanded from macro '__careful_cmp'
+                   __cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
+                                 ^
+   include/linux/minmax.h:32:25: note: expanded from macro '__cmp_once'
+                   typeof(y) unique_y = (y);               \
+                                         ^
+   3 warnings generated.
 
-[0] https://lore.kernel.org/lkml/20230314121216.413434-1-schnelle@linux.ibm.com/
 
-Changes since v3:
-- List archs without HAS_IOPORT in commit message (Arnd)
-- Select HAS_IOPORT for LoongArch (Arnd)
-- Use "select HAS_IOPORT if (E)ISA || .." instead of a "depends on" for (E)ISA
-  for m68k and parisc
-- Select HAS_IOPORT with config GSC on parisc (Arnd)
-- Drop "depends on HAS_IOPORT" for um's config ISA (Johannes)
-- Drop "depends on HAS_IOPORT" for config ISA on x86 and parisc where it is
-  always selected (Arnd)
+vim +739 drivers/iommu/dma-iommu.c
 
- arch/alpha/Kconfig      | 1 +
- arch/arm/Kconfig        | 1 +
- arch/arm64/Kconfig      | 1 +
- arch/ia64/Kconfig       | 1 +
- arch/loongarch/Kconfig  | 1 +
- arch/m68k/Kconfig       | 1 +
- arch/microblaze/Kconfig | 1 +
- arch/mips/Kconfig       | 1 +
- arch/parisc/Kconfig     | 1 +
- arch/powerpc/Kconfig    | 1 +
- arch/riscv/Kconfig      | 1 +
- arch/sh/Kconfig         | 1 +
- arch/sparc/Kconfig      | 1 +
- arch/x86/Kconfig        | 1 +
- drivers/bus/Kconfig     | 2 +-
- drivers/parisc/Kconfig  | 1 +
- lib/Kconfig             | 4 ++++
- 17 files changed, 20 insertions(+), 1 deletion(-)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  732  
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  733  static struct page **__iommu_dma_alloc_pages(struct device *dev,
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  734  		unsigned int count, unsigned long order_mask, gfp_t gfp)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  735  {
+0db2e5d18f76a6 Robin Murphy        2015-10-01  736  	struct page **pages;
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  737  	unsigned int i = 0, nid = dev_to_node(dev);
+3b6b7e19e31a81 Robin Murphy        2016-04-13  738  
+98d56389a5e38b Kirill A. Shutemov  2023-03-15 @739  	order_mask &= GENMASK(MAX_ORDER, 0);
+3b6b7e19e31a81 Robin Murphy        2016-04-13  740  	if (!order_mask)
+3b6b7e19e31a81 Robin Murphy        2016-04-13  741  		return NULL;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  742  
+ab6f4b001c8c72 Gustavo A. R. Silva 2021-09-28  743  	pages = kvcalloc(count, sizeof(*pages), GFP_KERNEL);
+0db2e5d18f76a6 Robin Murphy        2015-10-01  744  	if (!pages)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  745  		return NULL;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  746  
+0db2e5d18f76a6 Robin Murphy        2015-10-01  747  	/* IOMMU can map any pages, so himem can also be used here */
+0db2e5d18f76a6 Robin Murphy        2015-10-01  748  	gfp |= __GFP_NOWARN | __GFP_HIGHMEM;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  749  
+0db2e5d18f76a6 Robin Murphy        2015-10-01  750  	while (count) {
+0db2e5d18f76a6 Robin Murphy        2015-10-01  751  		struct page *page = NULL;
+3b6b7e19e31a81 Robin Murphy        2016-04-13  752  		unsigned int order_size;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  753  
+0db2e5d18f76a6 Robin Murphy        2015-10-01  754  		/*
+0db2e5d18f76a6 Robin Murphy        2015-10-01  755  		 * Higher-order allocations are a convenience rather
+0db2e5d18f76a6 Robin Murphy        2015-10-01  756  		 * than a necessity, hence using __GFP_NORETRY until
+3b6b7e19e31a81 Robin Murphy        2016-04-13  757  		 * falling back to minimum-order allocations.
+0db2e5d18f76a6 Robin Murphy        2015-10-01  758  		 */
+a706e6e10225fb Kirill A. Shutemov  2023-03-15  759  		for (order_mask &= GENMASK(__fls(count), 0);
+3b6b7e19e31a81 Robin Murphy        2016-04-13  760  		     order_mask; order_mask &= ~order_size) {
+3b6b7e19e31a81 Robin Murphy        2016-04-13  761  			unsigned int order = __fls(order_mask);
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  762  			gfp_t alloc_flags = gfp;
+3b6b7e19e31a81 Robin Murphy        2016-04-13  763  
+3b6b7e19e31a81 Robin Murphy        2016-04-13  764  			order_size = 1U << order;
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  765  			if (order_mask > order_size)
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  766  				alloc_flags |= __GFP_NORETRY;
+c4b17afb0a4e8d Ganapatrao Kulkarni 2018-11-30  767  			page = alloc_pages_node(nid, alloc_flags, order);
+0db2e5d18f76a6 Robin Murphy        2015-10-01  768  			if (!page)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  769  				continue;
+4604393ca0c6e4 Robin Murphy        2020-09-03  770  			if (order)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  771  				split_page(page, order);
+0db2e5d18f76a6 Robin Murphy        2015-10-01  772  			break;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  773  		}
+0db2e5d18f76a6 Robin Murphy        2015-10-01  774  		if (!page) {
+0db2e5d18f76a6 Robin Murphy        2015-10-01  775  			__iommu_dma_free_pages(pages, i);
+0db2e5d18f76a6 Robin Murphy        2015-10-01  776  			return NULL;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  777  		}
+3b6b7e19e31a81 Robin Murphy        2016-04-13  778  		count -= order_size;
+3b6b7e19e31a81 Robin Murphy        2016-04-13  779  		while (order_size--)
+0db2e5d18f76a6 Robin Murphy        2015-10-01  780  			pages[i++] = page++;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  781  	}
+0db2e5d18f76a6 Robin Murphy        2015-10-01  782  	return pages;
+0db2e5d18f76a6 Robin Murphy        2015-10-01  783  }
+0db2e5d18f76a6 Robin Murphy        2015-10-01  784  
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 780d4673c3ca..a5c2b1aa46b0 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -27,6 +27,7 @@ config ALPHA
- 	select AUDIT_ARCH
- 	select GENERIC_CPU_VULNERABILITIES
- 	select GENERIC_SMP_IDLE_THREAD
-+	select HAS_IOPORT
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select MODULES_USE_ELF_RELA
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e24a9820e12f..4acb5bc4b52a 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -70,6 +70,7 @@ config ARM
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select HARDIRQS_SW_RESEND
-+	select HAS_IOPORT
- 	select HAVE_ARCH_AUDITSYSCALL if AEABI && !OABI_COMPAT
- 	select HAVE_ARCH_BITREVERSE if (CPU_32v7M || CPU_32v7) && !CPU_32v6
- 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1023e896d46b..b740019c4aee 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -145,6 +145,7 @@ config ARM64
- 	select GENERIC_GETTIMEOFDAY
- 	select GENERIC_VDSO_TIME_NS
- 	select HARDIRQS_SW_RESEND
-+	select HAS_IOPORT
- 	select HAVE_MOVE_PMD
- 	select HAVE_MOVE_PUD
- 	select HAVE_PCI
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index d7e4a24e8644..2e13ec8263b9 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -25,6 +25,7 @@ config IA64
- 	select PCI_DOMAINS if PCI
- 	select PCI_MSI
- 	select PCI_SYSCALL if PCI
-+	select HAS_IOPORT
- 	select HAVE_ASM_MODVERSIONS
- 	select HAVE_UNSTABLE_SCHED_CLOCK
- 	select HAVE_EXIT_THREAD
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 7fd51257e0ed..e1615dfb5437 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -80,6 +80,7 @@ config LOONGARCH
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GPIOLIB
-+	select HAS_IOPORT
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
- 	select HAVE_ARCH_SECCOMP_FILTER
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index 82154952e574..40198a1ebe27 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -18,6 +18,7 @@ config M68K
- 	select GENERIC_CPU_DEVICES
- 	select GENERIC_IOMAP
- 	select GENERIC_IRQ_SHOW
-+	select HAS_IOPORT if PCI || ISA || ATARI_ROM_ISA
- 	select HAVE_ARCH_SECCOMP
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ASM_MODVERSIONS
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index cc88af6fa7a4..211f338d6235 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -21,6 +21,7 @@ config MICROBLAZE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_PCI_IOMAP
- 	select GENERIC_SCHED_CLOCK
-+	select HAS_IOPORT if PCI
- 	select HAVE_ARCH_HASH
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_SECCOMP
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e2f3ca73f40d..2ea3539a07ad 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -47,6 +47,7 @@ config MIPS
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GUP_GET_PXX_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
-+	select HAS_IOPORT if !NO_IOPORT_MAP || ISA
- 	select HAVE_ARCH_COMPILER_H
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KGDB if MIPS_FP_SUPPORT
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index a98940e64243..466a25525364 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -47,6 +47,7 @@ config PARISC
- 	select MODULES_USE_ELF_RELA
- 	select CLONE_BACKWARDS
- 	select TTY # Needed for pdc_cons.c
-+	select HAS_IOPORT if PCI || EISA
- 	select HAVE_DEBUG_STACKOVERFLOW
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HASH
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a6c4407d3ec8..02fd9bcd9215 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -188,6 +188,7 @@ config PPC
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_TIME_NS
-+	select HAS_IOPORT			if PCI
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_RADIX_MMU || PPC_8xx
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index c5e42cc37604..b957d12a171b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -74,6 +74,7 @@ config RISCV
- 	select GENERIC_TIME_VSYSCALL if MMU && 64BIT
- 	select GENERIC_VDSO_TIME_NS if HAVE_GENERIC_VDSO
- 	select HARDIRQS_SW_RESEND
-+	select HAS_IOPORT if MMU
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMALLOC if HAVE_ARCH_HUGE_VMAP
- 	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT && !XIP_KERNEL
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 0665ac0add0b..cfb797bc4200 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -25,6 +25,7 @@ config SUPERH
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GUP_GET_PXX_LOW_HIGH if X2TLB
-+	select HAS_IOPORT if HAS_IOPORT_MAP
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_SECCOMP_FILTER
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 84437a4c6545..d4c1d96f85cd 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -32,6 +32,7 @@ config SPARC
- 	select GENERIC_IRQ_SHOW
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select GENERIC_PCI_IOMAP
-+	select HAS_IOPORT
- 	select HAVE_NMI_WATCHDOG if SPARC64
- 	select HAVE_CBPF_JIT if SPARC32
- 	select HAVE_EBPF_JIT if SPARC64
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index a825bf031f49..44514c63a476 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -162,6 +162,7 @@ config X86
- 	select GUP_GET_PXX_LOW_HIGH		if X86_PAE
- 	select HARDIRQS_SW_RESEND
- 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
-+	select HAS_IOPORT
- 	select HAVE_ACPI_APEI			if ACPI
- 	select HAVE_ACPI_APEI_NMI		if ACPI
- 	select HAVE_ALIGNED_STRUCT_PAGE		if SLUB
-diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-index 7bfe998f3514..fcfa280df98a 100644
---- a/drivers/bus/Kconfig
-+++ b/drivers/bus/Kconfig
-@@ -81,7 +81,7 @@ config MOXTET
- config HISILICON_LPC
- 	bool "Support for ISA I/O space on HiSilicon Hip06/7"
- 	depends on (ARM64 && ARCH_HISI) || (COMPILE_TEST && !ALPHA && !HEXAGON && !PARISC)
--	depends on HAS_IOMEM
-+	depends on HAS_IOPORT
- 	select INDIRECT_PIO if ARM64
- 	help
- 	  Driver to enable I/O access to devices attached to the Low Pin
-diff --git a/drivers/parisc/Kconfig b/drivers/parisc/Kconfig
-index 9eb2c1b5de7d..2fc3222d2634 100644
---- a/drivers/parisc/Kconfig
-+++ b/drivers/parisc/Kconfig
-@@ -4,6 +4,7 @@ menu "Bus options (PCI, PCMCIA, EISA, GSC, ISA)"
- config GSC
- 	bool "VSC/GSC/HSC bus support"
- 	select HAVE_EISA
-+	select HAS_IOPORT
- 	default y
- 	help
- 	  The VSC, GSC and HSC busses were used from the earliest 700-series
-diff --git a/lib/Kconfig b/lib/Kconfig
-index ce2abffb9ed8..5c2da561c516 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -92,6 +92,7 @@ config ARCH_USE_SYM_ANNOTATIONS
- config INDIRECT_PIO
- 	bool "Access I/O in non-MMIO mode"
- 	depends on ARM64
-+	depends on HAS_IOPORT
- 	help
- 	  On some platforms where no separate I/O space exists, there are I/O
- 	  hosts which can not be accessed in MMIO mode. Using the logical PIO
-@@ -509,6 +510,9 @@ config HAS_IOMEM
- 	depends on !NO_IOMEM
- 	default y
- 
-+config HAS_IOPORT
-+	bool
-+
- config HAS_IOPORT_MAP
- 	bool
- 	depends on HAS_IOMEM && !NO_IOPORT_MAP
-
-base-commit: e8d018dd0257f744ca50a729e3d042cf2ec9da65
 -- 
-2.37.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
