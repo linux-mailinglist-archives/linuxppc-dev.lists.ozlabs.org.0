@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983FA6C63B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:34:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80BD6C63C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:35:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Y32zg8z3fTp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:34:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Z25wZ0z3fSM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:35:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bXT7tVFQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIWeaGhk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bXT7tVFQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIWeaGhk;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0Jp4NhSz3fCt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:23:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0K1367bz3f8D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:24:05 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E7C0E62567;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2B63EB82033;
+	Thu, 23 Mar 2023 09:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E88C433A8;
 	Thu, 23 Mar 2023 09:23:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57854C433A0;
-	Thu, 23 Mar 2023 09:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679563432;
-	bh=h6B+59Tw/wfggMAxASThb2CqM8SDBv67+wW2LDMN9Jw=;
+	s=k20201202; t=1679563440;
+	bh=cLED8RkguNRC7M0dLtOL32lQLdxQxLek8h+Azi/Gy6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXT7tVFQRhfcw151cmushy4biLsPbWo6PzWcZLPclsdZZu0AHI/gHXPCin5Sg9iiA
-	 2jk1L0YVy7Qe/xDRPG5nOHZxPuEwCxatggeE5zw2R5dQXNP451ThM1w/k3c6D25V2O
-	 N+fe/J9ocQzrTj5ZRLDbYNoj8L7Fg7BoJUvOHZovfKRiaVzD97DUE5sICsn6MFA/LY
-	 pi2Jmg0MAtEvLy9L7TPVXS9dEOiqkceSsUxLk5XOUJZY6EZeficShFvwWbnG3PVgeZ
-	 ReZTduniWcIdQc0MmOkZSG5un3YfSersJkiDN7rNBFhp80ssYVvFAzH/URVEBtzC7R
-	 bB6ljs+LiityQ==
+	b=WIWeaGhkdAVAFsei9Bza8wkj6njjW2uuNU19Ix52dZIy4kTovKxu2Yzdc1Dz5INgk
+	 6Pg8B0dxqUnQqAGPRddvXBDr04oxwsZgfgMfgJcU2jrpRxwEnlQEkRrI1EaXpZ/Sd3
+	 J1R1AHdgpJEjig/ZCiDv6lRb6moY7coIH3tSLS9pooMmPjppzT+nQQhT/DWOAlRgqO
+	 qm0cc8RB1yphHkpFQoCij3s1dldJDU1nXnNLUsJgMOQ4HfK7QoHZuhf2AiVIoE2wS5
+	 yFRQUoFek2mX0QhpEnHG0I8VwxyFZGYOyQDQfZMNp/sVEaoPdJET5/f6iAfGlVUfv5
+	 tjTM9P6gnulFg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 13/14] sparc: reword ARCH_FORCE_MAX_ORDER prompt and help text
-Date: Thu, 23 Mar 2023 11:21:55 +0200
-Message-Id: <20230323092156.2545741-14-rppt@kernel.org>
+Subject: [PATCH 14/14] xtensa: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Thu, 23 Mar 2023 11:21:56 +0200
+Message-Id: <20230323092156.2545741-15-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230323092156.2545741-1-rppt@kernel.org>
 References: <20230323092156.2545741-1-rppt@kernel.org>
@@ -72,20 +72,20 @@ Update both to actually describe what this option does.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/sparc/Kconfig | 16 +++++++++-------
+ arch/xtensa/Kconfig | 16 +++++++++-------
  1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index e3242bf5a8df..959e43a1aaca 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -270,15 +270,17 @@ config ARCH_SPARSEMEM_DEFAULT
- 	def_bool y if SPARC64
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index 3eee334ba873..3c6e5471f025 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -772,15 +772,17 @@ config HIGHMEM
+ 	  If unsure, say Y.
  
  config ARCH_FORCE_MAX_ORDER
 -	int "Maximum zone order"
 +	int "Order of maximal physically contiguous allocations"
- 	default "12"
+ 	default "10"
  	help
 -	  The kernel memory allocator divides physically contiguous memory
 -	  blocks into "zones", where each zone is a power of two number of
@@ -102,8 +102,8 @@ index e3242bf5a8df..959e43a1aaca 100644
 +
 +	  Don't change if unsure.
  
- if SPARC64 || COMPILE_TEST
- source "kernel/power/Kconfig"
+ endmenu
+ 
 -- 
 2.35.1
 
