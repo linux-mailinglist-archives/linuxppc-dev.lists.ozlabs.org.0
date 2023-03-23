@@ -2,88 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999FA6C611A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 08:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08586C6338
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:23:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhyBh3CmYz3cMf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 18:48:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Hs3vdmz3ccl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:23:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s2PLPXT6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FvLGPcFN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s2PLPXT6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FvLGPcFN;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phy9k1ydcz3bcN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 18:47:37 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N6J9I4022965;
-	Thu, 23 Mar 2023 07:47:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=TUYXsmxji0YN0qAboJerESDzRT8zPmIKsQ4n4Ur9ibA=;
- b=s2PLPXT6GtkSiVlIlwHDzKJsxgfggLuCAoxZfjeQ92fwGZmF5KzZ1tE/7r7JhURVLcmF
- rgAIIawWsQfX+OHoHmOeq3ohvMokUR2hbPkCpKJ3Eb5sTTBSwxgnxdY/GfSM0YQgBtsi
- 3jUGUL4PCvaCsxLgapYCPLKAOy3yO+k403SYBccMcDnN1+J+KhLqJ+Rm8bLVQWm3J6o9
- sEUEm3oEjKBezmNTWqLr2grbuu3Uu/qHIwjJ80hNd4Arn7NqGEgnbFg9DYDxrdpRad5F
- DMCivBmIt4a09WU/EB9JeRqwk1CwHPLF9q82mlEa2WUvehoq0YnEfFVG0aq7/5+QSHjJ 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77dpxd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 07:47:29 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32N6g4jF029094;
-	Thu, 23 Mar 2023 07:47:29 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77dpwv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 07:47:29 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MGBhjm029417;
-	Thu, 23 Mar 2023 07:47:27 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3pd4jff16v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 07:47:26 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32N7lODu23462444
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 07:47:24 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B88720043;
-	Thu, 23 Mar 2023 07:47:24 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D10C20040;
-	Thu, 23 Mar 2023 07:47:23 +0000 (GMT)
-Received: from r223l.aus.stglabs.ibm.com (unknown [9.3.109.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 07:47:22 +0000 (GMT)
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Fabiano Rosas <farosas@linux.ibm.com>
-Subject: [PATCH] arch/powerpc/kvm: kvmppc_core_vcpu_create_hv: check for kzalloc failure
-Date: Thu, 23 Mar 2023 03:47:18 -0400
-Message-Id: <20230323074718.2810914-1-kconsul@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0Gx2LBhz3bdV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:22:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2EDFE62564;
+	Thu, 23 Mar 2023 09:22:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81329C433A0;
+	Thu, 23 Mar 2023 09:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679563333;
+	bh=D35W3oT4dEB7lQGf2gyibA65I3USxy0/PoMsBYvdggw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FvLGPcFNvposDJHd12P4B6tiY0alzsOWKmMDuuC6Bbtu7FQoT8X1aprZqvi0FJfLS
+	 mt0kh+Jo3486s1qGacqEDX/OHvGQZOMLk3QivFrdR+KFUHaYTxUB878ydKgR4ebxQD
+	 hFtgvnKM+VqXPQFFh+LsJ24F5Nvj1PwRnlN6oaSMVilDaV5obtUxIDQf1ebqfjw///
+	 Xh234xD1rgyjvmGU7SMuN7Gnez8IKfnGstw+tdb8tErfz4SpbTfAXlP81Ofg/1ejcw
+	 5ntVdo/7OGVtej0l0Oes4NXXVkuGPAKtpkLi1VbVSLZcdokDBgJOW5/iwZAcLFvNjO
+	 EHVKriGuB7TNg==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 00/14] arch,mm: cleanup Kconfig entries for ARCH_FORCE_MAX_ORDER
+Date: Thu, 23 Mar 2023 11:21:42 +0200
+Message-Id: <20230323092156.2545741-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IyPP7A4fa8iYMef587CjzLjDnLJwINAH
-X-Proofpoint-ORIG-GUID: DHrc5KlRSNEB_noN4oDiBoBXr4_5AQRx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,46 +57,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kautuk Consul <kconsul@linux.vnet.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kvmppc_vcore_create() might not be able to allocate memory through
-kzalloc. In that case the kvm->arch.online_vcores shouldn't be
-incremented.
-Add a check for kzalloc failure and return with -ENOMEM from
-kvmppc_core_vcpu_create_hv().
+From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
----
- arch/powerpc/kvm/book3s_hv.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Hi,
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 6ba68dd6190b..e29ee755c920 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2968,13 +2968,17 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 			pr_devel("KVM: collision on id %u", id);
- 			vcore = NULL;
- 		} else if (!vcore) {
-+			vcore = kvmppc_vcore_create(kvm,
-+					id & ~(kvm->arch.smt_mode - 1));
-+			if (unlikely(!vcore)) {
-+				mutex_unlock(&kvm->lock);
-+				return -ENOMEM;
-+			}
-+
- 			/*
- 			 * Take mmu_setup_lock for mutual exclusion
- 			 * with kvmppc_update_lpcr().
- 			 */
--			err = -ENOMEM;
--			vcore = kvmppc_vcore_create(kvm,
--					id & ~(kvm->arch.smt_mode - 1));
- 			mutex_lock(&kvm->arch.mmu_setup_lock);
- 			kvm->arch.vcores[core] = vcore;
- 			kvm->arch.online_vcores++;
+Several architectures have ARCH_FORCE_MAX_ORDER in their Kconfig and
+they all have wrong and misleading prompt and help text for this option.
+
+Besides, some define insane limits for possible values of
+ARCH_FORCE_MAX_ORDER, some carefully define ranges only for a subset of
+possible configurations, some make this option configurable by users for no
+good reason.
+
+This set updates the prompt and help text everywhere and does its best to
+update actual definitions of ranges where applicable.
+
+Mike Rapoport (IBM) (14):
+  arm: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+  arm64: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  csky: drop ARCH_FORCE_MAX_ORDER
+  ia64: don't allow users to override ARCH_FORCE_MAX_ORDER
+  m68k: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  nios2: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  nios2: drop ranges for definition of ARCH_FORCE_MAX_ORDER
+  powerpc: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  powerpc: drop ranges for definition of ARCH_FORCE_MAX_ORDER
+  sh: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  sh: drop ranges for definition of ARCH_FORCE_MAX_ORDER
+  sparc: reword ARCH_FORCE_MAX_ORDER prompt and help text
+  xtensa: reword ARCH_FORCE_MAX_ORDER prompt and help text
+
+ arch/arm/Kconfig      | 16 +++++++++-------
+ arch/arm64/Kconfig    | 27 ++++++++++++---------------
+ arch/csky/Kconfig     |  4 ----
+ arch/ia64/Kconfig     |  3 +--
+ arch/m68k/Kconfig.cpu | 16 +++++++++-------
+ arch/nios2/Kconfig    | 17 +++++++++--------
+ arch/powerpc/Kconfig  | 22 +++++++++-------------
+ arch/sh/mm/Kconfig    | 19 +++++++++----------
+ arch/sparc/Kconfig    | 16 +++++++++-------
+ arch/xtensa/Kconfig   | 16 +++++++++-------
+ 10 files changed, 76 insertions(+), 80 deletions(-)
+
+
+base-commit: 51551d71edbc998fd8c8afa7312db3d270f5998e
 -- 
-2.39.2
+2.35.1
 
