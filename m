@@ -2,52 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80BD6C63C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 338FD6C63D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:40:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Z25wZ0z3fSM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:35:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0h70f8Wz3fS4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:40:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIWeaGhk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pCQdPrCY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WIWeaGhk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pCQdPrCY;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0K1367bz3f8D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:24:05 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 2B63EB82033;
-	Thu, 23 Mar 2023 09:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E88C433A8;
-	Thu, 23 Mar 2023 09:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679563440;
-	bh=cLED8RkguNRC7M0dLtOL32lQLdxQxLek8h+Azi/Gy6Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIWeaGhkdAVAFsei9Bza8wkj6njjW2uuNU19Ix52dZIy4kTovKxu2Yzdc1Dz5INgk
-	 6Pg8B0dxqUnQqAGPRddvXBDr04oxwsZgfgMfgJcU2jrpRxwEnlQEkRrI1EaXpZ/Sd3
-	 J1R1AHdgpJEjig/ZCiDv6lRb6moY7coIH3tSLS9pooMmPjppzT+nQQhT/DWOAlRgqO
-	 qm0cc8RB1yphHkpFQoCij3s1dldJDU1nXnNLUsJgMOQ4HfK7QoHZuhf2AiVIoE2wS5
-	 yFRQUoFek2mX0QhpEnHG0I8VwxyFZGYOyQDQfZMNp/sVEaoPdJET5/f6iAfGlVUfv5
-	 tjTM9P6gnulFg==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 14/14] xtensa: reword ARCH_FORCE_MAX_ORDER prompt and help text
-Date: Thu, 23 Mar 2023 11:21:56 +0200
-Message-Id: <20230323092156.2545741-15-rppt@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230323092156.2545741-1-rppt@kernel.org>
-References: <20230323092156.2545741-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0g91Y0qz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:39:48 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id w4so13685237plg.9
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 02:39:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679564386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zx1cWbW8skW+J91S4nIUH2+PrWy6/cJUo3hRxlmG+G4=;
+        b=pCQdPrCYjY2EZyqDFB6ur/y+zD7pfxrqPKXJ6qROgn8YzstnagOQ80gua0e1yJf5be
+         Iio59oXde7Wup+LLoxrsV6D9TeOXDdjIwSR0uzeN8xXXiJrpqDFsl3PPA9Bn/1zF3BIo
+         YLwOlu/RQCnP/HzzbsPc80+gLMzoDTJiFBHeGDoqzkTbPeTcgvhX6vrX/IYCDMIOQ+lF
+         oU3W9kqDe16PxbF7PpEZ1wobldylApgBPHSg1aCrJv/TSvboroNCYTId4WKXpZR8qvGg
+         BPHyb212ZPe8k9S2ggTMwGgiVnV72nO1xLe9xzULnDLsdD1LalTMpJY686VYZd+oZ85l
+         A86A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679564386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zx1cWbW8skW+J91S4nIUH2+PrWy6/cJUo3hRxlmG+G4=;
+        b=llBvNGIrjTSh113a62tpHtzm51s4kZxCkgvubBIHDuOMJMfYhHYT/GG6uArisR32Ry
+         t1zQ/XwMrXeMjnnh6K0G/8oCAIfsnIILlhlLPKdCTuyhnWHLLx2v+kQwcKhKYaDEmuVY
+         sMO4caoWNH2plZDoazN8U09VbAiTcO1Q5rTPkcU5j00fb0gITB9ZQry9JbAHKqA+h2WT
+         7xx4rlNpqztcUEY/eLGVPxqP8wCPtdetX8zAt3JRFZw257uaQFwimyJ3b6lpylzDJg7L
+         yWH+K9B/d+XFOVj4lziIVJyUmZ3EMdcCqDeJlR6Ck9F/AqFcdbxYEiQkSd1WEciafO44
+         6BFw==
+X-Gm-Message-State: AAQBX9e6wb4KD6efQVP7Jm+AJ/SQ2l0oNuznjigq8GU6Qu+2Sy+XMtOI
+	Sw2B+zhyvFvBw8Bmbt0LhV8B9bjPu4vVd2P/4qQ=
+X-Google-Smtp-Source: AKy350bCAexRMlOcrYwrCk12cMPtsoPYJWZ/XiHrtIhAZ4B6tk5Hhx8gC4VdgE3XYHEjClHtI+16JTGrwgF9+BfNLfM=
+X-Received: by 2002:a17:902:b687:b0:1a1:ffc5:1e8d with SMTP id
+ c7-20020a170902b68700b001a1ffc51e8dmr942230pls.3.1679564386271; Thu, 23 Mar
+ 2023 02:39:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230323092156.2545741-1-rppt@kernel.org> <20230323092156.2545741-15-rppt@kernel.org>
+In-Reply-To: <20230323092156.2545741-15-rppt@kernel.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Thu, 23 Mar 2023 02:39:34 -0700
+Message-ID: <CAMo8BfJtCgak4mbeZ2R61EEWz+HYYhK-KOz+XJ+fhLY+zFgajA@mail.gmail.com>
+Subject: Re: [PATCH 14/14] xtensa: reword ARCH_FORCE_MAX_ORDER prompt and help text
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,51 +75,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On Thu, Mar 23, 2023 at 2:24=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+>
+> The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
+> describe this configuration option.
+>
+> Update both to actually describe what this option does.
+>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+>  arch/xtensa/Kconfig | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 
-The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
-describe this configuration option.
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 
-Update both to actually describe what this option does.
-
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
----
- arch/xtensa/Kconfig | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index 3eee334ba873..3c6e5471f025 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -772,15 +772,17 @@ config HIGHMEM
- 	  If unsure, say Y.
- 
- config ARCH_FORCE_MAX_ORDER
--	int "Maximum zone order"
-+	int "Order of maximal physically contiguous allocations"
- 	default "10"
- 	help
--	  The kernel memory allocator divides physically contiguous memory
--	  blocks into "zones", where each zone is a power of two number of
--	  pages.  This option selects the largest power of two that the kernel
--	  keeps in the memory allocator.  If you need to allocate very large
--	  blocks of physically contiguous memory, then you may need to
--	  increase this value.
-+	  The kernel page allocator limits the size of maximal physically
-+	  contiguous allocations. The limit is called MAX_ORDER and it
-+	  defines the maximal power of two of number of pages that can be
-+	  allocated as a single contiguous block. This option allows
-+	  overriding the default setting when ability to allocate very
-+	  large blocks of physically contiguous memory is required.
-+
-+	  Don't change if unsure.
- 
- endmenu
- 
--- 
-2.35.1
-
+--=20
+Thanks.
+-- Max
