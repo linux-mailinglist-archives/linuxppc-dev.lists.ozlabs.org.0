@@ -2,68 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7181F6C6C97
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 16:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08BE6C6D13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:13:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj8w92m03z3fFM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 02:51:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj9Nw4DTwz3f7T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 03:13:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=M0KLrypF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oKkYeaYF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=M0KLrypF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oKkYeaYF;
 	dkim-atps=neutral
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj8vC55Z7z3chw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 02:50:46 +1100 (AEDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3ee6c339cceso59975e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 08:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1679586639;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rfdI9P0w7BsEhZbIeZstC1SbyLByst3A6MZbU2P/PdA=;
-        b=M0KLrypF9Eqf0Vzzw6TFab+9iQ+Ncl3B1z5cS2TruXPxfCRAnMc0Bsyt6FHXYX487C
-         /ZAHiVD9ttbXsMKvR8J8QO8Rlp/b8weR3Sfwy+CkAzHvD5ESJhDusVkFb2Aa9+8jnhrt
-         oY70G84O0h76FWyD3sMKsl7+coFfitqmLBdzEXnBXrNmcRoJOuByY6N/nb/29jm/j7et
-         wtvFCsH01qVhPpDKApQfrzth8TWB/JdQnrLtlMWHUSLbEexnIoyZXD5ZTNlUT8eeQWbW
-         6o6eimueCK1hZDEPHib4b11pg2Uw8U4LgLGoafXcwqHgBrJ16SWu5L+VTVQCfqcSczsD
-         FL6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679586639;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rfdI9P0w7BsEhZbIeZstC1SbyLByst3A6MZbU2P/PdA=;
-        b=mEKyfS620kEV68N7c6DYEqCXlXg8/p9kf1tWcgCmIr8ZrFmTUyOPGrty5JcGFGWX16
-         pW30CBEzEev6HcntnbnBOq1T60cRp9bkWcPGZDupJtKDoGqX3Ucy6YYCX8l3iRx/jid4
-         E906hyhJkf8b9R9k61t6qTXs2RVbB3yUbeQgJa8IBsmJuq31UlkbOjPpy3t2fWbZ7JwE
-         MjvoMwvDgtY8ugXdSYvIp2REQcAzbP0BqECkdbEpB52ZUV2qLPukYl5hCKlCic+KRWZt
-         AbRPyxUQauc+FFeFfVByrE4qfzmXT1u/ycces//mQBpFcZRLkNYE5TmRRbzOMxDpmxep
-         e9HQ==
-X-Gm-Message-State: AO0yUKWpGZWiW+CWuF9XcAgOjXmvT3Tb0U1LKItpoh6XQe1TNsHJdxWB
-	5s9B/pfY52mYwH1BAT54IxJGcVbI2XMskQfoGYYyCw==
-X-Google-Smtp-Source: AK7set8lqur84/fe+VYl9U45ksdbEDweEiqlIGbpsmubdP0iQFhECOJZ/No6eWEGme2wt6RUP8SzwqkDovdZBGmGUJQ=
-X-Received: by 2002:a05:600c:4fc2:b0:3ee:113f:4fd9 with SMTP id
- o2-20020a05600c4fc200b003ee113f4fd9mr209617wmq.1.1679586639380; Thu, 23 Mar
- 2023 08:50:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj9Mx2xJwz3cjM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 03:12:13 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NF80lH022777;
+	Thu, 23 Mar 2023 16:12:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=oSJEVLwEKqQwTZPvAIjerxVBtlI2bT9tUq/P1hkllzw=;
+ b=oKkYeaYFpdQzukV79DS0LyuS2Vz3Oa1Z+CXoVABqn6mS+ZYa/O+wwUxLoiySZ+SwLpEc
+ stZoBW0xdiQ8LMUXUwB3t6jY3gPGxYdeeDo+capF5mbLXlUXr83WclwelOvr0yFzmfww
+ INhNaLIUp86bPBD5YzFTSjv6UD3tnxcIkxEQRkCtLDcBmkE/Itfe59n/n+OtdW3BEE/f
+ 8Q48Wyl6CM1ADUUSk4x7nbAZI+ayc+cB6cN62Rxwt3qqHsqqTHpL2QIFh5wlbEdriPex
+ TzNMvKcjR3Fx9yFbNh3FE0Cn41CWtXDw1j/SM6REUr37A1WTn5zub2k5HNkZTcIZa0cB 5w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77tm84-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 16:12:02 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NEVKUs036320;
+	Thu, 23 Mar 2023 16:12:02 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77tm7k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 16:12:02 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32ND8nVD012813;
+	Thu, 23 Mar 2023 16:12:01 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x76tds-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 16:12:00 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NGBxhp53674396
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Mar 2023 16:11:59 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 37C4658062;
+	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1695D5805D;
+	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.242])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Mar 2023 16:11:59 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>,
+        Nicholas
+	Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 5/8] powerpc/rtas: rename va_rtas_call_unlocked() to
+ va_rtas_call()
+In-Reply-To: <84edcbaacd87e84997cd77664048799a3f93d169.camel@linux.ibm.com>
+References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
+ <20230220-rtas-queue-for-6-4-v1-5-010e4416f13f@linux.ibm.com>
+ <84edcbaacd87e84997cd77664048799a3f93d169.camel@linux.ibm.com>
+Date: Thu, 23 Mar 2023 11:11:58 -0500
+Message-ID: <87h6ub78hd.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <ZBxP77deq7ikTxwG@kernel.org>
-In-Reply-To: <ZBxP77deq7ikTxwG@kernel.org>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 23 Mar 2023 08:50:27 -0700
-Message-ID: <CAP-5=fX-0giZxATOVXO5PmCD6yfhoGMb4_vMcWAQLnSq=+DMhQ@mail.gmail.com>
-Subject: Re: perf tools power9 JSON files build breakage on ubuntu 18.04 cross build
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: XuqutOKwDFKnOpofaluIEvXYKAgzoI7r
+X-Proofpoint-ORIG-GUID: kuK9mClv2bRC-EwoPnt69zynvp22elSu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_21,2023-03-23_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 priorityscore=1501 suspectscore=0 mlxlogscore=859
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303230118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,56 +102,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 23, 2023 at 6:11=E2=80=AFAM Arnaldo Carvalho de Melo
-<acme@kernel.org> wrote:
->
-> Exception processing pmu-events/arch/powerpc/power9/other.json
-> Traceback (most recent call last):
->   File "pmu-events/jevents.py", line 997, in <module>
->     main()
->   File "pmu-events/jevents.py", line 979, in main
->     ftw(arch_path, [], preprocess_one_file)
->   File "pmu-events/jevents.py", line 935, in ftw
->     ftw(item.path, parents + [item.name], action)
->   File "pmu-events/jevents.py", line 933, in ftw
->     action(parents, item)
->   File "pmu-events/jevents.py", line 514, in preprocess_one_file
->     for event in read_json_events(item.path, topic):
->   File "pmu-events/jevents.py", line 388, in read_json_events
->     events =3D json.load(open(path), object_hook=3DJsonEvent)
->   File "/usr/lib/python3.6/json/__init__.py", line 296, in load
->     return loads(fp.read(),
->   File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
->     return codecs.ascii_decode(input, self.errors)[0]
-> UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 5509=
-0: ordinal not in range(128)
->   CC      /tmp/build/perf/tests/expr.o
-> pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-ev=
-ents.c' failed
-> make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
-> make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
-> Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-even=
-ts-in.o' failed
-> make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
-> make[2]: *** Waiting for unfinished jobs....
->
->
-> Now jevents is an opt-out feature so I'm noticing these problems.
->
-> A similar fix for s390 was accepted today:
+Andrew Donnellan <ajd@linux.ibm.com> writes:
 
-The JEVENTS_ARCH=3Dall make option builds the s390 files even on x86.
-I'm confused as to why that's been working before these fixes.
-
-Thanks,
-Ian
-
-> https://lore.kernel.org/r/20230323122532.2305847-1-tmricht@linux.ibm.com
-> https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
-> --
+> On Mon, 2023-03-06 at 15:33 -0600, Nathan Lynch via B4 Relay wrote:
+>> From: Nathan Lynch <nathanl@linux.ibm.com>
+>> 
+>> The function name va_rtas_call_unlocked() is confusing: it may be
+>> called with or without rtas_lock held. Rename it to va_rtas_call().
+>> 
+>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 >
-> - Arnaldo
+> Not a huge fan of the name, the va_ suggests that the only difference
+> between this function and rtas_call() is the varargs handling. Perhaps
+> something like __rtas_call()?
+
+I would be more inclined to agree if va_rtas_call() were a public API,
+like rtas_call().
+
+But it's not, so the convention you're appealing to shouldn't inform the
+expectations of external users of the rtas_* APIs, at least.
+
+__rtas_call() conveys strictly less information than va_rtas_call()
+IMO. Most functions in the kernel that take a va_list have a "v" worked
+into their name somehow.
