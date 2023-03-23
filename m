@@ -1,92 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6306C5E40
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 05:55:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A666C5F4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 07:03:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PhtLh3Twdz3cgy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 15:55:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Phvry0dBSz3f4N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 17:02:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jgjmRsXu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V/WOdjht;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jgjmRsXu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V/WOdjht;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PhtKn3skzz3bfk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 15:54:21 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N2gJrZ022891;
-	Thu, 23 Mar 2023 04:54:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=Fz949UnED9b+z0odK5W4St+mvGSXOw93nxagEvAaO4Y=;
- b=jgjmRsXunbRqluf+PcCSEPmeerRlEhMq6ZcGAY9TLW7lBopmAfw+tlKW8gm8ChorCgEl
- /RYpkeyM8nLDgEg+t2lJYk511v6sXCrVXydr+ooxsKnaFGch5pDjvfn+MJNUub1NuKIn
- UQLVfLrsfVhao8q5iMVuROeIiYW6w3i6u/l3J0dpXD2XOjpdmAVydp+VhdFR9HiEWN/9
- t0eFIwZ9QLLg1TKgEPM432WhuGaYT1+2YBh5V0J5n6vj9m0Pqtr3fc+ngrY06Trcnylx
- YSKvtFv2OoO4rGaG8sjpJwkN9S9Pf13jsZ6yHWLvztQasGXeT9v60KxwYpXrxLfxCCZH 8w== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Phvqy6bQ3z3bjb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 17:02:06 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N5hqME039311;
+	Thu, 23 Mar 2023 06:01:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=IUujRVc+UxRncttN4J/tMVjlE1OwpJ9AhMzXhgLGmhU=;
+ b=V/WOdjht176+cWRgi6N+3e53fiNV8mVutU15cCxzVqb8rLtBr8cssW6PPQfR/VayHdmI
+ OzN+GAegkfwyyZQXgqnIuSskGPUgMhsR0PqvfOLZSzEfyBldRzraYzRYRolrTBV/BDr4
+ 0Vy4fVYDmQHs0ooxRiXbOA8NZYPH1emrQmBkO4/FsVQjZIW1rh5W1tMoBEwDl3OsL039
+ c4TCRYxisNTTBNSPA8CxLMsJdLsDjG7b0u9YsHH9GDMTNy6Sqix3bF8gs/xExdPKlQNe
+ 0+AotIknRltBCcKFJkOkrP5lPOGvX8VqXWB7BUfY5jB8DUHKHHsPSGJ2oJkOAHsJq/Fb fg== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77a83d-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pggv78bcc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 04:54:12 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32N4hQrC030824;
-	Thu, 23 Mar 2023 04:54:11 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77a82r-1
+	Thu, 23 Mar 2023 06:01:58 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32N5jPPb004126;
+	Thu, 23 Mar 2023 06:01:57 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pggv78bbu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 04:54:11 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MB1RbH000634;
-	Thu, 23 Mar 2023 04:54:09 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3pd4x6dqp4-1
+	Thu, 23 Mar 2023 06:01:57 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MHUgF6018610;
+	Thu, 23 Mar 2023 06:01:55 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3pd4x6ev69-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 04:54:08 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32N4s5Sf31064674
+	Thu, 23 Mar 2023 06:01:55 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32N61rp240174052
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 04:54:05 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2563420040;
-	Thu, 23 Mar 2023 04:54:05 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 91D932004D;
-	Thu, 23 Mar 2023 04:54:02 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.74.26])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 23 Mar 2023 04:54:02 +0000 (GMT)
-Date: Thu, 23 Mar 2023 10:23:59 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 2/2] arch/powerpc/kvm: kvmppc_hv_entry: remove r4
- argument
-Message-ID: <ZBvbZ1iNcpqDHP0t@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230316051025.1424093-1-kconsul@linux.vnet.ibm.com>
- <20230316051025.1424093-3-kconsul@linux.vnet.ibm.com>
- <87v8itt1y8.fsf@mpe.ellerman.id.au>
+	Thu, 23 Mar 2023 06:01:53 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2EACA20040;
+	Thu, 23 Mar 2023 06:01:53 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2F7E2005A;
+	Thu, 23 Mar 2023 06:01:52 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Mar 2023 06:01:52 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2AA6E602EB;
+	Thu, 23 Mar 2023 17:01:49 +1100 (AEDT)
+Message-ID: <12f13c50f518c570a94a199ec3bf047eaab53bbf.camel@linux.ibm.com>
+Subject: Re: [PATCH 6/8] powerpc/rtas: lockdep annotations
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: nathanl@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas
+	Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Thu, 23 Mar 2023 17:01:48 +1100
+In-Reply-To: <20230220-rtas-queue-for-6-4-v1-6-010e4416f13f@linux.ibm.com>
+References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
+	 <20230220-rtas-queue-for-6-4-v1-6-010e4416f13f@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87v8itt1y8.fsf@mpe.ellerman.id.au>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bhiEqvG2tWkK9OPUvMTXhfh_puSybM6U
-X-Proofpoint-ORIG-GUID: YyCg7sUROtcZmwxYYldgaz7D3p7j4vFW
+X-Proofpoint-ORIG-GUID: oECsXOK6wD-72RTRUhuWU2T8GfxJAaUU
+X-Proofpoint-GUID: TNWYoCLl7zGGa-97Fdn2FhSlb0qOvefd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230034
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0
+ suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303230041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,97 +106,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, Sathvika Vasireddy <sv@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Mon, 2023-03-06 at 15:33 -0600, Nathan Lynch via B4 Relay wrote:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+>=20
+> Add lockdep annotations for the following properties that must hold:
+>=20
+> * Any error log retrieval must be atomically coupled with the prior
+> =C2=A0 RTAS call, without a window for another RTAS call to occur before
+> the
+> =C2=A0 error log can be retrieved.
+>=20
+> * All users of the core rtas_args parameter block must hold
+> rtas_lock.
+>=20
+> Move the definitions of rtas_lock and rtas_args up in the file so
+> that
+> __do_enter_rtas_trace() can refer to them.
+>=20
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-On 2023-03-22 23:17:35, Michael Ellerman wrote:
-> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> > kvmppc_hv_entry is called from only 2 locations within
-> > book3s_hv_rmhandlers.S. Both of those locations set r4
-> > as HSTATE_KVM_VCPU(r13) before calling kvmppc_hv_entry.
-> > So, shift the r4 load instruction to kvmppc_hv_entry and
-> > thus modify the calling convention of this function.
-> >
-> > Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-> > ---
-> >  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 11 ++++++-----
-> >  1 file changed, 6 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> > index b81ba4ee0521..b61f0b2c677b 100644
-> > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> > @@ -85,7 +85,7 @@ _GLOBAL_TOC(kvmppc_hv_entry_trampoline)
-> >  	RFI_TO_KERNEL
-> >  
-> >  kvmppc_call_hv_entry:
-> > -	ld	r4, HSTATE_KVM_VCPU(r13)
-> > +	/* Enter guest. */
-> >  	bl	kvmppc_hv_entry
-> >  
-> >  	/* Back from guest - restore host state and return to caller */
-> > @@ -352,9 +352,7 @@ kvm_secondary_got_guest:
-> >  	mtspr	SPRN_LDBAR, r0
-> >  	isync
-> >  63:
-> > -	/* Order load of vcpu after load of vcore */
-> > -	lwsync
-> > -	ld	r4, HSTATE_KVM_VCPU(r13)
-> > +	/* Enter guest. */
-> >  	bl	kvmppc_hv_entry
-> >  
-> >  	/* Back from the guest, go back to nap */
-> > @@ -506,7 +504,6 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
-> >  
-> >  	/* Required state:
-> >  	 *
-> > -	 * R4 = vcpu pointer (or NULL)
-> >  	 * MSR = ~IR|DR
-> >  	 * R13 = PACA
-> >  	 * R1 = host R1
-> > @@ -524,6 +521,10 @@ SYM_INNER_LABEL(kvmppc_hv_entry, SYM_L_LOCAL)
-> >  	li	r6, KVM_GUEST_MODE_HOST_HV
-> >  	stb	r6, HSTATE_IN_GUEST(r13)
-> >  
-> > +	/* Order load of vcpu after load of vcore */
-> 
-> Just copying the comment here doesn't work. It doesn't make sense on its
-> own here, because the VCORE is loaded (again) a few lines below (536).
-> So as written this comment seems backward vs the code.
-> 
-> The comment would need to expand to explain that the barrier is for the
-> case where we came from kvm_secondary_got_guest.
-> 
-Agreed.
-> > +	lwsync
-> > +	ld	r4, HSTATE_KVM_VCPU(r13)
-> > +
-> >  #ifdef CONFIG_KVM_BOOK3S_HV_P8_TIMING
-> >  	/* Store initial timestamp */
-> >  	cmpdi	r4, 0
-> 
-> 
-> But as Nick says I don't think it's worth investing effort in small
-> tweaks to this code. The risk of introducing bugs is too high for such a
-> small improvement to the code.
-> 
-> Thanks for trying, but I think this asm code is best left more or less
-> alone unless we find actual bugs in it - or unless we can make
-> substantial improvements to it, which would be rewriting in C, or at
-> least converting to a fully call/return style rather than the current
-> forest of labels.
-> 
-> I will take patch 1 though, as that's an obvious cleanup and poses no
-> risk (famous last words :D).
-Thanks for taking patch 1. I completely agree that it would not be wise
-to introduce even small alterations to stable legacy code. But sending
-patches like this and conversing with this mailing list's reviewers
-is giving me a good picture of what you are open to accepting at this
-stage.
+I'm no lockdep expert and I haven't checked if every possible case that
+can be annotated has been annotated, but these changes make sense as
+far as I can tell from my limited inspection.
 
-Thanks again!
-> 
-> cheers
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
