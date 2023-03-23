@@ -2,96 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B086C6884
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCDA6C693A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 14:12:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj4bz0kZvz3f7m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:37:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj5N35Plbz3f98
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 00:12:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AAAhVbam;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KRQCNT9x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rWLRPOUF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AAAhVbam;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KRQCNT9x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rWLRPOUF;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj4Zz2XPPz3chd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:36:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679574982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
-	b=AAAhVbamgnbXMGpvILnESVBWJfC13tdALhhR/u3fHYlaYPcp238NOYGg4k6HLm/9YIeMZK
-	Zz4BkySToZYE3qLRap7Pa7jgAhTTvy5OxC76fzaF3zF/MLNWVYs2yZ99kIMUSNHyB7sAy9
-	AUdFHzD4RwlrKNqf3eBbofqBMdpfy0s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679574983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
-	b=KRQCNT9xbLcQ2pIjQhnJGzkj9pC4cE/ah59J88gU6Lg+TY4KIbsWs6abamzJS4JDbqX6bI
-	WX4rMLpn7v10n/jSvSOyrN2zn5Gvcoh2iKHkAZkRrsIjmjZOmTnWNn7rHR2ef8ALesVerG
-	PncazaRsW3yYpwdMv4n1OKhkrF/Wz+Y=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-ALXhIx2sP-GNYKIS64wXaQ-1; Thu, 23 Mar 2023 08:36:21 -0400
-X-MC-Unique: ALXhIx2sP-GNYKIS64wXaQ-1
-Received: by mail-wm1-f72.google.com with SMTP id bi27-20020a05600c3d9b00b003e9d0925341so10229468wmb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:36:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679574980;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C1ZeVwAMcdgE90JtmIiMiS75gDxyRrOisVDnsuVcwUo=;
-        b=vaKT+jxRTU9pMPMIYIQBY0JgCStUh00XHL1fHxwTauu5bBeiLsQUmWu8SwDDzorI2Q
-         1bztPdh+w1+A1Qgv+GoPku+OT9y0PoN1hxSbUU5Q9vDvcfhtNmMw6TiNuyHFGzByt3jA
-         72yUj9nbVlba+Z35MUllnYQI2nB1YId0XaDsTq7l0ftZufOb3FYbcnEeGILfn1iUZTuS
-         IU3tSFqiY9S8IU+DlqbnpTbF5/NNAICXe4elq/rElvWisnJ4GQntD7DcOeZigGkzY9QN
-         35QUdtCymDSrX5iul0/WlSk5/YBrSMRdV6hJKyxQmWUMyxKPWaYjc27gTnTapTc8kGMw
-         ehDw==
-X-Gm-Message-State: AO0yUKWT6hbZt2n1oFMFa/OQRKbl62Yjv4Umzb2EmVAtwUfnVAr5OBV9
-	U+ga50EghvAbVpautwJfmxSmVMaf6iV/THO+MYh58fO4b5IoKcRfKSJS9o4MKyEZsz8jAGB5LGe
-	BJKU5vfyU4NCTvmNHNftmjA2o0g==
-X-Received: by 2002:a7b:c7c6:0:b0:3ed:c84c:7efe with SMTP id z6-20020a7bc7c6000000b003edc84c7efemr2405807wmk.7.1679574980325;
-        Thu, 23 Mar 2023 05:36:20 -0700 (PDT)
-X-Google-Smtp-Source: AK7set8oDnR+hiI0SXiFClKDLDWGr6LPzKLAvyQijtGW1h8/zF2dqcPY+2ZH3SbZTb15LmBbQxnPpA==
-X-Received: by 2002:a7b:c7c6:0:b0:3ed:c84c:7efe with SMTP id z6-20020a7bc7c6000000b003edc84c7efemr2405798wmk.7.1679574980073;
-        Thu, 23 Mar 2023 05:36:20 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-179-146.web.vodafone.de. [109.43.179.146])
-        by smtp.gmail.com with ESMTPSA id s12-20020a1cf20c000000b003ed1f111fdesm1754301wmc.20.2023.03.23.05.36.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 05:36:19 -0700 (PDT)
-Message-ID: <f03084cc-8ac6-b2cb-b2e8-39bc73843ab7@redhat.com>
-Date: Thu, 23 Mar 2023 13:36:18 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj5M925Pkz3cMh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 00:11:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 62007626A9;
+	Thu, 23 Mar 2023 13:11:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7DCC433EF;
+	Thu, 23 Mar 2023 13:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679577074;
+	bh=/OLefhFZ4sSoFTXhUzU6IaDDgb/f3Tybtx2GNklSFZk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=rWLRPOUFKadadg9y9Kg4aDNA6PX2eyrslleiTSZd8Rl5a+9bAFVMsuLgeDg9I8lSn
+	 nFVrfMFfHNMFzOtW6Dn0AF/FxudZs20bErVZ6Ya62L5K2rnkth6rcF5MohGU2rpGir
+	 0RKcqhwRySwxc2LXv7JW4XvwrIAtctgmdKslZ7tGHSWIIirCJ2vzl7BgCpbw8yHeTF
+	 U9BgvtDM/EjFikFXXAuQ4qo4L39x7X9u+S7lE9zryn0NgG8SD2cPQAsvU+646ZyyI+
+	 N/UrMv/RsDStFMphC+/DjFtaOZE+LYOQT4TEXBVxPDrguuF7vUPgNZwRS53wJGoLyf
+	 Pq+dE+zAL5RSw==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id F13B64052D; Thu, 23 Mar 2023 10:11:11 -0300 (-03)
+Date: Thu, 23 Mar 2023 10:11:11 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Subject: perf tools power9 JSON files build breakage on ubuntu 18.04 cross
+ build
+Message-ID: <ZBxP77deq7ikTxwG@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v2 06/10] powerpc/sprs: Specify SPRs with data
- rather than code
-To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
-References: <20230320070339.915172-1-npiggin@gmail.com>
- <20230320070339.915172-7-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230320070339.915172-7-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,101 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/03/2023 08.03, Nicholas Piggin wrote:
-> A significant rework that builds an array of 'struct spr', where each
-> element describes an SPR. This makes various metadata about the SPR
-> like name and access type easier to carry and use.
-> 
-> Hypervisor privileged registers are described despite not being used
-> at the moment for completeness, but also the code might one day be
-> reused for a hypervisor-privileged test.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> 
-> This ended up a little over-engineered perhaps, but there are lots of
-> SPRs, lots of access types, lots of changes between processor and ISA
-> versions, and lots of places they are implemented and used, so lots of
-> room for mistakes. There is not a good system in place to easily
-> see that userspace, supervisor, etc., switches perform all the right
-> SPR context switching so this is a nice test case to have. The sprs test
-> quickly caught a few QEMU TCG SPR bugs which really motivated me to
-> improve the SPR coverage.
-> ---
->   powerpc/sprs.c | 589 +++++++++++++++++++++++++++++++++----------------
->   1 file changed, 394 insertions(+), 195 deletions(-)
-> 
-> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-> index db341a9..dd83dac 100644
-> --- a/powerpc/sprs.c
-> +++ b/powerpc/sprs.c
-> @@ -82,231 +82,407 @@ static void mtspr(unsigned spr, uint64_t val)
->   	: "lr", "ctr", "xer");
->   }
->   
-> -uint64_t before[1024], after[1024];
-> +static uint64_t before[1024], after[1024];
->   
-> -/* Common SPRs for all PowerPC CPUs */
-> -static void set_sprs_common(uint64_t val)
-> -{
-> -	// mtspr(9, val);	/* CTR */ /* Used by mfspr/mtspr */
-> -	// mtspr(273, val);	/* SPRG1 */  /* Used by our exception handler */
-> -	mtspr(274, val);	/* SPRG2 */
-> -	mtspr(275, val);	/* SPRG3 */
-> -}
-> +#define SPR_PR_READ	0x0001
-> +#define SPR_PR_WRITE	0x0002
-> +#define SPR_OS_READ	0x0010
-> +#define SPR_OS_WRITE	0x0020
-> +#define SPR_HV_READ	0x0100
-> +#define SPR_HV_WRITE	0x0200
-> +
-> +#define RW		0x333
-> +#define RO		0x111
-> +#define WO		0x222
-> +#define OS_RW		0x330
-> +#define OS_RO		0x110
-> +#define OS_WO		0x220
-> +#define HV_RW		0x300
-> +#define HV_RO		0x100
-> +#define HV_WO		0x200
-> +
-> +#define SPR_ASYNC	0x1000	/* May be updated asynchronously */
-> +#define SPR_INT		0x2000	/* May be updated by synchronous interrupt */
-> +#define SPR_HARNESS	0x4000	/* Test harness uses the register */
-> +
-> +struct spr {
-> +	const char	*name;
-> +	uint8_t		width;
-> +	uint16_t	access;
-> +	uint16_t	type;
-> +};
-> +
-> +/* SPRs common denominator back to PowerPC Operating Environment Architecture */
-> +static const struct spr sprs_common[1024] = {
-> +  [1] = {"XER",		64,	RW,		SPR_HARNESS, }, /* Compiler */
-> +  [8] = {"LR", 		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
-> +  [9] = {"CTR",		64,	RW,		SPR_HARNESS, }, /* Compiler, mfspr/mtspr */
-> + [18] = {"DSISR",	32,	OS_RW,		SPR_INT, },
-> + [19] = {"DAR",		64,	OS_RW,		SPR_INT, },
-> + [26] = {"SRR0",	64,	OS_RW,		SPR_INT, },
-> + [27] = {"SRR1",	64,	OS_RW,		SPR_INT, },
-> +[268] = {"TB",		64,	RO	,	SPR_ASYNC, },
-> +[269] = {"TBU",		32,	RO,		SPR_ASYNC, },
-> +[272] = {"SPRG0",	64,	OS_RW,		SPR_HARNESS, }, /* Int stack */
-> +[273] = {"SPRG1",	64,	OS_RW,		SPR_HARNESS, }, /* Scratch */
-> +[274] = {"SPRG2",	64,	OS_RW, },
-> +[275] = {"SPRG3",	64,	OS_RW, },
-> +[287] = {"PVR",		32,	OS_RO, },
-> +};
+Exception processing pmu-events/arch/powerpc/power9/other.json
+Traceback (most recent call last):
+  File "pmu-events/jevents.py", line 997, in <module>
+    main()
+  File "pmu-events/jevents.py", line 979, in main
+    ftw(arch_path, [], preprocess_one_file)
+  File "pmu-events/jevents.py", line 935, in ftw
+    ftw(item.path, parents + [item.name], action)
+  File "pmu-events/jevents.py", line 933, in ftw
+    action(parents, item)
+  File "pmu-events/jevents.py", line 514, in preprocess_one_file
+    for event in read_json_events(item.path, topic):
+  File "pmu-events/jevents.py", line 388, in read_json_events
+    events = json.load(open(path), object_hook=JsonEvent)
+  File "/usr/lib/python3.6/json/__init__.py", line 296, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+    return codecs.ascii_decode(input, self.errors)[0]
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 55090: ordinal not in range(128)
+  CC      /tmp/build/perf/tests/expr.o
+pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-events.c' failed
+make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
+make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
+Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-events-in.o' failed
+make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
+make[2]: *** Waiting for unfinished jobs....
 
-Using a size of 1024 for each of these arrays looks weird. Why don't you add 
-a "nr" field to struct spr and specify the register number via that field 
-instead of using the index into the array as register number?
 
-  Thomas
+Now jevents is an opt-out feature so I'm noticing these problems.
 
+A similar fix for s390 was accepted today:
+
+
+https://lore.kernel.org/r/20230323122532.2305847-1-tmricht@linux.ibm.com
+https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
+-- 
+
+- Arnaldo
