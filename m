@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E96B6C63A2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:31:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4C06C63A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:32:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0V43GNfz3fSX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:31:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0W40t6hz3fl3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:32:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vf+DqdFM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GFFz5NaC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vf+DqdFM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GFFz5NaC;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0JP18H9z3f5l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:23:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0JW0X9jz3cjR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:23:39 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id CC2F2B8202A;
-	Thu, 23 Mar 2023 09:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922B2C4339E;
-	Thu, 23 Mar 2023 09:23:22 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 628A06256A;
+	Thu, 23 Mar 2023 09:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D02FC433A8;
+	Thu, 23 Mar 2023 09:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679563409;
-	bh=mp6A6C8OOeS6nY+QDsN8wj88cRjFdHtJCyFT1kANL6s=;
+	s=k20201202; t=1679563417;
+	bh=xyXXkPdOs/21dd9fXLx/1W3XAfw4Vm18klKPTzgLDlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vf+DqdFMjEwSbPC+mJj235EVrBbgYDeFMYHxHYwKEoJX6x2hG7Nd6wUFlTriUV+ju
-	 Ki+QZQPrDtM2ZM/upW1C91O6NowwP2geqJok0JmWq2H72w6qScQsAHBP450KPi50O8
-	 GnVm52Ym3n9y0567PryZU/4PnsUtdUTXIfj7RKzU4XtAIIDfvODMlcqYrijMGf+xdU
-	 xlmiAvGgCuUdAQV6JuFcTkmxtOYvFB1YsVPqzbZtVOz+BNwl7EUfScn+rtw/Gn/cvW
-	 hcHl/dApeHp57bvQnfEJzFI6X2ZwwbySWtQPm/oSj5a+4/6CqZV3+pdT8sT7oM/zlU
-	 LyHhQhr8mNFeQ==
+	b=GFFz5NaC+vrwnSCGIu6c0oHMBmH41+j5nnZFHvFRMqQaOnlu8zCF23yQp8LqpSUt6
+	 Qu329MdHdt1bUT9fJK06PoV31PmGAOtM86VmGGT1ePi7NlfJEiWbMRrc+lyLqcxUaC
+	 g3wJxdZ/KGyisazSl2iXmhi5XAujfAaBfhSNzNxy9q7dxCJ4yRuzdekruueK/KJns7
+	 E9Xbl9WHZZsP+II+QP+PJH/FE+VWPnqb5Q0JLaSNy+ppD59eLK0NEmcrtk4Jwx7jp8
+	 pagmMXBYAzaV+b1cDmcUqxElrUp+xt0+aQe1ggmHaoGesSG3y9jUY6DZ+ry7M/kiwn
+	 JU/N4Vy1Mv7nQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 10/14] powerpc: drop ranges for definition of ARCH_FORCE_MAX_ORDER
-Date: Thu, 23 Mar 2023 11:21:52 +0200
-Message-Id: <20230323092156.2545741-11-rppt@kernel.org>
+Subject: [PATCH 11/14] sh: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Thu, 23 Mar 2023 11:21:53 +0200
+Message-Id: <20230323092156.2545741-12-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230323092156.2545741-1-rppt@kernel.org>
 References: <20230323092156.2545741-1-rppt@kernel.org>
@@ -65,43 +65,55 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-PowerPC defines ranges for ARCH_FORCE_MAX_ORDER some of which are
-insanely allowing MAX_ORDER up to 63, which implies maximal contiguous
-allocation size of 2^63 pages.
+The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
+describe this configuration option.
 
-Drop bogus definitions of ranges for ARCH_FORCE_MAX_ORDER and leave it a
-simple integer with sensible defaults.
-
-Users that *really* need to change the value of ARCH_FORCE_MAX_ORDER
-will be able to do so but they won't be mislead by the bogus ranges.
+Update both to actually describe what this option does.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/powerpc/Kconfig | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/sh/mm/Kconfig | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c0095bf795ca..419be4a71004 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -897,17 +897,11 @@ config DATA_SHIFT
+diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
+index 40271090bd7d..fb15ba1052ba 100644
+--- a/arch/sh/mm/Kconfig
++++ b/arch/sh/mm/Kconfig
+@@ -19,8 +19,7 @@ config PAGE_OFFSET
+ 	default "0x00000000"
  
  config ARCH_FORCE_MAX_ORDER
- 	int "Order of maximal physically contiguous allocations"
--	range 7 8 if PPC64 && PPC_64K_PAGES
- 	default "8" if PPC64 && PPC_64K_PAGES
--	range 12 12 if PPC64 && !PPC_64K_PAGES
- 	default "12" if PPC64 && !PPC_64K_PAGES
--	range 8 63 if PPC32 && PPC_16K_PAGES
- 	default "8" if PPC32 && PPC_16K_PAGES
--	range 6 63 if PPC32 && PPC_64K_PAGES
- 	default "6" if PPC32 && PPC_64K_PAGES
--	range 4 63 if PPC32 && PPC_256K_PAGES
- 	default "4" if PPC32 && PPC_256K_PAGES
--	range 10 63
+-	int "Maximum zone order"
+-	range 8 63 if PAGE_SIZE_16KB
++	int "Order of maximal physically contiguous allocations"
+ 	default "8" if PAGE_SIZE_16KB
+ 	range 6 63 if PAGE_SIZE_64KB
+ 	default "6" if PAGE_SIZE_64KB
+@@ -28,16 +27,18 @@ config ARCH_FORCE_MAX_ORDER
+ 	default "13" if !MMU
  	default "10"
  	help
- 	  The kernel page allocator limits the size of maximal physically
+-	  The kernel memory allocator divides physically contiguous memory
+-	  blocks into "zones", where each zone is a power of two number of
+-	  pages.  This option selects the largest power of two that the kernel
+-	  keeps in the memory allocator.  If you need to allocate very large
+-	  blocks of physically contiguous memory, then you may need to
+-	  increase this value.
++	  The kernel page allocator limits the size of maximal physically
++	  contiguous allocations. The limit is called MAX_ORDER and it
++	  defines the maximal power of two of number of pages that can be
++	  allocated as a single contiguous block. This option allows
++	  overriding the default setting when ability to allocate very
++	  large blocks of physically contiguous memory is required.
+ 
+ 	  The page size is not necessarily 4KB. Keep this in mind when
+ 	  choosing a value for this option.
+ 
++	  Don't change if unsure.
++
+ config MEMORY_START
+ 	hex "Physical memory start address"
+ 	default "0x08000000"
 -- 
 2.35.1
 
