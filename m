@@ -1,55 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCDA6C693A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 14:12:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BFC6C6971
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 14:26:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj5N35Plbz3f98
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 00:12:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj5hB53tTz3f82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 00:26:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rWLRPOUF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XUOZb+O0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rWLRPOUF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XUOZb+O0;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj5M925Pkz3cMh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 00:11:17 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 62007626A9;
-	Thu, 23 Mar 2023 13:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7DCC433EF;
-	Thu, 23 Mar 2023 13:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679577074;
-	bh=/OLefhFZ4sSoFTXhUzU6IaDDgb/f3Tybtx2GNklSFZk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=rWLRPOUFKadadg9y9Kg4aDNA6PX2eyrslleiTSZd8Rl5a+9bAFVMsuLgeDg9I8lSn
-	 nFVrfMFfHNMFzOtW6Dn0AF/FxudZs20bErVZ6Ya62L5K2rnkth6rcF5MohGU2rpGir
-	 0RKcqhwRySwxc2LXv7JW4XvwrIAtctgmdKslZ7tGHSWIIirCJ2vzl7BgCpbw8yHeTF
-	 U9BgvtDM/EjFikFXXAuQ4qo4L39x7X9u+S7lE9zryn0NgG8SD2cPQAsvU+646ZyyI+
-	 N/UrMv/RsDStFMphC+/DjFtaOZE+LYOQT4TEXBVxPDrguuF7vUPgNZwRS53wJGoLyf
-	 Pq+dE+zAL5RSw==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id F13B64052D; Thu, 23 Mar 2023 10:11:11 -0300 (-03)
-Date: Thu, 23 Mar 2023 10:11:11 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: perf tools power9 JSON files build breakage on ubuntu 18.04 cross
- build
-Message-ID: <ZBxP77deq7ikTxwG@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj5gB28xTz3c8G
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 00:25:09 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NBwu6E027980;
+	Thu, 23 Mar 2023 13:24:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=VwL2eHgiXbSpbcyOMi1Fm6CGpKEbs60ss+WPZnJK5Ik=;
+ b=XUOZb+O02s7yDbfd9owIe2KU+IxtepAYblP5hOfMaou9r1s62w4XYcd21Ay890Ch0UtZ
+ b3P6V74UYISN/vgI9gfJX4goA81aaSJ6+BrnqTltbxt9dViPahHFqwYh2ph/oHgOCuUs
+ cBuk/dBdRXe6yir7UjhPfJohLY53yu99IuZ0u/VvorW219jlSZERTnQz24NuopyuaJRv
+ f/R4+LqrQSLYvZjgJitqK439IVBWg+2l8kKrls150yN5+2GDZLbAW/9AVV53S7LOSmnA
+ XiauVMwmdc0qgxFAu2fBNR8kde+goodonXLhqI7dsBaHwnZoURHUBVQ40SKG6ndeV6av Ww== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pghqssfc6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 13:24:08 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NBrkW0000445;
+	Thu, 23 Mar 2023 13:24:07 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pghqssfab-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 13:24:07 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32NCFRdl006837;
+	Thu, 23 Mar 2023 13:24:03 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3pd4x667jt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Mar 2023 13:24:03 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NDO0Y524772868
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Mar 2023 13:24:00 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBC2C20040;
+	Thu, 23 Mar 2023 13:24:00 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD7DC2004D;
+	Thu, 23 Mar 2023 13:23:57 +0000 (GMT)
+Received: from [9.171.87.16] (unknown [9.171.87.16])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Mar 2023 13:23:57 +0000 (GMT)
+Message-ID: <95d5d0c434ef6c4cadc3fca34c4c0d3104becea8.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 01/38] Kconfig: introduce HAS_IOPORT option and
+ select it as necessary
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Johannes Berg <johannes@sipsolutions.net>, Arnd Bergmann
+ <arnd@arndb.de>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan
+ Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas
+ <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert
+ Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley
+ <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou
+ <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich
+ Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin"
+ <hpa@zytor.com>
+Date: Thu, 23 Mar 2023 14:23:57 +0100
+In-Reply-To: <21a828bae06b97b8ca806a6b76d867902b1e0e1f.camel@sipsolutions.net>
+References: <20230314121216.413434-1-schnelle@linux.ibm.com>
+	 <20230314121216.413434-2-schnelle@linux.ibm.com>
+	 <21a828bae06b97b8ca806a6b76d867902b1e0e1f.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Url: http://acmel.wordpress.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ILhJ9KxUcdZTNzZ4sWuhaur67a0wm06C
+X-Proofpoint-ORIG-GUID: mOBSc53Xq2jpq67qceMo9W2p8ZoZQ_8a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 clxscore=1015
+ mlxscore=0 impostorscore=0 spamscore=0 bulkscore=0 mlxlogscore=449
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303230098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +137,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, "Rafael J.
+ Wysocki" <rafael@kernel.org>, linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-alpha@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-um@lists.infradead.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Alan Stern <stern@rowland.harvard.edu>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, linux-riscv@lists.infradead.org, Mauro Carvalho Chehab <mchehab@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Exception processing pmu-events/arch/powerpc/power9/other.json
-Traceback (most recent call last):
-  File "pmu-events/jevents.py", line 997, in <module>
-    main()
-  File "pmu-events/jevents.py", line 979, in main
-    ftw(arch_path, [], preprocess_one_file)
-  File "pmu-events/jevents.py", line 935, in ftw
-    ftw(item.path, parents + [item.name], action)
-  File "pmu-events/jevents.py", line 933, in ftw
-    action(parents, item)
-  File "pmu-events/jevents.py", line 514, in preprocess_one_file
-    for event in read_json_events(item.path, topic):
-  File "pmu-events/jevents.py", line 388, in read_json_events
-    events = json.load(open(path), object_hook=JsonEvent)
-  File "/usr/lib/python3.6/json/__init__.py", line 296, in load
-    return loads(fp.read(),
-  File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
-    return codecs.ascii_decode(input, self.errors)[0]
-UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 55090: ordinal not in range(128)
-  CC      /tmp/build/perf/tests/expr.o
-pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-events.c' failed
-make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
-make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
-Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-events-in.o' failed
-make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
-make[2]: *** Waiting for unfinished jobs....
+On Tue, 2023-03-14 at 13:37 +0100, Johannes Berg wrote:
+> On Tue, 2023-03-14 at 13:11 +0100, Niklas Schnelle wrote:
+> > --- a/arch/um/Kconfig
+> > +++ b/arch/um/Kconfig
+> > @@ -56,6 +56,7 @@ config NO_IOPORT_MAP
+> > =20
+> >  config ISA
+> >  	bool
+> > +	depends on HAS_IOPORT
+> >=20
+>=20
+> config ISA here is already unselectable, and nothing ever does "select
+> ISA" (only in some other architectures), so is there much point in this?
+>=20
+> I'm not even sure why this exists at all.
 
+You're right there's not much point and I dropped this for v4. I agree
+that probably the whole "config ISA" could be removed if it's always
+false anyway but that seems out of scope for this patch.
 
-Now jevents is an opt-out feature so I'm noticing these problems.
+>=20
+> But anyway, adding a dependency to a always-false symbol doesn't make it
+> less always-false :-)
+>=20
+> Acked-by: Johannes Berg <johannes@sipsolutions.net> # for ARCH=3Dum
 
-A similar fix for s390 was accepted today:
+Thanks
 
+>=20
+>=20
+> Certainly will be nice to get rid of this cruft for architectures that
+> don't have it.
+>=20
+> johannes
 
-https://lore.kernel.org/r/20230323122532.2305847-1-tmricht@linux.ibm.com
-https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
--- 
-
-- Arnaldo
+Yes, also, for s390 the broken NULL + port number access in the generic
+inb()/outb() currently causes the only remaining clang warning on
+defconfig builds.
