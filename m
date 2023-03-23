@@ -1,66 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4F86C6A0D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 14:54:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081776C6A59
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 15:03:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj6K04X8sz3f89
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 00:54:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj6W35rdMz3fCh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 01:03:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bDwla+6/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p8EJy2mB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=paulmck@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bDwla+6/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p8EJy2mB;
 	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj6J371w4z3cfg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 00:53:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679579620; x=1711115620;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BMnT2f9PT/iwzjkpsd4vT/8VCzv4VAo8CKM1oplFTtk=;
-  b=bDwla+6/1ZyCS9r9Ov61n0rBBSZTIbFENdM1XpyuhFc1TE197rH7kouq
-   Q0ilpp9W8zDdK0U9EdE/hkNhcr4fFKRFq7hmpIPEawiazLIjAdLdIo5wF
-   O4PqbpWD6ShUY5eWWjdPN6uS1N7LsnJ3iK4fAHBr+dk1whApV+I9hYwKJ
-   7begOWVHxhCaU6x8pTgo8VZ978Xp7IYyRzNVUvn/uRvecysB3IR1KfxhI
-   u+jPInID1dYmewJeWzGfu3pvBj3U9NUd8SoUl6TLZKoIMSd92BzIo+kpK
-   Vi/+dM9fxBGCKFJThsx5hL2zAScXlufNshCkdLJ5NIxt+77EKScHfJEqR
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341043865"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="341043865"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 06:46:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="746717842"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="746717842"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 23 Mar 2023 06:46:28 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pfLGt-000EPw-2r;
-	Thu, 23 Mar 2023 13:46:27 +0000
-Date: Thu, 23 Mar 2023 21:46:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 02/14] arm64: drop ranges in definition of
- ARCH_FORCE_MAX_ORDER
-Message-ID: <202303232149.Chh6KhiI-lkp@intel.com>
-References: <20230323092156.2545741-3-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj6V61yd7z3cB1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 01:02:22 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id C1AA5B81EC7;
+	Thu, 23 Mar 2023 14:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6EBC433EF;
+	Thu, 23 Mar 2023 14:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1679580137;
+	bh=4BlmXMRr26YZCeH8C6Q4S+NzUoEcZ7BqkJlz8QeKf7E=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=p8EJy2mB1R7yx87veUnHtbAshdKvVmlfCwVAP4SUX4YqsIQzsPhl/f2ngog2ZBj8M
+	 bTG2yI9c6c2NHrzFIThlvt1W8OY2VjuGpv39xNEVrvuTVHMAaXroFXdMtmMcwG8pOw
+	 uhDjDXMPrHGk19+JzMXwpL3U23HC2CedoJwgXSc3xVJNF7zqIEO5liafzYRduWkskf
+	 DmRUcOXJriLXqifnTGt4AdDlyvFWnmQMY8MChaqCNA5hybHJj1mTJJYCQZy1rD+xRp
+	 LfFeMa8vWzpDG/PCeQKSmSuri7upewGTh7ymoHYTrrTEryRNZdU0k+dFFZJhjrmz3q
+	 LtbHkdo7vRWPw==
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+	id 078391540398; Thu, 23 Mar 2023 07:02:17 -0700 (PDT)
+Date: Thu, 23 Mar 2023 07:02:16 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sachin Sant <sachinp@linux.ibm.com>
+Subject: Re: [next-20230322] Kernel WARN at kernel/workqueue.c:3182
+ (rcutorture)
+Message-ID: <fbb628c1-08bd-44ff-a613-794b134f6d46@paulmck-laptop>
+References: <139BEB3F-BC1C-4ABA-8928-9A8EF3FB5EDD@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230323092156.2545741-3-rppt@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <139BEB3F-BC1C-4ABA-8928-9A8EF3FB5EDD@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,445 +63,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, oe-kbuild-all@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, Linux Memory Management List <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Reply-To: paulmck@kernel.org
+Cc: Zqiang <qiang1.zhang@intel.com>, linux-next@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mike,
+On Thu, Mar 23, 2023 at 04:55:54PM +0530, Sachin Sant wrote:
+> While running rcutorture tests from LTP on an IBM Power10 server booted with
+> 6.3.0-rc3-next-20230322 following warning is observed:
+> 
+> [ 3629.242831] ------------[ cut here ]------------
+> [ 3629.242835] WARNING: CPU: 8 PID: 614614 at kernel/workqueue.c:3182 __flush_work.isra.44+0x44/0x370
+> [ 3629.242845] Modules linked in: rcutorture(-) torture vmac poly1305_generic chacha_generic chacha20poly1305 n_gsm pps_ldisc ppp_synctty ppp_async ppp_generic serport slcan can_dev slip slhc snd_hrtimer snd_seq snd_seq_device snd_timer snd soundcore pcrypt crypto_user n_hdlc dummy veth tun nfsv3 nfs_acl nfs lockd grace fscache netfs brd overlay exfat vfat fat btrfs blake2b_generic xor raid6_pq zstd_compress xfs loop sctp ip6_udp_tunnel udp_tunnel libcrc32c dm_mod bonding rfkill tls sunrpc kmem device_dax nd_pmem nd_btt dax_pmem papr_scm pseries_rng libnvdimm vmx_crypto ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi scsi_transport_srp ibmveth fuse [last unloaded: ltp_uaccess(O)]
+> [ 3629.242911] CPU: 8 PID: 614614 Comm: modprobe Tainted: G O 6.3.0-rc3-next-20230322 #1
+> [ 3629.242917] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
+> [ 3629.242923] NIP: c00000000018c204 LR: c00000000022306c CTR: c0000000002233c0
+> [ 3629.242927] REGS: c0000005c14e3880 TRAP: 0700 Tainted: G O (6.3.0-rc3-next-20230322)
+> [ 3629.242932] MSR: 800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: 48002222 XER: 0000000a
+> [ 3629.242943] CFAR: c00000000018c5b0 IRQMASK: 0 
+> [ 3629.242943] GPR00: c00000000022306c c0000005c14e3b20 c000000001401200 c00800000c4419e8 
+> [ 3629.242943] GPR04: 0000000000000001 0000000000000001 0000000000000011 fffffffffffe0000 
+> [ 3629.242943] GPR08: c000000efe9a8300 0000000000000001 0000000000000000 c00800000c42afe0 
+> [ 3629.242943] GPR12: c0000000002233c0 c000000effff6700 0000000000000000 0000000000000000 
+> [ 3629.242943] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.242943] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.242943] GPR24: c00800000c443400 c00800000c440f60 c00800000c4418c8 c000000002abb368 
+> [ 3629.242943] GPR28: c00800000c440f58 0000000000000000 c00800000c4419e8 c00800000c443400 
+> [ 3629.242987] NIP [c00000000018c204] __flush_work.isra.44+0x44/0x370
+> [ 3629.242993] LR [c00000000022306c] cleanup_srcu_struct+0x6c/0x1e0
+> [ 3629.242998] Call Trace:
+> [ 3629.243000] [c0000005c14e3b20] [c00800000c440f58] srcu9+0x0/0xfffffffffffef0a8 [rcutorture] (unreliable)
+> [ 3629.243009] [c0000005c14e3bb0] [c00000000022306c] cleanup_srcu_struct+0x6c/0x1e0
+> [ 3629.243015] [c0000005c14e3c50] [c000000000223428] srcu_module_notify+0x68/0x180
+> [ 3629.243021] [c0000005c14e3c90] [c00000000019a1e0] notifier_call_chain+0xc0/0x1b0
+> [ 3629.243027] [c0000005c14e3cf0] [c00000000019ad24] blocking_notifier_call_chain+0x64/0xa0
+> [ 3629.243033] [c0000005c14e3d30] [c00000000024a4c8] sys_delete_module+0x1f8/0x3c0
+> [ 3629.243039] [c0000005c14e3e10] [c000000000037480] system_call_exception+0x140/0x350
+> [ 3629.243044] [c0000005c14e3e50] [c00000000000d6a0] system_call_common+0x160/0x2e4
+> [ 3629.243050] --- interrupt: c00 at 0x7fff8cd39558
+> [ 3629.243054] NIP: 00007fff8cd39558 LR: 000000010d800398 CTR: 0000000000000000
+> [ 3629.243057] REGS: c0000005c14e3e80 TRAP: 0c00 Tainted: G O (6.3.0-rc3-next-20230322)
+> [ 3629.243062] MSR: 800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE> CR: 28008282 XER: 00000000
+> [ 3629.243072] IRQMASK: 0 
+> [ 3629.243072] GPR00: 0000000000000081 00007fffe99fd9c0 00007fff8ce07300 000000013df30ec8 
+> [ 3629.243072] GPR04: 0000000000000800 000000000000000a 1999999999999999 0000000000000000 
+> [ 3629.243072] GPR08: 00007fff8cd98160 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.243072] GPR12: 0000000000000000 00007fff8d5fcb50 000000010d80a650 000000010d80a648 
+> [ 3629.243072] GPR16: 0000000000000000 0000000000000001 0000000000000000 000000010d80a428 
+> [ 3629.243072] GPR20: 000000010d830068 0000000000000000 00007fffe99ff2f8 000000013df304f0 
+> [ 3629.243072] GPR24: 0000000000000000 00007fffe99ff2f8 000000013df30ec8 0000000000000000 
+> [ 3629.243072] GPR28: 0000000000000000 000000013df30e60 000000013df30ec8 000000013df30e60 
+> [ 3629.243115] NIP [00007fff8cd39558] 0x7fff8cd39558
+> [ 3629.243118] LR [000000010d800398] 0x10d800398
+> [ 3629.243121] --- interrupt: c00
+> [ 3629.243123] Code: 89292e39 f821ff71 e94d0c78 f9410068 39400000 69290001 0b090000 fbc10080 7c7e1b78 e9230018 7d290074 7929d182 <0b090000> 7c0802a6 fb810070 f80100a0 
+> [ 3629.243138] ---[ end trace 0000000000000000 ]—
+> 
+> Followed by following traces:
+> 
+> [ 3629.243149] ------------[ cut here ]------------
+> [ 3629.243152] WARNING: CPU: 8 PID: 614614 at kernel/rcu/srcutree.c:663 cleanup_srcu_struct+0x11c/0x1e0
+> [ 3629.243159] Modules linked in: rcutorture(-) torture vmac poly1305_generic chacha_generic chacha20poly1305 n_gsm pps_ldisc ppp_synctty ppp_async ppp_generic serport slcan can_dev slip slhc snd_hrtimer snd_seq snd_seq_device snd_timer snd soundcore pcrypt crypto_user n_hdlc dummy veth tun nfsv3 nfs_acl nfs lockd grace fscache netfs brd overlay exfat vfat fat btrfs blake2b_generic xor raid6_pq zstd_compress xfs loop sctp ip6_udp_tunnel udp_tunnel libcrc32c dm_mod bonding rfkill tls sunrpc kmem device_dax nd_pmem nd_btt dax_pmem papr_scm pseries_rng libnvdimm vmx_crypto ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi scsi_transport_srp ibmveth fuse [last unloaded: ltp_uaccess(O)]
+> [ 3629.243217] CPU: 8 PID: 614614 Comm: modprobe Tainted: G W O 6.3.0-rc3-next-20230322 #1
+> [ 3629.243222] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
+> [ 3629.243227] NIP: c00000000022311c LR: c0000000002230d8 CTR: c0000000002233c0
+> [ 3629.243230] REGS: c0000005c14e3910 TRAP: 0700 Tainted: G W O (6.3.0-rc3-next-20230322)
+> [ 3629.243235] MSR: 800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: 28002228 XER: 0000000a
+> [ 3629.243245] CFAR: c0000000008040c0 IRQMASK: 0 
+> [ 3629.243245] GPR00: c0000000002230b8 c0000005c14e3bb0 c000000001401200 0000000000000040 
+> [ 3629.243245] GPR04: 0000000000000040 0000000000000040 0000000000000011 fffffffffffe0000 
+> [ 3629.243245] GPR08: ffffffffffffffff 0000000000000001 0000000000000000 c00800000c42afe0 
+> [ 3629.243245] GPR12: c0000000002233c0 c000000effff6700 0000000000000000 0000000000000000 
+> [ 3629.243245] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.243245] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.243245] GPR24: c00800000c443400 c00800000c440f60 c00800000c4418c8 c000000002bdabe0 
+> [ 3629.243245] GPR28: c00800000c440f58 c000000002bdbe00 0000000000000040 c009fffffeb8c500 
+> [ 3629.243288] NIP [c00000000022311c] cleanup_srcu_struct+0x11c/0x1e0
+> [ 3629.243293] LR [c0000000002230d8] cleanup_srcu_struct+0xd8/0x1e0
+> [ 3629.243298] Call Trace:
+> [ 3629.243300] [c0000005c14e3bb0] [c0000000002230b8] cleanup_srcu_struct+0xb8/0x1e0 (unreliable)
+> [ 3629.243306] [c0000005c14e3c50] [c000000000223428] srcu_module_notify+0x68/0x180
+> [ 3629.243312] [c0000005c14e3c90] [c00000000019a1e0] notifier_call_chain+0xc0/0x1b0
+> [ 3629.243318] [c0000005c14e3cf0] [c00000000019ad24] blocking_notifier_call_chain+0x64/0xa0
+> [ 3629.243324] [c0000005c14e3d30] [c00000000024a4c8] sys_delete_module+0x1f8/0x3c0
+> [ 3629.243329] [c0000005c14e3e10] [c000000000037480] system_call_exception+0x140/0x350
+> [ 3629.243335] [c0000005c14e3e50] [c00000000000d6a0] system_call_common+0x160/0x2e4
+> [ 3629.243341] --- interrupt: c00 at 0x7fff8cd39558
+> [ 3629.243344] NIP: 00007fff8cd39558 LR: 000000010d800398 CTR: 0000000000000000
+> [ 3629.243348] REGS: c0000005c14e3e80 TRAP: 0c00 Tainted: G W O (6.3.0-rc3-next-20230322)
+> [ 3629.243353] MSR: 800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE> CR: 28008282 XER: 00000000
+> [ 3629.243363] IRQMASK: 0 
+> [ 3629.243363] GPR00: 0000000000000081 00007fffe99fd9c0 00007fff8ce07300 000000013df30ec8 
+> [ 3629.243363] GPR04: 0000000000000800 000000000000000a 1999999999999999 0000000000000000 
+> [ 3629.243363] GPR08: 00007fff8cd98160 0000000000000000 0000000000000000 0000000000000000 
+> [ 3629.243363] GPR12: 0000000000000000 00007fff8d5fcb50 000000010d80a650 000000010d80a648 
+> [ 3629.243363] GPR16: 0000000000000000 0000000000000001 0000000000000000 000000010d80a428 
+> [ 3629.243363] GPR20: 000000010d830068 0000000000000000 00007fffe99ff2f8 000000013df304f0 
+> [ 3629.243363] GPR24: 0000000000000000 00007fffe99ff2f8 000000013df30ec8 0000000000000000 
+> [ 3629.243363] GPR28: 0000000000000000 000000013df30e60 000000013df30ec8 000000013df30e60 
+> [ 3629.243407] NIP [00007fff8cd39558] 0x7fff8cd39558
+> [ 3629.243410] LR [000000010d800398] 0x10d800398
+> [ 3629.243413] --- interrupt: c00
+> [ 3629.243415] Code: 419dffa4 e93a0078 39400001 552907be 2f890000 7d20579e 0b090000 e95a0078 e91a0080 39200001 7fa85000 7d204f9e <0b090000> 7f23cb78 4bfffd65 0b030000 
+> [ 3629.243430] ---[ end trace 0000000000000000 ]—
+> 
+> These warnings are repeated few times. The LTP test is marked as PASS.
+> 
+> Git bisect point to the following patch
+> commit f46a5170e6e7d5f836f2199fe82cdb0b4363427f
+>     srcu: Use static init for statically allocated in-module srcu_struct
 
-Thank you for the patch! Yet something to improve:
+Hello, Sachin, and it looks like you hit something that Zqiang and I
+have been tracking down.  I am guessing that you were using modprobe
+and rmmod to make this happen, and that this happened at rmmod time.
 
-[auto build test ERROR on 51551d71edbc998fd8c8afa7312db3d270f5998e]
+Whatever the reproducer, does the following patch help?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Rapoport/arm-reword-ARCH_FORCE_MAX_ORDER-prompt-and-help-text/20230323-172512
-base:   51551d71edbc998fd8c8afa7312db3d270f5998e
-patch link:    https://lore.kernel.org/r/20230323092156.2545741-3-rppt%40kernel.org
-patch subject: [PATCH 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-config: arm64-randconfig-r022-20230322 (https://download.01.org/0day-ci/archive/20230323/202303232149.Chh6KhiI-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/0522f943c071abf1610651ea40405b7489c50987
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mike-Rapoport/arm-reword-ARCH_FORCE_MAX_ORDER-prompt-and-help-text/20230323-172512
-        git checkout 0522f943c071abf1610651ea40405b7489c50987
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/base/regmap/ drivers/iommu/ fs/proc/ mm/
+							Thanx, Paul
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303232149.Chh6KhiI-lkp@intel.com/
+------------------------------------------------------------------------
 
-All error/warnings (new ones prefixed by >>):
-
-   In file included from include/linux/kernel.h:25,
-                    from mm/mm_init.c:9:
-   mm/mm_init.c: In function 'find_zone_movable_pfns_for_nodes':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/math.h:61:25: note: in definition of macro 'roundup'
-      61 |         typeof(y) __y = y;                              \
-         |                         ^
-   mm/mm_init.c:429:55: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     429 |                         roundup(required_movablecore, MAX_ORDER_NR_PAGES);
-         |                                                       ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/math.h:61:25: note: in definition of macro 'roundup'
-      61 |         typeof(y) __y = y;                              \
-         |                         ^
-   mm/mm_init.c:540:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     540 |                         roundup(zone_movable_pfn[nid], MAX_ORDER_NR_PAGES);
-         |                                                        ^~~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/gfp.h:7,
-                    from include/linux/mm.h:7,
-                    from mm/debug.c:10:
-   mm/debug.c: In function '__dump_page':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   mm/debug.c:70:44: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-      70 |         if (page < head || (page >= head + MAX_ORDER_NR_PAGES)) {
-         |                                            ^~~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/build_bug.h:5,
-                    from include/linux/container_of.h:5,
-                    from include/linux/list.h:5,
-                    from include/linux/smp.h:12,
-                    from include/linux/kernel_stat.h:5,
-                    from mm/memory.c:42:
-   mm/memory.c: In function 'clear_huge_page':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
-      78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
-         |                                             ^
-   mm/memory.c:5791:44: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-    5791 |         if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
-         |                                            ^~~~~~~~~~~~~~~~~~
-   mm/memory.c: In function 'copy_user_huge_page':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
-      78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
-         |                                             ^
-   mm/memory.c:5843:44: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-    5843 |         if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
-         |                                            ^~~~~~~~~~~~~~~~~~
---
-   mm/shuffle.c: In function '__shuffle_zone':
->> mm/shuffle.c:86:35: warning: left shift count is negative [-Wshift-count-negative]
-      86 |         const int order_pages = 1 << order;
-         |                                 ~~^~~~~~~~
---
-   In file included from include/vdso/const.h:5,
-                    from include/linux/const.h:4,
-                    from include/linux/list.h:9,
-                    from include/linux/wait.h:7,
-                    from include/linux/wait_bit.h:8,
-                    from include/linux/fs.h:6,
-                    from include/linux/debugfs.h:15,
-                    from mm/page_owner.c:2:
-   mm/page_owner.c: In function 'pagetypeinfo_showmixedcount_print':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/uapi/linux/const.h:32:50: note: in definition of macro '__ALIGN_KERNEL_MASK'
-      32 | #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-         |                                                  ^~~~
-   include/linux/align.h:8:33: note: in expansion of macro '__ALIGN_KERNEL'
-       8 | #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_owner.c:298:31: note: in expansion of macro 'ALIGN'
-     298 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                               ^~~~~
-   mm/page_owner.c:298:46: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     298 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                                              ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/uapi/linux/const.h:32:61: note: in definition of macro '__ALIGN_KERNEL_MASK'
-      32 | #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-         |                                                             ^~~~
-   include/linux/align.h:8:33: note: in expansion of macro '__ALIGN_KERNEL'
-       8 | #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_owner.c:298:31: note: in expansion of macro 'ALIGN'
-     298 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                               ^~~~~
-   mm/page_owner.c:298:46: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     298 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                                              ^~~~~~~~~~~~~~~~~~
-   In file included from include/linux/gfp.h:7,
-                    from include/linux/xarray.h:15,
-                    from include/linux/list_lru.h:14,
-                    from include/linux/fs.h:13:
-   mm/page_owner.c: In function 'read_page_owner':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   mm/page_owner.c:526:43: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     526 |         while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
-         |                                           ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   mm/page_owner.c:543:29: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     543 |                 if ((pfn & (MAX_ORDER_NR_PAGES - 1)) == 0 && !pfn_valid(pfn)) {
-         |                             ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   mm/page_owner.c:544:32: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     544 |                         pfn += MAX_ORDER_NR_PAGES - 1;
-         |                                ^~~~~~~~~~~~~~~~~~
-   mm/page_owner.c: In function 'init_pages_in_zone':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/uapi/linux/const.h:32:50: note: in definition of macro '__ALIGN_KERNEL_MASK'
-      32 | #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-         |                                                  ^~~~
-   include/linux/align.h:8:33: note: in expansion of macro '__ALIGN_KERNEL'
-       8 | #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_owner.c:636:31: note: in expansion of macro 'ALIGN'
-     636 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                               ^~~~~
-   mm/page_owner.c:636:46: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     636 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                                              ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/uapi/linux/const.h:32:61: note: in definition of macro '__ALIGN_KERNEL_MASK'
-      32 | #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-         |                                                             ^~~~
-   include/linux/align.h:8:33: note: in expansion of macro '__ALIGN_KERNEL'
-       8 | #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_owner.c:636:31: note: in expansion of macro 'ALIGN'
-     636 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                               ^~~~~
-   mm/page_owner.c:636:46: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     636 |                         pfn = ALIGN(pfn + 1, MAX_ORDER_NR_PAGES);
-         |                                              ^~~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/kernel.h:26,
-                    from arch/arm64/include/asm/cpufeature.h:22,
-                    from arch/arm64/include/asm/ptrace.h:11,
-                    from arch/arm64/include/asm/irqflags.h:10,
-                    from include/linux/irqflags.h:16,
-                    from include/linux/spinlock.h:59,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:7,
-                    from include/linux/mm.h:7,
-                    from mm/page_isolation.c:6:
-   mm/page_isolation.c: In function 'isolate_single_pageblock':
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:27: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                           ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:27: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                           ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:27: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                           ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:40: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                                        ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:40: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                                        ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:28:40: note: in definition of macro '__cmp'
-      28 | #define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-         |                                        ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:31:39: note: in definition of macro '__cmp_once'
-      31 |                 typeof(x) unique_x = (x);               \
-         |                                       ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:31:39: note: in definition of macro '__cmp_once'
-      31 |                 typeof(x) unique_x = (x);               \
-         |                                       ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
->> include/linux/mmzone.h:33:31: warning: left shift count is negative [-Wshift-count-negative]
-      33 | #define MAX_ORDER_NR_PAGES (1 << MAX_ORDER)
-         |                               ^~
-   include/linux/minmax.h:31:39: note: in definition of macro '__cmp_once'
-      31 |                 typeof(x) unique_x = (x);               \
-         |                                       ^
-   include/linux/minmax.h:74:25: note: in expansion of macro '__careful_cmp'
-      74 | #define max(x, y)       __careful_cmp(x, y, >)
-         |                         ^~~~~~~~~~~~~
-   mm/page_isolation.c:329:22: note: in expansion of macro 'max'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                      ^~~
-   include/uapi/linux/const.h:31:41: note: in expansion of macro '__ALIGN_KERNEL_MASK'
-      31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:9:33: note: in expansion of macro '__ALIGN_KERNEL'
-       9 | #define ALIGN_DOWN(x, a)        __ALIGN_KERNEL((x) - ((a) - 1), (a))
-         |                                 ^~~~~~~~~~~~~~
-   mm/page_isolation.c:329:26: note: in expansion of macro 'ALIGN_DOWN'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                          ^~~~~~~~~~
-   mm/page_isolation.c:329:56: note: in expansion of macro 'MAX_ORDER_NR_PAGES'
-     329 |         start_pfn  = max(ALIGN_DOWN(isolate_pageblock, MAX_ORDER_NR_PAGES),
-         |                                                        ^~~~~~~~~~~~~~~~~~
-..
-
-
-vim +16 include/linux/build_bug.h
-
-bc6245e5efd70c Ian Abbott       2017-07-10   6  
-bc6245e5efd70c Ian Abbott       2017-07-10   7  #ifdef __CHECKER__
-bc6245e5efd70c Ian Abbott       2017-07-10   8  #define BUILD_BUG_ON_ZERO(e) (0)
-bc6245e5efd70c Ian Abbott       2017-07-10   9  #else /* __CHECKER__ */
-bc6245e5efd70c Ian Abbott       2017-07-10  10  /*
-bc6245e5efd70c Ian Abbott       2017-07-10  11   * Force a compilation error if condition is true, but also produce a
-8788994376d84d Rikard Falkeborn 2019-12-04  12   * result (of value 0 and type int), so the expression can be used
-bc6245e5efd70c Ian Abbott       2017-07-10  13   * e.g. in a structure initializer (or where-ever else comma expressions
-bc6245e5efd70c Ian Abbott       2017-07-10  14   * aren't permitted).
-bc6245e5efd70c Ian Abbott       2017-07-10  15   */
-8788994376d84d Rikard Falkeborn 2019-12-04 @16  #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-527edbc18a70e7 Masahiro Yamada  2019-01-03  17  #endif /* __CHECKER__ */
-527edbc18a70e7 Masahiro Yamada  2019-01-03  18  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 1fb078abbdc9..06f8ed1ce272 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -1921,7 +1921,6 @@ static int srcu_module_coming(struct module *mod)
+ 		ssp->sda = alloc_percpu(struct srcu_data);
+ 		if (WARN_ON_ONCE(!ssp->sda))
+ 			return -ENOMEM;
+-		init_srcu_struct_data(ssp);
+ 	}
+ 	return 0;
+ }
+@@ -1930,10 +1929,17 @@ static int srcu_module_coming(struct module *mod)
+ static void srcu_module_going(struct module *mod)
+ {
+ 	int i;
++	struct srcu_data __percpu *sda;
++	struct srcu_struct *ssp;
+ 	struct srcu_struct **sspp = mod->srcu_struct_ptrs;
+ 
+-	for (i = 0; i < mod->num_srcu_structs; i++)
+-		cleanup_srcu_struct(*(sspp++));
++	for (i = 0; i < mod->num_srcu_structs; i++) {
++		ssp = *(sspp++);
++		sda = ssp->sda;
++		if (!rcu_seq_state(smp_load_acquire(&ssp->srcu_sup->srcu_gp_seq_needed)))
++			cleanup_srcu_struct(ssp);
++		free_percpu(sda);
++	}
+ }
+ 
+ /* Handle one module, either coming or going. */
