@@ -2,91 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1716C6777
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A17FA6C67B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 13:13:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj3qF0ZZCz3f7T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:02:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj4493v20z3f4b
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 23:13:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MImzOq3g;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cyoMAlm7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=diMbOB1p;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=diMbOB1p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MImzOq3g;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cyoMAlm7;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=diMbOB1p;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=diMbOB1p;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj3pH5KHrz3ccq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:01:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj43G0TBvz3chw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 23:12:25 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679572865;
+	s=mimecast20190719; t=1679573542;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
-	b=MImzOq3gG4iYqVdyJtr7+DxKkwNyhoC94AesT3/+byIM9jRrmD356y4+nrWKWngFFnjmdm
-	bB2pn8Ea7NbHwDb5UQPaaZK5tfcXha/UidW2IXv751m6tsR7O2/a0DZDLe5WTBoQUrQ6fG
-	9INop8CDC8VodkRHrVxhbD+uk5LKDYY=
+	bh=47IZCbNDSGg7hhxdLu0FQ8d8WHV90o4g2qwBwc+O/G8=;
+	b=diMbOB1p0ZkZJMGH9mFaI2UEeLFRm4fsnhhhh0KjmROINBCN++Oxj/s3qbZcxWls2vxLNr
+	7KxW67EUTijU+SHnOgzJc5VzyFJg4E//x5AayZ9SmPecEovxDjEC4Tgn9oqZ5OBcgXzqMU
+	SOKmKaf92Xe14QkzXETa0vpR39yd0FA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679572866;
+	s=mimecast20190719; t=1679573542;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
-	b=cyoMAlm70klR0GW8zT1nMBNsddEtbFo5J9ACn+N9AK8GY3ak/lSQ1DgqETesUL2F8j9gHd
-	ixug6XXl0n9/h3tuaXh/GnnTCLBCCXr6YE5B8ExG6iE9LtwZAJRgULO5rfudLKsrIKXbeb
-	GtrKAqitjwv9CVSgvDStCJcbqzN6nkA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=47IZCbNDSGg7hhxdLu0FQ8d8WHV90o4g2qwBwc+O/G8=;
+	b=diMbOB1p0ZkZJMGH9mFaI2UEeLFRm4fsnhhhh0KjmROINBCN++Oxj/s3qbZcxWls2vxLNr
+	7KxW67EUTijU+SHnOgzJc5VzyFJg4E//x5AayZ9SmPecEovxDjEC4Tgn9oqZ5OBcgXzqMU
+	SOKmKaf92Xe14QkzXETa0vpR39yd0FA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-0AmAgqtEOB6dwTk25iEBPQ-1; Thu, 23 Mar 2023 08:01:04 -0400
-X-MC-Unique: 0AmAgqtEOB6dwTk25iEBPQ-1
-Received: by mail-wr1-f71.google.com with SMTP id d5-20020adfa345000000b002d716fc080fso1363869wrb.22
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:01:03 -0700 (PDT)
+ us-mta-323-Dkc6MegpPQqTpaQh7sA9eA-1; Thu, 23 Mar 2023 08:12:20 -0400
+X-MC-Unique: Dkc6MegpPQqTpaQh7sA9eA-1
+Received: by mail-wm1-f69.google.com with SMTP id o7-20020a05600c4fc700b003edf85f6bb1so926022wmq.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 05:12:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679572863;
+        d=1e100.net; s=20210112; t=1679573539;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KTGFYnjWURCLah9WgWBIHv8w4r2E6oqPT1N4romExjY=;
-        b=tE891uF2bdjJK0GB7nCV+J9SLaq7uBGm8dCQd7o3DgV5bjAvWE3Jaj3UZ31XPKNiV+
-         x1pMPhbM4i7RSMYEkYs7GiL/ZiWglYy8YziFjO96cT+csIEazOPnQzbxWo8mvXj9M5fH
-         Q9UX9TPv3ADi4f5WKYw6b8rnTfNQe9Aqd17PPv2WlBIKkeHHsC+crTFn55V1lfOYRr0f
-         tKf5uaSgeFusplZzdkKbFjJKEPBKtuK1xsQLOy27Y3OpulaehlfCAC/4Tkzwjoef7w+1
-         at7NoZDe6lRMUglURnKSkUpzvIUZJBeUhRAlLaYeYOoKTazwmwEtbMHHjlov6/igyvQP
-         GfRA==
-X-Gm-Message-State: AO0yUKVuVowQuFP3A3EQ0BDSaIGjYjjdpTrJ7h4NJgpvSfrKLpA7CDY9
-	aJs4QZmNzfYzrNvEL0gIo7ZQIV4Vd6PbpNpk66Z6r5em9Na6oJmS0hJwYtsrdXEKpXY5MovDLl7
-	oLjwIAJo3iEuOmUwoAfRNYwJgDA==
-X-Received: by 2002:a1c:4b1a:0:b0:3ed:a82d:dfe2 with SMTP id y26-20020a1c4b1a000000b003eda82ddfe2mr2025663wma.29.1679572863040;
-        Thu, 23 Mar 2023 05:01:03 -0700 (PDT)
-X-Google-Smtp-Source: AK7set9MyJMT/nYCBtz9tt9u0w+Cvx8tCG2gYM0Zl7gZFp2GCTxdj8RQVMZCS7m7wBDqJwRfnkzkqw==
-X-Received: by 2002:a1c:4b1a:0:b0:3ed:a82d:dfe2 with SMTP id y26-20020a1c4b1a000000b003eda82ddfe2mr2025649wma.29.1679572862779;
-        Thu, 23 Mar 2023 05:01:02 -0700 (PDT)
+        bh=47IZCbNDSGg7hhxdLu0FQ8d8WHV90o4g2qwBwc+O/G8=;
+        b=7VNFAHH/T2iGaFNyJDyrX0XXJKtC4KS4DX8B7aVCPQdV8V1cs59XvHxhHozwgTtY6B
+         3myzTJMD+v9ilk3RhocOxakZeDvebg5sCb58lQLtHZ+8SbgV/zmX2mNH+8ufwLrWgvwj
+         jhqLSrMJfdbXuG8q+qN5lwOiXG9uZdm3rpx7C1qbTb23nnqm3zxMuK49efHkfYu5bmVm
+         DPidAz/j3/xhHoX23Zro9BBjOBMf6mNkAJRF2RT6Svd1utdSyZhWsPUhgLockoi1ebVn
+         RxQ+gP1IsZFNlAE/p5/WfIgXU3elJYaHl8+PKk4EvBR5+EnKFqwDQmMccUpmW8w1t0Kg
+         JIkg==
+X-Gm-Message-State: AO0yUKVsFcAhytLg9YhA+hgAO0QcMN0R4yVPKuTSPZlCjemhsxVuv7/T
+	04OpyrLozjSor619zBrRjvvO1dFo4FmiIMxAbuKDA8V3u9d9BgeVZdyVze32PvyaWu/R7liubAf
+	40kyoYX+9+G6XsJWIg1OLlF2HKw==
+X-Received: by 2002:a1c:7512:0:b0:3ee:9909:acc8 with SMTP id o18-20020a1c7512000000b003ee9909acc8mr728902wmc.32.1679573539686;
+        Thu, 23 Mar 2023 05:12:19 -0700 (PDT)
+X-Google-Smtp-Source: AK7set/9iEyxce5NHUdHspeWWBLcGBNstlDq/wdzeMG5S5aJQ+Gtr/kX09u0bOWRqllPlg5DVjy8xg==
+X-Received: by 2002:a1c:7512:0:b0:3ee:9909:acc8 with SMTP id o18-20020a1c7512000000b003ee9909acc8mr728889wmc.32.1679573539350;
+        Thu, 23 Mar 2023 05:12:19 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-179-146.web.vodafone.de. [109.43.179.146])
-        by smtp.gmail.com with ESMTPSA id f20-20020a1c6a14000000b003edcc2223c6sm1682498wmc.28.2023.03.23.05.01.01
+        by smtp.gmail.com with ESMTPSA id o9-20020a05600c510900b003ed793d9de0sm6272651wms.1.2023.03.23.05.12.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 05:01:02 -0700 (PDT)
-Message-ID: <82e48016-90d4-0097-67b1-31f2c5668918@redhat.com>
-Date: Thu, 23 Mar 2023 13:01:00 +0100
+        Thu, 23 Mar 2023 05:12:18 -0700 (PDT)
+Message-ID: <de36dbe8-de4a-ba05-12f7-2b8a37ef552a@redhat.com>
+Date: Thu, 23 Mar 2023 13:12:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v2 04/10] powerpc: Add ISA v3.1 (POWER10) support
- to SPR test
+Subject: Re: [kvm-unit-tests v2 03/10] powerpc: abstract H_CEDE calls into a
+ sleep functions
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20230320070339.915172-1-npiggin@gmail.com>
- <20230320070339.915172-5-npiggin@gmail.com>
+ <20230320070339.915172-4-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230320070339.915172-5-npiggin@gmail.com>
+In-Reply-To: <20230320070339.915172-4-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -108,69 +108,152 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 20/03/2023 08.03, Nicholas Piggin wrote:
-> This is a very basic detection that does not include all new SPRs.
+> This consolidates several implementations, and it no longer leaves
+> MSR[EE] enabled after the decrementer interrupt is handled, but
+> rather disables it on return.
+> 
+> The handler no longer allows a continuous ticking, but rather dec
+> has to be re-armed and EE re-enabled (e.g., via H_CEDE hcall) each
+> time.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/sprs.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
+>   lib/powerpc/asm/handlers.h  |  2 +-
+>   lib/powerpc/asm/ppc_asm.h   |  1 +
+>   lib/powerpc/asm/processor.h |  7 +++++++
+>   lib/powerpc/handlers.c      | 10 ++++-----
+>   lib/powerpc/processor.c     | 42 +++++++++++++++++++++++++++++++++++++
+>   powerpc/sprs.c              |  6 +-----
+>   powerpc/tm.c                | 20 +-----------------
+>   7 files changed, 57 insertions(+), 31 deletions(-)
 > 
-> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-> index ba4ddee..6ee6dba 100644
-> --- a/powerpc/sprs.c
-> +++ b/powerpc/sprs.c
-> @@ -117,6 +117,15 @@ static void set_sprs_book3s_300(uint64_t val)
->   	mtspr(823, val);	/* PSSCR */
+> diff --git a/lib/powerpc/asm/handlers.h b/lib/powerpc/asm/handlers.h
+> index 64ba727..e4a0cd4 100644
+> --- a/lib/powerpc/asm/handlers.h
+> +++ b/lib/powerpc/asm/handlers.h
+> @@ -3,6 +3,6 @@
+>   
+>   #include <asm/ptrace.h>
+>   
+> -void dec_except_handler(struct pt_regs *regs, void *data);
+> +void dec_handler_oneshot(struct pt_regs *regs, void *data);
+>   
+>   #endif /* _ASMPOWERPC_HANDLERS_H_ */
+> diff --git a/lib/powerpc/asm/ppc_asm.h b/lib/powerpc/asm/ppc_asm.h
+> index 1b85f6b..6299ff5 100644
+> --- a/lib/powerpc/asm/ppc_asm.h
+> +++ b/lib/powerpc/asm/ppc_asm.h
+> @@ -36,6 +36,7 @@
+>   #endif /* __BYTE_ORDER__ */
+>   
+>   /* Machine State Register definitions: */
+> +#define MSR_EE_BIT	15			/* External Interrupts Enable */
+>   #define MSR_SF_BIT	63			/* 64-bit mode */
+>   
+>   #endif /* _ASMPOWERPC_PPC_ASM_H */
+> diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
+> index ac001e1..ebfeff2 100644
+> --- a/lib/powerpc/asm/processor.h
+> +++ b/lib/powerpc/asm/processor.h
+> @@ -20,6 +20,8 @@ static inline uint64_t get_tb(void)
+>   
+>   extern void delay(uint64_t cycles);
+>   extern void udelay(uint64_t us);
+> +extern void sleep_tb(uint64_t cycles);
+> +extern void usleep(uint64_t us);
+>   
+>   static inline void mdelay(uint64_t ms)
+>   {
+> @@ -27,4 +29,9 @@ static inline void mdelay(uint64_t ms)
+>   		udelay(1000);
 >   }
 >   
-> +/* SPRs from Power ISA Version 3.1B */
-> +static void set_sprs_book3s_31(uint64_t val)
+> +static inline void msleep(uint64_t ms)
 > +{
-> +	set_sprs_book3s_207(val);
-> +	mtspr(48, val);		/* PIDR */
-> +	/* 3.1 removes TIDR */
-> +	mtspr(823, val);	/* PSSCR */
+> +	usleep(ms * 1000);
 > +}
 > +
->   static void set_sprs(uint64_t val)
->   {
->   	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-> @@ -137,6 +146,9 @@ static void set_sprs(uint64_t val)
->   	case 0x4e:			/* POWER9 */
->   		set_sprs_book3s_300(val);
->   		break;
-> +	case 0x80:                      /* POWER10 */
-> +		set_sprs_book3s_31(val);
-> +		break;
->   	default:
->   		puts("Warning: Unknown processor version!\n");
->   	}
-> @@ -220,6 +232,13 @@ static void get_sprs_book3s_300(uint64_t *v)
->   	v[823] = mfspr(823);	/* PSSCR */
->   }
+>   #endif /* _ASMPOWERPC_PROCESSOR_H_ */
+> diff --git a/lib/powerpc/handlers.c b/lib/powerpc/handlers.c
+> index c8721e0..296f14f 100644
+> --- a/lib/powerpc/handlers.c
+> +++ b/lib/powerpc/handlers.c
+> @@ -9,15 +9,13 @@
+>   #include <libcflat.h>
+>   #include <asm/handlers.h>
+>   #include <asm/ptrace.h>
+> +#include <asm/ppc_asm.h>
 >   
-> +static void get_sprs_book3s_31(uint64_t *v)
-> +{
-> +	get_sprs_book3s_207(v);
-> +	v[48] = mfspr(48);	/* PIDR */
-> +	v[823] = mfspr(823);	/* PSSCR */
-> +}
-> +
->   static void get_sprs(uint64_t *v)
+>   /*
+>    * Generic handler for decrementer exceptions (0x900)
+> - * Just reset the decrementer back to the value specified when registering the
+> - * handler
+> + * Return with MSR[EE] disabled.
+>    */
+> -void dec_except_handler(struct pt_regs *regs __unused, void *data)
+> +void dec_handler_oneshot(struct pt_regs *regs, void *data)
 >   {
->   	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-> @@ -240,6 +259,9 @@ static void get_sprs(uint64_t *v)
->   	case 0x4e:			/* POWER9 */
->   		get_sprs_book3s_300(v);
->   		break;
-> +	case 0x80:                      /* POWER10 */
-> +		get_sprs_book3s_31(v);
-> +		break;
->   	}
+> -	uint64_t dec = *((uint64_t *) data);
+> -
+> -	asm volatile ("mtdec %0" : : "r" (dec));
+> +	regs->msr &= ~(1UL << MSR_EE_BIT);
 >   }
+> diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
+> index ec85b9d..e77a240 100644
+> --- a/lib/powerpc/processor.c
+> +++ b/lib/powerpc/processor.c
+> @@ -10,6 +10,8 @@
+>   #include <asm/ptrace.h>
+>   #include <asm/setup.h>
+>   #include <asm/barrier.h>
+> +#include <asm/hcall.h>
+> +#include <asm/handlers.h>
+>   
+>   static struct {
+>   	void (*func)(struct pt_regs *, void *data);
+> @@ -54,3 +56,43 @@ void udelay(uint64_t us)
+>   {
+>   	delay((us * tb_hz) / 1000000);
+>   }
+> +
+> +void sleep_tb(uint64_t cycles)
+> +{
+> +	uint64_t start, end, now;
+> +
+> +	start = now = get_tb();
+> +	end = start + cycles;
+> +
+> +	while (end > now) {
+> +		uint64_t left = end - now;
+> +
+> +		/* Could support large decrementer */
+> +		if (left > 0x7fffffff)
+> +			left = 0x7fffffff;
+> +
+> +		asm volatile ("mtdec %0" : : "r" (left));
+> +		handle_exception(0x900, &dec_handler_oneshot, NULL);
 
-Looks like I accidentally replied to v1 a couple of minutes ago... I meant 
-to reply here:
+Wouldn't it be better to first call handle_exception() before moving 
+something into the decrementer?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+> +		/*
+> +		 * H_CEDE is called with MSR[EE] clear and enables it as part
+> +		 * of the hcall, returning with EE enabled. The dec interrupt
+> +		 * is then taken immediately and the handler disables EE.
+> +		 *
+> +		 * If H_CEDE returned for any other interrupt than dec
+> +		 * expiring, that is considered an unhandled interrupt and
+> +		 * the test case would be stopped.
+> +		 */
+> +		if (hcall(H_CEDE) != H_SUCCESS) {
+> +			printf("H_CEDE failed\n");
+> +			abort();
+> +		}
+> +		handle_exception(0x900, NULL, NULL);
+> +
+> +		now = get_tb();
+> +	}
+> +}
+
+  Thomas
 
