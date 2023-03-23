@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042CC6C6346
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:23:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C5D6C635B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 10:24:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Jr5v0rz3cdL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:23:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj0Kr2PcPz3f5g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:24:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jhevsx6F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OZZcT6du;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jhevsx6F;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OZZcT6du;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0H460Sxz3chl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:22:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj0HF3KBSz3chd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 20:22:33 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B572962542;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0915BB8201D;
+	Thu, 23 Mar 2023 09:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3258C433AA;
 	Thu, 23 Mar 2023 09:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259A5C433A8;
-	Thu, 23 Mar 2023 09:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679563341;
-	bh=dcp30wp/Hf38sazwKthrJJR/hJsAXPYg2a1DhIjhRsY=;
+	s=k20201202; t=1679563348;
+	bh=1wuMjPglrXxylZYRQp9g6PBGTaQCsIyJmL4MjyDfkT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhevsx6FrKz/DSKyWa48ul+Br2Qq/2CdJ5Nno3oUdRcLCIk7t1cB69NdAiT1tyn5H
-	 Lhz9wXdd5uW6MFyeM+B3h0u5ydPTvK6l7CwpgHyUk3OAlG9W2UODv0/MJDEe3oHJOX
-	 /m2zMnBtkTaffkchF+6L07TdZQwBCPludGH8NHdSFGMYkW0A/qG31dPbgSSEevOGTB
-	 mnSJ77OEHBhaBpfgDQgrtyP3mOg3IRf23662ZNu2bRdqFbjyKhfTPTIRFNBR2BggXZ
-	 Y0Ifi3DaCS8c1NsQKYmG++xjhZAcZPCDklL+uk+NpDJszMuDUHYYaoRUcujltm1mXh
-	 pEp5mnhql9Qpg==
+	b=OZZcT6du5dwua6qJE5uCEiu3Bbh3Q97TquC+/sYNXkmdypc+bsLGDW93XoYEnZ4mH
+	 MSoFTjH6bKTl3fsgQ4Bc3SK5VaWp9pBpu5SvZo1sRyf7bml4ql3CzkUro6OsghW0vc
+	 Oy90Vtp+PuM+H/Fs7+pOeFq6VXb7ExvoCICIAZhSBN3LP0NP130lo2YGBKKTONyDoH
+	 O4a++hJhMH5PNPPUpgd9/coAlzQjl3AYohwmcVJY6mAnGbnI5g5nhBGeR+cfm7Ukr1
+	 7eEmM1z6tUZiEn08emyl+wuY10m5eYRrfMvZd2JFyNi2MsejH2NoIL8GFXLAlQ90D9
+	 npeRgo88+OTgg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 01/14] arm: reword ARCH_FORCE_MAX_ORDER prompt and help text
-Date: Thu, 23 Mar 2023 11:21:43 +0200
-Message-Id: <20230323092156.2545741-2-rppt@kernel.org>
+Subject: [PATCH 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+Date: Thu, 23 Mar 2023 11:21:44 +0200
+Message-Id: <20230323092156.2545741-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230323092156.2545741-1-rppt@kernel.org>
 References: <20230323092156.2545741-1-rppt@kernel.org>
@@ -65,47 +65,33 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
-describe this configuration option.
+It is not a good idea to change fundamental parameters of core memory
+management. Having predefined ranges suggests that the values within
+those ranges are sensible, but one has to *really* understand
+implications of changing MAX_ORDER before actually amending it and
+ranges don't help here.
 
-Update both to actually describe what this option does.
+Drop ranges in definition of ARCH_FORCE_MAX_ORDER
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/arm/Kconfig | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/arm64/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 929e646e84b9..0b15384c62e6 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1354,17 +1354,19 @@ config ARM_MODULE_PLTS
- 	  configurations. If unsure, say y.
- 
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index e60baf7859d1..bab6483e4317 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1489,9 +1489,7 @@ config XEN
  config ARCH_FORCE_MAX_ORDER
--	int "Maximum zone order"
-+	int "Order of maximal physically contiguous allocations"
- 	default "11" if SOC_AM33XX
- 	default "8" if SA1111
+ 	int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+ 	default "13" if ARM64_64K_PAGES
+-	range 11 13 if ARM64_16K_PAGES
+ 	default "11" if ARM64_16K_PAGES
+-	range 10 15 if ARM64_4K_PAGES
  	default "10"
  	help
--	  The kernel memory allocator divides physically contiguous memory
--	  blocks into "zones", where each zone is a power of two number of
--	  pages.  This option selects the largest power of two that the kernel
--	  keeps in the memory allocator.  If you need to allocate very large
--	  blocks of physically contiguous memory, then you may need to
--	  increase this value.
-+	  The kernel page allocator limits the size of maximal physically
-+	  contiguous allocations. The limit is called MAX_ORDER and it
-+	  defines the maximal power of two of number of pages that can be
-+	  allocated as a single contiguous block. This option allows
-+	  overriding the default setting when ability to allocate very
-+	  large blocks of physically contiguous memory is required.
-+
-+	  Don't change if unsure.
- 
- config ALIGNMENT_TRAP
- 	def_bool CPU_CP15_MMU
+ 	  The kernel memory allocator divides physically contiguous memory
 -- 
 2.35.1
 
