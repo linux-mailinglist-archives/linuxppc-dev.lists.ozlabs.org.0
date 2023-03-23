@@ -1,98 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0E36C712A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 20:40:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF80F6C717C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 21:02:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjFzr0zfCz3f8S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 06:40:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjGTP4lgcz3fQg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 07:02:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hr9F7fll;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IPZIkew3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=maskray@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hr9F7fll;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IPZIkew3;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjFyr4trmz3cjR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 06:39:16 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NI7rQk037016;
-	Thu, 23 Mar 2023 19:39:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=dYJ1b3z1QIjJUEXpivXu5+zowkB8PummjWgSxkl1pkg=;
- b=hr9F7fllanzBYK/2iL0xiWQzcaiLm/88Qn5OdEs3HAkiRE9OsulnwCqlDRaBMHEFEFpq
- 3yzHLOdRgyBZ2qZHm+3w1OH8c+uhBRQ+p43U1kIQu3Uq8hey42FV5uCjGHiULgdHJC53
- 9/X+Ffk/1ftzMRmF/UzUCNHFIiba/5UGHVT+GWjwc9K8HI57uy1wrXcXUvj58V2L/bF0
- HQLg9KErvBfdlusIv+WyIHhhJ0q0DyDmyeu2SyZVKj9vEk7bE0M4XCBI2OcFMBIq63Hk
- L0zhLY/hUuQCQVdDC7Vd1XnfBnrAUr5LxSYGJZ5KsGYS/cUu7OfkDQOGPQmtMA4HYeTr WQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pggv7uy5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 19:39:08 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NJb6eP016038;
-	Thu, 23 Mar 2023 19:39:07 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pggv7uy5e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 19:39:07 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32NHdQ5D021504;
-	Thu, 23 Mar 2023 19:39:07 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
-	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x7fqjy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Mar 2023 19:39:07 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NJd5TF30605922
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Mar 2023 19:39:05 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7EFD75805B;
-	Thu, 23 Mar 2023 19:39:05 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5F3E558059;
-	Thu, 23 Mar 2023 19:39:05 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Mar 2023 19:39:05 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman
- <mpe@ellerman.id.au>,
-        Nicholas
-	Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 8/8] powerpc/rtas: consume retry statuses in sys_rtas()
-In-Reply-To: <35f3e3c9486fe2a841bbf590349e8386c1bba390.camel@linux.ibm.com>
-References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
- <20230220-rtas-queue-for-6-4-v1-8-010e4416f13f@linux.ibm.com>
- <35f3e3c9486fe2a841bbf590349e8386c1bba390.camel@linux.ibm.com>
-Date: Thu, 23 Mar 2023 14:39:05 -0500
-Message-ID: <874jqb6yw6.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8m-HHAep1IT7bTpXuT1xkqg8mJ1Lep2d
-X-Proofpoint-GUID: J7ICT0tdXM2aVmblsLWjqtyOJdjjorHX
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjGSW08HPz3cfg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 07:01:29 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id u20so13544012pfk.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 13:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1679601687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+55oTh7z8IE/JgYLIE37w82gPzf2I2OB6Ia2/zSR7Vs=;
+        b=IPZIkew3dFtjmZdaViTjyD0HscLUwPXqPripmrMsr3WTFFmpjru7uOEiW5MdR0VV95
+         3AkjKWS+SSGR66Z2HcB5pk7YSGalu08/hGwoMnkFnDkE2qoAQbU1GvgUd6upSXxx5s2P
+         WgA85mghqIhhEYMtWiZMDw6eVS30vmwumoj8UFiy4jXPgOQpsvTsmsWOaQLIrepOjNLG
+         23PQbOvHd/lWhmQ57R9lQXqXoeGABGhKFPHzTLsKICBt+2gzhqsz8P/8SexMqUTFcc6H
+         UOF5X9dx/gsFR66RqsvJo3OswMwtQs/bMnp7PF1XkJIv33y55T3bQzLy+NDa36XNhCpS
+         +QIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679601687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+55oTh7z8IE/JgYLIE37w82gPzf2I2OB6Ia2/zSR7Vs=;
+        b=nP+ZaZv/k7AEbtAfJI6XlgTV2pOcsQM5rinuggqVRwsaTV/PXqHLLg4l3uHD2zpLSR
+         XPd5Cd0eIKybpSMUJ5HLard2qYNtH0rBpyPO3WjlgavPGDQS4d9ms0FbprVslkxWL7sY
+         cEeljXNap0WaQLnR4VpQGST1PVAdTj4fuTzKtPnOOQgIjLkSW/KMP3Hcf6Wl642pWUno
+         1hHZyYg0dz+2s7YcNcJ4Pmnm5TykozobiznwSct6SqmWQxFx5f4Eo/gzU8LZsAzV5SSD
+         FhWxF/nChypLyaFB8Uz+k2mtWp0X5pxzH/o0Fj0Eo2Iq8Yf6I5DoQEujPqsvAZNBZ28x
+         mguQ==
+X-Gm-Message-State: AO0yUKVZff8Zwr7XUSSOEjQKIUUbxFbZstYzFo0SW0cv8gSQEdTQzJiM
+	hlsekQ123jA8t3UWRdaGuLPM2wTsAmQZDV4YxhEiOw==
+X-Google-Smtp-Source: AK7set+ozY4YViDqnsSitk2Wr074yCOGB0DUpWwEKn9HjfwuqHnY07bD2pSglnB1LUnHagdMFzX9OQx8JdW2HNZ3kOw=
+X-Received: by 2002:a65:484d:0:b0:503:354c:41ad with SMTP id
+ i13-20020a65484d000000b00503354c41admr2238413pgs.11.1679601686525; Thu, 23
+ Mar 2023 13:01:26 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-23_13,2023-03-23_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=925 priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0
- suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230139
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+ <20230215143626.453491-2-alexghiti@rivosinc.com> <4a6fc7a3-9697-a49b-0941-97f32194b0d7@ghiti.fr>
+ <877cw7dphf.fsf@all.your.base.are.belong.to.us> <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdk0Lr-9gt0xAKvkcwA53+Wy8oeYQo1RJ7XH-LKCCURQCQ@mail.gmail.com>
+From: Fangrui Song <maskray@google.com>
+Date: Thu, 23 Mar 2023 13:01:15 -0700
+Message-ID: <CAFP8O3+UO0x9aETSnOkL7=473mX0wrt+ueuB9UgOJaf+N0p7gw@mail.gmail.com>
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
+To: Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,21 +77,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, nathan@kernel.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-
-> On Mon, 2023-03-06 at 15:33 -0600, Nathan Lynch via B4 Relay wrote:
->> * We can expect performance improvements for existing sys_rtas()
->> =C2=A0 users, not only because of overall reduction in the number of
->> system
->> =C2=A0 calls issued, but also due to the better handling of -2/990x in t=
-he
->> =C2=A0 kernel. For example, librtas still sleeps for 1ms on -2, which is
->> =C2=A0 completely unnecessary.
+On Wed, Mar 22, 2023 at 11:26=E2=80=AFAM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
 >
-> Would be good to see this fixed on the librtas side.
+> On Fri, Feb 24, 2023 at 7:58=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kern=
+el.org> wrote:
+> >
+> > Alexandre Ghiti <alex@ghiti.fr> writes:
+> >
+> > > +cc linux-kbuild, llvm, Nathan, Nick
+> > >
+> > > On 2/15/23 15:36, Alexandre Ghiti wrote:
+> > >> From: Alexandre Ghiti <alex@ghiti.fr>
+> > >>
+> > > I tried a lot of things, but I struggle to understand, does anyone ha=
+ve
+> > > any idea? FYI, the same problem happens with LLVM.
+>
+> Off the top of my head, no idea.
+>
+> (Maybe as a follow up to this series, I wonder if pursuing
+> ARCH_HAS_RELR for ARCH=3Driscv is worthwhile?)
 
-Filed an issue: https://github.com/ibm-power-utilities/librtas/issues/30
+(I had thought about this for my own fun, but the currently only
+implementation arch/arm64/kernel/head.S uses assembly.
+Every port needs to write some assembly for the same task, which is a pity.
+In FreeBSD rtld, glibc, and musl, DT_RELR code is target-independent.)
+
+
+> >
+> > Don't ask me *why*, but adding --emit-relocs to your linker flags solve=
+s
+> > "the NULL .rela.dyn" both for GCC and LLVM.
+> >
+> > The downside is that you end up with a bunch of .rela cruft in your
+> > vmlinux.
+>
+> There was a patch just this week to use $(OBJCOPY) to strip these from
+> vmlinux (for x86). Looks like x86 uses --emit-relocs for KASLR:
+> https://lore.kernel.org/lkml/20230320121006.4863-1-petr.pavlu@suse.com/
+> --
+> Thanks,
+> ~Nick Desaulniers
+>
+
+
+--=20
+=E5=AE=8B=E6=96=B9=E7=9D=BF
