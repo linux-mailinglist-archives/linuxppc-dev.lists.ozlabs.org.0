@@ -1,97 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2EE6C6ADF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 15:25:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246D76C6B01
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Mar 2023 15:31:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj71K41j8z3f7M
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 01:25:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pj77Q09xhz3fBJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 01:31:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OT/poq/Y;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OT/poq/Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Bwv/RXM6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OT/poq/Y;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OT/poq/Y;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Bwv/RXM6;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj70P1Cyhz3cfZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 01:25:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679581505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3cxY0YlR+Nav9cgoRAEQz2NR9PgUGMwQJGMBNInuMHU=;
-	b=OT/poq/YR3OKyCGXT0AdvsI6n9BhFvPhvUVO73f6r2D1yaP/ojvEAcTOlel5J+Rx0AkL0o
-	WbNiDsPQI2tLtVpsqT17mpgFSb8BnvhJOEujVCcbuayoO693KcCHBoSxymGiEBN34NcaGK
-	3M7NhPsSEwcjEDVa4SvQin9Z81qaqOk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679581505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3cxY0YlR+Nav9cgoRAEQz2NR9PgUGMwQJGMBNInuMHU=;
-	b=OT/poq/YR3OKyCGXT0AdvsI6n9BhFvPhvUVO73f6r2D1yaP/ojvEAcTOlel5J+Rx0AkL0o
-	WbNiDsPQI2tLtVpsqT17mpgFSb8BnvhJOEujVCcbuayoO693KcCHBoSxymGiEBN34NcaGK
-	3M7NhPsSEwcjEDVa4SvQin9Z81qaqOk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-xLeABINfNyKWQwOx9FyqQA-1; Thu, 23 Mar 2023 10:16:04 -0400
-X-MC-Unique: xLeABINfNyKWQwOx9FyqQA-1
-Received: by mail-wm1-f69.google.com with SMTP id bi27-20020a05600c3d9b00b003e9d0925341so10367905wmb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Mar 2023 07:16:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679580963;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3cxY0YlR+Nav9cgoRAEQz2NR9PgUGMwQJGMBNInuMHU=;
-        b=XnJ9EpcLknvzJQma+wzwOiHkmLp//Suhb86Jx4AJ8IMEfqgGpMRhQ9UO1j0AiMjjwL
-         dLeX1qarwTCoAXgdCAfXCv4vf8q4RvkuJQeyTbqWYVV8VToqMDdy8kJfkPPyWfeISY0H
-         kmLNWj7KLV/NltXa2F8fpMOOTWq87OtIzCPvK1uQHHmrSejhHvE9EqCzwNNSw8je/c6r
-         +91+iPluf4l0/uf6tyxWP0efgznXf0tzCocEDXL5kkQk0wBhsnMHd19JAEVZXx5uTY/W
-         /pOWI32sSUtKAdi6ouSya0M625ruyxOIaTrRjhLT40ZqW6ygxdfUjIVo/9SlceLVLsii
-         6SpA==
-X-Gm-Message-State: AO0yUKVzdWu2aM2pYFGb15pUHeT0aWCkc+iEPbYJ04KCivx2B8gGkr/u
-	UI9UyR99Gaa6qk8aqnRQrsza8/r80bpt+AU7LWvlX0ylZbB4LorMDQbTozk9At5M4WxiO4ML0AZ
-	XvC2wbPC83wwDBdm/Q/OLW2cE2Q==
-X-Received: by 2002:a1c:4c0d:0:b0:3ed:abb9:7515 with SMTP id z13-20020a1c4c0d000000b003edabb97515mr2479434wmf.11.1679580963329;
-        Thu, 23 Mar 2023 07:16:03 -0700 (PDT)
-X-Google-Smtp-Source: AK7set/3oWB5oheY84MnPANpjGZQTPaBGqoPuX1i8xTQHcr1RbVYlWVK0NfEAlBy0IX+fO2f9pUY1A==
-X-Received: by 2002:a1c:4c0d:0:b0:3ed:abb9:7515 with SMTP id z13-20020a1c4c0d000000b003edabb97515mr2479417wmf.11.1679580963039;
-        Thu, 23 Mar 2023 07:16:03 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-179-146.web.vodafone.de. [109.43.179.146])
-        by smtp.gmail.com with ESMTPSA id v4-20020a05600c470400b003ee8ab8d6cfsm1991913wmo.21.2023.03.23.07.16.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 07:16:02 -0700 (PDT)
-Message-ID: <9745a2df-1902-6b4c-d617-19fc2e56c909@redhat.com>
-Date: Thu, 23 Mar 2023 15:16:01 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pj76T02Kwz3chw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 01:30:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679581825; x=1711117825;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yycxH1AeGogQsiHx6KGAN/nQ6jWFX888/jtMkSYZfjo=;
+  b=Bwv/RXM6P+zHpdECma+ZgVBjZIcARK0507jQzzDm19wqBOMiDD3JZbIW
+   vbiu7UD0f2q56BltW0y2EuOu0ysajieEHHaHghMCtTtI0HiW2ya6wRJ2r
+   JBdxRSEOFP7Esg0dQ14uPe+JsmnxKYpBcpOccYK7PSiV3sR3DUo/ii122
+   4gKcRFRt1WzABMs5cL3k3TFLZYuRZKwTpac0dUfKe+Ih6ftMdl4qRVT2F
+   rpfFXk/oKg5Obo+9TLsMK6Zg5/UaFlrAkNxMJQIlY6fIeE5iFSmUygP8p
+   GUrXiIfWg5iqD2VPo+71Wmt1BcNhvX4pEyd0PpSLaWRrgzHOhfRe4oKve
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="367241209"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="367241209"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 07:30:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="684752720"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="684752720"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 23 Mar 2023 07:30:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1pfLx3-007XTh-2N;
+	Thu, 23 Mar 2023 16:30:01 +0200
+Date: Thu, 23 Mar 2023 16:30:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <ZBxiaflGTeK8Jlgx@smile.fi.intel.com>
+References: <20230320131633.61680-2-andriy.shevchenko@linux.intel.com>
+ <20230322192804.GA2485349@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v2 10/10] powerpc/sprs: Test hypervisor registers
- on powernv machine
-To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
-References: <20230320070339.915172-1-npiggin@gmail.com>
- <20230320070339.915172-11-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230320070339.915172-11-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322192804.GA2485349@bhelgaas>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,96 +72,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@
+ physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/03/2023 08.03, Nicholas Piggin wrote:
-> This enables HV privilege registers to be tested with the powernv
-> machine.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   powerpc/sprs.c | 31 ++++++++++++++++++++++++-------
->   1 file changed, 24 insertions(+), 7 deletions(-)
-> 
-> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-> index dd83dac..a7878ff 100644
-> --- a/powerpc/sprs.c
-> +++ b/powerpc/sprs.c
-> @@ -199,16 +199,16 @@ static const struct spr sprs_power_common[1024] = {
->   [190] = {"HFSCR",	64,	HV_RW, },
->   [256] = {"VRSAVE",	32,	RW, },
->   [259] = {"SPRG3",	64,	RO, },
-> -[284] = {"TBL",		32,	HV_WO, },
-> -[285] = {"TBU",		32,	HV_WO, },
-> -[286] = {"TBU40",	64,	HV_WO, },
-> +[284] = {"TBL",		32,	HV_WO, }, /* Things can go a bit wonky with */
-> +[285] = {"TBU",		32,	HV_WO, }, /* Timebase changing. Should save */
-> +[286] = {"TBU40",	64,	HV_WO, }, /* and restore it. */
->   [304] = {"HSPRG0",	64,	HV_RW, },
->   [305] = {"HSPRG1",	64,	HV_RW, },
->   [306] = {"HDSISR",	32,	HV_RW,		SPR_INT, },
->   [307] = {"HDAR",	64,	HV_RW,		SPR_INT, },
->   [308] = {"SPURR",	64,	HV_RW | OS_RO,	SPR_ASYNC, },
->   [309] = {"PURR",	64,	HV_RW | OS_RO,	SPR_ASYNC, },
-> -[313] = {"HRMOR",	64,	HV_RW, },
-> +[313] = {"HRMOR",	64,	HV_RW,		SPR_HARNESS, }, /* Harness can't cope with HRMOR changing */
->   [314] = {"HSRR0",	64,	HV_RW,		SPR_INT, },
->   [315] = {"HSRR1",	64,	HV_RW,		SPR_INT, },
->   [318] = {"LPCR",	64,	HV_RW, },
-> @@ -350,6 +350,22 @@ static const struct spr sprs_power10_pmu[1024] = {
->   
->   static struct spr sprs[1024];
->   
-> +static bool spr_read_perms(int spr)
-> +{
-> +	if (machine_is_powernv())
-> +		return !!(sprs[spr].access & SPR_HV_READ);
-> +	else
-> +		return !!(sprs[spr].access & SPR_OS_READ);
-> +}
-> +
-> +static bool spr_write_perms(int spr)
-> +{
-> +	if (machine_is_powernv())
-> +		return !!(sprs[spr].access & SPR_HV_WRITE);
-> +	else
-> +		return !!(sprs[spr].access & SPR_OS_WRITE);
-> +}
-> +
->   static void setup_sprs(void)
->   {
->   	uint32_t pvr = mfspr(287);	/* Processor Version Register */
-> @@ -462,7 +478,7 @@ static void get_sprs(uint64_t *v)
->   	int i;
->   
->   	for (i = 0; i < 1024; i++) {
-> -		if (!(sprs[i].access & SPR_OS_READ))
-> +		if (!spr_read_perms(i))
->   			continue;
->   		v[i] = mfspr(i);
->   	}
-> @@ -473,8 +489,9 @@ static void set_sprs(uint64_t val)
->   	int i;
->   
->   	for (i = 0; i < 1024; i++) {
-> -		if (!(sprs[i].access & SPR_OS_WRITE))
-> +		if (!spr_write_perms(i))
->   			continue;
-> +
->   		if (sprs[i].type & SPR_HARNESS)
->   			continue;
->   		if (!strcmp(sprs[i].name, "MMCR0")) {
-> @@ -546,7 +563,7 @@ int main(int argc, char **argv)
->   	for (i = 0; i < 1024; i++) {
->   		bool pass = true;
->   
-> -		if (!(sprs[i].access & SPR_OS_READ))
-> +		if (!spr_read_perms(i))
->   			continue;
->   
->   		if (sprs[i].width == 32) {
+On Wed, Mar 22, 2023 at 02:28:04PM -0500, Bjorn Helgaas wrote:
+> On Mon, Mar 20, 2023 at 03:16:30PM +0200, Andy Shevchenko wrote:
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+...
+
+> > +	pci_dev_for_each_resource_p(dev, r) {
+> >  		/* zap the 2nd function of the winbond chip */
+> > -		if (dev->resource[i].flags & IORESOURCE_IO
+> > -		    && dev->bus->number == 0 && dev->devfn == 0x81)
+> > -			dev->resource[i].flags &= ~IORESOURCE_IO;
+> > -		if (dev->resource[i].start == 0 && dev->resource[i].end) {
+> > -			dev->resource[i].flags = 0;
+> > -			dev->resource[i].end = 0;
+> > +		if (dev->bus->number == 0 && dev->devfn == 0x81 &&
+> > +		    r->flags & IORESOURCE_IO)
+> 
+> This is a nice literal conversion, but it's kind of lame to test
+> bus->number and devfn *inside* the loop here, since they can't change
+> inside the loop.
+
+Hmm... why are you asking me, even if I may agree on that? It's
+in the original code and out of scope of this series.
+
+> > +			r->flags &= ~IORESOURCE_IO;
+> > +		if (r->start == 0 && r->end) {
+> > +			r->flags = 0;
+> > +			r->end = 0;
+> >  		}
+> >  	}
+
+...
+
+> >  #define pci_resource_len(dev,bar) \
+> >  	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+> >  							\
+> > -	 (pci_resource_end((dev), (bar)) -		\
+> > -	  pci_resource_start((dev), (bar)) + 1))
+> > +	 resource_size(pci_resource_n((dev), (bar))))
+> 
+> I like this change, but it's unrelated to pci_dev_for_each_resource()
+> and unmentioned in the commit log.
+
+And as you rightfully noticed this either. I can split it to a separate one.
+
+...
+
+> > +#define __pci_dev_for_each_resource(dev, res, __i, vartype)		\
+> > +	for (vartype __i = 0;						\
+> > +	     res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;	\
+> > +	     __i++)
+> > +
+> > +#define pci_dev_for_each_resource(dev, res, i)				\
+> > +       __pci_dev_for_each_resource(dev, res, i, )
+> > +
+> > +#define pci_dev_for_each_resource_p(dev, res)				\
+> > +	__pci_dev_for_each_resource(dev, res, __i, unsigned int)
+> 
+> This series converts many cases to drop the iterator variable ("i"),
+> which is fantastic.
+> 
+> Several of the remaining places need the iterator variable only to
+> call pci_claim_resource(), which could be converted to take a "struct
+> resource *" directly without much trouble.
+> 
+> We don't have to do that pci_claim_resource() conversion now,
+
+Exactly, it's definitely should be separate change.
+
+> but
+> since we're converging on the "(dev, res)" style, I think we should
+> reverse the names so we have something like:
+> 
+>   pci_dev_for_each_resource(dev, res)
+>   pci_dev_for_each_resource_idx(dev, res, i)
+
+Wouldn't it be more churn, including pci_bus_for_each_resource() correction?
+
+...
+
+> Not sure __pci_dev_for_each_resource() is worthwhile since it only
+> avoids repeating that single "for" statement, and passing in "vartype"
+> (sometimes empty to implicitly avoid the declaration) is a little
+> complicated to read.  I think it'd be easier to read like this:
+
+No objections here.
+
+>   #define pci_dev_for_each_resource(dev, res)                      \
+>     for (unsigned int __i = 0;                                     \
+>          res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;  \
+>          __i++)
+> 
+>   #define pci_dev_for_each_resource_idx(dev, res, idx)             \
+>     for (idx = 0;                                                  \
+>          res = pci_resource_n(dev, idx), idx < PCI_NUM_RESOURCES;  \
+>          idx++)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
