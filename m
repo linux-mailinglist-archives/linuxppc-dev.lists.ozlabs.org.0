@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9806C8239
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 17:15:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CD56C826E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 17:34:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjnPM2yJzz3fW2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 03:15:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjnqf1fd1z3fWP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 03:34:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjnNq1Trlz3bT1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 03:15:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjnq73ldNz2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 03:34:26 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85CBC113E;
-	Fri, 24 Mar 2023 09:15:14 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.55.116])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F2B83F6C4;
-	Fri, 24 Mar 2023 09:14:28 -0700 (PDT)
-Date: Fri, 24 Mar 2023 16:14:22 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2C3A113E;
+	Fri, 24 Mar 2023 09:34:38 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.56.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17CBD3F6C4;
+	Fri, 24 Mar 2023 09:33:52 -0700 (PDT)
+Date: Fri, 24 Mar 2023 16:32:52 +0000
 From: Mark Rutland <mark.rutland@arm.com>
 To: Uros Bizjak <ubizjak@gmail.com>
 Subject: Re: [PATCH 01/10] locking/atomic: Add missing cast to try_cmpxchg()
  fallbacks
-Message-ID: <ZB3MR8lGbnea9ui6@FVFF77S0Q05N>
+Message-ID: <ZB3QtDYuWdpiD5qk@FVFF77S0Q05N>
 References: <20230305205628.27385-1-ubizjak@gmail.com>
  <20230305205628.27385-2-ubizjak@gmail.com>
  <ZB2v+avNt52ac/+w@FVFF77S0Q05N>
  <CAFULd4ZCgxDYnyy--qdgKoAo_y7MbNSaQdbdBFefnFuMoM2OYw@mail.gmail.com>
+ <ZB3MR8lGbnea9ui6@FVFF77S0Q05N>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFULd4ZCgxDYnyy--qdgKoAo_y7MbNSaQdbdBFefnFuMoM2OYw@mail.gmail.com>
+In-Reply-To: <ZB3MR8lGbnea9ui6@FVFF77S0Q05N>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,78 +50,47 @@ Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Will Deac
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 24, 2023 at 04:43:32PM +0100, Uros Bizjak wrote:
-> On Fri, Mar 24, 2023 at 3:13 PM Mark Rutland <mark.rutland@arm.com> wrote:
-> >
-> > On Sun, Mar 05, 2023 at 09:56:19PM +0100, Uros Bizjak wrote:
-> > > Cast _oldp to the type of _ptr to avoid incompatible-pointer-types warning.
-> >
-> > Can you give an example of where we are passing an incompatible pointer?
+On Fri, Mar 24, 2023 at 04:14:22PM +0000, Mark Rutland wrote:
+> On Fri, Mar 24, 2023 at 04:43:32PM +0100, Uros Bizjak wrote:
+> > On Fri, Mar 24, 2023 at 3:13 PM Mark Rutland <mark.rutland@arm.com> wrote:
+> > >
+> > > On Sun, Mar 05, 2023 at 09:56:19PM +0100, Uros Bizjak wrote:
+> > > > Cast _oldp to the type of _ptr to avoid incompatible-pointer-types warning.
+> > >
+> > > Can you give an example of where we are passing an incompatible pointer?
+> > 
+> > An example is patch 10/10 from the series, which will fail without
+> > this fix when fallback code is used. We have:
+> > 
+> > -       } while (local_cmpxchg(&rb->head, offset, head) != offset);
+> > +       } while (!local_try_cmpxchg(&rb->head, &offset, head));
+> > 
+> > where rb->head is defined as:
+> > 
+> > typedef struct {
+> >    atomic_long_t a;
+> > } local_t;
+> > 
+> > while offset is defined as 'unsigned long'.
 > 
-> An example is patch 10/10 from the series, which will fail without
-> this fix when fallback code is used. We have:
+> Ok, but that's because we're doing the wrong thing to start with.
 > 
-> -       } while (local_cmpxchg(&rb->head, offset, head) != offset);
-> +       } while (!local_try_cmpxchg(&rb->head, &offset, head));
+> Since local_t is defined in terms of atomic_long_t, we should define the
+> generic local_try_cmpxchg() in terms of atomic_long_try_cmpxchg(). We'll still
+> have a mismatch between 'long *' and 'unsigned long *', but then we can fix
+> that in the callsite:
 > 
-> where rb->head is defined as:
-> 
-> typedef struct {
->    atomic_long_t a;
-> } local_t;
-> 
-> while offset is defined as 'unsigned long'.
+> 	while (!local_try_cmpxchg(&rb->head, &(long *)offset, head))
 
-Ok, but that's because we're doing the wrong thing to start with.
+Sorry, that should be:
+	
+	while (!local_try_cmpxchg(&rb->head, (long *)&offset, head))
 
-Since local_t is defined in terms of atomic_long_t, we should define the
-generic local_try_cmpxchg() in terms of atomic_long_try_cmpxchg(). We'll still
-have a mismatch between 'long *' and 'unsigned long *', but then we can fix
-that in the callsite:
+The fundamenalthing I'm trying to say is that the
+atomic/atomic64/atomic_long/local/local64 APIs should be type-safe, and for
+their try_cmpxchg() implementations, the type signature should be:
 
-	while (!local_try_cmpxchg(&rb->head, &(long *)offset, head))
-
-... which then won't silently mask issues elsewhere, and will be consistent
-with all the other atomic APIs.
+	${atomictype}_try_cmpxchg(${atomictype} *ptr, ${inttype} *old, ${inttype} new)
 
 Thanks,
 Mark.
-
-> 
-> The assignment in existing try_cmpxchg template:
-> 
-> typeof(*(_ptr)) *___op = (_oldp)
-> 
-> will trigger an initialization from an incompatible pointer type error.
-> 
-> Please note that x86 avoids this issue by a cast in its
-> target-dependent definition:
-> 
-> #define __raw_try_cmpxchg(_ptr, _pold, _new, size, lock)                \
-> ({                                                                      \
->        bool success;                                                   \
->        __typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);              \
->        __typeof__(*(_ptr)) __old = *_old;                              \
->        __typeof__(*(_ptr)) __new = (_new);                             \
-> 
-> so, the warning/error will trigger only in the fallback code.
-> 
-> > That sounds indicative of a bug in the caller, but maybe I'm missing some
-> > reason this is necessary due to some indirection.
-> >
-> > > Fixes: 29f006fdefe6 ("asm-generic/atomic: Add try_cmpxchg() fallbacks")
-> >
-> > I'm not sure that this needs a fixes tag. Does anything go wrong today, or only
-> > later in this series?
-> 
-> The patch at [1] triggered a build error in posix_acl.c/__get.acl due
-> to the same problem. The compilation for x86 target was OK, because
-> x86 defines target-specific arch_try_cmpxchg, but the compilation
-> broke for targets that revert to generic support. Please note that
-> this specific problem was recently fixed in a different way [2], but
-> the issue with the fallback remains.
-> 
-> [1] https://lore.kernel.org/lkml/20220714173819.13312-1-ubizjak@gmail.com/
-> [2] https://lore.kernel.org/lkml/20221201160103.76012-1-ubizjak@gmail.com/
-> 
-> Uros.
