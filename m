@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F826C7758
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 06:29:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0266C775C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 06:29:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjW3H4sgJz3fdY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 16:28:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjW4H1bHsz3fbP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 16:29:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mcx5mi6z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dg5ZEoi0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mcx5mi6z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dg5ZEoi0;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjVx52rWSz3fQy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 16:23:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjVxD50KZz3f8B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 16:23:44 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B2F5A6295B;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0516662953;
+	Fri, 24 Mar 2023 05:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E0FC433D2;
 	Fri, 24 Mar 2023 05:23:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57431C4339E;
-	Fri, 24 Mar 2023 05:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679635415;
-	bh=16JrwLfrtLxPuHCHFmRFq3Y1XDuzg93pFyw8IuF9Xqw=;
+	s=k20201202; t=1679635422;
+	bh=3o/oiJZNYjmbb0ve77O2iog/Wu3nxAaOqmae3RvqrTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mcx5mi6zYMsZzfoU338NzBBcB1GnI+sBv5ceeoPKrKh+1fsy4+PTA/r3sP5Bom2yj
-	 4luDbZzurEwLt8XL4O3etoO/FZps8DQcHsDcqapH8HMJedXStV3PwysdRxoO+wouMt
-	 epZFwyP+LawQXFLfRWthEWTuvHRkJfa7niNubZ3Q+nrrv+77f3/mb4EpmnnIWnuqZr
-	 JtJauVIg4UQYcSle5l6vt7qITgP28NrOveEliCMkdFcXeegKGJWd7/cR8s4fJ7V7dt
-	 GYK3Jedaxs+h6q2d0egoaUJX3Dqbgnf9KbHMXy6oehrvJU/VHVoJS+22JmbMVEbb/d
-	 6gyRBPAs7d7NQ==
+	b=dg5ZEoi0t9FSUKA5Vf5WUTAMdkq5awtSVdVqTOfIj6XF/R0HIUiOqn5EjYWKEz12V
+	 mTiqvQ2kfY3LquWcC2iqXwvlnBvX9/gBDI+A52wL4tt/aj00N9ywZaaqf96CKRHrdg
+	 qFBvKiDudjh/e2ioZMdjcnNvV+v7Jj4HcmJc6NXZgEqeQbMymxkNwAwEFw00iaGNuK
+	 7UP27ur+wlUIMVPyOv7Zhkn9isMmE1l/OgwziL1VRcDuu/CsmBtAwjxvHl+OdhLaDT
+	 3sECoai8/JExuUNHYkVBL0kVVhiBVVxbZFej68r9c4/Oz8b80d2RcxxKR0dCEDd85u
+	 6UbAoIfK9A7Bw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 06/14] m68k: reword ARCH_FORCE_MAX_ORDER prompt and help text
-Date: Fri, 24 Mar 2023 08:22:25 +0300
-Message-Id: <20230324052233.2654090-7-rppt@kernel.org>
+Subject: [PATCH v2 07/14] nios2: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Fri, 24 Mar 2023 08:22:26 +0300
+Message-Id: <20230324052233.2654090-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230324052233.2654090-1-rppt@kernel.org>
 References: <20230324052233.2654090-1-rppt@kernel.org>
@@ -72,22 +72,21 @@ Update both to actually describe what this option does.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/m68k/Kconfig.cpu | 16 +++++++++-------
+ arch/nios2/Kconfig | 16 +++++++++-------
  1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
-index c9df6572133f..e530bc8f240f 100644
---- a/arch/m68k/Kconfig.cpu
-+++ b/arch/m68k/Kconfig.cpu
-@@ -398,21 +398,23 @@ config SINGLE_MEMORY_CHUNK
- 	  Say N if not sure.
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index 89708b95978c..fcaa6bbda3fc 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -45,16 +45,18 @@ menu "Kernel features"
+ source "kernel/Kconfig.hz"
  
  config ARCH_FORCE_MAX_ORDER
--	int "Maximum zone order" if ADVANCED
-+	int "Order of maximal physically contiguous allocations" if ADVANCED
- 	depends on !SINGLE_MEMORY_CHUNK
+-	int "Maximum zone order"
++	int "Order of maximal physically contiguous allocations"
+ 	range 8 19
  	default "10"
  	help
 -	  The kernel memory allocator divides physically contiguous memory
@@ -102,16 +101,11 @@ index c9df6572133f..e530bc8f240f 100644
 +	  allocated as a single contiguous block. This option allows
 +	  overriding the default setting when ability to allocate very
 +	  large blocks of physically contiguous memory is required.
- 
- 	  For systems that have holes in their physical address space this
- 	  value also defines the minimal size of the hole that allows
- 	  freeing unused memory map.
- 
-+	  Don't change if unsure.
 +
- config 060_WRITETHROUGH
- 	bool "Use write-through caching for 68060 supervisor accesses"
- 	depends on ADVANCED && M68060
++	  Don't change if unsure.
+ 
+ endmenu
+ 
 -- 
 2.35.1
 
