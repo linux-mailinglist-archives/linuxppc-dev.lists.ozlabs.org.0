@@ -2,62 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373BD6C886A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 23:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FA66C8872
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 23:35:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjxp56Zhpz3fSd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 09:34:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjxq700vQz3fQn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 09:34:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JQW5j6ej;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=atlas.cz header.i=@atlas.cz header.a=rsa-sha256 header.s=mail header.b=R6N7syRZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=peter.ujfalusi@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=atlas.cz (client-ip=46.255.227.205; helo=gmmr-4.centrum.cz; envelope-from=arkamar@atlas.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JQW5j6ej;
+	dkim=pass (1024-bit key; secure) header.d=atlas.cz header.i=@atlas.cz header.a=rsa-sha256 header.s=mail header.b=R6N7syRZ;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 83 seconds by postgrey-1.36 at boromir; Sat, 25 Mar 2023 09:02:45 AEDT
+Received: from gmmr-4.centrum.cz (gmmr-4.centrum.cz [46.255.227.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjkVx2fl4z3chX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 01:05:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679666713; x=1711202713;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N3nImKI8eGuJ2BCUd714yeyqn0z1Xx7ywtWUfvVU6L4=;
-  b=JQW5j6ejWjmWmxefjb0pO+N2m8sp6e18XUSBXSoWjPAMPWhwU9kIZ0u2
-   KzpVb9XjN8/f4pkBqgg+X2MBw5znimnxboAjLlnH2QT91eZTOLvMOyOkb
-   rUAKCPfssZanJjCcGkr5DjTMiCcPUfdMYORRNQI9QCAZmvZ8ksDwgbb2Y
-   C1emSG9FTZzfYAYaorE/uogHYxFbLOobH51snbq7L53tCeDI+dObpIwre
-   OCrB0ZLjetfm13U93PwlpqY8X4gYGxfSvsGEEfBhFlRoD3e58ee/nwpkH
-   JazrlUXuSuQ1nmAMEfaC5q6ztQef0TQfQ6Yz6rogDfKURveDBQBJlqgPq
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10659"; a="426051926"
-X-IronPort-AV: E=Sophos;i="5.98,288,1673942400"; 
-   d="scan'208";a="426051926"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 07:05:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10659"; a="856865022"
-X-IronPort-AV: E=Sophos;i="5.98,288,1673942400"; 
-   d="scan'208";a="856865022"
-Received: from rosenbaf-mobl.ger.corp.intel.com (HELO [10.252.63.223]) ([10.252.63.223])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 07:04:58 -0700
-Message-ID: <fecbddb2-e729-f9db-8426-a598348e26db@linux.intel.com>
-Date: Fri, 24 Mar 2023 16:05:29 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pjx5x6Tn4z3fJK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 09:02:45 +1100 (AEDT)
+Received: from gmmr-4.centrum.cz (localhost [127.0.0.1])
+	by gmmr-4.centrum.cz (Postfix) with ESMTP id E67DFACCB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 23:01:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1679695267; bh=wG+MCIOgalYaCRwp5w4NLK9EPO2p7bcnY4V9JHOzSn0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=R6N7syRZ4JprrYgEj3wDSz0yvsAqCxe66Cxg9p82/JlndMEIAyGeIWY7Tm9CHjED0
+	 o1HG+AdqKjbW/ywf5N6qwZNG38Jjne0HQd8Z1pHMugf9IFWn7+RAMfdFPQu/4PWsGG
+	 YpuELysWcIJ/I9FqqtwKU1PVWhDHF8BlKA4Qaz8E=
+Received: from antispam99.centrum.cz (unknown [10.30.208.99])
+	by gmmr-4.centrum.cz (Postfix) with ESMTP id E4C6A2012147
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 23:01:07 +0100 (CET)
+X-IPAS-Result: =?us-ascii?q?A2DeAgDaGx5k/03h/y5aHAEBAQEBAQcBARIBAQQEAQFAC?=
+ =?us-ascii?q?YFGgxeBZoRSkS+LXoYbgR+MPQ8BAQEBAQEBAQEJRAQBAYUFhTwmOBMBAgQBA?=
+ =?us-ascii?q?QEBAwIDAQEBAQEBAwEBAQUBAQEBAQEGAwGBHYUvRoZYJwQLAUYoAQwCJgJfE?=
+ =?us-ascii?q?4J+gigBAzGyLX8zGgJlnhoCSQVTXYEngRQti2+GCIINhH2ECxGEAIJnBJlIC?=
+ =?us-ascii?q?oE0dYEgDkpzgQQCCQIRa4ESCGuBfUECDWQLDm+BSwKCHTI3AwkDBwUsHUADC?=
+ =?us-ascii?q?xgNFjoTLDUUIQZYawEtEhIFAwsVKkcECDkGThECCA8SDyxDDkI3NBMGXAEpC?=
+ =?us-ascii?q?w4RA1BCGWwEggsHJiSacAIBgmcBgQ4ImGmtX4QEhDqcMhoylxQeA5IJAZdqo?=
+ =?us-ascii?q?0WEVYF6gX4zIjCDIlIZoht0OwIHAQoBAQMJgjuGLwGCWAEB?=
+IronPort-Data: A9a23:Nkaqq68/VO5CZpivWzf3DrUDnn+TJUtcMsCJ2f8bNWPcYEJGY0x3x
+ zMeUTqBPa6PamX9ft5zbNixp0oD7MPWyIRjGVBs+3wxFiIbosfsO4+Ufxz6V8+wwmwvb67FA
+ +E2MISowBUcFyeEzvuVGuG96yM6jMlkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1rlV
+ eja/ouOaDdJ5xYuajhPs/nZ9Es11BjPkGpwUmIWNKgjUGD2yCF94KI3fcmZM3b+S49IKe+2L
+ 86rIGaRows1Vz90Yj+Uuu6Tnn8iG9Y+DiDX4pZiYJVOtzAZzsAEPgbXA9JHAatfo23hc9mcU
+ 7yhv7ToIesiFvWkdOjwz3C0HgkmVZCq9oMrLlC27+vD8RbaYkDg0vZtK2BmFosR5d9oVDQmG
+ fwwcFjhbziMgqetxa6jE7EqjcklMNP2OcUUqBmMzxmFU7B8HM2FGf+Xo4AHtNszrpkm8fL2b
+ tAaYD9mdjzJfxlGIREcGvrSmc/x3ymhK2YG9Dp5o4IF/XDIxgN+ioGzE/PYQ92wVZtPhnmX8
+ zeuE2PRR0ty2Mak4TOf8Xupj/XnlD//UZlUH6/Q3vVqmlyI2msLCBBQUVahpuiRgVWxQdVCM
+ woZ50IGqLA/3EGvStTnWhS+5n+I+BcBM/JWC+w15wCL4qXR6gedQGMDS1ZpbN0gqd8uXTdv2
+ lKXt9foHiB09rqHTXuX7fGTtzzaESwUK3ISICwJVw0I5/H9r4wpyBHCVNBuFOiylNKdJN3r6
+ 2zU6nJj2vNJ15NNiPrTEU37vg9Ab6PhFmYdjjg7lEr8hu+lTOZJv7CV1GU=
+IronPort-HdrOrdr: A9a23:ZN8Q76MdczA4YcBcTtCjsMiBIKoaSvp037Dk7SxMoHtuA6mlfq
+ GV7ZYmPHDP5gr5NEtLpTniAtjifZqjz/9ICOAqVN/IYOCMggSVxe9ZgLcKuweBJxHD
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.98,288,1673910000"; 
+   d="scan'208";a="11860364"
+Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
+  by antispam99.centrum.cz with ESMTP; 24 Mar 2023 23:01:07 +0100
+Received: from localhost.localdomain (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id 941A9808B274;
+	Fri, 24 Mar 2023 23:01:07 +0100 (CET)
+From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/pseries: Add spaces around / operator
+Date: Fri, 24 Mar 2023 23:00:41 +0100
+Message-Id: <20230324220041.11378-1-arkamar@atlas.cz>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.9.0
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 7c4a254d78f89546d0e74a40617ef24c6151c8d1
-Content-Language: en-US
-To: kernel test robot <lkp@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <641cc5da.LRhzzaC4RvFK5EH/%lkp@intel.com>
-From: =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-In-Reply-To: <641cc5da.LRhzzaC4RvFK5EH/%lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Sat, 25 Mar 2023 09:33:19 +1100
@@ -72,46 +89,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>, linux-wireless@vger.kernel.org, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, amd-gfx@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, linuxppc-dev@lists.ozlabs.org, sound-open-firmware@alsa-project.org
+Cc: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+This is follow up change after 14b5d59a261b ("powerpc/pseries: Fix
+formatting to make code look more beautiful") to conform to kernel
+coding style.
 
-On 23/03/2023 23:34, kernel test robot wrote:
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> branch HEAD: 7c4a254d78f89546d0e74a40617ef24c6151c8d1  Add linux-next specific files for 20230323
-> 
-> Error/Warning reports:
-> 
-> https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
-> https://lore.kernel.org/oe-kbuild-all/202303231302.iY6qIfXA-lkp@intel.com
-> https://lore.kernel.org/oe-kbuild-all/202303232154.aXOXAWhg-lkp@intel.com
-> 
-> Error/Warning: (recently discovered and may have been fixed)
-> 
-> drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-> drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-> gpio.c:(.init.text+0xec): undefined reference to `of_mm_gpiochip_add_data'
-> include/linux/mmzone.h:1749:2: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE
-> 
-> Unverified Error/Warning (likely false positive, please contact us if interested):
+Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-...
-
-> sound/soc/sof/ipc4-pcm.c:391 sof_ipc4_pcm_dai_link_fixup_rate() error: uninitialized symbol 'be_rate'.
-> sound/soc/sof/ipc4-topology.c:1132 ipc4_copier_set_capture_fmt() error: uninitialized symbol 'sample_valid_bits'.
-
-These are false positives, the copier which is used in these functions
-always have input and output side, the be_rate will be initialized:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/sound/soc/sof/ipc4-pcm.c#n485
-on the first iteration.
-
-the sample_valid_bits will be initialized:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/sound/soc/sof/ipc4-topology.c#n1310
-on the first iteration.
-
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index c74b71d4733d..b0cb2fa39cf8 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -474,7 +474,7 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
+ 		 * Set up the page with TCE data, looping through and setting
+ 		 * the values.
+ 		 */
+-		limit = min_t(long, num_tce, 4096/TCE_ENTRY_SIZE);
++		limit = min_t(long, num_tce, 4096 / TCE_ENTRY_SIZE);
+ 		dma_offset = next + be64_to_cpu(maprange->dma_base);
+ 
+ 		for (l = 0; l < limit; l++) {
 -- 
--- 
-Péter
+2.39.2
+
