@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28516C7B1B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 10:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB2B6C7B27
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 10:22:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjcC13GC3z3fRc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 20:21:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjcD86ysXz3fSh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 20:22:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HXz0htO4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MZ4I2U6i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HXz0htO4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MZ4I2U6i;
 	dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjcB425JBz3btb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 20:20:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjcCD6dhwz3fFM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 20:21:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679649612; x=1711185612;
+  t=1679649673; x=1711185673;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=vsNBrnwY/qFfdSufiaxoySiGuysdLC+OL9fxRmgKucY=;
-  b=HXz0htO4y3V5nDWH7pAc2ShNm7ydnVIjtdX9jlrGHCBDF0ooD0vwssi5
-   ArTO8zQNsC1YJx/LMSj2Nkwe5qGLQ8cl1yYd1s39LrvpONN8YE1n0FjiG
-   1wLYr9mHI2Z0/5wF3zHegsVe5uGhPlSVTTUMtLBFdpIRNGAbTS47NSFqS
-   0P6g7FBqDkhJQDzL0aIuS7MV7iN3/3GwKz+5vmawATJvx2LyYAlt6FN0S
-   la6/AqbmuORGDvWSjSDImMxdmKnC7sjJVzZlAOyJOg69jL4ZDPQt+vsUN
-   E3t8optuDofVYpjt9FM+YS4c43jC+kQu9pZWWXcUi+iJMS7M3Y4S9gPay
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="404652770"
+  bh=Zv6p5PxBUIwRGR/FQTKCtRGfcJDPVTzeoNo7mhbkHhY=;
+  b=MZ4I2U6inIy02FjMozYrQ1OgG1SIEYnUccmCPAmXCnkbeqp6zolhRsKC
+   U2ujPh3qJVckuTBwto/enz5fbvXXsdWxRAqJw9/33qgQGackWDsNYb97F
+   CMb2icl45ffum8/53Qev7Vlqyh9QPpo/k9/CDKeGW7vs+zRMKj+M+hA3C
+   pU8q/XrfCRHFFymgo48cYHlcLGk00+bU8XpFFvPeL64H0Dk0tv0t2NO+I
+   XoYDfzkslo40ANAOHT+4Nw4t3hkUcIY4cO4LpUqEyHnwR4fLRqaYLLvx6
+   qd3UAYlUehhVtAPuBVRM0B5rIv3HNtETufTfX+8GjpRGZLUY4F7Fe/065
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="320129750"
 X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="404652770"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 02:20:07 -0700
+   d="scan'208";a="320129750"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 02:21:09 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="1012189014"
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="771814725"
 X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="1012189014"
+   d="scan'208";a="771814725"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 24 Mar 2023 02:19:57 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 24 Mar 2023 02:20:59 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1pfdaS-007qVe-2O;
-	Fri, 24 Mar 2023 11:19:52 +0200
-Date: Fri, 24 Mar 2023 11:19:52 +0200
+	id 1pfdbS-007qWb-1l;
+	Fri, 24 Mar 2023 11:20:54 +0200
+Date: Fri, 24 Mar 2023 11:20:54 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v7 4/6] EISA: Convert to use less arguments in
- pci_bus_for_each_resource()
-Message-ID: <ZB1rOHt8pG+9Ti2V@smile.fi.intel.com>
+Subject: Re: [PATCH v7 6/6] PCI: Make use of pci_resource_n()
+Message-ID: <ZB1rdkOgwwSC2Pxf@smile.fi.intel.com>
 References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
- <20230323173610.60442-5-andriy.shevchenko@linux.intel.com>
- <43e7ef6d-6248-4ee5-7144-70809e5c93e0@linaro.org>
+ <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
+ <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <43e7ef6d-6248-4ee5-7144-70809e5c93e0@linaro.org>
+In-Reply-To: <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,29 +79,38 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 24, 2023 at 10:02:15AM +0100, Philippe Mathieu-Daud√© wrote:
+On Fri, Mar 24, 2023 at 10:08:39AM +0100, Philippe Mathieu-DaudÈ wrote:
 > On 23/3/23 18:36, Andy Shevchenko wrote:
-> > The pci_bus_for_each_resource() can hide the iterator loop since
-> > it may be not used otherwise. With this, we may drop that iterator
-> > variable definition.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Reviewed-by: Krzysztof Wilczy≈Ñski <kw@linux.com>
-> > ---
-> >   drivers/eisa/pci_eisa.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/eisa/pci_eisa.c b/drivers/eisa/pci_eisa.c
+> > Replace open-coded implementations of pci_resource_n() in pci.h.
+
+...
+
+> >   #define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
+> > -#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
+> > -#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
+> > -#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
+> > -#define pci_resource_len(dev,bar) \
+> > -	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+> > -							\
+> > -	 (pci_resource_end((dev), (bar)) -		\
+> > -	  pci_resource_start((dev), (bar)) + 1))
+> > +#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
+> > +#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
+> > +#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
+> > +#define pci_resource_len(dev,bar)					\
+> > +	(pci_resource_end((dev), (bar)) ? 				\
+> > +	 resource_size(pci_resource_n((dev), (bar))) : 0)
 > 
-> Since this is *PCI* EISA, could be squashed into previous patch.
+> Seems (to me) more logical to have this patch as "PCI: Introduce
+> pci_resource_n()" ordered before your patch #2 "PCI: Introduce
+> pci_dev_for_each_resource()".
 
-I believe it would be better to have them separated.
-But if maintainers want to squash, I can do that.
+Either way works for me. Bjorn, what do you like?
 
-> Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
+> Here as #6 or as #2:
+> Reviewed-by: Philippe Mathieu-DaudÈ <philmd@linaro.org>
 
 Thank you!
-
 
 -- 
 With Best Regards,
