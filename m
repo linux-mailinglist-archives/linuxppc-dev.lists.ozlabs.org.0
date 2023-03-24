@@ -1,93 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7826C7B00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 10:18:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28516C7B1B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 10:21:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjc8T0xMBz3fSP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 20:18:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjcC13GC3z3fRc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 20:21:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=UgsRLR9C;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bOkAriQ7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HXz0htO4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm3 header.b=UgsRLR9C;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bOkAriQ7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HXz0htO4;
 	dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pjc7S5Z8tz3f8S
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 20:17:56 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id D91FE5C00D0;
-	Fri, 24 Mar 2023 05:17:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 24 Mar 2023 05:17:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1679649472; x=1679735872; bh=TXn9bh8NNQiaq9RCNIuEb1mA2gEV5NsgDpg
-	JpUdv/CY=; b=UgsRLR9CZYS9v7HxbOhO1Ht7dpegLxuTjK3G0tMgwmMzlAbJw/y
-	U9HlpavWJLBaeTE4VEdafvz57R0rK7HQLUol36Qnwp60zAakk00EMhB65LEt84tA
-	U43B1xJQJ7knz5Sz95Cl8pSrmjn2ISQYeYCskrbZEnIAxZKESLkyGsl7e2amr03c
-	jqQz/0DTEVpdG7TUR7w9wfNYuUPIxYq9WIDjY2oVuhG9XqCjr4gSL/qP2E5hLXw6
-	7KrL0Z8EQs2SxUyR1RRalFNhqwMXACbkDO8YWr3cfceVYglRMukqd0oyCRSdMKFd
-	rERfEvUu+7bBOo7kH347K8JHKDdAAH86rQQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1679649472; x=1679735872; bh=TXn9bh8NNQiaq9RCNIuEb1mA2gEV5NsgDpg
-	JpUdv/CY=; b=bOkAriQ7SnMVdc9qlRXrg5zjYuHLUnhkL6Unzsl8BtPHLmS3GXe
-	J6cE/oQ9wv8dIarPz0lMPZ5XmKxcd8+GI1QK7tguZGdNGzM2+DEE4xnVTQFTXYFo
-	y8lK+wmchkkV6NOzQngQq9SLF4fxFrFESKJvgSJd2GLXjX86jlAhQs9VC65mX3HW
-	5sTD9UaWye41qO4s5Q8HZOJOmcqA/qumqDU0Mh9SqhrxsG9M57fKYu5nwH6BxOen
-	BvlBpRQPlK+whAqHIzJXDYbZwwmdRDvo8ledWUeo1oXZMDtjw4z1rwfDrHR9IZAX
-	6ABMlrnc+AjRMD4Kz0Sj27qYvKPA00lTNeQ==
-X-ME-Sender: <xms:v2odZP0DKBmYhJwawl6AQqFJbRYwbeSdSF6WdW1t_xW_kf6YDCA1ZA>
-    <xme:v2odZOEc0QRgUxZYSV48BYhgnDEkQtvTB3g3UCU3TrW7CzFs7D0iyHpcD0VJnkx-c
-    kIWyrRPumnVUWbgVOc>
-X-ME-Received: <xmr:v2odZP7Jx6EtWVylFcEP02YbQr1V9F0NqX4lUk6bZIUs6RuqAHlihHcQnV_dwQVA7-uH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegiedgtdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpeflihgr
-    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhepuddtjeffteetfeekjeeiheefueeigeeutdevieejveeihfff
-    ledvgfduiefhvddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:wGodZE2hliBxevB73UB7FDxctXUd7Mw7JuXZPD87jbsd4EFvk9gKCA>
-    <xmx:wGodZCGgTeqiAZ5Lm-8-REfVc_xlmMESyx8WazmcKLOxI3WVQvdjcA>
-    <xmx:wGodZF9wPT7NC7kNhDO8E_rpjgU5KuY5looZwimGRHo1r153OEF9dw>
-    <xmx:wGodZK98UJgeF9dxp_Q9540JaqZEFReCb9Xx_acBTbK_3ql_xaXMLw>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Mar 2023 05:17:50 -0400 (EDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
-Subject: Re: [PATCH v3 0/4] Use dma_default_coherent for devicetree default
- coherency
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <20230323213930.GA7730@lst.de>
-Date: Fri, 24 Mar 2023 09:17:38 +0000
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CB41D3AF-20F6-42F3-9168-C0D6E716431A@flygoat.com>
-References: <20230321110813.26808-1-jiaxun.yang@flygoat.com>
- <20230323072944.GA18524@lst.de>
- <60D7FE31-D708-4495-949F-3F64DDC11377@flygoat.com>
- <20230323213930.GA7730@lst.de>
-To: Christoph Hellwig <hch@lst.de>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjcB425JBz3btb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 20:20:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679649612; x=1711185612;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=vsNBrnwY/qFfdSufiaxoySiGuysdLC+OL9fxRmgKucY=;
+  b=HXz0htO4y3V5nDWH7pAc2ShNm7ydnVIjtdX9jlrGHCBDF0ooD0vwssi5
+   ArTO8zQNsC1YJx/LMSj2Nkwe5qGLQ8cl1yYd1s39LrvpONN8YE1n0FjiG
+   1wLYr9mHI2Z0/5wF3zHegsVe5uGhPlSVTTUMtLBFdpIRNGAbTS47NSFqS
+   0P6g7FBqDkhJQDzL0aIuS7MV7iN3/3GwKz+5vmawATJvx2LyYAlt6FN0S
+   la6/AqbmuORGDvWSjSDImMxdmKnC7sjJVzZlAOyJOg69jL4ZDPQt+vsUN
+   E3t8optuDofVYpjt9FM+YS4c43jC+kQu9pZWWXcUi+iJMS7M3Y4S9gPay
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="404652770"
+X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
+   d="scan'208";a="404652770"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 02:20:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="1012189014"
+X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
+   d="scan'208";a="1012189014"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP; 24 Mar 2023 02:19:57 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1pfdaS-007qVe-2O;
+	Fri, 24 Mar 2023 11:19:52 +0200
+Date: Fri, 24 Mar 2023 11:19:52 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v7 4/6] EISA: Convert to use less arguments in
+ pci_bus_for_each_resource()
+Message-ID: <ZB1rOHt8pG+9Ti2V@smile.fi.intel.com>
+References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
+ <20230323173610.60442-5-andriy.shevchenko@linux.intel.com>
+ <43e7ef6d-6248-4ee5-7144-70809e5c93e0@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <43e7ef6d-6248-4ee5-7144-70809e5c93e0@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,29 +75,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, palmer@dabbelt.com, paul.walmsley@sifive.com, Robin Murphy <robin.murphy@arm.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Mar 24, 2023 at 10:02:15AM +0100, Philippe Mathieu-Daudé wrote:
+> On 23/3/23 18:36, Andy Shevchenko wrote:
+> > The pci_bus_for_each_resource() can hide the iterator loop since
+> > it may be not used otherwise. With this, we may drop that iterator
+> > variable definition.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+> > ---
+> >   drivers/eisa/pci_eisa.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/eisa/pci_eisa.c b/drivers/eisa/pci_eisa.c
+> 
+> Since this is *PCI* EISA, could be squashed into previous patch.
+
+I believe it would be better to have them separated.
+But if maintainers want to squash, I can do that.
+
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Thank you!
 
 
-> 2023=E5=B9=B43=E6=9C=8823=E6=97=A5 21:39=EF=BC=8CChristoph Hellwig =
-<hch@lst.de> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Thu, Mar 23, 2023 at 09:07:31PM +0000, Jiaxun Yang wrote:
->>=20
->>=20
->>> 2023=E5=B9=B43=E6=9C=8823=E6=97=A5 07:29=EF=BC=8CChristoph Hellwig =
-<hch@lst.de> =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>> The series looks fine to me.  How should we merge it?
->>=20
->> Perhaps go through dma-mapping tree?
->=20
-> Is patch a 6.3 candidate or should all of it go into 6.4?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Please leave it for 6.4, as corresponding MIPS arch part will be a part =
-of 6.4.
 
-Thanks
-Jiaxun=
