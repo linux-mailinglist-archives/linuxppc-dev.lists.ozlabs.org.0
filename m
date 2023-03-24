@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00DE6C776C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 06:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5476C776F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 06:36:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PjWBN6B92z3fX0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 16:35:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PjWCN4BYcz3ftT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 16:36:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OaMe0O8Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A3CqxCMw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OaMe0O8Y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A3CqxCMw;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjVy66xBnz3fRV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 16:24:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PjVyC6Rh6z3fS5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 16:24:35 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id A553DB822EC;
-	Fri, 24 Mar 2023 05:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE6FC433EF;
-	Fri, 24 Mar 2023 05:24:19 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3BCED6295A;
+	Fri, 24 Mar 2023 05:24:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2BAC4339B;
+	Fri, 24 Mar 2023 05:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679635466;
-	bh=1zRPyaaLaKChlaF3HiLNG8L4a1+H9YMBeM142XTaxBY=;
+	s=k20201202; t=1679635473;
+	bh=nw8UNJG7nUuciviQays7D2+1DNRt50wOuGp0YNt2kts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaMe0O8Y/VqFyvv8P3AJ1JWfaNX6fUglLOJcj3uiMUNqxbjm8gr3zQzueLpQbru3k
-	 epbhwOHrXR1omZCGUJ46MWgrzi5JVVVUMbEvFwbZBHTNJoP1R3O3Rt357nnca+/Y50
-	 MazCC6m/TE6Wk5itsz2kNTymFFE6Ee7czzfdznGtRIDbRXKkKdT8k8Q69UUznV4zMY
-	 kNNQO5IhLe22jyNOezzwMTCICskwDUKeXENIxmLxZ4yPWLQaCW5OKBlzmo+od0rKRh
-	 WosyWZZ35ErgkBKSd9iQE6LbvHpmmzi5D05v0zIQAi4gdnhM3ArvsglzNbBv6+vb9z
-	 9Y8re2b10Yv7w==
+	b=A3CqxCMwJfZzwcOy2cHw6Hy5i4tjtq0LLAqlPpMCz7gceY63zG9+sMCnohgsmNBDp
+	 BJhwe+zNosK9oTtSQJ6sMo8h6vZQi3bv8P4VussUYnMpuK3aiMI/SN4BS8qQdBSpx1
+	 N4o7L4cp676/LUwaSYP8a8XIhiZKbu5cpIY6aX1ykFXPd7EcB0LPOc/C0J/4Xdezpm
+	 9EkSoLPcIlsQkrS8IVNKy0jHHPFeCeWECsgynPY3be9ACBDzng19Lmp+cOjgPEHoQ5
+	 w6mtefVg74Z8gmKTE2K06WnOiAV3JoECw5bbt0ivWjt7dfAgLQyScbiZeeTkqm48hH
+	 er1kCT3TasZWQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 13/14] sparc: reword ARCH_FORCE_MAX_ORDER prompt and help text
-Date: Fri, 24 Mar 2023 08:22:32 +0300
-Message-Id: <20230324052233.2654090-14-rppt@kernel.org>
+Subject: [PATCH v2 14/14] xtensa: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Fri, 24 Mar 2023 08:22:33 +0300
+Message-Id: <20230324052233.2654090-15-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230324052233.2654090-1-rppt@kernel.org>
 References: <20230324052233.2654090-1-rppt@kernel.org>
@@ -71,22 +71,23 @@ describe this configuration option.
 Update both to actually describe what this option does.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/sparc/Kconfig | 16 +++++++++-------
+ arch/xtensa/Kconfig | 16 +++++++++-------
  1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index e3242bf5a8df..959e43a1aaca 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -270,15 +270,17 @@ config ARCH_SPARSEMEM_DEFAULT
- 	def_bool y if SPARC64
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index 3eee334ba873..3c6e5471f025 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -772,15 +772,17 @@ config HIGHMEM
+ 	  If unsure, say Y.
  
  config ARCH_FORCE_MAX_ORDER
 -	int "Maximum zone order"
 +	int "Order of maximal physically contiguous allocations"
- 	default "12"
+ 	default "10"
  	help
 -	  The kernel memory allocator divides physically contiguous memory
 -	  blocks into "zones", where each zone is a power of two number of
@@ -103,8 +104,8 @@ index e3242bf5a8df..959e43a1aaca 100644
 +
 +	  Don't change if unsure.
  
- if SPARC64 || COMPILE_TEST
- source "kernel/power/Kconfig"
+ endmenu
+ 
 -- 
 2.35.1
 
