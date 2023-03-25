@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88C56C8B84
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 07:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8DB6C8B96
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 07:12:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pk7xk5M4tz3fYt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 17:11:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pk7yk2HxPz3cL0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 17:12:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=frI6wY/7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rirI1LE3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=frI6wY/7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rirI1LE3;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pk7v40R08z3fRc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 17:09:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pk7vB6v0kz3fT5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 17:09:10 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 50FA2B826FB;
-	Sat, 25 Mar 2023 06:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F625C4339B;
-	Sat, 25 Mar 2023 06:08:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 54EA260A08;
+	Sat, 25 Mar 2023 06:09:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870B1C433D2;
+	Sat, 25 Mar 2023 06:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679724540;
-	bh=AZxdkgPPk5uvF+BQxbM9LjXE7h2xyoTV5CHwXU/8HBE=;
+	s=k20201202; t=1679724547;
+	bh=qNh6nhkYIBdXaRuLL5GYGOpZBsiUYM9+UhineGTjJPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frI6wY/7y9Ugq/kDdNPQDTAIrUL1Ibp1tX6t7Wkvuc4peDLOUS0FLn14dUsWo/UVP
-	 KtNbpypjIDQfLX5Sa2evDMHXVx61HvtQHFOB9PKZEAXW6tzkIYZ7paJcUl7b6QDkDd
-	 XhemG7a6NpMMwzsAA5r8YA40P6xhw2fdg7YT8O/KlzdC1TBydkuv+gJo7kkTOrB7+s
-	 enMaqi5rZNqjbwsUTqTpvzzTnA0aG8BdvkEhvLbQnSOQX291OOqIQDs7NKNHFmtArR
-	 Nv401z48Zg8rkh8YIDSIShaFEhib6B5rPElKdicGjHXH6RCXcm7FcU+nr/k4vFBvHI
-	 +2xif/sknb2gQ==
+	b=rirI1LE3IL192S0yKzg6Y9hCPNuKuJBa8/FnRMwHG+5iLbDwTy50fX949R6Y63xTF
+	 UXgqPugUFhJmfiXPsf80n0rIx2hpYxXgF013LBy9/cuaPPknS52iQCHlE9I/eNqysy
+	 YA5VqoQdNZbXputm2MtEunhOqdux1Kh0R1JI/PpfdvIMBpHcnD+7de9og02ue3WXm9
+	 0M/AXHZ0+Vav4cfU8cZirL/pvPdBPSCqFqtvhnml0w4rkC9tX34dsfUjcp9G6nULZG
+	 oBPlI/jXvQ4LSznp1Wy4B+lgG4MPAphGjzPzbxy93VbPRvoljM+BMe3yd5jHEvzR4E
+	 ThQp2TwEZDftA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-Date: Sat, 25 Mar 2023 09:08:16 +0300
-Message-Id: <20230325060828.2662773-3-rppt@kernel.org>
+Subject: [PATCH v3 03/14] arm64: reword ARCH_FORCE_MAX_ORDER prompt and help text
+Date: Sat, 25 Mar 2023 09:08:17 +0300
+Message-Id: <20230325060828.2662773-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230325060828.2662773-1-rppt@kernel.org>
 References: <20230325060828.2662773-1-rppt@kernel.org>
@@ -65,39 +65,59 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-It is not a good idea to change fundamental parameters of core memory
-management. Having predefined ranges suggests that the values within
-those ranges are sensible, but one has to *really* understand
-implications of changing MAX_ORDER before actually amending it and
-ranges don't help here.
+The prompt and help text of ARCH_FORCE_MAX_ORDER are not even close to
+describe this configuration option.
 
-Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
-visible only if EXPERT=y
+Update both to actually describe what this option does.
 
 Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/arm64/Kconfig | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/Kconfig | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index e60baf7859d1..7324032af859 100644
+index 7324032af859..cc11cdcf5a00 100644
 --- a/arch/arm64/Kconfig
 +++ b/arch/arm64/Kconfig
-@@ -1487,11 +1487,9 @@ config XEN
+@@ -1487,24 +1487,24 @@ config XEN
  # 16K |       27          |      14      |       13        |         11         |
  # 64K |       29          |      16      |       13        |         13         |
  config ARCH_FORCE_MAX_ORDER
--	int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
-+	int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
+-	int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
++	int "Order of maximal physically contiguous allocations" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
  	default "13" if ARM64_64K_PAGES
--	range 11 13 if ARM64_16K_PAGES
  	default "11" if ARM64_16K_PAGES
--	range 10 15 if ARM64_4K_PAGES
  	default "10"
  	help
- 	  The kernel memory allocator divides physically contiguous memory
+-	  The kernel memory allocator divides physically contiguous memory
+-	  blocks into "zones", where each zone is a power of two number of
+-	  pages.  This option selects the largest power of two that the kernel
+-	  keeps in the memory allocator.  If you need to allocate very large
+-	  blocks of physically contiguous memory, then you may need to
+-	  increase this value.
++	  The kernel page allocator limits the size of maximal physically
++	  contiguous allocations. The limit is called MAX_ORDER and it
++	  defines the maximal power of two of number of pages that can be
++	  allocated as a single contiguous block. This option allows
++	  overriding the default setting when ability to allocate very
++	  large blocks of physically contiguous memory is required.
+ 
+-	  We make sure that we can allocate up to a HugePage size for each configuration.
+-	  Hence we have :
+-		MAX_ORDER = PMD_SHIFT - PAGE_SHIFT  => PAGE_SHIFT - 3
++	  The maximal size of allocation cannot exceed the size of the
++	  section, so the value of MAX_ORDER should satisfy
+ 
+-	  However for 4K, we choose a higher default value, 10 as opposed to 9, giving us
+-	  4M allocations matching the default size used by generic code.
++	    MAX_ORDER + PAGE_SHIFT <= SECTION_SIZE_BITS
++
++	  Don't change if unsure.
+ 
+ config UNMAP_KERNEL_AT_EL0
+ 	bool "Unmap kernel when running in userspace (aka \"KAISER\")" if EXPERT
 -- 
 2.35.1
 
