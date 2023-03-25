@@ -2,48 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C13E6C8CC6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 09:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9066C8E2D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 13:31:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PkCP00cVlz3fV3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 19:46:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PkJMt4qvCz3f8t
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 23:31:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2KjxkXMu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=B9wcFxDi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2KjxkXMu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=B9wcFxDi;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PkCN11HG5z3cBX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 19:45:51 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 866C960A2A;
-	Sat, 25 Mar 2023 08:45:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2ABC433EF;
-	Sat, 25 Mar 2023 08:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1679733948;
-	bh=ddRQKzKXVAQC16CYajgA36u+mWU6j63cgTD9Dxolkms=;
-	h=From:To:Cc:Subject:Date:From;
-	b=2KjxkXMufWqlDvhQ7gNrJKaRN8VoNXY7bLKuoffEZFoo5XjWi0bgg22gSyOPH6csf
-	 hqKj/VRwdCfLW1ESeRc2dWvtol0qGr/WcVWEiaWIpDfaGfPBR8deGpZCaLwVPUt9bj
-	 d9vPuwYg4FSBlcuaEmm3CqdwLCwJfARvJ7djsMJA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] driver core: class: mark the struct class for sysfs callbacks as constant
-Date: Sat, 25 Mar 2023 09:45:37 +0100
-Message-Id: <20230325084537.3622280-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PkJKs5Hk4z3cdr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 23:29:20 +1100 (AEDT)
+Received: by mail-pl1-x631.google.com with SMTP id kq3so4151026plb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 05:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679747357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lIPeKscnGFEsy2WSX3ygNCSCd5BzRqHGBV3qN6cHP4c=;
+        b=B9wcFxDiELAauAwqU8QEmbr7m10gClpL9ePCr9lRMeuhNbGJAbpT032swL3+lhwdfP
+         sqxlRDiJkc09tWCcv4LUbojN3rTqGNv2ST8n0IjsgdbJzGkPK5ghLL8agNaISmSSUYzH
+         i1MeD2COYG2+ieZgv5tL9i8JJ9GR4t51JhQjWNHTiaT/1v2RoMirrVZ5WpVNZCTtc2FJ
+         6z8Icg6fbA5ouvQF69lIDdlDWXmwDWjHWjK19N1c0bbXvuHUyuUD4H2yEnRYmS/ghcLM
+         z2/NZl57hhyb1fAlpco0iHDBj+MeOPeoj+Uuun7S3rLW0UOvZXLZhtq/1zSMEj5CcneO
+         W8dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679747357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lIPeKscnGFEsy2WSX3ygNCSCd5BzRqHGBV3qN6cHP4c=;
+        b=WaJesjUjMrx/GJwdrOZbOmIovyZesBuicYfBbqOlkzRLSX+mx5hSr0JwYDq28A8qdr
+         RMtM+vYl1uRzO7C+v2sCjI+V0uEbkJGi+5E+ge+y8bn55MgOdGL4zRbC0JxqLbOV4KbH
+         lE8ALKGv0BWpR5vNTwbsH38cCCXv7TeAtzIo/l3s+RyUMNgsGQlZ3vDIlFIxFZ2U9M3D
+         2vZlozR6s0iGcRXeYkj7FDV6JsV+ARsnMVt7qw7F0dySSFbk0B+uKvTvHG/lBFf9tulq
+         tPGNkdGwkxevqVUv+K5YIBEk8iTs4FjcsUEedChHEh13XXvLPHTDHbN42NbovpBsnXJa
+         O8BA==
+X-Gm-Message-State: AO0yUKWsH1WsF1Glg66uKSulw1tK+pBvk58XB7PSGA3xH66VIHGSU8IG
+	H2bS1XYTZCk4K7Q76PFegA3pnlXiJnA=
+X-Google-Smtp-Source: AK7set8xUpT9Pws+/eg+Vt60NayKLWYsogw8CPjlH6JpYQ73SAwg390e4xtd3OEz2apfcEJIpQhlKA==
+X-Received: by 2002:a05:6a20:4e08:b0:d9:4c19:fe69 with SMTP id gk8-20020a056a204e0800b000d94c19fe69mr7499061pzb.25.1679747356897;
+        Sat, 25 Mar 2023 05:29:16 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([124.170.18.191])
+        by smtp.gmail.com with ESMTPSA id a13-20020a63d20d000000b0050376cedb3asm14923643pgg.24.2023.03.25.05.29.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Mar 2023 05:29:15 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/8] powerpc: copy_thread cleanups
+Date: Sat, 25 Mar 2023 22:28:56 +1000
+Message-Id: <20230325122904.2375060-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16632; i=gregkh@linuxfoundation.org; h=from:subject; bh=ddRQKzKXVAQC16CYajgA36u+mWU6j63cgTD9Dxolkms=; b=owGbwMvMwCRo6H6F97bub03G02pJDClyWzbunJ7Ke+i3RKrJpdIglZ9XdJYv2HR1TvbDqftTX JovZVrs7YhlYRBkYpAVU2T5so3n6P6KQ4pehranYeawMoEMYeDiFICJpOoxLJh1ct3kN+y/Dzz/ ZZHXtyjA0qrCjp9hQcfu0IsFO9aEnDx12CRwz+p3522KnQE=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,415 +75,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-cifs@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-rdma@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Namjae Jeon <linkinjeon@kernel.org>, Russ Weight <russell.h.weight@intel.com>, linux-s390@vger.kernel.org, linux-gpio@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steve French <sfrench@samba.org>, Minchan Kim <minchan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, netdev@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-struct class should never be modified in a sysfs callback as there is
-nothing in the structure to modify, and frankly, the structure is almost
-never used in a sysfs callback, so mark it as constant to allow struct
-class to be moved to read-only memory.
+This series cleans up copy_thread and hopefully makes the code
+easier to understand. The big changes in patch 3 and 4 which use
+the switch stack instead of user int stack for restoring
+fn and args parameters for the new thread.
 
-While we are touching all class sysfs callbacks also mark the attribute
-as constant as it can not be modified.  The bonding code still uses this
-structure so it can not be removed from the function callbacks.
+I don't think there's any bugs fixed here because in the case of
+a kernel-user thread, kthread_exec would re-populate the user int
+frame with regs, so that should be okay.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steve French <sfrench@samba.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-gpio@vger.kernel.org
-Cc: linux-mtd@lists.infradead.org
-Cc: linux-rdma@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/powerpc/platforms/pseries/dlpar.c    |  4 ++--
- arch/powerpc/platforms/pseries/mobility.c |  4 ++--
- drivers/base/class.c                      |  4 ++--
- drivers/base/devcoredump.c                |  4 ++--
- drivers/base/firmware_loader/sysfs.c      |  4 ++--
- drivers/block/pktcdvd.c                   |  6 +++---
- drivers/block/zram/zram_drv.c             | 11 +++++------
- drivers/gpio/gpiolib-sysfs.c              |  8 ++++----
- drivers/infiniband/core/user_mad.c        |  4 ++--
- drivers/mtd/ubi/build.c                   |  2 +-
- drivers/net/bonding/bond_sysfs.c          | 18 +++++++++---------
- drivers/s390/crypto/zcrypt_api.c          |  8 ++++----
- fs/ksmbd/server.c                         | 10 +++++-----
- include/linux/device/class.h              |  9 +++++----
- 14 files changed, 48 insertions(+), 48 deletions(-)
+Since v1, I only rejiged some changes between patches and minor
+cosmetic improvements but no functional change. Tested with
+32e/s 64e/s BE and LE.
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 75ffdbcd2865..719c97a155ed 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -512,7 +512,7 @@ static int dlpar_parse_id_type(char **cmd, struct pseries_hp_errorlog *hp_elog)
- 	return 0;
- }
- 
--static ssize_t dlpar_store(struct class *class, struct class_attribute *attr,
-+static ssize_t dlpar_store(const struct class *class, const struct class_attribute *attr,
- 			   const char *buf, size_t count)
- {
- 	struct pseries_hp_errorlog hp_elog;
-@@ -551,7 +551,7 @@ static ssize_t dlpar_store(struct class *class, struct class_attribute *attr,
- 	return rc ? rc : count;
- }
- 
--static ssize_t dlpar_show(struct class *class, struct class_attribute *attr,
-+static ssize_t dlpar_show(const struct class *class, const struct class_attribute *attr,
- 			  char *buf)
- {
- 	return sprintf(buf, "%s\n", "memory,cpu");
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index 643d309d1bd0..6b25642adfa0 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -787,8 +787,8 @@ int rtas_syscall_dispatch_ibm_suspend_me(u64 handle)
- 	return pseries_migrate_partition(handle);
- }
- 
--static ssize_t migration_store(struct class *class,
--			       struct class_attribute *attr, const char *buf,
-+static ssize_t migration_store(const struct class *class,
-+			       const struct class_attribute *attr, const char *buf,
- 			       size_t count)
- {
- 	u64 streamid;
-diff --git a/drivers/base/class.c b/drivers/base/class.c
-index 41a6a10da8dd..ecbf8b5b0dff 100644
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -483,8 +483,8 @@ void class_interface_unregister(struct class_interface *class_intf)
- }
- EXPORT_SYMBOL_GPL(class_interface_unregister);
- 
--ssize_t show_class_attr_string(struct class *class,
--			       struct class_attribute *attr, char *buf)
-+ssize_t show_class_attr_string(const struct class *class,
-+			       const struct class_attribute *attr, char *buf)
- {
- 	struct class_attribute_string *cs;
- 
-diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-index 59aaf2e1375a..91536ee05f14 100644
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -167,7 +167,7 @@ static int devcd_free(struct device *dev, void *data)
- 	return 0;
- }
- 
--static ssize_t disabled_show(struct class *class, struct class_attribute *attr,
-+static ssize_t disabled_show(const struct class *class, const struct class_attribute *attr,
- 			     char *buf)
- {
- 	return sysfs_emit(buf, "%d\n", devcd_disabled);
-@@ -197,7 +197,7 @@ static ssize_t disabled_show(struct class *class, struct class_attribute *attr,
-  * so, above situation would not occur.
-  */
- 
--static ssize_t disabled_store(struct class *class, struct class_attribute *attr,
-+static ssize_t disabled_store(const struct class *class, const struct class_attribute *attr,
- 			      const char *buf, size_t count)
- {
- 	long tmp = simple_strtol(buf, NULL, 10);
-diff --git a/drivers/base/firmware_loader/sysfs.c b/drivers/base/firmware_loader/sysfs.c
-index 56911d75b90a..c9c93b47d9a5 100644
---- a/drivers/base/firmware_loader/sysfs.c
-+++ b/drivers/base/firmware_loader/sysfs.c
-@@ -25,7 +25,7 @@ void __fw_load_abort(struct fw_priv *fw_priv)
- }
- 
- #ifdef CONFIG_FW_LOADER_USER_HELPER
--static ssize_t timeout_show(struct class *class, struct class_attribute *attr,
-+static ssize_t timeout_show(const struct class *class, const struct class_attribute *attr,
- 			    char *buf)
- {
- 	return sysfs_emit(buf, "%d\n", __firmware_loading_timeout());
-@@ -44,7 +44,7 @@ static ssize_t timeout_show(struct class *class, struct class_attribute *attr,
-  *
-  *	Note: zero means 'wait forever'.
-  **/
--static ssize_t timeout_store(struct class *class, struct class_attribute *attr,
-+static ssize_t timeout_store(const struct class *class, const struct class_attribute *attr,
- 			     const char *buf, size_t count)
- {
- 	int tmp_loading_timeout = simple_strtol(buf, NULL, 10);
-diff --git a/drivers/block/pktcdvd.c b/drivers/block/pktcdvd.c
-index 642e3377441a..ba9bbdef9ef5 100644
---- a/drivers/block/pktcdvd.c
-+++ b/drivers/block/pktcdvd.c
-@@ -343,7 +343,7 @@ static void class_pktcdvd_release(struct class *cls)
- 	kfree(cls);
- }
- 
--static ssize_t device_map_show(struct class *c, struct class_attribute *attr,
-+static ssize_t device_map_show(const struct class *c, const struct class_attribute *attr,
- 			       char *data)
- {
- 	int n = 0;
-@@ -364,7 +364,7 @@ static ssize_t device_map_show(struct class *c, struct class_attribute *attr,
- }
- static CLASS_ATTR_RO(device_map);
- 
--static ssize_t add_store(struct class *c, struct class_attribute *attr,
-+static ssize_t add_store(const struct class *c, const struct class_attribute *attr,
- 			 const char *buf, size_t count)
- {
- 	unsigned int major, minor;
-@@ -385,7 +385,7 @@ static ssize_t add_store(struct class *c, struct class_attribute *attr,
- }
- static CLASS_ATTR_WO(add);
- 
--static ssize_t remove_store(struct class *c, struct class_attribute *attr,
-+static ssize_t remove_store(const struct class *c, const struct class_attribute *attr,
- 			    const char *buf, size_t count)
- {
- 	unsigned int major, minor;
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index b7bb52f8dfbd..3feadfb96114 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2424,8 +2424,8 @@ static int zram_remove(struct zram *zram)
-  * creates a new un-initialized zram device and returns back this device's
-  * device_id (or an error code if it fails to create a new device).
-  */
--static ssize_t hot_add_show(struct class *class,
--			struct class_attribute *attr,
-+static ssize_t hot_add_show(const struct class *class,
-+			const struct class_attribute *attr,
- 			char *buf)
- {
- 	int ret;
-@@ -2438,11 +2438,10 @@ static ssize_t hot_add_show(struct class *class,
- 		return ret;
- 	return scnprintf(buf, PAGE_SIZE, "%d\n", ret);
- }
--static struct class_attribute class_attr_hot_add =
--	__ATTR(hot_add, 0400, hot_add_show, NULL);
-+static CLASS_ATTR_RO(hot_add);
- 
--static ssize_t hot_remove_store(struct class *class,
--			struct class_attribute *attr,
-+static ssize_t hot_remove_store(const struct class *class,
-+			const struct class_attribute *attr,
- 			const char *buf,
- 			size_t count)
- {
-diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
-index 774755052618..a895915affa5 100644
---- a/drivers/gpio/gpiolib-sysfs.c
-+++ b/drivers/gpio/gpiolib-sysfs.c
-@@ -426,8 +426,8 @@ ATTRIBUTE_GROUPS(gpiochip);
-  * /sys/class/gpio/unexport ... write-only
-  *	integer N ... number of GPIO to unexport
-  */
--static ssize_t export_store(struct class *class,
--				struct class_attribute *attr,
-+static ssize_t export_store(const struct class *class,
-+				const struct class_attribute *attr,
- 				const char *buf, size_t len)
- {
- 	long			gpio;
-@@ -478,8 +478,8 @@ static ssize_t export_store(struct class *class,
- }
- static CLASS_ATTR_WO(export);
- 
--static ssize_t unexport_store(struct class *class,
--				struct class_attribute *attr,
-+static ssize_t unexport_store(const struct class *class,
-+				const struct class_attribute *attr,
- 				const char *buf, size_t len)
- {
- 	long			gpio;
-diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
-index f83954180a33..0e9e04f8c685 100644
---- a/drivers/infiniband/core/user_mad.c
-+++ b/drivers/infiniband/core/user_mad.c
-@@ -1229,8 +1229,8 @@ static char *umad_devnode(const struct device *dev, umode_t *mode)
- 	return kasprintf(GFP_KERNEL, "infiniband/%s", dev_name(dev));
- }
- 
--static ssize_t abi_version_show(struct class *class,
--				struct class_attribute *attr, char *buf)
-+static ssize_t abi_version_show(const struct class *class,
-+				const struct class_attribute *attr, char *buf)
- {
- 	return sysfs_emit(buf, "%d\n", IB_USER_MAD_ABI_VERSION);
- }
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index ae6d35e3da9c..32105bd35831 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -95,7 +95,7 @@ static DEFINE_SPINLOCK(ubi_devices_lock);
- 
- /* "Show" method for files in '/<sysfs>/class/ubi/' */
- /* UBI version attribute ('/<sysfs>/class/ubi/version') */
--static ssize_t version_show(struct class *class, struct class_attribute *attr,
-+static ssize_t version_show(const struct class *class, const struct class_attribute *attr,
- 			    char *buf)
- {
- 	return sprintf(buf, "%d\n", UBI_VERSION);
-diff --git a/drivers/net/bonding/bond_sysfs.c b/drivers/net/bonding/bond_sysfs.c
-index 8996bd0a194a..0bb59da24922 100644
---- a/drivers/net/bonding/bond_sysfs.c
-+++ b/drivers/net/bonding/bond_sysfs.c
-@@ -31,12 +31,12 @@
- /* "show" function for the bond_masters attribute.
-  * The class parameter is ignored.
-  */
--static ssize_t bonding_show_bonds(struct class *cls,
--				  struct class_attribute *attr,
-+static ssize_t bonding_show_bonds(const struct class *cls,
-+				  const struct class_attribute *attr,
- 				  char *buf)
- {
--	struct bond_net *bn =
--		container_of(attr, struct bond_net, class_attr_bonding_masters);
-+	const struct bond_net *bn =
-+		container_of_const(attr, struct bond_net, class_attr_bonding_masters);
- 	int res = 0;
- 	struct bonding *bond;
- 
-@@ -59,7 +59,7 @@ static ssize_t bonding_show_bonds(struct class *cls,
- 	return res;
- }
- 
--static struct net_device *bond_get_by_name(struct bond_net *bn, const char *ifname)
-+static struct net_device *bond_get_by_name(const struct bond_net *bn, const char *ifname)
- {
- 	struct bonding *bond;
- 
-@@ -75,12 +75,12 @@ static struct net_device *bond_get_by_name(struct bond_net *bn, const char *ifna
-  *
-  * The class parameter is ignored.
-  */
--static ssize_t bonding_store_bonds(struct class *cls,
--				   struct class_attribute *attr,
-+static ssize_t bonding_store_bonds(const struct class *cls,
-+				   const struct class_attribute *attr,
- 				   const char *buffer, size_t count)
- {
--	struct bond_net *bn =
--		container_of(attr, struct bond_net, class_attr_bonding_masters);
-+	const struct bond_net *bn =
-+		container_of_const(attr, struct bond_net, class_attr_bonding_masters);
- 	char command[IFNAMSIZ + 1] = {0, };
- 	char *ifname;
- 	int rv, res = count;
-diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
-index 582ac301d315..cff2eea88f98 100644
---- a/drivers/s390/crypto/zcrypt_api.c
-+++ b/drivers/s390/crypto/zcrypt_api.c
-@@ -340,8 +340,8 @@ static const struct attribute_group *zcdn_dev_attr_groups[] = {
- 	NULL
- };
- 
--static ssize_t zcdn_create_store(struct class *class,
--				 struct class_attribute *attr,
-+static ssize_t zcdn_create_store(const struct class *class,
-+				 const struct class_attribute *attr,
- 				 const char *buf, size_t count)
- {
- 	int rc;
-@@ -357,8 +357,8 @@ static ssize_t zcdn_create_store(struct class *class,
- static const struct class_attribute class_attr_zcdn_create =
- 	__ATTR(create, 0600, NULL, zcdn_create_store);
- 
--static ssize_t zcdn_destroy_store(struct class *class,
--				  struct class_attribute *attr,
-+static ssize_t zcdn_destroy_store(const struct class *class,
-+				  const struct class_attribute *attr,
- 				  const char *buf, size_t count)
- {
- 	int rc;
-diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
-index b5af3e43e677..c2c958a5423e 100644
---- a/fs/ksmbd/server.c
-+++ b/fs/ksmbd/server.c
-@@ -418,7 +418,7 @@ int server_queue_ctrl_reset_work(void)
- 	return __queue_ctrl_work(SERVER_CTRL_TYPE_RESET);
- }
- 
--static ssize_t stats_show(struct class *class, struct class_attribute *attr,
-+static ssize_t stats_show(const struct class *class, const struct class_attribute *attr,
- 			  char *buf)
- {
- 	/*
-@@ -437,8 +437,8 @@ static ssize_t stats_show(struct class *class, struct class_attribute *attr,
- 			  server_conf.ipc_last_active / HZ);
- }
- 
--static ssize_t kill_server_store(struct class *class,
--				 struct class_attribute *attr, const char *buf,
-+static ssize_t kill_server_store(const struct class *class,
-+				 const struct class_attribute *attr, const char *buf,
- 				 size_t len)
- {
- 	if (!sysfs_streq(buf, "hard"))
-@@ -458,7 +458,7 @@ static const char * const debug_type_strings[] = {"smb", "auth", "vfs",
- 						  "oplock", "ipc", "conn",
- 						  "rdma"};
- 
--static ssize_t debug_show(struct class *class, struct class_attribute *attr,
-+static ssize_t debug_show(const struct class *class, const struct class_attribute *attr,
- 			  char *buf)
- {
- 	ssize_t sz = 0;
-@@ -476,7 +476,7 @@ static ssize_t debug_show(struct class *class, struct class_attribute *attr,
- 	return sz;
- }
- 
--static ssize_t debug_store(struct class *class, struct class_attribute *attr,
-+static ssize_t debug_store(const struct class *class, const struct class_attribute *attr,
- 			   const char *buf, size_t len)
- {
- 	int i;
-diff --git a/include/linux/device/class.h b/include/linux/device/class.h
-index 59af129f77e1..9145d35fe65f 100644
---- a/include/linux/device/class.h
-+++ b/include/linux/device/class.h
-@@ -175,10 +175,10 @@ static inline struct device *class_find_device_by_acpi_dev(const struct class *c
- 
- struct class_attribute {
- 	struct attribute attr;
--	ssize_t (*show)(struct class *class, struct class_attribute *attr,
-+	ssize_t (*show)(const struct class *class, const struct class_attribute *attr,
- 			char *buf);
--	ssize_t (*store)(struct class *class, struct class_attribute *attr,
--			const char *buf, size_t count);
-+	ssize_t (*store)(const struct class *class, const struct class_attribute *attr,
-+			 const char *buf, size_t count);
- };
- 
- #define CLASS_ATTR_RW(_name) \
-@@ -218,7 +218,8 @@ struct class_attribute_string {
- 	struct class_attribute_string class_attr_##_name = \
- 		_CLASS_ATTR_STRING(_name, _mode, _str)
- 
--ssize_t show_class_attr_string(struct class *class, struct class_attribute *attr, char *buf);
-+ssize_t show_class_attr_string(const struct class *class, const struct class_attribute *attr,
-+			       char *buf);
- 
- struct class_interface {
- 	struct list_head	node;
+Thanks,
+Nick
+
+Nicholas Piggin (8):
+  powerpc: copy_thread remove unused pkey code
+  powerpc: copy_thread make ret_from_fork register setup consistent
+  powerpc: use switch frame for ret_from_kernel_thread parameters
+  powerpc/64: ret_from_fork avoid restoring regs twice
+  powerpc: copy_thread differentiate kthreads and user mode threads
+  powerpc: differentiate kthread from user kernel thread start
+  powerpc: copy_thread don't set _TIF_RESTOREALL
+  powerpc: copy_thread don't set PPR in user interrupt frame regs
+
+ arch/powerpc/include/asm/thread_info.h |   2 +
+ arch/powerpc/kernel/entry_32.S         |  23 ++++-
+ arch/powerpc/kernel/interrupt_64.S     |  28 +++++-
+ arch/powerpc/kernel/process.c          | 124 ++++++++++++++-----------
+ 4 files changed, 113 insertions(+), 64 deletions(-)
+
 -- 
-2.40.0
+2.37.2
 
