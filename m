@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB96C8E3B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 13:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 398FA6C8E3E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 13:36:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PkJT55zXxz3fcb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 23:35:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PkJV60GXzz3fZ3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 23:36:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R5Jc62zu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hDJNrBr1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R5Jc62zu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hDJNrBr1;
 	dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PkJL51Db3z3fS1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 23:29:32 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id qe8-20020a17090b4f8800b0023f07253a2cso4043220pjb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 05:29:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PkJL66wNYz3fSX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 23:29:34 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id ix20so4192414plb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 05:29:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679747370;
+        d=gmail.com; s=20210112; t=1679747372;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vB2OFPDjoM6aB2FqnFtvEQ73ZNAfekYDKZqddNso9qU=;
-        b=R5Jc62zudyp3aHQoUJegsrIL7fSTV0Ewz2ouuWjOqPJThl/k1uvQr/sxEZwm5/F2qp
-         6ErxQ2ImJTo5exdbSySP7AtQt+K+Mylnlh/5xi3jBJxbYEvoRxYURjpWbaUit5XPLxu1
-         vT78myJkdsZUvZbWPTwcrfKZK1QdOuwDLQRVWdQxal6mrf33zet+tvKB4GG54j/4vJpG
-         mYnsIn1ipODrMECt/VRZU5HiOKlFZBAKQBStP9zOuFUiPBJnhAKkjudWQz/H4vAgV7Ey
-         L2JChpG/OLR375LWTxEuGKqptvDK/0Qlg+ODzoU6w25+XGpuopC9znbPkjUUitRWkMNd
-         mdow==
+        bh=upXccQ0m7RyNQSSayQoOkHrCXCXeyS8pm3WAGvKhfnM=;
+        b=hDJNrBr1zvZWRNYwwc4KMWknOi6i3e/Y/n67pXSu1dJ0fexioffY/e65uvp7vCkf1P
+         WDmZSIGN0cfVb2uEDDLuvrSOOx/kC2i3Qr14jNv/A2beTKWKkBUWr9fVOTKq6x6baLCq
+         8EXah7KD6wU52VDl4qqzTL9VXGEdMD/5VOvShnMIYd/ajtz6Y/CG+FjeeiZJuto8Z6EZ
+         wWrK5AUU0SXS5SPfC2gOzuBQ9Hm42SS8N6+uu5cfly/eA5b6QxgD4AeOBkLGKLGKqf+x
+         da5JhJthQOfZkGanbkZiNq0X8sB44HrO/dntVwtd9Z9uI3UYbQtKZ2SJ2gaR8w1sYoUO
+         TlGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679747370;
+        d=1e100.net; s=20210112; t=1679747372;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vB2OFPDjoM6aB2FqnFtvEQ73ZNAfekYDKZqddNso9qU=;
-        b=dWW+gWiT991dbAW2n1k/9nl7ZUwbvf180jAFiILjYP26jJ0xwD+ubcCvuhuMzyEbh3
-         BOvjJxG9EtLmfMW9S+iGfN0RW6ov9Iws943epCieZeJNIaG3sHL6tEPzA4ywiXmh3EGh
-         MczbsA0G3wN/9fbgDRHlQWCfJFIBXGzShlN8p9OXssxPP5A12NS9QDZou8slidNW5W4L
-         KOFIO5WfKqDQAoeflTLeISNJrrJeMgZCeBGsp5qquFKF/9opzEozj7PXzZUItNb6ddnK
-         NxyxG3nPhqzy+gBMlheBGFVEZ//vwDicexu85yY7bQr6qrjfLdIH5nVny18+oURu9RxY
-         lDTA==
-X-Gm-Message-State: AO0yUKUkPLZCD+FVRC/64uDr5ZdVtxblOXsA3gmg+CWsPkcXEJfiP2hq
-	peWq81Eknl4Xpo1S+XNscVM0aqyUkZ0=
-X-Google-Smtp-Source: AK7set+z6uTn2YYmtBDl96i/ttsUszSeWmDNIJyGIxgqKUfLMjDLg48ic4CDL6vJxf8O9DIgDgqssw==
-X-Received: by 2002:a05:6a20:9305:b0:d8:cfcc:555d with SMTP id r5-20020a056a20930500b000d8cfcc555dmr5328499pzh.17.1679747370219;
-        Sat, 25 Mar 2023 05:29:30 -0700 (PDT)
+        bh=upXccQ0m7RyNQSSayQoOkHrCXCXeyS8pm3WAGvKhfnM=;
+        b=RvYYCCOEGVP+P7NJxfNs0MkuwNuP3sj10sP8AfKT5yssRF/Z5+2zTA14UpPfDs7QXL
+         iAj3GCZXW/bxFrPE3XNXmpZBVEcE5tM12IhsXFC4o67/N8f1sIhrDxzvFnojaD01Y5QL
+         qSf85ZZdz4b57nRLR/zofsvS578Adud1CZDbRiFaFKyHoQUOFMxrDrA9BgUd0SpGZg+m
+         4Be2p0idEtt5oD3EEu3Z7MJhlmnQrRfircqrY/pUg941rrl+6zeov3pfxthAvJjuaQJu
+         7htSU21ow9cekjGWQrMRpA3I5qOnpwZ/xFDsaKsWnnFNh+Wg1ZBrkqYnnZlU1Kl9MBCH
+         unvw==
+X-Gm-Message-State: AAQBX9fN3kZm4A2JgpS1zNeE3uZb5Bc+u21wdyywSIkWxzTEFgCufmLJ
+	bEdNYSemdDPZSu6iMSeal2DTf6EWUWE=
+X-Google-Smtp-Source: AKy350aVBb/kOpJtr24Pn/BbPwHFqAqhRZpzZAWYruosjGzLlyv2xib+WgC3bPJdV2t1rkIOHwyktw==
+X-Received: by 2002:a17:90b:3eca:b0:237:5a3c:e86c with SMTP id rm10-20020a17090b3eca00b002375a3ce86cmr6681865pjb.24.1679747372408;
+        Sat, 25 Mar 2023 05:29:32 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([124.170.18.191])
-        by smtp.gmail.com with ESMTPSA id a13-20020a63d20d000000b0050376cedb3asm14923643pgg.24.2023.03.25.05.29.28
+        by smtp.gmail.com with ESMTPSA id a13-20020a63d20d000000b0050376cedb3asm14923643pgg.24.2023.03.25.05.29.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Mar 2023 05:29:29 -0700 (PDT)
+        Sat, 25 Mar 2023 05:29:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 6/8] powerpc: differentiate kthread from user kernel thread start
-Date: Sat, 25 Mar 2023 22:29:02 +1000
-Message-Id: <20230325122904.2375060-7-npiggin@gmail.com>
+Subject: [PATCH v2 7/8] powerpc: copy_thread don't set _TIF_RESTOREALL
+Date: Sat, 25 Mar 2023 22:29:03 +1000
+Message-Id: <20230325122904.2375060-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230325122904.2375060-1-npiggin@gmail.com>
 References: <20230325122904.2375060-1-npiggin@gmail.com>
@@ -82,126 +82,52 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kernel created user threads start similarly to kernel threads in that
-they call a kernel function after first returning from _switch, so
-they share ret_from_kernel_thread for this. Kernel threads never return
-from that function though, whereas user threads often do (although some
-don't, e.g., IO threads).
-
-Split these startup functions in two, and catch kernel threads that
-improperly return from their function. This is intended to make the
-complicated code a little bit easier to understand.
+In the kernel user thread path, don't set _TIF_RESTOREALL because
+the thread is required to call kernel_execve() before it returns,
+which will set _TIF_RESTOREALL if necessary via start_thread().
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/entry_32.S     | 20 ++++++++++++++++++--
- arch/powerpc/kernel/interrupt_64.S | 18 +++++++++++++++++-
- arch/powerpc/kernel/process.c      |  7 ++++---
- 3 files changed, 39 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/interrupt_64.S | 5 +++++
+ arch/powerpc/kernel/process.c      | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index c3fdb3081d3d..47f0dd9a45ad 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -186,8 +186,8 @@ ret_from_fork:
- 	li	r3,0	/* fork() return value */
- 	b	ret_from_syscall
- 
--	.globl	ret_from_kernel_thread
--ret_from_kernel_thread:
-+	.globl	ret_from_kernel_user_thread
-+ret_from_kernel_user_thread:
- 	bl	schedule_tail
- 	mtctr	r14
- 	mr	r3,r15
-@@ -196,6 +196,22 @@ ret_from_kernel_thread:
- 	li	r3,0
- 	b	ret_from_syscall
- 
-+	.globl	start_kernel_thread
-+start_kernel_thread:
-+	bl	schedule_tail
-+	mtctr	r14
-+	mr	r3,r15
-+	PPC440EP_ERR42
-+	bctrl
-+	/*
-+	 * This must not return. We actually want to BUG here, not WARN,
-+	 * because BUG will exit the process which is what the kernel thread
-+	 * should have done, which may give some hope of continuing.
-+	 */
-+100:	trap
-+	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,0
-+
-+
- /*
-  * This routine switches between two different tasks.  The process
-  * state of one is saved on its kernel stack.  Then the state
 diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index bac1f89501ac..a44c8aab63ec 100644
+index a44c8aab63ec..2a059214c1a9 100644
 --- a/arch/powerpc/kernel/interrupt_64.S
 +++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -739,7 +739,7 @@ _GLOBAL(ret_from_fork)
- 	li	r3,0	/* fork() return value */
- 	b	.Lsyscall_exit
- 
--_GLOBAL(ret_from_kernel_thread)
-+_GLOBAL(ret_from_kernel_user_thread)
- 	bl	schedule_tail
- 	mtctr	r14
- 	mr	r3,r15
-@@ -749,3 +749,19 @@ _GLOBAL(ret_from_kernel_thread)
+@@ -748,6 +748,11 @@ _GLOBAL(ret_from_kernel_user_thread)
+ #endif
  	bctrl
  	li	r3,0
- 	b	.Lsyscall_exit
-+
-+_GLOBAL(start_kernel_thread)
-+	bl	schedule_tail
-+	mtctr	r14
-+	mr	r3,r15
-+#ifdef CONFIG_PPC64_ELF_ABI_V2
-+	mr	r12,r14
-+#endif
-+	bctrl
 +	/*
-+	 * This must not return. We actually want to BUG here, not WARN,
-+	 * because BUG will exit the process which is what the kernel thread
-+	 * should have done, which may give some hope of continuing.
++	 * It does not matter whether this returns via the scv or sc path
++	 * because it returns as execve() and therefore has no calling ABI
++	 * (i.e., it sets registers according to the exec()ed entry point).
 +	 */
-+100:	trap
-+	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,0
+ 	b	.Lsyscall_exit
+ 
+ _GLOBAL(start_kernel_thread)
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 7b016f958e8b..307639948691 100644
+index 307639948691..4140b25f489f 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -1741,7 +1741,8 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 	struct pt_regs *kregs; /* Switch frame regs */
- 	extern void ret_from_fork(void);
- 	extern void ret_from_fork_scv(void);
--	extern void ret_from_kernel_thread(void);
-+	extern void ret_from_kernel_user_thread(void);
-+	extern void start_kernel_thread(void);
+@@ -1745,7 +1745,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	extern void start_kernel_thread(void);
  	void (*f)(void);
  	unsigned long sp = (unsigned long)task_stack_page(p) + THREAD_SIZE;
- 	struct thread_info *ti = task_thread_info(p);
-@@ -1758,7 +1759,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 		sp -= STACK_FRAME_MIN_SIZE;
- 		((unsigned long *)sp)[0] = 0;
- 
--		f = ret_from_kernel_thread;
-+		f = start_kernel_thread;
- 		p->thread.regs = NULL;	/* no user register state */
- 		clear_tsk_compat_task(p);
- 	} else {
-@@ -1784,7 +1785,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+-	struct thread_info *ti = task_thread_info(p);
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ 	int i;
+ #endif
+@@ -1784,7 +1783,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ #ifdef CONFIG_PPC64
  			childregs->softe = IRQS_ENABLED;
  #endif
- 			ti->flags |= _TIF_RESTOREALL;
--			f = ret_from_kernel_thread;
-+			f = ret_from_kernel_user_thread;
+-			ti->flags |= _TIF_RESTOREALL;
+ 			f = ret_from_kernel_user_thread;
  		} else {
  			struct pt_regs *regs = current_pt_regs();
- 			unsigned long clone_flags = args->flags;
 -- 
 2.37.2
 
