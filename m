@@ -2,82 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FA66C8872
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Mar 2023 23:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3476C8985
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 01:16:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pjxq700vQz3fQn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 09:34:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pk0410nrjz3fSc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Mar 2023 11:16:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=atlas.cz header.i=@atlas.cz header.a=rsa-sha256 header.s=mail header.b=R6N7syRZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pEIcaB2i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=atlas.cz (client-ip=46.255.227.205; helo=gmmr-4.centrum.cz; envelope-from=arkamar@atlas.cz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=atlas.cz header.i=@atlas.cz header.a=rsa-sha256 header.s=mail header.b=R6N7syRZ;
-	dkim-atps=neutral
-X-Greylist: delayed 83 seconds by postgrey-1.36 at boromir; Sat, 25 Mar 2023 09:02:45 AEDT
-Received: from gmmr-4.centrum.cz (gmmr-4.centrum.cz [46.255.227.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pjx5x6Tn4z3fJK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 09:02:45 +1100 (AEDT)
-Received: from gmmr-4.centrum.cz (localhost [127.0.0.1])
-	by gmmr-4.centrum.cz (Postfix) with ESMTP id E67DFACCB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 23:01:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
-	t=1679695267; bh=wG+MCIOgalYaCRwp5w4NLK9EPO2p7bcnY4V9JHOzSn0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R6N7syRZ4JprrYgEj3wDSz0yvsAqCxe66Cxg9p82/JlndMEIAyGeIWY7Tm9CHjED0
-	 o1HG+AdqKjbW/ywf5N6qwZNG38Jjne0HQd8Z1pHMugf9IFWn7+RAMfdFPQu/4PWsGG
-	 YpuELysWcIJ/I9FqqtwKU1PVWhDHF8BlKA4Qaz8E=
-Received: from antispam99.centrum.cz (unknown [10.30.208.99])
-	by gmmr-4.centrum.cz (Postfix) with ESMTP id E4C6A2012147
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Mar 2023 23:01:07 +0100 (CET)
-X-IPAS-Result: =?us-ascii?q?A2DeAgDaGx5k/03h/y5aHAEBAQEBAQcBARIBAQQEAQFAC?=
- =?us-ascii?q?YFGgxeBZoRSkS+LXoYbgR+MPQ8BAQEBAQEBAQEJRAQBAYUFhTwmOBMBAgQBA?=
- =?us-ascii?q?QEBAwIDAQEBAQEBAwEBAQUBAQEBAQEGAwGBHYUvRoZYJwQLAUYoAQwCJgJfE?=
- =?us-ascii?q?4J+gigBAzGyLX8zGgJlnhoCSQVTXYEngRQti2+GCIINhH2ECxGEAIJnBJlIC?=
- =?us-ascii?q?oE0dYEgDkpzgQQCCQIRa4ESCGuBfUECDWQLDm+BSwKCHTI3AwkDBwUsHUADC?=
- =?us-ascii?q?xgNFjoTLDUUIQZYawEtEhIFAwsVKkcECDkGThECCA8SDyxDDkI3NBMGXAEpC?=
- =?us-ascii?q?w4RA1BCGWwEggsHJiSacAIBgmcBgQ4ImGmtX4QEhDqcMhoylxQeA5IJAZdqo?=
- =?us-ascii?q?0WEVYF6gX4zIjCDIlIZoht0OwIHAQoBAQMJgjuGLwGCWAEB?=
-IronPort-Data: A9a23:Nkaqq68/VO5CZpivWzf3DrUDnn+TJUtcMsCJ2f8bNWPcYEJGY0x3x
- zMeUTqBPa6PamX9ft5zbNixp0oD7MPWyIRjGVBs+3wxFiIbosfsO4+Ufxz6V8+wwmwvb67FA
- +E2MISowBUcFyeEzvuVGuG96yM6jMlkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1rlV
- eja/ouOaDdJ5xYuajhPs/nZ9Es11BjPkGpwUmIWNKgjUGD2yCF94KI3fcmZM3b+S49IKe+2L
- 86rIGaRows1Vz90Yj+Uuu6Tnn8iG9Y+DiDX4pZiYJVOtzAZzsAEPgbXA9JHAatfo23hc9mcU
- 7yhv7ToIesiFvWkdOjwz3C0HgkmVZCq9oMrLlC27+vD8RbaYkDg0vZtK2BmFosR5d9oVDQmG
- fwwcFjhbziMgqetxa6jE7EqjcklMNP2OcUUqBmMzxmFU7B8HM2FGf+Xo4AHtNszrpkm8fL2b
- tAaYD9mdjzJfxlGIREcGvrSmc/x3ymhK2YG9Dp5o4IF/XDIxgN+ioGzE/PYQ92wVZtPhnmX8
- zeuE2PRR0ty2Mak4TOf8Xupj/XnlD//UZlUH6/Q3vVqmlyI2msLCBBQUVahpuiRgVWxQdVCM
- woZ50IGqLA/3EGvStTnWhS+5n+I+BcBM/JWC+w15wCL4qXR6gedQGMDS1ZpbN0gqd8uXTdv2
- lKXt9foHiB09rqHTXuX7fGTtzzaESwUK3ISICwJVw0I5/H9r4wpyBHCVNBuFOiylNKdJN3r6
- 2zU6nJj2vNJ15NNiPrTEU37vg9Ab6PhFmYdjjg7lEr8hu+lTOZJv7CV1GU=
-IronPort-HdrOrdr: A9a23:ZN8Q76MdczA4YcBcTtCjsMiBIKoaSvp037Dk7SxMoHtuA6mlfq
- GV7ZYmPHDP5gr5NEtLpTniAtjifZqjz/9ICOAqVN/IYOCMggSVxe9ZgLcKuweBJxHD
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="5.98,288,1673910000"; 
-   d="scan'208";a="11860364"
-Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
-  by antispam99.centrum.cz with ESMTP; 24 Mar 2023 23:01:07 +0100
-Received: from localhost.localdomain (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id 941A9808B274;
-	Fri, 24 Mar 2023 23:01:07 +0100 (CET)
-From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/pseries: Add spaces around / operator
-Date: Fri, 24 Mar 2023 23:00:41 +0100
-Message-Id: <20230324220041.11378-1-arkamar@atlas.cz>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pk0332p9wz3fG3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Mar 2023 11:15:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pEIcaB2i;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pk02y25fHz4x7x;
+	Sat, 25 Mar 2023 11:15:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1679703322;
+	bh=w0K471ob1PKvPyBG5sRwgYplsvQOQMCjUSp20cySzEw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pEIcaB2i63v6VAZvd8QS9Avo2WmI3Yc4NjqjsdJkgVpscX4Dbz6vticu+AhMtQ0QY
+	 29ryB5pX2Pf+nWqv1iCICFwczj4NcyrruwVEO1k9RXYjGw/ziHD2xdghz9rGBjGc4+
+	 70s7SvWQuhkYo6GXA71TkLs6p/PBpF8wAPnx8mfQLr9aSPVETOtcX5K43jH1NYtNth
+	 Y3l7E+NXxCaVqAqAuYRxJjYzpyf0RDVlNT/JMCU40P8cXTOmNlJ/ixZiXZwb2TPmdw
+	 UHVW8rZmkdl7wjjs/yoaNoQSOL6zbFsW5StZdQLfpfIuH4R7j/a5Lr2zA0vfd+2FVw
+	 OiWbfO0GNg2KQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jens Axboe <axboe@kernel.dk>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Memory coherency issue with IO thread offloading?
+In-Reply-To: <5fa06524-7170-aeb4-4b5c-2be2ffad696b@kernel.dk>
+References: <2b015a34-220e-674e-7301-2cf17ef45ed9@kernel.dk>
+ <272cda99-3b1a-95cd-ce03-bc3d17d572ec@csgroup.eu>
+ <5fa06524-7170-aeb4-4b5c-2be2ffad696b@kernel.dk>
+Date: Sat, 25 Mar 2023 11:15:16 +1100
+Message-ID: <87jzz5u1nv.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sat, 25 Mar 2023 09:33:19 +1100
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,32 +60,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is follow up change after 14b5d59a261b ("powerpc/pseries: Fix
-formatting to make code look more beautiful") to conform to kernel
-coding style.
+Jens Axboe <axboe@kernel.dk> writes:
+> On 3/24/23 1:27?AM, Christophe Leroy wrote:
+>> Le 23/03/2023 ? 19:54, Jens Axboe a ?crit :
+>>> I got a report sent to me from mariadb, in where 5.10.158 works fine and
+>>> 5.10.162 is broken. And in fact, current 6.3-rc also fails the test
+>>> case. Beware that this email is long, as I'm trying to include
+>>> everything that may be relevant...
+>> 
+>> Which variant of powerpc ? 32 or 64 bits ? Book3S or BookE ?
+>
+> I knew I'd forget something important... It's power9:
+>
+> processor	: 0
+> cpu		: POWER9 (architected), altivec supported
+> clock		: 2200.000000MHz
+> revision	: 2.2 (pvr 004e 1202)
 
-Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
----
- arch/powerpc/platforms/pseries/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Believe it or not there's still more variables in play, Power9 has two
+different MMUs, and Linux can run on two different hypervisors as well
+as on bare metal P9 :)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index c74b71d4733d..b0cb2fa39cf8 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -474,7 +474,7 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
- 		 * Set up the page with TCE data, looping through and setting
- 		 * the values.
- 		 */
--		limit = min_t(long, num_tce, 4096/TCE_ENTRY_SIZE);
-+		limit = min_t(long, num_tce, 4096 / TCE_ENTRY_SIZE);
- 		dma_offset = next + be64_to_cpu(maprange->dma_base);
- 
- 		for (l = 0; l < limit; l++) {
--- 
-2.39.2
+Can you paste the last ~10 lines of /proc/cpuinfo, with the "machine",
+"firmware" and "MMU" lines, that should tell us everything we need to
+know.
 
+cheers
