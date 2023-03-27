@@ -1,96 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9408E6C9A83
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 06:24:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E796C9A82
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 06:23:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlKT53Z4gz3f8t
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 15:24:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlKS41PQ0z3chK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 15:23:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdSx/Wl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FrX2YzE6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdSx/Wl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FrX2YzE6;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlKRH58tmz3cdD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 15:22:35 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32R2VAR6019849;
-	Mon, 27 Mar 2023 04:22:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=x+nkVH5X1xbXP2STnQdsIs6we5idVPglFNbNT+oCZBU=;
- b=NGdSx/Wl07/B3Lx5ahUYWGCqzL2LGQ1N02GvHT0c5nyIGKW8hCnjsspKd64FDTdeTLzR
- /sRhq608yvTXu5kgcfqdKCgHGm59h5ccyh4gZDth5liz4nKvBXV2gSu/Vfpv+YStWXlj
- wWBL4njoh5QeDapKII/vU3Kt4hJOmEDVLOow+0LqGXyYbA6orAHtJ2TLI3dC4MlmJXyQ
- ZGxpdKc1G8rZ9uBhGWFvM3wQDXMjDn3r8Od8WFxqkKX4v0Y3uazchwLJ87ACHea49bKw
- GhZ0T6G1xLPI/m0yfEMHGQjt1pou5DwPlnm91OtbTBhOZBmhLTlZZQAWKcudayZNEirc Qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pjahs50v4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Mar 2023 04:22:21 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32R4JNJY023003;
-	Mon, 27 Mar 2023 04:22:21 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pjahs50ur-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Mar 2023 04:22:20 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32QG1Q4l028889;
-	Mon, 27 Mar 2023 04:22:19 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3phr7fj9ay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Mar 2023 04:22:19 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32R4MFc846399802
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Mar 2023 04:22:15 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 92D522004B;
-	Mon, 27 Mar 2023 04:22:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4A8020040;
-	Mon, 27 Mar 2023 04:22:12 +0000 (GMT)
-Received: from [9.43.36.124] (unknown [9.43.36.124])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Mar 2023 04:22:12 +0000 (GMT)
-Message-ID: <a21aa4e1-506a-916c-03bd-39d7403c7941@linux.ibm.com>
-Date: Mon, 27 Mar 2023 09:52:11 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: perf tools power9 JSON files build breakage on ubuntu 18.04 cross
- build
-To: Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-References: <ZBxP77deq7ikTxwG@kernel.org>
-Content-Language: en-US
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <ZBxP77deq7ikTxwG@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlKR54k7Sz3bqw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 15:22:24 +1100 (AEDT)
+Received: by mail-pl1-x631.google.com with SMTP id c18so7177097ple.11
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Mar 2023 21:22:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679890940;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zbNEvqm/LgKf3xD8kfnZuqgmA6+B2XoCfN1MLRIliNE=;
+        b=FrX2YzE6K9vXSpkUYkcZQiyK7N6fIFS3OjQWLayfmzfOGc+LhJKquKBQoX6zFPJBvz
+         vY0nqJL+mWEQt7y8HkF4ru0z479ph1CR0WVvWPTTFhX8xvjslx2YRlyHw9g/XGz2RJe1
+         CQTZp9fxIzdS19STF2ZbA5TcBwM6tt9+2lU9JaJMqzNafvCgwQmgTE20Uv1O+c3kmgdM
+         nzoNu5uMYfYJ7ciyBIBHrsOfFdpdz3Z8bZhKLo28OofLeHJSk1ccle2nVUDHk4i4YvoW
+         vBVknTAFMMF7/UyHwW5rv3LCytQM6d97GuUd/bTu1hSWW4n9XuV5ZFp4QXIyI/vYk80x
+         gXYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679890940;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zbNEvqm/LgKf3xD8kfnZuqgmA6+B2XoCfN1MLRIliNE=;
+        b=4GjZNdrufKXbRG30+Tt4rZf0IbeQN6FDKhhnQ+OSbZGP4rMgXTz/IQFGOQlcGCzj3V
+         ZwKyJ3d11WNYynAbQwOHEE38qgTGAr5KZ+5UuGPX2PQ3sHrMeJqlBUOULDi4Q6tG5XHh
+         vKTg3YzjNX7zqyTopP/VU5LzEvX/Bc2jQL2Yi12Gbevlij2pWdUXbD3GKyYdvw7c37Yo
+         IxweUsV1NiNx7Ze6hD8rEJ3N4qOQ9DUC/Wi5QBzerQCDF7qM+jhJj5ftz5BNXgjngxXi
+         PVq1Gw16oF+O8v8lSurdTKaEIsbCBnveh51FTvgov2TRqmLib3xjtm7gjq3e/sxBYvZg
+         Q5iw==
+X-Gm-Message-State: AAQBX9dys56YpVSzsHwOC6KIuA5pRTybA+iXAbeSm+046LTnRS4h/4AC
+	1UOS1kTRBPfApH78f0quxXY=
+X-Google-Smtp-Source: AKy350aVt1YV2VYny4GqoNv4qxwnoK8ss5Uggj/slp+67Q24lhQbRk1Wlg8tiEQzxKeu1+LF49eNmA==
+X-Received: by 2002:a17:90b:3e82:b0:23f:78d6:6ac5 with SMTP id rj2-20020a17090b3e8200b0023f78d66ac5mr11341150pjb.19.1679890940015;
+        Sun, 26 Mar 2023 21:22:20 -0700 (PDT)
+Received: from localhost ([203.221.180.225])
+        by smtp.gmail.com with ESMTPSA id y4-20020a17090a134400b00233afe09177sm3403472pjf.8.2023.03.26.21.22.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Mar 2023 21:22:19 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ya3Y1osuSgBTj2FWlyxuE5Obmj3NBv-1
-X-Proofpoint-ORIG-GUID: 8vbKFSX2PP0V2De_L527-HruOj3vxEqA
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-24_11,2023-03-24_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 mlxscore=0
- clxscore=1011 spamscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303270034
+Date: Mon, 27 Mar 2023 14:22:14 +1000
+Message-Id: <CRGVMXJ46PPN.1VWRMA1IMPHW2@bobo>
+Subject: Re: Memory coherency issue with IO thread offloading?
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Jens Axboe" <axboe@kernel.dk>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+X-Mailer: aerc 0.13.0
+References: <2b015a34-220e-674e-7301-2cf17ef45ed9@kernel.dk>
+ <87h6u9u0e0.fsf@mpe.ellerman.id.au>
+ <872a1b2b-5fe6-e1ac-5dda-dc806b21b3f5@kernel.dk>
+ <9753c624-66e0-aace-6540-731cba9da864@kernel.dk>
+In-Reply-To: <9753c624-66e0-aace-6540-731cba9da864@kernel.dk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,52 +83,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat Mar 25, 2023 at 11:20 AM AEST, Jens Axboe wrote:
+> On 3/24/23 7:15?PM, Jens Axboe wrote:
+> >> Are there any CONFIG options I'd need to trip this?
+> >=20
+> > I don't think you need any special CONFIG options. I'll attach my confi=
+g
+> > here, and I know the default distro one hits it too. But perhaps the
+> > mariadb version is not new enough? I think you need 10.6 or above, as
+> > will use io_uring by default. What version are you running?
+>
+> And here's the .config and the patch for using queue_work().
 
+So if you *don't* apply this patch, the work gets queued up with an IO
+thread? In io-wq.c? Does that worker end up just doing an io_write()
+same as this one?
 
-On 3/23/23 18:41, Arnaldo Carvalho de Melo wrote:
-> Exception processing pmu-events/arch/powerpc/power9/other.json
-> Traceback (most recent call last):
->   File "pmu-events/jevents.py", line 997, in <module>
->     main()
->   File "pmu-events/jevents.py", line 979, in main
->     ftw(arch_path, [], preprocess_one_file)
->   File "pmu-events/jevents.py", line 935, in ftw
->     ftw(item.path, parents + [item.name], action)
->   File "pmu-events/jevents.py", line 933, in ftw
->     action(parents, item)
->   File "pmu-events/jevents.py", line 514, in preprocess_one_file
->     for event in read_json_events(item.path, topic):
->   File "pmu-events/jevents.py", line 388, in read_json_events
->     events = json.load(open(path), object_hook=JsonEvent)
->   File "/usr/lib/python3.6/json/__init__.py", line 296, in load
->     return loads(fp.read(),
->   File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
->     return codecs.ascii_decode(input, self.errors)[0]
-> UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 55090: ordinal not in range(128)
->   CC      /tmp/build/perf/tests/expr.o
-> pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-events.c' failed
-> make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
-> make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
-> Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-events-in.o' failed
-> make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> 
-> 
-> Now jevents is an opt-out feature so I'm noticing these problems.
+Can the  queueing cause the creation of an IO thread (if one does not
+exist, or all blocked?)
 
-Hi Arnaldo,
-    Thanks for raising it. I will check this issue.
+I'm wondering what the practical differences are between this patch and
+upstream.
+
+kthread_use_mm() should be basically the same as context switching to an
+IO thread. There is maybe a difference in that kthread_switch_mm() has
+a 'sync' instruction *after* the MMU is switched to the new thread from
+the membarrier code, but a regular context switch might not. The MMU
+switch does have an isync() after it though, so loads *should* be
+prohibited from moving ahead of that.
+
+Something like this adds a sync roughly where kthread_use_mm() has one.
+It's a pretty unlikely shot in the dark though. I'm more inclined to
+think the work submission to the IO thread might have a problem.
 
 Thanks,
-Kajol Jain
+Nick
 
-> 
-> A similar fix for s390 was accepted today:
-> 
-> 
-> https://lore.kernel.org/r/20230323122532.2305847-1-tmricht@linux.ibm.com
-> https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 488655f2319f..417c0652dc66 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5180,6 +5180,7 @@ static struct rq *finish_task_switch(struct task_stru=
+ct *prev)
+        tick_nohz_task_switch();
+        finish_lock_switch(rq);
+        finish_arch_post_lock_switch();
++       smp_mb();
+        kcov_finish_switch(current);
+        /*
+         * kmap_local_sched_out() is invoked with rq::lock held and
