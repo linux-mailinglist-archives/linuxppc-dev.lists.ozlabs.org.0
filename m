@@ -2,127 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B3E6CAF4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 21:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B43A6CB067
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:10:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlkBb3mRsz3fV0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 06:57:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=umu3x1D/;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=umu3x1D/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pllnx0Pdnz3fXR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 08:10:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=2a01:111:f400:fe0e::310; helo=eur04-vi1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=umu3x1D/;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=umu3x1D/;
-	dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04hn0310.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0e::310])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.42; helo=mail-oo1-f42.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Plk9Z5sLlz2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 06:57:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LuAJCNux07RHgBnJpGno2yMpVhKiZSt8TefWL+PbKRU=;
- b=umu3x1D/qbEcL/ZciHrF9WyntOisu8TpsQKKwt05gBZ5cflZmhWARbxAIXAHgIQ5S1esHUefT76dtLOZdDKQZ7yFmXWmegtCyKbIGiQ6DyQIwV3oGVwzWBKeBrk8nwCK1rOMy2VQ2VNrByzd8vWJZi9qMyzagGcQsQx9gC8p8Gpz4cxXHw4N/9DaBFYaNmp2bBlUwPjMlirDtLnsaBMlJO/xIVZQKQ3sHOmUv+Or9cfDTzt/5CFWLwJOksNsEgoI1nhxUEiPpql4k1PUTqLv44E2W+xtl6SV8eCvs9ri7giB4DJvFP5dfzHjJwPYnvicsZtDXJXqjqevEpb+0ouNtg==
-Received: from FR3P281CA0093.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:a1::13)
- by PAWPR03MB9738.eurprd03.prod.outlook.com (2603:10a6:102:2ed::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.41; Mon, 27 Mar
- 2023 19:56:44 +0000
-Received: from VI1EUR05FT065.eop-eur05.prod.protection.outlook.com
- (2603:10a6:d10:a1:cafe::a4) by FR3P281CA0093.outlook.office365.com
- (2603:10a6:d10:a1::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.16 via Frontend
- Transport; Mon, 27 Mar 2023 19:56:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.83)
- smtp.mailfrom=seco.com; dkim=pass (signature was verified)
- header.d=seco.com;dmarc=pass action=none header.from=seco.com;
-Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
- 20.160.56.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=20.160.56.83; helo=inpost-eu.tmcas.trendmicro.com; pr=C
-Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.83) by
- VI1EUR05FT065.mail.protection.outlook.com (10.233.243.91) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6199.32 via Frontend Transport; Mon, 27 Mar 2023 19:56:44 +0000
-Received: from outmta (unknown [192.168.82.140])
-	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id A034A2008026E;
-	Mon, 27 Mar 2023 19:56:43 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (unknown [104.47.17.171])
-	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id CD4072008006C;
-	Mon, 27 Mar 2023 19:56:43 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=biIvwNk5ueke9NB15QTqJclaw4N+qyXB75mVJakI8n8+V4ICbuX4hOd6ZBfDIalVcOjA4QpXekjTekpevJQZ0qHUFEY8qLE+ZLnh6a5iQrcioNiqE6P1yRbmK1mHAcE18U2URONSRFWgT1z6FJIUliaFCzMv1qHj7OsfT6T7qJXorxqw04/HLsDonmqqTd14WC8bbbkXVCP9NjwhqXka5dIID/BtkhnXy27Ba2ycAmFYPNLoXfY6YDZoLBZWQ+r3dgb16ZxcZwnTpfhJrRKUtsA1v++MZLj9U3+wE7yWa+LWPK8s5in5Z3A5jNFNzp3Bpad0t9aEb9GsW5xIi0cQNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LuAJCNux07RHgBnJpGno2yMpVhKiZSt8TefWL+PbKRU=;
- b=VspCPf7fr1HVjQaFzvLj+52ZYXFyV5lXAqKhEZQbv+rgrG4hxCjxzBu7s4cQ32mutPot2LWD/qO9713GEP6fxerl/E3hoP6GUlNGuKyfjOwSgbKgDXqSkEREhOm7PAMOv8jZtVdWhM7xqugUaXtO0OsCGzLguB5DdpsExWF0nH7tVvRaf3yqXJFiagV6XNf6kJEnTIsJSOMczmpL/KxjKiSvlg6WlZsKelFn7DtEj/3Nb1qAFZUf4yZVdEdCZ/bLlFY8bdW0XLALOdNh26RtlfgoxW6zPKAzIwMEX7n3M535H88aBJWuL4zMXgXeBH76B3x5JycneqIx/G552WWJlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LuAJCNux07RHgBnJpGno2yMpVhKiZSt8TefWL+PbKRU=;
- b=umu3x1D/qbEcL/ZciHrF9WyntOisu8TpsQKKwt05gBZ5cflZmhWARbxAIXAHgIQ5S1esHUefT76dtLOZdDKQZ7yFmXWmegtCyKbIGiQ6DyQIwV3oGVwzWBKeBrk8nwCK1rOMy2VQ2VNrByzd8vWJZi9qMyzagGcQsQx9gC8p8Gpz4cxXHw4N/9DaBFYaNmp2bBlUwPjMlirDtLnsaBMlJO/xIVZQKQ3sHOmUv+Or9cfDTzt/5CFWLwJOksNsEgoI1nhxUEiPpql4k1PUTqLv44E2W+xtl6SV8eCvs9ri7giB4DJvFP5dfzHjJwPYnvicsZtDXJXqjqevEpb+0ouNtg==
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from AS8PR03MB8832.eurprd03.prod.outlook.com (2603:10a6:20b:56e::11)
- by AM9PR03MB6993.eurprd03.prod.outlook.com (2603:10a6:20b:2db::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.33; Mon, 27 Mar
- 2023 19:56:36 +0000
-Received: from AS8PR03MB8832.eurprd03.prod.outlook.com
- ([fe80::6c3f:aabb:5e8f:6126]) by AS8PR03MB8832.eurprd03.prod.outlook.com
- ([fe80::6c3f:aabb:5e8f:6126%4]) with mapi id 15.20.6222.028; Mon, 27 Mar 2023
- 19:56:36 +0000
-Message-ID: <aa37e04b-95bc-c7f6-bda7-be83e97f5db1@seco.com>
-Date: Mon, 27 Mar 2023 15:56:31 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH v12 13/13] arm64: dts: ls1088ardb: Add serdes descriptions
-Content-Language: en-US
-From: Sean Anderson <sean.anderson@seco.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-References: <20230321201313.2507539-1-sean.anderson@seco.com>
- <20230321201313.2507539-14-sean.anderson@seco.com>
- <20230324131701.4ucxf65sxfdtqcai@LXL00007.wbi.nxp.com>
- <5ca4aeba-db2c-4c0c-c620-d380b4b839bb@seco.com>
-In-Reply-To: <5ca4aeba-db2c-4c0c-c620-d380b4b839bb@seco.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR16CA0050.namprd16.prod.outlook.com
- (2603:10b6:208:234::19) To AS8PR03MB8832.eurprd03.prod.outlook.com
- (2603:10a6:20b:56e::11)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PllnM37vvz3c8x
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 08:09:41 +1100 (AEDT)
+Received: by mail-oo1-f42.google.com with SMTP id h22-20020a4ad756000000b0053e4ab58fb5so516894oot.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 14:09:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679951379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jfOn32C10OnLMDPKfBd9GhbVkNrypbtF2Ph3uvU4wmQ=;
+        b=TBTT2j/STMXuxjSXxohyXWhP4gTJazaNgRYU6lAdsJBIZo2oS2654OeY+u5NP07BaI
+         7v1IOQJqdoT6VnzIF0PTUfGnxzI1a+xdtv22J2P/6YZHrVsnLUSV4QznHt+iUEVSYQw5
+         1xzkM4pznSqpx7xgGfWQv2eLxoF8VSBOqJpm5V0yxLXCObG1I6tLD3Hb2B49kNzUBAqJ
+         zxSYpIMzxl0SI3veBqxIlNHxMWrlo83dpSbpL3U//eBSvNigth0M4tIxcLz+PWX7dJX+
+         06ah1FvM1r81JxMXerbI7uZUePpKxPvizMBNRY5JCpKhEptN/5B+0cxHUGkD+QYHI/KX
+         DM3w==
+X-Gm-Message-State: AO0yUKVDPl967tfz3mPLmNIOSEtzhSvyuTKKyiIVj9hG69fv2NoeHb5J
+	2sGs8g56NZDrPllKKieTyw==
+X-Google-Smtp-Source: AK7set+LJSlGuloOzOTQnZG27e0vTxZs5DbZdqinqZKBpidciiFIPx3xkgyz61CbC+i0w9wJH00rGQ==
+X-Received: by 2002:a4a:3316:0:b0:538:c408:45cb with SMTP id q22-20020a4a3316000000b00538c40845cbmr6159785ooq.8.1679951378819;
+        Mon, 27 Mar 2023 14:09:38 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id a14-20020a056808098e00b00383ef58c15bsm1410684oic.28.2023.03.27.14.09.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 14:09:37 -0700 (PDT)
+Received: (nullmailer pid 666529 invoked by uid 1000);
+	Mon, 27 Mar 2023 21:09:36 -0000
+From: Rob Herring <robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Anatolij Gustschin <agust@denx.de>, Arnd Bergmann <arnd@arndb.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH v2] powerpc: Use of_address_to_resource()
+Date: Mon, 27 Mar 2023 16:09:28 -0500
+Message-Id: <20230327210929.664737-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic: 	AS8PR03MB8832:EE_|AM9PR03MB6993:EE_|VI1EUR05FT065:EE_|PAWPR03MB9738:EE_
-X-MS-Office365-Filtering-Correlation-Id: 828ebec0-9eb9-46be-6706-08db2efd63f4
-X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original:  GBq86owKPnBM+sQt+IWzQw8iqw34zpraDXTGAyobzMyJA++KfnlpPEt4FlDOCEWwDJ8Z+1+BmJCO1U/HkEp/fXu/eU4BF/vlNfKQezhjKhIZItIwFa80zNxSuCN8dzg5NqrgTkfZwek1lDRON41JYY6lL8uaFFV/rWB0INP1pFHNvTPs1Kvu9hFkhO7vh2FRL/h1WnRM40sI/HanGIw+MwjD1wq3lr6+Py8E70UPm01CH1KJxLch4t9egEA5AejVQ8T1kl3jdLRRfBoHVTFt2H2k8mCP6IHcwCiOA5AhxuY0I1Ne7ZgJIfpajuDBcTBLpZFNF6GM0LedGFCGqv8UbBFhIaPnYjkE1AapJGcXEicKEAQb/0sW8GNuzfWd3nU+J1zOrjP0ic1DJ9wxTRMU7a+LdjLBQAX/8I9fPgoDPXGTDkaxLjpgH4C+39OC0VEX3pmPpyHyoI/6tr7mLPiPoHKLtz5eTDLLXi7HOWXqqXpEKnSEhtOzq45k29PNe5fc0atepAKHeZbdD0rcvqC+LQ9aEwdzmhxeNCkLek+dmHc4w+Ad05//m4APdI3CaBTuO/2gBqXA8E5zkwlppBfY8SfGBK+7C5w3HvdxG9F9vcuLHalh2JUfOwRJdrR9uOdts9ODEY1ovAKpfOPWBwjzhPUsUnCIy008LjbmGvKlvNNavHLKFUHGWh/f4ciOTFmf
-X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR03MB8832.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(366004)(396003)(376002)(39850400004)(346002)(451199021)(2906002)(38350700002)(38100700002)(44832011)(52116002)(6486002)(8676002)(66476007)(316002)(66556008)(66946007)(6916009)(4326008)(41300700001)(36756003)(54906003)(5660300002)(7416002)(478600001)(8936002)(83380400001)(6666004)(186003)(31696002)(6512007)(6506007)(26005)(53546011)(2616005)(86362001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR03MB6993
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:  VI1EUR05FT065.eop-eur05.prod.protection.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 	92f3b425-7306-4d36-07a9-08db2efd5f2e
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	ljJuNnRgf7hjJEDJkUa0n980F+8OgMeZIZnp5el5N7wvy01vCdBdZY76FXC81IK/mFcoGLkRZ3oOxDMpCw+p3AqtagSI2k4pqD4uzXTg2tEaujqwtdCyTNV+OAp73S1wytgyVIQd3gHdaP3kp9Xua0LuzfFWxSqF9MJoAaxXuQujfpT3rxeqoRe4chFoqBJUxHxfZfb3RjoKp4bo0tubA+oK0oms+PMr4cbCv2BklUZdKbFV7J0AKOYhVYzdgqgR6tV0IzI5qtgPLlGy4IZg3RXmld+VhnJRO1kCRZPtk2/oFfYaExROWUOrAnQpKQSx8P1yZSabZtqEjlCnSyfIKack3ZAUaCroBaEBol8baEZjcoSO6PmVjSPiD5U+mAHJrM2UPmn9XVODvEGpWZVmhLtQtoC90Dgg8p4+sKzn7KzkLeiXEuQOh3CxvbnH52fsb824ZmBsTmw89iAUQGBfnSTGG5DMGL/VLLpv/uRHWaW5ZsWB2gexKM+IViq+rDof6X6CFqNfcQnQz6S29jrlD21q2fE6xIqcVnGNjBG355CjEIYFS3lsRI6raIaLitvliCls7GxWyHzbUViNnJJWvfbs5nOqYuxinf/MPeKx1JMVLrDfCUU7rBrvKnLK2GeQsdp1RNR80bt82eqSyTn2H7J1Y+B5sNM8tFvBXkjnxgFfQ+baZ9w3DoCGeqx4t7QIY1Wg03BnFIdEeV6nCsPj2FrFqy9lik8usu1/bfj2URdaIa7uvWehep11Wd/x+/mU43qQoJfSVePEB2UoBveUXZUruoClqUUMb0MEf4KXnSY=
-X-Forefront-Antispam-Report: 	CIP:20.160.56.83;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230028)(396003)(376002)(136003)(39850400004)(346002)(451199021)(5400799015)(40470700004)(36840700001)(46966006)(40460700003)(31686004)(6486002)(4326008)(54906003)(316002)(70586007)(70206006)(8676002)(6916009)(41300700001)(36756003)(356005)(31696002)(86362001)(478600001)(6666004)(2616005)(6512007)(6506007)(26005)(47076005)(2906002)(8936002)(7416002)(336012)(34020700004)(44832011)(5660300002)(82310400005)(40480700001)(7596003)(186003)(82740400003)(53546011)(36860700001)(83380400001)(7636003)(43740500002)(12100799027);DIR:OUT;SFP:1501;
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2023 19:56:44.0841
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 828ebec0-9eb9-46be-6706-08db2efd63f4
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.83];Helo=[inpost-eu.tmcas.trendmicro.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	VI1EUR05FT065.eop-eur05.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR03MB9738
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,70 +60,376 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/27/23 14:15, Sean Anderson wrote:
-> On 3/24/23 09:17, Ioana Ciornei wrote:
->> On Tue, Mar 21, 2023 at 04:13:12PM -0400, Sean Anderson wrote:
->>> This adds serdes support to the LS1088ARDB. I have tested the QSGMII
->>> ports as well as the two 10G ports. The SFP slot is now fully supported,
->>> instead of being modeled as a fixed-link.
->>> 
->>> Linux hangs around when the serdes is initialized if the si5341 is
->>> enabled with the in-tree driver, so I have modeled it as a two fixed
->>> clocks instead. There are a few registers in the QIXIS FPGA which
->>> control the SFP GPIOs; I have modeled them as discrete GPIO controllers
->>> for now. I never saw the AQR105 interrupt fire; not sure what was going
->>> on, but I have removed it to force polling.
->> 
->> So you didn't see the interrupt fire even without these patches?
-> 
-> Not sure. I went to check this, and discovered I could no longer get the
-> link to come up in Linux, even on v6.0 (before the rate adaptation
-> tuff). I see the LEDs blinking in U-Boot, so presumably it's some
-> configuration problem. I'm going to look into this further when I have
-> more time.
+Replace open coded reading of "reg" or of_get_address()/
+of_translate_address() calls with a single call to
+of_address_to_resource().
 
-I figured it out. I forgot the dpmac2 was 10G only (no rate adaptation
-for the AQR105).
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+v2:
+ - Fix compile in tsi108_dev.c
+---
+ arch/powerpc/mm/numa.c                        | 21 +++------
+ arch/powerpc/platforms/52xx/lite5200_pm.c     |  9 ++--
+ arch/powerpc/platforms/cell/axon_msi.c        |  9 ++--
+ arch/powerpc/platforms/embedded6xx/holly.c    |  7 ++-
+ arch/powerpc/platforms/embedded6xx/ls_uart.c  | 16 ++++---
+ arch/powerpc/platforms/powermac/feature.c     | 16 +++----
+ .../platforms/pseries/hotplug-memory.c        | 45 +++++--------------
+ arch/powerpc/platforms/pseries/iommu.c        | 20 +++------
+ arch/powerpc/sysdev/tsi108_dev.c              |  6 +--
+ 9 files changed, 50 insertions(+), 99 deletions(-)
 
-And the interrupt does not fire on net/main:
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index b44ce71917d7..3a5c0d56b1ad 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -16,6 +16,7 @@
+ #include <linux/cpu.h>
+ #include <linux/notifier.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/pfn.h>
+ #include <linux/cpuset.h>
+ #include <linux/node.h>
+@@ -1288,23 +1289,15 @@ static int hot_add_node_scn_to_nid(unsigned long scn_addr)
+ 	int nid = NUMA_NO_NODE;
+ 
+ 	for_each_node_by_type(memory, "memory") {
+-		unsigned long start, size;
+-		int ranges;
+-		const __be32 *memcell_buf;
+-		unsigned int len;
+-
+-		memcell_buf = of_get_property(memory, "reg", &len);
+-		if (!memcell_buf || len <= 0)
+-			continue;
++		int i = 0;
+ 
+-		/* ranges in cell */
+-		ranges = (len >> 2) / (n_mem_addr_cells + n_mem_size_cells);
++		while (1) {
++			struct resource res;
+ 
+-		while (ranges--) {
+-			start = read_n_cells(n_mem_addr_cells, &memcell_buf);
+-			size = read_n_cells(n_mem_size_cells, &memcell_buf);
++			if (of_address_to_resource(memory, i++, &res))
++				break;
+ 
+-			if ((scn_addr < start) || (scn_addr >= (start + size)))
++			if ((scn_addr < res.start) || (scn_addr > res.end))
+ 				continue;
+ 
+ 			nid = of_node_to_nid_single(memory);
+diff --git a/arch/powerpc/platforms/52xx/lite5200_pm.c b/arch/powerpc/platforms/52xx/lite5200_pm.c
+index 129313b1d021..ee29b63fca16 100644
+--- a/arch/powerpc/platforms/52xx/lite5200_pm.c
++++ b/arch/powerpc/platforms/52xx/lite5200_pm.c
+@@ -54,8 +54,7 @@ static int lite5200_pm_prepare(void)
+ 		{ .type = "builtin", .compatible = "mpc5200", }, /* efika */
+ 		{}
+ 	};
+-	u64 regaddr64 = 0;
+-	const u32 *regaddr_p;
++	struct resource res;
+ 
+ 	/* deep sleep? let mpc52xx code handle that */
+ 	if (lite5200_pm_target_state == PM_SUSPEND_STANDBY)
+@@ -66,12 +65,10 @@ static int lite5200_pm_prepare(void)
+ 
+ 	/* map registers */
+ 	np = of_find_matching_node(NULL, immr_ids);
+-	regaddr_p = of_get_address(np, 0, NULL, NULL);
+-	if (regaddr_p)
+-		regaddr64 = of_translate_address(np, regaddr_p);
++	of_address_to_resource(np, 0, &res);
+ 	of_node_put(np);
+ 
+-	mbar = ioremap((u32) regaddr64, 0xC000);
++	mbar = ioremap(res.start, 0xC000);
+ 	if (!mbar) {
+ 		printk(KERN_ERR "%s:%i Error mapping registers\n", __func__, __LINE__);
+ 		return -ENOSYS;
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
+index 0c11aad896c7..106000449d3b 100644
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ b/arch/powerpc/platforms/cell/axon_msi.c
+@@ -460,15 +460,14 @@ DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
+ void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
+ {
+ 	char name[8];
+-	u64 addr;
++	struct resource res;
+ 
+-	addr = of_translate_address(dn, of_get_property(dn, "reg", NULL));
+-	if (addr == OF_BAD_ADDR) {
+-		pr_devel("axon_msi: couldn't translate reg property\n");
++	if (of_address_to_resource(dn, 0, &res)) {
++		pr_devel("axon_msi: couldn't get reg property\n");
+ 		return;
+ 	}
+ 
+-	msic->trigger = ioremap(addr, 0x4);
++	msic->trigger = ioremap(res.start, 0x4);
+ 	if (!msic->trigger) {
+ 		pr_devel("axon_msi: ioremap failed\n");
+ 		return;
+diff --git a/arch/powerpc/platforms/embedded6xx/holly.c b/arch/powerpc/platforms/embedded6xx/holly.c
+index bebc5a972694..f7a17a6e2718 100644
+--- a/arch/powerpc/platforms/embedded6xx/holly.c
++++ b/arch/powerpc/platforms/embedded6xx/holly.c
+@@ -205,16 +205,15 @@ static void __noreturn holly_restart(char *cmd)
+ 	__be32 __iomem *ocn_bar1 = NULL;
+ 	unsigned long bar;
+ 	struct device_node *bridge = NULL;
+-	const void *prop;
+-	int size;
++	struct resource res;
+ 	phys_addr_t addr = 0xc0000000;
+ 
+ 	local_irq_disable();
+ 
+ 	bridge = of_find_node_by_type(NULL, "tsi-bridge");
+ 	if (bridge) {
+-		prop = of_get_property(bridge, "reg", &size);
+-		addr = of_translate_address(bridge, prop);
++		of_address_to_resource(bridge, 0, &res);
++		addr = res.start;
+ 		of_node_put(bridge);
+ 	}
+ 	addr += (TSI108_PB_OFFSET + 0x414);
+diff --git a/arch/powerpc/platforms/embedded6xx/ls_uart.c b/arch/powerpc/platforms/embedded6xx/ls_uart.c
+index 4ecbc55b37c0..36e4d2f85d5d 100644
+--- a/arch/powerpc/platforms/embedded6xx/ls_uart.c
++++ b/arch/powerpc/platforms/embedded6xx/ls_uart.c
+@@ -114,22 +114,24 @@ static void __init ls_uart_init(void)
+ static int __init ls_uarts_init(void)
+ {
+ 	struct device_node *avr;
+-	phys_addr_t phys_addr;
+-	int len;
++	struct resource res;
++	int len, ret;
+ 
+ 	avr = of_find_node_by_path("/soc10x/serial@80004500");
+ 	if (!avr)
+ 		return -EINVAL;
+ 
+ 	avr_clock = *(u32*)of_get_property(avr, "clock-frequency", &len);
+-	phys_addr = ((u32*)of_get_property(avr, "reg", &len))[0];
++	if (!avr_clock)
++		return -EINVAL;
+ 
+-	of_node_put(avr);
++	ret = of_address_to_resource(avr, 0, &res);
++	if (ret)
++		return ret;
+ 
+-	if (!avr_clock || !phys_addr)
+-		return -EINVAL;
++	of_node_put(avr);
+ 
+-	avr_addr = ioremap(phys_addr, 32);
++	avr_addr = ioremap(res.start, 32);
+ 	if (!avr_addr)
+ 		return -EFAULT;
+ 
+diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
+index dd508c2fcb5a..307548f20c1d 100644
+--- a/arch/powerpc/platforms/powermac/feature.c
++++ b/arch/powerpc/platforms/powermac/feature.c
+@@ -2545,8 +2545,7 @@ static int __init probe_motherboard(void)
+  */
+ static void __init probe_uninorth(void)
+ {
+-	const u32 *addrp;
+-	phys_addr_t address;
++	struct resource res;
+ 	unsigned long actrl;
+ 
+ 	/* Locate core99 Uni-N */
+@@ -2568,18 +2567,15 @@ static void __init probe_uninorth(void)
+ 		return;
+ 	}
+ 
+-	addrp = of_get_property(uninorth_node, "reg", NULL);
+-	if (addrp == NULL)
++	if (of_address_to_resource(uninorth_node, 0, &res))
+ 		return;
+-	address = of_translate_address(uninorth_node, addrp);
+-	if (address == 0)
+-		return;
+-	uninorth_base = ioremap(address, 0x40000);
++
++	uninorth_base = ioremap(res.start, 0x40000);
+ 	if (uninorth_base == NULL)
+ 		return;
+ 	uninorth_rev = in_be32(UN_REG(UNI_N_VERSION));
+ 	if (uninorth_maj == 3 || uninorth_maj == 4) {
+-		u3_ht_base = ioremap(address + U3_HT_CONFIG_BASE, 0x1000);
++		u3_ht_base = ioremap(res.start + U3_HT_CONFIG_BASE, 0x1000);
+ 		if (u3_ht_base == NULL) {
+ 			iounmap(uninorth_base);
+ 			return;
+@@ -2589,7 +2585,7 @@ static void __init probe_uninorth(void)
+ 	printk(KERN_INFO "Found %s memory controller & host bridge"
+ 	       " @ 0x%08x revision: 0x%02x\n", uninorth_maj == 3 ? "U3" :
+ 	       uninorth_maj == 4 ? "U4" : "UniNorth",
+-	       (unsigned int)address, uninorth_rev);
++	       (unsigned int)res.start, uninorth_rev);
+ 	printk(KERN_INFO "Mapped at 0x%08lx\n", (unsigned long)uninorth_base);
+ 
+ 	/* Set the arbitrer QAck delay according to what Apple does
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 2e3a317722a8..9c62c2c3b3d0 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -311,11 +311,8 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
+ 
+ static int pseries_remove_mem_node(struct device_node *np)
+ {
+-	const __be32 *prop;
+-	unsigned long base;
+-	unsigned long lmb_size;
+-	int ret = -EINVAL;
+-	int addr_cells, size_cells;
++	int ret;
++	struct resource res;
+ 
+ 	/*
+ 	 * Check to see if we are actually removing memory
+@@ -326,21 +323,11 @@ static int pseries_remove_mem_node(struct device_node *np)
+ 	/*
+ 	 * Find the base address and size of the memblock
+ 	 */
+-	prop = of_get_property(np, "reg", NULL);
+-	if (!prop)
++	ret = of_address_to_resource(np, 0, &res);
++	if (ret)
+ 		return ret;
+ 
+-	addr_cells = of_n_addr_cells(np);
+-	size_cells = of_n_size_cells(np);
+-
+-	/*
+-	 * "reg" property represents (addr,size) tuple.
+-	 */
+-	base = of_read_number(prop, addr_cells);
+-	prop += addr_cells;
+-	lmb_size = of_read_number(prop, size_cells);
+-
+-	pseries_remove_memblock(base, lmb_size);
++	pseries_remove_memblock(res.start, resource_size(&res));
+ 	return 0;
+ }
+ 
+@@ -929,11 +916,8 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
+ 
+ static int pseries_add_mem_node(struct device_node *np)
+ {
+-	const __be32 *prop;
+-	unsigned long base;
+-	unsigned long lmb_size;
+-	int ret = -EINVAL;
+-	int addr_cells, size_cells;
++	int ret;
++	struct resource res;
+ 
+ 	/*
+ 	 * Check to see if we are actually adding memory
+@@ -944,23 +928,14 @@ static int pseries_add_mem_node(struct device_node *np)
+ 	/*
+ 	 * Find the base and size of the memblock
+ 	 */
+-	prop = of_get_property(np, "reg", NULL);
+-	if (!prop)
++	ret = of_address_to_resource(np, 0, &res);
++	if (ret)
+ 		return ret;
+ 
+-	addr_cells = of_n_addr_cells(np);
+-	size_cells = of_n_size_cells(np);
+-	/*
+-	 * "reg" property represents (addr,size) tuple.
+-	 */
+-	base = of_read_number(prop, addr_cells);
+-	prop += addr_cells;
+-	lmb_size = of_read_number(prop, size_cells);
+-
+ 	/*
+ 	 * Update memory region to represent the memory add
+ 	 */
+-	ret = memblock_add(base, lmb_size);
++	ret = memblock_add(res.start, resource_size(&res));
+ 	return (ret < 0) ? -EINVAL : 0;
+ }
+ 
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index c74b71d4733d..f94c78a7bddc 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -22,6 +22,7 @@
+ #include <linux/crash_dump.h>
+ #include <linux/memory.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/iommu.h>
+ #include <linux/rculist.h>
+ #include <asm/io.h>
+@@ -1111,27 +1112,16 @@ static LIST_HEAD(failed_ddw_pdn_list);
+ 
+ static phys_addr_t ddw_memory_hotplug_max(void)
+ {
+-	phys_addr_t max_addr = memory_hotplug_max();
++	resource_size_t max_addr = memory_hotplug_max();
+ 	struct device_node *memory;
+ 
+ 	for_each_node_by_type(memory, "memory") {
+-		unsigned long start, size;
+-		int n_mem_addr_cells, n_mem_size_cells, len;
+-		const __be32 *memcell_buf;
++		struct resource res;
+ 
+-		memcell_buf = of_get_property(memory, "reg", &len);
+-		if (!memcell_buf || len <= 0)
++		if (of_address_to_resource(memory, 0, &res))
+ 			continue;
+ 
+-		n_mem_addr_cells = of_n_addr_cells(memory);
+-		n_mem_size_cells = of_n_size_cells(memory);
+-
+-		start = of_read_number(memcell_buf, n_mem_addr_cells);
+-		memcell_buf += n_mem_addr_cells;
+-		size = of_read_number(memcell_buf, n_mem_size_cells);
+-		memcell_buf += n_mem_size_cells;
+-
+-		max_addr = max_t(phys_addr_t, max_addr, start + size);
++		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
+ 	}
+ 
+ 	return max_addr;
+diff --git a/arch/powerpc/sysdev/tsi108_dev.c b/arch/powerpc/sysdev/tsi108_dev.c
+index 30051397292f..679bd5061201 100644
+--- a/arch/powerpc/sysdev/tsi108_dev.c
++++ b/arch/powerpc/sysdev/tsi108_dev.c
+@@ -45,9 +45,9 @@ phys_addr_t get_csrbase(void)
+ 
+ 	tsi = of_find_node_by_type(NULL, "tsi-bridge");
+ 	if (tsi) {
+-		unsigned int size;
+-		const void *prop = of_get_property(tsi, "reg", &size);
+-		tsi108_csr_base = of_translate_address(tsi, prop);
++		struct resource res;
++		of_address_to_resource(tsi, 0, &res);
++		tsi108_csr_base = res.start;
+ 		of_node_put(tsi);
+ 	}
+ 	return tsi108_csr_base;
+-- 
+2.39.2
 
-# cat /proc/interrupts | grep extirq
- 22:          0          0          0          0          0          0          0          0  ls-extirq   2 Level     0x0000000008b97000:00
-
-Inspecting the phy manually shows the link coming up. By removing the
-interrupt, the link comes up as usual. I wanted to look into this
-further, but the IRQ goes through the QIXIS and the firmware source
-isn't available so I wasn't able to do so.
-
-If you'd like, I can try probing the signal (to see where the problem
-is), but I won't have time for a bit.
-
->> I just tested this on a LS1088ARDB and it works.
->> 
->> 	root@localhost:~# cat /proc/interrupts | grep extirq
->> 	 99:          5  ls-extirq   2 Level     0x0000000008b97000:00
->> 	root@localhost:~# ip link set dev endpmac2 up
->> 	root@localhost:~# cat /proc/interrupts | grep extirq
->> 	 99:          6  ls-extirq   2 Level     0x0000000008b97000:00
->> 	root@localhost:~# ip link set dev endpmac2 down
->> 	root@localhost:~# cat /proc/interrupts | grep extirq
->> 	 99:          7  ls-extirq   2 Level     0x0000000008b97000:00
->> 
->> Please don't just remove things.
-> 
-> Well, polling isn't the worst thing for a single interface... I do
-> remember having a problem with the interrupt. If this series works
-> with interrupts enabled, I can leave it in.
-
-Anyway, given that interrupts seem to be broken for some boards? some
-configurations? I would like to keep polling.
-
-> Did you have a chance to look at the core (patches 7 and 8) of this
-> series? Does it make sense to you? Am I missing something which would
-> allow switching from 1G->10G?
-
---Sean
