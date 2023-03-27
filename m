@@ -2,53 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B43A6CB067
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58D86CB0A0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:25:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pllnx0Pdnz3fXR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 08:10:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Plm7y3vP3z3fTZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 08:25:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=oHN+8rjJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.42; helo=mail-oo1-f42.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::131; helo=mail-il1-x131.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=oHN+8rjJ;
+	dkim-atps=neutral
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PllnM37vvz3c8x
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 08:09:41 +1100 (AEDT)
-Received: by mail-oo1-f42.google.com with SMTP id h22-20020a4ad756000000b0053e4ab58fb5so516894oot.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 14:09:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Plm6z0P27z3bjW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 08:24:57 +1100 (AEDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-3230125dde5so295635ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 14:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679952293;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0eftNLvSesPHZioQvbRv9TEAEEp18MP4qcagijDbKiA=;
+        b=oHN+8rjJd161d9xb+O7uebxDzzMGQtRYlNB2UrEfskZdwJeZvMBLPNZ097JNHbu+/7
+         qX68v+uIuNeR++zL0y3VQYxHqagYmh0RgEXYUCVfx+z1XsRHiLvAwMMja2cESu2oWVw4
+         rQskRggjvr6y7ymfkcuQkp/a643UhRJfwgROio380BX94Lg1nuqLwZDhM1WSet47BJDn
+         ylkZhm/3rulXimy+X7vSj0+ekZaAgCghT56qcKZhs7utZy02bQD8ROYWrFCsTgruLOSM
+         GRBQKy6gOIwfU9iPmFwTLWOzRjttTErV0q4+IxbEGfX4tO3mLITrcBxOCoKy9IRVJuat
+         t2Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679951379;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jfOn32C10OnLMDPKfBd9GhbVkNrypbtF2Ph3uvU4wmQ=;
-        b=TBTT2j/STMXuxjSXxohyXWhP4gTJazaNgRYU6lAdsJBIZo2oS2654OeY+u5NP07BaI
-         7v1IOQJqdoT6VnzIF0PTUfGnxzI1a+xdtv22J2P/6YZHrVsnLUSV4QznHt+iUEVSYQw5
-         1xzkM4pznSqpx7xgGfWQv2eLxoF8VSBOqJpm5V0yxLXCObG1I6tLD3Hb2B49kNzUBAqJ
-         zxSYpIMzxl0SI3veBqxIlNHxMWrlo83dpSbpL3U//eBSvNigth0M4tIxcLz+PWX7dJX+
-         06ah1FvM1r81JxMXerbI7uZUePpKxPvizMBNRY5JCpKhEptN/5B+0cxHUGkD+QYHI/KX
-         DM3w==
-X-Gm-Message-State: AO0yUKVDPl967tfz3mPLmNIOSEtzhSvyuTKKyiIVj9hG69fv2NoeHb5J
-	2sGs8g56NZDrPllKKieTyw==
-X-Google-Smtp-Source: AK7set+LJSlGuloOzOTQnZG27e0vTxZs5DbZdqinqZKBpidciiFIPx3xkgyz61CbC+i0w9wJH00rGQ==
-X-Received: by 2002:a4a:3316:0:b0:538:c408:45cb with SMTP id q22-20020a4a3316000000b00538c40845cbmr6159785ooq.8.1679951378819;
-        Mon, 27 Mar 2023 14:09:38 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id a14-20020a056808098e00b00383ef58c15bsm1410684oic.28.2023.03.27.14.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Mar 2023 14:09:37 -0700 (PDT)
-Received: (nullmailer pid 666529 invoked by uid 1000);
-	Mon, 27 Mar 2023 21:09:36 -0000
-From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Anatolij Gustschin <agust@denx.de>, Arnd Bergmann <arnd@arndb.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH v2] powerpc: Use of_address_to_resource()
-Date: Mon, 27 Mar 2023 16:09:28 -0500
-Message-Id: <20230327210929.664737-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20210112; t=1679952293;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0eftNLvSesPHZioQvbRv9TEAEEp18MP4qcagijDbKiA=;
+        b=BFNucdFIpH8NtgjU6GMDso84BlKS/b6oW9W+ApeQgjW+Gdba5cW3ZIMySWIaPAZr//
+         +O1bwAQZVNtixx1549wp3ZbgVQZRrMfpuV9IWYeh2v+eCwJttyMwIDNCEgmeb3uDoqAD
+         x+nCaZDC/oxESupdUUE3zOXTjHhk0CVjTuwiBEn5wPTYdO/fRcrFJ/GYkmiNinqI8QxJ
+         oILHI3C8paYB3t++fdHI9c6BjVpix4KH/rJ3uRKzTvWeM5a3X8vqIE0NWWgL6k2VrARP
+         O/67erDTWWXQLVq1VIAg00mUnqqwoVL/H2uRQfDKx/xGIbDjgFCrntDYOU5e0HUNeE9k
+         DX4g==
+X-Gm-Message-State: AO0yUKUha6auUy6fG+zjS6UgQ0+ZeMiTQG7v8TVTFHN2D8mShuDu/Zl1
+	SxzdlMDSRCn+D50rZ+f3tzSEXQ==
+X-Google-Smtp-Source: AK7set9Wmkys4++12vnjWBDl13cixURA6bgcXr68KQowkdjg1VjxParnfG/MzfdxE4BhJEFFiXBoEQ==
+X-Received: by 2002:a05:6602:3405:b0:758:9c9e:d6c6 with SMTP id n5-20020a056602340500b007589c9ed6c6mr8015847ioz.2.1679952293049;
+        Mon, 27 Mar 2023 14:24:53 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id p15-20020a056638216f00b00403089c2a1dsm9339308jak.108.2023.03.27.14.24.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Mar 2023 14:24:52 -0700 (PDT)
+Message-ID: <3ae396db-4aa3-c031-67a7-2df341214b5b@kernel.dk>
+Date: Mon, 27 Mar 2023 15:24:51 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: Memory coherency issue with IO thread offloading?
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <2b015a34-220e-674e-7301-2cf17ef45ed9@kernel.dk>
+ <87h6u9u0e0.fsf@mpe.ellerman.id.au>
+ <872a1b2b-5fe6-e1ac-5dda-dc806b21b3f5@kernel.dk>
+ <9753c624-66e0-aace-6540-731cba9da864@kernel.dk>
+ <CRGVMXJ46PPN.1VWRMA1IMPHW2@bobo>
+ <6f32b504-ccd5-d67c-1b67-95d8fe1cf185@kernel.dk>
+In-Reply-To: <6f32b504-ccd5-d67c-1b67-95d8fe1cf185@kernel.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,376 +87,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace open coded reading of "reg" or of_get_address()/
-of_translate_address() calls with a single call to
-of_address_to_resource().
+>> Can the  queueing cause the creation of an IO thread (if one does not
+>> exist, or all blocked?)
+> 
+> Yep
+> 
+> Since writing this email, I've gone through a lot of different tests.
+> Here's a rough listing of what I found:
+> 
+> - Like using the hack patch, if I just limit the number of IO thread
+>   workers to 1, it seems to pass. At least longer than before, does 1000
+>   iterations.
+> 
+> - If I pin each IO worker to a single CPU, it also passes.
+> 
+> - If I liberally sprinkle smp_mb() for the io-wq side, test still fails.
+>   I've added one before queueing the work item, and after. One before
+>   the io-wq worker grabs a work item and one after. Eg full hammer
+>   approach. This still fails.
+> 
+> Puzzling... For the "pin each IO worker to a single CPU" I added some
+> basic code around trying to ensure that a work item queued on CPU X
+> would be processed by a worker on CPU X, and too a large degree, this
+> does happen. But since the work list is a normal list, it's quite
+> possible that some other worker finishes its work on CPU Y just in time
+> to grab the one from cpu X. I checked and this does happen in the test
+> case, yet it still passes. This may be because I got a bit lucky, but
+> seems suspect with thousands of passes of the test case.
+> 
+> Another theory there is that it's perhaps related to an io-wq worker
+> being rescheduled on a different CPU. Though again puzzled as to why the
+> smp_mb sprinkling didn't fix that then. I'm going to try and run the
+> test case with JUST the io-wq worker pinning and not caring about where
+> the work is processed to see if that does anything.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v2:
- - Fix compile in tsi108_dev.c
----
- arch/powerpc/mm/numa.c                        | 21 +++------
- arch/powerpc/platforms/52xx/lite5200_pm.c     |  9 ++--
- arch/powerpc/platforms/cell/axon_msi.c        |  9 ++--
- arch/powerpc/platforms/embedded6xx/holly.c    |  7 ++-
- arch/powerpc/platforms/embedded6xx/ls_uart.c  | 16 ++++---
- arch/powerpc/platforms/powermac/feature.c     | 16 +++----
- .../platforms/pseries/hotplug-memory.c        | 45 +++++--------------
- arch/powerpc/platforms/pseries/iommu.c        | 20 +++------
- arch/powerpc/sysdev/tsi108_dev.c              |  6 +--
- 9 files changed, 50 insertions(+), 99 deletions(-)
+Just pinning each worker to whatever CPU they got created on seemingly
+fixes the issue too. This does not mean that each worker will process
+work on the CPU on which it was queued, just that each worker will
+remain on whatever CPU it originally got created on.
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index b44ce71917d7..3a5c0d56b1ad 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -16,6 +16,7 @@
- #include <linux/cpu.h>
- #include <linux/notifier.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/pfn.h>
- #include <linux/cpuset.h>
- #include <linux/node.h>
-@@ -1288,23 +1289,15 @@ static int hot_add_node_scn_to_nid(unsigned long scn_addr)
- 	int nid = NUMA_NO_NODE;
- 
- 	for_each_node_by_type(memory, "memory") {
--		unsigned long start, size;
--		int ranges;
--		const __be32 *memcell_buf;
--		unsigned int len;
--
--		memcell_buf = of_get_property(memory, "reg", &len);
--		if (!memcell_buf || len <= 0)
--			continue;
-+		int i = 0;
- 
--		/* ranges in cell */
--		ranges = (len >> 2) / (n_mem_addr_cells + n_mem_size_cells);
-+		while (1) {
-+			struct resource res;
- 
--		while (ranges--) {
--			start = read_n_cells(n_mem_addr_cells, &memcell_buf);
--			size = read_n_cells(n_mem_size_cells, &memcell_buf);
-+			if (of_address_to_resource(memory, i++, &res))
-+				break;
- 
--			if ((scn_addr < start) || (scn_addr >= (start + size)))
-+			if ((scn_addr < res.start) || (scn_addr > res.end))
- 				continue;
- 
- 			nid = of_node_to_nid_single(memory);
-diff --git a/arch/powerpc/platforms/52xx/lite5200_pm.c b/arch/powerpc/platforms/52xx/lite5200_pm.c
-index 129313b1d021..ee29b63fca16 100644
---- a/arch/powerpc/platforms/52xx/lite5200_pm.c
-+++ b/arch/powerpc/platforms/52xx/lite5200_pm.c
-@@ -54,8 +54,7 @@ static int lite5200_pm_prepare(void)
- 		{ .type = "builtin", .compatible = "mpc5200", }, /* efika */
- 		{}
- 	};
--	u64 regaddr64 = 0;
--	const u32 *regaddr_p;
-+	struct resource res;
- 
- 	/* deep sleep? let mpc52xx code handle that */
- 	if (lite5200_pm_target_state == PM_SUSPEND_STANDBY)
-@@ -66,12 +65,10 @@ static int lite5200_pm_prepare(void)
- 
- 	/* map registers */
- 	np = of_find_matching_node(NULL, immr_ids);
--	regaddr_p = of_get_address(np, 0, NULL, NULL);
--	if (regaddr_p)
--		regaddr64 = of_translate_address(np, regaddr_p);
-+	of_address_to_resource(np, 0, &res);
- 	of_node_put(np);
- 
--	mbar = ioremap((u32) regaddr64, 0xC000);
-+	mbar = ioremap(res.start, 0xC000);
- 	if (!mbar) {
- 		printk(KERN_ERR "%s:%i Error mapping registers\n", __func__, __LINE__);
- 		return -ENOSYS;
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
-index 0c11aad896c7..106000449d3b 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -460,15 +460,14 @@ DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
- void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
- {
- 	char name[8];
--	u64 addr;
-+	struct resource res;
- 
--	addr = of_translate_address(dn, of_get_property(dn, "reg", NULL));
--	if (addr == OF_BAD_ADDR) {
--		pr_devel("axon_msi: couldn't translate reg property\n");
-+	if (of_address_to_resource(dn, 0, &res)) {
-+		pr_devel("axon_msi: couldn't get reg property\n");
- 		return;
- 	}
- 
--	msic->trigger = ioremap(addr, 0x4);
-+	msic->trigger = ioremap(res.start, 0x4);
- 	if (!msic->trigger) {
- 		pr_devel("axon_msi: ioremap failed\n");
- 		return;
-diff --git a/arch/powerpc/platforms/embedded6xx/holly.c b/arch/powerpc/platforms/embedded6xx/holly.c
-index bebc5a972694..f7a17a6e2718 100644
---- a/arch/powerpc/platforms/embedded6xx/holly.c
-+++ b/arch/powerpc/platforms/embedded6xx/holly.c
-@@ -205,16 +205,15 @@ static void __noreturn holly_restart(char *cmd)
- 	__be32 __iomem *ocn_bar1 = NULL;
- 	unsigned long bar;
- 	struct device_node *bridge = NULL;
--	const void *prop;
--	int size;
-+	struct resource res;
- 	phys_addr_t addr = 0xc0000000;
- 
- 	local_irq_disable();
- 
- 	bridge = of_find_node_by_type(NULL, "tsi-bridge");
- 	if (bridge) {
--		prop = of_get_property(bridge, "reg", &size);
--		addr = of_translate_address(bridge, prop);
-+		of_address_to_resource(bridge, 0, &res);
-+		addr = res.start;
- 		of_node_put(bridge);
- 	}
- 	addr += (TSI108_PB_OFFSET + 0x414);
-diff --git a/arch/powerpc/platforms/embedded6xx/ls_uart.c b/arch/powerpc/platforms/embedded6xx/ls_uart.c
-index 4ecbc55b37c0..36e4d2f85d5d 100644
---- a/arch/powerpc/platforms/embedded6xx/ls_uart.c
-+++ b/arch/powerpc/platforms/embedded6xx/ls_uart.c
-@@ -114,22 +114,24 @@ static void __init ls_uart_init(void)
- static int __init ls_uarts_init(void)
- {
- 	struct device_node *avr;
--	phys_addr_t phys_addr;
--	int len;
-+	struct resource res;
-+	int len, ret;
- 
- 	avr = of_find_node_by_path("/soc10x/serial@80004500");
- 	if (!avr)
- 		return -EINVAL;
- 
- 	avr_clock = *(u32*)of_get_property(avr, "clock-frequency", &len);
--	phys_addr = ((u32*)of_get_property(avr, "reg", &len))[0];
-+	if (!avr_clock)
-+		return -EINVAL;
- 
--	of_node_put(avr);
-+	ret = of_address_to_resource(avr, 0, &res);
-+	if (ret)
-+		return ret;
- 
--	if (!avr_clock || !phys_addr)
--		return -EINVAL;
-+	of_node_put(avr);
- 
--	avr_addr = ioremap(phys_addr, 32);
-+	avr_addr = ioremap(res.start, 32);
- 	if (!avr_addr)
- 		return -EFAULT;
- 
-diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
-index dd508c2fcb5a..307548f20c1d 100644
---- a/arch/powerpc/platforms/powermac/feature.c
-+++ b/arch/powerpc/platforms/powermac/feature.c
-@@ -2545,8 +2545,7 @@ static int __init probe_motherboard(void)
-  */
- static void __init probe_uninorth(void)
- {
--	const u32 *addrp;
--	phys_addr_t address;
-+	struct resource res;
- 	unsigned long actrl;
- 
- 	/* Locate core99 Uni-N */
-@@ -2568,18 +2567,15 @@ static void __init probe_uninorth(void)
- 		return;
- 	}
- 
--	addrp = of_get_property(uninorth_node, "reg", NULL);
--	if (addrp == NULL)
-+	if (of_address_to_resource(uninorth_node, 0, &res))
- 		return;
--	address = of_translate_address(uninorth_node, addrp);
--	if (address == 0)
--		return;
--	uninorth_base = ioremap(address, 0x40000);
-+
-+	uninorth_base = ioremap(res.start, 0x40000);
- 	if (uninorth_base == NULL)
- 		return;
- 	uninorth_rev = in_be32(UN_REG(UNI_N_VERSION));
- 	if (uninorth_maj == 3 || uninorth_maj == 4) {
--		u3_ht_base = ioremap(address + U3_HT_CONFIG_BASE, 0x1000);
-+		u3_ht_base = ioremap(res.start + U3_HT_CONFIG_BASE, 0x1000);
- 		if (u3_ht_base == NULL) {
- 			iounmap(uninorth_base);
- 			return;
-@@ -2589,7 +2585,7 @@ static void __init probe_uninorth(void)
- 	printk(KERN_INFO "Found %s memory controller & host bridge"
- 	       " @ 0x%08x revision: 0x%02x\n", uninorth_maj == 3 ? "U3" :
- 	       uninorth_maj == 4 ? "U4" : "UniNorth",
--	       (unsigned int)address, uninorth_rev);
-+	       (unsigned int)res.start, uninorth_rev);
- 	printk(KERN_INFO "Mapped at 0x%08lx\n", (unsigned long)uninorth_base);
- 
- 	/* Set the arbitrer QAck delay according to what Apple does
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 2e3a317722a8..9c62c2c3b3d0 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -311,11 +311,8 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
- 
- static int pseries_remove_mem_node(struct device_node *np)
- {
--	const __be32 *prop;
--	unsigned long base;
--	unsigned long lmb_size;
--	int ret = -EINVAL;
--	int addr_cells, size_cells;
-+	int ret;
-+	struct resource res;
- 
- 	/*
- 	 * Check to see if we are actually removing memory
-@@ -326,21 +323,11 @@ static int pseries_remove_mem_node(struct device_node *np)
- 	/*
- 	 * Find the base address and size of the memblock
- 	 */
--	prop = of_get_property(np, "reg", NULL);
--	if (!prop)
-+	ret = of_address_to_resource(np, 0, &res);
-+	if (ret)
- 		return ret;
- 
--	addr_cells = of_n_addr_cells(np);
--	size_cells = of_n_size_cells(np);
--
--	/*
--	 * "reg" property represents (addr,size) tuple.
--	 */
--	base = of_read_number(prop, addr_cells);
--	prop += addr_cells;
--	lmb_size = of_read_number(prop, size_cells);
--
--	pseries_remove_memblock(base, lmb_size);
-+	pseries_remove_memblock(res.start, resource_size(&res));
- 	return 0;
- }
- 
-@@ -929,11 +916,8 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 
- static int pseries_add_mem_node(struct device_node *np)
- {
--	const __be32 *prop;
--	unsigned long base;
--	unsigned long lmb_size;
--	int ret = -EINVAL;
--	int addr_cells, size_cells;
-+	int ret;
-+	struct resource res;
- 
- 	/*
- 	 * Check to see if we are actually adding memory
-@@ -944,23 +928,14 @@ static int pseries_add_mem_node(struct device_node *np)
- 	/*
- 	 * Find the base and size of the memblock
- 	 */
--	prop = of_get_property(np, "reg", NULL);
--	if (!prop)
-+	ret = of_address_to_resource(np, 0, &res);
-+	if (ret)
- 		return ret;
- 
--	addr_cells = of_n_addr_cells(np);
--	size_cells = of_n_size_cells(np);
--	/*
--	 * "reg" property represents (addr,size) tuple.
--	 */
--	base = of_read_number(prop, addr_cells);
--	prop += addr_cells;
--	lmb_size = of_read_number(prop, size_cells);
--
- 	/*
- 	 * Update memory region to represent the memory add
- 	 */
--	ret = memblock_add(base, lmb_size);
-+	ret = memblock_add(res.start, resource_size(&res));
- 	return (ret < 0) ? -EINVAL : 0;
- }
- 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index c74b71d4733d..f94c78a7bddc 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -22,6 +22,7 @@
- #include <linux/crash_dump.h>
- #include <linux/memory.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/iommu.h>
- #include <linux/rculist.h>
- #include <asm/io.h>
-@@ -1111,27 +1112,16 @@ static LIST_HEAD(failed_ddw_pdn_list);
- 
- static phys_addr_t ddw_memory_hotplug_max(void)
- {
--	phys_addr_t max_addr = memory_hotplug_max();
-+	resource_size_t max_addr = memory_hotplug_max();
- 	struct device_node *memory;
- 
- 	for_each_node_by_type(memory, "memory") {
--		unsigned long start, size;
--		int n_mem_addr_cells, n_mem_size_cells, len;
--		const __be32 *memcell_buf;
-+		struct resource res;
- 
--		memcell_buf = of_get_property(memory, "reg", &len);
--		if (!memcell_buf || len <= 0)
-+		if (of_address_to_resource(memory, 0, &res))
- 			continue;
- 
--		n_mem_addr_cells = of_n_addr_cells(memory);
--		n_mem_size_cells = of_n_size_cells(memory);
--
--		start = of_read_number(memcell_buf, n_mem_addr_cells);
--		memcell_buf += n_mem_addr_cells;
--		size = of_read_number(memcell_buf, n_mem_size_cells);
--		memcell_buf += n_mem_size_cells;
--
--		max_addr = max_t(phys_addr_t, max_addr, start + size);
-+		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
- 	}
- 
- 	return max_addr;
-diff --git a/arch/powerpc/sysdev/tsi108_dev.c b/arch/powerpc/sysdev/tsi108_dev.c
-index 30051397292f..679bd5061201 100644
---- a/arch/powerpc/sysdev/tsi108_dev.c
-+++ b/arch/powerpc/sysdev/tsi108_dev.c
-@@ -45,9 +45,9 @@ phys_addr_t get_csrbase(void)
- 
- 	tsi = of_find_node_by_type(NULL, "tsi-bridge");
- 	if (tsi) {
--		unsigned int size;
--		const void *prop = of_get_property(tsi, "reg", &size);
--		tsi108_csr_base = of_translate_address(tsi, prop);
-+		struct resource res;
-+		of_address_to_resource(tsi, 0, &res);
-+		tsi108_csr_base = res.start;
- 		of_node_put(tsi);
- 	}
- 	return tsi108_csr_base;
+Puzzling...
+
+Note that it is indeed quite possible that this isn't a ppc issue at
+all, just shows on ppc. It could be page cache related, or it could even
+be a bug in mariadb itself.
+
 -- 
-2.39.2
+Jens Axboe
+
 
