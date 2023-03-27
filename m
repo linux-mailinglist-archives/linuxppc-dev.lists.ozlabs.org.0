@@ -1,97 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE13C6CA7DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 16:40:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520B46CA881
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 17:03:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Plb7l4Y9yz3fV5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 01:40:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Plbg91mZcz3fWG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 02:03:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XCG2+TMM;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XCG2+TMM;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=v1TiVcw6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XCG2+TMM;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XCG2+TMM;
+	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=v1TiVcw6;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Plb6p2kNCz3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 01:39:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679927947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XoDLXhYZX6z7BtIjLUpiIi7lTU4JmFeBrYERY2LWfk0=;
-	b=XCG2+TMMN2LhBLL9AJ+6dAXCmUKgWVcsN06sM1lSqVEzqHo+07h9b+k9xGkifrrea8/XFN
-	68eP2nzEyzjx1agg2lIzwXWFaTIHJluIJgGVX3h/hzmK1Omga2oIbFet4Id925zABOfU+S
-	b4CYPrdUHMYBb3jCu/dNcu/+oV67k1A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679927947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XoDLXhYZX6z7BtIjLUpiIi7lTU4JmFeBrYERY2LWfk0=;
-	b=XCG2+TMMN2LhBLL9AJ+6dAXCmUKgWVcsN06sM1lSqVEzqHo+07h9b+k9xGkifrrea8/XFN
-	68eP2nzEyzjx1agg2lIzwXWFaTIHJluIJgGVX3h/hzmK1Omga2oIbFet4Id925zABOfU+S
-	b4CYPrdUHMYBb3jCu/dNcu/+oV67k1A=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-lJeewVUbPNuXWIiAcmr30Q-1; Mon, 27 Mar 2023 10:39:05 -0400
-X-MC-Unique: lJeewVUbPNuXWIiAcmr30Q-1
-Received: by mail-qt1-f197.google.com with SMTP id c14-20020ac87d8e000000b003e38726ec8bso6119530qtd.23
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 07:39:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679927944;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoDLXhYZX6z7BtIjLUpiIi7lTU4JmFeBrYERY2LWfk0=;
-        b=2LDQCkCH/MGidfhdOyctNlHulv6S9LDvIXKsB+0dxt2iLqmPHedy+ib+8SY5QI90aA
-         SwXr0wtH93R4ZYuHDJ6OjocpeJArlCOm/grVplMl8FzPvFN9bHgsxjU/41L3PQu/0QTc
-         vbDk8wmuks9stTX2+ZKUPHiaYyUmjj4ECnUZfsgPlAzN0qVAcl7v6IYzp7WNlh6JNnSa
-         WLEQqGRFyQcNu35C37Jrgv8JXYu/MUDT//ZgKKnWlgyuA+xF5gFf9oGz+20r8GCNovBl
-         BrHb6bk2FuP2T2IOe56CaHmm106ichKf2H6KwlAtKBMuvANYrSjz0PeWgfTJmd6eGDkv
-         RQEQ==
-X-Gm-Message-State: AO0yUKXLdVsgfJty5956VgSKnc2f0hwsV1VDGCtfU9cqIZ8KfkyWvaTs
-	7pUGZQKeyOzqz8+bpiZADrz85ChQdPOEwAEvCD+ZAA1z6B677Of1p7IiGS4F/gkElMHk1ZC3E9L
-	VepBPZKGrzMpUVcymWcpsPVnK1g==
-X-Received: by 2002:a05:622a:1648:b0:3b8:6ae9:b10d with SMTP id y8-20020a05622a164800b003b86ae9b10dmr20414133qtj.2.1679927944793;
-        Mon, 27 Mar 2023 07:39:04 -0700 (PDT)
-X-Google-Smtp-Source: AK7set+AIVfKyZ43ZdQzZE7WjGbMC2MuGN2mWA2dKyIEH1RqiiXs9Z6es282UQxXRqnv8qSeMs3zsw==
-X-Received: by 2002:a05:622a:1648:b0:3b8:6ae9:b10d with SMTP id y8-20020a05622a164800b003b86ae9b10dmr20414102qtj.2.1679927944544;
-        Mon, 27 Mar 2023 07:39:04 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-177-5.web.vodafone.de. [109.43.177.5])
-        by smtp.gmail.com with ESMTPSA id y3-20020a37f603000000b0074382b756c2sm16747347qkj.14.2023.03.27.07.39.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 07:39:03 -0700 (PDT)
-Message-ID: <229dd5e2-b757-d28b-b9db-0d9efce4c5d1@redhat.com>
-Date: Mon, 27 Mar 2023 16:39:00 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlbfF0g1Jz3cKj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 02:02:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GEE0ldPCAv+f5hC1f+jvTvP/uCZufNK448SDtGAe4Zk=; b=v1TiVcw6SlE1jYl57XDWmMLk7R
+	EWSel/m8qaxtTIpi1wpcv4wbnE7RPavO3PfN2/IvOoiwi/gCP7xcE5F2askSa5L3uzpsODKQD61x8
+	StfEk4v08foXfrG7VasjwmrT+4yuDajfp3NNHvjaYyh4aLuCmqN87WdluK/CgHa4tXqQusBd9TUSf
+	rgoEiiSrmdHN6nfAY4zrzY2ufcDHt1crFZ4RO0F/V9Ze42PDJKXYA8Ce8yBzBCsjOpJfgasawcEnA
+	+RKV1eekKL4QKumS3WLMLcQq87DVakybcmXPiUHI+Lzv6UbDhiuLRCeqCognGPTq1tbBLbTgEZBez
+	GAl3pldA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58066)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1pgoM7-00040C-4u; Mon, 27 Mar 2023 16:01:55 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1pgoLv-0005Vg-EZ; Mon, 27 Mar 2023 16:01:43 +0100
+Date: Mon, 27 Mar 2023 16:01:43 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH 20/21] ARM: dma-mapping: split out arch_dma_mark_clean()
+ helper
+Message-ID: <ZCGv18wnEtoFvtfM@shell.armlinux.org.uk>
+References: <20230327121317.4081816-1-arnd@kernel.org>
+ <20230327121317.4081816-21-arnd@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v3 03/13] powerpc: Add some checking to exception
- handler install
-To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
-References: <20230327124520.2707537-1-npiggin@gmail.com>
- <20230327124520.2707537-4-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230327124520.2707537-4-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230327121317.4081816-21-arnd@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,60 +65,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Michal Simek <monstr@
+ monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, linux-oxnas@groups.io, Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/03/2023 14.45, Nicholas Piggin wrote:
-> Check to ensure exception handlers are not being overwritten or
-> invalid exception numbers are used.
+On Mon, Mar 27, 2023 at 02:13:16PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> Since v2:
-> - New patch
-> 
->   lib/powerpc/processor.c | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
-> 
-> diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-> index ec85b9d..70391aa 100644
-> --- a/lib/powerpc/processor.c
-> +++ b/lib/powerpc/processor.c
-> @@ -19,11 +19,23 @@ static struct {
->   void handle_exception(int trap, void (*func)(struct pt_regs *, void *),
->   		      void * data)
->   {
-> +	if (trap & 0xff) {
+> The arm version of the arch_sync_dma_for_cpu() function annotates pages as
+> PG_dcache_clean after a DMA, but no other architecture does this here.
 
-You could check for the other "invalid exception handler" condition here 
-already, i.e. if (trap & ~0xf00) ...
+... because this is an arm32 specific feature. Generically, it's
+PG_arch_1, which is a page flag free for architecture use. On arm32
+we decided to use this to mark whether we can skip dcache writebacks
+when establishing a PTE - and thus it was decided to call it
+PG_dcache_clean to reflect how arm32 decided to use that bit.
 
-I'd maybe simply do an "assert(!(trap & ~0xf00))" here.
+This isn't just a DMA thing, there are other places that we update
+the bit, such as flush_dcache_page() and copy_user_highpage().
 
-> +		printf("invalid exception handler %#x\n", trap);
-> +		abort();
-> +	}
-> +
->   	trap >>= 8;
->   
->   	if (trap < 16) {
+So thinking that the arm32 PG_dcache_clean is something for DMA is
+actually wrong.
 
-... then you could get rid of the if-statement here and remove one level of 
-indentation in the code below.
+Other architectures are free to do their own other optimisations
+using that bit, and their implementations may be DMA-centric.
 
-> +		if (func && handlers[trap].func) {
-> +			printf("exception handler installed twice %#x\n", trap);
-> +			abort();
-> +		}
->   		handlers[trap].func = func;
->   		handlers[trap].data = data;
-> +	} else {
-> +		printf("invalid exception handler %#x\n", trap);
-> +		abort();
->   	}
->   }
->   
-
-  Thomas
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
