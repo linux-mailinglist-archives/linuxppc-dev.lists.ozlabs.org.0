@@ -2,68 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C046CA96C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 17:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAB96CA9F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 18:06:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlcYX6LTQz3fT5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 02:44:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pld3P1sqzz3fQn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 03:06:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HZFjetxT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LPLf/jCv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HZFjetxT;
-	dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlcXf30kRz3c6f
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 02:43:13 +1100 (AEDT)
-Received: by mail-pg1-x536.google.com with SMTP id q206so5396534pgq.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 08:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679931790;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HRasUUTOEu/ok1S92mQy2tcMp/4KwW2lXbLEiKBj/7o=;
-        b=HZFjetxTrU0/nv8Y55FAOK1Apm3VUH13SuQEA6blI4LQsquf470BO/HxA5cmFNd3aK
-         KhVXkKlmZq93fBkC6giJvUDlt7FuVro1W64JdaQrEtphQxoptl43dqOAsJuOdXDllTly
-         etHqoII3GsZRYL1O1XM8c2+DB4jJ3oBH+CWict03ya4f003TK7u/v0bAMMATlIwbsHEE
-         Eab9bSU2vOsS7u7Hi3cpukhSfrOKg/M8N1PXdsx2k+lYCOOyiPnKWQEclkXPeaKbVR3e
-         gND/Ow1eDKT0AYLAkJBh79+oSz/WTGmxOT1B4ufDuEkJHS9CEZchC2NFdFV6xpk2+oqj
-         wINA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679931790;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HRasUUTOEu/ok1S92mQy2tcMp/4KwW2lXbLEiKBj/7o=;
-        b=HhJbZt3wUfiDnadX95PDGDLeDXRgzwSJAReAbuPPU52O0TD477D/HN/WdzHPPrcg7b
-         2pjfJLGkQ/8J0mUbfkB7Du4N641blz2ZnjI3fGqf/SONqu1qbsyH/JuVzavWPOd2q0wY
-         KaI52Gvmd01MNBj6oLaly7aoIHpe3HYZLXhZDjGBAGgAys4Ts7e/2VJofZBUYw+5/RFr
-         +DALrmcAKz5vVI2NPx1TI/X4oXs9gmUZvu9T1QE3kzWSsPLzV4cBVotZlrF8qdQy7/h3
-         759O8yUck+gL3BQj9UKlsTvgF9xIcRHXjZqmxHFewBDoLfvvIq2XefCkhXjSyopIG52o
-         ny+A==
-X-Gm-Message-State: AAQBX9eNVi9TTzPhidMwc8lchiKAcBnfet+2UQdPrKnco8brsMukAn+o
-	VvFxehImq1Eszr/atyk3FFy0SXrdeyYPUdboaYQ=
-X-Google-Smtp-Source: AKy350ZLARTDoGqBnXYfSrHDqt1ndSavaTIx5HilksseUiOHQOdKd5qG9m3KbOwJxwDn1K1TODO6L/v92bKQLX9gh5M=
-X-Received: by 2002:a63:e20f:0:b0:50a:592b:25ba with SMTP id
- q15-20020a63e20f000000b0050a592b25bamr3326211pgh.3.1679931790647; Mon, 27 Mar
- 2023 08:43:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pld2M0tRqz3chq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 03:05:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RGwHI36+26alMOPcJARCf4i+u/nuff7mObHUT3LcJRU=; b=LPLf/jCvgk6BbAdu2sWsjs0oNX
+	30l+yYDMt7lIPUZlX1xLPKvd+VVVQITd3MBjp55UXnh0lC27yas9PjZ1X8/Ke/FN2w5Z7mgrMqRNS
+	NMe2iIKVClT29RE+YYzmxZbB3MjqVTlPCvQNedD6+P2DTM3qoHKrTsXd9k/l+Z6LWIlrLqO0i0LPP
+	WcUrCoUENmgBRd1TwHHhU6kKgkRvL9EW+Kwg4gKazSQbHimCznogGlrnIrlhrYbEsmEYHmZgBhRO2
+	txegvcMIwswcdkNGLcJijBEGxeQVIVJr1oRDPP6IWPp68b1YWWkcPAIa7dwiPZZpdkAy2Plhs+eAH
+	tVStJIQg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1pgpLM-00Beeh-0e;
+	Mon, 27 Mar 2023 16:05:12 +0000
+Date: Mon, 27 Mar 2023 09:05:12 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] driver core: class: mark the struct class for sysfs
+ callbacks as constant
+Message-ID: <ZCG+uH4Dh16Gwonj@bombadil.infradead.org>
+References: <20230325084537.3622280-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-3-arnd@kernel.org>
-In-Reply-To: <20230327121317.4081816-3-arnd@kernel.org>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Mon, 27 Mar 2023 08:42:59 -0700
-Message-ID: <CAMo8BfJwjcQxWVW9o6brvBYTgUe9v=QGgs39=_V6Oc9-OKv7Sw@mail.gmail.com>
-Subject: Re: [PATCH 02/21] xtensa: dma-mapping: use normal cache invalidation rules
-To: Arnd Bergmann <arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230325084537.3622280-1-gregkh@linuxfoundation.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,45 +54,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong
- @linaro.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, linux-oxnas@groups.io, Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-cifs@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-rdma@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Namjae Jeon <linkinjeon@kernel.org>, Russ Weight <russell.h.weight@intel.com>, linux-s390@vger.kernel.org, linux-gpio@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>, Minchan Kim <minchan@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 27, 2023 at 5:14=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wro=
-te:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> xtensa is one of the platforms that has both write-back and write-through
-> caches, and needs to account for both in its DMA mapping operations.
->
-> It does this through a set of operations that is different from any
-> architecture. This is not a problem by itself, but it makes it rather
-> hard to figure out whether this is correct or not, and to unify this
-> implementation with the others.
->
-> Change the semantics to the usual ones for non-speculating CPUs:
->
->  - On DMA_TO_DEVICE, call __flush_dcache_range() to perform the
->    writeback even on writethrough caches, where this is a nop.
->
->  - On DMA_FROM_DEVICE, invalidate the mapping before the DMA rather
->    than afterwards.
->
->  - On DMA_BIDIRECTIONAL, combine the pre-writeback with the
->    post-invalidate into a call to __flush_invalidate_dcache_range()
->    that turns into a simple invalidate on writeback caches.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/xtensa/Kconfig                  |  1 -
->  arch/xtensa/include/asm/cacheflush.h |  6 +++---
->  arch/xtensa/kernel/pci-dma.c         | 29 +++++-----------------------
->  3 files changed, 8 insertions(+), 28 deletions(-)
+On Sat, Mar 25, 2023 at 09:45:37AM +0100, Greg Kroah-Hartman wrote:
+> struct class should never be modified in a sysfs callback as there is
+> nothing in the structure to modify, and frankly, the structure is almost
+> never used in a sysfs callback, so mark it as constant to allow struct
+> class to be moved to read-only memory.
+> 
+> While we are touching all class sysfs callbacks also mark the attribute
+> as constant as it can not be modified.  The bonding code still uses this
+> structure so it can not be removed from the function callbacks.
+> 
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
 
---=20
-Thanks.
--- Max
+  Luis
