@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFD96CA410
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 14:27:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0056CA411
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 14:28:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlXBT57wnz3g2H
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:27:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlXCT1Wn1z3ff0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:28:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LxcGBomv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UN64uPXQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LxcGBomv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UN64uPXQ;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlWxY2J3Jz3fZ7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 23:16:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlWxl3CSMz3cj8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 23:16:11 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9E646611E3;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 1CE8CB81189;
+	Mon, 27 Mar 2023 12:16:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F899C433EF;
 	Mon, 27 Mar 2023 12:15:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68CCC433A8;
-	Mon, 27 Mar 2023 12:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679919359;
-	bh=dXkVBSHFZo75+7tpVyAnh5gU/93Of01AyIY3GkfM5Xo=;
+	s=k20201202; t=1679919367;
+	bh=YBtSO0RmdwE2AW1zN7HUJxa9NfwhIOXNCN8O+lzIRNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxcGBomvsroLU/soGwnnpht+OmpwZ+CQiYPJxIKYSMNj00PvVbGR5doPLu7Ta51zU
-	 A4AjXgBFUoaToan99cxpW2tpzSfzmbx7CfucJpx/cZmN4J82wZvf5lGWjPr1irkWI4
-	 eZp949vYHz5uXoUdFNeW62DfrFW7AYO5kKpo+/0YEhvvJIUHP4VPFskv3Eqs77XyrF
-	 Xs9EDnGZ3aZvKZmOae+ULTgqTWW5PJS6Wpz4iR9tqX40bYNm1DPxfkANwAHMeIL88M
-	 53CkbdMXPh+FND6MhgUZQGkY9ycD9t2Azpib43BAHfEe1LeuLFcS8ozxudjpxtNHkD
-	 yYFa2ciLpv92A==
+	b=UN64uPXQtdeLkLg4dn09AzIarAchhb4d1x34/SjwyiZWrDrJBuSzm2pjxivirdXOH
+	 jDWvdVBlPURZiAbbZkwr+j/acZdOxZqq6cGIPFvZdjZpd4mtJpLB9c6+CCJIpq7WlT
+	 yKwLGhptYzLT9fUIHqk5I/wF2qbPA7Jz2AgpBslZNOD+sEJ3MsZmMDIhBSPTN1n5u3
+	 xeD/9JePzosgXXiQzUg8ldJpqSjwUr9LKOTYJUPw5exVgHkbXy8JjWNj5CwfmVQvWQ
+	 Tf5G78NWWF9z4lJFW3lBVqt8Ks2rBF4G8TjU0+Ep1wg2uWq1/XkSNqoo9R0+XEHkMt
+	 ETlJDU59jGtbg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 14/21] parisc: dma-mapping: use regular flush/invalidate ops
-Date: Mon, 27 Mar 2023 14:13:10 +0200
-Message-Id: <20230327121317.4081816-15-arnd@kernel.org>
+Subject: [PATCH 15/21] ARM: dma-mapping: always invalidate WT caches before DMA
+Date: Mon, 27 Mar 2023 14:13:11 +0200
+Message-Id: <20230327121317.4081816-16-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230327121317.4081816-1-arnd@kernel.org>
 References: <20230327121317.4081816-1-arnd@kernel.org>
@@ -66,92 +66,90 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-non-coherent devices on parisc traditionally use a full flush+invalidate
-before and after each DMA, which is more expensive that what we do on
-other architectures.
+Most ARM CPUs can have write-back caches and that require
+cache management to be done in the dma_sync_*_for_device()
+operation. This is typically done in both writeback and
+writethrough mode.
 
-Before transfers to a device, the cache only has to be written back,
-but apparently there is no operation for this on parisc. There is no
-need to flush it again after the transfer though.
+The cache-v4.S (arm720/740/7tdmi/9tdmi) and cache-v4wt.S
+(arm920t, arm940t) implementations are the exception here,
+and only do the cache management after the DMA is complete,
+in the dma_sync_*_for_cpu() operation.
 
-After transfers from a device, the second writeback can be skipped because
-the CPU was not allowed to write to the buffer anyway, instead a purge
-(invalidate without flush) can be used.
+Change this for consistency with the other platforms. This
+should have no user visible effect.
 
-The DMA_FROM_DEVICE is handled differently across architectures,
-most use only an invalidate (purge) operation, but some have moved
-to flush in order to preserve dirty data when the device does not
-write to the buffer, see the link below. As parisc already did the
-full flush here, keep that behavior.
-
-Link: https://lore.kernel.org/all/20220606152150.GA31568@willie-the-truck/
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-I'm not really sure I understand the semantics of the 'flush'
-and 'purge' operations on parisc correctly, please double-check that
-this makes sense in the context of this architecture.
----
- arch/parisc/include/asm/cacheflush.h |  6 +++++-
- arch/parisc/kernel/pci-dma.c         | 25 +++++++++++++++++++++++--
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ arch/arm/mm/cache-v4.S   | 8 ++++----
+ arch/arm/mm/cache-v4wt.S | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/asm/cacheflush.h
-index 0bdee6724132..a4c5042f1821 100644
---- a/arch/parisc/include/asm/cacheflush.h
-+++ b/arch/parisc/include/asm/cacheflush.h
-@@ -33,8 +33,12 @@ void flush_cache_mm(struct mm_struct *mm);
+diff --git a/arch/arm/mm/cache-v4.S b/arch/arm/mm/cache-v4.S
+index 7787057e4990..e2b104876340 100644
+--- a/arch/arm/mm/cache-v4.S
++++ b/arch/arm/mm/cache-v4.S
+@@ -117,23 +117,23 @@ ENTRY(v4_dma_flush_range)
+ 	ret	lr
  
- void flush_kernel_dcache_page_addr(const void *addr);
+ /*
+- *	dma_unmap_area(start, size, dir)
++ *	dma_map_area(start, size, dir)
+  *	- start	- kernel virtual start address
+  *	- size	- size of region
+  *	- dir	- DMA direction
+  */
+-ENTRY(v4_dma_unmap_area)
++ENTRY(v4_dma_map_area)
+ 	teq	r2, #DMA_TO_DEVICE
+ 	bne	v4_dma_flush_range
+ 	/* FALLTHROUGH */
  
-+#define clean_kernel_dcache_range(start,size) \
-+	flush_kernel_dcache_range((start), (size))
- #define flush_kernel_dcache_range(start,size) \
--	flush_kernel_dcache_range_asm((start), (start)+(size));
-+	flush_kernel_dcache_range_asm((start), (start)+(size))
-+#define purge_kernel_dcache_range(start,size) \
-+	purge_kernel_dcache_range_asm((start), (start)+(size))
+ /*
+- *	dma_map_area(start, size, dir)
++ *	dma_unmap_area(start, size, dir)
+  *	- start	- kernel virtual start address
+  *	- size	- size of region
+  *	- dir	- DMA direction
+  */
+-ENTRY(v4_dma_map_area)
++ENTRY(v4_dma_unmap_area)
+ 	ret	lr
+ ENDPROC(v4_dma_unmap_area)
+ ENDPROC(v4_dma_map_area)
+diff --git a/arch/arm/mm/cache-v4wt.S b/arch/arm/mm/cache-v4wt.S
+index 0b290c25a99d..652218752f88 100644
+--- a/arch/arm/mm/cache-v4wt.S
++++ b/arch/arm/mm/cache-v4wt.S
+@@ -172,24 +172,24 @@ v4wt_dma_inv_range:
+ 	.equ	v4wt_dma_flush_range, v4wt_dma_inv_range
  
- #define ARCH_IMPLEMENTS_FLUSH_KERNEL_VMAP_RANGE 1
- void flush_kernel_vmap_range(void *vaddr, int size);
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index ba87f791323b..6d3d3cffb316 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -446,11 +446,32 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
- void arch_sync_dma_for_device(phys_addr_t paddr, size_t size,
- 		enum dma_data_direction dir)
- {
--	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
-+	unsigned long virt = (unsigned long)phys_to_virt(paddr);
-+
-+	switch (dir) {
-+	case DMA_TO_DEVICE:
-+		clean_kernel_dcache_range(virt, size);
-+		break;
-+	case DMA_FROM_DEVICE:
-+		clean_kernel_dcache_range(virt, size);
-+		break;
-+	case DMA_BIDIRECTIONAL:
-+		flush_kernel_dcache_range(virt, size);
-+		break;
-+	}
- }
+ /*
+- *	dma_unmap_area(start, size, dir)
++ *	dma_map_area(start, size, dir)
+  *	- start	- kernel virtual start address
+  *	- size	- size of region
+  *	- dir	- DMA direction
+  */
+-ENTRY(v4wt_dma_unmap_area)
++ENTRY(v4wt_dma_map_area)
+ 	add	r1, r1, r0
+ 	teq	r2, #DMA_TO_DEVICE
+ 	bne	v4wt_dma_inv_range
+ 	/* FALLTHROUGH */
  
- void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
- 		enum dma_data_direction dir)
- {
--	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
-+	unsigned long virt = (unsigned long)phys_to_virt(paddr);
-+
-+	switch (dir) {
-+	case DMA_TO_DEVICE:
-+		break;
-+	case DMA_FROM_DEVICE:
-+	case DMA_BIDIRECTIONAL:
-+		purge_kernel_dcache_range(virt, size);
-+		break;
-+	}
- }
+ /*
+- *	dma_map_area(start, size, dir)
++ *	dma_unmap_area(start, size, dir)
+  *	- start	- kernel virtual start address
+  *	- size	- size of region
+  *	- dir	- DMA direction
+  */
+-ENTRY(v4wt_dma_map_area)
++ENTRY(v4wt_dma_unmap_area)
+ 	ret	lr
+ ENDPROC(v4wt_dma_unmap_area)
+ ENDPROC(v4wt_dma_map_area)
 -- 
 2.39.2
 
