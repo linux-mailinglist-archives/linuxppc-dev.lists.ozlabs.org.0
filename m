@@ -2,73 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54356C9872
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 00:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9408E6C9A83
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 06:24:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pl9KM665Tz3fSV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 09:16:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlKT53Z4gz3f8t
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 15:24:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ZAGgSG23;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdSx/Wl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ZAGgSG23;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdSx/Wl;
 	dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pl9JP1PNYz3c6P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 09:16:02 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id kq3so6668877plb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Mar 2023 15:16:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679868959; x=1682460959;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xKxkpTyDkoOgmmhauSQXq3aTxLtXZ7dckp0QUTgkTYc=;
-        b=ZAGgSG23sEfXvfAq7VGcMZJhmVrKmVk+UAFykSBVf7IeMb0F9TkQSE7aTlsyBD/XSq
-         S75w5j50slc5lYE4mZBiVQNql+ZXso0Jc4uTeqwO3lqZ34dm/yqyhPDNxMhwuES2ECHg
-         JNSRLfWgwpOT/NY1RAJocbuHbaQVTWosZbQF7eCX57rwWhbaRwbTA5eLct5cApqcB5CN
-         OkkX+35z1unMEITA+i/DGdl9//E42PjdQXs876s74LlryjvM3CKjsW/C+1cEupMQFalP
-         LFtZa1qtbhtHArRylB08ORUVmraMlQCQrFw/KFTQKTCAOXbfwB387rIvPwoYf4L04p7W
-         T7DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679868959; x=1682460959;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xKxkpTyDkoOgmmhauSQXq3aTxLtXZ7dckp0QUTgkTYc=;
-        b=1xkp5VPosbrViGNulG/g7DCSoIZvZ8P5jmX3sVPk3CicykSLKOPD4xRQjvNlosimmS
-         yWU5GvEk00BiUDtxXa6wv4eUTZqoyWvPj3aTFqScGbTAZsh9lUqW7a0zKYi3+1J9+DAf
-         gGX8QIkRQYL6QG1xms1+5WMP49g93y+pJx9Wjt9Z6aB5YS0wzzOnCKgmKxEJxOTaAXkg
-         ketCDTJDMS9qoeGFtmTgb9Z9rVKyyF4ssI0ANdY1CExvCH5C+l9Yhc13S0+e1wgBYCdn
-         L2K47xdoi6NGk/k78AgNbMCjNF0E9rtYd6oe+AE8cd6zwoTJolyPLvDtLENV3sTwNARv
-         28Qw==
-X-Gm-Message-State: AAQBX9eoHpN5W98LQ0GQ/wmoVOGyqgjXsIY7YpDJuS1LqNEF0bFSg5Fu
-	H68rrKgmDMUFZULo0S9JEyUFUDxBxAzYnFMOMUzEjQ==
-X-Google-Smtp-Source: AKy350ZwlEJYvS731OjbiE7yxh8pcQTcXul88edEvrJElEkn4lfqrjXxskxbfdCjhlwYR48jKa4wFA==
-X-Received: by 2002:a17:902:720a:b0:1a1:b51b:4d3b with SMTP id ba10-20020a170902720a00b001a1b51b4d3bmr8194457plb.1.1679868958836;
-        Sun, 26 Mar 2023 15:15:58 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id ix18-20020a170902f81200b0019f1027f88bsm17790815plb.307.2023.03.26.15.15.58
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Mar 2023 15:15:58 -0700 (PDT)
-Message-ID: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
-Date: Sun, 26 Mar 2023 16:15:57 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlKRH58tmz3cdD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 15:22:35 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32R2VAR6019849;
+	Mon, 27 Mar 2023 04:22:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=x+nkVH5X1xbXP2STnQdsIs6we5idVPglFNbNT+oCZBU=;
+ b=NGdSx/Wl07/B3Lx5ahUYWGCqzL2LGQ1N02GvHT0c5nyIGKW8hCnjsspKd64FDTdeTLzR
+ /sRhq608yvTXu5kgcfqdKCgHGm59h5ccyh4gZDth5liz4nKvBXV2gSu/Vfpv+YStWXlj
+ wWBL4njoh5QeDapKII/vU3Kt4hJOmEDVLOow+0LqGXyYbA6orAHtJ2TLI3dC4MlmJXyQ
+ ZGxpdKc1G8rZ9uBhGWFvM3wQDXMjDn3r8Od8WFxqkKX4v0Y3uazchwLJ87ACHea49bKw
+ GhZ0T6G1xLPI/m0yfEMHGQjt1pou5DwPlnm91OtbTBhOZBmhLTlZZQAWKcudayZNEirc Qg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pjahs50v4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Mar 2023 04:22:21 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32R4JNJY023003;
+	Mon, 27 Mar 2023 04:22:21 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pjahs50ur-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Mar 2023 04:22:20 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32QG1Q4l028889;
+	Mon, 27 Mar 2023 04:22:19 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3phr7fj9ay-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Mar 2023 04:22:19 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32R4MFc846399802
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Mar 2023 04:22:15 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 92D522004B;
+	Mon, 27 Mar 2023 04:22:15 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C4A8020040;
+	Mon, 27 Mar 2023 04:22:12 +0000 (GMT)
+Received: from [9.43.36.124] (unknown [9.43.36.124])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Mar 2023 04:22:12 +0000 (GMT)
+Message-ID: <a21aa4e1-506a-916c-03bd-39d7403c7941@linux.ibm.com>
+Date: Mon, 27 Mar 2023 09:52:11 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: perf tools power9 JSON files build breakage on ubuntu 18.04 cross
+ build
+To: Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+References: <ZBxP77deq7ikTxwG@kernel.org>
 Content-Language: en-US
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <ZBxP77deq7ikTxwG@kernel.org>
 Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ya3Y1osuSgBTj2FWlyxuE5Obmj3NBv-1
+X-Proofpoint-ORIG-GUID: 8vbKFSX2PP0V2De_L527-HruOj3vxEqA
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-24_11,2023-03-24_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ clxscore=1011 spamscore=0 priorityscore=1501 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303270034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,101 +102,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Ian Rogers <irogers@google.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
-from my (arguably very short) checking is not commonly done for other
-archs. This is fine, except when PF_IO_WORKER's have been created and
-the task does something that causes a coredump to be generated. Then we
-get this crash:
 
-Kernel attempted to read user page (160) - exploit attempt? (uid: 1000)
-BUG: Kernel NULL pointer dereference on read at 0x00000160
-Faulting instruction address: 0xc0000000000c3a60
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=32 NUMA pSeries
-Modules linked in: bochs drm_vram_helper drm_kms_helper xts binfmt_misc ecb ctr syscopyarea sysfillrect cbc sysimgblt drm_ttm_helper aes_generic ttm sg libaes evdev joydev virtio_balloon vmx_crypto gf128mul drm dm_mod fuse loop configfs drm_panel_orientation_quirks ip_tables x_tables autofs4 hid_generic usbhid hid xhci_pci xhci_hcd usbcore usb_common sd_mod
-CPU: 1 PID: 1982 Comm: ppc-crash Not tainted 6.3.0-rc2+ #88
-Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-NIP:  c0000000000c3a60 LR: c000000000039944 CTR: c0000000000398e0
-REGS: c0000000041833b0 TRAP: 0300   Not tainted  (6.3.0-rc2+)
-MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 88082828  XER: 200400f8
-CFAR: c0000000000c386c DAR: 0000000000000160 DSISR: 40000000 IRQMASK: 0
-GPR00: c000000000039920 c000000004183650 c00000000175d600 c0000000040f9800
-GPR04: 0000000000000160 0000000000000008 c000000000039920 0000000000000000
-GPR08: 0000000000000000 0000000000000000 00000003fe060000 0000000000002000
-GPR12: c0000000000398e0 c0000003fffff200 c0000000015edbc0 c00000000ba2f648
-GPR16: c00000000ba2f600 c000000001616ea8 0000000000000004 00000000ffffffff
-GPR20: 0000000000000048 c000000004183918 c000000001410f00 c000000001410ef8
-GPR24: c0000000040f9800 c0000000040f9800 c0000000041837b8 c0000000000398e0
-GPR28: c00000000cc4cb80 c0000000040f9800 0000000000000008 0000000000000008
-NIP [c0000000000c3a60] memcpy_power7+0x200/0x7d0
-LR [c000000000039944] ppr_get+0x64/0xb0
-Call Trace:
-[c000000004183650] [c000000000039920] ppr_get+0x40/0xb0 (unreliable)
-[c000000004183690] [c0000000001e5e80] __regset_get+0x180/0x1f0
-[c000000004183700] [c0000000001e5f94] regset_get_alloc+0x64/0x90
-[c000000004183740] [c0000000007ae638] elf_core_dump+0xb98/0x1b60
-[c0000000041839c0] [c0000000007bb564] do_coredump+0x1c34/0x24a0
-[c000000004183ba0] [c0000000001acf0c] get_signal+0x71c/0x1410
-[c000000004183ce0] [c0000000000228a0] do_notify_resume+0x140/0x6f0
-[c000000004183db0] [c0000000000353bc] interrupt_exit_user_prepare_main+0x29c/0x320
-[c000000004183e20] [c00000000003579c] interrupt_exit_user_prepare+0x6c/0xa0
-[c000000004183e50] [c00000000000c6f4] interrupt_return_srr_user+0x8/0x138
---- interrupt: 300 at 0x183ee09e0
-NIP:  0000000183ee09e0 LR: 0000000183ee09dc CTR: 800000000280f033
-REGS: c000000004183e80 TRAP: 0300   Not tainted  (6.3.0-rc2+)
-MSR:  800000000000d033 <SF,EE,PR,ME,IR,DR,RI,LE>  CR: 22002848  XER: 000000f8
-CFAR: 00007ffe6d746aa8 DAR: 0000000000000000 DSISR: 42000000 IRQMASK: 0
-GPR00: 0000000183ee09dc 00007ffff20d37c0 0000000183f07f00 0000000000000000
-GPR04: 0000000000000000 00007ffff20d37a8 0000000000000000 00007ffe6d9eae00
-GPR08: 00007ffff20d3710 0000000000000000 0000000000000000 0000000000000000
-GPR12: 0000000000000000 00007ffe6d9eae00 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000183ee0860
-GPR24: 00007ffe6d9df820 00007ffe6d9e0000 00007ffff20d7d98 0000000000000001
-GPR28: 0000000183ee0c60 00007ffff20d7924 00007ffff20d7820 0000000000000000
-NIP [0000000183ee09e0] 0x183ee09e0
-LR [0000000183ee09dc] 0x183ee09dc
---- interrupt: 300
-Code: f9030018 38630020 409f001c e8040000 e8c40008 38840010 f8030000 f8c30008 38630010 78a50720 7cb01120 409c001c <80040000> 80c40004 38840008 90030000
----[ end trace 0000000000000000 ]---
 
-note: ppc-crash[1982] exited with irqs disabled
+On 3/23/23 18:41, Arnaldo Carvalho de Melo wrote:
+> Exception processing pmu-events/arch/powerpc/power9/other.json
+> Traceback (most recent call last):
+>   File "pmu-events/jevents.py", line 997, in <module>
+>     main()
+>   File "pmu-events/jevents.py", line 979, in main
+>     ftw(arch_path, [], preprocess_one_file)
+>   File "pmu-events/jevents.py", line 935, in ftw
+>     ftw(item.path, parents + [item.name], action)
+>   File "pmu-events/jevents.py", line 933, in ftw
+>     action(parents, item)
+>   File "pmu-events/jevents.py", line 514, in preprocess_one_file
+>     for event in read_json_events(item.path, topic):
+>   File "pmu-events/jevents.py", line 388, in read_json_events
+>     events = json.load(open(path), object_hook=JsonEvent)
+>   File "/usr/lib/python3.6/json/__init__.py", line 296, in load
+>     return loads(fp.read(),
+>   File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+>     return codecs.ascii_decode(input, self.errors)[0]
+> UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 55090: ordinal not in range(128)
+>   CC      /tmp/build/perf/tests/expr.o
+> pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-events.c' failed
+> make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
+> make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
+> Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-events-in.o' failed
+> make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> 
+> 
+> Now jevents is an opt-out feature so I'm noticing these problems.
 
-because ppr_get() is trying to copy from a PF_IO_WORKER with a NULL
-pt_regs.
+Hi Arnaldo,
+    Thanks for raising it. I will check this issue.
 
-Check for a valid pt_regs in both ppc_get/ppr_set, and return an error
-if not set. The actual error value doesn't seem to be important here,
-so just pick -EINVAL.
+Thanks,
+Kajol Jain
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index 2087a785f05f..80b699dd0d7f 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -290,6 +290,8 @@ static int gpr_set(struct task_struct *target, const struct user_regset *regset,
- static int ppr_get(struct task_struct *target, const struct user_regset *regset,
- 		   struct membuf to)
- {
-+	if (!target->thread.regs)
-+		return -EINVAL;
- 	return membuf_write(&to, &target->thread.regs->ppr, sizeof(u64));
- }
- 
-@@ -297,6 +299,8 @@ static int ppr_set(struct task_struct *target, const struct user_regset *regset,
- 		   unsigned int pos, unsigned int count, const void *kbuf,
- 		   const void __user *ubuf)
- {
-+	if (!target->thread.regs)
-+		return -EINVAL;
- 	return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
- 				  &target->thread.regs->ppr, 0, sizeof(u64));
- }
-
--- 
-Jens Axboe
-
+> 
+> A similar fix for s390 was accepted today:
+> 
+> 
+> https://lore.kernel.org/r/20230323122532.2305847-1-tmricht@linux.ibm.com
+> https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
