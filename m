@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477796C9B60
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 08:28:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07CC6C9B6F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 08:37:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlNDD1JnZz3f4b
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 17:28:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlNQv3F2Hz3f3x
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 17:37:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GHu6JKpd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D75x/PB0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GHu6JKpd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D75x/PB0;
 	dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlNCK5N5Kz30Ky
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 17:27:24 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id om3-20020a17090b3a8300b0023efab0e3bfso10754519pjb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Mar 2023 23:27:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlNPx75FKz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 17:36:37 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id z19so7445117plo.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Mar 2023 23:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679898442;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20210112; t=1679898994;
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/1MPkrc59nj7/vRx3EUgh/9Oxiv8gB+0mC5l8+wxrpQ=;
-        b=GHu6JKpdfvBlZ5CaysvaaW5cDtdLeomhMMlCptnKmPowtDEYcaguwfh+0jqmk9xQFI
-         1FN9tK8wUYX1MiEUyhUEzIyyvJi85fqIMXXcfMZAGG87+qhQk1EtSh6rpkl3aT5qR3Ll
-         3/HeuOx+/zHKRPf6Jd27te9wX66gWCKXPJuo1G6HV8ESD1jJy0Pve+e7KW/c+mHm8LoD
-         fuRgZckZJeVd+/zsPLpxTPJTgTJ5TVBuXhnOI1tJG6gGxA+BR/OWXf1TE3RXdQfVhIKC
-         KqxD0D8Bc4rKkURenEJ71V/cOYjgf3i8yGn4wCO/6WlVrZ4Bfu53kBp/ZodcL1ZzWPkh
-         SSOA==
+        bh=zgQWs7nhs/FdE97dkb000lced7BBVHZwFILQsK7gU7E=;
+        b=D75x/PB0J6N0KVG29fPDY4P4OGCoAxTxBkt2rstxG9tVwztovk5KyckzNM/jdcIJoD
+         I1YNZledYHx8iItNz9aKNKLkvOJuLXdnAnOqUxy5PNBQ3e2/rp3SCOJcwNAgu+EbhZPG
+         fyJfX0q89mfDn1v4fXkc5oHQlTjRWn2fu9rgvKteT2vHDumBruqWjmpPPS3/Lc+PzJCX
+         c9chvjzk3xdtNFHLvaTmfQ1UTIlQsGMRjWrddH5UDwCKAhR542x3ICkUvxxCEOUIn4H+
+         9WaTtGPcmIxrLXE/Q5+0orKlnzFURvR3rV4INkwEylF+makm6cydZY3FTmDMUOSJwYpM
+         xX8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679898442;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20210112; t=1679898994;
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/1MPkrc59nj7/vRx3EUgh/9Oxiv8gB+0mC5l8+wxrpQ=;
-        b=TZP1xhxmsHeb/cTrcH2pQv/EDMMXGLXqv4FRJ+yFpYOUcq5W18hzDGPqMwHkVkzhSB
-         0WuInOgTJLJ0joxwZzln1Ew0rPY97yFP9ac2suGSCDu2CwF7XISjmUb2PcMkLKtJgufc
-         0LV5yTjzd1qr2VTRx+soHGEVVOf3qtOYB8v+vWLdTC74Z4nD2Ld2WWskFYkKLhLrLAzY
-         2dR/6gD2pwgDGJe3cvWE2hnTDBwmNNU2wO/F6HsQKyfsaWvQ+ge8W4A8BXFXGdenzSrZ
-         v8Aq4Y666CeiLXLim949LQt8/DA372vDgzMrDHC7R6VGq7aa6KXXJdvVihJ3Ja4ZwHrr
-         3hqw==
-X-Gm-Message-State: AO0yUKU7ce6KHPfBw0kqylYaPRzbW0P4BsX+cDmXjquVC3mCkcLUpL0z
-	hh/VJ3MoQGFLQLP4OHKWwllyxeBAFjM=
-X-Google-Smtp-Source: AK7set/TTGUxgm141UWAXtsIwKXBDw657LJuDBKM8Ifljbg4ZknXfANlv+qDL8wsWDLevPkDyRMfxQ==
-X-Received: by 2002:a05:6a20:4ca7:b0:d4:fcb2:7966 with SMTP id fq39-20020a056a204ca700b000d4fcb27966mr9926508pzb.11.1679898441933;
-        Sun, 26 Mar 2023 23:27:21 -0700 (PDT)
+        bh=zgQWs7nhs/FdE97dkb000lced7BBVHZwFILQsK7gU7E=;
+        b=7mMYvtj+50cPbt3H/EBwrXQDLqUua9KW/Mko7mmw6LXQLADJva//D3vicC1SmBmp6I
+         cwDFnvntsM/FhdP4PJFhc/MjRjCGw4lMJ5fIzfCXbklyf1gyZ3WE4H7ZTtEFQc2GcfxW
+         2v6RjqFhmCGfK154JZiRzhraRzaXVUX9RGwxvobVevGyVvo1U8As4iuUEDDPetYJhg4Y
+         KgmbgI7DMlrdIVfNK2UF8aG0M8EWtrD54ts5b5GP0XxatLp1g5LBiG1XbqsKl7/GDFbT
+         RMoueHilT6JVhVDIc4QgkiDZGMVN/ixkSFkVt5Dh0YMzZGCCResYP07uNKrCdJlrIL7+
+         HMhw==
+X-Gm-Message-State: AAQBX9f7FWY4FongFiTnDYGB/EKUoPgc5c77d3MZbr0CEXtRmHvVZjWN
+	XsIb+RrOR/DM2e92P7wHWvl3oqONu14=
+X-Google-Smtp-Source: AKy350aEaG3yBnZvhIbsp9hU75Q509Vl23+Bo5GF2t08vR0J4W+9aqtelNHMWk3d8py2bE6xn47XwA==
+X-Received: by 2002:a17:902:f203:b0:1a0:67fb:445c with SMTP id m3-20020a170902f20300b001a067fb445cmr7406298plc.28.1679898994026;
+        Sun, 26 Mar 2023 23:36:34 -0700 (PDT)
 Received: from localhost ([203.221.180.225])
-        by smtp.gmail.com with ESMTPSA id j26-20020aa7929a000000b0062c0c3da6b8sm4253357pfa.13.2023.03.26.23.27.19
+        by smtp.gmail.com with ESMTPSA id a11-20020a1709027d8b00b00198e03c3ad4sm18291930plm.278.2023.03.26.23.36.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Mar 2023 23:27:21 -0700 (PDT)
+        Sun, 26 Mar 2023 23:36:33 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Mar 2023 16:27:17 +1000
-Message-Id: <CRGYAO7K51SR.1XV9XYPSYFFEY@bobo>
-Subject: Re: [kvm-unit-tests v2 07/10] powerpc/spapr_vpa: Add basic VPA
- tests
+Date: Mon, 27 Mar 2023 16:36:30 +1000
+Message-Id: <CRGYHQ3C77DV.1PXS812TV997N@bobo>
+Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL
+ pt_regs
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>
+To: "Jens Axboe" <axboe@kernel.dk>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.13.0
-References: <20230320070339.915172-1-npiggin@gmail.com>
- <20230320070339.915172-8-npiggin@gmail.com>
- <e10767db-95c2-18a2-aa9a-a055844570ac@redhat.com>
-In-Reply-To: <e10767db-95c2-18a2-aa9a-a055844570ac@redhat.com>
+References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
+In-Reply-To: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,222 +81,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Mar 24, 2023 at 12:07 AM AEST, Thomas Huth wrote:
-> On 20/03/2023 08.03, Nicholas Piggin wrote:
-> > The VPA is a(n optional) memory structure shared between the hypervisor
-> > and operating system, defined by PAPR. This test defines the structure
-> > and adds registration, deregistration, and a few simple sanity tests.
-> >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   lib/linux/compiler.h    |  2 +
-> >   lib/powerpc/asm/hcall.h |  1 +
-> >   lib/ppc64/asm/vpa.h     | 62 ++++++++++++++++++++++++++++
-> >   powerpc/Makefile.ppc64  |  2 +-
-> >   powerpc/spapr_vpa.c     | 90 ++++++++++++++++++++++++++++++++++++++++=
-+
->
-> Please add the new test to powerpc/unittests.cfg, otherwise it won't get=
-=20
-> picked up by the run_tests.sh script.
+On Mon Mar 27, 2023 at 8:15 AM AEST, Jens Axboe wrote:
+> Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
+> from my (arguably very short) checking is not commonly done for other
+> archs. This is fine, except when PF_IO_WORKER's have been created and
+> the task does something that causes a coredump to be generated. Then we
+> get this crash:
 
-Ah good point.
+Hey Jens,
 
-> > diff --git a/lib/linux/compiler.h b/lib/linux/compiler.h
-> > index 6f565e4..c9d205e 100644
-> > --- a/lib/linux/compiler.h
-> > +++ b/lib/linux/compiler.h
-> > @@ -45,7 +45,9 @@
-> >  =20
-> >   #define barrier()	asm volatile("" : : : "memory")
-> >  =20
-> > +#ifndef __always_inline
-> >   #define __always_inline	inline __attribute__((always_inline))
-> > +#endif
->
-> What's this change good for? ... it doesn't seem to be related to this pa=
-tch?
+Thanks for the testing and the patch.
 
-Some header ordering issue I forgot about, thanks for reminding. I think it
-should be split it out. See /usr/include/<arch>/sys/cdefs.h:
+I think your patch would work, but I'd be inclined to give the IO worker
+a pt_regs so it looks more like other archs and a regular user thread.
 
-/* Forces a function to be always inlined.  */
-#if __GNUC_PREREQ (3,2) || __glibc_has_attribute (__always_inline__)
-/* The Linux kernel defines __always_inline in stddef.h (283d7573), and
-   it conflicts with this definition.  Therefore undefine it first to
-   allow either header to be included first.  */
-# undef __always_inline
-# define __always_inline __inline __attribute__ ((__always_inline__))
-#else
-# undef __always_inline
-# define __always_inline __inline
-#endif
+Your IO worker bug reminded me to resurrect some copy_thread patches I
+had and I think they should do that
 
-> > diff --git a/lib/ppc64/asm/vpa.h b/lib/ppc64/asm/vpa.h
-> > new file mode 100644
-> > index 0000000..11dde01
-> > --- /dev/null
-> > +++ b/lib/ppc64/asm/vpa.h
-> > @@ -0,0 +1,62 @@
-> > +#ifndef _ASMPOWERPC_VPA_H_
-> > +#define _ASMPOWERPC_VPA_H_
-> > +/*
-> > + * This work is licensed under the terms of the GNU LGPL, version 2.
-> > + */
-> > +
-> > +#ifndef __ASSEMBLY__
-> > +
-> > +struct vpa {
-> > +	uint32_t	descriptor;
-> > +	uint16_t	size;
-> > +	uint8_t		reserved1[3];
-> > +	uint8_t		status;
->
-> Where does this status field come from? ... My LoPAPR only says that ther=
-e=20
-> are 18 "reserved" bytes in total here.
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2023-March/256271.html
 
-Hmm, I'm not sure why that was left out of LoPAPR, Linux has been using
-it for a long time. It basically just tells you if you are on a
-dedicated or shared partition (hard partitioned or timesliced CPUs).
-Possibly an oversight.
-
->
-> > +	uint8_t		reserved2[14];
-> > +	uint32_t	fru_node_id;
-> > +	uint32_t	fru_proc_id;
-> > +	uint8_t		reserved3[56];
-> > +	uint8_t		vhpn_change_counters[8];
-> > +	uint8_t		reserved4[80];
-> > +	uint8_t		cede_latency;
-> > +	uint8_t		maintain_ebb;
-> > +	uint8_t		reserved5[6];
-> > +	uint8_t		dtl_enable_mask;
-> > +	uint8_t		dedicated_cpu_donate;
-> > +	uint8_t		maintain_fpr;
-> > +	uint8_t		maintain_pmc;
-> > +	uint8_t		reserved6[28];
-> > +	uint64_t	idle_estimate_purr;
-> > +	uint8_t		reserved7[28];
-> > +	uint16_t	maintain_nr_slb;
-> > +	uint8_t		idle;
-> > +	uint8_t		maintain_vmx;
-> > +	uint32_t	vp_dispatch_count;
-> > +	uint32_t	vp_dispatch_dispersion;
-> > +	uint64_t	vp_fault_count;
-> > +	uint64_t	vp_fault_tb;
-> > +	uint64_t	purr_exprop_idle;
-> > +	uint64_t	spurr_exprop_idle;
-> > +	uint64_t	purr_exprop_busy;
-> > +	uint64_t	spurr_exprop_busy;
-> > +	uint64_t	purr_donate_idle;
-> > +	uint64_t	spurr_donate_idle;
-> > +	uint64_t	purr_donate_busy;
-> > +	uint64_t	spurr_donate_busy;
-> > +	uint64_t	vp_wait3_tb;
-> > +	uint64_t	vp_wait2_tb;
-> > +	uint64_t	vp_wait1_tb;
-> > +	uint64_t	purr_exprop_adjunct_busy;
-> > +	uint64_t	spurr_exprop_adjunct_busy;
->
-> The above two fields are also marked as "reserved" in my LoPAPR ... which=
-=20
-> version did you use?
->
-> > +	uint32_t	supervisor_pagein_count;
-> > +	uint8_t		reserved8[4];
-> > +	uint64_t	purr_exprop_adjunct_idle;
-> > +	uint64_t	spurr_exprop_adjunct_idle;
-> > +	uint64_t	adjunct_insns_executed;
->
-> dito for the above three lines... I guess my LoPAPR is too old...
-
-Ah, I'm guessing the "adjunct" option isn't relevant to Linux/KVM so it
-was probably left out (it's much older than LoPAPR).
-
-Generally LoPAPR is still pretty up to date, but we should do better at
-keeping it current IMO. I've made some more noises about that, but
-can't make any promises here.
-
-> > +	uint8_t		reserved9[120];
-> > +	uint64_t	dtl_index;
-> > +	uint8_t		reserved10[96];
-> > +};
-> > +
-> > +#endif /* __ASSEMBLY__ */
-> > +
-> > +#endif /* _ASMPOWERPC_VPA_H_ */
-> > diff --git a/powerpc/Makefile.ppc64 b/powerpc/Makefile.ppc64
-> > index ea68447..b0ed2b1 100644
-> > --- a/powerpc/Makefile.ppc64
-> > +++ b/powerpc/Makefile.ppc64
-> > @@ -19,7 +19,7 @@ reloc.o  =3D $(TEST_DIR)/reloc64.o
-> >   OBJDIRS +=3D lib/ppc64
-> >  =20
-> >   # ppc64 specific tests
-> > -tests =3D
-> > +tests =3D $(TEST_DIR)/spapr_vpa.elf
-> >  =20
-> >   include $(SRCDIR)/$(TEST_DIR)/Makefile.common
-> >  =20
-> > diff --git a/powerpc/spapr_vpa.c b/powerpc/spapr_vpa.c
-> > new file mode 100644
-> > index 0000000..45688fe
-> > --- /dev/null
-> > +++ b/powerpc/spapr_vpa.c
-> > @@ -0,0 +1,90 @@
-> > +/*
-> > + * Test sPAPR hypervisor calls (aka. h-calls)
->
-> Adjust to "Test sPAPR H_REGISTER_VPA hypervisor call" ?
-
-Yes.
-
-> > +	rc =3D hcall(H_REGISTER_VPA, 5ULL << 45, cpuid, vpa);
-> > +	report(rc =3D=3D H_SUCCESS, "VPA deregistered");
-> > +
-> > +	disp_count1 =3D be32_to_cpu(vpa->vp_dispatch_count);
-> > +	report(disp_count1 % 2 =3D=3D 1, "Dispatch count is odd after deregis=
-ter");
-> > +}
->
-> Now that was a very tame amount of tests ;-)
-
-Yeah it was just a start. I was going to add a few more scheduling
-type ones if I can improve SMP support as well.
-
-> I'd suggest to add some more:
->
-> - Check hcall(H_REGISTER_VPA, 0, ...);
-> - Check hcall(H_REGISTER_VPA, ..., bad-cpu-id, ...)
-> - Check hcall(H_REGISTER_VPA, ..., ..., unaligned-address)
-> - Check hcall(H_REGISTER_VPA, ..., ..., illegal-address)
-> - Check registration with vpa->size being too small
-> - Check registration where the vpa crosses the 4k boundary
->
-> What do you think?
-
-Good idea.
-
-> > +int main(int argc, char **argv)
-> > +{
-> > +	struct vpa *vpa;
-> > +
-> > +	vpa =3D memalign(4096, sizeof(*vpa));
-> > +
-> > +	memset(vpa, 0, sizeof(*vpa));
-> > +
-> > +	vpa->size =3D cpu_to_be16(sizeof(*vpa));
-> > +
-> > +	report_prefix_push("vpa");
->
-> This lacks the corresponding report_prefix_pop() later.
-
-Got it.
+I wouldn't ask you to test it until I've at least tried, do you have a
+test case that triggers this?
 
 Thanks,
 Nick
+
+>
+> Kernel attempted to read user page (160) - exploit attempt? (uid: 1000)
+> BUG: Kernel NULL pointer dereference on read at 0x00000160
+> Faulting instruction address: 0xc0000000000c3a60
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D32 NUMA pSeries
+> Modules linked in: bochs drm_vram_helper drm_kms_helper xts binfmt_misc e=
+cb ctr syscopyarea sysfillrect cbc sysimgblt drm_ttm_helper aes_generic ttm=
+ sg libaes evdev joydev virtio_balloon vmx_crypto gf128mul drm dm_mod fuse =
+loop configfs drm_panel_orientation_quirks ip_tables x_tables autofs4 hid_g=
+eneric usbhid hid xhci_pci xhci_hcd usbcore usb_common sd_mod
+> CPU: 1 PID: 1982 Comm: ppc-crash Not tainted 6.3.0-rc2+ #88
+> Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf00=
+0005 of:SLOF,HEAD hv:linux,kvm pSeries
+> NIP:  c0000000000c3a60 LR: c000000000039944 CTR: c0000000000398e0
+> REGS: c0000000041833b0 TRAP: 0300   Not tainted  (6.3.0-rc2+)
+> MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 88082828  X=
+ER: 200400f8
+> CFAR: c0000000000c386c DAR: 0000000000000160 DSISR: 40000000 IRQMASK: 0
+> GPR00: c000000000039920 c000000004183650 c00000000175d600 c0000000040f980=
+0
+> GPR04: 0000000000000160 0000000000000008 c000000000039920 000000000000000=
+0
+> GPR08: 0000000000000000 0000000000000000 00000003fe060000 000000000000200=
+0
+> GPR12: c0000000000398e0 c0000003fffff200 c0000000015edbc0 c00000000ba2f64=
+8
+> GPR16: c00000000ba2f600 c000000001616ea8 0000000000000004 00000000fffffff=
+f
+> GPR20: 0000000000000048 c000000004183918 c000000001410f00 c000000001410ef=
+8
+> GPR24: c0000000040f9800 c0000000040f9800 c0000000041837b8 c0000000000398e=
+0
+> GPR28: c00000000cc4cb80 c0000000040f9800 0000000000000008 000000000000000=
+8
+> NIP [c0000000000c3a60] memcpy_power7+0x200/0x7d0
+> LR [c000000000039944] ppr_get+0x64/0xb0
+> Call Trace:
+> [c000000004183650] [c000000000039920] ppr_get+0x40/0xb0 (unreliable)
+> [c000000004183690] [c0000000001e5e80] __regset_get+0x180/0x1f0
+> [c000000004183700] [c0000000001e5f94] regset_get_alloc+0x64/0x90
+> [c000000004183740] [c0000000007ae638] elf_core_dump+0xb98/0x1b60
+> [c0000000041839c0] [c0000000007bb564] do_coredump+0x1c34/0x24a0
+> [c000000004183ba0] [c0000000001acf0c] get_signal+0x71c/0x1410
+> [c000000004183ce0] [c0000000000228a0] do_notify_resume+0x140/0x6f0
+> [c000000004183db0] [c0000000000353bc] interrupt_exit_user_prepare_main+0x=
+29c/0x320
+> [c000000004183e20] [c00000000003579c] interrupt_exit_user_prepare+0x6c/0x=
+a0
+> [c000000004183e50] [c00000000000c6f4] interrupt_return_srr_user+0x8/0x138
+> --- interrupt: 300 at 0x183ee09e0
+> NIP:  0000000183ee09e0 LR: 0000000183ee09dc CTR: 800000000280f033
+> REGS: c000000004183e80 TRAP: 0300   Not tainted  (6.3.0-rc2+)
+> MSR:  800000000000d033 <SF,EE,PR,ME,IR,DR,RI,LE>  CR: 22002848  XER: 0000=
+00f8
+> CFAR: 00007ffe6d746aa8 DAR: 0000000000000000 DSISR: 42000000 IRQMASK: 0
+> GPR00: 0000000183ee09dc 00007ffff20d37c0 0000000183f07f00 000000000000000=
+0
+> GPR04: 0000000000000000 00007ffff20d37a8 0000000000000000 00007ffe6d9eae0=
+0
+> GPR08: 00007ffff20d3710 0000000000000000 0000000000000000 000000000000000=
+0
+> GPR12: 0000000000000000 00007ffe6d9eae00 0000000000000000 000000000000000=
+0
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 000000000000000=
+0
+> GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000183ee086=
+0
+> GPR24: 00007ffe6d9df820 00007ffe6d9e0000 00007ffff20d7d98 000000000000000=
+1
+> GPR28: 0000000183ee0c60 00007ffff20d7924 00007ffff20d7820 000000000000000=
+0
+> NIP [0000000183ee09e0] 0x183ee09e0
+> LR [0000000183ee09dc] 0x183ee09dc
+> --- interrupt: 300
+> Code: f9030018 38630020 409f001c e8040000 e8c40008 38840010 f8030000 f8c3=
+0008 38630010 78a50720 7cb01120 409c001c <80040000> 80c40004 38840008 90030=
+000
+> ---[ end trace 0000000000000000 ]---
+>
+> note: ppc-crash[1982] exited with irqs disabled
+>
+> because ppr_get() is trying to copy from a PF_IO_WORKER with a NULL
+> pt_regs.
+>
+> Check for a valid pt_regs in both ppc_get/ppr_set, and return an error
+> if not set. The actual error value doesn't seem to be important here,
+> so just pick -EINVAL.
+>
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kern=
+el/ptrace/ptrace-view.c
+> index 2087a785f05f..80b699dd0d7f 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-view.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+> @@ -290,6 +290,8 @@ static int gpr_set(struct task_struct *target, const =
+struct user_regset *regset,
+>  static int ppr_get(struct task_struct *target, const struct user_regset =
+*regset,
+>  		   struct membuf to)
+>  {
+> +	if (!target->thread.regs)
+> +		return -EINVAL;
+>  	return membuf_write(&to, &target->thread.regs->ppr, sizeof(u64));
+>  }
+> =20
+> @@ -297,6 +299,8 @@ static int ppr_set(struct task_struct *target, const =
+struct user_regset *regset,
+>  		   unsigned int pos, unsigned int count, const void *kbuf,
+>  		   const void __user *ubuf)
+>  {
+> +	if (!target->thread.regs)
+> +		return -EINVAL;
+>  	return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+>  				  &target->thread.regs->ppr, 0, sizeof(u64));
+>  }
+>
+> --=20
+> Jens Axboe
+
