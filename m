@@ -1,130 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00F46CA162
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 12:28:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA116CA17D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 12:31:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlTXy52sMz3cJG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 21:28:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlTcT17wnz3fSw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 21:31:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=P/HNz0Bn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=M9hEb/WN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::611; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=P/HNz0Bn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=M9hEb/WN;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20611.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::611])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlTWz0p51z3c34
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 21:27:09 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EbhkUqg/6O6HXWczbsYgaT5s2pBTEGIofn/xZEk6NI4l7XbP4n83zJf+ogYfUZsqLfOYR5ta8uY3rbcjstSHQY7DUpCKBVxruNGdSCWpElt+atVcIHyZyCvvMbsulyLqMvg2YL0bmUZiE6/sEGCDgV1doCNCk5OXRT1RrhB/P5gGHD1hoj8a4qSX147R4o2TJ81vVUie3pNjBEW/pKpdBJcThpbJrB8+gr/RgMDzan6gzXmPmRPZOFW8FNu3JU4vx1+ovNBrc9W12kbOzieCOSMso9DUcLzTiZ17kP1M74caUwU898ysW+Q5mQx4y+g3gBIaxA9AwcrXWL/nnYypWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j75aBlQPF2nHxRG+60Q9ss7ZdZF+76V0hpsx6cKsCMw=;
- b=SrR5ZMbK5Ba/6nFniMmgPNIqlbMgqfvkbTjoH2iaSJn2ZGEoAfSTYoBnU5/cP+FkGMx3M8BuFBE6eMO1K7BUVCxV2NIhEI+xXZkWrviZ/EyyGQYqgxHEr5Dbi2f0Xg8G4JP7UkFw3pqmF6yiz4l3+Lhq9O4tQ/FHxQhkYhEReWxTk1fJsMLxlTBM7Aktw7iVPTYJDeE0NvrtE+qnWGl/Z5sdEkF7EGc1QjQGu0eVdQy1t41QAeYKwuNEqdDTtadXxNspcrq/rQSnpmAyfoGmnU0mkyDenuWeZNFD+tYCVuI6MjuiYx5g9/Y8jg8G/tBvD9gDHHPzPOLtrLwoEE0MGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j75aBlQPF2nHxRG+60Q9ss7ZdZF+76V0hpsx6cKsCMw=;
- b=P/HNz0BnimstbpQIlnqtfmrg2+MWvl54vTUvUdF8g0XO3fn+hCuLw7E3bHcmHHv7LK7dk2dwVmM+pL0JHoU3M39h8rG3yrs+HPcDjlK6pxs9Ho4Of+I61XFCOL1erybUZES0kx34kOQqbcBBBS2ZmxHm7pTAObOmyqpZAvZxJVilABEMiIhHKmjRZyxX2OT/rp6wIGVxBgctTznUmRAbBJMjbA+zpwoAhb6H+Xuk/Drg/qWeh6qj0It4Y9i5/ATfxTqhSea0QTpR/urObd4vJwHSK1xCFPUJ1dNFluR+PbrggYJcV2BRRg6fyg/+eZUEMTnoZVW3vxz5O8lxIJrTSA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1910.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:8::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.30; Mon, 27 Mar
- 2023 10:26:47 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::3943:154a:eccc:fe3a%5]) with mapi id 15.20.6222.029; Mon, 27 Mar 2023
- 10:26:46 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Nicholas Piggin <npiggin@gmail.com>, Jens Axboe <axboe@kernel.dk>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
-Thread-Topic: [PATCH] powerpc: don't try to copy ppc for task with NULL
- pt_regs
-Thread-Index: AQHZYDCsztI03jSsUU6NInBtpDi8N68OLIwAgABAVgA=
-Date: Mon, 27 Mar 2023 10:26:46 +0000
-Message-ID: <6727b289-aef6-89f9-8b4f-d63cbaeb81e5@csgroup.eu>
-References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
- <CRGYHQ3C77DV.1PXS812TV997N@bobo>
-In-Reply-To: <CRGYHQ3C77DV.1PXS812TV997N@bobo>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1910:EE_
-x-ms-office365-filtering-correlation-id: 667d5069-2da6-4f6a-cabe-08db2eadc4d2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  b/xc7pnaHAPKGJorcZ3xtDE26vksPRGOobmc10u00x4yAq+RLLJQq7Gi6lI0a03q7vx/2bmqZ23J+SpLpcRPGiJ4zQzuHuHC+8fCrKj1aB76cjBdrY9h25Hp0WvT/WBOKvqn6nSDOTbaXkdqWA0x3/96TRDTardUzorPvvy/1sAooZNyyyjy0Sp24d7vusil1g5o5+Ili8t/M0kUPXcxoRo4LNBsQRUiUmo1v694ZhM2N3O27S6gvHRuxHCgeTTKTLxkEoIMUJ64NBjVAjqTqJg+0BEG8KstsTs+U0bkosnU4VA2tjt5sDqhAQT5y7gLheFHmqYNIzAyLAlD6maqD9KIhzXWBq3RO4w8sL0/Oa3T9OU9Z67iM8O8BZi8jWm1aGVAPuWqjWWFUrHUBoOm7U5U1wJzLL6RKDP6ONW4WTqbEkyd50tSOb/IRM53b9D6sCfm0ORQHKEZEti4Fpxi4avhCA9kko59VMrEgQdW0GjrWYlZph+XYosTAqRVqYD6vy9m+mXCaogMZaB0TrGxHQh7pzsjZoAmV0h2ZRjLXqTkZyDlcaojALdvQvb4WVzSNM6Q9g8bJVfzAmf2mIJmfM+QfyFWrBmOzxhISGaTxqZ1lZPbFiQTmE30ka1FDx+87Ku4/esVcbJlWxkfV1WmWAskCOTOsESFan+3MK/m7OU=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(396003)(39850400004)(136003)(376002)(451199021)(31686004)(2616005)(91956017)(66574015)(83380400001)(41300700001)(36756003)(44832011)(86362001)(31696002)(5660300002)(38100700002)(8936002)(122000001)(6486002)(966005)(478600001)(71200400001)(76116006)(64756008)(8676002)(66946007)(66556008)(66476007)(2906002)(66446008)(38070700005)(186003)(6506007)(26005)(6512007)(316002)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TUlhOEt1enFQbDdSN0prMWx2UnNRQkI3MVB1ZHFXZmRPeGJUUjNtcmdZU0hr?=
- =?utf-8?B?UDdlSXJuazVRV3M1YVJnQVlwTjVRM2EyV3NGQnNZRXJlTjc3aFcrd1o0ZnV0?=
- =?utf-8?B?ejFHMUNXVXNlRlNPQzZ3L1FMYUlaVWlkbE1jOXZsQWpIQ1lLWHpWTmZidlpM?=
- =?utf-8?B?UUNkSXN2eENkb2dBdjdtZ3RTMFA4cE9IaG1QcGxiYStBd2RzTzVNZVRiSzVZ?=
- =?utf-8?B?RVAvQkZmb01zTURhWGhpSTZSVm1PZ29xYTJpSWxpUEZSTTJLekNkUlkwc05a?=
- =?utf-8?B?RGYxNzZnaDBiN1RyNGtQaW0rQU04aUN4TWErM0dicjdJMmlMSG5hSWpTT1k5?=
- =?utf-8?B?L1dJWXNwcDJOTE1LdWdtYjFVZmdueVNrcktqN1hmdFBmWm5nWEZiU1lkZmlZ?=
- =?utf-8?B?cW8wbWFjdXBHQ3dKZUUxM0VYNWlURnNaNVNwUjRQdlJ1S01BSUNheGlLNFpU?=
- =?utf-8?B?UytDa3MrbThYb1YrSlp6NEFqQ0ZYdkR1TTA4dlc0aHF2NzFHYnRxZzdKaTF5?=
- =?utf-8?B?OWlrUTNxMFcrL1BjVE90NzJyNlhiOEtmMy93Vi9EODJYRy9YeklwYXhsUGJP?=
- =?utf-8?B?bjJPczBmTjdjWEZsMUlyOXZaN2w3Z2dCSTdQVGF5cFV4OTlCRStTNDdHdHhQ?=
- =?utf-8?B?eXFIQ3g5SWtiRWJuRURPUnR1TnA4dVMzTHpCQ1hNMVpWTGx2UHkxK0JOd3NU?=
- =?utf-8?B?S0VJMDF2L3l3Rm51ZjAwSEpZTFI0MzhuRmMzekJ5QWZJdm1EeE8vemt4eGVF?=
- =?utf-8?B?aytITmp6VTh6eUcwbUdRMlFFN2M4Tk8vQ1kwNmJtclZ2ZGhzcUpYaWNBZ0RM?=
- =?utf-8?B?VlpLdTJYS3Z1blF3UmFOcDU0cksvcWJxaG81d2VFd2l6T1BVUVdVWDZmRXg3?=
- =?utf-8?B?NjFWbjZhbGtxNEg1czE2eXF3cHNDejUzRW93UjRmcUpJM1YxYnZnNFRPUFRL?=
- =?utf-8?B?WU55cE9ZKzluemFJUDZxTmtsbGpMTE1rOEpJU2o4dWFUOVdMK0NBOFFFMlln?=
- =?utf-8?B?ck0vamlxMUloRjNRZ1Y5WnpuQ1VEbUFFTXNCYkliOFRVZVpBVXJNL0ttNnJ3?=
- =?utf-8?B?Q2EyRUhSZHdneUxsWWVRa2lGNC9oR01mK3VNSXFmQ1MyVmVlQWtpUkVOK3E1?=
- =?utf-8?B?ajJIWEN6ekFmZjNaNW9UMjZ4dWwxZ1hQa3d1QU5TNGgrTitOcHlFdWRrZzNE?=
- =?utf-8?B?R3JqS250TUd4ek1oM2hlN2g3bWI5OUR4SkE0WjVhMXhZYVlvTU5pSnNWQnJO?=
- =?utf-8?B?ODZCSkdEck5IUHFEZUcvOCs3RWVNVjJSWlZzV2hiNU9oMjNqNlhPMjA3UCtQ?=
- =?utf-8?B?K242Nm4wTlI0dy9rQlJ1SjdGMkNyVzArbStLbm9PV21TZXdlN3h4RDVpQm1H?=
- =?utf-8?B?ZkRJYmtzRko3azJpem5IV1BsS3BlVE8xV1NrS2M4TW4zLzJoV09pMHBIUjAz?=
- =?utf-8?B?MmloaFVVYmdodVJJQjZ5akQyVENTbzMxTVl4cERKRjVTaEZDR2NQOEwzM1Ax?=
- =?utf-8?B?SnpTT2cyQkVJZmtVbUJLa24wYnJHTTBDYmVENDJ0MFJkT1Naai9IK1VGVU5w?=
- =?utf-8?B?Z1JlS3dRckZiL0pYRjFZZHVBRlJaRWp3THdLUU04Zkc5RmN5Z0pTQ1pwUWlK?=
- =?utf-8?B?bDh0di90WHV0Q3VJekRMWThRTWVETG16YzRwNUhHRVJqeVgrNW1HV3FsVTZF?=
- =?utf-8?B?ZnF2OUNqKzR0anNXYk1XVWd3MGc3MTV3RjN2YXpIVS81UjB5V2NVcUdvRHhx?=
- =?utf-8?B?dTAzTmtiOG9CQXZ3OXZONWg3aHJjeXp3b1ZOamJ1TUQvRENYaFFINDJFTDUr?=
- =?utf-8?B?Z1NTTVFWalMyejVYcEZGV3RHazd4RWE3NW4reGZkQk16amxLOGMwUjhhODNj?=
- =?utf-8?B?V3FrQjJhUUZKR1Qvc1o5TmJNVTh6ZFVXcGYwdit5RWQ3Y1JWR0RlejM2bHR1?=
- =?utf-8?B?NHV1RHp5VXI4M2k0amFlQlRBRWlWS09ad0pNUXhIVXRSWGc0bEtZcTRsMXpV?=
- =?utf-8?B?bm5tVEljZ1k2SmNzbFg5eWVrOUI2L09OVUNCSG82b1Y4RzFCWmh4Q01WQXcv?=
- =?utf-8?B?OTcwR3oxVjhuZ1doMjNSUE53OW5qeWhFMHlmSHlpSkd1TVBCalZMVmx6V2t2?=
- =?utf-8?Q?BpISZRgvQhUc2R/AqymEFLJ1t?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C1AF59DA4F65A940B71159EF7E94FC66@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 667d5069-2da6-4f6a-cabe-08db2eadc4d2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2023 10:26:46.9268
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aiwQ5MzgnSjRh71RcRBS9IxwHGMagVdU4bbjMp0h0iOOsP3pjoi9s12XJ8jNN6upBe3Z02YXeJkt+H56gn+oaXOivNg6LGXbuf9Za4e9IYs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1910
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlTbX47YYz3cFn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 21:30:14 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id l9-20020a17090a3f0900b0023d32684e7fso10452485pjc.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 03:30:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679913011;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o/xoPcJZPu6j3k1DY8PgIJALXbobd1RS92NXoVMIbKY=;
+        b=M9hEb/WN2PzCPCzexKI81eDSMuLORjGhnA59gxeYCHREPVHuAbEM8joynh4Juk0mjk
+         J0rcridJvU2K8jVqBPdk1LqtrZcxDed87znweusGuwKKAKnHmCIvUUOPk5uNyeQplYK4
+         p+uDfM0EFNPVODIJtgoUVTu8+clgSHKJkkyYkDtZ+O1uBUtTNvrH7ovSFf8bgDqu4lkQ
+         k7ZyH0RwoKTKI+LE59ve3KICRQwVszyu38sUP084tyqq6H4/+OCqW+bRpZdAq85PUt7x
+         lOhGGOSHx8S/WVdVStHrU2wEkiaGYR6bmdr7UXlM6fDmhq2ErZJ319QoJCzPsoFYRIJ6
+         N1wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679913011;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=o/xoPcJZPu6j3k1DY8PgIJALXbobd1RS92NXoVMIbKY=;
+        b=IcOSNrtOnSLH69S2DT92/ygdHj/RniTYYmS8wkhZOCOsjdB4nyEfQHmjm21Jrd3zUY
+         xAfQ9bLL4gL7fPtuSdeizCULwFs6bbs9zbVDmKTvI0QnVIs8BVjmeuD73rfWYYFGKDzi
+         hOAmiDP7+QSQovSmbZGgXfR5YwDM64UNaMx1j29M5KJ/FRHpD4kQV7qzuTgZk99mTtFx
+         kkWTaUeSZ1TYrlbST1DMV4vUnJ7bUqhFfvXBcADj1aDcsgQZCgjA+qlyiNfZhjTMBYcK
+         0M1CCl4E7i0OQyWVbE14CLAze6YYmRdN0OSLaUbnxfTXxx47t6BSw/Tx+p6hNIl0hM/y
+         kAtQ==
+X-Gm-Message-State: AAQBX9c+O4aASEw076H3rwJt17/IZXb4ZZP7oF7C9Upt3Xx8N+00Czf1
+	lfXO6Jsfjf4h7NO4eZZkCl8=
+X-Google-Smtp-Source: AKy350ZePws+Fhfg4r9tvskQcm8V2QJtCXxS82HPo/4mMBhVhgoiqPj1L7mnlHYMcfaVlBVElZV2Bw==
+X-Received: by 2002:a17:90a:c8c:b0:23f:7e48:4f20 with SMTP id v12-20020a17090a0c8c00b0023f7e484f20mr11999857pja.41.1679913011524;
+        Mon, 27 Mar 2023 03:30:11 -0700 (PDT)
+Received: from localhost ([203.221.180.225])
+        by smtp.gmail.com with ESMTPSA id z23-20020a1709028f9700b001a043e84bf0sm18790204plo.209.2023.03.27.03.30.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Mar 2023 03:30:10 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Mar 2023 20:30:02 +1000
+Message-Id: <CRH3GJDNC4SF.2HBIHLLQSCWSI@bobo>
+To: "Kautuk Consul" <kconsul@linux.vnet.ibm.com>, "Michael Ellerman"
+ <mpe@ellerman.id.au>, "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, "Sathvika Vasireddy"
+ <sv@linux.ibm.com>, "Alexey Kardashevskiy" <aik@ozlabs.ru>, "Fabiano Rosas"
+ <farosas@linux.ibm.com>
+Subject: Re: [PATCH v4] arch/powerpc/kvm: kvmppc_hv_entry: remove .global
+ scope
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.13.0
+References: <20230327100411.3342194-1-kconsul@linux.vnet.ibm.com>
+In-Reply-To: <20230327100411.3342194-1-kconsul@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,42 +84,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI3LzAzLzIwMjMgw6AgMDg6MzYsIE5pY2hvbGFzIFBpZ2dpbiBhIMOpY3JpdMKgOg0K
-PiBPbiBNb24gTWFyIDI3LCAyMDIzIGF0IDg6MTUgQU0gQUVTVCwgSmVucyBBeGJvZSB3cm90ZToN
-Cj4+IFBvd2VycGMgc2V0cyB1cCBQRl9LVEhSRUFEIGFuZCBQRl9JT19XT1JLRVIgd2l0aCBhIE5V
-TEwgcHRfcmVncywgd2hpY2gNCj4+IGZyb20gbXkgKGFyZ3VhYmx5IHZlcnkgc2hvcnQpIGNoZWNr
-aW5nIGlzIG5vdCBjb21tb25seSBkb25lIGZvciBvdGhlcg0KPj4gYXJjaHMuIFRoaXMgaXMgZmlu
-ZSwgZXhjZXB0IHdoZW4gUEZfSU9fV09SS0VSJ3MgaGF2ZSBiZWVuIGNyZWF0ZWQgYW5kDQo+PiB0
-aGUgdGFzayBkb2VzIHNvbWV0aGluZyB0aGF0IGNhdXNlcyBhIGNvcmVkdW1wIHRvIGJlIGdlbmVy
-YXRlZC4gVGhlbiB3ZQ0KPj4gZ2V0IHRoaXMgY3Jhc2g6DQo+IA0KPiBIZXkgSmVucywNCj4gDQo+
-IFRoYW5rcyBmb3IgdGhlIHRlc3RpbmcgYW5kIHRoZSBwYXRjaC4NCj4gDQo+IEkgdGhpbmsgeW91
-ciBwYXRjaCB3b3VsZCB3b3JrLCBidXQgSSdkIGJlIGluY2xpbmVkIHRvIGdpdmUgdGhlIElPIHdv
-cmtlcg0KPiBhIHB0X3JlZ3Mgc28gaXQgbG9va3MgbW9yZSBsaWtlIG90aGVyIGFyY2hzIGFuZCBh
-IHJlZ3VsYXIgdXNlciB0aHJlYWQuDQo+IA0KPiBZb3VyIElPIHdvcmtlciBidWcgcmVtaW5kZWQg
-bWUgdG8gcmVzdXJyZWN0IHNvbWUgY29weV90aHJlYWQgcGF0Y2hlcyBJDQo+IGhhZCBhbmQgSSB0
-aGluayB0aGV5IHNob3VsZCBkbyB0aGF0DQo+IA0KPiBodHRwczovL2xpc3RzLm96bGFicy5vcmcv
-cGlwZXJtYWlsL2xpbnV4cHBjLWRldi8yMDIzLU1hcmNoLzI1NjI3MS5odG1sDQo+IA0KPiBJIHdv
-dWxkbid0IGFzayB5b3UgdG8gdGVzdCBpdCB1bnRpbCBJJ3ZlIGF0IGxlYXN0IHRyaWVkLCBkbyB5
-b3UgaGF2ZSBhDQo+IHRlc3QgY2FzZSB0aGF0IHRyaWdnZXJzIHRoaXM/DQoNCkkgZmFjdCwgbW9z
-dCBhcmNoaXRlY3R1cmVzIGRvbid0IGhhdmUgdGhyZWFkLnJlZ3MsIGJ1dCByZWx5IG9uIHNvbWV0
-aGluZyANCmxpa2U6DQoNCiNkZWZpbmUgdGFza19wdF9yZWdzKHApIFwNCgkoKHN0cnVjdCBwdF9y
-ZWdzICopKFRIUkVBRF9TSVpFICsgdGFza19zdGFja19wYWdlKHApKSAtIDEpDQoNCg0KSW4gcG93
-ZXJwYywgdGhyZWFkLnJlZ3Mgd2FzIHRoZXJlIGJlY2F1c2Ugb2YgdGhlIHJlZ3Mgbm90IGJlaW5n
-IGF0IHRoZSANCnNhbWUgcGxhY2UgaW4gdGhlIHN0YWNrIGRlcGVuZGluZyBvbiB3aGljaCBpbnRl
-cnJ1cHQgaXQgd2FzLg0KDQpIb3dldmVyIHdpdGggdGhlIHR3byBjb21taXRzIGJlbG93LCB3ZSBu
-b3cgaGF2ZSBzdGFibGUgZml4ZWQgbG9jYXRpb24gDQpmb3IgdGhlIHJlZ3MsIHNvIHRocmVhZC5y
-ZWdzIHNob3VsZG4ndCBiZSBuZWVkZWQgYW55bW9yZToNCi0gZGIyOTdjM2IwN2FmICgicG93ZXJw
-Yy8zMjogRG9uJ3Qgc2F2ZSB0aHJlYWQucmVncyBvbiBpbnRlcnJ1cHQgZW50cnkiKQ0KLSBiNWNm
-YzljZDdiMDQgKCJwb3dlcnBjLzMyOiBGaXggY3JpdGljYWwgYW5kIGRlYnVnIGludGVycnVwdHMg
-b24gQk9PS0UiKQ0KDQpCdXQgaW4gdGhlIG1lYW50aW1lLCB0aHJlYWQucmVncyBzdGFydGVkIHRv
-IGJlIHVzZWQgZm9yIGFkZGl0aW9uYWwgDQpwdXJwb3NlLCBsaWtlIGtub3dpbmcgaWYgaXQgaXMg
-YSB1c2VyIHRocmVhZCBvciBhIGtlcm5lbCB0aHJlYWQgYnkgdXNpbmcgDQp0aHJlYWQucmVncyBu
-dWxsaXR5Lg0KDQoNCk5vdyB0aGF0IHRocmVhZC5yZWdzIGRvZXNuJ3QgY2hhbmdlIGFueW1vcmUg
-YXQgZWFjaCBpbnRlcnJ1cHQsIGl0IHdvdWxkIA0KcHJvYmFibHkgYmUgd29ydGggZHJvcHBpbmcg
-aXQgYW5kIGZhbGxpbmcgYmFjayB0byB0YXNrX3B0X3JlZ3MoKSBhcyANCmRlZmluZWQgb24gbW9z
-dCBhcmNoaXRlY3R1cmUuDQpLbm93aW5nIHdoZXRoZXIgYSB0aHJlYWQgaXMgYSBrZXJuZWwgb3Ig
-dXNlciB0aHJlYWQgY2FuIGZvciBpbnN0YW5jZSBiZSANCmtub3duIHdpdGggUEZfS1RIUkVBRCBm
-bGFnLCBzbyBubyBuZWVkIG9mIHRocmVhZC5yZWdzIGZvciB0aGF0Lg0KDQpDaHJpc3RvcGhlDQo=
+On Mon Mar 27, 2023 at 8:04 PM AEST, Kautuk Consul wrote:
+> kvmppc_hv_entry isn't called from anywhere other than
+> book3s_hv_rmhandlers.S itself. Removing .global scope for
+> this function and annotating it with SYM_CODE_START_LOCAL
+> and SYM_CODE_END.
+
+Does removing .global introduce the objtool warning, or was it already
+present? Just trying to understand if this is two changes or one (not
+that it really matters, maybe just for the purpose of the changelog).
+
+Since the patch only touches KVM, subject should follow arch/powerpc/kvm
+convention, which is not the same as the rest of arch/powerpc. KVM: PPC:
+Book3S HV:
+
+Otherwise seems okay
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks,
+Nick
+
+>
+> Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/b=
+ook3s_hv_rmhandlers.S
+> index acf80915f406..0a9781192b86 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -502,8 +502,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+>   *                                                                      =
+      *
+>   ***********************************************************************=
+******/
+> =20
+> -.global kvmppc_hv_entry
+> -kvmppc_hv_entry:
+> +SYM_CODE_START_LOCAL(kvmppc_hv_entry)
+> =20
+>  	/* Required state:
+>  	 *
+> @@ -940,6 +939,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>  	ld	r4, VCPU_GPR(R4)(r4)
+>  	HRFI_TO_GUEST
+>  	b	.
+> +SYM_CODE_END(kvmppc_hv_entry)
+> =20
+>  secondary_too_late:
+>  	li	r12, 0
+> --=20
+> 2.39.2
+
