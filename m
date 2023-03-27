@@ -1,76 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C8D6CA446
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 14:43:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78456CA46F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 14:46:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlXY42LPYz3bZv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:43:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlXcc5z4hz3chq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 23:46:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=UJGzp2C7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IZtvd/an;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=UJGzp2C7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IZtvd/an;
 	dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlXX92Pcsz3bTG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 23:42:32 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6261eca70f7so373711b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 05:42:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlXbh1HGrz3bNn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 23:45:35 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id q102so7544784pjq.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Mar 2023 05:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679920949;
-        h=in-reply-to:from:references:to:content-language:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rm9bgJtF1FrdwcrIyXLASF/q7xHN2IePxGqvLqlnOM8=;
-        b=UJGzp2C7JnUj/mPOpVhPnpCRFBFUVWWi2qLSFnXrl19yZFG55duAVmse5LUuSC3GK1
-         OyjhDz3iGcX8U4mD3py2DUEDFnLPP97/AJNn+TSPBM0Fc+Xj8VLYZIkFMaIxTrdflHN3
-         0+Ln4iq2nUz0xmddI43jIJOwuyHYrTMAGU9cJ2QrX5W0dNAn11QVUBjW603ItBwfrUJ2
-         Fl8RHkLKBWDLOKFLD7TbaDTno9iRDHZT7RNXFhe4Lar+Idk9zNLEB1xqyiGmFmG7BecD
-         HMuyOTDO+VHRmV3OhQs7dHeLNW02XDwP7fg1HaSRgpxS2GAyPh8zZEgA1tE3O+T7J9g1
-         ql6g==
+        d=gmail.com; s=20210112; t=1679921133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KCiKOWP9OD70+BMDOPG9uFA2Fku30UBKZIR1BIz1KaI=;
+        b=IZtvd/anTvYfpHea3GmU2+btAEj77m3vW1Mt5eWpVnuyutaBiJVGvXjFs+TFLYNQbs
+         P02X4vQY1iBy3GWkgdWvwXkBgHJryaZxCK5nw+AsLgOCg1ZRrS/kO39xexqg2Z4S9i0v
+         fv5KoJRoNEyo6J33Zo1q5WN5YEaphnRgePvDdRe4tL8IznpiP63iqO+kOQcNLAp0VfcD
+         3KEtBaHsXSmOGKsAOg3OwEwY0SN4m6HfRQqFB3UpsTJgmd8/2tOVCyYyEhV4j/V9866H
+         2oraQgLAR1XMcgazB1Zv/seWO2/25b8S4xRErc2ZepPs8YJ6+OQBt9BZ7TFBn11Z+qfU
+         xltw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679920949;
-        h=in-reply-to:from:references:to:content-language:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rm9bgJtF1FrdwcrIyXLASF/q7xHN2IePxGqvLqlnOM8=;
-        b=rzm1SgMBerwJqe8tNp4EcDo6ZeikvbsLdVZxS9xBEXsdzMTW3Fauoo3AXmM/eCo1aW
-         DZPAoY8F3qgFbuUrYSXLdy9H/UDNCVr6RxpDY0A/XCwrV106WnoJzW01y4UVESg9m4t9
-         saxo08uXZeMmmy4TT3ydvHWLuz0iB6BUQKvfQ0poKezxd+NzLgs8mk4xIIgxiTX+jJz0
-         tYNkjtMFdw2brXbv4Em0PdmKxHSq8so73P4IKECu4ejuZcAfbYCzijGdEzpSjeLVGVKH
-         czsIiVM7bpxBSY2z2IIlfUJbvw3eNsEJJpHq26PHekBiQiAO1DnPzbyZDC3QMMBl7Wzf
-         PgLw==
-X-Gm-Message-State: AAQBX9fqS1VRAt1OL26SNNAMIfmWX/MswgwLr1ISR49D0xkW8NSBmEeT
-	Y2AyQ2Jk/y8JHCjoJHFtkVEoHQH23dKOUpe9AHMSbg==
-X-Google-Smtp-Source: AKy350apvxf0kx16OsAM9d6R8f+CuNpIqnd5SDZHbz2c056P+JJ6iw0u+FotaBC6go1BYr1TTCi+Cw==
-X-Received: by 2002:a17:90b:30d5:b0:23f:4e68:b860 with SMTP id hi21-20020a17090b30d500b0023f4e68b860mr8294596pjb.3.1679920949385;
-        Mon, 27 Mar 2023 05:42:29 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 4-20020a630f44000000b00502dc899394sm17382198pgp.66.2023.03.27.05.42.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 05:42:28 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------6fIop0QxA6rbpl20xUJils52"
-Message-ID: <1052468e-6b4e-16f2-a87e-fb403f0725f6@kernel.dk>
-Date: Mon, 27 Mar 2023 06:42:28 -0600
+        d=1e100.net; s=20210112; t=1679921133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KCiKOWP9OD70+BMDOPG9uFA2Fku30UBKZIR1BIz1KaI=;
+        b=Okg2sg+rapM50TcRAHWx0YOf60q+Rsa+43nrs4lnt7+3/1FWk0A2HANZBqHjmCARb/
+         oX/jSn/6oJ2YcEPj6ISWXMtGC/ldG9KV6vQGdgRgTxPYIYWK+ckNUXwLKKg3+1id7pu7
+         2jE+8SXY+ZYVQZAWbpZfH8gYqMkEL4KIxclK7cTAITw+LsGmqCddHbCggA/EkH0Dmri0
+         ux+b/enDJtgEQnkECwU+xQ5O3VSQ0RbyWJRjTyRPti1x1JFLxYyXoAhMXzVT2xInAuUv
+         eLFsTGbP3qvQV8AudLQrpLCV2XQxry//JQ8ZfkWhyaa8v5EqysBaw6jZvJnTcfB9F1Fn
+         hpWA==
+X-Gm-Message-State: AAQBX9cpNM3L8HtytXYj/PoqFDBaiW30CaKTkM/7+n7csCTv01UzBIBz
+	M6V3IB3i/vdKL2Ak2kAa11Y=
+X-Google-Smtp-Source: AKy350Yn3HKa4UqZvJBBsd+tBZKfXhhXlpPWcsb/4f2azx1FDruTqa/GfCcbWd7tMf57PyRRIc5UYA==
+X-Received: by 2002:a17:902:d411:b0:1a1:c8b3:3fe1 with SMTP id b17-20020a170902d41100b001a1c8b33fe1mr8896800ple.31.1679921132917;
+        Mon, 27 Mar 2023 05:45:32 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.221.180.225])
+        by smtp.gmail.com with ESMTPSA id ay6-20020a1709028b8600b0019a997bca5csm19053965plb.121.2023.03.27.05.45.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 05:45:32 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm@vger.kernel.org
+Subject: [kvm-unit-tests v3 00/13] powerpc: updates, P10, PNV support
+Date: Mon, 27 Mar 2023 22:45:07 +1000
+Message-Id: <20230327124520.2707537-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
- <CRGYHQ3C77DV.1PXS812TV997N@bobo>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CRGYHQ3C77DV.1PXS812TV997N@bobo>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,70 +75,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------6fIop0QxA6rbpl20xUJils52
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+This series is growing a bit I'm sorry. v2 series added extra interrupt
+vectors support which was actually wrong because interrupt handling
+code can only cope with 0x100-size vectors and new ones are 0x80 and
+0x20. It managed to work because those alias to the 0x100 boundary, but
+if more than one handler were installed in the same 0x100-aligned
+block it would crash. So a couple of patches added to cope with that.
 
-On 3/27/23 12:36?AM, Nicholas Piggin wrote:
-> On Mon Mar 27, 2023 at 8:15 AM AEST, Jens Axboe wrote:
->> Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
->> from my (arguably very short) checking is not commonly done for other
->> archs. This is fine, except when PF_IO_WORKER's have been created and
->> the task does something that causes a coredump to be generated. Then we
->> get this crash:
-> 
-> Hey Jens,
-> 
-> Thanks for the testing and the patch.
-> 
-> I think your patch would work, but I'd be inclined to give the IO worker
-> a pt_regs so it looks more like other archs and a regular user thread.
+Thanks,
+Nick
 
-Yep I think that'd be a better idea. No better way to get a good patch
-than to send out a bad one :-)
+Nicholas Piggin (13):
+  MAINTAINERS: Update powerpc list
+  powerpc: Add local variant of SPR test
+  powerpc: Add some checking to exception handler install
+  powerpc: Abstract H_CEDE calls into a sleep functions
+  powerpc: Add ISA v3.1 (POWER10) support to SPR test
+  powerpc: Extract some common helpers and defines to headers
+  powerpc/sprs: Specify SPRs with data rather than code
+  powerpc/spapr_vpa: Add basic VPA tests
+  powerpc: Expand exception handler vector granularity
+  powerpc: Add support for more interrupts including HV interrupts
+  powerpc: Discover runtime load address dynamically
+  powerpc: Support powernv machine with QEMU TCG
+  powerpc/sprs: Test hypervisor registers on powernv machine
 
-> Your IO worker bug reminded me to resurrect some copy_thread patches I
-> had and I think they should do that
-> 
-> https://lists.ozlabs.org/pipermail/linuxppc-dev/2023-March/256271.html
-> 
-> I wouldn't ask you to test it until I've at least tried, do you have a
-> test case that triggers this?
-
-I can test them pretty easily. I did write a test case that is 100%
-reliable for me, attached. Just do:
-
-$ gcc -Wall -o ppc-crash ppc-crash.c -luring
-$ ulimit -c10000000
-$ ./ppc-crash
-
-and it'll bomb while trying to write that coredump.
+ MAINTAINERS                 |   2 +-
+ lib/powerpc/asm/handlers.h  |   2 +-
+ lib/powerpc/asm/hcall.h     |   1 +
+ lib/powerpc/asm/ppc_asm.h   |   6 +
+ lib/powerpc/asm/processor.h |  55 ++-
+ lib/powerpc/handlers.c      |  10 +-
+ lib/powerpc/hcall.c         |   4 +-
+ lib/powerpc/io.c            |  27 +-
+ lib/powerpc/io.h            |   6 +
+ lib/powerpc/processor.c     |  80 ++++-
+ lib/powerpc/setup.c         |   8 +-
+ lib/ppc64/asm/opal.h        |  15 +
+ lib/ppc64/asm/vpa.h         |  62 ++++
+ lib/ppc64/opal-calls.S      |  46 +++
+ lib/ppc64/opal.c            |  74 +++++
+ powerpc/Makefile.ppc64      |   4 +-
+ powerpc/cstart64.S          | 105 ++++--
+ powerpc/run                 |  35 +-
+ powerpc/spapr_hcall.c       |   9 +-
+ powerpc/spapr_vpa.c         | 172 ++++++++++
+ powerpc/sprs.c              | 645 ++++++++++++++++++++++++++----------
+ powerpc/tm.c                |  20 +-
+ powerpc/unittests.cfg       |   6 +
+ 23 files changed, 1138 insertions(+), 256 deletions(-)
+ create mode 100644 lib/ppc64/asm/opal.h
+ create mode 100644 lib/ppc64/asm/vpa.h
+ create mode 100644 lib/ppc64/opal-calls.S
+ create mode 100644 lib/ppc64/opal.c
+ create mode 100644 powerpc/spapr_vpa.c
 
 -- 
-Jens Axboe
+2.37.2
 
---------------6fIop0QxA6rbpl20xUJils52
-Content-Type: text/x-csrc; charset=UTF-8; name="ppc-crash.c"
-Content-Disposition: attachment; filename="ppc-crash.c"
-Content-Transfer-Encoding: base64
-
-I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5jbHVkZSA8dW5pc3Rk
-Lmg+CgojaW5jbHVkZSA8bGlidXJpbmcuaD4KCmludCBtYWluKGludCBhcmdjLCBjaGFyICph
-cmd2W10pCnsKCXN0cnVjdCBpb191cmluZ19zcWUgKnNxZTsKCXN0cnVjdCBpb191cmluZyBy
-aW5nOwoJdW5zaWduZWQgbG9uZyAqcHRyID0gTlVMTDsKCWNoYXIgYnVmWzE2Mzg0XTsKCWNo
-YXIgZm5hbWVbMzJdOwoJaW50IGZkWzRdOwoJaW50IGk7CgoJZm9yIChpID0gMDsgaSA8IDQ7
-IGkrKykgewoJCXNwcmludGYoZm5hbWUsICIvZGV2L3NobS90ZXN0LiVkIiwgaSk7CgkJZmRb
-aV0gPSBvcGVuKGZuYW1lLCBPX1JEV1IgfCBPX0NSRUFULCAwNjQ0KTsKCQlpZiAoZmRbaV0g
-PCAwKSB7CgkJCXBlcnJvcigib3BlbiIpOwoJCQlyZXR1cm4gMTsKCQl9Cgl9CgoJaW9fdXJp
-bmdfcXVldWVfaW5pdCgzMiwgJnJpbmcsIDApOwoKCWZvciAoaSA9IDA7IGkgPCAzMjsgaSsr
-KSB7CgkJdW5zaWduZWQgbG9uZyBvZmYgPSAxNjM4NCAqIChpIC8gNCk7CgkJaW50IGluZGV4
-ID0gaSAmIDM7CgoJCXNxZSA9IGlvX3VyaW5nX2dldF9zcWUoJnJpbmcpOwoJCWlvX3VyaW5n
-X3ByZXBfd3JpdGUoc3FlLCBmZFtpbmRleF0sIGJ1Ziwgc2l6ZW9mKGJ1ZiksIG9mZik7Cgl9
-CgoJaW9fdXJpbmdfc3VibWl0KCZyaW5nKTsKCXVzbGVlcCgxMDAwKTsKCgkqcHRyID0gMHgx
-MjM0Owp9Cg==
-
---------------6fIop0QxA6rbpl20xUJils52--
