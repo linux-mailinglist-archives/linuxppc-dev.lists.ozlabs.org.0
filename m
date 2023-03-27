@@ -2,47 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAB96CA9F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 18:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8ADA6CAA01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 18:10:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pld3P1sqzz3fQn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 03:06:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LPLf/jCv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pld7z5Hr0z3fWn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 03:10:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=188.165.59.253; helo=7.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Received: from 7.mo552.mail-out.ovh.net (7.mo552.mail-out.ovh.net [188.165.59.253])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pld2M0tRqz3chq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 03:05:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=RGwHI36+26alMOPcJARCf4i+u/nuff7mObHUT3LcJRU=; b=LPLf/jCvgk6BbAdu2sWsjs0oNX
-	30l+yYDMt7lIPUZlX1xLPKvd+VVVQITd3MBjp55UXnh0lC27yas9PjZ1X8/Ke/FN2w5Z7mgrMqRNS
-	NMe2iIKVClT29RE+YYzmxZbB3MjqVTlPCvQNedD6+P2DTM3qoHKrTsXd9k/l+Z6LWIlrLqO0i0LPP
-	WcUrCoUENmgBRd1TwHHhU6kKgkRvL9EW+Kwg4gKazSQbHimCznogGlrnIrlhrYbEsmEYHmZgBhRO2
-	txegvcMIwswcdkNGLcJijBEGxeQVIVJr1oRDPP6IWPp68b1YWWkcPAIa7dwiPZZpdkAy2Plhs+eAH
-	tVStJIQg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgpLM-00Beeh-0e;
-	Mon, 27 Mar 2023 16:05:12 +0000
-Date: Mon, 27 Mar 2023 09:05:12 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] driver core: class: mark the struct class for sysfs
- callbacks as constant
-Message-ID: <ZCG+uH4Dh16Gwonj@bombadil.infradead.org>
-References: <20230325084537.3622280-1-gregkh@linuxfoundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pld7N6bFGz3cDT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 03:09:50 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.144])
+	by mo552.mail-out.ovh.net (Postfix) with ESMTPS id EA0DC2A4BD;
+	Mon, 27 Mar 2023 16:09:45 +0000 (UTC)
+Received: from kaod.org (37.59.142.107) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 27 Mar
+ 2023 18:09:45 +0200
+Authentication-Results: garm.ovh; auth=pass (GARM-107S0016611bc0e-10e9-4c4c-8b6a-1ed7abc98a3d,
+                    A6C3435B678E6C193C864925704A598F32E2E8B9) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <bdc241df-d9b8-a742-982b-21a5b4feb2a4@kaod.org>
+Date: Mon, 27 Mar 2023 18:09:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230325084537.3622280-1-gregkh@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [kvm-unit-tests v3 00/13] powerpc: updates, P10, PNV support
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, <kvm@vger.kernel.org>
+References: <20230327124520.2707537-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230327124520.2707537-1-npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.107]
+X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: 571f510b-fa8b-44e5-8060-037cb272a2a4
+X-Ovh-Tracer-Id: 13819576934494407587
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehvddgleekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuuddtteelgeejhfeikeegffekhfelvefgfeejveffjeeiveegfeehgfdtgfeitdenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomhdpkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdplhhvihhvihgvrhesrhgvughhrghtrdgtohhmpdhthhhuthhhsehrvgguhhgrthdrtghomhdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,22 +58,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-cifs@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-rdma@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Namjae Jeon <linkinjeon@kernel.org>, Russ Weight <russell.h.weight@intel.com>, linux-s390@vger.kernel.org, linux-gpio@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>, Minchan Kim <minchan@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 25, 2023 at 09:45:37AM +0100, Greg Kroah-Hartman wrote:
-> struct class should never be modified in a sysfs callback as there is
-> nothing in the structure to modify, and frankly, the structure is almost
-> never used in a sysfs callback, so mark it as constant to allow struct
-> class to be moved to read-only memory.
+On 3/27/23 14:45, Nicholas Piggin wrote:
+> This series is growing a bit I'm sorry. v2 series added extra interrupt
+> vectors support which was actually wrong because interrupt handling
+> code can only cope with 0x100-size vectors and new ones are 0x80 and
+> 0x20. It managed to work because those alias to the 0x100 boundary, but
+> if more than one handler were installed in the same 0x100-aligned
+> block it would crash. So a couple of patches added to cope with that.
 > 
-> While we are touching all class sysfs callbacks also mark the attribute
-> as constant as it can not be modified.  The bonding code still uses this
-> structure so it can not be removed from the function callbacks.
-> 
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+I gave them a try on P9 box
 
-  Luis
+$ ./run_tests.sh
+PASS selftest-setup (2 tests)
+PASS spapr_hcall (9 tests, 1 skipped)
+PASS spapr_vpa (13 tests)
+PASS rtas-get-time-of-day (10 tests)
+PASS rtas-get-time-of-day-base (10 tests)
+PASS rtas-set-time-of-day (5 tests)
+PASS emulator (4 tests)
+PASS h_cede_tm (2 tests)
+FAIL sprs (75 tests, 1 unexpected failures)
+FAIL sprs-migration (75 tests, 5 unexpected failures)
+
+And with TCG:
+
+$ ACCEL=tcg ./run_tests.sh
+PASS selftest-setup (2 tests)
+PASS spapr_hcall (9 tests, 1 skipped)
+FAIL spapr_vpa (13 tests, 1 unexpected failures)
+
+The dispatch count seems bogus after unregister
+
+PASS rtas-get-time-of-day (10 tests)
+PASS rtas-get-time-of-day-base (10 tests)
+PASS rtas-set-time-of-day (5 tests)
+PASS emulator (4 tests)
+SKIP h_cede_tm (qemu-system-ppc64: TCG cannot support more than 1 thread/core on a pseries machine)
+FAIL sprs (75 tests, 16 unexpected failures)
+FAIL sprs-migration (75 tests, 16 unexpected failures)
+
+
+Thanks,
+
+C.
