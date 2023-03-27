@@ -1,52 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021E56CA681
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 15:53:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FD16CA68B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Mar 2023 15:55:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PlZ6X6Tv5z3fSR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 00:53:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PlZ8b2Zy5z3fT4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 00:55:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ONNKO03g;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FiC99RbS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlZ5f5C9zz3ccn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 00:53:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PlZ7h3Lf7z30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 00:54:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ONNKO03g;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FiC99RbS;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PlZ5d0H0jz4x5c;
-	Tue, 28 Mar 2023 00:53:09 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PlZ7h212Bz4x7v;
+	Tue, 28 Mar 2023 00:54:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1679925189;
-	bh=TJxyA8ujdADIkY8VZ48F5mj79sUdnQouvkgZCgQhCb0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ONNKO03g9tDX03f7nB/Jocn1qJwc8ZQHTPX3EnjHFTjeKsKHeqPplpPTfQp2buRu+
-	 Q8PaGsAsoRqhMqhtKq95pdQq9RJDqzHf/HJQWW8GUHuFyJBkkxocTGtV2R9gOaUV9J
-	 jc4khherOTFrkSQhBz8RPH4fBiP03cn7Xl/4o86PQvHqXc1NOma1tA/34YkCtIBk/j
-	 pODWDlaqxA8/j43qg4MB3TxGMVtP4cN6lWOtNNoMpZ9JMc0aLw7VQ/t1FVK84ogvEk
-	 1n+lthIXVThskz3GoVN4q7S4Nx2r6cgG8X8Bga+gwCJInJuppbCB0WiXw7qzN24qd/
-	 ujGRRXrLejhTQ==
+	s=201909; t=1679925296;
+	bh=uWnl/m0Dw2ehpGVs2HiZ4txwkbY4GaZnOPnOtL2Xd14=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=FiC99RbS8fhQkhvDgf4lv6X64xpQnghza9fPGFd2Lpbp2cq2VPVagP4qDBES0aL0u
+	 PMRnB6GJ2jvdXnq4hCeat34L5PXYygp/AeOzAfZpvSdpytpEG0aWGz0c/+3JiSBrn4
+	 dLMc5wu/NOQLw/0fBdOnRZaqkUk8I2pKvRabRvdLcQ4bSC6B1Jl2nqzwP69lDVObY0
+	 vEnJHdVN4HrTt9yOwpXyHb7BNlMbIKZqssSf9PV+ie/B7v10GGzcxZ3mUc1YTwE1ES
+	 sVAkAiXckU9guW8LPhy2lzBXh2KiE4gh89XruinDFyhtyYTXur+KT5j0+CrJWLwm6J
+	 8CJ6Xebcii9Rw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jens Axboe <axboe@kernel.dk>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Memory coherency issue with IO thread offloading?
-In-Reply-To: <872a1b2b-5fe6-e1ac-5dda-dc806b21b3f5@kernel.dk>
-References: <2b015a34-220e-674e-7301-2cf17ef45ed9@kernel.dk>
- <87h6u9u0e0.fsf@mpe.ellerman.id.au>
- <872a1b2b-5fe6-e1ac-5dda-dc806b21b3f5@kernel.dk>
-Date: Tue, 28 Mar 2023 00:53:04 +1100
-Message-ID: <87zg7ycncv.fsf@mpe.ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
+In-Reply-To: <CRGYHQ3C77DV.1PXS812TV997N@bobo>
+References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
+ <CRGYHQ3C77DV.1PXS812TV997N@bobo>
+Date: Tue, 28 Mar 2023 00:54:55 +1100
+Message-ID: <87wn32cn9s.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,80 +59,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jens Axboe <axboe@kernel.dk> writes:
-> On 3/24/23 6:42?PM, Michael Ellerman wrote:
->> Jens Axboe <axboe@kernel.dk> writes:
->>> I got a report sent to me from mariadb, in where 5.10.158 works fine and
->>> 5.10.162 is broken. And in fact, current 6.3-rc also fails the test
->>> case. Beware that this email is long, as I'm trying to include
->>> everything that may be relevant...
->>>
->>> The test case in question is pretty simple. On debian testing, do:
->>>
->>> $ sudo apt-get install mariadb-test
->>> $ cd /usr/share/mysql/mysql-test
->>> $ ./mtr --mysqld=--innodb-flush-method=fsync --mysqld=--innodb-use-native-aio=1 --vardir=/dev/shm/mysql  --force encryption.innodb_encryption,innodb,undo0 --repeat=200
->> 
->> I mostly use Fedora, the package name is the same but the mtr binary
->> ends up in /usr/share/mysql.
->> 
->>> and if it fails, you'll see something like:
->>>
->>> encryption.innodb_encryption 'innodb,undo0' [ 6 pass ]   3120
->>> encryption.innodb_encryption 'innodb,undo0' [ 7 pass ]   3123
->>> encryption.innodb_encryption 'innodb,undo0' [ 8 pass ]   3042
->>> encryption.innodb_encryption 'innodb,undo0' [ 9 fail ]
->>>         Test ended at 2023-03-23 16:55:17
->> 
->> I haven't been able to get this to fail yet. I've done several runs with
->> --repeat=500 and haven't seen any errors yet.
->> 
->> Are there any CONFIG options I'd need to trip this?
+"Nicholas Piggin" <npiggin@gmail.com> writes:
+> On Mon Mar 27, 2023 at 8:15 AM AEST, Jens Axboe wrote:
+>> Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
+>> from my (arguably very short) checking is not commonly done for other
+>> archs. This is fine, except when PF_IO_WORKER's have been created and
+>> the task does something that causes a coredump to be generated. Then we
+>> get this crash:
 >
-> I don't think you need any special CONFIG options. I'll attach my config
-> here, and I know the default distro one hits it too. But perhaps the
-> mariadb version is not new enough? I think you need 10.6 or above, as
-> will use io_uring by default. What version are you running?
-
-Yeah I had 10.5.
-
-I ended up building mariadb git, and now I have it reproducing on one VM
-I have.
-
-For some reason I can't reproduce with the same setup on a bare metal
-machine, which is odd.
-
-...
->> My first guess would be that there's some missing barriers between the
->> thread that queues the IO and the IO worker thread. 
+> Hey Jens,
 >
-> That was my guess too, and I consulted Paul McKenney as well on that.
-> And he had some ideas of course, in terms of ordering of the CQ ring.
-> But tried it all out, and it still failed in the same way...
+> Thanks for the testing and the patch.
 >
->> I think you're using schedule_work() for that though, which should be a
->> full barrier. Could it be on the completion side?
+> I think your patch would work, but I'd be inclined to give the IO worker
+> a pt_regs so it looks more like other archs and a regular user thread.
 >
-> queue_work() for the patch, before that it's io-wq which is an internal
-> IO thread worker pool. The latter just needs a spin_lock() around
-> queueing the work, and then a wake of the task. Typing this out, maybe
-> this is where a barrier is now missing? If the IO thread is already
-> running rather than sleeping?
+> Your IO worker bug reminded me to resurrect some copy_thread patches I
+> had and I think they should do that
+>
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2023-March/256271.html
+>
+> I wouldn't ask you to test it until I've at least tried, do you have a
+> test case that triggers this?
 
-It sounded promising, but I've tried adding barriers around all the spin
-locks and it hasn't made any difference.
+I hit it once on one machine while running the mtr test from the other
+thread. I'm not sure what leads to it failing that way rather than the
+usual case of the mariadb test just printing an error.
 
-Are there barriers in the userspace code also? If so would they be in
-liburing or in the actual mariadb code?
-
-Possibly I'm completely wrong about barriers and it's something else,
-but I can't think what.
-
-I checked that the liburing tests are passing. Any idea what mariadb is
-doing different that's likely to be triggering the bug?
+I've got your series applied and am testing it now.
 
 cheers
