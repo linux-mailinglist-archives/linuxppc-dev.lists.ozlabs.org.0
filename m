@@ -1,50 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589546CBDCF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 13:33:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493ED6CBE0B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 13:48:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm6xx21bmz3fWJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 22:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm7Hb0jNMz3cdy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 22:48:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AMpWTwQ2;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E5ezmEsX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pm6x263rHz2yNy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 22:32:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pm7Gj39FSz3c4B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 22:47:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AMpWTwQ2;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E5ezmEsX;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pm6x1521Lz4xFW;
-	Tue, 28 Mar 2023 22:32:37 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pm7Gg5MMHz4whh;
+	Tue, 28 Mar 2023 22:47:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1680003157;
-	bh=g372AUSYfnay8EGETnHTvUJW5p9CXx9A6ULuph62ckc=;
+	s=201909; t=1680004076;
+	bh=DEns3mMtYYeJfnth0jh9KXN/GkEq0tgf3rOLFt0klxY=;
 	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=AMpWTwQ2QLoAJs9gTwNfc9vqTMryykrPnsJ5Zx+AosUyWmihI8sKIT260sayJHydL
-	 npFqwYK82sMcFdaffPRj5CcC80VIiEFudEjBWC/PygAPe9yuyORMbl7Ubz3qR+BodI
-	 h4x7VQfROWnrJdwHq3I4FGoWRQKYNe2lPzbDIZTeTF09lHTbO3Ovk0yCSB+i8L//l3
-	 uzK/4/QcxLCFto3CTtpteUsVgC+DMrrYLo8yLh02m9XRXiI04gL0YuABgJYv9auAt9
-	 vLaQvhjIxBhRhuZHjQHU6OM2Ad91qCz8G6nMHrxkfwp3WamJGrsMX/HItAOf+u87rh
-	 xK2GfEJi2rXtQ==
+	b=E5ezmEsX64RZyZY5IHFYLk7bnikcO6qGn9tLey/2dzrshZ8QrD1KeDN8/qLmNAf3p
+	 4ApUT0frB//2/VXj22yZ0NUj+RFL+7ymZsbQiI9lNl1KJ87B0zNawCb3lPyPEtGuOG
+	 maJ90A6NaBf2kJB42Ee3lNvC1rC6y4de9KcPcIvoLkwYd0UJU7bk8vD51PqUitRPso
+	 qYqYMiQEhOmWF3jHlvSH/fAzKtpP7JmG2Lf4r8SJ/7pXHIVEzbyOEJ8pW1aO8n5VQS
+	 aEHjSGl6higEF9U2hPc/np7R0gjqEs0cEKcXnoXz2IhvNLOxRnlnpHlngOUT2ckzqP
+	 BFbx6UhAPtdew==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jens Axboe <axboe@kernel.dk>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Jens Axboe <axboe@kernel.dk>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
-In-Reply-To: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
+In-Reply-To: <CRHSOZ15ORYN.1DMP7BFBDRFII@bobo>
 References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
-Date: Tue, 28 Mar 2023 22:32:34 +1100
-Message-ID: <87lejhcdrh.fsf@mpe.ellerman.id.au>
+ <CRGYHQ3C77DV.1PXS812TV997N@bobo>
+ <6727b289-aef6-89f9-8b4f-d63cbaeb81e5@csgroup.eu>
+ <CRHSOZ15ORYN.1DMP7BFBDRFII@bobo>
+Date: Tue, 28 Mar 2023 22:47:55 +1100
+Message-ID: <87ilelcd1w.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,23 +65,34 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jens Axboe <axboe@kernel.dk> writes:
-> Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
-> from my (arguably very short) checking is not commonly done for other
-> archs. This is fine, except when PF_IO_WORKER's have been created and
-> the task does something that causes a coredump to be generated.
+"Nicholas Piggin" <npiggin@gmail.com> writes:
+> On Mon Mar 27, 2023 at 8:26 PM AEST, Christophe Leroy wrote:
+...
+>>
+>> Now that thread.regs doesn't change anymore at each interrupt, it would 
+>> probably be worth dropping it and falling back to task_pt_regs() as 
+>> defined on most architecture.
+>> Knowing whether a thread is a kernel or user thread can for instance be 
+>> known with PF_KTHREAD flag, so no need of thread.regs for that.
+>
+> That would be nice if we can define regs that way, I agree. We should
+> look into doing that.
 
-Do kthread's ever core dump? I didn't think they did, but I can't find
-any logic to prevent it.
+Yeah it's on the long-list of things that need cleaning up.
 
-Maybe it's always been possible but just never happened due to luck.
+I think there's some complication in working out which sites are OK to
+use/give-out the value in pt_regs that's potentially a dummy value, vs
+cases that actually want to check PF_KTHREAD and do something different.
+But that's just my hunch I haven't looked through all the sites.
 
-As Nick said we should probably have a non-NULL regs for PF_IO_WORKERS,
-but I'll still take this as a nice backportable fix for the immediate
-crash.
+The thread.regs = NULL for kernel threads goes back to arch/ppc, about
+2002 by the looks:
 
-I tagged it as Fixes: pointing back at the commit that added ppr_get(),
-even though I don't know for sure the bug was triggerable back then
-(v4.8).
+  https://github.com/mpe/linux-fullhistory/commit/2a8e186c384c0c911f91cd12367658eabdc820d8#diff-939b705cff722ee75595fad30d56bb1175dfdce49a69adb4d5656f354be076c6
+
+There's no change log of course :)
+
+Still maybe it doesn't matter why it was originally done that way, if we
+can do it differently now.
 
 cheers
