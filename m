@@ -1,70 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF596CC7CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 18:22:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1412F6CC831
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 18:39:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PmFN00Bzzz3fBL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 03:22:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PmFkb74wSz3fTG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 03:39:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=nfF+dU3t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=AfwpH2OC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=nfF+dU3t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=AfwpH2OC;
 	dkim-atps=neutral
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmFM14rh8z3cdD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 03:22:04 +1100 (AEDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-3e390e23f83so133191cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 09:22:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmFjZ025Wz3c8f
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 03:38:08 +1100 (AEDT)
+Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-3261b76b17aso119665ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 09:38:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1680020520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5oxn8nTbQaOTMetn/sNIvHJIXX3TzoHjySwpSLICeOg=;
-        b=nfF+dU3tfEyt04fh1/XwDi2B2Edck4nMMhV2zkib5BiB9kekOWz4/Jeq6D1cW8YziA
-         dE6JcI7mVUBxHO+1YpIXZn8AtWc+c6pOxXJhV9pvpTwg3ZZQzSsiTT5M/7m82FjZbzV1
-         N+fPFV7Cfb/S1AQFTBkK3/GxefvAkGbj6HQv4CaKOS+oJ79PDnYDvDu3oayGUixW7enB
-         bHOOdMXZg2SJ73wlWridRt5zinA9l24/I/lBwHUTwkeIxX1gNcorqhsfne8baCBYTwOj
-         a3JKIkyECZlD247/owu28BlfL+qOQTYpSCVYUF5I+nE6YkvoBLQlR01pVKbXP4H9Wt8I
-         Eecg==
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1680021485;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GlOqeDaJE9dVLdv9u07tRhZeFPG3DwxLv/hO0KpxPOI=;
+        b=AfwpH2OCL0WDrLgnboWiCQc9zVZ4vXuWTcUZ0OjGKFUI5jz4g9KPrpbUMylqIxGWf4
+         rIdB8vRhsUT0A7b+VIJqJ/y+/uBuslR7eCTZ+7ZsXKP+YMtkh7umR5OuRXfBwxEqTcYU
+         pFJiu8Me7BUVENg8bJdKQ9CXsDR/FOJJJstp2sIM+T+u30/rZ3csk9PKSmALmzOVsspe
+         UNetoFe3GyA6lV67GxbGQ8IGVR9+2WeKr5QcrGiRASApXDbqXCLY5qmt5YIRS2WaQgG9
+         lq1sMSJa/QGHgGxW2QmWZFYDrqhLdpOdTmZUIe/Vo00CyltkvhpJLGnpinoBy8lLgtyi
+         vKXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680020520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5oxn8nTbQaOTMetn/sNIvHJIXX3TzoHjySwpSLICeOg=;
-        b=Hreyqhs5Po8wXW/VeFc695beqKzA+/Q9FBA2KGkEdMM6INSuUlsmFMZ8GaNApJ/u77
-         E4fCJ8DHW3zMH8pO2TczWMqBKBmSGlnPheyobaIXpKAAg425hqDJK6gGdbnMMQhlDnq0
-         cLgvEJ4hCky82sCwPMyDF/4r6PhgmPLRuHieHK6QT/SWnnByCkwK36y1HG9NRO7anh2c
-         Kvr+KIP11oPK7T6XtiC6W9hB/2man/VzZrxLMEf1cu1hq7IvavdKIRNyreW1KCwaz+lE
-         h85pjpdopCdMysT41OtemFYK6jUwBtdF1mzTLIBSRovd1ipXmPAaO4o/+TBHFXLLWPpJ
-         oRfA==
-X-Gm-Message-State: AAQBX9eqk3MEh9SmLBMyf9BCpHN6O0HfC2Fp46mEvXOKu0R+f2AtUevg
-	ukExVXvoNXGHCJGNvV+zm2CJBicNGJVIkwdm1OqhTA==
-X-Google-Smtp-Source: AKy350YyPtOQtBrbD3l/8Mh9YVfhMzfhYutuWTipioNOMVSceICp/9VY1tIWWQ6nvLUjxjm9X+9CPRKrRArLStwP74Q=
-X-Received: by 2002:ac8:58ca:0:b0:3db:1c01:9d95 with SMTP id
- u10-20020ac858ca000000b003db1c019d95mr536602qta.4.1680020520530; Tue, 28 Mar
- 2023 09:22:00 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680021485;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GlOqeDaJE9dVLdv9u07tRhZeFPG3DwxLv/hO0KpxPOI=;
+        b=Y+cFc97BHehn0el2B18YKS9DBq5CctuoQN1kSIIyhU9DPu5NRl1tWmnLTckboZdA4I
+         a40YXR0oGJVq4zfp2tSht0O+xNB2O0jmVy98hq20jtReaFtxxeBUCvEy64mz36lw6OPq
+         uHY5pyQPx7z0ckjlb975kYs0CYp2Cc6KpExuaBIf1vQQkkZBUrdCL78AzUNQ5sElntiV
+         gOejkon0Nu/5BNGCKlDUBg8mk810FFYvQXQDFRsLIDi+K/XDnx1uL6zQTLp20EM+JdHT
+         0AvANWGFOMXFeluSViz0i6FZmc+vejYPbcWJHVYVx1Yx8K+umnw5OdLppW0u8EnedA+3
+         OAiA==
+X-Gm-Message-State: AAQBX9d6eBNWO1ABdvINwtZRUUcq6M+Kp+p5hbSQG+L+WHPovOwXAx+z
+	iGJ7oUyE8xgkctsjUQTbm5xc6g==
+X-Google-Smtp-Source: AKy350bIpB+IudRrmzfPXKrY4fZNUwcuB191Ucr78PKhUXgM2aBTN0gOKLn/lFFHcGY48nMVUlIAgQ==
+X-Received: by 2002:a05:6e02:1543:b0:325:f635:26c5 with SMTP id j3-20020a056e02154300b00325f63526c5mr5598600ilu.3.1680021484784;
+        Tue, 28 Mar 2023 09:38:04 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id a17-20020a056e0208b100b00315785bfabfsm8682057ilt.47.2023.03.28.09.38.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Mar 2023 09:38:04 -0700 (PDT)
+Message-ID: <91477fb8-c9d8-53e7-e657-f5d6ba2e276f@kernel.dk>
+Date: Tue, 28 Mar 2023 10:38:03 -0600
 MIME-Version: 1.0
-References: <20230328112908.113158-1-kjain@linux.ibm.com>
-In-Reply-To: <20230328112908.113158-1-kjain@linux.ibm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Tue, 28 Mar 2023 09:21:49 -0700
-Message-ID: <CAP-5=fXU4F=LvE883EVjq0bWHKJ-LT12pTr827jqwGfH1RTXdw@mail.gmail.com>
-Subject: Re: [PATCH] perf vendor events power9: Remove UTF-8 characters from
- json files
-To: Kajol Jain <kjain@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: Memory coherency issue with IO thread offloading?
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <2b015a34-220e-674e-7301-2cf17ef45ed9@kernel.dk>
+ <87h6u9u0e0.fsf@mpe.ellerman.id.au>
+ <872a1b2b-5fe6-e1ac-5dda-dc806b21b3f5@kernel.dk>
+ <9753c624-66e0-aace-6540-731cba9da864@kernel.dk>
+ <CRGVMXJ46PPN.1VWRMA1IMPHW2@bobo>
+ <6f32b504-ccd5-d67c-1b67-95d8fe1cf185@kernel.dk>
+ <3ae396db-4aa3-c031-67a7-2df341214b5b@kernel.dk>
+ <87a5zxca3t.fsf@mpe.ellerman.id.au>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <87a5zxca3t.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,149 +89,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, disgoel@linux.ibm.com, linux-kernel@vger.kernel.org, acme@kernel.org, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, jolsa@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.com>, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: daniel@mariadb.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 28, 2023 at 4:30=E2=80=AFAM Kajol Jain <kjain@linux.ibm.com> wr=
-ote:
->
-> Commit 3c22ba524304 ("perf vendor events powerpc: Update POWER9 events")
-> added and updated power9 pmu json events. However some of the json
-> events which are part of other.json and pipeline.json files,
-> contains UTF-8 characters in their brief description.
-> Having UTF-8 character could brakes the perf build on some distros.
+On 3/28/23 6:51?AM, Michael Ellerman wrote:
+> Jens Axboe <axboe@kernel.dk> writes:
+>>>> Can the  queueing cause the creation of an IO thread (if one does not
+>>>> exist, or all blocked?)
+>>>
+>>> Yep
+>>>
+>>> Since writing this email, I've gone through a lot of different tests.
+>>> Here's a rough listing of what I found:
+>>>
+>>> - Like using the hack patch, if I just limit the number of IO thread
+>>>   workers to 1, it seems to pass. At least longer than before, does 1000
+>>>   iterations.
+>>>
+>>> - If I pin each IO worker to a single CPU, it also passes.
+>>>
+>>> - If I liberally sprinkle smp_mb() for the io-wq side, test still fails.
+>>>   I've added one before queueing the work item, and after. One before
+>>>   the io-wq worker grabs a work item and one after. Eg full hammer
+>>>   approach. This still fails.
+>>>
+>>> Puzzling... For the "pin each IO worker to a single CPU" I added some
+>>> basic code around trying to ensure that a work item queued on CPU X
+>>> would be processed by a worker on CPU X, and too a large degree, this
+>>> does happen. But since the work list is a normal list, it's quite
+>>> possible that some other worker finishes its work on CPU Y just in time
+>>> to grab the one from cpu X. I checked and this does happen in the test
+>>> case, yet it still passes. This may be because I got a bit lucky, but
+>>> seems suspect with thousands of passes of the test case.
+>>>
+>>> Another theory there is that it's perhaps related to an io-wq worker
+>>> being rescheduled on a different CPU. Though again puzzled as to why the
+>>> smp_mb sprinkling didn't fix that then. I'm going to try and run the
+>>> test case with JUST the io-wq worker pinning and not caring about where
+>>> the work is processed to see if that does anything.
+>>
+>> Just pinning each worker to whatever CPU they got created on seemingly
+>> fixes the issue too. This does not mean that each worker will process
+>> work on the CPU on which it was queued, just that each worker will
+>> remain on whatever CPU it originally got created on.
+>>
+>> Puzzling...
+>>
+>> Note that it is indeed quite possible that this isn't a ppc issue at
+>> all, just shows on ppc. It could be page cache related, or it could even
+>> be a bug in mariadb itself.
+> 
+> I tried binary patching every lwsync to hwsync (read/write to full
+> barrier) in mariadbd and all the libaries it links. It didn't fix the
+> problem.
+> 
+> I also tried switching all the kernel barriers/spin locks to using a
+> hwsync, but that also didn't fix it.
+> 
+> It's still possible there's somewhere that currently has no barrier at
+> all that needs one, the above would only fix the problem if we have a
+> read/write barrier that actually needs to be a full barrier.
+> 
+> 
+> I also looked at making all TLB invalidates broadcast, regardless of
+> whether we think the thread has only been on a single CPU. That didn't
+> help, but I'm not sure I got all places where we do TLB invalidates, so
+> I'll look at that some more tomorrow.
 
-nit: s/bakes/break/
+Thanks, appreciate your testing! I have no new data points since
+yesterday, but the key point from then still seems to be that if an io
+worker never reschedules onto a different CPU, then the problem doesn't
+occur. This could very well be a page cache issue, if it isn't an issue
+on the powerpc side...
 
-> Fix this issue by removing the UTF-8 characters from other.json and
-> pipeline.json files.
->
-> Result without the fix patch:
-> [command]# file -i pmu-events/arch/powerpc/power9/*
-> pmu-events/arch/powerpc/power9/cache.json:          application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/floating-point.json: application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/frontend.json:       application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/marked.json:         application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/memory.json:         application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/metrics.json:        application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/other.json:          application/json; cha=
-rset=3Dutf-8
-> pmu-events/arch/powerpc/power9/pipeline.json:       application/json; cha=
-rset=3Dutf-8
-> pmu-events/arch/powerpc/power9/pmc.json:            application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/translation.json:    application/json; cha=
-rset=3Dus-ascii
->
-> Result with the fix patch:
->
-> [command]# file -i pmu-events/arch/powerpc/power9/*
-> pmu-events/arch/powerpc/power9/cache.json:          application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/floating-point.json: application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/frontend.json:       application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/marked.json:         application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/memory.json:         application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/metrics.json:        application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/other.json:          application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/pipeline.json:       application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/pmc.json:            application/json; cha=
-rset=3Dus-ascii
-> pmu-events/arch/powerpc/power9/translation.json:    application/json; cha=
-rset=3Dus-ascii
->
-> Fixes: 3c22ba524304 ("perf vendor events powerpc: Update POWER9 events")
-> Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-> Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+-- 
+Jens Axboe
 
-Acked-by: Ian Rogers <irogers@google.com>
-
-Thanks,
-Ian
-
-> ---
->  tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
->  tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools=
-/perf/pmu-events/arch/powerpc/power9/other.json
-> index 3f69422c21f9..f10bd554521a 100644
-> --- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-> +++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-> @@ -1417,7 +1417,7 @@
->    {
->      "EventCode": "0x45054",
->      "EventName": "PM_FMA_CMPL",
-> -    "BriefDescription": "two flops operation completed (fmadd, fnmadd, f=
-msub, fnmsub) Scalar instructions only. "
-> +    "BriefDescription": "two flops operation completed (fmadd, fnmadd, f=
-msub, fnmsub) Scalar instructions only."
->    },
->    {
->      "EventCode": "0x201E8",
-> @@ -2017,7 +2017,7 @@
->    {
->      "EventCode": "0xC0BC",
->      "EventName": "PM_LSU_FLUSH_OTHER",
-> -    "BriefDescription": "Other LSU flushes including: Sync (sync ack fro=
-m L2 caused search of LRQ for oldest snooped load, This will either signal =
-a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid =
-Flush Next (several cases of this, one example is store and reload are line=
-d up such that a store-hit-reload scenario exists and the CDF has already l=
-aunched and has gotten bad/stale data); Bad Data Valid Flush Next (might be=
- a few cases of this, one example is a larxa (D$ hit) return data and dval =
-but can't allocate to LMQ (LMQ full or other reason). Already gave dval but=
- can't watch it for snoop_hit_larx. Need to take the =E2=80=9Cbad dval=E2=
-=80=9D back and flush all younger ops)"
-> +    "BriefDescription": "Other LSU flushes including: Sync (sync ack fro=
-m L2 caused search of LRQ for oldest snooped load, This will either signal =
-a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid =
-Flush Next (several cases of this, one example is store and reload are line=
-d up such that a store-hit-reload scenario exists and the CDF has already l=
-aunched and has gotten bad/stale data); Bad Data Valid Flush Next (might be=
- a few cases of this, one example is a larxa (D$ hit) return data and dval =
-but can't allocate to LMQ (LMQ full or other reason). Already gave dval but=
- can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and fl=
-ush all younger ops)"
->    },
->    {
->      "EventCode": "0x5094",
-> diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/to=
-ols/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> index d0265f255de2..723bffa41c44 100644
-> --- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> @@ -442,7 +442,7 @@
->    {
->      "EventCode": "0x4D052",
->      "EventName": "PM_2FLOP_CMPL",
-> -    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fa=
-bs, fnabs, fres ,fsqrte, fneg "
-> +    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fa=
-bs, fnabs, fres ,fsqrte, fneg"
->    },
->    {
->      "EventCode": "0x1F142",
-> --
-> 2.39.1
->
