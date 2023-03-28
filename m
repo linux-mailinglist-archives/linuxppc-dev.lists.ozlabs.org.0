@@ -1,94 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2746CBF3B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 14:35:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC316CBF53
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 14:40:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm8Kq0tmxz3f4k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 23:35:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm8Qs4QQ9z3c38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 23:40:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SPZTHfB5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=0A9PhD6J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=axboe@kernel.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SPZTHfB5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20210112.gappssmtp.com header.i=@kernel-dk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=0A9PhD6J;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pm8Jr2bvCz3cKk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 23:34:51 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32SBtjoi034531;
-	Tue, 28 Mar 2023 12:34:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=ptrMgdbQXSvBhMRQTtIdeTo823uJitfr4NbX+3nTZUs=;
- b=SPZTHfB5BjjKrn/iI/c0sAghsgpJgq9wN0rNzyY8YuNaWDW0J/IYSQRF/IH+6vXBRPei
- ZhQvcCzfAPmpzPXRPA4RQfQrUGpLE4JrPZGjEgg+nAUTMopevSAsc5i+fcJheDKIZjI7
- F5HJdatS7BbJb/L1eMC0gg4PkeDNEWy3Y3Z8elVO4pP5m/Q0kdvqJsz/8csDC3qE0HPB
- NTwa6t6pRiHcLvhQfX1lq5KmGRqVVhUzfI+cizhrGloh3cFdaBiZuS1x5k6cZsnsTI4M
- iriYSsWiRvfySdUyXyywl2DQYB90wBSoakvghe8gTMOFuKDr94rRTmBRuYI6mz9vwPj4 LA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pkysyh189-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Mar 2023 12:34:43 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32SC0KHB011094;
-	Tue, 28 Mar 2023 12:34:42 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pkysyh173-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Mar 2023 12:34:42 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32S4aLk7028880;
-	Tue, 28 Mar 2023 12:34:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3phr7fkyg7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Mar 2023 12:34:40 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32SCYcf646531042
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Mar 2023 12:34:38 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 463432005A;
-	Tue, 28 Mar 2023 12:34:38 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C4812004B;
-	Tue, 28 Mar 2023 12:34:35 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.75.27])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 28 Mar 2023 12:34:35 +0000 (GMT)
-Date: Tue, 28 Mar 2023 18:04:32 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] arch/powerpc/kvm: kvmppc_core_vcpu_create_hv: check for
- kzalloc failure
-Message-ID: <ZCLe2Jf0n6GR9Qhw@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230323074718.2810914-1-kconsul@linux.vnet.ibm.com>
- <87pm8tcir3.fsf@mpe.ellerman.id.au>
- <ZCK96ohvWRY12zZ3@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZCLHFw1U4Mq/QK2A@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <87fs9pcce6.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pm8Px54fSz3cLB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 23:39:16 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id a16so10645633pjs.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 05:39:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1680007154; x=1682599154;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UutT42ZBflgVUT3VbqbBg0lfJ8B58grigNouyyh8hi8=;
+        b=0A9PhD6Jtt1np5ZIeXIMyaEKE4xOsatY30/a1q24dk5EOBKiaxGJGLaZEPx7IdsOEW
+         8ksXfStHF5UqAmhkioFTBxmAHkTqjfN1kTZmHNSakVq/f57fo3Lcw4Ob3RYep8ofzxG2
+         wRg/6oVixG3s/UA4VaKmNLZjsXmWpidOOBTsCTXxbDIEsLUNz6nbE683OtGAiGeDm3Md
+         UR+JVPTmcKn0l8iBh9ZrYgx/e2LAUU8ruYzosCdgIh0UJ/h/ys/0NktKeupQWxfO+9vb
+         sBwY24s9WWJukU/Aup9kaqTrn6sFm6QXRM5H4OVgimfASYjldm05txqJuMY1OcYWjhkP
+         MHbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680007154; x=1682599154;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UutT42ZBflgVUT3VbqbBg0lfJ8B58grigNouyyh8hi8=;
+        b=TyqSWDSgYPGEsNUuFbgLcnYriBXWq8lEt0YAJkR5sYFJDv2ffHg2Ejaq/Jicfss8WB
+         fK/qCN4iyk1jd1L4TkyzIvFAhytrz0mB1s/19LG4ZjlenlL9DwdL4yncJy0/F/Ff4g4C
+         /vswOPX8PkHHrGCJNtHPpI20VrW7/vPrBRYp7nbuQWLXn/HOw3sNCjuhYWMWpUK2yirq
+         A7iPl7kMC9G8hZHVFrzM4bf5XGkUGYeCilOCcFut5lRjaMIWJ4w3yZkAxaWHMK+Y8svc
+         Cz6wrskMQJytKw/pcvpc9POzNL2fvujxHlz3In1CZh0z0TB2VM+/sohUiVDBcTD1MzwD
+         wVkA==
+X-Gm-Message-State: AAQBX9fwLitdijAgkwS4n01cz0rY02HDFptqQifa2T3m45iMithNZ+uX
+	GJq7/Rx6N2wGcoeZaEJOKTKz3posegcb8cbSC3vwWQ==
+X-Google-Smtp-Source: AKy350Z8SILTB8UZWbYNHb6ayVrS1+zCM3Spi2kzWFM+ip0Jix5OY0bkfJvR2fsJ3a+ploQai3IHjw==
+X-Received: by 2002:a05:6a21:32a2:b0:df:e8b2:ffb4 with SMTP id yt34-20020a056a2132a200b000dfe8b2ffb4mr7916970pzb.3.1680007153910;
+        Tue, 28 Mar 2023 05:39:13 -0700 (PDT)
+Received: from [192.168.1.136] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id l62-20020a632541000000b004fb10399da2sm19918519pgl.56.2023.03.28.05.39.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Mar 2023 05:39:13 -0700 (PDT)
+Message-ID: <6408fa0f-2fa9-f734-e318-fd57b8d31df8@kernel.dk>
+Date: Tue, 28 Mar 2023 06:39:12 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87fs9pcce6.fsf@mpe.ellerman.id.au>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: t9Wx0sulOkQ6-G24PekGAA78tuIhDZfX
-X-Proofpoint-ORIG-GUID: UhKF6mdPPRkSUFZ7iopmH-7mHoELxdO_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-24_11,2023-03-28_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
- adultscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303280100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH] powerpc: don't try to copy ppc for task with NULL pt_regs
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <d9f63344-fe7c-56ae-b420-4a1a04a2ae4c@kernel.dk>
+ <87lejhcdrh.fsf@mpe.ellerman.id.au>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <87lejhcdrh.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,61 +83,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-03-28 23:02:09, Michael Ellerman wrote:
-> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> > On 2023-03-28 15:44:02, Kautuk Consul wrote:
-> >> On 2023-03-28 20:44:48, Michael Ellerman wrote:
-> >> > Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> >> > > kvmppc_vcore_create() might not be able to allocate memory through
-> >> > > kzalloc. In that case the kvm->arch.online_vcores shouldn't be
-> >> > > incremented.
-> >> > 
-> >> > I agree that looks wrong.
-> >> > 
-> >> > Have you tried to test what goes wrong if it fails? It looks like it
-> >> > will break the LPCR update, which likely will cause the guest to crash
-> >> > horribly.
-> > Also, are you referring to the code in kvmppc_update_lpcr()?
-> > That code will not crash as it checks for the vc before trying to
-> > dereference it.
+On 3/28/23 5:32?AM, Michael Ellerman wrote:
+> Jens Axboe <axboe@kernel.dk> writes:
+>> Powerpc sets up PF_KTHREAD and PF_IO_WORKER with a NULL pt_regs, which
+>> from my (arguably very short) checking is not commonly done for other
+>> archs. This is fine, except when PF_IO_WORKER's have been created and
+>> the task does something that causes a coredump to be generated.
 > 
-> Yeah that's what I was looking at. I didn't mean it would crash, but
-> that it would bail out early when it sees a NULL vcore, leaving other
-> vcores with the wrong LPCR value.
+> Do kthread's ever core dump? I didn't think they did, but I can't find
+> any logic to prevent it.
+
+kthreads aren't associated with the original task, they just exist by
+themselves. They also can't take signals. Eg they cannot core dump, just
+oops :-)
+
+This is different than io workers that do show up as threads, but they
+still don't exit to userspace. That is why it ended being a problem.
+
+> As Nick said we should probably have a non-NULL regs for PF_IO_WORKERS,
+> but I'll still take this as a nice backportable fix for the immediate
+> crash.
 > 
-> But as you say it doesn't happen because qemu quits on the first ENOMEM.
-> 
-> And regardless if qemu does something that means the guest is broken
-> that's just a qemu bug, no big deal as far as the kernel is concerned.
-But there could be another user-mode application other than qemu that
-actually tries to create a vcpu after it gets a -ENOMEM for another
-vcpu. Shouldn't the kernel be independent of qemu?
-> 
-> > But the following 2 places that utilize the arch.online_vcores will have
-> > problems in logic if the usermode test-case doesn't pull down the
-> > kvm context after the -ENOMEM vcpu allocation failure:
-> > book3s_hv.c:3030:       if (!kvm->arch.online_vcores) {
-> > book3s_hv_rm_mmu.c:44:  if (kvm->arch.online_vcores == 1 && local_paca->kvm_hstate.kvm_vcpu)
-> 
-> OK. Both of those look harmless to the host.
-Harmless to the host in terms of a crash, not in terms of behavior.
-For example in the case of kvmhv_set_smt_mode:
-If we got a kzalloc failure once (and online_vcores was wrongly incremented), 
-then if kvmhv_set_smt_mode() is called after that then it would be
-not be setting the arch.smt_mode and arch.emul_smt_mode correctly and it
-would be wrongly returning with -EBUSY instead of 0.
-Isn't that incorrect with respect to the intent of the code ?
-I agree that applications like qemu might not do that but don't we need
-to have some integrity with respect to the intent and value of variable
-use ? What about good code and logic quality ?
-> 
-> If we find a case where a misbehaving qemu can crash the host then we
-> need to be a bit more careful and treat it at least as a
-> denial-of-service bug. But looks like this is not one of those.
-> 
-> cheers
-beers
+> I tagged it as Fixes: pointing back at the commit that added ppr_get(),
+> even though I don't know for sure the bug was triggerable back then
+> (v4.8).
+
+Thanks!
+
+-- 
+Jens Axboe
+
