@@ -2,39 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C820B6CB87C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 09:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583CF6CBA20
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 11:08:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm1wR5FS8z3ch5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 18:46:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm3kZ1lFVz3f53
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Mar 2023 20:08:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HyVQaSrN;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alpha.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de; envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pm1vr4cWXz3cC1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 18:46:13 +1100 (AEDT)
-Received: from uucp (helo=alpha)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1ph41q-0003r6-00; Tue, 28 Mar 2023 09:46:02 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id 2C9BFC1C6A; Tue, 28 Mar 2023 09:45:11 +0200 (CEST)
-Date: Tue, 28 Mar 2023 09:45:11 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v3 0/4] Use dma_default_coherent for devicetree default
- coherency
-Message-ID: <20230328074511.GA6188@alpha.franken.de>
-References: <20230321110813.26808-1-jiaxun.yang@flygoat.com>
- <20230323072944.GA18524@lst.de>
- <60D7FE31-D708-4495-949F-3F64DDC11377@flygoat.com>
- <20230323213930.GA7730@lst.de>
- <CB41D3AF-20F6-42F3-9168-C0D6E716431A@flygoat.com>
- <20230328011812.GA21977@lst.de>
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pm3jd5ZVPz3cNM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Mar 2023 20:07:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HyVQaSrN;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pm3jd2thwz4wj7;
+	Tue, 28 Mar 2023 20:07:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1679994453;
+	bh=CI6UkVt1iNphqH6yIerjhQUaBQ8iiEe/qQHit4JlIMo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HyVQaSrNlh7ULd1z7j7TqAGwSq+AIBMp2CM4ASQ7RpsS8yuBSbS4xwXn60fRG3hZH
+	 ry6Dgzy72rZ3epcrMLSJ+xxvGMeNkGCYSXrKUIxv2+UrTkX3a9IOy4He8x8QJ5KTkO
+	 LxV04GU8KDSOLoDbtxIWwYdinbAVgz3FPmPj039LD+W1Q3p1FfertasEgTNtTGD8sz
+	 rw8thPH4tGKiLr36IgisfD+PMsRJ/VUva3Jf1bounNv/NA0ePr647Is1fmOKlWSF8k
+	 sC1VCebtZEGyxxWwvC+znGT2JjkipULl8TbCbMjpRojrWXpFYMt3Llqc2dcC/ZOziJ
+	 kTp7CuaDe9ZQA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Sean Christopherson
+ <seanjc@google.com>
+Subject: Re: [PATCH 0/2] KVM: PPC: support kvm selftests
+In-Reply-To: <CRHTDZZU72CJ.3QAHM67MV5G47@bobo>
+References: <20230316031732.3591455-1-npiggin@gmail.com>
+ <87ilf0nc95.fsf@mpe.ellerman.id.au> <ZBs9tGkI5OQqtIqs@google.com>
+ <CRGX867PJCBF.1MV46YLYXMBYZ@bobo> <ZCHV20oFkFzp/AZs@google.com>
+ <CRHTDZZU72CJ.3QAHM67MV5G47@bobo>
+Date: Tue, 28 Mar 2023 20:07:29 +1100
+Message-ID: <87tty5ckha.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230328011812.GA21977@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,28 +61,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, palmer@dabbelt.com, paul.walmsley@sifive.com, Robin Murphy <robin.murphy@arm.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 28, 2023 at 03:18:12AM +0200, Christoph Hellwig wrote:
-> On Fri, Mar 24, 2023 at 09:17:38AM +0000, Jiaxun Yang wrote:
-> > > 
-> > > Is patch a 6.3 candidate or should all of it go into 6.4?
-> > 
-> > Please leave it for 6.4, as corresponding MIPS arch part will be a part of 6.4.
-> 
-> Ok.  I'll really need review from the MIPS and drivers/of/ maintainers,
-> through.
+"Nicholas Piggin" <npiggin@gmail.com> writes:
+> On Tue Mar 28, 2023 at 3:43 AM AEST, Sean Christopherson wrote:
+>> On Mon, Mar 27, 2023, Nicholas Piggin wrote:
+>> > On Thu Mar 23, 2023 at 3:41 AM AEST, Sean Christopherson wrote:
+...
+>> > >
+>> > > What is the long term plan for KVM PPC maintenance?  I was under the impression
+>> > > that KVM PPC was trending toward "bug fixes only", but the addition of selftests
+>> > > support suggests otherwise.
+...
+>
+>> and ideally there would be one or more M: (and R:) entries as well.  I'm not
+>> all that concerned about the selftests support being abandoned, but the lack of
+>> specific contacts makes it look like KVM PPC is in maintenance-only mode, and it
+>> sounds like that's not the case.
+>
+> Yeah, I guess the intention was to bring it a bit more under general
+> arch/powerpc maintainership but it does look a bit odd having a top
+> level entry and no contacts. We'll reconsider what to do with that.
 
-I don't see any MIPS changes in the series besides the ifdef CONFIG_MIPS
-part in patch 1, which gets removed again in patch 4 (chance to drop
-that completely ?).
+Yeah I agree it ends up looking a bit weird.
 
-I've merged the corresponding MIPS patches into mips-next last week.
+The intention was just to make it clear that Paul's tree was no longer
+where patches were being handled, and that they'd be handled as regular
+powerpc patches.
 
-Thomas.
+At the time I hoped we'd relatively quickly be able to add someone as at
+least a KVM "R:"eviewer, but circumstances intervened.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Hopefully we can fix that soon.
+
+cheers
