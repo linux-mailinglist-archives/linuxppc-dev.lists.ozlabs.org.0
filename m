@@ -1,76 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB08F6CEE17
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:54:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED826CEE78
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 18:02:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrhs4SG8z3fj6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:54:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrt747MYz3ghK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 03:02:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.179; helo=mail-oi1-f179.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.48; helo=mail-ed1-f48.google.com; envelope-from=wens213@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmrfw533lz3cJY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:52:56 +1100 (AEDT)
-Received: by mail-oi1-f179.google.com with SMTP id l18so11894539oic.13
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:52:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmrlt4JLMz3g51
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:57:14 +1100 (AEDT)
+Received: by mail-ed1-f48.google.com with SMTP id t10so65134417edd.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:57:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105174;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/yItqnZ9vRLGQesakQq7xospJXeaAueRctcAXfNX28w=;
-        b=dCIkLwJCIDtrG0vrwWChe4qqUK9e0FDwfYiOZ/hBo1OSH4KGvXW/UG44q9vDE7LXSv
-         A38gmLbMItRXf2gp3Wp83wZ0f0BCw5t9smYFiSHi57/j+WIzspwRlqWZ6wVtKDc9mOuu
-         g2ZcOadT/xspmY5r3COb7r++S1d7/4SzBJda4KSHooeNTBdHkgqfzIaIR4hwwFPK35s7
-         MPSTbNCPevgS/fVFuVjwsi1Zt2mrViyXae6PP/YsQnSK2clzuBQyzhslBgvyL7TAHMKl
-         ODRIYw9ATnbxElS/H5i4gFSemNrzP6DoqzUJRlArPMFhu7Txd0d5UdwyUG3E9rFh9n4F
-         AIeg==
-X-Gm-Message-State: AO0yUKX9tq/CI6EHl2SisW9bSt16fwvIX2PsjKuhykox6hKhfbb+S5ND
-	THxD4kVXtlAO+fRWzgKrrg==
-X-Google-Smtp-Source: AK7set8VenL+CVecLJkZQ+2YD6HECaZWNdDHKrwGAWt0Tn+DIRoRNNZ1eYx2LdRkWm+8wMeNY2nxyA==
-X-Received: by 2002:aca:1c07:0:b0:386:9dba:4571 with SMTP id c7-20020aca1c07000000b003869dba4571mr8390718oic.25.1680105174043;
-        Wed, 29 Mar 2023 08:52:54 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id q132-20020acac08a000000b0037fa035f4f3sm13719284oif.53.2023.03.29.08.52.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:52:53 -0700 (PDT)
-Received: (nullmailer pid 3198099 invoked by uid 1000);
-	Wed, 29 Mar 2023 15:52:45 -0000
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 29 Mar 2023 10:52:16 -0500
-Subject: [PATCH 19/19] of: Drop cpu.h include from of_device.h
+        d=1e100.net; s=20210112; t=1680105431;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mv45vqNNvk7gfjj9ywv5t87xL9EGo+L1vyvtzDS68LU=;
+        b=QBj93ltn7axau7Z9XQ6Bcn2XAqmqFx37WAiihhbW2nUShjJWGXvEKEc0+RDdlcHgAi
+         XgTq+mQsBXCIn14jykSuLkPDDKUVh5BOzcI114XiyUNVws5B+vDejTatj2ajw8wmllCH
+         tJtLEXFkbiObkvS1KiiVhsqsL5/e8Pga32dlTbtliqn2sbk8ND2eEXNAMNE56VPN0JkP
+         d5kNkHYP4evD74hALXQlZTB7Bj5g2nkXJ2szfI0b51DNPpULVBqkp2uivuRPtpooJpar
+         SRnjeqKBqPbiFtRzRXQniBB7wA1pFQOeNyqldUpbwzB0AJ7qEqXg5+UUkscHfSmdWiVa
+         Nw0A==
+X-Gm-Message-State: AAQBX9dM5vI3LNGJfO7X2aHEa6CjES5iw3ZFWQpAGny3/fgVgRPOQdLj
+	X1BgHuYi8gAS2NzZE6oUVk8+kMnVd4GKmc2b
+X-Google-Smtp-Source: AKy350ZnFE6GZG38IXatMCC/ciPBhi//96/TrJG/hazihXeeRlbdHtzo3tZ+RvLwiTYWZ2RdtQaCyA==
+X-Received: by 2002:a17:906:380a:b0:93b:943f:6261 with SMTP id v10-20020a170906380a00b0093b943f6261mr19946445ejc.74.1680105430786;
+        Wed, 29 Mar 2023 08:57:10 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id g13-20020a170906198d00b008c16025b318sm16628141ejd.155.2023.03.29.08.57.10
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Mar 2023 08:57:10 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id l12so16250298wrm.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:57:10 -0700 (PDT)
+X-Received: by 2002:a5d:591c:0:b0:2ca:4533:5d6a with SMTP id
+ v28-20020a5d591c000000b002ca45335d6amr4154237wrd.7.1680105410028; Wed, 29 Mar
+ 2023 08:56:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-dt-cpu-header-cleanups-v1-19-581e2605fe47@kernel.org>
-References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Amit Daniel Kachhap <amit.kachhap@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Yangtao Li <tiny.windzz@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Anup Patel <anup@brainfault.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
-	Marc Zyngier <maz@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>
-X-Mailer: b4 0.13-dev
+References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org> <20230329-dt-cpu-header-cleanups-v1-6-581e2605fe47@kernel.org>
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-6-581e2605fe47@kernel.org>
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Wed, 29 Mar 2023 23:56:38 +0800
+X-Gmail-Original-Message-ID: <CAGb2v64tNZa_LCUpHBbBUdpftB_Dms=oHcb7ZAD42qL-ov73hw@mail.gmail.com>
+Message-ID: <CAGb2v64tNZa_LCUpHBbBUdpftB_Dms=oHcb7ZAD42qL-ov73hw@mail.gmail.com>
+Subject: Re: [PATCH 06/19] ARM: sunxi: Drop of_device.h include
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,31 +67,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Reply-To: wens@csie.org
+Cc: Nishanth Menon <nm@ti.com>, Huacai Chen <chenhuacai@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Yangtao Li <tiny.windzz@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Amit Kucheria <amitk@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Frank Rowand <frowand.list@gmail.com>, Viresh Kumar <vireshk@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Marc Zyngier <maz@kernel.org>, Samuel Holland <samuel@sholland.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Andy Gross <agross@kernel.org>, Anup Patel <anup@brainfault.org>, Zhang Rui <rui.zhang@intel.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Albert Ou <aou@eecs.berkeley.ed
+ u>, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Amit Daniel Kachhap <amit.kachhap@gmail.com>, linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sudeep Holla <sudeep.holla@arm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Lukasz Luba <lukasz.luba@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that all users which had an implicit dependency on cpu.h have been
-fixed. the cpu.h include can be dropped from of_device.h
+On Wed, Mar 29, 2023 at 11:53=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
+e:
+>
+> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+> implicitly including other includes, and is no longer needed. Just drop
+> including of_device.h as of.h is already included.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Please ack and I will take the series via the DT tree.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- include/linux/of_device.h | 1 -
- 1 file changed, 1 deletion(-)
+Acked-by: Chen-Yu Tsai <wens@csie.org>
 
-diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-index 5cdafe19dc80..7ac9a8ae9c80 100644
---- a/include/linux/of_device.h
-+++ b/include/linux/of_device.h
-@@ -2,7 +2,6 @@
- #ifndef _LINUX_OF_DEVICE_H
- #define _LINUX_OF_DEVICE_H
- 
--#include <linux/cpu.h>
- #include <linux/platform_device.h>
- #include <linux/of_platform.h> /* temporary until merge */
- 
+I doubt this file would ever see any more changes.
 
--- 
-2.39.2
-
+> ---
+>  arch/arm/mach-sunxi/mc_smp.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
+> index 26cbce135338..cb63921232a6 100644
+> --- a/arch/arm/mach-sunxi/mc_smp.c
+> +++ b/arch/arm/mach-sunxi/mc_smp.c
+> @@ -19,7 +19,6 @@
+>  #include <linux/irqchip/arm-gic.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> -#include <linux/of_device.h>
+>  #include <linux/smp.h>
+>
+>  #include <asm/cacheflush.h>
+>
+> --
+> 2.39.2
+>
