@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181006CEDD8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D076CEE63
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 18:01:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PmrhM6p8fz3ffF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:54:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PmrrN1T7tz3gbs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 03:01:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.41; helo=mail-oo1-f41.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.47; helo=mail-oo1-f47.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmrft3Rqlz3cLF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:52:54 +1100 (AEDT)
-Received: by mail-oo1-f41.google.com with SMTP id l7-20020a4abe07000000b0053e1205c84bso2136683oop.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:52:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgT6J3Bz3fVX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:25 +1100 (AEDT)
+Received: by mail-oo1-f47.google.com with SMTP id m6-20020a4ae846000000b0053b9059edd5so2497343oom.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105172;
+        d=1e100.net; s=20210112; t=1680105205;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hUvdSWvlelGy1WbXkwFcUNCtjmz5cL2Z3yoJim8fyN4=;
-        b=im0dLVLy9D5gZwzJYdtxv7pjmbaI2tNECGsWLgI19QH+Ebr1Gd0ILS+lM8lBKlUK6P
-         rqfqOxh42uZLbylGq/GqczaNZXSyq2L3zVn4YS8N0O7GjV1kFw5IPm5F7Vp2bpEZrwYH
-         IdI/CzJR+j23GlvSZGioGC/4L3MbrMyewT1TsGsXCkMefGEYZHYSj0gA0KEkrpGpxgbK
-         JdkoO70vEPuILXQNoauSPi9tZmhxXpAGs0OubQZY20UZmHAAuL805NvkLMWg47LJq+r+
-         MMR0o4bmgUyP+DnLwzSc49Gf4XjnzPIgDq8IIK6OjLNAD8w7Yhhq1CpzO95khkitC7cJ
-         58qA==
-X-Gm-Message-State: AO0yUKVT4VqwNvUH/F0Ry77fopcxHFKNFNPmMs8udYW0d2pGU8brY8kq
-	Vz6aRk4p6VaYnOp9XIOzeQ==
-X-Google-Smtp-Source: AK7set8fZmNpueyLlqRjeVxsIcrGmIm7sG0omBAJB7zOEj3TTntZfmKbMnjZiGlZRcAnzZ6+ha8iMg==
-X-Received: by 2002:a4a:4191:0:b0:538:4d29:30cb with SMTP id x139-20020a4a4191000000b005384d2930cbmr9034039ooa.8.1680105171818;
-        Wed, 29 Mar 2023 08:52:51 -0700 (PDT)
+        bh=GxrilhvfwDlef/A2YTUefG5k1p916jMGPiiHrDKkFR0=;
+        b=Q2gekZnLdNdt7TcnRH4/xD0T1A8gdffYGtnzvM6NaDrA1EGIF3YvER84dTadrzkPHL
+         Ax1kVUE49FbCCbnf9/A2FhRq555Ow4l/ouXKkohg+VI0j7e4iVKwEBJFHf5XHNFFWps1
+         ZtGm9JkZjwRZE9QCyMw7JOC5sXWHGJfzHTlQzanASRUI3SqYA9cn0uPUPQ2U2xoGZlpQ
+         zCXWgChJJuG+mv87u5AONSWXt3r86Drb93FGJiNl6ER5nKgcGMpweRN+8TPITI/onq7B
+         bSx1j/0rxvRRjr0fZSkD2CbdVGlr8gUOUItt0HQw9Vcuhgr4wM19QFUApG6JtZy2jHNT
+         ypzg==
+X-Gm-Message-State: AO0yUKV/Dd4TSTQdR8Nm639nbVLeegEAZS+dQt3lVrO8EPdi1zZaI7cc
+	XD2aqXiNDbdshTN79N4zMw==
+X-Google-Smtp-Source: AK7set/IvKP58b96RyfRxVRB8Yjm2uXbhHwCU35QLNRLqkqctfQoMFiFz1/Ijy3GHwDVb/O3xlHYvQ==
+X-Received: by 2002:a4a:52d4:0:b0:53b:8b5:48d0 with SMTP id d203-20020a4a52d4000000b0053b08b548d0mr9782179oob.1.1680105205203;
+        Wed, 29 Mar 2023 08:53:25 -0700 (PDT)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id 129-20020a4a1887000000b005252d376caesm13850273ooo.22.2023.03.29.08.52.49
+        by smtp.gmail.com with ESMTPSA id 4-20020a4a1704000000b00524faf3d2d7sm13940444ooe.41.2023.03.29.08.53.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:52:51 -0700 (PDT)
-Received: (nullmailer pid 3198095 invoked by uid 1000);
+        Wed, 29 Mar 2023 08:53:24 -0700 (PDT)
+Received: (nullmailer pid 3198097 invoked by uid 1000);
 	Wed, 29 Mar 2023 15:52:45 -0000
 From: Rob Herring <robh@kernel.org>
-Date: Wed, 29 Mar 2023 10:52:14 -0500
-Subject: [PATCH 17/19] irqchip: loongson-eiointc: Add explicit include for
- cpuhotplug.h
+Date: Wed, 29 Mar 2023 10:52:15 -0500
+Subject: [PATCH 18/19] OPP: Adjust includes to remove of_device.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-dt-cpu-header-cleanups-v1-17-581e2605fe47@kernel.org>
+Message-Id: <20230329-dt-cpu-header-cleanups-v1-18-581e2605fe47@kernel.org>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
@@ -87,41 +86,31 @@ Cc: devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-arm-msm@vger.ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Removing the include of cpu.h from of_device.h causes an error:
-
-drivers/irqchip/irq-loongson-eiointc.c:420:9: error: implicit declaration of function 'cpuhp_setup_state_nocalls' [-Werror=implicit-function-declaration]
-
-This driver doesn't even use DT, so all the DT includes can be dropped.
+Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+implicitly including other includes, and is no longer needed. Adjust the
+include files with what was implicitly included by of_device.h (cpu.h and
+of.h) and drop including of_device.h.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
 Please ack and I will take the series via the DT tree.
 ---
- drivers/irqchip/irq-loongson-eiointc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/opp/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
-index d15fd38c1756..fd9d87f1470e 100644
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -7,16 +7,13 @@
- 
- #define pr_fmt(fmt) "eiointc: " fmt
- 
-+#include <linux/cpuhotplug.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/irqchip.h>
- #include <linux/irqdomain.h>
- #include <linux/irqchip/chained_irq.h>
- #include <linux/kernel.h>
--#include <linux/platform_device.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
--#include <linux/of_platform.h>
- #include <linux/syscore_ops.h>
- 
- #define EIOINTC_REG_NODEMAP	0x14a0
+diff --git a/drivers/opp/of.c b/drivers/opp/of.c
+index e55c6095adf0..63b126c6215e 100644
+--- a/drivers/opp/of.c
++++ b/drivers/opp/of.c
+@@ -13,7 +13,7 @@
+ #include <linux/cpu.h>
+ #include <linux/errno.h>
+ #include <linux/device.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/pm_domain.h>
+ #include <linux/slab.h>
+ #include <linux/export.h>
 
 -- 
 2.39.2
