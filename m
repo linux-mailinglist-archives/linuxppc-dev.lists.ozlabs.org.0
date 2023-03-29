@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B5B6CEE60
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 18:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33D06CEE47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 18:00:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrqr5gVwz3ft9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 03:00:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrq960C7z3gTQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 03:00:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.49; helo=mail-ot1-f49.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.51; helo=mail-oa1-f51.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgT4B4Gz3fFY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:25 +1100 (AEDT)
-Received: by mail-ot1-f49.google.com with SMTP id 61-20020a9d02c3000000b0069fe8de3139so8451455otl.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgR36S0z3fHC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:23 +1100 (AEDT)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-17683b570b8so16624593fac.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105203;
+        d=1e100.net; s=20210112; t=1680105201;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GcRNyMomlVIyDJBO4v13lmumWoZCHsVn17zoo+wPdkk=;
-        b=Eim/y7hWtOSaUWHC46Xerebnv00bQ329BJ9HvRyqfos1qC3z1UlI/AY5lNwvtJ3R6Z
-         2X0CU1wYRPC6Bw1rfVLZhQhqpAPveB569Z1b+tCoTEm6oUJM7RpUuOcJEuugr7zB5XS6
-         zQYK9SoHC3numbvIXXJvdysePZaJ4qVt+TxyXrXnAgPPwJPaRIoeHlGlVmK+NeLfQPYo
-         dPWQAuXGcxJBMeDNPO9SKjHYfhpOpshsx2AI/3MzyBlXRsND5rV1yvWyNF3m7QnpxX//
-         J386FXLDkSsIUS1l7eIzNXpDsJuUMKNByuIKKJrp1yKTA7AjqyzsjJZkwFQ5cLyLGD32
-         cDJw==
-X-Gm-Message-State: AO0yUKXW+v1WRg+kKDtL7oMlQtUfzBVBVVptL6HDToU1Buos5fSm+pgB
-	4LEXRx7XDaqtW+JUUHFMRA==
-X-Google-Smtp-Source: AK7set+G4RUI7e7LVlBDXGQ8p8x17CahM2R0t8c+RybdcRc83FcjeXtVKZHsxX3oO+Yqeus+IJNu+w==
-X-Received: by 2002:a05:6830:124e:b0:68e:da51:2cb2 with SMTP id s14-20020a056830124e00b0068eda512cb2mr10233310otp.37.1680105202916;
-        Wed, 29 Mar 2023 08:53:22 -0700 (PDT)
+        bh=bEYSgBedvEchN2q/UoiMsAU3PddmSYQdLMNjoc9MCt4=;
+        b=Gbcivw84vKDgUIOqg4co8ZikCAdoRQ46oYjrQyy+poqNlu063W0i3FbOq85I6qIJTB
+         bQQJcf4dYxm1x12t/OxSZNhgjY/O01AVqOW3Vu+BiCRX6fI/9AMrfu7uAm9IKnOzItAf
+         p3mvwmZ7Tbu344DhDC96EnRuI5ckycbuaquOfonvPz8Zdzj3trSXOYhyxWfvCZZIgZ9V
+         8YOA32FKb2McjX0RqnHKI7Nhc0KSal204RJuKTMzGnPHHwan220Sx4wgwYqinttlJf65
+         Dks5xM5bzWwWOOF1+oiSwDUhGt5rU8RQ35Vk+ucqa+3BfGMwpX02yfskilJQk9ldYAUK
+         312Q==
+X-Gm-Message-State: AAQBX9eX7PVVgiAZIN45HF9IJgXdI9SKDTzcqCaLw9//6r1PUS61WgGR
+	+VEg2JQSt+1TvmvNr8Mn5g==
+X-Google-Smtp-Source: AKy350ZHXeEonGuoS+n1vAF/JTVb3n1039viPI4HO0R7pB9GB4WjtZ+1Lq53IBiwmzOIfDambYJBVQ==
+X-Received: by 2002:a05:6870:972a:b0:17a:e448:3dcd with SMTP id n42-20020a056870972a00b0017ae4483dcdmr13459005oaq.59.1680105200708;
+        Wed, 29 Mar 2023 08:53:20 -0700 (PDT)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id y26-20020a056830209a00b006a06e7972ebsm6242943otq.38.2023.03.29.08.53.21
+        by smtp.gmail.com with ESMTPSA id k10-20020a056830168a00b0069dd3d98ec6sm5193290otr.44.2023.03.29.08.53.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:53:22 -0700 (PDT)
-Received: (nullmailer pid 3198087 invoked by uid 1000);
+        Wed, 29 Mar 2023 08:53:20 -0700 (PDT)
+Received: (nullmailer pid 3198089 invoked by uid 1000);
 	Wed, 29 Mar 2023 15:52:45 -0000
 From: Rob Herring <robh@kernel.org>
-Date: Wed, 29 Mar 2023 10:52:10 -0500
-Subject: [PATCH 13/19] soc: mediatek: mtk-svs: Add explicit include for
- cpu.h
+Date: Wed, 29 Mar 2023 10:52:11 -0500
+Subject: [PATCH 14/19] cpufreq: Adjust includes to remove of_device.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-dt-cpu-header-cleanups-v1-13-581e2605fe47@kernel.org>
+Message-Id: <20230329-dt-cpu-header-cleanups-v1-14-581e2605fe47@kernel.org>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
@@ -87,32 +86,156 @@ Cc: devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-arm-msm@vger.ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Removing the include of cpu.h from of_device.h (included by
-of_platform.h) causes an error:
-
-drivers/soc/mediatek/mtk-svs.c:2134:41: error: implicit declaration of function 'get_cpu_device'; did you mean 'get_swap_device'? [-Werror=implicit-function-declaration]
-
-of_platform.h is still needed for of_find_device_by_node().
+Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+implicitly including other includes, and is no longer needed. Adjust the
+include files with what was implicitly included by of_device.h (cpu.h and
+of.h) and drop including of_device.h.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
 Please ack and I will take the series via the DT tree.
 ---
- drivers/soc/mediatek/mtk-svs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq-dt-platdev.c | 1 -
+ drivers/cpufreq/kirkwood-cpufreq.c   | 2 +-
+ drivers/cpufreq/maple-cpufreq.c      | 2 +-
+ drivers/cpufreq/pmac32-cpufreq.c     | 2 +-
+ drivers/cpufreq/pmac64-cpufreq.c     | 2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c    | 4 ++--
+ drivers/cpufreq/spear-cpufreq.c      | 2 +-
+ drivers/cpufreq/tegra124-cpufreq.c   | 1 -
+ drivers/cpufreq/tegra20-cpufreq.c    | 2 +-
+ include/linux/cpufreq.h              | 1 -
+ 10 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index f26eb2f637d5..1b7579a5bec6 100644
---- a/drivers/soc/mediatek/mtk-svs.c
-+++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -7,6 +7,7 @@
- #include <linux/bits.h>
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index e85703651098..f9675e1a8529 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -6,7 +6,6 @@
+ 
+ #include <linux/err.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ 
+ #include "cpufreq-dt.h"
+diff --git a/drivers/cpufreq/kirkwood-cpufreq.c b/drivers/cpufreq/kirkwood-cpufreq.c
+index 70ad8fe1d78b..95588101efbd 100644
+--- a/drivers/cpufreq/kirkwood-cpufreq.c
++++ b/drivers/cpufreq/kirkwood-cpufreq.c
+@@ -9,7 +9,7 @@
+ #include <linux/module.h>
  #include <linux/clk.h>
+ #include <linux/cpufreq.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+ #include <asm/proc-fns.h>
+diff --git a/drivers/cpufreq/maple-cpufreq.c b/drivers/cpufreq/maple-cpufreq.c
+index 28d346062166..f9306410a07f 100644
+--- a/drivers/cpufreq/maple-cpufreq.c
++++ b/drivers/cpufreq/maple-cpufreq.c
+@@ -23,7 +23,7 @@
  #include <linux/completion.h>
-+#include <linux/cpu.h>
- #include <linux/cpuidle.h>
- #include <linux/debugfs.h>
+ #include <linux/mutex.h>
+ #include <linux/time.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #define DBG(fmt...) pr_debug(fmt)
+ 
+diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
+index 4b8ee2014da6..a28716d8fc54 100644
+--- a/drivers/cpufreq/pmac32-cpufreq.c
++++ b/drivers/cpufreq/pmac32-cpufreq.c
+@@ -23,7 +23,7 @@
+ #include <linux/init.h>
  #include <linux/device.h>
+ #include <linux/hardirq.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/irq.h>
+diff --git a/drivers/cpufreq/pmac64-cpufreq.c b/drivers/cpufreq/pmac64-cpufreq.c
+index ba9c31d98bd6..2cd2b06849a2 100644
+--- a/drivers/cpufreq/pmac64-cpufreq.c
++++ b/drivers/cpufreq/pmac64-cpufreq.c
+@@ -21,7 +21,7 @@
+ #include <linux/init.h>
+ #include <linux/completion.h>
+ #include <linux/mutex.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/irq.h>
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index 2f581d2d617d..df165a078d14 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -11,8 +11,8 @@
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ #include <linux/pm_opp.h>
+ #include <linux/pm_qos.h>
+ #include <linux/slab.h>
+diff --git a/drivers/cpufreq/spear-cpufreq.c b/drivers/cpufreq/spear-cpufreq.c
+index c6fdf019dbde..78b875db6b66 100644
+--- a/drivers/cpufreq/spear-cpufreq.c
++++ b/drivers/cpufreq/spear-cpufreq.c
+@@ -18,7 +18,7 @@
+ #include <linux/err.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/types.h>
+diff --git a/drivers/cpufreq/tegra124-cpufreq.c b/drivers/cpufreq/tegra124-cpufreq.c
+index 7a1ea6fdcab6..312ca5ddc6c4 100644
+--- a/drivers/cpufreq/tegra124-cpufreq.c
++++ b/drivers/cpufreq/tegra124-cpufreq.c
+@@ -11,7 +11,6 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_opp.h>
+diff --git a/drivers/cpufreq/tegra20-cpufreq.c b/drivers/cpufreq/tegra20-cpufreq.c
+index ab7ac7df9e62..5d1f5f87e46d 100644
+--- a/drivers/cpufreq/tegra20-cpufreq.c
++++ b/drivers/cpufreq/tegra20-cpufreq.c
+@@ -12,7 +12,7 @@
+ #include <linux/err.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_opp.h>
+ #include <linux/types.h>
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 65623233ab2f..3ac4a10d4651 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -15,7 +15,6 @@
+ #include <linux/kobject.h>
+ #include <linux/notifier.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/pm_opp.h>
+ #include <linux/pm_qos.h>
+ #include <linux/spinlock.h>
 
 -- 
 2.39.2
