@@ -1,37 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2516CF1F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 20:16:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22E96CF1FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 20:17:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PmvrC14NZz3fTg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 05:16:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PmvsW4pgnz3fTw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 05:17:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmvqf4xqGz3c7X
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 05:15:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmvs31QHTz2xrW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 05:16:54 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B965B2F4;
-	Wed, 29 Mar 2023 11:15:50 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CCC11576;
+	Wed, 29 Mar 2023 11:17:07 -0700 (PDT)
 Received: from bogus (unknown [10.57.52.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F9453F6C4;
-	Wed, 29 Mar 2023 11:14:57 -0700 (PDT)
-Date: Wed, 29 Mar 2023 19:14:23 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC5863F6C4;
+	Wed, 29 Mar 2023 11:16:13 -0700 (PDT)
+Date: Wed, 29 Mar 2023 19:15:39 +0100
 From: Sudeep Holla <sudeep.holla@arm.com>
 To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 04/19] of: Move CPU node related functions to their own
- file
-Message-ID: <20230329181423.6e2z2giwkgdvhshn@bogus>
+Subject: Re: [PATCH 10/19] cacheinfo: Adjust includes to remove of_device.h
+Message-ID: <20230329181539.t4yu7tsbv4ilegdt@bogus>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
- <20230329-dt-cpu-header-cleanups-v1-4-581e2605fe47@kernel.org>
+ <20230329-dt-cpu-header-cleanups-v1-10-581e2605fe47@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-4-581e2605fe47@kernel.org>
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-10-581e2605fe47@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,21 +46,13 @@ Cc: Nishanth Menon <nm@ti.com>, Huacai Chen <chenhuacai@kernel.org>, "Rafael J. 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 29, 2023 at 10:52:01AM -0500, Rob Herring wrote:
-> drivers/of/base.c is quite long and we've accumulated a number of CPU
-> node functions. Let's move them to a new file, cpu.c, along with the
-> lone of_cpu_device_node_get() in of_device.h. Moving the declaration has
-> no effect yet as of.h is included by of_device.h. This serves as
-> preparation to disentangle the includes in of_device.h and
-> of_platform.h.
+On Wed, Mar 29, 2023 at 10:52:07AM -0500, Rob Herring wrote:
+> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+> implicitly including other includes, and is no longer needed. Update the
+> includes to use of.h instead of of_device.h.
 >
 
-Makes sense to have its own file for CPUs, I am sure there will be more
-additions 😉.
-
-FWIW,
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
 -- 
 Regards,
