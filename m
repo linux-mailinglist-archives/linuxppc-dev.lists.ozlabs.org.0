@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051896CEE31
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46F76CEE28
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:58:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrnf6pLfz3fmj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:58:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrn15nfXz3gD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:58:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.44; helo=mail-oo1-f44.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.47; helo=mail-oa1-f47.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgK0br0z3fHy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:16 +1100 (AEDT)
-Received: by mail-oo1-f44.google.com with SMTP id h22-20020a4ad756000000b0053e4ab58fb5so1449605oot.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgG5drPz3fSq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:14 +1100 (AEDT)
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-17aceccdcf6so16646500fac.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105194;
+        d=1e100.net; s=20210112; t=1680105192;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tOFzIiTcs5glICtXCi7orAKYw6mLzzis64IJ8Etn534=;
-        b=ZFuv0C7lruVd7n+B6IK0BVmoxt4ADS2H4310Rshy8O5YU2X5jM5Dl6SgqaWwYZfZIl
-         y5wmhI09zn6yw6m3cQWZagdobEQJptMiZAB2Lm5j0oSfkuH3Ro8N/2F8PuRXw9nYx8tO
-         G5Nq+ijtLXwAwxGHTtYbzHEQ8a0BIVOBzkVylwbCn2zlu7Tpcr24JrJA+EJwD+qqKzdQ
-         QjjA+o/kPXr8sfaP16idTn6yTq5Szr4DSvv+NWEpIjyRp22aLMex31p0BqDuXziYx4JK
-         6vgCAL38xo9eNvHQOvafgperNuV+LXq35V0JTZnQbxB4e+wbV3CBKqO2rpIVSMLsRWvE
-         fdLA==
-X-Gm-Message-State: AO0yUKXzEdbQhVpFKbZFDNAyfaRetc3+7KaK3H5srv2sFe212wO/eGqh
-	o3hRHoGQ/oVg/GgH9RB//w==
-X-Google-Smtp-Source: AK7set9MAD4tg5pc/rHdBuixw1K3iao0K53LrjqhMjiHjl+aL1ahzPwsk7GYhgXBJpfdS1Uabklemg==
-X-Received: by 2002:a4a:41cb:0:b0:537:ad3c:d74f with SMTP id x194-20020a4a41cb000000b00537ad3cd74fmr9577499ooa.9.1680105194254;
-        Wed, 29 Mar 2023 08:53:14 -0700 (PDT)
+        bh=WurTN6TQClVnhKzRVCxCDshUnc0lAKMY5Mp4cC77h0Y=;
+        b=ikRIAR7myTixogJpXSi8+mOGH/yOYw36nWEQ97N0hEWpx0Hvx5b9lQjDWrIpbaMp8x
+         kKpfQg2llW6Q03IytJFyOYBlEPDbTQpaN1ALM9lGmV5C6Q1Xg7yi6QdN53afYM4RLJC2
+         9WK0GaU7QmYyqt5vn3oRLiUMcy959qktPfGKWkRKGy/TsjqJz0pNzGPvl4V4C9uCSGX+
+         q7P1o2amgZbg5SRY8Za0iUY1YwMx0WycR3X+fI7ikC8cflbz0/NZUQH0nJQhw8xfRU3H
+         iJS6Zr9gEgQLrwnpzE427WOGJAf5nRl65bLUJ1tbCOkCYF14BchJsPfa8MUTsIjOo5FC
+         ttKQ==
+X-Gm-Message-State: AAQBX9ejKqb45K1aZ4ymcoq9Xz+utsUfYO3xjbUGTkOx5t1ELdvAVBlf
+	7HOVc9F1ka81Zx2t6HvuHQ==
+X-Google-Smtp-Source: AKy350Zo9NclgwNBZoANioCGcuLyMicsG3a/5+eN9bgHMpdMdqlYEHn7LZHT8hqlsIh4r2ZmsXlMnw==
+X-Received: by 2002:a05:6870:2194:b0:17e:cb7:29c0 with SMTP id l20-20020a056870219400b0017e0cb729c0mr13838293oae.13.1680105192039;
+        Wed, 29 Mar 2023 08:53:12 -0700 (PDT)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id q125-20020a4a4b83000000b0051ffe0fe11bsm14001119ooa.6.2023.03.29.08.53.12
+        by smtp.gmail.com with ESMTPSA id aw8-20020a0568707f8800b001762d1bf6a9sm11897731oac.45.2023.03.29.08.53.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:53:13 -0700 (PDT)
-Received: (nullmailer pid 3198073 invoked by uid 1000);
+        Wed, 29 Mar 2023 08:53:11 -0700 (PDT)
+Received: (nullmailer pid 3198075 invoked by uid 1000);
 	Wed, 29 Mar 2023 15:52:45 -0000
 From: Rob Herring <robh@kernel.org>
-Date: Wed, 29 Mar 2023 10:52:03 -0500
-Subject: [PATCH 06/19] ARM: sunxi: Drop of_device.h include
+Date: Wed, 29 Mar 2023 10:52:04 -0500
+Subject: [PATCH 07/19] ARM: cpuidle: Drop of_device.h include
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-dt-cpu-header-cleanups-v1-6-581e2605fe47@kernel.org>
+Message-Id: <20230329-dt-cpu-header-cleanups-v1-7-581e2605fe47@kernel.org>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
@@ -94,21 +94,21 @@ Signed-off-by: Rob Herring <robh@kernel.org>
 ---
 Please ack and I will take the series via the DT tree.
 ---
- arch/arm/mach-sunxi/mc_smp.c | 1 -
+ arch/arm/kernel/cpuidle.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
-index 26cbce135338..cb63921232a6 100644
---- a/arch/arm/mach-sunxi/mc_smp.c
-+++ b/arch/arm/mach-sunxi/mc_smp.c
-@@ -19,7 +19,6 @@
- #include <linux/irqchip/arm-gic.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_device.h>
- #include <linux/smp.h>
+diff --git a/arch/arm/kernel/cpuidle.c b/arch/arm/kernel/cpuidle.c
+index 437ff39f7808..fba1f8bb03b5 100644
+--- a/arch/arm/kernel/cpuidle.c
++++ b/arch/arm/kernel/cpuidle.c
+@@ -5,7 +5,6 @@
  
- #include <asm/cacheflush.h>
+ #include <linux/cpuidle.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <asm/cpuidle.h>
+ 
+ extern struct of_cpuidle_method __cpuidle_method_of_table[];
 
 -- 
 2.39.2
