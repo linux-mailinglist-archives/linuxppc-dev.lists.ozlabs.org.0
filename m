@@ -1,52 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40416CF748
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 01:33:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5917A6CEE7D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 18:03:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pn2tJ5QXsz3fKh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 10:33:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrtd2BGgz3gt9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 03:03:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxtx.org (client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=jmforbes@linuxtx.org; receiver=<UNKNOWN>)
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.44; helo=mail-ed1-f44.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrkH69tkz3fcf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:55:51 +1100 (AEDT)
-Received: by mail-pl1-f180.google.com with SMTP id kc4so15342917plb.10
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:55:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmrm70yJPz3g6Z
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:57:27 +1100 (AEDT)
+Received: by mail-ed1-f44.google.com with SMTP id x3so65220514edb.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:57:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105349;
+        d=1e100.net; s=20210112; t=1680105444;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=62ZIWkSy5tZoUHv/2BRxXjvjKExsY1hv+Zfd9ZYJQ4E=;
-        b=b8l3hDGhau7Bc5OyMgPu8FYIPCyc96IjYtOacdyiBRAJPwcIyrWfMfTsfmnpYrH1da
-         LjcpIAxqX3urzswbGXHzSvWwShXTExV1fuHYCGxFlQXtEBEzoEdRa0J484d3f7jBYbaC
-         UnjhdzJNFAZ2MnWU3O83YA4bpMrn5YoyU0qA/40Syxkovs0L3uCJ5vk3AvQ8E7EQzVXb
-         4BTHm3uINZ0UGamCmfRKURt8f9SLj7s8ItfcMhV8hx9qJx3dACyDyGe6pWj+JPPpO7xn
-         YWe6PaaLcBIGErX7LOjSFHVhIuW/MXAayMb//71bbjkrAOnQ05YCRT6rTvtM2ejs7sf5
-         JMsg==
-X-Gm-Message-State: AAQBX9dlbRE8joL6eCDk+MXTj3TbopicMiv1stm7pgyhYrvKtJ1RhkfR
-	XwZshCXu3JUbm8m8KZtg24Xv/FztOPg9kayIQObpXQ==
-X-Google-Smtp-Source: AKy350aLDH5YR9t419L5OiinTR+6vLBCDmWiJH85fFWabTVqFHlXOqvkdPLNLHEa0183i9K3F9W0CuWctZ/RgFAniww=
-X-Received: by 2002:a17:902:c3c6:b0:1a1:b318:2776 with SMTP id
- j6-20020a170902c3c600b001a1b3182776mr7729184plj.0.1680105349103; Wed, 29 Mar
- 2023 08:55:49 -0700 (PDT)
+        bh=CiLLqeasGYV72OnUftYDwpJH98iYFk7qhLz9/jkuOco=;
+        b=nutDbiTbQFR4nRTidpvfB3WyyIqjbhxr93Q4XpCXNT+hp1SruMOP0EKYWQ0I8N4MxP
+         PUOin6fLDgj5PTUxUhY5MTN6iS88z9M/qWZdX7Wp6+AKqbctkdhDR6ZplKd0AFL9YUYI
+         Sbs+j4eiMFBX+3pF+ncQJdqXcGAfipWXzTNxv5PNTi92R1qXhKXFHBVUJf4YOxxDTjDm
+         y47jozpgEGMfgXrU7WSwtBeApID5g7+iRaF5jOQJCoYGwgymwgBd6tF391PTH+6IyZ9C
+         Cj4mOAUmOe1bb9DO1fyGTuNDVAbF/QOukiT1R+yjqI7aXwg8X9npFLPifguuZr/CyqKs
+         XiFQ==
+X-Gm-Message-State: AAQBX9eAJGWo+jVz9wCgYb+gL8pSR5GgH1Qlvd1rjqNc9reAs7n7wgXo
+	pPoJsUO35wb6xMyGrgr9nGgBBsiXTTASex2erlE=
+X-Google-Smtp-Source: AKy350bpppzhtgK7epjSXQz3h0DFNSdZnWNofTwOprIA61Xay8SqtY2fCtP8X1SqYIkDWIEHDZMZthJxQAfHpdrMVVg=
+X-Received: by 2002:a50:cc94:0:b0:4fb:c8e3:1ae2 with SMTP id
+ q20-20020a50cc94000000b004fbc8e31ae2mr10233137edi.3.1680105443653; Wed, 29
+ Mar 2023 08:57:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
-In-Reply-To: <20230325060828.2662773-3-rppt@kernel.org>
-From: Justin Forbes <jforbes@fedoraproject.org>
-Date: Wed, 29 Mar 2023 10:55:37 -0500
-Message-ID: <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-To: Mike Rapoport <rppt@kernel.org>
+References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org> <20230329-dt-cpu-header-cleanups-v1-16-581e2605fe47@kernel.org>
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-16-581e2605fe47@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 29 Mar 2023 17:57:12 +0200
+Message-ID: <CAJZ5v0iFMOWMuG1t4gwzF=m-kfonj4ni9+zciRHDzqFcTGaYpw@mail.gmail.com>
+Subject: Re: [PATCH 16/19] cpuidle: Adjust includes to remove of_device.h
+To: Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Thu, 30 Mar 2023 10:33:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,65 +57,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Nishanth Menon <nm@ti.com>, Huacai Chen <chenhuacai@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Yangtao Li <tiny.windzz@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Amit Kucheria <amitk@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Frank Rowand <frowand.list@gmail.com>, Viresh Kumar <vireshk@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Marc Zyngier <maz@kernel.org>, Samuel Holland <samuel@sholland.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Anup Patel <anup@brainfault.org>, Zhang Rui <rui.zhang@intel.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, A
+ lbert Ou <aou@eecs.berkeley.edu>, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Amit Daniel Kachhap <amit.kachhap@gmail.com>, linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sudeep Holla <sudeep.holla@arm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Lukasz Luba <lukasz.luba@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 25, 2023 at 1:09=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Wed, Mar 29, 2023 at 5:52=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
 >
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+> implicitly including other includes, and is no longer needed. Adjust the
+> include files with what was implicitly included by of_device.h (cpu.h,
+> cpuhotplug.h, of.h, and of_platform.h) and drop including of_device.h.
 >
-> It is not a good idea to change fundamental parameters of core memory
-> management. Having predefined ranges suggests that the values within
-> those ranges are sensible, but one has to *really* understand
-> implications of changing MAX_ORDER before actually amending it and
-> ranges don't help here.
->
-> Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
-> visible only if EXPERT=3Dy
-
-I do not like suddenly hiding this behind EXPERT for a couple of
-reasons.  Most importantly, it will silently change the config for
-users building with an old kernel config.  If a user has for instance
-"13" set and building with 4K pages, as is the current configuration
-for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
-to 10 with no indication that it is doing so.  And while I think that
-10 is a fine default for many aarch64 users, there are valid reasons
-for choosing other values. Putting this behind expert makes it much
-less obvious that this is an option.
-
-Justin
-
-> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->  arch/arm64/Kconfig | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> Please ack and I will take the series via the DT tree.
+
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+
+> ---
+>  drivers/cpuidle/cpuidle-psci.c      | 1 -
+>  drivers/cpuidle/cpuidle-qcom-spm.c  | 3 +--
+>  drivers/cpuidle/cpuidle-riscv-sbi.c | 2 +-
+>  drivers/cpuidle/dt_idle_states.c    | 1 -
+>  4 files changed, 2 insertions(+), 5 deletions(-)
 >
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index e60baf7859d1..7324032af859 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1487,11 +1487,9 @@ config XEN
->  # 16K |       27          |      14      |       13        |         11 =
-        |
->  # 64K |       29          |      16      |       13        |         13 =
-        |
->  config ARCH_FORCE_MAX_ORDER
-> -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
-> +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16=
-K_PAGES)
->         default "13" if ARM64_64K_PAGES
-> -       range 11 13 if ARM64_16K_PAGES
->         default "11" if ARM64_16K_PAGES
-> -       range 10 15 if ARM64_4K_PAGES
->         default "10"
->         help
->           The kernel memory allocator divides physically contiguous memor=
-y
+> diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psc=
+i.c
+> index 6de027f9f6f5..bf68920d038a 100644
+> --- a/drivers/cpuidle/cpuidle-psci.c
+> +++ b/drivers/cpuidle/cpuidle-psci.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/psci.h>
+>  #include <linux/pm_domain.h>
+> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle=
+-qcom-spm.c
+> index c6e2e91bb4c3..1fc9968eae19 100644
+> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
+> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+> @@ -11,8 +11,7 @@
+>  #include <linux/io.h>
+>  #include <linux/slab.h>
+>  #include <linux/of.h>
+> -#include <linux/of_address.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of_platform.h>
+>  #include <linux/err.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/cpuidle.h>
+> diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidl=
+e-riscv-sbi.c
+> index be383f4b6855..ae0b838a0634 100644
+> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
+> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> @@ -8,6 +8,7 @@
+>
+>  #define pr_fmt(fmt) "cpuidle-riscv-sbi: " fmt
+>
+> +#include <linux/cpuhotplug.h>
+>  #include <linux/cpuidle.h>
+>  #include <linux/cpumask.h>
+>  #include <linux/cpu_pm.h>
+> @@ -15,7 +16,6 @@
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_domain.h>
+> diff --git a/drivers/cpuidle/dt_idle_states.c b/drivers/cpuidle/dt_idle_s=
+tates.c
+> index 02aa0b39af9d..12fec92a85fd 100644
+> --- a/drivers/cpuidle/dt_idle_states.c
+> +++ b/drivers/cpuidle/dt_idle_states.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>
+>  #include "dt_idle_states.h"
+>
+>
 > --
-> 2.35.1
->
+> 2.39.2
 >
