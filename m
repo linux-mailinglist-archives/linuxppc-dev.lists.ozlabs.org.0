@@ -2,58 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5A96CDAAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 15:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAF16CECC3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:24:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PmnNL0HHLz3fB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 00:25:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmr1p4568z3fDt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:24:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WgjzEvDb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCMRukDR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WgjzEvDb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCMRukDR;
 	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmnMR1Jjnz3cJY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 00:24:19 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 32A8CCE2406;
-	Wed, 29 Mar 2023 13:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2492CC4339B;
-	Wed, 29 Mar 2023 13:24:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680096253;
-	bh=B9ZlgYT32JXvL6r+V3u05oh637hA8lFhd1cUlq+5cBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WgjzEvDbVTM7KJMGoXBzfWyNLjDmQM47ERZLqqkdSuvCs8rYIE/0MAgYKKswE2E1v
-	 CsxU8LNdtuty9PKKSvPxRs9UfjmX8YdQsqmGbwfLg2JHGM4Wlf9RqSYPbL6hy1jyEQ
-	 aRSuUPRf16oaUdy7IEqTovjaOshwe24NIwZVdmFkaA56qv/6XLXvN6zocfof8o3MXv
-	 i0B9WM/5qZ1awOUPYAvsmMcp8FmBwq8jD7vTRmstQiVx+57MUZuOleiHhuCGAEs1IN
-	 T3obesQZXOW3ttpXB8rHuJEovo/3fsbCfF1aTHMRIKomXIOFExC08QF6JELanHeO0B
-	 BsQmRsb73tyYA==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 517864052D; Wed, 29 Mar 2023 10:24:11 -0300 (-03)
-Date: Wed, 29 Mar 2023 10:24:11 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Subject: Re: [PATCH] perf vendor events power9: Remove UTF-8 characters from
- json files
-Message-ID: <ZCQ7+/9Yj5SDYsDn@kernel.org>
-References: <20230328112908.113158-1-kjain@linux.ibm.com>
- <CAP-5=fXU4F=LvE883EVjq0bWHKJ-LT12pTr827jqwGfH1RTXdw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmr0t3rmZz3c7N
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:23:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680103407; x=1711639407;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ptksIPCBqJcaNVtPPwyP250IRCPyy9oaMGihhbuBLbg=;
+  b=OCMRukDRuAVyeWrA5v/Vyp0efIty/ocN9ZmmjpJbXpWtw6Yl3aKtY6qK
+   mf8zLRURZh2ZJL/PiFnn6Q+2M55FDUS7I1MSroDmzt2yFGoInrF6FXii6
+   o52zeShz8mTiitW0NgkNb9u08ahgHsT1HcMacFyeyTeMwBpezNBN0OZ7z
+   F5NZ9NXaMeIT/xRGqcKKrDUmimY255ftCvaoLBjs1MF8HyO6DR0xSKP+l
+   tSNqCIfo+rkWiQvNKs2WTTM8MKXYeOyQ+ADitYv6OOBL+QpCUaJp9JxxT
+   igTeP5NF+NsYXCW1L6qOZJ/7hvDc36Sx0OBPpdiDsI1AmkkKZbKRaHY5g
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="368679514"
+X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
+   d="scan'208";a="368679514"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 08:22:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="716912773"
+X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
+   d="scan'208";a="716912773"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 29 Mar 2023 08:21:57 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1phXca-000Jf0-1i;
+	Wed, 29 Mar 2023 15:21:56 +0000
+Date: Wed, 29 Mar 2023 23:21:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 198925fae644b0099b66fac1d972721e6e563b17
+Message-ID: <64245763.70Rd23mcjZbCPFF8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP-5=fXU4F=LvE883EVjq0bWHKJ-LT12pTr827jqwGfH1RTXdw@mail.gmail.com>
-X-Url: http://acmel.wordpress.com
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,116 +70,262 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, Kajol Jain <kjain@linux.ibm.com>, linux-kernel@vger.kernel.org, disgoel@linux.ibm.com, atrajeev@linux.vnet.ibm.com, jolsa@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.com>, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, virtualization@lists.linux-foundation.org, Linux Memory Management List <linux-mm@kvack.org>, linux-gpio@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, io-uring@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Mar 28, 2023 at 09:21:49AM -0700, Ian Rogers escreveu:
-> On Tue, Mar 28, 2023 at 4:30 AM Kajol Jain <kjain@linux.ibm.com> wrote:
-> >
-> > Commit 3c22ba524304 ("perf vendor events powerpc: Update POWER9 events")
-> > added and updated power9 pmu json events. However some of the json
-> > events which are part of other.json and pipeline.json files,
-> > contains UTF-8 characters in their brief description.
-> > Having UTF-8 character could brakes the perf build on some distros.
-> 
-> nit: s/bakes/break/
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 198925fae644b0099b66fac1d972721e6e563b17  Add linux-next specific files for 20230329
 
-I'll fix that later, thans.
- 
-> > Fix this issue by removing the UTF-8 characters from other.json and
-> > pipeline.json files.
-> >
-> > Result without the fix patch:
+Error/Warning reports:
 
-[perfbuilder@five ~]$ cat dm.log/summary 
-   1    23.25 ubuntu:18.04-x-powerpc        : Ok   powerpc-linux-gnu-gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0 
-   2    24.56 ubuntu:18.04-x-powerpc64      : Ok   powerpc64-linux-gnu-gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0 
-   3    25.06 ubuntu:18.04-x-powerpc64el    : Ok   powerpc64le-linux-gnu-gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0 
-BUILD_TARBALL_HEAD=9da5ab1d38cd17fb47cbe5a1f95bca63e6ca9796
+https://lore.kernel.org/oe-kbuild-all/202303082135.NjdX1Bij-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303291916.ovLFJk2i-lkp@intel.com
 
-> > [command]# file -i pmu-events/arch/powerpc/power9/*
-> > pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-> > pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-> > pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-> >
-> > Result with the fix patch:
-> >
-> > [command]# file -i pmu-events/arch/powerpc/power9/*
-> > pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-> > pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-> >
-> > Fixes: 3c22ba524304 ("perf vendor events powerpc: Update POWER9 events")
-> > Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-> > Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-> > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> 
-> Acked-by: Ian Rogers <irogers@google.com>
-> 
-> Thanks,
-> Ian
-> 
-> > ---
-> >  tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
-> >  tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-> > index 3f69422c21f9..f10bd554521a 100644
-> > --- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-> > +++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-> > @@ -1417,7 +1417,7 @@
-> >    {
-> >      "EventCode": "0x45054",
-> >      "EventName": "PM_FMA_CMPL",
-> > -    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-> > +    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-> >    },
-> >    {
-> >      "EventCode": "0x201E8",
-> > @@ -2017,7 +2017,7 @@
-> >    {
-> >      "EventCode": "0xC0BC",
-> >      "EventName": "PM_LSU_FLUSH_OTHER",
-> > -    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-> > +    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-> >    },
-> >    {
-> >      "EventCode": "0x5094",
-> > diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> > index d0265f255de2..723bffa41c44 100644
-> > --- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> > +++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-> > @@ -442,7 +442,7 @@
-> >    {
-> >      "EventCode": "0x4D052",
-> >      "EventName": "PM_2FLOP_CMPL",
-> > -    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-> > +    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-> >    },
-> >    {
-> >      "EventCode": "0x1F142",
-> > --
-> > 2.39.1
-> >
+Error/Warning: (recently discovered and may have been fixed)
+
+drivers/base/power/domain.c:3090:23: error: 'struct dev_pm_info' has no member named 'runtime_error'
+drivers/base/power/domain.c:3092:28: error: 'struct dev_pm_info' has no member named 'disable_depth'
+drivers/base/power/domain.c:3094:28: error: 'struct dev_pm_info' has no member named 'runtime_status'
+drivers/base/power/domain.c:654:20: error: 'pm_wq' undeclared (first use in this function)
+drivers/base/power/domain.c:853:39: error: 'struct dev_pm_info' has no member named 'ignore_children'
+drivers/base/power/domain_governor.c:85:24: error: 'struct dev_pm_info' has no member named 'ignore_children'
+drivers/clk/clk-sp7021.c:316:8: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((_m), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (_m)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    int
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    void
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:140:9: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:16: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:189:26: sparse: sparse: dereference of noderef expression
+drivers/soc/fsl/qe/tsa.c:663:22: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/soc/fsl/qe/tsa.c:673:21: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/virtio/virtio_ring.c:2784:3: warning: Value stored to 'err' is never read [clang-analyzer-deadcode.DeadStores]
+drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
+include/linux/gpio/consumer.h: linux/err.h is included more than once.
+include/linux/gpio/driver.h: asm/bug.h is included more than once.
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+net/mac80211/mesh_pathtbl.c:616:24: warning: Value stored to 'cache' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- alpha-randconfig-r021-20230326
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arc-randconfig-r043-20230328
+|   |-- drivers-base-power-domain.c:error:pm_wq-undeclared-(first-use-in-this-function)
+|   |-- drivers-base-power-domain.c:error:struct-dev_pm_info-has-no-member-named-disable_depth
+|   |-- drivers-base-power-domain.c:error:struct-dev_pm_info-has-no-member-named-ignore_children
+|   |-- drivers-base-power-domain.c:error:struct-dev_pm_info-has-no-member-named-runtime_error
+|   |-- drivers-base-power-domain.c:error:struct-dev_pm_info-has-no-member-named-runtime_status
+|   `-- drivers-base-power-domain_governor.c:error:struct-dev_pm_info-has-no-member-named-ignore_children
+|-- arc-randconfig-s032-20230329
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:int
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:sparse:incompatible-types-in-conditional-expression-(different-base-types):
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:void
+|   |-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:dereference-of-noderef-expression
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-const-volatile-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-volatile-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-noderef-si_ram-got-void-noderef-__iomem
+|   `-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-noderef-si_regs-got-void-noderef-__iomem
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm64-randconfig-r031-20230327
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- csky-randconfig-s043-20230326
+|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+clang_recent_errors
+|-- powerpc-randconfig-r036-20230326
+|   `-- drivers-clk-clk-sp7021.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((_m)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-char)-unsigned-
+`-- riscv-randconfig-c006-20230326
+    |-- drivers-virtio-virtio_ring.c:warning:Value-stored-to-err-is-never-read-clang-analyzer-deadcode.DeadStores
+    `-- net-mac80211-mesh_pathtbl.c:warning:Value-stored-to-cache-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+
+elapsed time: 722m
+
+configs tested: 142
+configs skipped: 11
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r021-20230326   gcc  
+alpha                randconfig-r024-20230327   gcc  
+alpha                randconfig-r032-20230327   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r001-20230326   gcc  
+arc                  randconfig-r012-20230326   gcc  
+arc                  randconfig-r025-20230327   gcc  
+arc                  randconfig-r034-20230329   gcc  
+arc                  randconfig-r043-20230327   gcc  
+arc                  randconfig-r043-20230328   gcc  
+arc                  randconfig-r043-20230329   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r033-20230326   gcc  
+arm                  randconfig-r046-20230327   gcc  
+arm                  randconfig-r046-20230329   gcc  
+arm                             rpc_defconfig   gcc  
+arm                       spear13xx_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r031-20230327   gcc  
+arm64                randconfig-r035-20230329   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r005-20230326   clang
+hexagon              randconfig-r013-20230327   clang
+hexagon              randconfig-r021-20230327   clang
+hexagon              randconfig-r023-20230327   clang
+hexagon              randconfig-r041-20230329   clang
+hexagon              randconfig-r045-20230327   clang
+hexagon              randconfig-r045-20230329   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230327   gcc  
+i386                 randconfig-a002-20230327   gcc  
+i386                 randconfig-a003-20230327   gcc  
+i386                 randconfig-a004-20230327   gcc  
+i386                 randconfig-a005-20230327   gcc  
+i386                 randconfig-a006-20230327   gcc  
+i386                 randconfig-a011-20230327   clang
+i386                 randconfig-a012-20230327   clang
+i386                 randconfig-a013-20230327   clang
+i386                 randconfig-a014-20230327   clang
+i386                 randconfig-a015-20230327   clang
+i386                 randconfig-a016-20230327   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r004-20230326   gcc  
+ia64                 randconfig-r031-20230326   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r012-20230327   gcc  
+loongarch            randconfig-r021-20230329   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r002-20230329   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r022-20230326   gcc  
+m68k                 randconfig-r035-20230327   gcc  
+microblaze           randconfig-r006-20230326   gcc  
+microblaze           randconfig-r016-20230327   gcc  
+microblaze           randconfig-r023-20230329   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r002-20230326   gcc  
+mips                 randconfig-r002-20230327   clang
+mips                 randconfig-r034-20230326   gcc  
+nios2        buildonly-randconfig-r003-20230329   gcc  
+nios2        buildonly-randconfig-r006-20230327   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r006-20230327   gcc  
+nios2                randconfig-r015-20230327   gcc  
+nios2                randconfig-r023-20230326   gcc  
+openrisc             randconfig-r032-20230329   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r001-20230327   gcc  
+parisc               randconfig-r022-20230329   gcc  
+parisc               randconfig-r025-20230329   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r034-20230327   gcc  
+powerpc              randconfig-r036-20230326   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r025-20230326   gcc  
+riscv                randconfig-r031-20230329   gcc  
+riscv                randconfig-r042-20230326   gcc  
+riscv                randconfig-r042-20230327   clang
+riscv                randconfig-r042-20230329   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r004-20230327   clang
+s390                                defconfig   gcc  
+s390                 randconfig-r015-20230326   gcc  
+s390                 randconfig-r026-20230329   clang
+s390                 randconfig-r044-20230328   gcc  
+s390                 randconfig-r044-20230329   clang
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r005-20230326   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                   randconfig-r011-20230327   gcc  
+sh                   randconfig-r024-20230329   gcc  
+sh                   randconfig-r026-20230326   gcc  
+sh                   randconfig-r032-20230326   gcc  
+sh                           se7724_defconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r004-20230327   gcc  
+sparc                randconfig-r016-20230326   gcc  
+sparc                randconfig-r035-20230326   gcc  
+sparc                randconfig-r036-20230327   gcc  
+sparc64      buildonly-randconfig-r005-20230329   gcc  
+sparc64      buildonly-randconfig-r006-20230329   gcc  
+sparc64              randconfig-r005-20230327   gcc  
+sparc64              randconfig-r033-20230329   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230327   gcc  
+x86_64               randconfig-a002-20230327   gcc  
+x86_64               randconfig-a003-20230327   gcc  
+x86_64               randconfig-a004-20230327   gcc  
+x86_64               randconfig-a005-20230327   gcc  
+x86_64               randconfig-a006-20230327   gcc  
+x86_64               randconfig-a011-20230327   clang
+x86_64               randconfig-a012-20230327   clang
+x86_64               randconfig-a013-20230327   clang
+x86_64               randconfig-a014-20230327   clang
+x86_64               randconfig-a015-20230327   clang
+x86_64               randconfig-a016-20230327   clang
+x86_64               randconfig-r003-20230327   gcc  
+x86_64               randconfig-r014-20230327   clang
+x86_64                               rhel-8.3   gcc  
 
 -- 
-
-- Arnaldo
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
