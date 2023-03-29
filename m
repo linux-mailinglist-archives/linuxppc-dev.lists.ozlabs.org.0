@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B796CED92
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:53:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944D46CEE38
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Mar 2023 17:59:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrgs1qk8z3fZ0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:53:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pmrp93xV6z3gMF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 02:59:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.170; helo=mail-oi1-f170.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.50; helo=mail-ot1-f50.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pmrfr4X9vz3cLF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:52:52 +1100 (AEDT)
-Received: by mail-oi1-f170.google.com with SMTP id b19so11913331oib.7
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:52:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PmrgM1p3zz3fGQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 02:53:18 +1100 (AEDT)
+Received: by mail-ot1-f50.google.com with SMTP id o25-20020a9d4119000000b006a11eb19f8eso7247573ote.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 08:53:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680105169;
+        d=1e100.net; s=20210112; t=1680105196;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UL9zh/S00J+cmPfrAtv4vflOTxQVISfijtGfdl2R3L0=;
-        b=nG0mCMvzjt5fK3OTvxhRLJGIgaBgWs5acqhiG5gH9xpUMHd+m+FnDwg73RRw82btP7
-         W7gwKPt+V5IIAIFWoTwZno0GlTF5Wx5UG13IUCC8RxpFJrd5B0DIoBg4N4IiH0dAKt1a
-         +7xMXDGI4s2dy3jaTZh29Dq7w/5krby0qhjW5gPkgMobWPcEwsw2E6oLUhWETKky3Wsc
-         TuIF0RJVYTWIun2tlRK97Z2FbCCo/lp2QVUVS/CY/NV0qlzQYxkzfH+/rX1FIq27/Bsd
-         to4UFyHW0SqaFPxuE+d6JQoI/f8LS3XQVzPsE8Y4nHAiGO62bJMk8XtK+3VVT0FBxx5Q
-         3DhQ==
-X-Gm-Message-State: AAQBX9cSxduTTRBZ6K7BzehVFZQxqEeWTdeBhbwmy2f7Wdi1BN1Sh53w
-	8UyMO+Vk2OjaDTBggYhmqA==
-X-Google-Smtp-Source: AKy350YWPg6naXojJ+dh5QDGD5h6eaepx41Bc/m1xdmR3LQVsEP9dglulW7uPvOZ4q19z4rMeJNnvA==
-X-Received: by 2002:a05:6808:4da:b0:386:9883:ca9d with SMTP id a26-20020a05680804da00b003869883ca9dmr1291968oie.2.1680105169571;
-        Wed, 29 Mar 2023 08:52:49 -0700 (PDT)
+        bh=tWmtLeCB2PTcAHpGNr0ZZYDBf99xMHUdOSjMIZXheFk=;
+        b=QONdAJRZu7JyY3pVVPkeQf6XF7p/KbJNEks8W8kJ8Ar7B/G+YvNo6wOnLSjyUdww1t
+         e+Rx76clOJdVLec9Qe60PQ+kj+Yx1FAlH5ukSeq0mcQUh4HvddktiR62rzaGV1eGytPF
+         wNBpN6Ha0WywVdmlz7q0VcJcEVthrBQ3+aDcANUzVQfarYfKHKM+kjwZD12pulywG4rJ
+         2dgQnfN2YpnKJYQqcgk3V5obssWIMtO7AStByX5oCo3bSssrlPMVSG7nTn9gv0asdEvC
+         QPaAkVM3jA73AdAhrDpWQWUoU1aVPvVGvvKGXIATSjgFrNH0J/741LyCBniRBSk/kYWI
+         /8lA==
+X-Gm-Message-State: AO0yUKXW5D0py1LoUKSzkmpGq7yXRBPzToiEG44c32L+spSxtjWZQtJp
+	Afe8qAsiVuN4+Nd/5waPYg==
+X-Google-Smtp-Source: AKy350by63hvThVx+G6CTPOFFLOe4lmhMruBxp6akfw7h8ZCmJHsyJFTMVn+Dn/8by4Bc4xtRU8hFQ==
+X-Received: by 2002:a05:6830:1695:b0:694:3972:dbae with SMTP id k21-20020a056830169500b006943972dbaemr9305044otr.2.1680105196435;
+        Wed, 29 Mar 2023 08:53:16 -0700 (PDT)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id v184-20020acadec1000000b003871471f894sm10161090oig.27.2023.03.29.08.52.47
+        by smtp.gmail.com with ESMTPSA id q4-20020a9d4b04000000b0069f509ad088sm5047619otf.65.2023.03.29.08.53.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:52:49 -0700 (PDT)
-Received: (nullmailer pid 3198065 invoked by uid 1000);
+        Wed, 29 Mar 2023 08:53:16 -0700 (PDT)
+Received: (nullmailer pid 3198067 invoked by uid 1000);
 	Wed, 29 Mar 2023 15:52:45 -0000
 From: Rob Herring <robh@kernel.org>
-Date: Wed, 29 Mar 2023 10:51:59 -0500
-Subject: [PATCH 02/19] of: Move of_device_(add|register|unregister) to
- of_platform.h
+Date: Wed, 29 Mar 2023 10:52:00 -0500
+Subject: [PATCH 03/19] of: Move of_device_get_match_data() declaration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-dt-cpu-header-cleanups-v1-2-581e2605fe47@kernel.org>
+Message-Id: <20230329-dt-cpu-header-cleanups-v1-3-581e2605fe47@kernel.org>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
@@ -87,48 +86,41 @@ Cc: devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-arm-msm@vger.ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As of_device_(add|register|unregister) functions work on struct
-platform_device, they should be declared in of_platform.h instead.
-
-This move is transparent for now as both headers include each other.
+of_device.h mostly defines functions for bus drivers whereas
+of_device_get_match_data() is used by drivers. Let's move it to of.h.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- include/linux/of_device.h   | 4 ----
- include/linux/of_platform.h | 5 +++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ include/linux/of.h        | 2 ++
+ include/linux/of_device.h | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 36cf94596eba..b7118d68c73a 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -416,6 +416,8 @@ extern int of_detach_node(struct device_node *);
+ 
+ #define of_match_ptr(_ptr)	(_ptr)
+ 
++extern const void *of_device_get_match_data(const struct device *dev);
++
+ /*
+  * struct property *prop;
+  * const __be32 *p;
 diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-index f4b57614979d..e4aa61cb2bd0 100644
+index e4aa61cb2bd0..6af4c3acd502 100644
 --- a/include/linux/of_device.h
 +++ b/include/linux/of_device.h
-@@ -26,10 +26,6 @@ static inline int of_driver_match_device(struct device *dev,
+@@ -26,8 +26,6 @@ static inline int of_driver_match_device(struct device *dev,
  	return of_match_device(drv->of_match_table, dev) != NULL;
  }
  
--extern int of_device_add(struct platform_device *pdev);
--extern int of_device_register(struct platform_device *ofdev);
--extern void of_device_unregister(struct platform_device *ofdev);
+-extern const void *of_device_get_match_data(const struct device *dev);
 -
- extern const void *of_device_get_match_data(const struct device *dev);
- 
  extern ssize_t of_device_modalias(struct device *dev, char *str, ssize_t len);
-diff --git a/include/linux/of_platform.h b/include/linux/of_platform.h
-index d15b6cd5e1c3..8ac5cb933dc3 100644
---- a/include/linux/of_platform.h
-+++ b/include/linux/of_platform.h
-@@ -52,6 +52,11 @@ extern const struct of_device_id of_default_bus_match_table[];
- extern struct platform_device *of_device_alloc(struct device_node *np,
- 					 const char *bus_id,
- 					 struct device *parent);
-+
-+extern int of_device_add(struct platform_device *pdev);
-+extern int of_device_register(struct platform_device *ofdev);
-+extern void of_device_unregister(struct platform_device *ofdev);
-+
- #ifdef CONFIG_OF
- extern struct platform_device *of_find_device_by_node(struct device_node *np);
- #else
+ extern int of_device_request_module(struct device *dev);
+ 
 
 -- 
 2.39.2
