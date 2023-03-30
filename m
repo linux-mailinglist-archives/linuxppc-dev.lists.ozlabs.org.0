@@ -2,66 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345E96D09E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 17:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453076D0A79
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 17:52:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnSKj0z3Kz3fBv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 02:40:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnScP1KRXz3fKQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 02:52:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CDadiUse;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jeavevmH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CDadiUse;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jeavevmH;
 	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnSJn43hrz3c8G
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 02:39:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680190761; x=1711726761;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2y+Qd+RESrzEa/F9wmN52tzUziPss+ZxjSltCa9P/hk=;
-  b=CDadiUseP1WuKfP71C6XeaejIssdG4+TnK3pIAI+TYJHYvKlbBk7k7l7
-   J96oQtDlQPiAzIKd+i1/1XGxje+IbBqiGrVHCZh8ccmDYiZF06gH+WXdJ
-   koy7ouP2E95566Pm0ixBcIf7SAa5+x7xAUYRKhNmkLC0IbfICu5qAH3tu
-   MkCg0eNORThCk0rNv4VeGOjqfCZajDXqM7wADi471nIaiJ+nfUF9Zbj25
-   woJnHjNCYEiJAcxruzMUt9IthzqC3wty+5vom8ZFSqlgYafP2pUOAC7ya
-   gru4YVne8ZY/patY4ISezOoF2Vd8IHy9qqbLn0Zq68s9bUTEEtxvFO/Ck
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="368984330"
-X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="368984330"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 08:39:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="678241953"
-X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="678241953"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 30 Mar 2023 08:38:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1phuMV-00AURJ-0P;
-	Thu, 30 Mar 2023 18:38:51 +0300
-Date: Thu, 30 Mar 2023 18:38:50 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH v7 3/6] PCI: Allow pci_bus_for_each_resource() to take
- less arguments
-Message-ID: <ZCWtCpQBAM7oR6ra@smile.fi.intel.com>
-References: <20230323173610.60442-4-andriy.shevchenko@linux.intel.com>
- <202303302009.55848372-oliver.sang@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnSbX25Nnz3cLh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 02:52:07 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UF2ips006772;
+	Thu, 30 Mar 2023 15:52:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=pZCUFkZgsAw3SUtEcfncO2YiMButsh4w+3FR83KmNmI=;
+ b=jeavevmHOm6cm4mN/MxIsII10Y4RcmL+slaDNWZYEBvUOcBDnCfYX5DPaxrxu4esJ33o
+ kl5uU7SYpzMgoyZVx9rfB0oE8h3VRH8TMM12T/Zl+xptVvzpLzJOEsOLWO/ME2Jn/yll
+ NiilTLryzub9Spm9L7PKbs8SBQd1ZhhRY4cXQNjIrpO7UBNqgZDkBuhmAXxv/CgdDs/h
+ /VI+mV3XFksrpBu7lif1aLUQYf5QDMDJ3avdSuo30CnbESmcacyfVPlETfMMmwIMUx62
+ nyPlMSMofuIjAHYGxf9pNYiyJSP2R8plBjynkqPWmmw0TLJmxC/dkcith+Mtghi00pnG Yg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmpr41uwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 15:52:04 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32UF2rTU007786;
+	Thu, 30 Mar 2023 15:52:04 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmpr41uvj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 15:52:03 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32TKpnPI010293;
+	Thu, 30 Mar 2023 15:52:01 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3phrk6p0gg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 15:52:01 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32UFpw1Z46465388
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Mar 2023 15:51:58 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B33D2004E;
+	Thu, 30 Mar 2023 15:51:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B79B320043;
+	Thu, 30 Mar 2023 15:51:57 +0000 (GMT)
+Received: from [9.101.4.33] (unknown [9.101.4.33])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Mar 2023 15:51:57 +0000 (GMT)
+Message-ID: <45989617-e6f9-0ca5-3371-571268807fc5@linux.ibm.com>
+Date: Thu, 30 Mar 2023 17:51:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202303302009.55848372-oliver.sang@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH] powerpc/pseries/cpuhp: respect current SMT when adding
+ new CPU
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+        =?UTF-8?Q?Michal_Such=c3=a1nek?=
+ <msuchanek@suse.de>
+References: <20230213124510.12651-1-ldufour@linux.ibm.com>
+ <87ilg5aahx.fsf@linux.ibm.com> <20230213150429.GZ19419@kitsune.suse.cz>
+ <87fsb9a7zx.fsf@linux.ibm.com>
+Content-Language: en-US
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <87fsb9a7zx.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1NHTgHTUYtooka195LEfZscRFAKWB2bH
+X-Proofpoint-ORIG-GUID: NrYgbgxGkFR0zlCkEhKJwHMZhAl6U_X1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-30_09,2023-03-30_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303300123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,40 +104,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, lkp@intel.com, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic
- .park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, oe-lkp@lists.linux.dev, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Srikar Dronamraju <srikar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, npiggin@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 30, 2023 at 09:24:21PM +0800, kernel test robot wrote:
+On 13/02/2023 16:40:50, Nathan Lynch wrote:
+> Michal Suchánek <msuchanek@suse.de> writes:
+>> On Mon, Feb 13, 2023 at 08:46:50AM -0600, Nathan Lynch wrote:
+>>> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>>>> When a new CPU is added, the kernel is activating all its threads. This
+>>>> leads to weird, but functional, result when adding CPU on a SMT 4 system
+>>>> for instance.
+>>>>
+>>>> Here the newly added CPU 1 has 8 threads while the other one has 4 threads
+>>>> active (system has been booted with the 'smt-enabled=4' kernel option):
+>>>>
+>>>> ltcden3-lp12:~ # ppc64_cpu --info
+>>>> Core   0:    0*    1*    2*    3*    4     5     6     7
+>>>> Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
+>>>>
+>>>> There is no SMT value in the kernel. It is possible to run unbalanced LPAR
+>>>> with 2 threads for a CPU, 4 for another one, and 5 on the latest.
+>>>>
+>>>> To work around this possibility, and assuming that the LPAR run with the
+>>>> same number of threads for each CPU, which is the common case,
+>>>
+>>> I am skeptical at best of baking that assumption into this code. Mixed
+>>> SMT modes within a partition doesn't strike me as an unreasonable
+>>> possibility for some use cases. And if that's wrong, then we should just
+>>> add a global smt value instead of using heuristics.
+>>>
+>>>> the number
+>>>> of active threads of the CPU doing the hot-plug operation is computed. Only
+>>>> that number of threads will be activated for the newly added CPU.
+>>>>
+>>>> This way on a LPAR running in SMT=4, newly added CPU will be running 4
+>>>> threads, which is what a end user would expect.
+>>>
+>>> I could see why most users would prefer this new behavior. But surely
+>>> some users have come to expect the existing behavior, which has been in
+>>> place for years, and developed workarounds that might be broken by this
+>>> change?
+>>>
+>>> I would suggest that to handle this well, we need to give user space
+>>> more ability to tell the kernel what actions to take on added cores, on
+>>> an opt-in basis.
+>>>
+>>> This could take the form of extending the DLPAR sysfs command set:
+>>>
+>>> Option 1 - Add a flag that tells the kernel not to online any threads at
+>>> all; user space will online the desired threads later.
+>>>
+>>> Option 2 - Add an option that tells the kernel which SMT mode to apply.
+>>
+>> powerpc-utils grew some drmgr hooks recently so maybe the policy can be
+>> moved to userspace?
 > 
-> Greeting,
-> 
-> FYI, we noticed various errors such like
->     "i40e: probe of 0000:3d:00.0 failed with error -12"
-> due to commit (built with gcc-11):
-> 
-> commit: d23d5938fd7ced817d6aa1ff86cd671ebbaebfc2 ("[PATCH v7 3/6] PCI: Allow pci_bus_for_each_resource() to take less arguments")
-> url: https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/kernel-h-Split-out-COUNT_ARGS-and-CONCATENATE/20230324-013857
-> base: https://git.kernel.org/cgit/linux/kernel/git/pci/pci.git next
-> patch link: https://lore.kernel.org/all/20230323173610.60442-4-andriy.shevchenko@linux.intel.com/
-> patch subject: [PATCH v7 3/6] PCI: Allow pci_bus_for_each_resource() to take less arguments
-> 
-> in testcase: boot
-> 
-> on test machine: 96 threads 2 sockets Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz (Cascade Lake) with 512G memory
-> 
-> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
-> 
-> 
-> If you fix the issue, kindly add following tag
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Link: https://lore.kernel.org/oe-lkp/202303302009.55848372-oliver.sang@intel.com
+> I'm not sure whether the hook mechanism would come into play, but yes, I
+> am suggesting that user space be given the option of overriding the
+> kernel's current behavior.
 
-Thanks, that is useful test!
+Indeed, that's not so easy. There are multiple ways for the SMT level to be
+impacted:
+ - smt-enabled kernel option
+ - smtstate systemctl service (if activated), saving SMT level at shutdown
+time to restore it a boot time
+ - pseries-energyd daemon (if activated) could turn off threads
+ - ppc64_cpu --smt=x user command
+ - sysfs direct writing to turn off/on specific threads.
 
--- 
-With Best Regards,
-Andy Shevchenko
+There is no SMT level saved, on "disk" or in the kernel, and any of these
+options can interact in parallel. So from the user space point of view, the
+best we could do is looking for the SMT current values, there could be
+multiple values in the case of a mixed SMT state, peek one value and apply it.
 
+Extending the drmgr's hook is still valid, and I sent a patch series on the
+powerpc-utils mailing list to achieve that. However, changing the SMT level
+in that hook means that newly added CPU will be first turn on and there is
+a window where this threads could be seen active. Not a big deal but not
+turning on these extra threads looks better to me.
 
+That's being said, I can't see any benefit of a user space implementation
+compared to the option I'm proposing in that patch.
+
+Does anyone have a better idea?
+
+Cheers,
+Laurent.
