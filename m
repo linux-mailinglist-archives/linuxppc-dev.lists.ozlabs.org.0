@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CC66D0B4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 18:30:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2926D0B48
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 18:30:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnTSJ3q0qz3fWS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 03:30:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnTRK3hYmz3fSt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 03:30:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M+p+OG23;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XevMXvln;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M+p+OG23;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XevMXvln;
 	dkim-atps=neutral
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnTPW0jb4z3fJd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 03:28:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnTPV0287z3fBv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 03:28:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680193711; x=1711729711;
+  t=1680193710; x=1711729710;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gIQa0UBc6rrUYtPkGDZ1t1xT6zplGxALb8OYgbohTeo=;
-  b=M+p+OG23ES04SW/rX6i8g0KCiMi+SlQiSEkbf1cfI2vl2Hd1LmGHNt2F
-   MlKSB5AVVUSM53ESKOdlmML6SBcvMVafU4S6iKAlBPlmpkNDeEPpQZDm5
-   JjvLhVqEwJH3dwBl0exKpv8TRiCkdi2QT7+uamzeO9Si3TulkK4XsLehQ
-   yXlB6xqL0fhzn9pi66+DyA5gHsQVpqnENNHYHYgbNl256OlbPPOU+GXiL
-   r+YtA+yFm4VIkizzobFL1tmKhObp5hggr2RRZQnB4g9XnkuK99QdUWDNa
-   sB/UPZV1aJptHKfQ5UZOXvzWOS+4Q/PeQ2has1F/gwQpghsWkb/GHT5iE
+  bh=yhhBl9vHYjEoa/C6LYyaGmzTAsrwMbBX/9yhSQi3PhY=;
+  b=XevMXvlnS5SMzwKv8aaFd5tw0ctMus2Tr/eBYpvIGFvB1LlE6T6oHXqQ
+   h8BrK9obWJJukjUsO0NRcRn2uQwlK9i5Y3vGRi1rzfxJJK2Z+i/QYvMip
+   VBjMqMhCI+iQk82BOBHEK9sAfXeYfr5NYJrzldVM0lro5LyRd3AUUoxCX
+   aI7n0Ey+G7G0xcgxIXyTI2mhFbW+lV5toZ+8KYHaU9Uj/DfO3RSq2fgw6
+   lZa9SMwevxPJAsjUNod0kfhc8c9fT9I+78CO/ytgfs5geYbCcHHRUK7XR
+   bK1AidE8XAH6q3apD1m6waeO/fn5XYSFLtcW8sHHnL2QNN3q2F/l6girs
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427496008"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427495983"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="427496008"
+   d="scan'208";a="427495983"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:28:29 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:28:28 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="858971548"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="858971546"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="858971548"
+   d="scan'208";a="858971546"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 30 Mar 2023 09:28:17 -0700
+  by orsmga005.jf.intel.com with ESMTP; 30 Mar 2023 09:28:18 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id C528C14B; Thu, 30 Mar 2023 19:24:48 +0300 (EEST)
+	id DCBBF1D9; Thu, 30 Mar 2023 19:24:49 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -73,13 +73,14 @@ To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	linux-pci@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH v8 1/7] kernel.h: Split out COUNT_ARGS() and CONCATENATE()
-Date: Thu, 30 Mar 2023 19:24:28 +0300
-Message-Id: <20230330162434.35055-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v8 2/7] PCI: Introduce pci_resource_n()
+Date: Thu, 30 Mar 2023 19:24:29 +0300
+Message-Id: <20230330162434.35055-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 In-Reply-To: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
 References: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,64 +97,41 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kernel.h is being used as a dump for all kinds of stuff for a long time.
-The COUNT_ARGS() and CONCATENATE() macros may be used in some places
-without need of the full kernel.h dependency train with it.
-
-Here is the attempt on cleaning it up by splitting out these macros().
+Introduce pci_resource_n() and replace open-coded implementations of it
+in pci.h.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/linux/args.h   | 13 +++++++++++++
- include/linux/kernel.h |  8 +-------
- 2 files changed, 14 insertions(+), 7 deletions(-)
- create mode 100644 include/linux/args.h
+ include/linux/pci.h | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/args.h b/include/linux/args.h
-new file mode 100644
-index 000000000000..16ef6fad8add
---- /dev/null
-+++ b/include/linux/args.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef _LINUX_ARGS_H
-+#define _LINUX_ARGS_H
-+
-+/* This counts to 12. Any more, it will return 13th argument. */
-+#define __COUNT_ARGS(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _n, X...) _n
-+#define COUNT_ARGS(X...) __COUNT_ARGS(, ##X, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-+
-+#define __CONCAT(a, b) a ## b
-+#define CONCATENATE(a, b) __CONCAT(a, b)
-+
-+#endif	/* _LINUX_ARGS_H */
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index 0d91e0af0125..fa675d50d7b7 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -13,6 +13,7 @@
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index b50e5c79f7e3..aeaa95455d4c 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1995,14 +1995,13 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
+  * These helpers provide future and backwards compatibility
+  * for accessing popular PCI BAR info
+  */
+-#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
+-#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
+-#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
+-#define pci_resource_len(dev,bar) \
+-	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+-							\
+-	 (pci_resource_end((dev), (bar)) -		\
+-	  pci_resource_start((dev), (bar)) + 1))
++#define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
++#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
++#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
++#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
++#define pci_resource_len(dev,bar)					\
++	(pci_resource_end((dev), (bar)) ? 				\
++	 resource_size(pci_resource_n((dev), (bar))) : 0)
  
- #include <linux/stdarg.h>
- #include <linux/align.h>
-+#include <linux/args.h>
- #include <linux/limits.h>
- #include <linux/linkage.h>
- #include <linux/stddef.h>
-@@ -457,13 +458,6 @@ ftrace_vprintk(const char *fmt, va_list ap)
- static inline void ftrace_dump(enum ftrace_dump_mode oops_dump_mode) { }
- #endif /* CONFIG_TRACING */
- 
--/* This counts to 12. Any more, it will return 13th argument. */
--#define __COUNT_ARGS(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _n, X...) _n
--#define COUNT_ARGS(X...) __COUNT_ARGS(, ##X, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
--
--#define __CONCAT(a, b) a ## b
--#define CONCATENATE(a, b) __CONCAT(a, b)
--
- /* Rebuild everything on CONFIG_FTRACE_MCOUNT_RECORD */
- #ifdef CONFIG_FTRACE_MCOUNT_RECORD
- # define REBUILD_DUE_TO_FTRACE_MCOUNT_RECORD
+ /*
+  * Similar to the helpers above, these manipulate per-pci_dev
 -- 
 2.40.0.1.gaa8946217a0b
 
