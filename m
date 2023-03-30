@@ -2,86 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E176D0D07
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 19:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 749996D0AFD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 18:26:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnW4120Grz3fZY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 04:43:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnTMS22BWz3fGT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 03:26:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IDOEIl4j;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T3nQN+mU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IDOEIl4j;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T3nQN+mU;
 	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnTPp74PRz3fSF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 03:28:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680193727; x=1711729727;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CylzEgRAmJXOphwnxg3IbL2UXwW6z4Wch9KnUOezzDg=;
-  b=IDOEIl4jgTZNoU2e3/nuVrwGRK11UDzFAasGHBD/cjlQI8UCinoc5hus
-   Ru+kkPc+GxFSUZGBp7yJGpeAoDju9BZfbO9LWw8swbdZZ0xM1jSf2AR27
-   vRT85G3NgF78yaqhmke3IDkClFFtWb1bvUX49GkLUWhgEx8hufxlW3CxV
-   g6F1zaGpXFBumLR50MGM2Mc3VMaG85eWbxh0qbw/L/QlIWFg6uuWW7Fs6
-   Jjm4cLiQ4BkS/hN8u/rg/WSB+25bxq5/ojNu1RQ1LtqUeqs2jrEYOaTKz
-   dDO5pveFIlLlGZkWdhFSETm5m7Txdox4wOzt5jNVDc3keNOOKmk7gWmCV
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="321607016"
-X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="321607016"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:28:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="687307670"
-X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="687307670"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 30 Mar 2023 09:28:29 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 4A5522E9; Thu, 30 Mar 2023 19:24:53 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Juergen Gross <jgross@suse.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	linux-kernel@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v8 7/7] pcmcia: Convert to use less arguments in pci_bus_for_each_resource()
-Date: Thu, 30 Mar 2023 19:24:34 +0300
-Message-Id: <20230330162434.35055-8-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
-References: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnTLZ1VCwz3bh0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 03:25:57 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UFEQL1019431;
+	Thu, 30 Mar 2023 16:25:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : subject :
+ in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=XdWnTvDtTo7LhXCdnV2v3He3CuM9RJZvqgmWc1ncHwo=;
+ b=T3nQN+mUQhz2OkgLc0nTfp/Z0ERcNrv/uJbQ5F6mhtHcOuVXl5LVAQXUCU3GJTcNdEA1
+ X1dOQkR+k4+zU9xT64lm3ih20hWEqPVy+Vp197vNdJiuJpG/uQ4JYpH6iqXWlIJkWbUC
+ I6LKEn6xjz6RytFQYfC7hHC/Dc6NY1RU0JNeqJWVk7qFwTua0TAu/hl4ODkMsnGEpLST
+ yEG2drRtapaO+UeIvJ7pKFsSRUpbrN3ODc/qyDJYRjKA9c8hxue+oTdSXbHOX0b9EzKM
+ S8MLp+QZdK/wys98KsjM9HivbgzS2JwtkGNHxDcrbw2j0UhShT3s+jzqVPoPhR32eS7V Uw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pnb4qdt0f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 16:25:49 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32UFrlKG020763;
+	Thu, 30 Mar 2023 16:25:49 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pnb4qdt04-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 16:25:49 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32UE7e1i019763;
+	Thu, 30 Mar 2023 16:25:48 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3phrk83v6r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 16:25:48 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32UGPlba26411726
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Mar 2023 16:25:47 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFF2258059;
+	Thu, 30 Mar 2023 16:25:46 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 300CD58058;
+	Thu, 30 Mar 2023 16:25:45 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.103.32])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Mar 2023 16:25:44 +0000 (GMT)
+X-Mailer: emacs 29.0.60 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: Re: [PATCH] powerpc/papr_scm: Update the NUMA distance table for
+ the target node
+In-Reply-To: <20230330123502.1524429-1-aneesh.kumar@linux.ibm.com>
+References: <20230330123502.1524429-1-aneesh.kumar@linux.ibm.com>
+Date: Thu, 30 Mar 2023 21:55:42 +0530
+Message-ID: <87r0t6dx4p.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NsHSbmk3lkM__io5ywctUm9DIoQ_Bme1
+X-Proofpoint-ORIG-GUID: 0awJeey-jYybcpsdXioeAh2sGUJqf4ig
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-30_09,2023-03-30_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=918 adultscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303300127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,65 +97,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Gregory Clement <gregory.clement@bootlin.com>, Richard Henderson <richard.henderson@linaro.org>, Russell King <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Rich Felker <dalias@libc.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Miguel Ojeda <ojeda@kernel.org>, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, "David S. Miller" <davem@davemloft.net>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pci_bus_for_each_resource() can hide the iterator loop since
-it may be not used otherwise. With this, we may drop that iterator
-variable definition.
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
-Acked-by: Dominik Brodowski <linux@dominikbrodowski.net>
----
- drivers/pcmcia/rsrc_nonstatic.c | 9 +++------
- drivers/pcmcia/yenta_socket.c   | 3 +--
- 2 files changed, 4 insertions(+), 8 deletions(-)
+> platform device helper routines won't update the NUMA distance table
+> while creating a platform device, even if the device is present on
+> a NUMA node that doesn't have memory or CPU. This is especially true
+> for pmem devices. If the target node of the pmem device is not online, we
+> find the nearest online node to the device and associate the pmem
+> device with that online node. To find the nearest online node, we should
+> have the numa distance table updated correctly. Update the distance
+> information during the device probe.
+>
+> distance_lookup_table value for distance_ref_points_depth = 2 before and after
+> fix is below
+> node 3 distance depth 0  - 0
+> node 3 distance depth 1  - 0
+> node 4 distance depth 0  - 4
+> node 4 distance depth 1  - 2
+> node 5 distance depth 0  - 5
+> node 5 distance depth 1  - 1
+>
+> after fix
+> node 3 distance depth 0  - 3
+> node 3 distance depth 1  - 1
+> node 4 distance depth 0  - 4
+> node 4 distance depth 1  - 2
+> node 5 distance depth 0  - 5
+> node 5 distance depth 1  - 1
+>
+> Without the fix, the nearest numa node to the pmem device will be picked as 4.
+> After the fix, we get the correct numa node which is 5.
+>
+> Fixes: da1115fdbd6e ("powerpc/nvdimm: Pick nearby online node if the device node is not online")
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 2f8385523a13..5bef75714bd5 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -1428,6 +1428,10 @@ static int papr_scm_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+>  
+> +	/*
+> +	 * of platform device create won't update the numa distance table
+> +	 */
+> +	update_numa_distance(dn);
+>  
+>  	p = kzalloc(sizeof(*p), GFP_KERNEL);
+>  	if (!p)
+> -- 
+> 2.39.2
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index ad1141fddb4c..96264ebee46a 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -934,7 +934,7 @@ static int adjust_io(struct pcmcia_socket *s, unsigned int action, unsigned long
- static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- {
- 	struct resource *res;
--	int i, done = 0;
-+	int done = 0;
- 
- 	if (!s->cb_dev || !s->cb_dev->bus)
- 		return -ENODEV;
-@@ -960,12 +960,9 @@ static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- 	 */
- 	if (s->cb_dev->bus->number == 0)
- 		return -EINVAL;
--
--	for (i = 0; i < PCI_BRIDGE_RESOURCE_NUM; i++) {
--		res = s->cb_dev->bus->resource[i];
--#else
--	pci_bus_for_each_resource(s->cb_dev->bus, res, i) {
- #endif
-+
-+	pci_bus_for_each_resource(s->cb_dev->bus, res) {
- 		if (!res)
- 			continue;
- 
-diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
-index 1365eaa20ff4..fd18ab571ce8 100644
---- a/drivers/pcmcia/yenta_socket.c
-+++ b/drivers/pcmcia/yenta_socket.c
-@@ -673,9 +673,8 @@ static int yenta_search_res(struct yenta_socket *socket, struct resource *res,
- 			    u32 min)
- {
- 	struct resource *root;
--	int i;
- 
--	pci_bus_for_each_resource(socket->dev->bus, root, i) {
-+	pci_bus_for_each_resource(socket->dev->bus, root) {
- 		if (!root)
- 			continue;
- 
--- 
-2.40.0.1.gaa8946217a0b
+This also requires export of update_numa_distance()
 
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index b44ce71917d7..16cfe56be05b 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -366,6 +366,7 @@ void update_numa_distance(struct device_node *node)
+ 	WARN(numa_distance_table[nid][nid] == -1,
+ 	     "NUMA distance details for node %d not provided\n", nid);
+ }
++EXPORT_SYMBOL_GPL(update_numa_distance);
+ 
+ /*
+  * ibm,numa-lookup-index-table= {N, domainid1, domainid2, ..... domainidN}
