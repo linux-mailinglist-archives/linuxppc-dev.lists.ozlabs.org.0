@@ -2,95 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4280C6CFA18
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 06:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6ACD6CFB0C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 07:58:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pn9H81BR8z3fRD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 15:21:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnCQJ4f6Kz3fnp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 16:58:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TlGSRufn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KyKL5QSy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TlGSRufn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KyKL5QSy;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pn9GH1Q01z3cS4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 15:21:10 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32U3blMQ009091;
-	Thu, 30 Mar 2023 04:20:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=m8b/i+398SAH8q8B6eZhvGo0Og8BAKaPM5bSdtMfqoE=;
- b=TlGSRufn35rcdiravXttf5FjXsb/xgrf/TtOiCkJIPAQDm67Cf3jycJ5DracKm7ZgZ35
- x8T2NG3w7SndxEOLm/OZ6mSod6Ixxw8Ow00rm9srpbqCgdgekYcuFaKAI8YmejEMA24v
- d8vPrA5Q+Sc5QZTo5JbEqNAykXnYD5K1UeR5KzPktZpQaluseAmIWm6KSpLq19ugtIVt
- D4Xn9InzV/qR5mDkEplge7ILAxFYdmyQDEK7S+WQZ6TbteJn3bUA+0LbJzOKddlGZLML
- AWrwh6RvAc/vHpbZ/i9i7pknF6G492SsZxGLm3QamPbAmOD+WeqPALYY7ry+fX+pbEoi tg== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnCG13gJMz3f4k
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 16:51:05 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32U2bJBa029486;
+	Thu, 30 Mar 2023 05:50:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=LFw3lvtOXW9MFUx7xW/xYTSL3bIl9XlT0XdOOTQ+b/o=;
+ b=KyKL5QSyv6N8rPN5aYOCYLs2MR/1Uj/iGQGjRdGndJucQ0ymMJuyVaCXb8m6yhYeHJoh
+ SupampbPlu4H/hcWVDegH9SBtfYj17cEVF6Wy+TzoYtPRDKmiUTJRaMralaCMaTrkgY2
+ qr8U1bNg3cvwElT7oomWWk94SQiZkCexkYFxSzAPWhFm5Pcd2Znj6RxbEnjT54oZzyve
+ n4c8HmJ6AcJs8W7bLtjFCkdher7unGTsapURg4J804WR84D7v9KB0qnqbTycyrfate9Q
+ lBMtR+MWSTWwt1R/II4c2RFxyqufP/ywAS7q3DFnBRv2zAGsvWZVatRaZmGULqI1LmYh 3g== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusw8pg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmpr3m8nr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 04:20:58 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32U4ECGk003639;
-	Thu, 30 Mar 2023 04:20:58 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusw8nd-1
+	Thu, 30 Mar 2023 05:50:57 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32U5A5Rk009123;
+	Thu, 30 Mar 2023 05:50:57 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmpr3m8n4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 04:20:58 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32TLpeVR029355;
-	Thu, 30 Mar 2023 04:20:55 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3phr7fnh3a-1
+	Thu, 30 Mar 2023 05:50:56 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32TKZf9P019202;
+	Thu, 30 Mar 2023 05:50:54 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3phrk6nkey-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 04:20:55 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32U4Kros22151742
+	Thu, 30 Mar 2023 05:50:54 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32U5oqql47120642
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Mar 2023 04:20:53 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 139BD20040;
-	Thu, 30 Mar 2023 04:20:52 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F43720043;
-	Thu, 30 Mar 2023 04:20:50 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.21.16])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 30 Mar 2023 04:20:49 +0000 (GMT)
-Date: Thu, 30 Mar 2023 09:50:46 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] arch/powerpc/kvm: kvmppc_core_vcpu_create_hv: check for
- kzalloc failure
-Message-ID: <ZCUOHj+TYNzPVT1L@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230323074718.2810914-1-kconsul@linux.vnet.ibm.com>
- <87pm8tcir3.fsf@mpe.ellerman.id.au>
- <ZCK96ohvWRY12zZ3@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZCLHFw1U4Mq/QK2A@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <87fs9pcce6.fsf@mpe.ellerman.id.au>
- <ZCLe2Jf0n6GR9Qhw@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <87tty3az3c.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tty3az3c.fsf@mpe.ellerman.id.au>
+	Thu, 30 Mar 2023 05:50:52 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DF822004E;
+	Thu, 30 Mar 2023 05:50:52 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DD4A20040;
+	Thu, 30 Mar 2023 05:50:51 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Mar 2023 05:50:51 +0000 (GMT)
+Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 41956602FC;
+	Thu, 30 Mar 2023 16:50:48 +1100 (AEDT)
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/12] Add static DEXCR support
+Date: Thu, 30 Mar 2023 16:50:28 +1100
+Message-Id: <20230330055040.434133-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sRPum71o_EdXwn_YyYfH8Ql21D0WR5GS
-X-Proofpoint-ORIG-GUID: 71aLPHakSckviiKtYrujHH7qp-YfB3pC
+X-Proofpoint-GUID: -uesqjPh8yfnwNoYc5H4PCowA1pZdhoZ
+X-Proofpoint-ORIG-GUID: WeDSJrbGxnNCfNgXdOi2teuGWCnRJxet
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-29_16,2023-03-28_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- suspectscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2303200000 definitions=main-2303300031
+ definitions=2023-03-30_02,2023-03-30_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303300043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,78 +99,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
+Cc: npiggin@gmail.com, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-03-30 10:59:19, Michael Ellerman wrote:
-> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> > On 2023-03-28 23:02:09, Michael Ellerman wrote:
-> >> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> >> > On 2023-03-28 15:44:02, Kautuk Consul wrote:
-> >> >> On 2023-03-28 20:44:48, Michael Ellerman wrote:
-> >> >> > Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> >> >> > > kvmppc_vcore_create() might not be able to allocate memory through
-> >> >> > > kzalloc. In that case the kvm->arch.online_vcores shouldn't be
-> >> >> > > incremented.
-> >> >> > 
-> >> >> > I agree that looks wrong.
-> >> >> > 
-> >> >> > Have you tried to test what goes wrong if it fails? It looks like it
-> >> >> > will break the LPCR update, which likely will cause the guest to crash
-> >> >> > horribly.
-> >> > Also, are you referring to the code in kvmppc_update_lpcr()?
-> >> > That code will not crash as it checks for the vc before trying to
-> >> > dereference it.
-> >> 
-> >> Yeah that's what I was looking at. I didn't mean it would crash, but
-> >> that it would bail out early when it sees a NULL vcore, leaving other
-> >> vcores with the wrong LPCR value.
-> >> 
-> >> But as you say it doesn't happen because qemu quits on the first ENOMEM.
-> >> 
-> >> And regardless if qemu does something that means the guest is broken
-> >> that's just a qemu bug, no big deal as far as the kernel is concerned.
-> 
-> > But there could be another user-mode application other than qemu that
-> > actually tries to create a vcpu after it gets a -ENOMEM for another
-> > vcpu. Shouldn't the kernel be independent of qemu?
-> 
-> Yes, the kernel is independent of qemu.
-> 
-> On P8 we had kvmtool, and there's several other VMMs these days, though
-> most don't support Power.
-> 
-> I didn't mean qemu specifically above. If any VMM continues blindly
-> after getting ENOMEM back from the KVM API then that's a bug in that
-> VMM.
-> 
-> >> > But the following 2 places that utilize the arch.online_vcores will have
-> >> > problems in logic if the usermode test-case doesn't pull down the
-> >> > kvm context after the -ENOMEM vcpu allocation failure:
-> >> > book3s_hv.c:3030:       if (!kvm->arch.online_vcores) {
-> >> > book3s_hv_rm_mmu.c:44:  if (kvm->arch.online_vcores == 1 && local_paca->kvm_hstate.kvm_vcpu)
-> >> 
-> >> OK. Both of those look harmless to the host.
-> 
-> > Harmless to the host in terms of a crash, not in terms of behavior.
-> > For example in the case of kvmhv_set_smt_mode:
-> > If we got a kzalloc failure once (and online_vcores was wrongly incremented), 
-> > then if kvmhv_set_smt_mode() is called after that then it would be
-> > not be setting the arch.smt_mode and arch.emul_smt_mode correctly and it
-> > would be wrongly returning with -EBUSY instead of 0.
-> 
-> But again that bug only affects that VM, which the VMM should have
-> terminated when it got the ENOMEM back.
-> 
-> It's definitely a bug that we increment online_vcores incorrectly, but
-> it only affects that VM, and a correctly operating VMM will terminate
-> the VM anyway because of the ENOMEM.
-Okay, I understand. I used to earlier try to contribute to other
-mailing lists and they were very particular about correcting code
-that was doing something wrong (just by code review) irrespective of whether
-it would actually result in a bug/crash or misbehaviour. I guess maintainers
-look at the generic part of the kernel in a different way than arch or
-device specific kernel/driver code.
-> 
-> cheers
+Respin with requested ptrace/coredump support.
+
+The new support is tested by making a core dump. The result has the expected
+
+  LINUX 0x00000008 Unknown note type: (0x00000111) description data: 00 00 00 04 00 00 00 00
+  LINUX 0x00000008 Unknown note type: (0x00000112) description data: 53 6c dd 5e 23 eb 5e 03
+
+Entries when the dump is read with readelf (DEXCR hash NPHIE, HDEXCR is clear,
+HASHKEYR is random). Endianness is the same as all the other register printers.
+
+v2:	* Add ptrace/coredump support
+
+Previous versions:
+v1: https://lore.kernel.org/all/20230322054612.1340573-1-bgray@linux.ibm.com/
+RFC: https://lore.kernel.org/all/20221128024458.46121-1-bgray@linux.ibm.com/
+
+Benjamin Gray (12):
+  powerpc/book3s: Add missing <linux/sched.h> include
+  powerpc/ptrace: Add missing <linux/regset.h> include
+  powerpc/dexcr: Add initial Dynamic Execution Control Register (DEXCR)
+    support
+  powerpc/dexcr: Handle hashchk exception
+  powerpc/dexcr: Support userspace ROP protection
+  powerpc/dexcr: Support custom default DEXCR value
+  powerpc/ptrace: Expose DEXCR and HDEXCR registers to ptrace
+  powerpc/ptrace: Expose HASHKEYR register to ptrace
+  Documentation: Document PowerPC kernel DEXCR interface
+  selftests/powerpc: Add more utility macros
+  selftests/powerpc/dexcr: Add hashst/hashchk test
+  selftests/powerpc/dexcr: Add DEXCR status utility lsdexcr
+
+ Documentation/powerpc/dexcr.rst               |  58 +++++
+ Documentation/powerpc/index.rst               |   1 +
+ arch/powerpc/Kconfig                          |  14 ++
+ arch/powerpc/include/asm/book3s/64/kexec.h    |   5 +
+ arch/powerpc/include/asm/book3s/64/kup.h      |   1 +
+ arch/powerpc/include/asm/cputable.h           |   4 +-
+ arch/powerpc/include/asm/ppc-opcode.h         |   1 +
+ arch/powerpc/include/asm/processor.h          |  10 +
+ arch/powerpc/include/asm/reg.h                |  10 +
+ arch/powerpc/include/uapi/asm/elf.h           |   2 +
+ arch/powerpc/kernel/Makefile                  |   1 +
+ arch/powerpc/kernel/cpu_setup_power.c         |   9 +
+ arch/powerpc/kernel/dexcr.c                   |  36 +++
+ arch/powerpc/kernel/process.c                 |  17 ++
+ arch/powerpc/kernel/prom.c                    |   1 +
+ arch/powerpc/kernel/ptrace/ptrace-decl.h      |   6 +
+ arch/powerpc/kernel/ptrace/ptrace-view.c      |  67 +++++-
+ arch/powerpc/kernel/traps.c                   |  10 +
+ include/uapi/linux/elf.h                      |   2 +
+ tools/testing/selftests/powerpc/Makefile      |   1 +
+ .../selftests/powerpc/dexcr/.gitignore        |   2 +
+ .../testing/selftests/powerpc/dexcr/Makefile  |   9 +
+ tools/testing/selftests/powerpc/dexcr/dexcr.c | 132 ++++++++++
+ tools/testing/selftests/powerpc/dexcr/dexcr.h |  49 ++++
+ .../selftests/powerpc/dexcr/hashchk_test.c    | 227 ++++++++++++++++++
+ .../testing/selftests/powerpc/dexcr/lsdexcr.c | 141 +++++++++++
+ tools/testing/selftests/powerpc/include/reg.h |   4 +
+ .../testing/selftests/powerpc/include/utils.h |  31 ++-
+ .../powerpc/pmu/sampling_tests/misc.h         |   2 -
+ tools/testing/selftests/powerpc/utils.c       |  24 ++
+ 30 files changed, 872 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/powerpc/dexcr.rst
+ create mode 100644 arch/powerpc/kernel/dexcr.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/.gitignore
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/Makefile
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/dexcr.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/dexcr.h
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/hashchk_test.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/lsdexcr.c
+
+
+base-commit: 0f98241d5ef5c3bb4c5ca07ceee3a825d79999fd
+--
+2.39.2
