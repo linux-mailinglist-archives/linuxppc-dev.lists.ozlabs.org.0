@@ -2,94 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262556CFB0A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 07:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0386CFC60
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 09:12:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnCPN0Q2qz3flg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 16:57:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnF3l1GCXz3f7r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 18:12:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cSqtC5Sl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=QVEDTKeV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=oomTeCD5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cSqtC5Sl;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=QVEDTKeV;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=oomTeCD5;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnCG13VvFz3f4f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 16:51:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32U3blQJ009092;
-	Thu, 30 Mar 2023 05:51:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=kaCvw38dsgsOzi4yBRPMPtO23IrkqVLKsUivcFbF9vQ=;
- b=cSqtC5SlSYSJBsDYzhcxVLbI9yDwCYgmmnrxTsMiH9KO7rmuTl5AEG+eVoxLojbdl6xe
- tmhet6qMbNuh/5xwFX6214hisVrhxMyC2qogUXrCqC0qhhi56SVop3MHBpdYg1e8NjbB
- DiFGdv6IWZ22XxrQcUbBMn93dqBsdMxlJIVq7IsczflfeeWR7p3axIIGAyR9yvbrzinz
- P8qFg83wPZzQF1RaOWhPWG5VvLveXxydFG3IPoyEQbfu6AsxUiw411ZhdedI/l9lLo0t
- CjeMnVBLztDR+gzpDLLEOZ+SKzo1AoZdqOr57+2wpGJV2fuJ6AcFDU+8zTaZeSBhoBm2 9A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusy5sq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 05:51:00 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32U4T16F018193;
-	Thu, 30 Mar 2023 05:51:00 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusy5s8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 05:50:59 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32TJb3jw009599;
-	Thu, 30 Mar 2023 05:50:57 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3phrk6nj1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 05:50:57 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32U5otjp59572716
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Mar 2023 05:50:55 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2725D2004B;
-	Thu, 30 Mar 2023 05:50:55 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 27B9020043;
-	Thu, 30 Mar 2023 05:50:54 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Mar 2023 05:50:54 +0000 (GMT)
-Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6392E60806;
-	Thu, 30 Mar 2023 16:50:48 +1100 (AEDT)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 12/12] selftests/powerpc/dexcr: Add DEXCR status utility lsdexcr
-Date: Thu, 30 Mar 2023 16:50:40 +1100
-Message-Id: <20230330055040.434133-13-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230330055040.434133-1-bgray@linux.ibm.com>
-References: <20230330055040.434133-1-bgray@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: irZIuugswWhOTMFoqJfscOftP3mLZqGU
-X-Proofpoint-ORIG-GUID: OpJfX_8yN_e33vmkYxBJJgX_gvhRrX4m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-30_02,2023-03-30_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- suspectscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2303200000 definitions=main-2303300043
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnF2m0yZBz3cMr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 18:11:26 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 91091581DB4;
+	Thu, 30 Mar 2023 03:11:20 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 30 Mar 2023 03:11:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1680160280; x=1680167480; bh=wG
+	Aj9k8TObyqA6xHoUKa8szJrjCAJbphSDFQitQcQQs=; b=QVEDTKeVke/4u7Kg+r
+	/f0Ng8qyMJQjA0k7T1uZbzE62G/ueNBnWjpEnArFMDM92zNIXQ0BVhpsTK81gyt0
+	xSP5pbZY1IxVpqUBM+h72I4sgGKqPjbLqxNcKo6QCWkB1PzdfOUSKkfxHkuBpgbQ
+	cYQ6HqJa3bwV0Vkf7hmy8ejQKyFDSRYDfGJpYSPAochCUC5d86UJcSmtdy6Sxo6B
+	Jwxhii7JHhX5S3HrIP0mKrvU6BvYZqwsLNUfy16VYFyQuCPOCAze4qZ6sDRlwyQw
+	F08a6VUS4QIWlJ5ptfnwv75T7l2QsYPv/2qWlc1FTlhkx6SDxxZZxa17eJWjG25W
+	8QyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1680160280; x=1680167480; bh=wGAj9k8TObyqA
+	6xHoUKa8szJrjCAJbphSDFQitQcQQs=; b=oomTeCD59PNC83Jndx1U6VLOVE5Dm
+	iHmSiz3n1GUnKD2uHg/nJb7LQ4xFS4iggJ6sXq9/uqeoafmTb21qaw3LmGDGWVXs
+	zFRwDOtSbIgfSbefSTdQy+SDzfOWXM+Nas8Aqo7qkiw5wE6y4qdG6iwjS4DRWXtn
+	XctTZFf5GY9RMg5ciHLqGdffXqZGKOwN45T9El3FCgUi5LSy7a/pQo0750iSwL/f
+	RG+pNkv9fRAgzmmzo4HLa1cEOhymbMSIXzYbzI354FYA0THouxwTuuuM0yobQ3gk
+	LFgzGrnAkD2cRuN42h7TslpEIGdInF1W2TSA3tfbtXeFABGM7k1iBb/7Q==
+X-ME-Sender: <xms:FTYlZOrkzwdxpCxeIZzclV90hxzPUSC3ms8-E11J67_aPSJXJ1BIkg>
+    <xme:FTYlZMrP3FZFc1NJSA8GIlQPVO9kl25CsPN1r07QL_dGO5vWTCxWy7o2eATgnKdQ9
+    a578gSy3QQoXr1upcg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehjedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeu
+    feehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:FjYlZDNNTBCw6HhWBDqV-oUWPDwRI7BTNiBMI3iXI3sHS545zVmJ2w>
+    <xmx:FjYlZN4cwCdj47vqSASOc6XR5L2duLCySn6_f-BJZvURW8Sn6XqTzw>
+    <xmx:FjYlZN6Cp-M6Z89_Yu31L8qrA-V1bCiPBKi9s_taeLF3yPIrQttNLw>
+    <xmx:GDYlZL7CJyRZz1a_FlDEKTyWBaiLrIUUjNVWWchrrS5Jr6hXYCWp0A>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id E08C7B60086; Thu, 30 Mar 2023 03:11:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-238-g746678b8b6-fm-20230329.001-g746678b8
+Mime-Version: 1.0
+Message-Id: <34f3e043-20eb-40b2-a7f5-b1b98a0d452a@app.fastmail.com>
+In-Reply-To: <2668e232-ae83-4576-beaa-08e420236996@spud>
+References: <20230327121317.4081816-1-arnd@kernel.org>
+ <20230327121317.4081816-9-arnd@kernel.org>
+ <2668e232-ae83-4576-beaa-08e420236996@spud>
+Date: Thu, 30 Mar 2023 09:10:57 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Conor Dooley" <conor@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
+Subject: Re: [PATCH 08/21] riscv: dma-mapping: only invalidate after DMA, not flush
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,208 +94,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, Benjamin Gray <bgray@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Samuel Holland <samuel@sholland.org>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Brian Cain <bcain@quicinc.com>, "Lad,
+ Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, Robin Murphy <robin.murphy@arm.com>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a utility 'lsdexcr' to print the current DEXCR status. Useful for
-quickly checking the status such as when debugging test failures or
-verifying the new default DEXCR does what you want (for userspace at
-least). Example output:
+On Wed, Mar 29, 2023, at 22:48, Conor Dooley wrote:
+> On Mon, Mar 27, 2023 at 02:13:04PM +0200, Arnd Bergmann wrote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>> 
+>> No other architecture intentionally writes back dirty cache lines into
+>> a buffer that a device has just finished writing into. If the cache is
+>> clean, this has no effect at all, but
+>
+>> if a cacheline in the buffer has
+>> actually been written by the CPU,  there is a drive bug that is likely
+>> made worse by overwriting that buffer.
+>
+> So does this need a
+> Fixes: 1631ba1259d6 ("riscv: Add support for non-coherent devices using 
+> zicbom extension")
+> then, even if the cacheline really should not have been touched by the
+> CPU?
+> Also, minor typo, s/drive/driver/.
 
-    # ./lsdexcr
-       uDEXCR: 04000000 (NPHIE)
-       HDEXCR: 00000000
-    Effective: 04000000 (NPHIE)
+done
 
-            SBHE   (0): clear  	(Speculative branch hint enable)
-          IBRTPD   (3): clear  	(Indirect branch recurrent target ...)
-           SRAPD   (4): clear  	(Subroutine return address ...)
-           NPHIE * (5): set  	(Non-privileged hash instruction enable)
-            PHIE   (6): clear  	(Privileged hash instruction enable)
+> In the thread we had that sparked this, I went digging for the source of
+> the flushes, and it came from a review comment:
+> https://lore.kernel.org/linux-riscv/342e3c12-ebb0-badf-7d4c-c444a2b842b2@sholland.org/
 
-    DEXCR[NPHIE] enabled: hashst/hashchk working
+Ah, so the comment that led to it was 
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+"For arch_sync_dma_for_cpu(DMA_BIDIRECTIONAL), we expect the CPU to have
+written to the buffer, so this should flush, not invalidate."
 
----
+which sounds like Samuel just misunderstood what "bidirectional"
+means: the comment implies that both the cpu and the device access
+the buffer before arch_sync_dma_for_cpu(DMA_BIDIRECTIONAL), but
+this is not allowed. Instead, the point is that the device may both
+read and write the buffer, requiring that we must do a writeback
+at arch_sync_dma_for_device(DMA_BIDIRECTIONAL) and an invalidate
+at arch_sync_dma_for_cpu(DMA_BIDIRECTIONAL).
 
-v1:	* Report if hashst/hashchk actually does something
----
- .../selftests/powerpc/dexcr/.gitignore        |   1 +
- .../testing/selftests/powerpc/dexcr/Makefile  |   2 +
- .../testing/selftests/powerpc/dexcr/lsdexcr.c | 141 ++++++++++++++++++
- 3 files changed, 144 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/dexcr/lsdexcr.c
+The comment about arch_sync_dma_for_device(DMA_FROM_DEVICE) (in the
+same email) seems equally confused. It's of course easy to
+misunderstand these, and many others have gotten confused in
+similar ways before.
 
-diff --git a/tools/testing/selftests/powerpc/dexcr/.gitignore b/tools/testing/selftests/powerpc/dexcr/.gitignore
-index d12e4560aca9..b82f45dd46b9 100644
---- a/tools/testing/selftests/powerpc/dexcr/.gitignore
-+++ b/tools/testing/selftests/powerpc/dexcr/.gitignore
-@@ -1 +1,2 @@
- hashchk_test
-+lsdexcr
-diff --git a/tools/testing/selftests/powerpc/dexcr/Makefile b/tools/testing/selftests/powerpc/dexcr/Makefile
-index 16c8b489948a..76210f2bcec3 100644
---- a/tools/testing/selftests/powerpc/dexcr/Makefile
-+++ b/tools/testing/selftests/powerpc/dexcr/Makefile
-@@ -1,7 +1,9 @@
- TEST_GEN_PROGS := hashchk_test
-+TEST_GEN_FILES := lsdexcr
- 
- include ../../lib.mk
- 
- $(OUTPUT)/hashchk_test: CFLAGS += -fno-pie $(call cc-option,-mno-rop-protect)
- 
- $(TEST_GEN_PROGS): ../harness.c ../utils.c ./dexcr.c
-+$(TEST_GEN_FILES): ../utils.c ./dexcr.c
-diff --git a/tools/testing/selftests/powerpc/dexcr/lsdexcr.c b/tools/testing/selftests/powerpc/dexcr/lsdexcr.c
-new file mode 100644
-index 000000000000..94abbfcc389e
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/dexcr/lsdexcr.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <errno.h>
-+#include <stddef.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "dexcr.h"
-+#include "utils.h"
-+
-+static unsigned int dexcr;
-+static unsigned int hdexcr;
-+static unsigned int effective;
-+
-+struct dexcr_aspect {
-+	const char *name;
-+	const char *desc;
-+	unsigned int index;
-+};
-+
-+static const struct dexcr_aspect aspects[] = {
-+	{
-+		.name = "SBHE",
-+		.desc = "Speculative branch hint enable",
-+		.index = 0,
-+	},
-+	{
-+		.name = "IBRTPD",
-+		.desc = "Indirect branch recurrent target prediction disable",
-+		.index = 3,
-+	},
-+	{
-+		.name = "SRAPD",
-+		.desc = "Subroutine return address prediction disable",
-+		.index = 4,
-+	},
-+	{
-+		.name = "NPHIE",
-+		.desc = "Non-privileged hash instruction enable",
-+		.index = 5,
-+	},
-+	{
-+		.name = "PHIE",
-+		.desc = "Privileged hash instruction enable",
-+		.index = 6,
-+	},
-+};
-+
-+static void print_list(const char *list[], size_t len)
-+{
-+	for (size_t i = 0; i < len; i++) {
-+		printf("%s", list[i]);
-+		if (i + 1 < len)
-+			printf(", ");
-+	}
-+}
-+
-+static void print_dexcr(char *name, unsigned int bits)
-+{
-+	const char *enabled_aspects[ARRAY_SIZE(aspects) + 1] = {NULL};
-+	size_t j = 0;
-+
-+	printf("%s: %08x", name, bits);
-+
-+	if (bits == 0) {
-+		printf("\n");
-+		return;
-+	}
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(aspects); i++) {
-+		unsigned int mask = DEXCR_PR_BIT(aspects[i].index);
-+
-+		if (bits & mask) {
-+			enabled_aspects[j++] = aspects[i].name;
-+			bits &= ~mask;
-+		}
-+	}
-+
-+	if (bits)
-+		enabled_aspects[j++] = "unknown";
-+
-+	printf(" (");
-+	print_list(enabled_aspects, j);
-+	printf(")\n");
-+}
-+
-+static void print_aspect(const struct dexcr_aspect *aspect)
-+{
-+	const char *attributes[8] = {NULL};
-+	size_t j = 0;
-+	unsigned long mask;
-+
-+	mask = DEXCR_PR_BIT(aspect->index);
-+	if (dexcr & mask)
-+		attributes[j++] = "set";
-+	if (hdexcr & mask)
-+		attributes[j++] = "set (hypervisor)";
-+	if (!(effective & mask))
-+		attributes[j++] = "clear";
-+
-+	printf("%12s %c (%d): ", aspect->name, effective & mask ? '*' : ' ', aspect->index);
-+	print_list(attributes, j);
-+	printf("  \t(%s)\n", aspect->desc);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	if (!dexcr_exists()) {
-+		printf("DEXCR not detected on this hardware\n");
-+		return 1;
-+	}
-+
-+	dexcr = get_dexcr(DEXCR);
-+	hdexcr = get_dexcr(HDEXCR);
-+	effective = dexcr | hdexcr;
-+
-+	print_dexcr("    DEXCR", dexcr);
-+	print_dexcr("   HDEXCR", hdexcr);
-+	print_dexcr("Effective", effective);
-+	printf("\n");
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(aspects); i++)
-+		print_aspect(&aspects[i]);
-+	printf("\n");
-+
-+	if (effective & DEXCR_PR_NPHIE) {
-+		printf("DEXCR[NPHIE] enabled: hashst/hashchk ");
-+		if (hashchk_triggers())
-+			printf("working\n");
-+		else
-+			printf("failed to trigger\n");
-+	} else {
-+		printf("DEXCR[NPHIE] disabled: hashst/hashchk ");
-+		if (hashchk_triggers())
-+			printf("unexpectedly triggered\n");
-+		else
-+			printf("ignored\n");
-+	}
-+
-+	return 0;
-+}
--- 
-2.39.2
+> But *surely* if no other arch needs to do that, then we are safe to also
+> not do it... Your logic seems right by me at least, especially given the
+> lack of flushes elsewhere.
 
+Right, I remove the extra writeback from powerpc, parisc and microblaze
+for the same reason. Those appear to only be there because they used the
+same function for _for_device() as for _for_cpu(), not because someone
+thought they were required.
+
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks!
+
+     Arnd
