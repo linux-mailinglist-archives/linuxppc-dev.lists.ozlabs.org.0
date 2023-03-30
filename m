@@ -2,87 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E746D04D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 14:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC90B6D059D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 15:00:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnNFK50vWz3fTM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 23:36:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnNnL462hz3fRK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 00:00:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pWQn/B4M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gvyLOSrV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=prabhakar.csengg@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pWQn/B4M;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gvyLOSrV;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnNDT2WKLz3bh8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 23:35:20 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UBqWdb030820;
-	Thu, 30 Mar 2023 12:35:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=hArjTQXcD5roCtMSgLmZrJhf++lquJ+tD5ZrBUtgW6c=;
- b=pWQn/B4MMRahAnIy3b4lDSvqpFg6H0dzELCRqujZv79rs1m65nlCJyrCnIHMbGQtlzAw
- 6gxUONx75iOis3MxADLC0+crW5jZBQdC5Q4mNSVD6gO0i+JSSklYyOyuVKS0XpaeDNEO
- 0xcZvXVHq2yfHb1UqceheOhvKLOcgilFq5KRyyAPx/tE6aqq6r+2C8m1Uur77w0XLBxm
- dyciKVUDRJcn4s/gcjxuug5d0j/T7G1fR1AopBdqiymuG8lW73rq8+CxUYr9E6+I13Ch
- q9Rvw/sa6uPwFxSFFAnldXyFa/erh+5aQa+k0TtSaukB1lHm6n8J9srJKx8GBsDy7fUm TA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmph9f21d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 12:35:11 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32UBmAS5022873;
-	Thu, 30 Mar 2023 12:35:11 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmph9f213-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 12:35:11 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32UAjiAo019786;
-	Thu, 30 Mar 2023 12:35:10 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([9.208.129.116])
-	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3phrk82ra5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 12:35:10 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32UCZ8Yr459368
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Mar 2023 12:35:09 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CAAA258063;
-	Thu, 30 Mar 2023 12:35:08 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D7C758059;
-	Thu, 30 Mar 2023 12:35:06 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.103.32])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Mar 2023 12:35:05 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/papr_scm: Update the NUMA distance table for the target node
-Date: Thu, 30 Mar 2023 18:05:02 +0530
-Message-Id: <20230330123502.1524429-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnNmS4w4Lz3bT7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 23:59:35 +1100 (AEDT)
+Received: by mail-io1-xd31.google.com with SMTP id x3so724425iov.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 05:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680181172; x=1682773172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=db58zgLapT4+5eM+e2dEcRQMOxpl02qLJJqJynMawPw=;
+        b=gvyLOSrV5NqLHUuxidIYczTpyccsUd898Kt8qAjGZCJm8EQYH5JcTmwLqg57uC0cvB
+         j7U0x9dcm2RsX8dLxVGcboGq4Pdvm6cDFGIifVhW5LUG0BZhpnkLq+12fDfUITmPUgDN
+         KJqbUWD1A1NNvcxlD8Va+DklQ7yRgA9v4iGNa+yDzNCF8hz/BAHOp1sivo3m/ett+i3j
+         AtVwEXoZrtByosb2V89SvT6DgwFv0o1YJU+4lunFRTh6XWRbkQcRhcsLjusSr3Liunwq
+         utzWcTAPvMsNoessMz8HZ9Y6dfPH5hnImowquLEBicF67L5RSN3ovwZ4QUhqVrtpFGVk
+         CyWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680181172; x=1682773172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=db58zgLapT4+5eM+e2dEcRQMOxpl02qLJJqJynMawPw=;
+        b=LrWuJRphwpRixFwAP/bGfgu9fr7NcRFJAxgNsrjfuGGHSv98gWUsH9H1u06NyW9PSo
+         po0NhfSE/UiBguxj9JKhpejx8PkC9/epWs3LL9k69Syzkvod63YNHtgdafCtja09DU0j
+         nnc78iwF/k0U3qR8U1FkTteQzaiS3qQko3S4VvOWHhJnglxKaa3AHdMO7c9cJoAARBmB
+         v482490kWa0ndaV2sP4IAe5FTWIdrM22osB6JP7pSBTCLdPaG5Md4DpNHUWGoFJ+ypSS
+         AkNXMes9KJmBiTDYM3ubg9lOFoHy1vJLPGpH2CP9QV+UG5NcWylKFEe6x+jMhyYXo7SY
+         umHQ==
+X-Gm-Message-State: AAQBX9cC7ul1MWuf9OfCu1erBQ24m8Jb3iZQQ99/NPviU2tPm4KFjzkD
+	D6g6fioZm6qMBEYLhnrJJkgLkBxRVNHgOyLCp9c=
+X-Google-Smtp-Source: AKy350Yt7w4HDnt8ZzJ1OA1g5OCPUWPp6heQMoQ57xTct+y1JPFpMNsPMtx4N97vitPklV5i5ccLJReO6yCW0ia7/Oo=
+X-Received: by 2002:a02:95c3:0:b0:3eb:3166:9da4 with SMTP id
+ b61-20020a0295c3000000b003eb31669da4mr2710421jai.2.1680181172425; Thu, 30 Mar
+ 2023 05:59:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: u_NGBSuiRFHQL8VnEG6499_GmaBP9tbQ
-X-Proofpoint-ORIG-GUID: nVCuzDjimGNMMKpoL79cxCoOg_10i7rQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-30_07,2023-03-30_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- malwarescore=0 spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
- impostorscore=0 lowpriorityscore=0 mlxlogscore=918 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303300101
+References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-9-arnd@kernel.org>
+In-Reply-To: <20230327121317.4081816-9-arnd@kernel.org>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Thu, 30 Mar 2023 13:59:06 +0100
+Message-ID: <CA+V-a8v--RqxFJYTZ04vVgiA69VJsFWk=r=TvRvokhpAV-famg@mail.gmail.com>
+Subject: Re: [PATCH 08/21] riscv: dma-mapping: only invalidate after DMA, not flush
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,60 +75,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstr
+ ong@linaro.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, linux-oxnas@groups.io, Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-platform device helper routines won't update the NUMA distance table
-while creating a platform device, even if the device is present on
-a NUMA node that doesn't have memory or CPU. This is especially true
-for pmem devices. If the target node of the pmem device is not online, we
-find the nearest online node to the device and associate the pmem
-device with that online node. To find the nearest online node, we should
-have the numa distance table updated correctly. Update the distance
-information during the device probe.
+On Mon, Mar 27, 2023 at 1:16=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> No other architecture intentionally writes back dirty cache lines into
+> a buffer that a device has just finished writing into. If the cache is
+> clean, this has no effect at all, but if a cacheline in the buffer has
+> actually been written by the CPU,  there is a drive bug that is likely
+> made worse by overwriting that buffer.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/riscv/mm/dma-noncoherent.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-distance_lookup_table value for distance_ref_points_depth = 2 before and after
-fix is below
-node 3 distance depth 0  - 0
-node 3 distance depth 1  - 0
-node 4 distance depth 0  - 4
-node 4 distance depth 1  - 2
-node 5 distance depth 0  - 5
-node 5 distance depth 1  - 1
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-after fix
-node 3 distance depth 0  - 3
-node 3 distance depth 1  - 1
-node 4 distance depth 0  - 4
-node 4 distance depth 1  - 2
-node 5 distance depth 0  - 5
-node 5 distance depth 1  - 1
+Cheers,
+Prabhakar
 
-Without the fix, the nearest numa node to the pmem device will be picked as 4.
-After the fix, we get the correct numa node which is 5.
-
-Fixes: da1115fdbd6e ("powerpc/nvdimm: Pick nearby online node if the device node is not online")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 2f8385523a13..5bef75714bd5 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -1428,6 +1428,10 @@ static int papr_scm_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
-+	/*
-+	 * of platform device create won't update the numa distance table
-+	 */
-+	update_numa_distance(dn);
- 
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (!p)
--- 
-2.39.2
-
+> diff --git a/arch/riscv/mm/dma-noncoherent.c b/arch/riscv/mm/dma-noncoher=
+ent.c
+> index d919efab6eba..640f4c496d26 100644
+> --- a/arch/riscv/mm/dma-noncoherent.c
+> +++ b/arch/riscv/mm/dma-noncoherent.c
+> @@ -42,7 +42,7 @@ void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t si=
+ze,
+>                 break;
+>         case DMA_FROM_DEVICE:
+>         case DMA_BIDIRECTIONAL:
+> -               ALT_CMO_OP(flush, vaddr, size, riscv_cbom_block_size);
+> +               ALT_CMO_OP(inval, vaddr, size, riscv_cbom_block_size);
+>                 break;
+>         default:
+>                 break;
+> --
+> 2.39.2
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
