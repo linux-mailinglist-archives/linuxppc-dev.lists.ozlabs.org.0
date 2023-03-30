@@ -1,89 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37286D009B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 12:04:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0E86D0147
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 12:33:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnJtn0tnYz3fRG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 21:04:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnKWp72rJz3fST
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 21:33:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=JxPZOVxj;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=o3ayTuAj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=agjBVM6h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=JxPZOVxj;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=o3ayTuAj;
-	dkim-atps=neutral
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnJsr2Hzsz3ccs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 21:03:57 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.nyi.internal (Postfix) with ESMTP id A6E105821FE;
-	Thu, 30 Mar 2023 06:03:53 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 30 Mar 2023 06:03:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1680170633; x=1680177833; bh=gF
-	qXqcYMWSKuJaGFIiy50Zf8Mul16NUlD8xgems2xkg=; b=JxPZOVxjXCuuUFnz8g
-	uR2No3WKokB1kYnBVGLyuNTT1GHbSx7HcllmOlx7WL73MRjvBNY1Jz63nwSIuXZm
-	fARBRkt2EgiPXJLAvasiK+94JN9Rp7qIpeg/c8F9us28ZAmzX4a12l/FSLzGWeAf
-	GP7Lhb+lkhGzU3GXPlwLR10V758pcgH1ojqXsjwkdVyUvwtO9WMqdgRyfQ7u3ctM
-	W7sU+9bMDjJx0q1aRSpQBmyxejDAdo7VNGKwjccZfKKub+cgQ2ZTm/zkP2y/rRlx
-	wYI35VSqJc9OdGsxpiyx9Lz/h6dHQyx/rbychak5+lhcx20ykt8JwaYwQzyk90NH
-	m/JA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1680170633; x=1680177833; bh=gFqXqcYMWSKuJ
-	aGFIiy50Zf8Mul16NUlD8xgems2xkg=; b=o3ayTuAjbuBu4DPifrxB/HOOZRdO1
-	xb065wIqst9K32LE2zIFvIgvo3yv5lHodsQ9WEQeJOnQ4UcFBj18pN027eK8euOR
-	PtcZaxUi42xyTMd+sbBNtRmY12wtqYj80lCZcTZsq6sg8WYonLY5xmdrshZ5C44/
-	jXjWmEhQ68ThFXZ/SV/69f9njMopwi7kUxCVm+NBkbrrBCIP7mBID23rgx/hkVub
-	HQT4TO9CRtSmC/0UwEYJhKoIxPA5B3sXRdQjC9d5SuBSM3xeOdM9GqWhROqUG5n+
-	6gfH5c9KmTWNqq/meniN7YOfy58761x7eNGJpjVNO+ni0u9AywZLJQEUQ==
-X-ME-Sender: <xms:h14lZP2P6-1WML0tnHU0HdMdtZK3G6AdboBJze6kLEnEZTHVfufW-A>
-    <xme:h14lZOG421saOUxl3VTrr1QErXRPxmod2xdJenKYhBULtUD7d6J8ovO92D02wTAv1
-    7ZDE3mwId6_yOeP8ic>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehkedgvddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:h14lZP41dAmtiVu4ty1E8BBZ-9reNxwryxuQCN8Se8vdMAwQTZcBkg>
-    <xmx:h14lZE2dCL5QmCe3baeT7FUMFxbuJwcm88C-9hfhLub0UJvmYVxYPg>
-    <xmx:h14lZCHsPaycpm9MVz5soXkltYLZMmnIjjAwPs6W0AlziFmXAZIfJA>
-    <xmx:iV4lZI76poFBm_RbGrZvSm-s7BW_iB7cNPqH9WgtDueAW0AKJy54Lg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 423AFB60086; Thu, 30 Mar 2023 06:03:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-238-g746678b8b6-fm-20230329.001-g746678b8
-Mime-Version: 1.0
-Message-Id: <6a5bd3a3-87e0-4a24-89ca-d265b0817a95@app.fastmail.com>
-In-Reply-To: <d7f36a28-0cae-a035-791b-363754aefeee@linaro.org>
-References: <20230327121317.4081816-1-arnd@kernel.org>
- <20230327121317.4081816-19-arnd@kernel.org>
- <d7f36a28-0cae-a035-791b-363754aefeee@linaro.org>
-Date: Thu, 30 Mar 2023 12:03:16 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Arnd Bergmann" <arnd@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 18/21] ARM: drop SMP support for ARM11MPCore
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnKVw54V9z3c3w
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 21:32:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=agjBVM6h;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4PnKVv1tGzz4xFf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 21:32:39 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4PnKVv1pXQz4xDw; Thu, 30 Mar 2023 21:32:39 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=agjBVM6h;
+	dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4PnKVv1jDnz4whh;
+	Thu, 30 Mar 2023 21:32:38 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id p13-20020a17090a284d00b0023d2e945aebso6095809pjf.0;
+        Thu, 30 Mar 2023 03:32:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680172355;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lF8w+v1I1As3PcRa2mFbl+1Nj6II4gicPPy/HXfsPUE=;
+        b=agjBVM6haHpie21j60SdRYXaMuqusHQ6I0SiDhcGf8GOmptk/rQjZJdRkqp/wDdc1y
+         Isp6hWQflYExQE4t87mFCstZ+dk4qjf+cIw7ZGjtk+3Ej5AZLCN+WtpNks/pvVxBgC9Q
+         0tX4GjssDMYbRqzu4MAOjI3jpg8o9nXxp3J+bE38x+xr+Zq/ABpLd+ZZoeLBFrmlaA7p
+         01SwwdmXUYsJ8ZJZuNxKLWGxmly3H7ZVW1aIJQI1WAjRcTGMxItcJ7YiJFt1L4oqFRYw
+         Fx3DYtGh6hUyFKDrJLeLGcXA3+t4CbrM988MG5kHhVLvw6rCtOcBlgL1sT67h3cZcmAV
+         YtxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680172355;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lF8w+v1I1As3PcRa2mFbl+1Nj6II4gicPPy/HXfsPUE=;
+        b=tEUrnzY2ptQ8fcCL2sZ6ZcEB18Oirf8G7MqJIVNokDV3iuSRfN6wugjWW6sFAK4cvg
+         psIZG51rg3JndTqelpJJPmLsp7KmKuZkJj36w+zhfR72I79lM1px6QOAlbNpGWcJGfeL
+         mAFgL4BrSZnOnXOg6NOycHlJ8BaTcQ0OAU8rs2xDp1cJgdRZNu2N4O3in6tb5Fifgw33
+         y6rAbhqQ9Msc8Qf91fpxDCJIoxbeOjPSn0jh2eumbkG20L/mZk2RYCTkRxs7I1M7xLHr
+         H+n3BJ1yadwMaN0kqLf0rtTO0G+8Sjbz9BXH4P31+6yr/ojcN6IEYsgNDXdQs1yFXDTt
+         84hw==
+X-Gm-Message-State: AAQBX9fbkmn6NDO2ik9T3MdKTLh57i3YJOSHmUqD4XJV0GKNC1EV3V3q
+	qaMGnvN+RGULV5wEYLQC7J7cJqwEVu0=
+X-Google-Smtp-Source: AKy350bVPCbrPrrJ8o+kZqey+ilR1iv3/onIOPz19yPsTPV9nu8tgtJn3o74QlkOKNaBVEMQOfE3xQ==
+X-Received: by 2002:a17:90b:3b90:b0:23d:500f:e826 with SMTP id pc16-20020a17090b3b9000b0023d500fe826mr24512461pjb.14.1680172354675;
+        Thu, 30 Mar 2023 03:32:34 -0700 (PDT)
+Received: from bobo.ibm.com ([203.220.177.81])
+        by smtp.gmail.com with ESMTPSA id 6-20020a17090a08c600b0023440af7aafsm2895219pjn.9.2023.03.30.03.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 03:32:33 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2 0/2] KVM: PPC: Book3S HV: Injected interrupt SRR1
+Date: Thu, 30 Mar 2023 20:32:22 +1000
+Message-Id: <20230330103224.3589928-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,56 +91,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Daniel Golle <daniel@makrotopia.org>, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Lad,
- Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, Robin Murphy <robin.murphy@arm.com>, "David S . Miller" <davem@davemloft.net>
+Cc: Michael Neuling <mikey@neuling.org>, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 30, 2023, at 09:48, Neil Armstrong wrote:
-> On 27/03/2023 14:13, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> The cache management operations for noncoherent DMA on ARMv6 work
->> in two different ways:
->> 
->>   * When CONFIG_DMA_CACHE_RWFO is set, speculative prefetches on in-flight
->>     DMA buffers lead to data corruption when the prefetched data is written
->>     back on top of data from the device.
->> 
->>   * When CONFIG_DMA_CACHE_RWFO is disabled, a cache flush on one CPU
->>     is not seen by the other core(s), leading to inconsistent contents
->>     accross the system.
->> 
->> As a consequence, neither configuration is actually safe to use in a
->> general-purpose kernel that is used on both MPCore systems and ARM1176
->> with prefetching enabled.
->> 
->> We could add further workarounds to make the behavior more dynamic based
->> on the system, but realistically, there are close to zero remaining
->> users on any ARM11MPCore anyway, and nobody seems too interested in it,
->> compared to the more popular ARM1176 used in BMC2835 and AST2500.
->> 
->> The Oxnas platform has some minimal support in OpenWRT, but most of the
->> drivers and dts files never made it into the mainline kernel, while the
->> Arm Versatile/Realview platform mainly serves as a reference system but
->> is not necessary to be kept working once all other ARM11MPCore are gone.
->
-> Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
->
-> It's sad but it's the reality, there's no chance full OXNAS support will
-> ever come upstream and no real work has been done for years.
->
-> I think OXNAS support can be programmed for removal for next release,
-> it would need significant work to rework current support to make it acceptable
-> before trying to upstream missing bits anyway.
+I missed this in my earlier review and testing, but I think we need
+these in the prefix instruction enablement series before the final patch
+that enables HFSCR[PREFIX] for guests.
 
-Ok, thanks for your reply!
+Thanks,
+Nick
 
-To clarify, do you think we should plan for removal after the next
-stable release (6.3, removed in 6.4), or after the next LTS
-release (probably 6.6, removed in 6.7)? As far as I understand,
-the next OpenWRT release (23.x) will be based on linux-5.15,
-and the one after that (24.x) would likely still use 6.1, unless
-they skip an LTS kernel.
+Nicholas Piggin (2):
+  KVM: PPC: Permit SRR1 flags in more injected interrupt types
+  KVM: PPC: Book3S HV: Set SRR1[PREFIX] bit on injected interrupts
 
-     Arnd
+ arch/powerpc/include/asm/kvm_ppc.h     | 27 ++++++++++++++--------
+ arch/powerpc/kvm/book3s.c              | 32 +++++++++++++-------------
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 13 +++++++----
+ arch/powerpc/kvm/book3s_hv.c           | 23 ++++++++++++------
+ arch/powerpc/kvm/book3s_hv_nested.c    |  9 +++++---
+ arch/powerpc/kvm/book3s_pr.c           |  4 ++--
+ arch/powerpc/kvm/booke.c               | 13 +++++++----
+ arch/powerpc/kvm/emulate_loadstore.c   |  6 ++---
+ arch/powerpc/kvm/powerpc.c             |  4 +++-
+ 9 files changed, 81 insertions(+), 50 deletions(-)
+
+-- 
+2.37.2
+
