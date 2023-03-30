@@ -2,68 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834896CF9F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 06:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4280C6CFA18
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 06:21:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pn8sV0nw7z3fSq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 15:03:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pn9H81BR8z3fRD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Mar 2023 15:21:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20210112.gappssmtp.com header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ynfExVnq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TlGSRufn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=anup@brainfault.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20210112.gappssmtp.com header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ynfExVnq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TlGSRufn;
 	dkim-atps=neutral
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pn8rg18H9z3cC1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 15:02:25 +1100 (AEDT)
-Received: by mail-ed1-x52d.google.com with SMTP id ek18so71436825edb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Mar 2023 21:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20210112.gappssmtp.com; s=20210112; t=1680148938;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DRrMSTrE1hzXNMTnJR9hzwcHZG5OJLH6N1k4mRkhtxc=;
-        b=ynfExVnq8Pbne4CrK35vVvzcZo/HMcJEJUR3Ujna/kLNgyxndnnVOhaOok7Q3u4boK
-         FW4keBgSZ6pU7kWyE+manshTU5Tk7hNavSWkOvFCWTteIMmp/9Qk7GSzFj7kYZ5XfmBv
-         miUHdrLcGJzpXksYn+qz42allwe3QMPmR/pnE7vpqvm1r6J8sdtN2nbt3yHJRZJvjQa2
-         WULHOKYx2FaImOfeOidrkyK9ABt3NseOxAzqi3/iHsrvkvaPYLGzC0VonLkMDJt7dAvE
-         qA6CCYx7R2kWBHI86Kqb+JhYZk0VIktRQH4ecdVqtPrNiVN9gXZkgnTnC6UdsKE6Gs/B
-         u+Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680148938;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DRrMSTrE1hzXNMTnJR9hzwcHZG5OJLH6N1k4mRkhtxc=;
-        b=2Vobfgtsul55pXJDhBPCqnicCVXGx/Tj8ZgGebqpeZBCJJpGZ9ORZvOdZ1GO83SJBP
-         iKpLRIaRo+aHAE6p5+nA49naMzhhDi5dtsHp3kqCROwAvpKJAnCzyfiB60OX0xja5Rno
-         43LAmFpRvdHQHKCzegRzQP5y3AGIf/4c+Jz4VnxhvS0/nykP5hDKEOYrFC7oOho+rgKZ
-         Fo8Dq7v42RrZzix0+anfyiHOylkMy7ZSlNDQp75n3STyHy6woVMTFxfJeZ8DxJAkrs+B
-         CWJKOiFqx7h7cc0cy7GTxhlz+isNKjxx0PfhrL3nYmIpAsYwxR7CX62RLGAbWgWkTsUx
-         gFVQ==
-X-Gm-Message-State: AAQBX9fkaI8GlIuBeJ7kYVpMUV7LqNy7cFy3167ZV/zAqeUVzQtDRppE
-	61SijgiplcsS2hIHyH9auLuQY9jN5XJeTGUzoH5gqw==
-X-Google-Smtp-Source: AKy350YsOJqAiqRYem5e01w1p2m+BEvgEUELir1jFBDVGQszGos9GuJs6YHfU/Z+9mLpMcFmxWEdJiS8UYrZt9G/tI4=
-X-Received: by 2002:a50:9fef:0:b0:4fc:1608:68c8 with SMTP id
- c102-20020a509fef000000b004fc160868c8mr10756114edf.1.1680148938164; Wed, 29
- Mar 2023 21:02:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pn9GH1Q01z3cS4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 15:21:10 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32U3blMQ009091;
+	Thu, 30 Mar 2023 04:20:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=m8b/i+398SAH8q8B6eZhvGo0Og8BAKaPM5bSdtMfqoE=;
+ b=TlGSRufn35rcdiravXttf5FjXsb/xgrf/TtOiCkJIPAQDm67Cf3jycJ5DracKm7ZgZ35
+ x8T2NG3w7SndxEOLm/OZ6mSod6Ixxw8Ow00rm9srpbqCgdgekYcuFaKAI8YmejEMA24v
+ d8vPrA5Q+Sc5QZTo5JbEqNAykXnYD5K1UeR5KzPktZpQaluseAmIWm6KSpLq19ugtIVt
+ D4Xn9InzV/qR5mDkEplge7ILAxFYdmyQDEK7S+WQZ6TbteJn3bUA+0LbJzOKddlGZLML
+ AWrwh6RvAc/vHpbZ/i9i7pknF6G492SsZxGLm3QamPbAmOD+WeqPALYY7ry+fX+pbEoi tg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusw8pg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 04:20:58 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32U4ECGk003639;
+	Thu, 30 Mar 2023 04:20:58 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmnusw8nd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 04:20:58 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32TLpeVR029355;
+	Thu, 30 Mar 2023 04:20:55 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3phr7fnh3a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 04:20:55 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32U4Kros22151742
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Mar 2023 04:20:53 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 139BD20040;
+	Thu, 30 Mar 2023 04:20:52 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F43720043;
+	Thu, 30 Mar 2023 04:20:50 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.21.16])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 30 Mar 2023 04:20:49 +0000 (GMT)
+Date: Thu, 30 Mar 2023 09:50:46 +0530
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] arch/powerpc/kvm: kvmppc_core_vcpu_create_hv: check for
+ kzalloc failure
+Message-ID: <ZCUOHj+TYNzPVT1L@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+References: <20230323074718.2810914-1-kconsul@linux.vnet.ibm.com>
+ <87pm8tcir3.fsf@mpe.ellerman.id.au>
+ <ZCK96ohvWRY12zZ3@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+ <ZCLHFw1U4Mq/QK2A@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+ <87fs9pcce6.fsf@mpe.ellerman.id.au>
+ <ZCLe2Jf0n6GR9Qhw@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+ <87tty3az3c.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org> <20230329-dt-cpu-header-cleanups-v1-16-581e2605fe47@kernel.org>
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-16-581e2605fe47@kernel.org>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 30 Mar 2023 09:32:06 +0530
-Message-ID: <CAAhSdy3MYV=v2TNZ_507zGe6Pj_c95TZwODPK8-zTHpkn-ukww@mail.gmail.com>
-Subject: Re: [PATCH 16/19] cpuidle: Adjust includes to remove of_device.h
-To: Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tty3az3c.fsf@mpe.ellerman.id.au>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sRPum71o_EdXwn_YyYfH8Ql21D0WR5GS
+X-Proofpoint-ORIG-GUID: 71aLPHakSckviiKtYrujHH7qp-YfB3pC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-29_16,2023-03-28_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2303200000 definitions=main-2303300031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,99 +102,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishanth Menon <nm@ti.com>, Huacai Chen <chenhuacai@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Yangtao Li <tiny.windzz@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Amit Kucheria <amitk@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Frank Rowand <frowand.list@gmail.com>, Viresh Kumar <vireshk@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Marc Zyngier <maz@kernel.org>, Samuel Holland <samuel@sholland.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Zhang Rui <rui.zhang@intel.com>, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, 
- linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Amit Daniel Kachhap <amit.kachhap@gmail.com>, linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sudeep Holla <sudeep.holla@arm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 29, 2023 at 9:22=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
-> implicitly including other includes, and is no longer needed. Adjust the
-> include files with what was implicitly included by of_device.h (cpu.h,
-> cpuhotplug.h, of.h, and of_platform.h) and drop including of_device.h.
->
-> Signed-off-by: Rob Herring <robh@kernel.org>
-
-For cpuidle-riscv-sbi.c
-Acked-by: Anup Patel <anup@brainfault.org>
-
-Regards,
-Anup
-
-> ---
-> Please ack and I will take the series via the DT tree.
-> ---
->  drivers/cpuidle/cpuidle-psci.c      | 1 -
->  drivers/cpuidle/cpuidle-qcom-spm.c  | 3 +--
->  drivers/cpuidle/cpuidle-riscv-sbi.c | 2 +-
->  drivers/cpuidle/dt_idle_states.c    | 1 -
->  4 files changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psc=
-i.c
-> index 6de027f9f6f5..bf68920d038a 100644
-> --- a/drivers/cpuidle/cpuidle-psci.c
-> +++ b/drivers/cpuidle/cpuidle-psci.c
-> @@ -16,7 +16,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/psci.h>
->  #include <linux/pm_domain.h>
-> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle=
--qcom-spm.c
-> index c6e2e91bb4c3..1fc9968eae19 100644
-> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
-> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-> @@ -11,8 +11,7 @@
->  #include <linux/io.h>
->  #include <linux/slab.h>
->  #include <linux/of.h>
-> -#include <linux/of_address.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of_platform.h>
->  #include <linux/err.h>
->  #include <linux/platform_device.h>
->  #include <linux/cpuidle.h>
-> diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidl=
-e-riscv-sbi.c
-> index be383f4b6855..ae0b838a0634 100644
-> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-> @@ -8,6 +8,7 @@
->
->  #define pr_fmt(fmt) "cpuidle-riscv-sbi: " fmt
->
-> +#include <linux/cpuhotplug.h>
->  #include <linux/cpuidle.h>
->  #include <linux/cpumask.h>
->  #include <linux/cpu_pm.h>
-> @@ -15,7 +16,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/slab.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_domain.h>
-> diff --git a/drivers/cpuidle/dt_idle_states.c b/drivers/cpuidle/dt_idle_s=
-tates.c
-> index 02aa0b39af9d..12fec92a85fd 100644
-> --- a/drivers/cpuidle/dt_idle_states.c
-> +++ b/drivers/cpuidle/dt_idle_states.c
-> @@ -14,7 +14,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->
->  #include "dt_idle_states.h"
->
->
-> --
-> 2.39.2
->
+On 2023-03-30 10:59:19, Michael Ellerman wrote:
+> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
+> > On 2023-03-28 23:02:09, Michael Ellerman wrote:
+> >> Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
+> >> > On 2023-03-28 15:44:02, Kautuk Consul wrote:
+> >> >> On 2023-03-28 20:44:48, Michael Ellerman wrote:
+> >> >> > Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
+> >> >> > > kvmppc_vcore_create() might not be able to allocate memory through
+> >> >> > > kzalloc. In that case the kvm->arch.online_vcores shouldn't be
+> >> >> > > incremented.
+> >> >> > 
+> >> >> > I agree that looks wrong.
+> >> >> > 
+> >> >> > Have you tried to test what goes wrong if it fails? It looks like it
+> >> >> > will break the LPCR update, which likely will cause the guest to crash
+> >> >> > horribly.
+> >> > Also, are you referring to the code in kvmppc_update_lpcr()?
+> >> > That code will not crash as it checks for the vc before trying to
+> >> > dereference it.
+> >> 
+> >> Yeah that's what I was looking at. I didn't mean it would crash, but
+> >> that it would bail out early when it sees a NULL vcore, leaving other
+> >> vcores with the wrong LPCR value.
+> >> 
+> >> But as you say it doesn't happen because qemu quits on the first ENOMEM.
+> >> 
+> >> And regardless if qemu does something that means the guest is broken
+> >> that's just a qemu bug, no big deal as far as the kernel is concerned.
+> 
+> > But there could be another user-mode application other than qemu that
+> > actually tries to create a vcpu after it gets a -ENOMEM for another
+> > vcpu. Shouldn't the kernel be independent of qemu?
+> 
+> Yes, the kernel is independent of qemu.
+> 
+> On P8 we had kvmtool, and there's several other VMMs these days, though
+> most don't support Power.
+> 
+> I didn't mean qemu specifically above. If any VMM continues blindly
+> after getting ENOMEM back from the KVM API then that's a bug in that
+> VMM.
+> 
+> >> > But the following 2 places that utilize the arch.online_vcores will have
+> >> > problems in logic if the usermode test-case doesn't pull down the
+> >> > kvm context after the -ENOMEM vcpu allocation failure:
+> >> > book3s_hv.c:3030:       if (!kvm->arch.online_vcores) {
+> >> > book3s_hv_rm_mmu.c:44:  if (kvm->arch.online_vcores == 1 && local_paca->kvm_hstate.kvm_vcpu)
+> >> 
+> >> OK. Both of those look harmless to the host.
+> 
+> > Harmless to the host in terms of a crash, not in terms of behavior.
+> > For example in the case of kvmhv_set_smt_mode:
+> > If we got a kzalloc failure once (and online_vcores was wrongly incremented), 
+> > then if kvmhv_set_smt_mode() is called after that then it would be
+> > not be setting the arch.smt_mode and arch.emul_smt_mode correctly and it
+> > would be wrongly returning with -EBUSY instead of 0.
+> 
+> But again that bug only affects that VM, which the VMM should have
+> terminated when it got the ENOMEM back.
+> 
+> It's definitely a bug that we increment online_vcores incorrectly, but
+> it only affects that VM, and a correctly operating VMM will terminate
+> the VM anyway because of the ENOMEM.
+Okay, I understand. I used to earlier try to contribute to other
+mailing lists and they were very particular about correcting code
+that was doing something wrong (just by code review) irrespective of whether
+it would actually result in a bug/crash or misbehaviour. I guess maintainers
+look at the generic part of the kernel in a different way than arch or
+device specific kernel/driver code.
+> 
+> cheers
