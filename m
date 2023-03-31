@@ -1,88 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D28D6D1E2F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 12:40:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B506D1E5F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 12:54:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pnxd116JHz3fW7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 21:40:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pnxy24tdhz3bTc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 21:54:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=O42fuk6H;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JPaDge68;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AbBH1oq3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=O42fuk6H;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JPaDge68;
-	dkim-atps=neutral
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pnxc403kRz3cP0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 21:39:14 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.nyi.internal (Postfix) with ESMTP id D26A1582396;
-	Fri, 31 Mar 2023 06:39:08 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 31 Mar 2023 06:39:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1680259148; x=1680266348; bh=K1
-	dAtQ4qV7dN3w/MsrN2OU4KsjceOP96vjZ3nGCDYgU=; b=O42fuk6H00j4YO3Dp1
-	BZpVEg64wioju/Pf3Ul9c+yC+JB5XdicRTWH0q9GnoWih3BlKO7ycS4VkmJtYAx2
-	HF3aI4h7qS/1m7O+XBotHA3SusQ/XtmZTe1SelV31060xkaQsjLC+Rty4KZ74Yvx
-	8bw7878o63919IzvR+Ca6M1vkcItes1pLEXbaY77LelS2ks3dpTKB9JhtosvgxH9
-	+ApSLt608JKibSkRNbNXaPZrxR74u1HpPdHhBAqQ8bKYy43F0WIYCWltJ8d+Nxr5
-	UY2/i3t/A2I5dEnDHbqWHj0QoVrr3LU/Fv2icw0kSEreyID7p3UTj+/FERmgVJXo
-	hzHw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1680259148; x=1680266348; bh=K1dAtQ4qV7dN3
-	w/MsrN2OU4KsjceOP96vjZ3nGCDYgU=; b=JPaDge685EIEGG5cDvXTC6Hf/pzvm
-	2LXfWsv3Z5zkMmwE8C32B+GLYMQw2biD8Wtcsh3+gN/RW67iZNDoiLvinyHfJyhO
-	1CBu2+EZ095L80TMg9jHGsuvHMeo907gHC7dt+etaH2q+etaa6eyBD94aOcj5qXE
-	KheUVcYo15nCVOBu+OdUldzz7zhJUqUW6aydUu5zEsy8F+hQs0Zt8D+z64A23JIS
-	Kx1XI8b4kVzknXWdtURj2kbGyM2AkyJIdJez8MQRg+Lw6+RHNdZ/0/Ax+dvk71MU
-	jQs0qBDD/7PUFOzJedDaOZmFQ3hTV7UBmD3GRjqxTL6du3cOOiPJCa2Yw==
-X-ME-Sender: <xms:SrgmZDsH884wdhtgFP-WjqPhyahcq2rQV1BXYxePlUUQ0yWNiCYf2A>
-    <xme:SrgmZEcyU5Ls198-aW06FFsOi6L4h7Wv4sRp6jrS5FzAe2-BXtlYiEn15Eala7zKN
-    NcU-l2OnHMcheIfngs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeiuddgvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:SrgmZGyKbO8ZSxRvvBCAafLKJ27r0vqF2hHifh3Kk4089lyo9A36Dg>
-    <xmx:SrgmZCNkB_7TNX_44TcLX_4tkrnW4QS1tFNdVPhOlh7GN3VJkP21_Q>
-    <xmx:SrgmZD_ZpLN7Em5Le5BRlYn4MFCU1FD-w7XDCxVO_-sr7cT1Rt90EA>
-    <xmx:TLgmZA-CWiNDzQoNLgSC2uR0Ms9CrlheEMRimwc5o7XfZdsqiN9wmg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id F3FF8B6008D; Fri, 31 Mar 2023 06:39:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-238-g746678b8b6-fm-20230329.001-g746678b8
-Mime-Version: 1.0
-Message-Id: <a8a90181-a003-47a1-8257-fcbf55752249@app.fastmail.com>
-In-Reply-To: <ZCapXlrqMOpRxkSu@shell.armlinux.org.uk>
-References: <20230327121317.4081816-1-arnd@kernel.org>
- <20230327121317.4081816-16-arnd@kernel.org>
- <ZCai0FmZiOqsMkzc@shell.armlinux.org.uk>
- <ZCapXlrqMOpRxkSu@shell.armlinux.org.uk>
-Date: Fri, 31 Mar 2023 12:38:45 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Russell King" <linux@armlinux.org.uk>, "Arnd Bergmann" <arnd@kernel.org>
-Subject: Re: [PATCH 15/21] ARM: dma-mapping: always invalidate WT caches before DMA
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pnxx82PYBz3cJF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 21:54:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AbBH1oq3;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pnxx241sXz4x4r;
+	Fri, 31 Mar 2023 21:53:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1680260040;
+	bh=8QUsIUkBAgfdYfmbh//kvQTjF8lIKNNdvGDKhDBFuWg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AbBH1oq3KYd9qxnIlJOo0+7fIFnlw+pTGY+aW7PSFh5mdL880GrQYw72MEllwI+Fu
+	 Sn/TjtOyvGg7OR3BUbipFCYwSA5Yf2nP4FH3IDESzrgs1WW3lIHW1brLI1C+T0vdqO
+	 w7h94bj6QCeXfEHnv+HrsqMLGutoz7KwFzBsHbEUdhElNbDkqKiA30SW8SSCFAuM6A
+	 kCRKf/NqhSAmytND1L897CKg7WHSw2yq8uKMNZCp3nCncYacK6GlmMPLeKXd+O77Od
+	 hcyThV0TzQe1Jkalx5JTBxzOOc3L9GJwA/dRzLUW+2txepCtH9t9nPyoIkvQ9bZXyL
+	 kgIrl6k5DV6HA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Kolesa <daniel@octaforge.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] drm/amdgpu: drop the long-double-128 powerpc check/hack
+In-Reply-To: <dab9cbd8-2626-4b99-8098-31fe76397d2d@app.fastmail.com>
+References: <dab9cbd8-2626-4b99-8098-31fe76397d2d@app.fastmail.com>
+Date: Fri, 31 Mar 2023 21:53:57 +1100
+Message-ID: <87o7o9b396.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,84 +57,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Brian Cain <bcain@quicinc.com>, "Lad,
- Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, Robin Murphy <robin.murphy@arm.com>, "David S . Miller" <davem@davemloft.net>
+Cc: dan@danny.cz, alexdeucher@gmail.com, tpearson@raptorengineering.com, amd-gfx@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 31, 2023, at 11:35, Russell King (Oracle) wrote:
-> On Fri, Mar 31, 2023 at 10:07:28AM +0100, Russell King (Oracle) wrote:
->> On Mon, Mar 27, 2023 at 02:13:11PM +0200, Arnd Bergmann wrote:
->> > From: Arnd Bergmann <arnd@arndb.de>
->> > 
->> > Most ARM CPUs can have write-back caches and that require
->> > cache management to be done in the dma_sync_*_for_device()
->> > operation. This is typically done in both writeback and
->> > writethrough mode.
->> > 
->> > The cache-v4.S (arm720/740/7tdmi/9tdmi) and cache-v4wt.S
->> > (arm920t, arm940t) implementations are the exception here,
->> > and only do the cache management after the DMA is complete,
->> > in the dma_sync_*_for_cpu() operation.
->> > 
->> > Change this for consistency with the other platforms. This
->> > should have no user visible effect.
->> 
->> NAK...
->> 
->> The reason we do cache management _after_ is to ensure that there
->> is no stale data. The kernel _has_ (at the very least in the past)
->> performed DMA to data structures that are embedded within other
->> data structures, resulting in cache lines being shared. If one of
->> those cache lines is touched while DMA is progressing, then we
->> must to cache management _after_ the DMA operation has completed.
->> Doing it before is no good.
-
-What I'm trying to address here is the inconsistency between
-implementations. If we decide that we always want to invalidate
-after FROM_DEVICE, I can do that as part of the series, but then
-I have to change most of the other arm implementations.
-
-Right now, the only WT cache implementations that do the the
-invalidation after the DMA are cache-v4.S (arm720 integrator and
-clps711x), cache-v4wt.S (arm920/arm922 at91rm9200, clps711x,
-ep93xx, omap15xx, imx1 and integrator), some sparc32 leon3 and
-early xtensa.
-
-Most architectures that have write-through caches (m68k,
-microblaze) or write-back caches but no speculation (all other
-armv4/armv5, hexagon, openrisc, sh, most mips, later xtensa)
-only invalidate before DMA but not after.
-
-OTOH, most machines that are actually in use today (armv6+,
-powerpc, later mips, microblaze, riscv, nios2) also have to
-deal with speculative accesses, so they end up having to
-invalidate or flush both before and after a DMA_FROM_DEVICE
-and DMA_BIDIRECTIONAL.
-
-> It looks like the main offender of "touching cache lines shared
-> with DMA" has now been resolved - that was the SCSI sense buffer,
-> and was fixed some time ago:
+"Daniel Kolesa" <daniel@octaforge.org> writes:
+> Commit c653c591789b ("drm/amdgpu: Re-enable DCN for 64-bit powerpc")
+> introduced this check as a workaround for the driver not building
+> with toolchains that default to 64-bit long double.
+...
+> In mainline, this work is now fully done, so this check is fully
+> redundant and does not do anything except preventing AMDGPU DC
+> from being built on systems such as those using musl libc. The
+> last piece of work to enable this was commit c92b7fe0d92a
+> ("drm/amd/display: move remaining FPU code to dml folder")
+> and this has since been backported to 6.1 stable (in 6.1.7).
 >
-> commit de25deb18016f66dcdede165d07654559bb332bc
-> Author: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-> Date:   Wed Jan 16 13:32:17 2008 +0900
->
-> /if/ that is the one and only case, then we're probably fine, but
-> having been through an era where this kind of thing was the norm
-> and requests to fix it did not get great responses from subsystem
-> maintainers, I just don't trust the kernel not to want to DMA to
-> overlapping cache lines.
+> Relevant issue: https://gitlab.freedesktop.org/drm/amd/-/issues/2288
 
-Thanks for digging that out, that is very useful. It looks like this
-was around the same time as 03d70617b8a7 ("powerpc: Prevent memory
-corruption due to cache invalidation of unaligned DMA buffer"), so
-it may well have been related. I know we also had more recent 
-problems with USB drivers trying to DMA to stack, which would 
-also cause problems on non-coherent machines, but some of these were
-only found after we introduced VMAP_STACK.
+I looked to pick this up for 6.3 but was still seeing build errors with
+some compilers. I assumed that was due to some fixes coming in
+linux-next that I didn't have.
 
-It would be nice to use KASAN prevent reads on cache lines that
-have in-flight DMA.
+But applying the patch on v6.3-rc4 I still see build errors. This is
+building allyesconfig with the kernel.org GCC 12.2.0 / binutils 2.39
+toolchain:
 
-     Arnd
+  powerpc64le-linux-gnu-ld: drivers/gpu/drm/amd/display/dc/dml/display_mode_lib.o uses hard float, arch/powerpc/lib/test_emulate_step.o uses soft float
+  powerpc64le-linux-gnu-ld: failed to merge target specific data of file drivers/gpu/drm/amd/display/dc/dml/display_mode_lib.o
+
+etc.
+
+All the conflicts are between test_emulate_step.o and some file in drivers/gpu/drm/amd/display/dc/dml.
+
+So even with all the hard-float code isolated in the dml folder, we
+still hit build errors, because allyesconfig wants to link those
+hard-float using objects with soft-float objects from elsewhere in the
+kernel.
+
+It seems like the only workable fix is to force the kernel build to use
+128-bit long double. I'll send a patch doing that.
+
+cheers
