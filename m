@@ -2,60 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D206D247E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 17:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C49C6D249D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 18:06:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pp4ds0h9lz3fVk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 02:56:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pp4sY1WWPz3fWq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 03:06:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=F86J/lOD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vssTaNEW;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lsKnCu+H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=F86J/lOD;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vssTaNEW;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lsKnCu+H;
 	dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pp4cy2KJ4z3cDc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Apr 2023 02:55:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gUELt2K1QKph0U/mDlh4dwcj3jRy49Fgp81dawItijs=; b=F86J/lODgmEA0uwbHcY3bvQDIg
-	TgPZqAN80ItsKKu+iPQcuv/pts9DIvFXJeSEZcyq0SOfARV88djehGMYXJuDHo94xmNoUdc8so8TQ
-	lO3DlUKNl0JE1n5lC4OQRNQJ3a+9RGNNtr5VJSUX9rNMXskzfjoEtNIzNUj9gswxqSmuoQ2K/eCd1
-	sHbsLGLpmn7B5oFOttF1NlFGM73bvkK8EdPHfxwwzdfF3QwqoSTJnWaOA3vfMNEshnYYvIU/akmQr
-	wtBcESnlgj18abmkEesn3hmvJxyBrWubIThmP6qLXHE/lCCqgaePhuHTPqwc712P40mYINjGZoZVl
-	F0iXSnJA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60182)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1piH5K-0005f8-U5; Fri, 31 Mar 2023 16:54:38 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1piH5B-0001I3-3X; Fri, 31 Mar 2023 16:54:29 +0100
-Date: Fri, 31 Mar 2023 16:54:29 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 20/21] ARM: dma-mapping: split out arch_dma_mark_clean()
- helper
-Message-ID: <ZCcCNXyb9TZvA8wD@shell.armlinux.org.uk>
-References: <20230327121317.4081816-1-arnd@kernel.org>
- <20230327121317.4081816-21-arnd@kernel.org>
- <ZCGv18wnEtoFvtfM@shell.armlinux.org.uk>
- <1be05746-9deb-49cb-b106-71b2db8318cd@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pp4rd6ffHz3cdB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Apr 2023 03:05:37 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 43ADF1F8A3;
+	Fri, 31 Mar 2023 16:05:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1680278731; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n3FsFrFZEEvyj+FZQD8XDhYw0Rbs8LXkmS09BCUboQc=;
+	b=vssTaNEWuuOsvjH3CRaxUE7nk3r5WyiLxXjHnxHcAwsTHXqvcamczlJG+a/RTzstGjOEZ5
+	A+v7TzmBTWvwU1rlJScZlbOr1IUEjCIlasM7gaJS4B2AkFT769JIugzmcOgKKLboutpMTn
+	7hnRsV6zpCfqTsfxmGEbELMZJBiVwCk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1680278731;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n3FsFrFZEEvyj+FZQD8XDhYw0Rbs8LXkmS09BCUboQc=;
+	b=lsKnCu+HdX2lZj2g10HGMbRNwSuJexFbUDF1aTZbyySaNPuFBHuk0Z8rZcnO4MmSKoqwYs
+	0Kqb4TIvqTNVJVDA==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 7F6B42C141;
+	Fri, 31 Mar 2023 16:05:28 +0000 (UTC)
+Date: Fri, 31 Mar 2023 18:05:27 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH 1/2] pseries/smp: export the smt level in the SYS FS.
+Message-ID: <20230331160527.GA3132@kitsune.suse.cz>
+References: <20230331153905.31698-1-ldufour@linux.ibm.com>
+ <20230331153905.31698-2-ldufour@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1be05746-9deb-49cb-b106-71b2db8318cd@app.fastmail.com>
+In-Reply-To: <20230331153905.31698-2-ldufour@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,79 +71,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Neil Armstrong <neil.armstrong@linaro.org>, "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Arnd Bergmann <ar
- nd@kernel.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, Robin Murphy <robin.murphy@arm.com>, "David S . Miller" <davem@davemloft.net>
+Cc: nathanl@linux.ibm.com, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 31, 2023 at 04:06:37PM +0200, Arnd Bergmann wrote:
-> On Mon, Mar 27, 2023, at 17:01, Russell King (Oracle) wrote:
-> > On Mon, Mar 27, 2023 at 02:13:16PM +0200, Arnd Bergmann wrote:
-> >> From: Arnd Bergmann <arnd@arndb.de>
-> >> 
-> >> The arm version of the arch_sync_dma_for_cpu() function annotates pages as
-> >> PG_dcache_clean after a DMA, but no other architecture does this here.
-> >
-> > ... because this is an arm32 specific feature. Generically, it's
-> > PG_arch_1, which is a page flag free for architecture use. On arm32
-> > we decided to use this to mark whether we can skip dcache writebacks
-> > when establishing a PTE - and thus it was decided to call it
-> > PG_dcache_clean to reflect how arm32 decided to use that bit.
-> >
-> > This isn't just a DMA thing, there are other places that we update
-> > the bit, such as flush_dcache_page() and copy_user_highpage().
-> >
-> > So thinking that the arm32 PG_dcache_clean is something for DMA is
-> > actually wrong.
-> >
-> > Other architectures are free to do their own other optimisations
-> > using that bit, and their implementations may be DMA-centric.
+Hello,
+
+On Fri, Mar 31, 2023 at 05:39:04PM +0200, Laurent Dufour wrote:
+> There is no SMT level recorded in the kernel neither in user space.
+> Indeed there is no real constraint about that and mixed SMT levels are
+> allowed and system is working fine this way.
 > 
-> The flag is used the same way on most architectures, though some
-> use the opposite polarity and call it PG_dcache_dirty. The only
-> other architecture that uses it for DMA is ia64, with the difference
-> being that this also marks the page as clean even for coherent
-> DMA, not just when doing a flush as part of noncoherent DMA.
+> However when new CPU are added, the kernel is onlining all the threads
+> which is leading to mixed SMT levels and confuse end user a bit.
 > 
-> Based on Robin's reply it sounds that this is not a valid assumption
-> on Arm, if a coherent DMA can target a dirty dcache line without
-> cleaning it.
+> To prevent this exports a SMT level from the kernel so user space
+> application like the energy daemon, could read it to adjust their settings.
+> There is no action unless recording the value when a SMT value is written
+> into the new sysfs entry. User space applications like ppc64_cpu should
+> update the sysfs when changing the SMT level to keep the system consistent.
+> 
+> Suggested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/pseries.h |  3 ++
+>  arch/powerpc/platforms/pseries/smp.c     | 39 ++++++++++++++++++++++++
+>  2 files changed, 42 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+> index f8bce40ebd0c..af0a145af98f 100644
+> --- a/arch/powerpc/platforms/pseries/pseries.h
+> +++ b/arch/powerpc/platforms/pseries/pseries.h
+> @@ -23,7 +23,9 @@ extern int pSeries_machine_check_exception(struct pt_regs *regs);
+>  extern long pseries_machine_check_realmode(struct pt_regs *regs);
+>  void pSeries_machine_check_log_err(void);
+>  
+> +
+>  #ifdef CONFIG_SMP
+> +extern int pseries_smt;
+>  extern void smp_init_pseries(void);
+>  
+>  /* Get state of physical CPU from query_cpu_stopped */
+> @@ -34,6 +36,7 @@ int smp_query_cpu_stopped(unsigned int pcpu);
+>  #define QCSS_HARDWARE_ERROR -1
+>  #define QCSS_HARDWARE_BUSY -2
+>  #else
+> +#define pseries_smt 1
 
-The other thing to note here is that PG_dcache_clean doesn't have
-much meaning on modern CPUs with PIPT caches. For these,
-cache_is_vipt_nonaliasing() will be true, and
-cache_ops_need_broadcast() will be false.
+Is this really needed for anything?
 
-Firstly, if we're using coherent DMA, then PG_dcache_clean is
-intentionally not touched, because the data cache isn't cleaned
-in any way by DMA operations.
+The code using pseries_smt would not compile with a define, and would be
+only compiled with SMP enabled anyway so we should not need this.
 
-flush_dcache_page() turns into a no-op apart from clearing
-PG_dcache_clean if it was set.
+Thanks
 
-__sync_icache_dcache() will do nothing for non-executable pages,
-but will write-back a page that isn't marked PG_dcache_clean to
-ensure that it is visible to the instruction stream. This is only
-used to ensure that a the instructions are visible to a newly
-established executable mapping when e.g. the page has been DMA'd
-in. The default state of PG_dcache_clean is zero on any new
-allocation, so this has the effect of causing any executable page
-to be flushed such that the instruction stream can see the
-instructions, but only for the first establishment of the mapping.
-That means that e.g. libc text pages don't keep getting flushed on
-the start of every program.
+Michal
 
-update_mmu_cache() isn't compiled, so it's use of PG_dcache_clean
-is irrelevant.
-
-v6_copy_user_highpage_aliasing() won't be called because we're not
-using an aliasing cache.
-
-So, for modern ARM systems with DMA-coherent PG_dcache_clean only
-serves for the __sync_icache_dcache() optimisation.
-
-ARMs use of this remains valid in this circumstance.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>  static inline void smp_init_pseries(void) { }
+>  #endif
+>  
+> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
+> index c597711ef20a..6c382922f8f3 100644
+> --- a/arch/powerpc/platforms/pseries/smp.c
+> +++ b/arch/powerpc/platforms/pseries/smp.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/device.h>
+>  #include <linux/cpu.h>
+>  #include <linux/pgtable.h>
+> +#include <linux/sysfs.h>
+>  
+>  #include <asm/ptrace.h>
+>  #include <linux/atomic.h>
+> @@ -45,6 +46,8 @@
+>  
+>  #include "pseries.h"
+>  
+> +int pseries_smt;
+> +
+>  /*
+>   * The Primary thread of each non-boot processor was started from the OF client
+>   * interface by prom_hold_cpus and is spinning on secondary_hold_spinloop.
+> @@ -280,3 +283,39 @@ void __init smp_init_pseries(void)
+>  
+>  	pr_debug(" <- smp_init_pSeries()\n");
+>  }
+> +
+> +static ssize_t pseries_smt_store(struct class *class,
+> +			 struct class_attribute *attr,
+> +			 const char *buf, size_t count)
+> +{
+> +	int smt;
+> +
+> +	if (kstrtou32(buf, 0, &smt) || !smt || smt > (u32) threads_per_core) {
+> +		pr_err("Invalid pseries_smt specified.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	pseries_smt = smt;
+> +
+> +	return count;
+> +}
+> +
+> +static ssize_t pseries_smt_show(struct class *class, struct class_attribute *attr,
+> +			  char *buf)
+> +{
+> +	return sysfs_emit(buf, "%d\n", pseries_smt);
+> +}
+> +
+> +static CLASS_ATTR_RW(pseries_smt);
+> +
+> +static int __init pseries_smt_init(void)
+> +{
+> +	int rc;
+> +
+> +	pseries_smt = smt_enabled_at_boot;
+> +	rc = sysfs_create_file(kernel_kobj, &class_attr_pseries_smt.attr);
+> +	if (rc)
+> +		pr_err("Can't create pseries_smt sysfs/kernel entry.\n");
+> +	return rc;
+> +}
+> +machine_device_initcall(pseries, pseries_smt_init);
+> -- 
+> 2.40.0
+> 
