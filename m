@@ -1,70 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5286D1419
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 02:32:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 169306D13FF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 02:26:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pnh801cP7z3fT7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 11:32:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pnh0m00tTz3fST
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 11:26:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bPflKkHy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Aip2zx3i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=justintee8345@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bPflKkHy;
-	dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Png3B3wGKz2xb4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 10:43:17 +1100 (AEDT)
-Received: by mail-yb1-xb34.google.com with SMTP id z83so25623761ybb.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 16:43:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680219793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VcZqAGUTPeSkDw23rK6dbBPBzMq/2/SptfrVxtDB0UQ=;
-        b=bPflKkHyODU8uuehrKfUxhncuo2AuQrCOUht50s5CP3/L5DWLKNVwCzJiTEaTHDA2R
-         W8PNyNrEL/0WuHRgTIyQeHwGjj3WYh/uc7eHmXOP2Kh0AN+uxMqgTjoR3Kn9SorMT9Xa
-         BfwCqqF98FxGxSGu5FYlwvOEc0tA51r61ZxLW00pRti5pfB/oy40Wd6fMETOY3FJusUT
-         VYxs32cXpTrNn3hevQUPsImIy8gUaJ4HrTXAx4x1ol/idJy9N3HmWOkgyKDe9Yu4aWTD
-         gS4+6/d5JLC7opUHk4WN7PMB8OjJ92hP00c9kz7k94SGP6D/hVQB9e7W+S1kT5ou6+wb
-         o/Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680219793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VcZqAGUTPeSkDw23rK6dbBPBzMq/2/SptfrVxtDB0UQ=;
-        b=rU5FomUWIYyTTtC6oJMeFwwph7BvzOiy4sE1xAaCUgfQWfNHkwlZxVv+eSALaUOQNv
-         PlQfqC6OdOSrKtRnJjdM3SNyNdykPzfTBwbVSDHogzejPdJBCS4DcdSEYNduteM/qP8h
-         n6Ux5USZ2DJHqYF18ByQSpUGHFMaSGCU9H+h496P62kwhLnQWy8DmJlE0uOJTpMK7FLq
-         coISoKlgQ72a9QI+0/6j6Q08RUImX0CCTrkl3uo+BaIKrRs/3jSen9j98/otrwM1uwBV
-         /AHBVzdEmWogicyizUxmHNKe8MM4Ve/FWkZeTIseY/6CwQfCUuc0OfnPruXa2R5bzGk+
-         H7Og==
-X-Gm-Message-State: AAQBX9drXwn3tnq9vvFmKZJUZdfmCyRY9m0hpf+weTnyEimiHasQteHr
-	coHGcobDm5jXSBz+fiFJhCJO3U7imx8RAZuVe9g=
-X-Google-Smtp-Source: AKy350bqbzF6SrzHXSyol3UEFAY9jZj8xOWQlhMA5/OcrMr1OSBWBXFKxpU7bojSxQYKftTBFL5H45EMrnAbNzqKWXQ=
-X-Received: by 2002:a05:6902:1141:b0:b73:caa7:f06f with SMTP id
- p1-20020a056902114100b00b73caa7f06fmr16639952ybu.5.1680219792765; Thu, 30 Mar
- 2023 16:43:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pngzw4bl6z3cL8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 11:25:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Aip2zx3i;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pngzq3jNBz4xDp;
+	Fri, 31 Mar 2023 11:25:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1680222328;
+	bh=IryaxfhF/Yu8DUfVEv0KgipT5BAJ/9tMkYoQyyLxF6U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Aip2zx3iDhkXq6NqWtDY+HltrHSZmUQdB11c7c89fIKPWRqWQEEIynfhnHz2ck8WF
+	 359JBYgI6ZIuPaDDZzhCkh7wJ/pIROeoX8ARyX8ysA8shyHZT5JvHhR8ZXsdOXkZQk
+	 RAlLZEGGG+9UFv8KXtYlNhK7Mp57mcBh5oEgSDoOSRfAk3IAYAZf03TmugBzRYtKMo
+	 iaa2uwM28h9fOlmZVefWFxBTvctMLQZyJOd3u+i17AqhWccL3FLz50PwttPqAIvZir
+	 TBxWE+z37fD3HlA+yls6PaDUEPY9DaUVLmBsw1adqwDg3DnWcLYmmhKL0OQ2MRi1xK
+	 BMOnDuxrmRRGA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v8 0/7] Support page table check
+In-Reply-To: <3D9F951A-5132-4EE8-8A28-A23F74306C8C@linux.ibm.com>
+References: <20230215231153.2147454-1-rmclure@linux.ibm.com>
+ <3D9F951A-5132-4EE8-8A28-A23F74306C8C@linux.ibm.com>
+Date: Fri, 31 Mar 2023 11:25:22 +1100
+Message-ID: <87r0t5bwct.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20221206221335.GA1363005@bhelgaas> <20230315213537.GA1788623@bhelgaas>
-In-Reply-To: <20230315213537.GA1788623@bhelgaas>
-From: Justin Tee <justintee8345@gmail.com>
-Date: Thu, 30 Mar 2023 16:43:01 -0700
-Message-ID: <CABPRKS-kMVpEEdJPR6_ru6hjqyjxcVaR+FRWNGS1RRChjeFhCg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] scsi: lpfc: Change to use pci_aer_clear_uncorrect_error_status()
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 31 Mar 2023 11:31:50 +1100
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,102 +59,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: allenbh@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, Dick Kennedy <dick.kennedy@broadcom.com>, linux-scsi@vger.kernel.org, martin.petersen@oracle.com, Justin Tee <justin.tee@broadcom.com>, linux-pci@vger.kernel.org, jejb@linux.ibm.com, Zhuo Chen <chenzhuo.1@bytedance.com>, James Smart <james.smart@broadcom.com>, fancer.lancer@gmail.com, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, oohall@gmail.com, ruscur@russell.cc, bhelgaas@google.com, dave.jiang@intel.com, jdmason@kudzu.us, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Bjorn,
+Rohan McLure <rmclure@linux.ibm.com> writes:
+> Anyone got time to review this one?
 
-> But lpfc_aer_cleanup_state() is visible in the
-> "lpfc_aer_state_cleanup" sysfs file, so removing it would break any
-> userspace that uses it.
->
-> If we can rely on the PCI core to clean up AER errors itself
-> (admittedly, that might be a big "if"), maybe lpfc_aer_cleanup_state()
-> could just become a no-op?
->
-> Any comment from the LPFC folks?
+I was planning to pick it up, but it's going to conflict badly with the
+set_ptes() series:
 
-We have notified all users of the lpfc_aer_cleanup_state sysfs entry,
-and Broadcom LPFC is okay to no-op.
+  https://lore.kernel.org/all/20230315051444.3229621-1-willy@infradead.org/
 
-Regards,
-Justin
+I thought that series was likely to go in soon, but I see it's still not
+in linux-next.
 
-On Wed, Mar 15, 2023 at 2:39=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> =
-wrote:
->
-> On Tue, Dec 06, 2022 at 04:13:35PM -0600, Bjorn Helgaas wrote:
-> > On Wed, Sep 28, 2022 at 06:59:41PM +0800, Zhuo Chen wrote:
-> > > lpfc_aer_cleanup_state() requires clearing both fatal and non-fatal
-> > > uncorrectable error status.
-> >
-> > I don't know what the point of lpfc_aer_cleanup_state() is.  AER
-> > errors should be handled and cleared by the PCI core, not by
-> > individual drivers.  Only lpfc, liquidio, and sky2 touch
-> > PCI_ERR_UNCOR_STATUS.
-> >
-> > But lpfc_aer_cleanup_state() is visible in the
-> > "lpfc_aer_state_cleanup" sysfs file, so removing it would break any
-> > userspace that uses it.
-> >
-> > If we can rely on the PCI core to clean up AER errors itself
-> > (admittedly, that might be a big "if"), maybe lpfc_aer_cleanup_state()
-> > could just become a no-op?
-> >
-> > Any comment from the LPFC folks?
-> >
-> > Ideally, I would rather not export pci_aer_clear_nonfatal_status() or
-> > pci_aer_clear_uncorrect_error_status() outside the PCI core at all.
->
-> Resurrecting this old thread.  Zhuo, can you figure out where the PCI
-> core clears these errors, include that in the commit log, and propose
-> a patch that makes lpfc_aer_cleanup_state() a no-op, by removing the
-> pci_aer_clear_nonfatal_status() call completely?
->
-> Such a patch could be sent to the SCSI maintainers since it doesn't
-> involve the PCI core.
->
-> If it turns out that the PCI core *doesn't* clear these errors, we
-> should figure out *why* it doesn't and try to change the PCI core so
-> it does.
->
-> > > But using pci_aer_clear_nonfatal_status()
-> > > will only clear non-fatal error status. To clear both fatal and
-> > > non-fatal error status, use pci_aer_clear_uncorrect_error_status().
-> > >
-> > > Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
-> > > ---
-> > >  drivers/scsi/lpfc/lpfc_attr.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_a=
-ttr.c
-> > > index 09cf2cd0ae60..d835cc0ba153 100644
-> > > --- a/drivers/scsi/lpfc/lpfc_attr.c
-> > > +++ b/drivers/scsi/lpfc/lpfc_attr.c
-> > > @@ -4689,7 +4689,7 @@ static DEVICE_ATTR_RW(lpfc_aer_support);
-> > >   * Description:
-> > >   * If the @buf contains 1 and the device currently has the AER suppo=
-rt
-> > >   * enabled, then invokes the kernel AER helper routine
-> > > - * pci_aer_clear_nonfatal_status() to clean up the uncorrectable
-> > > + * pci_aer_clear_uncorrect_error_status() to clean up the uncorrecta=
-ble
-> > >   * error status register.
-> > >   *
-> > >   * Notes:
-> > > @@ -4715,7 +4715,7 @@ lpfc_aer_cleanup_state(struct device *dev, stru=
-ct device_attribute *attr,
-> > >             return -EINVAL;
-> > >
-> > >     if (phba->hba_flag & HBA_AER_ENABLED)
-> > > -           rc =3D pci_aer_clear_nonfatal_status(phba->pcidev);
-> > > +           rc =3D pci_aer_clear_uncorrect_error_status(phba->pcidev)=
-;
-> > >
-> > >     if (rc =3D=3D 0)
-> > >             return strlen(buf);
-> > > --
-> > > 2.30.1 (Apple Git-130)
-> > >
+Hopefully there'll be a v5 of that series soon and we can try and work
+out the conflicts. I might need to create a topic branch, or have this
+series go via -mm.
+
+cheers
+
+
+>> On 16 Feb 2023, at 10:11 am, Rohan McLure <rmclure@linux.ibm.com> wrote:
+>> 
+>> Support the page table check sanitiser on all PowerPC platforms. This
+>> sanitiser works by serialising assignments, reassignments and clears of
+>> page table entries at each level in order to ensure that anonymous
+>> mappings have at most one writable consumer, and likewise that
+>> file-backed mappings are not simultaneously also anonymous mappings.
+>> 
+>> In order to support this infrastructure, a number of stubs must be
+>> defined for all powerpc platforms. Additionally, seperate set_pte_at
+>> and set_pte, to allow for internal, uninstrumented mappings.
+>> 
+>> v8:
+>> * Fix linux/page_table_check.h include in asm/pgtable.h breaking
+>>   32-bit.
+>> 
+>> v7:
+>> * Remove use of extern in set_pte prototypes
+>> * Clean up pmdp_collapse_flush macro
+>> * Replace set_pte_at with static inline function
+>> * Fix commit message for patch 7
+>> Link: https://lore.kernel.org/linuxppc-dev/20230215020155.1969194-1-rmclure@linux.ibm.com/
+>> 
+>> v6:
+>> * Support huge pages and p{m,u}d accounting.
+>> * Remove instrumentation from set_pte from kernel internal pages.
+>> * 64s: Implement pmdp_collapse_flush in terms of __pmdp_collapse_flush
+>>   as access to the mm_struct * is required.
+>> Link: https://lore.kernel.org/linuxppc-dev/20230214015939.1853438-1-rmclure@linux.ibm.com/
+>> 
+>> v5:
+>> Link: https://lore.kernel.org/linuxppc-dev/20221118002146.25979-1-rmclure@linux.ibm.com/
+>> 
+>> Rohan McLure (7):
+>>  powerpc: mm: Separate set_pte, set_pte_at for internal, external use
+>>  powerpc/64s: mm: Introduce __pmdp_collapse_flush with mm_struct
+>>    argument
+>>  powerpc: mm: Replace p{u,m,4}d_is_leaf with p{u,m,4}_leaf
+>>  powerpc: mm: Implement p{m,u,4}d_leaf on all platforms
+>>  powerpc: mm: Add common pud_pfn stub for all platforms
+>>  powerpc: mm: Add p{te,md,ud}_user_accessible_page helpers
+>>  powerpc: mm: Support page table check
+>> 
+>> arch/powerpc/Kconfig                         |  1 +
+>> arch/powerpc/include/asm/book3s/32/pgtable.h | 17 +++-
+>> arch/powerpc/include/asm/book3s/64/pgtable.h | 85 +++++++++++++-------
+>> arch/powerpc/include/asm/book3s/pgtable.h    |  3 +-
+>> arch/powerpc/include/asm/nohash/32/pgtable.h | 12 ++-
+>> arch/powerpc/include/asm/nohash/64/pgtable.h | 24 +++++-
+>> arch/powerpc/include/asm/nohash/pgtable.h    |  9 ++-
+>> arch/powerpc/include/asm/pgtable.h           | 60 +++++++++-----
+>> arch/powerpc/kvm/book3s_64_mmu_radix.c       | 12 +--
+>> arch/powerpc/mm/book3s64/hash_pgtable.c      |  2 +-
+>> arch/powerpc/mm/book3s64/pgtable.c           | 16 ++--
+>> arch/powerpc/mm/book3s64/radix_pgtable.c     | 24 +++---
+>> arch/powerpc/mm/nohash/book3e_pgtable.c      |  2 +-
+>> arch/powerpc/mm/pgtable.c                    |  9 +--
+>> arch/powerpc/mm/pgtable_32.c                 |  2 +-
+>> arch/powerpc/mm/pgtable_64.c                 |  6 +-
+>> arch/powerpc/xmon/xmon.c                     |  6 +-
+>> 17 files changed, 197 insertions(+), 93 deletions(-)
+>> 
+>> -- 
+>> 2.37.2
+>> 
