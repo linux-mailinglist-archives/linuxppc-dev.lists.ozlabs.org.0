@@ -1,98 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67A66D23B2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 17:12:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A4B6D23C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 17:13:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pp3g74h34z3fWg
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 02:12:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cPx2eF9L;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pp3ht67fgz3fYv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 02:13:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cPx2eF9L;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pp3fB4w9zz3fL0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Apr 2023 02:11:29 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32VF9a9N022526;
-	Fri, 31 Mar 2023 15:11:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=peYCy6QUXj6+PheDewCu+f1Nhnx49OIt4ll5OQ5RGd0=;
- b=cPx2eF9LgrowGWY5Yipwi6ZusEiyLQgflu8iR+eVBLkzwEp+JFnSExlYeXGpxqNNkBkU
- 9o0sdHViQ3VRdVIdXO83w6eAdUhllneugsIJxIeF9cC2myrq0XNRVZTcsrGKldw842Gf
- VcrsjG7LvGV+9/4EgVJMe1+PYc/w9qY5pFjxFoR16gLRiEnF8lnsRbNG/e2cI5uh3hZV
- XttBWAgz7UIKwOJMoKZoL/qqSgGxcoLYYjz8BAXPm8U/hqv8MwbRwphfogHf3Mww2sqw
- lWEZ3dPMr087pUwudv7SiXttUwCompDcu78Y3loKXJt4ZjTAExU+cKsRR6XGs8fk7xPJ IA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pp16d18p8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Mar 2023 15:11:26 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32VF9eJJ023141;
-	Fri, 31 Mar 2023 15:11:26 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pp16d18nj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Mar 2023 15:11:26 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32ULEGGe019506;
-	Fri, 31 Mar 2023 15:11:24 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3phrk6pvku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Mar 2023 15:11:24 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32VFBK4Y45810016
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Mar 2023 15:11:20 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4C9C2004D;
-	Fri, 31 Mar 2023 15:11:20 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A78520040;
-	Fri, 31 Mar 2023 15:11:20 +0000 (GMT)
-Received: from [9.179.0.144] (unknown [9.179.0.144])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Mar 2023 15:11:20 +0000 (GMT)
-Message-ID: <b2947d2c-8688-ec42-0b7c-e523c80a6cac@linux.ibm.com>
-Date: Fri, 31 Mar 2023 17:11:19 +0200
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pp3hP09Smz3fL0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Apr 2023 02:13:22 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C21D02F4;
+	Fri, 31 Mar 2023 08:13:33 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E8D83F6C4;
+	Fri, 31 Mar 2023 08:12:37 -0700 (PDT)
+Message-ID: <cc3a78b6-b126-226f-b41a-061716aacd15@arm.com>
+Date: Fri, 31 Mar 2023 16:12:32 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH] powerpc/pseries/cpuhp: respect current SMT when adding
- new CPU
-Content-Language: en-US
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <20230213124510.12651-1-ldufour@linux.ibm.com>
- <87ilg5aahx.fsf@linux.ibm.com> <20230213150429.GZ19419@kitsune.suse.cz>
- <87fsb9a7zx.fsf@linux.ibm.com>
- <45989617-e6f9-0ca5-3371-571268807fc5@linux.ibm.com>
- <20230330161938.GY3132@kitsune.suse.cz>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20230330161938.GY3132@kitsune.suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sYKYMRSs-PCqj89gJBtLiN0IoZhDAdCf
-X-Proofpoint-GUID: hvAcmABO1qe1KZtdPpeFtmtGrTyVKMoV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-31_07,2023-03-31_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
- malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303310120
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 20/21] ARM: dma-mapping: split out arch_dma_mark_clean()
+ helper
+To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <20230327121317.4081816-1-arnd@kernel.org>
+ <20230327121317.4081816-21-arnd@kernel.org>
+ <cb9367fb-0897-244d-15b6-fdfafde2a1c0@arm.com>
+ <df6340c8-6ac2-4459-a9e5-c411020962d6@app.fastmail.com>
+Content-Language: en-GB
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <df6340c8-6ac2-4459-a9e5-c411020962d6@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,85 +48,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Srikar Dronamraju <srikar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Brian Cain <bcain@quicinc.com>, "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Michal 
+ Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30/03/2023 18:19:38, Michal Suchánek wrote:
-> On Thu, Mar 30, 2023 at 05:51:57PM +0200, Laurent Dufour wrote:
->> On 13/02/2023 16:40:50, Nathan Lynch wrote:
->>> Michal Suchánek <msuchanek@suse.de> writes:
->>>> On Mon, Feb 13, 2023 at 08:46:50AM -0600, Nathan Lynch wrote:
->>>>> Laurent Dufour <ldufour@linux.ibm.com> writes:
->>>>>> When a new CPU is added, the kernel is activating all its threads. This
->>>>>> leads to weird, but functional, result when adding CPU on a SMT 4 system
->>>>>> for instance.
->>>>>>
->>>>>> Here the newly added CPU 1 has 8 threads while the other one has 4 threads
->>>>>> active (system has been booted with the 'smt-enabled=4' kernel option):
->>>>>>
->>>>>> ltcden3-lp12:~ # ppc64_cpu --info
->>>>>> Core   0:    0*    1*    2*    3*    4     5     6     7
->>>>>> Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
->>>>>>
->>>>>> There is no SMT value in the kernel. It is possible to run unbalanced LPAR
->>>>>> with 2 threads for a CPU, 4 for another one, and 5 on the latest.
-> 
->> Indeed, that's not so easy. There are multiple ways for the SMT level to be
->> impacted:
->>  - smt-enabled kernel option
->>  - smtstate systemctl service (if activated), saving SMT level at shutdown
->> time to restore it a boot time
->>  - pseries-energyd daemon (if activated) could turn off threads
->>  - ppc64_cpu --smt=x user command
->>  - sysfs direct writing to turn off/on specific threads.
+On 31/03/2023 3:00 pm, Arnd Bergmann wrote:
+> On Mon, Mar 27, 2023, at 14:48, Robin Murphy wrote:
+>> On 2023-03-27 13:13, Arnd Bergmann wrote:
+>>>
+>>> [ HELP NEEDED: can anyone confirm that it is a correct assumption
+>>>     on arm that a cache-coherent device writing to a page always results
+>>>     in it being in a PG_dcache_clean state like on ia64, or can a device
+>>>     write directly into the dcache?]
 >>
->> There is no SMT level saved, on "disk" or in the kernel, and any of these
->> options can interact in parallel. So from the user space point of view, the
->> best we could do is looking for the SMT current values, there could be
->> multiple values in the case of a mixed SMT state, peek one value and apply it.
+>> In AMBA at least, if a snooping write hits in a cache then the data is
+>> most likely going to get routed directly into that cache. If it has
+>> write-back write-allocate attributes it could also land in any cache
+>> along its normal path to RAM; it wouldn't have to go all the way.
 >>
->> Extending the drmgr's hook is still valid, and I sent a patch series on the
->> powerpc-utils mailing list to achieve that. However, changing the SMT level
->> in that hook means that newly added CPU will be first turn on and there is
->> a window where this threads could be seen active. Not a big deal but not
->> turning on these extra threads looks better to me.
+>> Hence all the fun we have where treating a coherent device as
+>> non-coherent can still be almost as broken as the other way round :)
 > 
-> Which means
+> Ok, thanks for the information. I'm still not sure whether this can
+> result in the situation where PG_dcache_clean is wrong though.
 > 
-> 1) add an option to not onlince hotplugged CPUs by default
-
-After discussing this with Srikar, it happens that exposing the smt-enabled
-value set a boot time (or not) in SYS FS and to update it when SMT level is
-changed using ppc64_cpu will be better. This will aslo allow the energy
-daemon to take this value in account.
-
-> 2) when a tool that wants to manage CPU onlining is active it can set
-> the option so that no threads are onlined automatically, and online the
-> desired threads
-
-When new CPU are added, the kernel will automatically online the right
-number of threads based on that recorded SMT level.
-
+> Specifically, the question is whether a DMA to a coherent buffer
+> can end up in a dirty L1 dcache of one core and require to write
+> back the dcache before invalidating the icache for that page.
 > 
-> 3) when no such tool is active the default should be to online all
-> threeads to preserve compatibility with existing behavior
-
-I don't think we should keep the existing behavior, customers are confused
-and some user space tools like lparstart have difficulties to handled mixed
-SMT levels.
-
-I'll submit a new series exposing the SMT level and propose a patch for
-ppc64_cpu too.
-
+> On ia64, this is not the case, the optimization here is to
+> only flush the icache after a coherent DMA into an executable
+> user page, while Arm only does this for noncoherent DMA but not
+> coherent DMA.
 > 
->> That's being said, I can't see any benefit of a user space implementation
->> compared to the option I'm proposing in that patch.
+>  From your explanation it sounds like this might happen,
+> even though that would mean that "coherent" DMA is slightly
+> less coherent than it is elsewhere.
 > 
-> The userspace implementation can implement arbitrily complex policy,
-> that's not something that belongs into the kernel.
-> 
-> Thanks
-> 
-> Michal
+> To be on the safe side, I'd have to pass a flag into
+> arch_dma_mark_clean() about coherency, to let the arm
+> implementation still require the extra dcache flush
+> for coherent DMA, while ia64 can ignore that flag.
 
+Coherent DMA on Arm is assumed to be inner-shareable, so a coherent DMA 
+write should be pretty much equivalent to a coherent write by another 
+CPU (or indeed the local CPU itself) - nothing says that it *couldn't* 
+dirty a line in a data cache above the level of unification, so in 
+general the assumption must be that, yes, if coherent DMA is writing 
+data intended to be executable, then it's going to want a Dcache clean 
+to PoU and an Icache invalidate to PoU before trying to execute it. By 
+comparison, a non-coherent DMA transfer will inherently have to 
+invalidate the Dcache all the way to PoC in its dma_unmap, thus cannot 
+leave dirty data above the PoU, so only the Icache maintenance is 
+required in the executable case.
+
+(FWIW I believe the Armv8 IDC/DIC features can safely be considered 
+irrelevant to 32-bit kernels)
+
+I don't know a great deal about IA-64, but it appears to be using its 
+PG_arch_1 flag in a subtly different manner to Arm, namely to optimise 
+out the *Icache* maintenance. So if anything, it seems IA-64 is the 
+weirdo here (who'd have guessed?) where DMA manages to be *more* 
+coherent than the CPUs themselves :)
+
+This is all now making me think we need some careful consideration of 
+whether the benefits of consolidating code outweigh the confusion of 
+conflating multiple different meanings of "clean" together...
+
+Thanks,
+Robin.
