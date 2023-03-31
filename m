@@ -2,67 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C246D6D16B6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 07:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AD46D1B2A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 11:02:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PnpYz58z7z3fV6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 16:21:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PnvSr2QWpz3chB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Mar 2023 20:02:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j6snYCTS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ma9CGEid;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j6snYCTS;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ma9CGEid;
 	dkim-atps=neutral
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnlKD6RHmz3cR7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 13:55:43 +1100 (AEDT)
-Received: by mail-wr1-x434.google.com with SMTP id r29so20963914wra.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Mar 2023 19:55:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PnvS115TBz3cMb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 20:02:06 +1100 (AEDT)
+Received: by mail-yb1-xb32.google.com with SMTP id k17so26603109ybm.11
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Mar 2023 02:02:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680231337; x=1682823337;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0f0oYaBiIjZngwKKrarE3ZU4R7VLA65VkJQmbsO7p4=;
-        b=j6snYCTSc3mn9magen+ARP9tyBjdlqAg7Msxhi4LmTS+IMoHqzu/tVUg95/7GQ6fK1
-         Ab33kcxf2rMwtLKQFmY0q2/ynhw8dxHAA/ErsVFtm/f8HYQqlkegFOko3J2MRW/gozSA
-         zbFnAUPiwIsIfxZeD3NpRyiDH1t8mHcxYUHFlEa3a5uH/Q4E0EOa5K2KdXoGm2ikXbEJ
-         cFacjZNut43G140mcjfDOYCH49vCCq1WXMeWr4OoqMcEDx1mVacsHdDwvKbriOa6D9An
-         8vEDs5Gks6sYn2jJamaaMSvpCJ2dMNSlgydmr867/IW5q8kungIpa1YhWEGPeH+UTAyt
-         yw1g==
+        d=linaro.org; s=google; t=1680253322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BWm2jI2yHpPi79Yy1CI28Qxt6CEyohh41n1LA0fGLDM=;
+        b=ma9CGEidowfFcQ/RWwH9jcS3JpkuGTgIsGbkrjxNbpyIzTV0VWElAtIXD1pJ7GvLWW
+         o7VY5XN4Af8jnZZ9O6VFKig0/95cqzaeDCJiUPwYZQl8VR+1dmIghX/+s6g86bp9ODnN
+         MAzwUVCiMu/TmuzqPKTEsI7qk7BcH62AgPt5/bQM0gksa4J2iBNXg4d+1aT8ueqsMtsu
+         j/o9cEOqf4x14P3d54vkcr4sulvwLKD3DWlzGUaFgwLRmbPD3v1X3PVwEGdEFSAXSvdX
+         cX0K9wRov1LZHYLnnywTrm7QrejvefZ111ofD9/89zCLVipeznKpthRrdFZIrBFoD4rz
+         Cj1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680231337; x=1682823337;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R0f0oYaBiIjZngwKKrarE3ZU4R7VLA65VkJQmbsO7p4=;
-        b=nQAn+c6IMBrZKfTNQhBiY0/w83PyqsZJSH2M9SI9D2n7DmKP1SVzBuwgZbPiud56wT
-         m51A19gdV/2xfcxrAhwUvr45zWbi15izq8QmS+UAC3+2FWFa3/thLAucSre1apYFbmcb
-         I08G8F+DLqPVtXsIvFTEL8FL5tDIoCjBTRxldCe+0ulO2WcbMwHFZF17BwwFfV7oJKz+
-         dM1s836SefmxCKShLHXq56ZaJPjzXje6bxehn6vgem4drrO42TX4ghS+uz5o0tlBsiam
-         //GQ9/C/oUfsY0nyb3BH/GluXxk/u+ugRogQcuUDa1aZsGwqgOxR+I206432yAYZaePo
-         QYug==
-X-Gm-Message-State: AAQBX9cm7sBV9az1w2K0opaZZxCPjJI1HzQgPK8kgb19uhhMnCoUNH8d
-	9KMkTa7pRLivSPCCnB9EJbr4Ok1K6e4LG07tEU8=
-X-Google-Smtp-Source: AKy350aoW6eyWZ7Vy7uL9TzBTgI+9gM4kG0Y6ga+Ywwo/3Ce7novHeVGH33oyhBjPnINiHx5c4pgOiCGaiSL/Y/+Rnw=
-X-Received: by 2002:a5d:5152:0:b0:2c7:17b8:5759 with SMTP id
- u18-20020a5d5152000000b002c717b85759mr4385251wrt.3.1680231336775; Thu, 30 Mar
- 2023 19:55:36 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680253322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BWm2jI2yHpPi79Yy1CI28Qxt6CEyohh41n1LA0fGLDM=;
+        b=SAmMZqvMPOcgtx1s/+CdchGn3G3IMGsn+FHcDcSt03LWPUEPZrJ+Y19DhZC3EgVjuh
+         VlsadkAW02E/7ChFdao2xS2XTOZRC//jEp8qu/wiP1H7o16UB6s+nCpbGvww3BHHPBml
+         arU4KS4OYmmw2xMfp2U6nJ1lZV4QNgEMYlejxVNPwr1+fh4FfQMizcn0WtXahqJGkG/z
+         l7sQ8aqIjpoVyAtliXppCDza8dThMfXKbYey60b5TTl+Qxvu59bxGEcRtJyoduuk/oOP
+         vYR9kELZ4lpoIFYSFKqkPkFWjjmMgFNomLRVzufDcwuvtntnrcAtDrb+jCpCZ61S2dXi
+         zIiA==
+X-Gm-Message-State: AAQBX9dieqkZnWMbGtWUbXEffZdRj57nqOYQcRMir4Gr2aQdJpTLcha9
+	qjXW4cViRCLqSYTseA624g836IntgmImbLet76TDMQ==
+X-Google-Smtp-Source: AKy350YI8e95DFYP40XLqEj+u/39+STuziGTnuEb3AUKVWMQr59PuRxxs6tiZPNOPKYnKLtLdYTZJpdc8TKai7hc3Ak=
+X-Received: by 2002:a05:6902:1006:b0:b78:4b00:775f with SMTP id
+ w6-20020a056902100600b00b784b00775fmr12714571ybt.4.1680253322494; Fri, 31 Mar
+ 2023 02:02:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230330083040.77085-1-emas@bang-olufsen.dk>
-In-Reply-To: <20230330083040.77085-1-emas@bang-olufsen.dk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 31 Mar 2023 10:55:25 +0800
-Message-ID: <CAA+D8AOMTQ00Ah21w54DVXin3KcYkVxaGVd64Z_pSzv+Ooj9vw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Use physical format width
-To: Emil Abildgaard Svendsen <EMAS@bang-olufsen.dk>
-Content-Type: multipart/alternative; boundary="000000000000f8129e05f829571b"
-X-Mailman-Approved-At: Fri, 31 Mar 2023 16:21:17 +1100
+References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-16-arnd@kernel.org>
+In-Reply-To: <20230327121317.4081816-16-arnd@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 31 Mar 2023 11:01:51 +0200
+Message-ID: <CACRpkdbMry_UUYN1MuXTUpRXV+Tj9RSDvN-iBdvR8hDfkTaX4w@mail.gmail.com>
+Subject: Re: [PATCH 15/21] ARM: dma-mapping: always invalidate WT caches
+ before DMA
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,122 +76,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Michal Simek <monstr@mons
+ tr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, linux-oxnas@groups.io, Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000f8129e05f829571b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 27, 2023 at 2:16=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
 
-On Thu, Mar 30, 2023 at 4:30=E2=80=AFPM Emil Abildgaard Svendsen <
-EMAS@bang-olufsen.dk> wrote:
-
-> Slot width should follow the physical width of the format instead of the
-> data width.
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> This is needed for formats like SNDRV_PCM_FMTBIT_S24_LE where physical
-> width is 32 and data width is 24. By using the physical width, data
-> won't get misaligned.
-
-
-There are different requirements for this slot width. Some need physical
-width,
-Some need format width. We need to be careful about change here.
-
-Actually there is .set_tdm_slot API for slot specific setting, please use
-this API.
-
-best regards
-wang shengjiu
-
+> Most ARM CPUs can have write-back caches and that require
+> cache management to be done in the dma_sync_*_for_device()
+> operation. This is typically done in both writeback and
+> writethrough mode.
 >
-> Signed-off-by: Emil Svendsen <emas@bang-olufsen.dk>
-> ---
->  sound/soc/fsl/fsl_sai.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The cache-v4.S (arm720/740/7tdmi/9tdmi) and cache-v4wt.S
+> (arm920t, arm940t) implementations are the exception here,
+> and only do the cache management after the DMA is complete,
+> in the dma_sync_*_for_cpu() operation.
 >
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index 939c6bdd22c4..213e2d462076 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -519,13 +519,13 @@ static int fsl_sai_hw_params(struct
-> snd_pcm_substream *substream,
->         unsigned int channels =3D params_channels(params);
->         struct snd_dmaengine_dai_dma_data *dma_params;
->         struct fsl_sai_dl_cfg *dl_cfg =3D sai->dl_cfg;
-> +       u32 slot_width =3D params_physical_width(params);
->         u32 word_width =3D params_width(params);
->         int trce_mask =3D 0, dl_cfg_idx =3D 0;
->         int dl_cfg_cnt =3D sai->dl_cfg_cnt;
->         u32 dl_type =3D FSL_SAI_DL_I2S;
->         u32 val_cr4 =3D 0, val_cr5 =3D 0;
->         u32 slots =3D (channels =3D=3D 1) ? 2 : channels;
-> -       u32 slot_width =3D word_width;
->         int adir =3D tx ? RX : TX;
->         u32 pins, bclk;
->         u32 watermark;
-> --
-> 2.34.1
+> Change this for consistency with the other platforms. This
+> should have no user visible effect.
 >
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
---000000000000f8129e05f829571b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Looks good to me.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 30, 2023 at 4:30=E2=80=AF=
-PM Emil Abildgaard Svendsen &lt;<a href=3D"mailto:EMAS@bang-olufsen.dk">EMA=
-S@bang-olufsen.dk</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
- style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
-adding-left:1ex">Slot width should follow the physical width of the format =
-instead of the<br>
-data width.<br>
-<br>
-This is needed for formats like SNDRV_PCM_FMTBIT_S24_LE where physical<br>
-width is 32 and data width is 24. By using the physical width, data<br>
-won&#39;t get misaligned.</blockquote><div>=C2=A0</div><div>There are diffe=
-rent requirements for this slot width. Some=C2=A0need physical width,=C2=A0=
-</div><div>Some need format width. We need to be careful about change here.=
-=C2=A0</div><div><br></div><div>Actually there is=C2=A0.set_tdm_slot API fo=
-r slot specific setting, please use this API.</div><div><br></div><div>best=
- regards</div><div>wang shengjiu</div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">
-<br>
-Signed-off-by: Emil Svendsen &lt;<a href=3D"mailto:emas@bang-olufsen.dk" ta=
-rget=3D"_blank">emas@bang-olufsen.dk</a>&gt;<br>
----<br>
-=C2=A0sound/soc/fsl/fsl_sai.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-<br>
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
-index 939c6bdd22c4..213e2d462076 100644<br>
---- a/sound/soc/fsl/fsl_sai.c<br>
-+++ b/sound/soc/fsl/fsl_sai.c<br>
-@@ -519,13 +519,13 @@ static int fsl_sai_hw_params(struct snd_pcm_substream=
- *substream,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned int channels =3D params_channels(param=
-s);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct snd_dmaengine_dai_dma_data *dma_params;<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct fsl_sai_dl_cfg *dl_cfg =3D sai-&gt;dl_cf=
-g;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0u32 slot_width =3D params_physical_width(params=
-);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 word_width =3D params_width(params);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 int trce_mask =3D 0, dl_cfg_idx =3D 0;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 int dl_cfg_cnt =3D sai-&gt;dl_cfg_cnt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 dl_type =3D FSL_SAI_DL_I2S;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 val_cr4 =3D 0, val_cr5 =3D 0;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 slots =3D (channels =3D=3D 1) ? 2 : channel=
-s;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0u32 slot_width =3D word_width;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 int adir =3D tx ? RX : TX;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 pins, bclk;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 watermark;<br>
--- <br>
-2.34.1<br>
-</blockquote></div></div>
-
---000000000000f8129e05f829571b--
+Yours,
+Linus Walleij
