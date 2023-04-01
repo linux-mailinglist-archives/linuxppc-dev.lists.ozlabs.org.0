@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4DF6D3376
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 21:23:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5119D6D337C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 21:23:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ppn9w2dNqz3f54
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Apr 2023 05:23:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PpnBs1HRdz3fSx
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Apr 2023 05:23:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=g6sUbB29;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wLou/172;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=daniel.lezcano@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=g6sUbB29;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wLou/172;
 	dkim-atps=neutral
 Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ppn913hbfz3c9L
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Apr 2023 05:22:10 +1000 (AEST)
-Received: by mail-wm1-x32e.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso15824062wmo.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Apr 2023 12:22:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ppn9M1gxLz3cMS
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Apr 2023 05:22:31 +1000 (AEST)
+Received: by mail-wm1-x32e.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso15824419wmo.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Apr 2023 12:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680376923;
+        d=linaro.org; s=google; t=1680376950;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0hCHlkF5Z3NmTqMnInVbTSc5iAXn26gWIw7YwXQgkr4=;
-        b=g6sUbB29tDRqwWFaUjnPs6EJpXE5M1cKRPU9iBTc0LRSeeY2pnemn3+Ow7d7VJL9vC
-         1UPid8/hMd1vpO8Z1HH8wUfyfZNWK5WVNz8O2iOSwFulwT14iN6cAJ9k3kYRxszx/8J+
-         ZfVbXmkh0pMO1XRkO2ML4wn90O4bBd4syFghP/pgtFlNifs4VINxjJrPhysz2kyaFa3d
-         ut2cSJXOHIi46pQrkm23u6p9HDSNAX9mJNsPIRMYtwbQg8sSv434+Zoa59dQRAEnpuIW
-         UIBhBPrlBG9iosFOv68C9vWhjUSSn5P/QoCed33C2PtnKJGt1PfFOt1XJFjzTE6pAOu+
-         O3Aw==
+        bh=YsdIX4QaNsFy8jAUYtXLUiYq0pMM/KF7S/HscFFRFa8=;
+        b=wLou/172SsZ4tbZKAmsf4wdm/jkdhPJhgp/9PODUlSx+8zj3bvceTjgZUslKBzMWw8
+         dbzF5WM+xXp7t01zz37q83r+zoMvSKVW3P/J28MwkqEbL9aNMV8iCK1aq/f4+7SIi4B9
+         qp2UZBwhIDmh3rDtCB63WKwzAN5BUgdGepgfYA2wOSMqur9AYXlb5tF5t3JYnBT9m+FF
+         QZNbjh2HDQTcX3YBnp/khnrydEiI2K5FE2h9klkr7WGo/ExSeTZ8Jium1tK606uJuIKM
+         bxjPVjsLqxf1k5WstPx4prev8VXkZHddRS3F63SKw/dTy0euJ1u4Vad24HvY2PFiL49V
+         8UgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680376923;
+        d=1e100.net; s=20210112; t=1680376950;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hCHlkF5Z3NmTqMnInVbTSc5iAXn26gWIw7YwXQgkr4=;
-        b=e+7tVb4kzyVXGsQOI/8UzwwpHiTqJTxcuhSaoZKOaXaBkQhXWUNChRbqLkoddOj7Lk
-         LKi2GRv3MmP+ftOyGZQOFkCID1aKQqdnEMWbY82xTtDQCkKgug1LZPsIm5vuFi3KyFiF
-         2LI9wN5YCt/wrf06v8fSEi4V8E246S2+wIAhmvcmxH5cGcv+f73/eNFzjaZdPZY2Dkh5
-         iuObETzYVQ5Ym9gPdRbnJ/YKWdOgf3NMvJOpFBuxZpGJA4rnRZ1XAkzygeaHIjqxb6aI
-         UpxW9fyje6rbgMdW1q1Xx9wyj9XORr7kviCuk1stSqfyQqgOXexAnNQuSVpk/bnQwaRk
-         G4lg==
-X-Gm-Message-State: AO0yUKX4hRa963wDUp+F7YyMoS+T0naf7R/6rbI7TGcBvcN+0no+Zowv
-	u3MTNsZswpidaoh8i3uCmC0n2g==
-X-Google-Smtp-Source: AK7set9h+h3Yx3+JglVGj8gMjIzM5W42Mci6pIwcqvCbd9w9+V46ksoIxY9Juxkx8HAEL/TqjQdSeA==
-X-Received: by 2002:a7b:cb95:0:b0:3d0:6a57:66a5 with SMTP id m21-20020a7bcb95000000b003d06a5766a5mr22553123wmi.0.1680376923601;
-        Sat, 01 Apr 2023 12:22:03 -0700 (PDT)
+        bh=YsdIX4QaNsFy8jAUYtXLUiYq0pMM/KF7S/HscFFRFa8=;
+        b=K/0qkC1+khAlqIFYN56DwXD35N9aM0MkGGmjles2/vUyMev4uBThBH33LzLgE1wqdt
+         XnGEZDBmBt+Psg6XNey/2xQ7wpSyBaW1znZKlialJU5Tt7QyuAly796FERevLVjEddUD
+         i3TNkmUgd83WTxOObz3CULyMMb15Fz0yY9zMgqiog0r/nkLInexvXdSAndLc5Qch4srx
+         Z4qkv53IvFLA+0F7pMI/mjFbqV+hCIFWjkeSvekFVdZs+Zqq4ZQSquoGON1vhdY25POL
+         T4cQi/ncSycxsFbdf4SQi/zBI+7p6DDOqCdV3gFQEFzju+txCaSn/7mBZXFvbnoHMSJs
+         yBZA==
+X-Gm-Message-State: AO0yUKUWcCopp6coVz7Q2bmlWz8Gvs6SLV0MQONIqCZfNioBcRc767BG
+	Bp2WmPa63QIp8xiAdPM5y5JzVg==
+X-Google-Smtp-Source: AK7set9y5bHkZCySLIhsJfaK02RbOBp8M7OwMT91WfVTWaYaVc0pGHqd8wtNzjk/5/WSJSDGT1LTiA==
+X-Received: by 2002:a7b:cd88:0:b0:3ee:7061:1bdd with SMTP id y8-20020a7bcd88000000b003ee70611bddmr22820919wmj.4.1680376950405;
+        Sat, 01 Apr 2023 12:22:30 -0700 (PDT)
 Received: from ?IPV6:2a05:6e02:1041:c10:b36a:1186:309c:1f9a? ([2a05:6e02:1041:c10:b36a:1186:309c:1f9a])
-        by smtp.googlemail.com with ESMTPSA id o9-20020a05600c4fc900b003ef6bc71cccsm14508987wmq.27.2023.04.01.12.22.01
+        by smtp.googlemail.com with ESMTPSA id r5-20020adfe685000000b002e61e002943sm4791678wrm.116.2023.04.01.12.22.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Apr 2023 12:22:03 -0700 (PDT)
-Message-ID: <c0fdb192-43d1-760f-ccd8-2f9d5fe41a99@linaro.org>
-Date: Sat, 1 Apr 2023 21:22:01 +0200
+        Sat, 01 Apr 2023 12:22:29 -0700 (PDT)
+Message-ID: <93ffd73a-4544-5148-0159-1a9ea773c0a0@linaro.org>
+Date: Sat, 1 Apr 2023 21:22:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH 11/19] clocksource: ingenic: Add explicit include for
- cpuhotplug.h
+Subject: Re: [PATCH 12/19] thermal: cpuidle_cooling: Adjust includes to remove
+ of_device.h
 Content-Language: en-US
 To: Rob Herring <robh@kernel.org>, "David S. Miller" <davem@davemloft.net>,
  Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
@@ -91,9 +91,9 @@ To: Rob Herring <robh@kernel.org>, "David S. Miller" <davem@davemloft.net>,
  Marc Zyngier <maz@kernel.org>, Viresh Kumar <vireshk@kernel.org>,
  Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>
 References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
- <20230329-dt-cpu-header-cleanups-v1-11-581e2605fe47@kernel.org>
+ <20230329-dt-cpu-header-cleanups-v1-12-581e2605fe47@kernel.org>
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-11-581e2605fe47@kernel.org>
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-12-581e2605fe47@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -112,22 +112,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 29/03/2023 17:52, Rob Herring wrote:
-> Removing include of cpu.h from of_device.h (included by of_platform.h)
-> causes an error in ingenic-timer:
-> 
-> drivers/clocksource/ingenic-timer.c: In function ‘ingenic_tcu_init’:
-> drivers/clocksource/ingenic-timer.c:338:15: error: implicit declaration of function ‘cpuhp_setup_state’
-> 
-> The of_platform.h header is not necessary either, so it and of_address.h
-> can be dropped.
+> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+> implicitly including other includes, and is no longer needed. Adjust the
+> include files with what was implicitly included by of_device.h (cpu.h and
+> of.h) and drop including of_device.h.
 > 
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
 > Please ack and I will take the series via the DT tree.
-> ---
 
 Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
