@@ -1,46 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DEA6D30B2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 14:14:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4DF6D3376
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 21:23:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ppbfx6Hzmz3chK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Apr 2023 23:14:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ppn9w2dNqz3f54
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Apr 2023 05:23:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=g6sUbB29;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=daniel.lezcano@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=g6sUbB29;
+	dkim-atps=neutral
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PpbfP08dhz3cGr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Apr 2023 23:13:28 +1100 (AEDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.53])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4PpbZH6cNNz17LnP;
-	Sat,  1 Apr 2023 20:09:59 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Sat, 1 Apr 2023 20:12:30 +0800
-Subject: Re: [PATCH v8 2/2] arm64: support batched/deferred tlb shootdown
- during page reclamation
-From: Yicong Yang <yangyicong@huawei.com>
-To: Punit Agrawal <punit.agrawal@bytedance.com>, <catalin.marinas@arm.com>
-References: <20230329035512.57392-1-yangyicong@huawei.com>
- <20230329035512.57392-3-yangyicong@huawei.com> <87cz4qwfbt.fsf_-_@stealth>
- <2687a998-6dbe-de8f-2f62-1456d2de7940@huawei.com>
-Message-ID: <241c3a4c-642e-e871-72ae-e3098a967b69@huawei.com>
-Date: Sat, 1 Apr 2023 20:12:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ppn913hbfz3c9L
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Apr 2023 05:22:10 +1000 (AEST)
+Received: by mail-wm1-x32e.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso15824062wmo.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Apr 2023 12:22:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680376923;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0hCHlkF5Z3NmTqMnInVbTSc5iAXn26gWIw7YwXQgkr4=;
+        b=g6sUbB29tDRqwWFaUjnPs6EJpXE5M1cKRPU9iBTc0LRSeeY2pnemn3+Ow7d7VJL9vC
+         1UPid8/hMd1vpO8Z1HH8wUfyfZNWK5WVNz8O2iOSwFulwT14iN6cAJ9k3kYRxszx/8J+
+         ZfVbXmkh0pMO1XRkO2ML4wn90O4bBd4syFghP/pgtFlNifs4VINxjJrPhysz2kyaFa3d
+         ut2cSJXOHIi46pQrkm23u6p9HDSNAX9mJNsPIRMYtwbQg8sSv434+Zoa59dQRAEnpuIW
+         UIBhBPrlBG9iosFOv68C9vWhjUSSn5P/QoCed33C2PtnKJGt1PfFOt1XJFjzTE6pAOu+
+         O3Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680376923;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0hCHlkF5Z3NmTqMnInVbTSc5iAXn26gWIw7YwXQgkr4=;
+        b=e+7tVb4kzyVXGsQOI/8UzwwpHiTqJTxcuhSaoZKOaXaBkQhXWUNChRbqLkoddOj7Lk
+         LKi2GRv3MmP+ftOyGZQOFkCID1aKQqdnEMWbY82xTtDQCkKgug1LZPsIm5vuFi3KyFiF
+         2LI9wN5YCt/wrf06v8fSEi4V8E246S2+wIAhmvcmxH5cGcv+f73/eNFzjaZdPZY2Dkh5
+         iuObETzYVQ5Ym9gPdRbnJ/YKWdOgf3NMvJOpFBuxZpGJA4rnRZ1XAkzygeaHIjqxb6aI
+         UpxW9fyje6rbgMdW1q1Xx9wyj9XORr7kviCuk1stSqfyQqgOXexAnNQuSVpk/bnQwaRk
+         G4lg==
+X-Gm-Message-State: AO0yUKX4hRa963wDUp+F7YyMoS+T0naf7R/6rbI7TGcBvcN+0no+Zowv
+	u3MTNsZswpidaoh8i3uCmC0n2g==
+X-Google-Smtp-Source: AK7set9h+h3Yx3+JglVGj8gMjIzM5W42Mci6pIwcqvCbd9w9+V46ksoIxY9Juxkx8HAEL/TqjQdSeA==
+X-Received: by 2002:a7b:cb95:0:b0:3d0:6a57:66a5 with SMTP id m21-20020a7bcb95000000b003d06a5766a5mr22553123wmi.0.1680376923601;
+        Sat, 01 Apr 2023 12:22:03 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:b36a:1186:309c:1f9a? ([2a05:6e02:1041:c10:b36a:1186:309c:1f9a])
+        by smtp.googlemail.com with ESMTPSA id o9-20020a05600c4fc900b003ef6bc71cccsm14508987wmq.27.2023.04.01.12.22.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 01 Apr 2023 12:22:03 -0700 (PDT)
+Message-ID: <c0fdb192-43d1-760f-ccd8-2f9d5fe41a99@linaro.org>
+Date: Sat, 1 Apr 2023 21:22:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <2687a998-6dbe-de8f-2f62-1456d2de7940@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 11/19] clocksource: ingenic: Add explicit include for
+ cpuhotplug.h
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Yangtao Li <tiny.windzz@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Anup Patel <anup@brainfault.org>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Marc Zyngier <maz@kernel.org>, Viresh Kumar <vireshk@kernel.org>,
+ Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>
+References: <20230329-dt-cpu-header-cleanups-v1-0-581e2605fe47@kernel.org>
+ <20230329-dt-cpu-header-cleanups-v1-11-581e2605fe47@kernel.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-11-581e2605fe47@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,240 +107,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, realmz6@gmail.com, linux-doc@vger.kernel.org, peterz@infradead.org, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, anshuman.khandual@arm.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, Jonathan.Cameron@Huawei.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/3/30 21:45, Yicong Yang wrote:
-> Hi Punit,
+On 29/03/2023 17:52, Rob Herring wrote:
+> Removing include of cpu.h from of_device.h (included by of_platform.h)
+> causes an error in ingenic-timer:
 > 
-> On 2023/3/30 21:15, Punit Agrawal wrote:
->> Hi Yicong,
->>
->> Yicong Yang <yangyicong@huawei.com> writes:
->>
->>> From: Barry Song <v-songbaohua@oppo.com>
->>>
->>> on x86, batched and deferred tlb shootdown has lead to 90%
->>> performance increase on tlb shootdown. on arm64, HW can do
->>> tlb shootdown without software IPI. But sync tlbi is still
->>> quite expensive.
->>>
->>> Even running a simplest program which requires swapout can
->>> prove this is true,
->>>  #include <sys/types.h>
->>>  #include <unistd.h>
->>>  #include <sys/mman.h>
->>>  #include <string.h>
->>>
->>>  int main()
->>>  {
->>>  #define SIZE (1 * 1024 * 1024)
->>>          volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
->>>                                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->>>
->>>          memset(p, 0x88, SIZE);
->>>
->>>          for (int k = 0; k < 10000; k++) {
->>>                  /* swap in */
->>>                  for (int i = 0; i < SIZE; i += 4096) {
->>>                          (void)p[i];
->>>                  }
->>>
->>>                  /* swap out */
->>>                  madvise(p, SIZE, MADV_PAGEOUT);
->>>          }
->>>  }
->>>
->>> Perf result on snapdragon 888 with 8 cores by using zRAM
->>> as the swap block device.
->>>
->>>  ~ # perf record taskset -c 4 ./a.out
->>>  [ perf record: Woken up 10 times to write data ]
->>>  [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
->>>  ~ # perf report
->>>  # To display the perf.data header info, please use --header/--header-only options.
->>>  # To display the perf.data header info, please use --header/--header-only options.
->>>  #
->>>  #
->>>  # Total Lost Samples: 0
->>>  #
->>>  # Samples: 60K of event 'cycles'
->>>  # Event count (approx.): 35706225414
->>>  #
->>>  # Overhead  Command  Shared Object      Symbol
->>>  # ........  .......  .................  .............................................................................
->>>  #
->>>     21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
->>>      8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
->>>      6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
->>>      6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
->>>      5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
->>>      3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
->>>      3.49%  a.out    [kernel.kallsyms]  [k] memset64
->>>      1.63%  a.out    [kernel.kallsyms]  [k] clear_page
->>>      1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
->>>      1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
->>>      1.23%  a.out    [kernel.kallsyms]  [k] xas_load
->>>      1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
->>>
->>> ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
->>> swapping in/out a page mapped by only one process. If the
->>> page is mapped by multiple processes, typically, like more
->>> than 100 on a phone, the overhead would be much higher as
->>> we have to run tlb flush 100 times for one single page.
->>> Plus, tlb flush overhead will increase with the number
->>> of CPU cores due to the bad scalability of tlb shootdown
->>> in HW, so those ARM64 servers should expect much higher
->>> overhead.
->>>
->>> Further perf annonate shows 95% cpu time of ptep_clear_flush
->>> is actually used by the final dsb() to wait for the completion
->>> of tlb flush. This provides us a very good chance to leverage
->>> the existing batched tlb in kernel. The minimum modification
->>> is that we only send async tlbi in the first stage and we send
->>> dsb while we have to sync in the second stage.
->>>
->>> With the above simplest micro benchmark, collapsed time to
->>> finish the program decreases around 5%.
->>>
->>> Typical collapsed time w/o patch:
->>>  ~ # time taskset -c 4 ./a.out
->>>  0.21user 14.34system 0:14.69elapsed
->>> w/ patch:
->>>  ~ # time taskset -c 4 ./a.out
->>>  0.22user 13.45system 0:13.80elapsed
->>>
->>> Also, Yicong Yang added the following observation.
->>> 	Tested with benchmark in the commit on Kunpeng920 arm64 server,
->>> 	observed an improvement around 12.5% with command
->>> 	`time ./swap_bench`.
->>> 		w/o		w/
->>> 	real	0m13.460s	0m11.771s
->>> 	user	0m0.248s	0m0.279s
->>> 	sys	0m12.039s	0m11.458s
->>>
->>> 	Originally it's noticed a 16.99% overhead of ptep_clear_flush()
->>> 	which has been eliminated by this patch:
->>>
->>> 	[root@localhost yang]# perf record -- ./swap_bench && perf report
->>> 	[...]
->>> 	16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
->>>
->>> It is tested on 4,8,128 CPU platforms and shows to be beneficial on
->>> large systems but may not have improvement on small systems like on
->>> a 4 CPU platform. So make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends
->>> on CONFIG_EXPERT for this stage and make this disabled on systems
->>> with less than 8 CPUs. User can modify this threshold according to
->>> their own platforms by CONFIG_NR_CPUS_FOR_BATCHED_TLB.
->>
->> The commit log and the patch disagree on the name of the config option
->> (CONFIG_NR_CPUS_FOR_BATCHED_TLB vs CONFIG_ARM64_NR_CPUS_FOR_BATCHED_TLB).
->>
+> drivers/clocksource/ingenic-timer.c: In function ‘ingenic_tcu_init’:
+> drivers/clocksource/ingenic-timer.c:338:15: error: implicit declaration of function ‘cpuhp_setup_state’
 > 
-> ah yes, it's a typo and I'll fix it.
+> The of_platform.h header is not necessary either, so it and of_address.h
+> can be dropped.
 > 
->> But more importantly, I was wondering why this posting doesn't address
->> Catalin's feedback [a] about using a runtime tunable. Maybe I missed the
->> follow-up discussion.
->>
-> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Please ack and I will take the series via the DT tree.
+> ---
 
-So I used below patch based on this to provide a knob /proc/sys/vm/batched_tlb_enabled
-for turning on/off the batched TLB. But wondering flush.c is the best place for putting
-this, any comments?
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Thanks.
 
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 41a763cf8c1b..2b2c69c23b47 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -280,6 +280,8 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
- #ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
-
-+extern struct static_key_false batched_tlb_enabled;
-+
- static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
- {
-        /*
-@@ -289,7 +291,7 @@ static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-         * a threshold for enabling this to avoid potential side effects on
-         * these platforms.
-         */
--       if (num_online_cpus() < CONFIG_ARM64_NR_CPUS_FOR_BATCHED_TLB)
-+       if (!static_branch_unlikely(&batched_tlb_enabled))
-                return false;
-
-        /*
-diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
-index 5f9379b3c8c8..ce3bc32523f7 100644
---- a/arch/arm64/mm/flush.c
-+++ b/arch/arm64/mm/flush.c
-@@ -7,8 +7,10 @@
-  */
-
- #include <linux/export.h>
-+#include <linux/jump_label.h>
- #include <linux/mm.h>
- #include <linux/pagemap.h>
-+#include <linux/sysctl.h>
-
- #include <asm/cacheflush.h>
- #include <asm/cache.h>
-@@ -107,3 +109,53 @@ void arch_invalidate_pmem(void *addr, size_t size)
- }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
- #endif
-+
-+#ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
-+
-+DEFINE_STATIC_KEY_FALSE(batched_tlb_enabled);
-+
-+int batched_tlb_enabled_handler(struct ctl_table *table, int write,
-+                                     void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+       unsigned int enabled = static_branch_unlikely(&batched_tlb_enabled);
-+       struct ctl_table t;
-+       int err;
-+
-+       if (write && !capable(CAP_SYS_ADMIN))
-+               return -EPERM;
-+
-+       t = *table;
-+       t.data = &enabled;
-+       err = proc_dointvec_minmax(&t, write, buffer, lenp, ppos);
-+       if (!err && write) {
-+               if (enabled)
-+                       static_branch_enable(&batched_tlb_enabled);
-+               else
-+                       static_branch_disable(&batched_tlb_enabled);
-+       }
-+
-+       return err;
-+}
-+
-+static struct ctl_table batched_tlb_sysctls[] = {
-+       {
-+               .procname       = "batched_tlb_enabled",
-+               .data           = NULL,
-+               .maxlen         = sizeof(unsigned int),
-+               .mode           = 0644,
-+               .proc_handler   = batched_tlb_enabled_handler,
-+               .extra1         = SYSCTL_ZERO,
-+               .extra2         = SYSCTL_ONE,
-+       },
-+       {}
-+};
-+
-+static int __init batched_tlb_sysctls_init(void)
-+{
-+       register_sysctl_init("vm", batched_tlb_sysctls);
-+
-+       return 0;
-+}
-+late_initcall(batched_tlb_sysctls_init);
-+
-+#endif
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
