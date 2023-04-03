@@ -2,94 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4080E6D3ED3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 10:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740DC6D41DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 12:21:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PqkPr17TRz3cd9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 18:21:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p1P6YJA0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pqn3Z39cZz3f7F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 20:20:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p1P6YJA0;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PqkNv652yz3bh0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Apr 2023 18:20:47 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3336MUvI029408;
-	Mon, 3 Apr 2023 08:20:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Ce/uY5Qmt35O+FB4LSWe+febTzoDDvEq+TyyRMt2hXA=;
- b=p1P6YJA0LRKr3xgI8XfZhikG/9hvrqh3YQ0mGIWf4C4AZ2bKizlqKfqa/20ZrlpDTNLP
- fSl0/UgAkELV/+KOIgsIxnEkbUvZ/PU5g4d+RF2WeRJHOIh+dANkUj3jkRzijk34fv8y
- 42xPazb1NZPAoXf2XgDHYgBVVR9uGuBrlCcsrtk5lIuMpHh587HMNx5OoWqgUk6eq5Xu
- qX8itXzN292WL34JOj20s6uSd1e9CZlf9TDJ0q4ombtnGed+WzWJp7i+bu3G1EZmXZhV
- pRYMi5JDTzbQwuAL5dW0x9J4Myyyhb0GlGsg1EeFhKPJbVxCbiDzXmR1P1aC2CxTo+en wQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ppxfph6jj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Apr 2023 08:20:37 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3338BHKJ032740;
-	Mon, 3 Apr 2023 08:20:36 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ppxfph6j0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Apr 2023 08:20:36 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 332NlPYe004036;
-	Mon, 3 Apr 2023 08:20:34 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3ppbvg1ehe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Apr 2023 08:20:34 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3338KWDq43319808
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Apr 2023 08:20:32 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5481B20043;
-	Mon,  3 Apr 2023 08:20:32 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 035AE20049;
-	Mon,  3 Apr 2023 08:20:32 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Apr 2023 08:20:31 +0000 (GMT)
-Message-ID: <6417d5ef-1fb6-7d6b-689d-39699b50af4e@linux.ibm.com>
-Date: Mon, 3 Apr 2023 10:20:31 +0200
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pqn321ByMz3bsK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Apr 2023 20:20:26 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A5C41063;
+	Mon,  3 Apr 2023 03:20:37 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.57.89])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18E933F840;
+	Mon,  3 Apr 2023 03:19:50 -0700 (PDT)
+Date: Mon, 3 Apr 2023 11:19:48 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Uros Bizjak <ubizjak@gmail.com>
+Subject: Re: [PATCH 01/10] locking/atomic: Add missing cast to try_cmpxchg()
+ fallbacks
+Message-ID: <ZCqoRNU8EJhKJVEu@FVFF77S0Q05N>
+References: <20230305205628.27385-1-ubizjak@gmail.com>
+ <20230305205628.27385-2-ubizjak@gmail.com>
+ <ZB2v+avNt52ac/+w@FVFF77S0Q05N>
+ <CAFULd4ZCgxDYnyy--qdgKoAo_y7MbNSaQdbdBFefnFuMoM2OYw@mail.gmail.com>
+ <ZB3MR8lGbnea9ui6@FVFF77S0Q05N>
+ <ZB3QtDYuWdpiD5qk@FVFF77S0Q05N>
+ <CAFULd4aFUF5k=QJD8tDp4qzm2iBF7=rNvp1SJWrg44X5hTFxtQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.1
-Subject: Re: [PATCH 1/2] pseries/smp: export the smt level in the SYS FS.
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>, mpe@ellerman.id.au
-References: <20230331153905.31698-1-ldufour@linux.ibm.com>
- <20230331153905.31698-2-ldufour@linux.ibm.com>
- <20230331160527.GA3132@kitsune.suse.cz>
-Content-Language: en-US
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20230331160527.GA3132@kitsune.suse.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FphzzPNg81fB6LJPdYbgriT8f_ZuLIuz
-X-Proofpoint-GUID: BtTOKYnDXr_o_G8__RKT8Yr2jvBDuL7r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-03_04,2023-03-31_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 bulkscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304030062
+In-Reply-To: <CAFULd4aFUF5k=QJD8tDp4qzm2iBF7=rNvp1SJWrg44X5hTFxtQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,143 +48,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31/03/2023 18:05:27, Michal Suchánek wrote:
-> Hello,
+On Sun, Mar 26, 2023 at 09:28:38PM +0200, Uros Bizjak wrote:
+> On Fri, Mar 24, 2023 at 5:33 PM Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > On Fri, Mar 24, 2023 at 04:14:22PM +0000, Mark Rutland wrote:
+> > > On Fri, Mar 24, 2023 at 04:43:32PM +0100, Uros Bizjak wrote:
+> > > > On Fri, Mar 24, 2023 at 3:13 PM Mark Rutland <mark.rutland@arm.com> wrote:
+> > > > >
+> > > > > On Sun, Mar 05, 2023 at 09:56:19PM +0100, Uros Bizjak wrote:
+> > > > > > Cast _oldp to the type of _ptr to avoid incompatible-pointer-types warning.
+> > > > >
+> > > > > Can you give an example of where we are passing an incompatible pointer?
+> > > >
+> > > > An example is patch 10/10 from the series, which will fail without
+> > > > this fix when fallback code is used. We have:
+> > > >
+> > > > -       } while (local_cmpxchg(&rb->head, offset, head) != offset);
+> > > > +       } while (!local_try_cmpxchg(&rb->head, &offset, head));
+> > > >
+> > > > where rb->head is defined as:
+> > > >
+> > > > typedef struct {
+> > > >    atomic_long_t a;
+> > > > } local_t;
+> > > >
+> > > > while offset is defined as 'unsigned long'.
+> > >
+> > > Ok, but that's because we're doing the wrong thing to start with.
+> > >
+> > > Since local_t is defined in terms of atomic_long_t, we should define the
+> > > generic local_try_cmpxchg() in terms of atomic_long_try_cmpxchg(). We'll still
+> > > have a mismatch between 'long *' and 'unsigned long *', but then we can fix
+> > > that in the callsite:
+> > >
+> > >       while (!local_try_cmpxchg(&rb->head, &(long *)offset, head))
+> >
+> > Sorry, that should be:
+> >
+> >         while (!local_try_cmpxchg(&rb->head, (long *)&offset, head))
 > 
-> On Fri, Mar 31, 2023 at 05:39:04PM +0200, Laurent Dufour wrote:
->> There is no SMT level recorded in the kernel neither in user space.
->> Indeed there is no real constraint about that and mixed SMT levels are
->> allowed and system is working fine this way.
->>
->> However when new CPU are added, the kernel is onlining all the threads
->> which is leading to mixed SMT levels and confuse end user a bit.
->>
->> To prevent this exports a SMT level from the kernel so user space
->> application like the energy daemon, could read it to adjust their settings.
->> There is no action unless recording the value when a SMT value is written
->> into the new sysfs entry. User space applications like ppc64_cpu should
->> update the sysfs when changing the SMT level to keep the system consistent.
->>
->> Suggested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
->> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/pseries.h |  3 ++
->>  arch/powerpc/platforms/pseries/smp.c     | 39 ++++++++++++++++++++++++
->>  2 files changed, 42 insertions(+)
->>
->> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
->> index f8bce40ebd0c..af0a145af98f 100644
->> --- a/arch/powerpc/platforms/pseries/pseries.h
->> +++ b/arch/powerpc/platforms/pseries/pseries.h
->> @@ -23,7 +23,9 @@ extern int pSeries_machine_check_exception(struct pt_regs *regs);
->>  extern long pseries_machine_check_realmode(struct pt_regs *regs);
->>  void pSeries_machine_check_log_err(void);
->>  
->> +
->>  #ifdef CONFIG_SMP
->> +extern int pseries_smt;
->>  extern void smp_init_pseries(void);
->>  
->>  /* Get state of physical CPU from query_cpu_stopped */
->> @@ -34,6 +36,7 @@ int smp_query_cpu_stopped(unsigned int pcpu);
->>  #define QCSS_HARDWARE_ERROR -1
->>  #define QCSS_HARDWARE_BUSY -2
->>  #else
->> +#define pseries_smt 1
+> The fallbacks are a bit more complicated than above, and are different
+> from atomic_try_cmpxchg.
 > 
-> Is this really needed for anything?
+> Please note in patch 2/10, the falbacks when arch_try_cmpxchg_local
+> are not defined call arch_cmpxchg_local. Also in patch 2/10,
+> try_cmpxchg_local is introduced, where it calls
+> arch_try_cmpxchg_local. Targets (and generic code) simply define (e.g.
+> :
 > 
-> The code using pseries_smt would not compile with a define, and would be
-> only compiled with SMP enabled anyway so we should not need this.
+> #define local_cmpxchg(l, o, n) \
+>        (cmpxchg_local(&((l)->a.counter), (o), (n)))
+> +#define local_try_cmpxchg(l, po, n) \
+> +       (try_cmpxchg_local(&((l)->a.counter), (po), (n)))
 > 
+> which is part of the local_t API. Targets should either define all
+> these #defines, or none. There are no partial fallbacks as is the case
+> with atomic_t.
 
-Hi Michal,
+Whether or not there are fallbacks is immaterial.
 
-I do agree, the pseries code is implying SMP.
+In those cases, architectures can just as easily write C wrappers, e.g.
 
-When writing that code, I found that SMP conditional block and just add
-this define to be sure the code will compile in the case SMP is not
-defined, but that's probably useless.
+long local_cmpxchg(local_t *l, long old, long new)
+{
+	return cmpxchg_local(&l->a.counter, old, new);
+}
 
-Instead of resending a new series, Michael, could you please remove that
-line when applying the patch to your tree?
+long local_try_cmpxchg(local_t *l, long *old, long new)
+{
+	return try_cmpxchg_local(&l->a.counter, old, new);
+}
+
+> The core of the local_h API is in the local.h header. If the target
+> doesn't define its own local.h header, then asm-generic/local.h is
+> used that does exactly what you propose above regarding the usage of
+> atomic functions.
+> 
+> OTOH, when the target defines its own local.h, then the above
+> target-dependent #define path applies. The target should define its
+> own arch_try_cmpxchg_local, otherwise a "generic" target-dependent
+> fallback that calls target arch_cmpxchg_local applies. In the case of
+> x86, patch 9/10 enables new instruction by defining
+> arch_try_cmpxchg_local.
+> 
+> FYI, the patch sequence is carefully chosen so that x86 also exercises
+> fallback code between different patches in the series.
+> 
+> Targets are free to define local_t to whatever they like, but for some
+> reason they all define it to:
+> 
+> typedef struct {
+>     atomic_long_t a;
+> } local_t;
+
+Yes, which is why I used atomic_long() above.
+
+> so they have to dig the variable out of the struct like:
+> 
+> #define local_cmpxchg(l, o, n) \
+>      (cmpxchg_local(&((l)->a.counter), (o), (n)))
+> 
+> Regarding the mismatch of 'long *' vs 'unsigned long *': x86
+> target-specific code does for try_cmpxchg:
+> 
+> #define __raw_try_cmpxchg(_ptr, _pold, _new, size, lock) \
+> ({ \
+> bool success; \
+> __typeof__(_ptr) _old = (__typeof__(_ptr))(_pold); \
+> __typeof__(*(_ptr)) __old = *_old; \
+> __typeof__(*(_ptr)) __new = (_new); \
+> 
+> so, it *does* cast the "old" pointer to the type of "ptr". The generic
+> code does *not*. This difference is dangerous, since the compilation
+> of some code involving try_cmpxchg will compile OK for x86 but will
+> break for other targets that use try_cmpxchg fallback templates (I was
+> the unlucky one that tripped on this in the past). Please note that
+> this problem is not specific to the proposed local_try_cmpxchg series,
+> but affects the existing try_cmpxchg API.
+
+I understand the problem of arch code differing from generic code, and that we
+want to have *a* consistent behaviour for hte API.
+
+What I'm saying is that the behaviour we should aim for is where the 'old'
+pointer has a specific type (long), and we always require that, as we do for
+the various atomic_*() APIs of which local_*() is a cousin.
+
+> Also, I don't think that "fixing" callsites is the right thing to do.
+
+Why? What's wrong with doing that?
+
+The documentation in Documentation/core-api/local_ops.rst says:
+
+    The ``local_t`` type is defined as an opaque ``signed long``
+
+So the obvious and least surprising thing is for the local_*() functions to use
+'long' for values and 'long *' for pointers to values.
+
+Requiring a cast in a few places is not the end of the world.
+
+> The generic code should follow x86 and cast the "old" pointer to the
+> type of "ptr" inside the fallback.
+
+Why?
+
+I disagree, and think it's far better to be strict by default. That way,
+accidental usage of the wrong type will be caught by the compiler, and if
+someone *really* wants to use a differently type then can use a cast in the
+callsite, which makes it really obvious when that is happening.
+
+I appreciate that may require some preparatory cleanup, but I think that's a
+small price to pay for having this in a clearer and more maintainable state.
+
+> > The fundamenalthing I'm trying to say is that the
+> > atomic/atomic64/atomic_long/local/local64 APIs should be type-safe, and for
+> > their try_cmpxchg() implementations, the type signature should be:
+> >
+> >         ${atomictype}_try_cmpxchg(${atomictype} *ptr, ${inttype} *old, ${inttype} new)
+> 
+> This conversion should be performed also for the cmpxchg family of
+> functions, if desired at all. try_cmpxchg fallback is just cmpxchg
+> with some extra code around.
+
+FWIW, I agree that we *should* make try_cmpxchg() check that ptr and old
+pointer are the same type.
+
+However, I don't think that's a prerequisite for doing so for
+local_try_cmpxchg().
+
+Plese make local_try_cmpxchg() have a proper type-safe C prototype, as we do
+with the atomic*_try_cmpxchg() APIs.
 
 Thanks,
-Laurent.
-
-> Thanks
-> 
-> Michal
-> 
->>  static inline void smp_init_pseries(void) { }
->>  #endif
->>  
->> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
->> index c597711ef20a..6c382922f8f3 100644
->> --- a/arch/powerpc/platforms/pseries/smp.c
->> +++ b/arch/powerpc/platforms/pseries/smp.c
->> @@ -21,6 +21,7 @@
->>  #include <linux/device.h>
->>  #include <linux/cpu.h>
->>  #include <linux/pgtable.h>
->> +#include <linux/sysfs.h>
->>  
->>  #include <asm/ptrace.h>
->>  #include <linux/atomic.h>
->> @@ -45,6 +46,8 @@
->>  
->>  #include "pseries.h"
->>  
->> +int pseries_smt;
->> +
->>  /*
->>   * The Primary thread of each non-boot processor was started from the OF client
->>   * interface by prom_hold_cpus and is spinning on secondary_hold_spinloop.
->> @@ -280,3 +283,39 @@ void __init smp_init_pseries(void)
->>  
->>  	pr_debug(" <- smp_init_pSeries()\n");
->>  }
->> +
->> +static ssize_t pseries_smt_store(struct class *class,
->> +			 struct class_attribute *attr,
->> +			 const char *buf, size_t count)
->> +{
->> +	int smt;
->> +
->> +	if (kstrtou32(buf, 0, &smt) || !smt || smt > (u32) threads_per_core) {
->> +		pr_err("Invalid pseries_smt specified.\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	pseries_smt = smt;
->> +
->> +	return count;
->> +}
->> +
->> +static ssize_t pseries_smt_show(struct class *class, struct class_attribute *attr,
->> +			  char *buf)
->> +{
->> +	return sysfs_emit(buf, "%d\n", pseries_smt);
->> +}
->> +
->> +static CLASS_ATTR_RW(pseries_smt);
->> +
->> +static int __init pseries_smt_init(void)
->> +{
->> +	int rc;
->> +
->> +	pseries_smt = smt_enabled_at_boot;
->> +	rc = sysfs_create_file(kernel_kobj, &class_attr_pseries_smt.attr);
->> +	if (rc)
->> +		pr_err("Can't create pseries_smt sysfs/kernel entry.\n");
->> +	return rc;
->> +}
->> +machine_device_initcall(pseries, pseries_smt_init);
->> -- 
->> 2.40.0
->>
-
+Mark,
