@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3AF6D3C88
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 06:42:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED876D3C94
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 06:54:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PqdXZ1Hfgz3chV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 14:42:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PqdpH6g6Fz3chK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 14:53:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L3dFgnRq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=De7Hu5Fx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PqdWk5vm0z3bhL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Apr 2023 14:41:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PqdnS33lSz3bjb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Apr 2023 14:53:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L3dFgnRq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=De7Hu5Fx;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PqdWc12NMz4x4r;
-	Mon,  3 Apr 2023 14:41:16 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PqdnS0Jsjz4x91;
+	Mon,  3 Apr 2023 14:53:16 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1680496876;
-	bh=AJ+M0yLGP/wyTIKjs+7s4MYh/6gISoFpB8MLIEaLvgQ=;
+	s=201909; t=1680497596;
+	bh=vuS68/AAKNSd1m+TEtLv9bslPKbZs2f15sX3aOSETSc=;
 	h=From:To:Subject:Date:From;
-	b=L3dFgnRqDTSBbFeXl468KBQdIC2G/ZKYq5llRpLNHjVV4YssFYOHXUKL6fGGdrV41
-	 I2SFNYalOog5hbG12NQlrgdULtKtCl/re/1xd0bYfD9xhmXr9o1Ovg/S9gj4waPIoG
-	 6GlBDij4Oi/SH3zJw2WYaIzQNTsepJwYCFsOQ2bUOVr9df/fRcTI52JgCq33CZEwp6
-	 +9ddWLqoE/4Ws7EYhlgMNfK/FhMhA9MXct6gDzUtn/L6BPCJGcifb6P3ZOtRp4tg6+
-	 ZJP9gk0soxzJQinBaBGzOKpwlSrf1rt0GtQiWWg3MzfamvLFuyCHpZh8Ee+3Ip62xx
-	 9dsKYE0LGJFVg==
+	b=De7Hu5FxERB03J0pyiFbgYKIsAP/IXHkfulrGK9cl5qurhgCTHW+BH9wwOFQMY0f6
+	 4tRdRE2SWVDvZylZ68ZmRyxpyf6ADYE2PfBVHvOpaHXnzzNsB8zNLNLD3bij9rK2qA
+	 TXiEM/FLvpyi/C6FmlVcc6b12bsYvpBkPWjUSpgGkA4r4U3R+ZRt34pcjPPAr9SWU9
+	 gYCbwIh2Q8WQ5/cqWQenx1eo4JSeX3s8x4hxR5R1jB+OWIhimKq0a5UOU3nF7PWeEN
+	 6Bc2tADtZ375FcaFsxuqD/E7m2INWhNvoL1rLYLpGmZF9QdQJpyqLrnGUAdcVjo4wc
+	 jU0WN4y5Wk+AQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] KVM: PPC: BookE: Fix W=1 warnings
-Date: Mon,  3 Apr 2023 14:41:11 +1000
-Message-Id: <20230403044111.3090468-1-mpe@ellerman.id.au>
+Subject: [PATCH v2] KVM: PPC: BookE: Fix W=1 warnings
+Date: Mon,  3 Apr 2023 14:53:14 +1000
+Message-Id: <20230403045314.3095410-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,15 +62,9 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Fix various W=1 warnings in booke.c:
 
-  arch/powerpc/kvm/booke.c:626:6: error: no previous prototype for ‘kvmppc_watchdog_func’ [-Werror=missing-prototypes]
-    626 | void kvmppc_watchdog_func(struct timer_list *t)
-        |      ^~~~~~~~~~~~~~~~~~~~
   arch/powerpc/kvm/booke.c:1008:5: error: no previous prototype for ‘kvmppc_handle_exit’ [-Werror=missing-prototypes]
    1008 | int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
         |     ^~~~~~~~~~~~~~~~~~
-  arch/powerpc/kvm/booke.c:1949:6: error: no previous prototype for ‘kvm_guest_protect_msr’ [-Werror=missing-prototypes]
-   1949 | void kvm_guest_protect_msr(struct kvm_vcpu *vcpu, ulong prot_bitmap, bool set)
-        |      ^~~~~~~~~~~~~~~~~~~~~
   arch/powerpc/kvm/booke.c:1009: warning: Function parameter or member 'vcpu' not described in 'kvmppc_handle_exit'
   arch/powerpc/kvm/booke.c:1009: warning: Function parameter or member 'exit_nr' not described in 'kvmppc_handle_exit'
 
@@ -78,23 +72,17 @@ Reported-by: kernel test robot <lkp@intel.com>
 Link: https://lore.kernel.org/r/202304020827.3LEZ86WB-lkp@intel.com/
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kvm/booke.c | 7 ++++---
+ arch/powerpc/kvm/booke.c | 2 +-
  arch/powerpc/kvm/booke.h | 3 +++
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+v2: Rebased on my topic/ppc-kvm branch where I already had some of the
+fixes queued.
 
 diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index 01adffb24667..5908f2cc6a81 100644
+index ce37d282be6d..a9c04073d27e 100644
 --- a/arch/powerpc/kvm/booke.c
 +++ b/arch/powerpc/kvm/booke.c
-@@ -623,7 +623,7 @@ static void arm_next_watchdog(struct kvm_vcpu *vcpu)
- 	spin_unlock_irqrestore(&vcpu->arch.wdt_lock, flags);
- }
- 
--void kvmppc_watchdog_func(struct timer_list *t)
-+static void kvmppc_watchdog_func(struct timer_list *t)
- {
- 	struct kvm_vcpu *vcpu = from_timer(vcpu, t, arch.wdt_timer);
- 	u32 tsr, new_tsr;
 @@ -1000,7 +1000,7 @@ static int kvmppc_resume_inst_load(struct kvm_vcpu *vcpu,
  	}
  }
@@ -104,16 +92,6 @@ index 01adffb24667..5908f2cc6a81 100644
   * kvmppc_handle_exit
   *
   * Return value is in the form (errcode<<2 | RESUME_FLAG_HOST | RESUME_FLAG_NV)
-@@ -1946,7 +1946,8 @@ static int kvmppc_booke_add_watchpoint(struct debug_reg *dbg_reg, uint64_t addr,
- 	dbg_reg->dbcr0 |= DBCR0_IDM;
- 	return 0;
- }
--void kvm_guest_protect_msr(struct kvm_vcpu *vcpu, ulong prot_bitmap, bool set)
-+
-+static void kvm_guest_protect_msr(struct kvm_vcpu *vcpu, ulong prot_bitmap, bool set)
- {
- 	/* XXX: Add similar MSR protection for BookE-PR */
- #ifdef CONFIG_KVM_BOOKE_HV
 diff --git a/arch/powerpc/kvm/booke.h b/arch/powerpc/kvm/booke.h
 index be9da96d9f06..9c5b8e76014f 100644
 --- a/arch/powerpc/kvm/booke.h
