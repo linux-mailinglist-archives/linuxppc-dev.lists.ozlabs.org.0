@@ -1,42 +1,114 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740DC6D41DA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 12:21:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831CB6D4667
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 16:04:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pqn3Z39cZz3f7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Apr 2023 20:20:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pqt0z5QpWz3f3x
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 00:04:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Rx+fxQbI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pqn321ByMz3bsK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Apr 2023 20:20:26 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A5C41063;
-	Mon,  3 Apr 2023 03:20:37 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.57.89])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18E933F840;
-	Mon,  3 Apr 2023 03:19:50 -0700 (PDT)
-Date: Mon, 3 Apr 2023 11:19:48 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Uros Bizjak <ubizjak@gmail.com>
-Subject: Re: [PATCH 01/10] locking/atomic: Add missing cast to try_cmpxchg()
- fallbacks
-Message-ID: <ZCqoRNU8EJhKJVEu@FVFF77S0Q05N>
-References: <20230305205628.27385-1-ubizjak@gmail.com>
- <20230305205628.27385-2-ubizjak@gmail.com>
- <ZB2v+avNt52ac/+w@FVFF77S0Q05N>
- <CAFULd4ZCgxDYnyy--qdgKoAo_y7MbNSaQdbdBFefnFuMoM2OYw@mail.gmail.com>
- <ZB3MR8lGbnea9ui6@FVFF77S0Q05N>
- <ZB3QtDYuWdpiD5qk@FVFF77S0Q05N>
- <CAFULd4aFUF5k=QJD8tDp4qzm2iBF7=rNvp1SJWrg44X5hTFxtQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe13::603; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Rx+fxQbI;
+	dkim-atps=neutral
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on20603.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe13::603])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pqt051bMmz3bgy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 00:03:14 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jJXNAqivDrGu/o/tDKb5TUIop4vluvWgjibDTvx8B8tbyhcsgLHs1l8suikITX1uRk7EvFgOUqv874mPcLO4SVU4ZtvJrNbrE4gMH7z0vawLSH18UAjTP4gQb2Rt7sSk61/u6IIt2e+bM+GjOA348an47PI3ax00OVaa79waAk366ScKvvdHornuX+guVkZpbTSo+VdDHXkTPr6ZH7BBbJ/ivEhQ7ed3zJZaPGrXaNRWOVTJ14hv9K9lcawBDkwtGctkdwbxUzu0kAI/ruOF29WmL3j155kLrCZG8fUtEqdAbBj/c6pCEGJrU2HtxvdiZB3bt5yTtz+s8owNom9S2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5H2S0fVMCAsQBlLaIVdijR8w/I78c5sqqrtKj8UoAk0=;
+ b=JnemgycHnzUquLaJGZyxH2zea8b9s3OVt11Yn8QbcSwHoN/UEY7wSK7+5M+WWf9GRTKtSBoVZ2wUYwMysjksKwhrDshVTKIMlfiYKfWWeQuTU+VWkSK8NfCKnOlZ4yOrDKhpQi/THfifMl9fxSB0uMiv9B3YN04rGAj2EaA6EpFbi+aNNy1iRC+mfXggHRxHBPhNDK5I+cJ6gKyHE19n9Mkv7Htag0126F1R7CrEW9mSi6pStjU1/quL616qV/4hpOofDV3FeFZ0nWCjDDuaFY0ATUmRbp8MUzZtsOx868oWfPvv60GAgUw25cTKCZ4i0k9Aheg1F7qS7J6Rj20IVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5H2S0fVMCAsQBlLaIVdijR8w/I78c5sqqrtKj8UoAk0=;
+ b=Rx+fxQbITMD1H/1lYtzExuaxP8OQd76gJ/7Jv3bnIennEjoriIcS+aIHezuAzMcIRba+c/Y892xu5Y88sKk8eQl+JlsKLqXDykKJ3x867OW4RX7Se+XySoygl1RWoMkQW2sP+9s8A59WyV5l2dOAiqpFLiSb0wq7ObDMDrz5MwQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
+ by VE1PR04MB7390.eurprd04.prod.outlook.com (2603:10a6:800:1aa::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
+ 2023 14:02:51 +0000
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::dfa2:5d65:fad:a2a5]) by AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::dfa2:5d65:fad:a2a5%3]) with mapi id 15.20.6254.026; Mon, 3 Apr 2023
+ 14:02:50 +0000
+Date: Mon, 3 Apr 2023 17:02:47 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH v2 1/2] soc: fsl: qbman: Always disable interrupts when
+ taking cgr_lock
+Message-ID: <20230403140247.ugb23hqrha2kjup2@skbuf>
+References: <20230331151413.1684105-1-sean.anderson@seco.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFULd4aFUF5k=QJD8tDp4qzm2iBF7=rNvp1SJWrg44X5hTFxtQ@mail.gmail.com>
+In-Reply-To: <20230331151413.1684105-1-sean.anderson@seco.com>
+X-ClientProxiedBy: AM0PR06CA0073.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::14) To AM0PR04MB6452.eurprd04.prod.outlook.com
+ (2603:10a6:208:16d::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|VE1PR04MB7390:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6f92b4d-0238-47c8-9541-08db344c1cae
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:  aCYmdca4php/7c8w2rL+dHyXwIU1RY38rT+FeUIp3D0Xb6OQSFdf1IcPDt7Em0tl6KjskIPvV2oPu1VZItiRPBA4KefJSQF64Rru6JnFgrFN4Q9uO1IhUg5OLHtGhaPxsvv9i2QKhO1cvmJApCQ0doZgjlKbvra56nJHtkInPGjfglhxmyXm6/JQ2vtYATyOHYyGibSyJladMP+de5J1ecwTbbQNHAFmM0jS+aLeBmVmh1yaSfuvdpA0e6++1vzf5CbKwcMl7EgBRiEQD2KCYyRCGRerIucSI0LbKWCBeVm6jwC/i1JDO7aua3Ce5ZIXnoW/r3CKLl51t1EUD2mNsJyTOONXDF3Sb5Jy0+a6zfXgONIuruoz6IXZJabf7A228pBgK3UIuMKBqhgKIpk0yEdeA2Ody0rNVqCRn/LUeJUcvYf7Pyfh6WoGIYJmia/OCgCtbKNqploaonW4BHeXeskK5F8yCBiWeQ7pI/8vEM8aDtuOk+t5L43SVnp0Md6gEeo+tTuyzGglSvmRs7VtjnH/ktKGiiIL7teaSoX1NT+BXI+ZzYCK50Xb8j0Wz7Nz
+X-Forefront-Antispam-Report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(346002)(136003)(396003)(376002)(366004)(39860400002)(451199021)(86362001)(33716001)(2906002)(186003)(83380400001)(6512007)(1076003)(9686003)(6506007)(26005)(6666004)(6486002)(8676002)(4326008)(6916009)(66556008)(66946007)(66476007)(41300700001)(5660300002)(38100700002)(54906003)(316002)(478600001)(44832011)(4744005)(8936002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:  =?us-ascii?Q?BiRhz0exS8Hb6hX9pLvzDrXifDfi61ovIO8JY+nyHrFCtiOVY/nPFvB5w2m5?=
+ =?us-ascii?Q?Ql7AblGTArxqKQtxhtpsvRsOIPeXQJpXhrRUunHpeFKJAhNPHIEAAMunW+qz?=
+ =?us-ascii?Q?1gbTyOH47kBY/QUNLdNl3I3xqpg/tUcI3Jve+VZA2qPnBUV+xZMeLzmYp6ak?=
+ =?us-ascii?Q?zyEBMzf2oMhJs2W+WNtt/HJcSFuP5re5mmTJ9IhZwlALfw87B++uol0BVhyc?=
+ =?us-ascii?Q?TS1I5mpSBCuBTEpmPmkvYZi4C7MILe43tOT11sNwDJmEEng9K2q3G8tm2Gug?=
+ =?us-ascii?Q?EjzZl+u9Tvzdl5gFS7/SqnX8nZBUHWGcG9swj3/gJJa3YE7LHxRCZnzfSDpv?=
+ =?us-ascii?Q?RC4pwwDpX+w7yyI23ta7MAH0COIuHFFaoUnn78k840uGr4gReSTOxPw8r9gn?=
+ =?us-ascii?Q?PCJS8H/pbBGhaIQztTUXDMkqlxmZrBNnyNisQbSO2zicJXQOdvukbVUNTF6a?=
+ =?us-ascii?Q?JdfK0JBd0DsLaoH5pbAkbMZ2/0eTyhovReUvJ0uKOi0pVVfmr37HqXhikHp4?=
+ =?us-ascii?Q?9TFnOpsX4ONonNdKYdtzp7w7HVbqI1yZBrpHaYcV3CjgN8bA4CXkGFMSBxjw?=
+ =?us-ascii?Q?Kjm/W8zXWwm9UAzC685U00qbRD4mDapoujeAuMFctW9YwNnfirRWJSzkyB1a?=
+ =?us-ascii?Q?FuMHqCz/y9n6NNR8fYoqiLEuCz44sImUcALz+knBnjjw65hLy/Xv47L9hqU9?=
+ =?us-ascii?Q?e9szbQj4Rgzsy+rO9ANHqEoeU0xikRpm75sbsFRJxctyqTw7vGpkkLe/xHnF?=
+ =?us-ascii?Q?mHwDQ/9sFnDkFUd4jpwDhWLGs/hkWrfLfOzeAO16ZHQRubjlVmDD1Oy0dawh?=
+ =?us-ascii?Q?RXxZ6uP3+0fUNScNQHatzcFHKKMu9ngPFiGLscjRUGQajxLphzsjpqEXZJs1?=
+ =?us-ascii?Q?Yl4JTSf54p8FQSEdOHte+FZXZUICqOS61Ah+k+7EsYB4Q9Ukp2tpZX6tBeA0?=
+ =?us-ascii?Q?TrjAqUWffPzCWBNxCg0OFUSKYCNAL6ot1Ol3Gj6xBrc5P7SiEuAGjtciRmHn?=
+ =?us-ascii?Q?IjRWi978++orG5vGWL/rPujElepw6gOD7XTvabELOEXAjdtsxNDzYZokrpfJ?=
+ =?us-ascii?Q?o7G42pzla8wkw9yz32YEMM6mlmSFYwVrwYj18dVcB5rhwc+GoMfE9EtxWdkc?=
+ =?us-ascii?Q?rkbUiMtjZS5+/HVysOIsXpYhzGrKN+WWzrG2UQO/GGArzAhvXZdJ2uceYRJO?=
+ =?us-ascii?Q?MlDV0WkgiMndBAD2X/nqhskbu4aFNjqDjLVbfAZwEtlePkOutfWtqs10GOwk?=
+ =?us-ascii?Q?EUcsEpvHethCDaz39YqczjRjhzLuv0ziTlq4CoeDCAX5RgpCFm27RLDCMJfT?=
+ =?us-ascii?Q?dEkFTOtNfM84rcfW1A2t0hWXHR1fEDD5mFIreGTEDnXlWmdyCeBP1hyjtETY?=
+ =?us-ascii?Q?mA/qviyg8clIbhRB6DrGuqRdnHkICwOmSb3MLkM3GLd8gDUmKMl1+ywv0iYI?=
+ =?us-ascii?Q?fW1ySDCbaeEOoYbm9KWWIBROPX7CoyX+hc31vX2BbQtjT70Rj8fyMnUG3uSQ?=
+ =?us-ascii?Q?xAXYfzp3q3VvmVvMw+nh3gght+38Gt5Zysb3KDe/fE4dM+ATAPdUACzGoXUl?=
+ =?us-ascii?Q?NOmXZTG2+7ZRQxjh7WdI6XzjiDC4vtFus4u+UT4BibZpa5fSrxVhJgRd707p?=
+ =?us-ascii?Q?Pw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6f92b4d-0238-47c8-9541-08db344c1cae
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 14:02:50.8326
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Dnuql5pQVrnlKVy3h6EK43VEsg8iaaxC5/9hwF0ENRCqw/26cyckfe1Ji0mEI07MYTx1s/SS5rlnAcc6Jt5UxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7390
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,179 +120,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Roy Pledge <roy.pledge@nxp.com>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Claudiu Manoil <claudiu.manoil@nxp.com>, Camelia Groza <camelia.groza@nxp.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Mar 26, 2023 at 09:28:38PM +0200, Uros Bizjak wrote:
-> On Fri, Mar 24, 2023 at 5:33 PM Mark Rutland <mark.rutland@arm.com> wrote:
-> >
-> > On Fri, Mar 24, 2023 at 04:14:22PM +0000, Mark Rutland wrote:
-> > > On Fri, Mar 24, 2023 at 04:43:32PM +0100, Uros Bizjak wrote:
-> > > > On Fri, Mar 24, 2023 at 3:13 PM Mark Rutland <mark.rutland@arm.com> wrote:
-> > > > >
-> > > > > On Sun, Mar 05, 2023 at 09:56:19PM +0100, Uros Bizjak wrote:
-> > > > > > Cast _oldp to the type of _ptr to avoid incompatible-pointer-types warning.
-> > > > >
-> > > > > Can you give an example of where we are passing an incompatible pointer?
-> > > >
-> > > > An example is patch 10/10 from the series, which will fail without
-> > > > this fix when fallback code is used. We have:
-> > > >
-> > > > -       } while (local_cmpxchg(&rb->head, offset, head) != offset);
-> > > > +       } while (!local_try_cmpxchg(&rb->head, &offset, head));
-> > > >
-> > > > where rb->head is defined as:
-> > > >
-> > > > typedef struct {
-> > > >    atomic_long_t a;
-> > > > } local_t;
-> > > >
-> > > > while offset is defined as 'unsigned long'.
-> > >
-> > > Ok, but that's because we're doing the wrong thing to start with.
-> > >
-> > > Since local_t is defined in terms of atomic_long_t, we should define the
-> > > generic local_try_cmpxchg() in terms of atomic_long_try_cmpxchg(). We'll still
-> > > have a mismatch between 'long *' and 'unsigned long *', but then we can fix
-> > > that in the callsite:
-> > >
-> > >       while (!local_try_cmpxchg(&rb->head, &(long *)offset, head))
-> >
-> > Sorry, that should be:
-> >
-> >         while (!local_try_cmpxchg(&rb->head, (long *)&offset, head))
+On Fri, Mar 31, 2023 at 11:14:12AM -0400, Sean Anderson wrote:
+> smp_call_function_single disables IRQs when executing the callback. To
+> prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
+> This is already done by qman_update_cgr and qman_delete_cgr; fix the
+> other lockers.
 > 
-> The fallbacks are a bit more complicated than above, and are different
-> from atomic_try_cmpxchg.
-> 
-> Please note in patch 2/10, the falbacks when arch_try_cmpxchg_local
-> are not defined call arch_cmpxchg_local. Also in patch 2/10,
-> try_cmpxchg_local is introduced, where it calls
-> arch_try_cmpxchg_local. Targets (and generic code) simply define (e.g.
-> :
-> 
-> #define local_cmpxchg(l, o, n) \
->        (cmpxchg_local(&((l)->a.counter), (o), (n)))
-> +#define local_try_cmpxchg(l, po, n) \
-> +       (try_cmpxchg_local(&((l)->a.counter), (po), (n)))
-> 
-> which is part of the local_t API. Targets should either define all
-> these #defines, or none. There are no partial fallbacks as is the case
-> with atomic_t.
+> Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
 
-Whether or not there are fallbacks is immaterial.
+If you've identified smp_call_function_single() as the problem, then the
+true issue seems to lie in commit 96f413f47677 ("soc/fsl/qbman: fix
+issue in qman_delete_cgr_safe()") and not in the initial commit, no?
 
-In those cases, architectures can just as easily write C wrappers, e.g.
+Anyway,
 
-long local_cmpxchg(local_t *l, long old, long new)
-{
-	return cmpxchg_local(&l->a.counter, old, new);
-}
-
-long local_try_cmpxchg(local_t *l, long *old, long new)
-{
-	return try_cmpxchg_local(&l->a.counter, old, new);
-}
-
-> The core of the local_h API is in the local.h header. If the target
-> doesn't define its own local.h header, then asm-generic/local.h is
-> used that does exactly what you propose above regarding the usage of
-> atomic functions.
-> 
-> OTOH, when the target defines its own local.h, then the above
-> target-dependent #define path applies. The target should define its
-> own arch_try_cmpxchg_local, otherwise a "generic" target-dependent
-> fallback that calls target arch_cmpxchg_local applies. In the case of
-> x86, patch 9/10 enables new instruction by defining
-> arch_try_cmpxchg_local.
-> 
-> FYI, the patch sequence is carefully chosen so that x86 also exercises
-> fallback code between different patches in the series.
-> 
-> Targets are free to define local_t to whatever they like, but for some
-> reason they all define it to:
-> 
-> typedef struct {
->     atomic_long_t a;
-> } local_t;
-
-Yes, which is why I used atomic_long() above.
-
-> so they have to dig the variable out of the struct like:
-> 
-> #define local_cmpxchg(l, o, n) \
->      (cmpxchg_local(&((l)->a.counter), (o), (n)))
-> 
-> Regarding the mismatch of 'long *' vs 'unsigned long *': x86
-> target-specific code does for try_cmpxchg:
-> 
-> #define __raw_try_cmpxchg(_ptr, _pold, _new, size, lock) \
-> ({ \
-> bool success; \
-> __typeof__(_ptr) _old = (__typeof__(_ptr))(_pold); \
-> __typeof__(*(_ptr)) __old = *_old; \
-> __typeof__(*(_ptr)) __new = (_new); \
-> 
-> so, it *does* cast the "old" pointer to the type of "ptr". The generic
-> code does *not*. This difference is dangerous, since the compilation
-> of some code involving try_cmpxchg will compile OK for x86 but will
-> break for other targets that use try_cmpxchg fallback templates (I was
-> the unlucky one that tripped on this in the past). Please note that
-> this problem is not specific to the proposed local_try_cmpxchg series,
-> but affects the existing try_cmpxchg API.
-
-I understand the problem of arch code differing from generic code, and that we
-want to have *a* consistent behaviour for hte API.
-
-What I'm saying is that the behaviour we should aim for is where the 'old'
-pointer has a specific type (long), and we always require that, as we do for
-the various atomic_*() APIs of which local_*() is a cousin.
-
-> Also, I don't think that "fixing" callsites is the right thing to do.
-
-Why? What's wrong with doing that?
-
-The documentation in Documentation/core-api/local_ops.rst says:
-
-    The ``local_t`` type is defined as an opaque ``signed long``
-
-So the obvious and least surprising thing is for the local_*() functions to use
-'long' for values and 'long *' for pointers to values.
-
-Requiring a cast in a few places is not the end of the world.
-
-> The generic code should follow x86 and cast the "old" pointer to the
-> type of "ptr" inside the fallback.
-
-Why?
-
-I disagree, and think it's far better to be strict by default. That way,
-accidental usage of the wrong type will be caught by the compiler, and if
-someone *really* wants to use a differently type then can use a cast in the
-callsite, which makes it really obvious when that is happening.
-
-I appreciate that may require some preparatory cleanup, but I think that's a
-small price to pay for having this in a clearer and more maintainable state.
-
-> > The fundamenalthing I'm trying to say is that the
-> > atomic/atomic64/atomic_long/local/local64 APIs should be type-safe, and for
-> > their try_cmpxchg() implementations, the type signature should be:
-> >
-> >         ${atomictype}_try_cmpxchg(${atomictype} *ptr, ${inttype} *old, ${inttype} new)
-> 
-> This conversion should be performed also for the cmpxchg family of
-> functions, if desired at all. try_cmpxchg fallback is just cmpxchg
-> with some extra code around.
-
-FWIW, I agree that we *should* make try_cmpxchg() check that ptr and old
-pointer are the same type.
-
-However, I don't think that's a prerequisite for doing so for
-local_try_cmpxchg().
-
-Plese make local_try_cmpxchg() have a proper type-safe C prototype, as we do
-with the atomic*_try_cmpxchg() APIs.
-
-Thanks,
-Mark,
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
