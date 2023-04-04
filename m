@@ -2,91 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0566D59B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C926D59BD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:35:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrKHZ4vNvz3cfg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:33:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrKKZ36XQz3ccr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:34:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CLCy62Cb;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CLCy62Cb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CLCy62Cb;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CLCy62Cb;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrKGk5FKxz3c7X
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:32:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrKJl0mtKz2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:34:14 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680593547;
+	s=mimecast20190719; t=1680593652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
-	b=BQn/ZtVwPmUS8d68NdUb/cMu3wcSq+Kb6McRcS9ophvHgOoqpYrr6I7krtDVV74Wco6mGf
-	JraKjLifUC6uEp0700asJkuvvGzA07ggWTyVgh89bp5j0AAN1Z7gnaxUZLnI2mKiOI2eA/
-	h8kzs9sB+F8WNm1ELQalvSqRb/3jTxs=
+	bh=99tQM16AOIPSiD36e9lC8KgNlMe8A/CLkwAQnzAPAlM=;
+	b=CLCy62CbwyAVNK3NdQaTMLAhgAvNhvQHaSYEqw0eXRPRYIg0q6ehHOpDbqZcoj/9uudkh0
+	PecQxjPkcYG5YvHuBfscf7VQN6+3rhOSWEbQVMbxquaqpPMtIDx/pMlNlZH2VnxEOy8Akb
+	BSBpIeCbpUnqKytZlFa4HMaGuFcqGkM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680593547;
+	s=mimecast20190719; t=1680593652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
-	b=BQn/ZtVwPmUS8d68NdUb/cMu3wcSq+Kb6McRcS9ophvHgOoqpYrr6I7krtDVV74Wco6mGf
-	JraKjLifUC6uEp0700asJkuvvGzA07ggWTyVgh89bp5j0AAN1Z7gnaxUZLnI2mKiOI2eA/
-	h8kzs9sB+F8WNm1ELQalvSqRb/3jTxs=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=99tQM16AOIPSiD36e9lC8KgNlMe8A/CLkwAQnzAPAlM=;
+	b=CLCy62CbwyAVNK3NdQaTMLAhgAvNhvQHaSYEqw0eXRPRYIg0q6ehHOpDbqZcoj/9uudkh0
+	PecQxjPkcYG5YvHuBfscf7VQN6+3rhOSWEbQVMbxquaqpPMtIDx/pMlNlZH2VnxEOy8Akb
+	BSBpIeCbpUnqKytZlFa4HMaGuFcqGkM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-fvc_a-NCM7Ke3_apezcO6Q-1; Tue, 04 Apr 2023 03:32:25 -0400
-X-MC-Unique: fvc_a-NCM7Ke3_apezcO6Q-1
-Received: by mail-qt1-f200.google.com with SMTP id r22-20020ac85c96000000b003e638022bc9so9571512qta.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
+ us-mta-465-cmKcvQV6MB6F7niXeQ9tAw-1; Tue, 04 Apr 2023 03:34:10 -0400
+X-MC-Unique: cmKcvQV6MB6F7niXeQ9tAw-1
+Received: by mail-qk1-f198.google.com with SMTP id c186-20020a379ac3000000b007484744a472so14029121qke.22
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:34:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680593545;
+        d=1e100.net; s=20210112; t=1680593650;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
-        b=OnKVBXwcG5jYOAP+Nk5UBtmEMekE/glxTKF/6aStDqEEk/YwMXqn/CdpttfEtA+jAt
-         i9yYmcn/ei50gjYe1Np3IoyEzaFgx38pDn5YUHHXq1uEVoH0iBamJB8n7UOehCoFenyx
-         RWRBsdAg2Uj6VZqm+8uSMVWG+kQ1JoXBkQBEg8Ym85Xdx+br7blTMcDicZwNdDDKmDC5
-         YNs1ZsWRoXAsUy5W3t/F+mZTAfzGLDwu4L5ahDkT1ys+G18AIiawP9bAz18aJ7KEuyNh
-         CWvPSWMsQ3uCG89W1ya4/3kqduOrHsfdERaiwMywf3O/Uowy52cMgwmxcytJ+17jCof8
-         lWMQ==
-X-Gm-Message-State: AAQBX9cJXEPO8Hdyw+L0RoqguxFAyilQB3iMiBqjYST8BjdyTRqQxOX4
-	vv1Rmiiy3ijlYYiU0b6t6IJ91oFyNiRgCaw1FoJud2/UJi43jyNtywsXnsW2j8Y6JWW4XE+i64L
-	z+h8iB0PDjmFrP1VGgzXaVvmbcA==
-X-Received: by 2002:a05:622a:182:b0:3e4:eb53:b02b with SMTP id s2-20020a05622a018200b003e4eb53b02bmr1896139qtw.9.1680593545528;
-        Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
-X-Google-Smtp-Source: AKy350ZDOir1Y35E8xclX+Hnf46F/a/hbN46cWKyCZKECKxBaGphhxYeckRUlR/kD3u2/NfBjSZoGg==
-X-Received: by 2002:a05:622a:182:b0:3e4:eb53:b02b with SMTP id s2-20020a05622a018200b003e4eb53b02bmr1896125qtw.9.1680593545342;
-        Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
+        bh=99tQM16AOIPSiD36e9lC8KgNlMe8A/CLkwAQnzAPAlM=;
+        b=rUyRlgWfdjXY0uxYCM/QjUOKHD+gpuBUL5ZwrSJ2xPlVq4msgMpX7gp9r7uiUH/R5b
+         oGMZhMBRERkW19te9ChaYsWxGaNlnpuBdMiPlbRmGkpjBubmfg/cUvueeRTkEk7uSycN
+         h3LWF3USZo9winw3EzWsv7/O1M7EqawpBZlPndK2xGSoUCu4K41dL/q8TTVt9SH6GjCz
+         4ShG2W5KYQd1uA1q3Bsnvs6zclZnEkOFapkRjEDK6rmhtzdsZYefZpM6aQRCc8r8OyOX
+         xfgHrfp6kkYzM2OUfZAajaFtBj1IK7wPflkCaU9gS9Ih0PxuduxT2uYJfRIioGVx6VsC
+         k62Q==
+X-Gm-Message-State: AAQBX9dhIW4VJI2mAV428LJ1R27YaXykdoAkFWKywNlbBfs2OLI1PhRT
+	JVu8DydUla4UADBHcfiSP4afjw05GjigYQ8ypdgq7zHNGNCYaLUbkmjZSpAfLDOGNdQJ2lVZYPL
+	Hw6yZFHPutuuXapiqr1I1vz2vCA==
+X-Received: by 2002:ac8:5bd1:0:b0:3bf:b5fe:372d with SMTP id b17-20020ac85bd1000000b003bfb5fe372dmr1675112qtb.61.1680593650213;
+        Tue, 04 Apr 2023 00:34:10 -0700 (PDT)
+X-Google-Smtp-Source: AKy350Yn6pC2+LOXbHC+brsOhPYWbUELBitKuSNkTaw8rn7U2Tsgh0u4bgya1L8Kaug4snYGGiJM5g==
+X-Received: by 2002:ac8:5bd1:0:b0:3bf:b5fe:372d with SMTP id b17-20020ac85bd1000000b003bfb5fe372dmr1675096qtb.61.1680593649980;
+        Tue, 04 Apr 2023 00:34:09 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-178-74.web.vodafone.de. [109.43.178.74])
-        by smtp.gmail.com with ESMTPSA id dt8-20020a05620a478800b00748461ac012sm3372415qkb.63.2023.04.04.00.32.23
+        by smtp.gmail.com with ESMTPSA id m124-20020a375882000000b0073b8745fd39sm3385199qkb.110.2023.04.04.00.34.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 00:32:24 -0700 (PDT)
-Message-ID: <4ba1d826-b291-2120-f34f-e1e674608614@redhat.com>
-Date: Tue, 4 Apr 2023 09:32:22 +0200
+        Tue, 04 Apr 2023 00:34:09 -0700 (PDT)
+Message-ID: <773ea477-2702-0511-eaca-2a110c5bf13d@redhat.com>
+Date: Tue, 4 Apr 2023 09:34:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v3 10/13] powerpc: Add support for more
- interrupts including HV interrupts
+Subject: Re: [kvm-unit-tests v3 11/13] powerpc: Discover runtime load address
+ dynamically
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20230327124520.2707537-1-npiggin@gmail.com>
- <20230327124520.2707537-11-npiggin@gmail.com>
+ <20230327124520.2707537-12-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230327124520.2707537-11-npiggin@gmail.com>
+In-Reply-To: <20230327124520.2707537-12-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -108,18 +108,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 27/03/2023 14.45, Nicholas Piggin wrote:
-> Interrupt vectors were not being populated for all architected
-> interrupt types, which could lead to crashes rather than a message for
-> unhandled interrupts.
-> 
-> 0x20 sized vectors require some reworking of the code to fit. This
-> also adds support for HV / HSRR type interrupts which will be used in
-> a later change.
+> The next change will load the kernels at different addresses depending
+> on test options, so this needs to be reverted back to dynamic
+> discovery.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/cstart64.S | 79 ++++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 65 insertions(+), 14 deletions(-)
+>   powerpc/cstart64.S | 19 ++++++++++++++-----
+>   1 file changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
+> index 1bd0437..0592e03 100644
+> --- a/powerpc/cstart64.S
+> +++ b/powerpc/cstart64.S
+> @@ -33,9 +33,14 @@ start:
+>   	 * We were loaded at QEMU's kernel load address, but we're not
+>   	 * allowed to link there due to how QEMU deals with linker VMAs,
+>   	 * so we just linked at zero. This means the first thing to do is
+> -	 * to find our stack and toc, and then do a relocate.
+> +	 * to find our stack and toc, and then do a relocate. powernv and
+> +	 * pseries load addreses are not the same, so find the address
+
+With s/addreses/addresses/ :
 
 Acked-by: Thomas Huth <thuth@redhat.com>
 
