@@ -1,57 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E234F6D5965
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:23:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0566D59B6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:33:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrK3x5CTFz3chl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:23:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrKHZ4vNvz3cfg
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:33:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CqHblzUj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CqHblzUj;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQn/ZtVw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrK3361cKz3bXQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:22:23 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 187FE61248;
-	Tue,  4 Apr 2023 07:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18439C433D2;
-	Tue,  4 Apr 2023 07:22:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680592939;
-	bh=zNbuc2c7Q9IWg5uy9hdmHULoUQBr2Hs/BAYhilZF5F4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CqHblzUj1z5GNNRhlVv5PjhJZbkNnPlRJpd8BNP9SFM3LozxkSRnpQ6pJHq1734IE
-	 nD0HzFbv58nu6J/EDvb0/r/dPnGTG4/RX9IFH1dtOkbIUrpX4gBAxv+iMBA5DHcRED
-	 emlRqtXMUO+8S4B3gXHGAfaZat5oK//B6B2YKi3S5Gq0z1OVXNwTRQKMwaAeo6YUWs
-	 fVidc4rMbc4aUoxxzgWhlqdgki6r0Y6O3oX30JhcakMQVSnJAF09H5rT22qPoqcLsD
-	 1rUCPCKRgr6yla1vp2aXejTBBX5r0wagFlZzYRUY3h9pSLxjoBb/Ad/MMOzP9CoNyA
-	 E21K1u28YAOpQ==
-Date: Tue, 4 Apr 2023 10:22:00 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Justin Forbes <jforbes@fedoraproject.org>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
- ARCH_FORCE_MAX_ORDER
-Message-ID: <ZCvQGJzdED+An8an@kernel.org>
-References: <20230325060828.2662773-1-rppt@kernel.org>
- <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrKGk5FKxz3c7X
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:32:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680593547;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
+	b=BQn/ZtVwPmUS8d68NdUb/cMu3wcSq+Kb6McRcS9ophvHgOoqpYrr6I7krtDVV74Wco6mGf
+	JraKjLifUC6uEp0700asJkuvvGzA07ggWTyVgh89bp5j0AAN1Z7gnaxUZLnI2mKiOI2eA/
+	h8kzs9sB+F8WNm1ELQalvSqRb/3jTxs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680593547;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
+	b=BQn/ZtVwPmUS8d68NdUb/cMu3wcSq+Kb6McRcS9ophvHgOoqpYrr6I7krtDVV74Wco6mGf
+	JraKjLifUC6uEp0700asJkuvvGzA07ggWTyVgh89bp5j0AAN1Z7gnaxUZLnI2mKiOI2eA/
+	h8kzs9sB+F8WNm1ELQalvSqRb/3jTxs=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-410-fvc_a-NCM7Ke3_apezcO6Q-1; Tue, 04 Apr 2023 03:32:25 -0400
+X-MC-Unique: fvc_a-NCM7Ke3_apezcO6Q-1
+Received: by mail-qt1-f200.google.com with SMTP id r22-20020ac85c96000000b003e638022bc9so9571512qta.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680593545;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KQO5h3+WmOjHOdR/RQTb8OxWC50lKlPJekouNAzkZ20=;
+        b=OnKVBXwcG5jYOAP+Nk5UBtmEMekE/glxTKF/6aStDqEEk/YwMXqn/CdpttfEtA+jAt
+         i9yYmcn/ei50gjYe1Np3IoyEzaFgx38pDn5YUHHXq1uEVoH0iBamJB8n7UOehCoFenyx
+         RWRBsdAg2Uj6VZqm+8uSMVWG+kQ1JoXBkQBEg8Ym85Xdx+br7blTMcDicZwNdDDKmDC5
+         YNs1ZsWRoXAsUy5W3t/F+mZTAfzGLDwu4L5ahDkT1ys+G18AIiawP9bAz18aJ7KEuyNh
+         CWvPSWMsQ3uCG89W1ya4/3kqduOrHsfdERaiwMywf3O/Uowy52cMgwmxcytJ+17jCof8
+         lWMQ==
+X-Gm-Message-State: AAQBX9cJXEPO8Hdyw+L0RoqguxFAyilQB3iMiBqjYST8BjdyTRqQxOX4
+	vv1Rmiiy3ijlYYiU0b6t6IJ91oFyNiRgCaw1FoJud2/UJi43jyNtywsXnsW2j8Y6JWW4XE+i64L
+	z+h8iB0PDjmFrP1VGgzXaVvmbcA==
+X-Received: by 2002:a05:622a:182:b0:3e4:eb53:b02b with SMTP id s2-20020a05622a018200b003e4eb53b02bmr1896139qtw.9.1680593545528;
+        Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
+X-Google-Smtp-Source: AKy350ZDOir1Y35E8xclX+Hnf46F/a/hbN46cWKyCZKECKxBaGphhxYeckRUlR/kD3u2/NfBjSZoGg==
+X-Received: by 2002:a05:622a:182:b0:3e4:eb53:b02b with SMTP id s2-20020a05622a018200b003e4eb53b02bmr1896125qtw.9.1680593545342;
+        Tue, 04 Apr 2023 00:32:25 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-74.web.vodafone.de. [109.43.178.74])
+        by smtp.gmail.com with ESMTPSA id dt8-20020a05620a478800b00748461ac012sm3372415qkb.63.2023.04.04.00.32.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Apr 2023 00:32:24 -0700 (PDT)
+Message-ID: <4ba1d826-b291-2120-f34f-e1e674608614@redhat.com>
+Date: Tue, 4 Apr 2023 09:32:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [kvm-unit-tests v3 10/13] powerpc: Add support for more
+ interrupts including HV interrupts
+To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
+References: <20230327124520.2707537-1-npiggin@gmail.com>
+ <20230327124520.2707537-11-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230327124520.2707537-11-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,76 +103,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
-> On Sat, Mar 25, 2023 at 1:09 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> >
-> > It is not a good idea to change fundamental parameters of core memory
-> > management. Having predefined ranges suggests that the values within
-> > those ranges are sensible, but one has to *really* understand
-> > implications of changing MAX_ORDER before actually amending it and
-> > ranges don't help here.
-> >
-> > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
-> > visible only if EXPERT=y
+On 27/03/2023 14.45, Nicholas Piggin wrote:
+> Interrupt vectors were not being populated for all architected
+> interrupt types, which could lead to crashes rather than a message for
+> unhandled interrupts.
 > 
-> I do not like suddenly hiding this behind EXPERT for a couple of
-> reasons.  Most importantly, it will silently change the config for
-> users building with an old kernel config.  If a user has for instance
-> "13" set and building with 4K pages, as is the current configuration
-> for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
-> to 10 with no indication that it is doing so.  And while I think that
-> 10 is a fine default for many aarch64 users, there are valid reasons
-> for choosing other values. Putting this behind expert makes it much
-> less obvious that this is an option.
-
-That's the idea of EXPERT, no?
-
-This option was intended to allow allocation of huge pages for
-architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
-select size of maximal physically contiguous allocation.
-
-Changes to MAX_ORDER fundamentally change the behaviour of core mm and
-unless users *really* know what they are doing there is no reason to choose
-non-default values so hiding this option behind EXPERT seems totally
-appropriate to me.
- 
-> Justin
+> 0x20 sized vectors require some reworking of the code to fit. This
+> also adds support for HV / HSRR type interrupts which will be used in
+> a later change.
 > 
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > ---
-> >  arch/arm64/Kconfig | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > index e60baf7859d1..7324032af859 100644
-> > --- a/arch/arm64/Kconfig
-> > +++ b/arch/arm64/Kconfig
-> > @@ -1487,11 +1487,9 @@ config XEN
-> >  # 16K |       27          |      14      |       13        |         11         |
-> >  # 64K |       29          |      16      |       13        |         13         |
-> >  config ARCH_FORCE_MAX_ORDER
-> > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
-> > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
-> >         default "13" if ARM64_64K_PAGES
-> > -       range 11 13 if ARM64_16K_PAGES
-> >         default "11" if ARM64_16K_PAGES
-> > -       range 10 15 if ARM64_4K_PAGES
-> >         default "10"
-> >         help
-> >           The kernel memory allocator divides physically contiguous memory
-> > --
-> > 2.35.1
-> >
-> >
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   powerpc/cstart64.S | 79 ++++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 65 insertions(+), 14 deletions(-)
 
--- 
-Sincerely yours,
-Mike.
+Acked-by: Thomas Huth <thuth@redhat.com>
+
