@@ -2,52 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451976D6885
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 18:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 616C06D6E5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 22:48:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrXnw1F3vz3cjR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 02:11:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Prfxc2G8bz3f4x
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 06:48:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nkcQpc5N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ARgmW6bX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nkcQpc5N;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ARgmW6bX;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrXn53MFwz30Mn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 02:11:05 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A8F646366F;
-	Tue,  4 Apr 2023 16:11:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C854CC433D2;
-	Tue,  4 Apr 2023 16:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680624663;
-	bh=eKiqHkoBVo1AQRx10HafTawauui+/7aWix/7MTRPGrA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=nkcQpc5NRHDKcALdEO/kD1vJ7JRnALrRH75LPh2TDOMavdcMgvCuVznC7x8x+ecKt
-	 1/q7prAN9eClvaAU3c0+dUWFvcRO66V04KGg+gYkb+YrMhjTw0ASpXENR+YKBHmeia
-	 3Q5pvbnqrK/uCSEeFKclNxI3vwOX0dUud1/pCQiZ36qwD28S6odWh3QMAvbBbgMd/s
-	 C/Qhj0iZpFO3X/jYT9y3J5qKvtPSjj/GrdFNEZo1J9pLwcjwlot2Tv6qfpoajNxUA+
-	 o+rmP5HeMIpXk0J+ytkWwcX3yLOfhBvsgasfRd7/C7/NUehmnMEdxtOqmb8yLnHceu
-	 ZoK1FHXZYisVQ==
-Date: Tue, 4 Apr 2023 11:11:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <20230404161101.GA3554747@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Prfwk4j2dz3c8n
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 06:48:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680641286; x=1712177286;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Z6j/cGpZOXVTreuxHNHRJUI608KQQ2b8yubZngfX3x4=;
+  b=ARgmW6bXVGVa/tDfEHmGzpUFFc72v9G3WYe0WyP8REXLgYm4052IXIHR
+   7czzqaVN46XofZUX/Kqab/K9n1HyKHmIHFusPSLvxnh/8GCesCcHrxyME
+   kJGHLlyVsRiWDCdI/Fi5Mo6MRSqcjlqcTboJwbP0GyzrZ8T65MoBl8w6Y
+   6VCqEBNQTyc304lremkTf4crIcLbht8iP1uNrpT1clNvwpu/eby5lfU9A
+   I2VdpIlNWQFKB7sY3Vsj1GBu8oYa5KqbaEvSuiypxnzRpeLDNjcPaP4hf
+   lPeak7k5OWLIWR71nfFd32e5EuZr3Oa3b0tbkhbzNdjuKmceg6qVoM8e3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="407378524"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="407378524"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 13:47:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="636658836"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="636658836"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 04 Apr 2023 13:47:46 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pjnZB-000Q1q-17;
+	Tue, 04 Apr 2023 20:47:45 +0000
+Date: Wed, 05 Apr 2023 04:47:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 6a53bda3aaf3de5edeea27d0b1d8781d067640b6
+Message-ID: <642c8ceb.LBEdj8abbmwftu9h%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,121 +70,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@
- physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, amd-gfx@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, linux-gpio@vger.kernel.org, linux-m68k@lists.linux-m68k.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, io-uring@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> Provide two new helper macros to iterate over PCI device resources and
-> convert users.
-> 
-> Looking at it, refactor existing pci_bus_for_each_resource() and convert
-> users accordingly.
-> 
-> Note, the amount of lines grew due to the documentation update.
-> 
-> Changelog v8:
-> - fixed issue with pci_bus_for_each_resource() macro (LKP)
-> - due to above added a new patch to document how it works
-> - moved the last patch to be #2 (Philippe)
-> - added tags (Philippe)
-> 
-> Changelog v7:
-> - made both macros to share same name (Bjorn)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 6a53bda3aaf3de5edeea27d0b1d8781d067640b6  Add linux-next specific files for 20230404
 
-I didn't actually request the same name for both; I would have had no
-idea how to even do that :)
+Error/Warning reports:
 
-v6 had:
+https://lore.kernel.org/oe-kbuild-all/202303082135.NjdX1Bij-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304041708.siWlxmyD-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304041748.0sQc4K4l-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304042104.UFIuevBp-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304050029.38NdbQPf-lkp@intel.com
 
-  pci_dev_for_each_resource_p(dev, res)
-  pci_dev_for_each_resource(dev, res, i)
+Error/Warning: (recently discovered and may have been fixed)
 
-and I suggested:
+Documentation/virt/kvm/api.rst:8303: WARNING: Field list ends without a blank line; unexpected unindent.
+ERROR: modpost: "bpf_fentry_test1" [tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.ko] undefined!
+Error: failed to load BTF from vmlinux: No data available
+Makefile:77: *** Cannot find a vmlinux for VMLINUX_BTF at any of "vmlinux vmlinux ../../../../vmlinux /sys/kernel/btf/vmlinux /boot/vmlinux-5.9.0-0.bpo.2-amd64".  Stop.
+arch/m68k/include/asm/irq.h:78:11: error: expected ';' before 'void'
+arch/m68k/include/asm/irq.h:78:40: warning: 'struct pt_regs' declared inside parameter list will not be visible outside of this definition or declaration
+diff: tools/arch/s390/include/uapi/asm/ptrace.h: No such file or directory
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    int
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    void
+drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:148:31: error: implicit declaration of function 'pci_msix_can_alloc_dyn' [-Werror=implicit-function-declaration]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+kernel/bpf/verifier.c:18503: undefined reference to `find_kallsyms_symbol_value'
+ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+ld.lld: error: undefined symbol: find_kallsyms_symbol_value
+tcp_mmap.c:211:61: warning: 'lu' may be used uninitialized in this function [-Wmaybe-uninitialized]
+thermal_nl.h:6:10: fatal error: netlink/netlink.h: No such file or directory
+thermometer.c:21:10: fatal error: libconfig.h: No such file or directory
 
-  pci_dev_for_each_resource(dev, res)
-  pci_dev_for_each_resource_idx(dev, res, i)
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-because that pattern is used elsewhere.  But you figured out how to do
-it, and having one name is even better, so thanks for that extra work!
+drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
+drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:189:26: sparse: sparse: dereference of noderef expression
+drivers/soc/fsl/qe/tsa.c:663:22: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/soc/fsl/qe/tsa.c:673:21: sparse: sparse: incorrect type in assignment (different address spaces)
+include/linux/gpio/consumer.h: linux/err.h is included more than once.
+include/linux/gpio/driver.h: asm/bug.h is included more than once.
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
 
-> - split out the pci_resource_n() conversion (Bjorn)
-> 
-> Changelog v6:
-> - dropped unused variable in PPC code (LKP)
-> 
-> Changelog v5:
-> - renamed loop variable to minimize the clash (Keith)
-> - addressed smatch warning (Dan)
-> - addressed 0-day bot findings (LKP)
-> 
-> Changelog v4:
-> - rebased on top of v6.3-rc1
-> - added tag (Krzysztof)
-> 
-> Changelog v3:
-> - rebased on top of v2 by Mika, see above
-> - added tag to pcmcia patch (Dominik)
-> 
-> Changelog v2:
-> - refactor to have two macros
-> - refactor existing pci_bus_for_each_resource() in the same way and
->   convert users
-> 
-> Andy Shevchenko (6):
->   kernel.h: Split out COUNT_ARGS() and CONCATENATE()
->   PCI: Introduce pci_resource_n()
->   PCI: Document pci_bus_for_each_resource() to avoid confusion
->   PCI: Allow pci_bus_for_each_resource() to take less arguments
->   EISA: Convert to use less arguments in pci_bus_for_each_resource()
->   pcmcia: Convert to use less arguments in pci_bus_for_each_resource()
-> 
-> Mika Westerberg (1):
->   PCI: Introduce pci_dev_for_each_resource()
-> 
->  .clang-format                             |  1 +
->  arch/alpha/kernel/pci.c                   |  5 +-
->  arch/arm/kernel/bios32.c                  | 16 +++--
->  arch/arm/mach-dove/pcie.c                 | 10 ++--
->  arch/arm/mach-mv78xx0/pcie.c              | 10 ++--
->  arch/arm/mach-orion5x/pci.c               | 10 ++--
->  arch/mips/pci/ops-bcm63xx.c               |  8 +--
->  arch/mips/pci/pci-legacy.c                |  3 +-
->  arch/powerpc/kernel/pci-common.c          | 21 +++----
->  arch/powerpc/platforms/4xx/pci.c          |  8 +--
->  arch/powerpc/platforms/52xx/mpc52xx_pci.c |  5 +-
->  arch/powerpc/platforms/pseries/pci.c      | 16 ++---
->  arch/sh/drivers/pci/pcie-sh7786.c         | 10 ++--
->  arch/sparc/kernel/leon_pci.c              |  5 +-
->  arch/sparc/kernel/pci.c                   | 10 ++--
->  arch/sparc/kernel/pcic.c                  |  5 +-
->  drivers/eisa/pci_eisa.c                   |  4 +-
->  drivers/pci/bus.c                         |  7 +--
->  drivers/pci/hotplug/shpchp_sysfs.c        |  8 +--
->  drivers/pci/pci.c                         |  3 +-
->  drivers/pci/probe.c                       |  2 +-
->  drivers/pci/remove.c                      |  5 +-
->  drivers/pci/setup-bus.c                   | 37 +++++-------
->  drivers/pci/setup-res.c                   |  4 +-
->  drivers/pci/vgaarb.c                      | 17 ++----
->  drivers/pci/xen-pcifront.c                |  4 +-
->  drivers/pcmcia/rsrc_nonstatic.c           |  9 +--
->  drivers/pcmcia/yenta_socket.c             |  3 +-
->  drivers/pnp/quirks.c                      | 29 ++++-----
->  include/linux/args.h                      | 13 ++++
->  include/linux/kernel.h                    |  8 +--
->  include/linux/pci.h                       | 72 +++++++++++++++++++----
->  32 files changed, 190 insertions(+), 178 deletions(-)
->  create mode 100644 include/linux/args.h
+Error/Warning ids grouped by kconfigs:
 
-Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- alpha-buildonly-randconfig-r005-20230403
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- alpha-randconfig-s051-20230403
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:int
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:sparse:incompatible-types-in-conditional-expression-(different-base-types):
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:void
+|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-randconfig-m021-20230403
+|   |-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
+|   |-- io_uring-io_uring.c-io_prep_async_work()-error:we-previously-assumed-req-file-could-be-null-(see-line-)
+|   `-- io_uring-kbuf.c-__io_remove_buffers()-warn:variable-dereferenced-before-check-bl-buf_ring-(see-line-)
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- m68k-randconfig-s041-20230403
+|   |-- arch-m68k-include-asm-irq.h:error:expected-before-void
+|   `-- arch-m68k-include-asm-irq.h:warning:struct-pt_regs-declared-inside-parameter-list-will-not-be-visible-outside-of-this-definition-or-declaration
+|-- microblaze-buildonly-randconfig-r006-20230403
+|   `-- drivers-net-ethernet-mellanox-mlx5-core-pci_irq.c:error:implicit-declaration-of-function-pci_msix_can_alloc_dyn
+|-- mips-allmodconfig
+clang_recent_errors
+`-- arm-randconfig-r046-20230403
+    |-- ld.lld:error:.btf.vmlinux.bin.o:unknown-file-type
+    `-- ld.lld:error:undefined-symbol:find_kallsyms_symbol_value
 
-I omitted
+elapsed time: 840m
 
-  [1/7] kernel.h: Split out COUNT_ARGS() and CONCATENATE()"
+configs tested: 113
+configs skipped: 4
 
-only because it's not essential to this series and has only a trivial
-one-line impact on include/linux/pci.h.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r005-20230403   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r023-20230403   gcc  
+alpha                randconfig-r036-20230404   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r034-20230403   gcc  
+arc                  randconfig-r043-20230403   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm          buildonly-randconfig-r001-20230403   clang
+arm                                 defconfig   gcc  
+arm                          exynos_defconfig   gcc  
+arm                  randconfig-r046-20230403   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r021-20230403   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r033-20230403   gcc  
+hexagon              randconfig-r016-20230403   clang
+hexagon              randconfig-r035-20230403   clang
+hexagon              randconfig-r041-20230403   clang
+hexagon              randconfig-r045-20230403   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230403   clang
+i386                 randconfig-a002-20230403   clang
+i386                 randconfig-a003-20230403   clang
+i386                 randconfig-a004-20230403   clang
+i386                 randconfig-a005-20230403   clang
+i386                 randconfig-a006-20230403   clang
+i386                 randconfig-a011-20230403   gcc  
+i386                 randconfig-a012-20230403   gcc  
+i386                 randconfig-a013-20230403   gcc  
+i386                 randconfig-a014-20230403   gcc  
+i386                 randconfig-a015-20230403   gcc  
+i386                 randconfig-a016-20230403   gcc  
+i386                 randconfig-r015-20230403   gcc  
+i386                 randconfig-r022-20230403   gcc  
+i386                 randconfig-r036-20230403   clang
+ia64                             alldefconfig   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r002-20230403   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r002-20230403   gcc  
+m68k         buildonly-randconfig-r006-20230403   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r024-20230403   gcc  
+m68k                 randconfig-r034-20230404   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r005-20230403   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r033-20230404   gcc  
+openrisc             randconfig-r013-20230403   gcc  
+openrisc             randconfig-r026-20230403   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r001-20230403   gcc  
+parisc               randconfig-r014-20230403   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                     ep8248e_defconfig   gcc  
+powerpc                     kmeter1_defconfig   clang
+powerpc              randconfig-r025-20230403   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                randconfig-r042-20230403   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r004-20230403   clang
+s390                 randconfig-r012-20230403   gcc  
+s390                 randconfig-r031-20230404   gcc  
+s390                 randconfig-r044-20230403   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r011-20230403   gcc  
+sh                   randconfig-r031-20230403   gcc  
+sparc        buildonly-randconfig-r004-20230403   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r003-20230403   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230403   clang
+x86_64               randconfig-a002-20230403   clang
+x86_64               randconfig-a003-20230403   clang
+x86_64               randconfig-a004-20230403   clang
+x86_64               randconfig-a005-20230403   clang
+x86_64               randconfig-a006-20230403   clang
+x86_64               randconfig-a011-20230403   gcc  
+x86_64               randconfig-a012-20230403   gcc  
+x86_64               randconfig-a013-20230403   gcc  
+x86_64               randconfig-a014-20230403   gcc  
+x86_64               randconfig-a015-20230403   gcc  
+x86_64               randconfig-a016-20230403   gcc  
+x86_64               randconfig-r032-20230403   clang
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r003-20230403   gcc  
+xtensa               randconfig-r006-20230403   gcc  
+xtensa               randconfig-r035-20230404   gcc  
 
-Bjorn
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
