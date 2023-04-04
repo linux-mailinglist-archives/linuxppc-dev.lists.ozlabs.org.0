@@ -2,51 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8C36D6782
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3EE6D679A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:39:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrX0t4XKzz3cjG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 01:36:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrX4V0KsLz3chk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 01:39:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ccjt9OkL;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ccjt9OkL;
+	dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrX0M4jyfz3cKv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 01:35:47 +1000 (AEST)
-Received: from [2601:447:c680:c050::6c59]
-	by baldur.buserror.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <oss@buserror.net>)
-	id 1pjif1-009Iut-PN; Tue, 04 Apr 2023 10:33:28 -0500
-Message-ID: <48dacc58c7c04ba8a005d8edd56744c8455f007e.camel@buserror.net>
-From: Crystal Wood <oss@buserror.net>
-To: Sean Anderson <sean.anderson@seco.com>, Li Yang <leoyang.li@nxp.com>, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date: Tue, 04 Apr 2023 10:33:26 -0500
-In-Reply-To: <20230404145557.2356894-2-sean.anderson@seco.com>
-References: <20230404145557.2356894-1-sean.anderson@seco.com>
-	 <20230404145557.2356894-2-sean.anderson@seco.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4-0ubuntu1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrX3d4DqWz3cCF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 01:38:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680622717; x=1712158717;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=JyEyesUAfsnh39QScCqENVpHW7W4d6bfrVDonXQ7JJk=;
+  b=ccjt9OkLFakqec4yBiIn8rIUbvvrdizEG7HPKTELBAUAcitRvgX45FKK
+   5wMfb28Z5KOiiLRQMWPQ3sjDVhI/cc/Iv94tU45V0TLWaWa++2yHb/zmV
+   IhhcE5eKL8nivUUM0L6iCIxJxF7b3WBvzYr32eIuMxcPdA6d9L0Htq03y
+   kGt5BdHvuIXLUIBp/aaESXAHm6wod6aefHRp3t3tM14wX59e4XTMPMh7n
+   U5Dsd8qcRmcLO2uvuzyTvkXZ0kF46XXzIinmUjytDt7mELrvW/HlKJsWC
+   nsZkf+bthP+A1PfL1hB1rvv61GgKHp7I23pABTFqqp0CE0f0TdLCCLD5x
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="370039401"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="370039401"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 08:38:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="1016148187"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="1016148187"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 04 Apr 2023 08:38:32 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pjijv-000Pq6-1Y;
+	Tue, 04 Apr 2023 15:38:31 +0000
+Date: Tue, 4 Apr 2023 23:37:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge 5/7] .github/problem-matchers/sparse.json: warning:
+ ignored by one of the .gitignore files
+Message-ID: <202304042327.blhF5nCp-lkp@intel.com>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2601:447:c680:c050::6c59
-X-SA-Exim-Rcpt-To: sean.anderson@seco.com, leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, camelia.groza@nxp.com, linux-kernel@vger.kernel.org, roy.pledge@nxp.com, davem@davemloft.net
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-Subject: Re: [PATCH v3 2/2] soc: fsl: qbman: Use raw spinlock for cgr_lock
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,36 +68,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge <roy.pledge@nxp.com>, linux-kernel@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Camelia Groza <camelia.groza@nxp.com>, "David S .
-	Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIzLTA0LTA0IGF0IDEwOjU1IC0wNDAwLCBTZWFuIEFuZGVyc29uIHdyb3RlOgoK
-PiBAQCAtMTQ1NiwxMSArMTQ1NiwxMSBAQCBzdGF0aWMgdm9pZCBxbV9jb25nZXN0aW9uX3Rhc2so
-c3RydWN0IHdvcmtfc3RydWN0Cj4gKndvcmspCj4gwqDCoMKgwqDCoMKgwqDCoHVuaW9uIHFtX21j
-X3Jlc3VsdCAqbWNyOwo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgcW1hbl9jZ3IgKmNncjsKPiDC
-oAo+IC3CoMKgwqDCoMKgwqDCoHNwaW5fbG9ja19pcnEoJnAtPmNncl9sb2NrKTsKPiArwqDCoMKg
-wqDCoMKgwqByYXdfc3Bpbl9sb2NrX2lycSgmcC0+Y2dyX2xvY2spOwo+IMKgwqDCoMKgwqDCoMKg
-wqBxbV9tY19zdGFydCgmcC0+cCk7Cj4gwqDCoMKgwqDCoMKgwqDCoHFtX21jX2NvbW1pdCgmcC0+
-cCwgUU1fTUNDX1ZFUkJfUVVFUllDT05HRVNUSU9OKTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKCFx
-bV9tY19yZXN1bHRfdGltZW91dCgmcC0+cCwgJm1jcikpIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgc3Bpbl91bmxvY2tfaXJxKCZwLT5jZ3JfbG9jayk7Cj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHJhd19zcGluX3VubG9ja19pcnEoJnAtPmNncl9sb2NrKTsKCnFt
-X21jX3Jlc3VsdF90aW1lb3V0KCkgc3BpbnMgd2l0aCBhIHRpbWVvdXQgb2YgMTAgbXMgd2hpY2gg
-aXMgdmVyeQppbmFwcHJvcHJpYXRlIGZvciBhIHJhdyBsb2NrLiAgV2hhdCBpcyB0aGUgYWN0dWFs
-IGV4cGVjdGVkIHVwcGVyIGJvdW5kPwoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGRldl9jcml0KHAtPmNvbmZpZy0+ZGV2LCAiUVVFUllDT05HRVNUSU9OIHRpbWVvdXRcbiIpOwo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcW1hbl9wX2lycXNvdXJjZV9hZGQocCwg
-UU1fUElSUV9DU0NJKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsK
-PiBAQCAtMTQ3Niw3ICsxNDc2LDcgQEAgc3RhdGljIHZvaWQgcW1fY29uZ2VzdGlvbl90YXNrKHN0
-cnVjdCB3b3JrX3N0cnVjdAo+ICp3b3JrKQo+IMKgwqDCoMKgwqDCoMKgwqBsaXN0X2Zvcl9lYWNo
-X2VudHJ5KGNnciwgJnAtPmNncl9jYnMsIG5vZGUpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBpZiAoY2dyLT5jYiAmJiBxbWFuX2NncnNfZ2V0KCZjLCBjZ3ItPmNncmlkKSkKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjZ3ItPmNiKHAs
-IGNnciwgcW1hbl9jZ3JzX2dldCgmcnIsIGNnci0+Y2dyaWQpKTsKPiAtwqDCoMKgwqDCoMKgwqBz
-cGluX3VubG9ja19pcnEoJnAtPmNncl9sb2NrKTsKPiArwqDCoMKgwqDCoMKgwqByYXdfc3Bpbl91
-bmxvY2tfaXJxKCZwLT5jZ3JfbG9jayk7Cj4gwqDCoMKgwqDCoMKgwqDCoHFtYW5fcF9pcnFzb3Vy
-Y2VfYWRkKHAsIFFNX1BJUlFfQ1NDSSk7Cj4gwqB9CgpUaGUgY2FsbGJhY2sgbG9vcCBpcyBhbHNv
-IGEgYml0IGNvbmNlcm5pbmcuLi4KCi1DcnlzdGFsCgo=
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+head:   639e8992872c632f27b130b403e263eae966231e
+commit: ff94f02dbdf0d6077497f1ffb63080c6937c3ed9 [5/7] powerpc/ci: Add sparse problem matcher
+config: arc-buildonly-randconfig-r003-20230403 (https://download.01.org/0day-ci/archive/20230404/202304042327.blhF5nCp-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=ff94f02dbdf0d6077497f1ffb63080c6937c3ed9
+        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+        git fetch --no-tags powerpc merge
+        git checkout ff94f02dbdf0d6077497f1ffb63080c6937c3ed9
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
 
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304042327.blhF5nCp-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   .github/problem-matchers/compiler-non-source.json: warning: ignored by one of the .gitignore files
+   .github/problem-matchers/compiler-source.json: warning: ignored by one of the .gitignore files
+>> .github/problem-matchers/sparse.json: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-allconfig.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-clang.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-extrawarn.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-kernel+qemu.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-perf.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-ppctests.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-selftests.yml: warning: ignored by one of the .gitignore files
+   .github/workflows/powerpc-sparse.yml: warning: ignored by one of the .gitignore files
+   drivers/clk/.kunitconfig: warning: ignored by one of the .gitignore files
+   drivers/gpu/drm/tests/.kunitconfig: warning: ignored by one of the .gitignore files
+   drivers/gpu/drm/vc4/tests/.kunitconfig: warning: ignored by one of the .gitignore files
+   drivers/hid/.kunitconfig: warning: ignored by one of the .gitignore files
+   fs/ext4/.kunitconfig: warning: ignored by one of the .gitignore files
+   fs/fat/.kunitconfig: warning: ignored by one of the .gitignore files
+   kernel/kcsan/.kunitconfig: warning: ignored by one of the .gitignore files
+   lib/kunit/.kunitconfig: warning: ignored by one of the .gitignore files
+   mm/kfence/.kunitconfig: warning: ignored by one of the .gitignore files
+   net/sunrpc/.kunitconfig: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/arm64/tags/.gitignore: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/arm64/tags/Makefile: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/arm64/tags/run_tags_test.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/arm64/tags/tags_test.c: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/kvm/.gitignore: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/kvm/Makefile: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/kvm/config: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/kvm/settings: warning: ignored by one of the .gitignore files
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
