@@ -2,73 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39486D62BB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 15:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E6A6D71E7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 03:17:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrT4X5r4yz3cKb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 23:24:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Prmvs12N1z3cdd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 11:17:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CxCzEj2L;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4A1PZMH;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4A1PZMH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b; helo=mail-qk1-x72b.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=ypodemsk@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CxCzEj2L;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4A1PZMH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4A1PZMH;
 	dkim-atps=neutral
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrT3d249Pz2yNm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 23:23:24 +1000 (AEST)
-Received: by mail-qk1-x72b.google.com with SMTP id ay7so2185186qkb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 06:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680614601;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kVV5FfyLXKvr30JASXaFzrtmOvguU/pSGwBivgkkCt8=;
-        b=CxCzEj2L7VIhJL6LkhpoeSyjitfjUIwxyK7WygTAvIMrtL8sNfxriP0xlU7D62WQoz
-         JS8ax3M/Eesvd5oi0sr1H03A3xMMSSa82fhef9qRDqrlsouM+KCZqqtCxNs6kzj4t5Ub
-         F7DDt5YscrWWbseYb3G5W9hFZRpZsQPXo27yv0jzn2w9mDA1ooRuDwc7z6znLG2Vi+Bi
-         tq4rA2ZMQA51NCQ7Ksdo8VwWalrmJJS5r9RCMSPpRrKxpS4no0h4o3ze6IAi22w6AMMd
-         0et5DLzt+KCxhgyjPFDLnq1TYfArzjvJxF3PKXuT3UfUffLUWpYKI/WE/kzz1oDnvdpX
-         Etng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680614601;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kVV5FfyLXKvr30JASXaFzrtmOvguU/pSGwBivgkkCt8=;
-        b=06UkxbA7I3sgMMJ3KHE9oVboy/BXuIHa/ga+1od3pHUYw6CIUCOYqpfo9QnY7Tn3YC
-         5kJeR4r4fFn/i7k6g/k93JO6hkOTARcJ8xPBQqFKpKI3heMxp5kDCr+I0y3/7vo8OF7L
-         by9jauYFuuzW7rQf0TXPR4Ji57lvqyM9naanpGSPA2RwbMO7Rr3d7oU2+sNbsMqnZCxn
-         BGhaxCg829p/b8m95vvzGJXjPhQFnzUdj2CX2mU+1dplkV400VKCEETU/Jx4rcpeGrD3
-         bQyZ805GvxIJbl3C153P+rGhx1lGU2NEneqD41lTRaeDKBPaFm6tO/RJkKD62JSyJ4qB
-         EyPA==
-X-Gm-Message-State: AAQBX9e7mOLLVFJBxSnDp/IEhWv/xyzGfxmASVrQ5URgq4Xxn0g7hM3Q
-	QNjUrjwWyAtOpq8AUSFBwkC05w8JY1yP5GVaNno=
-X-Google-Smtp-Source: AKy350b/r9epx7QN6cXCoxgIbACmW4sFS0VlXrzPHDsCvgVLRBRS+bIi9gMlH812VAfYBgK5rBITGvtyCoxFOxnCyYI=
-X-Received: by 2002:a05:620a:404f:b0:74a:28c4:64ea with SMTP id
- i15-20020a05620a404f00b0074a28c464eamr911755qko.6.1680614600864; Tue, 04 Apr
- 2023 06:23:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrTVC1xCSz2xHK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 23:42:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680615775;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eOn+GooQef0PZGSR4LECkucKGIH5iRWxz3Wp3EiY8Go=;
+	b=Q4A1PZMH/3oWU8Y0Vqw0Y+aFINdfkLgQH1AbhBRs8BO71OVwa2nScDgG6Ea6MHSzerMwWd
+	92qTPq/kCT5YW2NUP3ec4+DAUkycxageMHg32hGpr+ELYJBYXMRVPgpf9YIxxYbTliNJ7v
+	CvvPy1ox6VpqUTXVx3uFeW6fb+fK1sw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680615775;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eOn+GooQef0PZGSR4LECkucKGIH5iRWxz3Wp3EiY8Go=;
+	b=Q4A1PZMH/3oWU8Y0Vqw0Y+aFINdfkLgQH1AbhBRs8BO71OVwa2nScDgG6Ea6MHSzerMwWd
+	92qTPq/kCT5YW2NUP3ec4+DAUkycxageMHg32hGpr+ELYJBYXMRVPgpf9YIxxYbTliNJ7v
+	CvvPy1ox6VpqUTXVx3uFeW6fb+fK1sw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-648-5BjHu8A0ORC4zh0ZPovsnQ-1; Tue, 04 Apr 2023 09:42:50 -0400
+X-MC-Unique: 5BjHu8A0ORC4zh0ZPovsnQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0B332A59564;
+	Tue,  4 Apr 2023 13:42:48 +0000 (UTC)
+Received: from ypodemsk.tlv.csb (unknown [10.39.194.160])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 41AAB2166B29;
+	Tue,  4 Apr 2023 13:42:40 +0000 (UTC)
+From: Yair Podemsky <ypodemsk@redhat.com>
+To: linux@armlinux.org.uk,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	davem@davemloft.net,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	will@kernel.org,
+	aneesh.kumar@linux.ibm.com,
+	akpm@linux-foundation.org,
+	peterz@infradead.org,
+	arnd@arndb.de,
+	keescook@chromium.org,
+	paulmck@kernel.org,
+	jpoimboe@kernel.org,
+	samitolvanen@google.com,
+	frederic@kernel.org,
+	ardb@kernel.org,
+	juerg.haefliger@canonical.com,
+	rmk+kernel@armlinux.org.uk,
+	geert+renesas@glider.be,
+	tony@atomide.com,
+	linus.walleij@linaro.org,
+	sebastian.reichel@collabora.com,
+	nick.hawkins@hpe.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	mtosatti@redhat.com,
+	vschneid@redhat.com,
+	dhildenb@redhat.com
+Subject: [PATCH 0/3] send tlb_remove_table_smp_sync IPI only to necessary CPUs
+Date: Tue,  4 Apr 2023 16:42:21 +0300
+Message-Id: <20230404134224.137038-1-ypodemsk@redhat.com>
 MIME-Version: 1.0
-References: <20230305205628.27385-1-ubizjak@gmail.com> <20230305205628.27385-2-ubizjak@gmail.com>
- <ZB2v+avNt52ac/+w@FVFF77S0Q05N> <CAFULd4ZCgxDYnyy--qdgKoAo_y7MbNSaQdbdBFefnFuMoM2OYw@mail.gmail.com>
- <ZB3MR8lGbnea9ui6@FVFF77S0Q05N> <ZB3QtDYuWdpiD5qk@FVFF77S0Q05N>
- <CAFULd4aFUF5k=QJD8tDp4qzm2iBF7=rNvp1SJWrg44X5hTFxtQ@mail.gmail.com>
- <ZCqoRNU8EJhKJVEu@FVFF77S0Q05N> <CAFULd4ZUnbtDYXBBbuTJnq9wLSf5cZTc=hUPxg6-8KRNA7YVeQ@mail.gmail.com>
- <ZCwj19okhYNRN8er@FVFF77S0Q05N.cambridge.arm.com>
-In-Reply-To: <ZCwj19okhYNRN8er@FVFF77S0Q05N.cambridge.arm.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Tue, 4 Apr 2023 15:23:09 +0200
-Message-ID: <CAFULd4ZypxQULgq-MYgzsYd8k_BV0aH0eRhggX3MHWCgvKW=Bg@mail.gmail.com>
-Subject: Re: [PATCH 01/10] locking/atomic: Add missing cast to try_cmpxchg() fallbacks
-To: Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Mailman-Approved-At: Wed, 05 Apr 2023 11:17:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,132 +118,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: alougovs@redhat.com, ypodemsk@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 4, 2023 at 3:19=E2=80=AFPM Mark Rutland <mark.rutland@arm.com> =
-wrote:
->
-> On Tue, Apr 04, 2023 at 02:24:38PM +0200, Uros Bizjak wrote:
-> > On Mon, Apr 3, 2023 at 12:19=E2=80=AFPM Mark Rutland <mark.rutland@arm.=
-com> wrote:
-> > >
-> > > On Sun, Mar 26, 2023 at 09:28:38PM +0200, Uros Bizjak wrote:
-> > > > On Fri, Mar 24, 2023 at 5:33=E2=80=AFPM Mark Rutland <mark.rutland@=
-arm.com> wrote:
-> > > > >
-> > > > > On Fri, Mar 24, 2023 at 04:14:22PM +0000, Mark Rutland wrote:
-> > > > > > On Fri, Mar 24, 2023 at 04:43:32PM +0100, Uros Bizjak wrote:
-> > > > > > > On Fri, Mar 24, 2023 at 3:13=E2=80=AFPM Mark Rutland <mark.ru=
-tland@arm.com> wrote:
-> > > > > > > >
-> > > > > > > > On Sun, Mar 05, 2023 at 09:56:19PM +0100, Uros Bizjak wrote=
-:
-> > > > > > > > > Cast _oldp to the type of _ptr to avoid incompatible-poin=
-ter-types warning.
-> > > > > > > >
-> > > > > > > > Can you give an example of where we are passing an incompat=
-ible pointer?
-> > > > > > >
-> > > > > > > An example is patch 10/10 from the series, which will fail wi=
-thout
-> > > > > > > this fix when fallback code is used. We have:
-> > > > > > >
-> > > > > > > -       } while (local_cmpxchg(&rb->head, offset, head) !=3D =
-offset);
-> > > > > > > +       } while (!local_try_cmpxchg(&rb->head, &offset, head)=
-);
-> > > > > > >
-> > > > > > > where rb->head is defined as:
-> > > > > > >
-> > > > > > > typedef struct {
-> > > > > > >    atomic_long_t a;
-> > > > > > > } local_t;
-> > > > > > >
-> > > > > > > while offset is defined as 'unsigned long'.
-> > > > > >
-> > > > > > Ok, but that's because we're doing the wrong thing to start wit=
-h.
-> > > > > >
-> > > > > > Since local_t is defined in terms of atomic_long_t, we should d=
-efine the
-> > > > > > generic local_try_cmpxchg() in terms of atomic_long_try_cmpxchg=
-(). We'll still
-> > > > > > have a mismatch between 'long *' and 'unsigned long *', but the=
-n we can fix
-> > > > > > that in the callsite:
-> > > > > >
-> > > > > >       while (!local_try_cmpxchg(&rb->head, &(long *)offset, hea=
-d))
-> > > > >
-> > > > > Sorry, that should be:
-> > > > >
-> > > > >         while (!local_try_cmpxchg(&rb->head, (long *)&offset, hea=
-d))
-> > > >
-> > > > The fallbacks are a bit more complicated than above, and are differ=
-ent
-> > > > from atomic_try_cmpxchg.
-> > > >
-> > > > Please note in patch 2/10, the falbacks when arch_try_cmpxchg_local
-> > > > are not defined call arch_cmpxchg_local. Also in patch 2/10,
-> > > > try_cmpxchg_local is introduced, where it calls
-> > > > arch_try_cmpxchg_local. Targets (and generic code) simply define (e=
-.g.
-> > > > :
-> > > >
-> > > > #define local_cmpxchg(l, o, n) \
-> > > >        (cmpxchg_local(&((l)->a.counter), (o), (n)))
-> > > > +#define local_try_cmpxchg(l, po, n) \
-> > > > +       (try_cmpxchg_local(&((l)->a.counter), (po), (n)))
-> > > >
-> > > > which is part of the local_t API. Targets should either define all
-> > > > these #defines, or none. There are no partial fallbacks as is the c=
-ase
-> > > > with atomic_t.
-> > >
-> > > Whether or not there are fallbacks is immaterial.
-> > >
-> > > In those cases, architectures can just as easily write C wrappers, e.=
-g.
-> > >
-> > > long local_cmpxchg(local_t *l, long old, long new)
-> > > {
-> > >         return cmpxchg_local(&l->a.counter, old, new);
-> > > }
-> > >
-> > > long local_try_cmpxchg(local_t *l, long *old, long new)
-> > > {
-> > >         return try_cmpxchg_local(&l->a.counter, old, new);
-> > > }
-> >
-> > Please find attached the complete prototype patch that implements the
-> > above suggestion.
-> >
-> > The patch includes:
-> > - implementation of instrumented try_cmpxchg{,64}_local definitions
-> > - corresponding arch_try_cmpxchg{,64}_local fallback definitions
-> > - generic local{,64}_try_cmpxchg (and local{,64}_cmpxchg) C wrappers
-> >
-> > - x86 specific local_try_cmpxchg (and local_cmpxchg) C wrappers
-> > - x86 specific arch_try_cmpxchg_local definition
-> >
-> > - kernel/events/ring_buffer.c change to test local_try_cmpxchg
-> > implementation and illustrate the transition
-> > - arch/x86/events/core.c change to test local64_try_cmpxchg
-> > implementation and illustrate the transition
-> >
-> > The definition of atomic_long_t is different for 64-bit and 32-bit
-> > targets (s64 vs int), so target specific C wrappers have to use
-> > different casts to account for this difference.
-> >
-> > Uros.
->
-> Thanks for this!
->
-> FWIW, the patch (inline below) looks good to me.
+Currently the tlb_remove_table_smp_sync IPI is sent to all CPUs
+indiscriminately, this causes unnecessary work and delays notable in
+real-time use-cases and isolated cpus.
+By limiting the IPI to only be sent to cpus referencing the effected
+mm and in kernel mode latency is improved.
+a config to differentiate architectures that support mm_cpumask from
+those that don't will allow safe usage of this feature.
 
-Thanks, I will prepare a patch series for submission later today.
+Yair Podemsky (3):
+  arch: Introduce ARCH_HAS_CPUMASK_BITS
+  mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to MM CPUs
+  mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to CPUs in
+    kernel mode
 
-Uros.
+-- 
+2.31.1
+
