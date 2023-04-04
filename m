@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6306D71ED
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 03:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6FE6D71EE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 03:20:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Prmxh6F9mz3fRv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 11:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Prmyd33Nqz3f8Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 11:20:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gg1Iu/u0;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gg1Iu/u0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dsTJvQlq;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dsTJvQlq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=ypodemsk@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=ypodemsk@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gg1Iu/u0;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gg1Iu/u0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dsTJvQlq;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dsTJvQlq;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrTVT34crz3bYW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 23:43:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrTVg6680z3cJn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 23:43:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680615790;
+	s=mimecast20190719; t=1680615801;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=98dFpManPARgksa4GjoMPiRXPOJRbGoDK3gntpYc2e0=;
-	b=gg1Iu/u0HbSP7KBLpYcpTxs24v0hvoOowo1jF4Ot9giP9ttkFkGtHtQVVvRFd+RDrj3Kwk
-	xPqFncNm2pWhlKG4/zbRbD241F5Sf0MG0k7aLr7xKOncrWsR0L20C9AKpUfP+qVU++JQER
-	pAb+JtGSciykdS19Pj+fBsAH4IPKf7E=
+	bh=/5AmH2Sv0AFTXQ2yib2CUEzf+dnZkAWR6OfJs2RIyZU=;
+	b=dsTJvQlqNOmXlbwNDrf2yMdGgZcSaexFcwNKOXWmxVc12PL3wcQmqc5foYNLuNnes5CoIo
+	4qfMJWGPeIjK9WPn5MQ2uiJuPHEyoHbwe9XCufgWIlswVmLjjJmPBp3cNGbo+/8LNCgC3h
+	Wsb+lLK2+h/Y/rXJQSocqBBCwjj9PbI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680615790;
+	s=mimecast20190719; t=1680615801;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=98dFpManPARgksa4GjoMPiRXPOJRbGoDK3gntpYc2e0=;
-	b=gg1Iu/u0HbSP7KBLpYcpTxs24v0hvoOowo1jF4Ot9giP9ttkFkGtHtQVVvRFd+RDrj3Kwk
-	xPqFncNm2pWhlKG4/zbRbD241F5Sf0MG0k7aLr7xKOncrWsR0L20C9AKpUfP+qVU++JQER
-	pAb+JtGSciykdS19Pj+fBsAH4IPKf7E=
+	bh=/5AmH2Sv0AFTXQ2yib2CUEzf+dnZkAWR6OfJs2RIyZU=;
+	b=dsTJvQlqNOmXlbwNDrf2yMdGgZcSaexFcwNKOXWmxVc12PL3wcQmqc5foYNLuNnes5CoIo
+	4qfMJWGPeIjK9WPn5MQ2uiJuPHEyoHbwe9XCufgWIlswVmLjjJmPBp3cNGbo+/8LNCgC3h
+	Wsb+lLK2+h/Y/rXJQSocqBBCwjj9PbI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-656-C67ab_qpOfSKsM99qL632Q-1; Tue, 04 Apr 2023 09:43:07 -0400
-X-MC-Unique: C67ab_qpOfSKsM99qL632Q-1
+ us-mta-175-4B_pK5R4OeycA85aaITT_g-1; Tue, 04 Apr 2023 09:43:15 -0400
+X-MC-Unique: 4B_pK5R4OeycA85aaITT_g-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E405101A553;
-	Tue,  4 Apr 2023 13:43:05 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B2548030CD;
+	Tue,  4 Apr 2023 13:43:13 +0000 (UTC)
 Received: from ypodemsk.tlv.csb (unknown [10.39.194.160])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C2282166B26;
-	Tue,  4 Apr 2023 13:42:57 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A2D02166B26;
+	Tue,  4 Apr 2023 13:43:05 +0000 (UTC)
 From: Yair Podemsky <ypodemsk@redhat.com>
 To: linux@armlinux.org.uk,
 	mpe@ellerman.id.au,
@@ -102,9 +102,9 @@ To: linux@armlinux.org.uk,
 	mtosatti@redhat.com,
 	vschneid@redhat.com,
 	dhildenb@redhat.com
-Subject: [PATCH 2/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to MM CPUs
-Date: Tue,  4 Apr 2023 16:42:23 +0300
-Message-Id: <20230404134224.137038-3-ypodemsk@redhat.com>
+Subject: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to CPUs in kernel mode
+Date: Tue,  4 Apr 2023 16:42:24 +0300
+Message-Id: <20230404134224.137038-4-ypodemsk@redhat.com>
 In-Reply-To: <20230404134224.137038-1-ypodemsk@redhat.com>
 References: <20230404134224.137038-1-ypodemsk@redhat.com>
 MIME-Version: 1.0
@@ -126,114 +126,104 @@ Cc: alougovs@redhat.com, ypodemsk@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently the tlb_remove_table_smp_sync IPI is sent to all CPUs
-indiscriminately, this causes unnecessary work and delays notable in
-real-time use-cases and isolated cpus.
-This patch will limit this IPI on systems with ARCH_HAS_CPUMASK_BITS,
-Where the IPI will only be sent to cpus referencing the affected mm.
+The tlb_remove_table_smp_sync IPI is used to ensure the outdated tlb page
+is not currently being accessed and can be cleared.
+This occurs once all CPUs have left the lockless gup code section.
+If they reenter the page table walk, the pointers will be to the new
+pages.
+Therefore the IPI is only needed for CPUs in kernel mode.
+By preventing the IPI from being sent to CPUs not in kernel mode,
+Latencies are reduced.
+
+Race conditions considerations:
+The context state check is vulnerable to race conditions between the
+moment the context state is read to when the IPI is sent (or not).
+
+Here are these scenarios.
+case 1:
+CPU-A                                             CPU-B
+
+                                                  state == CONTEXT_KERNEL
+int state = atomic_read(&ct->state);
+                                                  Kernel-exit:
+                                                  state == CONTEXT_USER
+if (state & CT_STATE_MASK == CONTEXT_KERNEL)
+
+In this case, the IPI will be sent to CPU-B despite it is no longer in
+the kernel. The consequence of which would be an unnecessary IPI being
+handled by CPU-B, causing a reduction in latency.
+This would have been the case every time without this patch.
+
+case 2:
+CPU-A                                             CPU-B
+
+modify pagetables
+tlb_flush (memory barrier)
+                                                  state == CONTEXT_USER
+int state = atomic_read(&ct->state);
+                                                  Kernel-enter:
+                                                  state == CONTEXT_KERNEL
+                                                  READ(pagetable values)
+if (state & CT_STATE_MASK == CONTEXT_USER)
+
+In this case, the IPI will not be sent to CPU-B despite it returning to
+the kernel and even reading the pagetable.
+However since this CPU-B has entered the pagetable after the
+modification it is reading the new, safe values.
+
+The only case when this IPI is truly necessary is when CPU-B has entered
+the lockless gup code section before the pagetable modifications and
+has yet to exit them, in which case it is still in the kernel.
 
 Signed-off-by: Yair Podemsky <ypodemsk@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
 ---
- include/asm-generic/tlb.h |  4 ++--
- mm/khugepaged.c           |  4 ++--
- mm/mmu_gather.c           | 17 ++++++++++++-----
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ mm/mmu_gather.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index b46617207c93..0b6ba17cc8d3 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -222,7 +222,7 @@ extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
- #define tlb_needs_table_invalidate() (true)
- #endif
- 
--void tlb_remove_table_sync_one(void);
-+void tlb_remove_table_sync_one(struct mm_struct *mm);
- 
- #else
- 
-@@ -230,7 +230,7 @@ void tlb_remove_table_sync_one(void);
- #error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
- #endif
- 
--static inline void tlb_remove_table_sync_one(void) { }
-+static inline void tlb_remove_table_sync_one(struct mm_struct *mm) { }
- 
- #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
- 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 92e6f56a932d..2b4e6ca1f38e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1070,7 +1070,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	_pmd = pmdp_collapse_flush(vma, address, pmd);
- 	spin_unlock(pmd_ptl);
- 	mmu_notifier_invalidate_range_end(&range);
--	tlb_remove_table_sync_one();
-+	tlb_remove_table_sync_one(mm);
- 
- 	spin_lock(pte_ptl);
- 	result =  __collapse_huge_page_isolate(vma, address, pte, cc,
-@@ -1427,7 +1427,7 @@ static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *v
- 				addr + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	pmd = pmdp_collapse_flush(vma, addr, pmdp);
--	tlb_remove_table_sync_one();
-+	tlb_remove_table_sync_one(mm);
- 	mmu_notifier_invalidate_range_end(&range);
- 	mm_dec_nr_ptes(mm);
- 	page_table_check_pte_clear_range(mm, addr, pmd);
 diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 2b93cf6ac9ae..5ea9be6fb87c 100644
+index 5ea9be6fb87c..731d955e152d 100644
 --- a/mm/mmu_gather.c
 +++ b/mm/mmu_gather.c
-@@ -191,7 +191,13 @@ static void tlb_remove_table_smp_sync(void *arg)
+@@ -9,6 +9,7 @@
+ #include <linux/smp.h>
+ #include <linux/swap.h>
+ #include <linux/rmap.h>
++#include <linux/context_tracking_state.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <asm/tlb.h>
+@@ -191,6 +192,20 @@ static void tlb_remove_table_smp_sync(void *arg)
  	/* Simply deliver the interrupt */
  }
  
--void tlb_remove_table_sync_one(void)
-+#ifdef CONFIG_ARCH_HAS_CPUMASK_BITS
-+#define REMOVE_TABLE_IPI_MASK mm_cpumask(mm)
-+#else
-+#define REMOVE_TABLE_IPI_MASK NULL
-+#endif /* CONFIG_ARCH_HAS_CPUMASK_BITS */
 +
-+void tlb_remove_table_sync_one(struct mm_struct *mm)
- {
- 	/*
- 	 * This isn't an RCU grace period and hence the page-tables cannot be
-@@ -200,7 +206,8 @@ void tlb_remove_table_sync_one(void)
++#ifdef CONFIG_CONTEXT_TRACKING
++static bool cpu_in_kernel(int cpu, void *info)
++{
++	struct context_tracking *ct = per_cpu_ptr(&context_tracking, cpu);
++	int state = atomic_read(&ct->state);
++	/* will return true only for cpus in kernel space */
++	return state & CT_STATE_MASK == CONTEXT_KERNEL;
++}
++#define CONTEXT_PREDICATE cpu_in_kernel
++#else
++#define CONTEXT_PREDICATE NULL
++#endif /* CONFIG_CONTEXT_TRACKING */
++
+ #ifdef CONFIG_ARCH_HAS_CPUMASK_BITS
+ #define REMOVE_TABLE_IPI_MASK mm_cpumask(mm)
+ #else
+@@ -206,8 +221,8 @@ void tlb_remove_table_sync_one(struct mm_struct *mm)
  	 * It is however sufficient for software page-table walkers that rely on
  	 * IRQ disabling.
  	 */
--	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
-+	on_each_cpu_mask(REMOVE_TABLE_IPI_MASK, tlb_remove_table_smp_sync,
-+			NULL, true);
+-	on_each_cpu_mask(REMOVE_TABLE_IPI_MASK, tlb_remove_table_smp_sync,
+-			NULL, true);
++	on_each_cpu_cond_mask(CONTEXT_PREDICATE, tlb_remove_table_smp_sync,
++			NULL, true, REMOVE_TABLE_IPI_MASK);
  }
  
  static void tlb_remove_table_rcu(struct rcu_head *head)
-@@ -237,9 +244,9 @@ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
- 	}
- }
- 
--static void tlb_remove_table_one(void *table)
-+static void tlb_remove_table_one(struct mm_struct *mm, void *table)
- {
--	tlb_remove_table_sync_one();
-+	tlb_remove_table_sync_one(mm);
- 	__tlb_remove_table(table);
- }
- 
-@@ -262,7 +269,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
- 		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
- 		if (*batch == NULL) {
- 			tlb_table_invalidate(tlb);
--			tlb_remove_table_one(table);
-+			tlb_remove_table_one(tlb->mm, table);
- 			return;
- 		}
- 		(*batch)->nr = 0;
 -- 
 2.31.1
 
