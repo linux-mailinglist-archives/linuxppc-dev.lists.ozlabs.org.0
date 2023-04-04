@@ -1,50 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0656D5D7E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 12:29:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B1F6D5F89
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 13:51:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrPCG35YVz3cLf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 20:29:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrR1d0wBtz3cf8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 21:51:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=A7nifk1k;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=W4e1ge3G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxtx.org (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=jmforbes@linuxtx.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=W4e1ge3G;
+	dkim-atps=neutral
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrPBM3nGyz3brQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 20:28:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=A7nifk1k;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PrPBJ5WTrz4x1N;
-	Tue,  4 Apr 2023 20:28:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1680604139;
-	bh=8o2+RFgNk7wyDy11vu39SRy4hjDn2gnyBl4n5abjTwI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=A7nifk1kfEvS33UdTDBn/+ASOWdtcDwvPfFymDW3ssxupISW6nISIxZWYlIaUFzMX
-	 ugpK9Tt5TQhb3Cu04glk9YwSzXHC+qv6wQtXVHLwh+GfPaJ1QUW6/Sllmvy08Xll0j
-	 E5mcdgVkg253/0l/66LtTIrTIIGZRql9GV5Gb6Smflq1dtrWr5bXgZZwGIeEqXibEv
-	 mkhhOkmA/l+P5PX4H9bIUzycZJ+ihHqOYNw/zZHZeHWam7safymyTKwP7gHPhqJwcO
-	 vZiAVfLsALk/zcQfPwOBGyNHTBBhVU8bIzJ199WSFgOfCScoa7NsmPdZXRi26AdseZ
-	 pB7lFKnCgcbzg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/64: Always build with 128-bit long double
-Date: Tue,  4 Apr 2023 20:28:47 +1000
-Message-Id: <20230404102847.3303623-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrR0j393bz3bdV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 21:50:44 +1000 (AEST)
+Received: by mail-ed1-x52f.google.com with SMTP id r11so129453990edd.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 04:50:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1680609035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
+        b=W4e1ge3GPQTmX0C71yqeRi0KrdamhjjB8UeVprdmGQkAwHCMKylEsOKg2Ht0ZrCjVL
+         ElMzk5ulNt5TMGLg+RDg8+9KRit3EKJzOc4Dn68iTht2HAgZxY1VIN6kYZM9X8SQQIW2
+         c7JmPvdtndkyEqcZooH8Ze4qhrM8b4U7AHitI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680609035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
+        b=dzl3kHmWNtCR1iq+CdskM3xAlIuHsmzKOEgCHHWgBptM0OpDB2yANKv3PGNW6Jdgr2
+         V4plU9KxMAL2huorliee83kh1z9QzgbkeIxfybS5I0xHo4DY6RoDumpd0uSqoP/zSOOL
+         M8bqh5UztOfh7xVi22NBCSLytwgye7Nds5oq3/O5TXjdQQ1sqwABZ9I8Aq1c6FhEfN5e
+         XCX6PZyP7/VkjS51lOAQGXFHskL6z6DJiVHarL/eis+NFXPPGRFNZaAA7SFBcfvoBpqV
+         S+Ajbx3k6C2xdEVjY2n9qu6gTCaLn9SfHSbnpZCBnfcX0Z9+1c8BbqQb1z5X+IrlbVCE
+         C83Q==
+X-Gm-Message-State: AAQBX9czvZR7PgzEd66BPqCyYva/0niDvn8Xno1kTiRouU4OHwk6zLgT
+	5A6jCOtGCBwxsQ4ObwOCZ4g8NfpeuKhlMr4PavbXIRIC76vf/A==
+X-Google-Smtp-Source: AKy350beKGoejJmoeO7/5MGFvVVxXwrDGpJQUny5T2XtKdOjnBMLPGG4mDq3uQAaVsKyG+zQlAm1ew==
+X-Received: by 2002:aa7:de0a:0:b0:502:32ba:37a9 with SMTP id h10-20020aa7de0a000000b0050232ba37a9mr2239279edv.0.1680609034628;
+        Tue, 04 Apr 2023 04:50:34 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id t20-20020a50d714000000b005021d17d896sm5806662edi.21.2023.04.04.04.50.33
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Apr 2023 04:50:34 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id m2so32489622wrh.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 04:50:33 -0700 (PDT)
+X-Received: by 2002:a05:6512:38d1:b0:4e8:45d5:53cd with SMTP id
+ p17-20020a05651238d100b004e845d553cdmr662558lft.12.1680609012911; Tue, 04 Apr
+ 2023 04:50:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com> <ZCvQGJzdED+An8an@kernel.org>
+In-Reply-To: <ZCvQGJzdED+An8an@kernel.org>
+From: Justin Forbes <jforbes@fedoraproject.org>
+Date: Tue, 4 Apr 2023 06:50:01 -0500
+X-Gmail-Original-Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,102 +83,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dan@danny.cz, daniel@octaforge.org, amd-gfx@lists.freedesktop.org, tpearson@raptorengineering.com, alexdeucher@gmail.com
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The amdgpu driver builds some of its code with hard-float enabled,
-whereas the rest of the kernel is built with soft-float.
+On Tue, Apr 4, 2023 at 2:22=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
+e:
+>
+> On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
+> > On Sat, Mar 25, 2023 at 1:09=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
+ wrote:
+> > >
+> > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > >
+> > > It is not a good idea to change fundamental parameters of core memory
+> > > management. Having predefined ranges suggests that the values within
+> > > those ranges are sensible, but one has to *really* understand
+> > > implications of changing MAX_ORDER before actually amending it and
+> > > ranges don't help here.
+> > >
+> > > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
+> > > visible only if EXPERT=3Dy
+> >
+> > I do not like suddenly hiding this behind EXPERT for a couple of
+> > reasons.  Most importantly, it will silently change the config for
+> > users building with an old kernel config.  If a user has for instance
+> > "13" set and building with 4K pages, as is the current configuration
+> > for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
+> > to 10 with no indication that it is doing so.  And while I think that
+> > 10 is a fine default for many aarch64 users, there are valid reasons
+> > for choosing other values. Putting this behind expert makes it much
+> > less obvious that this is an option.
+>
+> That's the idea of EXPERT, no?
+>
+> This option was intended to allow allocation of huge pages for
+> architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
+> select size of maximal physically contiguous allocation.
+>
+> Changes to MAX_ORDER fundamentally change the behaviour of core mm and
+> unless users *really* know what they are doing there is no reason to choo=
+se
+> non-default values so hiding this option behind EXPERT seems totally
+> appropriate to me.
 
-When building with 64-bit long double, if soft-float and hard-float
-objects are linked together, the build fails due to incompatible ABI
-tags.
+It sounds nice in theory. In practice. EXPERT hides too much. When you
+flip expert, you expose over a 175ish new config options which are
+hidden behind EXPERT.  You don't have to know what you are doing just
+with the MAX_ORDER, but a whole bunch more as well.  If everyone were
+already running 10, this might be less of a problem. At least Fedora
+and RHEL are running 13 for 4K pages on aarch64. This was not some
+accidental choice, we had to carry a patch to even allow it for a
+while.  If this does go in as is, we will likely just carry a patch to
+remove the "if EXPERT", but that is a bit of a disservice to users who
+might be trying to debug something else upstream, bisecting upstream
+kernels or testing a patch.  In those cases, people tend to use
+pristine upstream sources without distro patches to verify, and they
+tend to use their existing configs. With this change, their MAX_ORDER
+will drop to 10 from 13 silently.   That can look like a different
+issue enough to ruin a bisect or have them give bad feedback on a
+patch because it introduces a "regression" which is not a regression
+at all, but a config change they couldn't see.
 
-In the past there have been build errors in the amdgpu driver caused by
-this, some of those were due to bad intermingling of soft & hard-float
-code, but those issues have now all been fixed since commit c92b7fe0d92a
-("drm/amd/display: move remaining FPU code to dml folder").
-
-However it's still possible for soft & hard-float objects to end up
-linked together, if the amdgpu driver is built-in to the kernel along
-with the test_emulate_step.c code, which uses soft-float. That happens
-in an allyesconfig build.
-
-Currently those build errors are avoided because the amdgpu driver is
-gated on 128-bit long double being enabled. But that's not a detail the
-amdgpu driver should need to be aware of, and if another driver starts
-using hard-float the same problem would occur.
-
-All versions of the 64-bit ABI specify that long-double is 128-bits.
-However some compilers, notably the kernel.org ones, are built to use
-64-bit long double by default.
-
-Apart from this issue of soft vs hard-float, the kernel doesn't care
-what size long double is. In particular the kernel using 128-bit long
-double doesn't impact userspace's ability to use 64-bit long double, as
-musl does.
-
-So always build the 64-bit kernel with 128-bit long double. That should
-avoid any build errors due to the incompatible ABI tags. Excluding the
-code that uses soft/hard-float, the vmlinux is identical with/without
-the flag.
-
-It does mean any code which is incorrectly intermingling soft &
-hard-float code will build without error, so those bugs will need to be
-caught by testing rather than at build time.
-
-For more background see:
-  - commit d11219ad53dc ("amdgpu: disable powerpc support for the newer display engine")
-  - commit c653c591789b ("drm/amdgpu: Re-enable DCN for 64-bit powerpc")
-  - https://lore.kernel.org/r/dab9cbd8-2626-4b99-8098-31fe76397d2d@app.fastmail.com
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Kconfig                | 4 ----
- arch/powerpc/Makefile               | 1 +
- drivers/gpu/drm/amd/display/Kconfig | 2 +-
- 3 files changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index fc4e81dafca7..3fb2c2766139 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -291,10 +291,6 @@ config PPC
- 	# Please keep this list sorted alphabetically.
- 	#
- 
--config PPC_LONG_DOUBLE_128
--	depends on PPC64 && ALTIVEC
--	def_bool $(success,test "$(shell,echo __LONG_DOUBLE_128__ | $(CC) -E -P -)" = 1)
--
- config PPC_BARRIER_NOSPEC
- 	bool
- 	default y
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 12447b2361e4..4343cca57cb3 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -133,6 +133,7 @@ endif
- endif
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
-+CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mlong-double-128)
- 
- # Clang unconditionally reserves r2 on ppc32 and does not support the flag
- # https://bugs.llvm.org/show_bug.cgi?id=39555
-diff --git a/drivers/gpu/drm/amd/display/Kconfig b/drivers/gpu/drm/amd/display/Kconfig
-index 0c9bd0a53e60..e36261d546af 100644
---- a/drivers/gpu/drm/amd/display/Kconfig
-+++ b/drivers/gpu/drm/amd/display/Kconfig
-@@ -8,7 +8,7 @@ config DRM_AMD_DC
- 	depends on BROKEN || !CC_IS_CLANG || X86_64 || SPARC64 || ARM64
- 	select SND_HDA_COMPONENT if SND_HDA_CORE
- 	# !CC_IS_CLANG: https://github.com/ClangBuiltLinux/linux/issues/1752
--	select DRM_AMD_DC_DCN if (X86 || PPC_LONG_DOUBLE_128 || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
-+	select DRM_AMD_DC_DCN if (X86 || (PPC64 && ALTIVEC) || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
- 	help
- 	  Choose this option if you want to use the new display engine
- 	  support for AMDGPU. This adds required support for Vega and
--- 
-2.39.2
-
+>
+> > Justin
+> >
+> > > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > > ---
+> > >  arch/arm64/Kconfig | 4 +---
+> > >  1 file changed, 1 insertion(+), 3 deletions(-)
+> > >
+> > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > > index e60baf7859d1..7324032af859 100644
+> > > --- a/arch/arm64/Kconfig
+> > > +++ b/arch/arm64/Kconfig
+> > > @@ -1487,11 +1487,9 @@ config XEN
+> > >  # 16K |       27          |      14      |       13        |        =
+ 11         |
+> > >  # 64K |       29          |      16      |       13        |        =
+ 13         |
+> > >  config ARCH_FORCE_MAX_ORDER
+> > > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+> > > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM6=
+4_16K_PAGES)
+> > >         default "13" if ARM64_64K_PAGES
+> > > -       range 11 13 if ARM64_16K_PAGES
+> > >         default "11" if ARM64_16K_PAGES
+> > > -       range 10 15 if ARM64_4K_PAGES
+> > >         default "10"
+> > >         help
+> > >           The kernel memory allocator divides physically contiguous m=
+emory
+> > > --
+> > > 2.35.1
+> > >
+> > >
+>
+> --
+> Sincerely yours,
+> Mike.
+>
