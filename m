@@ -1,62 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3EE6D679A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:39:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDCD6D6836
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 18:04:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrX4V0KsLz3chk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 01:39:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrXd33y5Yz3f5M
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 02:04:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ccjt9OkL;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TIsAixbu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ccjt9OkL;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TIsAixbu;
 	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrX3d4DqWz3cCF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 01:38:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680622717; x=1712158717;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=JyEyesUAfsnh39QScCqENVpHW7W4d6bfrVDonXQ7JJk=;
-  b=ccjt9OkLFakqec4yBiIn8rIUbvvrdizEG7HPKTELBAUAcitRvgX45FKK
-   5wMfb28Z5KOiiLRQMWPQ3sjDVhI/cc/Iv94tU45V0TLWaWa++2yHb/zmV
-   IhhcE5eKL8nivUUM0L6iCIxJxF7b3WBvzYr32eIuMxcPdA6d9L0Htq03y
-   kGt5BdHvuIXLUIBp/aaESXAHm6wod6aefHRp3t3tM14wX59e4XTMPMh7n
-   U5Dsd8qcRmcLO2uvuzyTvkXZ0kF46XXzIinmUjytDt7mELrvW/HlKJsWC
-   nsZkf+bthP+A1PfL1hB1rvv61GgKHp7I23pABTFqqp0CE0f0TdLCCLD5x
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="370039401"
-X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
-   d="scan'208";a="370039401"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 08:38:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="1016148187"
-X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
-   d="scan'208";a="1016148187"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 04 Apr 2023 08:38:32 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pjijv-000Pq6-1Y;
-	Tue, 04 Apr 2023 15:38:31 +0000
-Date: Tue, 4 Apr 2023 23:37:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge 5/7] .github/problem-matchers/sparse.json: warning:
- ignored by one of the .gitignore files
-Message-ID: <202304042327.blhF5nCp-lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrXc73114z3cC1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 02:03:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XM/YkwYDYZGFI0IIp06DYqUacNJSQj373t93IN8a29o=; b=TIsAixbuLFpyKt07sPwhVOn1aU
+	cGv4c07N1emcfPmogLhgtjgpYR5LP6Nol8J6+PExO760jDlXjp+iCnrnWKK5UDZCU5FyEMUHrK0C1
+	SzrfvIUBbupni78V14bc2bjHewYPLY7HCVNoH9SqFSqG/2cWP412xfsne3M0o6n8fQU1Z2r+E2QHx
+	+fmjMHwxYiumGqYm7KWWTj1cAFUYaVEKYoqK3JR4anEGIOdaaPQwrDyMDfUbtnoOrucjM9WZUX3vA
+	cX9hzeBUJB03YvO04ppUKlwYspcwruBk8VDTYKJ3joh88cne62yn4oUyr/Od+3XIdZ24B2xIuVJdx
+	WXoLpPZg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pjj5O-00FV9O-TT; Tue, 04 Apr 2023 16:00:43 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 07BC4300202;
+	Tue,  4 Apr 2023 18:00:39 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D69342CB6F7B0; Tue,  4 Apr 2023 18:00:38 +0200 (CEST)
+Date: Tue, 4 Apr 2023 18:00:38 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Yair Podemsky <ypodemsk@redhat.com>
+Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
+ only to CPUs in kernel mode
+Message-ID: <20230404160038.GB38236@hirez.programming.kicks-ass.net>
+References: <20230404134224.137038-1-ypodemsk@redhat.com>
+ <20230404134224.137038-4-ypodemsk@redhat.com>
+ <20230404151217.GB297936@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20230404151217.GB297936@hirez.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,63 +67,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
+Cc: geert+renesas@glider.be, tony@atomide.com, Frederic Weisbecker <fweisbec@gmail.com>, linus.walleij@linaro.org, dave.hansen@linux.intel.com, sebastian.reichel@collabora.com, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, vschneid@redhat.com, gor@linux.ibm.com, aneesh.kumar@linux.ibm.com, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, samitolvanen@google.com, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, keescook@chromium.org, paulmck@kernel.org, hca@linux.ibm.com, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, bp@alien8.de, nick.hawkins@hpe.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, alougovs@redhat.com, mtosatti@redhat.com, linux-kernel@vger.kernel.org, arnd@arndb.de, svens@linux.ibm.com, dhildenb@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, dave
+ m@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-head:   639e8992872c632f27b130b403e263eae966231e
-commit: ff94f02dbdf0d6077497f1ffb63080c6937c3ed9 [5/7] powerpc/ci: Add sparse problem matcher
-config: arc-buildonly-randconfig-r003-20230403 (https://download.01.org/0day-ci/archive/20230404/202304042327.blhF5nCp-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=ff94f02dbdf0d6077497f1ffb63080c6937c3ed9
-        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
-        git fetch --no-tags powerpc merge
-        git checkout ff94f02dbdf0d6077497f1ffb63080c6937c3ed9
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+On Tue, Apr 04, 2023 at 05:12:17PM +0200, Peter Zijlstra wrote:
+> > case 2:
+> > CPU-A                                             CPU-B
+> > 
+> > modify pagetables
+> > tlb_flush (memory barrier)
+> >                                                   state == CONTEXT_USER
+> > int state = atomic_read(&ct->state);
+> >                                                   Kernel-enter:
+> >                                                   state == CONTEXT_KERNEL
+> >                                                   READ(pagetable values)
+> > if (state & CT_STATE_MASK == CONTEXT_USER)
+> > 
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304042327.blhF5nCp-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+Hmm, hold up; what about memory ordering, we need a store-load ordering
+between the page-table write and the context trackng load, and a
+store-load order on the context tracking update and software page-table
+walker loads.
 
-   .github/problem-matchers/compiler-non-source.json: warning: ignored by one of the .gitignore files
-   .github/problem-matchers/compiler-source.json: warning: ignored by one of the .gitignore files
->> .github/problem-matchers/sparse.json: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-allconfig.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-clang.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-extrawarn.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-kernel+qemu.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-perf.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-ppctests.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-selftests.yml: warning: ignored by one of the .gitignore files
-   .github/workflows/powerpc-sparse.yml: warning: ignored by one of the .gitignore files
-   drivers/clk/.kunitconfig: warning: ignored by one of the .gitignore files
-   drivers/gpu/drm/tests/.kunitconfig: warning: ignored by one of the .gitignore files
-   drivers/gpu/drm/vc4/tests/.kunitconfig: warning: ignored by one of the .gitignore files
-   drivers/hid/.kunitconfig: warning: ignored by one of the .gitignore files
-   fs/ext4/.kunitconfig: warning: ignored by one of the .gitignore files
-   fs/fat/.kunitconfig: warning: ignored by one of the .gitignore files
-   kernel/kcsan/.kunitconfig: warning: ignored by one of the .gitignore files
-   lib/kunit/.kunitconfig: warning: ignored by one of the .gitignore files
-   mm/kfence/.kunitconfig: warning: ignored by one of the .gitignore files
-   net/sunrpc/.kunitconfig: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/arm64/tags/.gitignore: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/arm64/tags/Makefile: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/arm64/tags/run_tags_test.sh: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/arm64/tags/tags_test.c: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/kvm/.gitignore: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/kvm/Makefile: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/kvm/config: warning: ignored by one of the .gitignore files
-   tools/testing/selftests/kvm/settings: warning: ignored by one of the .gitignore files
+Now, iirc page-table modification is done under pte_lock (or
+page_table_lock) and that only provides a RELEASE barrier on this end,
+which is insufficient to order against a later load.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Is there anything else?
+
+On the state tracking side, we have ct_state_inc() which is
+atomic_add_return() which should provide full barrier and is sufficient.
