@@ -2,87 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736AD6D5770
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 06:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A766D5919
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:03:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrDvb2tDSz3cHs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 14:15:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrJdL0hNyz3chK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:03:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qDx5zCIm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qDx5zCIm;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrDtg6cTpz2xHJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 14:14:50 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3343bNd5012672;
-	Tue, 4 Apr 2023 04:14:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=VKI9aH5kmBphqrfgmYA/7oEyqeMKddx7ygTrpi5Drig=;
- b=qDx5zCImprxeZkjd8uJwqQF0jeqm+mss9UhNL6bF6HtGn8eIV2yM66CRtvVMFIVnqf3y
- rL7UMh7aimAVhTSkVu1pizza6XkKF2PgCLMy8OtOdYhqFMbgSOZkLtuSUcOzRPMSvs5r
- FGcjgtaMW7xJlgTkGwWzB4vQNrGSrWXgocJc23C1g3ErLR3STQawENuANw7BCuEZH1SU
- ko2EWP57paGzC2wAnYwSvKOUW/R7HOUoF8WNhAeT9bvZGKoFKrTbg4wjcO2gLctDKgrP
- YG9jZOAcrEA5P2S2yOPRUS1QRn0gkjQkCPtDQ2HiY54WU7YfGFiJdzNCeqyMOHS0Vmld Xw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pr1gbr2sf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Apr 2023 04:14:42 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 334405dg023978;
-	Tue, 4 Apr 2023 04:14:41 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pr1gbr2sa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Apr 2023 04:14:41 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3343lvt5016965;
-	Tue, 4 Apr 2023 04:14:41 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3ppc88tktm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Apr 2023 04:14:40 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3344Ed7A33620502
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Apr 2023 04:14:39 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B73F5805D;
-	Tue,  4 Apr 2023 04:14:39 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 14EBD58058;
-	Tue,  4 Apr 2023 04:14:37 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.99.195])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Apr 2023 04:14:36 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v2] powerpc/papr_scm: Update the NUMA distance table for the target node
-Date: Tue,  4 Apr 2023 09:44:33 +0530
-Message-Id: <20230404041433.1781804-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrJcQ03h9z3bTH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:02:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680591760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
+	b=QBLjGc9vLCZ6qOGib/Uc/R6S5XNhDVrBEmZ9IXstRJVPHWp9GlqH5uqmuAWy2MYP1b7LS0
+	8c9QkQ+mgpkzaIiTuEWD+dD72+/PEbqjA0nQpMG4u8eVC3T1S1+dgIAULXOXj/QwvI+wU0
+	3wVrJ9ZITlDjOcjq+6/KBmO3Kd5SUdc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1680591760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
+	b=QBLjGc9vLCZ6qOGib/Uc/R6S5XNhDVrBEmZ9IXstRJVPHWp9GlqH5uqmuAWy2MYP1b7LS0
+	8c9QkQ+mgpkzaIiTuEWD+dD72+/PEbqjA0nQpMG4u8eVC3T1S1+dgIAULXOXj/QwvI+wU0
+	3wVrJ9ZITlDjOcjq+6/KBmO3Kd5SUdc=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-aIPuv0SVPnC35igq-DRjtA-1; Tue, 04 Apr 2023 03:02:38 -0400
+X-MC-Unique: aIPuv0SVPnC35igq-DRjtA-1
+Received: by mail-qt1-f200.google.com with SMTP id f36-20020a05622a1a2400b003deb2fa544bso21570903qtb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680591758;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
+        b=2Nw4QXbVw8wgbipC6ox5xc36zOJmd8X8P9LL9mC5Dd5d4HP3WQMt4CvNvcukuIYmiu
+         h0tiRzWLDes/O6/yBhfGv/HOjjzA29F5uxnBkFJFoB4mQmkwuBg20aAJiI6N4pNtrshO
+         NJshatRpb1O2UizIy0v4o790IoZ8jOB8q8aiL5ulr/B59Xw/oNO0qaxLZeQgF/5md+ng
+         Be1kM3nouOokJR60wxKvxL3Cd16RFMOi72x/pTWiE8kfyhvoB7846rFzMUNDqxpxAyfM
+         KlKYOoJYePYLbNbPaPaFtJ2uXqe1s45dsuQYCIHIsSNhrKHE0oDVbcZVYZ2GHVqSz4nd
+         F27A==
+X-Gm-Message-State: AAQBX9cjH3N9dZoI90kXbiigTQ0XYc8mauJ1pndA01gS5LP76OxjZDap
+	UvIDRf4PAr39hyw28vrd4QRPr95pXOcgZ7UuBxAxWVRr4ayvLm/7xmcWd9xtWPHCD4ap3QeDR6D
+	QK90Z7J7D9MWZ71ApWjpkZPnRjA==
+X-Received: by 2002:a05:622a:1014:b0:3bd:db4:b967 with SMTP id d20-20020a05622a101400b003bd0db4b967mr1605094qte.58.1680591758573;
+        Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
+X-Google-Smtp-Source: AKy350ZeBly8guyCmoO5xOctGAQXU6DItAkqiG1Wa+dT9GI6WOjdnqjMxk2CNPmIGaB4Rl1jZDmaUw==
+X-Received: by 2002:a05:622a:1014:b0:3bd:db4:b967 with SMTP id d20-20020a05622a101400b003bd0db4b967mr1605062qte.58.1680591758243;
+        Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-74.web.vodafone.de. [109.43.178.74])
+        by smtp.gmail.com with ESMTPSA id t20-20020ac85314000000b003e3870008c8sm3045284qtn.23.2023.04.04.00.02.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Apr 2023 00:02:36 -0700 (PDT)
+Message-ID: <1a2de9e8-3536-17d8-e6b3-7312c7ca7f46@redhat.com>
+Date: Tue, 4 Apr 2023 09:02:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: agNEOFFCCnjlCzu_vwIJF4HdTDPvXOsw
-X-Proofpoint-GUID: j3VS9VXoy61P4I3gJf8HGttIQlXyT2PR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-03_19,2023-04-03_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=953 impostorscore=0
- adultscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304040036
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [kvm-unit-tests v3 07/13] powerpc/sprs: Specify SPRs with data
+ rather than code
+To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
+References: <20230327124520.2707537-1-npiggin@gmail.com>
+ <20230327124520.2707537-8-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230327124520.2707537-8-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,82 +103,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-platform device helper routines won't update the NUMA distance table
-while creating a platform device, even if the device is present on
-a NUMA node that doesn't have memory or CPU. This is especially true
-for pmem devices. If the target node of the pmem device is not online, we
-find the nearest online node to the device and associate the pmem
-device with that online node. To find the nearest online node, we should
-have the numa distance table updated correctly. Update the distance
-information during the device probe.
+On 27/03/2023 14.45, Nicholas Piggin wrote:
+> A significant rework that builds an array of 'struct spr', where each
+> element describes an SPR. This makes various metadata about the SPR
+> like name and access type easier to carry and use.
+> 
+> Hypervisor privileged registers are described despite not being used
+> at the moment for completeness, but also the code might one day be
+> reused for a hypervisor-privileged test.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> 
+> This ended up a little over-engineered perhaps, but there are lots of
+> SPRs, lots of access types, lots of changes between processor and ISA
+> versions, and lots of places they are implemented and used, so lots of
+> room for mistakes. There is not a good system in place to easily
+> see that userspace, supervisor, etc., switches perform all the right
+> SPR context switching so this is a nice test case to have. The sprs test
+> quickly caught a few QEMU TCG SPR bugs which really motivated me to
+> improve the SPR coverage.
+> ---
+> Since v2:
+> - Merged with "Indirect SPR accessor functions" patch.
+> 
+>   powerpc/sprs.c | 643 ++++++++++++++++++++++++++++++++++---------------
+>   1 file changed, 450 insertions(+), 193 deletions(-)
 
-For a papr scm device on NUMA node 3 distance_lookup_table value for
-distance_ref_points_depth = 2 before and after fix is below:
-
-Before fix:
-node 3 distance depth 0  - 0
-node 3 distance depth 1  - 0
-node 4 distance depth 0  - 4
-node 4 distance depth 1  - 2
-node 5 distance depth 0  - 5
-node 5 distance depth 1  - 1
-
-After fix
-node 3 distance depth 0  - 3
-node 3 distance depth 1  - 1
-node 4 distance depth 0  - 4
-node 4 distance depth 1  - 2
-node 5 distance depth 0  - 5
-node 5 distance depth 1  - 1
-
-Without the fix, the nearest numa node to the pmem device(NUMA node 3) will be
-picked as 4. After the fix, we get the correct numa node which is 5.
-
-Fixes: da1115fdbd6e ("powerpc/nvdimm: Pick nearby online node if the device node is not online")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
-Changes from v1:
-* Update commit message
-* Update code comment
-
- arch/powerpc/mm/numa.c                    | 1 +
- arch/powerpc/platforms/pseries/papr_scm.c | 7 +++++++
- 2 files changed, 8 insertions(+)
-
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index b44ce71917d7..16cfe56be05b 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -366,6 +366,7 @@ void update_numa_distance(struct device_node *node)
- 	WARN(numa_distance_table[nid][nid] == -1,
- 	     "NUMA distance details for node %d not provided\n", nid);
- }
-+EXPORT_SYMBOL_GPL(update_numa_distance);
- 
- /*
-  * ibm,numa-lookup-index-table= {N, domainid1, domainid2, ..... domainidN}
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 2f8385523a13..500b2bd5417c 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -1428,6 +1428,13 @@ static int papr_scm_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
-+	/*
-+	 * open firmware  platform device create won't update the
-+	 * numa distance table. For papr scm device we use numa_map_to_online_node
-+	 * to find the nearest online numa node and that requires corrrect
-+	 * distance table information.
-+	 */
-+	update_numa_distance(dn);
- 
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (!p)
--- 
-2.39.2
+Acked-by: Thomas Huth <thuth@redhat.com>
 
