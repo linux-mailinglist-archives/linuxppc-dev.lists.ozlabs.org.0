@@ -2,91 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A766D5919
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DCC6D594B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 09:17:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PrJdL0hNyz3chK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:03:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrJxx1Z8Qz3chb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Apr 2023 17:17:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gd2TbU5P;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gd2TbU5P;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBLjGc9v;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gd2TbU5P;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gd2TbU5P;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrJcQ03h9z3bTH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:02:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrJx63jKhz3bXQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Apr 2023 17:17:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680591760;
+	s=mimecast20190719; t=1680592630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
-	b=QBLjGc9vLCZ6qOGib/Uc/R6S5XNhDVrBEmZ9IXstRJVPHWp9GlqH5uqmuAWy2MYP1b7LS0
-	8c9QkQ+mgpkzaIiTuEWD+dD72+/PEbqjA0nQpMG4u8eVC3T1S1+dgIAULXOXj/QwvI+wU0
-	3wVrJ9ZITlDjOcjq+6/KBmO3Kd5SUdc=
+	bh=NRYJdvmu2YT9+EZW2Y9gyrF6TzJ/lvpdC+QFmt09whw=;
+	b=Gd2TbU5PLdrqTxidaF4SxXFFrx8evn/CfqvsKyzyyMGpjLF8QhriKJn+smY9HbHbDhZZQs
+	FvqykJGfcF6lSQIMPTgW+aULNvyoPT28N4ATiDp8d60J05zKlVgc+8Of4d6WUr0SLuME0y
+	hTZDZ6VlG9YB5eCB8Br4Tj8uWSufB+g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680591760;
+	s=mimecast20190719; t=1680592630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
-	b=QBLjGc9vLCZ6qOGib/Uc/R6S5XNhDVrBEmZ9IXstRJVPHWp9GlqH5uqmuAWy2MYP1b7LS0
-	8c9QkQ+mgpkzaIiTuEWD+dD72+/PEbqjA0nQpMG4u8eVC3T1S1+dgIAULXOXj/QwvI+wU0
-	3wVrJ9ZITlDjOcjq+6/KBmO3Kd5SUdc=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NRYJdvmu2YT9+EZW2Y9gyrF6TzJ/lvpdC+QFmt09whw=;
+	b=Gd2TbU5PLdrqTxidaF4SxXFFrx8evn/CfqvsKyzyyMGpjLF8QhriKJn+smY9HbHbDhZZQs
+	FvqykJGfcF6lSQIMPTgW+aULNvyoPT28N4ATiDp8d60J05zKlVgc+8Of4d6WUr0SLuME0y
+	hTZDZ6VlG9YB5eCB8Br4Tj8uWSufB+g=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-aIPuv0SVPnC35igq-DRjtA-1; Tue, 04 Apr 2023 03:02:38 -0400
-X-MC-Unique: aIPuv0SVPnC35igq-DRjtA-1
-Received: by mail-qt1-f200.google.com with SMTP id f36-20020a05622a1a2400b003deb2fa544bso21570903qtb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
+ us-mta-621-mWPx5E5oOL6fivKIgKPvUA-1; Tue, 04 Apr 2023 03:17:08 -0400
+X-MC-Unique: mWPx5E5oOL6fivKIgKPvUA-1
+Received: by mail-qv1-f70.google.com with SMTP id v8-20020a0ccd88000000b005c1927d1609so14103766qvm.12
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 00:17:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680591758;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1680592628;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I3MVmNjjTrzkV62oECuu2nmnGPuxnQPyCsf8ynhsugY=;
-        b=2Nw4QXbVw8wgbipC6ox5xc36zOJmd8X8P9LL9mC5Dd5d4HP3WQMt4CvNvcukuIYmiu
-         h0tiRzWLDes/O6/yBhfGv/HOjjzA29F5uxnBkFJFoB4mQmkwuBg20aAJiI6N4pNtrshO
-         NJshatRpb1O2UizIy0v4o790IoZ8jOB8q8aiL5ulr/B59Xw/oNO0qaxLZeQgF/5md+ng
-         Be1kM3nouOokJR60wxKvxL3Cd16RFMOi72x/pTWiE8kfyhvoB7846rFzMUNDqxpxAyfM
-         KlKYOoJYePYLbNbPaPaFtJ2uXqe1s45dsuQYCIHIsSNhrKHE0oDVbcZVYZ2GHVqSz4nd
-         F27A==
-X-Gm-Message-State: AAQBX9cjH3N9dZoI90kXbiigTQ0XYc8mauJ1pndA01gS5LP76OxjZDap
-	UvIDRf4PAr39hyw28vrd4QRPr95pXOcgZ7UuBxAxWVRr4ayvLm/7xmcWd9xtWPHCD4ap3QeDR6D
-	QK90Z7J7D9MWZ71ApWjpkZPnRjA==
-X-Received: by 2002:a05:622a:1014:b0:3bd:db4:b967 with SMTP id d20-20020a05622a101400b003bd0db4b967mr1605094qte.58.1680591758573;
-        Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
-X-Google-Smtp-Source: AKy350ZeBly8guyCmoO5xOctGAQXU6DItAkqiG1Wa+dT9GI6WOjdnqjMxk2CNPmIGaB4Rl1jZDmaUw==
-X-Received: by 2002:a05:622a:1014:b0:3bd:db4:b967 with SMTP id d20-20020a05622a101400b003bd0db4b967mr1605062qte.58.1680591758243;
-        Tue, 04 Apr 2023 00:02:38 -0700 (PDT)
+        bh=NRYJdvmu2YT9+EZW2Y9gyrF6TzJ/lvpdC+QFmt09whw=;
+        b=mPpg+RyaX0mfRNiQeqidS3Z5iSBc6OUN8KNtrGHosjnNJb0bZUeEUu4vJCU0o24mp2
+         439KAA6eb5IAr34WC3IBCFJHf3jXPtgQbLUfPPVxwBECDVbtfZDs8GR0g7bbkwNuMVna
+         rcWkIz0otmWNC8+NYgnuqbgalgmvg5aDOwmuTQRwA/S1K9U2vof6mIsPCKiT9A+W7O3Q
+         BEHfHUyIQfsf9RmT3srFrLpbmz90LfQFucPZa9UT8r/LofA8ZEHh50TfBOrg6zjISpqW
+         +GLG2J4fvlJrpk4AygyHdco40TyD7tfri4yX2N6lLtWV+Tnpxj+c9ydVMCHVQs22ZIIM
+         cRMg==
+X-Gm-Message-State: AAQBX9fK2M8oEl5Fgcqqfwpvu52o1Fl+iK9b0mJYp+ZWfrrUZ4/0xeqj
+	/Pg42afpfJFSsbOx+YW0q2K+fO/rMs7lZ/IQUKTadhWY03olrjBGAoYvslmTf1a9ejofRYfMafM
+	M2BHszMmPB/v1ngOoIGxeXCRc9A==
+X-Received: by 2002:a05:6214:27e5:b0:5df:44f2:e97d with SMTP id jt5-20020a05621427e500b005df44f2e97dmr33283682qvb.19.1680592628185;
+        Tue, 04 Apr 2023 00:17:08 -0700 (PDT)
+X-Google-Smtp-Source: AKy350b6/Qv/o3wVhUyDFX4zCkfQ4F1t3P/9CUFpq6rARbRXin+E+2DWPBrOHxMRu4dS2R5/r6Cm9g==
+X-Received: by 2002:a05:6214:27e5:b0:5df:44f2:e97d with SMTP id jt5-20020a05621427e500b005df44f2e97dmr33283667qvb.19.1680592627968;
+        Tue, 04 Apr 2023 00:17:07 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-178-74.web.vodafone.de. [109.43.178.74])
-        by smtp.gmail.com with ESMTPSA id t20-20020ac85314000000b003e3870008c8sm3045284qtn.23.2023.04.04.00.02.35
+        by smtp.gmail.com with ESMTPSA id k5-20020a0cebc5000000b005dd8b9345d3sm3160219qvq.107.2023.04.04.00.17.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 00:02:36 -0700 (PDT)
-Message-ID: <1a2de9e8-3536-17d8-e6b3-7312c7ca7f46@redhat.com>
-Date: Tue, 4 Apr 2023 09:02:33 +0200
+        Tue, 04 Apr 2023 00:17:06 -0700 (PDT)
+Message-ID: <de9407df-e3cf-8545-53fa-df7d671b4ea8@redhat.com>
+Date: Tue, 4 Apr 2023 09:17:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [kvm-unit-tests v3 07/13] powerpc/sprs: Specify SPRs with data
- rather than code
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20230327124520.2707537-1-npiggin@gmail.com>
- <20230327124520.2707537-8-npiggin@gmail.com>
+ <20230327124520.2707537-9-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230327124520.2707537-8-npiggin@gmail.com>
+Subject: Re: [kvm-unit-tests v3 08/13] powerpc/spapr_vpa: Add basic VPA tests
+In-Reply-To: <20230327124520.2707537-9-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -108,30 +107,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 27/03/2023 14.45, Nicholas Piggin wrote:
-> A significant rework that builds an array of 'struct spr', where each
-> element describes an SPR. This makes various metadata about the SPR
-> like name and access type easier to carry and use.
+> The VPA is an optional memory structure shared between the hypervisor
+> and operating system, defined by PAPR. This test defines the structure
+> and adds registration, deregistration, and a few simple sanity tests.
 > 
-> Hypervisor privileged registers are described despite not being used
-> at the moment for completeness, but also the code might one day be
-> reused for a hypervisor-privileged test.
-> 
+> [Thanks to Thomas Huth for suggesting many of the test cases.]
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> 
-> This ended up a little over-engineered perhaps, but there are lots of
-> SPRs, lots of access types, lots of changes between processor and ISA
-> versions, and lots of places they are implemented and used, so lots of
-> room for mistakes. There is not a good system in place to easily
-> see that userspace, supervisor, etc., switches perform all the right
-> SPR context switching so this is a nice test case to have. The sprs test
-> quickly caught a few QEMU TCG SPR bugs which really motivated me to
-> improve the SPR coverage.
 > ---
-> Since v2:
-> - Merged with "Indirect SPR accessor functions" patch.
-> 
->   powerpc/sprs.c | 643 ++++++++++++++++++++++++++++++++++---------------
->   1 file changed, 450 insertions(+), 193 deletions(-)
+...
+> diff --git a/powerpc/Makefile.ppc64 b/powerpc/Makefile.ppc64
+> index ea68447..b0ed2b1 100644
+> --- a/powerpc/Makefile.ppc64
+> +++ b/powerpc/Makefile.ppc64
+> @@ -19,7 +19,7 @@ reloc.o  = $(TEST_DIR)/reloc64.o
+>   OBJDIRS += lib/ppc64
+>   
+>   # ppc64 specific tests
+> -tests =
+> +tests = $(TEST_DIR)/spapr_vpa.elf
+>   
+>   include $(SRCDIR)/$(TEST_DIR)/Makefile.common
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+That reminds me: We added all other tests to Makefile.common ... without 
+ever checking them on 32-bit. Since we removed the early 32-bit code long 
+ago already (see commit 2a814baab80af990eaf), it just might not make sense 
+anymore to keep the separation for 64-bit and 32-bit Makefiles around here 
+anymore --> could be a future cleanup to merge the Makefiles in the powerpc 
+folder.
+
+Anyway, that's not a problem of your patch here which looks fine, so:
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
