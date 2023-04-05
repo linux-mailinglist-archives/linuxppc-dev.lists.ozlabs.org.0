@@ -2,93 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532746D7CE8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 14:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 660816D7F2C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 16:20:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ps4B313jvz3f3r
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 22:46:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ps6Gr1VZ8z3f4v
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 00:20:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GER116tg;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VOaUqbHi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=i7Lwf1d+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GER116tg;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VOaUqbHi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=i7Lwf1d+;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ps49816PGz30Mn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 22:45:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680698711;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rJlvbrDO3MZW25EtVUfp0HoO311UYJgGKtfX/KEqF/k=;
-	b=GER116tgb+iYLrIT7d4YCy70CvkCC3ZTYBKLxajJxbZgXuyKM2JcZML6stGxqYHRr9T3HP
-	v8nxW5K3mkeZs7BYaINTyAH6JCw+5alZIbchu93T79G7V2a+W0U8fV0muR1w1xJg8nfw83
-	Gk8E7tl2N3FaU5OmliSluZx/6RQwOf8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680698712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rJlvbrDO3MZW25EtVUfp0HoO311UYJgGKtfX/KEqF/k=;
-	b=VOaUqbHiE2KsX8j2+ZaPdjQNGPnRZ9gzSveDOemwB5nBg1nBwszCop6W9KedLMPRnNo8F4
-	n6EMZrbQxaC2DSYJBnMfzopwRq87/kwjjjoX4obd71FfOfYt+ZECHGV0vgFaBfi2c9BBAI
-	xG7uzYQiemNmxwSYm6urcvQS8XCwYyU=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-WIxacERQOcWw8yVk4eP-IQ-1; Wed, 05 Apr 2023 08:45:10 -0400
-X-MC-Unique: WIxacERQOcWw8yVk4eP-IQ-1
-Received: by mail-qk1-f200.google.com with SMTP id z187-20020a3765c4000000b007468706dfb7so16000023qkb.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Apr 2023 05:45:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ps6D35q7Rz3c7K
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 00:17:55 +1000 (AEST)
+Received: by mail-ed1-x532.google.com with SMTP id er13so100479062edb.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Apr 2023 07:17:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680704266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gimnYVeRT5Ual27rDuwguD8QOIPyBqLLZeCy9UtpDHk=;
+        b=i7Lwf1d+h99qQcQRPi1brnjQQkNsqbi82jDBwp2udTnqAeJTWtBLGDIA01yNQL6row
+         ZgAoRWmGc+pF1uK7WnxxeRSty5vZbEXha74ihCXAp2M2hQWG3h4MQXSDq83PmjITTlEY
+         1TEsdgXlIIHXegoxT+tvvL144fO9uavFxIsYm4xR+oWaHG/67Mbe3vXI2VQIx6RTBLau
+         SUT61wOC+HjiaqVLtSkcGmdHyZ7effqqHEvmQaoyQ8ziHXviInyJiv5WpPRW5492RHM9
+         tJ8EeAt4z9bcihE2b48t8jL5ajgHXKDZvGizKjCBFNbS9COTmew+128z7S+VL4vkDCxO
+         yPrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680698710;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rJlvbrDO3MZW25EtVUfp0HoO311UYJgGKtfX/KEqF/k=;
-        b=0nrczxH3b6tlEvocffGnENmHcqtD8vwN/3aQ9WRh8rV1cbaz5cKWT/gDz8SDtZPUU8
-         6qo3CNnCVBY/niDplNCDXt/q3B5PZ+KB+vWyqAfMk+cg8zVPPqdymx857qgCgs8Poig3
-         7QqEOtFO0nO2Rq/9FbXYJvG7TQQev9Q6gbufoxu3hC4xYA5XxyXyA7thyz6NSNPCQBdU
-         HC+s4iiX0TqVkvetnEz/EsnJjkzWGvzK/fxl2lA9PeITJ/am63hHnOVMgngG/A4ZGDms
-         bP8/So+VMvVVS7nawSKGKVBlG4TPnnH0NHgIPz1+Z2xIEmKLcRT5GoZjo1/deVoJAJgD
-         4Avw==
-X-Gm-Message-State: AAQBX9c69E+pIJqKZ5tj5hXvM926hwpchSQ6fmcHB5EMJtWuGTh3y/Of
-	gpIHC4KakvHPoh8UtGTS1Br0ywR6GmE1E0n3H6eTaip7rGC7ZxWyOIrN9fbaPOvDeBgUxwYBOjc
-	EF1cnN+U7dsdsOHDzDtU7FK6J+g==
-X-Received: by 2002:a05:622a:1716:b0:3e4:eb03:687d with SMTP id h22-20020a05622a171600b003e4eb03687dmr4303584qtk.44.1680698709897;
-        Wed, 05 Apr 2023 05:45:09 -0700 (PDT)
-X-Google-Smtp-Source: AKy350YM3193lIgKl2aWj9mqpkVtYuh0l9dX5dcxwgxaNjVBgfvhxy0L8/57jtC9NbW/iCG3sMx10Q==
-X-Received: by 2002:a05:622a:1716:b0:3e4:eb03:687d with SMTP id h22-20020a05622a171600b003e4eb03687dmr4303502qtk.44.1680698709447;
-        Wed, 05 Apr 2023 05:45:09 -0700 (PDT)
-Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id t186-20020a37aac3000000b00746b7372d62sm4415939qke.27.2023.04.05.05.45.03
+        d=1e100.net; s=20210112; t=1680704266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gimnYVeRT5Ual27rDuwguD8QOIPyBqLLZeCy9UtpDHk=;
+        b=0SJlXSPfaf4wsh8G8Nv0lxWoh7UqMg985aL9vVbMHQ9YMQrYTYnHZjkCApH+P4NGGR
+         GxhWYtHl0N8ilh5cKoHD5kMdDJFqK5MG2rnwaDzQcPZtCUhuHHmUEBKPr1ZxJk2U8z31
+         Yzw1wSXyi2m5ZmRZ++b/cyfA/2u7Gkq7BUr01/C8wZbL2U+v7EJvl3cjdaKvhw2L5IWH
+         igEGJiaPJ/+CKbZ3PfjnOUZ+y3rMIvt6cvoU7/IGAJ5JIJtTwcpy/+6zx5UZM0QOY3Tq
+         1WQtadbBPA8TW9oi3bwsmE7nLmmCWzfQ/F1py/NItfXBp9+fq5I4dlKZ/hqcwoo8t8fq
+         LhJw==
+X-Gm-Message-State: AAQBX9fPW5sIB2FFZUvx3k+WaWC66srquY6AHnGiB4AdtUcTuSFLeSSy
+	c7VPONhbRzTa/cwaSTj6Uwk=
+X-Google-Smtp-Source: AKy350ZLwW17aF+39vghcTuhCDYFbM0+I7GCNro7zTtnC9fuZakgWqGvzxqPQ4Er/diScFgX88yB5w==
+X-Received: by 2002:a17:907:5c7:b0:928:796d:71e8 with SMTP id wg7-20020a17090705c700b00928796d71e8mr3874454ejb.3.1680704265983;
+        Wed, 05 Apr 2023 07:17:45 -0700 (PDT)
+Received: from localhost.localdomain ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id g6-20020a170906348600b009334219656dsm7381246ejb.56.2023.04.05.07.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 05:45:08 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Frederic Weisbecker <frederic@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>
-Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
- only to CPUs in kernel mode
-In-Reply-To: <ZC1j8ivE/kK7+Gd5@lothringen>
-References: <20230404134224.137038-1-ypodemsk@redhat.com>
- <20230404134224.137038-4-ypodemsk@redhat.com>
- <ZC1Q7uX4rNLg3vEg@lothringen> <ZC1XD/sEJY+zRujE@lothringen>
- <20230405114148.GA351571@hirez.programming.kicks-ass.net>
- <ZC1j8ivE/kK7+Gd5@lothringen>
-Date: Wed, 05 Apr 2023 13:45:02 +0100
-Message-ID: <xhsmhpm8ia46p.mognet@vschneid.remote.csb>
+        Wed, 05 Apr 2023 07:17:45 -0700 (PDT)
+From: Uros Bizjak <ubizjak@gmail.com>
+To: linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] locking: Introduce local{,64}_try_cmpxchg
+Date: Wed,  5 Apr 2023 16:17:05 +0200
+Message-Id: <20230405141710.3551-1-ubizjak@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,45 +82,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: geert+renesas@glider.be, tony@atomide.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, Yair Podemsky <ypodemsk@redhat.com>, sebastian.reichel@collabora.com, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, arnd@arndb.de, paulmck@kernel.org, aneesh.kumar@linux.ibm.com, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, samitolvanen@google.com, borntraeger@linux.ibm.com, keescook@chromium.org, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, bp@alien8.de, nick.hawkins@hpe.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, alougovs@redhat.com, mtosatti@redhat.com, linux-kernel@vger.kernel.org, juerg.haefliger@canonical.com, svens@linux.ibm.com, dhildenb@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, "H. Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Jun Yi <yijun@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Nicholas Piggin <npiggin@gmail.com>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Jiri Olsa <jolsa@kernel.org>, Borislav Petkov <bp@alien8.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/04/23 14:05, Frederic Weisbecker wrote:
->  static void smp_call_function_many_cond(const struct cpumask *mask,
->                                       smp_call_func_t func, void *info,
-> @@ -946,10 +948,13 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
->  #endif
->                       cfd_seq_store(pcpu->seq_queue, this_cpu, cpu, CFD_SEQ_QUEUE);
->                       if (llist_add(&csd->node.llist, &per_cpu(call_single_queue, cpu))) {
-> -				__cpumask_set_cpu(cpu, cfd->cpumask_ipi);
-> -				nr_cpus++;
-> -				last_cpu = cpu;
-> -
-> +				if (!(scf_flags & SCF_NO_USER) ||
-> +				    !IS_ENABLED(CONFIG_GENERIC_ENTRY) ||
-> +				     ct_state_cpu(cpu) != CONTEXT_USER) {
-> +					__cpumask_set_cpu(cpu, cfd->cpumask_ipi);
-> +					nr_cpus++;
-> +					last_cpu = cpu;
-> +				}
+Add generic and target specific support for local{,64}_try_cmpxchg
+and wire up support for all targets that use local_t infrastructure.
 
-I've been hacking on something like this (CSD deferral for NOHZ-full),
-and unfortunately this uses the CPU-local cfd_data storage thing, which
-means any further smp_call_function() from the same CPU to the same
-destination will spin on csd_lock_wait(), waiting for the target CPU to
-come out of userspace and flush the queue - and we've just spent extra
-effort into *not* disturbing it, so that'll take a while :(
+The patch enables x86 targets to emit special instruction for
+local_try_cmpxchg and also local64_try_cmpxchg for x86_64.
 
-I don't have much that is in a shareable state yet (though I'm supposed to
-talk some more about it at OSPM in <2 weeks, so I'll have to get there),
-but ATM I'm playing with
-o a bitmask (like in [1]) for coalescable stuff such as do_sync_core() for
-  x86 instruction patching
-o a CSD-like queue for things that need to pass data around, using
-  statically-allocated storage (so with a limit on how much it can be used) - the
-  alternative being allocating a struct on sending, since you don't have a
-  bound on how much crap you can queue on an undisturbed NOHZ-full CPU...
+The last patch changes __perf_output_begin in events/ring_buffer
+to use new locking primitive and improves code from
 
-[1]: https://lore.kernel.org/all/20210929152429.067060646@infradead.org/
+     4b3:	48 8b 82 e8 00 00 00 	mov    0xe8(%rdx),%rax
+     4ba:	48 8b b8 08 04 00 00 	mov    0x408(%rax),%rdi
+     4c1:	8b 42 1c             	mov    0x1c(%rdx),%eax
+     4c4:	48 8b 4a 28          	mov    0x28(%rdx),%rcx
+     4c8:	85 c0                	test   %eax,%eax
+     ...
+     4ef:	48 89 c8             	mov    %rcx,%rax
+     4f2:	48 0f b1 7a 28       	cmpxchg %rdi,0x28(%rdx)
+     4f7:	48 39 c1             	cmp    %rax,%rcx
+     4fa:	75 b7                	jne    4b3 <...>
+
+to
+
+     4b2:	48 8b 4a 28          	mov    0x28(%rdx),%rcx
+     4b6:	48 8b 82 e8 00 00 00 	mov    0xe8(%rdx),%rax
+     4bd:	48 8b b0 08 04 00 00 	mov    0x408(%rax),%rsi
+     4c4:	8b 42 1c             	mov    0x1c(%rdx),%eax
+     4c7:	85 c0                	test   %eax,%eax
+     ...
+     4d4:	48 89 c8             	mov    %rcx,%rax
+     4d7:	48 0f b1 72 28       	cmpxchg %rsi,0x28(%rdx)
+     4dc:	0f 85 d0 00 00 00    	jne    5b2 <...>
+     ...
+     5b2:	48 89 c1             	mov    %rax,%rcx
+     5b5:	e9 fc fe ff ff       	jmp    4b6 <...>
+
+Please note that in addition to removed compare, the load from
+0x28(%rdx) gets moved out of the loop and the code is rearranged
+according to likely/unlikely tags in the source.
+---
+v2:
+
+Implement target specific support for local_try_cmpxchg and
+local_cmpxchg using typed C wrappers that call their _local
+counterpart and provide additional checking of their input
+arguments.
+
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Jun Yi <yijun@loongson.cn>
+
+Uros Bizjak (5):
+  locking/atomic: Add generic try_cmpxchg{,64}_local support
+  locking/generic: Wire up local{,64}_try_cmpxchg
+  locking/arch: Wire up local_try_cmpxchg
+  locking/x86: Define arch_try_cmpxchg_local
+  events: Illustrate the transition to local{,64}_try_cmpxchg
+
+ arch/alpha/include/asm/local.h              | 12 +++++++++--
+ arch/loongarch/include/asm/local.h          | 13 +++++++++--
+ arch/mips/include/asm/local.h               | 13 +++++++++--
+ arch/powerpc/include/asm/local.h            | 11 ++++++++++
+ arch/x86/events/core.c                      |  9 ++++----
+ arch/x86/include/asm/cmpxchg.h              |  6 ++++++
+ arch/x86/include/asm/local.h                | 13 +++++++++--
+ include/asm-generic/local.h                 |  1 +
+ include/asm-generic/local64.h               | 12 ++++++++++-
+ include/linux/atomic/atomic-arch-fallback.h | 24 ++++++++++++++++++++-
+ include/linux/atomic/atomic-instrumented.h  | 20 ++++++++++++++++-
+ kernel/events/ring_buffer.c                 |  5 +++--
+ scripts/atomic/gen-atomic-fallback.sh       |  4 ++++
+ scripts/atomic/gen-atomic-instrumented.sh   |  2 +-
+ 14 files changed, 126 insertions(+), 19 deletions(-)
+
+-- 
+2.39.2
 
