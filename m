@@ -2,69 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A796D738A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 06:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1363C6D73CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 07:33:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Prsjs6JGYz3cDG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 14:54:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PrtZb6vJPz3c6v
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 15:33:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RqoT6vjC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YfZvmH+F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=joel.stan@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RqoT6vjC;
-	dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Prsj01Tn0z3bNj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 14:53:38 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id x15so32783864pjk.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Apr 2023 21:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680670414;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=xWE1BdjjONbSdvZOnpSK61k+ESjWxs05enNGucW95n4=;
-        b=RqoT6vjCQR1qdSGF2iuUSsuPO0sWrRE4MWl5gPRef0/dNL92YQB6piemjZSmqDweEd
-         bolTZ7aSSG22HOxanbfceXyAqPa2mhVKdqCVptC0AWxFGh3BSnro81mNEjjhI1Q30Yug
-         vpEBP1xvK1Yo2ptMZ1qc2szlZATlPkPTVtdHfNXoHEl2pkR6avu2lOgnv0oSZ3LgHB+1
-         SYvWhxnyXFNMQ6jLsl+LjFjz/5r03c9pNMi2wLTDZQlh6IoaIUV1dPN7my2Pau9Sveiu
-         Qw4CblGveahZPZqk3yVZY3u5z9XzpQDf88/p31kvGI7XgGwbbjwc+TdsAeoR6X8GTRpd
-         U3Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680670414;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xWE1BdjjONbSdvZOnpSK61k+ESjWxs05enNGucW95n4=;
-        b=oDslgQ3LCtmj1hyRWKCPxMQdoQVfDFCQ5w5Vz28z3lKxzFqbleFM/n43SThN9OpSjv
-         Rehwrf6+bFKs5j89Izvn5UsM62cTccIGjRCKYKKILopBgkjfFh7k9A4YBXkrWNa1yvVN
-         2n6NvhPhsqUTT98mi0ePStZio2VYiOkDBrD/rx1CdoZ3zydeOa2yvqObxnVh95JrKuxL
-         7J3yl4dJwE/5PdzqrfTlMvbTviMzJlQVg6zrZSjj7qtXQH4FJ2CNuvp+IVA/8Fnl1vwJ
-         FLudWAdT4NFilIdzpB+nFLAo5mi8AzTZMpSdAPUocpcKQQ4hvakahaDXv1eFztUdfdhF
-         jM0g==
-X-Gm-Message-State: AAQBX9clVmTSfPREKC/x0AldyjnvX2w6S6xunSpJ0OfYTv3XOuxA8m0R
-	eQcpaugoEYvKwQBbzUTjxiri+quyMaQ=
-X-Google-Smtp-Source: AKy350bO1dDnCaiZ6Qp2vAmME2Tx9T6tsrd8UbiKj6KMjmCx7KOqLE1S8ZzclkApSP7K9VfedkY5zg==
-X-Received: by 2002:a17:902:f541:b0:1a2:8940:6dbd with SMTP id h1-20020a170902f54100b001a289406dbdmr6043956plf.45.1680670414116;
-        Tue, 04 Apr 2023 21:53:34 -0700 (PDT)
-Received: from localhost.localdomain ([45.124.203.18])
-        by smtp.gmail.com with ESMTPSA id h4-20020a170902704400b0019a593e45f1sm9122900plt.261.2023.04.04.21.53.32
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Apr 2023 21:53:33 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Remove duplicate SPRN_HSRR definitions
-Date: Wed,  5 Apr 2023 14:23:16 +0930
-Message-Id: <20230405045316.95003-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PrtYk356Jz3bgr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Apr 2023 15:32:26 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YfZvmH+F;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PrtYh30Hrz4wj7;
+	Wed,  5 Apr 2023 15:32:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1680672746;
+	bh=6cvZnTNdwRmgAZ2M1VYA2Gsp2e92pYs++vVV/vBNJI0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YfZvmH+FVv9XziLRu5Qy0A59sFncSyDVUTEY9XnAANVK87Rj7BcIp7Pr4igO888Wj
+	 7fEVYZ6ezUGVvYRpfEYBpt+/rsqwlyGm51T1Ocbfrth0iO8J2iYQ/zNcI+duNkPddP
+	 WEJa9k0ih/LUCi1xme4jWirECKyad4GxjkLJWaEhO3XIUbU4QGr8M6rqqrUxvYlIp3
+	 XXzlLj1te8KtwjzDxT7Z+8QaiK8N/dA0Ksf1iaIy0DL6VrIHabBAhfTz20X4qWZl9H
+	 3I7PFOMSZlj3noQzITqlCpBOWSHxa4q3nZC0/kOItcmVaakQrbOHemRvnCnTkSvBSK
+	 SA4zKynbM994g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH] powerpc/64: Always build with 128-bit long double
+In-Reply-To: <20230404151010.GC25951@gate.crashing.org>
+References: <20230404102847.3303623-1-mpe@ellerman.id.au>
+ <20230404151010.GC25951@gate.crashing.org>
+Date: Wed, 05 Apr 2023 15:32:21 +1000
+Message-ID: <87edoyki6y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,33 +58,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: dan@danny.cz, daniel@octaforge.org, amd-gfx@lists.freedesktop.org, tpearson@raptorengineering.com, alexdeucher@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are two copies of these defines. Keep the older ones as they have
-associated bit definitions.
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Tue, Apr 04, 2023 at 08:28:47PM +1000, Michael Ellerman wrote:
+>> The amdgpu driver builds some of its code with hard-float enabled,
+>> whereas the rest of the kernel is built with soft-float.
+>> 
+>> When building with 64-bit long double, if soft-float and hard-float
+>> objects are linked together, the build fails due to incompatible ABI
+>> tags.
+>
+>> Currently those build errors are avoided because the amdgpu driver is
+>> gated on 128-bit long double being enabled. But that's not a detail the
+>> amdgpu driver should need to be aware of, and if another driver starts
+>> using hard-float the same problem would occur.
+>
+> Well.  The kernel driver either has no business using long double (or
+> any other floating point even) at all, or it should know exactly what is
+> used: double precision, double-double, or quadruple precision.  Both of
+> the latter two are 128 bits.
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
-Today I learnt that if you have two copies of the define, but they are
-the same value, the compiler won't warn.
+In a perfect world ... :)
 
- arch/powerpc/include/asm/reg.h | 2 --
- 1 file changed, 2 deletions(-)
+>> All versions of the 64-bit ABI specify that long-double is 128-bits.
+>> However some compilers, notably the kernel.org ones, are built to use
+>> 64-bit long double by default.
+>
+> Mea culpa, I suppose?  But builddall doesn't force 64 bit explicitly.
+> I wonder how this happened?  Is it maybe a problem in the powerpc64le
+> config in GCC itself?
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1e8b2e04e626..0bf4c506a1eb 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -382,8 +382,6 @@
- #define SPRN_HIOR	0x137	/* 970 Hypervisor interrupt offset */
- #define SPRN_RMOR	0x138	/* Real mode offset register */
- #define SPRN_HRMOR	0x139	/* Real mode offset register */
--#define SPRN_HSRR0	0x13A	/* Hypervisor Save/Restore 0 */
--#define SPRN_HSRR1	0x13B	/* Hypervisor Save/Restore 1 */
- #define SPRN_ASDR	0x330	/* Access segment descriptor register */
- #define SPRN_IC		0x350	/* Virtual Instruction Count */
- #define SPRN_VTB	0x351	/* Virtual Time Base */
--- 
-2.39.2
+Not blaming anyone, just one of those things that happens. The
+toolchains the distros (Ubuntu/Fedora) build all seem to use 128, but
+possibly that's because someone told them to configure them that way at
+some point.
 
+> I have a patch from summer last year (Arnd's
+> toolchains are built without it) that does
+> +       powerpc64le-*)  TARGET_GCC_CONF=--with-long-double-128
+> Unfortunately I don't remember why I did that, and I never investigated
+> what the deeper problem is :-/
+
+Last summer (aka winter) is when we first discovered this issue with the
+long double size being implicated.
+
+See:
+  https://git.kernel.org/torvalds/c/c653c591789b3acfa4bf6ae45d5af4f330e50a91
+
+So I guess that's what prompted your patch?
+
+> In either case, the kernel should always use specific types, not rely on
+> the toolchain to pick a type that may or may not work.  The correct size
+> floating point type alone is not enough, but it is a step in the right
+> direction certainly.
+>
+> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+Thanks.
+
+cheers
