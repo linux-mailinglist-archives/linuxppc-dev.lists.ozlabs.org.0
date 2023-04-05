@@ -2,76 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6696D7F41
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 16:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774006D8117
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Apr 2023 17:08:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ps6Kd4bDdz3fZy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 00:22:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ps7LN22gVz3bNj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 01:08:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dcJpf62S;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=w8tf3DJb;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NJtJ5rJL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dcJpf62S;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=w8tf3DJb;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NJtJ5rJL;
 	dkim-atps=neutral
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ps6D75MYmz3f42
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 00:17:59 +1000 (AEST)
-Received: by mail-ed1-x52a.google.com with SMTP id t10so141323317edd.12
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Apr 2023 07:17:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680704276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tX2Wz3EA82OevW9OfamI7/Kvuo0JRd1kfWWZWf7tBPI=;
-        b=dcJpf62STM2t7wBeMFWRHA65D4e8ki42FaDdkuuO3agKqVH6m85Cy4lQ8Jc6WqjxoF
-         fnnlug9El9w16kuSLGTsPbq74oNaQ+P8JDxMAcNUZHQhE8u+5jySMEVYMmtE4egR+MrD
-         Yo63AeJfrWzh2LWw4CUsO/Jz8F4pDt2KwqewSmosxEslt2xhDsBYXNkotYBZ0u2SUb3b
-         bY44Ptodk1vZVbJl1WFw1p9lD7pDptPbaK3ykNtKWYarwScxbwyxAFGsy3vIZ++4+u08
-         7sJWtj5rpBofs9g4DRnm1uwhZ6aYf1PTSfC6VMfZ4+8IxgDtdbMLLd8hp6MXeYVptMAQ
-         HEzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680704276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tX2Wz3EA82OevW9OfamI7/Kvuo0JRd1kfWWZWf7tBPI=;
-        b=6ZH17dBvjGIOCxWWmELfqwwbjWHMz44bUf8YHnS7FSdDb+z0ZArsQPmFXDW0imbHCN
-         ZJAfr2gVJPuTPLzzmIeC+OiyurJ/ecVO77IDchTs63a8K/x/iLWwLofgK07+QBHUBFMt
-         ST6WAYpO4HmxR78aTfq8gxFLaARPrZBFC4PVUBNzqo4PT3YJacbLcDX4Qzdx2rfgiHeT
-         CKtKC2M9bePbXnY546yIzmEmnepsXT6FG9B8dUet65v0RXFYzEUKUob1+291WAbO44W3
-         yRCTAlYhwK1U5H0Lt0aNOOokTKDSfhKMr0TP1xG/5JEiHdprg07e+KQVw+EETMigCWUs
-         joyA==
-X-Gm-Message-State: AAQBX9eqo2y8eoTb7HsPaQfG3ceq8Us1L0lG+RwxiKkROEqavkyxI0rT
-	y8ahlSNb7PZNivFFWcXqNG8=
-X-Google-Smtp-Source: AKy350ZbYZNSgst5kJdLcblY6mgsM4CglBWBhr5I5xeGEgTa/9eOQOFET04v+j0TrQ94wu4NswT8dQ==
-X-Received: by 2002:a17:906:53c3:b0:947:791b:fdcb with SMTP id p3-20020a17090653c300b00947791bfdcbmr2772881ejo.21.1680704276052;
-        Wed, 05 Apr 2023 07:17:56 -0700 (PDT)
-Received: from localhost.localdomain ([46.248.82.114])
-        by smtp.gmail.com with ESMTPSA id g6-20020a170906348600b009334219656dsm7381246ejb.56.2023.04.05.07.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 07:17:55 -0700 (PDT)
-From: Uros Bizjak <ubizjak@gmail.com>
-To: linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] events: Illustrate the transition to local{,64}_try_cmpxchg
-Date: Wed,  5 Apr 2023 16:17:10 +0200
-Message-Id: <20230405141710.3551-6-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230405141710.3551-1-ubizjak@gmail.com>
-References: <20230405141710.3551-1-ubizjak@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ps7HZ4yVJz3cBk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 01:06:02 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E984822926;
+	Wed,  5 Apr 2023 15:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1680707157; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=g5CNiBMyJmGfOboPN85iL6BEAbMbhCK1z8h/E7PJqO8=;
+	b=w8tf3DJbATFS2jgiySieo5lgHacr0/X4t8O83kSm+JjUTN7INy+KEE0c6QKy2YQQEG1D51
+	ei/9VshpEuJZ8SmDOnR/EjlVwb3io8xNrPAvyiDEaO/puZewQ0rt7tBgAYItRDRs1brqRE
+	qzs1tuAkBaBxL74Ueu6ptbgKfBk5KMI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1680707157;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=g5CNiBMyJmGfOboPN85iL6BEAbMbhCK1z8h/E7PJqO8=;
+	b=NJtJ5rJLvESSn/PDRi2v9Tc541wLbJpWwnGJQVN5sUOfOKv49P3yAdDLaj2lKracLovScc
+	sc9Vq2L2x0GeLvDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 85CA413A10;
+	Wed,  5 Apr 2023 15:05:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id aFHUH1WOLWTPIAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 05 Apr 2023 15:05:57 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	daniel.vetter@ffwll.ch,
+	deller@gmx.de,
+	javierm@redhat.com,
+	gregkh@linuxfoundation.org
+Subject: [PATCH 00/18] arch: Consolidate <asm/fb.h>
+Date: Wed,  5 Apr 2023 17:05:36 +0200
+Message-Id: <20230405150554.30540-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,66 +77,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch illustrates the transition to local{,64}_try_cmpxchg.
-It is not intended to be merged as-is.
+Various architectures provide <arm/fb.h> with helpers for fbdev
+framebuffer devices. Share the contained code where possible. There
+is already <asm-generic/fb.h>, which implements generic (as in
+'empty') functions of the fbdev helpers. The header was added in
+commit aafe4dbed0bf ("asm-generic: add generic versions of common
+headers"), but never used.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
----
- arch/x86/events/core.c      | 9 ++++-----
- kernel/events/ring_buffer.c | 5 +++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
+Each per-architecture header file declares and/or implements fbdev
+helpers and defines a preprocessor token for each. The generic
+header then provides the remaining helpers. It works like the I/O
+helpers in <asm/io.h>.
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index d096b04bf80e..d9310e9363f1 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -129,13 +129,12 @@ u64 x86_perf_event_update(struct perf_event *event)
- 	 * exchange a new raw count - then add that new-prev delta
- 	 * count to the generic event atomically:
- 	 */
--again:
- 	prev_raw_count = local64_read(&hwc->prev_count);
--	rdpmcl(hwc->event_base_rdpmc, new_raw_count);
- 
--	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
--					new_raw_count) != prev_raw_count)
--		goto again;
-+	do {
-+		rdpmcl(hwc->event_base_rdpmc, new_raw_count);
-+	} while (!local64_try_cmpxchg(&hwc->prev_count, &prev_raw_count,
-+				      new_raw_count));
- 
- 	/*
- 	 * Now we have the new raw value and have updated the prev
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 273a0fe7910a..111ab85ee97d 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -191,9 +191,10 @@ __perf_output_begin(struct perf_output_handle *handle,
- 
- 	perf_output_get_handle(handle);
- 
-+	offset = local_read(&rb->head);
- 	do {
- 		tail = READ_ONCE(rb->user_page->data_tail);
--		offset = head = local_read(&rb->head);
-+		head = offset;
- 		if (!rb->overwrite) {
- 			if (unlikely(!ring_buffer_has_space(head, tail,
- 							    perf_data_size(rb),
-@@ -217,7 +218,7 @@ __perf_output_begin(struct perf_output_handle *handle,
- 			head += size;
- 		else
- 			head -= size;
--	} while (local_cmpxchg(&rb->head, offset, head) != offset);
-+	} while (!local_try_cmpxchg(&rb->head, &offset, head));
- 
- 	if (backward) {
- 		offset = head;
+For PARISC, the architecture helpers are mixed up with helpers
+for the system's STI graphics firmware. We first move the STI code
+to appropriate locations under video/ and then move the architecture
+helper under arch/parisc.
+
+For Sparc, there's an additional patch that moves the implementation
+from the header into a source file. This allows to avoid some include
+statements in the header file.
+
+Built on arm, arm64, m68k, mips, parisc, powerpc, sparc and x86.
+
+Thomas Zimmermann (18):
+  fbdev: Prepare generic architecture helpers
+  arch/arc: Implement <asm/fb.h> with generic helpers
+  arch/arm: Implement <asm/fb.h> with generic helpers
+  arch/arm64: Implement <asm/fb.h> with generic helpers
+  arch/ia64: Implement <asm/fb.h> with generic helpers
+  arch/loongarch: Implement <asm/fb.h> with generic helpers
+  arch/m68k: Implement <asm/fb.h> with generic helpers
+  arch/mips: Implement <asm/fb.h> with generic helpers
+  video: Remove trailing whitespaces
+  video: Move HP PARISC STI core code to shared location
+  arch/parisc: Remove trailing whitespaces
+  arch/parisc: Implement fb_is_primary_device() under arch/parisc
+  arch/parisc: Implement <asm/fb.h> with generic helpers
+  arch/powerpc: Implement <asm/fb.h> with generic helpers
+  arch/sh: Implement <asm/fb.h> with generic helpers
+  arch/sparc: Implement fb_is_primary_device() in source file
+  arch/sparc: Implement <asm/fb.h> with generic helpers
+  arch/x86: Implement <asm/fb.h> with generic helpers
+
+ arch/arc/include/asm/fb.h                     |  11 +-
+ arch/arm/include/asm/fb.h                     |  10 +-
+ arch/arm64/include/asm/fb.h                   |  10 +-
+ arch/ia64/include/asm/fb.h                    |  11 +-
+ arch/loongarch/include/asm/fb.h               |  10 +-
+ arch/m68k/include/asm/fb.h                    |  10 +-
+ arch/mips/include/asm/fb.h                    |  10 +-
+ arch/parisc/Makefile                          |   4 +-
+ arch/parisc/include/asm/fb.h                  |  17 +-
+ arch/parisc/video/Makefile                    |   3 +
+ arch/parisc/video/fbdev.c                     |  27 +++
+ arch/powerpc/include/asm/fb.h                 |   8 +-
+ arch/sh/include/asm/fb.h                      |  10 +-
+ arch/sparc/Makefile                           |   1 +
+ arch/sparc/include/asm/fb.h                   |  30 ++--
+ arch/sparc/video/Makefile                     |   3 +
+ arch/sparc/video/fbdev.c                      |  24 +++
+ arch/x86/include/asm/fb.h                     |  11 +-
+ drivers/video/Kconfig                         |   7 +
+ drivers/video/Makefile                        |   1 +
+ drivers/video/console/Kconfig                 |   1 +
+ drivers/video/console/Makefile                |   4 +-
+ drivers/video/console/sticon.c                |   6 +-
+ drivers/video/fbdev/Kconfig                   |   3 +-
+ drivers/video/fbdev/stifb.c                   | 158 +++++++++---------
+ drivers/video/{console => }/sticore.c         | 123 ++++++--------
+ include/asm-generic/fb.h                      |  20 ++-
+ .../video/fbdev => include/video}/sticore.h   |  16 +-
+ 28 files changed, 297 insertions(+), 252 deletions(-)
+ create mode 100644 arch/parisc/video/Makefile
+ create mode 100644 arch/parisc/video/fbdev.c
+ create mode 100644 arch/sparc/video/Makefile
+ create mode 100644 arch/sparc/video/fbdev.c
+ rename drivers/video/{console => }/sticore.c (95%)
+ rename {drivers/video/fbdev => include/video}/sticore.h (99%)
+
+
+base-commit: a7180debb9c631375684f4d717466cfb9f238660
 -- 
-2.39.2
+2.40.0
 
