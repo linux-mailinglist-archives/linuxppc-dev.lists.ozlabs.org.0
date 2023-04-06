@@ -2,23 +2,23 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871A06D8BC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 02:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774776D8BC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 02:22:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMdc3MJhz3fTf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 10:22:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMf631hmz3fTc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 10:22:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=2001:4190:8020::34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=<UNKNOWN>)
 Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::34])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMcD2xVdz3fBv
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMcD3rk8z3chn
 	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 10:21:16 +1000 (AEST)
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id DB94092009E; Thu,  6 Apr 2023 02:21:09 +0200 (CEST)
+	id 9B5779200BC; Thu,  6 Apr 2023 02:21:13 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id D459B92009B;
-	Thu,  6 Apr 2023 01:21:09 +0100 (BST)
-Date: Thu, 6 Apr 2023 01:21:09 +0100 (BST)
+	by angie.orcam.me.uk (Postfix) with ESMTP id 96CB29200BB;
+	Thu,  6 Apr 2023 01:21:13 +0100 (BST)
+Date: Thu, 6 Apr 2023 01:21:13 +0100 (BST)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: Bjorn Helgaas <bhelgaas@google.com>, 
     Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
@@ -29,9 +29,10 @@ To: Bjorn Helgaas <bhelgaas@google.com>,
     "David S. Miller" <davem@davemloft.net>, 
     Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
     Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH v8 2/7] PCI: Export PCI link retrain timeout
+Subject: [PATCH v8 3/7] PCI: Execute `quirk_enable_clear_retrain_link'
+ earlier
 In-Reply-To: <alpine.DEB.2.21.2304060100160.13659@angie.orcam.me.uk>
-Message-ID: <alpine.DEB.2.21.2304060110230.13659@angie.orcam.me.uk>
+Message-ID: <alpine.DEB.2.21.2304060112160.13659@angie.orcam.me.uk>
 References: <alpine.DEB.2.21.2304060100160.13659@angie.orcam.me.uk>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
@@ -51,14 +52,14 @@ Cc: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, David Abdurachmanov <david.ab
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rename LINK_RETRAIN_TIMEOUT to PCIE_LINK_RETRAIN_TIMEOUT and make it
-available via "pci.h" for PCI drivers to use.
+Make `quirk_enable_clear_retrain_link' `pci_fixup_early' so that any later 
+fixups can rely on `clear_retrain_link' to have been already initialised.
 
 Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 ---
 Changes from v7:
 
-- Reorder from 1/7.
+- Reorder from 2/7.
 
 No change from v6.
 
@@ -66,43 +67,24 @@ No change from v5.
 
 New change in v5.
 ---
- drivers/pci/pci.h       |    2 ++
- drivers/pci/pcie/aspm.c |    4 +---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-linux-pcie-link-retrain-timeout.diff
-Index: linux-macro/drivers/pci/pci.h
+linux-pcie-clear-retrain-link-early.diff
+Index: linux-macro/drivers/pci/quirks.c
 ===================================================================
---- linux-macro.orig/drivers/pci/pci.h
-+++ linux-macro/drivers/pci/pci.h
-@@ -11,6 +11,8 @@
+--- linux-macro.orig/drivers/pci/quirks.c
++++ linux-macro/drivers/pci/quirks.c
+@@ -2407,9 +2407,9 @@ static void quirk_enable_clear_retrain_l
+ 	dev->clear_retrain_link = 1;
+ 	pci_info(dev, "Enable PCIe Retrain Link quirk\n");
+ }
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_PERICOM, 0xe110, quirk_enable_clear_retrain_link);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_PERICOM, 0xe111, quirk_enable_clear_retrain_link);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_PERICOM, 0xe130, quirk_enable_clear_retrain_link);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PERICOM, 0xe110, quirk_enable_clear_retrain_link);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PERICOM, 0xe111, quirk_enable_clear_retrain_link);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PERICOM, 0xe130, quirk_enable_clear_retrain_link);
  
- #define PCI_VSEC_ID_INTEL_TBT	0x1234	/* Thunderbolt */
- 
-+#define PCIE_LINK_RETRAIN_TIMEOUT HZ
-+
- extern const unsigned char pcie_link_speed[];
- extern bool pci_early_dump;
- 
-Index: linux-macro/drivers/pci/pcie/aspm.c
-===================================================================
---- linux-macro.orig/drivers/pci/pcie/aspm.c
-+++ linux-macro/drivers/pci/pcie/aspm.c
-@@ -90,8 +90,6 @@ static const char *policy_str[] = {
- 	[POLICY_POWER_SUPERSAVE] = "powersupersave"
- };
- 
--#define LINK_RETRAIN_TIMEOUT HZ
--
- /*
-  * The L1 PM substate capability is only implemented in function 0 in a
-  * multi function device.
-@@ -213,7 +211,7 @@ static bool pcie_retrain_link(struct pci
- 	}
- 
- 	/* Wait for link training end. Break out after waiting for timeout */
--	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-+	end_jiffies = jiffies + PCIE_LINK_RETRAIN_TIMEOUT;
- 	do {
- 		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
- 		if (!(reg16 & PCI_EXP_LNKSTA_LT))
+ static void fixup_rev1_53c810(struct pci_dev *dev)
+ {
