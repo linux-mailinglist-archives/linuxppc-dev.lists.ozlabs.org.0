@@ -1,90 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088746D9B0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 16:47:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA7B6D9B11
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 16:48:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pskr85wVWz3g4Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 00:47:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Psks45ZcCz3g5Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 00:48:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Xl+ravcs;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=GJfsiXyS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rEIkwQ/w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Xl+ravcs;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=GJfsiXyS;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rEIkwQ/w;
 	dkim-atps=neutral
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pskcs6ttSz3fvv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Apr 2023 00:38:05 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id D62C5320085B;
-	Thu,  6 Apr 2023 10:37:58 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 06 Apr 2023 10:38:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1680791878; x=1680878278; bh=ox
-	2ZTXVsnbCyF5ePDD8wIyzUaomnw6wvo09Yg9xH4yE=; b=Xl+ravcsiPsKVk2KkL
-	I2jaNWP6SsVzgj0l2AAUmdwcsWH8WBvAQaHcPNWK+oWtxSG5v8oft3mEiGrfSX+O
-	oOOyht5MAlRfGzJVVW/iK2pv4kUDma72keV05qqQR8UC9Pc42i0O9T9EHpbWfV2q
-	dhneyZXVZjxAxknA+NZ3ltAeelllUc2qY1dUTPlVHUWQKRYu1HGioEopE0mqBp1x
-	yAl5Qo49dkA9pIDgeovoR8Wtmb0YUeabZaE1fHuoRFtZXdWYnqKR3cGRvxX3PLsI
-	WCdrwJwIgl81qkWG+GkEin7JO5Vdh2sfir2w6BIffO16YKeBp9i2LWc6dH7NCOlY
-	2Feg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1680791878; x=1680878278; bh=ox2ZTXVsnbCyF
-	5ePDD8wIyzUaomnw6wvo09Yg9xH4yE=; b=GJfsiXySiyLf/aSKQME9Omi9YYhQr
-	CBUMzH5Uu43SH4QKDtYKPdBAJfuqP0NYP8lJWaRmtwPVtNV7viKv4fLZGelyBqMK
-	J5Qna0pHObrbrHvqZPnhXi74n8rFpFnA2IhtqhvDkY3Z4V+VtO1Mf625SU81oW1O
-	fZ7gI045b0yaHjkgJUFjqkjCPcT9n75w4QICk0wh0D0JSwWkLoz/7o543vEbuZi5
-	3gbR+G+lSU0RNbFT5kHLJQRV5kzSUkuNvJ66O5Oi0u+VQ5cdF+pUKK8toGyIkV/Q
-	rkuRD9xppnn4JB0zMQ6IdR/RkvatfyUfnN/l9S6EkQxCzLpAoyGjeVpog==
-X-ME-Sender: <xms:RtkuZCqf42ix84osUCEK9qBmJpUY0MWD5aN0kUufTQmfAJCPAI9ePQ>
-    <xme:RtkuZAqdmJirzfxks01q6UkJQGYetIRs4WOepWBxGJcXFoPE90E4G-icR0GYMnVOt
-    VJ4Ttz8oAhfswFsqN0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdejfedgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:RtkuZHMxqn64kqiLOVgPSyYvg7svJqv-ByDyemeaeZD3anI6mqKv_Q>
-    <xmx:RtkuZB7My2vHt6AwrHQt_rAYHS5WUC7Rj_Thxx6629TSM03aenFM8g>
-    <xmx:RtkuZB6hFGsGfZM8nFH_fIefgRcisw4z8faenvM5ePqi-0oFIPgF4Q>
-    <xmx:RtkuZCPXreSStp1HAL25jNK0qQrYTDcw3TjgITOQ56G92NdX7CTSpQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 216BEB60093; Thu,  6 Apr 2023 10:37:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-334-g8c072af647-fm-20230330.001-g8c072af6
-Mime-Version: 1.0
-Message-Id: <3ff4e8c4-9c4d-4694-bc34-d7778958770e@app.fastmail.com>
-In-Reply-To: <20230406143019.6709-2-tzimmermann@suse.de>
-References: <20230406143019.6709-1-tzimmermann@suse.de>
- <20230406143019.6709-2-tzimmermann@suse.de>
-Date: Thu, 06 Apr 2023 16:37:36 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>,
- "Daniel Vetter" <daniel.vetter@ffwll.ch>, "Helge Deller" <deller@gmx.de>,
- "Javier Martinez Canillas" <javierm@redhat.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2 01/19] fbdev: Prepare generic architecture helpers
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pskg9113pz3fVq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Apr 2023 00:40:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xC9liSByLfpmJoqxob1Tfe5QJtboRITHVK7L2yzhpb4=; b=rEIkwQ/wxL0jbUwKNMG+Rh2X7J
+	fhszdLIzSoytlVtA4gcIUYPYI8IA1Jwh6TeTtXAh3APvzGn9QtZ/HqTywulvk4Df4PtnnO40IDaBd
+	4ZvtlOBF7yGAQPzpfFAmhO5IxmOLDaNwkkrydZ3Gcgl1WF0OUojR7tF3RXOQTtWC4wGL+7WVFfYZn
+	ObQcLHeCK4J039oW17+VXorH+Ez+FqxveiV0q7ZKCMtFodu4+1u0q2K1HssdvPWS4UaLP12oUmZEZ
+	MU7rPLjGwsEoA0GXCU3E/wk0EU3HtN/HGsZIZbNNtQKaCbLvxGCp5vLBqHYTa8Z/UolfGFRVEzFo1
+	yL+DHjGA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1pkQlu-00AY5v-2L;
+	Thu, 06 Apr 2023 14:39:30 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9BA2F300338;
+	Thu,  6 Apr 2023 16:39:26 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 7FDF3212E36AE; Thu,  6 Apr 2023 16:39:26 +0200 (CEST)
+Date: Thu, 6 Apr 2023 16:39:26 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
+ only to CPUs in kernel mode
+Message-ID: <20230406143926.GP386572@hirez.programming.kicks-ass.net>
+References: <20230404134224.137038-1-ypodemsk@redhat.com>
+ <20230404134224.137038-4-ypodemsk@redhat.com>
+ <ZC1Q7uX4rNLg3vEg@lothringen>
+ <ZC1XD/sEJY+zRujE@lothringen>
+ <20230405114148.GA351571@hirez.programming.kicks-ass.net>
+ <ZC1j8ivE/kK7+Gd5@lothringen>
+ <xhsmhpm8ia46p.mognet@vschneid.remote.csb>
+ <20230406133805.GO386572@hirez.programming.kicks-ass.net>
+ <xhsmh8rf59k2f.mognet@vschneid.remote.csb>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xhsmh8rf59k2f.mognet@vschneid.remote.csb>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,28 +74,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: geert+renesas@glider.be, tony@atomide.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, Yair Podemsky <ypodemsk@redhat.com>, sebastian.reichel@collabora.com, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, arnd@arndb.de, paulmck@kernel.org, aneesh.kumar@linux.ibm.com, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, samitolvanen@google.com, borntraeger@linux.ibm.com, hca@linux.ibm.com, keescook@chromium.org, gor@linux.ibm.com, Frederic Weisbecker <frederic@kernel.org>, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, bp@alien8.de, nick.hawkins@hpe.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, alougovs@redhat.com, mtosatti@redhat.com, linux-kernel@vger.kernel.org, juerg.haefliger@canonical.com, svens@linux.ibm.com, dhildenb@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@da
+ vemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 6, 2023, at 16:30, Thomas Zimmermann wrote:
-> Generic implementations of fb_pgprotect() and fb_is_primary_device()
-> have been in the source code for a long time. Prepare the header file
-> to make use of them.
->
-> Improve the code by using an inline function for fb_pgprotect()
-> and by removing include statements. The default mode set by
-> fb_pgprotect() is now writecombine, which is what most platforms
-> want.
->
-> Symbols are protected by preprocessor guards. Architectures that
-> provide a symbol need to define a preprocessor token of the same
-> name and value. Otherwise the header file will provide a generic
-> implementation. This pattern has been taken from <asm/io.h>.
->
-> v2:
-> 	*  use writecombine mappings by default (Arnd)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+On Thu, Apr 06, 2023 at 03:11:52PM +0100, Valentin Schneider wrote:
+> On 06/04/23 15:38, Peter Zijlstra wrote:
+> > On Wed, Apr 05, 2023 at 01:45:02PM +0100, Valentin Schneider wrote:
+> >>
+> >> I've been hacking on something like this (CSD deferral for NOHZ-full),
+> >> and unfortunately this uses the CPU-local cfd_data storage thing, which
+> >> means any further smp_call_function() from the same CPU to the same
+> >> destination will spin on csd_lock_wait(), waiting for the target CPU to
+> >> come out of userspace and flush the queue - and we've just spent extra
+> >> effort into *not* disturbing it, so that'll take a while :(
+> >
+> > I'm not sure I buy into deferring stuff.. a NOHZ_FULL cpu might 'never'
+> > come back. Queueing data just in case it does seems wasteful.
+> 
+> Putting those callbacks straight into the bin would make my life much
+> easier!
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Well, it's either they get inhibited at the source like the parent patch
+does, or they go through. I really don't see a sane middle way here.
+
+> Unfortunately, even if they really should, I don't believe all of the
+> things being crammed onto NOHZ_FULL CPUs have the same definition of
+> 'never' as we do :/
+
+That's not entirely the point, the point is that there are proper
+NOHZ_FULL users that won't return to the kernel until the machine shuts
+down. Buffering stuff for them is more or less a direct memory leak.
+
