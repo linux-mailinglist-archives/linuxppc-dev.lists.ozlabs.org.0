@@ -2,68 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FFA6D9FD3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 20:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E30446DA200
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 21:51:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Psqls6FzZz3fW8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 04:29:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PssZb5FDmz3fSv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 05:51:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=HYwyP555;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mI5rb8Kq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=HYwyP555;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mI5rb8Kq;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Psqky3nTnz3fSm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Apr 2023 04:28:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=krRR1rbNljM3A0v7Or9ollBea6RqbuAL/TrS9ntMbko=; b=HYwyP5557eX2aBI0hUlezid1GH
-	5hoyG1Aj5dHjNeznaZOFr7Cy51rbii3Y5i3cE2woInFfeI8EAPtppz3o99BPe2GIduN6vXv6uyaw7
-	R9cuTob59q/BPrQnGdBywtK77Stl8OJJpBnvpSy/YFDL7vPiYkNIMiGQPDEidGAvoA4jROBnBdVah
-	jOoSwHyGjI0QMaTrXlud204St1NXsF+ujX5WasSumcwLZCeKMORJsJy5xkcpHYXjSOgsSKV186/O/
-	cA0kt/u7rjhL3oPljvBtkfjk5sjNe9coia8oht3RGaO73x29c2Bi67dc2zk8arCu3QV+LNr4pLHNl
-	VKwPG5qQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pkUKx-00Ad17-2X;
-	Thu, 06 Apr 2023 18:27:55 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BDA6530008D;
-	Thu,  6 Apr 2023 20:27:49 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A5453212E36AA; Thu,  6 Apr 2023 20:27:49 +0200 (CEST)
-Date: Thu, 6 Apr 2023 20:27:49 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
- only to CPUs in kernel mode
-Message-ID: <20230406182749.GA405948@hirez.programming.kicks-ass.net>
-References: <20230404134224.137038-4-ypodemsk@redhat.com>
- <ZC1Q7uX4rNLg3vEg@lothringen>
- <ZC1XD/sEJY+zRujE@lothringen>
- <ZC3P3Ds/BIcpRNGr@tpad>
- <20230405195226.GB365912@hirez.programming.kicks-ass.net>
- <ZC69Wmqjdwk+I8kn@tpad>
- <20230406132928.GM386572@hirez.programming.kicks-ass.net>
- <20230406140423.GA386634@hirez.programming.kicks-ass.net>
- <20230406150213.GQ386572@hirez.programming.kicks-ass.net>
- <248392c0-52d1-d09d-75ec-9e930435c053@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PssYj6N82z3fQW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Apr 2023 05:50:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE52617E2;
+	Thu,  6 Apr 2023 19:50:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C19C4339B;
+	Thu,  6 Apr 2023 19:50:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1680810646;
+	bh=32/ERBuCPLg73Wp+3UJTiBuxgUhs/B+tC/Mg3mw9sJY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=mI5rb8Kqbexq5Sn0CO12HTVYh67g8aNr3I4vWR7XOtjcr/2qK8eLNe4N9yrReytaa
+	 0yOep1u/DSfnBp9+6NLfRaBIxrMZxgnp7jyF5Bayn0bahU8w2wOdJ/95rwIW3sADPM
+	 LyToKoIPQI6HgU7Fews06dS6yBdd6OE1bW68Msw2DBXRlyLI/2tn7QKdT/3vXRiqOz
+	 YGSfra0HW+4hnWKkr97Tvrcdf/jprBkk53H57H8E5LyaqbGOlvuPuD0TRUspyiCe3e
+	 pyrprNIIz1Xmk7JgGwWskIZjsG7uHgqEXr4VOS4AMXWTK/q/YgDfTGhIv8Ot6/gNM/
+	 BFs+KFWxmBdCA==
+Date: Thu, 6 Apr 2023 14:50:45 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Grant Grundler <grundler@chromium.org>
+Subject: Re: [PATCHv2 pci-next 2/2] PCI/AER: Rate limit the reporting of the
+ correctable errors
+Message-ID: <20230406195045.GA3729127@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <248392c0-52d1-d09d-75ec-9e930435c053@redhat.com>
+In-Reply-To: <20230317175109.3859943-2-grundler@chromium.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,44 +59,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: geert+renesas@glider.be, tony@atomide.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, Yair Podemsky <ypodemsk@redhat.com>, sebastian.reichel@collabora.com, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, vschneid@redhat.com, arnd@arndb.de, paulmck@kernel.org, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, samitolvanen@google.com, borntraeger@linux.ibm.com, hca@linux.ibm.com, keescook@chromium.org, gor@linux.ibm.com, jannh@google.com, Frederic Weisbecker <frederic@kernel.org>, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, Yang Shi <shy828301@gmail.com>, bp@alien8.de, nick.hawkins@hpe.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, alougovs@redhat.com, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, juerg.haefliger@canonical.com, svens@linux.ibm.com, aneesh.kumar@linux.ibm.com
- , dhildenb@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Oliver O 'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 06, 2023 at 05:51:52PM +0200, David Hildenbrand wrote:
-> On 06.04.23 17:02, Peter Zijlstra wrote:
-
-> > DavidH, what do you thikn about reviving Jann's patches here:
-> > 
-> >    https://bugs.chromium.org/p/project-zero/issues/detail?id=2365#c1
-> > 
-> > Those are far more invasive, but afaict they seem to do the right thing.
-> > 
+On Fri, Mar 17, 2023 at 10:51:09AM -0700, Grant Grundler wrote:
+> From: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
 > 
-> I recall seeing those while discussed on security@kernel.org. What we
-> currently have was (IMHO for good reasons) deemed better to fix the issue,
-> especially when caring about backports and getting it right.
-
-Yes, and I think that was the right call. However, we can now revisit
-without having the pressure of a known defect and backport
-considerations.
-
-> The alternative that was discussed in that context IIRC was to simply
-> allocate a fresh page table, place the fresh page table into the list
-> instead, and simply free the old page table (then using common machinery).
+> There are many instances where correctable errors tend to inundate
+> the message buffer. We observe such instances during thunderbolt PCIe
+> tunneling.
 > 
-> TBH, I'd wish (and recently raised) that we could just stop wasting memory
-> on page tables for THPs that are maybe never going to get PTE-mapped ... and
-> eventually just allocate on demand (with some caching?) and handle the
-> places where we're OOM and cannot PTE-map a THP in some descend way.
+> It's true that they are mitigated by the hardware and are non-fatal
+> but we shouldn't be spamming the logs with such correctable errors as it
+> confuses other kernel developers less familiar with PCI errors, support
+> staff, and users who happen to look at the logs, hence rate limit them.
 > 
-> ... instead of trying to figure out how to deal with these page tables we
-> cannot free but have to special-case simply because of GUP-fast.
+> A typical example log inside an HP TBT4 dock:
+> [54912.661142] pcieport 0000:00:07.0: AER: Multiple Corrected error received: 0000:2b:00.0
+> [54912.661194] igc 0000:2b:00.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Transmitter ID)
+> [54912.661203] igc 0000:2b:00.0:   device [8086:5502] error status/mask=00001100/00002000
+> [54912.661211] igc 0000:2b:00.0:    [ 8] Rollover
+> [54912.661219] igc 0000:2b:00.0:    [12] Timeout
+> [54982.838760] pcieport 0000:00:07.0: AER: Corrected error received: 0000:2b:00.0
+> [54982.838798] igc 0000:2b:00.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Transmitter ID)
+> [54982.838808] igc 0000:2b:00.0:   device [8086:5502] error status/mask=00001000/00002000
+> [54982.838817] igc 0000:2b:00.0:    [12] Timeout
 
-Not keeping them around sounds good to me, but I'm not *that* familiar
-with the THP code, most of that happened after I stopped tracking mm. So
-I'm not sure how feasible is it.
+The timestamps don't contribute to understanding the problem, so we
+can omit them.
 
-But it does look entirely feasible to rework this page-table freeing
-along the lines Jann did.
+> This gets repeated continuously, thus inundating the buffer.
+> 
+> Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+> Signed-off-by: Grant Grundler <grundler@chromium.org>
+> ---
+>  drivers/pci/pcie/aer.c | 42 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index cb6b96233967..b592cea8bffe 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -706,8 +706,8 @@ static void __aer_print_error(struct pci_dev *dev,
+>  			errmsg = "Unknown Error Bit";
+>  
+>  		if (info->severity == AER_CORRECTABLE)
+> -			pci_info(dev, "   [%2d] %-22s%s\n", i, errmsg,
+> -				info->first_error == i ? " (First)" : "");
+> +			pci_info_ratelimited(dev, "   [%2d] %-22s%s\n", i, errmsg,
+> +					     info->first_error == i ? " (First)" : "");
+
+I don't think this is going to reliably work the way we want.  We have
+a bunch of pci_info_ratelimited() calls, and each caller has its own
+ratelimit_state data.  Unless we call pci_info_ratelimited() exactly
+the same number of times for each error, the ratelimit counters will
+get out of sync and we'll end up printing fragments from error A mixed
+with fragments from error B.
+
+I think we need to explicitly manage the ratelimiting ourselves,
+similar to print_hmi_event_info() or print_extlog_rcd().  Then we can
+have a *single* ratelimit_state, and we can check it once to determine
+whether to log this correctable error.
+
+>  		else
+>  			pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+>  				info->first_error == i ? " (First)" : "");
+> @@ -719,7 +719,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  {
+>  	int layer, agent;
+>  	int id = ((dev->bus->number << 8) | dev->devfn);
+> -	const char *level;
+>  
+>  	if (!info->status) {
+>  		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
+> @@ -730,14 +729,21 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+>  	agent = AER_GET_AGENT(info->severity, info->status);
+>  
+> -	level = (info->severity == AER_CORRECTABLE) ? KERN_INFO : KERN_ERR;
+> +	if (info->severity == AER_CORRECTABLE) {
+> +		pci_info_ratelimited(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> +				     aer_error_severity_string[info->severity],
+> +				     aer_error_layer[layer], aer_agent_string[agent]);
+>  
+> -	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> -		   aer_error_severity_string[info->severity],
+> -		   aer_error_layer[layer], aer_agent_string[agent]);
+> +		pci_info_ratelimited(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +				     dev->vendor, dev->device, info->status, info->mask);
+> +	} else {
+> +		pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> +			aer_error_severity_string[info->severity],
+> +			aer_error_layer[layer], aer_agent_string[agent]);
+>  
+> -	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> -		   dev->vendor, dev->device, info->status, info->mask);
+> +		pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +			dev->vendor, dev->device, info->status, info->mask);
+> +	}
+>  
+>  	__aer_print_error(dev, info);
+>  
+> @@ -757,11 +763,19 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
+>  	u8 bus = info->id >> 8;
+>  	u8 devfn = info->id & 0xff;
+>  
+> -	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
+> -		 info->multi_error_valid ? "Multiple " : "",
+> -		 aer_error_severity_string[info->severity],
+> -		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
+> -		 PCI_FUNC(devfn));
+> +	if (info->severity == AER_CORRECTABLE)
+> +		pci_info_ratelimited(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
+> +				     info->multi_error_valid ? "Multiple " : "",
+> +				     aer_error_severity_string[info->severity],
+> +				     pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
+> +				     PCI_FUNC(devfn));
+> +	else
+> +		pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
+> +			 info->multi_error_valid ? "Multiple " : "",
+> +			 aer_error_severity_string[info->severity],
+> +			 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
+> +			 PCI_FUNC(devfn));
+> +
+>  }
+>  
+>  #ifdef CONFIG_ACPI_APEI_PCIEAER
+> -- 
+> 2.40.0.rc1.284.g88254d51c5-goog
+> 
