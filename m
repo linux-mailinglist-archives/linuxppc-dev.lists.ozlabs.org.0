@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267A6D8BE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 02:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4F56D8BDF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 02:28:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMnP2jq9z3frp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 10:29:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PsMmP5kJ2z3fjc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 10:28:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PsMlw6ccVz3fYD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PsMlw0d3fz3fdk
 	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 10:27:56 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PsMlw3FyFz4xDr;
-	Thu,  6 Apr 2023 10:27:56 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PsMls5tn2z4x1N;
+	Thu,  6 Apr 2023 10:27:53 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Benjamin Gray <bgray@linux.ibm.com>
-In-Reply-To: <20230302225947.81083-1-bgray@linux.ibm.com>
-References: <20230302225947.81083-1-bgray@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/64s: Fix __pte_needs_flush() false positive warning
-Message-Id: <168074081763.3666874.3253471572277076314.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20230404041433.1781804-1-aneesh.kumar@linux.ibm.com>
+References: <20230404041433.1781804-1-aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/papr_scm: Update the NUMA distance table for the target node
+Message-Id: <168074081765.3666874.4766413676138573175.b4-ty@ellerman.id.au>
 Date: Thu, 06 Apr 2023 10:26:57 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,25 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, ruscur@russell.cc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 03 Mar 2023 09:59:47 +1100, Benjamin Gray wrote:
-> Userspace PROT_NONE ptes set _PAGE_PRIVILEGED, triggering a false
-> positive debug assertion that __pte_flags_need_flush() is not called
-> on a kernel mapping.
-> 
-> Detect when it is a userspace PROT_NONE page by checking the required
-> bits of PAGE_NONE are set, and none of the RWX bits are set.
-> pte_protnone() is insufficient here because it always returns 0 when
-> CONFIG_NUMA_BALANCING=n.
+On Tue, 04 Apr 2023 09:44:33 +0530, Aneesh Kumar K.V wrote:
+> platform device helper routines won't update the NUMA distance table
+> while creating a platform device, even if the device is present on
+> a NUMA node that doesn't have memory or CPU. This is especially true
+> for pmem devices. If the target node of the pmem device is not online, we
+> find the nearest online node to the device and associate the pmem
+> device with that online node. To find the nearest online node, we should
+> have the numa distance table updated correctly. Update the distance
+> information during the device probe.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/64s: Fix __pte_needs_flush() false positive warning
-      https://git.kernel.org/powerpc/c/1abce0580b89464546ae06abd5891ebec43c9470
+[1/1] powerpc/papr_scm: Update the NUMA distance table for the target node
+      https://git.kernel.org/powerpc/c/b277fc793daf258877b4c0744b52f69d6e6ba22e
 
 cheers
