@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454FA6D8C97
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 03:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFE76D8CA5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 03:18:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PsNmp1wyNz3fg0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 11:13:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PsNtT0hR8z3fnX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 11:18:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PsNjr37yHz3cMy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 11:11:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PsNk16w3Cz3fBf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 11:11:21 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PsNjr2MrLz4xFg;
-	Thu,  6 Apr 2023 11:11:12 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PsNk14l1Gz4xG6;
+	Thu,  6 Apr 2023 11:11:21 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nathan Lynch <nathanl@linux.ibm.com>
-In-Reply-To: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
-References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
-Subject: Re: (subset) [PATCH 0/8] RTAS changes for 6.4
-Message-Id: <168074339916.3678997.1713532883621826400.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Anatolij Gustschin <agust@denx.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Rob Herring <robh@kernel.org>
+In-Reply-To: <20230310144659.1541127-1-robh@kernel.org>
+References: <20230310144659.1541127-1-robh@kernel.org>
+Subject: Re: [PATCH] powerpc: Use of_property_read_bool() for boolean properties
+Message-Id: <168074339913.3678997.13589135548528569547.b4-ty@ellerman.id.au>
 Date: Thu, 06 Apr 2023 11:09:59 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,26 +42,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 06 Mar 2023 15:33:39 -0600, Nathan Lynch wrote:
-> Proposed changes for the RTAS subsystem and client code.
+On Fri, 10 Mar 2023 08:46:57 -0600, Rob Herring wrote:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties.
+> Convert reading boolean properties to to of_property_read_bool().
 > 
-> Fixes that are subject to backporting are at the front of the queue,
-> followed by documentation and cleanups, with enhancements at the end.
 > 
-> Noteworthy changes:
-> * Change sys_rtas() to consume -2/990x statuses instead of returning
->   them to user space.
-> * Lockdep annotations for invariants in rtas.c.
-> 
-> [...]
 
 Applied to powerpc/next.
 
-[6/8] powerpc/rtas: lockdep annotations
-      https://git.kernel.org/powerpc/c/af8bc68263b2184e63ee67ca70cecff4636f7901
+[1/1] powerpc: Use of_property_read_bool() for boolean properties
+      https://git.kernel.org/powerpc/c/4d57e3515e3838b12eccbeb5e0e52f053e3f638a
 
 cheers
