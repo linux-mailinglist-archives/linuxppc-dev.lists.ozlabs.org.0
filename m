@@ -1,78 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3A56D97D4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 15:18:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241B46D9844
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 15:31:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PshsG1kq0z3fTf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 23:18:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Psj8B0LqKz3fJd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Apr 2023 23:31:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZfVeh5HW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Efid/otI;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vue8C2R2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mtosatti@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZfVeh5HW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Efid/otI;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vue8C2R2;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PshqR2XNfz3f4R
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 23:17:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680787023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rEZb6SaUsngmnCMPg4YGowc9TbgaZEBXr+mRqfM4dbw=;
-	b=ZfVeh5HWD5OO0bu/XR72lsVK2ymu9iISJZWfMZOfkZgPJFtI7b5DuemAYbFWsYBQFO0Ob8
-	WmyhBZ73ld7S/BC3ekVnQrH6N1kzuYoBcqfTufn6nTT6lygQkqMz3fiPKsSZfi67acjUOw
-	gw/AQYHLgDvrQaYoLAZJV8gdq6tVruQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680787024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rEZb6SaUsngmnCMPg4YGowc9TbgaZEBXr+mRqfM4dbw=;
-	b=Efid/otIlv1zWb4EKkOrk23R3yICnRokZgDheIj2N18W1uvCJrsR8cfRdvidWhZw8+3Lby
-	AcZPhRwpnKbeR9nKhoCn7J97gdFChZlCygnLHn/gryCkTeUGbVZA5wyReFMzKJDOjJeyKS
-	wB40iL5WW6tsucO/3DLOG3rTYl1/qoI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-10l_5oWZPX2YbGgfWqkGXw-1; Thu, 06 Apr 2023 09:16:57 -0400
-X-MC-Unique: 10l_5oWZPX2YbGgfWqkGXw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B0A9884EC0;
-	Thu,  6 Apr 2023 13:16:55 +0000 (UTC)
-Received: from tpad.localdomain (ovpn-112-2.gru2.redhat.com [10.97.112.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 82F2D2166B26;
-	Thu,  6 Apr 2023 13:16:54 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id A64FC40EB07D7; Thu,  6 Apr 2023 09:49:22 -0300 (-03)
-Date: Thu, 6 Apr 2023 09:49:22 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Psj7F2q7Vz3fBd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Apr 2023 23:30:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Nd3XkTPolwnpqLUE3NgrOTALtPa5jjJD1/nKvlAaz2Y=; b=vue8C2R2wX38xDkBGmlwtFuwej
+	Uh9YLsW/EhfXMh7OJlSlN4QIICEHntt5WzTJnGsnePbisoQVK9CJRIbgzILTTKcC9rMcoH5KSTnLC
+	+BM4FSDOzNuPtj0pJezReU7JgYDtuX7kZBnGSJ5R6oJeKcNvAgEzHJ5cnyJl6vMuW/lwUcLdzsb+U
+	jV4L2Sfce7s6V1mmzQ7Ujvs482g3uQ7SKnRijWGFfVXch9CHyJFxOeVVM6YM2Zd34fz6GBDK0qY8r
+	kylhl+3KwiY5LKfmkEmzd8bEYUSWaULkGLEtIOsfwdZDai4Vh6S9T3AIUaj4NN1o1QFsneAz55xwe
+	RYXZfkyg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pkPgE-00HS2T-GH; Thu, 06 Apr 2023 13:29:34 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A336A300194;
+	Thu,  6 Apr 2023 15:29:28 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 7C90E212E36AC; Thu,  6 Apr 2023 15:29:28 +0200 (CEST)
+Date: Thu, 6 Apr 2023 15:29:28 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marcelo Tosatti <mtosatti@redhat.com>
 Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
  only to CPUs in kernel mode
-Message-ID: <ZC6/0hRXztNwqXg0@tpad>
+Message-ID: <20230406132928.GM386572@hirez.programming.kicks-ass.net>
 References: <20230404134224.137038-1-ypodemsk@redhat.com>
  <20230404134224.137038-4-ypodemsk@redhat.com>
  <ZC1Q7uX4rNLg3vEg@lothringen>
- <ZC3PUkI7N2uEKy6v@tpad>
- <20230405195457.GC365912@hirez.programming.kicks-ass.net>
+ <ZC1XD/sEJY+zRujE@lothringen>
+ <ZC3P3Ds/BIcpRNGr@tpad>
+ <20230405195226.GB365912@hirez.programming.kicks-ass.net>
+ <ZC69Wmqjdwk+I8kn@tpad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230405195457.GC365912@hirez.programming.kicks-ass.net>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+In-Reply-To: <ZC69Wmqjdwk+I8kn@tpad>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,50 +76,18 @@ Cc: geert+renesas@glider.be, tony@atomide.com, linus.walleij@linaro.org, dave.ha
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 05, 2023 at 09:54:57PM +0200, Peter Zijlstra wrote:
-> On Wed, Apr 05, 2023 at 04:43:14PM -0300, Marcelo Tosatti wrote:
+On Thu, Apr 06, 2023 at 09:38:50AM -0300, Marcelo Tosatti wrote:
+
+> > To actually hit this path you're doing something really dodgy.
 > 
-> > Two points:
-> > 
-> > 1) For a virtualized system, the overhead is not only of executing the
-> > IPI but:
-> > 
-> > 	VM-exit
-> > 	run VM-exit code in host
-> > 	handle IPI
-> > 	run VM-entry code in host
-> > 	VM-entry
+> Apparently khugepaged is using the same infrastructure:
 > 
-> I thought we could do IPIs without VMexit these days? 
-
-Yes, IPIs to vCPU (guest context). In this case we can consider
-an IPI to the host pCPU (which requires VM-exit from guest context).
-
-> Also virt... /me walks away.
+> $ grep tlb_remove_table khugepaged.c 
+> 	tlb_remove_table_sync_one();
+> 	tlb_remove_table_sync_one();
 > 
-> > 2) Depends on the application and the definition of "occasional".
-> > 
-> > For certain types of applications (for example PLC software or
-> > RAN processing), upon occurrence of an event, it is necessary to
-> > complete a certain task in a maximum amount of time (deadline).
-> 
-> If the application is properly NOHZ_FULL and never does a kernel entry,
-> it will never get that IPI. If it is a pile of shit and does kernel
-> entries while it pretends to be NOHZ_FULL it gets to keep the pieces and
-> no amount of crying will get me to care.
+> So just enabling khugepaged will hit that path.
 
-I suppose its common practice to use certain system calls in latency
-sensitive applications, for example nanosleep. Some examples:
+Urgh, WTF..
 
-1) cyclictest		(nanosleep)
-2) PLC programs		(nanosleep)
-
-A system call does not necessarily have to take locks, does it ?
-
-Or even if application does system calls, but runs under a VM,
-then you are requiring it to never VM-exit.
-
-This reduces the flexibility of developing such applications.
-
-
-
+Let me go read that stuff :/
