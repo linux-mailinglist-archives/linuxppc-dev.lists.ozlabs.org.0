@@ -1,71 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A7C6DB721
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 01:25:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1216DB728
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 01:31:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PtZGn3K7lz3fZ2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 09:25:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtZPx07mWz3fZh
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 09:31:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAizk1c7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=g5wwO/E/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3pacwzaykdn4seanjcgoogle.comlinuxppc-devlists.ozlabs.org@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAizk1c7;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=g5wwO/E/;
 	dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtZFv4nJ2z3fTm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 09:24:34 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1a51d48b25fso1077615ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 16:24:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtZP64Q9nz3fBd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 09:30:48 +1000 (AEST)
+Received: by mail-pl1-x64a.google.com with SMTP id j2-20020a170902da8200b001a055243657so89932plx.19
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 16:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1680909871; x=1683501871;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/k8Ld9z1xCEc4BHtSmCo5AXFhJJw0OpZKpMkjzbxFWI=;
-        b=EAizk1c7O9PSk8Lcp5k9X8nBk8poWUZJYgJ1zQSs3cXVB4sXVf+Y1AsOx+AtDFsFAW
-         2dDCeU+lW16NjIoR0dsKQDmfA2fZMyCUTowQojsK1V6H+uuZoDeYt3HZshvgoqNwsxiV
-         oul25JbSjwDfzn6VUTVySwfuUNKg+iqkbVRWtj9X1mP9Hvn5MMN/DkkdQDLzuJcMsZoq
-         Gg/YBtLlopy1oaBW4cdsA0gSXw38fJUu/cLsrPsV5NRkjRN3Yy9L/IOAOe0s7ZHghlpH
-         SYIrj1xKNzQZGH2vcfR2x8LZ9HAhdVhUbnMZajyEeB/Bf0ujei+4U7/SvSO1dQk/Fu3y
-         KTlg==
+        d=google.com; s=20210112; t=1680910246;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFUj6O6CB3iiBV1uvi/t8sklxmHPNBdsFm6z4ma14Yo=;
+        b=g5wwO/E/km9HV/J4Uo40AnPSisucwkmavL4S1Pf4Fx0jHCk1WbKxYKFrTEZxFx6XHp
+         2exvb76Kc6SS9Ds8LXjXF0I1WFqClQxCNCC6sf4daSWTnp+YpnSO2121ov5N7kOpcqib
+         YCLGPirwnvPcpp/S3fo5s+vT7QnEVjcGGwmgFHFlmScqbAaLkGHrQ6ia2vS3XVAARuDd
+         sMCqZDZFuZewtQIjpJWpW7S/bUTL7IiTKNWpDkyOWB4W2AE70oenj4IH+Pui3ZI77/9t
+         egivxNBn8aOes50PuEtPh0HjwIwXrfmgH5cXyJJ/cO29tWSweCMf9GcheLm+s0IsbY3F
+         CJyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680909871; x=1683501871;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/k8Ld9z1xCEc4BHtSmCo5AXFhJJw0OpZKpMkjzbxFWI=;
-        b=YUa54m2+KkVhRJXdVjVR1B122y1f1AZXtFXhssxdbsH/inCuTBT90VA/9s/4pW3hWj
-         Lh0WsAablujMSjTFwTQsvadTbsqjJphHTCw8Cfm0nlHRQHMSCeNhYJ8z62RwKN+S/a3a
-         oFSKOag81jz0VOHtXaHxTLg9od2Kne0VofxM+PQnDqjYEf1hEvucZvRcY8Rwx4xPn313
-         1Ow8qEkp5k1P5/ZeVrJGnu+Ie+qPM8E9yRHjzr5pfqClfPGnY6mExvf/Ib/CHt2U2Kjs
-         7FG9azjVFTrbJTtnjFKw5+/SZx0bDKfb1pqG8BUPXXeWPPsj/mVNKKvWVNU9Btdq1P28
-         kVrA==
-X-Gm-Message-State: AAQBX9fj/lNIFvAahdwMgfsluyeCb8IsPZ7/8HyhN7KCF+IKqKW+eqa2
-	A4BFlTwBGUTPKpJzVAcGBarc1g==
-X-Google-Smtp-Source: AKy350ZVzfdilh3sQ5mgS8FjOciG5ROpRCAvfvKR/AT1puPgkgbSm11Om9eOeamlMjtON4N/OSg76Q==
-X-Received: by 2002:a62:6417:0:b0:62d:b4ae:e48c with SMTP id y23-20020a626417000000b0062db4aee48cmr270792pfb.23.1680909871377;
-        Fri, 07 Apr 2023 16:24:31 -0700 (PDT)
-Received: from google.com ([2620:15c:2d1:203:5eb4:e720:fec7:a2d3])
-        by smtp.gmail.com with ESMTPSA id p14-20020a63e64e000000b004fb8732a2f9sm3162486pgj.88.2023.04.07.16.24.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 16:24:30 -0700 (PDT)
-Date: Fri, 7 Apr 2023 16:24:26 -0700
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH] powerpc/32: Include thread_info.h in head_booke.h
-Message-ID: <ZDCmKoworvEhxKCu@google.com>
-References: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
+        d=1e100.net; s=20210112; t=1680910246;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFUj6O6CB3iiBV1uvi/t8sklxmHPNBdsFm6z4ma14Yo=;
+        b=OkLqVs8pngHVK1UZFdlHDSZ7oerK2XdZhBT0l276rvJZl4iYisveRq8Gv+lEp+lveD
+         Sikvubm9svinQIGIExFLVXV5Fk+vfebf850AJxMu7FCgyO5fQXo2RO51RgnD0x8yiR+I
+         XaT4IuObGuIx55sGjRLXfa3okGxTiUotoffD6t1o2pAuVtMpQPOh9bmRSKZnXdFM6oX0
+         WQHiK6iMcXYVYgokJQX7uoXZPuYFChYnb2UJLWJia2NpyyGaZupsPM+So1e9BwO0qJ/X
+         nIGJDCxgBlt7+ouvZAva813onj8CHk99t6npbVMPkFbyGHiJBDIibRxtRGKV9rVnVwM/
+         z/YA==
+X-Gm-Message-State: AAQBX9fznqPGcOpuPeA2k/2z6u7SmWOSFFMJ+jszyj73SSd6vGzdgEbF
+	q/XTJGTnqfq2QUZpUopZA9dDFNKjsww=
+X-Google-Smtp-Source: AKy350YxihhHFMNV20FoO+AQH03z9Y8GXCy5PhVvBVZ1Rdqa7VXUgXNseSxSRo6RlhR0sxbeKagnCEmAUJY=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:cc01:b0:244:9909:6e60 with SMTP id
+ b1-20020a17090acc0100b0024499096e60mr959943pju.3.1680910245959; Fri, 07 Apr
+ 2023 16:30:45 -0700 (PDT)
+Date: Fri, 7 Apr 2023 16:30:44 -0700
+In-Reply-To: <20230306190156.434452-1-dmatlack@google.com>
+Mime-Version: 1.0
+References: <20230306190156.434452-1-dmatlack@google.com>
+Message-ID: <ZDCnpAd0fh2cKcpS@google.com>
+Subject: Re: [PATCH v2 0/4] KVM: Refactor KVM stats macros and enable custom
+ stat names
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,53 +74,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, masahiroy@kernel.org, patches@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Zenghui Yu <yuzenghui@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Sathvika Vasireddy <sv@linux.ibm.com>, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Anup Patel <anup@brainfault.org>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini
+  <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 06, 2023 at 10:51:30AM -0700, Nathan Chancellor wrote:
-> When building with W=1 after commit 80b6093b55e3 ("kbuild: add -Wundef
-> to KBUILD_CPPFLAGS for W=1 builds"), the following warning occurs.
+On Mon, Mar 06, 2023, David Matlack wrote:
+> David Matlack (4):
+>   KVM: Refactor stats descriptor generation macros
+>   KVM: Refactor designated initializer macros for struct _kvm_stats_desc
+>   KVM: Allow custom names for KVM_STAT()
+>   KVM: x86: Drop union for pages_{4k,2m,1g} stats
 > 
->   In file included from arch/powerpc/kvm/bookehv_interrupts.S:26:
->   arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning: "THREAD_SHIFT" is not defined, evaluates to 0 [-Wundef]
->      20 | #if (THREAD_SHIFT < 15)
->         |      ^~~~~~~~~~~~
-> 
-> THREAD_SHIFT is defined in thread_info.h but it is not directly included
-> in head_booke.h, so it is possible for THREAD_SHIFT to be undefined. Add
-> the include to ensure that THREAD_SHIFT is always defined.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/202304050954.yskLdczH-lkp@intel.com/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>  arch/arm64/kvm/guest.c          |  14 +--
+>  arch/mips/kvm/mips.c            |  54 ++++-----
+>  arch/powerpc/kvm/book3s.c       |  62 +++++-----
+>  arch/powerpc/kvm/booke.c        |  48 ++++----
+>  arch/riscv/kvm/vcpu.c           |  16 +--
+>  arch/s390/kvm/kvm-s390.c        | 198 ++++++++++++++++----------------
+>  arch/x86/include/asm/kvm_host.h |   9 +-
+>  arch/x86/kvm/x86.c              |  94 +++++++--------
+>  include/linux/kvm_host.h        | 179 +++++++++++------------------
+>  9 files changed, 314 insertions(+), 360 deletions(-)
 
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+For the series,
 
-> ---
->  arch/powerpc/kernel/head_booke.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-> index 37d43c172676..b6b5b01a173c 100644
-> --- a/arch/powerpc/kernel/head_booke.h
-> +++ b/arch/powerpc/kernel/head_booke.h
-> @@ -5,6 +5,7 @@
->  #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
->  #include <asm/kvm_asm.h>
->  #include <asm/kvm_booke_hv_asm.h>
-> +#include <asm/thread_info.h>	/* for THREAD_SHIFT */
->  
->  #ifdef __ASSEMBLY__
->  
-> 
-> ---
-> base-commit: b0bbe5a2915201e3231e788d716d39dc54493b03
-> change-id: 20230406-wundef-thread_shift_booke-e08d806ed656
-> 
-> Best regards,
-> -- 
-> Nathan Chancellor <nathan@kernel.org>
-> 
-> 
+Reviewed-by: Sean Christopherson <seanjc@google.com>
