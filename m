@@ -1,82 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C177D6DAE2F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 15:47:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592436DB010
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 18:02:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PtKRy4rLxz3fVQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Apr 2023 23:47:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtNRg0pk6z3fWZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 02:02:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kX12iSDY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b1x6wuN8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=bagasdotme@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3wz4wzaykdmaykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kX12iSDY;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=b1x6wuN8;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtKR65sN2z3chd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Apr 2023 23:46:41 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-23b4291461dso160407a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 06:46:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtNQm2X9Cz3fDv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 02:01:34 +1000 (AEST)
+Received: by mail-pl1-x649.google.com with SMTP id h4-20020a170902f54400b001a1f5f00f3fso24186205plf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 09:01:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680875197;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZL321vaITWn9sq0TM/dZld2xfZM7ieaEWlwJnFULcKo=;
-        b=kX12iSDYPTc/jNWI/Shc8ryP57t5aEJe6dCb/WMczQssEYLicItq9gB9dV7uM6EBZd
-         HvxFSx8v/lDlcZRtF1tzF6whyY+6UrmmJUEzdC9ZLJR+dda2MvA/7oUSxpLgeInB/POm
-         Su74NLfmxkvKDnKgdWXQqhWJqQ17l+u6wV8Q233LYvItrgXBUAjy0prMpNT+xDJgIxZ8
-         HmgQB2Jdp1gSDuO3tpXsmjlL3edgxU6Vqi1mUHX5koE0q0XWVtIAQT8N//rrRnkC+yxv
-         I4IMsbF6r3RAOo3rC5XYdjYa8/s5ShRBVLBmC4KcbEmQsXcigR+3E1wJTOuF1WVTjWak
-         xilA==
+        d=google.com; s=20210112; t=1680883291;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ArkFzgGmWr5GIWIb5S26dnAG6/MRvelBkLMc+Gk1DCI=;
+        b=b1x6wuN8SB2jxdh5jqkPjFSPwNKAuuWDG6iq4r0w3QQ/c5uBQxAUffbz7fBkpbziRs
+         lMJRpn1M2y6+OlEjiNm3RbYpHz87fmdsm1jcQrsUaK7jsdHCMBrQjEVfhZbS2K8FL1xC
+         BjOOsJBZ/EzEfpR405ay040NT0E7n++jFFtxki7qpx43vYV/QX7b+IUkqPqVe7tcsl+y
+         celfLgTwE59cPCrG6hNTC32U/dCV/eE9guxjTQaSprpdU+4l2Qni1vJVQi9P8OgA5p5x
+         zskClbiyAR4JdPnZE4oZ6VhsZg2eDSH7aRqCaxCbL86DuP6LI+TvES+S+ZRH9wBMef7s
+         QYqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680875197;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZL321vaITWn9sq0TM/dZld2xfZM7ieaEWlwJnFULcKo=;
-        b=0n7SukRDguRO3lhxOYPuty/knknpJOqkmksIhJzJWHenKzJ1y4k6va4Us2AqDqmrMO
-         Uyx4fE1PxGlKraHD1E91M3b9k24P+yf+FFMs1P3xxk62N7snIRQV6i/dWNYKOexu4qFb
-         rOM5fFSsfA/C0tFzptEGTW4POaQ9hxgyTcPLlINWo2AeMIF8v1nGWpa9KKLlsydjE/pY
-         PVXBnDeyjnwjdeJwzzvlKlGamOtZjevh/Coojp7aymzRUbIJ2HMUANtTRsdJDC5rbA+U
-         8Bv9Nr7Jn8+jbhKFQXGu8CUON0DTZn/WAz9obY604KnGnrC1AqA+46oMg85naElurt/5
-         H4PQ==
-X-Gm-Message-State: AAQBX9egsoq5fMLGyBemwKNEKOZq1JK3wc4/iKX8ano5aAL22gUpOdVw
-	o9cUjRWJkYyWaf4vS1A1sn4=
-X-Google-Smtp-Source: AKy350YaVuyemhEJIxnNyz0NWio4uKYlJsvlUnwsS6Msz0fskX2OH31jxejr8ZW2tYTR1B7iwI4pdw==
-X-Received: by 2002:a62:1989:0:b0:626:1c2a:2805 with SMTP id 131-20020a621989000000b006261c2a2805mr2273160pfz.25.1680875197221;
-        Fri, 07 Apr 2023 06:46:37 -0700 (PDT)
-Received: from debian.me (subs03-180-214-233-76.three.co.id. [180.214.233.76])
-        by smtp.gmail.com with ESMTPSA id b8-20020aa78108000000b0062d7c0dc4f4sm3067550pfi.80.2023.04.07.06.46.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 06:46:36 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-	id BEB061067F2; Fri,  7 Apr 2023 20:46:32 +0700 (WIB)
-Date: Fri, 7 Apr 2023 20:46:32 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Kautuk Consul <kconsul@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Fabiano Rosas <farosas@linux.ibm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>
+        d=1e100.net; s=20210112; t=1680883291;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ArkFzgGmWr5GIWIb5S26dnAG6/MRvelBkLMc+Gk1DCI=;
+        b=7G0YSMx+kIUnaBZxnXkQDSFVBgq/cGk4TvIrumgqge6FszioEjnJMLB+DlwL1Y+Q9G
+         ky9Hwac4U8j3Kg7R4SpXWc7HtZ11SlB2FgQx77Z0CRvd5ObfSp/WDylK2pUO2Ap9thAI
+         wzn6ZTjkUVuhbuEQX7FfojI5gP3RN7djnMme8FWlu5KUVMDz5kayjscHywr2pAaoSV0h
+         UHGgEtoO5jwvJGArMVxBOqCs8Rn8MtuSRkuCLLIctAqdmJtPiwDfAz9j5jMVZPuBSfbP
+         ZBXJc/03gXVztaEK+5m9DLsKj91wOHEL642VKu0FSmKRmEG7sG+4GKvee0lI6d81H8hQ
+         DJfw==
+X-Gm-Message-State: AAQBX9eq8+ifNPLAFaH5VqsSu7oX0bVLiLZ0odEVjRnPAEIC3KqzjlA+
+	hmVdXP2qmJsESKeeSCVIsH1c/UCgpXA=
+X-Google-Smtp-Source: AKy350a1DofUs4VOJFEpf/Bjl29q9TIoQByxl0Ghis+7csRXJ+eNPnFAcI7+ZZ3vVziDU2S9rTWGWVfcWWc=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:cf90:b0:244:a6e7:bb6c with SMTP id
+ i16-20020a17090acf9000b00244a6e7bb6cmr760824pju.8.1680883291507; Fri, 07 Apr
+ 2023 09:01:31 -0700 (PDT)
+Date: Fri, 7 Apr 2023 09:01:29 -0700
+In-Reply-To: <ZDAeuL2fz1aEW6rz@debian.me>
+Mime-Version: 1.0
+References: <20230407093147.3646597-1-kconsul@linux.vnet.ibm.com> <ZDAeuL2fz1aEW6rz@debian.me>
+Message-ID: <ZDA+WdiqB2931xHB@google.com>
 Subject: Re: [PATCH] KVM: PPC: BOOK3S: book3s_hv_nested.c: improve branch
  prediction for k.alloc
-Message-ID: <ZDAeuL2fz1aEW6rz@debian.me>
-References: <20230407093147.3646597-1-kconsul@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6caTa8mxFTuMf/uP"
-Content-Disposition: inline
-In-Reply-To: <20230407093147.3646597-1-kconsul@linux.vnet.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,43 +74,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Fabiano Rosas <farosas@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Kautuk Consul <kconsul@linux.vnet.ibm.com>, Chao Peng <chao.p.peng@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Apr 07, 2023, Bagas Sanjaya wrote:
+> On Fri, Apr 07, 2023 at 05:31:47AM -0400, Kautuk Consul wrote:
+> > I used the unlikely() macro on the return values of the k.alloc
+> > calls and found that it changes the code generation a bit.
+> > Optimize all return paths of k.alloc calls by improving
+> > branch prediction on return value of k.alloc.
 
---6caTa8mxFTuMf/uP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Nit, this is improving code generation, not branch prediction.
 
-On Fri, Apr 07, 2023 at 05:31:47AM -0400, Kautuk Consul wrote:
-> I used the unlikely() macro on the return values of the k.alloc
-> calls and found that it changes the code generation a bit.
-> Optimize all return paths of k.alloc calls by improving
-> branch prediction on return value of k.alloc.
+> What about below?
+> 
+> "Improve branch prediction on kmalloc() and kzalloc() call by using
+> unlikely() macro to optimize their return paths."
 
-What about below?
-
-"Improve branch prediction on kmalloc() and kzalloc() call by using
-unlikely() macro to optimize their return paths."
-
-That is, try to avoid first-person construct (I).
-
-Thanks.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---6caTa8mxFTuMf/uP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZDAetAAKCRD2uYlJVVFO
-o8WRAQDI+qrr3elgQo4FKB1f8DWaii9J1c8omUyFNKUt/TOr0AEAvj3x7tljbC01
-Cs/ZW4kFNxjJHwgIY5bhRfZr28QfbA4=
-=4KC8
------END PGP SIGNATURE-----
-
---6caTa8mxFTuMf/uP--
+Another nit, using unlikely() doesn't necessarily provide a measurable optimization.
+As above, it does often improve code generation for the happy path, but that doesn't
+always equate to improved performance, e.g. if the CPU can easily predict the branch
+and/or there is no impact on the cache footprint.
