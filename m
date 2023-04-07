@@ -2,55 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9EE6DB710
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 01:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A7C6DB721
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 01:25:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PtZ3s1NBtz3fTR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 09:15:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtZGn3K7lz3fZ2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 09:25:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ByBI9RNP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAizk1c7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ByBI9RNP;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAizk1c7;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtZ2z2QvBz3chb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 09:15:07 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0C91965549;
-	Fri,  7 Apr 2023 23:15:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187AAC433EF;
-	Fri,  7 Apr 2023 23:15:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680909302;
-	bh=eVPMrVHJu8S6/AV9JoIyXesIKaGwbrhFt6Aeyu8JnC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ByBI9RNPnH/VZd+G7KFu2un4q2UzvQdABlt08r22ZeBJfq/eck31eQXZA5747D3LK
-	 PTdt5dqFr84muP7tva6/V7KcEEGDCNF6R7tEw1puEFitkPw4Mn3bKNiuqtTrZYwwLA
-	 BymZnTGmzYLa3UJCXZZD6pwVBUs/NFfXC7RrK7XY4uR5gDLdU4XNUn+AwsdaNeJdiF
-	 OcNkRJtK/JM2TFtspLumgbeYT/jVNlbDVjr3ESpxd+HpJVbXBJzD5+X+/z/skQYMLs
-	 nTS2sNz6mbe8mCznT64v9r8SXliA05v1zQS85iCqyu3oq1US5mE+U8esF9svexREUc
-	 rmC4rPAhB3f4g==
-Date: Fri, 7 Apr 2023 16:15:00 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning:
- "THREAD_SHIFT" is not defined, evaluates to 0
-Message-ID: <20230407231500.GA2598451@dev-arch.thelio-3990X>
-References: <202304050954.yskLdczH-lkp@intel.com>
- <CAKwvOdmXTOaK+JALp+fr4Q_MtVgi23Te9RvLPF8-Sisc3qWQ=A@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PtZFv4nJ2z3fTm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 09:24:34 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1a51d48b25fso1077615ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 16:24:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1680909871; x=1683501871;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/k8Ld9z1xCEc4BHtSmCo5AXFhJJw0OpZKpMkjzbxFWI=;
+        b=EAizk1c7O9PSk8Lcp5k9X8nBk8poWUZJYgJ1zQSs3cXVB4sXVf+Y1AsOx+AtDFsFAW
+         2dDCeU+lW16NjIoR0dsKQDmfA2fZMyCUTowQojsK1V6H+uuZoDeYt3HZshvgoqNwsxiV
+         oul25JbSjwDfzn6VUTVySwfuUNKg+iqkbVRWtj9X1mP9Hvn5MMN/DkkdQDLzuJcMsZoq
+         Gg/YBtLlopy1oaBW4cdsA0gSXw38fJUu/cLsrPsV5NRkjRN3Yy9L/IOAOe0s7ZHghlpH
+         SYIrj1xKNzQZGH2vcfR2x8LZ9HAhdVhUbnMZajyEeB/Bf0ujei+4U7/SvSO1dQk/Fu3y
+         KTlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680909871; x=1683501871;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/k8Ld9z1xCEc4BHtSmCo5AXFhJJw0OpZKpMkjzbxFWI=;
+        b=YUa54m2+KkVhRJXdVjVR1B122y1f1AZXtFXhssxdbsH/inCuTBT90VA/9s/4pW3hWj
+         Lh0WsAablujMSjTFwTQsvadTbsqjJphHTCw8Cfm0nlHRQHMSCeNhYJ8z62RwKN+S/a3a
+         oFSKOag81jz0VOHtXaHxTLg9od2Kne0VofxM+PQnDqjYEf1hEvucZvRcY8Rwx4xPn313
+         1Ow8qEkp5k1P5/ZeVrJGnu+Ie+qPM8E9yRHjzr5pfqClfPGnY6mExvf/Ib/CHt2U2Kjs
+         7FG9azjVFTrbJTtnjFKw5+/SZx0bDKfb1pqG8BUPXXeWPPsj/mVNKKvWVNU9Btdq1P28
+         kVrA==
+X-Gm-Message-State: AAQBX9fj/lNIFvAahdwMgfsluyeCb8IsPZ7/8HyhN7KCF+IKqKW+eqa2
+	A4BFlTwBGUTPKpJzVAcGBarc1g==
+X-Google-Smtp-Source: AKy350ZVzfdilh3sQ5mgS8FjOciG5ROpRCAvfvKR/AT1puPgkgbSm11Om9eOeamlMjtON4N/OSg76Q==
+X-Received: by 2002:a62:6417:0:b0:62d:b4ae:e48c with SMTP id y23-20020a626417000000b0062db4aee48cmr270792pfb.23.1680909871377;
+        Fri, 07 Apr 2023 16:24:31 -0700 (PDT)
+Received: from google.com ([2620:15c:2d1:203:5eb4:e720:fec7:a2d3])
+        by smtp.gmail.com with ESMTPSA id p14-20020a63e64e000000b004fb8732a2f9sm3162486pgj.88.2023.04.07.16.24.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Apr 2023 16:24:30 -0700 (PDT)
+Date: Fri, 7 Apr 2023 16:24:26 -0700
+From: Nick Desaulniers <ndesaulniers@google.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH] powerpc/32: Include thread_info.h in head_booke.h
+Message-ID: <ZDCmKoworvEhxKCu@google.com>
+References: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOdmXTOaK+JALp+fr4Q_MtVgi23Te9RvLPF8-Sisc3qWQ=A@mail.gmail.com>
+In-Reply-To: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,88 +77,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Cc: kernel test robot <lkp@intel.com>, masahiroy@kernel.org, patches@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 07, 2023 at 04:08:43PM -0700, Nick Desaulniers wrote:
-> On Tue, Apr 4, 2023 at 6:29 PM kernel test robot <lkp@intel.com> wrote:
-> >
-> > Hi Masahiro,
-> >
-> > FYI, the error/warning still remains.
-> >
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> > head:   76f598ba7d8e2bfb4855b5298caedd5af0c374a8
-> > commit: 80b6093b55e31c2c40ff082fb32523d4e852954f kbuild: add -Wundef to KBUILD_CPPFLAGS for W=1 builds
-> > date:   4 months ago
-> > config: powerpc-buildonly-randconfig-r003-20230405 (https://download.01.org/0day-ci/archive/20230405/202304050954.yskLdczH-lkp@intel.com/config)
-> > compiler: powerpc-linux-gcc (GCC) 12.1.0
-> > reproduce (this is a W=1 build):
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=80b6093b55e31c2c40ff082fb32523d4e852954f
-> >         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> >         git fetch --no-tags linus master
-> >         git checkout 80b6093b55e31c2c40ff082fb32523d4e852954f
-> >         # save the config file
-> >         mkdir build_dir && cp config build_dir/.config
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/ arch/powerpc/kvm/ virt/
-> >
-> > If you fix the issue, kindly add following tag where applicable
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Link: https://lore.kernel.org/oe-kbuild-all/202304050954.yskLdczH-lkp@intel.com/
-> >
-> > All warnings (new ones prefixed by >>):
-> >
-> >    In file included from arch/powerpc/kvm/bookehv_interrupts.S:26:
-> > >> arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning: "THREAD_SHIFT" is not defined, evaluates to 0 [-Wundef]
-> >       20 | #if (THREAD_SHIFT < 15)
-> >          |      ^~~~~~~~~~~~
+On Thu, Apr 06, 2023 at 10:51:30AM -0700, Nathan Chancellor wrote:
+> When building with W=1 after commit 80b6093b55e3 ("kbuild: add -Wundef
+> to KBUILD_CPPFLAGS for W=1 builds"), the following warning occurs.
 > 
-> Should arch/powerpc/kernel/head_booke.h be #include'ing
-> asm/thread_info.h before using THREAD_SHIFT?
+>   In file included from arch/powerpc/kvm/bookehv_interrupts.S:26:
+>   arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning: "THREAD_SHIFT" is not defined, evaluates to 0 [-Wundef]
+>      20 | #if (THREAD_SHIFT < 15)
+>         |      ^~~~~~~~~~~~
+> 
+> THREAD_SHIFT is defined in thread_info.h but it is not directly included
+> in head_booke.h, so it is possible for THREAD_SHIFT to be undefined. Add
+> the include to ensure that THREAD_SHIFT is always defined.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/202304050954.yskLdczH-lkp@intel.com/
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-I think so, sorry for not cc'ing you on
-https://lore.kernel.org/linuxppc-dev/20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org/
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-> >
-> >
-> > vim +/THREAD_SHIFT +20 arch/powerpc/kvm/../kernel/head_booke.h
-> >
-> > 1a4b739bbb4f88 Christophe Leroy 2019-04-30  10
-> > 63dafe5728e735 Becky Bruce      2006-01-14  11  /*
-> > 63dafe5728e735 Becky Bruce      2006-01-14  12   * Macros used for common Book-e exception handling
-> > 63dafe5728e735 Becky Bruce      2006-01-14  13   */
-> > 63dafe5728e735 Becky Bruce      2006-01-14  14
-> > 63dafe5728e735 Becky Bruce      2006-01-14  15  #define SET_IVOR(vector_number, vector_label)           \
-> > 63dafe5728e735 Becky Bruce      2006-01-14  16                  li      r26,vector_label@l;             \
-> > 63dafe5728e735 Becky Bruce      2006-01-14  17                  mtspr   SPRN_IVOR##vector_number,r26;   \
-> > 63dafe5728e735 Becky Bruce      2006-01-14  18                  sync
-> > 63dafe5728e735 Becky Bruce      2006-01-14  19
-> > e12401222f749c Yuri Tikhonov    2009-01-29 @20  #if (THREAD_SHIFT < 15)
-> > e12401222f749c Yuri Tikhonov    2009-01-29  21  #define ALLOC_STACK_FRAME(reg, val)                     \
-> > e12401222f749c Yuri Tikhonov    2009-01-29  22          addi reg,reg,val
-> > e12401222f749c Yuri Tikhonov    2009-01-29  23  #else
-> > e12401222f749c Yuri Tikhonov    2009-01-29  24  #define ALLOC_STACK_FRAME(reg, val)                     \
-> > e12401222f749c Yuri Tikhonov    2009-01-29  25          addis   reg,reg,val@ha;                         \
-> > e12401222f749c Yuri Tikhonov    2009-01-29  26          addi    reg,reg,val@l
-> > e12401222f749c Yuri Tikhonov    2009-01-29  27  #endif
-> > e12401222f749c Yuri Tikhonov    2009-01-29  28
-> >
-> > :::::: The code at line 20 was first introduced by commit
-> > :::::: e12401222f749c37277a313d631dc024bbfd3b00 powerpc/44x: Support for 256KB PAGE_SIZE
-> >
-> > :::::: TO: Yuri Tikhonov <yur@emcraft.com>
-> > :::::: CC: Josh Boyer <jwboyer@linux.vnet.ibm.com>
-> >
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests
+> ---
+>  arch/powerpc/kernel/head_booke.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
+> index 37d43c172676..b6b5b01a173c 100644
+> --- a/arch/powerpc/kernel/head_booke.h
+> +++ b/arch/powerpc/kernel/head_booke.h
+> @@ -5,6 +5,7 @@
+>  #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
+>  #include <asm/kvm_asm.h>
+>  #include <asm/kvm_booke_hv_asm.h>
+> +#include <asm/thread_info.h>	/* for THREAD_SHIFT */
+>  
+>  #ifdef __ASSEMBLY__
+>  
 > 
+> ---
+> base-commit: b0bbe5a2915201e3231e788d716d39dc54493b03
+> change-id: 20230406-wundef-thread_shift_booke-e08d806ed656
 > 
+> Best regards,
 > -- 
-> Thanks,
-> ~Nick Desaulniers
+> Nathan Chancellor <nathan@kernel.org>
+> 
+> 
