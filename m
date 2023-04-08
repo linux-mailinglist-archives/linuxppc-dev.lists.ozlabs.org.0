@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F42F6DB81C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 04:20:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E266DB81D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 04:21:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptf8s1M4mz3fgw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 12:20:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptf9p04XBz3fff
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 12:21:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oUVD0o2B;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Jdxxy2k3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oUVD0o2B;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Jdxxy2k3;
 	dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptf6B2Pywz3cjW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 12:18:10 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id bg9so482543plb.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 19:18:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptf6F1bN6z3fWn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 12:18:13 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id 60-20020a17090a09c200b0023fcc8ce113so2697005pjo.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 19:18:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680920288; x=1683512288;
+        d=gmail.com; s=20210112; t=1680920291; x=1683512291;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dWV2YzJkSdVhHH8yn695MrgwE31x1dFs+RHWpfsQ+HM=;
-        b=oUVD0o2BKraOLnU1M2aVt007Fep2I5ZrdfPI97jvkSC/OP/WDGlB+LBk45h7JS/te5
-         TafSpWW/9Ilj2YD91+H82o3m1WP0KJzlfMaYS1EBTYfLQyxqrMY+1K7lXMbGolNcvffb
-         E8UY2b71eatIFFrvW0mCrk3MO1WHzcqKYAXOiAtgzU6awKp8cX+GRZLT7E6YafKAbU8d
-         u102Up98pfVFfl4kZ2TPdL3K4eIax5J67Y1B+uEPyLzTt1BZEbhaljkUdilSBShdFGRi
-         DlmJJGUlkYidMyAD+7F9Ll644jyeR8UyQ9c1QPH1T8hfIdXs9d5wcEyCVBp69KWTN5Sb
-         oxYw==
+        bh=xw1mbwBNy9otf/zNS0CGo+Qrz1tbS9TlYwkGqXtPzHQ=;
+        b=Jdxxy2k35TF8VuQ7JI9qP4SiXDx+w1ZKMlNFPi7UT6u6Kj37osyBVAppCsq8WoU2hG
+         v5HXonkNfaXsgbzQ+jR6nC0bJnA0rQWODkzlmEflt37g2gpCS42ryZdoQf7WEIn+C9eB
+         161C9de6qZ5ZXOAKuXsDka5fYQjovD3DhMUbnLUlK7zaZIqMCkzETq2LL4oyGNeen7f2
+         kAePwT57XlbbRJ1o7QNmI2Pa0Zi4ZaDPF/J5stW2QJKW3Wg+hbChE3eZd7qjK+DhwKEp
+         +y/+Ko/WNQJyCGhSm2SOUGtm7N3Vbo4Z4WSZLiGidgxnNGG7UfdZxjjS+HFE0ElCWbr+
+         FxrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680920288; x=1683512288;
+        d=1e100.net; s=20210112; t=1680920291; x=1683512291;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dWV2YzJkSdVhHH8yn695MrgwE31x1dFs+RHWpfsQ+HM=;
-        b=K1wXsBUfZrDP9PDsK03VrpaM8Y2bgsIu2fOEvMg6H4WnJ07ZVUL/TGwANtY7YL3jgo
-         eyEiyLGfZk2SpXuTrxerYGzneGV/buYjz+FFNgrrq4QfxCWex1j/LNWjvOWh2dx0CfUR
-         F3dv0QlaLdrrILoXv4nLxcf/IGJ9vCMtRpULyi0VneYHb3VV/t+vUrAm+I+P1Sn9NhT7
-         zY6AEx0qwGHKJUmGGHyZmZoM99AE7x6D/a4TKr7+VPXvkdfXqw0BeoVNGWAcVBK+X/Q5
-         Jtxa0T026yxiWzr4JoALTqQTTuteo2BDHCBLPWzjDNjuo7ks525+KWjROaV/agq4lFhs
-         MGWA==
-X-Gm-Message-State: AAQBX9cSdlP7vV1dklKfGTzqPWPL5TnqarS6sEre8RHnnWDWMw2jOHt7
-	6MWYoOjz5oi8gmBMw2vwDBHeIx1LYb3u/g==
-X-Google-Smtp-Source: AKy350b22zyVMsb1yYBJJL9V6XIjuSZ8BsSu/Mq7hMA9TKDSGMQs8r/B3tVTX8DIL4NHX0IHIcbRnQ==
-X-Received: by 2002:a17:90b:180e:b0:246:725e:cd42 with SMTP id lw14-20020a17090b180e00b00246725ecd42mr1172845pjb.21.1680920287917;
-        Fri, 07 Apr 2023 19:18:07 -0700 (PDT)
+        bh=xw1mbwBNy9otf/zNS0CGo+Qrz1tbS9TlYwkGqXtPzHQ=;
+        b=Qu0fN/L9Yq83lZ2al4U37J+ehE9xNPNV8qHTb9jDYeBIHlQI09pIKZVaO17MdFlR3y
+         Fik2z2pNeN+fc0zycnR2UlV6iw5J1K0yMx9yzQL2XeWmJkgK5sJrCyWXneXsl1H+5k4s
+         8rqH8+YkVGb0QgfsZzBg5vLZDkY/WHAJAtUV1V+/8cIPOYcVYtOPy8Of9Md2kTv4yvHi
+         IvXOzZV6Ypp9VLnrzwQLT+Ln67KmxNYlkqGEJQlTiNBmAb84QQrMV4peiRe/Em67fV8U
+         iT5a3GeGyo74m2Ssm2+j7/3DXLHvbksSdyGAkHWqKVPtUm6SHrG/kmMNGHhXrCLnTRmu
+         hnng==
+X-Gm-Message-State: AAQBX9dSQ7mUxIWPrzGITY7WPV4Xs/kod7eYVtdzX6hIgyd7RESYuXFj
+	vpGM47cDeCgSy/A2WxOhRLEl1colhOTWqQ==
+X-Google-Smtp-Source: AKy350Y8fH/qvdd9UR2Kul4yVGWrUfDhMVf6ekg4MTUDNUNiTXmFpuXEnZPYAl8AHQQHtoak5dTTtg==
+X-Received: by 2002:a17:902:e5c4:b0:19b:107b:698e with SMTP id u4-20020a170902e5c400b0019b107b698emr5427242plf.14.1680920290848;
+        Fri, 07 Apr 2023 19:18:10 -0700 (PDT)
 Received: from wheely.local0.net ([203.59.189.25])
-        by smtp.gmail.com with ESMTPSA id d11-20020a170902654b00b001a19f3a661esm3498577pln.138.2023.04.07.19.18.05
+        by smtp.gmail.com with ESMTPSA id d11-20020a170902654b00b001a19f3a661esm3498577pln.138.2023.04.07.19.18.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 19:18:07 -0700 (PDT)
+        Fri, 07 Apr 2023 19:18:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/6] powerpc/64s: Run at the kernel virtual address earlier in boot
-Date: Sat,  8 Apr 2023 12:17:48 +1000
-Message-Id: <20230408021752.862660-3-npiggin@gmail.com>
+Subject: [PATCH 3/6] powerpc/64: Add support to build with prefixed instructions
+Date: Sat,  8 Apr 2023 12:17:49 +1000
+Message-Id: <20230408021752.862660-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230408021752.862660-1-npiggin@gmail.com>
 References: <20230408021752.862660-1-npiggin@gmail.com>
@@ -82,228 +82,287 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This mostly consolidates the Book3E and Book3S behaviour in boot WRT
-executing from the physical or virtual address.
+Add an option to build kernel and module with prefixed instructions if
+the CPU and toolchain support it.
 
-Book3E sets up kernel virtual linear map in start_initialization_book3e
-and runs from the virtual linear alias after that. This change makes
-Book3S begin to execute from the virtual alias at the same point. Book3S
-can not use its MMU for that at this point, but when the MMU is disabled,
-the virtual linear address correctly aliases to physical memory because
-the top bits of the address are ignored with MMU disabled.
+This is not related to kernel support for userspace execution of
+prefixed instructions.
 
-Secondaries execute from the virtual address similarly early.
-
-This reduces the differences between subarchs, but the main motivation
-was to enable the PC-relative addressing ABI for Book3S, where pointer
-calculations must execute from the virtual address or the top bits of
-the pointer will be lost. This is similar to the requirement the TOC
-relative addressing already has that the TOC pointer use its virtual
-address.
+Building with prefixed instructions breaks some extended inline asm
+memory addressing, for example it will provide immediates that exceed
+the range of simple load/store displacement. Whether this is a
+toolchain or a kernel asm problem remains to be seen. For now, these
+are replaced with simpler and less efficient direct register addressing
+when compiling with prefixed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/head_64.S | 82 +++++++++++++++++++----------------
- 1 file changed, 44 insertions(+), 38 deletions(-)
+ arch/powerpc/Kconfig                   |  3 +++
+ arch/powerpc/Makefile                  |  4 +++
+ arch/powerpc/include/asm/atomic.h      | 24 ++++++++++++++---
+ arch/powerpc/include/asm/io.h          | 37 ++++++++++++++++++++++++++
+ arch/powerpc/include/asm/uaccess.h     | 28 +++++++++++++++++--
+ arch/powerpc/kernel/trace/ftrace.c     |  2 ++
+ arch/powerpc/platforms/Kconfig.cputype | 20 ++++++++++++++
+ 7 files changed, 112 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 5b2d607cd1e8..66c21061036b 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -76,6 +76,13 @@
-  *   2. The kernel is entered at __start
-  */
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index a6c4407d3ec8..19c13733a4ed 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -4,6 +4,9 @@ source "arch/powerpc/platforms/Kconfig.cputype"
+ config CC_HAS_ELFV2
+ 	def_bool PPC64 && $(cc-option, -mabi=elfv2)
  
-+/*
-+ * boot_from_prom and prom_init run at the physical address. Everything
-+ * after prom and kexec entry run at the virtual address (PAGE_OFFSET).
-+ * Secondaries run at the virtual address from generic_secondary_common_init
-+ * onward.
-+ */
++config CC_HAS_PREFIXED
++	def_bool PPC64 && $(cc-option, -mcpu=power10 -mprefixed)
 +
- OPEN_FIXED_SECTION(first_256B, 0x0, 0x100)
- USE_FIXED_SECTION(first_256B)
- 	/*
-@@ -303,13 +310,11 @@ _GLOBAL(fsl_secondary_thread_init)
- 	/* turn on 64-bit mode */
- 	bl	enable_64b_mode
+ config 32BIT
+ 	bool
+ 	default y if PPC32
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index e91d7e91347d..de8bb40b73c0 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -181,7 +181,11 @@ ifdef CONFIG_476FPE_ERR46
+ endif
  
--	/* get a valid TOC pointer, wherever we're mapped at */
--	bl	relative_toc
--	tovirt(r2,r2)
--
- 	/* Book3E initialization */
- 	mr	r3,r24
- 	bl	book3e_secondary_thread_init
-+	bl	relative_toc
-+
- 	b	generic_secondary_common_init
+ # No prefix or pcrel
++ifdef CONFIG_PPC_KERNEL_PREFIXED
++KBUILD_CFLAGS += $(call cc-option,-mprefixed)
++else
+ KBUILD_CFLAGS += $(call cc-option,-mno-prefixed)
++endif
+ KBUILD_CFLAGS += $(call cc-option,-mno-pcrel)
  
- #endif /* CONFIG_PPC_BOOK3E_64 */
-@@ -331,16 +336,12 @@ _GLOBAL(generic_secondary_smp_init)
- 	/* turn on 64-bit mode */
- 	bl	enable_64b_mode
+ # No AltiVec or VSX or MMA instructions when building kernel
+diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+index 486ab7889121..50212c44be2a 100644
+--- a/arch/powerpc/include/asm/atomic.h
++++ b/arch/powerpc/include/asm/atomic.h
+@@ -27,14 +27,22 @@ static __inline__ int arch_atomic_read(const atomic_t *v)
+ {
+ 	int t;
  
--	/* get a valid TOC pointer, wherever we're mapped at */
--	bl	relative_toc
--	tovirt(r2,r2)
--
- #ifdef CONFIG_PPC_BOOK3E_64
- 	/* Book3E initialization */
- 	mr	r3,r24
- 	mr	r4,r25
- 	bl	book3e_secondary_core_init
--
-+	/* Now NIA and r2 are relocated to PAGE_OFFSET if not already */
- /*
-  * After common core init has finished, check if the current thread is the
-  * one we wanted to boot. If not, start the specified thread and stop the
-@@ -378,6 +379,16 @@ _GLOBAL(generic_secondary_smp_init)
- 10:
- 	b	10b
- 20:
-+#else
-+	/* Now the MMU is off, can branch to our PAGE_OFFSET address */
-+	bcl	20,31,$+4
-+1:	mflr	r11
-+	addi	r11,r11,(2f - 1b)
-+	tovirt(r11, r11)
-+	mtctr	r11
-+	bctr
-+2:
-+	bl	relative_toc
- #endif
+-	__asm__ __volatile__("lwz%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
++	/* -mprefixed can generate offsets beyond range, fall back hack */
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
++		__asm__ __volatile__("lwz %0,0(%1)" : "=r"(t) : "b"(&v->counter));
++	else
++		__asm__ __volatile__("lwz%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
  
- generic_secondary_common_init:
-@@ -492,6 +503,8 @@ SYM_FUNC_START_LOCAL(start_initialization_book3s)
- 	/* Switch off MMU if not already off */
- 	bl	__mmu_off
+ 	return t;
+ }
  
-+	/* Now the MMU is off, can return to our PAGE_OFFSET address */
-+	tovirt(r25,r25)
- 	mtlr	r25
- 	blr
- SYM_FUNC_END(start_initialization_book3s)
-@@ -531,16 +544,19 @@ __start_initialization_multiplatform:
- 	mr	r29,r9
- #endif
+ static __inline__ void arch_atomic_set(atomic_t *v, int i)
+ {
+-	__asm__ __volatile__("stw%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
++	/* -mprefixed can generate offsets beyond range, fall back hack */
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
++		__asm__ __volatile__("stw %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
++	else
++		__asm__ __volatile__("stw%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
+ }
  
-+	/* These functions return to the virtual (PAGE_OFFSET) address */
- #ifdef CONFIG_PPC_BOOK3E_64
- 	bl	start_initialization_book3e
- #else
- 	bl	start_initialization_book3s
- #endif /* CONFIG_PPC_BOOK3E_64 */
+ #define ATOMIC_OP(op, asm_op, suffix, sign, ...)			\
+@@ -226,14 +234,22 @@ static __inline__ s64 arch_atomic64_read(const atomic64_t *v)
+ {
+ 	s64 t;
  
--	/* Get TOC pointer */
-+	/* Get TOC pointer, virtual */
- 	bl	relative_toc
+-	__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
++	/* -mprefixed can generate offsets beyond range, fall back hack */
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
++		__asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter));
++	else
++		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
  
- 	/* find out where we are now */
-+
-+	/* OPAL doesn't pass base address in r4, have to derive it. */
- 	bcl	20,31,$+4
- 0:	mflr	r26			/* r26 = runtime addr here */
- 	addis	r26,r26,(_stext - 0b)@ha
-@@ -551,7 +567,7 @@ __start_initialization_multiplatform:
- __REF
- __boot_from_prom:
- #ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
--	/* Get TOC pointer */
-+	/* Get TOC pointer, non-virtual */
- 	bl	relative_toc
+ 	return t;
+ }
  
- 	/* find out where we are now */
-@@ -600,18 +616,11 @@ __boot_from_prom:
- __after_prom_start:
- #ifdef CONFIG_RELOCATABLE
- 	/* process relocations for the final address of the kernel */
--	lis	r25,PAGE_OFFSET@highest	/* compute virtual base of kernel */
--	sldi	r25,r25,32
--#if defined(CONFIG_PPC_BOOK3E_64)
--	tovirt(r26,r26)		/* on booke, we already run at PAGE_OFFSET */
--#endif
- 	lwz	r7,(FIXED_SYMBOL_ABS_ADDR(__run_at_load))(r26)
--#if defined(CONFIG_PPC_BOOK3E_64)
--	tophys(r26,r26)
--#endif
- 	cmplwi	cr0,r7,1	/* flagged to stay where we are ? */
--	bne	1f
--	add	r25,r25,r26
-+	mr	r25,r26		/* then use current kernel base */
-+	beq	1f
-+	LOAD_REG_IMMEDIATE(r25, PAGE_OFFSET) /* else use static kernel base */
- 1:	mr	r3,r25
- 	bl	relocate
- #if defined(CONFIG_PPC_BOOK3E_64)
-@@ -627,14 +636,8 @@ __after_prom_start:
+ static __inline__ void arch_atomic64_set(atomic64_t *v, s64 i)
+ {
+-	__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
++	/* -mprefixed can generate offsets beyond range, fall back hack */
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
++		__asm__ __volatile__("std %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
++	else
++		__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
+ }
+ 
+ #define ATOMIC64_OP(op, asm_op)						\
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index fc112a91d0c2..f1e657c9bbe8 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -97,6 +97,42 @@ extern bool isa_io_special;
   *
-  * Note: This process overwrites the OF exception vectors.
   */
--	li	r3,0			/* target addr */
--#ifdef CONFIG_PPC_BOOK3E_64
--	tovirt(r3,r3)		/* on booke, we already run at PAGE_OFFSET */
--#endif
-+	LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)
- 	mr.	r4,r26			/* In some cases the loader may  */
--#if defined(CONFIG_PPC_BOOK3E_64)
--	tovirt(r4,r4)
--#endif
- 	beq	9f			/* have already put us at zero */
- 	li	r6,0x100		/* Start offset, the first 0x100 */
- 					/* bytes were copied earlier.	 */
-@@ -645,9 +648,6 @@ __after_prom_start:
-  * variable __run_at_load, if it is set the kernel is treated as relocatable
-  * kernel, otherwise it will be moved to PHYSICAL_START
-  */
--#if defined(CONFIG_PPC_BOOK3E_64)
--	tovirt(r26,r26)		/* on booke, we already run at PAGE_OFFSET */
--#endif
- 	lwz	r7,(FIXED_SYMBOL_ABS_ADDR(__run_at_load))(r26)
- 	cmplwi	cr0,r7,1
- 	bne	3f
-@@ -766,9 +766,15 @@ _GLOBAL(pmac_secondary_start)
- 	sync
- 	slbia
  
--	/* get TOC pointer (real address) */
-+	/* Branch to our PAGE_OFFSET address */
-+	bcl	20,31,$+4
-+1:	mflr	r11
-+	addi	r11,r11,(2f - 1b)
-+	tovirt(r11, r11)
-+	mtctr	r11
-+	bctr
-+2:
- 	bl	relative_toc
--	tovirt(r2,r2)
++/* -mprefixed can generate offsets beyond range, fall back hack */
++#ifdef CONFIG_PPC_KERNEL_PREFIXED
++#define DEF_MMIO_IN_X(name, size, insn)				\
++static inline u##size name(const volatile u##size __iomem *addr)	\
++{									\
++	u##size ret;							\
++	__asm__ __volatile__("sync;"#insn" %0,0,%1;twi 0,%0,0;isync"	\
++		: "=r" (ret) : "r" (addr) : "memory");			\
++	return ret;							\
++}
++
++#define DEF_MMIO_OUT_X(name, size, insn)				\
++static inline void name(volatile u##size __iomem *addr, u##size val)	\
++{									\
++	__asm__ __volatile__("sync;"#insn" %1,0,%0"			\
++		: : "r" (addr), "r" (val) : "memory");			\
++	mmiowb_set_pending();						\
++}
++
++#define DEF_MMIO_IN_D(name, size, insn)				\
++static inline u##size name(const volatile u##size __iomem *addr)	\
++{									\
++	u##size ret;							\
++	__asm__ __volatile__("sync;"#insn" %0,0(%1);twi 0,%0,0;isync"\
++		: "=r" (ret) : "b" (addr) : "memory");	\
++	return ret;							\
++}
++
++#define DEF_MMIO_OUT_D(name, size, insn)				\
++static inline void name(volatile u##size __iomem *addr, u##size val)	\
++{									\
++	__asm__ __volatile__("sync;"#insn" %1,0(%0)"			\
++		: : "b" (addr), "r" (val) : "memory");	\
++	mmiowb_set_pending();						\
++}
++#else
+ #define DEF_MMIO_IN_X(name, size, insn)				\
+ static inline u##size name(const volatile u##size __iomem *addr)	\
+ {									\
+@@ -130,6 +166,7 @@ static inline void name(volatile u##size __iomem *addr, u##size val)	\
+ 		: "=m<>" (*addr) : "r" (val) : "memory");	\
+ 	mmiowb_set_pending();						\
+ }
++#endif
  
- 	/* Copy some CPU settings from CPU 0 */
- 	bl	__restore_cpu_ppc970
-@@ -907,8 +913,9 @@ SYM_FUNC_END(enable_64b_mode)
-  * TOC in -mcmodel=medium mode. After we relocate to 0 but before
-  * the MMU is on we need our TOC to be a virtual address otherwise
-  * these pointers will be real addresses which may get stored and
-- * accessed later with the MMU on. We use tovirt() at the call
-- * sites to handle this.
-+ * accessed later with the MMU on. We branch to the virtual address
-+ * while still in real mode then call relative_toc again to handle
-+ * this.
+ DEF_MMIO_IN_D(in_8,     8, lbz);
+ DEF_MMIO_OUT_D(out_8,   8, stb);
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 3ddc65c63a49..722b1ec12cff 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -71,14 +71,26 @@ __pu_failed:							\
+  * because we do not write to any memory gcc knows about, so there
+  * are no aliasing issues.
   */
- _GLOBAL(relative_toc)
- 	mflr	r0
-@@ -927,9 +934,8 @@ p_toc:	.8byte	.TOC. - 0b
-  */
- __REF
- start_here_multiplatform:
--	/* set up the TOC */
--	bl      relative_toc
--	tovirt(r2,r2)
-+	/* Adjust TOC for moved kernel. Could adjust when moving it instead. */
-+	bl	relative_toc
++/* -mprefixed can generate offsets beyond range, fall back hack */
++#ifdef CONFIG_PPC_KERNEL_PREFIXED
++#define __put_user_asm_goto(x, addr, label, op)			\
++	asm_volatile_goto(					\
++		"1:	" op " %0,0(%1)	# put_user\n"		\
++		EX_TABLE(1b, %l2)				\
++		:						\
++		: "r" (x), "b" (addr)				\
++		:						\
++		: label)
++#else
+ #define __put_user_asm_goto(x, addr, label, op)			\
+ 	asm_volatile_goto(					\
+ 		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
+ 		EX_TABLE(1b, %l2)				\
+ 		:						\
+-		: "r" (x), "m<>" (*addr)		\
++		: "r" (x), "m<>" (*addr)			\
+ 		:						\
+ 		: label)
++#endif
  
- 	/* Clear out the BSS. It may have been done in prom_init,
- 	 * already but that's irrelevant since prom_init will soon
+ #ifdef __powerpc64__
+ #define __put_user_asm2_goto(x, ptr, label)			\
+@@ -131,14 +143,26 @@ do {								\
+ 
+ #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ 
++/* -mprefixed can generate offsets beyond range, fall back hack */
++#ifdef CONFIG_PPC_KERNEL_PREFIXED
++#define __get_user_asm_goto(x, addr, label, op)			\
++	asm_volatile_goto(					\
++		"1:	"op" %0,0(%1)	# get_user\n"		\
++		EX_TABLE(1b, %l2)				\
++		: "=r" (x)					\
++		: "b" (addr)					\
++		:						\
++		: label)
++#else
+ #define __get_user_asm_goto(x, addr, label, op)			\
+ 	asm_volatile_goto(					\
+ 		"1:	"op"%U1%X1 %0, %1	# get_user\n"	\
+ 		EX_TABLE(1b, %l2)				\
+ 		: "=r" (x)					\
+-		: "m<>" (*addr)				\
++		: "m<>" (*addr)					\
+ 		:						\
+ 		: label)
++#endif
+ 
+ #ifdef __powerpc64__
+ #define __get_user_asm2_goto(x, addr, label)			\
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 7b85c3b460a3..72864fb7a6cc 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -194,6 +194,8 @@ __ftrace_make_nop(struct module *mod,
+ 	 * get corrupted.
+ 	 *
+ 	 * Use a b +8 to jump over the load.
++	 * XXX: could make PCREL depend on MPROFILE_KERNEL
++	 * XXX: check PCREL && MPROFILE_KERNEL calling sequence
+ 	 */
+ 	if (IS_ENABLED(CONFIG_MPROFILE_KERNEL) || IS_ENABLED(CONFIG_PPC32))
+ 		pop = ppc_inst(PPC_RAW_NOP());
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 046b571496b1..aff760e2ff90 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -180,6 +180,7 @@ config POWER10_CPU
+ 	bool "POWER10"
+ 	depends on PPC_BOOK3S_64
+ 	select ARCH_HAS_FAST_MULTIPLIER
++	select PPC_HAVE_PREFIXED_SUPPORT
+ 
+ config E5500_CPU
+ 	bool "Freescale e5500"
+@@ -454,6 +455,22 @@ config PPC_RADIX_MMU_DEFAULT
+ 
+ 	  If you're unsure, say Y.
+ 
++config PPC_KERNEL_PREFIXED
++	depends on PPC_HAVE_PREFIXED_SUPPORT
++	depends on CC_HAS_PREFIXED
++	default n
++	bool "Build Kernel with Prefixed Instructions"
++	help
++	  POWER10 and later CPUs support prefixed instructions, 8 byte
++	  instructions that include large immediate, pc relative addressing,
++	  and various floating point, vector, MMA.
++
++	  This option builds the kernel with prefixed instructions, and
++	  allows a pc relative addressing option to be selected.
++
++	  Kernel support for prefixed instructions in applications and guests
++          is not affected by this option.
++
+ config PPC_KUEP
+ 	bool "Kernel Userspace Execution Prevention" if !40x
+ 	default y if !40x
+@@ -490,6 +507,9 @@ config PPC_MMU_NOHASH
+ config PPC_HAVE_PMU_SUPPORT
+ 	bool
+ 
++config PPC_HAVE_PREFIXED_SUPPORT
++	bool
++
+ config PMU_SYSFS
+ 	bool "Create PMU SPRs sysfs file"
+ 	default n
 -- 
 2.40.0
 
