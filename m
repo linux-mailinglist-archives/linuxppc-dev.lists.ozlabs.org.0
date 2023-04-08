@@ -2,67 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50AE6DB8DA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 06:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD736DBB27
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 15:27:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptj1x3B5Rz3cLf
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 14:29:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtwyK5CDFz3fbG
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 23:27:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D346j511;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A+Vg5mDB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D346j511;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A+Vg5mDB;
 	dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptj160RGlz3bWC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 14:28:57 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id ke16so411163plb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 21:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680928134; x=1683520134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q50aU1v6yjni7d2uLBSPz0XLaQn4jFeo7juuh25KIlk=;
-        b=D346j511kmV4uIsEYEHYKYzgQU7tQrEz3CZQcMGr5l8SIVoTeAf/gpe3D1uFIw2PKP
-         vGA0tHjKOwn1joM0tzf2WVbZY5Ws5zn1yMvE6ioyLKE+nlTt3e0FDVERFc188cJIENRV
-         Z2+cyaVxYODfFGPM5XDHqedZRA5yhqXRbkOb7UhVRSIBgqKwORMk5rrbNde7WUgbnak3
-         tDqYfn4Jxv9/9QWix9CwZODQsLpFg0BIESgHKXTSQdLX5140Dcc2/rC7/RsRU/yCbZVY
-         aQC7mAvFWbVj0IJlOBhIy/bDF7NyUdUudNeX/0e9BlxPGPfYB7zujUgYBeGtR/ZJS+H4
-         NaBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680928134; x=1683520134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q50aU1v6yjni7d2uLBSPz0XLaQn4jFeo7juuh25KIlk=;
-        b=7Wzy23ui9h4JfNHsPFgsUGuki6KLGX+zAg+yaSi0Ac0S3lQkby7UwJW8YcJpKiGW+4
-         sPZ1i5/ZvGA0aWzpv9fcgGAhA3ZCRv7JNLz5fNLFJKtu1gqvTmfQ8KLsB5veuKN4Vrix
-         VuAhpYLdI6TThZeD6cAGfcOCXJ+QVn6NVyePYywo/O/JFpOzn2mEAkjWFt9PDrg88dVI
-         lWenyimc7rHMf67KZS16/Se8kxiXGHNGh18XoPEmhejvecs/LnLdjeS7Bi+su8gn2IUc
-         7C5eXbpB/y2/rTlcVrF7z/YS0VWi9V0YQocDJS6uu5yajVQxASPXUYDoi1acWF70z95f
-         s10Q==
-X-Gm-Message-State: AAQBX9fEN6eO2TCioluAGHxJmhl7fvFvMdv9XI7jmg//o0mBrBsNiyY8
-	QzIyCDpa45Y3/DVSS5bPEMOIkjyK4M8J/A==
-X-Google-Smtp-Source: AKy350a1u9griyJsoa3KV6NO+pUKkZAdm+QMoh4e0wi7WtqRMyrKKgb1g3Fg10L6Ab7AgDVaQ87lTg==
-X-Received: by 2002:a17:902:f547:b0:1a0:6721:6cdb with SMTP id h7-20020a170902f54700b001a067216cdbmr1050013plf.40.1680928133895;
-        Fri, 07 Apr 2023 21:28:53 -0700 (PDT)
-Received: from wheely.local0.net ([203.59.189.25])
-        by smtp.gmail.com with ESMTPSA id k16-20020a170902761000b0019aa8149cc9sm3658915pll.35.2023.04.07.21.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 21:28:53 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] KVM: PPC: Update MAINTAINERS
-Date: Sat,  8 Apr 2023 14:28:39 +1000
-Message-Id: <20230408042839.869361-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptwth4DTpz3f8R
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 23:24:12 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B9BE361068;
+	Sat,  8 Apr 2023 13:24:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AD5C4339C;
+	Sat,  8 Apr 2023 13:24:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1680960248;
+	bh=EvyNCaXVQHGWXs9rYUpC1SM3FYnQ6ejFf2xaT5h8af0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=A+Vg5mDBVXJtMmaN03L8GHLaaIyf9y45qHnPHGx+nAozIi3K6Nr91K76kUzAMwQiC
+	 AVjwiuBywWyd5nQyu4pI7bWUtucvo+Ajnqf3HvXn2Y2oyASukG+ZIMZO3Ssor2GvwP
+	 rUN1zDmTB2GJT4RbdUExVRX/KhDMU1zUIfisGXeo/oNfjzxggS1giHqTGittwuC4yK
+	 3tQ6SC9of2j8a7cifzHRPqbLEkg2mRNNBrelCeKNg2XMqbyzFAzlyEECDlmRW+N76v
+	 V5HEYUOVhfJcvGQKrhyxQa+I1T2KA7p1ZUU+h5mD94PVlKt5ZdLqXLtDQCBqlSDY0N
+	 Wl31TeVKsp9kg==
+Received: by pali.im (Postfix)
+	id 117B77B7; Sat,  8 Apr 2023 15:24:05 +0200 (CEST)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH 0/8] powerpc/fsl_uli1575: Cleanups
+Date: Sat,  8 Apr 2023 15:21:43 +0200
+Message-Id: <20230408132151.8902-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,45 +62,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael is maintaining KVM PPC with the powerpc tree at the moment,
-just doesn't necessarily have time to be across all of KVM. But I
-think that's okay, from mechanics of how patches flow upstream he is
-maintainer. And it probably makes a bit more sense to people who need
-to look at the MAINTAINERS file if we have some contacts there.
+This patch series contains cleanups for fsl_uli1575 driver.
 
-So add mpe as KVM PPC maintainer and I am a reviewer. Split out the
-subarchs that don't get much attention.
+This patch series is prerequisity for another patch series:
+"powerpc/85xx: p2020: Create one unified machine description"
 
-Thanks,
-Nick
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Christophe Leroy (1):
+  powerpc/fsl_uli1575: Misc cleanup
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 90abe83c02f3..c6283280683e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11292,8 +11292,15 @@ F:	arch/mips/include/uapi/asm/kvm*
- F:	arch/mips/kvm/
- 
- KERNEL VIRTUAL MACHINE FOR POWERPC (KVM/powerpc)
-+M:	Michael Ellerman <mpe@ellerman.id.au>
-+R:	Nicholas Piggin <npiggin@gmail.com>
- L:	linuxppc-dev@lists.ozlabs.org
-+L:	kvm@vger.kernel.org
-+S:	Maintained (Book3S 64-bit HV)
-+S:	Odd fixes (Book3S 64-bit PR)
-+S:	Orphan (Book3E and 32-bit)
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-+S:	Maintained
- F:	arch/powerpc/include/asm/kvm*
- F:	arch/powerpc/include/uapi/asm/kvm*
- F:	arch/powerpc/kernel/kvm*
+Pali Rohár (7):
+  powerpc/85xx: mpc85xx_ds: Simplify mpc85xx_exclude_device() function
+  powerpc/fsl_uli1575: Simplify uli_exclude_device() usage
+  powerpc/85xx: mpc85xx_ds: Move uli_init() code into its own driver
+    file
+  powerpc/mpc85xx: mpc85xx_rdb: Do not automatically select FSL_ULI1575
+  powerpc/fsl_uli1575: Allow to disable FSL_ULI1575 support
+  powerpc/mpc86xx: mpc86xx_hpcn: Call uli_init() instead of explicit
+    ppc_md assignment
+  powerpc/fsl_uli1575: Mark uli_exclude_device() as static
+
+ arch/powerpc/include/asm/ppc-pci.h         |  8 +++++
+ arch/powerpc/platforms/85xx/Kconfig        |  1 -
+ arch/powerpc/platforms/85xx/mpc85xx_ds.c   | 39 ++--------------------
+ arch/powerpc/platforms/86xx/mpc86xx_hpcn.c | 20 ++---------
+ arch/powerpc/platforms/Kconfig             |  2 +-
+ arch/powerpc/platforms/fsl_uli1575.c       | 29 +++++++++++++---
+ 6 files changed, 38 insertions(+), 61 deletions(-)
+
 -- 
-2.40.0
+2.20.1
 
