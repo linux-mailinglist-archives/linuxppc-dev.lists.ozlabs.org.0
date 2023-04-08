@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A686DBB2C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 15:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004EA6DBB70
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 16:04:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptx2z6Kj4z3fsx
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 23:31:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtxnZ6Hjrz3fXw
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Apr 2023 00:04:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qK1iS4Gt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pO/pIvD2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qK1iS4Gt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pO/pIvD2;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptwtk2RH8z3f8R
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 23:24:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptxkt6DH2z3f3t
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Apr 2023 00:02:30 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5CAF8614BD;
-	Sat,  8 Apr 2023 13:24:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F72BC433A4;
-	Sat,  8 Apr 2023 13:24:08 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B4B0460F57;
+	Sat,  8 Apr 2023 14:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05325C433D2;
+	Sat,  8 Apr 2023 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680960248;
-	bh=srC5FNdHp8IZu3BmeF2lk+iRAsCZCPftWJJge9NlI14=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qK1iS4Gt2hk19S3uZQit4fs4EX3pmmERzut14YJTdZSYCu72VPkj+vHpj3nVX07rK
-	 o86+N2d9j42WUcZlAuylY5vC8AAFVgGzVfKM30IaoVjNJ96w03FbXM+ba44gXA0PCZ
-	 k1x1JoSqjD4cvVh37RZpZ51jHPVCve7bbNzimeHV03LxQPGxYnvhI+AawaH96W3Y9s
-	 hlVIVprAcqF11pJ0wCUdqv2FnJhOmFQPihBaV5ltGEeVU67y1DzFMLpC/Wxez6rv0t
-	 IvebZbSc0XSiSVOioweJC5byI8U5dUh3R0U5h/Ly7aL7PFjMnnsRadhJr/PTZeiyET
-	 /IRudWGSbJ/HQ==
+	s=k20201202; t=1680962548;
+	bh=NusFkGGWy7tIEkNWULQ6KBnE8wGN/lVCtwr0E9TzwQg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pO/pIvD2PjueXcAu2so/kjWoFvOlM5xiFp8zr3VFHPLpltcX9OBx6J2UF2ds5zytp
+	 VGv1Suoz542kqv9dBdu5X0C3E782Bf/1AdmkxLG6HU7jO/9ouYJV7PxtVw+u7WRrU4
+	 7D4fMbwS9Fm8i0wf1emUw+YSdBuv7nHxRRRiSAPWwu84BeQCX3p0C4oTMGsG3pB7gz
+	 yZ28di557tAyV8SYe8e8pneb9ljOtQuyx8m2ePhmZnbKE2U87z4bDvlEXhBm9DZqYZ
+	 goT6anqZyWlak2+LYC3D+jrOyZIDJBKl98PfA7SPmdSLl16LjOBCbLD2Nto+ZTOvHa
+	 JqkET6L+RqSTw==
 Received: by pali.im (Postfix)
-	id A20162317; Sat,  8 Apr 2023 15:24:06 +0200 (CEST)
+	id 795FC7B7; Sat,  8 Apr 2023 16:02:25 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 8/8] powerpc/fsl_uli1575: Mark uli_exclude_device() as static
-Date: Sat,  8 Apr 2023 15:21:51 +0200
-Message-Id: <20230408132151.8902-9-pali@kernel.org>
+Subject: [PATCH v5 00/13] powerpc/85xx: p2020: Create one unified machine description
+Date: Sat,  8 Apr 2023 16:01:09 +0200
+Message-Id: <20230408140122.25293-1-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230408132151.8902-1-pali@kernel.org>
-References: <20230408132151.8902-1-pali@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,48 +66,79 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Function uli_exclude_device() is not used outside of the fsl_uli1575.c
-source file anymore. So mark it as static and remove public prototype.
+This patch series unifies all P2020 boards and machine descriptions into
+one generic unified P2020 machine description. With this generic machine
+description, kernel can boot on any P2020-based board with correct DTS
+file.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- arch/powerpc/include/asm/ppc-pci.h   | 2 --
- arch/powerpc/platforms/fsl_uli1575.c | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+Tested on CZ.NIC Turris 1.1 board which has Freescale P2020 processor.
+Kernel during booting correctly detects P2020 and prints:
+[    0.000000] Hardware name: Turris 1.1 e500v2 0x80211051 Freescale P2020
 
-diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
-index 00a3011d6e98..d9fcff575027 100644
---- a/arch/powerpc/include/asm/ppc-pci.h
-+++ b/arch/powerpc/include/asm/ppc-pci.h
-@@ -58,7 +58,6 @@ void eeh_sysfs_remove_device(struct pci_dev *pdev);
- #endif /* CONFIG_EEH */
- 
- #ifdef CONFIG_FSL_ULI1575
--int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn);
- void __init uli_init(void);
- #endif /* CONFIG_FSL_ULI1575 */
- 
-@@ -69,7 +68,6 @@ static inline void init_pci_config_tokens(void) { }
- #endif /* !CONFIG_PCI */
- 
- #if !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575)
--static inline int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn) { return PCIBIOS_SUCCESSFUL; }
- static inline void __init uli_init(void) {}
- #endif /* !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575) */
- 
-diff --git a/arch/powerpc/platforms/fsl_uli1575.c b/arch/powerpc/platforms/fsl_uli1575.c
-index b073db9d7c79..b8d37a9932f1 100644
---- a/arch/powerpc/platforms/fsl_uli1575.c
-+++ b/arch/powerpc/platforms/fsl_uli1575.c
-@@ -344,7 +344,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5288, hpcd_quirk_uli5288);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5229, hpcd_quirk_uli5229);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AL, 0x5288, hpcd_final_uli5288);
- 
--int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
-+static int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
- {
- 	if (hose->dn == fsl_pci_primary && bus == (hose->first_busno + 2)) {
- 		/* exclude Modem controller */
+This patch series depends on another patch series "powerpc/fsl_uli1575: Cleanups":
+https://lore.kernel.org/linuxppc-dev/20230408132151.8902-1-pali@kernel.org/t/#u
+(it was split from this one in v5)
+
+Changes in v5:
+* Split fsl_uli1575 patches to separate patch series as this one started to be too big.
+* Fix commit messages
+* Reduce includes
+* Rebase on top of powerpc/next (b0bbe5a2915201e3231e788d716d39dc54493b03)
+* Test all patches again on CZ.NIC Turris 1.1 board with P2020 processor
+
+Changes in v4:
+* Added several preparatory cleanup patchs
+* Minimised churn by not duplicating helpers at the first place
+* Split main patch in two
+* Dropped patchs 1 and 2
+* Untested beyond basic build test
+
+Changes in v3:
+* Use 'if (IS_ENABLED(CONFIG_PPC_I8259))' instead of '#ifdef CONFIG_PPC_I8259'
+* Simplify p2020_probe()
+* Patches generated by -M and -C git options
+
+Link to v2: https://lore.kernel.org/linuxppc-dev/20221224211425.14983-1-pali@kernel.org/
+
+Changes in v2:
+* Added patch "p2020: Move i8259 code into own function" (separated from the next one)
+* Renamed CONFIG_P2020 to CONFIG_PPC_P2020
+* Fixed descriptions
+
+Link to v1: https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@kernel.org/
+
+Christophe Leroy (6):
+  powerpc/85xx: Remove DBG() macro
+  powerpc/85xx: mpc85xx_{ds/rdb} compact the call to mpic_alloc()
+  powerpc/85xx: mpc85xx_{ds/rdb} replace BUG_ON() by WARN_ON()
+  powerpc/85xx: mpc85xx_{ds/rdb} replace prink by pr_xxx macro
+  powerpc/85xx: Remove #ifdefs CONFIG_PPC_I8259 in mpc85xx_ds
+  powerpc/85xx: Remove #ifdef CONFIG_QUICC_ENGINE in mpc85xx_rdb
+
+Pali Rohár (7):
+  powerpc/85xx: p2020: Move all P2020 DS machine descriptions to p2020.c
+  powerpc/85xx: p2020: Move all P2020 RDB machine descriptions to
+    p2020.c
+  powerpc/85xx: mpc85xx_ds: Move i8259 code into own file
+  powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
+  powerpc/85xx: p2020: Define just one machine description
+  powerpc/85xx: p2020: Enable boards by new config option
+    CONFIG_PPC_P2020
+  powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+
+ arch/powerpc/boot/dts/turris1x.dts         |  2 +-
+ arch/powerpc/platforms/85xx/Kconfig        | 22 +++++-
+ arch/powerpc/platforms/85xx/Makefile       |  4 +-
+ arch/powerpc/platforms/85xx/mpc85xx.h      |  6 ++
+ arch/powerpc/platforms/85xx/mpc85xx_8259.c | 63 ++++++++++++++++
+ arch/powerpc/platforms/85xx/mpc85xx_ds.c   | 87 +++-------------------
+ arch/powerpc/platforms/85xx/mpc85xx_mds.c  |  7 --
+ arch/powerpc/platforms/85xx/mpc85xx_rdb.c  | 63 +++-------------
+ arch/powerpc/platforms/85xx/p2020.c        | 81 ++++++++++++++++++++
+ 9 files changed, 191 insertions(+), 144 deletions(-)
+ create mode 100644 arch/powerpc/platforms/85xx/mpc85xx_8259.c
+ create mode 100644 arch/powerpc/platforms/85xx/p2020.c
+
 -- 
 2.20.1
 
