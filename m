@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CF06DB81E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 04:22:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03756DB81F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 04:22:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PtfBk1SZ0z3flW
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 12:22:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PtfCg4L3Gz3fnG
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 12:22:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DmV8kIG7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O+RY1ieE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DmV8kIG7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O+RY1ieE;
 	dkim-atps=neutral
 Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptf6K07xMz3cjW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 12:18:16 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id 90-20020a17090a0fe300b0023b4bcf0727so199662pjz.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 19:18:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptf6M3Ycmz3fX9
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 12:18:19 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id pc4-20020a17090b3b8400b0024676052044so314161pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Apr 2023 19:18:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680920294; x=1683512294;
+        d=gmail.com; s=20210112; t=1680920297; x=1683512297;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Dx7k0DT2Bv9DseyBatlGrZ4x3+BK9M+ugCj+JyJg4fE=;
-        b=DmV8kIG7xLhdp0apFB96Ld54MuLWyf7pwI9okyFpQoqXe5HjOtwmCs4YxGdWjEJk78
-         OGo3N1oBvfj/wlL511U2VGCeKtre/f+YO9VUBINDQ2t9u2ptS1dm+XD5tKM5PD2rwALD
-         EWwZRiu2kt+ekACfghyfBqzVK9fUxwtQ5ljZCnBSWeRXyxrB4Sm0/EfDYSNzaM4F5suK
-         Ky8uwydY85cPXSRaThFTraaBhhjK2f+CjEYWnKflfBDyddKynGJA+Lz2PRPEPiDk8D98
-         ZPP4amelMxEql7/Zai7+qsI/wzOBsftU1WXNR4LfPUqFnN6izDBhGayqvKL4YgvMrjtY
-         dKrQ==
+        bh=1Wky77CJfOFi6ZMNem4B5ZdPwyAXj8Qdgep1k/UT0SA=;
+        b=O+RY1ieEaLoUyZ4g1QfXE8HJ4A/DaqSKVWe0qdenWNviMDFAXdM0Hg1NiBeFGSh+sp
+         vsK5KG8D72JYH0B58edzuJetYkZNncpUUjtHV28pHLgPDaoHyDfNQ2CG0SPGjf47sMR9
+         K/vd/XTeEPp59LkZhQGtwevWdieQIzFt2kAtcRSupDq69dYr+mVItkTXX8KZJ88InqIa
+         59rXlbeWXv2mKnBq5g5YXqDvzStWNRkJI5zWCKzL+E9g8S2gMyssVjWGDlEuojeVqpr1
+         La8bacGxYFR+7Oe3cnHWB29kNKkaXIYqV9ofyg39XqsaPi3aD4bf2/5oUvSCnfHXBtz+
+         01Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680920294; x=1683512294;
+        d=1e100.net; s=20210112; t=1680920297; x=1683512297;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Dx7k0DT2Bv9DseyBatlGrZ4x3+BK9M+ugCj+JyJg4fE=;
-        b=1ZwjpID2NWIZgBsWsn8PMSPvdbrhGe3MpII4FEOrVEtkGwigeH8cnoaj9uVXVkxxdk
-         SPhOA3tKsnZR9k4DStEdBb5OoIqwqsLfRgh+V6onpRCoEwZUROKpTmrvvNzWbBFfPBl0
-         d6y36Nkwzyxj7discCTeMNdfV2R1pSG6AznIE6CiRYOaUCVpDaMke+Qoc3qjAVqgHfog
-         d1HrVgqwDoMxFoqRuqcfO1qO8xlBLFSoWlJLte75FMRpgR72eumUobfGiLfL8S0qM5BM
-         dHVJKBrItenPdpYa+eJ0IxIJOF6lQhz8nc0V+kprhdoMqobQKPz/FyJkzgjGfWyn1Dlq
-         3V7g==
-X-Gm-Message-State: AAQBX9dSp2gztIWN2bR1Q1PDNuFBOv1h1kPOh07N4psxnFRqyDzV9VbS
-	bEGaO+LRfy+plkllpBw3w7gVwfL/hY0Bew==
-X-Google-Smtp-Source: AKy350Z0fTaZy03ETLOnkKVMwG4R0E04TyiecGrLvEHUIhwRXagg6eREPJ/1QxyME1LcrmsbBQvtFg==
-X-Received: by 2002:a17:903:11c8:b0:19f:1c64:c9d8 with SMTP id q8-20020a17090311c800b0019f1c64c9d8mr5315180plh.14.1680920294033;
-        Fri, 07 Apr 2023 19:18:14 -0700 (PDT)
+        bh=1Wky77CJfOFi6ZMNem4B5ZdPwyAXj8Qdgep1k/UT0SA=;
+        b=inD6enUUp841VjBwZ/ANecwXWxfuCON2iBO801AqYTfOimSy+gahhP4sKsLr8dTBQ7
+         XmzgoEcSzNWttgSFyD/lHEaKjxV7hg4/KZmKJojRu89KLRMGw1oSzLaybMD3Pu3RLCdf
+         96pDeH5lAUgdL9Jcq9H1ay+urqu8P4VSVytS3aWwCtS6C58PIyFGtbThpbTAiMRPhIdr
+         kX0f46db4/g2YQ/4/MWpDQ1Sp4FXnrIrARghCVvZC/TQnAJuYuzkK9fT/6O57ex4d3lC
+         FFnSqcFPgGoF5RHbHVy/WpPt6LuUUUGEGH3XLjDqkhaU9gljUGXo9kb3Rq2vMe/qXmRu
+         mc7Q==
+X-Gm-Message-State: AAQBX9fIHvEpIRidP/KsJ4Svrf4Z2DKS99o/mScQ9wBzhyqsEMIlmm1m
+	FkUySkLGFUVaEWx8s6snM+iIvBr4KwTnDA==
+X-Google-Smtp-Source: AKy350ZCBOeFx86T/sBWh/LnKa7AlUHKzOPKddphLhbCutq7E3uFhRFvOZICDx0cjhDtqAhI2GQbpQ==
+X-Received: by 2002:a17:902:d14a:b0:1a2:1922:985b with SMTP id t10-20020a170902d14a00b001a21922985bmr326010plt.59.1680920297209;
+        Fri, 07 Apr 2023 19:18:17 -0700 (PDT)
 Received: from wheely.local0.net ([203.59.189.25])
-        by smtp.gmail.com with ESMTPSA id d11-20020a170902654b00b001a19f3a661esm3498577pln.138.2023.04.07.19.18.11
+        by smtp.gmail.com with ESMTPSA id d11-20020a170902654b00b001a19f3a661esm3498577pln.138.2023.04.07.19.18.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 19:18:13 -0700 (PDT)
+        Fri, 07 Apr 2023 19:18:16 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/6] powerpc: add CFUNC assembly label annotation
-Date: Sat,  8 Apr 2023 12:17:50 +1000
-Message-Id: <20230408021752.862660-5-npiggin@gmail.com>
+Subject: [PATCH 5/6] powerpc/64: vmlinux support building with PCREL addresing
+Date: Sat,  8 Apr 2023 12:17:51 +1000
+Message-Id: <20230408021752.862660-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230408021752.862660-1-npiggin@gmail.com>
 References: <20230408021752.862660-1-npiggin@gmail.com>
@@ -82,941 +82,737 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This macro is to be used in assembly where C functions are called.
-pcrel addressing mode requires branches to functions with a
-localentry value of 1 to have either a trailing nop or @notoc.
-This macro permits the latter without changing callers.
+PC-Relative or PCREL addressing is an extension to the ELF ABI which
+uses Power ISA v3.1 PC-relative instructions to calculate addresses,
+rather than the traditional TOC scheme.
+
+Add an option to build vmlinux using pcrel addressing. Modules continue
+to use TOC addressing.
+
+- TOC address helpers and r2 are poisoned with -1 when running vmlinux.
+  r2 could be used for something useful once things are ironed out.
+
+- Assembly must call C functions with @notoc annotation, or the linker
+  complains aobut a missing nop after the call. This is done with the
+  CFUNC macro introduced earlier.
+
+- Boot: with the exception of prom_init, the execution branches to the
+  kernel virtual address early in boot, before any addresses are
+  generated, which ensures 34-bit pcrel addressing does not miss the
+  high PAGE_OFFSET bits. TOC relative addressing has a similar
+  requirement. prom_init does not go to the virtual address and its
+  addresses should not carry over to the post-prom kernel.
+
+- Ftrace trampolines are converted from TOC addressing to pcrel
+  addressing, including module ftrace trampolines that currently use the
+  kernel TOC to find ftrace target functions.
+
+- BPF function prologue and function calling generation are converted
+  from TOC to pcrel.
+
+- copypage_64.S has an interesting problem, prefixed instructions have
+  alignment restrictions so the linker can add padding, which makes the
+  assembler treat the difference between two local labels as
+  non-constant even if alignment is arranged so padding is not required.
+  This may need toolchain help to solve nicely, for now move the prefix
+  instruction out of the alternate patch section to work around it.
+
+This reduces kernel text size by about 6%.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/ppc_asm.h      |   5 ++
- arch/powerpc/kernel/exceptions-64s.S    | 112 ++++++++++++------------
- arch/powerpc/kernel/head_64.S           |  12 +--
- arch/powerpc/kernel/interrupt_64.S      |  28 +++---
- arch/powerpc/kernel/misc_64.S           |   2 +-
- arch/powerpc/kernel/vdso/gettimeofday.S |   6 +-
- arch/powerpc/kvm/book3s_hv_rmhandlers.S |  16 ++--
- arch/powerpc/lib/copypage_power7.S      |   4 +-
- arch/powerpc/lib/copyuser_power7.S      |   8 +-
- arch/powerpc/lib/hweight_64.S           |   8 +-
- arch/powerpc/lib/memcmp_64.S            |   4 +-
- arch/powerpc/lib/memcpy_power7.S        |   6 +-
- arch/powerpc/platforms/pseries/hvCall.S |   4 +-
- 13 files changed, 112 insertions(+), 103 deletions(-)
+ arch/powerpc/Kconfig                   |  3 ++
+ arch/powerpc/Makefile                  |  7 +++
+ arch/powerpc/include/asm/paca.h        |  2 +
+ arch/powerpc/include/asm/ppc-opcode.h  |  8 ++++
+ arch/powerpc/include/asm/ppc_asm.h     | 19 ++++++++
+ arch/powerpc/include/asm/sections.h    |  5 +++
+ arch/powerpc/kernel/asm-offsets.c      |  2 +
+ arch/powerpc/kernel/head_64.S          | 14 ++++++
+ arch/powerpc/kernel/irq.c              |  8 ++++
+ arch/powerpc/kernel/module_64.c        | 60 +++++++++++++++++++-------
+ arch/powerpc/kernel/paca.c             |  2 +
+ arch/powerpc/kernel/trace/ftrace.c     | 50 ++++++++++++++++-----
+ arch/powerpc/kernel/vector.S           |  6 +++
+ arch/powerpc/kernel/vmlinux.lds.S      |  6 +++
+ arch/powerpc/lib/copypage_64.S         | 10 +++++
+ arch/powerpc/net/bpf_jit.h             | 10 +++--
+ arch/powerpc/net/bpf_jit_comp64.c      | 35 +++++++++++----
+ arch/powerpc/platforms/Kconfig.cputype | 18 ++++++++
+ arch/powerpc/xmon/xmon.c               |  2 +
+ 19 files changed, 228 insertions(+), 39 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index d2f44612f4b0..9f64f9a6a897 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -180,6 +180,11 @@
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 19c13733a4ed..08df2cba8b9d 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -7,6 +7,9 @@ config CC_HAS_ELFV2
+ config CC_HAS_PREFIXED
+ 	def_bool PPC64 && $(cc-option, -mcpu=power10 -mprefixed)
  
- #ifdef __KERNEL__
++config CC_HAS_PCREL
++	def_bool PPC64 && $(cc-option, -mcpu=power10 -mpcrel)
++
+ config 32BIT
+ 	bool
+ 	default y if PPC32
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index de8bb40b73c0..d99fdd0f111a 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -107,6 +107,9 @@ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) += -z notext
+ LDFLAGS_vmlinux	:= $(LDFLAGS_vmlinux-y)
+ 
+ ifdef CONFIG_PPC64
++ifdef CONFIG_PPC_KERNEL_PCREL
++	KBUILD_CFLAGS_MODULE += $(call cc-option,-mno-pcrel)
++endif
+ ifeq ($(call cc-option-yn,-mcmodel=medium),y)
+ 	# -mcmodel=medium breaks modules because it uses 32bit offsets from
+ 	# the TOC pointer to create pointers where possible. Pointers into the
+@@ -186,7 +189,11 @@ KBUILD_CFLAGS += $(call cc-option,-mprefixed)
+ else
+ KBUILD_CFLAGS += $(call cc-option,-mno-prefixed)
+ endif
++ifdef CONFIG_PPC_KERNEL_PCREL
++KBUILD_CFLAGS += $(call cc-option,-mpcrel)
++else
+ KBUILD_CFLAGS += $(call cc-option,-mno-pcrel)
++endif
+ 
+ # No AltiVec or VSX or MMA instructions when building kernel
+ KBUILD_CFLAGS += $(call cc-option,-mno-altivec)
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 0ab3511a47d7..da0377f46597 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -88,7 +88,9 @@ struct paca_struct {
+ 	u16 lock_token;			/* Constant 0x8000, used in locks */
+ #endif
+ 
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	u64 kernel_toc;			/* Kernel TOC address */
++#endif
+ 	u64 kernelbase;			/* Base address of kernel */
+ 	u64 kernel_msr;			/* MSR while running in kernel */
+ 	void *emergency_sp;		/* pointer to emergency stack */
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 21e33e46f4b8..ca5a0da7df4e 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -120,11 +120,18 @@
+  * 16-bit immediate helper macros: HA() is for use with sign-extending instrs
+  * (e.g. LD, ADDI).  If the bottom 16 bits is "-ve", add another bit into the
+  * top half to negate the effect (i.e. 0xffff + 1 = 0x(1)0000).
++ *
++ * XXX: should these mask out possible sign bits?
+  */
+ #define IMM_H(i)                ((uintptr_t)(i)>>16)
+ #define IMM_HA(i)               (((uintptr_t)(i)>>16) +                       \
+ 					(((uintptr_t)(i) & 0x8000) >> 15))
  
 +/*
-+ * Used to name C functions called from asm
++ * 18-bit immediate helper for prefix 18-bit upper immediate si0 field.
 + */
-+#define CFUNC(name) name
++#define IMM_H18(i)              (((uintptr_t)(i)>>16) & 0x3ffff)
 +
+ 
+ /* opcode and xopcode for instructions */
+ #define OP_PREFIX	1
+@@ -306,6 +313,7 @@
+ #define PPC_PREFIX_8LS			0x04000000
+ 
+ /* Prefixed instructions */
++#define PPC_INST_PADDI			0x38000000
+ #define PPC_INST_PLD			0xe4000000
+ #define PPC_INST_PSTD			0xf4000000
+ 
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 9f64f9a6a897..9315f007d010 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -183,7 +183,11 @@
+ /*
+  * Used to name C functions called from asm
+  */
++#if defined(CONFIG_PPC_KERNEL_PCREL) && !defined(MODULE)
++#define CFUNC(name) name@notoc
++#else
+ #define CFUNC(name) name
++#endif
+ 
  /*
   * We use __powerpc64__ here because we want the compat VDSO to use the 32-bit
-  * version below in the else case of the ifdef.
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6441a1ba57ac..c33c8ebf8641 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1075,7 +1075,7 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	__GEN_COMMON_BODY system_reset
+@@ -212,6 +216,9 @@
+ 	.globl name; \
+ name:
  
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	system_reset_exception
-+	bl	CFUNC(system_reset_exception)
++#if defined(CONFIG_PPC_KERNEL_PCREL) && !defined(MODULE)
++#define _GLOBAL_TOC _GLOBAL
++#else
+ #define _GLOBAL_TOC(name) \
+ 	.align 2 ; \
+ 	.type name,@function; \
+@@ -220,6 +227,7 @@ name: \
+ 0:	addis r2,r12,(.TOC.-0b)@ha; \
+ 	addi r2,r2,(.TOC.-0b)@l; \
+ 	.localentry name,.-name
++#endif
  
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */
- 	li	r9,0
-@@ -1223,9 +1223,9 @@ BEGIN_FTR_SECTION
- END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- BEGIN_FTR_SECTION
--	bl	machine_check_early_boot
-+	bl	CFUNC(machine_check_early_boot)
- END_FTR_SECTION(0, 1)     // nop out after boot
--	bl	machine_check_early
-+	bl	CFUNC(machine_check_early)
- 	std	r3,RESULT(r1)	/* Save result */
- 	ld	r12,_MSR(r1)
+ #define DOTSYM(a)	a
  
-@@ -1286,7 +1286,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
- 	 * Queue up the MCE event so that we can log it later, while
- 	 * returning from kernel or opal call.
- 	 */
--	bl	machine_check_queue_event
-+	bl	CFUNC(machine_check_queue_event)
- 	MACHINE_CHECK_HANDLER_WINDUP
- 	RFI_TO_KERNEL
+@@ -351,8 +359,13 @@ GLUE(.,name):
  
-@@ -1312,7 +1312,7 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	 */
- 	GEN_COMMON machine_check
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	machine_check_exception_async
-+	bl	CFUNC(machine_check_exception_async)
- 	b	interrupt_return_srr
+ #ifdef __powerpc64__
  
++#ifdef CONFIG_PPC_KERNEL_PCREL
++#define __LOAD_PACA_TOC(reg)			\
++	li	reg,-1
++#else
+ #define __LOAD_PACA_TOC(reg)			\
+ 	ld	reg,PACATOC(r13)
++#endif
  
-@@ -1322,7 +1322,7 @@ EXC_COMMON_BEGIN(machine_check_common)
-  * done. Queue the event then call the idle code to do the wake up.
+ #define LOAD_PACA_TOC()				\
+ 	__LOAD_PACA_TOC(r2)
+@@ -366,9 +379,15 @@ GLUE(.,name):
+ 	ori	reg, reg, (expr)@l;		\
+ 	rldimi	reg, tmp, 32, 0
+ 
++#if defined(CONFIG_PPC_KERNEL_PCREL) && !defined(MODULE)
++#define LOAD_REG_ADDR(reg,name)			\
++	pla	reg,name@pcrel
++
++#else
+ #define LOAD_REG_ADDR(reg,name)			\
+ 	addis	reg,r2,name@toc@ha;		\
+ 	addi	reg,reg,name@toc@l
++#endif
+ 
+ #ifdef CONFIG_PPC_BOOK3E_64
+ /*
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 9c00c9c0ca8f..4e1f548c8d37 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -46,10 +46,15 @@ extern char end_virt_trampolines[];
   */
- EXC_COMMON_BEGIN(machine_check_idle_common)
--	bl	machine_check_queue_event
-+	bl	CFUNC(machine_check_queue_event)
+ static inline unsigned long kernel_toc_addr(void)
+ {
++#ifdef CONFIG_PPC_KERNEL_PCREL
++	BUILD_BUG();
++	return -1UL;
++#else
+ 	unsigned long toc_ptr;
  
- 	/*
- 	 * GPR-loss wakeups are relatively straightforward, because the
-@@ -1361,7 +1361,7 @@ EXC_COMMON_BEGIN(unrecoverable_mce)
- BEGIN_FTR_SECTION
- 	li	r10,0 /* clear MSR_RI */
- 	mtmsrd	r10,1
--	bl	disable_machine_check
-+	bl	CFUNC(disable_machine_check)
- END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	ld	r10,PACAKMSR(r13)
- 	li	r3,MSR_ME
-@@ -1378,14 +1378,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	 * the early handler which is a true NMI.
- 	 */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	machine_check_exception
-+	bl	CFUNC(machine_check_exception)
+ 	asm volatile("mr %0, 2" : "=r" (toc_ptr));
+ 	return toc_ptr;
++#endif
+ }
  
- 	/*
- 	 * We will not reach here. Even if we did, there is no way out.
- 	 * Call unrecoverable_exception and die.
- 	 */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	unrecoverable_exception
-+	bl	CFUNC(unrecoverable_exception)
- 	b	.
- 
- 
-@@ -1440,16 +1440,16 @@ EXC_COMMON_BEGIN(data_access_common)
- 	bne-	1f
- #ifdef CONFIG_PPC_64S_HASH_MMU
- BEGIN_MMU_FTR_SECTION
--	bl	do_hash_fault
-+	bl	CFUNC(do_hash_fault)
- MMU_FTR_SECTION_ELSE
--	bl	do_page_fault
-+	bl	CFUNC(do_page_fault)
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- #else
--	bl	do_page_fault
-+	bl	CFUNC(do_page_fault)
- #endif
- 	b	interrupt_return_srr
- 
--1:	bl	do_break
-+1:	bl	CFUNC(do_break)
- 	/*
- 	 * do_break() may have changed the NV GPRS while handling a breakpoint.
- 	 * If so, we need to restore them with their updated values.
-@@ -1493,7 +1493,7 @@ EXC_COMMON_BEGIN(data_access_slb_common)
- BEGIN_MMU_FTR_SECTION
- 	/* HPT case, do SLB fault */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_slb_fault
-+	bl	CFUNC(do_slb_fault)
- 	cmpdi	r3,0
- 	bne-	1f
- 	b	fast_interrupt_return_srr
-@@ -1507,7 +1507,7 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- #endif
- 	std	r3,RESULT(r1)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_bad_segment_interrupt
-+	bl	CFUNC(do_bad_segment_interrupt)
- 	b	interrupt_return_srr
- 
- 
-@@ -1541,12 +1541,12 @@ EXC_COMMON_BEGIN(instruction_access_common)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- #ifdef CONFIG_PPC_64S_HASH_MMU
- BEGIN_MMU_FTR_SECTION
--	bl	do_hash_fault
-+	bl	CFUNC(do_hash_fault)
- MMU_FTR_SECTION_ELSE
--	bl	do_page_fault
-+	bl	CFUNC(do_page_fault)
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- #else
--	bl	do_page_fault
-+	bl	CFUNC(do_page_fault)
- #endif
- 	b	interrupt_return_srr
- 
-@@ -1581,7 +1581,7 @@ EXC_COMMON_BEGIN(instruction_access_slb_common)
- BEGIN_MMU_FTR_SECTION
- 	/* HPT case, do SLB fault */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_slb_fault
-+	bl	CFUNC(do_slb_fault)
- 	cmpdi	r3,0
- 	bne-	1f
- 	b	fast_interrupt_return_srr
-@@ -1595,7 +1595,7 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- #endif
- 	std	r3,RESULT(r1)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_bad_segment_interrupt
-+	bl	CFUNC(do_bad_segment_interrupt)
- 	b	interrupt_return_srr
- 
- 
-@@ -1649,7 +1649,7 @@ EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
- EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	GEN_COMMON hardware_interrupt
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_IRQ
-+	bl	CFUNC(do_IRQ)
- 	BEGIN_FTR_SECTION
- 	b	interrupt_return_hsrr
- 	FTR_SECTION_ELSE
-@@ -1679,7 +1679,7 @@ EXC_VIRT_END(alignment, 0x4600, 0x100)
- EXC_COMMON_BEGIN(alignment_common)
- 	GEN_COMMON alignment
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	alignment_exception
-+	bl	CFUNC(alignment_exception)
- 	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
- 	b	interrupt_return_srr
- 
-@@ -1745,7 +1745,7 @@ EXC_COMMON_BEGIN(program_check_common)
- 
- .Ldo_program_check:
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	program_check_exception
-+	bl	CFUNC(program_check_exception)
- 	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
- 	b	interrupt_return_srr
- 
-@@ -1777,7 +1777,7 @@ EXC_COMMON_BEGIN(fp_unavailable_common)
- 	GEN_COMMON fp_unavailable
- 	bne	1f			/* if from user, just load it up */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	kernel_fp_unavailable_exception
-+	bl	CFUNC(kernel_fp_unavailable_exception)
- 0:	trap
- 	EMIT_BUG_ENTRY 0b, __FILE__, __LINE__, 0
- 1:
-@@ -1790,12 +1790,12 @@ BEGIN_FTR_SECTION
- 	bne-	2f
- END_FTR_SECTION_IFSET(CPU_FTR_TM)
- #endif
--	bl	load_up_fpu
-+	bl	CFUNC(load_up_fpu)
- 	b	fast_interrupt_return_srr
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 2:	/* User process was in a transaction */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	fp_unavailable_tm
-+	bl	CFUNC(fp_unavailable_tm)
- 	b	interrupt_return_srr
- #endif
- 
-@@ -1839,7 +1839,7 @@ EXC_VIRT_END(decrementer, 0x4900, 0x80)
- EXC_COMMON_BEGIN(decrementer_common)
- 	GEN_COMMON decrementer
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	timer_interrupt
-+	bl	CFUNC(timer_interrupt)
- 	b	interrupt_return_srr
- 
- 
-@@ -1925,9 +1925,9 @@ EXC_COMMON_BEGIN(doorbell_super_common)
- 	GEN_COMMON doorbell_super
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- #ifdef CONFIG_PPC_DOORBELL
--	bl	doorbell_exception
-+	bl	CFUNC(doorbell_exception)
- #else
--	bl	unknown_async_exception
-+	bl	CFUNC(unknown_async_exception)
- #endif
- 	b	interrupt_return_srr
- 
-@@ -2091,7 +2091,7 @@ EXC_VIRT_END(single_step, 0x4d00, 0x100)
- EXC_COMMON_BEGIN(single_step_common)
- 	GEN_COMMON single_step
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	single_step_exception
-+	bl	CFUNC(single_step_exception)
- 	b	interrupt_return_srr
- 
- 
-@@ -2126,9 +2126,9 @@ EXC_COMMON_BEGIN(h_data_storage_common)
- 	GEN_COMMON h_data_storage
- 	addi    r3,r1,STACK_INT_FRAME_REGS
- BEGIN_MMU_FTR_SECTION
--	bl      do_bad_page_fault_segv
-+	bl	CFUNC(do_bad_page_fault_segv)
- MMU_FTR_SECTION_ELSE
--	bl      unknown_exception
-+	bl	CFUNC(unknown_exception)
- ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_TYPE_RADIX)
- 	b       interrupt_return_hsrr
- 
-@@ -2154,7 +2154,7 @@ EXC_VIRT_END(h_instr_storage, 0x4e20, 0x20)
- EXC_COMMON_BEGIN(h_instr_storage_common)
- 	GEN_COMMON h_instr_storage
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	unknown_exception
-+	bl	CFUNC(unknown_exception)
- 	b	interrupt_return_hsrr
- 
- 
-@@ -2177,7 +2177,7 @@ EXC_VIRT_END(emulation_assist, 0x4e40, 0x20)
- EXC_COMMON_BEGIN(emulation_assist_common)
- 	GEN_COMMON emulation_assist
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	emulation_assist_interrupt
-+	bl	CFUNC(emulation_assist_interrupt)
- 	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
- 	b	interrupt_return_hsrr
- 
-@@ -2237,7 +2237,7 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
- 	__GEN_COMMON_BODY hmi_exception_early
- 
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	hmi_exception_realmode
-+	bl	CFUNC(hmi_exception_realmode)
- 	cmpdi	cr0,r3,0
- 	bne	1f
- 
-@@ -2255,7 +2255,7 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
- EXC_COMMON_BEGIN(hmi_exception_common)
- 	GEN_COMMON hmi_exception
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	handle_hmi_exception
-+	bl	CFUNC(handle_hmi_exception)
- 	b	interrupt_return_hsrr
- 
- 
-@@ -2290,9 +2290,9 @@ EXC_COMMON_BEGIN(h_doorbell_common)
- 	GEN_COMMON h_doorbell
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- #ifdef CONFIG_PPC_DOORBELL
--	bl	doorbell_exception
-+	bl	CFUNC(doorbell_exception)
- #else
--	bl	unknown_async_exception
-+	bl	CFUNC(unknown_async_exception)
- #endif
- 	b	interrupt_return_hsrr
- 
-@@ -2325,7 +2325,7 @@ EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
- EXC_COMMON_BEGIN(h_virt_irq_common)
- 	GEN_COMMON h_virt_irq
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	do_IRQ
-+	bl	CFUNC(do_IRQ)
- 	b	interrupt_return_hsrr
- 
- 
-@@ -2374,10 +2374,10 @@ EXC_COMMON_BEGIN(performance_monitor_common)
- 	lbz	r4,PACAIRQSOFTMASK(r13)
- 	cmpdi	r4,IRQS_ENABLED
- 	bne	1f
--	bl	performance_monitor_exception_async
-+	bl	CFUNC(performance_monitor_exception_async)
- 	b	interrupt_return_srr
- 1:
--	bl	performance_monitor_exception_nmi
-+	bl	CFUNC(performance_monitor_exception_nmi)
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */
- 	li	r9,0
- 	mtmsrd	r9,1
-@@ -2421,19 +2421,19 @@ BEGIN_FTR_SECTION
- 	bne-	2f
-   END_FTR_SECTION_NESTED(CPU_FTR_TM, CPU_FTR_TM, 69)
- #endif
--	bl	load_up_altivec
-+	bl	CFUNC(load_up_altivec)
- 	b	fast_interrupt_return_srr
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 2:	/* User process was in a transaction */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	altivec_unavailable_tm
-+	bl	CFUNC(altivec_unavailable_tm)
- 	b	interrupt_return_srr
- #endif
- 1:
- END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
- #endif
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	altivec_unavailable_exception
-+	bl	CFUNC(altivec_unavailable_exception)
- 	b	interrupt_return_srr
- 
- 
-@@ -2475,14 +2475,14 @@ BEGIN_FTR_SECTION
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 2:	/* User process was in a transaction */
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	vsx_unavailable_tm
-+	bl	CFUNC(vsx_unavailable_tm)
- 	b	interrupt_return_srr
- #endif
- 1:
- END_FTR_SECTION_IFSET(CPU_FTR_VSX)
- #endif
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	vsx_unavailable_exception
-+	bl	CFUNC(vsx_unavailable_exception)
- 	b	interrupt_return_srr
- 
- 
-@@ -2509,7 +2509,7 @@ EXC_VIRT_END(facility_unavailable, 0x4f60, 0x20)
- EXC_COMMON_BEGIN(facility_unavailable_common)
- 	GEN_COMMON facility_unavailable
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	facility_unavailable_exception
-+	bl	CFUNC(facility_unavailable_exception)
- 	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
- 	b	interrupt_return_srr
- 
-@@ -2537,7 +2537,7 @@ EXC_VIRT_END(h_facility_unavailable, 0x4f80, 0x20)
- EXC_COMMON_BEGIN(h_facility_unavailable_common)
- 	GEN_COMMON h_facility_unavailable
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	facility_unavailable_exception
-+	bl	CFUNC(facility_unavailable_exception)
- 	/* XXX Shouldn't be necessary in practice */
- 	HANDLER_RESTORE_NVGPRS()
- 	b	interrupt_return_hsrr
-@@ -2568,7 +2568,7 @@ EXC_VIRT_NONE(0x5200, 0x100)
- EXC_COMMON_BEGIN(cbe_system_error_common)
- 	GEN_COMMON cbe_system_error
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	cbe_system_error_exception
-+	bl	CFUNC(cbe_system_error_exception)
- 	b	interrupt_return_hsrr
- 
- #else /* CONFIG_CBE_RAS */
-@@ -2599,7 +2599,7 @@ EXC_VIRT_END(instruction_breakpoint, 0x5300, 0x100)
- EXC_COMMON_BEGIN(instruction_breakpoint_common)
- 	GEN_COMMON instruction_breakpoint
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	instruction_breakpoint_exception
-+	bl	CFUNC(instruction_breakpoint_exception)
- 	b	interrupt_return_srr
- 
- 
-@@ -2721,7 +2721,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- EXC_COMMON_BEGIN(denorm_exception_common)
- 	GEN_COMMON denorm_exception
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	unknown_exception
-+	bl	CFUNC(unknown_exception)
- 	b	interrupt_return_hsrr
- 
- 
-@@ -2738,7 +2738,7 @@ EXC_VIRT_NONE(0x5600, 0x100)
- EXC_COMMON_BEGIN(cbe_maintenance_common)
- 	GEN_COMMON cbe_maintenance
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	cbe_maintenance_exception
-+	bl	CFUNC(cbe_maintenance_exception)
- 	b	interrupt_return_hsrr
- 
- #else /* CONFIG_CBE_RAS */
-@@ -2764,10 +2764,10 @@ EXC_COMMON_BEGIN(altivec_assist_common)
- 	GEN_COMMON altivec_assist
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- #ifdef CONFIG_ALTIVEC
--	bl	altivec_assist_exception
-+	bl	CFUNC(altivec_assist_exception)
- 	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
- #else
--	bl	unknown_exception
-+	bl	CFUNC(unknown_exception)
- #endif
- 	b	interrupt_return_srr
- 
-@@ -2785,7 +2785,7 @@ EXC_VIRT_NONE(0x5800, 0x100)
- EXC_COMMON_BEGIN(cbe_thermal_common)
- 	GEN_COMMON cbe_thermal
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	cbe_thermal_exception
-+	bl	CFUNC(cbe_thermal_exception)
- 	b	interrupt_return_hsrr
- 
- #else /* CONFIG_CBE_RAS */
-@@ -2818,7 +2818,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	__GEN_COMMON_BODY soft_nmi
- 
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	soft_nmi_interrupt
-+	bl	CFUNC(soft_nmi_interrupt)
- 
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */
- 	li	r9,0
+ static inline int overlaps_interrupt_vector_text(unsigned long start,
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index d24a59a98c0c..9f14d95b8b32 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -185,7 +185,9 @@ int main(void)
+ 				 offsetof(struct task_struct, thread_info));
+ 	OFFSET(PACASAVEDMSR, paca_struct, saved_msr);
+ 	OFFSET(PACAR1, paca_struct, saved_r1);
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	OFFSET(PACATOC, paca_struct, kernel_toc);
++#endif
+ 	OFFSET(PACAKBASE, paca_struct, kernelbase);
+ 	OFFSET(PACAKMSR, paca_struct, kernel_msr);
+ #ifdef CONFIG_PPC_BOOK3S_64
 diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 66c21061036b..2254f6fa3528 100644
+index 2254f6fa3528..a76be31dfc67 100644
 --- a/arch/powerpc/kernel/head_64.S
 +++ b/arch/powerpc/kernel/head_64.S
-@@ -605,7 +605,7 @@ __boot_from_prom:
+@@ -330,6 +330,12 @@ _GLOBAL(fsl_secondary_thread_init)
+  */
+ _GLOBAL(generic_secondary_smp_init)
+ 	FIXUP_ENDIAN
++
++	li	r13,0
++
++	/* Poison TOC */
++	li	r2,-1
++
+ 	mr	r24,r3
+ 	mr	r25,r4
  
- 	/* Do all of the interaction with OF client interface */
- 	mr	r8,r26
--	bl	prom_init
-+	bl	CFUNC(prom_init)
- #endif /* #CONFIG_PPC_OF_BOOT_TRAMPOLINE */
+@@ -528,6 +534,9 @@ __start_initialization_multiplatform:
+ 	/* Zero r13 (paca) so early program check / mce don't use it */
+ 	li	r13,0
  
- 	/* We never return. We also hit that trap if trying to boot
-@@ -833,7 +833,7 @@ __secondary_start:
- 	 * can turn it on below. This is a call to C, which is OK, we're still
- 	 * running on the emergency stack.
- 	 */
--	bl	early_setup_secondary
-+	bl	CFUNC(early_setup_secondary)
- 
++	/* Poison TOC */
++	li	r2,-1
++
  	/*
- 	 * The primary has initialized our kernel stack for us in the paca, grab
-@@ -872,7 +872,7 @@ start_secondary_prolog:
- 	LOAD_PACA_TOC()
- 	li	r3,0
- 	std	r3,0(r1)		/* Zero the stack frame pointer	*/
--	bl	start_secondary
-+	bl	CFUNC(start_secondary)
- 	b	.
- /*
-  * Reset stack pointer and call start_secondary
-@@ -883,7 +883,7 @@ _GLOBAL(start_secondary_resume)
- 	ld	r1,PACAKSAVE(r13)	/* Reload kernel stack pointer */
- 	li	r3,0
- 	std	r3,0(r1)		/* Zero the stack frame pointer	*/
--	bl	start_secondary
-+	bl	CFUNC(start_secondary)
- 	b	.
- #endif
- 
-@@ -988,7 +988,7 @@ start_here_multiplatform:
+ 	 * Are we booted from a PROM Of-type client-interface ?
  	 */
- 
- #ifdef CONFIG_KASAN
--	bl	kasan_early_init
-+	bl	CFUNC(kasan_early_init)
- #endif
- 	/* Restore parameters passed from prom_init/kexec */
- 	mr	r3,r31
-@@ -1021,7 +1021,7 @@ start_here_common:
- 	stb	r0,PACAIRQHAPPENED(r13)
- 
- 	/* Generic kernel entry */
--	bl	start_kernel
-+	bl	CFUNC(start_kernel)
- 
- 	/* Not reached */
- 0:	trap
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index fccc34489add..23d7cdc5a23e 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -101,12 +101,12 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	 * state of kernel code.
- 	 */
- 	SANITIZE_SYSCALL_GPRS()
--	bl	system_call_exception
-+	bl	CFUNC(system_call_exception)
- 
- .Lsyscall_vectored_\name\()_exit:
- 	addi	r4,r1,STACK_INT_FRAME_REGS
- 	li	r5,1 /* scv */
--	bl	syscall_exit_prepare
-+	bl	CFUNC(syscall_exit_prepare)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- .Lsyscall_vectored_\name\()_rst_start:
- 	lbz	r11,PACAIRQHAPPENED(r13)
-@@ -185,7 +185,7 @@ _ASM_NOKPROBE_SYMBOL(syscall_vectored_\name\()_restart)
- 	addi	r4,r1,STACK_INT_FRAME_REGS
- 	li	r11,IRQS_ALL_DISABLED
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	bl	syscall_exit_restart
-+	bl	CFUNC(syscall_exit_restart)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- 	b	.Lsyscall_vectored_\name\()_rst_start
- 1:
-@@ -286,12 +286,12 @@ END_BTB_FLUSH_SECTION
- 	 * state of kernel code.
- 	 */
- 	SANITIZE_SYSCALL_GPRS()
--	bl	system_call_exception
-+	bl	CFUNC(system_call_exception)
- 
- .Lsyscall_exit:
- 	addi	r4,r1,STACK_INT_FRAME_REGS
- 	li	r5,0 /* !scv */
--	bl	syscall_exit_prepare
-+	bl	CFUNC(syscall_exit_prepare)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- #ifdef CONFIG_PPC_BOOK3S
- .Lsyscall_rst_start:
-@@ -372,7 +372,7 @@ _ASM_NOKPROBE_SYMBOL(syscall_restart)
- 	addi	r4,r1,STACK_INT_FRAME_REGS
- 	li	r11,IRQS_ALL_DISABLED
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	bl	syscall_exit_restart
-+	bl	CFUNC(syscall_exit_restart)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- 	b	.Lsyscall_rst_start
- 1:
-@@ -401,7 +401,7 @@ _ASM_NOKPROBE_SYMBOL(fast_interrupt_return_srr)
- 	li	r3,0 /* 0 return value, no EMULATE_STACK_STORE */
- 	bne+	.Lfast_kernel_interrupt_return_srr
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	unrecoverable_exception
-+	bl	CFUNC(unrecoverable_exception)
- 	b	. /* should not get here */
- #else
- 	bne	.Lfast_user_interrupt_return_srr
-@@ -419,7 +419,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\())
- interrupt_return_\srr\()_user: /* make backtraces match the _kernel variant */
- _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	interrupt_exit_user_prepare
-+	bl	CFUNC(interrupt_exit_user_prepare)
- #ifndef CONFIG_INTERRUPT_SANITIZE_REGISTERS
- 	cmpdi	r3,0
- 	bne-	.Lrestore_nvgprs_\srr
-@@ -523,7 +523,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user_restart)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- 	li	r11,IRQS_ALL_DISABLED
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	bl	interrupt_exit_user_restart
-+	bl	CFUNC(interrupt_exit_user_restart)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- 	b	.Linterrupt_return_\srr\()_user_rst_start
- 1:
-@@ -536,7 +536,7 @@ RESTART_TABLE(.Linterrupt_return_\srr\()_user_rst_start, .Linterrupt_return_\srr
- interrupt_return_\srr\()_kernel:
- _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_kernel)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
--	bl	interrupt_exit_kernel_prepare
-+	bl	CFUNC(interrupt_exit_kernel_prepare)
- 
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- .Linterrupt_return_\srr\()_kernel_rst_start:
-@@ -705,7 +705,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_kernel_restart)
- 	addi	r3,r1,STACK_INT_FRAME_REGS
- 	li	r11,IRQS_ALL_DISABLED
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	bl	interrupt_exit_kernel_restart
-+	bl	CFUNC(interrupt_exit_kernel_restart)
- 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
- 	b	.Linterrupt_return_\srr\()_kernel_rst_start
- 1:
-@@ -727,20 +727,20 @@ DEFINE_FIXED_SYMBOL(__end_soft_masked, text)
- 
- #ifdef CONFIG_PPC_BOOK3S
- _GLOBAL(ret_from_fork_scv)
--	bl	schedule_tail
-+	bl	CFUNC(schedule_tail)
- 	REST_NVGPRS(r1)
- 	li	r3,0	/* fork() return value */
- 	b	.Lsyscall_vectored_common_exit
- #endif
- 
- _GLOBAL(ret_from_fork)
--	bl	schedule_tail
-+	bl	CFUNC(schedule_tail)
- 	REST_NVGPRS(r1)
- 	li	r3,0	/* fork() return value */
- 	b	.Lsyscall_exit
- 
- _GLOBAL(ret_from_kernel_thread)
--	bl	schedule_tail
-+	bl	CFUNC(schedule_tail)
- 	REST_NVGPRS(r1)
- 	mtctr	r14
- 	mr	r3,r15
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index c39c07a4c06e..2c9ac70aaf0c 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -432,7 +432,7 @@ _GLOBAL(kexec_sequence)
- 1:
- 	/* copy dest pages, flush whole dest image */
- 	mr	r3,r29
--	bl	kexec_copy_flush	/* (image) */
-+	bl	CFUNC(kexec_copy_flush)	/* (image) */
- 
- 	/* turn off mmu now if not done earlier */
- 	cmpdi	r26,0
-diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
-index 0c4ecc8fec5a..48fc6658053a 100644
---- a/arch/powerpc/kernel/vdso/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-@@ -38,7 +38,11 @@
- 	.else
- 	addi		r4, r5, VDSO_DATA_OFFSET
- 	.endif
--	bl		DOTSYM(\funct)
-+#ifdef __powerpc64__
-+	bl		CFUNC(DOTSYM(\funct))
+@@ -918,6 +927,10 @@ SYM_FUNC_END(enable_64b_mode)
+  * this.
+  */
+ _GLOBAL(relative_toc)
++#ifdef CONFIG_PPC_KERNEL_PCREL
++	tdnei	r2,-1
++	blr
 +#else
-+	bl		\funct
-+#endif
- 	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
- #ifdef __powerpc64__
- 	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index acf80915f406..3eab313843b7 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -381,7 +381,7 @@ kvm_secondary_got_guest:
- 	bne	kvm_no_guest
- 
- 	li	r3,0			/* NULL argument */
--	bl	hmi_exception_realmode
-+	bl	CFUNC(hmi_exception_realmode)
- /*
-  * At this point we have finished executing in the guest.
-  * We need to wait for hwthread_req to become zero, since
-@@ -458,7 +458,7 @@ kvm_unsplit_nap:
- 	cmpwi	r12, BOOK3S_INTERRUPT_HMI
- 	bne	55f
- 	li	r3, 0			/* NULL argument */
--	bl	hmi_exception_realmode
-+	bl	CFUNC(hmi_exception_realmode)
- 55:
- 	/*
- 	 * Ensure that secondary doesn't nap when it has
-@@ -859,7 +859,7 @@ deliver_guest_interrupt:	/* r4 = vcpu, r13 = paca */
- 	cmpdi	r0, 0
- 	beq	71f
- 	mr	r3, r4
--	bl	kvmppc_guest_entry_inject_int
-+	bl	CFUNC(kvmppc_guest_entry_inject_int)
- 	ld	r4, HSTATE_KVM_VCPU(r13)
- 71:
- 	ld	r6, VCPU_SRR0(r4)
-@@ -1544,7 +1544,7 @@ kvmppc_guest_external:
- 	/* External interrupt, first check for host_ipi. If this is
- 	 * set, we know the host wants us out so let's do it now
- 	 */
--	bl	kvmppc_read_intr
-+	bl	CFUNC(kvmppc_read_intr)
- 
- 	/*
- 	 * Restore the active volatile registers after returning from
-@@ -1626,7 +1626,7 @@ kvmppc_hdsi:
- 	/* Search the hash table. */
- 	mr	r3, r9			/* vcpu pointer */
- 	li	r7, 1			/* data fault */
--	bl	kvmppc_hpte_hv_fault
-+	bl	CFUNC(kvmppc_hpte_hv_fault)
- 	ld	r9, HSTATE_KVM_VCPU(r13)
- 	ld	r10, VCPU_PC(r9)
- 	ld	r11, VCPU_MSR(r9)
-@@ -1702,7 +1702,7 @@ kvmppc_hisi:
- 	mr	r4, r10
- 	mr	r6, r11
- 	li	r7, 0			/* instruction fault */
--	bl	kvmppc_hpte_hv_fault
-+	bl	CFUNC(kvmppc_hpte_hv_fault)
- 	ld	r9, HSTATE_KVM_VCPU(r13)
- 	ld	r10, VCPU_PC(r9)
- 	ld	r11, VCPU_MSR(r9)
-@@ -2342,7 +2342,7 @@ hmi_realmode:
- 	lbz	r0, HSTATE_PTID(r13)
- 	cmpwi	r0, 0
- 	bne	guest_exit_cont
--	bl	kvmppc_realmode_hmi_handler
-+	bl	CFUNC(kvmppc_realmode_hmi_handler)
- 	ld	r9, HSTATE_KVM_VCPU(r13)
- 	li	r12, BOOK3S_INTERRUPT_HMI
- 	b	guest_exit_cont
-@@ -2413,7 +2413,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
- 7:	mflr	r0
- 	std	r0, PPC_LR_STKOFF(r1)
- 	stdu	r1, -PPC_MIN_STKFRM(r1)
--	bl	kvmppc_read_intr
-+	bl	CFUNC(kvmppc_read_intr)
- 	nop
- 	li	r12, BOOK3S_INTERRUPT_EXTERNAL
- 	cmpdi	r3, 1
-diff --git a/arch/powerpc/lib/copypage_power7.S b/arch/powerpc/lib/copypage_power7.S
-index a9844c6353cf..a783973f1215 100644
---- a/arch/powerpc/lib/copypage_power7.S
-+++ b/arch/powerpc/lib/copypage_power7.S
-@@ -45,7 +45,7 @@ _GLOBAL(copypage_power7)
- 	std	r4,-STACKFRAMESIZE+STK_REG(R30)(r1)
- 	std	r0,16(r1)
- 	stdu	r1,-STACKFRAMESIZE(r1)
--	bl	enter_vmx_ops
-+	bl	CFUNC(enter_vmx_ops)
- 	cmpwi	r3,0
- 	ld	r0,STACKFRAMESIZE+16(r1)
- 	ld	r3,STK_REG(R31)(r1)
-@@ -88,7 +88,7 @@ _GLOBAL(copypage_power7)
- 	addi	r3,r3,128
- 	bdnz	1b
- 
--	b	exit_vmx_ops		/* tail call optimise */
-+	b	CFUNC(exit_vmx_ops)		/* tail call optimise */
- 
- #else
- 	li	r0,(PAGE_SIZE/128)
-diff --git a/arch/powerpc/lib/copyuser_power7.S b/arch/powerpc/lib/copyuser_power7.S
-index 28f0be523c06..ac41053c3a5a 100644
---- a/arch/powerpc/lib/copyuser_power7.S
-+++ b/arch/powerpc/lib/copyuser_power7.S
-@@ -47,7 +47,7 @@
- 	ld	r15,STK_REG(R15)(r1)
- 	ld	r14,STK_REG(R14)(r1)
- .Ldo_err3:
--	bl	exit_vmx_usercopy
-+	bl	CFUNC(exit_vmx_usercopy)
- 	ld	r0,STACKFRAMESIZE+16(r1)
- 	mtlr	r0
- 	b	.Lexit
-@@ -272,7 +272,7 @@ err1;	stb	r0,0(r3)
  	mflr	r0
- 	std	r0,16(r1)
- 	stdu	r1,-STACKFRAMESIZE(r1)
--	bl	enter_vmx_usercopy
-+	bl	CFUNC(enter_vmx_usercopy)
- 	cmpwi	cr1,r3,0
- 	ld	r0,STACKFRAMESIZE+16(r1)
- 	ld	r3,STK_REG(R31)(r1)
-@@ -488,7 +488,7 @@ err3;	lbz	r0,0(r4)
- err3;	stb	r0,0(r3)
+ 	bcl	20,31,$+4
+ 0:	mflr	r11
+@@ -928,6 +941,7 @@ _GLOBAL(relative_toc)
  
- 15:	addi	r1,r1,STACKFRAMESIZE
--	b	exit_vmx_usercopy	/* tail call optimise */
-+	b	CFUNC(exit_vmx_usercopy)	/* tail call optimise */
+ .balign 8
+ p_toc:	.8byte	.TOC. - 0b
++#endif
  
- .Lvmx_unaligned_copy:
- 	/* Get the destination 16B aligned */
-@@ -691,5 +691,5 @@ err3;	lbz	r0,0(r4)
- err3;	stb	r0,0(r3)
+ /*
+  * This is where the main kernel code starts.
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index c9535f2760b5..6f7d4edaa0bc 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -206,7 +206,11 @@ static __always_inline void call_do_softirq(const void *sp)
+ 	asm volatile (
+ 		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+ 		"mr		%%r1, %[sp]		;"
++#ifdef CONFIG_PPC_KERNEL_PCREL
++		"bl		%[callee]@notoc		;"
++#else
+ 		"bl		%[callee]		;"
++#endif
+ 		 PPC_LL "	%%r1, 0(%%r1)		;"
+ 		 : // Outputs
+ 		 : // Inputs
+@@ -259,7 +263,11 @@ static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
+ 		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+ 		"mr		%%r4, %%r1		;"
+ 		"mr		%%r1, %[sp]		;"
++#ifdef CONFIG_PPC_KERNEL_PCREL
++		"bl		%[callee]@notoc		;"
++#else
+ 		"bl		%[callee]		;"
++#endif
+ 		 PPC_LL "	%%r1, 0(%%r1)		;"
+ 		 : // Outputs
+ 		   "+r" (r3)
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 2ac78d207f77..0fc04abac3bd 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -101,17 +101,18 @@ static unsigned long stub_func_addr(func_desc_t func)
+ /* Like PPC32, we need little trampolines to do > 24-bit jumps (into
+    the kernel itself).  But on PPC64, these need to be used for every
+    jump, actually, to reset r2 (TOC+0x8000). */
+-struct ppc64_stub_entry
+-{
+-	/* 28 byte jump instruction sequence (7 instructions). We only
+-	 * need 6 instructions on ABIv2 but we always allocate 7 so
+-	 * so we don't have to modify the trampoline load instruction. */
++struct ppc64_stub_entry {
++	/*
++	 * 28 byte jump instruction sequence (7 instructions) that can
++	 * hold ppc64_stub_insns or stub_insns. Must be 8-byte aligned
++	 * with PCREL kernels that use prefix instructions in the stub.
++	 */
+ 	u32 jump[7];
+ 	/* Used by ftrace to identify stubs */
+ 	u32 magic;
+ 	/* Data for the above code */
+ 	func_desc_t funcdata;
+-};
++} __aligned(8);
  
- 15:	addi	r1,r1,STACKFRAMESIZE
--	b	exit_vmx_usercopy	/* tail call optimise */
-+	b	CFUNC(exit_vmx_usercopy)	/* tail call optimise */
- #endif /* CONFIG_ALTIVEC */
-diff --git a/arch/powerpc/lib/hweight_64.S b/arch/powerpc/lib/hweight_64.S
-index 6effad901ef7..09af29561314 100644
---- a/arch/powerpc/lib/hweight_64.S
-+++ b/arch/powerpc/lib/hweight_64.S
-@@ -14,7 +14,7 @@
+ /*
+  * PPC64 uses 24 bit jumps, but we need to jump into other modules or
+@@ -333,11 +334,21 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
+ #ifdef CONFIG_MPROFILE_KERNEL
  
- _GLOBAL(__arch_hweight8)
+ static u32 stub_insns[] = {
++#ifdef CONFIG_PPC_KERNEL_PCREL
++	PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernelbase)),
++	PPC_RAW_NOP(), /* align the prefix insn */
++	/* paddi r12,r12,addr */
++	PPC_PREFIX_MLS | __PPC_PRFX_R(0),
++	PPC_INST_PADDI | ___PPC_RT(_R12) | ___PPC_RA(_R12),
++	PPC_RAW_MTCTR(_R12),
++	PPC_RAW_BCTR(),
++#else
+ 	PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernel_toc)),
+ 	PPC_RAW_ADDIS(_R12, _R12, 0),
+ 	PPC_RAW_ADDI(_R12, _R12, 0),
+ 	PPC_RAW_MTCTR(_R12),
+ 	PPC_RAW_BCTR(),
++#endif
+ };
+ 
+ /*
+@@ -358,18 +369,37 @@ static inline int create_ftrace_stub(struct ppc64_stub_entry *entry,
+ {
+ 	long reladdr;
+ 
+-	memcpy(entry->jump, stub_insns, sizeof(stub_insns));
+-
+-	/* Stub uses address relative to kernel toc (from the paca) */
+-	reladdr = addr - kernel_toc_addr();
+-	if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+-		pr_err("%s: Address of %ps out of range of kernel_toc.\n",
+-							me->name, (void *)addr);
++	if ((unsigned long)entry->jump % 8 != 0) {
++		pr_err("%s: Address of stub entry is not 8-byte aligned\n", me->name);
+ 		return 0;
+ 	}
+ 
+-	entry->jump[1] |= PPC_HA(reladdr);
+-	entry->jump[2] |= PPC_LO(reladdr);
++	BUILD_BUG_ON(sizeof(stub_insns) > sizeof(entry->jump));
++	memcpy(entry->jump, stub_insns, sizeof(stub_insns));
++
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
++		/* Stub uses address relative to kernel base (from the paca) */
++		reladdr = addr - local_paca->kernelbase;
++		if (reladdr > 0x1FFFFFFFFL || reladdr < -0x200000000L) {
++			pr_err("%s: Address of %ps out of range of 34-bit relative address.\n",
++				me->name, (void *)addr);
++			return 0;
++		}
++
++		entry->jump[2] |= IMM_H18(reladdr);
++		entry->jump[3] |= IMM_L(reladdr);
++	} else {
++		/* Stub uses address relative to kernel toc (from the paca) */
++		reladdr = addr - kernel_toc_addr();
++		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
++			pr_err("%s: Address of %ps out of range of kernel_toc.\n",
++				me->name, (void *)addr);
++			return 0;
++		}
++
++		entry->jump[1] |= PPC_HA(reladdr);
++		entry->jump[2] |= PPC_LO(reladdr);
++	}
+ 
+ 	/* Even though we don't use funcdata in the stub, it's needed elsewhere. */
+ 	entry->funcdata = func_desc(addr);
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index be8db402e963..cda4e00b67c1 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -191,7 +191,9 @@ void __init initialise_paca(struct paca_struct *new_paca, int cpu)
+ #endif
+ 	new_paca->lock_token = 0x8000;
+ 	new_paca->paca_index = cpu;
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	new_paca->kernel_toc = kernel_toc_addr();
++#endif
+ 	new_paca->kernelbase = (unsigned long) _stext;
+ 	/* Only set MSR:IR/DR when MMU is initialized */
+ 	new_paca->kernel_msr = MSR_KERNEL & ~(MSR_IR | MSR_DR);
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 72864fb7a6cc..78e7250bb6e8 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -727,6 +727,15 @@ int __init ftrace_dyn_arch_init(void)
+ {
+ 	int i;
+ 	unsigned int *tramp[] = { ftrace_tramp_text, ftrace_tramp_init };
++#ifdef CONFIG_PPC_KERNEL_PCREL
++	u32 stub_insns[] = {
++		/* pla r12,addr */
++		PPC_PREFIX_MLS | __PPC_PRFX_R(1),
++		PPC_INST_PADDI | ___PPC_RT(_R12),
++		PPC_RAW_MTCTR(_R12),
++		PPC_RAW_BCTR()
++	};
++#else
+ 	u32 stub_insns[] = {
+ 		PPC_RAW_LD(_R12, _R13, PACATOC),
+ 		PPC_RAW_ADDIS(_R12, _R12, 0),
+@@ -734,6 +743,8 @@ int __init ftrace_dyn_arch_init(void)
+ 		PPC_RAW_MTCTR(_R12),
+ 		PPC_RAW_BCTR()
+ 	};
++#endif
++
+ 	unsigned long addr;
+ 	long reladdr;
+ 
+@@ -742,19 +753,36 @@ int __init ftrace_dyn_arch_init(void)
+ 	else
+ 		addr = ppc_global_function_entry((void *)ftrace_caller);
+ 
+-	reladdr = addr - kernel_toc_addr();
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
++		for (i = 0; i < 2; i++) {
++			reladdr = addr - (unsigned long)tramp[i];
+ 
+-	if (reladdr >= SZ_2G || reladdr < -(long)SZ_2G) {
+-		pr_err("Address of %ps out of range of kernel_toc.\n",
+-				(void *)addr);
+-		return -1;
+-	}
++			if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
++				pr_err("Address of %ps out of range of pcrel address.\n",
++						(void *)addr);
++				return -1;
++			}
++
++			memcpy(tramp[i], stub_insns, sizeof(stub_insns));
++			tramp[i][0] |= IMM_H18(reladdr);
++			tramp[i][1] |= IMM_L(reladdr);
++			add_ftrace_tramp((unsigned long)tramp[i]);
++		}
++	} else {
++		reladdr = addr - kernel_toc_addr();
+ 
+-	for (i = 0; i < 2; i++) {
+-		memcpy(tramp[i], stub_insns, sizeof(stub_insns));
+-		tramp[i][1] |= PPC_HA(reladdr);
+-		tramp[i][2] |= PPC_LO(reladdr);
+-		add_ftrace_tramp((unsigned long)tramp[i]);
++		if (reladdr >= (long)SZ_2G || reladdr < -(long)SZ_2G) {
++			pr_err("Address of %ps out of range of kernel_toc.\n",
++					(void *)addr);
++			return -1;
++		}
++
++		for (i = 0; i < 2; i++) {
++			memcpy(tramp[i], stub_insns, sizeof(stub_insns));
++			tramp[i][1] |= PPC_HA(reladdr);
++			tramp[i][2] |= PPC_LO(reladdr);
++			add_ftrace_tramp((unsigned long)tramp[i]);
++		}
+ 	}
+ 
+ 	return 0;
+diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
+index ffe5d90abe17..fcc0ad6d9c7b 100644
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -177,9 +177,15 @@ fpone:
+ fphalf:
+ 	.quad	0x3fe0000000000000	/* 0.5 */
+ 
++#ifdef CONFIG_PPC_KERNEL_PCREL
++#define LDCONST(fr, name)		\
++	pla	r11,name@pcrel;		\
++	lfd	fr,0(r11)
++#else
+ #define LDCONST(fr, name)		\
+ 	addis	r11,r2,name@toc@ha;	\
+ 	lfd	fr,name@toc@l(r11)
++#endif
+ #endif
+ 	.text
+ /*
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index ee86753e444e..13614f0b269c 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -169,12 +169,18 @@ SECTIONS
+ 	}
+ 
+ #else /* CONFIG_PPC32 */
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	.toc1 : AT(ADDR(.toc1) - LOAD_OFFSET) {
+ 		*(.toc1)
+ 	}
++#endif
+ 
+ 	.got : AT(ADDR(.got) - LOAD_OFFSET) ALIGN(256) {
++#ifdef CONFIG_PPC_KERNEL_PCREL
++		*(.got)
++#else
+ 		*(.got .toc)
++#endif
+ 	}
+ 
+ 	SOFT_MASK_TABLE(8)
+diff --git a/arch/powerpc/lib/copypage_64.S b/arch/powerpc/lib/copypage_64.S
+index 6812cb19d04a..5d09a029b556 100644
+--- a/arch/powerpc/lib/copypage_64.S
++++ b/arch/powerpc/lib/copypage_64.S
+@@ -18,8 +18,18 @@ FTR_SECTION_ELSE
+ #endif
+ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
+ 	ori	r5,r5,PAGE_SIZE@l
++#ifdef CONFIG_PPC_KERNEL_PCREL
++	/*
++	 * Hack for toolchain - prefixed instructions cause label difference to
++	 * be non-constant even if 8 byte alignment is known, so they can not
++	 * be put in FTR sections.
++	 */
++	LOAD_REG_ADDR(r10, ppc64_caches)
++BEGIN_FTR_SECTION
++#else
  BEGIN_FTR_SECTION
--	b __sw_hweight8
-+	b CFUNC(__sw_hweight8)
- 	nop
- 	nop
- FTR_SECTION_ELSE
-@@ -26,7 +26,7 @@ EXPORT_SYMBOL(__arch_hweight8)
+ 	LOAD_REG_ADDR(r10, ppc64_caches)
++#endif
+ 	lwz	r11,DCACHEL1LOGBLOCKSIZE(r10)	/* log2 of cache block size */
+ 	lwz     r12,DCACHEL1BLOCKSIZE(r10)	/* get cache block size */
+ 	li	r9,0
+diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+index d767e39d5645..72b7bb34fade 100644
+--- a/arch/powerpc/net/bpf_jit.h
++++ b/arch/powerpc/net/bpf_jit.h
+@@ -19,6 +19,8 @@
+ #define FUNCTION_DESCR_SIZE	0
+ #endif
  
- _GLOBAL(__arch_hweight16)
- BEGIN_FTR_SECTION
--	b __sw_hweight16
-+	b CFUNC(__sw_hweight16)
- 	nop
- 	nop
- 	nop
-@@ -49,7 +49,7 @@ EXPORT_SYMBOL(__arch_hweight16)
++#define CTX_NIA(ctx) ((unsigned long)ctx->idx * 4)
++
+ #define PLANT_INSTR(d, idx, instr)					      \
+ 	do { if (d) { (d)[idx] = instr; } idx++; } while (0)
+ #define EMIT(instr)		PLANT_INSTR(image, ctx->idx, instr)
+@@ -26,7 +28,7 @@
+ /* Long jump; (unconditional 'branch') */
+ #define PPC_JMP(dest)							      \
+ 	do {								      \
+-		long offset = (long)(dest) - (ctx->idx * 4);		      \
++		long offset = (long)(dest) - CTX_NIA(ctx);		      \
+ 		if ((dest) != 0 && !is_offset_in_branch_range(offset)) {		      \
+ 			pr_err_ratelimited("Branch offset 0x%lx (@%u) out of range\n", offset, ctx->idx);			\
+ 			return -ERANGE;					      \
+@@ -40,7 +42,7 @@
+ /* "cond" here covers BO:BI fields. */
+ #define PPC_BCC_SHORT(cond, dest)					      \
+ 	do {								      \
+-		long offset = (long)(dest) - (ctx->idx * 4);		      \
++		long offset = (long)(dest) - CTX_NIA(ctx);		      \
+ 		if ((dest) != 0 && !is_offset_in_cond_branch_range(offset)) {		      \
+ 			pr_err_ratelimited("Conditional branch offset 0x%lx (@%u) out of range\n", offset, ctx->idx);		\
+ 			return -ERANGE;					      \
+@@ -92,12 +94,12 @@
+  * state.
+  */
+ #define PPC_BCC(cond, dest)	do {					      \
+-		if (is_offset_in_cond_branch_range((long)(dest) - (ctx->idx * 4))) {	\
++		if (is_offset_in_cond_branch_range((long)(dest) - CTX_NIA(ctx))) {	\
+ 			PPC_BCC_SHORT(cond, dest);			      \
+ 			EMIT(PPC_RAW_NOP());				      \
+ 		} else {						      \
+ 			/* Flip the 'T or F' bit to invert comparison */      \
+-			PPC_BCC_SHORT(cond ^ COND_CMP_TRUE, (ctx->idx+2)*4);  \
++			PPC_BCC_SHORT(cond ^ COND_CMP_TRUE, CTX_NIA(ctx) + 2*4);  \
+ 			PPC_JMP(dest);					      \
+ 		} } while(0)
  
- _GLOBAL(__arch_hweight32)
- BEGIN_FTR_SECTION
--	b __sw_hweight32
-+	b CFUNC(__sw_hweight32)
- 	nop
- 	nop
- 	nop
-@@ -75,7 +75,7 @@ EXPORT_SYMBOL(__arch_hweight32)
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index 8dd3cabaa83a..fcb90910e84a 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -126,8 +126,10 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
+ {
+ 	int i;
  
- _GLOBAL(__arch_hweight64)
- BEGIN_FTR_SECTION
--	b __sw_hweight64
-+	b CFUNC(__sw_hweight64)
- 	nop
- 	nop
- 	nop
-diff --git a/arch/powerpc/lib/memcmp_64.S b/arch/powerpc/lib/memcmp_64.S
-index 384218df71ba..0b9b1685a33d 100644
---- a/arch/powerpc/lib/memcmp_64.S
-+++ b/arch/powerpc/lib/memcmp_64.S
-@@ -44,7 +44,7 @@
- 	std     r5,-STACKFRAMESIZE+STK_REG(R29)(r1); \
- 	std     r0,16(r1); \
- 	stdu    r1,-STACKFRAMESIZE(r1); \
--	bl      enter_vmx_ops; \
-+	bl      CFUNC(enter_vmx_ops); \
- 	cmpwi   cr1,r3,0; \
- 	ld      r0,STACKFRAMESIZE+16(r1); \
- 	ld      r3,STK_REG(R31)(r1); \
-@@ -60,7 +60,7 @@
- 	std     r5,-STACKFRAMESIZE+STK_REG(R29)(r1); \
- 	std     r0,16(r1); \
- 	stdu    r1,-STACKFRAMESIZE(r1); \
--	bl      exit_vmx_ops; \
-+	bl      CFUNC(exit_vmx_ops); \
- 	ld      r0,STACKFRAMESIZE+16(r1); \
- 	ld      r3,STK_REG(R31)(r1); \
- 	ld      r4,STK_REG(R30)(r1); \
-diff --git a/arch/powerpc/lib/memcpy_power7.S b/arch/powerpc/lib/memcpy_power7.S
-index 54f226333c94..9398b2b746c4 100644
---- a/arch/powerpc/lib/memcpy_power7.S
-+++ b/arch/powerpc/lib/memcpy_power7.S
-@@ -218,7 +218,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
- 	std	r5,-STACKFRAMESIZE+STK_REG(R29)(r1)
- 	std	r0,16(r1)
- 	stdu	r1,-STACKFRAMESIZE(r1)
--	bl	enter_vmx_ops
-+	bl	CFUNC(enter_vmx_ops)
- 	cmpwi	cr1,r3,0
- 	ld	r0,STACKFRAMESIZE+16(r1)
- 	ld	r3,STK_REG(R31)(r1)
-@@ -433,7 +433,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
+ 		EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)));
++#endif
  
- 15:	addi	r1,r1,STACKFRAMESIZE
- 	ld	r3,-STACKFRAMESIZE+STK_REG(R31)(r1)
--	b	exit_vmx_ops		/* tail call optimise */
-+	b	CFUNC(exit_vmx_ops)		/* tail call optimise */
+ 	/*
+ 	 * Initialize tail_call_cnt if we do tail calls.
+@@ -208,16 +210,31 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
+ 	if (WARN_ON_ONCE(!core_kernel_text(func_addr)))
+ 		return -EINVAL;
  
- .Lvmx_unaligned_copy:
- 	/* Get the destination 16B aligned */
-@@ -637,5 +637,5 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+-	reladdr = func_addr - kernel_toc_addr();
+-	if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+-		pr_err("eBPF: address of %ps out of range of kernel_toc.\n", (void *)func);
+-		return -ERANGE;
+-	}
++	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
++		reladdr = func_addr - CTX_NIA(ctx);
  
- 15:	addi	r1,r1,STACKFRAMESIZE
- 	ld	r3,-STACKFRAMESIZE+STK_REG(R31)(r1)
--	b	exit_vmx_ops		/* tail call optimise */
-+	b	CFUNC(exit_vmx_ops)		/* tail call optimise */
- #endif /* CONFIG_ALTIVEC */
-diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
-index 783c16ad648b..35254ac7af5e 100644
---- a/arch/powerpc/platforms/pseries/hvCall.S
-+++ b/arch/powerpc/platforms/pseries/hvCall.S
-@@ -44,7 +44,7 @@ hcall_tracepoint_refcount:
- 	std	r0,16(r1);					\
- 	addi	r4,r1,STK_PARAM(FIRST_REG);			\
- 	stdu	r1,-STACK_FRAME_MIN_SIZE(r1);			\
--	bl	__trace_hcall_entry;				\
-+	bl	CFUNC(__trace_hcall_entry);			\
- 	ld	r3,STACK_FRAME_MIN_SIZE+STK_PARAM(R3)(r1);	\
- 	ld	r4,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1);	\
- 	ld	r5,STACK_FRAME_MIN_SIZE+STK_PARAM(R5)(r1);	\
-@@ -63,7 +63,7 @@ hcall_tracepoint_refcount:
- 	std	r3,STACK_FRAME_MIN_SIZE+STK_PARAM(R3)(r1);	\
- 	mr	r4,r3;						\
- 	mr	r3,r0;						\
--	bl	__trace_hcall_exit;				\
-+	bl	CFUNC(__trace_hcall_exit);			\
- 	ld	r0,STACK_FRAME_MIN_SIZE+16(r1);			\
- 	addi	r1,r1,STACK_FRAME_MIN_SIZE;			\
- 	ld	r3,STK_PARAM(R3)(r1);				\
+-	EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
+-	EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
+-	EMIT(PPC_RAW_MTCTR(_R12));
+-	EMIT(PPC_RAW_BCTRL());
++		if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
++			pr_err("eBPF: address of %ps out of range of pcrel address.\n", (void *)func);
++			return -ERANGE;
++		}
++		/* pla r12,addr */
++		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(1) | IMM_H18(reladdr));
++		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | IMM_L(reladdr));
++		EMIT(PPC_RAW_MTCTR(_R12));
++		EMIT(PPC_RAW_BCTR());
++
++	} else {
++		reladdr = func_addr - kernel_toc_addr();
++		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
++			pr_err("eBPF: address of %ps out of range of kernel_toc.\n", (void *)func);
++			return -ERANGE;
++		}
++
++		EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
++		EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
++		EMIT(PPC_RAW_MTCTR(_R12));
++		EMIT(PPC_RAW_BCTRL());
++	}
+ 
+ 	return 0;
+ }
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index aff760e2ff90..a35fc865c392 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -181,6 +181,7 @@ config POWER10_CPU
+ 	depends on PPC_BOOK3S_64
+ 	select ARCH_HAS_FAST_MULTIPLIER
+ 	select PPC_HAVE_PREFIXED_SUPPORT
++	select PPC_HAVE_PCREL_SUPPORT
+ 
+ config E5500_CPU
+ 	bool "Freescale e5500"
+@@ -471,6 +472,20 @@ config PPC_KERNEL_PREFIXED
+ 	  Kernel support for prefixed instructions in applications and guests
+           is not affected by this option.
+ 
++config PPC_KERNEL_PCREL
++	depends on PPC_HAVE_PCREL_SUPPORT
++	depends on PPC_HAVE_PREFIXED_SUPPORT
++	depends on CC_HAS_PCREL
++	default n
++	select PPC_KERNEL_PREFIXED
++	bool "Build Kernel with PC-Relative addressing model"
++	help
++	  POWER10 and later CPUs support pc relative addressing. Recent
++	  compilers have support for an ELF ABI extension for a pc relative
++	  ABI.
++
++	  This option builds the kernel with the pc relative ABI model.
++
+ config PPC_KUEP
+ 	bool "Kernel Userspace Execution Prevention" if !40x
+ 	default y if !40x
+@@ -510,6 +525,9 @@ config PPC_HAVE_PMU_SUPPORT
+ config PPC_HAVE_PREFIXED_SUPPORT
+ 	bool
+ 
++config PPC_HAVE_PCREL_SUPPORT
++	bool
++
+ config PMU_SYSFS
+ 	bool "Create PMU SPRs sysfs file"
+ 	default n
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index e753a6bd4888..728d3c257e4a 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -2634,7 +2634,9 @@ static void dump_one_paca(int cpu)
+ 
+ 	DUMP(p, lock_token, "%#-*x");
+ 	DUMP(p, paca_index, "%#-*x");
++#ifndef CONFIG_PPC_KERNEL_PCREL
+ 	DUMP(p, kernel_toc, "%#-*llx");
++#endif
+ 	DUMP(p, kernelbase, "%#-*llx");
+ 	DUMP(p, kernel_msr, "%#-*llx");
+ 	DUMP(p, emergency_sp, "%-*px");
 -- 
 2.40.0
 
