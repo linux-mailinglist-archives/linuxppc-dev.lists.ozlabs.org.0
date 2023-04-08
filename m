@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E3A6DBB2B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 15:30:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A686DBB2C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 15:31:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptx232z9Dz3fpS
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 23:30:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ptx2z6Kj4z3fsx
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Apr 2023 23:31:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B5DDK8GI;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qK1iS4Gt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B5DDK8GI;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qK1iS4Gt;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptwtj2yS0z3fCp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 23:24:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ptwtk2RH8z3f8R
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Apr 2023 23:24:14 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 73DA461073;
-	Sat,  8 Apr 2023 13:24:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA873C433D2;
-	Sat,  8 Apr 2023 13:24:10 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5CAF8614BD;
+	Sat,  8 Apr 2023 13:24:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F72BC433A4;
+	Sat,  8 Apr 2023 13:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680960250;
-	bh=ps76pyu3TDlG2IApvb70QcdiPajYqBKpLTa4tWI5Ohs=;
+	s=k20201202; t=1680960248;
+	bh=srC5FNdHp8IZu3BmeF2lk+iRAsCZCPftWJJge9NlI14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5DDK8GI+rwvjJPfZEVp80zJfVVp8JpL4yQrVaExPzOfnPcYpewHbcb5OA0jfC1rR
-	 FHldYjZtQ3UtLbQmXxZYby67EG6pS3EDZw4FZwfF5wdVDOq+CCE1sYgVfmtd9ay2v5
-	 zVWKDlIBpuKD1K3Twseu/S0T8Ou5vkSc0od8dPDrr827ViP++aIiHuocJImOSlfdWr
-	 uS7nRFH5WeDt3n83/E0Z/APHg5ni6LV8Un316/6feLD/cHnLGcqps/Q2vp5iEDnwjR
-	 qamRvrC64lD4ebM4jH81mls0fVgHqsp08bLb0QrpJvGCvgYe5X+OSYbrOacGvxpc1n
-	 SNxbneZmpBL9w==
+	b=qK1iS4Gt2hk19S3uZQit4fs4EX3pmmERzut14YJTdZSYCu72VPkj+vHpj3nVX07rK
+	 o86+N2d9j42WUcZlAuylY5vC8AAFVgGzVfKM30IaoVjNJ96w03FbXM+ba44gXA0PCZ
+	 k1x1JoSqjD4cvVh37RZpZ51jHPVCve7bbNzimeHV03LxQPGxYnvhI+AawaH96W3Y9s
+	 hlVIVprAcqF11pJ0wCUdqv2FnJhOmFQPihBaV5ltGEeVU67y1DzFMLpC/Wxez6rv0t
+	 IvebZbSc0XSiSVOioweJC5byI8U5dUh3R0U5h/Ly7aL7PFjMnnsRadhJr/PTZeiyET
+	 /IRudWGSbJ/HQ==
 Received: by pali.im (Postfix)
-	id 6F567213C; Sat,  8 Apr 2023 15:24:06 +0200 (CEST)
+	id A20162317; Sat,  8 Apr 2023 15:24:06 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 7/8] powerpc/mpc86xx: mpc86xx_hpcn: Call uli_init() instead of explicit ppc_md assignment
-Date: Sat,  8 Apr 2023 15:21:50 +0200
-Message-Id: <20230408132151.8902-8-pali@kernel.org>
+Subject: [PATCH 8/8] powerpc/fsl_uli1575: Mark uli_exclude_device() as static
+Date: Sat,  8 Apr 2023 15:21:51 +0200
+Message-Id: <20230408132151.8902-9-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20230408132151.8902-1-pali@kernel.org>
 References: <20230408132151.8902-1-pali@kernel.org>
@@ -68,38 +68,48 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After calling fsl_pci_assign_primary(), it is possible to use uli_init() to
-conditionally initialize ppc_md.pci_exclude_device callback based on the
-uli1575 detection.
+Function uli_exclude_device() is not used outside of the fsl_uli1575.c
+source file anymore. So mark it as static and remove public prototype.
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
- arch/powerpc/platforms/86xx/mpc86xx_hpcn.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/powerpc/include/asm/ppc-pci.h   | 2 --
+ arch/powerpc/platforms/fsl_uli1575.c | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c b/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
-index 645125cc8420..812110673d88 100644
---- a/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
-+++ b/arch/powerpc/platforms/86xx/mpc86xx_hpcn.c
-@@ -46,10 +46,6 @@ mpc86xx_hpcn_setup_arch(void)
- 	if (ppc_md.progress)
- 		ppc_md.progress("mpc86xx_hpcn_setup_arch()", 0);
+diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+index 00a3011d6e98..d9fcff575027 100644
+--- a/arch/powerpc/include/asm/ppc-pci.h
++++ b/arch/powerpc/include/asm/ppc-pci.h
+@@ -58,7 +58,6 @@ void eeh_sysfs_remove_device(struct pci_dev *pdev);
+ #endif /* CONFIG_EEH */
  
--#ifdef CONFIG_PCI
--	ppc_md.pci_exclude_device = uli_exclude_device;
--#endif
--
- 	printk("MPC86xx HPCN board from Freescale Semiconductor\n");
+ #ifdef CONFIG_FSL_ULI1575
+-int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn);
+ void __init uli_init(void);
+ #endif /* CONFIG_FSL_ULI1575 */
  
- #ifdef CONFIG_SMP
-@@ -57,6 +53,7 @@ mpc86xx_hpcn_setup_arch(void)
- #endif
+@@ -69,7 +68,6 @@ static inline void init_pci_config_tokens(void) { }
+ #endif /* !CONFIG_PCI */
  
- 	fsl_pci_assign_primary();
-+	uli_init();
+ #if !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575)
+-static inline int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn) { return PCIBIOS_SUCCESSFUL; }
+ static inline void __init uli_init(void) {}
+ #endif /* !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575) */
  
- 	swiotlb_detect_4g();
- }
+diff --git a/arch/powerpc/platforms/fsl_uli1575.c b/arch/powerpc/platforms/fsl_uli1575.c
+index b073db9d7c79..b8d37a9932f1 100644
+--- a/arch/powerpc/platforms/fsl_uli1575.c
++++ b/arch/powerpc/platforms/fsl_uli1575.c
+@@ -344,7 +344,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5288, hpcd_quirk_uli5288);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5229, hpcd_quirk_uli5229);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AL, 0x5288, hpcd_final_uli5288);
+ 
+-int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
++static int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
+ {
+ 	if (hose->dn == fsl_pci_primary && bus == (hose->first_busno + 2)) {
+ 		/* exclude Modem controller */
 -- 
 2.20.1
 
