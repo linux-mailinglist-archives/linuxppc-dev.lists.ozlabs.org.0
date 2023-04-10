@@ -2,61 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203B46DC6BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 14:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1EC6DC76E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 15:46:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pw7WS5T5Vz3f5W
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 22:26:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O0SyOusV;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pw9HP3pHNz3chK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 23:46:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O0SyOusV;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pw7Vc3xJWz3cDt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 22:26:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8961961238
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 12:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECAEC433EF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 12:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1681129556;
-	bh=R51FWEIp18MYl85q3yXscMHpWLTqVf59xo43B5BTt5E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O0SyOusVQBRKCu7SauLU1y+y0in9KxNntgye6BV+4KjVy6PwS1j1XW9blvPUVLNV+
-	 n+aO32Ij0LETQj14DnIIE+brcW1ag2+dqzsu7bgqRXYV2eKFASi0iOzHZkJcQX4gYB
-	 BJC6OUWkGzuqV2qSXH19/gcuB7e+1DEALsLhkfv4Tuy6mYcSJLbJouicxWAIdJFk9c
-	 V68iTcI/iJZUE/mC4OHPFVmwiexLHY+BWzoKlqwdN2UdyPXCMWTfzoYjSzuaX1DZgw
-	 ShHpK1GO+NodW20cOo0/dbyW4M840oCcf8nfB7+FtbcYxtfnKZmzeI17Yujb00rvaG
-	 4l4wqN7AEVpXA==
-Received: by mail-ot1-f54.google.com with SMTP id 6-20020a9d0106000000b006a177038dfeso15660387otu.7
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 05:25:55 -0700 (PDT)
-X-Gm-Message-State: AAQBX9f+wsjOZTUuhoIxp9qJ0T1y9vYQ3E220SRy7LOUW3lriocekCJO
-	mhu/NxWSx6ovP5lVEI0zmTgliltjtBPObi4gFZU=
-X-Google-Smtp-Source: AKy350bdkwU1ebLGE4JP+fBsICaK+Wcxmukh0nZJBXSPtPXvag5RVEDxxySCY496ivQn3tPbsueq8aLc/K0XaUBOVv8=
-X-Received: by 2002:a05:6830:130a:b0:69f:8da4:48d with SMTP id
- p10-20020a056830130a00b0069f8da4048dmr2677577otq.1.1681129555328; Mon, 10 Apr
- 2023 05:25:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pw9GK70GCz3fTr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 23:45:29 +1000 (AEST)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.56])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Pw99J6VlpznbV5;
+	Mon, 10 Apr 2023 21:41:08 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 10 Apr 2023 21:44:40 +0800
+From: Yicong Yang <yangyicong@huawei.com>
+To: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <anshuman.khandual@arm.com>,
+	<linux-doc@vger.kernel.org>
+Subject: [PATCH v9 0/2] arm64: support batched/deferred tlb shootdown during page reclamation/migration
+Date: Mon, 10 Apr 2023 21:43:50 +0800
+Message-ID: <20230410134352.4519-1-yangyicong@huawei.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-References: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
-In-Reply-To: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 10 Apr 2023 21:25:19 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATPTw58VfMNQYG1dNvoggS3pa7gVdGDb8W0fgb0XahRZw@mail.gmail.com>
-Message-ID: <CAK7LNATPTw58VfMNQYG1dNvoggS3pa7gVdGDb8W0fgb0XahRZw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/32: Include thread_info.h in head_booke.h
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.163.32]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,78 +49,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, patches@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, Jonathan.Cameron@Huawei.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 7, 2023 at 2:51=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
-> wrote:
->
-> When building with W=3D1 after commit 80b6093b55e3 ("kbuild: add -Wundef
-> to KBUILD_CPPFLAGS for W=3D1 builds"), the following warning occurs.
->
->   In file included from arch/powerpc/kvm/bookehv_interrupts.S:26:
->   arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning: "THREAD_SHIFT" i=
-s not defined, evaluates to 0 [-Wundef]
->      20 | #if (THREAD_SHIFT < 15)
->         |      ^~~~~~~~~~~~
->
-> THREAD_SHIFT is defined in thread_info.h but it is not directly included
-> in head_booke.h, so it is possible for THREAD_SHIFT to be undefined. Add
-> the include to ensure that THREAD_SHIFT is always defined.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/202304050954.yskLdczH-lkp@intel.com/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+From: Yicong Yang <yangyicong@hisilicon.com>
 
+Though ARM64 has the hardware to do tlb shootdown, the hardware
+broadcasting is not free.
+A simplest micro benchmark shows even on snapdragon 888 with only
+8 cores, the overhead for ptep_clear_flush is huge even for paging
+out one page mapped by only one process:
+5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
 
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+While pages are mapped by multiple processes or HW has more CPUs,
+the cost should become even higher due to the bad scalability of
+tlb shootdown.
 
-Thanks.
+The same benchmark can result in 16.99% CPU consumption on ARM64
+server with around 100 cores according to Yicong's test on patch
+2/2.
 
+This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
+1. only send tlbi instructions in the first stage -
+	arch_tlbbatch_add_mm()
+2. wait for the completion of tlbi by dsb while doing tlbbatch
+	sync in arch_tlbbatch_flush()
+Testing on snapdragon shows the overhead of ptep_clear_flush
+is removed by the patchset. The micro benchmark becomes 5% faster
+even for one page mapped by single process on snapdragon 888.
 
+This support also optimize the page migration more than 50% with support
+of batched TLB flushing [*].
 
+[*] https://lore.kernel.org/linux-mm/20230213123444.155149-1-ying.huang@intel.com/
 
+-v9:
+1. Using a runtime tunable to control batched TLB flush, per Catalin in v7.
+   Sorry for missing this on v8.
+Link: https://lore.kernel.org/all/20230329035512.57392-1-yangyicong@huawei.com/
 
+-v8:
+1. Rebase on 6.3-rc4
+2. Tested the optimization on page migration and mentioned it in the commit
+3. Thanks the review from Anshuman.
+Link: https://lore.kernel.org/linux-mm/20221117082648.47526-1-yangyicong@huawei.com/
 
+-v7:
+1. rename arch_tlbbatch_add_mm() to arch_tlbbatch_add_pending() as suggested, since it
+   takes an extra address for arm64, per Nadav and Anshuman. Also mentioned in the commit.
+2. add tags from Xin Hao, thanks.
+Link: https://lore.kernel.org/lkml/20221115031425.44640-1-yangyicong@huawei.com/
 
+-v6:
+1. comment we don't defer TLB flush on platforms affected by ARM64_WORKAROUND_REPEAT_TLBI
+2. use cpus_have_const_cap() instead of this_cpu_has_cap()
+3. add tags from Punit, Thanks.
+4. default enable the feature when cpus >= 8 rather than > 8, since the original
+   improvement is observed on snapdragon 888 with 8 cores.
+Link: https://lore.kernel.org/lkml/20221028081255.19157-1-yangyicong@huawei.com/
 
+-v5:
+1. Make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends on EXPERT for this stage on arm64.
+2. Make a threshold of CPU numbers for enabling batched TLP flush on arm64
+Link: https://lore.kernel.org/linux-arm-kernel/20220921084302.43631-1-yangyicong@huawei.com/T/
 
+-v4:
+1. Add tags from Kefeng and Anshuman, Thanks.
+2. Limit the TLB batch/defer on systems with >4 CPUs, per Anshuman
+3. Merge previous Patch 1,2-3 into one, per Anshuman
+Link: https://lore.kernel.org/linux-mm/20220822082120.8347-1-yangyicong@huawei.com/
 
+-v3:
+1. Declare arch's tlbbatch defer support by arch_tlbbatch_should_defer() instead
+   of ARCH_HAS_MM_CPUMASK, per Barry and Kefeng
+2. Add Tested-by from Xin Hao
+Link: https://lore.kernel.org/linux-mm/20220711034615.482895-1-21cnbao@gmail.com/
 
->  arch/powerpc/kernel/head_booke.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_=
-booke.h
-> index 37d43c172676..b6b5b01a173c 100644
-> --- a/arch/powerpc/kernel/head_booke.h
-> +++ b/arch/powerpc/kernel/head_booke.h
-> @@ -5,6 +5,7 @@
->  #include <asm/ptrace.h>        /* for STACK_FRAME_REGS_MARKER */
->  #include <asm/kvm_asm.h>
->  #include <asm/kvm_booke_hv_asm.h>
-> +#include <asm/thread_info.h>   /* for THREAD_SHIFT */
->
->  #ifdef __ASSEMBLY__
->
->
-> ---
-> base-commit: b0bbe5a2915201e3231e788d716d39dc54493b03
-> change-id: 20230406-wundef-thread_shift_booke-e08d806ed656
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
+-v2:
+1. Collected Yicong's test result on kunpeng920 ARM64 server;
+2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
+   according to the comments of Peter Zijlstra and Dave Hansen
+3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
+   is empty according to the comments of Nadav Amit
 
+Thanks, Peter, Dave and Nadav for your testing or reviewing
+, and comments.
 
+-v1:
+https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
 
+Anshuman Khandual (1):
+  mm/tlbbatch: Introduce arch_tlbbatch_should_defer()
 
+Barry Song (1):
+  arm64: support batched/deferred tlb shootdown during page
+    reclamation/migration
 
+ .../features/vm/TLB/arch-support.txt          |  2 +-
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/include/asm/tlbbatch.h             | 12 ++++
+ arch/arm64/include/asm/tlbflush.h             | 33 ++++++++-
+ arch/arm64/mm/flush.c                         | 69 +++++++++++++++++++
+ arch/x86/include/asm/tlbflush.h               | 17 ++++-
+ include/linux/mm_types_task.h                 |  4 +-
+ mm/rmap.c                                     | 21 +++---
+ 8 files changed, 139 insertions(+), 20 deletions(-)
+ create mode 100644 arch/arm64/include/asm/tlbbatch.h
 
+-- 
+2.24.0
 
---=20
-Best Regards
-Masahiro Yamada
