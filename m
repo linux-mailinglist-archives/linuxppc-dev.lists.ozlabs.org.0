@@ -2,56 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81EF6DBE30
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Apr 2023 02:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA426DD963
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 13:28:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PvCKd5XBkz3fm2
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Apr 2023 10:15:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PwkB604Sfz3cjH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 21:28:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V2l6qdPR;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CS2NUHbs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V2l6qdPR;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CS2NUHbs;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PvCCB4zshz3fSf
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Apr 2023 10:09:26 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3D21E616C9;
-	Sun,  9 Apr 2023 00:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E2CC433A4;
-	Sun,  9 Apr 2023 00:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680998961;
-	bh=YEYW+9T4EI8T6uo7e4f/NgSgHv1w/SjKHzpBZaSdlx4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2l6qdPRZkpPOakuXO/i2NozEMYU2t+gCNAfFzbWPbCgqgmrS2KO6Jr1uL4tRgbOH
-	 yTk+Yu/kAI4rw9IwBT0Ad8MP+aZBz69bD4mMT6zHJFXQtLUuX+cVhSw7xDS1dPT7JW
-	 ucuMN3AKdAssbIza5ZXUw/ylvCdAIACYNA9L81NwtWDhx9/zrjvGEQbT+4FNjiYyoL
-	 gcc1pxGutqIPcajSyfmG6FoPWkl5d+/0ha9tPjnJsd7fkQsKt08xdLll2Z9rM6+m1N
-	 Qh+RRt2uJgAX36gL9m3da0R9+v7GB9e5k3BG8EW33qdTHZgBzlngdyIo/atnA+oe40
-	 bMSWkufxHF0pA==
-Received: by pali.im (Postfix)
-	id 70BA32317; Sun,  9 Apr 2023 02:09:19 +0200 (CEST)
-From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v3 8/8] powerpc/fsl_uli1575: Mark uli_exclude_device() as static
-Date: Sun,  9 Apr 2023 02:08:12 +0200
-Message-Id: <20230409000812.18904-9-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230409000812.18904-1-pali@kernel.org>
-References: <20230409000812.18904-1-pali@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pwk981DW5z3c7X
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 21:27:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=5ZqyIo2yPozy9BK+WevZ7XbxMmk32DVp4jnPgiud1w8=; b=CS2NUHbsxWHgEMwrtE3Ai397jJ
+	eXoVpzicm+RfmWnc3oR1P0YPKA4NK1qTUUhYXh1Bx8+hhT0ZArj5TeXoeMsj2Wxuka1omHAjGFdzx
+	j5Na+sxo7khLwW2anLjX1oh6PmqjFIaGugSYTdO/uO+/H+x8yCmlUVg6EXH9HC+lP1pYuhLif4TQW
+	kI/KfPyZUOfIy6svdLEK0YuOQolRPwaRZ+Upn9GMk+KJqTN0cCvL96zCQ3Z9h04uaIlILCIoWj/qE
+	B7QJ8lJLdyUZZOGRIWVDL5BaVBrA2AU0Rn/UQ2w6NjrPPYcnC5nqlVawWViqmcCOW+FqZya2e4xVg
+	mASJvUpA==;
+Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1plg5X-00EPbS-2C;
+	Mon, 10 Apr 2023 01:12:55 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2] soc/fsl/qe: fix usb.c build errors
+Date: Sun,  9 Apr 2023 18:12:54 -0700
+Message-Id: <20230410011254.25675-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,53 +55,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kernel test robot <lkp@intel.com>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Kumar Gala <galak@kernel.crashing.org>, Leo Li <leoyang.li@nxp.com>, Qiang Zhao <qiang.zhao@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, Nicolas Schier <nicolas@fjasle.eu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Function uli_exclude_device() is not used outside of the fsl_uli1575.c
-source file anymore. So mark it as static and remove public prototype.
+Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+causes build errors when QUICC_ENGINE is not set. Making
+QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
+Fixes these build errors:
+
+drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+usb.c:(.text+0x1e): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+
+Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Leo Li <leoyang.li@nxp.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Kumar Gala <galak@kernel.crashing.org>
 ---
- arch/powerpc/include/asm/ppc-pci.h   | 3 ---
- arch/powerpc/platforms/fsl_uli1575.c | 2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
+v2: drop Anton Vorontsov <avorontsov@ru.mvista.com>; rebase/resend
 
-diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
-index 0e393aeed912..d9fcff575027 100644
---- a/arch/powerpc/include/asm/ppc-pci.h
-+++ b/arch/powerpc/include/asm/ppc-pci.h
-@@ -58,7 +58,6 @@ void eeh_sysfs_remove_device(struct pci_dev *pdev);
- #endif /* CONFIG_EEH */
- 
- #ifdef CONFIG_FSL_ULI1575
--int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn);
- void __init uli_init(void);
- #endif /* CONFIG_FSL_ULI1575 */
- 
-@@ -69,8 +68,6 @@ static inline void init_pci_config_tokens(void) { }
- #endif /* !CONFIG_PCI */
- 
- #if !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575)
--#include <linux/pci.h>
--static inline int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn) { return PCIBIOS_SUCCESSFUL; }
- static inline void __init uli_init(void) {}
- #endif /* !defined(CONFIG_PCI) || !defined(CONFIG_FSL_ULI1575) */
- 
-diff --git a/arch/powerpc/platforms/fsl_uli1575.c b/arch/powerpc/platforms/fsl_uli1575.c
-index b073db9d7c79..b8d37a9932f1 100644
---- a/arch/powerpc/platforms/fsl_uli1575.c
-+++ b/arch/powerpc/platforms/fsl_uli1575.c
-@@ -344,7 +344,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5288, hpcd_quirk_uli5288);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AL, 0x5229, hpcd_quirk_uli5229);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AL, 0x5288, hpcd_final_uli5288);
- 
--int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
-+static int uli_exclude_device(struct pci_controller *hose, u_char bus, u_char devfn)
- {
- 	if (hose->dn == fsl_pci_primary && bus == (hose->first_busno + 2)) {
- 		/* exclude Modem controller */
--- 
-2.20.1
+ drivers/soc/fsl/qe/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
+diff -- a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+--- a/drivers/soc/fsl/qe/Kconfig
++++ b/drivers/soc/fsl/qe/Kconfig
+@@ -62,6 +62,7 @@ config QE_TDM
+ 
+ config QE_USB
+ 	bool
++	depends on QUICC_ENGINE
+ 	default y if USB_FSL_QE
+ 	help
+ 	  QE USB Controller support
