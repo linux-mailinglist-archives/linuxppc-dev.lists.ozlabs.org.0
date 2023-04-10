@@ -1,49 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA426DD963
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 13:28:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203B46DC6BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 14:26:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PwkB604Sfz3cjH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 21:28:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pw7WS5T5Vz3f5W
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 22:26:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CS2NUHbs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O0SyOusV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CS2NUHbs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O0SyOusV;
 	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pwk981DW5z3c7X
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 21:27:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=5ZqyIo2yPozy9BK+WevZ7XbxMmk32DVp4jnPgiud1w8=; b=CS2NUHbsxWHgEMwrtE3Ai397jJ
-	eXoVpzicm+RfmWnc3oR1P0YPKA4NK1qTUUhYXh1Bx8+hhT0ZArj5TeXoeMsj2Wxuka1omHAjGFdzx
-	j5Na+sxo7khLwW2anLjX1oh6PmqjFIaGugSYTdO/uO+/H+x8yCmlUVg6EXH9HC+lP1pYuhLif4TQW
-	kI/KfPyZUOfIy6svdLEK0YuOQolRPwaRZ+Upn9GMk+KJqTN0cCvL96zCQ3Z9h04uaIlILCIoWj/qE
-	B7QJ8lJLdyUZZOGRIWVDL5BaVBrA2AU0Rn/UQ2w6NjrPPYcnC5nqlVawWViqmcCOW+FqZya2e4xVg
-	mASJvUpA==;
-Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1plg5X-00EPbS-2C;
-	Mon, 10 Apr 2023 01:12:55 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] soc/fsl/qe: fix usb.c build errors
-Date: Sun,  9 Apr 2023 18:12:54 -0700
-Message-Id: <20230410011254.25675-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.40.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pw7Vc3xJWz3cDt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 22:26:00 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8961961238
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 12:25:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECAEC433EF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 12:25:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1681129556;
+	bh=R51FWEIp18MYl85q3yXscMHpWLTqVf59xo43B5BTt5E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=O0SyOusVQBRKCu7SauLU1y+y0in9KxNntgye6BV+4KjVy6PwS1j1XW9blvPUVLNV+
+	 n+aO32Ij0LETQj14DnIIE+brcW1ag2+dqzsu7bgqRXYV2eKFASi0iOzHZkJcQX4gYB
+	 BJC6OUWkGzuqV2qSXH19/gcuB7e+1DEALsLhkfv4Tuy6mYcSJLbJouicxWAIdJFk9c
+	 V68iTcI/iJZUE/mC4OHPFVmwiexLHY+BWzoKlqwdN2UdyPXCMWTfzoYjSzuaX1DZgw
+	 ShHpK1GO+NodW20cOo0/dbyW4M840oCcf8nfB7+FtbcYxtfnKZmzeI17Yujb00rvaG
+	 4l4wqN7AEVpXA==
+Received: by mail-ot1-f54.google.com with SMTP id 6-20020a9d0106000000b006a177038dfeso15660387otu.7
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 05:25:55 -0700 (PDT)
+X-Gm-Message-State: AAQBX9f+wsjOZTUuhoIxp9qJ0T1y9vYQ3E220SRy7LOUW3lriocekCJO
+	mhu/NxWSx6ovP5lVEI0zmTgliltjtBPObi4gFZU=
+X-Google-Smtp-Source: AKy350bdkwU1ebLGE4JP+fBsICaK+Wcxmukh0nZJBXSPtPXvag5RVEDxxySCY496ivQn3tPbsueq8aLc/K0XaUBOVv8=
+X-Received: by 2002:a05:6830:130a:b0:69f:8da4:48d with SMTP id
+ p10-20020a056830130a00b0069f8da4048dmr2677577otq.1.1681129555328; Mon, 10 Apr
+ 2023 05:25:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
+In-Reply-To: <20230406-wundef-thread_shift_booke-v1-1-8deffa4d84f9@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 10 Apr 2023 21:25:19 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATPTw58VfMNQYG1dNvoggS3pa7gVdGDb8W0fgb0XahRZw@mail.gmail.com>
+Message-ID: <CAK7LNATPTw58VfMNQYG1dNvoggS3pa7gVdGDb8W0fgb0XahRZw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/32: Include thread_info.h in head_booke.h
+To: Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,53 +68,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Kumar Gala <galak@kernel.crashing.org>, Leo Li <leoyang.li@nxp.com>, Qiang Zhao <qiang.zhao@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, Nicolas Schier <nicolas@fjasle.eu>
+Cc: kernel test robot <lkp@intel.com>, patches@lists.linux.dev, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
-This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
-When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
-being set. When USB_FSL_QE is set, QE_USB deafults to y, which
-causes build errors when QUICC_ENGINE is not set. Making
-QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
+On Fri, Apr 7, 2023 at 2:51=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
+> wrote:
+>
+> When building with W=3D1 after commit 80b6093b55e3 ("kbuild: add -Wundef
+> to KBUILD_CPPFLAGS for W=3D1 builds"), the following warning occurs.
+>
+>   In file included from arch/powerpc/kvm/bookehv_interrupts.S:26:
+>   arch/powerpc/kvm/../kernel/head_booke.h:20:6: warning: "THREAD_SHIFT" i=
+s not defined, evaluates to 0 [-Wundef]
+>      20 | #if (THREAD_SHIFT < 15)
+>         |      ^~~~~~~~~~~~
+>
+> THREAD_SHIFT is defined in thread_info.h but it is not directly included
+> in head_booke.h, so it is possible for THREAD_SHIFT to be undefined. Add
+> the include to ensure that THREAD_SHIFT is always defined.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/202304050954.yskLdczH-lkp@intel.com/
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
 
-Fixes these build errors:
 
-drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
-usb.c:(.text+0x1e): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
-powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
-powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Leo Li <leoyang.li@nxp.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Kumar Gala <galak@kernel.crashing.org>
----
-v2: drop Anton Vorontsov <avorontsov@ru.mvista.com>; rebase/resend
+Thanks.
 
- drivers/soc/fsl/qe/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
 
-diff -- a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
---- a/drivers/soc/fsl/qe/Kconfig
-+++ b/drivers/soc/fsl/qe/Kconfig
-@@ -62,6 +62,7 @@ config QE_TDM
- 
- config QE_USB
- 	bool
-+	depends on QUICC_ENGINE
- 	default y if USB_FSL_QE
- 	help
- 	  QE USB Controller support
+
+
+
+
+
+
+
+
+
+>  arch/powerpc/kernel/head_booke.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_=
+booke.h
+> index 37d43c172676..b6b5b01a173c 100644
+> --- a/arch/powerpc/kernel/head_booke.h
+> +++ b/arch/powerpc/kernel/head_booke.h
+> @@ -5,6 +5,7 @@
+>  #include <asm/ptrace.h>        /* for STACK_FRAME_REGS_MARKER */
+>  #include <asm/kvm_asm.h>
+>  #include <asm/kvm_booke_hv_asm.h>
+> +#include <asm/thread_info.h>   /* for THREAD_SHIFT */
+>
+>  #ifdef __ASSEMBLY__
+>
+>
+> ---
+> base-commit: b0bbe5a2915201e3231e788d716d39dc54493b03
+> change-id: 20230406-wundef-thread_shift_booke-e08d806ed656
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
+
+
+
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
