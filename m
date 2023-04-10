@@ -1,36 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1EC6DC76E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 15:46:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B81C6DC76A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 15:45:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pw9HP3pHNz3chK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 23:46:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pw9GN03D1z3fVy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Apr 2023 23:45:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pw9GK70GCz3fTr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 23:45:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pw9Fl67ZRz3cBP
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Apr 2023 23:44:53 +1000 (AEST)
 Received: from canpemm500009.china.huawei.com (unknown [172.30.72.56])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Pw99J6VlpznbV5;
-	Mon, 10 Apr 2023 21:41:08 +0800 (CST)
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Pw99M0wYdz17RLS;
+	Mon, 10 Apr 2023 21:41:11 +0800 (CST)
 Received: from localhost.localdomain (10.50.163.32) by
  canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 10 Apr 2023 21:44:40 +0800
+ 15.1.2507.23; Mon, 10 Apr 2023 21:44:42 +0800
 From: Yicong Yang <yangyicong@huawei.com>
 To: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <anshuman.khandual@arm.com>,
 	<linux-doc@vger.kernel.org>
-Subject: [PATCH v9 0/2] arm64: support batched/deferred tlb shootdown during page reclamation/migration
-Date: Mon, 10 Apr 2023 21:43:50 +0800
-Message-ID: <20230410134352.4519-1-yangyicong@huawei.com>
+Subject: [PATCH v9 1/2] mm/tlbbatch: Introduce arch_tlbbatch_should_defer()
+Date: Mon, 10 Apr 2023 21:43:51 +0800
+Message-ID: <20230410134352.4519-2-yangyicong@huawei.com>
 X-Mailer: git-send-email 2.31.0
+In-Reply-To: <20230410134352.4519-1-yangyicong@huawei.com>
+References: <20230410134352.4519-1-yangyicong@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -49,114 +51,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, Jonathan.Cameron@Huawei.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, guojian@oppo.com, linux-riscv@lists.infradead.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, Jonathan.Cameron@Huawei.com, Barry Song <baohua@kernel.org>, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
 
-Though ARM64 has the hardware to do tlb shootdown, the hardware
-broadcasting is not free.
-A simplest micro benchmark shows even on snapdragon 888 with only
-8 cores, the overhead for ptep_clear_flush is huge even for paging
-out one page mapped by only one process:
-5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
+The entire scheme of deferred TLB flush in reclaim path rests on the
+fact that the cost to refill TLB entries is less than flushing out
+individual entries by sending IPI to remote CPUs. But architecture
+can have different ways to evaluate that. Hence apart from checking
+TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
+architecture specific.
 
-While pages are mapped by multiple processes or HW has more CPUs,
-the cost should become even higher due to the bad scalability of
-tlb shootdown.
+Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+[https://lore.kernel.org/linuxppc-dev/20171101101735.2318-2-khandual@linux.vnet.ibm.com/]
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+[Rebase and fix incorrect return value type]
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Xin Hao <xhao@linux.alibaba.com>
+Tested-by: Punit Agrawal <punit.agrawal@bytedance.com>
+---
+ arch/x86/include/asm/tlbflush.h | 12 ++++++++++++
+ mm/rmap.c                       |  9 +--------
+ 2 files changed, 13 insertions(+), 8 deletions(-)
 
-The same benchmark can result in 16.99% CPU consumption on ARM64
-server with around 100 cores according to Yicong's test on patch
-2/2.
-
-This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
-1. only send tlbi instructions in the first stage -
-	arch_tlbbatch_add_mm()
-2. wait for the completion of tlbi by dsb while doing tlbbatch
-	sync in arch_tlbbatch_flush()
-Testing on snapdragon shows the overhead of ptep_clear_flush
-is removed by the patchset. The micro benchmark becomes 5% faster
-even for one page mapped by single process on snapdragon 888.
-
-This support also optimize the page migration more than 50% with support
-of batched TLB flushing [*].
-
-[*] https://lore.kernel.org/linux-mm/20230213123444.155149-1-ying.huang@intel.com/
-
--v9:
-1. Using a runtime tunable to control batched TLB flush, per Catalin in v7.
-   Sorry for missing this on v8.
-Link: https://lore.kernel.org/all/20230329035512.57392-1-yangyicong@huawei.com/
-
--v8:
-1. Rebase on 6.3-rc4
-2. Tested the optimization on page migration and mentioned it in the commit
-3. Thanks the review from Anshuman.
-Link: https://lore.kernel.org/linux-mm/20221117082648.47526-1-yangyicong@huawei.com/
-
--v7:
-1. rename arch_tlbbatch_add_mm() to arch_tlbbatch_add_pending() as suggested, since it
-   takes an extra address for arm64, per Nadav and Anshuman. Also mentioned in the commit.
-2. add tags from Xin Hao, thanks.
-Link: https://lore.kernel.org/lkml/20221115031425.44640-1-yangyicong@huawei.com/
-
--v6:
-1. comment we don't defer TLB flush on platforms affected by ARM64_WORKAROUND_REPEAT_TLBI
-2. use cpus_have_const_cap() instead of this_cpu_has_cap()
-3. add tags from Punit, Thanks.
-4. default enable the feature when cpus >= 8 rather than > 8, since the original
-   improvement is observed on snapdragon 888 with 8 cores.
-Link: https://lore.kernel.org/lkml/20221028081255.19157-1-yangyicong@huawei.com/
-
--v5:
-1. Make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends on EXPERT for this stage on arm64.
-2. Make a threshold of CPU numbers for enabling batched TLP flush on arm64
-Link: https://lore.kernel.org/linux-arm-kernel/20220921084302.43631-1-yangyicong@huawei.com/T/
-
--v4:
-1. Add tags from Kefeng and Anshuman, Thanks.
-2. Limit the TLB batch/defer on systems with >4 CPUs, per Anshuman
-3. Merge previous Patch 1,2-3 into one, per Anshuman
-Link: https://lore.kernel.org/linux-mm/20220822082120.8347-1-yangyicong@huawei.com/
-
--v3:
-1. Declare arch's tlbbatch defer support by arch_tlbbatch_should_defer() instead
-   of ARCH_HAS_MM_CPUMASK, per Barry and Kefeng
-2. Add Tested-by from Xin Hao
-Link: https://lore.kernel.org/linux-mm/20220711034615.482895-1-21cnbao@gmail.com/
-
--v2:
-1. Collected Yicong's test result on kunpeng920 ARM64 server;
-2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
-   according to the comments of Peter Zijlstra and Dave Hansen
-3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
-   is empty according to the comments of Nadav Amit
-
-Thanks, Peter, Dave and Nadav for your testing or reviewing
-, and comments.
-
--v1:
-https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
-
-Anshuman Khandual (1):
-  mm/tlbbatch: Introduce arch_tlbbatch_should_defer()
-
-Barry Song (1):
-  arm64: support batched/deferred tlb shootdown during page
-    reclamation/migration
-
- .../features/vm/TLB/arch-support.txt          |  2 +-
- arch/arm64/Kconfig                            |  1 +
- arch/arm64/include/asm/tlbbatch.h             | 12 ++++
- arch/arm64/include/asm/tlbflush.h             | 33 ++++++++-
- arch/arm64/mm/flush.c                         | 69 +++++++++++++++++++
- arch/x86/include/asm/tlbflush.h               | 17 ++++-
- include/linux/mm_types_task.h                 |  4 +-
- mm/rmap.c                                     | 21 +++---
- 8 files changed, 139 insertions(+), 20 deletions(-)
- create mode 100644 arch/arm64/include/asm/tlbbatch.h
-
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index cda3118f3b27..8a497d902c16 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+ 	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
+ }
+ 
++static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
++{
++	bool should_defer = false;
++
++	/* If remote CPUs need to be flushed then defer batch the flush */
++	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
++		should_defer = true;
++	put_cpu();
++
++	return should_defer;
++}
++
+ static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+ {
+ 	/*
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 8632e02661ac..38ccb700748c 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -686,17 +686,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+  */
+ static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
+ {
+-	bool should_defer = false;
+-
+ 	if (!(flags & TTU_BATCH_FLUSH))
+ 		return false;
+ 
+-	/* If remote CPUs need to be flushed then defer batch the flush */
+-	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+-		should_defer = true;
+-	put_cpu();
+-
+-	return should_defer;
++	return arch_tlbbatch_should_defer(mm);
+ }
+ 
+ /*
 -- 
 2.24.0
 
