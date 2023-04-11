@@ -2,58 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0096DD4D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 10:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C36DF6DD519
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 10:20:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pwdnk26Lwz3fGT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 18:10:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pwf185Hn3z3f6r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 18:20:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.178; helo=mail-yw1-f178.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.171; helo=mail-yw1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pwdn84VTfz3bT1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 18:10:20 +1000 (AEST)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-54ee9ad5eb3so139337547b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 01:10:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pwf0d5NDrz3cLx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 18:20:17 +1000 (AEST)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-54f64b29207so36340787b3.8
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 01:20:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681200617;
+        d=1e100.net; s=20210112; t=1681201214;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BKyKsR4WjWkIQ4662w2UQ58EahuI+KkHYModkQblq2M=;
-        b=e8WsoIqAtanCg2d4uSpWBMX7Eq1yZfuaWjlGTRjHtPD9KWKY/ozIx4p1unAzhuk0Ks
-         64QYN9IRQhfEbBv6EAJalYQvXJBm2F/OVMBzxn6gdzDCMbZMj+FAsA6WWHQJ37uXA324
-         a1AjqYbKt4gxazJNF3jgv6xpATlR0MAOI4la6IVt6nb2KJH5L097d5wfF/vGmg6wF6Ru
-         OSM7prOL0YvD1OGTjhdMinm6aU9ihZjgXlBTl6JNhyJgF0rLYMb/49iw7qxPHnky84TG
-         sAJ2wY/NY04EpAEKBB1/iOnlZUAZPD43YhChrQKMepVmaQMq1v1nGfKFyj25radHHRJP
-         Bczw==
-X-Gm-Message-State: AAQBX9e953pQNpDhNQ3zxMjZFTz/juV66WqIHIAzg6EUHPeRBvrdgFYs
-	8qPtlWd6DrYY8I2zTxr92Ysi8pF9nSq6IQ==
-X-Google-Smtp-Source: AKy350aYrSBbS54Yzgzv5jVPh92/kwe4gbDgJ7uyAUIqapzR28kxDOvNYmkT+JSAhOVrOWqxB5w9nA==
-X-Received: by 2002:a81:9292:0:b0:546:2787:4b93 with SMTP id j140-20020a819292000000b0054627874b93mr6974000ywg.35.1681200617599;
-        Tue, 11 Apr 2023 01:10:17 -0700 (PDT)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
-        by smtp.gmail.com with ESMTPSA id bh31-20020a05690c039f00b00545a08184a7sm3351383ywb.55.2023.04.11.01.10.16
+        bh=KOXdqLxEHLBZ7hy/2mM/9REbA1X5ZreSZtF+7etv6Sw=;
+        b=RrxwDJJLqpYrSDtRs87/WbxjpKLjQfUl9VyJaWGux92+fjcEtiobkZPmn7eu0qN5b8
+         EWH5n6TOLh/G6xizhfkvkcnyrhQD4LjX2qV2A13kzOqKgWX/oWlf7FI9GYfxmGjE6ySH
+         qPdjguA/5atmXpO3xz0HlZcCV7YrkbC9ALUvzEUvdFtBVHwN0HDKwiggGDtsUdiNaKco
+         OfOHEQl6raisumkqpURY0L9qmRT90Qo6RIMPSnwWFkWm1G3owwIZO9yGhFvMXCKjukzM
+         d2smyOmlS8DYswwQsXXE1I7uoc9UuqPzcYiwFBVcjikK8EbZPMkEW54/QE9tBb7dZesc
+         DNxA==
+X-Gm-Message-State: AAQBX9fnTTM87lUMh4KP/n9fFDu4MY6k1K3Zy/ldqphGg9ES7ihGRBLD
+	ksFql0C4Qjzja0Lcz7/WVgPZPaJ/EkPIIw==
+X-Google-Smtp-Source: AKy350ZXBiL5DHvoZFAI20rmJt2k6zp8qAHmuqLBCaVNODnuiU5s7e8RidS/09flEWwQ0x1FuAAGGQ==
+X-Received: by 2002:a81:7482:0:b0:538:5216:2ad2 with SMTP id p124-20020a817482000000b0053852162ad2mr1462508ywc.52.1681201214362;
+        Tue, 11 Apr 2023 01:20:14 -0700 (PDT)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id y207-20020a814bd8000000b00545a0818496sm3343294ywa.38.2023.04.11.01.20.13
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Apr 2023 01:10:17 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-54c17fa9ae8so243175357b3.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 01:10:16 -0700 (PDT)
-X-Received: by 2002:a81:bc08:0:b0:54e:e490:d190 with SMTP id
- a8-20020a81bc08000000b0054ee490d190mr1216128ywi.4.1681200616792; Tue, 11 Apr
- 2023 01:10:16 -0700 (PDT)
+        Tue, 11 Apr 2023 01:20:13 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id i20so10861275ybg.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 01:20:13 -0700 (PDT)
+X-Received: by 2002:a25:d447:0:b0:b75:9519:dbcd with SMTP id
+ m68-20020a25d447000000b00b759519dbcdmr960089ybf.12.1681201212819; Tue, 11 Apr
+ 2023 01:20:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230406143019.6709-1-tzimmermann@suse.de> <20230406143019.6709-8-tzimmermann@suse.de>
-In-Reply-To: <20230406143019.6709-8-tzimmermann@suse.de>
+References: <20230406143019.6709-1-tzimmermann@suse.de> <20230406143019.6709-9-tzimmermann@suse.de>
+In-Reply-To: <20230406143019.6709-9-tzimmermann@suse.de>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 11 Apr 2023 10:10:04 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWY2KdnpuunRqADjDjt_vnEdyD_yfwJySTi4s5N+A1ZgA@mail.gmail.com>
-Message-ID: <CAMuHMdWY2KdnpuunRqADjDjt_vnEdyD_yfwJySTi4s5N+A1ZgA@mail.gmail.com>
-Subject: Re: [PATCH v2 07/19] arch/m68k: Merge variants of fb_pgprotect() into
- single function
+Date: Tue, 11 Apr 2023 10:20:00 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVmZ2GRKqEnZgQKzJ1-Hy-Cz8yoUOhD0TMMqZriH82-tQ@mail.gmail.com>
+Message-ID: <CAMuHMdVmZ2GRKqEnZgQKzJ1-Hy-Cz8yoUOhD0TMMqZriH82-tQ@mail.gmail.com>
+Subject: Re: [PATCH v2 08/19] arch/m68k: Implement <asm/fb.h> with generic helpers
 To: Thomas Zimmermann <tzimmermann@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -74,21 +73,22 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Thu, Apr 6, 2023 at 4:30=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse.=
 de> wrote:
-> Merge all variants of fb_pgprotect() into a single function body.
-> There are two different cases for MMU systems. For non-MMU systems,
-> the function body will be empty. No functional changes, but this
-> will help with the switch to <asm-generic/fb.h>.
+> Replace the architecture's fb_is_primary_device() with the generic
+> one from <asm-generic/fb.h>. No functional changes.
+>
+> v2:
+>         * provide empty fb_pgprotect() on non-MMU systems
 >
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
 Gr{oetje,eeting}s,
 
                         Geert
 
---=20
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
 .org
 
