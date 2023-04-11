@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08846DD921
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 13:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6F06DD981
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 13:36:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PwjsW40Bpz3ccg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 21:14:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PwkMW3ZCsz3f5q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Apr 2023 21:36:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pwjs231tjz3bfk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 21:13:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PwkM265ltz3bjj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Apr 2023 21:36:29 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 587DED75;
-	Tue, 11 Apr 2023 04:14:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96259D75;
+	Tue, 11 Apr 2023 04:36:42 -0700 (PDT)
 Received: from FVFF77S0Q05N (unknown [10.57.20.166])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 57B213F6C4;
-	Tue, 11 Apr 2023 04:13:24 -0700 (PDT)
-Date: Tue, 11 Apr 2023 12:13:21 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4DAD93F6C4;
+	Tue, 11 Apr 2023 04:35:53 -0700 (PDT)
+Date: Tue, 11 Apr 2023 12:35:50 +0100
 From: Mark Rutland <mark.rutland@arm.com>
-To: Uros Bizjak <ubizjak@gmail.com>
-Subject: Re: [PATCH v2 2/5] locking/generic: Wire up local{,64}_try_cmpxchg
-Message-ID: <ZDVA0a6QHaONg8AL@FVFF77S0Q05N>
+To: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v2 0/5] locking: Introduce local{,64}_try_cmpxchg
+Message-ID: <ZDVGFhMwOtpxJtnQ@FVFF77S0Q05N>
 References: <20230405141710.3551-1-ubizjak@gmail.com>
- <20230405141710.3551-3-ubizjak@gmail.com>
+ <7360ffd2-a5aa-1373-8309-93e71ff36cbb@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230405141710.3551-3-ubizjak@gmail.com>
+In-Reply-To: <7360ffd2-a5aa-1373-8309-93e71ff36cbb@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,75 +41,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, x86@kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, Jun Yi <yijun@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, loongarch@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel
+ .org, Jiri Olsa <jolsa@kernel.org>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 05, 2023 at 04:17:07PM +0200, Uros Bizjak wrote:
-> Implement generic support for local{,64}_try_cmpxchg.
+On Wed, Apr 05, 2023 at 09:37:04AM -0700, Dave Hansen wrote:
+> On 4/5/23 07:17, Uros Bizjak wrote:
+> > Add generic and target specific support for local{,64}_try_cmpxchg
+> > and wire up support for all targets that use local_t infrastructure.
 > 
-> Redirect to the atomic_ family of functions when the target
-> does not provide its own local.h definitions.
+> I feel like I'm missing some context.
 > 
-> For 64-bit targets, implement local64_try_cmpxchg and
-> local64_cmpxchg using typed C wrappers that call local_
-> family of functions and provide additional checking
-> of their input arguments.
-> 
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> What are the actual end user visible effects of this series?  Is there a
+> measurable decrease in perf overhead?  Why go to all this trouble for
+> perf?  Who else will use local_try_cmpxchg()?
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+Overall, the theory is that it can generate slightly better code (e.g. by
+reusing the flags on x86). In practice, that might be in the noise, but as
+demonstrated in prior postings the code generation is no worse than before.
 
+From my perspective, the more important part is that this aligns local_t with
+the other atomic*_t APIs, which all have ${atomictype}_try_cmpxchg(), and for
+consistency/legibility/maintainability it's nice to be able to use the same
+code patterns, e.g.
+
+	${inttype} new, old = ${atomictype}_read(ptr);
+	do {
+		...
+		new = do_something_with(old);
+	} while (${atomictype}_try_cmpxvhg(ptr, &oldval, newval);
+
+> I'm all for improving things, and perf is an important user.  But, if
+> the goal here is improving performance, it would be nice to see at least
+> a stab at quantifying the performance delta.
+
+IIUC, Steve's original request for local_try_cmpxchg() was a combination of a
+theoretical performance benefit and a more general preference to use
+try_cmpxchg() for consistency / better structure of the source code:
+
+  https://lore.kernel.org/lkml/20230301131831.6c8d4ff5@gandalf.local.home/
+
+I agree it'd be nice to have performance figures, but I think those would only
+need to demonstrate a lack of a regression rather than a performance
+improvement, and I think it's fairly clear from eyeballing the generated
+instructions that a regression isn't likely.
+
+Thanks,
 Mark.
-
-> ---
->  include/asm-generic/local.h   |  1 +
->  include/asm-generic/local64.h | 12 +++++++++++-
->  2 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/asm-generic/local.h b/include/asm-generic/local.h
-> index fca7f1d84818..7f97018df66f 100644
-> --- a/include/asm-generic/local.h
-> +++ b/include/asm-generic/local.h
-> @@ -42,6 +42,7 @@ typedef struct
->  #define local_inc_return(l) atomic_long_inc_return(&(l)->a)
->  
->  #define local_cmpxchg(l, o, n) atomic_long_cmpxchg((&(l)->a), (o), (n))
-> +#define local_try_cmpxchg(l, po, n) atomic_long_try_cmpxchg((&(l)->a), (po), (n))
->  #define local_xchg(l, n) atomic_long_xchg((&(l)->a), (n))
->  #define local_add_unless(l, _a, u) atomic_long_add_unless((&(l)->a), (_a), (u))
->  #define local_inc_not_zero(l) atomic_long_inc_not_zero(&(l)->a)
-> diff --git a/include/asm-generic/local64.h b/include/asm-generic/local64.h
-> index 765be0b7d883..14963a7a6253 100644
-> --- a/include/asm-generic/local64.h
-> +++ b/include/asm-generic/local64.h
-> @@ -42,7 +42,16 @@ typedef struct {
->  #define local64_sub_return(i, l) local_sub_return((i), (&(l)->a))
->  #define local64_inc_return(l)	local_inc_return(&(l)->a)
->  
-> -#define local64_cmpxchg(l, o, n) local_cmpxchg((&(l)->a), (o), (n))
-> +static inline s64 local64_cmpxchg(local64_t *l, s64 old, s64 new)
-> +{
-> +	return local_cmpxchg(&l->a, old, new);
-> +}
-> +
-> +static inline bool local64_try_cmpxchg(local64_t *l, s64 *old, s64 new)
-> +{
-> +	return local_try_cmpxchg(&l->a, (long *)old, new);
-> +}
-> +
->  #define local64_xchg(l, n)	local_xchg((&(l)->a), (n))
->  #define local64_add_unless(l, _a, u) local_add_unless((&(l)->a), (_a), (u))
->  #define local64_inc_not_zero(l)	local_inc_not_zero(&(l)->a)
-> @@ -81,6 +90,7 @@ typedef struct {
->  #define local64_inc_return(l)	atomic64_inc_return(&(l)->a)
->  
->  #define local64_cmpxchg(l, o, n) atomic64_cmpxchg((&(l)->a), (o), (n))
-> +#define local64_try_cmpxchg(l, po, n) atomic64_try_cmpxchg((&(l)->a), (po), (n))
->  #define local64_xchg(l, n)	atomic64_xchg((&(l)->a), (n))
->  #define local64_add_unless(l, _a, u) atomic64_add_unless((&(l)->a), (_a), (u))
->  #define local64_inc_not_zero(l)	atomic64_inc_not_zero(&(l)->a)
-> -- 
-> 2.39.2
-> 
