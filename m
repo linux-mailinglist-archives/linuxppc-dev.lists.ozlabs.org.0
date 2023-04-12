@@ -1,50 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9016DEB72
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 07:52:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE236DEBB3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 08:18:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PxBh50dgqz3bnM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 15:52:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PxCG62kqdz3f4b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 16:18:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=frI2z76Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lTZEAUAJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxBgB6Q46z3bhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Apr 2023 15:52:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxCFD3nDrz308w
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Apr 2023 16:18:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=frI2z76Q;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lTZEAUAJ;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PxBg814h6z4xDn;
-	Wed, 12 Apr 2023 15:52:03 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4PxCF401xjz4xFj;
+	Wed, 12 Apr 2023 16:17:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1681278724;
-	bh=jqtJJylomYzYVkCC66q6zDwuo6aVxIv4ryKs0Q31Tkw=;
+	s=201909; t=1681280282;
+	bh=mVus6VBYhH8GmWv60JhlJfNhVtxbImSRmEm6BDRrW3s=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=frI2z76QxUdVGt9vzxq4XlF8uIotArtGilXmy4Yiw8TO9qGru44k0P9sUscx6dYta
-	 6bw/iiIXrmh7BO+CxEEmfkdPJFXeMQmvDVeWGzfNcuM1LNApk5hChKNhblcZ4Potc8
-	 DwUdvWd0xL/zjaJhYelrU1Q2HcuCtDYwXyyn7VK2Po1+ybtVBHy58g0maVIKFYhTY9
-	 IQZBAnSE9vDm4/nGjVFO+W3+sF8IEdupCmqw9SMyGlmO6PGIQmjqJrncKfqDZE/4F3
-	 miVoHKYSz0H1/39qk1WWoYYJwFt6CqbTC10JJqwJXxGl7HfF8vpCvMrNbd5Vb8kxHT
-	 IwP/U1veucJHQ==
+	b=lTZEAUAJ2QZsc9UPHGoexeIDhivQg0OZP2tQ8N178oguDiIOjU/GS5yjDEkHA0ZQY
+	 UoSdL/mLxTXV/wa3HPEVjblwcxsdx2c+OnuyDK5Tv1Pbg7hiKGkpXXQYiHyY9ZXKUK
+	 6CSwY02DKtu+cGQJMahEUbmjJakfBQLvnLNWdj1LScutIwzO/9mPiHZFRCutiHgFFy
+	 LDNwBaVtxl/OmcZoIc9q0YGGvsTAR4vPp6o9KxvHWYHacDs55AZq5ZD42D7HmgmLSM
+	 12TeMwxecBFtXBTtmtuIhlm5OkckoQGJYZdQPchk2E7CbMKkKzVuJ/odBCPWTELN7l
+	 5ijFDMn/S4fVA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Dave Airlie
- <airlied@redhat.com>, DRI <dri-devel@lists.freedesktop.org>
-Subject: Re: linux-next: manual merge of the drm tree with the powerpc tree
-In-Reply-To: <20230412112213.59365041@canb.auug.org.au>
-References: <20230412112213.59365041@canb.auug.org.au>
-Date: Wed, 12 Apr 2023 15:51:57 +1000
-Message-ID: <87ttxlir5u.fsf@mpe.ellerman.id.au>
+To: Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
+ daniel.vetter@ffwll.ch, deller@gmx.de, javierm@redhat.com,
+ gregkh@linuxfoundation.org
+Subject: Re: [PATCH v2 15/19] arch/powerpc: Implement <asm/fb.h> with
+ generic helpers
+In-Reply-To: <20230406143019.6709-16-tzimmermann@suse.de>
+References: <20230406143019.6709-1-tzimmermann@suse.de>
+ <20230406143019.6709-16-tzimmermann@suse.de>
+Date: Wed, 12 Apr 2023 16:17:59 +1000
+Message-ID: <87r0spipyg.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,33 +61,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Harry Wentland <harry.wentland@amd.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
+Thomas Zimmermann <tzimmermann@suse.de> writes:
+> Replace the architecture's fb_is_primary_device() with the generic
+> one from <asm-generic/fb.h>. No functional changes.
 >
-> Today's linux-next merge of the drm tree got a conflict in:
->
->   drivers/gpu/drm/amd/display/Kconfig
->
-> between commit:
->
->   78f0929884d4 ("powerpc/64: Always build with 128-bit long double")
->
-> from the powerpc tree and commit:
->
->   4652ae7a51b7 ("drm/amd/display: Rename DCN config to FP")
->
-> from the drm tree.
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/fb.h | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 
-> I fixed it up (I used the powerpc version - with "(PPC64 && ALTIVEC)")
-> and can carry the fix as necessary.
+Looks fine.
 
-Thanks, that's the right resolution.
-
-Not much we can do to avoid that conflict, we'll just have to tell Linus
-about it at pull request time.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers
+
+> diff --git a/arch/powerpc/include/asm/fb.h b/arch/powerpc/include/asm/fb.h
+> index 6541ab77c5b9..5f1a2e5f7654 100644
+> --- a/arch/powerpc/include/asm/fb.h
+> +++ b/arch/powerpc/include/asm/fb.h
+> @@ -2,8 +2,8 @@
+>  #ifndef _ASM_FB_H_
+>  #define _ASM_FB_H_
+>  
+> -#include <linux/fb.h>
+>  #include <linux/fs.h>
+> +
+>  #include <asm/page.h>
+>  
+>  static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
+> @@ -13,10 +13,8 @@ static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
+>  						 vma->vm_end - vma->vm_start,
+>  						 vma->vm_page_prot);
+>  }
+> +#define fb_pgprotect fb_pgprotect
+>  
+> -static inline int fb_is_primary_device(struct fb_info *info)
+> -{
+> -	return 0;
+> -}
+> +#include <asm-generic/fb.h>
+>  
+>  #endif /* _ASM_FB_H_ */
+> -- 
+> 2.40.0
