@@ -2,62 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EFD6DFC56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 19:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9AD6DFCB3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 19:27:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PxTlf6Xhhz3fSF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 03:11:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PxV5t21jyz3fRM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 03:27:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxTl76MQHz3cG7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 03:11:30 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pmdzp-0001ho-BG; Wed, 12 Apr 2023 19:11:01 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pmdzm-00AmwQ-36; Wed, 12 Apr 2023 19:10:58 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pmdzk-00CfNB-OC; Wed, 12 Apr 2023 19:10:56 +0200
-Date: Wed, 12 Apr 2023 19:10:56 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Roy Pledge <Roy.Pledge@nxp.com>, Li Yang <leoyang.li@nxp.com>,
-	Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vinod Koul <vkoul@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH 0/6] bus: fsl-mc: Make remove function return void
-Message-ID: <20230412171056.xcluewbuyytm77yp@pengutronix.de>
-References: <20230310224128.2638078-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxV5L5W57z3chn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 03:27:18 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 7DEAC63282;
+	Wed, 12 Apr 2023 17:27:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA85C433EF;
+	Wed, 12 Apr 2023 17:27:11 +0000 (UTC)
+Date: Wed, 12 Apr 2023 18:27:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Justin Forbes <jforbes@fedoraproject.org>
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <ZDbp7LAHES3YFo30@arm.com>
+References: <20230325060828.2662773-1-rppt@kernel.org>
+ <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+ <ZCvQGJzdED+An8an@kernel.org>
+ <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2x2mx27jq2zwvoxs"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230310224128.2638078-1-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,53 +49,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Apr 04, 2023 at 06:50:01AM -0500, Justin Forbes wrote:
+> On Tue, Apr 4, 2023 at 2:22 AM Mike Rapoport <rppt@kernel.org> wrote:
+> > On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
+> > > On Sat, Mar 25, 2023 at 1:09 AM Mike Rapoport <rppt@kernel.org> wrote:
+> > > >
+> > > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > > >
+> > > > It is not a good idea to change fundamental parameters of core memory
+> > > > management. Having predefined ranges suggests that the values within
+> > > > those ranges are sensible, but one has to *really* understand
+> > > > implications of changing MAX_ORDER before actually amending it and
+> > > > ranges don't help here.
+> > > >
+> > > > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
+> > > > visible only if EXPERT=y
+> > >
+> > > I do not like suddenly hiding this behind EXPERT for a couple of
+> > > reasons.  Most importantly, it will silently change the config for
+> > > users building with an old kernel config.  If a user has for instance
+> > > "13" set and building with 4K pages, as is the current configuration
+> > > for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
+> > > to 10 with no indication that it is doing so.  And while I think that
+> > > 10 is a fine default for many aarch64 users, there are valid reasons
+> > > for choosing other values. Putting this behind expert makes it much
+> > > less obvious that this is an option.
+> >
+> > That's the idea of EXPERT, no?
+> >
+> > This option was intended to allow allocation of huge pages for
+> > architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
+> > select size of maximal physically contiguous allocation.
+> >
+> > Changes to MAX_ORDER fundamentally change the behaviour of core mm and
+> > unless users *really* know what they are doing there is no reason to choose
+> > non-default values so hiding this option behind EXPERT seems totally
+> > appropriate to me.
+> 
+> It sounds nice in theory. In practice. EXPERT hides too much. When you
+> flip expert, you expose over a 175ish new config options which are
+> hidden behind EXPERT.  You don't have to know what you are doing just
+> with the MAX_ORDER, but a whole bunch more as well.  If everyone were
+> already running 10, this might be less of a problem. At least Fedora
+> and RHEL are running 13 for 4K pages on aarch64. This was not some
+> accidental choice, we had to carry a patch to even allow it for a
+> while.  If this does go in as is, we will likely just carry a patch to
+> remove the "if EXPERT", but that is a bit of a disservice to users who
+> might be trying to debug something else upstream, bisecting upstream
+> kernels or testing a patch.  In those cases, people tend to use
+> pristine upstream sources without distro patches to verify, and they
+> tend to use their existing configs. With this change, their MAX_ORDER
+> will drop to 10 from 13 silently.   That can look like a different
+> issue enough to ruin a bisect or have them give bad feedback on a
+> patch because it introduces a "regression" which is not a regression
+> at all, but a config change they couldn't see.
 
---2x2mx27jq2zwvoxs
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If we remove EXPERT (as prior to this patch), I'd rather keep the ranges
+and avoid having to explain to people why some random MAX_ORDER doesn't
+build (keeping the range would also make sense for randconfig, not sure
+we got to any conclusion there).
 
-Hello,
-
-On Fri, Mar 10, 2023 at 11:41:22PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
->=20
-> many bus remove functions return an integer which is a historic
-> misdesign that makes driver authors assume that there is some kind of
-> error handling in the upper layers. This is wrong however and returning
-> and error code only yields an error message.
->=20
-> This series improves the fsl-mc bus by changing the remove callback to
-> return no value instead. As a preparation all drivers are changed to
-> return zero before so that they don't trigger the error message.
-
-Who is supposed to pick up this patch series (or point out a good reason
-for not taking it)?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2x2mx27jq2zwvoxs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ25h8ACgkQj4D7WH0S
-/k7l+Af+N5+aCs46B4ridehobQBafv9tZPTtFGoBY5sC3oXI6o1esrrE+v65jjyp
-+6c8u6nhgNeTebXzIxFZRF5wUcD+7uIAD+ZomoHHX7CJ83BoYu0ifciGJOIC15r5
-j5AnkV0+1vzfztf5wozUdHsk/m+PKeRgKLzvJ2z7HmFShucihqWRGFUkdu9+DIw4
-0hxxi+Y0L+5iuoKcXmrFi28Rid2oVDjeSYvkQTsWtp3l/4Gtu2Dqc0hW2hU66NmG
-6rOxQ24mymBgwEc0XyR0uBq+/1YBdKzJOFjjH3ilQNzWb66Spxl1q74K0karyFcS
-rEZESsixkY8yP2PuyQt8FJxICwYcXQ==
-=BATw
------END PGP SIGNATURE-----
-
---2x2mx27jq2zwvoxs--
+-- 
+Catalin
