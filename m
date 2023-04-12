@@ -1,77 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79996DED32
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 10:04:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D6A6DF2D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 13:14:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PxFcS4Gnqz3f6n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 18:04:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TG3HVhuv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PxKqH4dl6z3cdL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Apr 2023 21:14:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TG3HVhuv;
-	dkim-atps=neutral
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inspur.com (client-ip=210.51.26.145; helo=unicom145.biz-email.net; envelope-from=wangdeming@inspur.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir; Wed, 12 Apr 2023 21:14:07 AEST
+Received: from unicom145.biz-email.net (unicom145.biz-email.net [210.51.26.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxFbZ19SDz2ynx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Apr 2023 18:04:07 +1000 (AEST)
-Received: by mail-ej1-x635.google.com with SMTP id qa44so26332091ejc.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Apr 2023 01:04:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681286643;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7sCYQWmrIHjLodZCUEstj/wAUl8903bf+mCezIM9gIs=;
-        b=TG3HVhuvb+yHg3+UCrQWVrPaZhnVggB+RTvB0Pk09hNmrC2AYQz++koo4E4+CDrAOU
-         pPLu4b9mtg8xMwyxSv0ujdYIw/HzwYiN/TJeZLZD/8GKuGrL5i1+x166V2W1H0TqBPde
-         Z+LyeS8tth4XhHd7jdXS2Gsu3+qgmtwuSo9ncvGkxin3QOIkBuAE1R6L9ANkI4lf8ZFU
-         +3s4PCb0Xmk9+YoCb42tdD83/YeUZhzsDPybPBh13YPKEF7mXd08dRL9zdCh0ZDJNdV3
-         tGQbkY93qCRDW3kpUUKV+OXW297TqIFpSKHBYQ4qxCnzZz1oS1tw0BQgVmev7RsazY7s
-         VCIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681286643;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7sCYQWmrIHjLodZCUEstj/wAUl8903bf+mCezIM9gIs=;
-        b=xzWaoZqTqNKHx+yXHZ1AFi0UR6E9PqYzCefu1Ayp01zGTguKoWZ+Wtq/6RZt2OZpMb
-         lqoNulFp4ECv30601l6Cf/uMfM1/mLw7cuDTGm+nFy525O75e4DOrzY3RRkQoXR3un6V
-         T/KxAiB91htz/ZqOYqR48KS7zbjlW2nfxQpiXXbTRPnyVHQp0lXRgAvv3r9/h+szTcIM
-         cbBn4CmU3jAJnyh5JKw8xZMRaKVsshAh8kFEFqmJP1RkYsCMSYTGzCyDbd24/MoANEf7
-         kE+m0zViMF2YMjx6PbmADo5TmBtXg0Uwdifw2qp3+c8n/sirGsRpY86rfVz7HSq9+xpy
-         BjLg==
-X-Gm-Message-State: AAQBX9cmy5nEt9B9nSsSuTMLwSAGxzfkMbJFPvnRc9zAYF2OZMQJr2Dq
-	2UVmlZO969Xl7wUc1ExFp1JmTQ==
-X-Google-Smtp-Source: AKy350bqsn9FugkvkWfL/MPu3dTIMA0gp1RVfg+cMrbd9FUEsvEngyqRYlsTCIugeFcFo52sPdNCog==
-X-Received: by 2002:a17:906:8601:b0:948:6e3d:a030 with SMTP id o1-20020a170906860100b009486e3da030mr14441369ejx.42.1681286643266;
-        Wed, 12 Apr 2023 01:04:03 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:8fa0:9989:3f72:b14f? ([2a02:810d:15c0:828:8fa0:9989:3f72:b14f])
-        by smtp.gmail.com with ESMTPSA id sc40-20020a1709078a2800b0094a84462e5fsm2998603ejc.37.2023.04.12.01.04.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Apr 2023 01:04:02 -0700 (PDT)
-Message-ID: <848f5e3e-44ca-3648-2d6b-7e06ce7b5cda@linaro.org>
-Date: Wed, 12 Apr 2023 10:04:00 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxKpl39GBz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Apr 2023 21:14:07 +1000 (AEST)
+Received: from unicom145.biz-email.net
+        by unicom145.biz-email.net ((D)) with ASMTP (SSL) id IHZ00139;
+        Wed, 12 Apr 2023 19:12:39 +0800
+Received: from localhost.localdomain.com (10.200.104.82) by
+ jtjnmail201603.home.langchao.com (10.100.2.3) with Microsoft SMTP Server id
+ 15.1.2507.21; Wed, 12 Apr 2023 19:12:38 +0800
+From: Deming Wang <wangdeming@inspur.com>
+To: <shuah@kernel.org>, <mpe@ellerman.id.au>
+Subject: [PATCH] selftests/powerpc: Replace obsolete memalign() with posix_memalign()
+Date: Wed, 12 Apr 2023 07:12:37 -0400
+Message-ID: <20230412111237.2007-1-wangdeming@inspur.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v13 03/15] dt-bindings: Convert gpio-mmio to yaml
-Content-Language: en-US
-To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, linux-phy@lists.infradead.org
-References: <20230411184313.3679145-1-sean.anderson@seco.com>
- <20230411184313.3679145-4-sean.anderson@seco.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230411184313.3679145-4-sean.anderson@seco.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.200.104.82]
+tUid: 2023412191239017fc8024cbab55b7953522593d5685e
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,34 +48,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, =?UTF-8?Q?Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
+Cc: Deming Wang <wangdeming@inspur.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/04/2023 20:43, Sean Anderson wrote:
-> This is a generic binding for simple MMIO GPIO controllers. Although we
-> have a single driver for these controllers, they were previously spread
-> over several files. Consolidate them. The register descriptions are
-> adapted from the comments in the source. There is no set order for the
-> registers, and some registers may be omitted. Because of this, reg-names
-> is mandatory, and no order is specified.
-> 
-> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
-> has moved.
-> 
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Linus or Bartosz, feel free to pick this up as the rest of this series
-> may not be merged any time soon.
-> 
-> Changes in v13:
-> - Fix references to brcm,bcm63xx-gpio.yaml (neé brcm,bcm6345-gpio)
+memalign() is obsolete according to its manpage.
 
-You got some of the same errors as last time.
+Replace memalign() with posix_memalign() and remove malloc.h include
+that was there for memalign().
 
-Test your patches before sending.
+As a pointer is passed into posix_memalign(), initialize *s to NULL
+to silence a warning about the function's return value being used as
+uninitialized (which is not valid anyway because the error is properly
+checked before p is returned).
 
-Best regards,
-Krzysztof
+Signed-off-by: Deming Wang <wangdeming@inspur.com>
+---
+ tools/testing/selftests/powerpc/stringloops/strlen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/powerpc/stringloops/strlen.c b/tools/testing/selftests/powerpc/stringloops/strlen.c
+index 9055ebc484d0..f9c1f9cc2d32 100644
+--- a/tools/testing/selftests/powerpc/stringloops/strlen.c
++++ b/tools/testing/selftests/powerpc/stringloops/strlen.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include <malloc.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
+@@ -51,10 +50,11 @@ static void bench_test(char *s)
+ static int testcase(void)
+ {
+ 	char *s;
++	int ret;
+ 	unsigned long i;
+ 
+-	s = memalign(128, SIZE);
+-	if (!s) {
++	ret = posix_memalign((void **)&s, 128, SIZE);
++	if (ret < 0) {
+ 		perror("memalign");
+ 		exit(1);
+ 	}
+-- 
+2.27.0
 
