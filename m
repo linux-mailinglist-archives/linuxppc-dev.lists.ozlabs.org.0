@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8726E1493
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 20:48:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFB36E16A9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 23:48:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Py7rJ06mrz3fS3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 04:48:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PyCrK4NlXz3fXb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 07:48:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iU60ymNU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r0GRWg6o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iU60ymNU;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r0GRWg6o;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Py7qS0mdZz3fB4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 04:47:31 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 34FAC640F0;
-	Thu, 13 Apr 2023 18:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97E3C433D2;
-	Thu, 13 Apr 2023 18:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1681411647;
-	bh=mkbJGGjfVkWp270Vlh6GLKeqXvgPYjdfjauLg3DCCWo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iU60ymNU//wlioH8Qp0n9wi/EMQ8EVBLnhMKRUSItaFADysFEblNtIvmrNmZL/toK
-	 0FERzr4szZYQ/gXrF2Y/GjqLqfr491cBTjFHq/6J2vv844nMI1c5XQ6rARGqCr0uyt
-	 3ZNDY5jFbTWtqxbPeFeZknN3ls2ketaqRF0AYKR0hrmV/wIupAbTua+oufq374vnYj
-	 0PiI4h6l2vmO56skSGCcnV4FXWL8hTZp9WbQR7ss/oUIlqSB+b40O0b0al5XjQfn5c
-	 SipdKARiz8B3fFQx3whLX4uvswZji6RcceMqS1PaBGNYtsMqhZOpyDrA50F6H5fGZY
-	 nBFwJ7mzX1Jsg==
-Date: Thu, 13 Apr 2023 11:47:25 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: linux-next: manual merge of the drm tree with the powerpc tree
-Message-ID: <20230413184725.GA3183133@dev-arch.thelio-3990X>
-References: <20230412112213.59365041@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Py9831wX2z3fCJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 05:46:58 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DJkde9010136;
+	Thu, 13 Apr 2023 19:46:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=9bXJxQDpqf1FHLqGzpmDLwhqgj0ZIvKATcvCppLD37c=;
+ b=r0GRWg6onBfCy+Ud/Ja+kk63Q68i4wgCjw68rZfbSVHGeLCdP0OLL8apQzbXMYxGqkTY
+ Lad0Dv7Fmj3YK3Uf4pTTpzs9BGU61zkuiHQbIqnJAM+L4Ff4o34HoG52I5LIndL25Km1
+ yvCkBGZtlEo3ALzAuhooNTLqlzAhTj75l8orUnrm/GFc5xrO+c0vPTRpJtH8+nbqeArT
+ 0e7g7iaw4YfMvhI+IWm3DKgm8kJt4PEjNfM4sEQsI2Y5vSfAm0xFIhWEiCaySOxTMHFN
+ f71Q7IqWw2vEBq/YTvMKu0077GXtMvWt1v7IEfyt4ZbNPi6H0q7wjo+hAnZx8mansaiZ Bw== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxmf6hruc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Apr 2023 19:46:40 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33DGbSCn020774;
+	Thu, 13 Apr 2023 19:46:39 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3pu0jhd4qx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Apr 2023 19:46:39 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33DJkbYm22151704
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Apr 2023 19:46:37 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A35715803F;
+	Thu, 13 Apr 2023 19:46:37 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16C1A58054;
+	Thu, 13 Apr 2023 19:46:37 +0000 (GMT)
+Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Apr 2023 19:46:37 +0000 (GMT)
+From: Danny Tsen <dtsen@linux.ibm.com>
+To: linux-crypto@vger.kernel.org
+Subject: [PATCH v2 0/2] Remove POWER10_CPU dependency and move PPC_MODULE_FEATURE_P10.
+Date: Thu, 13 Apr 2023 15:46:23 -0400
+Message-Id: <20230413194625.10631-1-dtsen@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230412112213.59365041@canb.auug.org.au>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kkHix0dOBNVrQxcEppfrkjkeKkloETFL
+X-Proofpoint-ORIG-GUID: kkHix0dOBNVrQxcEppfrkjkeKkloETFL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-13_14,2023-04-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=639
+ impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304130174
+X-Mailman-Approved-At: Fri, 14 Apr 2023 07:43:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,57 +87,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, DRI <dri-devel@lists.freedesktop.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, Alex Deucher <alexander.deucher@amd.com>, Dave Airlie <airlied@redhat.com>, Harry Wentland <harry.wentland@amd.com>
+Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark,
+Remove Power10 dependency in Kconfig and detect Power10 feature at runtime.
+Move PPC_MODULE_FEATURE_P10 definition to be in
+arch/powerpc/include/asm/cpufeature.h.
 
-On Wed, Apr 12, 2023 at 11:22:13AM +1000, Stephen Rothwell wrote:
-> Hi all,
-> 
-> Today's linux-next merge of the drm tree got a conflict in:
-> 
->   drivers/gpu/drm/amd/display/Kconfig
-> 
-> between commit:
-> 
->   78f0929884d4 ("powerpc/64: Always build with 128-bit long double")
-> 
-> from the powerpc tree and commit:
-> 
->   4652ae7a51b7 ("drm/amd/display: Rename DCN config to FP")
-> 
-> from the drm tree.
-> 
-> I fixed it up (I used the powerpc version - with "(PPC64 && ALTIVEC)")
-> and can carry the fix as necessary. This is now fixed as far as
-> linux-next is concerned, but any non trivial conflicts should be
-> mentioned to your upstream maintainer when your tree is submitted for
-> merging.  You may also want to consider cooperating with the maintainer
-> of the conflicting tree to minimise any particularly complex conflicts.
+Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
 
-This resolution is not quite right on next-20230412 and next-20230413,
-as the drm tree's rename was not taken into account on the conflicting
-line. In other words, I need this diff for everything to work properly.
+Danny Tsen (2):
+  Kconfig: Remove POWER10_CPU dependency.
+  aes-gcm-p10-glue.c, cpufeature.h: Move Power10 feature, PPC_MODULE_FEATURE_P10.
 
-diff --git a/drivers/gpu/drm/amd/display/Kconfig b/drivers/gpu/drm/amd/display/Kconfig
-index b990ef80d686..2d8e55e29637 100644
---- a/drivers/gpu/drm/amd/display/Kconfig
-+++ b/drivers/gpu/drm/amd/display/Kconfig
-@@ -8,7 +8,7 @@ config DRM_AMD_DC
- 	depends on BROKEN || !CC_IS_CLANG || X86_64 || SPARC64 || ARM64
- 	select SND_HDA_COMPONENT if SND_HDA_CORE
- 	# !CC_IS_CLANG: https://github.com/ClangBuiltLinux/linux/issues/1752
--	select DRM_AMD_DC_DCN if (X86 || (PPC64 && ALTIVEC) || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
-+	select DRM_AMD_DC_FP if (X86 || (PPC64 && ALTIVEC) || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
- 	help
- 	  Choose this option if you want to use the new display engine
- 	  support for AMDGPU. This adds required support for Vega and
+ arch/powerpc/crypto/Kconfig            | 2 +-
+ arch/powerpc/crypto/aes-gcm-p10-glue.c | 1 -
+ arch/powerpc/include/asm/cpufeature.h  | 1 +
+ 3 files changed, 2 insertions(+), 2 deletions(-)
 
-Please consider resolving this in a future -next update, I was rather
-surprised that my AMD test machine's graphical output was not working
-until I noticed the configuration difference :)
+-- 
+2.31.1
 
-Cheers,
-Nathan
