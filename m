@@ -1,89 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48A76E16A2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 23:46:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A366E0EF7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 15:38:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PyCnZ5HtWz3fYg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 07:46:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Py0zB6Lgpz3fRZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 23:38:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dQ9PN1bx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DE1UbYm3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dQ9PN1bx;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Py0Wp4cz3z3cd4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 23:18:30 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DCeE6M027748;
-	Thu, 13 Apr 2023 13:18:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=RRTkCQ0l6XYgsz/wyT39D6/1Wcr56Eh0Y911JQcgA2o=;
- b=dQ9PN1bxJrETx4FWj4QEYEgaLuxJSBasp4NBHn6LZIGlp9IZBnM9mbbdawMwH7GUzIfd
- 7DzsB/e1tNE8/Uk4KcDih9jOp8SLH81ensuMZinFznCH/jgDeZ0PAvyeYKqnk6HWy+vT
- tFGsxXq8GgxKGoEVFcb1NI84ZL5QHWYmLsSMo36LLTu4Mpp+XB6+4SPDF6T56EXEi99M
- WBsDkxrTYZvrebbtKzwz+KJbHHi7iaoRrGOJPqEYKLH6ssaiwBQ2xwuilFHto6HUBgUe
- 9ZMvN7jIs8lu5Man2G0bcsnUI99lK2Azgt/QAgfFbN4PCRDPkf307MCrCw3QVk9JuHAL Nw== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxf129d5r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 13:18:16 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33DC7L9E029751;
-	Thu, 13 Apr 2023 13:18:16 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3pu0fqtex9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 13:18:15 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33DDIDmP36635248
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Apr 2023 13:18:14 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7CE858055;
-	Thu, 13 Apr 2023 13:18:13 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E59DB58043;
-	Thu, 13 Apr 2023 13:18:12 +0000 (GMT)
-Received: from [9.65.220.56] (unknown [9.65.220.56])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Apr 2023 13:18:12 +0000 (GMT)
-Message-ID: <71c63813-bbf1-8baa-3b94-f5184cc5e872@linux.ibm.com>
-Date: Thu, 13 Apr 2023 08:18:12 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Py0yL4M3yz3bg1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 23:38:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DE1UbYm3;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Py0yH4GVfz4xDp;
+	Thu, 13 Apr 2023 23:37:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1681393081;
+	bh=D6Yngrhf/77tbyzUv4PHE1XGjdrZLdCsqxFpA13UCAc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DE1UbYm3G/dtwFS3saRQY9viWkm9YPf6SYiwBKDezYKRSZsoGJluHPEiDVazFNVrX
+	 fq0CsWzpl6jsdpkLr4x1ITotU2R/RhlLKfEcBzDggs50gaFgJ2egum+6YHgqKaV7WG
+	 ArZm5tX2ZJ2U4/+IhNW07HBRxDur2c+MvnR9DJ5B1+7oWMZO8ONqLrO3sGOD9N3K+t
+	 KdfagfefIKVTYPfqqaHbYWYgLkr4efpVK9ANA5EoqXTAREVamcEVEvGbH9xqe7ssQI
+	 e7B21Qxau0K/G+TTnRco/wnq+MiHJux6HZN+vGZnsLtHDgTW2fXs9zbJuqHOLBv0IY
+	 aAV4xJfaMFMJw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Laurent Dufour <ldufour@linux.ibm.com>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 1/2] pseries/smp: export the smt level in the SYS FS.
+In-Reply-To: <20230331153905.31698-2-ldufour@linux.ibm.com>
+References: <20230331153905.31698-1-ldufour@linux.ibm.com>
+ <20230331153905.31698-2-ldufour@linux.ibm.com>
+Date: Thu, 13 Apr 2023 23:37:59 +1000
+Message-ID: <87ttxjaonc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.1
-Subject: Re: [PATCH] Remove POWER10_CPU dependency and move
- PPC_MODULE_FEATURE_P10.
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-crypto@vger.kernel.org
-References: <20230412181232.2051-1-dtsen@linux.ibm.com>
- <87wn2g9b9l.fsf@mpe.ellerman.id.au>
-From: Danny Tsen <dtsen@linux.ibm.com>
-In-Reply-To: <87wn2g9b9l.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l1U5v_9VpvbIi5deTL7wF5J4Yqnxt5cQ
-X-Proofpoint-GUID: l1U5v_9VpvbIi5deTL7wF5J4Yqnxt5cQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-13_08,2023-04-13_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- adultscore=0 mlxscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304130116
-X-Mailman-Approved-At: Fri, 14 Apr 2023 07:43:48 +1000
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,79 +59,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Hi Laurent,
 
-If I do separate patch for moving PPC_MODULE_FEATURE_P10, this will 
-break the build since it is currently defined in aes-gcm-p10-glue.c.  
-And the p10 will be detected when loading the module in 
-module_cpu_feature_match(PPC_MODULE_FEATURE_P10, p10_init); so it won't 
-load if it's not P10.
-
-Thanks.
-
--Danny
-
-On 4/13/23 8:12 AM, Michael Ellerman wrote:
-> Danny Tsen <dtsen@linux.ibm.com> writes:
->> Remove Power10 dependency in Kconfig and detect Power10 feature at runtime.
->> Move PPC_MODULE_FEATURE_P10 definition to be in
->> arch/powerpc/include/asm/cpufeature.h.
-> This should be two patches, one for the Kconfig change and one moving
-> the feature flag.
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> There is no SMT level recorded in the kernel neither in user space.
+> Indeed there is no real constraint about that and mixed SMT levels are
+> allowed and system is working fine this way.
 >
-> Also don't you need a cpu feature check in p10_init()? Otherwise the
-> driver can be loaded on non-P10 CPUs, either by being built-in, or
-> manually.
+> However when new CPU are added, the kernel is onlining all the threads
+> which is leading to mixed SMT levels and confuse end user a bit.
 >
-> cheers
+> To prevent this exports a SMT level from the kernel so user space
+> application like the energy daemon, could read it to adjust their settings.
+> There is no action unless recording the value when a SMT value is written
+> into the new sysfs entry. User space applications like ppc64_cpu should
+> update the sysfs when changing the SMT level to keep the system consistent.
 >
->> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
->> ---
->>   arch/powerpc/crypto/Kconfig            | 2 +-
->>   arch/powerpc/crypto/aes-gcm-p10-glue.c | 1 -
->>   arch/powerpc/include/asm/cpufeature.h  | 1 +
->>   3 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
->> index 1f8f02b494e1..7113f9355165 100644
->> --- a/arch/powerpc/crypto/Kconfig
->> +++ b/arch/powerpc/crypto/Kconfig
->> @@ -96,7 +96,7 @@ config CRYPTO_AES_PPC_SPE
->>   
->>   config CRYPTO_AES_GCM_P10
->>   	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
->> -	depends on PPC64 && POWER10_CPU && CPU_LITTLE_ENDIAN
->> +	depends on PPC64 && CPU_LITTLE_ENDIAN
->>   	select CRYPTO_LIB_AES
->>   	select CRYPTO_ALGAPI
->>   	select CRYPTO_AEAD
->> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
->> index 1533c8cdd26f..bd3475f5348d 100644
->> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
->> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
->> @@ -22,7 +22,6 @@
->>   #include <linux/module.h>
->>   #include <linux/types.h>
->>   
->> -#define PPC_MODULE_FEATURE_P10	(32 + ilog2(PPC_FEATURE2_ARCH_3_1))
->>   #define	PPC_ALIGN		16
->>   #define GCM_IV_SIZE		12
->>   
->> diff --git a/arch/powerpc/include/asm/cpufeature.h b/arch/powerpc/include/asm/cpufeature.h
->> index f6f790a90367..2dcc66225e7f 100644
->> --- a/arch/powerpc/include/asm/cpufeature.h
->> +++ b/arch/powerpc/include/asm/cpufeature.h
->> @@ -22,6 +22,7 @@
->>    */
->>   
->>   #define PPC_MODULE_FEATURE_VEC_CRYPTO			(32 + ilog2(PPC_FEATURE2_VEC_CRYPTO))
->> +#define PPC_MODULE_FEATURE_P10				(32 + ilog2(PPC_FEATURE2_ARCH_3_1))
->>   
->>   #define cpu_feature(x)		(x)
->>   
->> -- 
->> 2.31.1
+> Suggested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/pseries.h |  3 ++
+>  arch/powerpc/platforms/pseries/smp.c     | 39 ++++++++++++++++++++++++
+>  2 files changed, 42 insertions(+)
+
+There is a generic sysfs interface for smt in /sys/devices/system/cpu/smt
+
+I think we should be enabling that on powerpc and then adapting it to
+our needs, rather than adding a pseries specific file.
+
+Currently the generic code is only aware of SMT on/off, so it would need
+to be taught about SMT4 and 8 at least.
+
+There are already hooks in the generic code to check the SMT level when
+bringing CPUs up, see cpu_smt_allowed(), they may work for the pseries
+hotplug case too, though maybe we need some additional logic.
+
+Wiring up the basic support is pretty straight forward, something like
+the diff below.
+
+cheers
+
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 0f123f1f62a1..a48576f1c579 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -260,6 +260,7 @@ config PPC
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_VIRT_CPU_ACCOUNTING
+ 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
++	select HOTPLUG_SMT			if HOTPLUG_CPU
+ 	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+ 	select IOMMU_HELPER			if PPC64
+ 	select IRQ_DOMAIN
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index 8a4d4f4d9749..bd23ba716d23 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -143,5 +143,8 @@ static inline int cpu_to_coregroup_id(int cpu)
+ #endif
+ #endif
+
++bool topology_is_primary_thread(unsigned int cpu);
++bool topology_smt_supported(void);
++
+ #endif /* __KERNEL__ */
+ #endif	/* _ASM_POWERPC_TOPOLOGY_H */
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 265801a3e94c..8619609809d5 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1769,4 +1769,20 @@ void __noreturn arch_cpu_idle_dead(void)
+ 	start_secondary_resume();
+ }
+
++/**
++ * topology_is_primary_thread - Check whether CPU is the primary SMT thread
++ * @cpu:	CPU to check
++ */
++bool topology_is_primary_thread(unsigned int cpu)
++{
++	return cpu == cpu_first_thread_sibling(cpu);
++}
++
++/**
++ * topology_smt_supported - Check whether SMT is supported by the CPUs
++ */
++bool topology_smt_supported(void)
++{
++	return threads_per_core > 1;
++}
+ #endif
