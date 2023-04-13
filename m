@@ -2,93 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697E16E0BF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 12:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830866E0CDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 13:42:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PxxR22P2Kz3fSV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 20:59:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PxyNy32Ylz3fRx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 21:42:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oUCWEgAS;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CpeNTl/Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7ea9::62d; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=robert.richter@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oUCWEgAS;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CpeNTl/Y;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2062d.outbound.protection.outlook.com [IPv6:2a01:111:f400:7ea9::62d])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxxQ83kVrz3f4T
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 20:58:24 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DABvQU032016;
-	Thu, 13 Apr 2023 10:58:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=IR8LKcKiw33wXth3I8yWVtlKKhdz/A2u+4Eh937TsV0=;
- b=oUCWEgASKVQHJCoE4e6jkx9a6xujiduh4/dCfaefU5n9i8D2td4XGoiy5tQiJX/Pxbz1
- w4ReIawpOjuo8syxyIVc5sImGLO1Cq88VcMFw6SUF3+6gjkrb0WAjDiaiMoRnis+3g3i
- U9N0pOtj5PZNbtJaPODd3TkqZDhZ2CrkjmZzNCG4Oo2Bawi5gbT8lKhbzHt8jT3NjDxk
- p6gXrhOIHMAJR/4zB6Y4Lr6S+gzBw23q2z6ftwc91f3kfC3NwpN0sSp+oUUC8CVbpt9p
- FAh8Y4OFbRrmc+7fJI4rpR29yzJM1d1KRXCiro6vAlOQ0/a3JQSuVQe02a1RmS3k2nuw 2g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxfs3sxr6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 10:58:18 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33DAv0A9015586;
-	Thu, 13 Apr 2023 10:58:17 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxfs3sxqj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 10:58:17 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33D8CEu5027956;
-	Thu, 13 Apr 2023 10:58:16 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([9.208.129.118])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3pu0jjhv8x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 10:58:16 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33DAwEma65208820
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Apr 2023 10:58:15 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF0F15803F;
-	Thu, 13 Apr 2023 10:58:14 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCEDD58061;
-	Thu, 13 Apr 2023 10:58:12 +0000 (GMT)
-Received: from [9.211.115.174] (unknown [9.211.115.174])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Apr 2023 10:58:12 +0000 (GMT)
-Message-ID: <00ac999d-4447-31db-f68e-3e0748d9f755@linux.vnet.ibm.com>
-Date: Thu, 13 Apr 2023 16:28:11 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxyMz3jBtz3cXl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 21:41:31 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nZ3DeGnMEfWNzlplVtiCR9/WfAHwHT7O2KqRRSTJmQDbDT0zebA95Fd1A9+YvIQ3Xr45J7EWdImkfyZoBnRcLFVgS+ajUeeGr+x1Os9FFqTKoNnhftfWrUR8K5CzJteARKFFJ+H91y1aqJhwi99fcawQOCNO2Um3e3UR7M8VuMoW9H+9j1+Kx/X3OFlV8AM/Bz1cMBr4q9tFoqcmzXie3bWb7fh294DlcktuDGLcuKpbz6gTWt6lvdkKIrKXVdooEdCb30Bm7pGK5RVWFcKFUino1Dusj4fNCmr0Pv1WzQF4ljB9UDVranbHsg6y7J+ZZe1aOugjBqzgUyEafJdd7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KUkrigx83+dTevdRmV5tgiS+SnOZl6n77b8Vj2l+QO4=;
+ b=OVvd77DxHoFj7+FIAPs1a4SPRtlYfAP5Yyw63RV1tu+kB6hNiPCgK3YHHHQM4MFK/diDESaO5buHxcgZjSYzaHMuIFppv/ZK51lPutLowoOug3kySPmzkODKxd/sbtNI5UmkNzunFsik8T7F0QzoPysdjw4j6cRAHzpu93RMR+IbTeUH1xSMVc0U9DJnWdQ6m3U8GbvY5YmU3hUk3X8d9H4svmXbyM98R9GQjpr5mEyo45syhLQWtApUm24EFiEG2BPo/cGt+6uDWruJV16/SXXB2cCW3Sl/fk/54uPUAwlB99FcsI8LQ9VjogkZtuDVIPnRchOe48SM4L2KuziRpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KUkrigx83+dTevdRmV5tgiS+SnOZl6n77b8Vj2l+QO4=;
+ b=CpeNTl/YYVXn5cUiM4VWJDq5sn8G7Y6/8G6jVoASLxSYxkxw+6/zXdquJZGlnx/kImudAzyGJO7t/h+7zyr9yfn2eUlMf/zwNFX+kW5dizxEx6q1ewWPvySQSE9sPZteUYNLkNQXglNAEipsXAiLunQ5G9BiSk8VKmNQ3xQ14g8=
+Received: from CY5P221CA0027.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:b::37) by
+ PH7PR12MB5853.namprd12.prod.outlook.com (2603:10b6:510:1d4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Thu, 13 Apr
+ 2023 11:41:06 +0000
+Received: from CY4PEPF0000C980.namprd02.prod.outlook.com
+ (2603:10b6:930:b:cafe::81) by CY5P221CA0027.outlook.office365.com
+ (2603:10b6:930:b::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.32 via Frontend
+ Transport; Thu, 13 Apr 2023 11:41:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000C980.mail.protection.outlook.com (10.167.241.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6298.27 via Frontend Transport; Thu, 13 Apr 2023 11:41:05 +0000
+Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 13 Apr
+ 2023 06:41:01 -0500
+Date: Thu, 13 Apr 2023 13:40:52 +0200
+From: Robert Richter <rrichter@amd.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v3 5/6] PCI/AER: Forward RCH downstream port-detected
+ errors to the CXL.mem dev handler
+Message-ID: <ZDfbLF1ZYc3uIC19@rric.localdomain>
+References: <20230411180302.2678736-6-terry.bowman@amd.com>
+ <20230412220233.GA83215@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 00/17] powerpc: alternate queued spinlock
- implementation
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20221126095932.1234527-1-npiggin@gmail.com>
-From: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-In-Reply-To: <20221126095932.1234527-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Pye5D6kVE-nAtoGNfodtrtUkVsjpCLAh
-X-Proofpoint-ORIG-GUID: WF4CzoXdQhiPQ-2i-LfvcVtnclO8AHf5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-13_06,2023-04-12_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 clxscore=1011
- impostorscore=0 bulkscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304130091
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230412220233.GA83215@bhelgaas>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000C980:EE_|PH7PR12MB5853:EE_
+X-MS-Office365-Filtering-Correlation-Id: 407de9c9-3422-4541-e00c-08db3c13f75b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	NJCk1gisY/d2zEObFYDOjj/hS5YPbBJoZHJsTBndEkt340+TU7i17fQ269ABsmPmVJYP/2op9WeUT7eJ+eF0ucgx8PMRP9gHw3orgNCl7+gpaU1Yugd9XZzW0nHr/RoK9RvyHKD22Ez+/F1TrrI/pdicMGxnnrYsEc+QA+RoGNEGrAuzl8qA5sO0XA+ZbCFs7DKK9jLbjxRHX8nvNFruSl/QeNerbrC4gxxQ951pneLv9j1oE0EV9hV9jTIyzqIOlVcw/PGUiViUuVPYmeWrPiHWP8U2kZtT5Gj1F0YFcYRDmLiE7ebMWnYorEezQP4KCGvaxF5XbCh6A2cqhmUpI0I7CD1PmemNj1RJJQ/SDXwSD05EPsrjk3LzEdMlzivMySYQzOwnnYuzibSv7Um5yJ+BKcXVfPtCCParOj9JvsNdpgc7gyqsMK1t8Bik03u17Ft0XtIlDIeUs1jXpt//nHjR4Qp660PP1QM3t3RfU1baVYBKjtbokQzdUuJRjP+UudN/aAQUd0y0JFBLtEvrqX6ZRxbEoEykxcmWZQe1mhr7Yfh5rYNKIwaBJqbUWWNmn56ZvZQ3SBxr6Dx3rvYsjPMLD8AM8sKfGuJpR3b6xAOTnmTM1foRRe5V4RISgLjbEupN6T8hagz7kqSAchiaCZp+Mt4moDfpYbxl8W1f7WMgTQwtmdRL6/SboOELmEbv681g/ji+q76S+tFK60Jf342BTl5cD4Znw1Ods/SzML8=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(136003)(396003)(346002)(451199021)(40470700004)(36840700001)(46966006)(36860700001)(55016003)(4326008)(5660300002)(81166007)(30864003)(7416002)(8676002)(8936002)(40480700001)(40460700003)(70586007)(82740400003)(41300700001)(82310400005)(70206006)(356005)(6916009)(2906002)(966005)(47076005)(316002)(26005)(54906003)(9686003)(53546011)(426003)(336012)(7696005)(478600001)(186003)(6666004)(16526019)(83380400001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2023 11:41:05.4002
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 407de9c9-3422-4541-e00c-08db3c13f75b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	CY4PEPF0000C980.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5853
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,178 +105,344 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: alison.schofield@intel.com, dave.jiang@intel.com, Terry Bowman <terry.bowman@amd.com>, vishal.l.verma@intel.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, bhelgaas@google.com, Oliver O'Halloran <oohall@gmail.com>, Jonathan.Cameron@huawei.com, bwidawsk@kernel.org, dan.j.williams@intel.com, ira.weiny@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Bjorn,
 
+thanks for your detailed review.
 
-On 11/26/22 3:29 PM, Nicholas Piggin wrote:
-> This replaces the generic queued spinlock code (like s390 does) with
-> our own implementation. There is an extra shim patch 1a to get the
-> series to apply.
+On 12.04.23 17:02:33, Bjorn Helgaas wrote:
+> On Tue, Apr 11, 2023 at 01:03:01PM -0500, Terry Bowman wrote:
+> > From: Robert Richter <rrichter@amd.com>
+> > 
+> > In Restricted CXL Device (RCD) mode a CXL device is exposed as an
+> > RCiEP, but CXL downstream and upstream ports are not enumerated and
+> > not visible in the PCIe hierarchy. Protocol and link errors are sent
+> > to an RCEC.
+> > 
+> > Restricted CXL host (RCH) downstream port-detected errors are signaled
+> > as internal AER errors, either Uncorrectable Internal Error (UIE) or
+> > Corrected Internal Errors (CIE). The error source is the id of the
+> > RCEC. A CXL handler must then inspect the error status in various CXL
+> > registers residing in the dport's component register space (CXL RAS
+> > cap) or the dport's RCRB (AER ext cap). [1]
+> > 
+> > Errors showing up in the RCEC's error handler must be handled and
+> > connected to the CXL subsystem. Implement this by forwarding the error
+> > to all CXL devices below the RCEC. Since the entire CXL device is
+> > controlled only using PCIe Configuration Space of device 0, Function
+> > 0,
 > 
-> Generic PV qspinlock code is causing latency / starvation regressions on
-> large systems that are resulting in hard lockups reported (mostly in
-> pathoogical cases).  The generic qspinlock code has a number of issues
-> important for powerpc hardware and hypervisors that aren't easily solved
-> without changing code that would impact other architectures. Follow
-> s390's lead and implement our own for now.
+> Capitalize "device" and "Function" the same way (also appears in
+> comment below).
+
+Changed that.
+
 > 
-> Issues for powerpc using generic qspinlocks:
-> - The previous lock value should not be loaded with simple loads, and
->   need not be passed around from previous loads or cmpxchg results,
->   because powerpc uses ll/sc-style atomics which can perform more
->   complex operations that do not require this. powerpc implementations
->   tend to prefer loads use larx for improved coherency performance.
-> - The queueing process should absolutely minimise the number of stores
->   to the lock word to reduce exclusive coherency probes, important for
->   large system scalability. The pending logic is counter productive
->   here.
-> - Non-atomic unlock for paravirt locks is important (atomic instructions
->   tend to still be more expensive than x86 CPUs).
-> - Yielding to the lock owner is important in the oversubscribed paravirt
->   case, which requires storing the owner CPU in the lock word.
-> - More control of lock stealing for the paravirt case is important to
->   keep latency down on large systems.
-> - The lock acquisition operation should always be made with a special
->   variant of atomic instructions with the lock hint bit set, including
->   (especially) in the queueing paths. This is more a matter of adding
->   more arch lock helpers so not an insurmountable problem for generic
->   code.
+> > only pass it there [2]. These devices have the Memory Device class
+> > code set (PCI_CLASS_MEMORY_CXL, 502h) and the existing cxl_pci driver
+> > can implement the handler. In addition to errors directed to the CXL
+> > endpoint device, the handler must also inspect the CXL downstream
+> > port's CXL RAS and PCIe AER external capabilities that is connected to
 > 
-> Thanks,
-> Nick
+> "AER external capabilities" --  is that referring to the "AER
+> *Extended* capability"?  If so, we usually don't bother including the
+> "extended" part because it's usually not relevant.  But if you intended
+> "external", I don't know what it means.
+
+Right, "extended" is meant here, but I will drop it to also fit with
+the 'CXL RAS capability'.
+
 > 
-> Since v2:
-> - Rebase the series on upstream and remove the 1a shim patch.
-> - Squash in the RFC patches that avoid a few more cmpxchg patterns in
->   favour of more optimal larx/stcx implementations and allows the
->   non-stealing queueing case to be removed, significantly reducing
->   the queuing code.
-> - Reword some changelogs.
+> > the device.
+> > 
+> > Since CXL downstream port errors are signaled using internal errors,
+> > the handler requires those errors to be unmasked. This is subject of a
+> > follow-on patch.
+> > 
+> > The reason for choosing this implementation is that a CXL RCEC device
+> > is bound to the AER port driver, but the driver does not allow it to
+> > register a custom specific handler to support CXL. Connecting the RCEC
+> > hard-wired with a CXL handler does not work, as the CXL subsystem
+> > might not be present all the time. The alternative to add an
+> > implementation to the portdrv to allow the registration of a custom
+> > RCEC error handler isn't worth doing it as CXL would be its only user.
+> > Instead, just check for an CXL RCEC and pass it down to the connected
+> > CXL device's error handler. With this approach the code can entirely
+> > be implemented in the PCIe AER driver and is independent of the CXL
+> > subsystem. The CXL driver only provides the handler.
 > 
-> Since v1:
-> - Change most 'if (cond) return 1 ; return 0;'
-> - Bug fix: was testing count == MAX, but reentrant NMIs could bring that
->   > MAX and crash.
-> - Fix missing memory barrier lost in asm conversion patch.
-> - Seperate the release barrier in publish_tail from the acquire barrier
->   in get_tail_qnode.
-> - Moving a few minor things into their logically correct change.
-> - Make encode_tail_cpu take a cpu argument to match get_tail_cpu.
-> - Rename get_tail_cpu to decode_tail_cpu to match encode_tail_cpu.
-> - Rename lock_set_locked to set_locked.
-> - IS_ENABLED(x) ? 1 : 0 -> IS_ENABLED(x)
-> - Fix some comments inside inline asm.
-> - Change tunable names to lowercase.
-> - Consolidate asm for trylock_clear_tail_cpu and trylock_with_tail_cpu
-> - Restructure steal/wait loops to be more readable
-> - Count a failed cmpxchg as an iteration in steal/wait loops to avoid
->   theoretical livelock/latency concern.
+> Can you make this more concrete with an example topology so we can
+> work through how this all works?  Correct me when I go off the rails
+> here:
+
+Let's assume just a simple CXL RCH topology:
+
+PCI hierarchy:
+
+		-----------------
+		| ACPI0016      |----------------	Host bridge (CXL host)
+		| - CEDT        |		|
+   -------------|   - RCRB base |		|
+   |		-----------------		:
+   |		     |
+   |		     |
+   |		------------------- 	---------
+   |		| RCiEP       	  |.....| RCEC  |	Endpoint (CXL dev)
+   |	--------| - BDF       	  |	| - BDF |
+   |	|	| - PCIe AER  	  |	---------
+   |	|	| - CXL dvsec     |
+   |	|	|   (v2: reg loc) |
+   |	|	|   - Comp regs   |
+   |	|	|     - CXL RAS   |
+   |	|	-------------------
+   :	:
+	
+CXL hierarchy:
+
+   :						:
+   : 		------------------		|
+   |		| CXL root port  |<--------------
+   |		|     	   	 |	  
+   |----------->| - dport RCRB   |<--------------
+   |		|   - PCIe AER	 |		|
+   |		|   - Comp regs	 |		|
+   |		|     - CXL RAS  |		|
+   |		------------------		|
+   |	:					|
+   |	|	------------------		|
+   |	------->| CXL endpoint   |---------------
+   |		| (v1: RCRB)	 |
+   ------------>| - uport RCRB   |
+   		|   - Comp regs	 |
+		|     - CXL RAS  |
+		------------------
+
+Dport detected errors are reported using PCIe AER and CXL RAS caps in
+the dports RCRB.
+
+Uport detected errors are reported using RCiEP's PCIe AER cap and
+either the uport's RCRB RAS cap or the RAS cap of the comp regs
+located using CXL DVSEC register locator.
+
+In all cases the RCEC is used with either the RCEC (dport errors) or
+the RCiEP (uport errors) error source id (BDF: bus, dev, func).
+
 > 
-> Nicholas Piggin (17):
->   powerpc/qspinlock: add mcs queueing for contended waiters
->   powerpc/qspinlock: use a half-word store to unlock to avoid larx/stcx.
->   powerpc/qspinlock: convert atomic operations to assembly
->   powerpc/qspinlock: allow new waiters to steal the lock before queueing
->   powerpc/qspinlock: theft prevention to control latency
->   powerpc/qspinlock: store owner CPU in lock word
->   powerpc/qspinlock: paravirt yield to lock owner
->   powerpc/qspinlock: implement option to yield to previous node
->   powerpc/qspinlock: allow stealing when head of queue yields
->   powerpc/qspinlock: allow propagation of yield CPU down the queue
->   powerpc/qspinlock: add ability to prod new queue head CPU
->   powerpc/qspinlock: allow lock stealing in trylock and lock fastpath
->   powerpc/qspinlock: use spin_begin/end API
->   powerpc/qspinlock: reduce remote node steal spins
->   powerpc/qspinlock: allow indefinite spinning on a preempted owner
->   powerpc/qspinlock: provide accounting and options for sleepy locks
->   powerpc/qspinlock: add compile-time tuning adjustments
+> The current code uses pcie_walk_rcec() in this path, which basically
+> searches below a Root Port or RCEC for devices that have an AER error
+> status bit set, add them to the e_info[] list, and call
+> handle_error_source() for each one:
+
+For reference, this series adds support to handle RCH downstream
+port-detected errors as described in CXL 3.0, 12.2.1.1.
+
+This flow looks correct to me, see comments inline.
+
 > 
->  arch/powerpc/include/asm/qspinlock.h       | 130 ++-
->  arch/powerpc/include/asm/qspinlock_types.h |  63 +-
->  arch/powerpc/lib/qspinlock.c               | 985 ++++++++++++++++++++-
->  3 files changed, 1167 insertions(+), 11 deletions(-)
+>   aer_isr_one_error
+>     # get e_src from aer_fifo
+>     find_source_device(e_src)
+
+e_src is the RCEC.
+
+>       pcie_walk_rcec(find_device_iter)
+>         find_device_iter
+>           is_error_source
+>             # read PCI_ERR_COR_STATUS or PCI_ERR_UNCOR_STATUS
+
+It is an internal error (CIE or UIE).
+
+>           if (error-source)
+
+An early version of the spec did not require the RCEC as an error
+source. But this case is not handled with this series.
+
+>             add_error_device
+>               # add device to e_info[] list
+>     # now call handle_error_source for everything in e_info[]
+>     aer_process_err_devices
+>       for (i = 0; i < e_info->err_dev_num; i++)
+>         handle_error_source
+
+handle_error_source() is called with the RCEC as pci_dev.
+
 > 
+> IIUC, this patch basically says that an RCEC should have an AER error
+> status bit (UIE or CIE) set, but the devices "below" the RCEC will
+> not, so they won't get added to e_info[].
 
-Hi. 
+An internal error of the RCEC indicates a CXL dport error.
 
-we are observing hardlockup problems with queued spinlock on powerVM Shared Processor LPAR's(SPLPAR)
-LPAR is configured with 320vcpu/160cpu. It is over-committed. 
+> 
+> So we insert cxl_handle_error() in handle_error_source(), where it
+> gets called for the RCEC, and then it uses pcie_walk_rcec() again to
+> forcibly call handle_error_source() for *every* device "below" the
+> RCEC (even though they don't have AER error status bits set).
 
+The CXL device contains the links to the dport's caps. Also, there can
+be multiple RCs with CXL devs connected to it. So we must search for
+all CXL devices now, determine the corresponding dport and inspect
+both, PCIe AER and CXL RAS caps.
 
-Scenario: 
-Bring up the system. create a CPU cgroup with 50% or 5% CPU bandwidth. Run strss-ng with 160 CPU stressor.
-Issue is hit consistently on 5% CPU bandwidth allocation. Issue happens sometime with 50%. Issue was 
-not observed when stress-ng is run without any cgroup during testing. Lockups are more easily hit, if
-other SPLPAR are doing some work.
-The same testing holds good in Dedicated LPAR. So this maybe specific to SPLPAR only.  
+> 
+> Then handle_error_source() ultimately calls the CXL driver err_handler
+> entry points (.cor_error_detected(), .error_detected(), etc), which
+> can look at the CXL-specific error status in the CXL RAS or RCRB or
+> whatever.
 
+The AER driver (portdrv) does not have the knowledge of CXL internals.
+Thus the approach is to pass dport errors to the cxl_mem driver to
+handle it there in addition to cxl mem dev errors.
 
-Lockup backtrace:
-[ 2612.771144] watchdog: CPU 216 self-detected hard LOCKUP @ plpar_hcall_norets_notrace+0x18/0x2c
-[ 2612.771158] watchdog: CPU 216 TB:119522648258051, last heartbeat TB:119516305262839 (12388ms ago) 
-[ 2612.771160] Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables bonding nfnetlink mlx5_ib pseries_rng ib_uverbs ib_core drm drm_panel_orientation_quirks xfs libcrc32c mlx5_core mlxfw nvme tls vmx_crypto nvme_core psample t10_pi dm_mirror dm_region_hash dm_log dm_mod fuse
-[ 2612.771186] CPU: 216 PID: 0 Comm: swapper/216 Not tainted 6.2.0ssh+ #6           
-[ 2612.771189] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.10 (MH1030_044) hv:phyp pSeries
-[ 2612.771191] NIP:  c0000000000f2710 LR: c0000000000ae38c CTR: 0000000000000000
-[ 2612.771193] REGS: c00000fffb4c7d60 TRAP: 0900   Not tainted  (6.2.0ssh+)         
-[ 2612.771195] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24022222  XER: 00000000
-[ 2612.771200] CFAR: 0000000000000000 IRQMASK: 1                                
-[ 2612.771200] GPR00: 0000000024022222 c00000fffba47b30 c0000000017f0e00 0000000000000000
-[ 2612.771200] GPR04: 0000000000000040 000000000000ebd9 0000000000000081 fffffffffffe0000
-[ 2612.771200] GPR08: 0000000000000081 c00000fffbf49c80 0000000000000004 0000000044022222
-[ 2612.771200] GPR12: 0000000000000000 c00000fffbee9c80 0000000000000001 c00000000125ef08
-[ 2612.771200] GPR16: c00000739f6bd600 c000000002ac78d0 c000000002ac7058 000000000000ebd9
-[ 2612.771200] GPR20: 0000000000000200 0000000000000000 fffffffffffe0000 0000000000000001
-[ 2612.771200] GPR24: 0000000000000001 0000000000000001 c0000000021f1880 0000000000000001
-[ 2612.771200] GPR28: 0000000000000032 c000000002ac7190 0000000000008081 c00000fff5a31f80
-[ 2612.771217] NIP [c0000000000f2710] plpar_hcall_norets_notrace+0x18/0x2c      
-[ 2612.771221] LR [c0000000000ae38c] queued_spin_lock_slowpath+0x52c/0x1190         
-[ 2612.771225] Call Trace:                                                      
-[ 2612.771226] [c00000fffba47c40] [c000000000f635c0] _raw_spin_lock+0x70/0x90   
-[ 2612.771232] [c00000fffba47c60] [c000000000198f6c] raw_spin_rq_lock_nested+0x2c/0x100
-[ 2612.771236] [c00000fffba47ca0] [c0000000001ba900] load_balance+0x5e0/0x9b0   
-[ 2612.771239] [c00000fffba47e10] [c0000000001bbbc8] rebalance_domains+0x2e8/0x490
-[ 2612.771242] [c00000fffba47ee0] [c000000000f63c8c] __do_softirq+0x15c/0x3dc   
-[ 2612.771245] [c00000fffba47fe0] [c000000000017950] do_softirq_own_stack+0x40/0x60
-[ 2612.771248] [c000007387c9f9b0] [c0000000001539e8] __irq_exit_rcu+0x158/0x190 
-[ 2612.771251] [c000007387c9f9e0] [c000000000154520] irq_exit+0x20/0x40         
-[ 2612.771253] [c000007387c9fa00] [c000000000028af4] timer_interrupt+0x174/0x320
-[ 2612.771255] [c000007387c9fa60] [c000000000009f8c] decrementer_common_virt+0x28c/0x290
+> 
+> So this basically looks like a workaround for the fact that the AER
+> code only calls handle_error_source() when it finds AER error status,
+> and CXL doesn't *set* that AER error status.  There's not that much
+> code here, but it seems like a quite a bit of complexity in an area
+> that is already pretty complicated.
+> 
+> Here's another idea: the ACPI GHES code (ghes_handle_aer()) basically
+> receives a packet of error status from firmware and queues it for
+> recovery via pcie_do_recovery().  What if you had a CXL module that
+> knew how to look for the CXL error status, package it up similarly,
+> and queue it via aer_recover_queue()?
 
+The CXL module knows how and where to look for errors, but it does not
+receive interrupts (for dport errors). The interrupts land in the
+portdrv (the RCEC's pci driver) and the CXL module must be notified by
+the portdrv. But the portdrv (AER driver) does not know the CXL module
+nor it is always present (e.g. CXL bus must be enumerated first etc.).
 
-We did a git bisect between 6.1 and 6.2
-Git bisect logs:
-# git bisect log  
-git bisect start
-# good: [274d842fa1efd9449e62222c8896e0be11621f1f] powerpc/tlb: Add local flush for page given mm_struct and psize
-git bisect good 274d842fa1efd9449e62222c8896e0be11621f1f
-# bad: [0b2199841a7952d01a717b465df028b40b2cf3e9] powerpc/qspinlock: add compile-time tuning adjustments
-git bisect bad 0b2199841a7952d01a717b465df028b40b2cf3e9
-# good: [247f34f7b80357943234f93f247a1ae6b6c3a740] Linux 6.1-rc2
-git bisect good 247f34f7b80357943234f93f247a1ae6b6c3a740
-# good: [bd48287b2cf4cd6e95576db3a94fd2a7cdf9832d] powerpc/qspinlock: implement option to yield to previous node
-git bisect good bd48287b2cf4cd6e95576db3a94fd2a7cdf9832d
-# bad: [f61ab43cc1a6146d6eef7e0713a452c3677ad13e] powerpc/qspinlock: allow lock stealing in trylock and lock fastpath
-git bisect bad f61ab43cc1a6146d6eef7e0713a452c3677ad13e
-# bad: [28db61e207ea3890d286cff3141c1ce67346074d] powerpc/qspinlock: allow propagation of yield CPU down the queue
-git bisect bad 28db61e207ea3890d286cff3141c1ce67346074d
-# good: [b4c3cdc1a698a2f6168768d0bed4bf062723722e] powerpc/qspinlock: allow stealing when head of queue yields
-git bisect good b4c3cdc1a698a2f6168768d0bed4bf062723722e
-# first bad commit: [28db61e207ea3890d286cff3141c1ce67346074d] powerpc/qspinlock: allow propagation of yield CPU down the queue
+aer_recover_queue() is interesting to report AER errors that has been
+retrieved outside the PCIe hierarchy, in particular the dport AER cap
+in the RCRB (see patch #4). We could collect all the data and just
+send it to aer_recover_queue(). I think aer_recover_work_func() must
+be extended to also handle corrected errors, otherwise the function is
+already almost the same as handle_error_source().
 
+But first, RCEC error notifications (RCEC AER interrupts) must be sent
+to the CXL driver to look into the dport's RCRB.
 
-Tried fiddling with these tunable available for qspinlock with their default values on the test system:
+-Robert
 
-qspl_steal_spins = 256
-qspl_head_spins = 256
-qspl_pv_yield_owner = 1
-qspl_pv_yield_prev = 1
-qspl_pv_yield_allow_steal = 0
-qspl_pv_yield_propagate_owner = 1
-
-No lockup with qspl_pv_yield_propagate_owner = 0. But that would defeat the purpose of the queued spinlock. 
-So tried with next one, i.e qspl_pv_yield_allow_steal = 1.  No lockup was seen. Likely we have to tune it for
-powerVM or default values need to change based on the system? 
+> 
+> > [1] CXL 3.0 spec, 12.2.1.1 RCH Downstream Port-detected Errors
+> > [2] CXL 3.0 spec, 8.1.3 PCIe DVSEC for CXL Devices
+> > 
+> > Co-developed-by: Terry Bowman <terry.bowman@amd.com>
+> > Signed-off-by: Robert Richter <rrichter@amd.com>
+> > Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+> > Cc: "Oliver O'Halloran" <oohall@gmail.com>
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: linux-pci@vger.kernel.org
+> > ---
+> >  drivers/pci/pcie/Kconfig |  8 ++++++
+> >  drivers/pci/pcie/aer.c   | 61 ++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 69 insertions(+)
+> > 
+> > diff --git a/drivers/pci/pcie/Kconfig b/drivers/pci/pcie/Kconfig
+> > index 228652a59f27..b0dbd864d3a3 100644
+> > --- a/drivers/pci/pcie/Kconfig
+> > +++ b/drivers/pci/pcie/Kconfig
+> > @@ -49,6 +49,14 @@ config PCIEAER_INJECT
+> >  	  gotten from:
+> >  	     https://git.kernel.org/cgit/linux/kernel/git/gong.chen/aer-inject.git/
+> >  
+> > +config PCIEAER_CXL
+> > +	bool "PCI Express CXL RAS support"
+> > +	default y
+> > +	depends on PCIEAER && CXL_PCI
+> > +	help
+> > +	  This enables CXL error handling for Restricted CXL Hosts
+> > +	  (RCHs).
+> > +
+> >  #
+> >  # PCI Express ECRC
+> >  #
+> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > index 7a25b62d9e01..171a08fd8ebd 100644
+> > --- a/drivers/pci/pcie/aer.c
+> > +++ b/drivers/pci/pcie/aer.c
+> > @@ -946,6 +946,65 @@ static bool find_source_device(struct pci_dev *parent,
+> >  	return true;
+> >  }
+> >  
+> > +#ifdef CONFIG_PCIEAER_CXL
+> > +
+> > +static bool is_cxl_mem_dev(struct pci_dev *dev)
+> > +{
+> > +	/*
+> > +	 * A CXL device is controlled only using PCIe Configuration
+> > +	 * Space of device 0, Function 0.
+> > +	 */
+> > +	if (dev->devfn != PCI_DEVFN(0, 0))
+> > +		return false;
+> > +
+> > +	/* Right now there is only a CXL.mem driver */
+> > +	if ((dev->class >> 8) != PCI_CLASS_MEMORY_CXL)
+> > +		return false;
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static bool is_internal_error(struct aer_err_info *info)
+> > +{
+> > +	if (info->severity == AER_CORRECTABLE)
+> > +		return info->status & PCI_ERR_COR_INTERNAL;
+> > +
+> > +	return info->status & PCI_ERR_UNC_INTN;
+> > +}
+> > +
+> > +static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info);
+> > +
+> > +static int cxl_handle_error_iter(struct pci_dev *dev, void *data)
+> > +{
+> > +	struct aer_err_info *e_info = (struct aer_err_info *)data;
+> > +
+> > +	if (!is_cxl_mem_dev(dev))
+> > +		return 0;
+> > +
+> > +	/* pci_dev_put() in handle_error_source() */
+> > +	dev = pci_dev_get(dev);
+> > +	if (dev)
+> > +		handle_error_source(dev, e_info);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void cxl_handle_error(struct pci_dev *dev, struct aer_err_info *info)
+> > +{
+> > +	/*
+> > +	 * CXL downstream port errors are signaled as RCEC internal
+> > +	 * errors. Forward them to all CXL devices below the RCEC.
+> > +	 */
+> > +	if (pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC &&
+> > +	    is_internal_error(info))
+> > +		pcie_walk_rcec(dev, cxl_handle_error_iter, info);
+> > +}
+> > +
+> > +#else
+> > +static inline void cxl_handle_error(struct pci_dev *dev,
+> > +				    struct aer_err_info *info) { }
+> > +#endif
+> > +
+> >  /**
+> >   * handle_error_source - handle logging error into an event log
+> >   * @dev: pointer to pci_dev data structure of error source device
+> > @@ -957,6 +1016,8 @@ static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
+> >  {
+> >  	int aer = dev->aer_cap;
+> >  
+> > +	cxl_handle_error(dev, info);
+> > +
+> >  	if (info->severity == AER_CORRECTABLE) {
+> >  		/*
+> >  		 * Correctable error does not need software intervention.
+> > -- 
+> > 2.34.1
+> > 
