@@ -1,55 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74436E030F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 02:12:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5461C6E0373
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 03:03:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pxg4f5FwZz3fRJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 10:12:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ng1uWfFh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PxhCv1WPZz3fRV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Apr 2023 11:03:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inspur.com (client-ip=210.51.26.146; helo=unicom146.biz-email.net; envelope-from=wangdeming@inspur.com; receiver=<UNKNOWN>)
+Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pxg3p0YKsz3c2j
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 10:11:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ng1uWfFh;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pxg3k1fL5z4xGK;
-	Thu, 13 Apr 2023 10:11:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1681344690;
-	bh=ptjOI3AT2/hYtcYUPlZVEdbaAdsYtMWDcr1HU6xLHPk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ng1uWfFhe4z23J4cjn0ubPm9lTEthaP4Cal102stJ7NcTcam2/rK+5b1ZjgZaU1VZ
-	 avi9T+kduc9YFiK/0WtznbNCy6sld5Aus9ecCFuY+GwYdGZUkRe+f2V0I3A3W+WUX6
-	 yFKVCJT2wHKkcVOvd2+YkEJEDuN6VlIh1/9mvtXS4q0k2PT0V8fubxvhJkhwzYZbpF
-	 Ts9ckAEyyIjMH//NICrJmPsFWh14Z6qKQSzxgQ0DoKcVNtCpBI3wE0qgcdnJkR9+9e
-	 pjWphtI59QX6GbQmYfzgPLwBCRhP9C4yUEHAN/IKfJE6dPcDYCl/vgy3QttAQTu3qC
-	 afX5EwbzTu6MQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Anatolij Gustschin
- <agust@denx.de>
-Subject: Re: [PATCH] powerpc/mpc52xx_lpbfifo: Drop unused functions
-In-Reply-To: <20230412150524.ojsvukh47hing6db@pengutronix.de>
-References: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de>
- <20230412150524.ojsvukh47hing6db@pengutronix.de>
-Date: Thu, 13 Apr 2023 10:11:25 +1000
-Message-ID: <87zg7cabf6.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PxhCL12S2z3f5Y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Apr 2023 11:03:02 +1000 (AEST)
+Received: from unicom146.biz-email.net
+        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id IVP00149;
+        Thu, 13 Apr 2023 09:02:49 +0800
+Received: from localhost.localdomain.com (10.200.104.82) by
+ jtjnmail201603.home.langchao.com (10.100.2.3) with Microsoft SMTP Server id
+ 15.1.2507.21; Thu, 13 Apr 2023 09:02:52 +0800
+From: Deming Wang <wangdeming@inspur.com>
+To: <mpe@ellerman.id.au>, <shuah@kernel.org>
+Subject: [PATCH] selftests/powerpc: Replace obsolete memalign() with posix_memalign()
+Date: Wed, 12 Apr 2023 21:02:50 -0400
+Message-ID: <20230413010250.4254-1-wangdeming@inspur.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.200.104.82]
+tUid: 20234130902494f5cc0be4c7a12b8b3835e93dee5f208
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,30 +47,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Deming Wang <wangdeming@inspur.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
-> On Wed, Dec 28, 2022 at 03:51:29PM +0100, Uwe Kleine-K=C3=B6nig wrote:
->> The four exported functions mpc52xx_lpbfifo_submit(),
->> mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll(), and
->> mpc52xx_lpbfifo_start_xfer() are not used. So they can be dropped and the
->> definitions needed to call them can be moved into the driver file.
->>=20
->> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
->
-> I never got feedback about this driver and it has not appeared in next
-> up to now. Did it fell through the cracks?
+memalign() is obsolete according to its manpage.
 
-Yeah. I was hoping someone would explain what's going on with the
-driver.
+Replace memalign() with posix_memalign() and remove malloc.h include
+that was there for memalign().
 
-Presumably there are some out-of-tree drivers that use the routines
-provided by this driver?
+As a pointer is passed into posix_memalign(), initialize *s to NULL
+to silence a warning about the function's return value being used as
+uninitialized (which is not valid anyway because the error is properly
+checked before s is returned).
 
-I think rather than merging this patch, which keeps the code but makes
-it completely useless, do you mind sending a patch to remove the whole
-driver? Maybe that will get someone's attention.
+Signed-off-by: Deming Wang <wangdeming@inspur.com>
+---
+ tools/testing/selftests/powerpc/stringloops/strlen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-cheers
+diff --git a/tools/testing/selftests/powerpc/stringloops/strlen.c b/tools/testing/selftests/powerpc/stringloops/strlen.c
+index 9055ebc484d0..f9c1f9cc2d32 100644
+--- a/tools/testing/selftests/powerpc/stringloops/strlen.c
++++ b/tools/testing/selftests/powerpc/stringloops/strlen.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include <malloc.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
+@@ -51,10 +50,11 @@ static void bench_test(char *s)
+ static int testcase(void)
+ {
+ 	char *s;
++	int ret;
+ 	unsigned long i;
+ 
+-	s = memalign(128, SIZE);
+-	if (!s) {
++	ret = posix_memalign((void **)&s, 128, SIZE);
++	if (ret < 0) {
+ 		perror("memalign");
+ 		exit(1);
+ 	}
+-- 
+2.27.0
+
