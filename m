@@ -1,52 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C32A6E24B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:50:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C201B6E24B6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:51:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4PydBP10CYz3fsb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PydCc4qTNz3ftk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:51:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LSAKrRu2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k28EzNgu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pycd23DPfz3fR7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 23:25:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LSAKrRu2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k28EzNgu;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pycd11td3z4xFp;
-	Fri, 14 Apr 2023 23:25:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1681478709;
-	bh=jor0a0KWhYqVsbg+TNw5Wvj0geZRadaKhGXQdRHf0ZU=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=LSAKrRu2OVgbDs0eVMBRg6u7Pjj5WA17GqCfoKyqA2HQaT74MO7v+WTDE5URph+Sg
-	 8oGwaXZUcIVYXuXy1wGTL0iTv+LSD72nhCkBUXCBHavQ7yVzOkrZ60ad0U1z01beJN
-	 qXKrmdqZ9KNxvjy9mW0of0Wj3iYsuucT9D0b7mtTLAkLjjgdHvCNmu1cQfUPGq/DVA
-	 XUbBv5Yi75MPfl9Uo9Q4mm2Qk+dSMv4tx9gGdeTjj+uwnBpJnLFDGJiTreO5/7St4z
-	 p4Oth7ysj5Eh4pvJ8dSqhHoNA7BIBY/hiS3yJcYEpxZ0dWmjjnmgA7HKbhztdoZNyK
-	 urAIj1SaGecTQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 32/32] powerpc/configs: Make pseries_defconfig an alias for ppc64le_guest
-Date: Fri, 14 Apr 2023 23:24:15 +1000
-Message-Id: <20230414132415.821564-32-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230414132415.821564-1-mpe@ellerman.id.au>
-References: <20230414132415.821564-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pycjx2QkPz3fgR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 23:29:25 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33EDIdW1025912;
+	Fri, 14 Apr 2023 13:29:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=L17NEor15alxJnJyRZpYEiLZmDLO42JcdjMLI+tQ52s=;
+ b=k28EzNguGaMswoOu1OjTLikcPom2JuC/5+dGXxoeRcKzkRnKwqEGPvrEsMxT9GDHJbVU
+ UKr0034wf3T852k1E50/Ne7HEiLr43ahlNP0J/CG4ZWPeBi1q354txo+rI0daGDIVNv0
+ c26oKF/S8IkuxHypxBOHbdCCqPHOy+NwsJKGrPC+joI0INGaayFCuVWoXaCYM2QtKHdu
+ Gauj8Vi6pAz/myts07wazLGOQUeY+rCXRmdWwKHkVqBbRIXncZBdpp/muSBDMVoqMIBn
+ iuhE9Gf/IHj5HM/3XdFXDotlSYnCulRiIvX2wDTsgAxnwS6aTlldpiChDWVSu6BSSr8I Hw== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3py7kt8ba9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Apr 2023 13:29:12 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33EDNMdB027913;
+	Fri, 14 Apr 2023 13:29:11 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3pu0jjs2v7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Apr 2023 13:29:11 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33EDTAfb10879716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Apr 2023 13:29:10 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F18FE5805E;
+	Fri, 14 Apr 2023 13:29:09 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 103BE58051;
+	Fri, 14 Apr 2023 13:29:09 +0000 (GMT)
+Received: from [9.160.183.133] (unknown [9.160.183.133])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Apr 2023 13:29:08 +0000 (GMT)
+Message-ID: <29e7972a-17ad-638e-fa2d-1c65ae619c41@linux.ibm.com>
+Date: Fri, 14 Apr 2023 08:29:08 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/2] Remove POWER10_CPU dependency.
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-crypto@vger.kernel.org
+References: <20230413194625.10631-1-dtsen@linux.ibm.com>
+ <20230413194625.10631-2-dtsen@linux.ibm.com>
+ <87ildya9xd.fsf@mpe.ellerman.id.au>
+From: Danny Tsen <dtsen@linux.ibm.com>
+In-Reply-To: <87ildya9xd.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TAZXTrc9NthrcIflRSRgsBWMNDFafO9O
+X-Proofpoint-ORIG-GUID: TAZXTrc9NthrcIflRSRgsBWMNDFafO9O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-14_06,2023-04-14_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 impostorscore=0 phishscore=0 clxscore=1015 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304140118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,370 +94,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than trying to keep multiple configs up to date, make
-pseries_defconfig an alias for ppc64le_guest_defconfig.
+Thanks Michael.
 
-NOTE, pseries_defconfig was a big endian config, but this commit
-switches it to little endian.
+-Danny
 
-Almost all distros are ppc64le these days, so little endian is much more
-likely to be what a user wants when they build for "pseries".
-
-For an actual big endian guest, use ppc64_guest_defconfig.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Makefile                  |   3 +
- arch/powerpc/configs/pseries_defconfig | 323 -------------------------
- 2 files changed, 3 insertions(+), 323 deletions(-)
- delete mode 100644 arch/powerpc/configs/pseries_defconfig
-
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 5b332d222ede..b7c44ebbf923 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -263,6 +263,9 @@ generated_configs += ppc64_guest_defconfig
- generated_configs += pseries_le_defconfig
- pseries_le_defconfig: ppc64le_guest_defconfig
- 
-+generated_configs += pseries_defconfig
-+pseries_defconfig: ppc64le_guest_defconfig
-+
- generated_configs += powernv_be_defconfig
- powernv_be_defconfig:
- 	$(call merge_into_defconfig,powernv_defconfig,be)
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-deleted file mode 100644
-index 7497e17ea657..000000000000
---- a/arch/powerpc/configs/pseries_defconfig
-+++ /dev/null
-@@ -1,323 +0,0 @@
--CONFIG_PPC64=y
--CONFIG_NR_CPUS=2048
--CONFIG_SYSVIPC=y
--CONFIG_POSIX_MQUEUE=y
--CONFIG_AUDIT=y
--# CONFIG_CONTEXT_TRACKING_USER_FORCE is not set
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_VIRT_CPU_ACCOUNTING_GEN=y
--CONFIG_TASKSTATS=y
--CONFIG_TASK_DELAY_ACCT=y
--CONFIG_TASK_XACCT=y
--CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_IKCONFIG=y
--CONFIG_IKCONFIG_PROC=y
--CONFIG_LOG_BUF_SHIFT=18
--CONFIG_LOG_CPU_MAX_BUF_SHIFT=13
--CONFIG_NUMA_BALANCING=y
--CONFIG_CGROUPS=y
--CONFIG_MEMCG=y
--CONFIG_CGROUP_SCHED=y
--CONFIG_CGROUP_FREEZER=y
--CONFIG_CPUSETS=y
--CONFIG_CGROUP_DEVICE=y
--CONFIG_CGROUP_CPUACCT=y
--CONFIG_CGROUP_PERF=y
--CONFIG_CGROUP_BPF=y
--CONFIG_USER_NS=y
--CONFIG_BLK_DEV_INITRD=y
--CONFIG_BPF_SYSCALL=y
--# CONFIG_COMPAT_BRK is not set
--CONFIG_PROFILING=y
--CONFIG_KPROBES=y
--CONFIG_JUMP_LABEL=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODVERSIONS=y
--CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_PPC_SPLPAR=y
--CONFIG_DTL=y
--CONFIG_PPC_SMLPAR=y
--CONFIG_IBMEBUS=y
--CONFIG_LIBNVDIMM=m
--CONFIG_PAPR_SCM=m
--CONFIG_PPC_SVM=y
--# CONFIG_PPC_PMAC is not set
--CONFIG_RTAS_FLASH=m
--CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
--CONFIG_HZ_100=y
--CONFIG_BINFMT_MISC=m
--CONFIG_PPC_TRANSACTIONAL_MEM=y
--CONFIG_KEXEC=y
--CONFIG_KEXEC_FILE=y
--CONFIG_IRQ_ALL_CPUS=y
--CONFIG_MEMORY_HOTPLUG=y
--CONFIG_MEMORY_HOTREMOVE=y
--CONFIG_KSM=y
--CONFIG_TRANSPARENT_HUGEPAGE=y
--CONFIG_SCHED_SMT=y
--CONFIG_HOTPLUG_PCI=y
--CONFIG_HOTPLUG_PCI_RPA=m
--CONFIG_HOTPLUG_PCI_RPA_DLPAR=m
--CONFIG_NET=y
--CONFIG_PACKET=y
--CONFIG_UNIX=y
--CONFIG_XFRM_USER=m
--CONFIG_NET_KEY=m
--CONFIG_INET=y
--CONFIG_IP_MULTICAST=y
--CONFIG_NET_IPIP=y
--CONFIG_SYN_COOKIES=y
--CONFIG_INET_AH=m
--CONFIG_INET_ESP=m
--CONFIG_INET_IPCOMP=m
--# CONFIG_IPV6 is not set
--CONFIG_NETFILTER=y
--# CONFIG_NETFILTER_ADVANCED is not set
--CONFIG_BRIDGE=m
--CONFIG_VLAN_8021Q=m
--CONFIG_NET_SCHED=y
--CONFIG_NET_CLS_BPF=m
--CONFIG_NET_CLS_ACT=y
--CONFIG_NET_ACT_BPF=m
--CONFIG_BPF_JIT=y
--CONFIG_DEVTMPFS=y
--CONFIG_DEVTMPFS_MOUNT=y
--CONFIG_PARPORT=m
--CONFIG_PARPORT_PC=m
--CONFIG_BLK_DEV_FD=m
--CONFIG_BLK_DEV_LOOP=y
--CONFIG_BLK_DEV_NBD=m
--CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_RAM_SIZE=65536
--CONFIG_VIRTIO_BLK=m
--CONFIG_BLK_DEV_NVME=y
--CONFIG_BLK_DEV_SD=y
--CONFIG_CHR_DEV_ST=m
--CONFIG_BLK_DEV_SR=y
--CONFIG_CHR_DEV_SG=y
--CONFIG_SCSI_CONSTANTS=y
--CONFIG_SCSI_FC_ATTRS=y
--CONFIG_SCSI_CXGB3_ISCSI=m
--CONFIG_SCSI_CXGB4_ISCSI=m
--CONFIG_SCSI_BNX2_ISCSI=m
--CONFIG_BE2ISCSI=m
--CONFIG_SCSI_MPT2SAS=m
--CONFIG_SCSI_IBMVSCSI=y
--CONFIG_SCSI_IBMVFC=m
--CONFIG_SCSI_SYM53C8XX_2=m
--CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
--CONFIG_SCSI_IPR=y
--CONFIG_SCSI_QLA_FC=m
--CONFIG_SCSI_QLA_ISCSI=m
--CONFIG_SCSI_LPFC=m
--CONFIG_SCSI_VIRTIO=m
--CONFIG_SCSI_DH=y
--CONFIG_SCSI_DH_RDAC=m
--CONFIG_SCSI_DH_ALUA=m
--CONFIG_ATA=y
--CONFIG_SATA_AHCI=y
--CONFIG_PATA_AMD=y
--CONFIG_ATA_GENERIC=y
--CONFIG_MD=y
--CONFIG_BLK_DEV_MD=y
--CONFIG_MD_LINEAR=y
--CONFIG_MD_RAID0=y
--CONFIG_MD_RAID1=y
--CONFIG_MD_RAID10=m
--CONFIG_MD_RAID456=m
--CONFIG_MD_MULTIPATH=m
--CONFIG_MD_FAULTY=m
--CONFIG_BLK_DEV_DM=y
--CONFIG_DM_CRYPT=m
--CONFIG_DM_SNAPSHOT=m
--CONFIG_DM_THIN_PROVISIONING=m
--CONFIG_DM_MIRROR=m
--CONFIG_DM_ZERO=m
--CONFIG_DM_MULTIPATH=m
--CONFIG_DM_MULTIPATH_QL=m
--CONFIG_DM_MULTIPATH_ST=m
--CONFIG_DM_UEVENT=y
--CONFIG_BONDING=m
--CONFIG_DUMMY=m
--CONFIG_MACVLAN=m
--CONFIG_MACVTAP=m
--CONFIG_VXLAN=m
--CONFIG_NETCONSOLE=y
--CONFIG_TUN=m
--CONFIG_VETH=m
--CONFIG_VIRTIO_NET=m
--CONFIG_VORTEX=m
--CONFIG_ACENIC=m
--CONFIG_ACENIC_OMIT_TIGON_I=y
--CONFIG_PCNET32=m
--CONFIG_TIGON3=y
--CONFIG_BNX2X=m
--CONFIG_CHELSIO_T1=m
--CONFIG_BE2NET=m
--CONFIG_S2IO=m
--CONFIG_IBMVETH=y
--CONFIG_EHEA=y
--CONFIG_IBMVNIC=y
--CONFIG_E100=y
--CONFIG_E1000=y
--CONFIG_E1000E=y
--CONFIG_IXGB=m
--CONFIG_IXGBE=m
--CONFIG_I40E=m
--CONFIG_MLX4_EN=m
--CONFIG_MYRI10GE=m
--CONFIG_NETXEN_NIC=m
--CONFIG_PPP=m
--CONFIG_PPP_BSDCOMP=m
--CONFIG_PPP_DEFLATE=m
--CONFIG_PPPOE=m
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_INPUT_EVDEV=m
--CONFIG_INPUT_MISC=y
--CONFIG_INPUT_PCSPKR=m
--# CONFIG_SERIO_SERPORT is not set
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--CONFIG_SERIAL_ICOM=m
--CONFIG_SERIAL_JSM=m
--CONFIG_HVC_CONSOLE=y
--CONFIG_HVC_RTAS=y
--CONFIG_HVCS=m
--CONFIG_VIRTIO_CONSOLE=m
--CONFIG_IBM_BSR=m
--CONFIG_I2C_CHARDEV=y
--CONFIG_FB=y
--CONFIG_FIRMWARE_EDID=y
--CONFIG_FB_OF=y
--CONFIG_FB_MATROX=y
--CONFIG_FB_MATROX_MILLENIUM=y
--CONFIG_FB_MATROX_MYSTIQUE=y
--CONFIG_FB_MATROX_G=y
--CONFIG_FB_RADEON=y
--CONFIG_FB_IBM_GXT4500=y
--CONFIG_LCD_PLATFORM=m
--# CONFIG_VGA_CONSOLE is not set
--CONFIG_FRAMEBUFFER_CONSOLE=y
--CONFIG_LOGO=y
--CONFIG_HID_GYRATION=y
--CONFIG_HID_PANTHERLORD=y
--CONFIG_HID_PETALYNX=y
--CONFIG_HID_SAMSUNG=y
--CONFIG_HID_SUNPLUS=y
--CONFIG_USB_HIDDEV=y
--CONFIG_USB=y
--CONFIG_USB_MON=m
--CONFIG_USB_EHCI_HCD=y
--# CONFIG_USB_EHCI_HCD_PPC_OF is not set
--CONFIG_USB_OHCI_HCD=y
--CONFIG_USB_XHCI_HCD=y
--CONFIG_USB_STORAGE=m
--CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
--CONFIG_LEDS_POWERNV=m
--CONFIG_INFINIBAND=m
--CONFIG_INFINIBAND_USER_MAD=m
--CONFIG_INFINIBAND_USER_ACCESS=m
--CONFIG_INFINIBAND_MTHCA=m
--CONFIG_INFINIBAND_CXGB4=m
--CONFIG_MLX4_INFINIBAND=m
--CONFIG_INFINIBAND_IPOIB=m
--CONFIG_INFINIBAND_IPOIB_CM=y
--CONFIG_INFINIBAND_SRP=m
--CONFIG_INFINIBAND_ISER=m
--CONFIG_RTC_CLASS=y
--CONFIG_RTC_DRV_GENERIC=y
--CONFIG_VIRTIO_PCI=m
--CONFIG_VIRTIO_BALLOON=m
--CONFIG_EXT2_FS=y
--CONFIG_EXT2_FS_XATTR=y
--CONFIG_EXT2_FS_POSIX_ACL=y
--CONFIG_EXT2_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
--CONFIG_JFS_FS=m
--CONFIG_JFS_POSIX_ACL=y
--CONFIG_JFS_SECURITY=y
--CONFIG_XFS_FS=m
--CONFIG_XFS_POSIX_ACL=y
--CONFIG_BTRFS_FS=m
--CONFIG_BTRFS_FS_POSIX_ACL=y
--CONFIG_NILFS2_FS=m
--CONFIG_FS_DAX=y
--CONFIG_AUTOFS4_FS=m
--CONFIG_FUSE_FS=m
--CONFIG_OVERLAY_FS=m
--CONFIG_ISO9660_FS=y
--CONFIG_UDF_FS=m
--CONFIG_MSDOS_FS=y
--CONFIG_VFAT_FS=m
--CONFIG_PROC_KCORE=y
--CONFIG_TMPFS=y
--CONFIG_TMPFS_POSIX_ACL=y
--CONFIG_HUGETLBFS=y
--CONFIG_CRAMFS=m
--CONFIG_SQUASHFS=m
--CONFIG_SQUASHFS_XATTR=y
--CONFIG_SQUASHFS_LZO=y
--CONFIG_SQUASHFS_XZ=y
--CONFIG_PSTORE=y
--CONFIG_NFS_FS=y
--CONFIG_NFS_V3_ACL=y
--CONFIG_NFS_V4=y
--CONFIG_NFSD=m
--CONFIG_NFSD_V3_ACL=y
--CONFIG_NFSD_V4=y
--CONFIG_CIFS=m
--CONFIG_CIFS_XATTR=y
--CONFIG_CIFS_POSIX=y
--CONFIG_NLS_DEFAULT="utf8"
--CONFIG_NLS_CODEPAGE_437=y
--CONFIG_NLS_ASCII=y
--CONFIG_NLS_ISO8859_1=y
--CONFIG_NLS_UTF8=y
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_KERNEL=y
--CONFIG_DEBUG_STACK_USAGE=y
--CONFIG_DEBUG_STACKOVERFLOW=y
--CONFIG_SOFTLOCKUP_DETECTOR=y
--CONFIG_HARDLOCKUP_DETECTOR=y
--CONFIG_FUNCTION_TRACER=y
--CONFIG_FTRACE_SYSCALLS=y
--CONFIG_SCHED_TRACER=y
--CONFIG_STACK_TRACER=y
--CONFIG_BLK_DEV_IO_TRACE=y
--CONFIG_CODE_PATCHING_SELFTEST=y
--CONFIG_FTR_FIXUP_SELFTEST=y
--CONFIG_MSI_BITMAP_SELFTEST=y
--CONFIG_XMON=y
--CONFIG_CRYPTO_TEST=m
--CONFIG_CRYPTO_PCBC=m
--CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_CRC32C_VPMSUM=m
--CONFIG_CRYPTO_MD5_PPC=m
--CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA1_PPC=m
--CONFIG_CRYPTO_SHA256=y
--CONFIG_CRYPTO_WP512=m
--CONFIG_CRYPTO_ANUBIS=m
--CONFIG_CRYPTO_BLOWFISH=m
--CONFIG_CRYPTO_CAST6=m
--CONFIG_CRYPTO_KHAZAD=m
--CONFIG_CRYPTO_SERPENT=m
--CONFIG_CRYPTO_TEA=m
--CONFIG_CRYPTO_TWOFISH=m
--CONFIG_CRYPTO_LZO=m
--CONFIG_CRYPTO_DEV_NX=y
--CONFIG_CRYPTO_DEV_NX_ENCRYPT=m
--CONFIG_CRYPTO_DEV_VMX=y
--CONFIG_VIRTUALIZATION=y
--CONFIG_KVM_BOOK3S_64=m
--CONFIG_KVM_BOOK3S_64_HV=m
--CONFIG_VHOST_NET=m
--CONFIG_PRINTK_TIME=y
--CONFIG_PRINTK_CALLER=y
--- 
-2.39.2
-
+On 4/14/23 8:08 AM, Michael Ellerman wrote:
+> Danny Tsen <dtsen@linux.ibm.com> writes:
+>> Remove Power10 dependency in Kconfig and detect Power10 feature at runtime.
+> ... using the existing call to module_cpu_feature_match() :)
+>
+>> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+>> ---
+>>   arch/powerpc/crypto/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+>
+> cheers
+>
+>> diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+>> index 1f8f02b494e1..7113f9355165 100644
+>> --- a/arch/powerpc/crypto/Kconfig
+>> +++ b/arch/powerpc/crypto/Kconfig
+>> @@ -96,7 +96,7 @@ config CRYPTO_AES_PPC_SPE
+>>   
+>>   config CRYPTO_AES_GCM_P10
+>>   	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+>> -	depends on PPC64 && POWER10_CPU && CPU_LITTLE_ENDIAN
+>> +	depends on PPC64 && CPU_LITTLE_ENDIAN
+>>   	select CRYPTO_LIB_AES
+>>   	select CRYPTO_ALGAPI
+>>   	select CRYPTO_AEAD
+>> -- 
+>> 2.31.1
