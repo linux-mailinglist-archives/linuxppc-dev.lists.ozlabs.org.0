@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE356E2457
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EED06E2467
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:39:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pycrg1p90z3g3x
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:35:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PycxS05L3z3fch
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:39:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=C6JrzruP;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EKA9Nxc3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -16,32 +16,32 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pyccq4XgMz3fRj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 23:24:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pyccv16ztz3fSy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 23:25:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=C6JrzruP;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EKA9Nxc3;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pyccq3Kf3z4xKS;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pyccq6nDdz4xMs;
 	Fri, 14 Apr 2023 23:24:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1681478699;
-	bh=iEQq88jKc3wvtiqeckSASaLZjjfhW1WfULO6lRzpkoc=;
+	s=201909; t=1681478700;
+	bh=4plTnvf1qFyPCSmjzLZC+M/DebtvpGDJjDqX0yq0HJk=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=C6JrzruPgz3gj95KzvQyhlw+eQL3L5dS3YBqZp74Qr33lypRICo8hqvVH4igxO+Lp
-	 cfVGcmBXPWcsS6TK8phEE322/5hyLt7qT16nEhhLcnXXz/a6lwbX8dPGs3JVuoSsTR
-	 pDMg3i8evWx/JTGxY/Kmjwvo7s3fcengPwgecYHe/VAiYw9JUCvY8vglV3pWFxn8DH
-	 Jdqf3RVl28TORExcSpRa4ewDn4T2W8ilKnkx3s7gPA8WSOeM++/ugdaYB6tavSHZbl
-	 xF19ATyOqT1Ay2vLywODqfKr+x4/aN8+ODP+rM8vI4Zc3fHn8tRAd66+66XbZuWbMd
-	 fXjfxBrRMxZsQ==
+	b=EKA9Nxc3jBJ+qD4gmpFNb9Gfk9CGBhipfWXtzRB3xHJLPyxBtstcdbNN298SS6InU
+	 PgcYMVCo1yVMkGQtEmRu3dHRrh5HrIVc7Ep1LV+8V1wpmb1ovH0fZAxtdHqmeu+Ky7
+	 arkjjSz+TNgiyGPMs1zqTKmx9u3o2gJ/zB7pMX7polIfoSHGwDBcQObStlndESjszs
+	 WPsHGZr3GECAIRBzDDwaUprKLcIWcZLu6KsniKr3OHB9ccZG2XRQoIxy2kGG35apAJ
+	 dxEigB1dwbwwiVPspsGcly6BCRtV8ygZ4qs7KcFZ0IxD8vO3pcPdtT200q4VA4HFYh
+	 +9NpOfJm1jFng==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 13/32] powerpc/configs/64s: Enable CHECKPOINT_RESTORE
-Date: Fri, 14 Apr 2023 23:23:56 +1000
-Message-Id: <20230414132415.821564-13-mpe@ellerman.id.au>
+Subject: [PATCH 14/32] powerpc/configs/64s: Enable ZSWAP & ZRAM
+Date: Fri, 14 Apr 2023 23:23:57 +1000
+Message-Id: <20230414132415.821564-14-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230414132415.821564-1-mpe@ellerman.id.au>
 References: <20230414132415.821564-1-mpe@ellerman.id.au>
@@ -61,25 +61,36 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most distros enable this.
+Most distros enable these. In particular Fedore uses zram in the default
+install.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/configs/ppc64_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/configs/ppc64_defconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index e853905c4e7e..07a92f02e1f8 100644
+index 07a92f02e1f8..59b9d8eb1c7b 100644
 --- a/arch/powerpc/configs/ppc64_defconfig
 +++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -32,6 +32,7 @@ CONFIG_CGROUP_PERF=y
- CONFIG_CGROUP_BPF=y
- CONFIG_CGROUP_MISC=y
- CONFIG_USER_NS=y
-+CONFIG_CHECKPOINT_RESTORE=y
- CONFIG_SCHED_AUTOGROUP=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_PROFILING=y
+@@ -78,6 +78,9 @@ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_BINFMT_MISC=m
++CONFIG_ZSWAP=y
++CONFIG_Z3FOLD=y
++CONFIG_ZSMALLOC=y
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_MEMORY_HOTPLUG=y
+ CONFIG_MEMORY_HOTREMOVE=y
+@@ -114,6 +117,7 @@ CONFIG_ELECTRA_CF=y
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ CONFIG_BLK_DEV_FD=y
++CONFIG_ZRAM=m
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_NBD=m
+ CONFIG_BLK_DEV_RAM=y
 -- 
 2.39.2
 
