@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E456E249B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B366E24B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 15:49:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pyd8Y0QHcz2xHJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:49:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pyd9S5tPWz3gjX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Apr 2023 23:49:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IpvX5mHs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b2iznGDH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pycd0371Kz3chl
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pycd06P0bz3fSs
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 23:25:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IpvX5mHs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b2iznGDH;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pycd01nG7z4xV1;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Pycd05Bqyz4xVF;
 	Fri, 14 Apr 2023 23:25:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
 	s=201909; t=1681478708;
-	bh=4x86PLY76jz4B3/9MpNRTb5Tou8zTeZZBHyRaGGXdMM=;
+	bh=MhQgFQGd29Ey5Oz6Xwdrp0bRx+bzruK6rA1rv8xnnJc=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=IpvX5mHscNIcyhQBbVvIAay3bGfGx/FLqXpOphWVkoxFWl2CuRNGgPcI2o12xjx5h
-	 pRN0FlyA6QGVI+vQJMX0FWPhc7UZe/z0XBD5pD1S2kD8yBxLg+SoarC7pVDX/tCb2C
-	 ePA+XNKJHSJpW+tSRnlGDyssyoo8P3eZfOm2Y2og84u2F4Wqe3PKI4Kfc0xmM9e59P
-	 BDRQsi2l0nXC5870Zu/M0OQ4XuyBrPXvsIDmtybQXuhGnQyEbIMK2VsIFWEBJZdAU+
-	 gMIxYrAnffn1U/CQHusN8azlgv6ZYgR8QJGiRHm1JmOYf4YZEpo3pKsiTD3MvaqOyL
-	 G7FoBJA8zsfrA==
+	b=b2iznGDH8ynId94pk/cWh4TkBo7iHGHQOb+xh4RNCg6zZ0H/9ijAmZFkkC79KFlfd
+	 Y2vlam6lndAQYrb9slYSwFNrC9WBz5Oa1D+zwamgCkuggGb3T/EOrbqSjD3SbygfQK
+	 DFdzgfcRKEuqgtbanjDHGnpb1vHQASN3WDn+aEY8gm5pfCwqsZ9Yi9hrvCKMONl1BU
+	 RK8NVDYH06miQBQ/79w24x7dbcCN7hsHc7hMIMBJhHyjogRZfXa+7+dVVSP/MSw4fp
+	 bHXF8PxBj4hVW8Z9rRKMUrGmhd9hL/JmcAtkXJBsrsj0s2QOGSmOTlSWDhC+yqVmoE
+	 WYZewF2Ce5+tw==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 30/32] powerpc/configs: Incorporate generic kvm_guest.config into guest configs
-Date: Fri, 14 Apr 2023 23:24:13 +1000
-Message-Id: <20230414132415.821564-30-mpe@ellerman.id.au>
+Subject: [PATCH 31/32] powerpc/configs: Make pseries_le an alias for ppc64le_guest
+Date: Fri, 14 Apr 2023 23:24:14 +1000
+Message-Id: <20230414132415.821564-31-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230414132415.821564-1-mpe@ellerman.id.au>
 References: <20230414132415.821564-1-mpe@ellerman.id.au>
@@ -61,46 +61,45 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Incorporate the generic kvm_guest.config into the powerpc guest configs,
-ppc64[le]_guest_defconfig.
+Rather than trying to keep multiple configs up to date, make
+pseries_le_defconfig an alias for ppc64le_guest_defconfig.
 
-This brings in some useful options, in particular 9P support, and also
-means future additions to the generic file will be automatically picked
-up by the powerpc configs.
+ppc64le_guest_defconfig should work in all cases that
+pseries_le_defconfig currently does, but if not we can update it.
+
+Move pseries_le_defconfig down in the Makefile, so it appears after
+ppc64le_guest_defconfig in the help output.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/Makefile                 | 4 ++--
- arch/powerpc/configs/kvm_guest.config | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
- create mode 120000 arch/powerpc/configs/kvm_guest.config
+ arch/powerpc/Makefile | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index e86a989d445c..55c9b7968fbf 100644
+index 55c9b7968fbf..5b332d222ede 100644
 --- a/arch/powerpc/Makefile
 +++ b/arch/powerpc/Makefile
-@@ -258,11 +258,11 @@ generated_configs += ppc64le_defconfig
+@@ -248,10 +248,6 @@ PHONY += bootwrapper_install
  
- generated_configs += ppc64le_guest_defconfig
- ppc64le_guest_defconfig:
--	$(call merge_into_defconfig,ppc64_defconfig,le guest)
-+	$(call merge_into_defconfig,ppc64_defconfig,le guest kvm_guest)
+ include $(srctree)/scripts/Makefile.defconf
  
- generated_configs += ppc64_guest_defconfig
+-generated_configs += pseries_le_defconfig
+-pseries_le_defconfig:
+-	$(call merge_into_defconfig,pseries_defconfig,le)
+-
+ generated_configs += ppc64le_defconfig
+ ppc64le_defconfig:
+ 	$(call merge_into_defconfig,ppc64_defconfig,le)
+@@ -264,6 +260,9 @@ generated_configs += ppc64_guest_defconfig
  ppc64_guest_defconfig:
--	$(call merge_into_defconfig,ppc64_defconfig,be guest)
-+	$(call merge_into_defconfig,ppc64_defconfig,be guest kvm_guest)
+ 	$(call merge_into_defconfig,ppc64_defconfig,be guest kvm_guest)
  
++generated_configs += pseries_le_defconfig
++pseries_le_defconfig: ppc64le_guest_defconfig
++
  generated_configs += powernv_be_defconfig
  powernv_be_defconfig:
-diff --git a/arch/powerpc/configs/kvm_guest.config b/arch/powerpc/configs/kvm_guest.config
-new file mode 120000
-index 000000000000..a5f7a2fa74ef
---- /dev/null
-+++ b/arch/powerpc/configs/kvm_guest.config
-@@ -0,0 +1 @@
-+../../../kernel/configs/kvm_guest.config
-\ No newline at end of file
+ 	$(call merge_into_defconfig,powernv_defconfig,be)
 -- 
 2.39.2
 
