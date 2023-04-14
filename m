@@ -1,74 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30F86E2CE4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 01:28:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE706E2CE6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 01:30:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pyt1V3x6Wz3fRm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 09:28:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Pyt3l08kVz3chR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 09:30:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ohd1+UCb;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TE+Kpz9G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=lstoakes@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7eaf::621; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ohd1+UCb;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TE+Kpz9G;
 	dkim-atps=neutral
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20621.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eaf::621])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pyt0g0P2pz3cFY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 09:28:02 +1000 (AEST)
-Received: by mail-wm1-x334.google.com with SMTP id n42-20020a05600c3baa00b003f0b12814aaso1808831wms.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Apr 2023 16:28:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681514873; x=1684106873;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ftq6TTcnXmE4j3aIu+06i4fKocrqUKSD4QQo68fNkt8=;
-        b=ohd1+UCbWmxvM4MzYWo9I9cjeFbuOl76YkSJ4H1bBFMabAoAOh9PP3Xn3F4/WBuFLE
-         44aN9PSGmSuG7eqNDfNvN1tuP6TlgtU1eO6O4TQ3ntS2xwnbSqXZuzvWyKhZK6MbRP+6
-         rSYx1oJ6hL09OWI1C8flq0T9yyN+BfcDW5h8OYenbAi9oU9AE2yE+xQpgMPr10v3G8Aw
-         /wdUnEwSsTFYCQstfHfX6RgCpSbJiS/mcHorC1MFCP0huO0EtgtALhIqad5Blxade8UR
-         ugQfPqV5ZS3RS5cYDhvRxP2urKRR9NIkiFqJFqyXuoEcF+72M4833WQ7ukV49X69L8WH
-         5oMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681514873; x=1684106873;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ftq6TTcnXmE4j3aIu+06i4fKocrqUKSD4QQo68fNkt8=;
-        b=YCajnoELPYnntIGkinEYCwFzBixlynhAONJtgj8DFIoqqMtxXJotFyOu/StjrhOelQ
-         M8AWFlUMvjTcDm3fjerE+J5IEjngdUCl8iwr/dFq9zL2kwuVVlb+jPGSOBtRl21dfJUA
-         9KpSvsgAlmcW7t/D6z6XbFaTWcb/b0RMIFgymKRpPD+b0LpTFzQa4WpR8Ps3nT8B3UsV
-         BNxfVk2MrSScWcK4WPnLA+bXZzv13qZ9yXz2HX/cnjKzyoMLRcQaAfrb/ByyKtEqnvtV
-         3ey7UGunJ8y7i+R+RovTrFjIPyKRKzyhdxsI98jiwf/CAoFeaUodm3gyu55mPeBUoLyo
-         ntcA==
-X-Gm-Message-State: AAQBX9cvQAYt7/JlZXLKEKwZycyoPeDYmtCH5sy+FMww/P0eZcFUQDOV
-	OQ2dOfu4Hey+mio7TcCyBAI=
-X-Google-Smtp-Source: AKy350aM7HhgsRREzBUJkpVKcr6aG9xKg7anitOKYJkUq3hDdkna1nbr7oIWFGuzU7Puz99fUyJcFw==
-X-Received: by 2002:a05:600c:21cd:b0:3f1:662a:93d0 with SMTP id x13-20020a05600c21cd00b003f1662a93d0mr454115wmj.15.1681514872738;
-        Fri, 14 Apr 2023 16:27:52 -0700 (PDT)
-Received: from lucifer.home (host86-156-84-164.range86-156.btcentralplus.com. [86.156.84.164])
-        by smtp.googlemail.com with ESMTPSA id n19-20020a1c7213000000b003ee58e8c971sm5303734wmc.14.2023.04.14.16.27.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Apr 2023 16:27:51 -0700 (PDT)
-From: Lorenzo Stoakes <lstoakes@gmail.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6/7] mm/gup: remove vmas parameter from pin_user_pages()
-Date: Sat, 15 Apr 2023 00:27:49 +0100
-Message-Id: <8333df218248b7bb08d5fe391c1b8e9e3f309588.1681508038.git.lstoakes@gmail.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <cover.1681508038.git.lstoakes@gmail.com>
-References: <cover.1681508038.git.lstoakes@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pyt2r3Htfz30QD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 09:29:54 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NzaJl9+pfkBGfJe8UyUdzLuxj18qwv8TRdpkGKKL5Xu3hXIsiGJ9D5rLSuQRMCCXarTkIWCNVXhfSUi0uNYwYPpDW+n4IRw7jZAU7MaVnUIKWt5/ekyHAjfwh5kbi8hDTNIuaK75Oq/GCGxEcK3lIlY7ryf/qhyieyrnbIL2sg3ns1BGx5mZZDEMne4KSeprgOUjUi13YfJticFKdmx/BnXbjv4rl/KgVy2cCMNwZ2e3TSpNSF0F7nzl48C9CeaaVF/iLtUE6MJE/BbwgevoLCboDGlOF4sVzXEBHupMDqUQ+hjQ04Ja5LfU85um5MUdTT1JX4QBmNDpSTY+jg9bVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Me3QbxxJ2P71X58gDkzzJUD5WvCy9CwatkCsKkKA3bM=;
+ b=A00MUT7XKopYhgJVittaEM3kk4/nZFNk4l/wpb49ulUHGHODb+LvM8dz9dGXrmKu49pYkMsCLwQpcl+Jz1LHVtE+W7hEMtigOUDKTHSokx+c6cKGFc0iIterSfxz0On+Ne6yDM1itiq0azFnRx1knIdZ6zrRoFXqzW7xA9Vmp+3Dh+FYNz3GVepoH1rg7qFGkwPn/JZWrlieVVYMIIRepDVXkHmIuBAbsi8NmSbiP/ew9WbWcuZOT6351KLNs7ybBHhilqtcbk2D13nTHL7domTG9jaE9Vn+KIyLF3hCTTr12tyxNh4DmrrzNQGAZhqFQwtItXa1KUZsPOTFbQPBmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Me3QbxxJ2P71X58gDkzzJUD5WvCy9CwatkCsKkKA3bM=;
+ b=TE+Kpz9Gi7K1LCvIw81E/+ZSQqamX/MYA3LMqkYQlt45jgC+wjX7PXAVQ+Acx9+qDXp1LDVe3bo829/djcz3LO0w/us6XiF4iUHfhU0ZTGdoiot4vpxVtP8BYJcNqIm05JVayW9ks3wnTyap3d5AZ+O6J4ULZw8sAJe34Hv3GNY=
+Received: from AM0PR04MB6289.eurprd04.prod.outlook.com (2603:10a6:208:145::23)
+ by VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Fri, 14 Apr
+ 2023 23:29:35 +0000
+Received: from AM0PR04MB6289.eurprd04.prod.outlook.com
+ ([fe80::8516:ebc7:c128:e69d]) by AM0PR04MB6289.eurprd04.prod.outlook.com
+ ([fe80::8516:ebc7:c128:e69d%6]) with mapi id 15.20.6277.038; Fri, 14 Apr 2023
+ 23:29:35 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Paul Gortmaker
+	<paul.gortmaker@windriver.com>
+Subject: RE: [RFC PATCH 0/4] Remove some e500/MPC85xx evaluation platforms
+Thread-Topic: [RFC PATCH 0/4] Remove some e500/MPC85xx evaluation platforms
+Thread-Index: AQHZRi1QkS0YOzFcxEanclAMrMYrvq8qYTnxgAFfAWA=
+Date: Fri, 14 Apr 2023 23:29:34 +0000
+Message-ID:  <AM0PR04MB628965937FB711C2DA3A20FF8F999@AM0PR04MB6289.eurprd04.prod.outlook.com>
+References: <20230221194637.28436-1-paul.gortmaker@windriver.com>
+ <CADRPPNTyGPZOLwb5e20_FxwkpJ4ayt7VrgAEDgg7XqYSha3vMg@mail.gmail.com>
+ <87o7nr9png.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87o7nr9png.fsf@mpe.ellerman.id.au>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR04MB6289:EE_|VI1PR04MB7104:EE_
+x-ms-office365-filtering-correlation-id: 2e9f6291-d40f-403b-ab48-08db3d401b60
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  Ff+jxm1cQxYfTUCzxOiRDV/AXv/9ul2sqeTy2eyRgqz3/J6BuDYcMaIxUzPNXD3NG+5w6mtC4QKB9FqkaIAJnS3bg7H6ARHIJ1jcZ913GjHMFfvyyoYJrwURuSStlQfVQ+iUU62qAYuBMHyqnqT+VeqEnelvG3aXp3qYF0lL7wbHu589ANXNLgYoWgJDYbExpje8qWdTQXaNSX9fL6tM72pE7dBOs0146YMA2/eYtPHETA60tkOSWwoDrfkgsO15niOBAPOkbIvBjOcvewvjazWk3VDimNYs2p/YgCO6UIMVRv7h4/I5HGIGN/ytbJ8n0xD0t9KM6RDAZtnOtPR2dCJNQMIv9GeXE7vNSDOqcO88mMDaFJB16dHyFA08sJTXMDaQu62yiId3Rh/sxM0xOsz3NpFEE3L+/ZKiCMfX85bH93nlBaTmxaFIxXlN7XMrR/aArkvq/b0Yb44Fpor4m8Ma/fvqbfwq1E3CbR3kXKnvCDvsA387aFrBHVgEmNC2zAcoKgxm7t/5tz0VrpgetvtZkVUmLKfvaXKXaf5d9bQSbr7M0pWHh3rf1MKxdhT85C9dr90QG0jm/pVHYdGXo9YOvmjhPUbrs4A7hC/jOEgV1SzSRVM6WT2Ie6Le0Bgw
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6289.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(136003)(39860400002)(366004)(451199021)(2906002)(66899021)(52536014)(38100700002)(5660300002)(122000001)(38070700005)(8676002)(8936002)(4326008)(76116006)(66476007)(41300700001)(64756008)(66556008)(83380400001)(110136005)(186003)(66446008)(54906003)(66574015)(316002)(55236004)(6506007)(26005)(71200400001)(9686003)(478600001)(86362001)(33656002)(53546011)(7696005)(66946007)(55016003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?akloZTBKdEZKMklmRE8rVldDc05kazkvR0gwZHhuTzBzQm9tS2xZSGpaaTR2?=
+ =?utf-8?B?RFhMckpIekFobCtoY0UxWWlIdExBUHUzODU4TEVWVjZLZVFudVRVL0VaN1Bu?=
+ =?utf-8?B?SU5CRVhweittMDlqSmdMcENNRjVCQSsyZ2s4WVRjdmsvYUJjeFZBc01NSFNC?=
+ =?utf-8?B?a3BTR0k2TElOY0JmSGhmVUJyZlJaUlJHQ1l5d2ZhZnAyM2NQMm9GcHJoT3pj?=
+ =?utf-8?B?RHNjTElxWFl0TnIrbWhBUjFWdnM5ZDdhalpoT0YwQng1SFpKVncyVUEzMWtt?=
+ =?utf-8?B?ZDVVbzlhdUlMSm5NVFFNR3ZkcXNxb05PS0hpSXVSUlNwSkNqZC80WjV0QS9V?=
+ =?utf-8?B?MmZDZkRYY2pGQ2JnenRLUk1sb2FGdkUwWG9qNDRqVEZrYzErVUVFUXF3V2Y5?=
+ =?utf-8?B?SFhCeTVONG1BYllrRDUxRGM1QnM4SGlsRGtLN1RrSklrTnVUcldZcy9Gb0hC?=
+ =?utf-8?B?eVVUUWJkeUZ3ZnVKemVFeHJubkpqTVVyNkxSaGF0V0V3aWw4UDJKVy84Qm5i?=
+ =?utf-8?B?L0ttMndSempQZTRVeE0zaENRY0JaR2ZxNXJBTi8wd2FsTUVyVG5JZjN2aThN?=
+ =?utf-8?B?ajQwWFhOQ2dtQUcwQ1crZURGSGRzeE80ak9UdkRnU1l3UGJYemJzMnlMVkxo?=
+ =?utf-8?B?bGI5SkhyU3JDK1JNdGVCYmplVjVYaWpPRWcrRnk5SzREN0xJVnBCNTBxYU9t?=
+ =?utf-8?B?Slg4K0NQczhsNHJFdk5QQkFQMEVLVk1CYWxlZzcvRmNOb09BeEJseDJEZy9r?=
+ =?utf-8?B?T1ZTT1pGSkxoTngwZkMvR3M5YWgvZ2ZJN2pDTnhwcUxXc255NkFnQ2FQS3FC?=
+ =?utf-8?B?NXcwQy96WFJRQkRYWWxCaFZyT2dnY2c0VmYvbnNqZlpGNVV2cThnSGJ3T0Nk?=
+ =?utf-8?B?am1EQVowbmxUSW9vU1BYV01UTGtwWGg1a0NMelhMc3J4OHA4eUc4dHZkTnhE?=
+ =?utf-8?B?UjVVQlBIeHJvSGFydzlDeVdZa2ZQQWtKK2FldlN4MW50dXN0TzhhMWZIS3kw?=
+ =?utf-8?B?R3RYMDhZTG05dTVUdnhUVEpPUTRmdUQ2bS9BNjgxdklGL25jY0FuOW1nSkRU?=
+ =?utf-8?B?UUlKZTdZSzZqai9XSDRyYzJucDRQSzJrZCtMcVVCeElVcWkwNmk1bHp4SHZQ?=
+ =?utf-8?B?Q3hJNTZ0cVFtYWpzQ1RLbHVRQUZoUllqa1lteFl5UTlReWdVOFg3OWNLR2pq?=
+ =?utf-8?B?Z1FrYktjOXhJSzlMNzN6UzFTMXQxT1poMC81ZzNteURLNytRdTZVWmJKS1FO?=
+ =?utf-8?B?Q1BmRUtuNWxVY0w1dnlmZGgxTkZDYURyQnM3ZTR3bndJTWdPditzRHplQ3NL?=
+ =?utf-8?B?Z3pYSEplUzBsenJDeW9qMGxhdWVId01WWG1idXN0OE9YMnZLTnhxVTVWTTZ6?=
+ =?utf-8?B?eHh1dHpvSHBjdDdtVURtZTUvc0VhVjVxUlhkTjFkM2VrVDNidlhmdi8zYWl4?=
+ =?utf-8?B?dm9CZVlWd2R0aUMyaGdCNVFnWDlCOGRybXJOUHcyTHhqamQxNERCMDZXamtt?=
+ =?utf-8?B?Q0RPSTNMTXFzYUwwaGh4enkyWjlWNS8yTHI4WTJVMGE1OFJWNHNSTTNTc3Fs?=
+ =?utf-8?B?WmRFN3RRMWN2c1BLTmpYb0k0Tnltc1NtSzJjOXN1NUZEOS9RUEcyTEFhUHBL?=
+ =?utf-8?B?WDNUOE5WOE9iT0V2L3N2ak1lczJYODhiRDdJN2N1UUVDRnhWL25qY3pjSFdX?=
+ =?utf-8?B?Y3RKVm1Lbk9nRWlTTjVaNitWaGVPaUtCNERpYjl2em1ibU1UOG9LaEl4ME0v?=
+ =?utf-8?B?Y0JOUmdtVCtobE1CVGtDaU9lVXdIWEVnZFJWNGZNTDNtNjVtemhtSjVTaE4w?=
+ =?utf-8?B?eWJWazBxWjJPVUtIdEJPeEJhR0pDeGtnbmpNY1JFL1JPeEt1eXJqT3hTd3lp?=
+ =?utf-8?B?KzVGaHRlaXMwbWNBc0RuWm0zRUdtYXlpS1Bodk1OZnZGN2h1Y2lGNUpvWkx1?=
+ =?utf-8?B?c3NuTDRNMFd5WEgwOTkzei9HMDVaelZFMUJsU0QrV1VzUEZRakpCbldlUFFs?=
+ =?utf-8?B?YjdYYytpY1JQeFpKdEk1OEVxNncwZVd5TTJFNXVqM3NiZXlidjlSUE5obXp4?=
+ =?utf-8?B?VGltcGlIaWx2clZ2VXR6L1BhemtqalI0MzZKMzB4ZlIyTUllK0YvVW5wYm5Q?=
+ =?utf-8?Q?txlamskmkTAyiwF4yKtBz/HG/?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6289.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e9f6291-d40f-403b-ab48-08db3d401b60
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2023 23:29:34.9492
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Pgu+CMki+NzCwFJIW0AR1aIQEqy35LCq9alIzLDP1lc9KzdSLb/D1+vZ0CqPJfpLYwUocVXcBPAOU1jRMzIb/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,231 +132,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nelson Escobar <neescoba@cisco.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Jason Wang <jasowang@redhat.com>, Alexei Starovoitov <ast@kernel.org>, virtualization@lists.linux-foundation.org, Eric Dumazet <edumazet@google.com>, Leon Romanovsky <leon@kernel.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>, John Fastabend <john.fastabend@gmail.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Bernard Metzler <bmt@zurich.ibm.com>, Paolo Abeni <pabeni@redhat.com>, linux-media@vger.kernel.org, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, io-uring@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, Lorenzo Stoakes <lstoakes@gmail.com>, Jens Axboe <axboe@kernel.dk>, Daniel Borkmann <daniel
- @iogearbox.net>, netdev@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>, Bjorn Topel <bjorn@kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, Christian Benvenuti <benve@cisco.com>
+Cc: Scott Wood <oss@buserror.net>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>, =?utf-8?B?UGFsaSBSb2jDoXI=?= <pali@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After the introduction of FOLL_SAME_FILE we no longer require vmas for any
-invocation of pin_user_pages(), so eliminate this parameter from the
-function and all callers.
-
-This clears the way to removing the vmas parameter from GUP altogether.
-
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
----
- arch/powerpc/mm/book3s64/iommu_api.c       | 2 +-
- drivers/infiniband/hw/qib/qib_user_pages.c | 2 +-
- drivers/infiniband/hw/usnic/usnic_uiom.c   | 2 +-
- drivers/infiniband/sw/siw/siw_mem.c        | 2 +-
- drivers/media/v4l2-core/videobuf-dma-sg.c  | 2 +-
- drivers/vdpa/vdpa_user/vduse_dev.c         | 2 +-
- drivers/vhost/vdpa.c                       | 2 +-
- include/linux/mm.h                         | 3 +--
- io_uring/rsrc.c                            | 2 +-
- mm/gup.c                                   | 9 +++------
- mm/gup_test.c                              | 9 ++++-----
- net/xdp/xdp_umem.c                         | 2 +-
- 12 files changed, 17 insertions(+), 22 deletions(-)
-
-diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
-index 81d7185e2ae8..d19fb1f3007d 100644
---- a/arch/powerpc/mm/book3s64/iommu_api.c
-+++ b/arch/powerpc/mm/book3s64/iommu_api.c
-@@ -105,7 +105,7 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
- 
- 		ret = pin_user_pages(ua + (entry << PAGE_SHIFT), n,
- 				FOLL_WRITE | FOLL_LONGTERM,
--				mem->hpages + entry, NULL);
-+				mem->hpages + entry);
- 		if (ret == n) {
- 			pinned += n;
- 			continue;
-diff --git a/drivers/infiniband/hw/qib/qib_user_pages.c b/drivers/infiniband/hw/qib/qib_user_pages.c
-index f693bc753b6b..1bb7507325bc 100644
---- a/drivers/infiniband/hw/qib/qib_user_pages.c
-+++ b/drivers/infiniband/hw/qib/qib_user_pages.c
-@@ -111,7 +111,7 @@ int qib_get_user_pages(unsigned long start_page, size_t num_pages,
- 		ret = pin_user_pages(start_page + got * PAGE_SIZE,
- 				     num_pages - got,
- 				     FOLL_LONGTERM | FOLL_WRITE,
--				     p + got, NULL);
-+				     p + got);
- 		if (ret < 0) {
- 			mmap_read_unlock(current->mm);
- 			goto bail_release;
-diff --git a/drivers/infiniband/hw/usnic/usnic_uiom.c b/drivers/infiniband/hw/usnic/usnic_uiom.c
-index 2a5cac2658ec..84e0f41e7dfa 100644
---- a/drivers/infiniband/hw/usnic/usnic_uiom.c
-+++ b/drivers/infiniband/hw/usnic/usnic_uiom.c
-@@ -140,7 +140,7 @@ static int usnic_uiom_get_pages(unsigned long addr, size_t size, int writable,
- 		ret = pin_user_pages(cur_base,
- 				     min_t(unsigned long, npages,
- 				     PAGE_SIZE / sizeof(struct page *)),
--				     gup_flags, page_list, NULL);
-+				     gup_flags, page_list);
- 
- 		if (ret < 0)
- 			goto out;
-diff --git a/drivers/infiniband/sw/siw/siw_mem.c b/drivers/infiniband/sw/siw/siw_mem.c
-index f51ab2ccf151..e6e25f15567d 100644
---- a/drivers/infiniband/sw/siw/siw_mem.c
-+++ b/drivers/infiniband/sw/siw/siw_mem.c
-@@ -422,7 +422,7 @@ struct siw_umem *siw_umem_get(u64 start, u64 len, bool writable)
- 		umem->page_chunk[i].plist = plist;
- 		while (nents) {
- 			rv = pin_user_pages(first_page_va, nents, foll_flags,
--					    plist, NULL);
-+					    plist);
- 			if (rv < 0)
- 				goto out_sem_up;
- 
-diff --git a/drivers/media/v4l2-core/videobuf-dma-sg.c b/drivers/media/v4l2-core/videobuf-dma-sg.c
-index 53001532e8e3..405b89ea1054 100644
---- a/drivers/media/v4l2-core/videobuf-dma-sg.c
-+++ b/drivers/media/v4l2-core/videobuf-dma-sg.c
-@@ -180,7 +180,7 @@ static int videobuf_dma_init_user_locked(struct videobuf_dmabuf *dma,
- 		data, size, dma->nr_pages);
- 
- 	err = pin_user_pages(data & PAGE_MASK, dma->nr_pages, gup_flags,
--			     dma->pages, NULL);
-+			     dma->pages);
- 
- 	if (err != dma->nr_pages) {
- 		dma->nr_pages = (err >= 0) ? err : 0;
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 0c3b48616a9f..1f80254604f0 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -995,7 +995,7 @@ static int vduse_dev_reg_umem(struct vduse_dev *dev,
- 		goto out;
- 
- 	pinned = pin_user_pages(uaddr, npages, FOLL_LONGTERM | FOLL_WRITE,
--				page_list, NULL);
-+				page_list);
- 	if (pinned != npages) {
- 		ret = pinned < 0 ? pinned : -ENOMEM;
- 		goto out;
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 7be9d9d8f01c..4317128c1c62 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -952,7 +952,7 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
- 	while (npages) {
- 		sz2pin = min_t(unsigned long, npages, list_size);
- 		pinned = pin_user_pages(cur_base, sz2pin,
--					gup_flags, page_list, NULL);
-+					gup_flags, page_list);
- 		if (sz2pin != pinned) {
- 			if (pinned < 0) {
- 				ret = pinned;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 8dfa236cfb58..3f7d36ad7de7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2382,8 +2382,7 @@ long pin_user_pages_remote(struct mm_struct *mm,
- long get_user_pages(unsigned long start, unsigned long nr_pages,
- 		    unsigned int gup_flags, struct page **pages);
- long pin_user_pages(unsigned long start, unsigned long nr_pages,
--		    unsigned int gup_flags, struct page **pages,
--		    struct vm_area_struct **vmas);
-+		    unsigned int gup_flags, struct page **pages);
- long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
- 		    struct page **pages, unsigned int gup_flags);
- long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index adc860bcbd4f..92d0d47e322c 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1157,7 +1157,7 @@ struct page **io_pin_pages(unsigned long ubuf, unsigned long len, int *npages)
- 
- 	pret = pin_user_pages(ubuf, nr_pages,
- 			      FOLL_WRITE | FOLL_LONGTERM | FOLL_SAME_FILE,
--			      pages, NULL);
-+			      pages);
- 	if (pret == nr_pages) {
- 		/*
- 		 * lookup the first VMA, we require that all VMAs in range
-diff --git a/mm/gup.c b/mm/gup.c
-index 3954ce499a4a..714970ef3b30 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3132,8 +3132,6 @@ EXPORT_SYMBOL(pin_user_pages_remote);
-  * @gup_flags:	flags modifying lookup behaviour
-  * @pages:	array that receives pointers to the pages pinned.
-  *		Should be at least nr_pages long.
-- * @vmas:	array of pointers to vmas corresponding to each page.
-- *		Or NULL if the caller does not require them.
-  *
-  * Nearly the same as get_user_pages(), except that FOLL_TOUCH is not set, and
-  * FOLL_PIN is set.
-@@ -3142,15 +3140,14 @@ EXPORT_SYMBOL(pin_user_pages_remote);
-  * see Documentation/core-api/pin_user_pages.rst for details.
-  */
- long pin_user_pages(unsigned long start, unsigned long nr_pages,
--		    unsigned int gup_flags, struct page **pages,
--		    struct vm_area_struct **vmas)
-+		    unsigned int gup_flags, struct page **pages)
- {
- 	int locked = 1;
- 
--	if (!is_valid_gup_args(pages, vmas, NULL, &gup_flags, FOLL_PIN))
-+	if (!is_valid_gup_args(pages, NULL, NULL, &gup_flags, FOLL_PIN))
- 		return 0;
- 	return __gup_longterm_locked(current->mm, start, nr_pages,
--				     pages, vmas, &locked, gup_flags);
-+				     pages, NULL, &locked, gup_flags);
- }
- EXPORT_SYMBOL(pin_user_pages);
- 
-diff --git a/mm/gup_test.c b/mm/gup_test.c
-index 9ba8ea23f84e..1668ce0e0783 100644
---- a/mm/gup_test.c
-+++ b/mm/gup_test.c
-@@ -146,18 +146,17 @@ static int __gup_test_ioctl(unsigned int cmd,
- 						 pages + i);
- 			break;
- 		case PIN_BASIC_TEST:
--			nr = pin_user_pages(addr, nr, gup->gup_flags, pages + i,
--					    NULL);
-+			nr = pin_user_pages(addr, nr, gup->gup_flags, pages + i);
- 			break;
- 		case PIN_LONGTERM_BENCHMARK:
- 			nr = pin_user_pages(addr, nr,
- 					    gup->gup_flags | FOLL_LONGTERM,
--					    pages + i, NULL);
-+					    pages + i);
- 			break;
- 		case DUMP_USER_PAGES_TEST:
- 			if (gup->test_flags & GUP_TEST_FLAG_DUMP_PAGES_USE_PIN)
- 				nr = pin_user_pages(addr, nr, gup->gup_flags,
--						    pages + i, NULL);
-+						    pages + i);
- 			else
- 				nr = get_user_pages(addr, nr, gup->gup_flags,
- 						    pages + i);
-@@ -270,7 +269,7 @@ static inline int pin_longterm_test_start(unsigned long arg)
- 							gup_flags, pages);
- 		else
- 			cur_pages = pin_user_pages(addr, remaining_pages,
--						   gup_flags, pages, NULL);
-+						   gup_flags, pages);
- 		if (cur_pages < 0) {
- 			pin_longterm_test_stop();
- 			ret = cur_pages;
-diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
-index 02207e852d79..06cead2b8e34 100644
---- a/net/xdp/xdp_umem.c
-+++ b/net/xdp/xdp_umem.c
-@@ -103,7 +103,7 @@ static int xdp_umem_pin_pages(struct xdp_umem *umem, unsigned long address)
- 
- 	mmap_read_lock(current->mm);
- 	npgs = pin_user_pages(address, umem->npgs,
--			      gup_flags | FOLL_LONGTERM, &umem->pgs[0], NULL);
-+			      gup_flags | FOLL_LONGTERM, &umem->pgs[0]);
- 	mmap_read_unlock(current->mm);
- 
- 	if (npgs != umem->npgs) {
--- 
-2.40.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWljaGFlbCBFbGxlcm1h
+biA8bXBlQGVsbGVybWFuLmlkLmF1Pg0KPiBTZW50OiBUaHVyc2RheSwgQXByaWwgMTMsIDIwMjMg
+OToxNCBQTQ0KPiBUbzogTGVvIExpIDxsZW95YW5nLmxpQG54cC5jb20+OyBQYXVsIEdvcnRtYWtl
+cg0KPiA8cGF1bC5nb3J0bWFrZXJAd2luZHJpdmVyLmNvbT4NCj4gQ2M6IFNjb3R0IFdvb2QgPG9z
+c0BidXNlcnJvci5uZXQ+OyBQYXVsIE1hY2tlcnJhcyA8cGF1bHVzQHNhbWJhLm9yZz47DQo+IENs
+YXVkaXUgTWFub2lsIDxjbGF1ZGl1Lm1hbm9pbEBueHAuY29tPjsgbGludXhwcGMtZGV2QGxpc3Rz
+Lm96bGFicy5vcmc7DQo+IFBhbGkgUm9ow6FyIDxwYWxpQGtlcm5lbC5vcmc+DQo+IFN1YmplY3Q6
+IFJlOiBbUkZDIFBBVENIIDAvNF0gUmVtb3ZlIHNvbWUgZTUwMC9NUEM4NXh4IGV2YWx1YXRpb24N
+Cj4gcGxhdGZvcm1zDQo+IA0KPiBMaSBZYW5nIDxsZW95YW5nLmxpQG54cC5jb20+IHdyaXRlczoN
+Cj4gPiBPbiBUdWUsIEZlYiAyMSwgMjAyMyBhdCAxOjUy4oCvUE0gUGF1bCBHb3J0bWFrZXINCj4g
+PiA8cGF1bC5nb3J0bWFrZXJAd2luZHJpdmVyLmNvbT4gd3JvdGU6DQo+ID4+DQo+ID4+IFtUaGlz
+IFJGQyBpcyBwcm9wb3NlZCBmb3IgdjYuNCBhbmQgaGVuY2UgaXMgYmFzZWQgb2ZmIGxpbnV4LW5l
+eHQuXQ0KPiA+Pg0KPiA+PiBJbiBhIHNpbWlsYXIgdGhlbWUgdG8gdGhlIGUzMDAvTVBDODN4eCBl
+dmFsdWF0aW9uIHBsYXRmb3JtDQo+ID4+IHJlbW92YWxbMV0sIHRoaXMgdGFyZ2V0cyByZW1vdmFs
+IG9mIHNvbWUgMTMgLS0+IDIxIHllYXIgb2xkDQo+ID4+IGU1MDAvTVBDODV4eCBldmFsdWF0aW9u
+IGJvYXJkcyB0aGF0IHdlcmUgcHJvZHVjZWQgaW4gbGltaXRlZCBudW1iZXJzDQo+ID4+IGFuZCBw
+cmltYXJpbHkgbWFkZSBhdmFpbGFibGUgdG8gaGFyZHdhcmUvc29mdHdhcmUgZGV2ZWxvcGVycyB0
+byBzaGFwZQ0KPiB0aGVpciBvd24gYm9hcmRzIGFuZCBCU1BzLg0KPiA+DQo+ID4gVGhlc2UgZTUw
+MCBwbGF0Zm9ybXMgYXJlIHNpbWlsYXIgdG8gdGhlIGUzMDAgcGxhdGZvcm1zIHRoYXQgdGhleSBh
+cmUNCj4gPiBzdGlsbCBiZWluZyBzaGlwcGVkLCB0aGUgdGFyZ2V0aW5nIG1hcmtldCBwcm9iYWJs
+eSBjYXVzZWQgaXQgdG8gaGF2ZSBhDQo+ID4gbG9uZ2VyIGxpZmUgY3ljbGUuDQo+ID4NCj4gLi4u
+DQo+ID4NCj4gPiBUaGUgZGlmZmVyZW5jZSBoZXJlIGZyb20gdGhlIGUzMDAgcGxhdGZvcm1zIGlz
+IHRoYXQgTVBDODU0MEFEUywNCj4gPiBNUEM4NTYwQURTLCBNUEM4NTQ4Q0RTLCBNUEM4NTY4LU1E
+UyBhcmUgdGhlIG9ubHkgcmVmZXJlbmNlDQo+IHBsYXRmb3Jtcw0KPiA+IHN1cHBsaWVkIGJ5IHVz
+IGZvciB0aGVzZSBTb0NzLiAgV2UgZG9uJ3QgaGF2ZSBhIHNlcGFyYXRpb24gb2YNCj4gPiBldmFs
+dWF0aW9uIHBsYXRmb3JtcyB2cyBwcm9kdWN0LWxpa2UgcGxhdGZvcm1zIGxpa2Ugd2UgZGlkIGxh
+dGVyLg0KPiA+IFRoYXQgcHJvYmFibHkgbWVhbnMgZXZlbiBpZiB0aGV5IGRvbid0IGxvb2sgbGlr
+ZSAiaG9iYnlpc3QiIGZyaWVuZGx5DQo+ID4gdGhleSBhcmUgbW9yZSBsaWtlbHkgdG8gYmUgc3Rp
+bGwgaW4gdXNlLg0KPiANCj4gT0suIEJ1dCB3aGF0IGlzIHRoZSBjaGFuY2UgYW55b25lIGlzIGJv
+b3RpbmcgdXBzdHJlYW0ga2VybmVscyBvbiB0aGVtPw0KDQpXZSBkbyBzdGlsbCBoYXZlIHRoZXNl
+IHBhcnRzIHNoaXBwZWQsIHdoaWNoIG1lYW5zIHRoYXQgdGhlcmUgYXJlIGRlZmluaXRlbHkgYWN0
+aXZlIHVzZXJzIG9mIHRoZXNlIHNpbGljb25zLiAgQnV0IGl0IGlzIHJlYWxseSBoYXJkIHRvIHNh
+eSBob3cgbWFueSBvZiB0aGV5IGFyZSBydW5uaW5nIGxhdGVzdCB1cHN0cmVhbSBrZXJuZWwuICBJ
+TU8sIGlmIHRoZSBuYXR1cmUgb2YgdGhlIGFwcGxpY2F0aW9uIGlzIGNyaXRpY2FsIGl0IGlzIGxp
+a2VseSB0aGV5IHdpbGwgbmVlZCB0byB1cGRhdGUgdGhlIGtlcm5lbCB0byBnZXQgYWxsIHRoZSBz
+ZWN1cml0eSBmaXhlcy4gIEFuZCB0aGUgcmVmZXJlbmNlIGJvYXJkIHdpbGwgYmUgaGVscGZ1bCBh
+cyBhIHN0YXJ0aW5nIHBvaW50IHdoZW4gdGhleSB1cGRhdGUgdGhlIGtlcm5lbC4NCg0KPiANCj4g
+SSBhc3N1bWUgbm8gb25lIGF0IE5YUCBpcyB0ZXN0aW5nIHVwc3RyZWFtIG9uIHRob3NlIGJvYXJk
+cz8NCg0KVG8gYmUgZnJhbmsgdGhleSBhcmUgbm90IGluY2x1ZGVkIGluIHRoZSByb3V0aW5lIHRl
+c3RzIGNhcnJpZWQgb3V0IGJ5IHRoZSBkZXZlbG9wbWVudCB0ZWFtIG5vdyB3aGljaCBpcyBub3Qg
+aWRlYWwgdG8gbWUuICBCdXQgSSB0aGluayB0aGUgc3VwcG9ydCB0ZWFtIGFyZSBwcm9iYWJseSB3
+aWxsaW5nIHRvIGhlbHAgb24gaXNzdWVzIHdpdGggbGF0ZXN0IGtlcm5lbCB3aGVuIG5lZWRlZC4N
+Cg0KUmVnYXJkcywNCkxlbw0K
