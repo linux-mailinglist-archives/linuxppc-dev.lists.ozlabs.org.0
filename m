@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B726E2FF1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 11:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1463A6E314B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 14:10:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Pz6vn1gw7z3fSv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 19:09:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4PzBwQ6D2Cz3fT1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Apr 2023 22:10:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nIsKl560;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=s6CnqnzB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=lstoakes@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::336; helo=mail-wm1-x336.google.com; envelope-from=lstoakes@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nIsKl560;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=s6CnqnzB;
 	dkim-atps=neutral
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Pz6tv0bPlz2xVn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 19:08:54 +1000 (AEST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f0acdd46f2so3271735e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 02:08:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4PzBvZ1DQ7z3cdj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 22:09:45 +1000 (AEST)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f169350e6cso1370835e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Apr 2023 05:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681549730; x=1684141730;
+        d=gmail.com; s=20221208; t=1681560575; x=1684152575;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=InhEM3EHiRkXrRv+rDOd/57bP6C2VpOkdZxgrLu5jHw=;
-        b=nIsKl560k8l1z5w+7Vj9euFCWZH9iEYRsj90660ZNXMvB3jyD9wfY0wtUFEPNkAAWr
-         DM6hd7rU2kNk23Pc+1FSpvcnPwXlB0bt0zS1jjavZpkr6ffnt04azfiMIHD5DTwYuv4S
-         C5XoRspwhOTPB2qwBSsm0HzAiNcEpf2KkiLZFtmKge8HFu/5PEZyeLddBuKAPjEXxn4T
-         Khp3w3pCQoHTkm4L5NakurRQD9sY0L+KWM7tvBwGcJlRyNXUdQSC2YMJ0hNJy1q73DSk
-         H1a9uPS+UUpLKnnhcDdM7CpraDeMo3FTa0RLWUsBx7q30BVtBuAXvfSO2aVDdxKRnJIn
-         wppw==
+        bh=K8x3ikmaTJACOYzpIpbcvsaXlC6/cI+6Eg2IWvlQkq0=;
+        b=s6CnqnzBZ6THc6cnIXQ9tFiKd6HkuMO7PzqDl5qYoVBPz6TLY1hkf210w8sOnAzrei
+         v9NRZuqzkZm3ujvdTD4Q/xqsKFPfppKZJkMHKOw1AXAo0XZJ/iNVur/2UqE3Jlv29kyX
+         WOn43QOaq8pv1V3qHMqN6IwqHfyZW68QFzHs6Q02KpmsgBu7UGSYRrSzvpVoPUtTl+Mh
+         FXMcaHBNr48f9KhhS0WYsUzECx59vCwrezWsHbg5B0XWjTD0sne3p5XHAreuf1/PzvZU
+         3+QyOXL//9FA9+lL8VD4Lx7D8n+ic1FTN1z4dE6iaHk0DOWVvQ9otbUTysRkeHkeJynd
+         4YHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681549730; x=1684141730;
+        d=1e100.net; s=20221208; t=1681560575; x=1684152575;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=InhEM3EHiRkXrRv+rDOd/57bP6C2VpOkdZxgrLu5jHw=;
-        b=X4tlQ6RHKSPgapGDI3QKd88whPRqICMcM/8Bgc/aSc7Rq3dh+vUAnZbbvjex7xA5Pn
-         riagHijrG6pt2hObh7NoxEeDC1thVhrKOadcCEOthLTQjf/GfnZcKWuNt5V1nfVkZ42W
-         cYE4k0RngWJph5BWErU98AeQxncSQaefTqtqHlHuckJyEdRAzjmeiiwD0ztumlMq/nfg
-         ffLPhqmQyp9FIEG4TL+Vh087BvZUoum2g6PdXjqo0B3MxwlBxwahbLH1nuM8TkguosoV
-         r0AkKuUwXvvcm1Za/Qq+e09EMi36B5hvf9dBRbMOriX6ZF+ATC26ty1peCkTLlchHWpI
-         RbAw==
-X-Gm-Message-State: AAQBX9ftH3U2ogfq3uEQFiz7K8cF1ZjtxhI1x9zeBdf7TsmaxnaHjvKi
-	uGeStdpHdQA0wb+RdBdPP6k=
-X-Google-Smtp-Source: AKy350Z5pLswAXLOFSTYMOtF/X2jVhBWwPLFnyPBpYeO/k93TYYcoLOvVvEGvTS833bwvHj8k46jZA==
-X-Received: by 2002:adf:f183:0:b0:2e4:d8d7:839a with SMTP id h3-20020adff183000000b002e4d8d7839amr1028458wro.43.1681549729931;
-        Sat, 15 Apr 2023 02:08:49 -0700 (PDT)
+        bh=K8x3ikmaTJACOYzpIpbcvsaXlC6/cI+6Eg2IWvlQkq0=;
+        b=jVkFq1UQZ9nkJJwiYVdUDagTf9iBNQZ07ps9KSo3kc9UswtqDvNieTPGiI6vIzojEj
+         nizWgQM3DTTzG0la0UkpcJ7vVuOYdBUKqGknUqbX9+q23NMV6E1tsaBrSHqoQkzmY+Ca
+         8stlUgEGyXy4yx9b8ORkuG7mxsQXL9MbRvrrfors29NqxGuFO273YmCEyTRi0Ql82tti
+         EFlhkqh+34Z05+JhaNHNll9JYWQ6A+H6c9d+jPuuRsG9IO3EE+oaFgktyfIeXa6PMx7z
+         S+3seIUXuAnQgmyTDsqrzV+M1qekxLBkYI511bhDKog2IGca8prUqj1tiBQPK35lupJi
+         ZRtg==
+X-Gm-Message-State: AAQBX9f191p+IT7nlb0uu0JXiXDH0cVhd5hsETrUdFi/zf4AlI2rKDly
+	KQVexLDNpADsCWVIfgwGmM0=
+X-Google-Smtp-Source: AKy350YomYNfdZqxeUoplG58e3G8aFqN6nmBy7aau2fgnqPuY2DvZIwHvG83m+klTmm1CrIhE9BoRQ==
+X-Received: by 2002:a5d:6a42:0:b0:2f2:3a72:1cfa with SMTP id t2-20020a5d6a42000000b002f23a721cfamr1388788wrw.15.1681560575329;
+        Sat, 15 Apr 2023 05:09:35 -0700 (PDT)
 Received: from lucifer.home ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.googlemail.com with ESMTPSA id j4-20020a5d5644000000b002f02df4c7a3sm5338874wrw.30.2023.04.15.02.08.48
+        by smtp.googlemail.com with ESMTPSA id t5-20020adfeb85000000b002e71156b0fcsm5651091wrn.6.2023.04.15.05.09.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Apr 2023 02:08:49 -0700 (PDT)
+        Sat, 15 Apr 2023 05:09:34 -0700 (PDT)
 From: Lorenzo Stoakes <lstoakes@gmail.com>
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 6/7] mm/gup: remove vmas parameter from pin_user_pages()
-Date: Sat, 15 Apr 2023 10:08:45 +0100
-Message-Id: <925661e55664dd65a6aaa9f60e96bd0d71ed8197.1681547405.git.lstoakes@gmail.com>
+Subject: [PATCH v3 6/7] mm/gup: remove vmas parameter from pin_user_pages()
+Date: Sat, 15 Apr 2023 13:09:32 +0100
+Message-Id: <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <cover.1681547405.git.lstoakes@gmail.com>
-References: <cover.1681547405.git.lstoakes@gmail.com>
+In-Reply-To: <cover.1681558407.git.lstoakes@gmail.com>
+References: <cover.1681558407.git.lstoakes@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -213,11 +213,11 @@ index 1bfe73a2b6d3..363e3d0d46f4 100644
  		    struct page **pages, unsigned int gup_flags);
  long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
 diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index adc860bcbd4f..92d0d47e322c 100644
+index 56de4d7bfc2b..bd45681de660 100644
 --- a/io_uring/rsrc.c
 +++ b/io_uring/rsrc.c
-@@ -1157,7 +1157,7 @@ struct page **io_pin_pages(unsigned long ubuf, unsigned long len, int *npages)
- 
+@@ -1156,7 +1156,7 @@ struct page **io_pin_pages(unsigned long ubuf, unsigned long len, int *npages)
+ 	mmap_read_lock(current->mm);
  	pret = pin_user_pages(ubuf, nr_pages,
  			      FOLL_WRITE | FOLL_LONGTERM | FOLL_SAME_FILE,
 -			      pages, NULL);
