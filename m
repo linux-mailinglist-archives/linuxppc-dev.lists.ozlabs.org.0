@@ -2,128 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD296E46FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 14:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C197F6E488D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 14:57:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0QcK1jz3z3f8R
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 22:00:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0Rt44R0Cz3f7t
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 22:57:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cornelisnetworks.com header.i=@cornelisnetworks.com header.a=rsa-sha256 header.s=selector1 header.b=HYImFkB4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qU6w2kY5;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oVQCEIp+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cornelisnetworks.com (client-ip=2a01:111:f400:7eab::726; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=dennis.dalessandro@cornelisnetworks.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cornelisnetworks.com header.i=@cornelisnetworks.com header.a=rsa-sha256 header.s=selector1 header.b=HYImFkB4;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qU6w2kY5;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oVQCEIp+;
 	dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20726.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::726])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0QbN3rzxz3bWw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 21:59:59 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ai+3WL86HI3dKHB04VmmhgzcRC7JtpsbVmo3BJtVQgcDAfJjEEYUHr8R81Ig8vMBbGyBW/LxLv6wCgA0Q55i2ex3wJTTF7WyQnj5yqbhiDVFhtAnmvDk8Y7eikNTzcyYnclfMW6MsjFlo2sucLAvGZzrjObwbWQSjvmYVGSxNj3sWvKDM0UL/E2a2VDXhkbK7C+2Cp3RjVW89ky8G8ovoh4NlVDRBjbNpNeC68vZ2KkHj6x4/q6JWLfte2qtt1Cao4ySbjIX7dh8VeTG7XQfFB0sdF9ZBFCNQ147G5TbcdxQfezACjQ7wEmpXpMimsdY5IYaP6W9CkzjackqrjW6Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1sCt0j7nh5WAnvCqxD31/2x7EkyjxxxCU/JHi8l8Bvg=;
- b=HKocIO9I4GnK+63SFc4Gbzcnp4eh1wN+H8X5xkP4EjsEEIsc00OQ7WFBPBU8luT6RNfoQNoByfAOlXU7O3xhauaXEe/tMCLxfB4bRzLNX7i1NlwzPL3BTsM1ArkOqV4Am8NmDkCLq5L5B6PvnXwEA9VS4JwliYO01i8rthkNQQlikYsXLmjDeJ3XQygZ99K1rX8Yfa4ibgbRw9ATTeF1/eLUSN4S/rlnSy5rQPmFAgSkIS7y2UsCP1ciW5YqKaQJuARonVRgiYPTaGh7sV0v57ajtZ+hBvhB/RfMPnk2Htcq1biLrbRHifVMRyDo4r81/61xvbVdV8AvwBvv4boBRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cornelisnetworks.com; dmarc=pass action=none
- header.from=cornelisnetworks.com; dkim=pass header.d=cornelisnetworks.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cornelisnetworks.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1sCt0j7nh5WAnvCqxD31/2x7EkyjxxxCU/JHi8l8Bvg=;
- b=HYImFkB4VWAgLDxYQZ+4ZtEgsUgikdBh1Fc9nizN1s8zHp5A1CtdQTqHocNTyJIAidOGJbnPVtIvctjMo+VD62HKUm8VcPv2ODGC2Gc/DC1H3wYREIKixpK8ZmMVnCKcDtynFdSZBGOyYlLC/LFL+kf2iMpelrvgCwDp/N/xDnsz0emI+/rep/W2aEw1mryCEYY8e7Wwe9q/7kbqvZXBwORRSPAx/QIixQ/UyGpxKvARuzEPrN7oGwLE6Hp4C9tEaUDwIiANqjsTu5vjWuapgCbUGKWERt2wXGRV3K1TaH45PaaHj0BzC6aSQzhVdsJjRkAAufeHyPVAR8KX68Hjwg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cornelisnetworks.com;
-Received: from DM6PR01MB4107.prod.exchangelabs.com (2603:10b6:5:22::24) by
- CH0PR01MB7154.prod.exchangelabs.com (2603:10b6:610:eb::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6319.19; Mon, 17 Apr 2023 11:59:40 +0000
-Received: from DM6PR01MB4107.prod.exchangelabs.com
- ([fe80::f33a:edf4:c24:d88e]) by DM6PR01MB4107.prod.exchangelabs.com
- ([fe80::f33a:edf4:c24:d88e%7]) with mapi id 15.20.6319.019; Mon, 17 Apr 2023
- 11:59:40 +0000
-Message-ID: <181d6b4e-4a7a-c458-0292-c35317a0fafe@cornelisnetworks.com>
-Date: Mon, 17 Apr 2023 07:59:34 -0400
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH v3 6/7] mm/gup: remove vmas parameter from
- pin_user_pages()
-To: Lorenzo Stoakes <lstoakes@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-References: <cover.1681558407.git.lstoakes@gmail.com>
- <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
-Content-Language: en-US
-From: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-In-Reply-To: <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR17CA0017.namprd17.prod.outlook.com
- (2603:10b6:208:15e::30) To DM6PR01MB4107.prod.exchangelabs.com
- (2603:10b6:5:22::24)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0RsB66lkz3cGm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 22:57:02 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 65ACA1F86C;
+	Mon, 17 Apr 2023 12:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1681736218; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TjKFT65nFde0KHYwvUCAIbizOxCNdL0ntslOVRl87lE=;
+	b=qU6w2kY5MzqEXwd8TMNs58RhCH9e5hAM3giF5jjQmYT6lBuIWGXS/c+WHrP5T+pN3SY2vp
+	NA5N6GTN/+zI0Nkuz0JjvVnZJyhucRMUl5SOITpu5xAQg48nvBBYq194+Km0t5IwM18z2J
+	BTyIpDo3bUNDxPWIkyVoQeOFNoGNWP4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1681736218;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TjKFT65nFde0KHYwvUCAIbizOxCNdL0ntslOVRl87lE=;
+	b=oVQCEIp+Zsfrb6hp9far1l809Ib3e3nbzdCxJOOQ2f8MndGptEVdK0mKoxA4OcCHq1YcqT
+	IcKcAyErDVaEE+AQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E43D31390E;
+	Mon, 17 Apr 2023 12:56:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id yBGhNhlCPWToWwAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Mon, 17 Apr 2023 12:56:57 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	daniel.vetter@ffwll.ch,
+	deller@gmx.de,
+	javierm@redhat.com,
+	gregkh@linuxfoundation.org
+Subject: [PATCH v3 00/19] arch: Consolidate <asm/fb.h>
+Date: Mon, 17 Apr 2023 14:56:32 +0200
+Message-Id: <20230417125651.25126-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR01MB4107:EE_|CH0PR01MB7154:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd3b6097-8821-4c13-a357-08db3f3b3910
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	1DhMeSSpVv1b8F4hkxlMYIh7EydeM4Eig9BgKt4GccTtVkQTgISy6T7j3T1VyO/eTf3Uof+flnx9mpH1oim63IEEOey6tNlM7f1vkM1+GSyutPP+KEfkZocK4qMXrV6gM5jATPiI2QOirjQ/5cYNeuzD5juo2GGykYB3k0p6RJ1Lh4bttD759S9Y9LZ8mW9GhOgGw/I3L4Dow0rX97X3yM4EyeIWffO2/nmOaB8zAp90Kujp5q8zaF2eK3cfkNU4XSfTlmY+6Xqx4HNbVVY59WbPDyAe3xbS2YrGfWN5QIsjvs0p7Jn65LqWYIkhfqREPr4c5pBctxRHZ+zStDjx562ehDJ/yZ5TGxN4JKnveTFKZHBfwfuhnmIMZrapqA5biKPSzDxXtEc+lytCy0+3Hk7qq9alA05vOUBUQi0/jIpGsoXBpGFFj+wO0MjuPfM31wJnHKlt/qQ6fqq6zthA9FmYCiR1Z+32ngxVeF5n4gRRx+JVOWmkQBP8eQJb4Aoy2HCORqPuQ7CtO2v+K5IC6DRGMlE5U6/GfbTlBAnMV8xeW6Srnhxik53X5cgLoDjapeufETT3NiDMe7669RKG4nPre3tUDHkgrYNS2WDP8+jwXc80FgwrxrlPOe2d3r+EJvjBVENcX+DQ9xZaie1u3g==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR01MB4107.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(39830400003)(366004)(136003)(451199021)(110136005)(54906003)(4326008)(316002)(66946007)(66556008)(66476007)(52116002)(8936002)(6486002)(478600001)(6666004)(5660300002)(41300700001)(8676002)(2906002)(7416002)(7406005)(44832011)(86362001)(31696002)(36756003)(38350700002)(38100700002)(2616005)(26005)(186003)(53546011)(6512007)(6506007)(83380400001)(31686004)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Rml3ZzZZbHViVmRURE9Nc0xITndiUTVSMVE3OGZIajBHbzYrajlvWE5pMUl5?=
- =?utf-8?B?cVdzUzJuTUJCT2haM3g3WTFZdm5FTTNBU3JuMFQwblU1aUNIZ2dCZU5VRXR5?=
- =?utf-8?B?THlPMC9JbXVWWGFWdFczbkRsVXd1V25rWHA2VXNJUW1sNjRLMXRrSCtNYUdS?=
- =?utf-8?B?YmlJN1piNG11UVdWRi8wRkt4ZndJNFZ3MG0vSUlIOWhQMHo2bXJSR092bC9K?=
- =?utf-8?B?TVJRTWF1S09KL2NPU0pRSlRUUWQzcDBVcXIrMEU2cmJWTkZQVnFzSlYzNGxi?=
- =?utf-8?B?TzVLWTlZbHNmUjhTZkpPUFphYUFZYlFqNDFFWmVBY1MzRFh6TkVXZzVBZWxD?=
- =?utf-8?B?dFJTNjY2bGNzWnpTbUhOVUw2cFM4VUcrMklNL2c4VTR3Q29nMDZKWWdmb2o5?=
- =?utf-8?B?S2hnaGd3c2JaeFZ4RG5YREpDUGJMWk41a2t1WC9INHZzb2hFRm12OCs4WnBK?=
- =?utf-8?B?QTMxclp3OFQ2YUdyZkdxYWEvbjFGMW5sZUtKMXdSVW53c3h4em5mdGRvUzdo?=
- =?utf-8?B?RmlSVXJ6cW9Wbjl3VUJjWFUrclFwR2haYXhHdE5DaUh4S1ovWXM5ZkRzdDVp?=
- =?utf-8?B?cjU0MzIvNW0vSXN1TVVMUFh0SkswdWJnV3p2c2Mwa2tzMS9qRC9hUmp1bzI1?=
- =?utf-8?B?ZllPeU9lM1JJbGpUYzJlM2ZMSURHRWp4a1NmMXFYSHNvdkVLblYwMmlnWm9P?=
- =?utf-8?B?Y1M2dUJtR0JkOERHNTlNaFJVbUdIWElpQW1XM0pVd2ZjUkorUDBxODM1UWxI?=
- =?utf-8?B?ZDgyTTBkb1BsVzdxcmVkbXFFNVJlc2dRUHZleEdDRFFubUhSbFQySzlYNGNQ?=
- =?utf-8?B?TGtmaHhyZXBMV1hhc1NDY2FrWE5GcnNvZTlJSVd3QVcwNTVXVFRleFVncUxW?=
- =?utf-8?B?Y1BpZlViVkkwTE80a2ViclplUGlSd01BYkRMV0lITElIL1RMcjV6dGRTUWtH?=
- =?utf-8?B?NXdJam9ialp0ZGE1Y25BOG0xM3IweExKSEJ0T0d3UkczaG5OVGcyaGNFMWYy?=
- =?utf-8?B?REtIbjRBOFlDZXpyODFqVEJGR3JxUkZVQ2psbWhOa29mRzhacUloWjFkRDRy?=
- =?utf-8?B?OXkrdXYxT2xROU9yaHRxNmluL3RvMytEWFBhVjZ4alNJQTYrVWFIckltUmJF?=
- =?utf-8?B?TUFUOFBId1dUZXhXTTI5aHRsZnRranZ5MnFTZ3NWUnBrVnlQQmNGY2l6YnJj?=
- =?utf-8?B?VzB3MkZ5ZHBhY2Rtd2xQNzF0Q1htTHhtRXpRckh0SUZMbGFLdU1LNm0rb2xJ?=
- =?utf-8?B?Um5HcExHSlp4bDJyQ0M0azcwWEw0UkZkWUppZThCZTAvdmN3WUtxQ2dNaXN5?=
- =?utf-8?B?SWVKY2pXTyt6NEdCVVBRaG5YVTBNWWhyejRyd0krc2pqMG9acWFOU3JBbHVO?=
- =?utf-8?B?Ri9yOXFjUElPNmlCdGp3dXIwcUdxVi95UmNnMURZeDA4dDZxU1V4bmRqNHJx?=
- =?utf-8?B?akpGTDA2NmR5S2tHSUVUcnBKQi9MS1g4eVRGQ1pTVW53WjJ2WUJPZGlkR3d0?=
- =?utf-8?B?RGZrRWJ6QkZVOEpXdTFnVjh0d3YrdGc4VE85bUFyR1VsbE84cDUyRDlrWWlX?=
- =?utf-8?B?cjY3SkY5K0ltaEZpTng2czg5LzdGMkZ2UXZBcXBFODhBOGdTak5Nby9IMVhN?=
- =?utf-8?B?cWl0N3lkYTRzbFhMNTFpNGxsMW5KeTZDN3lTQSthQ1FVK2VoZkJndUZZZGp4?=
- =?utf-8?B?U3lXTVkzcjd2dHlmaEE0a1lCcGQrSHNiMURuWlRPWjlVTXhIb25hdGc1M0s3?=
- =?utf-8?B?eVF2bmk2NE55R1dic3lrMUpXeHZxUjdDcmhTUG5lUjU4ekQzSlJZbXpQWE1p?=
- =?utf-8?B?T0RkRzA4c1JPcXR4cmFWdUMvZEZKMU9Pa3NlaGVjTDBuajRzWUdDWXJ3YWRs?=
- =?utf-8?B?aEhWMjlyTXZ1eHgvSkZySFlHWll4d0ZRS0dSUGVaV3FjTUpmczB0NHRvVDJE?=
- =?utf-8?B?bDJQOE9HeXZKdTM4SkJhdjBJbENMam10azdSK2lkelYxNUR2U3pabDNpMFFE?=
- =?utf-8?B?VFVjY0JvUzFSRDF3bWFPVGM1eHU5RlM0ZWRGMjBMbk9CeDJpTDAzSzdhLzRP?=
- =?utf-8?B?N1RGTWw5bjl0aXRWUVA2Tlg5by9sbmQzTFpnUlYybExNOWxrRDhNeDc0Mklp?=
- =?utf-8?B?bWNCMG53djhVTFp0RzliWS9sWVRDbHl2NVY4SlZWcElTdmx3a09Cb2pQS1F2?=
- =?utf-8?Q?cpPvJW6u15b4gMRyamZQtFs=3D?=
-X-OriginatorOrg: cornelisnetworks.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd3b6097-8821-4c13-a357-08db3f3b3910
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR01MB4107.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2023 11:59:39.8624
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4dbdb7da-74ee-4b45-8747-ef5ce5ebe68a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nMqnAoQTMA1pXaQyRDyRDkkNb1GPOwuspHLueg82Ikt0POx8RR4YI9q+9EAz7M36Pin5Tyy6o1Yxj223NE7da2kOglT+ArI8P7q8D6f2l0kvdg+VtlDNvydSvF0J/+r2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR01MB7154
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,50 +77,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nelson Escobar <neescoba@cisco.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Jason Wang <jasowang@redhat.com>, Alexei Starovoitov <ast@kernel.org>, virtualization@lists.linux-foundation.org, Eric Dumazet <edumazet@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>, John Fastabend <john.fastabend@gmail.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-media@vger.kernel.org, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Bernard Metzler <bmt@zurich.ibm.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, io-uring@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>, Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>, Bjorn Topel <bjorn
- @kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, Christian Benvenuti <benve@cisco.com>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Various architectures provide <asm/fb.h> with helpers for fbdev
+framebuffer devices. Share the contained code where possible. There
+is already <asm-generic/fb.h>, which implements generic (as in
+'empty') functions of the fbdev helpers. The header was added in
+commit aafe4dbed0bf ("asm-generic: add generic versions of common
+headers"), but never used.
 
-On 4/15/23 8:09 AM, Lorenzo Stoakes wrote:
-> After the introduction of FOLL_SAME_FILE we no longer require vmas for any
-> invocation of pin_user_pages(), so eliminate this parameter from the
-> function and all callers.
-> 
-> This clears the way to removing the vmas parameter from GUP altogether.
-> 
-> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> ---
->  arch/powerpc/mm/book3s64/iommu_api.c       | 2 +-
->  drivers/infiniband/hw/qib/qib_user_pages.c | 2 +-
->  drivers/infiniband/hw/usnic/usnic_uiom.c   | 2 +-
->  drivers/infiniband/sw/siw/siw_mem.c        | 2 +-
->  drivers/media/v4l2-core/videobuf-dma-sg.c  | 2 +-
->  drivers/vdpa/vdpa_user/vduse_dev.c         | 2 +-
->  drivers/vhost/vdpa.c                       | 2 +-
->  include/linux/mm.h                         | 3 +--
->  io_uring/rsrc.c                            | 2 +-
->  mm/gup.c                                   | 9 +++------
->  mm/gup_test.c                              | 9 ++++-----
->  net/xdp/xdp_umem.c                         | 2 +-
->  12 files changed, 17 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/qib/qib_user_pages.c b/drivers/infiniband/hw/qib/qib_user_pages.c
-> index f693bc753b6b..1bb7507325bc 100644
-> --- a/drivers/infiniband/hw/qib/qib_user_pages.c
-> +++ b/drivers/infiniband/hw/qib/qib_user_pages.c
-> @@ -111,7 +111,7 @@ int qib_get_user_pages(unsigned long start_page, size_t num_pages,
->  		ret = pin_user_pages(start_page + got * PAGE_SIZE,
->  				     num_pages - got,
->  				     FOLL_LONGTERM | FOLL_WRITE,
-> -				     p + got, NULL);
-> +				     p + got);
->  		if (ret < 0) {
->  			mmap_read_unlock(current->mm);
->  			goto bail_release;
+Each per-architecture header file declares and/or implements fbdev
+helpers and defines a preprocessor token for each. The generic
+header then provides the remaining helpers. It works like the I/O
+helpers in <asm/io.h>.
 
-For Qib...
+For PARISC, the architecture helpers are mixed up with helpers
+for the system's STI graphics firmware. We first move the STI code
+to appropriate locations under video/ and then move the architecture
+helper under arch/parisc.
 
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+For Sparc, there's an additional patch that moves the implementation
+from the header into a source file. This allows to avoid some include
+statements in the header file.
+
+Built on arm, arm64, m68k, mips, parisc, powerpc, sparc and x86.
+
+v3:
+	* use default fb_pgprotect() on arc, parisc, sparc64 (Arnd)
+	* fix includes in generic fb.h
+v2:
+	* make writecombine the default mapping mode (Arnd)
+	* rework fb_pgprotect() on m68k
+
+Thomas Zimmermann (19):
+  fbdev: Prepare generic architecture helpers
+  arch/arc: Implement <asm/fb.h> with generic helpers
+  arch/arm: Implement <asm/fb.h> with generic helpers
+  arch/arm64: Implement <asm/fb.h> with generic helpers
+  arch/ia64: Implement <asm/fb.h> with generic helpers
+  arch/loongarch: Implement <asm/fb.h> with generic helpers
+  arch/m68k: Merge variants of fb_pgprotect() into single function
+  arch/m68k: Implement <asm/fb.h> with generic helpers
+  arch/mips: Implement <asm/fb.h> with generic helpers
+  video: Remove trailing whitespaces
+  video: Move HP PARISC STI core code to shared location
+  arch/parisc: Remove trailing whitespaces
+  arch/parisc: Implement fb_is_primary_device() under arch/parisc
+  arch/parisc: Implement <asm/fb.h> with generic helpers
+  arch/powerpc: Implement <asm/fb.h> with generic helpers
+  arch/sh: Implement <asm/fb.h> with generic helpers
+  arch/sparc: Implement fb_is_primary_device() in source file
+  arch/sparc: Implement <asm/fb.h> with generic helpers
+  arch/x86: Implement <asm/fb.h> with generic helpers
+
+ arch/arc/include/asm/fb.h                     |  16 +-
+ arch/arm/include/asm/fb.h                     |  15 +-
+ arch/arm64/include/asm/fb.h                   |  15 +-
+ arch/ia64/include/asm/fb.h                    |  11 +-
+ arch/loongarch/include/asm/fb.h               |  15 +-
+ arch/m68k/include/asm/fb.h                    |  22 +--
+ arch/mips/include/asm/fb.h                    |  10 +-
+ arch/parisc/Makefile                          |   4 +-
+ arch/parisc/include/asm/fb.h                  |  20 +--
+ arch/parisc/video/Makefile                    |   3 +
+ arch/parisc/video/fbdev.c                     |  27 +++
+ arch/powerpc/include/asm/fb.h                 |   8 +-
+ arch/sh/include/asm/fb.h                      |  15 +-
+ arch/sparc/Makefile                           |   1 +
+ arch/sparc/include/asm/fb.h                   |  33 ++--
+ arch/sparc/video/Makefile                     |   3 +
+ arch/sparc/video/fbdev.c                      |  24 +++
+ arch/x86/include/asm/fb.h                     |  11 +-
+ drivers/video/Kconfig                         |   7 +
+ drivers/video/Makefile                        |   1 +
+ drivers/video/console/Kconfig                 |   1 +
+ drivers/video/console/Makefile                |   4 +-
+ drivers/video/console/sticon.c                |   6 +-
+ drivers/video/fbdev/Kconfig                   |   3 +-
+ drivers/video/fbdev/stifb.c                   | 158 +++++++++---------
+ drivers/video/{console => }/sticore.c         | 123 ++++++--------
+ include/asm-generic/fb.h                      |  24 ++-
+ .../video/fbdev => include/video}/sticore.h   |  16 +-
+ 28 files changed, 285 insertions(+), 311 deletions(-)
+ create mode 100644 arch/parisc/video/Makefile
+ create mode 100644 arch/parisc/video/fbdev.c
+ create mode 100644 arch/sparc/video/Makefile
+ create mode 100644 arch/sparc/video/fbdev.c
+ rename drivers/video/{console => }/sticore.c (95%)
+ rename {drivers/video/fbdev => include/video}/sticore.h (99%)
+
+
+base-commit: c7cfe0c7215db9556ffe7ce33d1f60f768336cfd
+prerequisite-patch-id: 0aa359f6144c4015c140c8a6750be19099c676fb
+prerequisite-patch-id: c67e5d886a47b7d0266d81100837557fda34cb24
+prerequisite-patch-id: cbc453ee02fae02af22fbfdce56ab732c7a88c36
+-- 
+2.40.0
 
