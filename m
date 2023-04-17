@@ -2,91 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8266E439B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 11:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6456E4628
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 13:15:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0M755L70z3ccg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 19:23:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0Pc71Nzfz3cjY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 21:15:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=hoxslnOK;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MR4yxKuz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3oFxcza;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3oFxcza;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.27; helo=wnew2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=hoxslnOK;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MR4yxKuz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3oFxcza;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3oFxcza;
 	dkim-atps=neutral
-Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com [64.147.123.27])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0M673mMzz3cLh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 19:22:54 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.west.internal (Postfix) with ESMTP id DD2C02B066BA;
-	Mon, 17 Apr 2023 05:22:47 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 17 Apr 2023 05:22:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-	1681723367; x=1681730567; bh=peYP/lOIqmvTTJ2GJZFK05PdIeVxfQrMTMT
-	dWlxN2bY=; b=hoxslnOKq5L0fgq1KZ5uwFxkfCsDUbQoEitttD9Gb157/4VvDaL
-	fzRTYgwNrKhMTGBEWYk5kV4pCoKxj3IQV0FpUtGeddLg5GfVlMhZex8QF6mhL8p9
-	gvwX4MSUzxesv1YcnaqKaa4Hf8aEonHOEB+LqYDIenoy4k9B5AvOOz7WXYv6rPww
-	vauHxzq0EC93J9INj8HpYFP0uokUJZlvJ0DGwXpWQ8LUcqRJMmLECR08O/Gg7C4C
-	FExoluX3ejusbKwfN3AFnDxBNc0Jh1L5n5E2k8MJ529jR2BSvuckTFMjwePw4/jA
-	IVxKZIBctylYcZmrJ3YTpI6yusKyhHnhjmw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1681723367; x=1681730567; bh=peYP/lOIqmvTTJ2GJZFK05PdIeVxfQrMTMT
-	dWlxN2bY=; b=MR4yxKuz3/tjr23pAzsFitwD0Txq7SZ+LasC5Fyh1rdL9W+5uLQ
-	QWuTkcsnaN+XbFlYxewK49c7zL/ltjC0cAxyGzvY+pAqila9tzloSXls1fSGTLU8
-	83j+ql9LP2Am/jKxSL+2eFTD9s2a+pAHNF1s4l+85O8VFC4gAEQAX/IiexVaT7mA
-	1njCOrvD++JH4RDb7rqDNfo30GjQVpEJWnie2UNVdXN3+HoTO7VAHqni1UoK4zJb
-	K0nmV8AH3mMhRqTjxdJcDOoA4dxU/4N4+juQYM/HVijErDhMcN+7kkXCY9vJtEKX
-	A6hZ5WwaK7trmU2l173N30Rm9x+GYS13Hyg==
-X-ME-Sender: <xms:5g89ZGh1XGEKu3GOwuyxUAI_aRj0-gXb1yU9cH41yOyGtrZXXEBRxw>
-    <xme:5g89ZHCJrzk8kcvbfI9uoi9xOXxIpgIcnUMY2tPn_xA8atud9UMgflJi8xJj_xxVr
-    3CIR7jk9VrljLNWmYA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeliedguddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:5g89ZOF82A9szmMdiIKfUdndIY5Y_J2WWepzSI164UFVULZ600rDfg>
-    <xmx:5g89ZPS9rsGZ3-6dQW4K4hejhxqnpa-f-mX9DnhlkCPRmeMFlap6YA>
-    <xmx:5g89ZDzdQ2ec3Pn4h3UEvgarbJnSwOf3ZSGbcWd6YhZnAMBHYJ805Q>
-    <xmx:5w89ZEqvqQ-8qIHbFuXLaLZUzpDWtqOdQ0aVq4skLKD0cgTZu8vkwIppGeY>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 2AD08B60086; Mon, 17 Apr 2023 05:22:46 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-334-g8c072af647-fm-20230330.001-g8c072af6
-Mime-Version: 1.0
-Message-Id: <55abd7af-acb8-47ce-89db-1722bcf0cb9c@app.fastmail.com>
-In-Reply-To: <2b4f75b8-aa83-8e41-7c99-7c8d573c0f31@suse.de>
-References: <20230406143019.6709-1-tzimmermann@suse.de>
- <20230406143019.6709-2-tzimmermann@suse.de>
- <CAMuHMdUfViWzPbB+GcGUwxmGNxAohfq71Jed3DzS=Cb+gBzotg@mail.gmail.com>
- <2b4f75b8-aa83-8e41-7c99-7c8d573c0f31@suse.de>
-Date: Mon, 17 Apr 2023 11:22:24 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 01/19] fbdev: Prepare generic architecture helpers
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0PbC5xP3z3c7l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 21:14:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1681730081;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5KNRdeLRU2Xq/n1iDZzMtTXMvfraDKy7YfY/QU65aIc=;
+	b=i3oFxczaEt479I0iFXaRhrqLSx9P6FifoKisSNQvp7e9tktK5cHxJxAFqtr3/GP3+qQL9I
+	nFNrBUPeyJNPD5WLlgYOR+rD9soVZlgW5jRZCfGZG+xYH4q8JIoahT5ZvWoP57opaZ5sBw
+	6jIV08hpzQ46euOkDOabHH0mEPAqZTI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1681730081;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5KNRdeLRU2Xq/n1iDZzMtTXMvfraDKy7YfY/QU65aIc=;
+	b=i3oFxczaEt479I0iFXaRhrqLSx9P6FifoKisSNQvp7e9tktK5cHxJxAFqtr3/GP3+qQL9I
+	nFNrBUPeyJNPD5WLlgYOR+rD9soVZlgW5jRZCfGZG+xYH4q8JIoahT5ZvWoP57opaZ5sBw
+	6jIV08hpzQ46euOkDOabHH0mEPAqZTI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-67-DcTEP-9AMk68DG7dYy3YKA-1; Mon, 17 Apr 2023 07:14:40 -0400
+X-MC-Unique: DcTEP-9AMk68DG7dYy3YKA-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f080f534acso8156435e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 04:14:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681730079; x=1684322079;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5KNRdeLRU2Xq/n1iDZzMtTXMvfraDKy7YfY/QU65aIc=;
+        b=EK67KEDHzhoxgsommZjtZxdSECQb71sRorHn+XPJPESQTQc/LhN8w7IXJf8Fu0cx/6
+         DHWqxFwN+M0cV9SDQIS4qSBvxDjiJWlVdrqQfvfw+UBkBHTNdkIx9T6NUjgvvlF58CIH
+         7GA5t903IgPbxEremRUxtPkS7Kv5kAPghkqiq4IOZx9QPby4UGzjyxW+kVcGDv3S7Q5b
+         2TGjzYpqkjwmisEWJZMStzfDTA+we/8RxZD0164+21ok4yyEPXE9O8O4+r+D6IMcXnqs
+         RSo/4tDpTDlBQOOgIScKK4Ym9cDvLnobr30DcHnakNff2nlBPb5nOe4G7Dh/qTzB2CcF
+         a70w==
+X-Gm-Message-State: AAQBX9cwThSFC/80Sc1fg45+I9l3tXZL+qSYWcCyuNbWmwLHDbPDblga
+	0GzT46BwaV0bgev0oo8iEg2DBAhln9tuuIBrDL2qctC7/kfKHIR2ZGGtHPlwUQIqQQgbCsVzrtg
+	WMR1tQF27OV+vLPpfbhkhYtoBbg==
+X-Received: by 2002:a5d:650c:0:b0:2f8:3225:2bc2 with SMTP id x12-20020a5d650c000000b002f832252bc2mr4681555wru.41.1681730079149;
+        Mon, 17 Apr 2023 04:14:39 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bNt0CQlgSAneNNoqT/xp81/MyHZrBQz3dDdnffEdIUnbPzTF+43gFytbOZ+e3kttt+3w0ALw==
+X-Received: by 2002:a5d:650c:0:b0:2f8:3225:2bc2 with SMTP id x12-20020a5d650c000000b002f832252bc2mr4681519wru.41.1681730078827;
+        Mon, 17 Apr 2023 04:14:38 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c700:fc00:db07:68a9:6af5:ecdf? (p200300cbc700fc00db0768a96af5ecdf.dip0.t-ipconnect.de. [2003:cb:c700:fc00:db07:68a9:6af5:ecdf])
+        by smtp.gmail.com with ESMTPSA id v3-20020adfe4c3000000b002f459afc809sm10282660wrm.72.2023.04.17.04.14.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Apr 2023 04:14:38 -0700 (PDT)
+Message-ID: <eb624430-6fb5-0349-0798-3f71c39e8768@redhat.com>
+Date: Mon, 17 Apr 2023 13:14:36 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v3 6/7] mm/gup: remove vmas parameter from
+ pin_user_pages()
+To: Lorenzo Stoakes <lstoakes@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+References: <cover.1681558407.git.lstoakes@gmail.com>
+ <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,39 +106,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, Daniel Vetter <daniel.vetter@ffwll.ch>, Helge Deller <deller@gmx.de>, linux-mips@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Nelson Escobar <neescoba@cisco.com>, kvm@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Alexei Starovoitov <ast@kernel.org>, virtualization@lists.linux-foundation.org, Eric Dumazet <edumazet@google.com>, Leon Romanovsky <leon@kernel.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-media@vger.kernel.org, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Bernard Metzler <bmt@zurich.ibm.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, io-uring@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>, Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.
+ com>, Bjorn Topel <bjorn@kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, Christian Benvenuti <benve@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 17, 2023, at 11:03, Thomas Zimmermann wrote:
-> Am 11.04.23 um 10:08 schrieb Geert Uytterhoeven:
->> On Thu, Apr 6, 2023 at 4:30=E2=80=AFPM Thomas Zimmermann <tzimmermann=
-@suse.de> wrote:
+On 15.04.23 14:09, Lorenzo Stoakes wrote:
+> After the introduction of FOLL_SAME_FILE we no longer require vmas for any
+> invocation of pin_user_pages(), so eliminate this parameter from the
+> function and all callers.
+> 
+> This clears the way to removing the vmas parameter from GUP altogether.
+> 
+> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+> ---
 
->>> +#ifndef fb_pgprotect
->>> +#define fb_pgprotect fb_pgprotect
->>> +static inline void fb_pgprotect(struct file *file, struct vm_area_s=
-truct *vma,
->>> +                               unsigned long off)
->>=20
->> Does this affect any noMMU platforms that relied on fb_pgprotect()
->> doing nothing before?
->> Perhaps the body below should be protected by "#ifdef CONFIG_MMU"?
->
-> I cannot conclusively answer this question, but I did some grep'ing=20
-> ('git grep ndef | grep CONFIG_MMU'):
->
-> Only the architectures in this patchset provide <asm/fb.h> but nothing=20
-> anywhere uses <asm-generic/fb.h> yet. And of those architectures, only=20
-> arm and m68k have !CONFIG_MMU cases. Those are handled in the rsp=20
-> patches. I think we're good.
+Ideally, we'd avoid FOLL_SAME_FILE as well
 
-Agreed. The generic version is just a more elaborate way to do
-nothing here, as the=20
+Acked-by: David Hildenbrand <david@redhat.com>
 
-     vma->vm_page_prot =3D pgprot_writecombine(vma->vm_page_prot);
+-- 
+Thanks,
 
-line on nommu just turns into a self-assignment of the same member
-that was set the line before.
+David / dhildenb
 
-     Arnd
