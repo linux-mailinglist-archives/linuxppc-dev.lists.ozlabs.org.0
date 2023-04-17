@@ -2,77 +2,128 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B346E46CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 13:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD296E46FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 14:00:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0QPL6Q8Cz3f7r
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 21:51:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0QcK1jz3z3f8R
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 22:00:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=IgahMDmI;
+	dkim=pass (2048-bit key; unprotected) header.d=cornelisnetworks.com header.i=@cornelisnetworks.com header.a=rsa-sha256 header.s=selector1 header.b=HYImFkB4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cornelisnetworks.com (client-ip=2a01:111:f400:7eab::726; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=dennis.dalessandro@cornelisnetworks.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=IgahMDmI;
+	dkim=pass (2048-bit key; unprotected) header.d=cornelisnetworks.com header.i=@cornelisnetworks.com header.a=rsa-sha256 header.s=selector1 header.b=HYImFkB4;
 	dkim-atps=neutral
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20726.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::726])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0QNN6Z04z3cFw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 21:50:27 +1000 (AEST)
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 16F693F22B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 11:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1681732223;
-	bh=6GYDRTm5i091Nsg8Us5E8SdBSSCh6NzIhoebfwUefD0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=IgahMDmI2v/POHGj/X7gKk2fgviknFjsr8RSLsNooxNNiteND1O8zFY4wH/E1/jUB
-	 CX0sSrAtgeH0+ik6GB0OOh7fVyXajxjNxuz5+FcUn4J/sD9Sym7q1MVzEli7Kj8JuA
-	 6LupZE4KoJPcYufC+T9d6rgnkbycOEHytZn3mbS/Kh4TThmWAkGeZmuHxVBlwMtcpU
-	 OBipkC6SlRTmHquxE99vR8myA5yVdlYeP0ZUnuE08o/TwCV3mtj0eNNaDpQrKQK1bS
-	 0sXRoREMQyLyp4QGcAnj7xvdP/lJBuIwyiVX/dc5CsWJaV8NxQolyNdqv1yXX8LM/8
-	 QC3zBal444PKQ==
-Received: by mail-pj1-f69.google.com with SMTP id z18-20020a17090acb1200b00246eef2845aso5817117pjt.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 04:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681732221; x=1684324221;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6GYDRTm5i091Nsg8Us5E8SdBSSCh6NzIhoebfwUefD0=;
-        b=JrJPPtN5nV8YFFfSRIjV5VmSEdZ6DTb+WyiXzq/gFnxCY64/izYxkmKcWGHVYKd826
-         PZE7bz0iQKSJSb0PUouZb7bx1O8PeebkxU8is762/Es5zXhsUlATJ8piolDvBBALG/Oi
-         W/7bqVwWu52mfcsIVg2+4M2BWosIHWsJ4vMRRhmzfTgxrBXxT87ItkN4rQ3/eIMtDcMk
-         oqjk/H4talLu6enM8yU6lPlRAZp4dO2Rs9ZZmXbMb5aaA++nc7RF343kYK6KY0BHwcBC
-         y5e6gmipjzq5qvysWXdEFYjdnEVYXPAW4suE8JmKeIj+GX5X2L7bv4SMu9+o9EHkAV+u
-         OfEg==
-X-Gm-Message-State: AAQBX9fnlD5Cevpvq7g0WDV8D37OOAoeDDI442349cfdAZzU2KpHZnJs
-	Uf01MHHpiWM/99jrC+8mwSBRjiCvJUx2pd1TtDQN7vLGDj3tlc8NUDBEDwb1r7mgtuaSJexE0vK
-	BrdEVoa6xqlzJXKyRS8N7QC3jslxqIj62/9lIj7RZmpjeY8fymLXovnVQG2k=
-X-Received: by 2002:a17:90a:b00e:b0:247:2437:d5c4 with SMTP id x14-20020a17090ab00e00b002472437d5c4mr13489429pjq.13.1681732221393;
-        Mon, 17 Apr 2023 04:50:21 -0700 (PDT)
-X-Google-Smtp-Source: AKy350bMHUJJluXpbTYJTU5g2d4iXGCmYsFbXGYmNAIPXStId8I4XBXBOXkL9aEbLgiYT/vEGd3M3KO/cmCBEgLV28M=
-X-Received: by 2002:a17:90a:b00e:b0:247:2437:d5c4 with SMTP id
- x14-20020a17090ab00e00b002472437d5c4mr13489409pjq.13.1681732221055; Mon, 17
- Apr 2023 04:50:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0QbN3rzxz3bWw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 21:59:59 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ai+3WL86HI3dKHB04VmmhgzcRC7JtpsbVmo3BJtVQgcDAfJjEEYUHr8R81Ig8vMBbGyBW/LxLv6wCgA0Q55i2ex3wJTTF7WyQnj5yqbhiDVFhtAnmvDk8Y7eikNTzcyYnclfMW6MsjFlo2sucLAvGZzrjObwbWQSjvmYVGSxNj3sWvKDM0UL/E2a2VDXhkbK7C+2Cp3RjVW89ky8G8ovoh4NlVDRBjbNpNeC68vZ2KkHj6x4/q6JWLfte2qtt1Cao4ySbjIX7dh8VeTG7XQfFB0sdF9ZBFCNQ147G5TbcdxQfezACjQ7wEmpXpMimsdY5IYaP6W9CkzjackqrjW6Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1sCt0j7nh5WAnvCqxD31/2x7EkyjxxxCU/JHi8l8Bvg=;
+ b=HKocIO9I4GnK+63SFc4Gbzcnp4eh1wN+H8X5xkP4EjsEEIsc00OQ7WFBPBU8luT6RNfoQNoByfAOlXU7O3xhauaXEe/tMCLxfB4bRzLNX7i1NlwzPL3BTsM1ArkOqV4Am8NmDkCLq5L5B6PvnXwEA9VS4JwliYO01i8rthkNQQlikYsXLmjDeJ3XQygZ99K1rX8Yfa4ibgbRw9ATTeF1/eLUSN4S/rlnSy5rQPmFAgSkIS7y2UsCP1ciW5YqKaQJuARonVRgiYPTaGh7sV0v57ajtZ+hBvhB/RfMPnk2Htcq1biLrbRHifVMRyDo4r81/61xvbVdV8AvwBvv4boBRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cornelisnetworks.com; dmarc=pass action=none
+ header.from=cornelisnetworks.com; dkim=pass header.d=cornelisnetworks.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cornelisnetworks.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1sCt0j7nh5WAnvCqxD31/2x7EkyjxxxCU/JHi8l8Bvg=;
+ b=HYImFkB4VWAgLDxYQZ+4ZtEgsUgikdBh1Fc9nizN1s8zHp5A1CtdQTqHocNTyJIAidOGJbnPVtIvctjMo+VD62HKUm8VcPv2ODGC2Gc/DC1H3wYREIKixpK8ZmMVnCKcDtynFdSZBGOyYlLC/LFL+kf2iMpelrvgCwDp/N/xDnsz0emI+/rep/W2aEw1mryCEYY8e7Wwe9q/7kbqvZXBwORRSPAx/QIixQ/UyGpxKvARuzEPrN7oGwLE6Hp4C9tEaUDwIiANqjsTu5vjWuapgCbUGKWERt2wXGRV3K1TaH45PaaHj0BzC6aSQzhVdsJjRkAAufeHyPVAR8KX68Hjwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cornelisnetworks.com;
+Received: from DM6PR01MB4107.prod.exchangelabs.com (2603:10b6:5:22::24) by
+ CH0PR01MB7154.prod.exchangelabs.com (2603:10b6:610:eb::24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6319.19; Mon, 17 Apr 2023 11:59:40 +0000
+Received: from DM6PR01MB4107.prod.exchangelabs.com
+ ([fe80::f33a:edf4:c24:d88e]) by DM6PR01MB4107.prod.exchangelabs.com
+ ([fe80::f33a:edf4:c24:d88e%7]) with mapi id 15.20.6319.019; Mon, 17 Apr 2023
+ 11:59:40 +0000
+Message-ID: <181d6b4e-4a7a-c458-0292-c35317a0fafe@cornelisnetworks.com>
+Date: Mon, 17 Apr 2023 07:59:34 -0400
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH v3 6/7] mm/gup: remove vmas parameter from
+ pin_user_pages()
+To: Lorenzo Stoakes <lstoakes@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+References: <cover.1681558407.git.lstoakes@gmail.com>
+ <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
+Content-Language: en-US
+From: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+In-Reply-To: <fa5487e54dfae725c84dfd7297b06567340165bd.1681558407.git.lstoakes@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR17CA0017.namprd17.prod.outlook.com
+ (2603:10b6:208:15e::30) To DM6PR01MB4107.prod.exchangelabs.com
+ (2603:10b6:5:22::24)
 MIME-Version: 1.0
-References: <20220727013255.269815-2-kai.heng.feng@canonical.com> <20220928214557.GA1840266@bhelgaas>
-In-Reply-To: <20220928214557.GA1840266@bhelgaas>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Mon, 17 Apr 2023 19:50:09 +0800
-Message-ID: <CAAd53p7LFXSmBfLoz3i1C16x1oSJf99pVPuxTbj+tvxuKcNmPA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] PCI/AER: Disable AER service on suspend when IRQ is
- shared with PME
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR01MB4107:EE_|CH0PR01MB7154:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd3b6097-8821-4c13-a357-08db3f3b3910
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	1DhMeSSpVv1b8F4hkxlMYIh7EydeM4Eig9BgKt4GccTtVkQTgISy6T7j3T1VyO/eTf3Uof+flnx9mpH1oim63IEEOey6tNlM7f1vkM1+GSyutPP+KEfkZocK4qMXrV6gM5jATPiI2QOirjQ/5cYNeuzD5juo2GGykYB3k0p6RJ1Lh4bttD759S9Y9LZ8mW9GhOgGw/I3L4Dow0rX97X3yM4EyeIWffO2/nmOaB8zAp90Kujp5q8zaF2eK3cfkNU4XSfTlmY+6Xqx4HNbVVY59WbPDyAe3xbS2YrGfWN5QIsjvs0p7Jn65LqWYIkhfqREPr4c5pBctxRHZ+zStDjx562ehDJ/yZ5TGxN4JKnveTFKZHBfwfuhnmIMZrapqA5biKPSzDxXtEc+lytCy0+3Hk7qq9alA05vOUBUQi0/jIpGsoXBpGFFj+wO0MjuPfM31wJnHKlt/qQ6fqq6zthA9FmYCiR1Z+32ngxVeF5n4gRRx+JVOWmkQBP8eQJb4Aoy2HCORqPuQ7CtO2v+K5IC6DRGMlE5U6/GfbTlBAnMV8xeW6Srnhxik53X5cgLoDjapeufETT3NiDMe7669RKG4nPre3tUDHkgrYNS2WDP8+jwXc80FgwrxrlPOe2d3r+EJvjBVENcX+DQ9xZaie1u3g==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR01MB4107.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(39830400003)(366004)(136003)(451199021)(110136005)(54906003)(4326008)(316002)(66946007)(66556008)(66476007)(52116002)(8936002)(6486002)(478600001)(6666004)(5660300002)(41300700001)(8676002)(2906002)(7416002)(7406005)(44832011)(86362001)(31696002)(36756003)(38350700002)(38100700002)(2616005)(26005)(186003)(53546011)(6512007)(6506007)(83380400001)(31686004)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Rml3ZzZZbHViVmRURE9Nc0xITndiUTVSMVE3OGZIajBHbzYrajlvWE5pMUl5?=
+ =?utf-8?B?cVdzUzJuTUJCT2haM3g3WTFZdm5FTTNBU3JuMFQwblU1aUNIZ2dCZU5VRXR5?=
+ =?utf-8?B?THlPMC9JbXVWWGFWdFczbkRsVXd1V25rWHA2VXNJUW1sNjRLMXRrSCtNYUdS?=
+ =?utf-8?B?YmlJN1piNG11UVdWRi8wRkt4ZndJNFZ3MG0vSUlIOWhQMHo2bXJSR092bC9K?=
+ =?utf-8?B?TVJRTWF1S09KL2NPU0pRSlRUUWQzcDBVcXIrMEU2cmJWTkZQVnFzSlYzNGxi?=
+ =?utf-8?B?TzVLWTlZbHNmUjhTZkpPUFphYUFZYlFqNDFFWmVBY1MzRFh6TkVXZzVBZWxD?=
+ =?utf-8?B?dFJTNjY2bGNzWnpTbUhOVUw2cFM4VUcrMklNL2c4VTR3Q29nMDZKWWdmb2o5?=
+ =?utf-8?B?S2hnaGd3c2JaeFZ4RG5YREpDUGJMWk41a2t1WC9INHZzb2hFRm12OCs4WnBK?=
+ =?utf-8?B?QTMxclp3OFQ2YUdyZkdxYWEvbjFGMW5sZUtKMXdSVW53c3h4em5mdGRvUzdo?=
+ =?utf-8?B?RmlSVXJ6cW9Wbjl3VUJjWFUrclFwR2haYXhHdE5DaUh4S1ovWXM5ZkRzdDVp?=
+ =?utf-8?B?cjU0MzIvNW0vSXN1TVVMUFh0SkswdWJnV3p2c2Mwa2tzMS9qRC9hUmp1bzI1?=
+ =?utf-8?B?ZllPeU9lM1JJbGpUYzJlM2ZMSURHRWp4a1NmMXFYSHNvdkVLblYwMmlnWm9P?=
+ =?utf-8?B?Y1M2dUJtR0JkOERHNTlNaFJVbUdIWElpQW1XM0pVd2ZjUkorUDBxODM1UWxI?=
+ =?utf-8?B?ZDgyTTBkb1BsVzdxcmVkbXFFNVJlc2dRUHZleEdDRFFubUhSbFQySzlYNGNQ?=
+ =?utf-8?B?TGtmaHhyZXBMV1hhc1NDY2FrWE5GcnNvZTlJSVd3QVcwNTVXVFRleFVncUxW?=
+ =?utf-8?B?Y1BpZlViVkkwTE80a2ViclplUGlSd01BYkRMV0lITElIL1RMcjV6dGRTUWtH?=
+ =?utf-8?B?NXdJam9ialp0ZGE1Y25BOG0xM3IweExKSEJ0T0d3UkczaG5OVGcyaGNFMWYy?=
+ =?utf-8?B?REtIbjRBOFlDZXpyODFqVEJGR3JxUkZVQ2psbWhOa29mRzhacUloWjFkRDRy?=
+ =?utf-8?B?OXkrdXYxT2xROU9yaHRxNmluL3RvMytEWFBhVjZ4alNJQTYrVWFIckltUmJF?=
+ =?utf-8?B?TUFUOFBId1dUZXhXTTI5aHRsZnRranZ5MnFTZ3NWUnBrVnlQQmNGY2l6YnJj?=
+ =?utf-8?B?VzB3MkZ5ZHBhY2Rtd2xQNzF0Q1htTHhtRXpRckh0SUZMbGFLdU1LNm0rb2xJ?=
+ =?utf-8?B?Um5HcExHSlp4bDJyQ0M0azcwWEw0UkZkWUppZThCZTAvdmN3WUtxQ2dNaXN5?=
+ =?utf-8?B?SWVKY2pXTyt6NEdCVVBRaG5YVTBNWWhyejRyd0krc2pqMG9acWFOU3JBbHVO?=
+ =?utf-8?B?Ri9yOXFjUElPNmlCdGp3dXIwcUdxVi95UmNnMURZeDA4dDZxU1V4bmRqNHJx?=
+ =?utf-8?B?akpGTDA2NmR5S2tHSUVUcnBKQi9MS1g4eVRGQ1pTVW53WjJ2WUJPZGlkR3d0?=
+ =?utf-8?B?RGZrRWJ6QkZVOEpXdTFnVjh0d3YrdGc4VE85bUFyR1VsbE84cDUyRDlrWWlX?=
+ =?utf-8?B?cjY3SkY5K0ltaEZpTng2czg5LzdGMkZ2UXZBcXBFODhBOGdTak5Nby9IMVhN?=
+ =?utf-8?B?cWl0N3lkYTRzbFhMNTFpNGxsMW5KeTZDN3lTQSthQ1FVK2VoZkJndUZZZGp4?=
+ =?utf-8?B?U3lXTVkzcjd2dHlmaEE0a1lCcGQrSHNiMURuWlRPWjlVTXhIb25hdGc1M0s3?=
+ =?utf-8?B?eVF2bmk2NE55R1dic3lrMUpXeHZxUjdDcmhTUG5lUjU4ekQzSlJZbXpQWE1p?=
+ =?utf-8?B?T0RkRzA4c1JPcXR4cmFWdUMvZEZKMU9Pa3NlaGVjTDBuajRzWUdDWXJ3YWRs?=
+ =?utf-8?B?aEhWMjlyTXZ1eHgvSkZySFlHWll4d0ZRS0dSUGVaV3FjTUpmczB0NHRvVDJE?=
+ =?utf-8?B?bDJQOE9HeXZKdTM4SkJhdjBJbENMam10azdSK2lkelYxNUR2U3pabDNpMFFE?=
+ =?utf-8?B?VFVjY0JvUzFSRDF3bWFPVGM1eHU5RlM0ZWRGMjBMbk9CeDJpTDAzSzdhLzRP?=
+ =?utf-8?B?N1RGTWw5bjl0aXRWUVA2Tlg5by9sbmQzTFpnUlYybExNOWxrRDhNeDc0Mklp?=
+ =?utf-8?B?bWNCMG53djhVTFp0RzliWS9sWVRDbHl2NVY4SlZWcElTdmx3a09Cb2pQS1F2?=
+ =?utf-8?Q?cpPvJW6u15b4gMRyamZQtFs=3D?=
+X-OriginatorOrg: cornelisnetworks.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd3b6097-8821-4c13-a357-08db3f3b3910
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR01MB4107.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2023 11:59:39.8624
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4dbdb7da-74ee-4b45-8747-ef5ce5ebe68a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nMqnAoQTMA1pXaQyRDyRDkkNb1GPOwuspHLueg82Ikt0POx8RR4YI9q+9EAz7M36Pin5Tyy6o1Yxj223NE7da2kOglT+ArI8P7q8D6f2l0kvdg+VtlDNvydSvF0J/+r2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR01MB7154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,105 +135,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, mika.westerberg@linux.intel.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Nelson Escobar <neescoba@cisco.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Jason Wang <jasowang@redhat.com>, Alexei Starovoitov <ast@kernel.org>, virtualization@lists.linux-foundation.org, Eric Dumazet <edumazet@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>, John Fastabend <john.fastabend@gmail.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-media@vger.kernel.org, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Bernard Metzler <bmt@zurich.ibm.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, io-uring@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>, Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>, Bjorn Topel <bjorn
+ @kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, Christian Benvenuti <benve@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 29, 2022 at 5:46=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> =
-wrote:
->
-> On Wed, Jul 27, 2022 at 09:32:51AM +0800, Kai-Heng Feng wrote:
-> > PCIe service that shares IRQ with PME may cause spurious wakeup on
-> > system suspend.
-> >
-> > PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
-> > that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
-> > (D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
-> > much here to disable AER during system suspend.
-> >
-> > This is very similar to previous attempts to suspend AER and DPC [1],
-> > but with a different reason.
-> >
-> > [1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.=
-feng@canonical.com/
-> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D216295
-> >
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> >  drivers/pci/pcie/aer.c | 23 ++++++++++++++++++++++-
-> >  1 file changed, 22 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index 7952e5efd6cf3..60cc373754af2 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -1372,6 +1372,26 @@ static int aer_probe(struct pcie_device *dev)
-> >       return 0;
-> >  }
-> >
-> > +static int aer_suspend(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc =3D get_service_data(dev);
-> > +
-> > +     if (dev->shared_pme_irq)
-> > +             aer_disable_rootport(rpc);
->
-> aer_disable_rootport() seems like it might be overkill.  IIUC, what
-> we want to do here is disable AER interrupts, which should only
-> require clearing ROOT_PORT_INTR_ON_MESG_MASK in PCI_ERR_ROOT_COMMAND.
->
-> In addition to clearing ROOT_PORT_INTR_ON_MESG_MASK,
-> aer_disable_rootport() traverses the whole hierarchy, clearing
-> PCI_EXP_AER_FLAGS (CERE | NFERE | FERE | URRE) in PCI_EXP_DEVCTL.
-> I don't think these DEVCTL bits control interrupt generation, so I
-> don't know why we need to touch them.
->
-> aer_disable_rootport() also clears PCI_ERR_ROOT_STATUS, which I think
-> we should not do during suspend either.  We might want to clear it
-> on resume (which we already do in pci_restore_state()), but I think
-> generally we should preserve error information as long as it doesn't
-> cause trouble.
->
-> Your thoughts please :)
 
-Sorry for the belated response.
+On 4/15/23 8:09 AM, Lorenzo Stoakes wrote:
+> After the introduction of FOLL_SAME_FILE we no longer require vmas for any
+> invocation of pin_user_pages(), so eliminate this parameter from the
+> function and all callers.
+> 
+> This clears the way to removing the vmas parameter from GUP altogether.
+> 
+> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+> ---
+>  arch/powerpc/mm/book3s64/iommu_api.c       | 2 +-
+>  drivers/infiniband/hw/qib/qib_user_pages.c | 2 +-
+>  drivers/infiniband/hw/usnic/usnic_uiom.c   | 2 +-
+>  drivers/infiniband/sw/siw/siw_mem.c        | 2 +-
+>  drivers/media/v4l2-core/videobuf-dma-sg.c  | 2 +-
+>  drivers/vdpa/vdpa_user/vduse_dev.c         | 2 +-
+>  drivers/vhost/vdpa.c                       | 2 +-
+>  include/linux/mm.h                         | 3 +--
+>  io_uring/rsrc.c                            | 2 +-
+>  mm/gup.c                                   | 9 +++------
+>  mm/gup_test.c                              | 9 ++++-----
+>  net/xdp/xdp_umem.c                         | 2 +-
+>  12 files changed, 17 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/infiniband/hw/qib/qib_user_pages.c b/drivers/infiniband/hw/qib/qib_user_pages.c
+> index f693bc753b6b..1bb7507325bc 100644
+> --- a/drivers/infiniband/hw/qib/qib_user_pages.c
+> +++ b/drivers/infiniband/hw/qib/qib_user_pages.c
+> @@ -111,7 +111,7 @@ int qib_get_user_pages(unsigned long start_page, size_t num_pages,
+>  		ret = pin_user_pages(start_page + got * PAGE_SIZE,
+>  				     num_pages - got,
+>  				     FOLL_LONGTERM | FOLL_WRITE,
+> -				     p + got, NULL);
+> +				     p + got);
+>  		if (ret < 0) {
+>  			mmap_read_unlock(current->mm);
+>  			goto bail_release;
 
-Clearing ROOT_PORT_INTR_ON_MESG_MASK along to disable interrupt can
-solve the issue too.
-And I agree that the AER information should be preserved too.
+For Qib...
 
-Kai-Heng
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
 
->
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int aer_resume(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc =3D get_service_data(dev);
-> > +
-> > +     if (dev->shared_pme_irq)
-> > +             aer_enable_rootport(rpc);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  /**
-> >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-> >   * @dev: pointer to Root Port, RCEC, or RCiEP
-> > @@ -1441,8 +1461,9 @@ static struct pcie_port_service_driver aerdriver =
-=3D {
-> >       .name           =3D "aer",
-> >       .port_type      =3D PCIE_ANY_PORT,
-> >       .service        =3D PCIE_PORT_SERVICE_AER,
-> > -
-> >       .probe          =3D aer_probe,
-> > +     .suspend        =3D aer_suspend,
-> > +     .resume         =3D aer_resume,
-> >       .remove         =3D aer_remove,
-> >  };
-> >
-> > --
-> > 2.36.1
-> >
