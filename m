@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3D56E7850
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BD56E7851
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:16:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dVj31gSz3g1G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:15:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dWf16Slz3g2T
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:15:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VrQ0lWqr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Xg6P0Upa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VrQ0lWqr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Xg6P0Upa;
 	dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0fQf4y11z3cjT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 06:53:14 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id h24-20020a17090a9c1800b002404be7920aso27917920pjp.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 13:53:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0fQh02xrz3cjM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 06:53:15 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id v21-20020a17090a459500b0024776162815so6440864pjg.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 13:53:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681764793; x=1684356793;
+        d=gmail.com; s=20221208; t=1681764794; x=1684356794;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oJJ/5JNaAhhn0BtCWyESRHZW29NfaaBB7RT6Dtpfjog=;
-        b=VrQ0lWqrs/ZeVvxhrMkEnri25zysQvP6rvUVlziuAvcyoO7aiCs2Ip8nrZdL+4djlt
-         EalUxXukap5u9TcR0Ypqd1nj4oCE7Zy1crkVgOFcBvFvQfkcdrgLVV5yu4aZ8sXiNQzS
-         MzbdyHaLybqiTpdHLCapkJdM135ufCzQfSX7LCwPasNWotwzcPJsMf59UKAQgZOOczBx
-         ZYZuB1ddeu/80rtF2gv16gY+bwHM4NdL4pbXt10qFjUxYFen/hCDj/7OzFab+Hq/fc/w
-         UWRA/d9TiIVFZRkxxpOQPugklzg3SfxU/z6fpq4Q2x5DyNF+cvnkXmPJMDWg2KdcBHj4
-         X1Mg==
+        bh=WInZHFLF0E37CPvH/fyQuQmpONrFi7mPGahLu3Z9gNY=;
+        b=Xg6P0UpaqLjmTr9GC8q8FEqPaWuvWAOVoK//8dKOM2wu82xE/PCXSYeAATRXUJ/HKh
+         6EEKIr46u43LbmKVnfil2W4E6LUnTir89HhCdDllvASzF+yevHo7MjwPE9+XRv+3hhES
+         OUUsnstcNrA0rLCFMYj7vWl5ZczSf3KPYpA7wTt20fxP/HKu0nYQRIzVhW6nrnGOA5jn
+         ZX8zcSMK8Y+FlG/fX2gye51alnw5R0vQJIqmi3wnRTlMtqWonWHxJepWd7O0uYkErLAf
+         nElaONPL6snfMupRjx7SgoPL0fo06TUuoxc3sYPVOppMWFUfAwgvDIOHO8Ugh+LFqXUj
+         IYjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681764793; x=1684356793;
+        d=1e100.net; s=20221208; t=1681764794; x=1684356794;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oJJ/5JNaAhhn0BtCWyESRHZW29NfaaBB7RT6Dtpfjog=;
-        b=A74XMbK/hdA0bpFqiVcHISYddMg+UjXaoVVhZmEI2zZP3rND/8uPq/3JoogBaYrcOB
-         JQ28o/My/Chq2tGvz721tmbgbmVqbmah/nk6g/4B3oDelim+2evMvslDV96sjBwAHj3Y
-         KnXHpvQD1OBp6mNDaCrL4oIoCeQ4sKIINRTg/Vgvwwpg2TdA2PZvBm2wzK5TX99jrQK+
-         BVoMfQvcObOfTOqL0QVcv/uPrxRIzYP/pJlLIhaVFvy2LgB6f0gsOPqrOka+dYGa2mXL
-         XGCjVugilKki6PnK0n+oRxs6DwTSXaMgfqPNdoCKO3zsIYuBu9eDrWsWR3BSzRt5gZ81
-         S7Mg==
-X-Gm-Message-State: AAQBX9dFCcFMLiVIvew5H/E+6+ztRk/aM0aHqWsiNm5PkK1+DBwvUs6U
-	nc37ySXnkiOW3s9d87BTiD8=
-X-Google-Smtp-Source: AKy350Y2w7IaE9PrAymAnxztuomQd4Ga7koe4Zw+ByQfv97VTbICRP51vtaSBBH4u41LkAvC07UcrA==
-X-Received: by 2002:a17:902:bd86:b0:1a6:c6d4:5586 with SMTP id q6-20020a170902bd8600b001a6c6d45586mr227041pls.13.1681764792942;
-        Mon, 17 Apr 2023 13:53:12 -0700 (PDT)
+        bh=WInZHFLF0E37CPvH/fyQuQmpONrFi7mPGahLu3Z9gNY=;
+        b=BY9Htg2cL/ZLrjCTcBtipnbTMAcHSrn1PfDDFAT3l35YecEU3/lpo1R7SubQwgp6NW
+         D/IxuA28fWzFu9pWjVnUfgNhPEqVeE+E8oxR+VXa365NDp1xgU5143D1w5R/AuUDsCBG
+         gjydmJ1A3xAk+cN3bEhJ+LV7Le0qSP/C+u571fUJ39UCD2mZLC/mh7rqFEe7z263yvqd
+         3ruKbvryODYOq2yCixsaOudPFjTIJ4pX5tFQq25neGUstLB399O67YWKTwKHQ8OyDqnC
+         NZFU34nDQo9cM4ODbgcfgLYTtk0DXoWHCtpZ3k6DE+izDk05ud5fSVbxxQndkMbLqj89
+         Uskg==
+X-Gm-Message-State: AAQBX9fnRTFXdJWCRhRAsDivP4lecDNJsaYrhkrR2pXlZbKIkOcTJULI
+	RzyN9ka6aSj14tcyDEyssMw=
+X-Google-Smtp-Source: AKy350Ym3GSROxWd30N3vnOcQ+scJJk4j2bn57g6f2y/wdjBz5ko3J6EyTomKSlBO1Xk2XiBoSAe7w==
+X-Received: by 2002:a17:90a:5315:b0:23f:81c0:eadd with SMTP id x21-20020a17090a531500b0023f81c0eaddmr15717621pjh.47.1681764794292;
+        Mon, 17 Apr 2023 13:53:14 -0700 (PDT)
 Received: from fedora.hsd1.ca.comcast.net ([2601:644:937f:7f20::c139])
-        by smtp.googlemail.com with ESMTPSA id h7-20020a17090ac38700b0022335f1dae2sm7609707pjt.22.2023.04.17.13.53.11
+        by smtp.googlemail.com with ESMTPSA id h7-20020a17090ac38700b0022335f1dae2sm7609707pjt.22.2023.04.17.13.53.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Apr 2023 13:53:12 -0700 (PDT)
+        Mon, 17 Apr 2023 13:53:14 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 20/33] arm64: Convert various functions to use ptdescs
-Date: Mon, 17 Apr 2023 13:50:35 -0700
-Message-Id: <20230417205048.15870-21-vishal.moola@gmail.com>
+Subject: [PATCH 21/33] csky: Convert __pte_free_tlb() to use ptdescs
+Date: Mon, 17 Apr 2023 13:50:36 -0700
+Message-Id: <20230417205048.15870-22-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230417205048.15870-1-vishal.moola@gmail.com>
 References: <20230417205048.15870-1-vishal.moola@gmail.com>
@@ -84,82 +84,29 @@ Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As part of the conversions to replace pgtable constructor/destructors with
-ptdesc equivalents, convert various page table functions to use ptdescs.
+Part of the conversions to replace pgtable constructor/destructors with
+ptdesc equivalents.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- arch/arm64/include/asm/tlb.h | 14 ++++++++------
- arch/arm64/mm/mmu.c          |  7 ++++---
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ arch/csky/include/asm/pgalloc.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-index c995d1f4594f..6cb70c247e30 100644
---- a/arch/arm64/include/asm/tlb.h
-+++ b/arch/arm64/include/asm/tlb.h
-@@ -75,18 +75,20 @@ static inline void tlb_flush(struct mmu_gather *tlb)
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte,
- 				  unsigned long addr)
- {
--	pgtable_pte_page_dtor(pte);
--	tlb_remove_table(tlb, pte);
-+	struct ptdesc *ptdesc = page_ptdesc(pte);
-+
-+	ptdesc_pte_dtor(ptdesc);
-+	tlb_remove_ptdesc(tlb, ptdesc);
- }
+diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgalloc.h
+index 7d57e5da0914..af26f1191b43 100644
+--- a/arch/csky/include/asm/pgalloc.h
++++ b/arch/csky/include/asm/pgalloc.h
+@@ -63,8 +63,8 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
  
- #if CONFIG_PGTABLE_LEVELS > 2
- static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmdp,
- 				  unsigned long addr)
- {
--	struct page *page = virt_to_page(pmdp);
-+	struct ptdesc *ptdesc = virt_to_ptdesc(pmdp);
+ #define __pte_free_tlb(tlb, pte, address)		\
+ do {							\
+-	pgtable_pte_page_dtor(pte);			\
+-	tlb_remove_page(tlb, pte);			\
++	ptdesc_pte_dtor(page_ptdesc(pte));		\
++	tlb_remove_page_ptdesc(tlb, page_ptdesc(pte));	\
+ } while (0)
  
--	pgtable_pmd_page_dtor(page);
--	tlb_remove_table(tlb, page);
-+	ptdesc_pmd_dtor(ptdesc);
-+	tlb_remove_ptdesc(tlb, ptdesc);
- }
- #endif
- 
-@@ -94,7 +96,7 @@ static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmdp,
- static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pudp,
- 				  unsigned long addr)
- {
--	tlb_remove_table(tlb, virt_to_page(pudp));
-+	tlb_remove_ptdesc(tlb, virt_to_ptdesc(pudp));
- }
- #endif
- 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index af6bc8403ee4..5ba005fd607e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -426,6 +426,7 @@ static phys_addr_t __pgd_pgtable_alloc(int shift)
- static phys_addr_t pgd_pgtable_alloc(int shift)
- {
- 	phys_addr_t pa = __pgd_pgtable_alloc(shift);
-+	struct ptdesc *ptdesc = page_ptdesc(phys_to_page(pa));
- 
- 	/*
- 	 * Call proper page table ctor in case later we need to
-@@ -433,12 +434,12 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
- 	 * this pre-allocated page table.
- 	 *
- 	 * We don't select ARCH_ENABLE_SPLIT_PMD_PTLOCK if pmd is
--	 * folded, and if so pgtable_pmd_page_ctor() becomes nop.
-+	 * folded, and if so ptdesc_pte_dtor() becomes nop.
- 	 */
- 	if (shift == PAGE_SHIFT)
--		BUG_ON(!pgtable_pte_page_ctor(phys_to_page(pa)));
-+		BUG_ON(!ptdesc_pte_dtor(ptdesc));
- 	else if (shift == PMD_SHIFT)
--		BUG_ON(!pgtable_pmd_page_ctor(phys_to_page(pa)));
-+		BUG_ON(!ptdesc_pte_dtor(ptdesc));
- 
- 	return pa;
- }
+ extern void pagetable_init(void);
 -- 
 2.39.2
 
