@@ -2,79 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B756E432F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 11:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8266E439B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 11:23:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0Lk53j6cz3fCj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 19:05:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0M755L70z3ccg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Apr 2023 19:23:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=lEbyRvZ0;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EFaog30z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=hoxslnOK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MR4yxKuz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.27; helo=wnew2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=lEbyRvZ0;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EFaog30z;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=hoxslnOK;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MR4yxKuz;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com [64.147.123.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0Lj70jSKz3cfg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 19:04:42 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 55A821F381;
-	Mon, 17 Apr 2023 09:04:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1681722280; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b6sKemqSNeqSuzvlbtysiTKcK5tWpdbhBfOYMbe1xpA=;
-	b=lEbyRvZ0mhA+HTDSg/bXcfjaxsomSGRcRcjAVr8tOXKoCIe65JHXtQwHv+wj7v7Ke+mxUp
-	bIvywh/2mTvYmeDpIakryjRc6GWveByKR+d8zJyovqzoed8ILUJDIM9PJ1iTG2s35Y4y2b
-	/H4VpktNgiA/80+JLQ6zI2hzIjIGiiM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1681722280;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b6sKemqSNeqSuzvlbtysiTKcK5tWpdbhBfOYMbe1xpA=;
-	b=EFaog30zlwFDQPmFwOt7LFAWdUfZI1apM55oIu7KK0oVl8+PIBxm8zHlg/ELchgxNZjEUD
-	aIQOnTvp5Q6hvbAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DA51213319;
-	Mon, 17 Apr 2023 09:04:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id EEoeNKcLPWRGVwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Mon, 17 Apr 2023 09:04:39 +0000
-Message-ID: <4450d4bf-a6e0-764e-d1c4-efba272f0529@suse.de>
-Date: Mon, 17 Apr 2023 11:04:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 02/19] arch/arc: Implement <asm/fb.h> with generic
- helpers
-Content-Language: en-US
-To: Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- Helge Deller <deller@gmx.de>, Javier Martinez Canillas <javierm@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0M673mMzz3cLh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 19:22:54 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.west.internal (Postfix) with ESMTP id DD2C02B066BA;
+	Mon, 17 Apr 2023 05:22:47 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Mon, 17 Apr 2023 05:22:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+	1681723367; x=1681730567; bh=peYP/lOIqmvTTJ2GJZFK05PdIeVxfQrMTMT
+	dWlxN2bY=; b=hoxslnOKq5L0fgq1KZ5uwFxkfCsDUbQoEitttD9Gb157/4VvDaL
+	fzRTYgwNrKhMTGBEWYk5kV4pCoKxj3IQV0FpUtGeddLg5GfVlMhZex8QF6mhL8p9
+	gvwX4MSUzxesv1YcnaqKaa4Hf8aEonHOEB+LqYDIenoy4k9B5AvOOz7WXYv6rPww
+	vauHxzq0EC93J9INj8HpYFP0uokUJZlvJ0DGwXpWQ8LUcqRJMmLECR08O/Gg7C4C
+	FExoluX3ejusbKwfN3AFnDxBNc0Jh1L5n5E2k8MJ529jR2BSvuckTFMjwePw4/jA
+	IVxKZIBctylYcZmrJ3YTpI6yusKyhHnhjmw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1681723367; x=1681730567; bh=peYP/lOIqmvTTJ2GJZFK05PdIeVxfQrMTMT
+	dWlxN2bY=; b=MR4yxKuz3/tjr23pAzsFitwD0Txq7SZ+LasC5Fyh1rdL9W+5uLQ
+	QWuTkcsnaN+XbFlYxewK49c7zL/ltjC0cAxyGzvY+pAqila9tzloSXls1fSGTLU8
+	83j+ql9LP2Am/jKxSL+2eFTD9s2a+pAHNF1s4l+85O8VFC4gAEQAX/IiexVaT7mA
+	1njCOrvD++JH4RDb7rqDNfo30GjQVpEJWnie2UNVdXN3+HoTO7VAHqni1UoK4zJb
+	K0nmV8AH3mMhRqTjxdJcDOoA4dxU/4N4+juQYM/HVijErDhMcN+7kkXCY9vJtEKX
+	A6hZ5WwaK7trmU2l173N30Rm9x+GYS13Hyg==
+X-ME-Sender: <xms:5g89ZGh1XGEKu3GOwuyxUAI_aRj0-gXb1yU9cH41yOyGtrZXXEBRxw>
+    <xme:5g89ZHCJrzk8kcvbfI9uoi9xOXxIpgIcnUMY2tPn_xA8atud9UMgflJi8xJj_xxVr
+    3CIR7jk9VrljLNWmYA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeliedguddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:5g89ZOF82A9szmMdiIKfUdndIY5Y_J2WWepzSI164UFVULZ600rDfg>
+    <xmx:5g89ZPS9rsGZ3-6dQW4K4hejhxqnpa-f-mX9DnhlkCPRmeMFlap6YA>
+    <xmx:5g89ZDzdQ2ec3Pn4h3UEvgarbJnSwOf3ZSGbcWd6YhZnAMBHYJ805Q>
+    <xmx:5w89ZEqvqQ-8qIHbFuXLaLZUzpDWtqOdQ0aVq4skLKD0cgTZu8vkwIppGeY>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 2AD08B60086; Mon, 17 Apr 2023 05:22:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-334-g8c072af647-fm-20230330.001-g8c072af6
+Mime-Version: 1.0
+Message-Id: <55abd7af-acb8-47ce-89db-1722bcf0cb9c@app.fastmail.com>
+In-Reply-To: <2b4f75b8-aa83-8e41-7c99-7c8d573c0f31@suse.de>
 References: <20230406143019.6709-1-tzimmermann@suse.de>
- <20230406143019.6709-3-tzimmermann@suse.de>
- <27c1210f-4e40-4bbc-905b-155427465e00@app.fastmail.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <27c1210f-4e40-4bbc-905b-155427465e00@app.fastmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------iPEL9xuP1J0A8seUIdWajJMz"
+ <20230406143019.6709-2-tzimmermann@suse.de>
+ <CAMuHMdUfViWzPbB+GcGUwxmGNxAohfq71Jed3DzS=Cb+gBzotg@mail.gmail.com>
+ <2b4f75b8-aa83-8e41-7c99-7c8d573c0f31@suse.de>
+Date: Mon, 17 Apr 2023 11:22:24 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 01/19] fbdev: Prepare generic architecture helpers
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,78 +98,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Vineet Gupta <vgupta@kernel.org>, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, Daniel Vetter <daniel.vetter@ffwll.ch>, Helge Deller <deller@gmx.de>, linux-mips@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------iPEL9xuP1J0A8seUIdWajJMz
-Content-Type: multipart/mixed; boundary="------------ITCxEOG7I6GWaznxs8pYlTkW";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- Helge Deller <deller@gmx.de>, Javier Martinez Canillas <javierm@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-snps-arc@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org,
- Vineet Gupta <vgupta@kernel.org>
-Message-ID: <4450d4bf-a6e0-764e-d1c4-efba272f0529@suse.de>
-Subject: Re: [PATCH v2 02/19] arch/arc: Implement <asm/fb.h> with generic
- helpers
-References: <20230406143019.6709-1-tzimmermann@suse.de>
- <20230406143019.6709-3-tzimmermann@suse.de>
- <27c1210f-4e40-4bbc-905b-155427465e00@app.fastmail.com>
-In-Reply-To: <27c1210f-4e40-4bbc-905b-155427465e00@app.fastmail.com>
+On Mon, Apr 17, 2023, at 11:03, Thomas Zimmermann wrote:
+> Am 11.04.23 um 10:08 schrieb Geert Uytterhoeven:
+>> On Thu, Apr 6, 2023 at 4:30=E2=80=AFPM Thomas Zimmermann <tzimmermann=
+@suse.de> wrote:
 
---------------ITCxEOG7I6GWaznxs8pYlTkW
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+>>> +#ifndef fb_pgprotect
+>>> +#define fb_pgprotect fb_pgprotect
+>>> +static inline void fb_pgprotect(struct file *file, struct vm_area_s=
+truct *vma,
+>>> +                               unsigned long off)
+>>=20
+>> Does this affect any noMMU platforms that relied on fb_pgprotect()
+>> doing nothing before?
+>> Perhaps the body below should be protected by "#ifdef CONFIG_MMU"?
+>
+> I cannot conclusively answer this question, but I did some grep'ing=20
+> ('git grep ndef | grep CONFIG_MMU'):
+>
+> Only the architectures in this patchset provide <asm/fb.h> but nothing=20
+> anywhere uses <asm-generic/fb.h> yet. And of those architectures, only=20
+> arm and m68k have !CONFIG_MMU cases. Those are handled in the rsp=20
+> patches. I think we're good.
 
-DQoNCkFtIDA2LjA0LjIzIHVtIDE2OjQzIHNjaHJpZWIgQXJuZCBCZXJnbWFubjoNCj4gT24g
-VGh1LCBBcHIgNiwgMjAyMywgYXQgMTY6MzAsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0K
-Pj4gKw0KPj4gICBzdGF0aWMgaW5saW5lIHZvaWQgZmJfcGdwcm90ZWN0KHN0cnVjdCBmaWxl
-ICpmaWxlLCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSwNCj4+ICAgCQkJCXVuc2lnbmVk
-IGxvbmcgb2ZmKQ0KPj4gICB7DQo+PiAgIAl2bWEtPnZtX3BhZ2VfcHJvdCA9IHBncHJvdF9u
-b25jYWNoZWQodm1hLT52bV9wYWdlX3Byb3QpOw0KPj4gICB9DQo+PiArI2RlZmluZSBmYl9w
-Z3Byb3RlY3QgZmJfcGdwcm90ZWN0DQo+IA0KPiBJIHN0aWxsIGZlZWwgdGhhdCBmb3IgYXJj
-aGl0ZWN0dXJlcyBsaWtlIGFyYyB0aGF0IGRvbid0IGhhdmUNCj4gcGdwcm90X3dyaXRlY29t
-YmluZSgpLCBpdCB3b3VsZCBiIGJlc3QgdG8gZ28gd2l0aCB0aGUNCj4gZ2VuZXJpYyBpbXBs
-ZW1lbnRhdGlvbiB0aGF0IGN1cnJlbnRseSBiZWhhdmVzIHRoZSBleGFjdA0KPiBzYW1lIHdh
-eS4gSWYgcGdwcm90X3dyaXRlY29tYmluZSgpIGdldHMgYWRkZWQgaW4gdGhlIGZ1dHVyZSwN
-Cj4gaXQgd291bGQgY2F1c2UgdGhlIGFyY2hpdGVjdHVyZSB0byBiZWhhdmUgYXMgZXhwZWN0
-ZWQgcmF0aGVyDQo+IHRoYW4gaW50cm9kdWNpbmcgdGhlIHNhbWUgYnVnIHRoYXQgbWlwcyBo
-YXMuDQoNCk9LLCBJJ2xsIGNoYW5nZSBpdC4NCg0KPiANCj4gICAgICAgIEFybmQNCg0KLS0g
-DQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBT
-b2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBO
-w7xybmJlcmcsIEdlcm1hbnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6Rm
-dHNmw7xocmVyOiBJdm8gVG90ZXYNCg==
+Agreed. The generic version is just a more elaborate way to do
+nothing here, as the=20
 
---------------ITCxEOG7I6GWaznxs8pYlTkW--
+     vma->vm_page_prot =3D pgprot_writecombine(vma->vm_page_prot);
 
---------------iPEL9xuP1J0A8seUIdWajJMz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+line on nommu just turns into a self-assignment of the same member
+that was set the line before.
 
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmQ9C6cFAwAAAAAACgkQlh/E3EQov+Ac
-QBAAsfmjop5GpI2/M6n6MvSHBTqHHtmA95cabDcKwQFUOYGC55wDQtKCk1YbTbOeOOp4DHs0Rob4
-xWSoykdeIUiYGbc8U+MPXGhCdo2C2sKIZkY1wgmuti3n3EkfC6k6Cx9aCz+tiJ+jd9E45wBaOnaE
-56XOzZWvxMz+zYzMPsC0pDMXkpZW1XtmvqXrjF6Ohri8O/In5if4HwkiXyJhY0aEXDHB5qLJU+SI
-b+YsRcUJLtzaBG/4xUkrhyP1kpTB/tNLYF4Z9fw7YtOUj+DXACQArqlHD8tVe+Z8HfxPmhRId6bp
-XouIgS+7VDb0Utb5Nd22dACIzY1DC6CXiz04MI8o++SCFEAK/FZedYlrXtkriEEYX2pcvlUbU+1p
-1RB16i/tjmLBhntUmgiUCOQZxk1IIcpOn13HiEGxkin8oFdsKztsrpK15yCcuTY0/1vlx/bahdFv
-Mtsy0ss6D9F1XmgpgRJjQkxR1KNV6LNvXzC56bQdk1qiPg6hRRIh5V65ygR1nowW8PHA3kZw5aS0
-tGeYxjnvqz41zAoXzDM3bDKjPcdgFfuzm25s3Z3nwqLsD8nKpoSR6Jr+IpXKNxikB8yx3b9GCTbe
-C/MTua22YAkNdKZ2MS00YzB8dMZ0u2ZCINsYOTcIYIN+s8mpb7LPO7Zj36RDWZCJMILkijh/NUmM
-Xe0=
-=9BHz
------END PGP SIGNATURE-----
-
---------------iPEL9xuP1J0A8seUIdWajJMz--
+     Arnd
