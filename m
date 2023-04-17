@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183776E788C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:24:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB046E788B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:24:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1djp0Zxxz3gcj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:24:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dht3GxLz3gF2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:23:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Bs6MBnbj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RTJID0Q/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Bs6MBnbj;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RTJID0Q/;
 	dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0fQy4nPJz3f6H
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0fQy2QFJz3f4F
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 06:53:30 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id p17so16172378pla.3
+Received: by mail-pl1-x636.google.com with SMTP id w1so4515915plg.6
         for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Apr 2023 13:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681764808; x=1684356808;
+        d=gmail.com; s=20221208; t=1681764810; x=1684356810;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CSVYEUhM0zGHlDR1yqa5KIpwwPynV1rh1Z3AvIT239o=;
-        b=Bs6MBnbjQkX1GScZCbLklar3CQYsHMcNQJhdEJMSRoz85XciXhpnQ0YtDU9kdG/nWk
-         TxMCtPr19eviQJI5aQ6Z23KjvD0/UYdwUUF801SK8Z3tk/XuPH8n6ufK4lU6OPOoTkEa
-         tcxsOYaiL60cLVhSI6wekl2Ojt4T3pVi0l4/Kpd6dmP8a2GTqJPhoPlibhYfl7AzaVkC
-         8dHP626PMZuKBlHUuWDeE5Ws0Xf5nvhx1+eNXqdjJYxnU1JpJLYxfuGpVyKb6jdKhgqK
-         l+AozFzFnnh8JDe5VzEpQS6lDqTnIa40opwHXXYLbmcB20BMSqSIISIYF0OD142rh4KG
-         4Sbw==
+        bh=m8/b+eKq2obnq3wrn4AaChyOhPXbZKipyE2UTOB7XHg=;
+        b=RTJID0Q/WW7iedj/afuCWToOfH/aBrY/NrWNeyN7ByP/usee9y9Bzy2eV2Pryddh5k
+         SgN8rXjbYlFESamvA2kpEGUYeNDAEQAcb5DBJGBzqZ39H1PUjeRb3TeWmdsscSkj+duB
+         XdhsoeufQBiAlQ1VDbbJWcUzg1wdK3pe72OAkzLWRjQ1C0S075Nqq87qXF8IdfaSlDxW
+         +Bud3Bjv7jwgjZOfa7R1sSZhrnf0y6c/vZkSvJ9Qym0uRrXk7trecdbr2o902twf3Tei
+         jaw/7g2aCCpoNC5Ttid57NGpw+n0jzjqhu5TM+KCbKbeUljRTtHuGZwGu624c+XnB9eN
+         r1BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681764808; x=1684356808;
+        d=1e100.net; s=20221208; t=1681764810; x=1684356810;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CSVYEUhM0zGHlDR1yqa5KIpwwPynV1rh1Z3AvIT239o=;
-        b=W/g+ZtqZH2uYVOXk/kGx32eMSS500o9PfXCBU77Au5kF+O5BHFv4XPfMPWsKs32Am1
-         2DHTmVFk5OO/AInzuL7WKZVol1rM2yCByYuM/EvnbiH1ai9ahQnjQqVl9wY7HxzHKPBC
-         X6pHb3NEdY6sFzGk4XSa2lN7oBtv/ytWhVB9FzS1CJwd7gBxvFNpkpWHSkDNzdcXXcIi
-         L5L/pHHIA4582ZEmPUTrsryK/+3knLoibcX8koCDXd/AyewIrxK4G8CiZfVaS/D6BNwI
-         XLwkNs/10DYSIbfTIA5otixrekvFXuliY4eax4RQRLkLLJjoMsQrZjLFM9y4UdcDYmhT
-         umlA==
-X-Gm-Message-State: AAQBX9egaE00qVSEsfs2ImTeCyQBrhyjpF/cVW8I1jfv3knx6L82Lx59
-	auCowmAIiDR5XodeJqiUBZs=
-X-Google-Smtp-Source: AKy350a2GcdGbRUVrvD14pA7yb7zjU30cICJUnhJQSgTB8CRLuH7Cup5yhi/f0UjvURoMBG/RaZdVQ==
-X-Received: by 2002:a17:903:1206:b0:19f:1871:3dcd with SMTP id l6-20020a170903120600b0019f18713dcdmr272381plh.5.1681764808447;
-        Mon, 17 Apr 2023 13:53:28 -0700 (PDT)
+        bh=m8/b+eKq2obnq3wrn4AaChyOhPXbZKipyE2UTOB7XHg=;
+        b=L+/LWUGhzCtjrhR+nFZ7d/ZjNIVnVJsb1w2WD8/Qko9LwK6oZ2IkSsEkDuBRC4IsVt
+         cOgRybWZjSa24D3e1kZ6hfa4eI8hguYXw6QwO9iyxBOih60ThbGDV9hUT9ubkb38rgQi
+         ZdFzV+pEpiveqyH8dPdflbRN5YVJkAIA51qlD1aK56iJZ4A7ttR0x//esfIILb/1XFDi
+         gFrQ+1gpspjMqizcbyHhkzQ5tJPUQMY/o0WhXZfgnUV1ZvwyL8a4kt+QHYQZ4fpQndrY
+         CzMEK6+kLm3C8j7rIqPdv9vmxQFvE8g5g0yySZPzyL+9i9YZE34WfQ2yCzDoqg3nH4LN
+         vMlQ==
+X-Gm-Message-State: AAQBX9cUlEnf/ZU6nWCPBo1O4zyClTgLip0/tGT3UjsPvr6jB62UjCOC
+	51TWMBHEMn/C9p1cNJBSClk=
+X-Google-Smtp-Source: AKy350Ygryz7WWGm7uHh1637qBCeDzWZK5X9wTShPkAHp+hvTpFfVrAPSXU4dDYY+IJtVCH6njxkhg==
+X-Received: by 2002:a17:90a:4144:b0:240:973d:b436 with SMTP id m4-20020a17090a414400b00240973db436mr14169767pjg.49.1681764809815;
+        Mon, 17 Apr 2023 13:53:29 -0700 (PDT)
 Received: from fedora.hsd1.ca.comcast.net ([2601:644:937f:7f20::c139])
-        by smtp.googlemail.com with ESMTPSA id h7-20020a17090ac38700b0022335f1dae2sm7609707pjt.22.2023.04.17.13.53.27
+        by smtp.googlemail.com with ESMTPSA id h7-20020a17090ac38700b0022335f1dae2sm7609707pjt.22.2023.04.17.13.53.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Apr 2023 13:53:28 -0700 (PDT)
+        Mon, 17 Apr 2023 13:53:29 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 31/33] sparc: Convert pgtable_pte_page_{ctor, dtor}() to ptdesc equivalents
-Date: Mon, 17 Apr 2023 13:50:46 -0700
-Message-Id: <20230417205048.15870-32-vishal.moola@gmail.com>
+Subject: [PATCH 32/33] um: Convert {pmd, pte}_free_tlb() to use ptdescs
+Date: Mon, 17 Apr 2023 13:50:47 -0700
+Message-Id: <20230417205048.15870-33-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230417205048.15870-1-vishal.moola@gmail.com>
 References: <20230417205048.15870-1-vishal.moola@gmail.com>
@@ -84,37 +84,47 @@ Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Part of the conversions to replace pgtable pte constructor/destructors with
-ptdesc equivalents.
+Part of the conversions to replace pgtable constructor/destructors with
+ptdesc equivalents. Also cleans up some spacing issues.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- arch/sparc/mm/srmmu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/um/include/asm/pgalloc.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index 13f027afc875..964938aa7b88 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -355,7 +355,8 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
- 		return NULL;
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
- 	spin_lock(&mm->page_table_lock);
--	if (page_ref_inc_return(page) == 2 && !pgtable_pte_page_ctor(page)) {
-+	if (page_ref_inc_return(page) == 2 &&
-+			!ptdesc_pte_ctor(page_ptdesc(page))) {
- 		page_ref_dec(page);
- 		ptep = NULL;
- 	}
-@@ -371,7 +372,7 @@ void pte_free(struct mm_struct *mm, pgtable_t ptep)
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
- 	spin_lock(&mm->page_table_lock);
- 	if (page_ref_dec_return(page) == 1)
--		pgtable_pte_page_dtor(page);
-+		ptdesc_pte_dtor(page_ptdesc(page));
- 	spin_unlock(&mm->page_table_lock);
+diff --git a/arch/um/include/asm/pgalloc.h b/arch/um/include/asm/pgalloc.h
+index 8ec7cd46dd96..760b029505c1 100644
+--- a/arch/um/include/asm/pgalloc.h
++++ b/arch/um/include/asm/pgalloc.h
+@@ -25,19 +25,19 @@
+  */
+ extern pgd_t *pgd_alloc(struct mm_struct *);
  
- 	srmmu_free_nocache(ptep, SRMMU_PTE_TABLE_SIZE);
+-#define __pte_free_tlb(tlb,pte, address)		\
+-do {							\
+-	pgtable_pte_page_dtor(pte);			\
+-	tlb_remove_page((tlb),(pte));			\
++#define __pte_free_tlb(tlb, pte, address)			\
++do {								\
++	ptdesc_pte_dtor(page_ptdesc(pte));			\
++	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
+ } while (0)
+ 
+ #ifdef CONFIG_3_LEVEL_PGTABLES
+ 
+-#define __pmd_free_tlb(tlb, pmd, address)		\
+-do {							\
+-	pgtable_pmd_page_dtor(virt_to_page(pmd));	\
+-	tlb_remove_page((tlb),virt_to_page(pmd));	\
+-} while (0)						\
++#define __pmd_free_tlb(tlb, pmd, address)			\
++do {								\
++	ptdesc_pmd_dtor(virt_to_ptdesc(pmd));			\
++	tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(pmd));	\
++} while (0)
+ 
+ #endif
+ 
 -- 
 2.39.2
 
