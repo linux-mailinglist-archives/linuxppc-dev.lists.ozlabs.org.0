@@ -1,92 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348306E663E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 15:46:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB1F6E6803
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 17:24:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q14vN09gqz3fV5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 23:46:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q174f6PhQz3fSp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 01:24:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TkVdMp3l;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=QAzdf8lr;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=QAzdf8lr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=2a01:111:f400:fe0d::62b; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TkVdMp3l;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=QAzdf8lr;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=QAzdf8lr;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on062b.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::62b])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q14sV5Gh1z3f5N
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 23:44:30 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33ID6PKd017035;
-	Tue, 18 Apr 2023 13:44:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=JrXV5WpLPfISz/ogVFmLv6FO9GD/Bx08dWDfErkGGhI=;
- b=TkVdMp3lPDW1ytfhLP8D1HP44CcwNyioIWekd/mOsM7c/XL3EsucrE+9LctIODJHqXe6
- jxIO/e4o++7L/cc0uRZvOsO7FIiLnrBEyccWTbygiK3yV6stovlUBLcE6zS6DJDtMJlg
- I1z9w0FQTobKMX98zKPQNYWNxdkMuZIt4ais+N4e/7VcpCJGOerrP6nhqERVqKhVVNGq
- hBQl/ek4YHwo21UpbvGxiDofvjtkmJaxOubvlGYQMLER74jbq50itumRyd+G8qtKh2yr
- 42TSwY2YfbyefO1CDdAeK3ZIW9we8VQZjuv48HnMt0SlWUiui23/p/NUyZ0L7uwD3o3e Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q1pww297p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Apr 2023 13:44:21 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33IDZs6m014354;
-	Tue, 18 Apr 2023 13:44:20 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q1pww296t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Apr 2023 13:44:20 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33ID7QWb013965;
-	Tue, 18 Apr 2023 13:44:19 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3pykj75fns-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Apr 2023 13:44:19 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33IDiHJD29163800
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Apr 2023 13:44:18 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A0EBB58063;
-	Tue, 18 Apr 2023 13:44:17 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5560058059;
-	Tue, 18 Apr 2023 13:44:16 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Apr 2023 13:44:16 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: kexec@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v9 4/4] tpm/kexec: Duplicate TPM measurement log in of-tree for kexec
-Date: Tue, 18 Apr 2023 09:44:09 -0400
-Message-Id: <20230418134409.177485-5-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230418134409.177485-1-stefanb@linux.ibm.com>
-References: <20230418134409.177485-1-stefanb@linux.ibm.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q173j0V88z3cdn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 01:23:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AOUkxBIC2Cz5Gx0Qbx4hYV9qydLXls7EOVVO/fKWM24=;
+ b=QAzdf8lryAW5tqcwk802BOf2VjtQt0IYCwM8qLmBKvqoKZIbwtgYGd9L4zhJa2CrnY88SOiDchFjxT7sJMvHIzPzYbdwR0meTw57F8f6qJZ88gvHcsLEs1u/QwOIhPw701X2ewoMdj210nO8PVF/lJr/fcI7J6S4AahSlOjJX4E+tlUG3nCMKCYs10RC9sIgcmaDJIM7ThddJa/H1dx3UZ39FGCYbWLj5H2jJ0HEWO2JE5s7aw/xOg9qdLT1Y664e/UUQKO6lu2UU1eJEW4yu56u6hOUit3qgiKCdBb/pgFe5Q174WMrVpfc0FzyBbGuauC8VifHazTfD6colm6uNw==
+Received: from AM5PR1001CA0036.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:206:2::49)
+ by DU0PR03MB9566.eurprd03.prod.outlook.com (2603:10a6:10:41e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.45; Tue, 18 Apr
+ 2023 15:23:04 +0000
+Received: from AM6EUR05FT036.eop-eur05.prod.protection.outlook.com
+ (2603:10a6:206:2:cafe::50) by AM5PR1001CA0036.outlook.office365.com
+ (2603:10a6:206:2::49) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.47 via Frontend
+ Transport; Tue, 18 Apr 2023 15:23:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.86)
+ smtp.mailfrom=seco.com; dkim=pass (signature was verified)
+ header.d=seco.com;dmarc=pass action=none header.from=seco.com;
+Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
+ 20.160.56.86 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.86; helo=inpost-eu.tmcas.trendmicro.com; pr=C
+Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.86) by
+ AM6EUR05FT036.mail.protection.outlook.com (10.233.241.222) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6319.20 via Frontend Transport; Tue, 18 Apr 2023 15:23:03 +0000
+Received: from outmta (unknown [192.168.82.140])
+	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id C28EE20080266;
+	Tue, 18 Apr 2023 15:23:03 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (unknown [104.47.18.104])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 1595920080073;
+	Tue, 18 Apr 2023 15:24:03 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AIx57jjBsUKOEsnjMmrjsQ+WfGJ63fpzkIziRSDe+MwFROyjGyaSndiW/idmo1VJbHpTppltfUDFT8vsZNf5JQIPhSmiX9y+B8rt4ASl4ySeg0AMkfSPf+RIu8FVExycdyI4o7vrPRY7lBu7x0HuL942JsBRqdA+qoBnMezoFNJx5PbWp0i5nH13EcVWV0mUWpqeBSzxyUJ47IkZm4x/3yqgwyHKBCbplAbSOeTI6oFuTaTNwEMjQeIkUINh56AE+SqA9+LbeRk1w1lZDmbom2mevToIg2Ry1dWNgLFUeFs5bhhaL5Mpbf2Qo/eBVQKfSD/eGPukMz+ZMyPKHDIcbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AOUkxBIC2Cz5Gx0Qbx4hYV9qydLXls7EOVVO/fKWM24=;
+ b=VqluJ23ydD/R4qtjxG0s7UFZ9WpGK7Gy8cfbJ9kd8vuTa4LjXJzYeMkjK0WJmVLfcOiOqXwwEhrCQqBAcy2ULSyXMN8Z+Ad1eZWrT2RVz8Rpf0A2yLbv2dYTxwzAWHi7l7IQZE5MEoRVv4f34WMSiRc9cGSgiCDXD0hx7dsP2AXlOAE6VM8o0XAiDnVtaQkZYD+yOGQ0u3QcrMl/Hf/D7l/c2EbqEPAVpl//Ftu4/U0z8lOiuESA/3S2yYeNlqXr9pGCpzeW9bbFXEjd+c/0n+wlWQstHuf6nXO4vlcIpBVYKMhsxT7Oq5gqyM4iO+X3ZVSYRCp9hh1OvQopA7bgcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AOUkxBIC2Cz5Gx0Qbx4hYV9qydLXls7EOVVO/fKWM24=;
+ b=QAzdf8lryAW5tqcwk802BOf2VjtQt0IYCwM8qLmBKvqoKZIbwtgYGd9L4zhJa2CrnY88SOiDchFjxT7sJMvHIzPzYbdwR0meTw57F8f6qJZ88gvHcsLEs1u/QwOIhPw701X2ewoMdj210nO8PVF/lJr/fcI7J6S4AahSlOjJX4E+tlUG3nCMKCYs10RC9sIgcmaDJIM7ThddJa/H1dx3UZ39FGCYbWLj5H2jJ0HEWO2JE5s7aw/xOg9qdLT1Y664e/UUQKO6lu2UU1eJEW4yu56u6hOUit3qgiKCdBb/pgFe5Q174WMrVpfc0FzyBbGuauC8VifHazTfD6colm6uNw==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
+ by PAWPR03MB9788.eurprd03.prod.outlook.com (2603:10a6:102:2ef::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.45; Tue, 18 Apr
+ 2023 15:22:58 +0000
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::2226:eb03:a8c:a7e5]) by DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::2226:eb03:a8c:a7e5%2]) with mapi id 15.20.6298.045; Tue, 18 Apr 2023
+ 15:22:58 +0000
+Message-ID: <e9c2b2df-72e5-f0ab-728a-255e8b2e565d@seco.com>
+Date: Tue, 18 Apr 2023 11:22:50 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH v3 2/2] soc: fsl: qbman: Use raw spinlock for cgr_lock
+Content-Language: en-US
+To: Crystal Wood <oss@buserror.net>, Li Yang <leoyang.li@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20230404145557.2356894-1-sean.anderson@seco.com>
+ <20230404145557.2356894-2-sean.anderson@seco.com>
+ <48dacc58c7c04ba8a005d8edd56744c8455f007e.camel@buserror.net>
+ <d4737c45-2bbf-d364-9768-20baa46f6af4@seco.com>
+ <3b707d1c-1120-274f-6cd6-b3283a334563@seco.com>
+ <497c92b50103a4ba3469cd41edbd967ee9bfb291.camel@buserror.net>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <497c92b50103a4ba3469cd41edbd967ee9bfb291.camel@buserror.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yAqmBtBNnpGH6og9BhDxa-knZIwuBfXv
-X-Proofpoint-ORIG-GUID: VRbGQ6LqH1ZDbze7tFHYSq1iO0wdPNM7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-18_09,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
- impostorscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304180118
+X-ClientProxiedBy: BL1P221CA0029.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c5::25) To DB9PR03MB8847.eurprd03.prod.outlook.com
+ (2603:10a6:10:3dd::13)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|PAWPR03MB9788:EE_|AM6EUR05FT036:EE_|DU0PR03MB9566:EE_
+X-MS-Office365-Filtering-Correlation-Id: 268a86b5-78a6-4f95-9595-08db4020cdd0
+X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:  1Wr6hZqCtiCN2v95JDDW/2jvIccgo4m90ocBk4xxyiXXwYinT88Gov7cCTQUaLEwlWg2ur+2mMnwnPgpCoCa6+wE2oBu3KJQtnCXscTv2m3iK6S3N9DllPI9Hig6YscZEjWWS7Gz4OfW36sZ2UhoHK1SQ8a4ndPcPbJQiQXhvdpxEpkY4FCjEdG14G59CMEU8O2kaYnk7tHkPo+si97+pJJtv8v/nT8UjyatfR3BhaL6QmVbzVfDq3r8+4ChsAtw7ccoZRjgqbeeMdbQJNv2LqunTwhONYkPpBwbYvYoC5bf0bTXEQ0+IaKd5NsKXRjY4QRALXyGmKSI6+HFIPlbQvjIWY5fabCY2wOTRF52I2QfxtBXtVEE5Hh3Y3N7OSzDiYxIm+6WCQu1cSWSyqv+ilswtxH2hr4KLTb5GfUyBxWldXBXQh5EwB1s71X9r0D9W+lCSStwsxdqoYxdweWshRpMepc0wMkMsN4epUWcK1lNQp8TxmJyKq2DXJDtZGKBfoVg8E/cM2jIclTpDHquuWW8cxwFMkpvpKMwI9n2Ao5KW7l/xCFUe0jR0/G57eiq+9ZD9KtBSk8CMPgg4CxvDMonGAgRvaAeAmDaW+7LwSl9A3bYUZfxIjVQrjX4MoBRea9sWjDF9SwCKGGANv16cuTmzd2+jyCbVBWNgRQVCZAm4EM1mDHYAg2wXd93r1a8
+X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(346002)(136003)(39850400004)(376002)(396003)(451199021)(6506007)(86362001)(31696002)(26005)(83380400001)(6512007)(53546011)(36756003)(186003)(2906002)(44832011)(7416002)(31686004)(2616005)(6486002)(52116002)(5660300002)(38350700002)(38100700002)(6666004)(8676002)(8936002)(66476007)(478600001)(110136005)(54906003)(41300700001)(316002)(66556008)(66946007)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR03MB9788
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:  AM6EUR05FT036.eop-eur05.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 	6eadbde8-6ea6-460a-16ec-08db4020c8d7
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	pfjckRU0hiSSlcw0wDNgOxyOT57yO27Ry4PepPYhDnQCM84aerifCG+Ztk7LwTIqnD16wR5xMchpP7p6Hs0Jk/Cf5b/kMIGC2SB9uOrA/NoFq/fQzKx1Zdj3k8Ym1Nn/atHMCf/GllVx7+M8J1MKaNz5E+p3IFFGT5rxATIeyEYB6Wxky9cdyc7k04z/cGpzcdKPoIUcnR0Cd8XISk1eBETysiFPAYYU9kMQgw+pEPlyUHDfulNoj7DbgVq4qEqBUgzCoP2VdWziEUsvxuCT7tVUzGR45pNdMK3KGZVdMGVv9soLU17In7+d4zyMOftgUpMUsko7MwPjqUUG/HIgp6ZXWpMIpJVEK/vByLvshLch8jwRq25M9PJwN0i4yjhFgL74G4KZrsGYXPC6JsmxKGn3I67uVhF0fyOVgHiEozFFtElkyBXKH2hEjvfyvyctrPwnM9eYcJdyW5YqAd+ELP8ZkzTU/EqgT1teiKD1V4CSC2Hv4XDmKc0rnQ85wK7gqldxUvTsnXCUD88O8v5x+5GAcXmbVldsrpte6PQLkgyhE23QI+akGjx3AyL5CLXe3xGpsPnqlq2Bah1G7cJY8MXped0Am3oZWAjXl5pFISiJF+jYmfQFt+tJTlGLtEp30qKdVhCuIklhjhLw1vOoDdQu46AW1EW0AG8uUzdxs3bg5/zvp8fmijVOtlMaO25Pp9oLfHKvs48+FcszQmJtD8lHuHArksLZIssW16RXgN1I3I2BtdnxJIzorHq+OheDqokeUiyhU2V0/7kN09hEYA==
+X-Forefront-Antispam-Report: 	CIP:20.160.56.86;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230028)(396003)(346002)(136003)(39850400004)(376002)(451199021)(46966006)(40470700004)(36840700001)(36860700001)(2616005)(110136005)(6512007)(6506007)(26005)(6666004)(40480700001)(86362001)(54906003)(34070700002)(478600001)(31686004)(316002)(4326008)(83380400001)(336012)(186003)(6486002)(53546011)(47076005)(70206006)(70586007)(7596003)(356005)(7636003)(82740400003)(5660300002)(44832011)(7416002)(41300700001)(2906002)(40460700003)(8936002)(8676002)(31696002)(36756003)(82310400005)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2023 15:23:03.8874
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 268a86b5-78a6-4f95-9595-08db4020cdd0
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.86];Helo=[inpost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	AM6EUR05FT036.eop-eur05.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB9566
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,391 +137,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Coiby Xu <coxu@redhat.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, nayna@linux.ibm.com, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, Eric Biederman <ebiederm@xmission.com>, Frank Rowand <frowand.list@gmail.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Madalin Bucur <madalin.bucur@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge <roy.pledge@nxp.com>, linux-kernel@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Camelia Groza <camelia.groza@nxp.com>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The memory area of the TPM measurement log is currently not properly
-duplicated for carrying it across kexec when an Open Firmware
-Devicetree is used. Therefore, the contents of the log get corrupted.
-Fix this for the kexec_file_load() syscall by allocating a buffer and
-copying the contents of the existing log into it. The new buffer is
-preserved across the kexec and a pointer to it is available when the new
-kernel is started. To achieve this, store the allocated buffer's address
-in the flattened device tree (fdt) under the name linux,tpm-kexec-buffer
-and search for this entry early in the kernel startup before the TPM
-subsystem starts up. Adjust the pointer in the of-tree stored under
-linux,sml-base to point to this buffer holding the preserved log. The TPM
-driver can then read the base address from this entry when making the log
-available. Invalidate the log by removing 'linux,sml-base' from the
-devicetree if anything goes wrong with updating the buffer.
+On 4/18/23 02:29, Crystal Wood wrote:
+> On Tue, 2023-04-11 at 11:09 -0400, Sean Anderson wrote:
+>> Hi Crystal,
+>> 
+>> On 4/4/23 12:04, Sean Anderson wrote:
+>> > On 4/4/23 11:33, Crystal Wood wrote:
+>> > > On Tue, 2023-04-04 at 10:55 -0400, Sean Anderson wrote:
+>> > > 
+>> > > > @@ -1456,11 +1456,11 @@ static void tqm_congestion_task(struct
+>> > > > work_struct
+>> > > > *work)
+>> > > >         union qm_mc_result *mcr;
+>> > > >         struct qman_cgr *cgr;
+>> > > >  
+>> > > > -       spin_lock_irq(&p->cgr_lock);
+>> > > > +       raw_spin_lock_irq(&p->cgr_lock);
+>> > > >         qm_mc_start(&p->p);
+>> > > >         qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
+>> > > >         if (!qm_mc_result_timeout(&p->p, &mcr)) {
+>> > > > -               spin_unlock_irq(&p->cgr_lock);
+>> > > > +               raw_spin_unlock_irq(&p->cgr_lock);
+>> > > 
+>> > > qm_mc_result_timeout() spins with a timeout of 10 ms which is very
+>> > > inappropriate for a raw lock.  What is the actual expected upper bound?
+>> > 
+>> > Hm, maybe we can move this qm_mc stuff outside cgr_lock? In most other
+>> > places they're called without cgr_lock, which implies that its usage
+>> > here is meant to synchronize against some other function.
+>> 
+>> Do you have any suggestions here? I think this should really be handled
+>> in a follow-up patch. If you think this code is waiting too long in a raw
+>> spinlock, the existing code can wait just as long with IRQs disabled.
+>> This patch doesn't change existing system responsiveness.
+> 
+> Well, AFAICT it expands the situations in which it happens from configuration
+> codepaths to stuff like congestion handling.  The proper fix would probably be
+> to use some mechanism other than smp_call_function_single() to run code on the
+> target cpu so that it can run with irqs enabled (or get confirmation that the
+> actual worst case is short enough),
 
-Use subsys_initcall() to call the function to restore the buffer even if
-the TPM subsystem or driver are not used. This allows the buffer to be
-carried across the next kexec without involvement of the TPM subsystem
-and ensures a valid buffer pointed to by the of-tree.
+Well, we used to use a kthread/wait_for_completion before 96f413f47677
+("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()"). The commit
+description there isn't very enlightening as to the actual bug, which is
+why I CC's Madalin earlier. To be honest, I'm not really familiar with
+the other options in the kernel.
 
-Use the subsys_initcall(), rather than an ealier initcall, since
-page_is_ram() in get_kexec_buffer() only starts working at this stage.
+> but barring that I guess at least acknowledge the situation in a
+> comment?
 
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Tested-by: Coiby Xu <coxu@redhat.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Fine by me.
 
----
-v6:
- - Define prototype for tpm_add_kexec_buffer under same config options
-   as drivers/of/kexec.c is compiled, provide inline function otherwise.
-   (kernel test robot)
-
-v4:
- - Added #include <linux/vmalloc.h> due to parisc
- - Use phys_addr_t for physical address rather than void *
- - Remove linux,sml-base if the buffer cannot be updated after a kexec
- - Added __init to functions where possible
----
- drivers/of/kexec.c    | 216 +++++++++++++++++++++++++++++++++++++++++-
- include/linux/kexec.h |   6 ++
- include/linux/of.h    |   6 ++
- kernel/kexec_file.c   |   6 ++
- 4 files changed, 232 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-index fa8c0c75adf9..9831d25dd83e 100644
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -19,6 +19,8 @@
- #include <linux/random.h>
- #include <linux/slab.h>
- #include <linux/types.h>
-+#include <linux/tpm.h>
-+#include <linux/vmalloc.h>
- 
- #define RNG_SEED_SIZE		128
- 
-@@ -116,7 +118,6 @@ static int do_get_kexec_buffer(const void *prop, int len, unsigned long *addr,
- 	return 0;
- }
- 
--#ifdef CONFIG_HAVE_IMA_KEXEC
- static int __init get_kexec_buffer(const char *name, unsigned long *addr,
- 				   size_t *size)
- {
-@@ -151,6 +152,7 @@ static int __init get_kexec_buffer(const char *name, unsigned long *addr,
- 	return 0;
- }
- 
-+#ifdef CONFIG_HAVE_IMA_KEXEC
- /**
-  * ima_get_kexec_buffer - get IMA buffer from the previous kernel
-  * @addr:	On successful return, set to point to the buffer contents.
-@@ -239,7 +241,6 @@ static void remove_ima_buffer(void *fdt, int chosen_node)
- 	remove_buffer(fdt, chosen_node, "linux,ima-kexec-buffer");
- }
- 
--#ifdef CONFIG_IMA_KEXEC
- static int setup_buffer(void *fdt, int chosen_node, const char *name,
- 			phys_addr_t addr, size_t size)
- {
-@@ -263,6 +264,7 @@ static int setup_buffer(void *fdt, int chosen_node, const char *name,
- 
- }
- 
-+#ifdef CONFIG_IMA_KEXEC
- /**
-  * setup_ima_buffer - add IMA buffer information to the fdt
-  * @image:		kexec image being loaded.
-@@ -285,6 +287,213 @@ static inline int setup_ima_buffer(const struct kimage *image, void *fdt,
- }
- #endif /* CONFIG_IMA_KEXEC */
- 
-+/**
-+ * tpm_get_kexec_buffer - get TPM log buffer from the previous kernel
-+ * @phyaddr:	On successful return, set to physical address of buffer
-+ * @size:	On successful return, set to the buffer size.
-+ *
-+ * Return: 0 on success, negative errno on error.
-+ */
-+static int __init tpm_get_kexec_buffer(phys_addr_t *phyaddr, size_t *size)
-+{
-+	unsigned long tmp_addr;
-+	size_t tmp_size;
-+	int ret;
-+
-+	ret = get_kexec_buffer("linux,tpm-kexec-buffer", &tmp_addr, &tmp_size);
-+	if (ret)
-+		return ret;
-+
-+	*phyaddr = (phys_addr_t)tmp_addr;
-+	*size = tmp_size;
-+
-+	return 0;
-+}
-+
-+/**
-+ * tpm_of_remove_kexec_buffer - remove the linux,tpm-kexec-buffer node
-+ */
-+static int __init tpm_of_remove_kexec_buffer(void)
-+{
-+	struct property *prop;
-+
-+	prop = of_find_property(of_chosen, "linux,tpm-kexec-buffer", NULL);
-+	if (!prop)
-+		return -ENOENT;
-+
-+	return of_remove_property(of_chosen, prop);
-+}
-+
-+/**
-+ * remove_tpm_buffer - remove the TPM log buffer property and reservation from @fdt
-+ *
-+ * @fdt: Flattened Device Tree to update
-+ * @chosen_node: Offset to the chosen node in the device tree
-+ *
-+ * The TPM log measurement buffer is of no use to a subsequent kernel, so we always
-+ * remove it from the device tree.
-+ */
-+static void remove_tpm_buffer(void *fdt, int chosen_node)
-+{
-+	if (!IS_ENABLED(CONFIG_PPC64))
-+		return;
-+
-+	remove_buffer(fdt, chosen_node, "linux,tpm-kexec-buffer");
-+}
-+
-+/**
-+ * setup_tpm_buffer - add TPM measurement log buffer information to the fdt
-+ * @image:		kexec image being loaded.
-+ * @fdt:		Flattened device tree for the next kernel.
-+ * @chosen_node:	Offset to the chosen node.
-+ *
-+ * Return: 0 on success, or negative errno on error.
-+ */
-+static int setup_tpm_buffer(const struct kimage *image, void *fdt,
-+			    int chosen_node)
-+{
-+	if (!IS_ENABLED(CONFIG_PPC64))
-+		return 0;
-+
-+	return setup_buffer(fdt, chosen_node, "linux,tpm-kexec-buffer",
-+			    image->tpm_buffer_addr, image->tpm_buffer_size);
-+}
-+
-+void tpm_add_kexec_buffer(struct kimage *image)
-+{
-+	struct kexec_buf kbuf = { .image = image, .buf_align = 1,
-+				  .buf_min = 0, .buf_max = ULONG_MAX,
-+				  .top_down = true };
-+	struct device_node *np;
-+	void *buffer;
-+	u32 size;
-+	u64 base;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_PPC64))
-+		return;
-+
-+	np = of_find_node_by_name(NULL, "vtpm");
-+	if (!np)
-+		return;
-+
-+	if (of_tpm_get_sml_parameters(np, &base, &size) < 0)
-+		return;
-+
-+	buffer = vmalloc(size);
-+	if (!buffer)
-+		return;
-+	memcpy(buffer, __va(base), size);
-+
-+	kbuf.buffer = buffer;
-+	kbuf.bufsz = size;
-+	kbuf.memsz = size;
-+	ret = kexec_add_buffer(&kbuf);
-+	if (ret) {
-+		pr_err("Error passing over kexec TPM measurement log buffer: %d\n",
-+		       ret);
-+		return;
-+	}
-+
-+	image->tpm_buffer = buffer;
-+	image->tpm_buffer_addr = kbuf.mem;
-+	image->tpm_buffer_size = size;
-+}
-+
-+/**
-+ * tpm_post_kexec - Make stored TPM log buffer available in of-tree
-+ */
-+static int __init tpm_post_kexec(void)
-+{
-+	struct property *newprop, *p;
-+	struct device_node *np;
-+	phys_addr_t phyaddr;
-+	u32 oflogsize;
-+	size_t size;
-+	u64 unused;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_PPC64))
-+		return 0;
-+
-+	np = of_find_node_by_name(NULL, "vtpm");
-+	if (!np)
-+		return 0;
-+
-+	if (!of_get_property(of_chosen, "linux,tpm-kexec-buffer", NULL)) {
-+		/*
-+		 * linux,tpm-kexec-buffer may be missing on initial boot
-+		 * or if previous kernel didn't pass a buffer.
-+		 */
-+		if (of_get_property(of_chosen, "linux,booted-from-kexec", NULL)) {
-+			/* no buffer but kexec'd: remove 'linux,sml-base' */
-+			ret = -EINVAL;
-+			goto err_remove_sml_base;
-+		}
-+		return 0;
-+	}
-+
-+	/*
-+	 * If any one of the following steps fails we remove linux,sml-base
-+	 * to invalidate the TPM log.
-+	 */
-+	ret = tpm_get_kexec_buffer(&phyaddr, &size);
-+	if (ret)
-+		goto err_remove_kexec_buffer;
-+
-+	/* logsize must not have changed */
-+	ret = of_tpm_get_sml_parameters(np, &unused, &oflogsize);
-+	if (ret < 0)
-+		goto err_free_memblock;
-+	ret = -EINVAL;
-+	if (oflogsize != size)
-+		goto err_free_memblock;
-+
-+	/* replace linux,sml-base with new physical address of buffer */
-+	ret = -ENOMEM;
-+	newprop = kzalloc(sizeof(*newprop), GFP_KERNEL);
-+	if (!newprop)
-+		goto err_free_memblock;
-+
-+	newprop->name = kstrdup("linux,sml-base", GFP_KERNEL);
-+	newprop->length = sizeof(phyaddr);
-+	newprop->value = kmalloc(sizeof(phyaddr), GFP_KERNEL);
-+	if (!newprop->name || !newprop->value)
-+		goto err_free_newprop_struct;
-+
-+	if (of_property_match_string(np, "compatible", "IBM,vtpm") < 0 &&
-+	    of_property_match_string(np, "compatible", "IBM,vtpm20") < 0) {
-+		ret = -ENODEV;
-+		goto err_free_newprop_struct;
-+	} else {
-+		*(phys_addr_t *)newprop->value = phyaddr;
-+	}
-+
-+	ret = of_update_property(np, newprop);
-+	if (ret) {
-+		pr_err("Could not update linux,sml-base with new address");
-+		goto err_free_newprop_struct;
-+	}
-+
-+	return 0;
-+
-+err_free_newprop_struct:
-+	kfree(newprop->value);
-+	kfree(newprop->name);
-+	kfree(newprop);
-+err_free_memblock:
-+	memblock_phys_free((phys_addr_t)phyaddr, size);
-+err_remove_kexec_buffer:
-+	tpm_of_remove_kexec_buffer();
-+err_remove_sml_base:
-+	p = of_find_property(np, "linux,sml-base", NULL);
-+	if (p)
-+		of_remove_property(np, p);
-+
-+	return ret;
-+}
-+subsys_initcall(tpm_post_kexec);
-+
- /*
-  * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
-  *
-@@ -483,6 +692,9 @@ void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
- 	remove_ima_buffer(fdt, chosen_node);
- 	ret = setup_ima_buffer(image, fdt, fdt_path_offset(fdt, "/chosen"));
- 
-+	remove_tpm_buffer(fdt, chosen_node);
-+	ret = setup_tpm_buffer(image, fdt, fdt_path_offset(fdt, "/chosen"));
-+
- out:
- 	if (ret) {
- 		kvfree(fdt);
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 6883c5922701..6116abdda590 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -380,6 +380,12 @@ struct kimage {
- 	void *elf_headers;
- 	unsigned long elf_headers_sz;
- 	unsigned long elf_load_addr;
-+
-+	/* Virtual address of TPM log buffer for kexec syscall */
-+	void *tpm_buffer;
-+
-+	phys_addr_t tpm_buffer_addr;
-+	size_t tpm_buffer_size;
- };
- 
- /* kexec interface functions */
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 0af611307db2..9afa99950310 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -1658,4 +1658,10 @@ static inline int of_overlay_notifier_unregister(struct notifier_block *nb)
- 
- #endif
- 
-+#if defined(CONFIG_KEXEC_FILE) && defined(CONFIG_OF_FLATTREE)
-+void tpm_add_kexec_buffer(struct kimage *image);
-+#else
-+static inline void tpm_add_kexec_buffer(struct kimage *image) { }
-+#endif
-+
- #endif /* _LINUX_OF_H */
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index f1a0e4e3fb5c..58c7aaf11883 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -27,6 +27,7 @@
- #include <linux/kernel_read_file.h>
- #include <linux/syscalls.h>
- #include <linux/vmalloc.h>
-+#include <linux/of.h>
- #include "kexec_internal.h"
- 
- #ifdef CONFIG_KEXEC_SIG
-@@ -113,6 +114,9 @@ void kimage_file_post_load_cleanup(struct kimage *image)
- 	image->ima_buffer = NULL;
- #endif /* CONFIG_IMA_KEXEC */
- 
-+	vfree(image->tpm_buffer);
-+	image->tpm_buffer = NULL;
-+
- 	/* See if architecture has anything to cleanup post load */
- 	arch_kimage_file_post_load_cleanup(image);
- 
-@@ -248,6 +252,8 @@ kimage_file_prepare_segments(struct kimage *image, int kernel_fd, int initrd_fd,
- 
- 	/* IMA needs to pass the measurement list to the next kernel. */
- 	ima_add_kexec_buffer(image);
-+	/* Pass the TPM measurement log to next kernel */
-+	tpm_add_kexec_buffer(image);
- 
- 	/* Call arch image load handlers */
- 	ldata = arch_kexec_kernel_image_load(image);
--- 
-2.38.1
-
+--Sean
