@@ -2,66 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708356E6CBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 21:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2736D6E6D8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 22:38:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1D9t2YH2z3fSn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 05:14:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RH9mxQ6P;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1G2k11XMz3fWn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 06:38:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RH9mxQ6P;
-	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.47; helo=mail-oa1-f47.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1D8t07j8z3ccv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 05:13:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681845198; x=1713381198;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hi5rDPKAiKO3dkrZvNzmcu1W3or/62oMJmUKhJ71JxI=;
-  b=RH9mxQ6P8qLIY9sstj5qHKVkbYPpmUsDY8LFnDvYtkjId2n1uIjxq5A2
-   FP+TGlag69+r5IDwkTHXBKzojsoVosSOHOvcnwcZgsKh+5onHeu4wvHps
-   +Pz67NVpcyfgzREQvuXb4yDLKQ+qeUYijAIwuo5QGlx+q3CPHzVEhLakL
-   cA8zk2pWDGgs4lzF69stdnz1e8QTZs13Wkd7LYu2YyFQh/1hcALjIfgK3
-   NMvae3xCvm9zxJPphJLoHqadmp6vr/avEnJOQTdJEixZ9n8OqyVBPue2v
-   qtF1WIR90aQOzMsOhdITIWbSX9kfCFLX0H2Iutb3tmfJ+X6J+FqZ11W3Z
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10684"; a="325599459"
-X-IronPort-AV: E=Sophos;i="5.99,207,1677571200"; 
-   d="scan'208";a="325599459"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2023 12:13:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10684"; a="641481107"
-X-IronPort-AV: E=Sophos;i="5.99,207,1677571200"; 
-   d="scan'208";a="641481107"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 18 Apr 2023 12:13:04 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1poqlD-000dwL-1q;
-	Tue, 18 Apr 2023 19:13:03 +0000
-Date: Wed, 19 Apr 2023 03:12:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, kexec@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v9 4/4] tpm/kexec: Duplicate TPM measurement log in
- of-tree for kexec
-Message-ID: <202304190215.d0zwo1ni-lkp@intel.com>
-References: <20230418134409.177485-5-stefanb@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1G2C1J3Qz3f6W
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 06:37:37 +1000 (AEST)
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-187b70ab997so6038821fac.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 13:37:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681850254; x=1684442254;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7o5+N3VS1qDPO/Zinw5mZUfsFpj4R1h4uEgY0MH+7Dk=;
+        b=RBAUDockAaL8E1H8EmTpGBAk5nE0ZT18E6w93jZ3IEimBKRUXcww/q4n1myk6yr16S
+         BV7cmnkzVBH2Fs1N6tCgJSBl1jqA+4dCuTeh1O/pqo9guQhoU+pYHcObQSbal2cclU5q
+         4taIysTKdIqcxHcna5+zPgUeWl88ZKrckQqJm9rj7d1+BunSXpa7jZO+YbHV0dlvKDQO
+         4tsVzP0mXMV3ZrGAKoQFjMA1CYEArDohCQx7xLKWw6Mnv3E//RJDjd61rl0aFmWniV0U
+         dBKhJivyU7xF281+nE69UV4hz/Q17qt/YaMqa+FA9arybNmppHVZBSW2gtUYaBCj22i9
+         HNLw==
+X-Gm-Message-State: AAQBX9fvCI+ICQ/v6xdOKaKhoNE1gVB1idtUkFAupOLTDrNwECF8TQmp
+	HHNYOonQ4aOpAp9g8WU7xA==
+X-Google-Smtp-Source: AKy350aZLI017yqSUkhnZhkBxYDsjknuM4p3cQeAY3E4Q5qQfI6Lee06CNzMPbw6G/bjNY9+oYKk3g==
+X-Received: by 2002:aca:d7c4:0:b0:38a:63c8:800e with SMTP id o187-20020acad7c4000000b0038a63c8800emr80477oig.7.1681850254248;
+        Tue, 18 Apr 2023 13:37:34 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id 125-20020a4a0d83000000b005251e3f92ecsm6297501oob.47.2023.04.18.13.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Apr 2023 13:37:33 -0700 (PDT)
+Received: (nullmailer pid 2297135 invoked by uid 1000);
+	Tue, 18 Apr 2023 20:37:32 -0000
+Date: Tue, 18 Apr 2023 15:37:32 -0500
+From: Rob Herring <robh@kernel.org>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH v14 03/15] dt-bindings: Convert gpio-mmio to yaml
+Message-ID: <20230418203732.GA2262819-robh@kernel.org>
+References: <20230413160607.4128315-1-sean.anderson@seco.com>
+ <20230413160607.4128315-4-sean.anderson@seco.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230418134409.177485-5-stefanb@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230413160607.4128315-4-sean.anderson@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +64,345 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nageswara R Sastry <rnsastry@linux.ibm.com>, nayna@linux.ibm.com, Coiby Xu <coxu@redhat.com>, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, Eric Biederman <ebiederm@xmission.com>, oe-kbuild-all@lists.linux.dev, Frank Rowand <frowand.list@gmail.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, =?iso-8859-1?Q?Fern=E1ndez?= Rojas <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Stefan,
+On Thu, Apr 13, 2023 at 12:05:55PM -0400, Sean Anderson wrote:
+> This is a generic binding for simple MMIO GPIO controllers. Although we
+> have a single driver for these controllers, they were previously spread
+> over several files. Consolidate them. The register descriptions are
+> adapted from the comments in the source. There is no set order for the
+> registers, and some registers may be omitted. Because of this, reg-names
+> is mandatory, and no order is specified.
+> 
+> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
+> has moved.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Linus or Bartosz, feel free to pick this up as the rest of this series
+> may not be merged any time soon.
+> 
+> Changes in v14:
+> - Fix incorrect $id
+> 
+> Changes in v13:
+> - Fix references to brcm,bcm63xx-gpio.yaml (neé brcm,bcm6345-gpio)
+> 
+> Changes in v12:
+> - Put compatible first
+> - Keep gpio-controller to one line
+> - Add little-endian property
+> - Alphabetize compatibles
+> - Remove some comments
+> - Remove some examples with insufficient novelty
+> 
+> Changes in v11:
+> - Keep empty (or almost-empty) properties on a single line
+> - Don't use | unnecessarily
+> - Use gpio as the node name for examples
+> - Rename brcm,bcm6345-gpio.yaml to brcm,bcm63xx-gpio.yaml
+> 
+> Changes in v10:
+> - New
+> 
+>  ...m6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} |  18 +--
+>  .../devicetree/bindings/gpio/gpio-mmio.yaml   | 117 ++++++++++++++++++
+>  .../bindings/gpio/ni,169445-nand-gpio.txt     |  38 ------
+>  .../devicetree/bindings/gpio/wd,mbl-gpio.txt  |  38 ------
+>  .../mfd/brcm,bcm6318-gpio-sysctl.yaml         |   4 +-
+>  .../mfd/brcm,bcm63268-gpio-sysctl.yaml        |   4 +-
+>  .../mfd/brcm,bcm6328-gpio-sysctl.yaml         |   4 +-
+>  .../mfd/brcm,bcm6358-gpio-sysctl.yaml         |   4 +-
+>  .../mfd/brcm,bcm6362-gpio-sysctl.yaml         |   4 +-
+>  .../mfd/brcm,bcm6368-gpio-sysctl.yaml         |   4 +-
+>  10 files changed, 131 insertions(+), 104 deletions(-)
+>  rename Documentation/devicetree/bindings/gpio/{brcm,bcm6345-gpio.yaml => brcm,bcm63xx-gpio.yaml} (75%)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+> similarity index 75%
+> rename from Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+> rename to Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+> index 4d69f79df859..62fcc2bd5d80 100644
+> --- a/Documentation/devicetree/bindings/gpio/brcm,bcm6345-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/gpio/brcm,bcm63xx-gpio.yaml
+> @@ -1,10 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/gpio/brcm,bcm6345-gpio.yaml#
+> +$id: http://devicetree.org/schemas/gpio/brcm,bcm63xx-gpio.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Broadcom BCM6345 GPIO controller
+> +title: Broadcom BCM63xx GPIO controller
+>  
+>  maintainers:
+>    - Álvaro Fernández Rojas <noltari@gmail.com>
+> @@ -18,8 +18,6 @@ description: |+
+>  
+>    BCM6338 have 8-bit data and dirout registers, where GPIO state can be read
+>    and/or written, and the direction changed from input to output.
+> -  BCM6345 have 16-bit data and dirout registers, where GPIO state can be read
+> -  and/or written, and the direction changed from input to output.
+>    BCM6318, BCM6328, BCM6358, BCM6362, BCM6368 and BCM63268 have 32-bit data
+>    and dirout registers, where GPIO state can be read and/or written, and the
+>    direction changed from input to output.
+> @@ -29,7 +27,6 @@ properties:
+>      enum:
+>        - brcm,bcm6318-gpio
+>        - brcm,bcm6328-gpio
+> -      - brcm,bcm6345-gpio
+>        - brcm,bcm6358-gpio
+>        - brcm,bcm6362-gpio
+>        - brcm,bcm6368-gpio
+> @@ -63,17 +60,6 @@ required:
+>  additionalProperties: false
+>  
+>  examples:
+> -  - |
+> -    gpio@fffe0406 {
+> -      compatible = "brcm,bcm6345-gpio";
+> -      reg-names = "dirout", "dat";
+> -      reg = <0xfffe0406 2>, <0xfffe040a 2>;
+> -      native-endian;
+> -
+> -      gpio-controller;
+> -      #gpio-cells = <2>;
+> -    };
+> -
+>    - |
+>      gpio@0 {
+>        compatible = "brcm,bcm63268-gpio";
+> diff --git a/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml b/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+> new file mode 100644
+> index 000000000000..b394e058256e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpio/gpio-mmio.yaml
+> @@ -0,0 +1,117 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/gpio/gpio-mmio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Generic MMIO GPIO
+> +
+> +maintainers:
+> +  - Linus Walleij <linus.walleij@linaro.org>
+> +  - Bartosz Golaszewski <brgl@bgdev.pl>
+> +
+> +description:
+> +  Some simple GPIO controllers may consist of a single data register or a pair
+> +  of set/clear-bit registers. Such controllers are common for glue logic in
+> +  FPGAs or ASICs. Commonly, these controllers are accessed over memory-mapped
+> +  NAND-style parallel busses.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - brcm,bcm6345-gpio
+> +      - ni,169445-nand-gpio
+> +      - wd,mbl-gpio # Western Digital MyBook Live memory-mapped GPIO controller
+> +
+> +  big-endian: true
+> +
+> +  '#gpio-cells':
+> +    const: 2
+> +
+> +  gpio-controller: true
+> +
+> +  little-endian: true
+> +
+> +  reg:
+> +    minItems: 1
+> +    description:
+> +      A list of registers in the controller. The width of each register is
+> +      determined by its size. All registers must have the same width. The number
+> +      of GPIOs is set by the width, with bit 0 corresponding to GPIO 0.
+> +    items:
+> +      - description:
+> +          Register to READ the value of the GPIO lines. If GPIO line is high,
+> +          the bit will be set. If the GPIO line is low, the bit will be cleared.
+> +          This register may also be used to drive GPIOs if the SET register is
+> +          omitted.
+> +      - description:
+> +          Register to SET the value of the GPIO lines. Setting a bit in this
+> +          register will drive the GPIO line high.
+> +      - description:
+> +          Register to CLEAR the value of the GPIO lines. Setting a bit in this
+> +          register will drive the GPIO line low. If this register is omitted,
+> +          the SET register will be used to clear the GPIO lines as well, by
+> +          actively writing the line with 0.
+> +      - description:
+> +          Register to set the line as OUTPUT. Setting a bit in this register
+> +          will turn that line into an output line. Conversely, clearing a bit
+> +          will turn that line into an input.
+> +      - description:
+> +          Register to set this line as INPUT. Setting a bit in this register
+> +          will turn that line into an input line. Conversely, clearing a bit
+> +          will turn that line into an output.
+> +
+> +  reg-names:
+> +    minItems: 1
+> +    maxItems: 5
+> +    items:
+> +      enum:
+> +        - dat
+> +        - set
+> +        - clr
+> +        - dirout
+> +        - dirin
+> +
+> +  native-endian: true
+> +
+> +  no-output:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      If this property is present, the controller cannot drive the GPIO lines.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - '#gpio-cells'
+> +  - gpio-controller
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    gpio@1f300010 {
+> +      compatible = "ni,169445-nand-gpio";
+> +      reg = <0x1f300010 0x4>;
+> +      reg-names = "dat";
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +    };
+> +
+> +    gpio@e0100000 {
+> +      compatible = "wd,mbl-gpio";
+> +      reg-names = "dat";
+> +      reg = <0xe0100000 0x1>;
+> +      #gpio-cells = <2>;
+> +      gpio-controller;
+> +      no-output;
+> +    };
+> +
+> +    gpio@fffe0406 {
+> +      compatible = "brcm,bcm6345-gpio";
+> +      reg-names = "dirout", "dat";
+> +      reg = <0xfffe0406 2>, <0xfffe040a 2>;
+> +      native-endian;
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt b/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+> deleted file mode 100644
+> index ca2f8c745a27..000000000000
+> --- a/Documentation/devicetree/bindings/gpio/ni,169445-nand-gpio.txt
+> +++ /dev/null
+> @@ -1,38 +0,0 @@
+> -Bindings for the National Instruments 169445 GPIO NAND controller
+> -
+> -The 169445 GPIO NAND controller has two memory mapped GPIO registers, one
+> -for input (the ready signal) and one for output (control signals).  It is
+> -intended to be used with the GPIO NAND driver.
+> -
+> -Required properties:
+> -	- compatible: should be "ni,169445-nand-gpio"
+> -	- reg-names: must contain
+> -		"dat" - data register
+> -	- reg: address + size pairs describing the GPIO register sets;
+> -		order must correspond with the order of entries in reg-names
+> -	- #gpio-cells: must be set to 2. The first cell is the pin number and
+> -			the second cell is used to specify the gpio polarity:
+> -			0 = active high
+> -			1 = active low
+> -	- gpio-controller: Marks the device node as a gpio controller.
+> -
+> -Optional properties:
+> -	- no-output: disables driving output on the pins
+> -
+> -Examples:
+> -	gpio1: nand-gpio-out@1f300010 {
+> -		compatible = "ni,169445-nand-gpio";
+> -		reg = <0x1f300010 0x4>;
+> -		reg-names = "dat";
+> -		gpio-controller;
+> -		#gpio-cells = <2>;
+> -	};
+> -
+> -	gpio2: nand-gpio-in@1f300014 {
+> -		compatible = "ni,169445-nand-gpio";
+> -		reg = <0x1f300014 0x4>;
+> -		reg-names = "dat";
+> -		gpio-controller;
+> -		#gpio-cells = <2>;
+> -		no-output;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt b/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+> deleted file mode 100644
+> index 038c3a6a1f4d..000000000000
+> --- a/Documentation/devicetree/bindings/gpio/wd,mbl-gpio.txt
+> +++ /dev/null
+> @@ -1,38 +0,0 @@
+> -Bindings for the Western Digital's MyBook Live memory-mapped GPIO controllers.
+> -
+> -The Western Digital MyBook Live has two memory-mapped GPIO controllers.
+> -Both GPIO controller only have a single 8-bit data register, where GPIO
+> -state can be read and/or written.
+> -
+> -Required properties:
+> -	- compatible: should be "wd,mbl-gpio"
+> -	- reg-names: must contain
+> -		"dat" - data register
+> -	- reg: address + size pairs describing the GPIO register sets;
+> -		order must correspond with the order of entries in reg-names
+> -	- #gpio-cells: must be set to 2. The first cell is the pin number and
+> -			the second cell is used to specify the gpio polarity:
+> -			0 = active high
+> -			1 = active low
+> -	- gpio-controller: Marks the device node as a gpio controller.
+> -
+> -Optional properties:
+> -	- no-output: GPIOs are read-only.
+> -
+> -Examples:
+> -	gpio0: gpio0@e0000000 {
+> -		compatible = "wd,mbl-gpio";
+> -		reg-names = "dat";
+> -		reg = <0xe0000000 0x1>;
+> -		#gpio-cells = <2>;
+> -		gpio-controller;
+> -	};
+> -
+> -	gpio1: gpio1@e0100000 {
+> -		compatible = "wd,mbl-gpio";
+> -		reg-names = "dat";
+> -		reg = <0xe0100000 0x1>;
+> -		#gpio-cells = <2>;
+> -		gpio-controller;
+> -		no-output;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml b/Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml
+> index 148f1da47603..9f9a14af875e 100644
+> --- a/Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/brcm,bcm6318-gpio-sysctl.yaml
+> @@ -35,11 +35,11 @@ patternProperties:
+>    "^gpio@[0-9a-f]+$":
+>      # Child node
+>      type: object
+> -    $ref: "../gpio/brcm,bcm6345-gpio.yaml"
+> +    $ref: "../gpio/brcm,bcm63xx-gpio.yaml"
 
-kernel test robot noticed the following build warnings:
+If you respin, please drop the quotes here and the other spots.
 
-[auto build test WARNING on 6a8f57ae2eb07ab39a6f0ccad60c760743051026]
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Berger/drivers-of-kexec-ima-Support-32-bit-platforms/20230418-214600
-base:   6a8f57ae2eb07ab39a6f0ccad60c760743051026
-patch link:    https://lore.kernel.org/r/20230418134409.177485-5-stefanb%40linux.ibm.com
-patch subject: [PATCH v9 4/4] tpm/kexec: Duplicate TPM measurement log in of-tree for kexec
-config: x86_64-randconfig-a013-20230417 (https://download.01.org/0day-ci/archive/20230419/202304190215.d0zwo1ni-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/16a833d47b9aca53a1b099dea4066b76b7f14ee1
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Stefan-Berger/drivers-of-kexec-ima-Support-32-bit-platforms/20230418-214600
-        git checkout 16a833d47b9aca53a1b099dea4066b76b7f14ee1
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/mailbox/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304190215.d0zwo1ni-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/mailbox/mailbox.c:18:
-   In file included from include/linux/mailbox_client.h:10:
->> include/linux/of.h:1664:48: warning: declaration of 'struct kimage' will not be visible outside of this function [-Wvisibility]
-   static inline void tpm_add_kexec_buffer(struct kimage *image) { }
-                                                  ^
-   1 warning generated.
-
-
-vim +1664 include/linux/of.h
-
-  1660	
-  1661	#if defined(CONFIG_KEXEC_FILE) && defined(CONFIG_OF_FLATTREE)
-  1662	void tpm_add_kexec_buffer(struct kimage *image);
-  1663	#else
-> 1664	static inline void tpm_add_kexec_buffer(struct kimage *image) { }
-  1665	#endif
-  1666	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Rob
