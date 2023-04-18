@@ -2,66 +2,152 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754176E575F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 04:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587976E578D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 04:38:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0nXy2MVxz3fSn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 12:14:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q0p5Q1GBYz3cdG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 12:38:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jHZgHBfI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BaSerJUD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jHZgHBfI;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BaSerJUD;
 	dkim-atps=neutral
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0nX401Ffz3cHX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 12:13:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q0p4T27zwz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 12:37:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681784004; x=1713320004;
+  t=1681785481; x=1713321481;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wqlsjQk8Hlncd0Tit9Ob615YFcxS+GeVN0PRT6FhUrY=;
-  b=jHZgHBfIfrYtBGtDvdNewg1H/rbSKW/5ZRHSThqNQFck5WIm0Axiz6u0
-   73iB8Vc1nW3quy5ggogMUpTczJmuTUTV5vlt3/W84A4488SW+QUV8MpSY
-   b8kRm0YPavz9dAwfR5Lfs5ylLtZuIi9jv+YH/wjNR5hQV+sWm/JmzF0V4
-   Jp8rxi2iN6UsaYl29NhYRE66nWuScbXr8h8KNyLdtcv8ZkSqKp9DarYk6
-   hs4aVvR2vnybhYiTfcxK/3+Zc5Pkp5gj/NCcexQdy85jTGlZbLd0ozhNN
-   1y39VJoRzHRZy1PFytVwHJUH3OYJge/gKCv/8hF/EBz4IEPClA5jc7RiI
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="343806394"
+   in-reply-to:mime-version;
+  bh=XkS8Nl+S/BNTsu3WEeWUkENgPerzyGwAFgzfit6rtkw=;
+  b=BaSerJUD1ShTgquCTeXFshpuTIfXhUOacaK6yjFw3rOwt83dkkUyoc+l
+   QD3aCsEh96FwwZMnfmkxZgNaPGCzidkkUG6oj9nUrA7zulisERtHlAyAN
+   pMTfTUtq7ZJgvEAW8n/ZQkQHgwaNACJaKZmYzSDeDnC+gtO5hzx8qRPsy
+   wn2vXjh9IW76MLr4fF6jTSflLQ9xYa1sKrnzyYiV+rTPjX25XZ9ubf0/N
+   V5vM22o32JTSUsoTDSYH+VUIU2g5IJmVsHkZFu8DaOtm7LtMi45+kL2Za
+   HPbNJAiDzxW/VJZ5FyugPwXMyPVqrMSGd9wm+UWOPq6znzhum/tDDoZ+N
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="343809862"
 X-IronPort-AV: E=Sophos;i="5.99,205,1677571200"; 
-   d="scan'208";a="343806394"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 19:13:19 -0700
+   d="scan'208";a="343809862"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 19:37:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="723460357"
+X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="668319851"
 X-IronPort-AV: E=Sophos;i="5.99,205,1677571200"; 
-   d="scan'208";a="723460357"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 17 Apr 2023 19:13:13 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1poaqG-000cqb-33;
-	Tue, 18 Apr 2023 02:13:12 +0000
-Date: Tue, 18 Apr 2023 10:13:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 12/33] mm: Create ptdesc equivalents for
- pgtable_{pte,pmd}_page_{ctor,dtor}
-Message-ID: <202304180959.YFCTfVKw-lkp@intel.com>
-References: <20230417205048.15870-13-vishal.moola@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+   d="scan'208";a="668319851"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga006.jf.intel.com with ESMTP; 17 Apr 2023 19:37:51 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 17 Apr 2023 19:37:51 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 17 Apr 2023 19:37:51 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Mon, 17 Apr 2023 19:37:51 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.105)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Mon, 17 Apr 2023 19:37:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fksfNOl5xPOcC6knlTxYQqTRWXW9zsTNHeoUx6kutOHnHe+6entL6vR5OeWKriYEMv/tGgFbICrUPw9CyALEgkv7TjqgqofqoPtmPyuqkEHmiEwu2Zb0Zbl4VLKa1LhiWkfFWiIchLKEIyAnC0p2kq+EX4imAkUFC06c6SYzTnB81FY7HzNfINbePv7FGCWvPyf/jE+imFNesqOJdOj7DwCHVjDaThydBV2hKvIUSCfWG3agS/ZGoVJrw2FNL++FkHih/LVgD92iqHFo4G0KCjYBxobQHOfAehOBseoa69OFAV0embD8tkR2EAQp/eZ1FVi7o5lePhtneV0Ik9ODyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zib61m6NcjiPEa1wBCn7AMlO/ibQmmwuFVfJvlYsUig=;
+ b=oR+IHA/omLv40AgbUvVm6MK0NkH+t6CDpfpYJxOeFIVSd1jC9QxfXkegj/pFuZiE5+vzXdgBj6zUHPzhei5fNktsWkDJbhfmYUuylXLfAQ9Sn6XcUZVz+Efp2cle9eV7Yuz0XvyoBazMuqJu1fa4JRkCKRn4ih06cWA+CE8spAaaUSv6N7CWaOkoPQ0mgom2lSsq7mWpdVZwr1z6xjviM+NnCy+GV2aYCxQfo0kcfwbE8hSZL7nDJHxwx4B/g82RNtGWgShjF650pT07Dt4p4Blq00cjeRU4m9HDPiD8fTZdd13s4fR72VVjnjBOFBlHyondntSZTiKJUtSysWhznA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SJ0PR11MB4800.namprd11.prod.outlook.com (2603:10b6:a03:2af::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.45; Tue, 18 Apr
+ 2023 02:37:49 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::ffa1:410b:20b3:6233]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::ffa1:410b:20b3:6233%6]) with mapi id 15.20.6298.045; Tue, 18 Apr 2023
+ 02:37:48 +0000
+Date: Mon, 17 Apr 2023 19:37:45 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Terry Bowman <terry.bowman@amd.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <bwidawsk@kernel.org>,
+	<dan.j.williams@intel.com>, <dave.jiang@intel.com>,
+	<Jonathan.Cameron@huawei.com>, <linux-cxl@vger.kernel.org>
+Subject: RE: [PATCH v3 6/6] PCI/AER: Unmask RCEC internal errors to enable
+ RCH downstream port error handling
+Message-ID: <643e0279392f_1b66294d7@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20230411180302.2678736-1-terry.bowman@amd.com>
+ <20230411180302.2678736-7-terry.bowman@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230417205048.15870-13-vishal.moola@gmail.com>
+In-Reply-To: <20230411180302.2678736-7-terry.bowman@amd.com>
+X-ClientProxiedBy: BYAPR01CA0054.prod.exchangelabs.com (2603:10b6:a03:94::31)
+ To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB4800:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f0e0ad3-0252-46a8-56d7-08db3fb5e5ad
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8UhnwgHk29V5h49h2hG3l9dCHIVl8Jfc3uo/QvrLvHF6Tjl2z1SfzCHjFwyl6xNb/ScJ61jR9qmHPF9WmJu+D/F2tGvLRi6Yi2HWvCMO8I8mca2sSo9sgyfvXUe2uX++N5boTV5NqVM3mh1RLV22nleCPTX30Lr8ldGssfPZsyG/WqfFbGdPe084GSUkTSqtIunQBtxcxI2q26l0SycqkLVX+T1nHeZSiothjWv+bXExhWdhmvMrk7XGNYZZKCY3TO1S2V9wYYaihv3YwytFjaX2YHs5F1SAaZLnw08rbWEM0ushjv6hi86HFmMSmefHmizl3Ad6GuHOhDbzuwQE3L8/FahiFwjwvLImpF/tvY+FJdM0BY659M50HG6W7nab+OooubPtAU9iM3mu2COkW0c2DNRLBBDYwscCMDWRq1FVTiwGJ2xaKrv1hF01KpZCcSlFjM5mCDk6ZByXvD4B8aGHMMDn0LmCO2OVIHLOB1rUcQ7yGuo3p99MBXCpFORLrtXRYVFyigI1l/HW5nrckjdNzpODs90k0pGW/wT1bUI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(396003)(376002)(39860400002)(136003)(346002)(451199021)(54906003)(6666004)(478600001)(6486002)(83380400001)(82960400001)(316002)(41300700001)(4326008)(66556008)(966005)(186003)(9686003)(6506007)(26005)(6512007)(66476007)(66946007)(5660300002)(7416002)(2906002)(8936002)(38100700002)(8676002)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Qh28q8YCCzItHetswUw/pSSsb18pdqTDGSiCU8zIAvDGpEbHB3aGN1y0IQQc?=
+ =?us-ascii?Q?KWyAch078RDREIb6Iw5GtRua7NoSNF4QwCF5d35KTMsi7umw09DDa4lHZ/yN?=
+ =?us-ascii?Q?C9rV/x8G0gZMobKOBuBi7JA9PGF1QafS+qz5iU3gUXlV4lvMyhP6bCpf/I9S?=
+ =?us-ascii?Q?VOrBJ8KxeyVwVYtqtTDmygh5gUjJmJR9YXzIQUwVZ/Ekx3Ekqx/EyX0eaBsI?=
+ =?us-ascii?Q?7EK2s1/d2KU5fcHFrvxBvXvOpyhvwsbDDtlp7UrVWhL+z8nhIlA9ZoD/ajtB?=
+ =?us-ascii?Q?T9FvfVJKJ7/cPOM9eQex30caLdHOHBArA12XFucRcwcDAfR9c0/lK7zdpAsS?=
+ =?us-ascii?Q?xTb3ZDOOya8yNqFCZ3tGsazrat9nAcs6ixMcS7Be28SMLXo4El3OgBCPWjDq?=
+ =?us-ascii?Q?ZWZd+KTg4JzI86xg3MaguxdfpjHVflbCV2qQIYcDraZxfzid6YT7sG0VG0VP?=
+ =?us-ascii?Q?9DS2n3qLASJpLiK8pQO7Lh7bFu49+RR1MYRnDGqe4TYqg+wsFerMCU1GIY3G?=
+ =?us-ascii?Q?oXpVZ1BwB9i9QUIcoU1Hz6D1AVQ3V9jL12BOAJ9bicaSHxv57VGH8p5wNiwF?=
+ =?us-ascii?Q?M537GrIqJ41p1MDdiO6yG4U26MxAWk1kgXljzCNj/43z0YVjHwuyPVIZNVI+?=
+ =?us-ascii?Q?5NSqAIlikgnM2/X1B91omjli7iU71k7T5uuPPA4zd7un/dZXBD8X2NTEc50b?=
+ =?us-ascii?Q?JD+FQ0gZltpRQxQmljkH2OKEZmurzHXg/yFJBdX43dEpQwcrrma9Q58+Zpxf?=
+ =?us-ascii?Q?BR/c16ruEXWHCKHse9HJHJo8vrCwDeIo7IJWs633ZdprkPA90/OTAOD52yXK?=
+ =?us-ascii?Q?5sSaihnmq7Rf0VS3rPIJI7DG+as9xlvh3frf522/URdmpoKdAqBWzTteblEs?=
+ =?us-ascii?Q?NqLw/mgfhMauHUrEa06fwK5LXFU12JDtDJzUWveGNsKbC7xF1sRrhaR48Mvg?=
+ =?us-ascii?Q?DYkrLp9muGR+6O/Z4h0j+VW3orEUG3M0JH7AeWucgd2peJ9NWT4o4oT5qRFI?=
+ =?us-ascii?Q?6DNFhJ2TmsoiYjIkT582U3EYrnKydnYhmaVhMRh7qGxEDxOP+a7pvYBJ3IA8?=
+ =?us-ascii?Q?NRNyQilanf9GvElwxABj7EuwoCO2pQ1267Pxjk8jwoyhrn1UnuONR5OaBpWF?=
+ =?us-ascii?Q?FKKAufwpyo7yFit/cwkzsE6NNa6hZAWB02CIuLCIgjL+qPKU1Yb8FRQYnHaO?=
+ =?us-ascii?Q?w80LkuKhWjAR+k18MUXHrIjZ1iDXic7x1drDXv80Bqryvi6f3OSdiDcimQto?=
+ =?us-ascii?Q?E0Caq7pQJDe83K+eB8ltE1HT9haVrLMOazyp8Ccd66xP7J91FMxcjqT03Ctp?=
+ =?us-ascii?Q?EOmoar0vZhbbXLvhn2mXm8WchLXeNoZQUMxbLgcExRIQBn10Cdipm4RSr/Ck?=
+ =?us-ascii?Q?FlQ+989BSQyTmw0u42iuO02tlkPRrjXKextM9d6hLl81vSDsl1huxIpzaHpQ?=
+ =?us-ascii?Q?/R9/OpBUIdbkBhsXWAdZwKWjC/YFVTkA9izMcuxIYZ8edzSUQ9MgP0/7LbvZ?=
+ =?us-ascii?Q?0+HnCafNVrU3m6s/gI0tgK9GVJuEIC0sOzJe8VWL1UjL7nnZbVLOxXrV9/6I?=
+ =?us-ascii?Q?7k3umfvTDmlFjuU3ODKyoEU6V5Xsqh9ILTbnGig0BAkEdTd5TLf+NMxnjFu0?=
+ =?us-ascii?Q?KQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f0e0ad3-0252-46a8-56d7-08db3fb5e5ad
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2023 02:37:48.1353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2Dfa5okU0yEn9waREzch2wmH1wce/m8FYrk5KLrN9SqpeE1GYzlqcenH0Bgh3iES5084YJ5bc3P7ysJdAyn4GCElYv8xmDI3I/swB82s5lc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4800
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,224 +159,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, Linux Memory Management List <linux-mm@kvack.org>, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: rrichter@amd.com, terry.bowman@amd.com, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal,
+Terry Bowman wrote:
+> From: Robert Richter <rrichter@amd.com>
+> 
+> RCEC AER corrected and uncorrectable internal errors (CIE/UIE) are
+> disabled by default. [1][2] Enable them to receive CXL downstream port
+> errors of a Restricted CXL Host (RCH).
+> 
+> [1] CXL 3.0 Spec, 12.2.1.1 - RCH Downstream Port Detected Errors
+> [2] PCIe Base Spec 6.0, 7.8.4.3 Uncorrectable Error Mask Register,
+>     7.8.4.6 Correctable Error Mask Register
 
-kernel test robot noticed the following build warnings:
+My comment on patch5 to make CXL link details a first class property of a
+'struct pci_dev':
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on next-20230417]
-[cannot apply to s390/features powerpc/next powerpc/fixes geert-m68k/for-next geert-m68k/for-linus linus/master v6.3-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+http://lore.kernel.org/r/643debf5af445_1b66294f4@dwillia2-xfh.jf.intel.com.notmuch/
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vishal-Moola-Oracle/s390-Use-_pt_s390_gaddr-for-gmap-address-tracking/20230418-045832
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20230417205048.15870-13-vishal.moola%40gmail.com
-patch subject: [PATCH 12/33] mm: Create ptdesc equivalents for pgtable_{pte,pmd}_page_{ctor,dtor}
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20230418/202304180959.YFCTfVKw-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/d53de56a2dbf659b53aee1aa2eac60bcc936f10b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Vishal-Moola-Oracle/s390-Use-_pt_s390_gaddr-for-gmap-address-tracking/20230418-045832
-        git checkout d53de56a2dbf659b53aee1aa2eac60bcc936f10b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh prepare
+...also applies here.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304180959.YFCTfVKw-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/sh/kernel/asm-offsets.c:14:
-   include/linux/mm.h: In function 'virt_to_ptdesc':
-   include/linux/mm.h:2723:16: error: implicit declaration of function 'page_ptdesc' [-Werror=implicit-function-declaration]
-    2723 |         return page_ptdesc(virt_to_head_page(x));
-         |                ^~~~~~~~~~~
-   include/linux/mm.h:2723:16: warning: returning 'int' from a function with return type 'struct ptdesc *' makes pointer from integer without a cast [-Wint-conversion]
-    2723 |         return page_ptdesc(virt_to_head_page(x));
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from arch/sh/include/asm/thread_info.h:13,
-                    from include/linux/thread_info.h:60,
-                    from include/asm-generic/preempt.h:5,
-                    from ./arch/sh/include/generated/asm/preempt.h:1,
-                    from include/linux/preempt.h:78,
-                    from include/linux/spinlock.h:56,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:7,
-                    from include/linux/mm.h:7:
-   include/linux/mm.h: In function 'ptdesc_to_virt':
-   include/linux/mm.h:2728:29: error: implicit declaration of function 'ptdesc_page'; did you mean 'pte_page'? [-Werror=implicit-function-declaration]
-    2728 |         return page_to_virt(ptdesc_page(pt));
-         |                             ^~~~~~~~~~~
-   arch/sh/include/asm/page.h:139:27: note: in definition of macro '___va'
-     139 | #define ___va(x)        ((x)+PAGE_OFFSET)
-         |                           ^
-   include/linux/mm.h:117:25: note: in expansion of macro '__va'
-     117 | #define page_to_virt(x) __va(PFN_PHYS(page_to_pfn(x)))
-         |                         ^~~~
-   include/linux/mm.h:117:30: note: in expansion of macro 'PFN_PHYS'
-     117 | #define page_to_virt(x) __va(PFN_PHYS(page_to_pfn(x)))
-         |                              ^~~~~~~~
-   include/asm-generic/memory_model.h:64:21: note: in expansion of macro '__page_to_pfn'
-      64 | #define page_to_pfn __page_to_pfn
-         |                     ^~~~~~~~~~~~~
-   include/linux/mm.h:2728:16: note: in expansion of macro 'page_to_virt'
-    2728 |         return page_to_virt(ptdesc_page(pt));
-         |                ^~~~~~~~~~~~
-   include/asm-generic/memory_model.h:46:35: warning: initialization of 'const struct page *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-      46 | ({      const struct page *__pg = (pg);                         \
-         |                                   ^
-   arch/sh/include/asm/page.h:139:27: note: in definition of macro '___va'
-     139 | #define ___va(x)        ((x)+PAGE_OFFSET)
-         |                           ^
-   include/linux/mm.h:117:25: note: in expansion of macro '__va'
-     117 | #define page_to_virt(x) __va(PFN_PHYS(page_to_pfn(x)))
-         |                         ^~~~
-   include/linux/mm.h:117:30: note: in expansion of macro 'PFN_PHYS'
-     117 | #define page_to_virt(x) __va(PFN_PHYS(page_to_pfn(x)))
-         |                              ^~~~~~~~
-   include/asm-generic/memory_model.h:64:21: note: in expansion of macro '__page_to_pfn'
-      64 | #define page_to_pfn __page_to_pfn
-         |                     ^~~~~~~~~~~~~
-   include/linux/mm.h:117:39: note: in expansion of macro 'page_to_pfn'
-     117 | #define page_to_virt(x) __va(PFN_PHYS(page_to_pfn(x)))
-         |                                       ^~~~~~~~~~~
-   include/linux/mm.h:2728:16: note: in expansion of macro 'page_to_virt'
-    2728 |         return page_to_virt(ptdesc_page(pt));
-         |                ^~~~~~~~~~~~
-   include/linux/mm.h: In function 'ptdesc_address':
-   include/linux/mm.h:2733:30: error: implicit declaration of function 'ptdesc_folio'; did you mean 'page_folio'? [-Werror=implicit-function-declaration]
-    2733 |         return folio_address(ptdesc_folio(pt));
-         |                              ^~~~~~~~~~~~
-         |                              page_folio
-   include/linux/mm.h:2733:30: warning: passing argument 1 of 'folio_address' makes pointer from integer without a cast [-Wint-conversion]
-    2733 |         return folio_address(ptdesc_folio(pt));
-         |                              ^~~~~~~~~~~~~~~~
-         |                              |
-         |                              int
-   include/linux/mm.h:2151:55: note: expected 'const struct folio *' but argument is of type 'int'
-    2151 | static inline void *folio_address(const struct folio *folio)
-         |                                   ~~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/mm.h: In function 'ptdesc_is_reserved':
-   include/linux/mm.h:2738:36: warning: passing argument 1 of 'folio_test_reserved' makes pointer from integer without a cast [-Wint-conversion]
-    2738 |         return folio_test_reserved(ptdesc_folio(pt));
-         |                                    ^~~~~~~~~~~~~~~~
-         |                                    |
-         |                                    int
-   In file included from include/linux/mmzone.h:23:
-   include/linux/page-flags.h:375:62: note: expected 'struct folio *' but argument is of type 'int'
-     375 | static __always_inline bool folio_test_##lname(struct folio *folio)     \
-         |                                                ~~~~~~~~~~~~~~^~~~~
-   include/linux/page-flags.h:423:9: note: in expansion of macro 'TESTPAGEFLAG'
-     423 |         TESTPAGEFLAG(uname, lname, policy)                              \
-         |         ^~~~~~~~~~~~
-   include/linux/page-flags.h:494:1: note: in expansion of macro 'PAGEFLAG'
-     494 | PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)
-         | ^~~~~~~~
-   include/linux/mm.h: In function 'ptdesc_alloc':
-   include/linux/mm.h:2745:16: warning: returning 'int' from a function with return type 'struct ptdesc *' makes pointer from integer without a cast [-Wint-conversion]
-    2745 |         return page_ptdesc(page);
-         |                ^~~~~~~~~~~~~~~~~
-   include/linux/mm.h: In function 'ptdesc_free':
-   include/linux/mm.h:2750:29: warning: initialization of 'struct page *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2750 |         struct page *page = ptdesc_page(pt);
-         |                             ^~~~~~~~~~~
-   include/linux/mm.h: In function 'ptdesc_pte_ctor':
->> include/linux/mm.h:2826:31: warning: initialization of 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2826 |         struct folio *folio = ptdesc_folio(ptdesc);
-         |                               ^~~~~~~~~~~~
-   include/linux/mm.h: In function 'pgtable_pte_page_ctor':
-   include/linux/mm.h:2837:32: warning: passing argument 1 of 'ptdesc_pte_ctor' makes pointer from integer without a cast [-Wint-conversion]
-    2837 |         return ptdesc_pte_ctor(page_ptdesc(page));
-         |                                ^~~~~~~~~~~~~~~~~
-         |                                |
-         |                                int
-   include/linux/mm.h:2824:51: note: expected 'struct ptdesc *' but argument is of type 'int'
-    2824 | static inline bool ptdesc_pte_ctor(struct ptdesc *ptdesc)
-         |                                    ~~~~~~~~~~~~~~~^~~~~~
-   include/linux/mm.h: In function 'ptdesc_pte_dtor':
-   include/linux/mm.h:2842:31: warning: initialization of 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2842 |         struct folio *folio = ptdesc_folio(ptdesc);
-         |                               ^~~~~~~~~~~~
-   include/linux/mm.h: In function 'pgtable_pte_page_dtor':
-   include/linux/mm.h:2851:25: warning: passing argument 1 of 'ptdesc_pte_dtor' makes pointer from integer without a cast [-Wint-conversion]
-    2851 |         ptdesc_pte_dtor(page_ptdesc(page));
-         |                         ^~~~~~~~~~~~~~~~~
-         |                         |
-         |                         int
-   include/linux/mm.h:2840:51: note: expected 'struct ptdesc *' but argument is of type 'int'
-    2840 | static inline void ptdesc_pte_dtor(struct ptdesc *ptdesc)
-         |                                    ~~~~~~~~~~~~~~~^~~~~~
-   include/linux/mm.h: In function 'ptdesc_pmd_ctor':
-   include/linux/mm.h:2935:31: warning: initialization of 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2935 |         struct folio *folio = ptdesc_folio(ptdesc);
-         |                               ^~~~~~~~~~~~
-   include/linux/mm.h: In function 'pgtable_pmd_page_ctor':
-   include/linux/mm.h:2946:32: warning: passing argument 1 of 'ptdesc_pmd_ctor' makes pointer from integer without a cast [-Wint-conversion]
-    2946 |         return ptdesc_pmd_ctor(page_ptdesc(page));
-         |                                ^~~~~~~~~~~~~~~~~
-         |                                |
-         |                                int
-   include/linux/mm.h:2933:51: note: expected 'struct ptdesc *' but argument is of type 'int'
-    2933 | static inline bool ptdesc_pmd_ctor(struct ptdesc *ptdesc)
-         |                                    ~~~~~~~~~~~~~~~^~~~~~
-   include/linux/mm.h: In function 'ptdesc_pmd_dtor':
-   include/linux/mm.h:2951:31: warning: initialization of 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2951 |         struct folio *folio = ptdesc_folio(ptdesc);
-         |                               ^~~~~~~~~~~~
-   include/linux/mm.h: In function 'pgtable_pmd_page_dtor':
-   include/linux/mm.h:2960:25: warning: passing argument 1 of 'ptdesc_pmd_dtor' makes pointer from integer without a cast [-Wint-conversion]
-    2960 |         ptdesc_pmd_dtor(page_ptdesc(page));
-         |                         ^~~~~~~~~~~~~~~~~
-         |                         |
-         |                         int
-   include/linux/mm.h:2949:51: note: expected 'struct ptdesc *' but argument is of type 'int'
-    2949 | static inline void ptdesc_pmd_dtor(struct ptdesc *ptdesc)
-         |                                    ~~~~~~~~~~~~~~~^~~~~~
-   include/linux/mm.h: In function 'free_reserved_ptdesc':
-   include/linux/mm.h:3016:28: warning: passing argument 1 of 'free_reserved_page' makes pointer from integer without a cast [-Wint-conversion]
-    3016 |         free_reserved_page(ptdesc_page(pt));
-         |                            ^~~~~~~~~~~~~~~
-         |                            |
-         |                            int
-   include/linux/mm.h:2999:52: note: expected 'struct page *' but argument is of type 'int'
-    2999 | static inline void free_reserved_page(struct page *page)
-         |                                       ~~~~~~~~~~~~~^~~~
-   cc1: some warnings being treated as errors
-   make[2]: *** [scripts/Makefile.build:114: arch/sh/kernel/asm-offsets.s] Error 1
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:1286: prepare0] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:226: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
-
-vim +2826 include/linux/mm.h
-
-  2823	
-  2824	static inline bool ptdesc_pte_ctor(struct ptdesc *ptdesc)
-  2825	{
-> 2826		struct folio *folio = ptdesc_folio(ptdesc);
-  2827	
-  2828		if (!ptlock_init(ptdesc))
-  2829			return false;
-  2830		__SetPageTable(&folio->page);
-  2831		lruvec_stat_add_folio(folio, NR_PAGETABLE);
-  2832		return true;
-  2833	}
-  2834	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Other than that nothing more from me on this one beyond what Bjorn and
+Jonathan have said. I do agree with Robert about being cautious about
+only enabling this for CXL devices for now and not all internal errors
+for all AER capable devices globally. The rationale being that CXL
+devices are a new link on top of PCIe and abuse/reuse internal errors
+when they are conceptually functionally equivalent to PCIe link errors.
