@@ -1,57 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40196E697D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 18:27:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36236E6AE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Apr 2023 19:26:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q18V25XZjz3fR4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 02:27:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q19ng4ZMFz3fQb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 03:26:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jtqpme91;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.181; helo=mail-oi1-f181.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jtqpme91;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q18TT4J6kz30Qg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 02:27:24 +1000 (AEST)
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-38bef0af6e9so582595b6e.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 09:27:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681835242; x=1684427242;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KA3Wj6o+Guvdyn6RVWvc15n99JJqv1Kt6CugaXzG/F8=;
-        b=MQPHASU6Pe4PFzSmElsNJfNQaCtoZffjgHAWHQSd1HkeLzD+7W+Fe8p+ca6iGWgSG1
-         0qrdEkvG1EiYkKahLPhKDW2ag5jd46TC8MAtpQrhvU86YuetuG7A/U5GPwdKu8AmsuLJ
-         4t2CPmpJJY6DC/z+BnlpX+sYao+IsKjZu8kNNWO0qDDDdMU398UC7Nd3kiJnTfPdnGzh
-         BzdiAtArUbRL8E/ur1DGFWQNY/j6ZYZDIpK3u/8YPfxdTTiPj/bNlII8yR1JdLAqH2OR
-         p93zb14bj9snukANJ+HDjA4ZINmyRRmSWtZCoYGQg/R7zE6pRt0SPE9TQMDco3LvL6am
-         F8Rg==
-X-Gm-Message-State: AAQBX9cWX2H4699r8OsZfrEqZX5c6jVnx1eLKMrHe62oZxtlBu8jbX/k
-	fjDfvwL7JRw/plYyHd0vQw==
-X-Google-Smtp-Source: AKy350bBHLRqNa07Du4N0WmT6K0vuSFaG9g8fJGUXZXaLSnM3rdYMjG2JcU3ECFR82i0sqHbDMgiyw==
-X-Received: by 2002:a05:6808:2203:b0:38e:390b:777b with SMTP id bd3-20020a056808220300b0038e390b777bmr1228732oib.59.1681835241818;
-        Tue, 18 Apr 2023 09:27:21 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id i11-20020aca3b0b000000b0038c235e24fesm2204031oia.48.2023.04.18.09.27.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Apr 2023 09:27:20 -0700 (PDT)
-Received: (nullmailer pid 1810183 invoked by uid 1000);
-	Tue, 18 Apr 2023 16:27:19 -0000
-Date: Tue, 18 Apr 2023 11:27:19 -0500
-From: Rob Herring <robh@kernel.org>
-To: Thierry Reding <thierry.reding@gmail.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>, Jonathan Hunter <jonathanh@nvidia.com>, Ryder Lee <ryder.lee@mediatek.com>, Jianjun Wang <jianjun.wang@mediatek.com>, Tyrel Datwyler <tyreld@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH] PCI: Use of_property_present() for testing DT property
- presence
-Message-ID: <20230418162719.GF1764573-robh@kernel.org>
-References: <20230310144719.1544443-1-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q19mm42XLz3cV7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 03:25:43 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33IGrY4Y014149;
+	Tue, 18 Apr 2023 17:25:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=vdoH0xI9moVJ18M3ElgIPUjofAUGNGZMp834ePtAdLk=;
+ b=jtqpme91r+SYPo1/H86DsIBNOP/lqnHFaQFzI/99XY9UbPftuWUNzpj9I5z5jlCD3n4s
+ Jqe/jY9pfqnLFdfJ7ZR/bdgpLUV4N0ZvjJh3aXZvthDBZ1+jqcurFb8Usj0ixuIcl9t7
+ FFFB5h49D1CcgY0DJJAXP2hUgLmXPBnzeXLzDNJxYEBtyYLWSP5+T+IMZF02Vj8a9Nxh
+ CzakJtRZjNftjMTMpMYIAm2XUXfox2inGkC0EGe7t1Lwc8fUllI1I8cC87nLXTjILM6D
+ LCSpgEGRlK1xlxf9T/0TEFAnUECOcxHpQrNB35nVYWzDLUpztcgHQwlLiz70CXbFHVuY 5g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q1pm1jctw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Apr 2023 17:25:34 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33IGhq8G003233;
+	Tue, 18 Apr 2023 17:25:34 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q1pm1jcsq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Apr 2023 17:25:33 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33I60wsI015916;
+	Tue, 18 Apr 2023 17:25:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3pyk6fj6s0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Apr 2023 17:25:31 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33IHPRfI37093744
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Apr 2023 17:25:28 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D0C4C2004B;
+	Tue, 18 Apr 2023 17:25:27 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4489820043;
+	Tue, 18 Apr 2023 17:25:26 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 18 Apr 2023 17:25:26 +0000 (GMT)
+Date: Tue, 18 Apr 2023 22:55:25 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH 1/2] pseries/smp: export the smt level in the SYS FS.
+Message-ID: <20230418172525.GK1005120@linux.vnet.ibm.com>
+References: <20230331153905.31698-1-ldufour@linux.ibm.com>
+ <20230331153905.31698-2-ldufour@linux.ibm.com>
+ <87ttxjaonc.fsf@mpe.ellerman.id.au>
+ <0e668a82-3a3e-798a-8707-1a9b622b23b6@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230310144719.1544443-1-robh@kernel.org>
+In-Reply-To: <0e668a82-3a3e-798a-8707-1a9b622b23b6@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: F61CGiDnGSZzrAgeKEtUlsW5cI7A7pfL
+X-Proofpoint-ORIG-GUID: H7lmZzvkuhTKSv4pZdyZ1OLP6YXdo6ri
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-18_12,2023-04-18_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 mlxscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304180143
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,99 +98,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: nathanl@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 10, 2023 at 08:47:19AM -0600, Rob Herring wrote:
-> It is preferred to use typed property access functions (i.e.
-> of_property_read_<type> functions) rather than low-level
-> of_get_property/of_find_property functions for reading properties. As
-> part of this, convert of_get_property/of_find_property calls to the
-> recently added of_property_present() helper when we just want to test
-> for presence of a property and nothing more.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/pci/controller/pci-tegra.c     | 4 ++--
->  drivers/pci/controller/pcie-mediatek.c | 2 +-
->  drivers/pci/hotplug/rpaphp_core.c      | 4 ++--
->  drivers/pci/of.c                       | 2 +-
->  4 files changed, 6 insertions(+), 6 deletions(-)
+* Laurent Dufour <ldufour@linux.ibm.com> [2023-04-13 17:38:51]:
 
-Ping!
+> On 13/04/2023 15:37:59, Michael Ellerman wrote:
+> > Hi Laurent,
+> > 
+> > Laurent Dufour <ldufour@linux.ibm.com> writes:
+> >> There is no SMT level recorded in the kernel neither in user space.
+> >> Indeed there is no real constraint about that and mixed SMT levels are
+> >> allowed and system is working fine this way.
+> >>
+> >> However when new CPU are added, the kernel is onlining all the threads
+> >> which is leading to mixed SMT levels and confuse end user a bit.
+> >>
+> >> To prevent this exports a SMT level from the kernel so user space
+> >> application like the energy daemon, could read it to adjust their settings.
+> >> There is no action unless recording the value when a SMT value is written
+> >> into the new sysfs entry. User space applications like ppc64_cpu should
+> >> update the sysfs when changing the SMT level to keep the system consistent.
+> >>
+> >> Suggested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> >> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> >> ---
+> >>  arch/powerpc/platforms/pseries/pseries.h |  3 ++
+> >>  arch/powerpc/platforms/pseries/smp.c     | 39 ++++++++++++++++++++++++
+> >>  2 files changed, 42 insertions(+)
+> > 
+> > There is a generic sysfs interface for smt in /sys/devices/system/cpu/smt
+> > 
+> > I think we should be enabling that on powerpc and then adapting it to
+> > our needs, rather than adding a pseries specific file.
+> 
+> Thanks Michael, I was not aware of this sysfs interface.
+> 
+> > Currently the generic code is only aware of SMT on/off, so it would need
+> > to be taught about SMT4 and 8 at least.
+> 
+> Do you think we should limit our support to SMT4 and SMT8 only?
+
+smt2 is also a valid already supported configuration and we are evaluating 
+smt6 mode based on some inputs from ISV teams. 
+
+So I believe having a value for all modes would be good. 
 
 > 
-> diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-> index 74c109f14ff0..79630885b9c8 100644
-> --- a/drivers/pci/controller/pci-tegra.c
-> +++ b/drivers/pci/controller/pci-tegra.c
-> @@ -1375,7 +1375,7 @@ static int tegra_pcie_phys_get(struct tegra_pcie *pcie)
->  	struct tegra_pcie_port *port;
->  	int err;
->  
-> -	if (!soc->has_gen2 || of_find_property(np, "phys", NULL) != NULL)
-> +	if (!soc->has_gen2 || of_property_present(np, "phys"))
->  		return tegra_pcie_phys_get_legacy(pcie);
->  
->  	list_for_each_entry(port, &pcie->ports, list) {
-> @@ -1944,7 +1944,7 @@ static bool of_regulator_bulk_available(struct device_node *np,
->  	for (i = 0; i < num_supplies; i++) {
->  		snprintf(property, 32, "%s-supply", supplies[i].supply);
->  
-> -		if (of_find_property(np, property, NULL) == NULL)
-> +		if (!of_property_present(np, property))
->  			return false;
->  	}
->  
-> diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
-> index ae5ad05ddc1d..31de7a29192c 100644
-> --- a/drivers/pci/controller/pcie-mediatek.c
-> +++ b/drivers/pci/controller/pcie-mediatek.c
-> @@ -643,7 +643,7 @@ static int mtk_pcie_setup_irq(struct mtk_pcie_port *port,
->  		return err;
->  	}
->  
-> -	if (of_find_property(dev->of_node, "interrupt-names", NULL))
-> +	if (of_property_present(dev->of_node, "interrupt-names"))
->  		port->irq = platform_get_irq_byname(pdev, "pcie_irq");
->  	else
->  		port->irq = platform_get_irq(pdev, port->slot);
-> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-> index 491986197c47..2316de0fd198 100644
-> --- a/drivers/pci/hotplug/rpaphp_core.c
-> +++ b/drivers/pci/hotplug/rpaphp_core.c
-> @@ -278,7 +278,7 @@ int rpaphp_check_drc_props(struct device_node *dn, char *drc_name,
->  		return -EINVAL;
->  	}
->  
-> -	if (of_find_property(dn->parent, "ibm,drc-info", NULL))
-> +	if (of_property_present(dn->parent, "ibm,drc-info"))
->  		return rpaphp_check_drc_props_v2(dn, drc_name, drc_type,
->  						be32_to_cpu(*my_index));
->  	else
-> @@ -440,7 +440,7 @@ int rpaphp_add_slot(struct device_node *dn)
->  	if (!of_node_name_eq(dn, "pci"))
->  		return 0;
->  
-> -	if (of_find_property(dn, "ibm,drc-info", NULL))
-> +	if (of_property_present(dn, "ibm,drc-info"))
->  		return rpaphp_drc_info_add_slot(dn);
->  	else
->  		return rpaphp_drc_add_slot(dn);
-> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> index 196834ed44fe..e085f2eca372 100644
-> --- a/drivers/pci/of.c
-> +++ b/drivers/pci/of.c
-> @@ -447,7 +447,7 @@ static int of_irq_parse_pci(const struct pci_dev *pdev, struct of_phandle_args *
->  		return -ENODEV;
->  
->  	/* Local interrupt-map in the device node? Use it! */
-> -	if (of_get_property(dn, "interrupt-map", NULL)) {
-> +	if (of_property_present(dn, "interrupt-map")) {
->  		pin = pci_swizzle_interrupt_pin(pdev, pin);
->  		ppnode = dn;
->  	}
-> -- 
-> 2.39.2
+> > There are already hooks in the generic code to check the SMT level when
+> > bringing CPUs up, see cpu_smt_allowed(), they may work for the pseries
+> > hotplug case too, though maybe we need some additional logic.
+> > 
+> > Wiring up the basic support is pretty straight forward, something like
+> > the diff below.
 > 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
