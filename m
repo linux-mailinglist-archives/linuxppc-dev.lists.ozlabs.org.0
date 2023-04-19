@@ -1,80 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204696E8060
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 19:29:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B9B6E8135
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 20:26:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1nq209lQz3fR7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 03:29:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1q4Z0sQ4z3f8g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 04:26:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=ZmsCl4VX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CDQvHa09;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.21; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=ZmsCl4VX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CDQvHa09;
 	dkim-atps=neutral
-X-Greylist: delayed 327 seconds by postgrey-1.36 at boromir; Thu, 20 Apr 2023 03:29:00 AEST
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1np41LtXz3cdr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 03:28:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1681925334; i=deller@gmx.de;
-	bh=C5yrQi1O5H/ZJ6i2wZhc9S+TYhhPSe8koYmOSkrsxpg=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZmsCl4VXvitbCRVdUkBdlfI2alparlkCERuNbgnY7uFetwUgClkeBi4gOjmBAqd8K
-	 rxkZFLoL7KBGe43vgpDjJhI9Tk+3toIQtbOPE0A5czZXGzMHog6tWDlNydgRDVeQxI
-	 18gI+1YqhcLDEMfNUMmqT273oEXsIpfSy4N+QeUQcrJBNlZ7DsCkzGpHT4p7Nkf0KQ
-	 vniRppU4X1gtB6DtcBD0fr1qcYEOp2Lht8plYj1fD8q3Oc6iaUvKUUDcu/gK4JEzO5
-	 9evkgKh2Nk7bDEHYASQWUUZ9+P3pZ7S4rgxMSnALNFLfWEg4xT6ndfwpUZ8Cr+CwD7
-	 wBa1i16YR47Qg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.134]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MatVb-1qRYCj0P8t-00cRzi; Wed, 19
- Apr 2023 19:22:54 +0200
-Message-ID: <b1f90fa4-85c7-e785-ba14-f32962f87d5e@gmx.de>
-Date: Wed, 19 Apr 2023 19:22:50 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1q3f3QWTz3cf0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 04:25:50 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3AC5F6417A;
+	Wed, 19 Apr 2023 18:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADE1C433EF;
+	Wed, 19 Apr 2023 18:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1681928745;
+	bh=2P38Dw70hIslqESCsP4xROGp7y6M/3NfsY5sjrm73kc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CDQvHa098OUr1TV+UYmGrjfxifLo/RGveTTYnTeR6EbI4whpre6POiH8WZIEoYCUs
+	 SbKSYpcb7j0Ovj8KoEu2B/SQcXoRCQxCvJE9OlhofYZEMW4Ov0km+NRxLoGAZm9Sh3
+	 L0S7b2F0fH1KvR692twl6VSdpPcnJo5Fa7mQHGrxhLoXsLDXFjvynHtGSqDPqo3s9o
+	 xIV5+PwIaZM9bKV7S/r0c28xMBBLGgW44usD9vNJHeTKlTLhNC/mYXtngjQBTGOFwU
+	 2zinwSVQbf5Higgr0d7Gr+wkVA1CWh8RbyBjwgziBfRYOltTtMJ60clU3rOGcUABFK
+	 9i7F+w/0JL5ug==
+From: Mark Brown <broonie@kernel.org>
+To: kuninori.morimoto.gx@renesas.com, shengjiu.wang@gmail.com, 
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, shawnguo@kernel.org, 
+ s.hauer@pengutronix.de, kernel@pengutronix.de, linux-imx@nxp.com, 
+ alsa-devel@alsa-project.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1681900158-17428-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1681900158-17428-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] Revert "ASoC: fsl: remove unnecessary
+ dai_link->platform"
+Message-Id: <168192874180.115075.9783971012630228095.b4-ty@kernel.org>
+Date: Wed, 19 Apr 2023 19:25:41 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v3 00/19] arch: Consolidate <asm/fb.h>
-Content-Language: en-US
-To: Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Daniel Vetter <daniel.vetter@ffwll.ch>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20230417125651.25126-1-tzimmermann@suse.de>
- <1641007d-7953-426a-a3de-ca9c90f6c5a9@app.fastmail.com>
- <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:H9qZXkCOPDN+3vsO7z+9ttDKPCRSFaiF/4cDmiO5ovofGlBxTzT
- kMlRPG3r4Q6KYGeHBb//fU40kwtmWj1gVkdx7p7FELLCFOD5Nql8qYPGjnWefhzsS88zNIK
- xaqD2s84khdceDbFsitlOpU2HidQYYXlykQQ9SD+p1IgyfdLRLZnqUmFoBDr2Oq3uB/Hpmu
- vy6bniwylk05WNGd4sCJg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:JkuuhQTF31w=;L+yIwDUJ+AXwy27/xZlNldQZIxM
- ZndB806O4sJYo7gNJlDnQvJOJ3qya+xdPNud87tENN/4Wtbco1yfPL/qNys1opwGEGvkEeq8F
- nCiQYohKL5+TvZLCZQ5qjIPml/dGguzb5CIZmkr6fzC/X0jrXlMm8pmzmz7SqA1JTsTyI92zA
- rbXUd38iqhnoIrCKtupAcPi+nrmdP/dAkRtta6PfNzgAK35JT/3QlwC7Fw6FVx4Tv3hBCP0Ab
- KmvHEAzslBFQ+wM4h8sM0PF6OyDCoCKU4vaRcmbZ4s7eJRS85nImghPCaY+CtG2yQ+W+ldTvC
- M7+uODp8Jz6Zbf/GVuqDcwc3FCx2mPYZGdCD5MXlIv16W1ozCpaI11s0GhKbbhcKcMRWTT9J/
- Vy+6Eqf5QOF3rNPy0pdw5SwERbIcSyG6rnGDIB4r6H/x1Fg7lpI9WkmGs3NMXdDzr53//56MO
- NYBE3NMvNMjQlpw8D4cpOrkWNb3BEXdCj00Bdy/uZjoVnGyX649xC586ABXlMzYRJEb/ubSum
- SHUD6SCHykIGSurFcOUQw75QsrwBzULu28EgOXg54OyO58RtajmZMqPwNzcTxBJ9Za8oaGWmw
- 5jDRcxg9X+kyt1IPIsthIycfCg3lhSIZUA24lF3sFWUijWtyzbDOygnDweU05unOizKPuV7a4
- k3npJ6ZxkiX1KrLjOUIYlW8yobiXQ1c9YIEKGkDvJiPBNS0GAQhIEYTx2XbHs1TtdqRnDpXng
- eK6ViZlYIlX8PfwqN0liN4mjYEVcTPb+CHTKCIQDCZAuIHgU3n5MdzsKScm47eUCtttEyG5jo
- 9Hih5943EzjVlq/m4Hmbxpyzr54KHjNOIf02GnLFzxU/RHG223/15lVZB64R/5eMlAFwOc2F8
- VQz2VKfk1RpNaUFdCkt+i28hqSxoHKc2XhxcD409x6EubflhzhyrDFbWHdrvUbipNZIfj3JbG
- pemUaXlsB5VMSk2TadDPs1wT6r0=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-00e42
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,38 +65,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Thomas,
+On Wed, 19 Apr 2023 18:29:18 +0800, Shengjiu Wang wrote:
+> This reverts commit 33683cbf49b5412061cb1e4c876063fdef86def4.
+> 
+> dai_link->platform is needed. The platform component is
+> "snd_dmaengine_pcm", which is registered from cpu driver,
+> 
+> If dai_link->platform is not assigned, then platform
+> component will not be probed, then there will be issue:
+> 
+> [...]
 
-> Am 17.04.23 um 16:12 schrieb Arnd Bergmann:>> On Mon, Apr 17, 2023, at 1=
-4:56, Thomas Zimmermann wrote:
->>> Various architectures provide <asm/fb.h> with helpers for fbdev
->>> framebuffer devices. Share the contained code where possible. There
->>> is already <asm-generic/fb.h>, which implements generic (as in
->>> 'empty') functions of the fbdev helpers. The header was added in
->>> commit aafe4dbed0bf ("asm-generic: add generic versions of common
->>> headers"), but never used.
->>>
->>> Each per-architecture header file declares and/or implements fbdev
->>> helpers and defines a preprocessor token for each. The generic
->>> header then provides the remaining helpers. It works like the I/O
->>> helpers in <asm/io.h>.
->>
->> Looks all good to me,
->>
->> Acked-by: Arnd Bergmann <arnd@arndb.de>
->
-> Thanks a lot. I know that Helge wants to test the PARISC changes, so
-> I'll keep this series pending for a bit longer. I'd like to merge the
-> patches through the DRM tree, if no one objects.
+Applied to
 
-Yes, patch is good and I've tested it on parisc. Thanks!
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-You may add:
-Acked-by: Helge Deller <deller@gmx.de>
-to the series and take it through the drm tree.
+Thanks!
 
-Helge
+[1/1] Revert "ASoC: fsl: remove unnecessary dai_link->platform"
+      commit: 09cda705860125ffee1b1359b1da79f8e0c77a40
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
