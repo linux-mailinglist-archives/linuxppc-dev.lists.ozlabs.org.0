@@ -1,80 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CFF6E7E3A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 17:27:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8C56E7F57
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 18:14:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1l5l6TBtz3c8r
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 01:27:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1m8X1phVz3fVX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 02:14:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WIde/pNc;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TF55AK3G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:fe5b::60d; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WIde/pNc;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TF55AK3G;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2060d.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5b::60d])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1l4q1Vs4z3c7d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 01:26:34 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33JEZxp6034942;
-	Wed, 19 Apr 2023 15:26:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=wLNPvVRGxg8hpkzo7WwsYUTm8PK8gZi/YR+4Q12n04Q=;
- b=WIde/pNcdxWKiSeyGtWLs2wR2k0uK22GWhxa9O6OVbi5ZqNCoxN9w9id2tjfzocyi042
- 3OhI2M1LH0h0wvY+SZy5yfhX4hY0+x5deombzGV6VtcI77KmM/YRJsOAwLWTui+f3Cxo
- Fl/uUJfFMuQ7FRaBqH1mdhikEoo+06IBV96r/tiIIJcCK5arxQJgrnvFNco3BdL8bQyt
- j4tLTO3KoMqLtQ2JDT5qtOY4pR7UzxR4AAti6hyIDczjxmTvcqDN8r3PsRiUjSz05VNj
- yImZIyvKhwBjo4yStUvhy1lygf2wslplfv3ouFbgmyVCq15c+n4EZGsUsqRKVFAFGB60 Eg== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q2apn1kvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Apr 2023 15:26:26 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33JE2MUc026556;
-	Wed, 19 Apr 2023 15:26:25 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3q1uxdfn41-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Apr 2023 15:26:25 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33JFQOA223134776
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Apr 2023 15:26:24 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5312E5805F;
-	Wed, 19 Apr 2023 15:26:24 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F15805805A;
-	Wed, 19 Apr 2023 15:26:23 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.24.27.252])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Apr 2023 15:26:23 +0000 (GMT)
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/iommu: DMA address offset is incorrectly calculated with 2MB TCEs
-Date: Wed, 19 Apr 2023 10:26:23 -0500
-Message-Id: <20230419152623.26439-1-gbatra@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1m5m0Tb8z3cDG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 02:12:25 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Bqj0wCssbCBTdTWx6Rwjf5/n2R7GorjXlmXXhJFwd7PHRfqaZcxPwsrIo8ht3ajASmzerZgt3UTGDVX1PxiHrln61S1Nwrh9um+Dj8embUpqEMAB8IkEehJy1n/W3PA+f69T/ujusRrtuXmq/dFkVrYk4OBulXRLzTi9LnVx68PLwa1TkJ49tVhpA4lzAoY7PbtdLLLUmTeTV5pninNwT+M9vlC1NET3DEbP4OKFz5wBF7/oASk7WVsZVpcA4AFZ6QwzXHZtkgYyLZ2eh3Hv9e0e5sxdhpdYiV2rbb2ePmyT0wEmWnkWlWE7fNp13CrGjaihJEP55j9HoJeVfstuEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aQPUsuK5vGIaJef6f4S7pYnI8VbCHe+jPeaMkcbKN88=;
+ b=BE4F9+JmCdLZwAGoXPCtvg70K9I+wC/RfklCsKfw7MFFxUEWv5CyUTkRrmX5qYH/tjhkk9l/1ADJjTeAp1f8zuHHIytuOFg8Wxa5mlw3X4dXbf2fogRWc+Dx/nF1Zo6NFynI7t78lSfJ1P42mT6i3RvXFQPfvuIy9f0+YVNcS5hJnqEdR7FBmp5wfl6PoeYjOCO+3bNjAqMI6ZIGf3DYBSmo1EVJHXVmUnkEr3bz69T5sw+2/bY/qL+FS71lEZQ6ys3qasD1zxLheeIhwFHpYhfMIcl4LSyKJuKct7zHIAefOhsVPoe99+A4q6IVyWELGHOE33SFWGIPHtlM6ArmBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aQPUsuK5vGIaJef6f4S7pYnI8VbCHe+jPeaMkcbKN88=;
+ b=TF55AK3Gxx6yRL4yPrEFCV+jOsPT97yYEdqcqaYxGIHLvMYHc6H4+i44csoiPt7NsN8nlNKocovRtWDkEBut34DSOygVFZOaUN1YkaT0Od2zQvZ5Bx9Fqjind0oMXQfiC2YFNCv7gdfee95FTMjUxNOAyVZwXjEmaM2EAJq9rnSK5qKCwwhHOoWOOgXBHUJ67Lh79WkKMzrpVody1c2eDTMinhBdEj+XepIkIgfdYT7yJ6m9hCTkIrl8AIq8Rr4ZLuuqPzRFYelLwIs2gX0aeoV90Ht7DGTtQQ5gG2VN/83mogXltkWluibcD74h47peO5bX5jcdtdSOLOEd2U4CYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by MN0PR12MB6342.namprd12.prod.outlook.com (2603:10b6:208:3c1::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.20; Wed, 19 Apr
+ 2023 16:12:01 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6319.020; Wed, 19 Apr 2023
+ 16:12:01 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	David Woodhouse <dwmw2@infradead.org>,
+	iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 00/11] Consolidate the probe_device path
+Date: Wed, 19 Apr 2023 13:11:46 -0300
+Message-Id: <0-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JQjm7dxg65jGEiIWsFPzrjeVjofGVsyt
-X-Proofpoint-GUID: JQjm7dxg65jGEiIWsFPzrjeVjofGVsyt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-19_10,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 mlxlogscore=995 adultscore=0
- lowpriorityscore=0 mlxscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304190131
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0075.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::20) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|MN0PR12MB6342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57a38f5e-94e5-4491-89f4-08db40f0ce70
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	DW/kT7uMag8c+B27SsbUJnkUYSCuedVkcLtfFylulA+2IfyYn4GBGBzk1YKDvaz3h3RhNcSxMQ27sAQT+V3qz07VqmpvZbe4WdwYdyRHJ6+d4tK9gMDPPDc3uNYwB4CkAncvLHIAEjDiC50u6dHsYXxrlDG3Ne9vmOUaFqLbXjY1DQoHxEDjkpmBDrA773ri5yvjHTZ1bIfqbf+jyoahMCT6nY9jEGgA5lIPTO6zwz/j1nmUpNx9r1Lpn6Rbr57RXIRYzVPoa5Kp64iWEr+UNjnIe9/avkLscDxzvgafnX7RTKGwDIMvwWZHiTbGtT1wnMnfHB4fAVkU0WbWwXiZa/kBeaAPDHLVuOenvMdjCt6Suz6KGK4FcXEEPb3kafQFt0igUdJ3jn9zGhoONSEB0kjYHNSBRxloSOTWXeKOgSQEddqpxPX7o+Vsn8606YGFtPQsV4wcw1Vmhu6ytrjlyAuieIUWwziA6VT7EGN7q8cwFHA+qjcD68IoTJ6a5DaSuTWNCcmgLbas6g9XOrjwKLHQRhLs0rDq77vQtgUaySTJlYOUspfaNLtkgOw0JcA1a/NCGSthkVH1qvTswo8ywwWE17Xw8xIWbxCfkS0C/jUicHlRuPFwzv/RV7ucVirbDRNnoJoWDWqBmwNsnPHa2hDr0p2Pc+LNyRASRXkEqQE=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39860400002)(366004)(346002)(136003)(451199021)(6666004)(6486002)(966005)(478600001)(110136005)(86362001)(36756003)(2616005)(83380400001)(107886003)(6512007)(186003)(6506007)(26005)(38100700002)(316002)(921005)(66946007)(66476007)(66556008)(2906002)(8676002)(5660300002)(8936002)(7416002)(41300700001)(4326008)(54906003)(4216001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?+tJkyBwa+yAE0snvrJu/q2oVxxl92WDqmZOHhKU6c/AqlpReN2q8pOCm3E9g?=
+ =?us-ascii?Q?mkhMWtWiZr6EEsF+C6YONClMo7HD/x+u8Sn+L9oSw27TfFXWlZBM+Gyc8FcD?=
+ =?us-ascii?Q?KffTGbV/HIXwgM7gUiarUBATOCtDVvRuvg0pRyWYFOOUwetp9GSpfzLuoynp?=
+ =?us-ascii?Q?SWbpik6SVP2zPpyIRzWAYDxASlYcwXhIGfocU1cvz6A60wWFF6x1YwYi07kJ?=
+ =?us-ascii?Q?+umZTTZQeqMUs7gIzV7iWI9NQvFnp85i2zvUkTQNtPvqJ8CAM4GQguaOT20c?=
+ =?us-ascii?Q?jcDWchFZyQRTCRO/fI9wF5eKplgznWtmU+n6I2+53daTaYSpOp2/wnREb0j1?=
+ =?us-ascii?Q?Sb6ypsFs6ycVJduv+MFVdNpHG2rRlO0PpKSgNSMpNVroHZPdBS87GntZr+En?=
+ =?us-ascii?Q?KMZ0ZrcB0verGc3u4ih3tZAEbOpppgUQvqAX3u1pGLZN5BRybwUWrntrfMD6?=
+ =?us-ascii?Q?fimXG7FfOCzCLHp+n01cZAn84EsLGHQCR9DVnOceJ9ZBJX9nFzo29D2oEwOY?=
+ =?us-ascii?Q?FRpfC/hTVciEyhw78vEu9ZCgh7uidjt58BbrR+TsPTzfiusLNBFxLfNU+XIG?=
+ =?us-ascii?Q?Lm6uo9DcXMRKjjX9jAchUQ4SCpDLf6kBH0EN8wqw29tlgQJWkr56iixYwkKh?=
+ =?us-ascii?Q?jFzWxl7ut0/4RbcShpmhwI3AQI8TD2ktFzlDygmgCpGOUUf2MvTi3OQIhzHA?=
+ =?us-ascii?Q?OCinRgPymhLLT6FXgToLCFWK+o2puViJ37JoZOS88g4lBICHCZ47nI5inFVk?=
+ =?us-ascii?Q?JDgh+dpsWywNGvxM3Xo3T6iZKcjgGrq9zmULnB1rZTNX43/tyknOthdPscvS?=
+ =?us-ascii?Q?v9sUYUQlmEpwU51KJ6BjuJkaFVSiaQmV0osoTVSLR9ZiugYCTnNd4qiibjDn?=
+ =?us-ascii?Q?F4GvTjNF63a7OCHF9sh/DWlLfQRlH8CnoARiej2EP9LgXmHuyIiq+ovyZh6Z?=
+ =?us-ascii?Q?8wUGghwm8yS+3Yu1nrZX8kZ6vph8wexdgyDuWSClZXKXik7ioU4PrzyDB30d?=
+ =?us-ascii?Q?uh4JAeOR62NSESUC6lFTXyN0gKFVgGQRVk87E7HNIQbKaYqR/9RjPEYCBCUS?=
+ =?us-ascii?Q?ZQsX2VAicWtZ0kssqRWa8xXXZ/6tWPsi2667/QhzYYhDPnKvi2Beb88KJV2P?=
+ =?us-ascii?Q?rzEvqn5BXprDySWic50NpWhybbkSJgnUuGyaFj/K9twBCxObHyDTwmyTQaGG?=
+ =?us-ascii?Q?+O/YkOioUeAxCcv8BOhB9D6h0tAy9Ae+1R83rZwuYlVPJ7TNlUnKsQmAUP2Z?=
+ =?us-ascii?Q?zdwm9+ae/5qtTpCAFnNVLOsPYTtmQmF6mWS1+QNO9fOONJSAbO8OwNKV3kt0?=
+ =?us-ascii?Q?OuhkRcQ8a3k04IFpFpqhFLD/zyrgdQmXTbH1MErTwgNCpHkxX1IdR3miXCEo?=
+ =?us-ascii?Q?bbMV1Pf1PwcEmub+wke3KIllMRPwU6B7BrYtEvZbB4Oq/myqkLfEeFIWJqN3?=
+ =?us-ascii?Q?U7HBNnFK+5oP5UGd2sSInDvx+4qhvXgdc2UH3f/bEa6fy/zFXR+kLzEbzyBl?=
+ =?us-ascii?Q?4YdfZScBvByfjfMocnWY/ojmJZgjz3zXA05dovrMxBLH6+/jQ64izwNjgIRH?=
+ =?us-ascii?Q?yOxGS+ioRAF72A1JcqaUJ+y/nGpCb8G+bLJLg8Xb?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57a38f5e-94e5-4491-89f4-08db40f0ce70
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2023 16:12:00.3939
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v2VqTJHf00M+7EE/lGpTL8bUGyGgnwfoi8Qqey4qPqShZ8zd7QMvpTh8sbnzqN3l
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6342
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,67 +128,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Greg Joyce <gjoyce@linux.vnet.ibm.com>, Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Cc: Kevin Tian <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When DMA window is backed by 2MB TCEs, the DMA address for the mapped
-page should be the offset of the page relative to the 2MB TCE. The code
-was incorrectly setting the DMA address to the beginning of the TCE
-range.
+Now that the domain allocation path is less duplicated we can tackle the
+probe_device path. Details of this are spread across several functions,
+broadly move most of the code into __iommu_probe_device() and organize it
+more strictly in terms of paired do/undo functions.
 
-Mellanox driver is reporting timeout trying to ENABLE_HCA for an SR-IOV
-ethernet port, when DMA window is backed by 2MB TCEs.
+Make the locking simpler by obtaining the group->mutex fewer times and
+avoiding adding a half-initialized device to an initialized
+group. Previously we would lock/unlock the group three times on these
+paths.
 
-Fixes: 3872731187141d5d0a5c4fb30007b8b9ec36a44d
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+This locking change is the primary point of the series, creating the
+paired do/undo functions is a path to being able to organize the setup
+code under a single lock and still have a logical, not duplicated, error
+unwind.
 
-Reviewed-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/iommu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+This follows the prior series:
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index ee95937bdaf1..ca57526ce47a 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -517,7 +517,7 @@ int ppc_iommu_map_sg(struct device *dev, struct iommu_table *tbl,
- 		/* Convert entry to a dma_addr_t */
- 		entry += tbl->it_offset;
- 		dma_addr = entry << tbl->it_page_shift;
--		dma_addr |= (s->offset & ~IOMMU_PAGE_MASK(tbl));
-+		dma_addr |= (vaddr & ~IOMMU_PAGE_MASK(tbl));
- 
- 		DBG("  - %lu pages, entry: %lx, dma_addr: %lx\n",
- 			    npages, entry, dma_addr);
-@@ -904,6 +904,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	unsigned int order;
- 	unsigned int nio_pages, io_order;
- 	struct page *page;
-+	int tcesize = (1 << tbl->it_page_shift);
- 
- 	size = PAGE_ALIGN(size);
- 	order = get_order(size);
-@@ -930,7 +931,8 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	memset(ret, 0, size);
- 
- 	/* Set up tces to cover the allocated range */
--	nio_pages = size >> tbl->it_page_shift;
-+	nio_pages = IOMMU_PAGE_ALIGN(size, tbl) >> tbl->it_page_shift;
-+
- 	io_order = get_iommu_order(size, tbl);
- 	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
- 			      mask >> tbl->it_page_shift, io_order, 0);
-@@ -938,7 +940,8 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 		free_pages((unsigned long)ret, order);
- 		return NULL;
- 	}
--	*dma_handle = mapping;
-+
-+	*dma_handle = mapping | ((u64)ret & (tcesize - 1));
- 	return ret;
- }
- 
+https://lore.kernel.org/r/0-v4-79d0c229580a+650-iommu_err_unwind_jgg@nvidia.com
+
+Jason Gunthorpe (11):
+  iommu: Have __iommu_probe_device() check for already probed devices
+  iommu: Use iommu_group_ref_get/put() for dev->iommu_group
+  iommu: Inline iommu_group_get_for_dev() into __iommu_probe_device()
+  iommu: Simplify the __iommu_group_remove_device() flow
+  iommu: Add iommu_init/deinit_driver() paired functions
+  iommu: Move the iommu driver sysfs setup into
+    iommu_init/deinit_driver()
+  iommu: Do not export iommu_device_link/unlink()
+  iommu: Always destroy the iommu_group during iommu_release_device()
+  iommu/power: Remove iommu_del_device()
+  iommu: Split iommu_group_add_device()
+  iommu: Avoid locking/unlocking for iommu_probe_device()
+
+ arch/powerpc/include/asm/iommu.h       |   5 -
+ arch/powerpc/kernel/iommu.c            |  17 -
+ arch/powerpc/platforms/powernv/pci.c   |  25 --
+ arch/powerpc/platforms/pseries/iommu.c |  25 --
+ drivers/acpi/scan.c                    |   2 +-
+ drivers/iommu/intel/iommu.c            |   7 -
+ drivers/iommu/iommu-sysfs.c            |   8 -
+ drivers/iommu/iommu.c                  | 411 +++++++++++++------------
+ drivers/iommu/of_iommu.c               |   2 +-
+ 9 files changed, 212 insertions(+), 290 deletions(-)
+
+
+base-commit: 172314c88ed17bd838404d837bfb256d9bfd4e3d
 -- 
+2.40.0
 
