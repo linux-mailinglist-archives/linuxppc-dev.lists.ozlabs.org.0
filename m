@@ -1,80 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726566E78B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:34:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390096E78B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:34:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dwX31Zhz3h4X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:34:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dxS6z0Yz3g0W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:34:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=aOmHCOip;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdVAsM9S;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdVAsM9S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxtx.org (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=jmforbes@linuxtx.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=aOmHCOip;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdVAsM9S;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdVAsM9S;
 	dkim-atps=neutral
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1dnl0Jvtz3glp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 21:28:09 +1000 (AEST)
-Received: by mail-ej1-x636.google.com with SMTP id kt6so42584883ejb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 04:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1681903686; x=1684495686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8N99yfKqkNg/PzVluqPrnuo7/UXaVkUZ4pARZeRWAW0=;
-        b=aOmHCOipVssUIFiOoZV/XYVogKVHpAzuiq8VEyTLvA7Yk95r4ytn9vTT8PpUhQnARJ
-         WhOkvYx9dTRxFaR/svUxtJL6wEy7ip/MEvOVSUewRhDmjfSeiPs+EqDlwS4WxJ5pxJy2
-         ++BQaECiQP+IF3B1SGcbW9EeNZEQfujRcwKyw=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1ds82xWpz3gsD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 21:31:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1681903863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dPuQPsleEjjBeSq0BvDdXkwF3D8bnmU80K+kHEWN1i0=;
+	b=VdVAsM9SDIMFVlFaiTV21FNVdvlixn938MmjFMpgbc9vO0rU69SNTb7DmrWj/7/JLV46YU
+	ha17LGPDrMFu7XqCp6UAbboHtSqv2+qfPmJFwE0FprNhOPZbw+KnF8Z298JC3anoobeNnb
+	O/A4QfJH/k69P5OTAb3glI5hHMHpSH8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1681903863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dPuQPsleEjjBeSq0BvDdXkwF3D8bnmU80K+kHEWN1i0=;
+	b=VdVAsM9SDIMFVlFaiTV21FNVdvlixn938MmjFMpgbc9vO0rU69SNTb7DmrWj/7/JLV46YU
+	ha17LGPDrMFu7XqCp6UAbboHtSqv2+qfPmJFwE0FprNhOPZbw+KnF8Z298JC3anoobeNnb
+	O/A4QfJH/k69P5OTAb3glI5hHMHpSH8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-30-rnemUtw-P3Sr-rhCwL2wLA-1; Wed, 19 Apr 2023 07:31:01 -0400
+X-MC-Unique: rnemUtw-P3Sr-rhCwL2wLA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-2f43679bcf5so1853610f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 04:31:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681903686; x=1684495686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8N99yfKqkNg/PzVluqPrnuo7/UXaVkUZ4pARZeRWAW0=;
-        b=U4K9O6lX4uZ4pmfeDZum58FCmOF4a2GyyjCBBlNcp7ycqK+7vrbZ2Tlgz5Pv5sRg+T
-         vuQT8CwEclU/Z1GNeQ7GqXNi4Ih9s2OGrEhUs9RABzLAgG2bDQsgUn49vvwFAfx2x/mn
-         nPZrhNXfu6k3qKGyh3Fc+gU2f1Mkhew7rk/hDuncGl3BSDtmUHR6EB1kLeh+brYBoGxv
-         O2WiRi0WjYBrQx3kEhy9JgJkYos34501N+9hb8mU2u6X72nad+WuSG+2ikWqE4ro54Bi
-         qt1Z+reBm1smErEJjgah6pPWjsqAmji9ZS1zubJWsH97caPUox8gxvDYA6jEZvbVF7Do
-         T1wg==
-X-Gm-Message-State: AAQBX9cJQzUJHVCeZKBBYbtbvcw14+7y/42VEOtWkZmnLFMA2J84ptIC
-	ArE+bwgGRJpJi5McrJqSRrPDhst8OBnRwoHoLikVXZL/
-X-Google-Smtp-Source: AKy350ZdTbwawLWFsU8rJR9UkzgUMnrT4EJxPXDJ84WiGAAmdjIk3Oh881GoB4hlgMgPm4Ii6ZvaPw==
-X-Received: by 2002:a17:907:9090:b0:932:e6d5:bd7c with SMTP id ge16-20020a170907909000b00932e6d5bd7cmr13347808ejb.20.1681903685918;
-        Wed, 19 Apr 2023 04:28:05 -0700 (PDT)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id wg9-20020a17090705c900b0094ea48e9052sm9078618ejb.32.2023.04.19.04.28.05
-        for <linuxppc-dev@lists.ozlabs.org>
+        d=1e100.net; s=20221208; t=1681903860; x=1684495860;
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dPuQPsleEjjBeSq0BvDdXkwF3D8bnmU80K+kHEWN1i0=;
+        b=iqbz/zQW13GHTCoU1vOwIwrMUOL6VFvebsAqzuej4Si6IX1aoV2o72A3/2dU++wX/G
+         IKglFoEFC+4lHPE6Tdt1O/xvd6DsBNYmr1I7C07Wn64DZfrQBblNBpG/L5dXeeLw1KhU
+         fFuNMkd65ofr9GmMsO6jqSN2gX1q5wZiRj0mSM3qB11UgaiYK3BfNYJkXbf2f2hRTe1f
+         unDjhA0PEDq92EdPhlfBF3H1pXfT/3l3oQm9rRfs/YVmzr1IkWRGqmbvkwlS5mRr8uTR
+         u3FIKj4LOLtnd+4yfERUzwY4o15pZziwv3xx1CnOmDT0pj46lalRRIkWrbiJsQbI06/O
+         TvzA==
+X-Gm-Message-State: AAQBX9fS7Ad1V2Xlj7Gr98Mi22LnD9a3XPrLXe8zdZ6ULXsIZvgZLrK4
+	0WsPqouRmlk7tfz75Et+CHWdStF4vFvTLoC2ugB32CuntVdgweF6wr7u2e5cGdbIKorSxOUgDVU
+	zEQ7ylxCm8jbLqXFFx6c2fa1vgA==
+X-Received: by 2002:a5d:69d0:0:b0:2fe:c0ea:18ad with SMTP id s16-20020a5d69d0000000b002fec0ea18admr1723965wrw.47.1681903860469;
+        Wed, 19 Apr 2023 04:31:00 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bzhkcwsfhrSQkvGUIm/JW8RoVL0p90cvfrRI4bamTYUVPg7DxfHt0wqA8rK9Mz1QlqY1RVnA==
+X-Received: by 2002:a5d:69d0:0:b0:2fe:c0ea:18ad with SMTP id s16-20020a5d69d0000000b002fec0ea18admr1723910wrw.47.1681903860074;
+        Wed, 19 Apr 2023 04:31:00 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70b:7b00:7c52:a5fa:8004:96fd? (p200300cbc70b7b007c52a5fa800496fd.dip0.t-ipconnect.de. [2003:cb:c70b:7b00:7c52:a5fa:8004:96fd])
+        by smtp.gmail.com with ESMTPSA id v17-20020a1cf711000000b003f16fdc6233sm1880494wmh.47.2023.04.19.04.30.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 04:28:05 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-505934ccc35so5723578a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 04:28:05 -0700 (PDT)
-X-Received: by 2002:a2e:7012:0:b0:2a5:fe8f:b314 with SMTP id
- l18-20020a2e7012000000b002a5fe8fb314mr1874851ljc.5.1681903663880; Wed, 19 Apr
- 2023 04:27:43 -0700 (PDT)
+        Wed, 19 Apr 2023 04:30:59 -0700 (PDT)
+Message-ID: <914e826e-3fab-4540-d3a1-24ca39b1cf0a@redhat.com>
+Date: Wed, 19 Apr 2023 13:30:57 +0200
 MIME-Version: 1.0
-References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
- <ZCvQGJzdED+An8an@kernel.org> <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
- <ZDbp7LAHES3YFo30@arm.com> <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
- <ZD/K+Mof/Dx5yzjQ@arm.com>
-In-Reply-To: <ZD/K+Mof/Dx5yzjQ@arm.com>
-From: Justin Forbes <jforbes@fedoraproject.org>
-Date: Wed, 19 Apr 2023 06:27:31 -0500
-X-Gmail-Original-Message-ID: <CAFbkSA3yn_4Monrnk2u3CzfJ934Hy15rjAJ85AdFU40nV7KTkQ@mail.gmail.com>
-Message-ID: <CAFbkSA3yn_4Monrnk2u3CzfJ934Hy15rjAJ85AdFU40nV7KTkQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-To: Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20230404134224.137038-4-ypodemsk@redhat.com>
+ <ZC1Q7uX4rNLg3vEg@lothringen> <ZC1XD/sEJY+zRujE@lothringen>
+ <ZC3P3Ds/BIcpRNGr@tpad>
+ <20230405195226.GB365912@hirez.programming.kicks-ass.net>
+ <ZC69Wmqjdwk+I8kn@tpad>
+ <20230406132928.GM386572@hirez.programming.kicks-ass.net>
+ <20230406140423.GA386634@hirez.programming.kicks-ass.net>
+ <20230406150213.GQ386572@hirez.programming.kicks-ass.net>
+ <248392c0-52d1-d09d-75ec-9e930435c053@redhat.com>
+ <20230406182749.GA405948@hirez.programming.kicks-ass.net>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH 3/3] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
+ only to CPUs in kernel mode
+In-Reply-To: <20230406182749.GA405948@hirez.programming.kicks-ass.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,63 +113,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: geert+renesas@glider.be, tony@atomide.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, Yair Podemsky <ypodemsk@redhat.com>, sebastian.reichel@collabora.com, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, vschneid@redhat.com, arnd@arndb.de, paulmck@kernel.org, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, samitolvanen@google.com, borntraeger@linux.ibm.com, hca@linux.ibm.com, keescook@chromium.org, gor@linux.ibm.com, jannh@google.com, Frederic Weisbecker <frederic@kernel.org>, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, Yang Shi <shy828301@gmail.com>, bp@alien8.de, nick.hawkins@hpe.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, alougovs@redhat.com, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, juerg.haefliger@canonical.com, svens@linux.ibm.com, aneesh.kumar@linux.ibm.com
+ , dhildenb@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 19, 2023 at 6:12=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
-m.com> wrote:
->
-> On Tue, Apr 18, 2023 at 03:05:57PM -0700, Andrew Morton wrote:
-> > On Wed, 12 Apr 2023 18:27:08 +0100 Catalin Marinas <catalin.marinas@arm=
-.com> wrote:
-> > > > It sounds nice in theory. In practice. EXPERT hides too much. When =
-you
-> > > > flip expert, you expose over a 175ish new config options which are
-> > > > hidden behind EXPERT.  You don't have to know what you are doing ju=
-st
-> > > > with the MAX_ORDER, but a whole bunch more as well.  If everyone we=
-re
-> > > > already running 10, this might be less of a problem. At least Fedor=
-a
-> > > > and RHEL are running 13 for 4K pages on aarch64. This was not some
-> > > > accidental choice, we had to carry a patch to even allow it for a
-> > > > while.  If this does go in as is, we will likely just carry a patch=
- to
-> > > > remove the "if EXPERT", but that is a bit of a disservice to users =
-who
-> > > > might be trying to debug something else upstream, bisecting upstrea=
-m
-> > > > kernels or testing a patch.  In those cases, people tend to use
-> > > > pristine upstream sources without distro patches to verify, and the=
-y
-> > > > tend to use their existing configs. With this change, their MAX_ORD=
-ER
-> > > > will drop to 10 from 13 silently.   That can look like a different
-> > > > issue enough to ruin a bisect or have them give bad feedback on a
-> > > > patch because it introduces a "regression" which is not a regressio=
-n
-> > > > at all, but a config change they couldn't see.
-> > >
-> > > If we remove EXPERT (as prior to this patch), I'd rather keep the ran=
-ges
-> > > and avoid having to explain to people why some random MAX_ORDER doesn=
-'t
-> > > build (keeping the range would also make sense for randconfig, not su=
-re
-> > > we got to any conclusion there).
-> >
-> > Well this doesn't seem to have got anywhere.  I think I'll send the
-> > patchset into Linus for the next merge window as-is.  Please let's take
-> > a look at this Kconfig presentation issue during the following -rc
-> > cycle.
->
-> That's fine by me. I have a slight preference to drop EXPERT and keep
-> the ranges in, especially if it affects current distro kernels. Debian
-> seems to enable EXPERT already in their arm64 kernel config but I'm not
-> sure about the Fedora or other distro kernels. If they don't, we can
-> fix/revert this Kconfig entry once the merging window is closed.
+On 06.04.23 20:27, Peter Zijlstra wrote:
+> On Thu, Apr 06, 2023 at 05:51:52PM +0200, David Hildenbrand wrote:
+>> On 06.04.23 17:02, Peter Zijlstra wrote:
+> 
+>>> DavidH, what do you thikn about reviving Jann's patches here:
+>>>
+>>>     https://bugs.chromium.org/p/project-zero/issues/detail?id=2365#c1
+>>>
+>>> Those are far more invasive, but afaict they seem to do the right thing.
+>>>
+>>
+>> I recall seeing those while discussed on security@kernel.org. What we
+>> currently have was (IMHO for good reasons) deemed better to fix the issue,
+>> especially when caring about backports and getting it right.
+> 
+> Yes, and I think that was the right call. However, we can now revisit
+> without having the pressure of a known defect and backport
+> considerations.
+> 
+>> The alternative that was discussed in that context IIRC was to simply
+>> allocate a fresh page table, place the fresh page table into the list
+>> instead, and simply free the old page table (then using common machinery).
+>>
+>> TBH, I'd wish (and recently raised) that we could just stop wasting memory
+>> on page tables for THPs that are maybe never going to get PTE-mapped ... and
+>> eventually just allocate on demand (with some caching?) and handle the
+>> places where we're OOM and cannot PTE-map a THP in some descend way.
+>>
+>> ... instead of trying to figure out how to deal with these page tables we
+>> cannot free but have to special-case simply because of GUP-fast.
+> 
+> Not keeping them around sounds good to me, but I'm not *that* familiar
+> with the THP code, most of that happened after I stopped tracking mm. So
+> I'm not sure how feasible is it.
+> 
+> But it does look entirely feasible to rework this page-table freeing
+> along the lines Jann did.
 
-Fedora and RHEL do not enable EXPERT already.
+It's most probably more feasible, although the easiest would be to just 
+allocate a fresh page table to deposit and free the old one using the 
+mmu gatherer.
 
-Justin
+This way we can avoid the khugepaged of tlb_remove_table_smp_sync(), but 
+not the tlb_remove_table_one() usage. I suspect khugepaged isn't really 
+relevant in RT kernels (IIRC, most of RT setups disable THP completely).
+
+tlb_remove_table_one() only triggers if __get_free_page(GFP_NOWAIT | 
+__GFP_NOWARN); fails. IIUC, that can happen easily under memory pressure 
+because it doesn't wait for direct reclaim.
+
+I don't know much about RT workloads (so I'd appreciate some feedback), 
+but I guess we can run int memory pressure as well due to some !rt 
+housekeeping task on the system?
+
+-- 
+Thanks,
+
+David / dhildenb
+
