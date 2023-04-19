@@ -2,94 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179906E773A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 12:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3726E78AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:32:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1c3h6pW2z3fTw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 20:10:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjIYzAQS;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dtl3XLzz3g9L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:32:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YjIYzAQS;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 551 seconds by postgrey-1.36 at boromir; Wed, 19 Apr 2023 21:08:04 AEST
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1c2m6gnYz3cjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 20:09:20 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33JA89Nm027920;
-	Wed, 19 Apr 2023 10:09:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=LLS0pJQeMDVHzZ1pRWUSOdu0Lny2cku9AQMDCdPgS80=;
- b=YjIYzAQS6Jes7zHiobkm7f/dYzVDn5LRG4gkCpXAlJd+LuZ0mByLo13dCIPS+jGWxXpL
- VkR8+q6eedwoTYpro46uoGA67y5eyExS+Kzg/nxUxFODMEk5RxFxE3qXeCDTwm0yihhN
- wmGG0vY9IGXzNHL9bGvHs602LYP+aUhG+Ifaag5eGfXd4uH856v+NxSbxTqgB9iO9j5n
- +O5Qz3VcEfflBgUGmrBy7agGJ4vK98CyyuZystIbm9FC12obdK705HqD6HTHZOl9KDW7
- 8UebpjXTs6kvNOvD10QGcKBcEpSleyQUh1qfMpi2lMKgRAA2xAwlh8FLIqFCjfJM6Rek ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q28tyse7c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Apr 2023 10:09:07 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33JA7JJS033082;
-	Wed, 19 Apr 2023 10:09:07 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q28tyse35-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Apr 2023 10:09:06 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33J3PLsR012853;
-	Wed, 19 Apr 2023 10:09:01 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3pyk6fj600-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Apr 2023 10:09:01 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33JA8xMd17564182
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Apr 2023 10:08:59 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7C2FD20040;
-	Wed, 19 Apr 2023 10:08:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2700F2004D;
-	Wed, 19 Apr 2023 10:08:56 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.43.42.198])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 19 Apr 2023 10:08:55 +0000 (GMT)
-Date: Wed, 19 Apr 2023 15:38:52 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] KVM: PPC: BOOK3S: book3s_hv_nested.c: improve branch
- prediction for k.alloc
-Message-ID: <ZD+9tHrOWs7SbG1H@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20230407093147.3646597-1-kconsul@linux.vnet.ibm.com>
- <ZDAeuL2fz1aEW6rz@debian.me>
- <ZDA+WdiqB2931xHB@google.com>
- <ZDTpGsT15s0iOrTJ@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <873557j59d.fsf@mpe.ellerman.id.au>
- <ZDZX7cAa5uKwfJOd@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZDZX7cAa5uKwfJOd@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0U7ujuPgU23qZF-R5pKz9gWorDsokjz_
-X-Proofpoint-GUID: Q1BU1_1VGTq-ou__BIWOXY4rwf-DWC6M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-19_05,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304190085
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1dLX4cnwz3fj2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 21:08:04 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7ACAD1A11F6;
+	Wed, 19 Apr 2023 12:58:49 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 168121A0F1F;
+	Wed, 19 Apr 2023 12:58:49 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 1F73D1800254;
+	Wed, 19 Apr 2023 18:58:47 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: kuninori.morimoto.gx@renesas.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	linux-imx@nxp.com,
+	alsa-devel@alsa-project.org
+Subject: [PATCH] Revert "ASoC: fsl: remove unnecessary dai_link->platform"
+Date: Wed, 19 Apr 2023 18:29:18 +0800
+Message-Id: <1681900158-17428-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,67 +56,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Fabiano Rosas <farosas@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Chao Peng <chao.p.peng@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-04-12 12:34:13, Kautuk Consul wrote:
-> Hi,
-> 
-> On 2023-04-11 16:35:10, Michael Ellerman wrote:
-> > Kautuk Consul <kconsul@linux.vnet.ibm.com> writes:
-> > > On 2023-04-07 09:01:29, Sean Christopherson wrote:
-> > >> On Fri, Apr 07, 2023, Bagas Sanjaya wrote:
-> > >> > On Fri, Apr 07, 2023 at 05:31:47AM -0400, Kautuk Consul wrote:
-> > >> > > I used the unlikely() macro on the return values of the k.alloc
-> > >> > > calls and found that it changes the code generation a bit.
-> > >> > > Optimize all return paths of k.alloc calls by improving
-> > >> > > branch prediction on return value of k.alloc.
-> > >> 
-> > >> Nit, this is improving code generation, not branch prediction.
-> > > Sorry my mistake.
-> > >> 
-> > >> > What about below?
-> > >> > 
-> > >> > "Improve branch prediction on kmalloc() and kzalloc() call by using
-> > >> > unlikely() macro to optimize their return paths."
-> > >> 
-> > >> Another nit, using unlikely() doesn't necessarily provide a measurable optimization.
-> > >> As above, it does often improve code generation for the happy path, but that doesn't
-> > >> always equate to improved performance, e.g. if the CPU can easily predict the branch
-> > >> and/or there is no impact on the cache footprint.
-> > 
-> > > I see. I will submit a v2 of the patch with a better and more accurate
-> > > description. Does anyone else have any comments before I do so ?
-> >  
-> > In general I think unlikely should be saved for cases where either the
-> > compiler is generating terrible code, or the likelyness of the condition
-> > might be surprising to a human reader.
-> > 
-> > eg. if you had some code that does a NULL check and it's *expected* that
-> > the value is NULL, then wrapping that check in likely() actually adds
-> > information for a human reader.
-> >     
-> > Also please don't use unlikely in init paths or other cold paths, it
-> > clutters the code (only slightly but a little) and that's not worth the
-> > possible tiny benefit for code that only runs once or infrequently.
-> > 
-> > I would expect the compilers to do the right thing in all
-> > these cases without the unlikely. But if you can demonstrate that they
-> > meaningfully improve the code generation with a before/after
-> > dissassembly then I'd be interested.
-> Just FYI, the last email by kautuk.consul.80@gmail.com was by me.
-> That last email contains a diff file attachment which compares 2 files:
-> before my changes and after my changes.
-> This diff file shows a lot of changes in code generation. Im assuming
-> all those changes are made by the compiler towards optimizing all return
-> paths to k.alloc calls.
-> Kindly review and comment.
-Any comments on the numerous code generation changes as shown by the
-files I attached to this mail chain ? Sorry I don't have concrete
-figures of any type to prove that this leads to any measurable performance
-improvements. I am just assuming that the compiler's modified code
-generation (due to the use of the unlikely macro) would be optimal.
+This reverts commit 33683cbf49b5412061cb1e4c876063fdef86def4.
 
-Thanks.
-> > cheers
+dai_link->platform is needed. The platform component is
+"snd_dmaengine_pcm", which is registered from cpu driver,
+
+If dai_link->platform is not assigned, then platform
+component will not be probed, then there will be issue:
+
+aplay: main:831: audio open error: Invalid argument
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/imx-audmix.c | 14 ++++++++++----
+ sound/soc/fsl/imx-spdif.c  |  5 ++++-
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index 2c57fe9d2d08..1292a845c424 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -207,8 +207,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 	for (i = 0; i < num_dai; i++) {
+ 		struct snd_soc_dai_link_component *dlc;
+ 
+-		/* for CPU/Codec x 2 */
+-		dlc = devm_kcalloc(&pdev->dev, 4, sizeof(*dlc), GFP_KERNEL);
++		/* for CPU/Codec/Platform x 2 */
++		dlc = devm_kcalloc(&pdev->dev, 6, sizeof(*dlc), GFP_KERNEL);
+ 		if (!dlc)
+ 			return -ENOMEM;
+ 
+@@ -240,9 +240,11 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 
+ 		priv->dai[i].cpus = &dlc[0];
+ 		priv->dai[i].codecs = &dlc[1];
++		priv->dai[i].platforms = &dlc[2];
+ 
+ 		priv->dai[i].num_cpus = 1;
+ 		priv->dai[i].num_codecs = 1;
++		priv->dai[i].num_platforms = 1;
+ 
+ 		priv->dai[i].name = dai_name;
+ 		priv->dai[i].stream_name = "HiFi-AUDMIX-FE";
+@@ -250,6 +252,7 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 		priv->dai[i].codecs->name = "snd-soc-dummy";
+ 		priv->dai[i].cpus->of_node = args.np;
+ 		priv->dai[i].cpus->dai_name = dev_name(&cpu_pdev->dev);
++		priv->dai[i].platforms->of_node = args.np;
+ 		priv->dai[i].dynamic = 1;
+ 		priv->dai[i].dpcm_playback = 1;
+ 		priv->dai[i].dpcm_capture = (i == 0 ? 1 : 0);
+@@ -264,17 +267,20 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 		be_cp = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 				       "AUDMIX-Capture-%d", i);
+ 
+-		priv->dai[num_dai + i].cpus = &dlc[2];
+-		priv->dai[num_dai + i].codecs = &dlc[3];
++		priv->dai[num_dai + i].cpus = &dlc[3];
++		priv->dai[num_dai + i].codecs = &dlc[4];
++		priv->dai[num_dai + i].platforms = &dlc[5];
+ 
+ 		priv->dai[num_dai + i].num_cpus = 1;
+ 		priv->dai[num_dai + i].num_codecs = 1;
++		priv->dai[num_dai + i].num_platforms = 1;
+ 
+ 		priv->dai[num_dai + i].name = be_name;
+ 		priv->dai[num_dai + i].codecs->dai_name = "snd-soc-dummy-dai";
+ 		priv->dai[num_dai + i].codecs->name = "snd-soc-dummy";
+ 		priv->dai[num_dai + i].cpus->of_node = audmix_np;
+ 		priv->dai[num_dai + i].cpus->dai_name = be_name;
++		priv->dai[num_dai + i].platforms->name = "snd-soc-dummy";
+ 		priv->dai[num_dai + i].no_pcm = 1;
+ 		priv->dai[num_dai + i].dpcm_playback = 1;
+ 		priv->dai[num_dai + i].dpcm_capture  = 1;
+diff --git a/sound/soc/fsl/imx-spdif.c b/sound/soc/fsl/imx-spdif.c
+index 114b49660193..4446fba755b9 100644
+--- a/sound/soc/fsl/imx-spdif.c
++++ b/sound/soc/fsl/imx-spdif.c
+@@ -26,7 +26,7 @@ static int imx_spdif_audio_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+-	comp = devm_kzalloc(&pdev->dev, 2 * sizeof(*comp), GFP_KERNEL);
++	comp = devm_kzalloc(&pdev->dev, 3 * sizeof(*comp), GFP_KERNEL);
+ 	if (!data || !comp) {
+ 		ret = -ENOMEM;
+ 		goto end;
+@@ -34,15 +34,18 @@ static int imx_spdif_audio_probe(struct platform_device *pdev)
+ 
+ 	data->dai.cpus		= &comp[0];
+ 	data->dai.codecs	= &comp[1];
++	data->dai.platforms	= &comp[2];
+ 
+ 	data->dai.num_cpus	= 1;
+ 	data->dai.num_codecs	= 1;
++	data->dai.num_platforms	= 1;
+ 
+ 	data->dai.name = "S/PDIF PCM";
+ 	data->dai.stream_name = "S/PDIF PCM";
+ 	data->dai.codecs->dai_name = "snd-soc-dummy-dai";
+ 	data->dai.codecs->name = "snd-soc-dummy";
+ 	data->dai.cpus->of_node = spdif_np;
++	data->dai.platforms->of_node = spdif_np;
+ 	data->dai.playback_only = true;
+ 	data->dai.capture_only = true;
+ 
+-- 
+2.34.1
+
