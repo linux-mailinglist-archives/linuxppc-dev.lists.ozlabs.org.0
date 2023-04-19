@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B376E78A0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:28:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA366E78A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 13:29:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dpQ1JBpz3fc0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:28:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1dqL27dJz3gPb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 21:29:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=cISFcM3F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=XMIwSffg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=cISFcM3F;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=XMIwSffg;
 	dkim-atps=neutral
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1S2K08rMz3c6Y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 14:08:24 +1000 (AEST)
-Received: by mail-wm1-x32f.google.com with SMTP id m39-20020a05600c3b2700b003f170e75bd3so1517921wms.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 21:08:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1S7w41Rjz3cGH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 14:13:16 +1000 (AEST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3f173af665fso14001805e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Apr 2023 21:13:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681877294; x=1684469294;
+        d=gmail.com; s=20221208; t=1681877592; x=1684469592;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4XiNSYWgcLQuFxvkCNT3Vf0nczCpBov3KqNEUIXrcn0=;
-        b=cISFcM3FK8NlEQ/j69bU9vzPaK1RQd/OLdKanNtMb9Ks1ScubJ1xa+cr9nDAM59aXN
-         oflZAG489ztY98TpYlKduZB114YxDnfeuoh8dXLNIy4S7EhZoqNEYICqepDs3Jq2CxbI
-         AUzeK/gwPGWIL45O2gmzuqe4jr7Pmi+M5CUL8pLguoy04dQCJA6vRvhWoR6muGIjhtPx
-         yEiQGeSRVgd4LwkbTRKuxScztYb6QxsSp5lHiB1D45sZIwAxWkdzBqZCYOTwkSRPDL5F
-         Q27eJg7nO6lqKOnI4M08VJ3TOxTaa7z6JUzYPA/QmlVOuPOeP+5DTUYFsfF9nev1FIJu
-         y8EA==
+        bh=0akbJljmojF3UJNSUOLXeu8f3O++7bqonY0yv+A1TrU=;
+        b=XMIwSffgsGWjELoKkkm698JTXva7wRaUxD245dGJdtvmwZe4HSog5T6nxs8g6QraRl
+         8elWDC/a5LMy2iF2eSnljf8f09kg8AaBqLNQMAQ5+Fl7MJe5PtuCG5nF6ZsaCmaw4VBF
+         a5g6A2GH1AUgyCYga8ATIXJRSND/TT4jtMTQ8gvgrwNHX4gAHTFajG5vdMa+xlbU2zjg
+         rn1hfOE/e0+zM2iJ+EVZ/ZpBeXk+CyIiWjdZAdLUsk8AJZBqNdpRl9LYcRCNIMj8icfq
+         OAJUqzF/vZLLiqbrGwB/Bd8LyfjwBbs/IqGzXyq/LkwJAOnoGnZ7epkqURMTkZvWxV6u
+         CMIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681877294; x=1684469294;
+        d=1e100.net; s=20221208; t=1681877592; x=1684469592;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4XiNSYWgcLQuFxvkCNT3Vf0nczCpBov3KqNEUIXrcn0=;
-        b=BfWfv9/nF/msrv5Ijd3wtusoKY0+iDVeUKupLVNq1v2Pgf/BHwd8YCQSfeIC8yR4W5
-         NKw18yfP3nch3TXUQAGSftERTwT0iEhf1ohJbXMASklZ1z9gRyNykrrJrj901TYgIZbG
-         DIknBi65Jtfn4roUliBLvFxI81KWmcWAgwKsv9Z92cKIS08I7Y47NmqF+6AdpV3d6rPy
-         KllCDbXtVUrdrXrNV2Ve5TIPsdISRelCDFvvehXOEdb/sdtyAiLl9Z+PZmL/VaZnHfmQ
-         tBPitPIcnhTZrbBSKifHtTfuA44QHy48uthWHC0JHAWIyHBK/vvEAucz3x8kFCBRDu8g
-         EI+Q==
-X-Gm-Message-State: AAQBX9dVTNxHhAzVZ7WJdhwpcL4wbZvJ3Qb1Q01hM6qKSZwwf7jFP3VM
-	bU6KqX1lgwPQoOgr6yRt/jmz8HNcwQU94GotAPA=
-X-Google-Smtp-Source: AKy350b/gytWfcCTSq6cXvf5OHycptkSDSBQ37Bh+xbM1B7LJ48m9ZeT/1hDwyo0u8RxtqSRH9/FGup/ogPibY4n5j4=
-X-Received: by 2002:a05:600c:244:b0:3e2:1a3f:4ea2 with SMTP id
- 4-20020a05600c024400b003e21a3f4ea2mr4003260wmj.7.1681877294476; Tue, 18 Apr
- 2023 21:08:14 -0700 (PDT)
+        bh=0akbJljmojF3UJNSUOLXeu8f3O++7bqonY0yv+A1TrU=;
+        b=JvRp+iZDtbgKt6JYhsf/nCpnwDmO9TGrTbiKcwcHTfvfRdJrOVUkS7atRe9xQlkOMJ
+         gGq3kTcvXCEN2MDO7ob5Ojo4qTH40QD5/yeLPVdH9MvtsSDBZ1ZasQTMfVXE5C/A68r7
+         PV7ASmrFQNKyxGr2IwoASu0tUQOJtl8eG28rCmufIG3p2FGbHkJTy0UsCJc7HpI41zV6
+         JHm5I7mAViqtbTTVvy3P8gCa+wgMldZs7fEe7MKl+rCmRsLEsjFmUbYm4ogHQa+pT/eh
+         +wCb2WhF/me5nAdL7AjcI7/ounx7fTDC7Uz5vmE04PFvH39/N1js9KvliYT9oFefLPzm
+         GiGA==
+X-Gm-Message-State: AAQBX9eIdn/AgfrgC40j6Qlrnt+iGlouiMPWAE3Geeca3aQV2wItmvGB
+	Z/9do2R0HzqFE/KfCTzM2GBGVmha1Cp4eIqD45k=
+X-Google-Smtp-Source: AKy350ZiAxYLGbvX9YTP+GPSMewg+Ha4vzTJrde1v7HprSxa3S1Bn0zu7KGPozGuiItBEeId16ueHNoV2fe+7Bdw3oM=
+X-Received: by 2002:a5d:4492:0:b0:2c7:17b8:5759 with SMTP id
+ j18-20020a5d4492000000b002c717b85759mr672199wrq.3.1681877591909; Tue, 18 Apr
+ 2023 21:13:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230418094259.4150771-1-chancel.liu@nxp.com>
-In-Reply-To: <20230418094259.4150771-1-chancel.liu@nxp.com>
+References: <20230417133242.53339-1-n.zhandarovich@fintech.ru>
+In-Reply-To: <20230417133242.53339-1-n.zhandarovich@fintech.ru>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 19 Apr 2023 12:08:03 +0800
-Message-ID: <CAA+D8AO4R-gEiSo1aL7tC_162XzJbOSkGZP_Ki8xDgmTx4RchA@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Fix pins setting for i.MX8QM platform
-To: Chancel Liu <chancel.liu@nxp.com>
-Content-Type: multipart/alternative; boundary="000000000000b1723a05f9a89290"
+Date: Wed, 19 Apr 2023 12:13:00 +0800
+Message-ID: <CAA+D8AOX0Ad0U_6ZQhjGx+zMgr6TVkG53iesiX77pQcgnNFSFw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_asrc_dma: fix potential null-ptr-deref
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Content-Type: multipart/alternative; boundary="0000000000006be9bf05f9a8a477"
 X-Mailman-Approved-At: Wed, 19 Apr 2023 20:57:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,22 +74,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, perex@perex.cz, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Natalia Petrova <n.petrova@fintech.ru>, lvc-project@linuxtesting.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000b1723a05f9a89290
+--0000000000006be9bf05f9a8a477
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 18, 2023 at 5:44=E2=80=AFPM Chancel Liu <chancel.liu@nxp.com> w=
-rote:
+On Mon, Apr 17, 2023 at 9:33=E2=80=AFPM Nikita Zhandarovich <
+n.zhandarovich@fintech.ru> wrote:
 
-> SAI on i.MX8QM platform supports the data lines up to 4. So the pins
-> setting should be corrected to 4.
+> dma_request_slave_channel() may return NULL which will lead to
+> NULL pointer dereference error in 'tmp_chan->private'.
 >
-> Fixes: eba0f0077519 ("ASoC: fsl_sai: Enable combine mode soft")
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> Correct this behaviour by, first, switching from deprecated function
+> dma_request_slave_channel() to dma_request_chan(). Secondly, enable
+> sanity check for the resuling value of dma_request_chan().
+> Also, fix description that follows the enacted changes and that
+> concerns the use of dma_request_slave_channel().
+>
+> Fixes: 706e2c881158 ("ASoC: fsl_asrc_dma: Reuse the dma channel if
+> available in Back-End")
+> Co-developed-by: Natalia Petrova <n.petrova@fintech.ru>
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 >
 
 Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
@@ -98,70 +106,124 @@ Best regards
 wang shengjiu
 
 > ---
->  sound/soc/fsl/fsl_sai.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  sound/soc/fsl/fsl_asrc_dma.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 >
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index 07d13dca852e..abdaffb00fbd 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -1544,7 +1544,7 @@ static const struct fsl_sai_soc_data
-> fsl_sai_imx8qm_data =3D {
->         .use_imx_pcm =3D true,
->         .use_edma =3D true,
->         .fifo_depth =3D 64,
-> -       .pins =3D 1,
-> +       .pins =3D 4,
->         .reg_offset =3D 0,
->         .mclk0_is_mclk1 =3D false,
->         .flags =3D 0,
-> --
-> 2.25.1
+> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+> index 3b81a465814a..05a7d1588d20 100644
+> --- a/sound/soc/fsl/fsl_asrc_dma.c
+> +++ b/sound/soc/fsl/fsl_asrc_dma.c
+> @@ -209,14 +209,19 @@ static int fsl_asrc_dma_hw_params(struct
+> snd_soc_component *component,
+>                 be_chan =3D
+> soc_component_to_pcm(component_be)->chan[substream->stream];
+>                 tmp_chan =3D be_chan;
+>         }
+> -       if (!tmp_chan)
+> -               tmp_chan =3D dma_request_slave_channel(dev_be, tx ? "tx" =
+:
+> "rx");
+> +       if (!tmp_chan) {
+> +               tmp_chan =3D dma_request_chan(dev_be, tx ? "tx" : "rx");
+> +               if (IS_ERR(tmp_chan)) {
+> +                       dev_err(dev, "failed to request DMA channel for
+> Back-End\n");
+> +                       return -EINVAL;
+> +               }
+> +       }
 >
+>         /*
+>          * An EDMA DEV_TO_DEV channel is fixed and bound with DMA event o=
+f
+> each
+>          * peripheral, unlike SDMA channel that is allocated dynamically.
+> So no
+>          * need to configure dma_request and dma_request2, but get
+> dma_chan of
+> -        * Back-End device directly via dma_request_slave_channel.
+> +        * Back-End device directly via dma_request_chan.
+>          */
+>         if (!asrc->use_edma) {
+>                 /* Get DMA request of Back-End */
 >
 
---000000000000b1723a05f9a89290
+--0000000000006be9bf05f9a8a477
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Apr 18, 2023 at 5:44=E2=80=AF=
-PM Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.c=
-om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">SAI on i.MX8QM platform supports the data lines up to 4. So the pins<br>
-setting should be corrected to 4.<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Apr 17, 2023 at 9:33=E2=80=AF=
+PM Nikita Zhandarovich &lt;<a href=3D"mailto:n.zhandarovich@fintech.ru">n.z=
+handarovich@fintech.ru</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
+04);padding-left:1ex">dma_request_slave_channel() may return NULL which wil=
+l lead to<br>
+NULL pointer dereference error in &#39;tmp_chan-&gt;private&#39;.<br>
 <br>
-Fixes: eba0f0077519 (&quot;ASoC: fsl_sai: Enable combine mode soft&quot;)<b=
-r>
-Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
-t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
-v>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">sh=
-engjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regards</div><d=
-iv>wang shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">
+Correct this behaviour by, first, switching from deprecated function<br>
+dma_request_slave_channel() to dma_request_chan(). Secondly, enable<br>
+sanity check for the resuling value of dma_request_chan().<br>
+Also, fix description that follows the enacted changes and that<br>
+concerns the use of dma_request_slave_channel().<br>
+<br>
+Fixes: 706e2c881158 (&quot;ASoC: fsl_asrc_dma: Reuse the dma channel if ava=
+ilable in Back-End&quot;)<br>
+Co-developed-by: Natalia Petrova &lt;<a href=3D"mailto:n.petrova@fintech.ru=
+" target=3D"_blank">n.petrova@fintech.ru</a>&gt;<br>
+Signed-off-by: Nikita Zhandarovich &lt;<a href=3D"mailto:n.zhandarovich@fin=
+tech.ru" target=3D"_blank">n.zhandarovich@fintech.ru</a>&gt;<br></blockquot=
+e><div><br></div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengji=
+u.wang@gmail.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>=
+Best regards</div><div>wang shengjiu=C2=A0</div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">
 ---<br>
-=C2=A0sound/soc/fsl/fsl_sai.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+=C2=A0sound/soc/fsl/fsl_asrc_dma.c | 11 ++++++++---<br>
+=C2=A01 file changed, 8 insertions(+), 3 deletions(-)<br>
 <br>
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
-index 07d13dca852e..abdaffb00fbd 100644<br>
---- a/sound/soc/fsl/fsl_sai.c<br>
-+++ b/sound/soc/fsl/fsl_sai.c<br>
-@@ -1544,7 +1544,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx8qm_d=
-ata =3D {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .use_imx_pcm =3D true,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .use_edma =3D true,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .fifo_depth =3D 64,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0.pins =3D 1,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0.pins =3D 4,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .reg_offset =3D 0,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .mclk0_is_mclk1 =3D false,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 .flags =3D 0,<br>
--- <br>
-2.25.1<br>
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c<br=
+>
+index 3b81a465814a..05a7d1588d20 100644<br>
+--- a/sound/soc/fsl/fsl_asrc_dma.c<br>
++++ b/sound/soc/fsl/fsl_asrc_dma.c<br>
+@@ -209,14 +209,19 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_comp=
+onent *component,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 be_chan =3D soc_com=
+ponent_to_pcm(component_be)-&gt;chan[substream-&gt;stream];<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tmp_chan =3D be_cha=
+n;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!tmp_chan)<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tmp_chan =3D dma_re=
+quest_slave_channel(dev_be, tx ? &quot;tx&quot; : &quot;rx&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!tmp_chan) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tmp_chan =3D dma_re=
+quest_chan(dev_be, tx ? &quot;tx&quot; : &quot;rx&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(tmp_chan=
+)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0dev_err(dev, &quot;failed to request DMA channel for Back-End\n&q=
+uot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0return -EINVAL;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
 <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* An EDMA DEV_TO_DEV channel is fixed and=
+ bound with DMA event of each<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* peripheral, unlike SDMA channel that is=
+ allocated dynamically. So no<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* need to configure dma_request and dma_r=
+equest2, but get dma_chan of<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 * Back-End device directly via dma_request_sla=
+ve_channel.<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 * Back-End device directly via dma_request_cha=
+n.<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!asrc-&gt;use_edma) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Get DMA request =
+of Back-End */<br>
 </blockquote></div></div>
 
---000000000000b1723a05f9a89290--
+--0000000000006be9bf05f9a8a477--
