@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A145F6E82BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 22:30:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B446C6E91E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 13:08:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1sqH4t2Zz3fQg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 06:30:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2FJ03t0sz3cd1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 21:08:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WIB0Mw6m;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Hf8STPeT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112c; helo=mail-yw1-x112c.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WIB0Mw6m;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Hf8STPeT;
 	dkim-atps=neutral
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1spS1dGxz3cf6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 06:29:35 +1000 (AEST)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-54fbb713301so15854957b3.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 13:29:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1x4c1cb9z3cB1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 08:57:01 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1a6bc48aec8so4253615ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 15:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681936166; x=1684528166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ri4M7wwnqfUyWg7ITQYtSCFlkjwgDD80RYs577YrqxA=;
-        b=WIB0Mw6mTuaRsirvoZFjheEp9yY5Y/q9onOHwXnfWFMdFmYyli6xaVNh9nuRkFM8Bu
-         OnXLT3OfefylOw1YM4VwkunQfq+Wm/ji1lKG5q5iuDSnqXz+pveEOmagYUHY70pV+qoa
-         KvVDM5rfvXh7k0t2ztxy0CpMZU4jrTcGpdw3ugWQ7PYvTc5DIMuci51oMb3/89hTRu18
-         ASTMyUIpSKSpdVyzVJqnIsAfKfcTX+AN3kdlEImle/BVRj8WezpdfvQGOxxtdhWDpR5M
-         v2CCX9NS0Q1nwilMdzeBzucKwgU44O+OvH3u0Wiv6qbWAvaUduq3fyhR1v2QD/zzuIcP
-         d4gg==
+        d=chromium.org; s=google; t=1681945019; x=1684537019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EfHs6iQcu6f/xzGNIRNs/Y6zNI7wkCv1JLv9sFf5g1M=;
+        b=Hf8STPeTqcCEMBqR/MDrmp1HtnPk6GIH5PFNOTsUN7tPgWqWR1ZyBP8GwDsJkkLKG8
+         AYhZdFrgwCV8MqXtRmCQi31cmL6jiSjz3Nhdqbn+Ydb7KtggmVC0mWLgTkV8h5LrocTx
+         JMSiKPmPNqI9PaMzeCfkSLedwLBMwC/49yavs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681936166; x=1684528166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ri4M7wwnqfUyWg7ITQYtSCFlkjwgDD80RYs577YrqxA=;
-        b=NJRAvviRnRk6IJDpCIZU8Q1H2LhgHQR4wgkzOfkJmbnR9sfBrOWF8ULkzUVK4hkZWQ
-         J9NtEjJh7lxdOgFmQmh7rsO4szPkiw5T5vOBQGsrod4MmPlDVar56YoFQKpX1AK9l1vz
-         m6+T5WYutk95Zb7USlbBiDnOStmXp4BWgrAzAl7P5CuVRGbI0uhFk2js3FjIYr4Ye5zE
-         7upPCbgKJ3yGVkaIfdMIVtAEyukKeWi9SwIoYBpxeRjpPrHEw//aCvmrHRtKCJNad8gj
-         LyByehDrY2dx2R3jADNTaLe17803OUXLE4qFpclAnwsMMe3BK/pY1KpQRCLcNmWTMxNt
-         nMxQ==
-X-Gm-Message-State: AAQBX9fQ3VoZBFzT3SOzj/9+lODw4kfqE8kBisLEJAzKFXKc7dn+Tksa
-	TD6lpW9XEd3TjfebhIxV4jejJ1isEEyawY2rIQw=
-X-Google-Smtp-Source: AKy350aNDMALBM0VAdPN5cwgCAJgGmI7MyMPzfpEMhO/TACZWqeGBJUZoGoWlGr6ZHAaYh0Tzxhzwi/dxg7Fov1Ofog=
-X-Received: by 2002:a81:53c2:0:b0:54e:84f6:6669 with SMTP id
- h185-20020a8153c2000000b0054e84f66669mr4502802ywb.49.1681936166163; Wed, 19
- Apr 2023 13:29:26 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681945019; x=1684537019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EfHs6iQcu6f/xzGNIRNs/Y6zNI7wkCv1JLv9sFf5g1M=;
+        b=QVcfyb1zeS1uZmBV+WcgNorPFgWQOVpAjty1zj5S8dUuwgAY5Z0rnuzCNgD9fXcr64
+         wqGzYRstMRMh0n1IOy3Qzi6VmJQnHVxBM1mXBly0/Hn3Uak6IJmIiO8wf1oJ3Vq0QsUa
+         sBYlMY6jesIbL0ITCk6slJTyX08pQFJdHUdLwnTR0NIfqcl4c69Yt7Kf7zNBhrWcDXKo
+         zRRTJJPFze4SiBMMy3zONufD1cUZ7kCYZv5RkwpEldPTEYguGcS+MfCyekSeTJT8Lik0
+         rw9YLxPYZ4TNXilQxForRf8lH4W7yqWUu+4VQDXdWM/JC5A81iKwobW3i+5G/u5DNhie
+         P9DA==
+X-Gm-Message-State: AAQBX9e3yUjbz9p9IeSicwNSOe9CHN/SQamU6xTCc4zzug8UepfHRfF6
+	5q6I/xVoHEgeSpBnSlQQrZRm9Q==
+X-Google-Smtp-Source: AKy350ZiPT69ec5g7FHlxHkgLJsXu49t1r2PGDTeEGKpYVM7Qe0rm8s8+T+i58n9/utMvufCZU7NAA==
+X-Received: by 2002:a17:902:e74a:b0:1a6:46d7:77dc with SMTP id p10-20020a170902e74a00b001a646d777dcmr7987289plf.43.1681945018669;
+        Wed, 19 Apr 2023 15:56:58 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:8b1:fa03:670e:b784])
+        by smtp.gmail.com with ESMTPSA id h15-20020a17090aea8f00b00246ea338c96sm1847101pjz.53.2023.04.19.15.56.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Apr 2023 15:56:57 -0700 (PDT)
+From: Douglas Anderson <dianders@chromium.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v8 00/10] arm64: Add framework to turn an IPI as NMI
+Date: Wed, 19 Apr 2023 15:55:54 -0700
+Message-ID: <20230419225604.21204-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.40.0.634.g4ca3ef3211-goog
 MIME-Version: 1.0
-References: <20230417205048.15870-1-vishal.moola@gmail.com>
- <20230417205048.15870-5-vishal.moola@gmail.com> <ZD/syK8RYO9FZ6ks@vernon-pc>
-In-Reply-To: <ZD/syK8RYO9FZ6ks@vernon-pc>
-From: Vishal Moola <vishal.moola@gmail.com>
-Date: Wed, 19 Apr 2023 13:29:14 -0700
-Message-ID: <CAOzc2pyt8MBv7N0qizdxr0__RKXK7hMLX-Jqvsd6RPh3nyTFVw@mail.gmail.com>
-Subject: Re: [PATCH 4/33] mm: add utility functions for ptdesc
-To: Vernon Yang <vernon2gm@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 20 Apr 2023 21:06:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,151 +78,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Huacai Chen <chenhuacai@kernel.org>, Jinyang He <hejinyang@loongson.cn>, Lecopzer Chen <lecopzer.chen@mediatek.com>, Peter Zijlstra <peterz@infradead.org>, kgdb-bugreport@lists.sourceforge.net, Dave Hansen <dave.hansen@linux.intel.com>, Qing Zhang <zhangqing@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, Gaosheng Cui <cuigaosheng1@huawei.com>, Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Masayoshi Mizuma <msys.mizuma@gmail.com>, Ingo Molnar <mingo@kernel.org
+ >, Pierre Gondois <Pierre.Gondois@arm.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, loongarch@lists.linux.dev, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Jianmin Lv <lvjianmin@loongson.cn>, Borislav Petkov <bp@alien8.de>, Joey Gouly <joey.gouly@arm.com>, Ben Dooks <ben-linux@fluff.org>, Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Andrey Konovalov <andreyknvl@gmail.com>, x86@kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, ito-yuichi@fujitsu.com, Douglas Anderson <dianders@chromium.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "Eric W. Biederman" <ebi
+ ederm@xmission.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Jason Wessel <jason.wessel@windriver.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 19, 2023 at 6:34=E2=80=AFAM Vernon Yang <vernon2gm@gmail.com> w=
-rote:
->
-> On Mon, Apr 17, 2023 at 01:50:19PM -0700, Vishal Moola wrote:
-> > Introduce utility functions setting the foundation for ptdescs. These
-> > will also assist in the splitting out of ptdesc from struct page.
-> >
-> > ptdesc_alloc() is defined to allocate new ptdesc pages as compound
-> > pages. This is to standardize ptdescs by allowing for one allocation
-> > and one free function, in contrast to 2 allocation and 2 free functions=
-.
-> >
-> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> > ---
-> >  include/asm-generic/tlb.h | 11 ++++++++++
-> >  include/linux/mm.h        | 44 +++++++++++++++++++++++++++++++++++++++
-> >  include/linux/pgtable.h   | 13 ++++++++++++
-> >  3 files changed, 68 insertions(+)
-> >
-> > diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> > index b46617207c93..6bade9e0e799 100644
-> > --- a/include/asm-generic/tlb.h
-> > +++ b/include/asm-generic/tlb.h
-> > @@ -481,6 +481,17 @@ static inline void tlb_remove_page(struct mmu_gath=
-er *tlb, struct page *page)
-> >       return tlb_remove_page_size(tlb, page, PAGE_SIZE);
-> >  }
-> >
-> > +static inline void tlb_remove_ptdesc(struct mmu_gather *tlb, void *pt)
-> > +{
-> > +     tlb_remove_table(tlb, pt);
-> > +}
-> > +
-> > +/* Like tlb_remove_ptdesc, but for page-like page directories. */
-> > +static inline void tlb_remove_page_ptdesc(struct mmu_gather *tlb, stru=
-ct ptdesc *pt)
-> > +{
-> > +     tlb_remove_page(tlb, ptdesc_page(pt));
-> > +}
-> > +
-> >  static inline void tlb_change_page_size(struct mmu_gather *tlb,
-> >                                                    unsigned int page_si=
-ze)
-> >  {
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index b18848ae7e22..ec3cbe2fa665 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -2744,6 +2744,45 @@ static inline pmd_t *pmd_alloc(struct mm_struct =
-*mm, pud_t *pud, unsigned long a
-> >  }
-> >  #endif /* CONFIG_MMU */
-> >
-> > +static inline struct ptdesc *virt_to_ptdesc(const void *x)
-> > +{
-> > +     return page_ptdesc(virt_to_head_page(x));
-> > +}
-> > +
-> > +static inline void *ptdesc_to_virt(struct ptdesc *pt)
-> > +{
-> > +     return page_to_virt(ptdesc_page(pt));
-> > +}
-> > +
-> > +static inline void *ptdesc_address(struct ptdesc *pt)
-> > +{
-> > +     return folio_address(ptdesc_folio(pt));
-> > +}
-> > +
-> > +static inline bool ptdesc_is_reserved(struct ptdesc *pt)
-> > +{
-> > +     return folio_test_reserved(ptdesc_folio(pt));
-> > +}
-> > +
-> > +static inline struct ptdesc *ptdesc_alloc(gfp_t gfp, unsigned int orde=
-r)
-> > +{
-> > +     struct page *page =3D alloc_pages(gfp | __GFP_COMP, order);
-> > +
-> > +     return page_ptdesc(page);
-> > +}
-> > +
-> > +static inline void ptdesc_free(struct ptdesc *pt)
-> > +{
-> > +     struct page *page =3D ptdesc_page(pt);
-> > +
-> > +     __free_pages(page, compound_order(page));
-> > +}
-> > +
-> > +static inline void ptdesc_clear(void *x)
-> > +{
-> > +     clear_page(x);
-> > +}
-> > +
-> >  #if USE_SPLIT_PTE_PTLOCKS
-> >  #if ALLOC_SPLIT_PTLOCKS
-> >  void __init ptlock_cache_init(void);
-> > @@ -2970,6 +3009,11 @@ static inline void mark_page_reserved(struct pag=
-e *page)
-> >       adjust_managed_page_count(page, -1);
-> >  }
-> >
-> > +static inline void free_reserved_ptdesc(struct ptdesc *pt)
-> > +{
-> > +     free_reserved_page(ptdesc_page(pt));
-> > +}
-> > +
-> >  /*
-> >   * Default method to free all the __init memory into the buddy system.
-> >   * The freed pages will be poisoned with pattern "poison" if it's with=
-in
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 7cc6ea057ee9..7cd803aa38eb 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -97,6 +97,19 @@ TABLE_MATCH(ptl, ptl);
-> >  #undef TABLE_MATCH
-> >  static_assert(sizeof(struct ptdesc) <=3D sizeof(struct page));
-> >
-> > +#define ptdesc_page(pt)                      (_Generic((pt),          =
-       \
-> > +     const struct ptdesc *:          (const struct page *)(pt),      \
-> > +     struct ptdesc *:                (struct page *)(pt)))
-> > +
-> > +#define ptdesc_folio(pt)             (_Generic((pt),                 \
-> > +     const struct ptdesc *:          (const struct folio *)(pt),     \
-> > +     struct ptdesc *:                (struct folio *)(pt)))
-> > +
-> > +static inline struct ptdesc *page_ptdesc(struct page *page)
-> > +{
-> > +     return (struct ptdesc *)page;
-> > +}
->
-> Hi Vishal,
->
-> I'm a little curious, why is the page_ptdesc() using inline functions ins=
-tead of macro?
-> If this is any magic, please tell me, thank you very much.
+This is an attempt to resurrect Sumit's old patch series [1] that
+allowed us to use the arm64 pseudo-NMI to get backtraces of CPUs and
+also to round up CPUs in kdb/kgdb. The last post from Sumit that I
+could find was v7, so I called this series v8. I haven't copied all of
+his old changelongs here, but you can find them from the link.
 
-No magic here, I was mainly basing it off Matthew's netmem
-series. I'm not too clear on when to use macros vs inlines
-myself :/.
+Since v7, I have:
+* Addressed the small amount of feedback that was there for v7.
+* Rebased.
+* Added a new patch that prevents us from spamming the logs with idle
+  tasks.
+* Added an extra patch to gracefully fall back to regular IPIs if
+  pseudo-NMIs aren't there.
 
-If there's a benefit to having it be a macro let me
-know and I can make that change in v2.
+Since there appear to be a few different patches series related to
+being able to use NMIs to get stack traces of crashed systems, let me
+try to organize them to the best of my understanding:
+
+a) This series. On its own, a) will (among other things) enable stack
+   traces of all running processes with the soft lockup detector if
+   you've enabled the sysctl "kernel.softlockup_all_cpu_backtrace". On
+   its own, a) doesn't give a hard lockup detector.
+
+b) A different recently-posted series [2] that adds a hard lockup
+   detector based on perf. On its own, b) gives a stack crawl of the
+   locked up CPU but no stack crawls of other CPUs (even if they're
+   locked too). Together with a) + b) we get everything (full lockup
+   detect, full ability to get stack crawls).
+
+c) The old Android "buddy" hard lockup detector [3] that I'm
+   considering trying to upstream. If b) lands then I believe c) would
+   be redundant (at least for arm64). c) on its own is really only
+   useful on arm64 for platforms that can print CPU_DBGPCSR somehow
+   (see [4]). a) + c) is roughly as good as a) + b).
+
+[1] https://lore.kernel.org/linux-arm-kernel/1604317487-14543-1-git-send-email-sumit.garg@linaro.org/
+[2] https://lore.kernel.org/linux-arm-kernel/20220903093415.15850-1-lecopzer.chen@mediatek.com/
+[3] https://issuetracker.google.com/172213097
+[4] https://issuetracker.google.com/172213129
+
+Changes in v8:
+- dynamic_ipi_setup() and dynamic_ipi_teardown() no longer take cpu param
+- dynamic_ipi_setup() and dynamic_ipi_teardown() no longer take cpu param
+- Add loongarch support, too
+- Removed "#ifdef CONFIG_SMP" since arm64 is always SMP
+- "Tag the arm64 idle functions as __cpuidle" new for v8
+- "Provide a stub kgdb_nmicallback() if !CONFIG_KGDB" new for v8
+- "Fallback to a regular IPI if NMI isn't enabled" new for v8
+
+Douglas Anderson (3):
+  arm64: idle: Tag the arm64 idle functions as __cpuidle
+  kgdb: Provide a stub kgdb_nmicallback() if !CONFIG_KGDB
+  arm64: ipi_nmi: Fallback to a regular IPI if NMI isn't enabled
+
+Sumit Garg (7):
+  arm64: Add framework to turn IPI as NMI
+  irqchip/gic-v3: Enable support for SGIs to act as NMIs
+  arm64: smp: Assign and setup an IPI as NMI
+  nmi: backtrace: Allow runtime arch specific override
+  arm64: ipi_nmi: Add support for NMI backtrace
+  kgdb: Expose default CPUs roundup fallback mechanism
+  arm64: kgdb: Roundup cpus using IPI as NMI
+
+ arch/arm/include/asm/irq.h       |   2 +-
+ arch/arm/kernel/smp.c            |   3 +-
+ arch/arm64/include/asm/irq.h     |   4 ++
+ arch/arm64/include/asm/nmi.h     |  17 +++++
+ arch/arm64/kernel/Makefile       |   2 +-
+ arch/arm64/kernel/idle.c         |   4 +-
+ arch/arm64/kernel/ipi_nmi.c      | 103 +++++++++++++++++++++++++++++++
+ arch/arm64/kernel/kgdb.c         |  18 ++++++
+ arch/arm64/kernel/smp.c          |   8 +++
+ arch/loongarch/include/asm/irq.h |   2 +-
+ arch/loongarch/kernel/process.c  |   3 +-
+ arch/mips/include/asm/irq.h      |   2 +-
+ arch/mips/kernel/process.c       |   3 +-
+ arch/powerpc/include/asm/nmi.h   |   2 +-
+ arch/powerpc/kernel/stacktrace.c |   3 +-
+ arch/sparc/include/asm/irq_64.h  |   2 +-
+ arch/sparc/kernel/process_64.c   |   4 +-
+ arch/x86/include/asm/irq.h       |   2 +-
+ arch/x86/kernel/apic/hw_nmi.c    |   3 +-
+ drivers/irqchip/irq-gic-v3.c     |  29 ++++++---
+ include/linux/kgdb.h             |  13 ++++
+ include/linux/nmi.h              |  12 ++--
+ kernel/debug/debug_core.c        |   8 ++-
+ 23 files changed, 217 insertions(+), 32 deletions(-)
+ create mode 100644 arch/arm64/include/asm/nmi.h
+ create mode 100644 arch/arm64/kernel/ipi_nmi.c
+
+-- 
+2.40.0.634.g4ca3ef3211-goog
+
