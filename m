@@ -2,50 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341AE6E7C8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 16:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882216E7CD8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Apr 2023 16:36:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1jlB6bnpz3fZm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 00:26:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1jyS0KDmz3fG3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 00:36:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WZkty0bQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OKKeavw9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WZkty0bQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OKKeavw9;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1jgy1J9Hz3fCn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 00:23:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1jxc6PFrz3c38
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 00:35:16 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7454F63FC1;
-	Wed, 19 Apr 2023 14:23:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADC8C4339C;
-	Wed, 19 Apr 2023 14:23:21 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F13DB60B88;
+	Wed, 19 Apr 2023 14:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2F1C433D2;
+	Wed, 19 Apr 2023 14:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1681914203;
-	bh=Y7NtdRvmYffAP0FrGkf+Pv8B5hj7E6uae/PQvl6MaS0=;
+	s=k20201202; t=1681914914;
+	bh=sBYbUiJ6GlCWj4lYqLlaskm6OAopEbc4bQC5luPU9Tg=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=WZkty0bQqzMKfoyrRccbSKpbRiEzNS5m3vNdN9kjx4OK+ujf8Dr7zDBRIDEJX7l+A
-	 /oaqUG6MTOm2Cb3rB6COeQ69GRfdloleSwXfcmCkf5mLvVTqyXGlK0PoJLGmR9UayM
-	 R/TStqm3LXaUJoQ9NHiSPsVlhvt09qBj1cC/v6SEAirutEftAoikqibiLJPm/aO3Ph
-	 OCpz5Yt0apuLBnaqx2riz2GDI2PWh1rJvxYYR7QZuBBnecaJtS9HuDDdpCOGF9zyXk
-	 ZotnIDTRuRHkHr7lcJJPZl4fvZI49fsnsqA1KBKvAZdJOBaSdwYH6iCC0hBoydNMoY
-	 /zxpAsncbTrbQ==
+	b=OKKeavw9KAKCyJMFID/gsexph94AvBnlqXJYcXH8ScMbhtZRBm/XzDjUamvrscn/t
+	 lANg4Ig3Te4XIhTywIcanyOf0gdNLui07r9YSDxXwHHcizz7wYdUMimUisEQPCW/23
+	 WUB3ETEuam2/O71qFvPHRLhTZpJpYqDEQxCDZiaaCGn3tPN954phonD8c/xtOLzIru
+	 vs1kpvSYFr0JcIH5xwQRmgs7lkDCW4I9qVMuMupi6bq0UnxRcLK2urzhE69QvPoZ5u
+	 stDFtMNvNMyomVbDSe/XFbJmTDRhtP6RaMFYB1M2xewMzPslHBcyl+kEtV/lmE+CLn
+	 9a/JSMhue0uTA==
 From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, 
- Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-In-Reply-To: <20230417133242.53339-1-n.zhandarovich@fintech.ru>
-References: <20230417133242.53339-1-n.zhandarovich@fintech.ru>
-Subject: Re: [PATCH] ASoC: fsl_asrc_dma: fix potential null-ptr-deref
-Message-Id: <168191420102.83860.17076301173895914430.b4-ty@kernel.org>
-Date: Wed, 19 Apr 2023 15:23:21 +0100
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <c167c16a535049d56f817bbede9c9f6f0a0f4c68.1681626553.git.christophe.jaillet@wanadoo.fr>
+References: <c167c16a535049d56f817bbede9c9f6f0a0f4c68.1681626553.git.christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] ASoC: fsl: Simplify an error message
+Message-Id: <168191491177.87831.11926959447891085887.b4-ty@kernel.org>
+Date: Wed, 19 Apr 2023 15:35:11 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -61,21 +64,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Natalia Petrova <n.petrova@fintech.ru>, lvc-project@linuxtesting.org, Liam Girdwood <lgirdwood@gmail.com>, linuxppc-dev@lists.ozlabs.org, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Apr 2023 06:32:42 -0700, Nikita Zhandarovich wrote:
-> dma_request_slave_channel() may return NULL which will lead to
-> NULL pointer dereference error in 'tmp_chan->private'.
+On Sun, 16 Apr 2023 08:29:34 +0200, Christophe JAILLET wrote:
+> dev_err_probe() already display the error code. There is no need to
+> duplicate it explicitly in the error message.
 > 
-> Correct this behaviour by, first, switching from deprecated function
-> dma_request_slave_channel() to dma_request_chan(). Secondly, enable
-> sanity check for the resuling value of dma_request_chan().
-> Also, fix description that follows the enacted changes and that
-> concerns the use of dma_request_slave_channel().
 > 
-> [...]
 
 Applied to
 
@@ -83,8 +80,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl_asrc_dma: fix potential null-ptr-deref
-      commit: 86a24e99c97234f87d9f70b528a691150e145197
+[1/1] ASoC: fsl: Simplify an error message
+      commit: 574399f4c997ad71fab95dd875a9ff55424f9a3d
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
