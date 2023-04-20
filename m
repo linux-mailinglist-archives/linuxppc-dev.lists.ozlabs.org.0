@@ -2,73 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1006F6E856B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 00:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F15926E863A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 02:13:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1x5c6Y4vz3fTx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 08:57:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q1ymM5zcPz3fHV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 10:13:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f/keZsFs;
+	dkim=pass (1024-bit key; unprotected) header.d=renesas.com header.i=@renesas.com header.a=rsa-sha256 header.s=selector1 header.b=OWIV6Odo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=renesas.com (client-ip=2a01:111:f403:7010::705; helo=jpn01-tyc-obe.outbound.protection.outlook.com; envelope-from=kuninori.morimoto.gx@renesas.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f/keZsFs;
+	dkim=pass (1024-bit key; unprotected) header.d=renesas.com header.i=@renesas.com header.a=rsa-sha256 header.s=selector1 header.b=OWIV6Odo;
 	dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on20705.outbound.protection.outlook.com [IPv6:2a01:111:f403:7010::705])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1x4m6vcnz3bTc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 08:57:12 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-63b62d2f729so373768b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Apr 2023 15:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1681945030; x=1684537030;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yb6/i5wvA5aqg7D8OxOUWOO0Hm18poXHV7fpSzZnAys=;
-        b=f/keZsFsRpPyIorAm94ME+WfSd7KDG8/BCFf8R105b11Ffbgzo9pzq82YxXSDVqjJO
-         RAL0ohhvLSzGUV9NQcjZjhqrAR/qHB43wWIHePRtjqAsuC10cirRBAifx8Ei2JUh23ob
-         cLyiXukGwpoVOUWteGcvINVlZG2UD8Xz1AuKg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681945030; x=1684537030;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yb6/i5wvA5aqg7D8OxOUWOO0Hm18poXHV7fpSzZnAys=;
-        b=dWN0Lz+pTU4MBbmj+OvwOjJzDzRnLV7gUt0sYH5PQsGOwc48lNAKbk4/6qUQvP/sNZ
-         8oS6kqV0Q0jxi7GgQGOYD7+ry3r+m65vSsozA7jQoV1Tc51ue4GsZ33ZvZYM/SlhJSMJ
-         qJGeA9WSMKT+HPMgr/8AQ0uH70MTgIXGEq/A4eJR0a+IGNH0ZaA1W18ZlBvmkkYpj8/B
-         +JbPGFpnnsEDrnUZSF44WelsiYm4bp0BKJIKMQN/lUesf9ZuJsZ2Po/KAnVEXlLjwCFy
-         vGRebLACJEdjV8fGm44PT/ZKxYdyhNvP/i5LNAXJZu7cBOa6yI0bbeZ0QROyT4zTKGbR
-         Ufzw==
-X-Gm-Message-State: AAQBX9cGfZV0VbZblH7LFVkxkqAzrMrrp0RRfRM1hdes8IooD+s6gIqb
-	7+jvzv/N14sYrqk5x+wMQaMLuQ==
-X-Google-Smtp-Source: AKy350bC/5PM+ohv9/mlWqv8/0FC6IWAoMFnR21tmHI/E3Ye/uJYm0ouOTrfyEROhwU6t4EAkcC5kQ==
-X-Received: by 2002:a05:6a20:3c8d:b0:ee:6c12:6c95 with SMTP id b13-20020a056a203c8d00b000ee6c126c95mr232937pzj.21.1681945030329;
-        Wed, 19 Apr 2023 15:57:10 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:8b1:fa03:670e:b784])
-        by smtp.gmail.com with ESMTPSA id h15-20020a17090aea8f00b00246ea338c96sm1847101pjz.53.2023.04.19.15.57.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:57:09 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v8 04/10] nmi: backtrace: Allow runtime arch specific override
-Date: Wed, 19 Apr 2023 15:55:58 -0700
-Message-ID: <20230419155341.v8.4.I3929b13cb2fab48772537aa308cd89e6f8a6753c@changeid>
-X-Mailer: git-send-email 2.40.0.634.g4ca3ef3211-goog
-In-Reply-To: <20230419225604.21204-1-dianders@chromium.org>
-References: <20230419225604.21204-1-dianders@chromium.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q1ylV1ZS1z3cGH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 10:12:18 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jfJJopDRQOaLoSdP1crjDgoFEnw6hqjXPnhgw7+9lZh850ma4Ek8IL1FRZrBzL+LxXW7UsON03W4QTikX7+nrbeNsahZFwrFInhoI6qmmC6gAcSAJs8tl5WAeMmzfMaaKPHyU311dusLLFeBKBRgxbmBl0PnghwdE1jg3oR3bcv2jZEhxEBbFtdtdBlmx+Y7jis81NWYMdYfnLN4k1dRhIkPlbKSNGYGQVGtZP7FMOCqV2gMifeqPwvovCkthSUfO4EYy9yOGppYWNcbNr2MrQniu1OSUNe8CJwj9g4nLsxBtbk9LCXPXa30CePNyB9/O6aZE1SdhUXdABnvAtwzhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zMl5Ut/Xc0Z7kuZ/drt9sXcQaelCyUk9MEpDfmGVEPY=;
+ b=CRDV5bPBOWIy6PQIkFSZw2n2ZpedV/CEX/Hge9qJ8Vv9JoMPlA9nMPFTwnai5ZkTwh1eeFKnAF+Zvl3zooDmUhVin/LL59aHIu5s3lTdcLatKPG74RV5BaIzeUwajTSmFowLZo/Q6OUXsk3dQ7Xthb8TFOm6l6Mdn9RoRpm34QuWeBnglMnk8gWYeij1wGiCQsWpvL4UCKhw2dF00w+p5wDbRbOQUsQFF/rlctvFbbmQf5xVQo9ukf5S9B8SUcD2XY7bOzgpZYrusuMeMrSBdNJOlmJeuu0Y9A86JsAiCVt7Mm/FjFR5kKE7dQIdq5C/7Ao057KM6ZmYrj9b34mrgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zMl5Ut/Xc0Z7kuZ/drt9sXcQaelCyUk9MEpDfmGVEPY=;
+ b=OWIV6Odoykz2WcsBYkqRCBjz+fGot6Lw2muSTew+Fp08IY4n9drXPE6Gdp92Psat5GppAQG9+0TQsdhudTbpeM6b9al1w027pNG8NWza3WloiBa91bqwSEPYM+u9xtolGqeVdFoyZuPkQL+24b3j0CaQMAdUc0vwondqHnzCW2M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com (2603:1096:604:194::10)
+ by TYWPR01MB9276.jpnprd01.prod.outlook.com (2603:1096:400:1a0::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.22; Thu, 20 Apr
+ 2023 00:11:55 +0000
+Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com
+ ([fe80::91e7:a94f:9f75:d840]) by OS3PR01MB8426.jpnprd01.prod.outlook.com
+ ([fe80::91e7:a94f:9f75:d840%5]) with mapi id 15.20.6319.022; Thu, 20 Apr 2023
+ 00:11:54 +0000
+Message-ID: <87y1mnv2d2.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] Revert "ASoC: fsl: remove unnecessary dai_link->platform"
+In-Reply-To: <1681900158-17428-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1681900158-17428-1-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Thu, 20 Apr 2023 00:11:54 +0000
+X-ClientProxiedBy: TYCP286CA0097.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::11) To OS3PR01MB8426.jpnprd01.prod.outlook.com
+ (2603:1096:604:194::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS3PR01MB8426:EE_|TYWPR01MB9276:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b0558b2-8f5e-4759-4e3e-08db4133d939
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	YHkeu3Jl2tg5HERTAdF/RiqXQJaoUeKgygPvb9X3/cQ91vWfHpQHaDgr7JszlBIX0JPl8NqCldSHhpmhqO1AIsv2+/AiEJLczIJBCvzDcKhD6GUjNeH3Pa6bBMmNWHX6Y/MPAgaenlIDt6YHZ5MFM903L5vbNUWGOBAyhV9TzOBjXlu+QGLEZ5rkigcpVdE7Z2HG3/Qk7hG+N0jBuXRCPLr0cM8M51XYhL0ujC1zPpLhQTpsvIDDDDABLkAOwGsgM1hV3mXMfYaplIwfQ+rUx9j+RrMY09q/QWXXhLLVypsgRHFqhCT2hRsxtXHeGt9GMVtmZB5O2cNh+5OAk7eGTNydDl1hbYfo/t6voOHndCP6UhaNerjXecom2OhhJDdBRVu+D2Qfcy700hZK648EtbZ3mNvmqoXco5Xqkt01oV9Jrr9OxfhdewfkemiwA5/HnN0Wp73LP50tuwZ5yhhE+QODYUrbKlz8cVEVALh28ys+ICvgzVqbuk3RijqFtVcqAR2Pi2in0MtdN+//vqeiEyRZaiv/nblAwYE+w65fV5IB3aQ61FJ+mMj2R8cw3w2xzSLDZUZC+3HFvdW603T27q2uvWeH4ZJsXdJgpTQjB5oOAn7qvmCfT8r+Y30GMDM4
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB8426.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(136003)(346002)(39860400002)(376002)(451199021)(6512007)(6916009)(6506007)(316002)(4326008)(186003)(26005)(478600001)(2616005)(41300700001)(66476007)(52116002)(66556008)(66946007)(6486002)(38350700002)(38100700002)(8936002)(36756003)(86362001)(2906002)(8676002)(4744005)(5660300002)(7416002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?379Hv9wKjc2jRyj1paY/hUL0yh4NCqAUW32nd4UC3EHcl7+VRnf+tTC/AI9l?=
+ =?us-ascii?Q?lx1qZ1q8WgwbBicvHHGtwuu0ry1aHeFlxAQPsAG62rg9oaATJrFtURCWwIlG?=
+ =?us-ascii?Q?gxkK2NR18qb9dIPtgxJWUVKxjmvglvT9teXZfjA+XncDoElE77t6qHKKVcAH?=
+ =?us-ascii?Q?X23YxwfpcHpx1XqNc3otP6gvkR1GnktHCCTAnrC7OG+O4kenTY2PqkJnPpdv?=
+ =?us-ascii?Q?QkRpoGbec83OuIa5dtv0GB0fPK5XDYwXX06HZ4WyGTzbjkO8vHKuJo0wSwWb?=
+ =?us-ascii?Q?0XKKBCZBCl5uoPiXhFfGyo+81MC24169ADpRICl9zPgsmIc4c4MLMR9ILwLM?=
+ =?us-ascii?Q?zH4uqJ0I6FiKmPZM/c6MUCq2uv+RKzRP5CqCEHBH064tk18mJPwzvKrBpaOu?=
+ =?us-ascii?Q?zbklpxXKwUn6rKZVtJLirse2TSrXx6DsuVsv0w9VN+YqqESK7TdNmgtEwWun?=
+ =?us-ascii?Q?QbFbih9KcrmvlurygDwk6Avr2+bJhgtbp6SScfsfLA/DnG4YwylUoKAJbynd?=
+ =?us-ascii?Q?ysCRPFgOuRLqqrnVOvmsr+UQWTKY1qWf9tsXLg6an6n98g1iLm8MDwM0Fg87?=
+ =?us-ascii?Q?3yx42c3Cqh50QOfa53n5cSbPNp1LpgRJEudeY3J7AoNXw1dp+i2M0nQ16WWk?=
+ =?us-ascii?Q?0D0dSSmj2Rg/ka6Nn0cKS5WTAj1OArmERRni2nSzq3DBq123GIKCM7mqC0HC?=
+ =?us-ascii?Q?FQCK/jSoe4qfnCs3ohzQSkf9D6tvfMWWLegWSLsM8QbNtvhztgEwiJu4oo8a?=
+ =?us-ascii?Q?LqsgMsW286Qxnrk231rfFcz1ya4fVvhCtlR8f1YfZ5Sdh60CHKek8H2cBtPd?=
+ =?us-ascii?Q?UDTTix3tJhUYnyVAQ4KD32yoUvfR99OYiWz6vjPnxFL1AeIZT1aUv8dLH57q?=
+ =?us-ascii?Q?mlcReRLzRNZVhv2+ba88Rm3mH413EBaiwVo/Rh1DSYKwF00PnVReRfdcQWuB?=
+ =?us-ascii?Q?H6Zkj+z28vvlqtB9XwQ0acvRKi7M2YK08jZVtTrfu3wSHqSu40q1DzIeoHbZ?=
+ =?us-ascii?Q?u1yu6q0qYE158AAwVvthQ6HZCrgGtnLWFymGZUHDequxHkNY4bnqaLLC/UxO?=
+ =?us-ascii?Q?v4psORyQytKC03FRJq0kdEA9YS84kxr+hX7ums5ENMbwut9g4QfaVKubbk6l?=
+ =?us-ascii?Q?svXp4kyi4BxOcjp+GYXdxmS+5tKDS0yq03EolzIgRhLIoYYaZzodLLV0iXsl?=
+ =?us-ascii?Q?F/qbVqbvy17KhtlESLqo03spNNi/4mket11ioIinl4WUDLc/v8koy0AbXF5C?=
+ =?us-ascii?Q?ydZcnKU5KpzaX03PO9AvNShjonnrTKVoH9wnpP6e9Y+eLY7UN1ov/rCO9gP5?=
+ =?us-ascii?Q?XCgxefyF0HQlSf2k97/q9a7GBXuYkvsmJNWce4Ok8x4qllj6hLyKgnna8N8P?=
+ =?us-ascii?Q?JFvDrfjCRudQZUp+vXa2fRl0RhazJkd2mD55Q0Kyvsf9Fry4T0If1EKEvXPU?=
+ =?us-ascii?Q?4sa4v4cD/Qxbp0BIHyBM9NkZzm/SOIzBMb+awl8SoM1BG52n4Zju2+Xud1go?=
+ =?us-ascii?Q?feH2+DLmC7oK6avxJiP95vUqebOioxOAVibTrSO+CONU+5Gmre1CVaIIecSG?=
+ =?us-ascii?Q?TobQbIWN32UgHkcTJcuZp7QYIoT39KVtLH4takoAfenedToY2g8jPVhclUM4?=
+ =?us-ascii?Q?bIIlXp51g8RY83eETZoLS54=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b0558b2-8f5e-4759-4e3e-08db4133d939
+X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB8426.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2023 00:11:54.8039
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 62/iaIvDVFkx5dS3VKJkQu6YWj/0jUxEVG+Apvp6+egajsJLeh7jW6HyrA43EpOwNbUGgPz/HuAVwgMBIV+o4SWCoUeDzTeJwj3s7zWEeQqJVYZp5EY58d6UXdwKWSNv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB9276
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,258 +119,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Huacai Chen <chenhuacai@kernel.org>, Jinyang He <hejinyang@loongson.cn>, Lecopzer Chen <lecopzer.chen@mediatek.com>, Peter Zijlstra <peterz@infradead.org>, kgdb-bugreport@lists.sourceforge.net, Dave Hansen <dave.hansen@linux.intel.com>, Qing Zhang <zhangqing@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Gaosheng Cui <cuigaosheng1@huawei.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Masayoshi Mizuma <msys.mizuma@gmail.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
- Stephen Boyd <swboyd@chromium.org>, loongarch@lists.linux.dev, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Jianmin Lv <lvjianmin@loongson.cn>, Borislav Petkov <bp@alien8.de>, Ben Dooks <ben-linux@fluff.org>, Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, x86@kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, ito-yuichi@fujitsu.com, Douglas Anderson <dianders@chromium.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "Eric W. Biederman" <ebiederm@xmission.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, shengjiu.wang@gmail.com, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de, shawnguo@kernel.org, festevam@gmail.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sumit Garg <sumit.garg@linaro.org>
 
-Add a boolean return to arch_trigger_cpumask_backtrace() to support a
-use-case where a particular architecture detects at runtime if it supports
-NMI backtrace or it would like to fallback to default implementation using
-SMP cross-calls.
+Hi Shengjiu
+Cc Mark
 
-Currently such an architecture example is arm64 supporting pseudo NMIs
-feature which is only available on platforms which have support for GICv3
-or later version.
+Thank you for the patch
 
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Tested-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> This reverts commit 33683cbf49b5412061cb1e4c876063fdef86def4.
+> 
+> dai_link->platform is needed. The platform component is
+> "snd_dmaengine_pcm", which is registered from cpu driver,
+> 
+> If dai_link->platform is not assigned, then platform
+> component will not be probed, then there will be issue:
+> 
+> aplay: main:831: audio open error: Invalid argument
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+
+And sorry to my noise patch. I understood the issue.
+
+Can I ask 2 things ?
+
+My original patch removed 3 platforms.
+Then, I understood that 2 of them are used as
+soc-generic-dmaengine-pcm (= 1st, 3rd platform).
+
+I think we want to have comment here that
+why dummy component is needed. Can you agree ?
+
+I wonder how about 2nd platform ? Is it same ?
+I'm asking because it doesn't have of_node which other 2 platforms have.
+
+Thank you for your help !!
+
+Best regards
 ---
-
-Changes in v8:
-- Add loongarch support, too
-
- arch/arm/include/asm/irq.h       |  2 +-
- arch/arm/kernel/smp.c            |  3 ++-
- arch/loongarch/include/asm/irq.h |  2 +-
- arch/loongarch/kernel/process.c  |  3 ++-
- arch/mips/include/asm/irq.h      |  2 +-
- arch/mips/kernel/process.c       |  3 ++-
- arch/powerpc/include/asm/nmi.h   |  2 +-
- arch/powerpc/kernel/stacktrace.c |  3 ++-
- arch/sparc/include/asm/irq_64.h  |  2 +-
- arch/sparc/kernel/process_64.c   |  4 +++-
- arch/x86/include/asm/irq.h       |  2 +-
- arch/x86/kernel/apic/hw_nmi.c    |  3 ++-
- include/linux/nmi.h              | 12 ++++--------
- 13 files changed, 23 insertions(+), 20 deletions(-)
-
-diff --git a/arch/arm/include/asm/irq.h b/arch/arm/include/asm/irq.h
-index a7c2337b0c7d..e6b62c7d6f0e 100644
---- a/arch/arm/include/asm/irq.h
-+++ b/arch/arm/include/asm/irq.h
-@@ -32,7 +32,7 @@ void init_IRQ(void);
- #ifdef CONFIG_SMP
- #include <linux/cpumask.h>
- 
--extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
-+extern bool arch_trigger_cpumask_backtrace(const cpumask_t *mask,
- 					   bool exclude_self);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- #endif
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 0b8c25763adc..acb97d9219b1 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -849,7 +849,8 @@ static void raise_nmi(cpumask_t *mask)
- 	__ipi_send_mask(ipi_desc[IPI_CPU_BACKTRACE], mask);
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_nmi);
-+	return true;
- }
-diff --git a/arch/loongarch/include/asm/irq.h b/arch/loongarch/include/asm/irq.h
-index a115e8999c69..c7a152d6bf0c 100644
---- a/arch/loongarch/include/asm/irq.h
-+++ b/arch/loongarch/include/asm/irq.h
-@@ -40,7 +40,7 @@ void spurious_interrupt(void);
- #define NR_IRQS_LEGACY 16
- 
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
--void arch_trigger_cpumask_backtrace(const struct cpumask *mask, bool exclude_self);
-+bool arch_trigger_cpumask_backtrace(const struct cpumask *mask, bool exclude_self);
- 
- #define MAX_IO_PICS 2
- #define NR_IRQS	(64 + (256 * MAX_IO_PICS))
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index fa2443c7afb2..8f7f818f5c4e 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -339,9 +339,10 @@ static void raise_backtrace(cpumask_t *mask)
- 	}
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
-+	return true;
- }
- 
- #ifdef CONFIG_64BIT
-diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
-index 44f9824c1d8c..daf16173486a 100644
---- a/arch/mips/include/asm/irq.h
-+++ b/arch/mips/include/asm/irq.h
-@@ -77,7 +77,7 @@ extern int cp0_fdc_irq;
- 
- extern int get_c0_fdc_int(void);
- 
--void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
-+bool arch_trigger_cpumask_backtrace(const struct cpumask *mask,
- 				    bool exclude_self);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 093dbbd6b843..7d538571830a 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -750,9 +750,10 @@ static void raise_backtrace(cpumask_t *mask)
- 	}
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
-+	return true;
- }
- 
- int mips_get_process_fp_mode(struct task_struct *task)
-diff --git a/arch/powerpc/include/asm/nmi.h b/arch/powerpc/include/asm/nmi.h
-index c3c7adef74de..135f65adcf63 100644
---- a/arch/powerpc/include/asm/nmi.h
-+++ b/arch/powerpc/include/asm/nmi.h
-@@ -12,7 +12,7 @@ static inline void watchdog_nmi_set_timeout_pct(u64 pct) {}
- #endif
- 
- #ifdef CONFIG_NMI_IPI
--extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
-+extern bool arch_trigger_cpumask_backtrace(const cpumask_t *mask,
- 					   bool exclude_self);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- #endif
-diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index 5de8597eaab8..0fee4bded7ba 100644
---- a/arch/powerpc/kernel/stacktrace.c
-+++ b/arch/powerpc/kernel/stacktrace.c
-@@ -221,8 +221,9 @@ static void raise_backtrace_ipi(cpumask_t *mask)
- 	}
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace_ipi);
-+	return true;
- }
- #endif /* defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_NMI_IPI) */
-diff --git a/arch/sparc/include/asm/irq_64.h b/arch/sparc/include/asm/irq_64.h
-index 154df2cf19f4..00a0051a9da0 100644
---- a/arch/sparc/include/asm/irq_64.h
-+++ b/arch/sparc/include/asm/irq_64.h
-@@ -87,7 +87,7 @@ static inline unsigned long get_softint(void)
- 	return retval;
- }
- 
--void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
-+bool arch_trigger_cpumask_backtrace(const struct cpumask *mask,
- 				    bool exclude_self);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- 
-diff --git a/arch/sparc/kernel/process_64.c b/arch/sparc/kernel/process_64.c
-index 91c2b8124527..f9aea1df3adf 100644
---- a/arch/sparc/kernel/process_64.c
-+++ b/arch/sparc/kernel/process_64.c
-@@ -236,7 +236,7 @@ static void __global_reg_poll(struct global_reg_snapshot *gp)
- 	}
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	struct thread_info *tp = current_thread_info();
- 	struct pt_regs *regs = get_irq_regs();
-@@ -291,6 +291,8 @@ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- 	memset(global_cpu_snapshot, 0, sizeof(global_cpu_snapshot));
- 
- 	spin_unlock_irqrestore(&global_cpu_snapshot_lock, flags);
-+
-+	return true;
- }
- 
- #ifdef CONFIG_MAGIC_SYSRQ
-diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
-index 768aa234cbb4..f731638cc38e 100644
---- a/arch/x86/include/asm/irq.h
-+++ b/arch/x86/include/asm/irq.h
-@@ -43,7 +43,7 @@ extern void init_ISA_irqs(void);
- extern void __init init_IRQ(void);
- 
- #ifdef CONFIG_X86_LOCAL_APIC
--void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
-+bool arch_trigger_cpumask_backtrace(const struct cpumask *mask,
- 				    bool exclude_self);
- 
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
-diff --git a/arch/x86/kernel/apic/hw_nmi.c b/arch/x86/kernel/apic/hw_nmi.c
-index 34a992e275ef..e7dcd28bc824 100644
---- a/arch/x86/kernel/apic/hw_nmi.c
-+++ b/arch/x86/kernel/apic/hw_nmi.c
-@@ -34,10 +34,11 @@ static void nmi_raise_cpu_backtrace(cpumask_t *mask)
- 	apic->send_IPI_mask(mask, NMI_VECTOR);
- }
- 
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+bool arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
- {
- 	nmi_trigger_cpumask_backtrace(mask, exclude_self,
- 				      nmi_raise_cpu_backtrace);
-+	return true;
- }
- 
- static int nmi_cpu_backtrace_handler(unsigned int cmd, struct pt_regs *regs)
-diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index 048c0b9aa623..7d8a77cd1e03 100644
---- a/include/linux/nmi.h
-+++ b/include/linux/nmi.h
-@@ -145,26 +145,22 @@ static inline void touch_nmi_watchdog(void)
- #ifdef arch_trigger_cpumask_backtrace
- static inline bool trigger_all_cpu_backtrace(void)
- {
--	arch_trigger_cpumask_backtrace(cpu_online_mask, false);
--	return true;
-+	return arch_trigger_cpumask_backtrace(cpu_online_mask, false);
- }
- 
- static inline bool trigger_allbutself_cpu_backtrace(void)
- {
--	arch_trigger_cpumask_backtrace(cpu_online_mask, true);
--	return true;
-+	return arch_trigger_cpumask_backtrace(cpu_online_mask, true);
- }
- 
- static inline bool trigger_cpumask_backtrace(struct cpumask *mask)
- {
--	arch_trigger_cpumask_backtrace(mask, false);
--	return true;
-+	return arch_trigger_cpumask_backtrace(mask, false);
- }
- 
- static inline bool trigger_single_cpu_backtrace(int cpu)
- {
--	arch_trigger_cpumask_backtrace(cpumask_of(cpu), false);
--	return true;
-+	return arch_trigger_cpumask_backtrace(cpumask_of(cpu), false);
- }
- 
- /* generic implementation */
--- 
-2.40.0.634.g4ca3ef3211-goog
-
+Kuninori Morimoto
