@@ -1,64 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344526E95CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 15:24:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B506E969B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 16:06:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2JKt07LCz3fSR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 23:24:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2KFm5hD9z3f52
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Apr 2023 00:06:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dfs3YDhN;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SLVHkBGh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dfs3YDhN;
-	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2JJy6qzzz2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 23:24:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681997043; x=1713533043;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4eXHBNoWZ5C9eV7iYDdSPHHBQ/JfwKX3mi1xRWHKRXU=;
-  b=dfs3YDhN2o9Wq7yA/2X9X12IdY+qZW/w8l/VRk7ztFZ/eLzYVR8MJdDH
-   Uyw9L+dPchoiRBC+6MdR7WBvwRUS6ePVUkwaU8xcSapiXql6VZeqeGU5T
-   Pj8EN7NXnXGbB9di4a8ZZ8JtjnuEXRCuqfNKpzeaSM3qe14Rr9A5As62g
-   AnZ7naHqVTpRRxKFfvvfTYX+YPEsuB+dLPAYmjZkxVKa/m+nu/Jp9FTp1
-   7GMk2QwY63uq2ez8ECTEULxdzPU0MCYWfkocduFYppSFUyb3XCYEM+vAD
-   uX/43mgZMKOAuxCH5ryNCeCJ0dge50ORbXhg/cnmz/cce5w4Qa8bG/ZHJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="344484513"
-X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
-   d="scan'208";a="344484513"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 06:23:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="756505113"
-X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
-   d="scan'208";a="756505113"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 20 Apr 2023 06:23:55 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 3C0261670; Thu, 20 Apr 2023 16:23:59 +0300 (EEST)
-Date: Thu, 20 Apr 2023 16:23:59 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v3 2/4] PCI/AER: Factor out interrupt toggling into
- helpers
-Message-ID: <20230420132359.GQ66750@black.fi.intel.com>
-References: <20230420125941.333675-1-kai.heng.feng@canonical.com>
- <20230420125941.333675-2-kai.heng.feng@canonical.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2KDw1JjQz3cLB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Apr 2023 00:05:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SLVHkBGh;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q2KDt6K41z4x1N;
+	Fri, 21 Apr 2023 00:05:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1681999534;
+	bh=0NX+HySVKG9RzPLDm7csn/HMBcenSt9vaesjVYx28NM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SLVHkBGhfh/tauw63mD4CJtBXh2KpgRdJW5/HiBrH6uUCy/iU67jw4RkPycZRP4Dp
+	 LW0nKW7FsnXGxLyqVr+oWzCzX7ezbb260E4AhuvE3AhgCxON16DV8xunhwrgsvIN7V
+	 g1QL/38iRZwj5d3dtKt2UzO/U47PsVmLXrveylcJmC6i3gR6HUMlZEbP3S67kJ3hEH
+	 4Duh5GYRNlK8WqjZTjnG8PQYClxQcD9B9wPp/lMjdXz1CKUN54bQ8HE66cJgz2GlWx
+	 8e/KKImw/8X4z3PCmBI50qzV2OzVPwTQe+MuZ+4gKsCB0mHz09AHxhMU+qHyS2sgGI
+	 afxChOW/ljArA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH] KVM: PPC: Update MAINTAINERS
+In-Reply-To: <20230408042839.869361-1-npiggin@gmail.com>
+References: <20230408042839.869361-1-npiggin@gmail.com>
+Date: Fri, 21 Apr 2023 00:05:33 +1000
+Message-ID: <87jzy64pjm.fsf@mail.concordia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230420125941.333675-2-kai.heng.feng@canonical.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,14 +57,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 20, 2023 at 08:59:38PM +0800, Kai-Heng Feng wrote:
-> There are many places that enable and disable AER interrput, so move
-> them into helpers.
-> 
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Michael is maintaining KVM PPC with the powerpc tree at the moment,
+> just doesn't necessarily have time to be across all of KVM. But I
+> think that's okay, from mechanics of how patches flow upstream he is
+> maintainer. And it probably makes a bit more sense to people who need
+> to look at the MAINTAINERS file if we have some contacts there.
+>
+> So add mpe as KVM PPC maintainer and I am a reviewer. Split out the
+> subarchs that don't get much attention.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Yeah I guess this is better than what we have now.
+
+Can you send a non-RFC and SOB'ed version, and maybe Cc the KVM list
+as well?
+
+cheers
