@@ -2,62 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268156E9103
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 12:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78846E914C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 12:59:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2DxL6xcwz3fQr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 20:51:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2F5c401cz3fT0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 20:59:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eG7O2EVx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=SV6NOe5H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::929; helo=mail-ua1-x929.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eG7O2EVx;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=SV6NOe5H;
 	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2DwT3NSbz3fSn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 20:51:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681987865; x=1713523865;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VQeRmgq2CDJ+tcP+P+IQ5uUOrFT2lqNUDOdu5qsJP4E=;
-  b=eG7O2EVxfmIBIvIGnq4HXBsBAJDEFv6ujZ0/kl9H2NaoY5VwKQ/QLCxq
-   KRy/r6AdLIPWLXU6ftphIvXTsI6B2GW02GAEjK5lIWbL9I6v9C/CH59Bu
-   cC7vCi1Vhq1lET0YctE14WjGVryxQzVUSs7Zcg9IqMrLdsSDU1dKzOtZa
-   k0iLQwkOD6fmFKHKOTtmScF+RwR+OWLQNt4F0tI6U72luCj4f1MBFlHCS
-   G7L4arFPzfVaV6a7W+5fES8odZ9enO6vCT0D7MvcoEENdVLuMFAICGSzU
-   HRJHaEXYqOUYeA4CDBZDEWzvAhR72tRsw9C3S51Su02GCqF59qvBzT2Ei
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="373596459"
-X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
-   d="scan'208";a="373596459"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 03:51:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="756465504"
-X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
-   d="scan'208";a="756465504"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 20 Apr 2023 03:51:00 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 51AAE21E7; Thu, 20 Apr 2023 13:51:05 +0300 (EEST)
-Date: Thu, 20 Apr 2023 13:51:05 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v2 4/4] PCI/DPC: Disable DPC interrupt during suspend
-Message-ID: <20230420105105.GO66750@black.fi.intel.com>
-References: <20230420015830.309845-1-kai.heng.feng@canonical.com>
- <20230420015830.309845-4-kai.heng.feng@canonical.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2F4l3zQCz3chx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 20:58:13 +1000 (AEST)
+Received: by mail-ua1-x929.google.com with SMTP id a19so1908325uan.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 03:58:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681988287; x=1684580287;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OlkpqVPsMGBCHCwPiGXeltlqZgDhFYvIj0YwaJwjXcY=;
+        b=SV6NOe5HXGojj8j858toAmnSCAUSPE+WaKKDGb4VN2CvbQQri0Qft/DJ2/u6BcgzIJ
+         FP9KTi9YL+RDIsLWGjjdaTD+mwNxmS81RD6Kv75eL8QiZqvJ5D/5HnBNXxAXTWpzmD5c
+         ByPMIyHMuAyJ2PH12t3+7r60A68vWdORNBRVkrNLSL1KjQ+L2dlt8PJyFucLhPNQ8EWe
+         tL49nbKGktraXetVBfH1pqPCuS3fH/RauI+qN7JXAzO9XPUTml6aFgFtHD3g0hwqhatJ
+         dvV4v0hO76lzr9KdIbk6DYwHAn2C52Ms8rtGrYA0V4HoCzc5ZL4rLxX9rgRVERyISyUq
+         /CKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681988287; x=1684580287;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OlkpqVPsMGBCHCwPiGXeltlqZgDhFYvIj0YwaJwjXcY=;
+        b=iGRP+5WuABszZFdxFso8SlPR3mjmqfMg2uS8Qg4OLuiz8VsoVPrYFL9ma+jN02OvFO
+         HmGBkipJqYEPRTzrBiovCbL+1gyjWjneA0eC4kIQKjVtbioy/cP1/vg+WDoBA8YTsK0p
+         IRVB+cfbdKjjO4Pl4+XhfqzG4kvQ+wegEeb+l7fFwe3sJ9Anz17KwZv2uRQuNb0HJxvp
+         vvqYyL2+d//8inPDopwEBHu4irAlkzCHe9+OHOqd9++PQ4TrkSvI1WyRQk5IINPxj5WW
+         TeabEepibxpMQugNiXrlLTD3gWrO8l1z8AP+gZU7+jCmMtqjt24njKAeCxJp261hjPSx
+         WvFg==
+X-Gm-Message-State: AAQBX9cJK32OjsVn70cUOPZ1pyy461D2LpDuACjekth/Ey5wU86biMv6
+	GvtVzwatumDD3yOaP7iElzqD4NMq73zkvPuG4c1+vMceF4zMPCzdai8=
+X-Google-Smtp-Source: AKy350b7fx0YW1+BNZLLBmYhRSGLKi7LfzgDknAEsvAl3PAP80GeDmOlnQyMN2RGFNnwI0N5D1wvi1oRdNQ/BUlwORQ=
+X-Received: by 2002:a1f:4114:0:b0:443:e263:2dff with SMTP id
+ o20-20020a1f4114000000b00443e2632dffmr377711vka.7.1681988287392; Thu, 20 Apr
+ 2023 03:58:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230420015830.309845-4-kai.heng.feng@canonical.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 20 Apr 2023 16:27:56 +0530
+Message-ID: <CA+G9fYsdMioe4+DEgeh38aTeaY3YaN_s_c0GFjPHhuPWfxyetA@mail.gmail.com>
+Subject: next: powerpc: gpio_mdio.c:(.text+0x13c): undefined reference to `__of_mdiobus_register'
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Linux-Next Mailing List <linux-next@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	lkft-triage@lists.linaro.org, 
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, Netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,28 +73,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, ajd@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 20, 2023 at 09:58:30AM +0800, Kai-Heng Feng wrote:
-> PCIe service that shares IRQ with PME may cause spurious wakeup on
-> system suspend.
-> 
-> Since AER is conditionally disabled in previous patch, also apply the
-> same logic to disable DPC which depends on AER to work.
-> 
-> PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
-> that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
-> (D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
-> much here to disable DPC during system suspend.
-> 
-> This is very similar to previous attempts to suspend AER and DPC [1],
-> but with a different reason.
-> 
-> [1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-> 
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Following build failures noticed on Linux next-20230419 for powerpc.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Regressions found on powerpc:
+ - build/gcc-8-defconfig
+ - build/clang-16-defconfig
+ - build/gcc-12-defconfig
+ - build/clang-nightly-defconfig
+
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build log:
+--------
+powerpc64le-linux-gnu-ld: arch/powerpc/platforms/pasemi/gpio_mdio.o:
+in function `gpio_mdio_probe':
+gpio_mdio.c:(.text+0x13c): undefined reference to `__of_mdiobus_register'
+powerpc64le-linux-gnu-ld: drivers/net/phy/phy_device.o: in function `phy_probe':
+phy_device.c:(.text+0x56ac): undefined reference to
+`devm_led_classdev_register_ext'
+powerpc64le-linux-gnu-ld: drivers/net/ethernet/pasemi/pasemi_mac.o: in
+function `pasemi_mac_open':
+pasemi_mac.c:(.text+0x19ac): undefined reference to `of_phy_connect'
+make[2]: *** [scripts/Makefile.vmlinux:35: vmlinux] Error 1
+
+Build details:
+---------
+https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230419/testrun/16369015/suite/build/test/gcc-12-defconfig/details/
+https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230419/testrun/16369015/suite/build/test/gcc-12-defconfig/log
+
+
+Steps to reproduce:
+------------
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+#
+# See https://docs.tuxmake.org/ for complete documentation.
+# Original tuxmake command with fragments listed below.
+
+tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12
+--kconfig defconfig
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
