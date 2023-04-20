@@ -1,52 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E056E9839
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 17:22:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6110B6E9AFA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 19:41:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2Lxq5nP7z3fV2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Apr 2023 01:22:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2Q1f2KyTz3f57
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Apr 2023 03:41:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UcgeEMtO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=swcqEAzz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2Lx05DX6z3c8F
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Apr 2023 01:21:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UcgeEMtO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=swcqEAzz;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q2Lwy3Tw9z4wgq;
-	Fri, 21 Apr 2023 01:21:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1682004114;
-	bh=h3SxPhUzmHsWbs5PrOyBL05+AzAxJen9yDDWwFWGrJg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UcgeEMtOu5gCE3xnZ8yL7EhvVi56TJH/mXtgir2ZUYL6hwHySD+gGrMdxEqdiOR9Y
-	 uCk2Fot9lnib5bX3lv6c+GhgxRHAnaKPtWjkSmEfrNxE/a8gnbn+B+FyQXcBWzFS/D
-	 DTjPiKSEeqjyPPSKSFkTIU8g2rQREwxbOvOEjceH1bRy6J8mC/QHom1Ul0kCmK8qZ0
-	 j6bnr1Lx1uMNRUUEmDuGKI0VT296rCc1rKZ2m3Ym8HbLoH/5gkr7xr+tEBEvxMRN/B
-	 /wVsqVUt8NEU7X2/fA8fBTa7kJKlX+BGUW81m5zS590QjzJgpVxB8eDM900ZWUZe/a
-	 ZyuYe11FsZ5Bg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] powerpc/iommu: DMA address offset is incorrectly
- calculated with 2MB TCEs
-In-Reply-To: <20230419152623.26439-1-gbatra@linux.vnet.ibm.com>
-References: <20230419152623.26439-1-gbatra@linux.vnet.ibm.com>
-Date: Fri, 21 Apr 2023 01:21:51 +1000
-Message-ID: <87leimfuk0.fsf@mail.concordia>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2Q0n6Ts4z3c38
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Apr 2023 03:40:25 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9563C64731;
+	Thu, 20 Apr 2023 17:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F125BC433EF;
+	Thu, 20 Apr 2023 17:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1682012422;
+	bh=xx+vnuJ8fbBXHjt5KUhqykE72X3YbB4D+HrbBLN/fp0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=swcqEAzzNfF4PbGtLC+Y1g8NIPrhqMOJudKRPHs5s2Csb72NKfNl3YFeGxGY/Zjug
+	 mgDaBG1UiPHXP5gDhO5hZyyePMOqFVTrVQVAZtyXaaTobM+RSFX9sZMGuEAZzBK3/v
+	 1jzJz7qSpleZTattS492X+EGgmP5uB7+UQs0GORMgqN2ZnP9tvicgu0W49TS9ELd5P
+	 2SVRXYj2Ocu9C0rFm5WXUA+bzPprIweNTq5un4A4W8wRDrlJ7n41p+gmAmClYNyHiN
+	 lPlV+xhImalzbHl1zYFi22w5s33BGoaaTU+sICbNfEDgu6SSxslrYCsLHK3zP0tG6F
+	 msYaLIlP1PKhg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D2810E270E2;
+	Thu, 20 Apr 2023 17:40:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v9 0/6] Introduce 64b relocatable kernel
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id:  <168201242185.9373.5416270250289201005.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Apr 2023 17:40:21 +0000
+References: <20230329045329.64565-1-alexghiti@rivosinc.com>
+In-Reply-To: <20230329045329.64565-1-alexghiti@rivosinc.com>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,77 +62,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Greg Joyce <gjoyce@linux.vnet.ibm.com>, Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Cc: aou@eecs.berkeley.edu, linux-kbuild@vger.kernel.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, bjorn@kernel.org, palmer@dabbelt.com, npiggin@gmail.com, paul.walmsley@sifive.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
-> When DMA window is backed by 2MB TCEs, the DMA address for the mapped
-> page should be the offset of the page relative to the 2MB TCE. The code
-> was incorrectly setting the DMA address to the beginning of the TCE
-> range.
->
-> Mellanox driver is reporting timeout trying to ENABLE_HCA for an SR-IOV
-> ethernet port, when DMA window is backed by 2MB TCEs.
+Hello:
 
-I assume this is similar or related to the bug Srikar reported?
+This series was applied to riscv/linux.git (for-next)
+by Palmer Dabbelt <palmer@rivosinc.com>:
 
-  https://lore.kernel.org/linuxppc-dev/20230323095333.GI1005120@linux.vnet.ibm.com/
+On Wed, 29 Mar 2023 06:53:23 +0200 you wrote:
+> After multiple attempts, this patchset is now based on the fact that the
+> 64b kernel mapping was moved outside the linear mapping.
+> 
+> The first patch allows to build relocatable kernels but is not selected
+> by default. That patch is a requirement for KASLR.
+> The second and third patches take advantage of an already existing powerpc
+> script that checks relocations at compile-time, and uses it for riscv.
+> 
+> [...]
 
-In that thread Alexey suggested a patch, have you tried his patch? He
-suggested rounding up the allocation size, rather than adjusting the
-dma_handle.
+Here is the summary with links:
+  - [v9,1/6] riscv: Prepare EFI header for relocatable kernels
+    https://git.kernel.org/riscv/c/55de1e4ad43b
+  - [v9,2/6] riscv: Move .rela.dyn outside of init to avoid empty relocations
+    https://git.kernel.org/riscv/c/69a90d2fe107
+  - [v9,3/6] riscv: Introduce CONFIG_RELOCATABLE
+    https://git.kernel.org/riscv/c/39b33072941f
+  - [v9,4/6] powerpc: Move script to check relocations at compile time in scripts/
+    https://git.kernel.org/riscv/c/47981b5cc687
+  - [v9,5/6] riscv: Check relocations at compile time
+    https://git.kernel.org/riscv/c/c2dea0bc5339
+  - [v9,6/6] riscv: Use --emit-relocs in order to move .rela.dyn in init
+    https://git.kernel.org/riscv/c/559d1e45a16d
 
-> Fixes: 3872731187141d5d0a5c4fb30007b8b9ec36a44d
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-That's not the right syntax, it's described in the documentation how to
-generate it.
 
-It should be:
-
-  Fixes: 387273118714 ("powerps/pseries/dma: Add support for 2M IOMMU page size")
-
-cheers
-
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index ee95937bdaf1..ca57526ce47a 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -517,7 +517,7 @@ int ppc_iommu_map_sg(struct device *dev, struct iommu_table *tbl,
->  		/* Convert entry to a dma_addr_t */
->  		entry += tbl->it_offset;
->  		dma_addr = entry << tbl->it_page_shift;
-> -		dma_addr |= (s->offset & ~IOMMU_PAGE_MASK(tbl));
-> +		dma_addr |= (vaddr & ~IOMMU_PAGE_MASK(tbl));
->  
->  		DBG("  - %lu pages, entry: %lx, dma_addr: %lx\n",
->  			    npages, entry, dma_addr);
-> @@ -904,6 +904,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
->  	unsigned int order;
->  	unsigned int nio_pages, io_order;
->  	struct page *page;
-> +	int tcesize = (1 << tbl->it_page_shift);
->  
->  	size = PAGE_ALIGN(size);
->  	order = get_order(size);
-> @@ -930,7 +931,8 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
->  	memset(ret, 0, size);
->  
->  	/* Set up tces to cover the allocated range */
-> -	nio_pages = size >> tbl->it_page_shift;
-> +	nio_pages = IOMMU_PAGE_ALIGN(size, tbl) >> tbl->it_page_shift;
-> +
->  	io_order = get_iommu_order(size, tbl);
->  	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
->  			      mask >> tbl->it_page_shift, io_order, 0);
-> @@ -938,7 +940,8 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
->  		free_pages((unsigned long)ret, order);
->  		return NULL;
->  	}
-> -	*dma_handle = mapping;
-> +
-> +	*dma_handle = mapping | ((u64)ret & (tcesize - 1));
->  	return ret;
->  }
->  
-> -- 
