@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954EA6E87BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 04:00:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8B6E87C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 04:01:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q217z3wGfz3fRJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 12:00:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q218x1Bcxz3fXW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 12:01:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=hgKzGosD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=sX7r+Fnp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.121; helo=smtp-relay-canonical-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=hgKzGosD;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=sX7r+Fnp;
 	dkim-atps=neutral
 Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q21741d3Hz3c8F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 11:59:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q21751DRBz3c8b
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 11:59:29 +1000 (AEST)
 Received: from localhost.localdomain (unknown [10.101.196.174])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 0BAE641EAA;
-	Thu, 20 Apr 2023 01:59:18 +0000 (UTC)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 0B89342A36;
+	Thu, 20 Apr 2023 01:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1681955962;
-	bh=18fxRuTXUXBCZGjHQDK8n5GxW6CRAotRhBz1xm7lXP8=;
+	s=20210705; t=1681955966;
+	bh=GvxobRKlf1r2LOJfuxc46vcCZjfhma6sFjPHV1PVN6U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
 	 MIME-Version;
-	b=hgKzGosDoQ+l+SxBBQSEIp3Y84gOuxy9mDwcnupbbcnr8+74Kfa/GsYlnC8oFbj/I
-	 82C7bHnlkby6k5/NlOkjlr6Dc+GXdckGFYc5wAgtv+rCPl3hm2tdJiOvWSZ+PaR0n/
-	 xpSBm2HJzFjKl362BADGO86rsOJcv3Xbc11MyRM8R8p6zwXLdeZNuR3bazqluFobOS
-	 5p0QOmr51GVlfRbBJBliaLXEx8KEUB3bwEzZaDdIpBH0n/lrVlUX7ohMKCxdelf7jQ
-	 P9F6X3pHsl8FgGbcExjV4alT6LkKYkoK64BJmHxilkFRx3qu3h6eyWX/cU2k7OUfx9
-	 5A0YsPKDZaDXw==
+	b=sX7r+FnpAZXsSCx+1VAfxDUdCmhTZTfKO7rwZ74TZYTIxDapUUdxufd1gpNOpkJxo
+	 /0h8kZ7w5yIcr5sf+ryx2IZVyRroMoj53kKOxclAjWuq9yhz1QhNSHBHym/bAOgRyC
+	 I+qGjo/8NZkPfMY8rtHXGckoMa29gnEaLGzsowqr086N68LszOSODjaRo+SLoUiZGj
+	 +34op4nwdw6irkISngwcyYAiCsmoLzzpmbGPzQqBMz4WbqMlxzqcD+g5yahb8K0IRQ
+	 EwrhO3del6Wo1xl55st8SNV2x0Zz/1ipCmhMAMFlzYTTdBQnVO5gY72BeEApwsBeGG
+	 YcZ4UXZ5dHkUg==
 From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 To: bhelgaas@google.com
-Subject: [PATCH v2 2/4] PCI/AER: Factor out interrput toggling into helpers
-Date: Thu, 20 Apr 2023 09:58:28 +0800
-Message-Id: <20230420015830.309845-2-kai.heng.feng@canonical.com>
+Subject: [PATCH v2 3/4] PCI/AER: Disable AER interrupt on suspend
+Date: Thu, 20 Apr 2023 09:58:29 +0800
+Message-Id: <20230420015830.309845-3-kai.heng.feng@canonical.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230420015830.309845-1-kai.heng.feng@canonical.com>
 References: <20230420015830.309845-1-kai.heng.feng@canonical.com>
@@ -64,101 +64,70 @@ Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, M
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are many places that enable and disable AER interrput, so move
-them into helpers.
+PCIe service that shares IRQ with PME may cause spurious wakeup on
+system suspend.
+
+PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
+that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
+(D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
+much here to disable AER during system suspend.
+
+This is very similar to previous attempts to suspend AER and DPC [1],
+but with a different reason.
+
+[1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
 
 Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
 v2:
- - New patch.
+ - Only disable AER IRQ.
+ - No more check on PME IRQ#.
+ - Use helper.
 
- drivers/pci/pcie/aer.c | 45 +++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index f6c24ded134c..1420e1f27105 100644
+index 1420e1f27105..9c07fdbeb52d 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -1227,6 +1227,28 @@ static irqreturn_t aer_irq(int irq, void *context)
- 	return IRQ_WAKE_THREAD;
+@@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
  }
  
-+static void aer_enable_irq(struct pci_dev *pdev)
++static int aer_suspend(struct pcie_device *dev)
 +{
-+	int aer = pdev->aer_cap;
-+	u32 reg32;
++	struct aer_rpc *rpc = get_service_data(dev);
++	struct pci_dev *pdev = rpc->rpd;
 +
-+	/* Enable Root Port's interrupt in response to error messages */
-+	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-+	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
-+	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-+}
-+
-+static void aer_disable_irq(struct pci_dev *pdev)
-+{
-+	int aer = pdev->aer_cap;
-+	u32 reg32;
-+
-+	/* Disable Root's interrupt in response to error messages */
-+	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-+	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
-+	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-+}
-+
- /**
-  * aer_enable_rootport - enable Root Port's interrupts when receiving messages
-  * @rpc: pointer to a Root Port data structure
-@@ -1256,10 +1278,7 @@ static void aer_enable_rootport(struct aer_rpc *rpc)
- 	pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
- 	pci_write_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, reg32);
- 
--	/* Enable Root Port's interrupt in response to error messages */
--	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
--	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
--	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-+	aer_enable_irq(pdev);
- }
- 
- /**
-@@ -1274,10 +1293,7 @@ static void aer_disable_rootport(struct aer_rpc *rpc)
- 	int aer = pdev->aer_cap;
- 	u32 reg32;
- 
--	/* Disable Root's interrupt in response to error messages */
--	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
--	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
--	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
 +	aer_disable_irq(pdev);
++
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++	struct pci_dev *pdev = rpc->rpd;
++
++	aer_enable_irq(pdev);
++
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+  * @dev: pointer to Root Port, RCEC, or RCiEP
+@@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
  
- 	/* Clear Root's error status reg */
- 	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
-@@ -1372,12 +1388,8 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
- 	 */
- 	aer = root ? root->aer_cap : 0;
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
  
--	if ((host->native_aer || pcie_ports_native) && aer) {
--		/* Disable Root's interrupt in response to error messages */
--		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
--		reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
--		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
--	}
-+	if ((host->native_aer || pcie_ports_native) && aer)
-+		aer_disable_irq(root);
- 
- 	if (type == PCI_EXP_TYPE_RC_EC || type == PCI_EXP_TYPE_RC_END) {
- 		rc = pcie_reset_flr(dev, PCI_RESET_DO_RESET);
-@@ -1396,10 +1408,7 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
- 		pci_read_config_dword(root, aer + PCI_ERR_ROOT_STATUS, &reg32);
- 		pci_write_config_dword(root, aer + PCI_ERR_ROOT_STATUS, reg32);
- 
--		/* Enable Root Port's interrupt in response to error messages */
--		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
--		reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
--		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
-+		aer_enable_irq(root);
- 	}
- 
- 	return rc ? PCI_ERS_RESULT_DISCONNECT : PCI_ERS_RESULT_RECOVERED;
 -- 
 2.34.1
 
