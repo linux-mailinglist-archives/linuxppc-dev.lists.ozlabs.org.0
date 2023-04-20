@@ -1,54 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC326E87C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 04:02:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770006E8913
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 06:24:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q219z03dvz3cjB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 12:01:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q24L82LPrz3fVK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 14:24:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=JA/W3MZn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JMbr5Wvs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.121; helo=smtp-relay-canonical-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=JA/W3MZn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JMbr5Wvs;
 	dkim-atps=neutral
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q21794Wpzz3c8F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 11:59:33 +1000 (AEST)
-Received: from localhost.localdomain (unknown [10.101.196.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 85DCD41ABE;
-	Thu, 20 Apr 2023 01:59:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1681955971;
-	bh=l7qV65a1Ex7JimCTQ70xlboGGlA6oTb+7PSGlAKXVZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=JA/W3MZnZs8oMCb27sG0qP7Lqyw+YrWx9VLJ8GmTzHl1Gi+C1NDmxi22GikzwmZY6
-	 ftq9VmOYoMOfdQyB0vnGwxq8vGP/AsB9pTxd+Cod2XRQ1NhFeXKhjRmWPlDw1HGBA6
-	 noUqUUg3Sxe/igXl3K0K6BKJfANPD3Yjcsig6BO1Sv9nBJuC2BbQ9WMTWEXsomsoM+
-	 Onr3nwZVHCxndNi8CriRRd9lS4fjIxXjmYkricY31kHkGO3M7O1g3CGnMGesWp99kX
-	 V3afaJ5m3g0y2GCH20MB13SZ09aKj0YupHxq5jptYnLJjX4LkP+Gj2E2td2ES1+TRA
-	 3xUd9QrKluUsg==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: bhelgaas@google.com
-Subject: [PATCH v2 4/4] PCI/DPC: Disable DPC interrupt during suspend
-Date: Thu, 20 Apr 2023 09:58:30 +0800
-Message-Id: <20230420015830.309845-4-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230420015830.309845-1-kai.heng.feng@canonical.com>
-References: <20230420015830.309845-1-kai.heng.feng@canonical.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q24KH6mW2z3cBX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 14:23:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681964612; x=1713500612;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XukRQffyaLcurPj0MIxT2KBrbiwJQ4mOpE0STVWyGKg=;
+  b=JMbr5Wvs8SEJ5Gvfy1k8zqCOjMhlPg5mhKYrUNd48vZw+RIBiF9qyMbN
+   tpUu3YgRq1R06rCVxDCmjeRzUNKNDuhzEYp5kfC+deGDMyqphN3pSYr0R
+   G8Nkx6/9IxggL0MQnf/+qh/Bi6+0DNXm2l9ieGvNAgFYcf9BgEZ0jp1R7
+   wCBmo/X3jjEvy4OILBJ68hz8nCDsAXNu+iT3xFDjrWFvniP0SK0nL7CE2
+   wOpF7Z35nHTeTbAE19O7SyV8a1cWxxHjbtR3pSK1VCMLMXU98TYz/eI9n
+   IN0O6BBGv4R2e8m8KrROTfcCAw44sglNBJRlraMI2Jww3SfyOfBgclqGO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="345630240"
+X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
+   d="scan'208";a="345630240"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 21:23:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="781099157"
+X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
+   d="scan'208";a="781099157"
+Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
+  by FMSMGA003.fm.intel.com with ESMTP; 19 Apr 2023 21:23:15 -0700
+Message-ID: <da60a120-e1dd-3b61-d6c4-ba0d955e2339@linux.intel.com>
+Date: Thu, 20 Apr 2023 12:23:11 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 08/11] iommu: Always destroy the iommu_group during
+ iommu_release_device()
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robin Murphy
+ <robin.murphy@arm.com>, Will Deacon <will@kernel.org>
+References: <8-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <8-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,80 +77,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
+Cc: Kevin Tian <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>, baolu.lu@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PCIe service that shares IRQ with PME may cause spurious wakeup on
-system suspend.
+On 4/20/23 12:11 AM, Jason Gunthorpe wrote:
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index dbaf3ed9012c45..a82516c8ea87ad 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -569,7 +569,6 @@ static void __iommu_group_remove_device(struct device *dev)
+>   			dev->iommu_group = NULL;
+>   		goto out;
 
-Since AER is conditionally disabled in previous patch, also apply the
-same logic to disable DPC which depends on AER to work.
+Nit, given that below line has been removed, can above simply be a
+loop break?
 
-PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
-that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
-(D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
-much here to disable DPC during system suspend.
+>   	}
+> -	WARN(true, "Corrupted iommu_group device_list");
+>   out:
+>   	mutex_unlock(&group->mutex);
 
-This is very similar to previous attempts to suspend AER and DPC [1],
-but with a different reason.
-
-[1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v2:
- - Only disable DPC IRQ.
- - No more check on PME IRQ#.
-
- drivers/pci/pcie/dpc.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a5d7c69b764e..98bdefde6df1 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -385,6 +385,30 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
-+static int dpc_suspend(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+
-+	return 0;
-+}
-+
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl |= PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+
-+	return 0;
-+}
-+
- static void dpc_remove(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
-@@ -400,6 +424,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
--- 
-2.34.1
+Best regards,
+baolu
 
