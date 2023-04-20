@@ -1,92 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D6C6E942D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 14:23:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7456E9542
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 15:01:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2Gyq43scz3cjF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 22:23:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q2Hpw2vX5z3fTp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Apr 2023 23:01:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=UXWrJ2EE;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Hf7YZCJ1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=p7H5vlhD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.121; helo=smtp-relay-canonical-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=UXWrJ2EE;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Hf7YZCJ1;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=p7H5vlhD;
 	dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2Gxt3NSkz3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 22:22:25 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id D55065C01A9;
-	Thu, 20 Apr 2023 08:22:19 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 20 Apr 2023 08:22:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1681993339; x=1682079739; bh=sZ
-	ONUP6h+SJJnBCxfgbuzzXtSUZFZ3CJUwyCTkmq7Xg=; b=UXWrJ2EEvSiy24KMbi
-	fOpjxO35+cBmgDE7F6QvpjvJAcc23bJlf2c6pqZRu5zeqK/HhqTkzQ+AbklUI5r1
-	vV4RktufQbcODh2x1HBkLgxMMrQGKIKQAw8/PMXttqcziirs1IJenx5RmmTFrAMl
-	/8Y45X2c1rk1vHeLI0bgaxK/bHqFaL6fTf6EA6BNC1vlPOcyrNaRpdCfYl4AUcLb
-	uXhKGvOFaUZyhA57UzjmEoBCxxyncuaERsVmjWAbCYJjm6hDOaWQjNb2cK3Nnk6a
-	pZIAguRdayXwLnrrMIf8uZasj/QpiZ0pMq2GgHa8ap55jaPF4G0DAXX1tX/z7wO2
-	QKXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1681993339; x=1682079739; bh=sZONUP6h+SJJn
-	BCxfgbuzzXtSUZFZ3CJUwyCTkmq7Xg=; b=Hf7YZCJ1hzUf+3hn6Y3OxxyMZgL8i
-	PN/hgEMQ5V0XaWicdiNtSvmHWbgNanzjnZ+YZ5arE5hBWFFYPyGfSVFckEA3wa0U
-	y7U6nsAR5/qkpd6sZFRm1CIy1ubMvDFjqQWsbA3AJVbBpB8Y0EFIrTJtH1UAhhMB
-	kOMfeDIlbqXzEzGjZxVd8/xuJ9X13FEjEHB8dj84RQ6GL+IY5Zfd6O1oRgAnNYRX
-	uSA/bjY0JIjxLpWqg4Pk13mLPaK5OX0NXk3YfsaGKetfAhBTeEY8fTxgQucu17rt
-	xejm00Egbcf/Ymh/+Jj1/ngFyhUpbyU0E9FoLcz3HBDBbJPRmWWaiyYHQ==
-X-ME-Sender: <xms:ey5BZI7NI8R3UM7swGYU65cfll0oLLl7jJkR3kQPgqZSjCKfqgDT4g>
-    <xme:ey5BZJ41ypjuCPWmB-_ULfXWacdRdJfku9BgPPhlIC7U76U5Lu0Cu77YjPm9YEh4E
-    dd-9LrkRSzT6-bHDqs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedtvddghedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dunecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:ey5BZHcgTSP7afLL2Ly7HJa4kgBCh5FOot5NhfcpWOpNEaavFDFsJA>
-    <xmx:ey5BZNIombeMEXIsHXza8yedFKUPJgDUrLZp30tcja3zOvsg158BXA>
-    <xmx:ey5BZMLRvsDvBxiF3PAoHk_uIaZscCP7T6FX8JZoVJ5JqBzfN2LA0g>
-    <xmx:ey5BZKwd9vOyIog2uaUSb4za4BGatTv8tQEB_Re3wJ6lH5JCurK72g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 06C07B60086; Thu, 20 Apr 2023 08:22:18 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-372-g43825cb665-fm-20230411.003-g43825cb6
-Mime-Version: 1.0
-Message-Id: <747af785-963b-45e5-9d7b-d361951ea3fc@app.fastmail.com>
-In-Reply-To:  <CA+G9fYsdMioe4+DEgeh38aTeaY3YaN_s_c0GFjPHhuPWfxyetA@mail.gmail.com>
-References:  <CA+G9fYsdMioe4+DEgeh38aTeaY3YaN_s_c0GFjPHhuPWfxyetA@mail.gmail.com>
-Date: Thu, 20 Apr 2023 14:21:58 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Naresh Kamboju" <naresh.kamboju@linaro.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-next <linux-next@vger.kernel.org>,
- "open list" <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Netdev <netdev@vger.kernel.org>
-Subject: Re: next: powerpc: gpio_mdio.c:(.text+0x13c): undefined reference to
- `__of_mdiobus_register'
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q2Hnx6Z2Sz3cDG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Apr 2023 23:00:36 +1000 (AEST)
+Received: from localhost.localdomain (unknown [10.101.196.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 65C3F41D91;
+	Thu, 20 Apr 2023 13:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1681995632;
+	bh=bSDqyUQmDXJf+AsjkLS1M/z8VFy5Mn2It7eZMkd0OPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+	b=p7H5vlhDlTiPjwhzZY91SmcaoJ9lPbMMCGWBV8Uyejhok0CVyMZhTZ1QvVSCKuYDa
+	 jk4Zcw/LCmIR+ETVYCe2f+MbxddgOHpGpbLevxVR7TC98oMr/AmAHvi0P2qpMmiPUq
+	 Lnn72GIR6eGx0bqn4DsRXasFHU9eLkcn4cmbQajr2LRLubF8MP5h4bZlnORRbEW72F
+	 2zwJfNv48/aIfKW7dSNxfxv29xZzdZiREhFTTCZr8EeJG2aKTmXN3XiMzGjA9xzhYZ
+	 3UnnMnUx8zGeUjI6rDRuDz+b2PgKQubozVla4YqXGl/+URDgWywNQISNKeFWWNpqXb
+	 jPxMpvhfz1bBg==
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+To: bhelgaas@google.com
+Subject: [PATCH v3 2/4] PCI/AER: Factor out interrupt toggling into helpers
+Date: Thu, 20 Apr 2023 20:59:38 +0800
+Message-Id: <20230420125941.333675-2-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230420125941.333675-1-kai.heng.feng@canonical.com>
+References: <20230420125941.333675-1-kai.heng.feng@canonical.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,37 +60,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Andrew Donnellan <ajd@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "David S . Miller" <davem@davemloft.net>
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 20, 2023, at 12:57, Naresh Kamboju wrote:
-> Following build failures noticed on Linux next-20230419 for powerpc.
->
-> Regressions found on powerpc:
->  - build/gcc-8-defconfig
->  - build/clang-16-defconfig
->  - build/gcc-12-defconfig
->  - build/clang-nightly-defconfig
->
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> Build log:
-> --------
-> powerpc64le-linux-gnu-ld: arch/powerpc/platforms/pasemi/gpio_mdio.o:
-> in function `gpio_mdio_probe':
-> gpio_mdio.c:(.text+0x13c): undefined reference to `__of_mdiobus_register'
-> powerpc64le-linux-gnu-ld: drivers/net/phy/phy_device.o: in function `phy_probe':
-> phy_device.c:(.text+0x56ac): undefined reference to
-> `devm_led_classdev_register_ext'
-> powerpc64le-linux-gnu-ld: drivers/net/ethernet/pasemi/pasemi_mac.o: in
-> function `pasemi_mac_open':
-> pasemi_mac.c:(.text+0x19ac): undefined reference to `of_phy_connect'
-> make[2]: *** [scripts/Makefile.vmlinux:35: vmlinux] Error 1
+There are many places that enable and disable AER interrput, so move
+them into helpers.
 
-Same bug as the other one:
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+v3:
+ - Correct subject.
 
-https://lore.kernel.org/all/20230420084624.3005701-1-arnd@kernel.org/
+v2:
+ - New patch.
 
-      Arnd
+ drivers/pci/pcie/aer.c | 45 +++++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index f6c24ded134c..1420e1f27105 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1227,6 +1227,28 @@ static irqreturn_t aer_irq(int irq, void *context)
+ 	return IRQ_WAKE_THREAD;
+ }
+ 
++static void aer_enable_irq(struct pci_dev *pdev)
++{
++	int aer = pdev->aer_cap;
++	u32 reg32;
++
++	/* Enable Root Port's interrupt in response to error messages */
++	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
++	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
++	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
++}
++
++static void aer_disable_irq(struct pci_dev *pdev)
++{
++	int aer = pdev->aer_cap;
++	u32 reg32;
++
++	/* Disable Root's interrupt in response to error messages */
++	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
++	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
++	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
++}
++
+ /**
+  * aer_enable_rootport - enable Root Port's interrupts when receiving messages
+  * @rpc: pointer to a Root Port data structure
+@@ -1256,10 +1278,7 @@ static void aer_enable_rootport(struct aer_rpc *rpc)
+ 	pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
+ 	pci_write_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, reg32);
+ 
+-	/* Enable Root Port's interrupt in response to error messages */
+-	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+-	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
+-	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
++	aer_enable_irq(pdev);
+ }
+ 
+ /**
+@@ -1274,10 +1293,7 @@ static void aer_disable_rootport(struct aer_rpc *rpc)
+ 	int aer = pdev->aer_cap;
+ 	u32 reg32;
+ 
+-	/* Disable Root's interrupt in response to error messages */
+-	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+-	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
+-	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
++	aer_disable_irq(pdev);
+ 
+ 	/* Clear Root's error status reg */
+ 	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
+@@ -1372,12 +1388,8 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
+ 	 */
+ 	aer = root ? root->aer_cap : 0;
+ 
+-	if ((host->native_aer || pcie_ports_native) && aer) {
+-		/* Disable Root's interrupt in response to error messages */
+-		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+-		reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
+-		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
+-	}
++	if ((host->native_aer || pcie_ports_native) && aer)
++		aer_disable_irq(root);
+ 
+ 	if (type == PCI_EXP_TYPE_RC_EC || type == PCI_EXP_TYPE_RC_END) {
+ 		rc = pcie_reset_flr(dev, PCI_RESET_DO_RESET);
+@@ -1396,10 +1408,7 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
+ 		pci_read_config_dword(root, aer + PCI_ERR_ROOT_STATUS, &reg32);
+ 		pci_write_config_dword(root, aer + PCI_ERR_ROOT_STATUS, reg32);
+ 
+-		/* Enable Root Port's interrupt in response to error messages */
+-		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+-		reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
+-		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
++		aer_enable_irq(root);
+ 	}
+ 
+ 	return rc ? PCI_ERS_RESULT_DISCONNECT : PCI_ERS_RESULT_RECOVERED;
+-- 
+2.34.1
+
