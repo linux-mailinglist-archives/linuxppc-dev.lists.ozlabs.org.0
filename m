@@ -1,55 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F055C6EB23F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Apr 2023 21:25:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA066EB24E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Apr 2023 21:38:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q34J06GJDz3fX4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 05:25:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q34ZF35dtz3fW3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 05:38:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P1uQO+lQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WVmPBemb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P1uQO+lQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WVmPBemb;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q34H72fK7z3fHP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 05:25:07 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A572F60C88;
-	Fri, 21 Apr 2023 19:25:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98362C433EF;
-	Fri, 21 Apr 2023 19:25:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1682105103;
-	bh=W7uWtRhn74gI5DdykMl9Ygbat47KEyixL2s+R7CXf4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P1uQO+lQn46h8sPkUIDTeuuuaqYEuXAC5XrVOBAwjT+6B4j8NizF8+Bhcmg/SbXDx
-	 R35KPmFskBNMwE2hWOlTsNitogRtztEI5E/BMcoea1Ygr0ah4ez9K+IKV/JXLH8xg+
-	 2hSscDX7Y8/QQfQ0dNAJrbGWNpjH3G26G1l8YL3wv2N927leM1laIByU2Nknx0W5Lh
-	 9qUiz7pT6ig8062P2j0qb4E+8nVCmlLsP5ZWFcalVG/T7mul1u92MUMzR6U/UeaO7S
-	 IR77iLd+n3LXOoNWDfycqXuLnHTaBxVfi9wkSaVNIx9yoRUXcGRCx1vUEBj83/9xev
-	 DJZslEGbLEeSw==
-Date: Fri, 21 Apr 2023 20:24:58 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Konstantin Ryabitsev <konstantin.ryabitsev@linux.dev>
-Subject: Re: [PATCH v9 0/6] Introduce 64b relocatable kernel
-Message-ID: <20230421-uneaten-obvious-250d95c86560@spud>
-References: <mhng-bb70f74f-2b5b-4880-b7bf-975e67dc554e@palmer-ri-x1c9>
- <ba235aa677a561ceb2dc776414403dc0@linux.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q34YN0Zl7z3fR1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 05:37:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682105848; x=1713641848;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=76ew50xbvStvHzZe254p6rgGyvx/DeSR1aLRziVMfdo=;
+  b=WVmPBembe2H+5iccTGZusxuO5FZNNfI1qPfKh8m4lNqJshGm/9jZWJVj
+   mZOnwoTc7uKkMy/wgUGBdRSTL+a8mRd3t6P8yZbjwyS2OY+JZn8eWWqa7
+   tIFc2FtQDxpXKK/+ysbW5RPkkWvZ7VYzPB9i08+BMKtYAMBO2WHUaVgRA
+   nRdGC15bSdqhhOVZmUPholOQ7oHUpXeBj11PBrwwZAYqi1sCK72mXxG3I
+   R22MRiBhlbe9GjBSKL+4HSN4NNslR7PoDGlU8GwGj42ut6CGf+Go0PWg7
+   72Gxraq7ux9saZivmgqpI5eXVO+A54I4XJ6iVEX8n1Xoy0ioepKPKSlew
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="346085972"
+X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
+   d="scan'208";a="346085972"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2023 12:37:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="816530251"
+X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
+   d="scan'208";a="816530251"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 21 Apr 2023 12:37:21 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ppwZM-000gku-2H;
+	Fri, 21 Apr 2023 19:37:20 +0000
+Date: Sat, 22 Apr 2023 03:37:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ 836a3de6b2bfe0b7c96a7104d3d567883d8a57b3
+Message-ID: <6442e5e6.IGKuM5gzI/uN0sgO%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cYLCWmWMPROB1qtr"
-Content-Disposition: inline
-In-Reply-To: <ba235aa677a561ceb2dc776414403dc0@linux.dev>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,59 +70,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, alexghiti@rivosinc.com, linux-kbuild@vger.kernel.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, bjorn@kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 836a3de6b2bfe0b7c96a7104d3d567883d8a57b3  powerpc/configs/powernv: Add IGB=y
 
---cYLCWmWMPROB1qtr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 728m
 
-On Fri, Apr 21, 2023 at 07:10:14PM +0000, Konstantin Ryabitsev wrote:
-> April 21, 2023 2:59 PM, "Palmer Dabbelt" <palmer@dabbelt.com> wrote:
-> >> riscv: Use PUD/P4D/PGD pages for the linear mapping
-> >> (https://patchwork.kernel.org/project/linux-riscv/list/?series=3D73360=
-3)
-> >> base-commit-tag: v6.3-rc1
-> >=20
-> > The QEMU CI has some way to say "this depends on an un-merged patch set=
- sent as $MESSAGE_ID", not
-> > sure if that's a b4-ism but it's a bit less confusing.
->=20
-> I think it's patchwork-ism, actually. B4 will eventually learn to be
-> able to include dependent series info and automatically retrieve/apply
-> them in the proper order on "shazam", but it can't do that yet.
+configs tested: 67
+configs skipped: 3
 
-A patchwork-ism or a patchew-ism? Drew Jones was my source for this, but
-he had said the thing to do in QEMU-land was put a:
-Based-on: $message-id
-in your cover letter for each thing that you depend on. I'm not entirely
-sure if that meant each series or each patch. I think patchew picks that
-up and dumps in it on a patchew github account that the CI might pick up
-on. From the QEMU docs:
-<quote>
-It is also okay to base patches on top of other on-going work that is
-not yet part of the git master branch. To aid continuous integration
-tools, such as `patchew <http://patchew.org/QEMU/>`__, you should `add a
-tag <https://lists.gnu.org/archive/html/qemu-devel/2017-08/msg01288.html>`__
-line ``Based-on: $MESSAGE_ID`` to your cover letter to make the series
-dependency obvious.
-<\quote>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-FWIW, my vote is for something with a message-id, rather than those
-patchwork series links that you can't dump into b4!
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230417   gcc  
+i386                 randconfig-a002-20230417   gcc  
+i386                 randconfig-a003-20230417   gcc  
+i386                 randconfig-a004-20230417   gcc  
+i386                 randconfig-a005-20230417   gcc  
+i386                 randconfig-a006-20230417   gcc  
+i386                 randconfig-a011-20230417   clang
+i386                 randconfig-a012-20230417   clang
+i386                 randconfig-a013-20230417   clang
+i386                 randconfig-a014-20230417   clang
+i386                 randconfig-a015-20230417   clang
+i386                 randconfig-a016-20230417   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230417   gcc  
+x86_64               randconfig-a002-20230417   gcc  
+x86_64               randconfig-a003-20230417   gcc  
+x86_64               randconfig-a004-20230417   gcc  
+x86_64               randconfig-a005-20230417   gcc  
+x86_64               randconfig-a006-20230417   gcc  
+x86_64               randconfig-a011-20230417   clang
+x86_64               randconfig-a012-20230417   clang
+x86_64               randconfig-a013-20230417   clang
+x86_64               randconfig-a014-20230417   clang
+x86_64               randconfig-a015-20230417   clang
+x86_64               randconfig-a016-20230417   clang
+x86_64                               rhel-8.3   gcc  
 
---cYLCWmWMPROB1qtr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZELjCgAKCRB4tDGHoIJi
-0s1yAP9XTAhQrJD/xmNk2JTUsPIU6e0uJxU1rNaDElF8T2ioggD/RuvGZYpDeAT8
-rVM1QBn5DNrHVZWw5EILFxMXOgo1hA4=
-=0mnA
------END PGP SIGNATURE-----
-
---cYLCWmWMPROB1qtr--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
