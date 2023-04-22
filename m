@@ -1,64 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B76EB769
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 06:51:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC6C6EB932
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 14:47:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q3Jrk0Zmlz3fTj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 14:51:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q3WQB5Zwvz3cNN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 22:47:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E9LIuBD4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VZizgABQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E9LIuBD4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VZizgABQ;
 	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q3Jqp4P6rz3cM7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 14:50:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682139046; x=1713675046;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MOa+uFZXHcWLVxxZlFT8A/G9+ogtZLhA2X/tQRktSjI=;
-  b=E9LIuBD4x3Po43qMiObIhaPA9L5o5j995Eg0KMRFLQo55K2qewhvmIBs
-   u7X+9zoDWtS6i94koZCCVC2L7Ds1P9beRqsPwD3hJ96QfSrgbE7/MgyHj
-   sQnxIXNB8x7xj/i/4ued7cC6+qAFRSYEKmSwJ1Tdc5VXyWh0ferpGQWMq
-   Qz9BU6J1H/P4MKpij3SKgTqGMrlbB5sV2qDSJUiFhg9GjgSG+Vdaa8uFD
-   sknXdkqddo7dWkTMbJOUSifCxcVPnbHNlgkBWgrNlJv0KAN+2FOQ1HBlw
-   mg9d0KVPRqGE7Ykidti4tkvo7+onXweWeVFbYtrfKYZMx4P52WiyRup3J
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="344877798"
-X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
-   d="scan'208";a="344877798"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2023 21:50:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="692467877"
-X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
-   d="scan'208";a="692467877"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 21 Apr 2023 21:50:35 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pq5Ck-000h4s-2k;
-	Sat, 22 Apr 2023 04:50:34 +0000
-Date: Sat, 22 Apr 2023 12:49:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 5d8eb803edc65ca55337a2724e9f3d3bb3ba2c17
-Message-ID: <6443676f.oT2ZJNr5pNUrEcyq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q3WPK2sMrz3cBL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 22:47:00 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-517c01edaaaso2250345a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 05:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682167616; x=1684759616;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=m2O8emGU/1aRanCBdkH+9Iyixy0g4IVb5HIaoIUN3PI=;
+        b=VZizgABQtdlUQXpqlnDCHy5eM1NWD4h/9aGFqTRbXHYo/Dp6KGHq3FqpUudhHQfwFw
+         gqbrrAAwclGzSvDsDZNZGyLam0qDaz6TH4R4hzIsYQ+TXW/TA6X4LMcilWG9ho/M7YbV
+         c9QkaqLI5UZjMUddzWX6vsHNIgBhr3Aa5WJa79noxLPMzKXqIbXsab1pQspxw4Ic1HJ8
+         BscNcRSWAJUXysIDT9b9cCH3zV1yGR0VRV3IgjpM2dBSwoxXb+heJSGIs54NtDCjodbR
+         X6nd4sr08PKVj3uWxwlL7FXC31bHOT/CvxkurfqtDRR0f43C98EYDtqXVRKfsn2z3Hy8
+         13gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682167616; x=1684759616;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m2O8emGU/1aRanCBdkH+9Iyixy0g4IVb5HIaoIUN3PI=;
+        b=TbSovKUy+kjaYr3DKOnRGpup/ihZfwGr1uA+stLhtEzgNf95SPGAmGdqQIoCG8JC9Q
+         4xwa6MDF+ZM2c2T8c4m8j9Ieuxu1jeJWMLVmjBW+w6ltzDPfh/IIxi0g5irQlfDUNCqu
+         G2nb5SvIBWmifh7xBLa045mPLH9fRFL19HpC2izlPvE/8dp7R47kvumId3iZ1BA52Qiv
+         sC+8qqzoqt2ZNCNhEC13cYZRGrwgl1imKYt0tF4rUwmvaxFIw0EIZ8egNyW3NPrJNYY3
+         Mg3aWBseQc9NJMLCf3Zj3hK9xDlfD0W/jLxAK9L6awaYmRvQvM8IUhIf82Iz/vhlWF+1
+         hN6Q==
+X-Gm-Message-State: AAQBX9doIwqkufQn1trdS7G9zWN4dlCpt3SFCMd9amZrH/f23dVbD2p0
+	ZUmM2RXhMpjZ7ikBaReGMYhdqFqZjny+uaMYgZ8iRsPOdZM=
+X-Google-Smtp-Source: AKy350bpKitbfeLCPQ3PxdWhS1ofVmulhkrg720nWstlpjoGcHKdtyUGL4sSAVDRG2o+KRHaCS6AepRdspyzaAwAkQ8=
+X-Received: by 2002:a17:90a:ae81:b0:247:78e6:b025 with SMTP id
+ u1-20020a17090aae8100b0024778e6b025mr8313373pjq.17.1682167615951; Sat, 22 Apr
+ 2023 05:46:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Date: Sat, 22 Apr 2023 20:46:44 +0800
+Message-ID: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
+Subject: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, rcu <rcu@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, lance@osuosl.org, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,66 +72,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 5d8eb803edc65ca55337a2724e9f3d3bb3ba2c17  Automatic merge of 'next' into merge (2023-04-21 16:25)
+Dear PowerPC and RCU developers:
+During the RCU torture test on mainline (on the VM of Opensource Lab
+of Oregon State University), SRCU-P failed with __stack_chk_fail:
+[  264.381952][   T99] [c000000006c7bab0] [c0000000010c67c0]
+dump_stack_lvl+0x94/0xd8 (unreliable)
+[  264.383786][   T99] [c000000006c7bae0] [c00000000014fc94] panic+0x19c/0x468
+[  264.385128][   T99] [c000000006c7bb80] [c0000000010fca24]
+__stack_chk_fail+0x24/0x30
+[  264.386610][   T99] [c000000006c7bbe0] [c0000000002293b4]
+srcu_gp_start_if_needed+0x5c4/0x5d0
+[  264.388188][   T99] [c000000006c7bc70] [c00000000022f7f4]
+srcu_torture_call+0x34/0x50
+[  264.389611][   T99] [c000000006c7bc90] [c00000000022b5e8]
+rcu_torture_fwd_prog+0x8c8/0xa60
+[  264.391439][   T99] [c000000006c7be00] [c00000000018e37c] kthread+0x15c/0x170
+[  264.392792][   T99] [c000000006c7be50] [c00000000000df94]
+ret_from_kernel_thread+0x5c/0x64
+The kernel config file can be found in [1].
+And I write a bash script to accelerate the bug reproducing [2].
+After a week's debugging, I found the cause of the bug is because the
+register r10 used to judge for stack overflow is not constant between
+context switches.
+The assembly code for srcu_gp_start_if_needed is located at [3]:
+c000000000226eb4:   78 6b aa 7d     mr      r10,r13
+c000000000226eb8:   14 42 29 7d     add     r9,r9,r8
+c000000000226ebc:   ac 04 00 7c     hwsync
+c000000000226ec0:   10 00 7b 3b     addi    r27,r27,16
+c000000000226ec4:   14 da 29 7d     add     r9,r9,r27
+c000000000226ec8:   a8 48 00 7d     ldarx   r8,0,r9
+c000000000226ecc:   01 00 08 31     addic   r8,r8,1
+c000000000226ed0:   ad 49 00 7d     stdcx.  r8,0,r9
+c000000000226ed4:   f4 ff c2 40     bne-    c000000000226ec8
+<srcu_gp_start_if_needed+0x1c8>
+c000000000226ed8:   28 00 21 e9     ld      r9,40(r1)
+c000000000226edc:   78 0c 4a e9     ld      r10,3192(r10)
+c000000000226ee0:   79 52 29 7d     xor.    r9,r9,r10
+c000000000226ee4:   00 00 40 39     li      r10,0
+c000000000226ee8:   b8 03 82 40     bne     c0000000002272a0
+<srcu_gp_start_if_needed+0x5a0>
+by debugging, I see the r10 is assigned with r13 on c000000000226eb4,
+but if there is a context-switch before c000000000226edc, a false
+positive will be reported.
 
-elapsed time: 1283m
+[1] http://154.220.3.115/logs/0422/configformainline.txt
+[2] 154.220.3.115/logs/0422/whilebash.sh
+[3] http://154.220.3.115/logs/0422/srcu_gp_start_if_needed.txt
 
-configs tested: 43
-configs skipped: 3
+My analysis and debugging may not be correct, but the bug is easily
+reproducible.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Thanks
+Zhouyi
