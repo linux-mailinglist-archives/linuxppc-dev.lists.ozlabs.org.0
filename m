@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336EF6EBAF6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 21:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEABD6EBAFE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Apr 2023 21:29:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q3h7c1gCgz3cLF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Apr 2023 05:20:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q3hKw57qTz3cjK
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Apr 2023 05:29:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=tsV+XRz6;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=u1zJkinE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=joel@joelfernandes.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=joel@joelfernandes.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=tsV+XRz6;
+	dkim=pass (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=u1zJkinE;
 	dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q3h6m6RGdz3c3W
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Apr 2023 05:19:59 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-b95af16639cso4188390276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 12:19:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q3hK44lG7z2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Apr 2023 05:28:55 +1000 (AEST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-54f8e823e47so32558237b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Apr 2023 12:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1682191195; x=1684783195;
+        d=joelfernandes.org; s=google; t=1682191732; x=1684783732;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3OHJY4Fkh+i9IKg2K8qTc2zv9H9+ffmQTlvrABmh8bQ=;
-        b=tsV+XRz6vc6v28gtdYF8Gj99Qpo+XphroXPdLWtFBNnpBNNol6ARzQFBZAJLZYUc/9
-         mVicFywL0vgU7dZHJJ8b286loaHazmcmDh1GCUuCP+U/tei92lcLvifueeydbAcr5m0C
-         xE0xNy4X8A3TGTFVu+7F/jnmN9ZU+YHAPlh18=
+        bh=sCriSCxRgt6c54/aZMrPhGXLFhCTM5p0XMg6TzpIhbY=;
+        b=u1zJkinE0WZES7ZbULFAq8kl4b17EZY5F1OHn0mudgK6svMvuoOCAYesMwKC6SOxR7
+         JDAlHJI0vNv/xQBkPEsV7b0wSR/161efkefxsl/9owctBXvtKBYROtkl5gA+IWb7mLd9
+         G7hUvEo28+bNXV7BGpirnlPB56iw0AJ+DtUvI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682191195; x=1684783195;
+        d=1e100.net; s=20221208; t=1682191732; x=1684783732;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3OHJY4Fkh+i9IKg2K8qTc2zv9H9+ffmQTlvrABmh8bQ=;
-        b=DQAl7bSvEbAUBR9gcMu2V9VJEu8JZgykZ/aryMYFB1I9ip5pBrvPcr2wDza6S9CKda
-         t3w+mVvuf5V0+okagkDXrUXWE/ILbjcFobRV4sPNaeZKALqdb6JLDaEc/QcZClem32PL
-         EIvWoMxhIgZobfGsqwnr3qwmEPEL3j1axr2RNMdkjNgryVsOA0h3FhVF7iLf106Lf5Fq
-         zw3fgmIp4oRXuJYNlysdqkXxk1i7pkru9U3fv7ENRMyGXdfH3u1QMBRmLvDM35RU7Emu
-         da8mayHefruB7GhhvTlUTojYmeMaE2LJBK5q6Xom0LdmnvtYIFC0iDnOKPIrTxHZfqmv
-         +w7w==
-X-Gm-Message-State: AAQBX9eb2XZ7BktZaK7OvKnBsdcQC/QE691Za8a94usDqLJToABv6SCI
-	zoe75+82j6n8s8Pk57FyX6BJq5mELx8fqRFFSb1B/g==
-X-Google-Smtp-Source: AKy350abbGfzNu9Ezn4OMBp5YhNGQ7AC6quo9KEVhw/AIwmIzl2/hq5vRDRnt/Z4h6Ejw/51Vx77DKi3Wrd7Zr6TarY=
-X-Received: by 2002:a81:6604:0:b0:54f:5419:2fa4 with SMTP id
- a4-20020a816604000000b0054f54192fa4mr4608890ywc.50.1682191194837; Sat, 22 Apr
- 2023 12:19:54 -0700 (PDT)
+        bh=sCriSCxRgt6c54/aZMrPhGXLFhCTM5p0XMg6TzpIhbY=;
+        b=F9qpMmOefoYnWXcxvr/sy6Bx/UN2tqUN5rX9/M4/mO9MiU+r104Z84fw2npCO01fdI
+         pLyTG7/FNCpjYfeSzfufEamVDLC3lZ38ckMrz+5c9hL4Sujhq+vzvDDPYXdzyqYHyk9j
+         XLyB2AIVdJPDBlEF622PjfQSWwTOFOyXjBrMvrs3F+RXpUfTu8O4ZCdIhdOTWHCVN0ot
+         3wwM9wXZtXuh/eXL6VnGox2h3K3LyB1WQVaJoC92EwBmjUJLvzsDrn32Hl3TvIZEUj2A
+         4LhlJGchcR7tDgNsRHEpHt3002g6h7va00K2gL0unehQ83UBX7OVB/0INguOKgYrySSr
+         D7rA==
+X-Gm-Message-State: AAQBX9e+cXBqZoW62g8eXOpl+bHETKL/I2ksjCXIY7kXrErzC6OmVQ2E
+	oriBawpNX+/5ilKRo+Ly+rQ9JnuA4wfhDJTdofvuag==
+X-Google-Smtp-Source: AKy350YU3Dafxewi46eez9uCVfmHiwtrwjvUGKGw+0XUG+JvN/TpIgW8Bm/wSKo8AdnttnoFwBOUAc+u40ckO2Ik3x8=
+X-Received: by 2002:a0d:c4c3:0:b0:552:d36e:e6db with SMTP id
+ g186-20020a0dc4c3000000b00552d36ee6dbmr4261843ywd.6.1682191732207; Sat, 22
+ Apr 2023 12:28:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
 In-Reply-To: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
 From: Joel Fernandes <joel@joelfernandes.org>
-Date: Sat, 22 Apr 2023 21:19:41 +0200
-Message-ID: <CAEXW_YQCugPs1bquaA4ZLdsM4S3hWv9OMNTt80tSvjCO0LwiHg@mail.gmail.com>
+Date: Sat, 22 Apr 2023 21:28:39 +0200
+Message-ID: <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
 Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
 To: Zhouyi Zhou <zhouzhouyi@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -75,8 +75,6 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: "Paul E. McKenney" <paulmck@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
-
-Hi Zhouyi,
 
 On Sat, Apr 22, 2023 at 2:47=E2=80=AFPM Zhouyi Zhou <zhouzhouyi@gmail.com> =
 wrote:
@@ -133,35 +131,15 @@ c/0x170
 > My analysis and debugging may not be correct, but the bug is easily
 > reproducible.
 
-Could you provide the full kernel log? It is not clear exactly from
-your attachments, but I think this is a stack overflow issue as
-implied by the mention of __stack_chk_fail. One trick might be to turn
-on any available stack debug kernel config options, or check the
-kernel logs for any messages related to shortage of remaining stack
-space.
-
-Additionally, you could also find out where the kernel crash happened
-in C code following the below notes [1] I wrote (see section "Figuring
-out where kernel crashes happen in C code"). The notes are
-x86-specific but should be generally applicable (In the off chance
-you'd like to improve the notes, feel free to share them ;-)).
-
-Lastly, is it a specific kernel release from which you start seeing
-this issue? You should try git bisect if it is easily reproducible in
-a newer release, but goes away in an older one.
-
-I will also join you in your debug efforts soon though I am currently
-in between conferences.
-
-[1] https://gist.github.com/joelagnel/ae15c404facee0eb3ebb8aff0e996a68
+If this is a bug in the stack smashing protection as you seem to hint,
+I wonder if you see the issue with a specific gcc version and is a
+compiler-specific issue. It's hard to say, but considering this I
+think it's important for you to mention the compiler version in your
+report (along with kernel version, kernel logs etc.)
 
 thanks,
 
+- Joel
+
+
  - Joel
-
-
-
-
->
-> Thanks
-> Zhouyi
