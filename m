@@ -2,35 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB806ED38A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 19:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C6A6ED4B3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 20:48:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4sgG5XPlz3fSN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 03:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4vKb3MMQz3f7r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 04:48:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PnTYr+Ut;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4sfl1Jqtz3bW0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 03:33:16 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 33OHT2fU012355;
-	Mon, 24 Apr 2023 12:29:03 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 33OHT1xM012351;
-	Mon, 24 Apr 2023 12:29:01 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Mon, 24 Apr 2023 12:29:00 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
-Message-ID: <20230424172900.GR19790@gate.crashing.org>
-References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com> <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com> <ZEXOMC2casTlobE1@boqun-archlinux> <87fs8pzalj.fsf@mail.concordia> <20230424151351.GP19790@gate.crashing.org> <ZEagN1jJwg+rUzX4@boqun-archlinux>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZEagN1jJwg+rUzX4@boqun-archlinux>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PnTYr+Ut;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4vJg4Gmhz3bfw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 04:47:46 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33OIjWt3005208;
+	Mon, 24 Apr 2023 18:47:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=PU0yTWnCifsPQLIhuXxRyUNG/QoJ66lSgetgnDeM0x0=;
+ b=PnTYr+Ut4Lq9NoIL5qtGqNXEJPagn/Bvf6+H0Uddxxr/+dWY2ihQ5uc6axzg0txrZT3w
+ kAZd7fJ0XOjIGWqpPhLU7PzYhLp1ocWqqc0hTdJFthWG9enyCbs7Anly4nXueMbinun+
+ XHPBHsuR1Uh14D8MTIuyKN2FD0lCNkppEgY8hzWFXQ2wKNIKYJs0AkjgLzVTiSk60MuS
+ HlzA0E4iGfVqyn9UXYPI8qFU341VMjjdk4R8HkB1jgIYAs7JTF5ChSL7COZRQU5Xwzbb
+ awuQKdV/6KEISHjfoue8qzhuYeMBiTmDRWSDhhwSno3k9+L+WkgaIba+rbEUfFy0WSCn Cw== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q5w76cj3g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Apr 2023 18:47:32 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33OIBntJ014357;
+	Mon, 24 Apr 2023 18:47:31 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3q4777mge5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Apr 2023 18:47:30 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33OIlTk020840748
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Apr 2023 18:47:29 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21FAC5805A;
+	Mon, 24 Apr 2023 18:47:29 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E702A58051;
+	Mon, 24 Apr 2023 18:47:28 +0000 (GMT)
+Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Apr 2023 18:47:28 +0000 (GMT)
+From: Danny Tsen <dtsen@linux.ibm.com>
+To: linux-crypto@vger.kernel.org
+Subject: [PATCH 0/5] crypto: Accelerated Chacha20/Poly1305 implementation
+Date: Mon, 24 Apr 2023 14:47:21 -0400
+Message-Id: <20230424184726.2091-1-dtsen@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: I01tP0s8TSId33nmyRRvCVMuahHNnH4n
+X-Proofpoint-ORIG-GUID: I01tP0s8TSId33nmyRRvCVMuahHNnH4n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-24_11,2023-04-21_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=536
+ phishscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2304240167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,37 +86,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, Zhouyi Zhou <zhouzhouyi@gmail.com>, Joel Fernandes <joel@joelfernandes.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 24, 2023 at 08:28:55AM -0700, Boqun Feng wrote:
-> On Mon, Apr 24, 2023 at 10:13:51AM -0500, Segher Boessenkool wrote:
-> > At what points can r13 change?  Only when some particular functions are
-> > called?
-> 
-> r13 is the local paca:
-> 
-> 	register struct paca_struct *local_paca asm("r13");
-> 
-> , which is a pointer to percpu data.
+This patch series provide an accelerated/optimized Chacha20 and Poly1305
+implementation for Power10 or later CPU (ppc64le).  This module
+implements algorithm specified in RFC7539.  The implementation
+provides 3.5X better performance than the baseline for Chacha20 and
+Poly1305 individually and 1.5X improvement for Chacha20/Poly1305
+operation.
 
-Yes, it is a global register variable.
-
-> So if a task schedule from one CPU to anotehr CPU, the value gets
-> changed.
-
-But the compiler does not see that something else changes local_paca (or
-r13 some other way, via assembler code perhaps)?  Or is there a compiler
-bug?
-
-If the latter is true:
-
-Can you make a reproducer and open a GCC PR?  <https://gcc.gnu.org/bugs/>
-for how to get started doing that.  We need *exact* code that shows the
-problem, together with a compiler command line.  So that we can
-reproduce the problem.  That is step 0 in figuring out what is going on,
-and then maybe fixing the problem :-)
+This patch has been tested with the kernel crypto module tcrypt.ko and
+has passed the selftest.  The patch is also tested with
+CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
 
 
-Segher
+Danny Tsen (5):
+  An optimized Chacha20 implementation with 8-way unrolling for ppc64le.
+  Glue code for optmized Chacha20 implementation for ppc64le.
+  An optimized Poly1305 implementation with 4-way unrolling for ppc64le.
+  Glue code for optmized Poly1305 implementation for ppc64le.
+  Update Kconfig and Makefile.
+
+ arch/powerpc/crypto/Kconfig             |   26 +
+ arch/powerpc/crypto/Makefile            |    4 +
+ arch/powerpc/crypto/chacha-p10-glue.c   |  223 +++++
+ arch/powerpc/crypto/chacha-p10le-8x.S   |  842 ++++++++++++++++++
+ arch/powerpc/crypto/poly1305-p10-glue.c |  186 ++++
+ arch/powerpc/crypto/poly1305-p10le_64.S | 1075 +++++++++++++++++++++++
+ 6 files changed, 2356 insertions(+)
+ create mode 100644 arch/powerpc/crypto/chacha-p10-glue.c
+ create mode 100644 arch/powerpc/crypto/chacha-p10le-8x.S
+ create mode 100644 arch/powerpc/crypto/poly1305-p10-glue.c
+ create mode 100644 arch/powerpc/crypto/poly1305-p10le_64.S
+
+-- 
+2.31.1
+
