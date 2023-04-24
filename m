@@ -2,74 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9427A6EC948
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 11:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6545D6EC96A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 11:51:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4gGT3DLDz3cCy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 19:45:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4gPX1Zk9z3f5Q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 19:51:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=fI/x9hKE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y863Qaep;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.20; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=fI/x9hKE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y863Qaep;
 	dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4gFY6mGNz3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 19:44:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1682329429; i=deller@gmx.de;
-	bh=FHjYBg4NiAOiwz2WyLL8oych2ductNrKsA7W77JnpvY=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fI/x9hKE8J/nrtLbh0AvQAHxcyTyCKmPFoEwfLiantaRQ+lRbnj/8zSJCBiZjOUMP
-	 DuRZnHHmLFiB2LXxCkDDm0lD/3SG+nzf06WObmafSFTCxTGhlSUJ9+fG3R+aQe7JRk
-	 uqF4PdjS394lFaY16k7DJ9L4gMR2JnGEt80UuH7/xmHAP6jo6X5Xw8S4RdejVANwQQ
-	 A0QK5p9GU3vc5rOtR8+VuKQJBN8sg67PH4dpWpfmD1gkn/P/BfHYLCd2dUXdWBEL5O
-	 VBtY/MNLNWaNNv9fFW7pqSxVt/HDVdS33P36BaZ/A4a6PjITXiyOazOR+aqcPMGhkH
-	 oks1hKbTwKm+A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.153.242]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mr9Bu-1qboPL3G6Q-00oHvR; Mon, 24
- Apr 2023 11:43:49 +0200
-Message-ID: <8027fd8f-6e99-aae7-85a1-3be4c9fac8a0@gmx.de>
-Date: Mon, 24 Apr 2023 11:43:48 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4gNf34Fpz3bh3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 19:50:24 +1000 (AEST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-94f1a6e66c9so747309566b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 02:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682329818; x=1684921818;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9Is2thnxMX0NfS0ATfXggVukIP4xt06PqoAtrJstbVw=;
+        b=Y863QaepaDFc/zBRlmtqWeoRVTVKKterbJixxWjJYjqZD4Oo5MOaqD2gUS2FjoyFcv
+         oOvOhGMxHoosA3Ja91da4xlxUK+eGWEqATjBaM/1ScTDlK1xQR03BfO3R/XIqW5a3G6d
+         XgsRpbBnJywGLuG0H1K8cp8TR/ojcU7g5jMHMmdOsp1rUDr2qFyCtuOq+Fb5/YhJL5L7
+         8JKWOiqVL4DfyDFbfvYzBAvMyClfWeapNecihQbJ0pHJ4Jm5c3QIvsNWiwSygrRGyZUi
+         OdvcCMf87omaBkOx5i/vXXpJCKtMYqNX370sA5eJG56xieJ4RhcHN/SWlGZFrcQA4RvD
+         /+cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682329818; x=1684921818;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9Is2thnxMX0NfS0ATfXggVukIP4xt06PqoAtrJstbVw=;
+        b=UsS+Wbd0CSh/QAZx/ZC6B1/qSkLh2LrgdbudyiwIxEwTwXe8DLAEEIWbzjH/Fd3O21
+         wXheljZOEshpmG6zxtMOwobI63t66gfZQ1xIoAxBA4X0V8R0TXGeXUlQcDSw0luKgZFe
+         A6I+rqMN9Ei36ftCDHaSzRoISIIgR0tf55U6bZ2LW8MpROIn91LX2FHJt85+kp8i01Dt
+         6gf5OZH6aqr8fHYPPJUCbu65idSRT7OSIowfsrbAoF9gTsxYwckfJt6kQamA9MJ3G8kQ
+         f7m1NobxW0v9i9fxbksllWQW8xt/T6L0F8D79r0GV/rm67H3S/RLgN3U/J0ZrsC+MPd/
+         hcYA==
+X-Gm-Message-State: AAQBX9ff3gXi4ChVCdvC1GPHgO41bdCcnpGZayhWmlPme0lB7/bGZyNi
+	qIcHkogimvrXRROawtbpwxQgHYP3gxIlhBbvlfw=
+X-Google-Smtp-Source: AKy350a8PgtY0Rv9tw+XuKO2+y8O6JuUL4PcYTcSolhIOBGMSaCPgR6j0orK/qM1thAKjN0MD/AWnbDXvNKqyHQ0VBM=
+X-Received: by 2002:a17:906:8a44:b0:94f:553:6fd6 with SMTP id
+ gx4-20020a1709068a4400b0094f05536fd6mr9465953ejc.24.1682329818094; Mon, 24
+ Apr 2023 02:50:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 0/3] fbdev: Set missing owner fields in fb_ops
-Content-Language: en-US
-To: Thomas Zimmermann <tzimmermann@suse.de>, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, geert@linux-m68k.org
-References: <20230424085825.18287-1-tzimmermann@suse.de>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230424085825.18287-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:43f3kKWCK86xmG24dJC4dDpRYwSwsqvLizGYnCgPkKnX1Sb4VLQ
- iMOlKOWhPrx1piaDxup49hJej0rDnfB59oa08xyxTbuxuIkoP6aJj3VQQd+p5KteZpouVOx
- 3WDisypXG6Rua3Soolst+8QjhMSWXWUrM9hiplejTPf/2IUWgOgsQ7cq86sYKe7K8uUk0ce
- Ip0fwALjlYjbr5r+0F5RQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1WWx4g9Ba3M=;bwBSUAj+ZXwoKoEmLNzkH2p6dzv
- TuleNe3F64OudF81OhNYHB6wpej9TYJPm6oML7hNpoj/HaTapwkLb3AgfO6b+MLU9Kvu8s5Ev
- 1J9/liOcr73nu6JD36kyMP5/GtP1omrL9FQcDjTdmD/rMGAlURV9LEMGUbKllkrYYctchG6xk
- +yNbMyLT/hBLeCsuhyvMVOYgblRzq550esbgvl4HheG8YWb78NR8FB3yP8W7ko2BNY2LG+pL1
- ai9J3mAqOTns2WLN8Oi5+24iznNZMEqVQTMydLVV+ZnfFsI/zvy+fc5QDPaq0wB7/90wB7hkP
- kNGPo2ii4XJy1BEAp5Cxb70NWbVTKveMGGVwRSJg0qdmxwZz1VXjo7o9BeNXt5AF68FnPpaXE
- 4jBKrId/dcgJJ9fVQ2rYya4AWYB67GITH3vUBwfFXQouyTDJFZh8tqba7cAxADzOADP/GVMC5
- fj9iuH7E1wGlq6mZneKuQ9m2FNu3ryvzT3SSc28biaATpzK8hpzBKcTRD76H7NyavbOOQmI7s
- v628RfbstuNW9q+sB3bmEgaaFmocRQERL2o5NbnLVzoam3MXyAS9J3kF1dWH5MW60uRMVxjXo
- 7N81mN5s+C5EEUi7/JRJXmB41+bW4Agz3o6q27QYQ8AZYRCZ13HYo1EdK3wsIZFsmgLRGxULE
- BjE1pj/5uJXUEd0aIRTv1pPb9j+UobcZVOt45AWTx+MoN9qpw24tOO0+L8U4ugAozGI/yTrB9
- 1vuw4mbXKv/KbOiKezQwuTCL85nRwwPNcn0tmuVnrii7iS97Nq0Xcs6eVHzmv1dZ+WeEo23hm
- vNWNYqrceYDF3FzCXZL0eAgFDQhZm86ZNHTTXxAj013EBL4YDoDodnx2ugIM2v3Nrula2HOcc
- EUwwATy4V56ZssoHRLCM1Ix13+bJUk4hYujdUwoIu/GYjeebMp8Q2i4CDjlKbeh+JUSgLqSRI
- u6zsqGIztDPJNR4SRmhhZC9ZlYQ=
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Mon, 24 Apr 2023 11:50:07 +0200
+Message-ID: <CAKXUXMziSWC9oGVQxCPs6U5GsnuA2KbKsobj1Feo_eNUn3e4dg@mail.gmail.com>
+Subject: In-flight collision: DRM_AMD_DC_DCN renaming
+To: Michael Ellerman <mpe@ellerman.id.au>, Harry Wentland <harry.wentland@amd.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	kernel-janitors <kernel-janitors@vger.kernel.org>, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,28 +74,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/24/23 10:58, Thomas Zimmermann wrote:
-> Set the owner field of various drivers' fb_ops instance. The
-> setting is required by fbcon, which acquires a reference on the
-> fbdev driver's module. Otherwise, users could attempt to unload
-> the module while it's still in use.
->
-> Thomas Zimmermann (3):
->    fbdev/68328fb: Init owner field of struct fb_ops
->    fbdev/ps3fb: Init owner field of struct fb_ops
->    fbdev/vfb: Init owner field of struct fb_ops
->
->   drivers/video/fbdev/68328fb.c | 1 +
->   drivers/video/fbdev/ps3fb.c   | 1 +
->   drivers/video/fbdev/vfb.c     | 1 +
->   3 files changed, 3 insertions(+)
->
+Dear Michael, dear Harry, dear Alex,
 
-Series applied.
+The commit 4652ae7a51b7 ("drm/amd/display: Rename DCN config to FP")
+renames config DRM_AMD_DC_DCN to config DRM_AMD_DC_FP. The concurrent
+commit 78f0929884d4 ("powerpc/64: Always build with 128-bit long
+double") overrides the renaming change for the select in config
+DRM_AMD_DC, and this leads to selecting the non-existent
+DRM_AMD_DC_DCN.
 
-Thank you!
-Helge
+It is easy to fix, adjust this one line to the renaming and 'select
+DRM_AMD_DC_FP' once both commits are merged. For now, I am just
+reporting to let you know; probably, it is best to get a quick fix-up
+patch with -rc2, once all the changes landed in -rc1.
+
+
+Best regards,
+
+Lukas
