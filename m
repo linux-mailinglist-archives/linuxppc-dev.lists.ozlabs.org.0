@@ -2,89 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8C46ED854
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 01:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93EF6ED8F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 01:48:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q515B2S4Yz3f7Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 09:08:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q51zH41jYz3cdr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 09:48:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PH0Ubasg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ff1GUy4S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PH0Ubasg;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ff1GUy4S;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q514G4qY3z30Qg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 09:07:26 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33ON6Vqq015808;
-	Mon, 24 Apr 2023 23:07:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fExAxKLVcSTqPhkI6VxZk6pSQLPZPhLetOrek+2+AFI=;
- b=PH0Ubasgb5J396r2jXQ4GFI6TODc/t0DJE76T6NzAUK9Ttt/Dll8H4RmUzN+WPE0To/L
- iao4FQBMujMCJ4baka4RzhjOKtfs6lMX/KTlRwCRoVPJqDOwTjPMXi4USmBvocC6spsO
- wkN/4VpuWosgOwgyxlPw/B7luMO+P7y+O4WzOEnlmL2MvJccml8aGzBwdHlT9WDiCMUS
- 7Iq9d/uaUJldxu1SnMiwi3nqs7pJAsmnTlwVQUT3+jqeTTQn6LaG41rra28eqP0/e0an
- IZJFVusgyaE4AdXpiHfJSfAFU6STdf5Kel6ch1i5SYAOrujLHXewozYGZwjcP8oMm3Hn dA== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q617dkp1u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Apr 2023 23:07:11 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33OMRbQb001323;
-	Mon, 24 Apr 2023 23:07:05 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3q4778ddx2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Apr 2023 23:07:05 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33ON74eT2818628
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Apr 2023 23:07:04 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C14D5806F;
-	Mon, 24 Apr 2023 23:07:04 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8987458067;
-	Mon, 24 Apr 2023 23:07:03 +0000 (GMT)
-Received: from [9.160.84.113] (unknown [9.160.84.113])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Apr 2023 23:07:03 +0000 (GMT)
-Message-ID: <a8239d13-a3ee-d6c6-13c5-7f668991489d@linux.ibm.com>
-Date: Mon, 24 Apr 2023 18:07:03 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q51yN0KMXz3bhC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 09:47:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682380044; x=1713916044;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=aK/On8LhJ5PZbxxIOlfLlJ0Lc3VgGWOJ7H6mrKcUX3I=;
+  b=ff1GUy4SwxP9tvZX/gRDdJvG93oaVfDX/jEEB2YkG08JVN08IbTK4lgf
+   C/0egPqIxXeNPLDFnhlxSM0j4gHm7UbMc5/aB18uEuF4UfRN2i3/MN0kd
+   PB2Uo+xex8BMWOdjUxUt61unMTDFlqlGcdsOpe8q4aLC59VDFVBMFYZpW
+   w5TFLXYKCVvibkQS5rLlBWMNZdfXBpIsdzLANvHkusrw/1GuAjSsBV8G9
+   R8jaRqlDQDB1Dav0y3SY0lyLTTfZuNVCUdN3Q8SOG5VIzzWzYbR1xL5/C
+   zNWBluWPz4XdsIvChYFl7YPwuzdGJjnIyxwlSpXQUB137pPbYTe6MUJGe
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="335499670"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="335499670"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 16:47:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="782611127"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="782611127"
+Received: from jsagoe-mobl1.amr.corp.intel.com (HELO [10.251.8.47]) ([10.251.8.47])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 16:47:13 -0700
+Message-ID: <97260e8b-1892-49a5-3792-0e3c28378fc0@linux.intel.com>
+Date: Mon, 24 Apr 2023 16:47:10 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH 1/5] An optimized Chacha20 implementation with 8-way
- unrolling for ppc64le.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.10.0
+Subject: Re: [PATCH v4 2/3] PCI/AER: Disable AER interrupt on suspend
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
+References: <20230424055249.460381-1-kai.heng.feng@canonical.com>
+ <20230424055249.460381-2-kai.heng.feng@canonical.com>
 Content-Language: en-US
-To: "Elliott, Robert (Servers)" <elliott@hpe.com>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
-References: <20230424184726.2091-1-dtsen@linux.ibm.com>
- <20230424184726.2091-2-dtsen@linux.ibm.com>
- <MW5PR84MB1842E9D9F596D3928B415DBAAB679@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-From: Danny Tsen <dtsen@linux.ibm.com>
-In-Reply-To: <MW5PR84MB1842E9D9F596D3928B415DBAAB679@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20230424055249.460381-2-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3ToIx2cMVqsNRfwcrV9RUxtMw79fqZgI
-X-Proofpoint-GUID: 3ToIx2cMVqsNRfwcrV9RUxtMw79fqZgI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-24_11,2023-04-21_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- phishscore=0 adultscore=0 mlxlogscore=694 impostorscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304240209
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,16 +70,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "dtsen@us.ibm.com" <dtsen@us.ibm.com>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "appro@cryptogams.org" <appro@cryptogams.org>, "ltcgcw@linux.vnet.ibm.com" <ltcgcw@linux.vnet.ibm.com>, "leitao@debian.org" <leitao@debian.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: mika.westerberg@linux.intel.com, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is recommended template to use for IBM copyright.
 
-Thanks.
 
--Danny
+On 4/23/23 10:52 PM, Kai-Heng Feng wrote:
+> PCIe service that shares IRQ with PME may cause spurious wakeup on
+> system suspend.
+> 
+> PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
+> that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
+> (D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
+> much here to disable AER during system suspend.
+> 
+> This is very similar to previous attempts to suspend AER and DPC [1],
+> but with a different reason.
+> 
+> [1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+> 
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
 
-On 4/24/23 3:40 PM, Elliott, Robert (Servers) wrote:
->> +# Copyright 2023- IBM Inc. All rights reserved
-> I don't think any such entity exists - you probably mean IBM Corporation.
+IIUC, you encounter AER errors during the suspend/resume process, which
+results in AER IRQ. Because AER and PME share an IRQ, it is regarded as a
+spurious wake-up IRQ. So to fix it, you want to disable AER reporting,
+right?
+
+It looks like it is harmless to disable the AER during the suspend/resume
+path. But, I am wondering why we get these errors? Did you check what errors
+you get during the suspend/resume path? Are these errors valid?
+
+
+>  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 1420e1f27105..9c07fdbeb52d 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
+>  	return 0;
+>  }
+>  
+> +static int aer_suspend(struct pcie_device *dev)
+> +{
+> +	struct aer_rpc *rpc = get_service_data(dev);
+> +	struct pci_dev *pdev = rpc->rpd;
+> +
+> +	aer_disable_irq(pdev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int aer_resume(struct pcie_device *dev)
+> +{
+> +	struct aer_rpc *rpc = get_service_data(dev);
+> +	struct pci_dev *pdev = rpc->rpd;
+> +
+> +	aer_enable_irq(pdev);
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+>   * @dev: pointer to Root Port, RCEC, or RCiEP
+> @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver = {
+>  	.service	= PCIE_PORT_SERVICE_AER,
+>  
+>  	.probe		= aer_probe,
+> +	.suspend	= aer_suspend,
+> +	.resume		= aer_resume,
+>  	.remove		= aer_remove,
+>  };
+>  
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
