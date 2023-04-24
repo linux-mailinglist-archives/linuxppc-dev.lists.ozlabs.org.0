@@ -1,58 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8206EC834
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 10:59:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34EFB6EC83F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 11:02:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4fFb3RLsz3fDd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 18:59:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4fJp0pC0z3fZQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 19:02:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=sTHEbv0Q;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=v8+j+2ry;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=sjYBGC5t;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XCAwZFYn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=sTHEbv0Q;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=v8+j+2ry;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=sjYBGC5t;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XCAwZFYn;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4fDl3BH7z3bWw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 18:58:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4fDq1Zfvz3cLC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 18:58:35 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7513121A14;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B7EFD1FD7B;
 	Mon, 24 Apr 2023 08:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1682326707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+XJKKs849sQThStkQBOzc9zUGVmnw3q29MM/bZVqjno=;
-	b=sTHEbv0Qsj31NwYUZzEROdQpCSS5LV/X6EuZYOl8EJ/bnEQLJc2J8oV6QktbiKtYcaJuuu
-	bBnHLvNYCglfbu5XkDrmY/YYnMwCjos6qAXMMu6vvsD24subW2YeAo3U/UBSrLftjgjYjW
-	711In0IAbrsSC3ikIF9+94JqNbFPsPo=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2KsN1V3LZEtdFqq36eDVk4nfUTrXtItgjE/Q0UzO78c=;
+	b=sjYBGC5tRcaRbxsA0CbMhwi5UJ/73GQmAvfX+FQdgdg6yjeUA7hpEc3l3aU72HBjLNMdsk
+	kW0o3nstNkyPoUv1p+3/D9g+HJLRiC03MzUJDvFnrpA0sG30UwZm92GZIBFkX3rSzz1hcM
+	0mTidvlMkJONGtc3IwswNns4HLZxurE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1682326707;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+XJKKs849sQThStkQBOzc9zUGVmnw3q29MM/bZVqjno=;
-	b=v8+j+2rycJN/3aArKwUvpMuDbTcryq8BQGXsbwDQWcVhH5EDTbrMI2eMMxAJgCq6OQwUBV
-	jxp5mg9z0y66loDQ==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2KsN1V3LZEtdFqq36eDVk4nfUTrXtItgjE/Q0UzO78c=;
+	b=XCAwZFYnqzDJjsVExF5zNxPQcqXS00+Je86sHFdRXlHUJ9zCjrFRjtCAxO4s29ZqpCxyQe
+	j/gs37RoafugclDA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 39AB513780;
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 793141391A;
 	Mon, 24 Apr 2023 08:58:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id t0TQDLNERmQneQAAMHmgww
+	id CI+wHLNERmQneQAAMHmgww
 	(envelope-from <tzimmermann@suse.de>); Mon, 24 Apr 2023 08:58:27 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -60,10 +64,12 @@ To: deller@gmx.de,
 	npiggin@gmail.com,
 	christophe.leroy@csgroup.eu,
 	geert@linux-m68k.org
-Subject: [PATCH 0/3] fbdev: Set missing owner fields in fb_ops
-Date: Mon, 24 Apr 2023 10:58:22 +0200
-Message-Id: <20230424085825.18287-1-tzimmermann@suse.de>
+Subject: [PATCH 1/3] fbdev/68328fb: Init owner field of struct fb_ops
+Date: Mon, 24 Apr 2023 10:58:23 +0200
+Message-Id: <20230424085825.18287-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230424085825.18287-1-tzimmermann@suse.de>
+References: <20230424085825.18287-1-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,21 +87,26 @@ Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas Zimmerman
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Set the owner field of various drivers' fb_ops instance. The
-setting is required by fbcon, which acquires a reference on the
-fbdev driver's module. Otherwise, users could attempt to unload
-the module while it's still in use.
+Initialize the owner field of struct fb_ops. Required to prevent
+module unloading while the driver is in use.
 
-Thomas Zimmermann (3):
-  fbdev/68328fb: Init owner field of struct fb_ops
-  fbdev/ps3fb: Init owner field of struct fb_ops
-  fbdev/vfb: Init owner field of struct fb_ops
-
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
  drivers/video/fbdev/68328fb.c | 1 +
- drivers/video/fbdev/ps3fb.c   | 1 +
- drivers/video/fbdev/vfb.c     | 1 +
- 3 files changed, 3 insertions(+)
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/video/fbdev/68328fb.c b/drivers/video/fbdev/68328fb.c
+index ef49cdfb7dd2..07d6e8dc686b 100644
+--- a/drivers/video/fbdev/68328fb.c
++++ b/drivers/video/fbdev/68328fb.c
+@@ -94,6 +94,7 @@ static int mc68x328fb_pan_display(struct fb_var_screeninfo *var,
+ static int mc68x328fb_mmap(struct fb_info *info, struct vm_area_struct *vma);
+ 
+ static const struct fb_ops mc68x328fb_ops = {
++	.owner		= THIS_MODULE,
+ 	.fb_check_var	= mc68x328fb_check_var,
+ 	.fb_set_par	= mc68x328fb_set_par,
+ 	.fb_setcolreg	= mc68x328fb_setcolreg,
 -- 
 2.40.0
 
