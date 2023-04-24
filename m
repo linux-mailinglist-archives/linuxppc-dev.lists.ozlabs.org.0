@@ -2,69 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3BD6ED7A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 00:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8C46ED854
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 01:08:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4zth4q8fz3chy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 08:14:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q515B2S4Yz3f7Q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 09:08:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lgW/07YT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PH0Ubasg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lgW/07YT;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PH0Ubasg;
 	dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4zsr2Kb4z30Kr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 08:13:18 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-246fd87a124so4469423a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 15:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682374394; x=1684966394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z9rvKKuJVj1CnXeKwNCCdeFPzJf6ElUXCptJ/Xncu1o=;
-        b=lgW/07YTzPgxutnXZ8yZ9NDI2sbzEYZRwHOtg5AvLIGZaO42Hme6ZIPkRlXSGKXu4L
-         tSsp1nw+IYnBdrFXuEqruxS15GqiOnl2olmJwMx1T2EIizWecMs43X5AvjAQFchtsZhX
-         Uc3vILp44cAhwxN3xMRwpQPkuMRAxD4/iyKkPDuOJoClMQ6jTM41zvFrpsRbu7CCpq7N
-         OhpBgr5rEwrEdi45ul8uj517SM+wEyjtp6Llk6aV5P3GoaSo7caowbk3fDg4JIpqkJig
-         J41g5iMu/sp3yTwV3tCJI3ftaUZvtmq2t8zNs+oOr4EIKq5XmlYWq6Vx6FKKAQtPeRYT
-         qTZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682374394; x=1684966394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z9rvKKuJVj1CnXeKwNCCdeFPzJf6ElUXCptJ/Xncu1o=;
-        b=hdyMLqlew1H/QrIQz+2CTsdCwNdpEEYZWilZheQdbrs2LJWbgwxXbPd/0OS9besWhV
-         9FkV6nut9xAtX8vVhxbL40VppKWWd5oftZVoEvLTfCTsuMelgQ3Ttx7qG75ILQi9+ge/
-         9kLZ1LrV7aLDXfvGHEMNNF/ZHfJjN0qrfNEBMAHWA0vtECLOVPWgYc288CL+wblCl8xp
-         VRXnUhtyjNCoPesxr7NQG9hxBNbPn2dwGtQd6m1w3zccQ8qfy5VKTHP3yYzZKO1bLcP3
-         pEqHG4mL9cdxQI/qpKRfzPgKb3tDfq5QKqknffZ4yLo6DIkp0CnJMRRmCVWPoe0piVGl
-         hVeQ==
-X-Gm-Message-State: AC+VfDwFmDBIwedrVBsOPxqLIdfAni4LNaNp7x3At+PdTQnw+td0zmtv
-	d3jN2JdL7CPmsvgtLDuQ7lbwJbSGSXZyUpLFq+s=
-X-Google-Smtp-Source: ACHHUZ7NDc8ftZgKp3D6+xjLBB5r4jOIbLW9ESTjJBqzh7b7RRVFRxjd4F4qyRKzKqNsTXfebgAdu1O2qNo8hfgzOKg=
-X-Received: by 2002:a17:90b:a49:b0:24b:d66c:523c with SMTP id
- gw9-20020a17090b0a4900b0024bd66c523cmr1346155pjb.9.1682374394571; Mon, 24 Apr
- 2023 15:13:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q514G4qY3z30Qg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 09:07:26 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33ON6Vqq015808;
+	Mon, 24 Apr 2023 23:07:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=fExAxKLVcSTqPhkI6VxZk6pSQLPZPhLetOrek+2+AFI=;
+ b=PH0Ubasgb5J396r2jXQ4GFI6TODc/t0DJE76T6NzAUK9Ttt/Dll8H4RmUzN+WPE0To/L
+ iao4FQBMujMCJ4baka4RzhjOKtfs6lMX/KTlRwCRoVPJqDOwTjPMXi4USmBvocC6spsO
+ wkN/4VpuWosgOwgyxlPw/B7luMO+P7y+O4WzOEnlmL2MvJccml8aGzBwdHlT9WDiCMUS
+ 7Iq9d/uaUJldxu1SnMiwi3nqs7pJAsmnTlwVQUT3+jqeTTQn6LaG41rra28eqP0/e0an
+ IZJFVusgyaE4AdXpiHfJSfAFU6STdf5Kel6ch1i5SYAOrujLHXewozYGZwjcP8oMm3Hn dA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q617dkp1u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Apr 2023 23:07:11 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33OMRbQb001323;
+	Mon, 24 Apr 2023 23:07:05 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3q4778ddx2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Apr 2023 23:07:05 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33ON74eT2818628
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Apr 2023 23:07:04 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C14D5806F;
+	Mon, 24 Apr 2023 23:07:04 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8987458067;
+	Mon, 24 Apr 2023 23:07:03 +0000 (GMT)
+Received: from [9.160.84.113] (unknown [9.160.84.113])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Apr 2023 23:07:03 +0000 (GMT)
+Message-ID: <a8239d13-a3ee-d6c6-13c5-7f668991489d@linux.ibm.com>
+Date: Mon, 24 Apr 2023 18:07:03 -0500
 MIME-Version: 1.0
-References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
- <87cz3tylwx.fsf@mail.concordia>
-In-Reply-To: <87cz3tylwx.fsf@mail.concordia>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Tue, 25 Apr 2023 06:13:03 +0800
-Message-ID: <CAABZP2zk2kpgocnGk_on3r3awyQcVyEtBQsby=brW=ciFSCYjA@mail.gmail.com>
-Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH 1/5] An optimized Chacha20 implementation with 8-way
+ unrolling for ppc64le.
+Content-Language: en-US
+To: "Elliott, Robert (Servers)" <elliott@hpe.com>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
+References: <20230424184726.2091-1-dtsen@linux.ibm.com>
+ <20230424184726.2091-2-dtsen@linux.ibm.com>
+ <MW5PR84MB1842E9D9F596D3928B415DBAAB679@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
+From: Danny Tsen <dtsen@linux.ibm.com>
+In-Reply-To: <MW5PR84MB1842E9D9F596D3928B415DBAAB679@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3ToIx2cMVqsNRfwcrV9RUxtMw79fqZgI
+X-Proofpoint-GUID: 3ToIx2cMVqsNRfwcrV9RUxtMw79fqZgI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-24_11,2023-04-21_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ phishscore=0 adultscore=0 mlxlogscore=694 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304240209
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,44 +96,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>
+Cc: "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "dtsen@us.ibm.com" <dtsen@us.ibm.com>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "appro@cryptogams.org" <appro@cryptogams.org>, "ltcgcw@linux.vnet.ibm.com" <ltcgcw@linux.vnet.ibm.com>, "leitao@debian.org" <leitao@debian.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 25, 2023 at 6:07=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
->
-> Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
-> > Dear PowerPC and RCU developers:
-> > During the RCU torture test on mainline (on the VM of Opensource Lab
-> > of Oregon State University), SRCU-P failed with __stack_chk_fail:
-> ...
-> > by debugging, I see the r10 is assigned with r13 on c000000000226eb4,
-> > but if there is a context-switch before c000000000226edc, a false
-> > positive will be reported.
-> >
-> > [1] http://154.220.3.115/logs/0422/configformainline.txt
->
-> Says:
->
-> CONFIG_CC_VERSION_TEXT=3D"powerpc64le-linux-gnu-gcc-10 (Ubuntu 10.4.0-4ub=
-untu1~22.04) 10.4.0"
->
-> Do you see the same issue with a newer GCC?
-I would like to try that in the newest GCC ;-), please give me about a
-day's time because I am going to compile the gcc ;-)
->
-> There's 12.2.0 here:
->   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/12=
-.2.0/
->   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/ppc64le/1=
-2.2.0/
->
-> Or if you can build in a Fedora 38 system or container, it has GCC 13.
-OK, I will try it or similar
+This is recommended template to use for IBM copyright.
 
-This is a very learningful process for me, thank you all ;-)
+Thanks.
 
-Cheers
->
-> cheers
+-Danny
+
+On 4/24/23 3:40 PM, Elliott, Robert (Servers) wrote:
+>> +# Copyright 2023- IBM Inc. All rights reserved
+> I don't think any such entity exists - you probably mean IBM Corporation.
