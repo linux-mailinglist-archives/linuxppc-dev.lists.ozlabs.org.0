@@ -2,105 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62346EBEC8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Apr 2023 12:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B46F6EC348
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 02:34:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q44wl47Z5z3fXt
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Apr 2023 20:57:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q4R2y4Zzcz3f7M
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Apr 2023 10:34:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YMlUmVB9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YdYZbtba;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q44q91761z3f7K
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Apr 2023 20:52:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b; helo=mail-qk1-x72b.google.com; envelope-from=boqun.feng@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YMlUmVB9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YdYZbtba;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4Q44q90fjsz4xFh
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Apr 2023 20:52:53 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4Q44q90c85z4xKS; Sun, 23 Apr 2023 20:52:53 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YMlUmVB9;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Q44q85Smmz4xFh
-	for <linuxppc-dev@ozlabs.org>; Sun, 23 Apr 2023 20:52:52 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33NARP2i031343;
-	Sun, 23 Apr 2023 10:52:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=sr9HkYOgW2s5m++cs6x6XTGC53BWeHi2/KRxTjayfyI=;
- b=YMlUmVB9WauyqGsOPSjutVzfytBcIdv3brjSmc3xVhQ672VN9wGexF+aTB9PQnujBj0F
- 8tKy2W50Vx3FryYENKYjg7xGSK7Gm5hHhGkoyvaFumdHhGMLXeM+oEjGhcJJ061946Yp
- EkkDzDawf3jalGnXQMpb/TukUswsSAXAijo61GTQiF4h5/8CAj9UfpTOlMozSrwrRW02
- 0CrEbpC0AQucAo/pbCxmWSKsHCyZY0Fttsrt/ZIfoKdQuHIJu+mUSUt4/d6LcYMf3Yf4
- XxYZdfpjvCH0y3zXeL9aJeP2j9wtcTsWtK8UtBsU5FLQXN3NzuurZVX5UUkh6HLpYJBM jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q48jjq3s9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Apr 2023 10:52:44 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33NAloFk014556;
-	Sun, 23 Apr 2023 10:52:44 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q48jjq3re-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Apr 2023 10:52:44 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33N30NnI030805;
-	Sun, 23 Apr 2023 10:52:41 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3q47770jd5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Apr 2023 10:52:41 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33NAqcgx21365386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 23 Apr 2023 10:52:38 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C2D120043;
-	Sun, 23 Apr 2023 10:52:38 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18FD320040;
-	Sun, 23 Apr 2023 10:52:35 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.22.217])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 23 Apr 2023 10:52:34 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v10 5/5] powerpc/kexec: add crash memory hotplug support
-Date: Sun, 23 Apr 2023 16:22:13 +0530
-Message-Id: <20230423105213.70795-6-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230423105213.70795-1-sourabhjain@linux.ibm.com>
-References: <20230423105213.70795-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q4R243Z9zz3cCL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Apr 2023 10:33:30 +1000 (AEST)
+Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-74db3642400so430638485a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Apr 2023 17:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682296407; x=1684888407;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ImiI1T82BoC75l7Q4KTC7ZYDR3+sxlOmDrEgnlmaLjo=;
+        b=YdYZbtbaAwDfhD0kKPD0I2VMekKRqLApQrwYVJsP/vE8EHRol9GaMTLvVY+kKgVviQ
+         ToglhcFaeOdkdNw2aD/nq5vQpx57RgK2A33xpruDvZlSSOcMZ8NaGIHiXkCEbD+ZPOwL
+         wy58vaEJ8NhiN3aYmFL/RKMc6Hv3AOOaPDiG4lOlioigYNQKuBehD8dfAV4iXCgWJNTT
+         S3vgPmAW/c9gP5jTio4kEzfxKrA/2kekkpN0vSddPGyxCZdcUs2AAUxiTMkdASiwWD1O
+         bxeZIjXOOKiGrqCpO2CqjJdr1V98DbJsKDw7Tsx4n7vBejQOFVCxGWAvblCIXFTKxoiC
+         esoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682296407; x=1684888407;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ImiI1T82BoC75l7Q4KTC7ZYDR3+sxlOmDrEgnlmaLjo=;
+        b=WGlX78wn6jDLosJHwOdta08pN+PYEhOX08v5RyIPmy3zSN0DkOq8MmJLHKEwo7Tk0f
+         XB6uh6koUVN1wdPsoIQxoRjBx/7SleVO7eUiJPdN8PvdORf8RkClR3Ul8hkbSM4yULXV
+         bTYVxQjttBJ/LWvXJgh7gq4IPqGVSZaXKRM4lGc6LHtbmoYIwqHeho4cAbPsfJ8Uy4/7
+         OVCBeVGgErO9ZIVhllCwisrVZcGEfbBihMzoFcM/YsgdYnt6nV4q7JHqKCQZqymm4WJA
+         snf9ZmDIp3rOBUWbw0TtomaEXOHa6xymeKolQxiEIXv9exSRbM77+dI4ygTJEtv/mqzr
+         8cZA==
+X-Gm-Message-State: AAQBX9eXagafDiOTXtM0j13KIxqc0HfkIrxx8pSvtFLTxxAoPbU3pSzr
+	yTkL06nIbRJlqutOo5Ec4FI=
+X-Google-Smtp-Source: AKy350bgmauIMKkvOkDgSzpZ2lCxZT0EIepKhGqt9HU+W0nlT56JKraWbigEhCmd5TTTBRNizkxq/w==
+X-Received: by 2002:a05:622a:44a:b0:3ef:5f95:8365 with SMTP id o10-20020a05622a044a00b003ef5f958365mr15595249qtx.42.1682296406651;
+        Sun, 23 Apr 2023 17:33:26 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id n4-20020a05620a294400b0074d1b6a8187sm190726qkp.130.2023.04.23.17.33.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Apr 2023 17:33:26 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailauth.nyi.internal (Postfix) with ESMTP id C97A827C0054;
+	Sun, 23 Apr 2023 20:33:24 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Sun, 23 Apr 2023 20:33:25 -0400
+X-ME-Sender: <xms:U85FZMmiOM9ncgfsyiSEaigy-I45CjBCP04OU22Fh6iYS29OftMnwA>
+    <xme:U85FZL0BoMRDwmzg09OQ9spoTP-emiL8Yxb3c81SDut8NzR7wX4CvB22i8MrhEcoe
+    a7VBjz0UIiawJPmvg>
+X-ME-Received: <xmr:U85FZKrjTPHdxmdPamwK_nOVPo2lU68rPPPflr4RyPyi4GaUikDaSsDvgiY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedtledgfeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepgefftdduhedvfefgleevvdejiefgvedutdefvdeifeevtefhleekhefh
+    geeukeeinecuffhomhgrihhnpeduheegrddvvddtrdefrdduudehnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
+    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
+    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:U85FZIkX42P5c3ik7nX-_Dy_vKVq0xBW8OwpqQLqBRoTG2I-XG1vlw>
+    <xmx:U85FZK3fZUup3_3maTOnUbhd4Ho-vxy-VD4-kry6sM3kW7fc-swvNA>
+    <xmx:U85FZPtGuFtP_ev_kB5ELwbtZhlCLXFSjOMpDWz8iFv6mrQhkyZOfA>
+    <xmx:VM5FZDl1scgVvLKn8J0vkANveM8JES2HMnbPildbBRYJsO7fm6E-TQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 23 Apr 2023 20:33:23 -0400 (EDT)
+Date: Sun, 23 Apr 2023 17:32:48 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Joel Fernandes <joel@joelfernandes.org>
+Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
+Message-ID: <ZEXOMC2casTlobE1@boqun-archlinux>
+References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
+ <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MpLcnz16uJKM99Yht7nUmoAI1v5B7hUd
-X-Proofpoint-GUID: BfxVrRtjrmWAoowl91gybpq7R9QJU9la
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-23_06,2023-04-21_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 mlxscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2303200000 definitions=main-2304230097
+In-Reply-To: <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,341 +107,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: eric.devolder@oracle.com, bhe@redhat.com, mahesh@linux.vnet.ibm.com, kexec@lists.infradead.org, Laurent Dufour <laurent.dufour@fr.ibm.com>, ldufour@linux.ibm.com, hbathini@linux.ibm.com
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Extend PowerPC arch crash hotplug handler to support memory hotplug
-events. Since elfcorehdr is used to exchange the memory info between the
-kernels hence it needs to be recreated to reflect the changes due to
-memory hotplug events.
+On Sat, Apr 22, 2023 at 09:28:39PM +0200, Joel Fernandes wrote:
+> On Sat, Apr 22, 2023 at 2:47 PM Zhouyi Zhou <zhouzhouyi@gmail.com> wrote:
+> >
+> > Dear PowerPC and RCU developers:
+> > During the RCU torture test on mainline (on the VM of Opensource Lab
+> > of Oregon State University), SRCU-P failed with __stack_chk_fail:
+> > [  264.381952][   T99] [c000000006c7bab0] [c0000000010c67c0]
+> > dump_stack_lvl+0x94/0xd8 (unreliable)
+> > [  264.383786][   T99] [c000000006c7bae0] [c00000000014fc94] panic+0x19c/0x468
+> > [  264.385128][   T99] [c000000006c7bb80] [c0000000010fca24]
+> > __stack_chk_fail+0x24/0x30
+> > [  264.386610][   T99] [c000000006c7bbe0] [c0000000002293b4]
+> > srcu_gp_start_if_needed+0x5c4/0x5d0
+> > [  264.388188][   T99] [c000000006c7bc70] [c00000000022f7f4]
+> > srcu_torture_call+0x34/0x50
+> > [  264.389611][   T99] [c000000006c7bc90] [c00000000022b5e8]
+> > rcu_torture_fwd_prog+0x8c8/0xa60
+> > [  264.391439][   T99] [c000000006c7be00] [c00000000018e37c] kthread+0x15c/0x170
+> > [  264.392792][   T99] [c000000006c7be50] [c00000000000df94]
+> > ret_from_kernel_thread+0x5c/0x64
+> > The kernel config file can be found in [1].
+> > And I write a bash script to accelerate the bug reproducing [2].
+> > After a week's debugging, I found the cause of the bug is because the
+> > register r10 used to judge for stack overflow is not constant between
+> > context switches.
+> > The assembly code for srcu_gp_start_if_needed is located at [3]:
+> > c000000000226eb4:   78 6b aa 7d     mr      r10,r13
+> > c000000000226eb8:   14 42 29 7d     add     r9,r9,r8
+> > c000000000226ebc:   ac 04 00 7c     hwsync
+> > c000000000226ec0:   10 00 7b 3b     addi    r27,r27,16
+> > c000000000226ec4:   14 da 29 7d     add     r9,r9,r27
+> > c000000000226ec8:   a8 48 00 7d     ldarx   r8,0,r9
+> > c000000000226ecc:   01 00 08 31     addic   r8,r8,1
+> > c000000000226ed0:   ad 49 00 7d     stdcx.  r8,0,r9
+> > c000000000226ed4:   f4 ff c2 40     bne-    c000000000226ec8
+> > <srcu_gp_start_if_needed+0x1c8>
+> > c000000000226ed8:   28 00 21 e9     ld      r9,40(r1)
+> > c000000000226edc:   78 0c 4a e9     ld      r10,3192(r10)
+> > c000000000226ee0:   79 52 29 7d     xor.    r9,r9,r10
+> > c000000000226ee4:   00 00 40 39     li      r10,0
+> > c000000000226ee8:   b8 03 82 40     bne     c0000000002272a0
+> > <srcu_gp_start_if_needed+0x5a0>
+> > by debugging, I see the r10 is assigned with r13 on c000000000226eb4,
+> > but if there is a context-switch before c000000000226edc, a false
+> > positive will be reported.
+> >
+> > [1] http://154.220.3.115/logs/0422/configformainline.txt
+> > [2] 154.220.3.115/logs/0422/whilebash.sh
+> > [3] http://154.220.3.115/logs/0422/srcu_gp_start_if_needed.txt
+> >
+> > My analysis and debugging may not be correct, but the bug is easily
+> > reproducible.
+> 
+> If this is a bug in the stack smashing protection as you seem to hint,
+> I wonder if you see the issue with a specific gcc version and is a
+> compiler-specific issue. It's hard to say, but considering this I
 
-The way memory hotplug events are handled on PowerPC and the notifier
-call chain used in generic code to trigger the arch crash handler, the
-process to recreate the elfcorehdr is different for memory add and
-remove case.
+Very likely, more asm code from Zhouyi's link:
 
-For memory remove case the memory change notifier call chain is
-triggered first and then memblock regions is updated. Whereas for the
-memory hot add case, memblock regions are updated before invoking the
-memory change notifier call chain.
+This is the __srcu_read_unlock_nmisafe(), since "hwsync" is
+smp_mb__{after,before}_atomic(), and the following code is first
+barrier then atomic, so it's the unlock.
 
-On PowerPC, memblock regions list is used to prepare the elfcorehdr. In
-case of memory hot remove the memblock regions are updated after the
-arch crash hotplug handler is triggered, hence an additional step is
-taken to ensure that memory ranges used to prepare elfcorehdr do not
-include hot removed memory.
+	c000000000226eb4:	78 6b aa 7d 	mr      r10,r13
 
-When memory is hot removed it possible that memory regions count may
-increase. So to accommodate a growing number of memory regions, the
-elfcorehdr kexec segment is built with additional buffer space.
+^ r13 is the pointer to percpu data on PPC64 kernel, and it's also
+the pointer to TLS data for userspace code.
 
-The changes done here will also work for the kexec_load system call given
-that the kexec tool builds the elfcoredhr with additional space to
-accommodate future memory regions as it is done for kexec_file_load
-system call in the kernel.
+	c000000000226eb8:	14 42 29 7d 	add     r9,r9,r8
+	c000000000226ebc:	ac 04 00 7c 	hwsync
+	c000000000226ec0:	10 00 7b 3b 	addi    r27,r27,16
+	c000000000226ec4:	14 da 29 7d 	add     r9,r9,r27
+	c000000000226ec8:	a8 48 00 7d 	ldarx   r8,0,r9
+	c000000000226ecc:	01 00 08 31 	addic   r8,r8,1
+	c000000000226ed0:	ad 49 00 7d 	stdcx.  r8,0,r9
+	c000000000226ed4:	f4 ff c2 40 	bne-    c000000000226ec8 <srcu_gp_start_if_needed+0x1c8>
+	c000000000226ed8:	28 00 21 e9 	ld      r9,40(r1)
+	c000000000226edc:	78 0c 4a e9 	ld      r10,3192(r10)
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
----
- arch/powerpc/include/asm/kexec_ranges.h |  1 +
- arch/powerpc/kexec/core_64.c            | 77 +++++++++++++++++++++-
- arch/powerpc/kexec/file_load_64.c       | 36 ++++++++++-
- arch/powerpc/kexec/ranges.c             | 85 +++++++++++++++++++++++++
- 4 files changed, 195 insertions(+), 4 deletions(-)
+here I think that the compiler is using r10 as an alias to r13, since
+for userspace program, it's safe to assume the TLS pointer doesn't
+change. However this is not true for kernel percpu pointer.
 
-diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-index f83866a19e870..802abf580cf0f 100644
---- a/arch/powerpc/include/asm/kexec_ranges.h
-+++ b/arch/powerpc/include/asm/kexec_ranges.h
-@@ -7,6 +7,7 @@
- void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
- struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
- int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
- int add_tce_mem_ranges(struct crash_mem **mem_ranges);
- int add_initrd_mem_range(struct crash_mem **mem_ranges);
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 147ea6288a526..01a764b1c9b07 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -19,6 +19,7 @@
- #include <linux/of.h>
- #include <linux/libfdt.h>
- #include <linux/memblock.h>
-+#include <linux/memory.h>
- 
- #include <asm/page.h>
- #include <asm/current.h>
-@@ -547,6 +548,76 @@ int update_cpus_node(void *fdt)
- #undef pr_fmt
- #define pr_fmt(fmt) "crash hp: " fmt
- 
-+/**
-+ * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it with old
-+ *			       elfcorehdr in the kexec segment array.
-+ * @image: the active struct kimage
-+ * @arg: struct memory_notify data handler
-+ */
-+static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *mn)
-+{
-+	int ret;
-+	struct crash_mem *cmem = NULL;
-+	struct kexec_segment *ksegment;
-+	void *ptr, *mem, *elfbuf = NULL;
-+	unsigned long elfsz, memsz, base_addr, size;
-+
-+	ksegment = &image->segment[image->elfcorehdr_index];
-+	mem = (void *) ksegment->mem;
-+	memsz = ksegment->memsz;
-+
-+	ret = get_crash_memory_ranges(&cmem);
-+	if (ret) {
-+		pr_err("Failed to get crash mem range\n");
-+		return;
-+	}
-+
-+	/*
-+	 * The hot unplugged memory is not yet removed from crash memory
-+	 * ranges, remove it here.
-+	 */
-+	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
-+		base_addr = PFN_PHYS(mn->start_pfn);
-+		size = mn->nr_pages * PAGE_SIZE;
-+		ret = remove_mem_range(&cmem, base_addr, size);
-+		if (ret) {
-+			pr_err("Failed to remove hot-unplugged from crash memory ranges.\n");
-+			return;
-+		}
-+	}
-+
-+	ret = crash_prepare_elf64_headers(cmem, false, &elfbuf, &elfsz);
-+	if (ret) {
-+		pr_err("Failed to prepare elf header\n");
-+		return;
-+	}
-+
-+	/*
-+	 * It is unlikely that kernel hit this because elfcorehdr kexec
-+	 * segment (memsz) is built with addition space to accommodate growing
-+	 * number of crash memory ranges while loading the kdump kernel. It is
-+	 * Just to avoid any unforeseen case.
-+	 */
-+	if (elfsz > memsz) {
-+		pr_err("Updated crash elfcorehdr elfsz %lu > memsz %lu", elfsz, memsz);
-+		goto out;
-+	}
-+
-+	ptr = __va(mem);
-+	if (ptr) {
-+		/* Temporarily invalidate the crash image while it is replaced */
-+		xchg(&kexec_crash_image, NULL);
-+
-+		/* Replace the old elfcorehdr with newly prepared elfcorehdr */
-+		memcpy((void *)ptr, elfbuf, elfsz);
-+
-+		/* The crash image is now valid once again */
-+		xchg(&kexec_crash_image, image);
-+	}
-+out:
-+	vfree(elfbuf);
-+}
-+
- /**
-  * arch_crash_hotplug_handler() - Handle crash CPU/Memory hotplug events to update the
-  *                                necessary kexec segments based on the hotplug event.
-@@ -554,12 +625,14 @@ int update_cpus_node(void *fdt)
-  * @arg: struct memory_notify handler for memory add/remove case and NULL for CPU case.
-  *
-  * Update FDT segment to include newly added CPU. No action for CPU remove case.
-+ * Recreate the elfcorehdr for Memory add/remove case and replace it with old one.
-  */
- void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- {
- 	void *fdt, *ptr;
- 	unsigned long mem;
- 	int i, fdt_index = -1;
-+	struct memory_notify *mn;
- 	unsigned int hp_action = image->hp_action;
- 
- 	/*
-@@ -569,9 +642,9 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 	if (hp_action == KEXEC_CRASH_HP_REMOVE_CPU)
- 		return;
- 
--	/* crash update on memory hotplug events is not supported yet */
- 	if (hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY || hp_action == KEXEC_CRASH_HP_ADD_MEMORY) {
--		pr_info_once("Crash update is not supported for memory hotplug\n");
-+		mn = (struct memory_notify *) arg;
-+		update_crash_elfcorehdr(image, mn);
- 		return;
- 	}
- 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 3554168687869..db7ba1c8c5e0b 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -21,6 +21,8 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/elf.h>
-+
- #include <asm/setup.h>
- #include <asm/drmem.h>
- #include <asm/firmware.h>
-@@ -707,6 +709,30 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	}
- }
- 
-+/* get_max_phdr - Find the total number of Phdr needed to represent the
-+ *		  max memory in the kdump elfcorehdr.
-+ *
-+ * @cmem: crash memory ranges in the system.
-+ */
-+static int get_max_phdr(struct crash_mem *cmem)
-+{
-+	int max_lmb;
-+
-+	/* In the worst case, a Phdr is needed for every other LMB to be represented
-+	 * as an individual crash range.
-+	 */
-+	max_lmb = memory_hotplug_max() / 2 * drmem_lmb_size();
-+
-+	/* Do not cross the Phdr max limit of the elf header.
-+	 * Avoid counting Phdr for crash ranges (cmem->nr_ranges) which
-+	 * are already part of elfcorehdr.
-+	 */
-+	if (max_lmb > PN_XNUM)
-+		return PN_XNUM - cmem->nr_ranges;
-+
-+	return max_lmb - cmem->nr_ranges;
-+}
-+
- /**
-  * load_elfcorehdr_segment - Setup crash memory ranges and initialize elfcorehdr
-  *                           segment needed to load kdump kernel.
-@@ -738,7 +764,13 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
--	kbuf->bufsz = kbuf->memsz = headers_sz;
-+	kbuf->bufsz = headers_sz;
-+/* Additional buffer space to accommodate future memory ranges */
-+#if defined(CONFIG_MEMORY_HOTPLUG)
-+	kbuf->memsz = headers_sz + get_max_phdr(cmem) * sizeof(Elf64_Phdr);
-+#else
-+	kbuf->memsz = headers_sz;
-+#endif
- 	kbuf->top_down = false;
- 
- 	ret = kexec_add_buffer(kbuf);
-@@ -748,7 +780,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	}
- 
- 	image->elf_load_addr = kbuf->mem;
--	image->elf_headers_sz = headers_sz;
-+	image->elf_headers_sz = kbuf->memsz;
- 	image->elf_headers = headers;
- out:
- 	kfree(cmem);
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 5fc53a5fcfdf6..d8007363cdc11 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -234,6 +234,91 @@ int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
- 	return __add_mem_range(mem_ranges, base, size);
- }
- 
-+/**
-+ * remove_mem_range - Removes the given memory range from the range list.
-+ * @mem_ranges:    Range list to remove the memory range to.
-+ * @base:          Base address of the range to remove.
-+ * @size:          Size of the memory range to remove.
-+ *
-+ * (Re)allocates memory, if needed.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-+{
-+	u64 end;
-+	int ret = 0;
-+	unsigned int i;
-+	u64 mstart, mend;
-+	struct crash_mem *mem_rngs = *mem_ranges;
-+
-+	if (!size)
-+		return 0;
-+
-+	/*
-+	 * Memory range are stored as start and end address, use
-+	 * the same format to do remove operation.
-+	 */
-+	end = base + size - 1;
-+
-+	for (i = 0; i < mem_rngs->nr_ranges; i++) {
-+		mstart = mem_rngs->ranges[i].start;
-+		mend = mem_rngs->ranges[i].end;
-+
-+		/*
-+		 * Memory range to remove is not part of this range entry
-+		 * in the memory range list
-+		 */
-+		if (!(base >= mstart && end <= mend))
-+			continue;
-+
-+		/*
-+		 * Memory range to remove is equivalent to this entry in the
-+		 * memory range list. Remove the range entry from the list.
-+		 */
-+		if (base == mstart && end == mend) {
-+			for (; i < mem_rngs->nr_ranges - 1; i++) {
-+				mem_rngs->ranges[i].start = mem_rngs->ranges[i+1].start;
-+				mem_rngs->ranges[i].end = mem_rngs->ranges[i+1].end;
-+			}
-+			mem_rngs->nr_ranges--;
-+			goto out;
-+		}
-+		/*
-+		 * Start address of the memory range to remove and the
-+		 * current memory range entry in the list is same. Just
-+		 * move the start address of the current memory range
-+		 * entry in the list to end + 1.
-+		 */
-+		else if (base == mstart) {
-+			mem_rngs->ranges[i].start = end + 1;
-+			goto out;
-+		}
-+		/*
-+		 * End address of the memory range to remove and the
-+		 * current memory range entry in the list is same.
-+		 * Just move the end address of the current memory
-+		 * range entry in the list to base - 1.
-+		 */
-+		else if (end == mend)  {
-+			mem_rngs->ranges[i].end = base - 1;
-+			goto out;
-+		}
-+		/*
-+		 * Memory range to remove is not at the edge of current
-+		 * memory range entry. Split the current memory entry into
-+		 * two half.
-+		 */
-+		else {
-+			mem_rngs->ranges[i].end = base - 1;
-+			size = mem_rngs->ranges[i].end - end;
-+			ret = add_mem_range(mem_ranges, end + 1, size);
-+		}
-+	}
-+out:
-+	return ret;
-+}
-+
- /**
-  * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
-  * @mem_ranges:         Range list to add the memory range(s) to.
--- 
-2.39.2
+The real intention here is to compare 40(r1) vs 3192(r13) for stack
+guard checking, however since r13 is the percpu pointer in kernel, so
+the value of r13 can be changed if the thread gets scheduled to a
+different CPU after reading r13 for r10.
 
+__srcu_read_unlock_nmisafe() triggers this issue, because:
+
+* it contains a read from r13
+* it locates at the very end of srcu_gp_start_if_needed().
+
+This gives the compiler more opportunity to "optimize" a read from r13
+away.
+
+	c000000000226ee0:	79 52 29 7d 	xor.    r9,r9,r10
+	c000000000226ee4:	00 00 40 39 	li      r10,0
+	c000000000226ee8:	b8 03 82 40 	bne     c0000000002272a0 <srcu_gp_start_if_needed+0x5a0>
+
+As a result, here triggers __stack_chk_fail if mis-match.
+
+If I'm correct, the following should be a workaround:
+
+	diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+	index ab4ee58af84b..f5ae3be3d04d 100644
+	--- a/kernel/rcu/srcutree.c
+	+++ b/kernel/rcu/srcutree.c
+	@@ -747,6 +747,7 @@ void __srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx)
+
+		smp_mb__before_atomic(); /* C */  /* Avoid leaking the critical section. */
+		atomic_long_inc(&sdp->srcu_unlock_count[idx]);
+	+       asm volatile("" : : : "r13", "memory");
+	 }
+	 EXPORT_SYMBOL_GPL(__srcu_read_unlock_nmisafe);
+
+Zhouyi, could you give a try? Note I think the "memory" clobber here is
+unnecesarry, but I just add it in case I'm wrong.
+
+
+Needless to say, the correct fix is to make ppc stack protector aware of
+r13 is volatile.
+
+Regards,
+Boqun
+
+> think it's important for you to mention the compiler version in your
+> report (along with kernel version, kernel logs etc.)
+> 
+> thanks,
+> 
+> - Joel
+> 
+> 
+>  - Joel
