@@ -2,70 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C625E6EE0D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 13:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6B96EE163
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 13:54:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5K2l4NzTz3cMy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 21:07:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5L505D9Dz3f4n
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 21:54:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=VdR3wwmA;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YLzLX23g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=joel@joelfernandes.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=VdR3wwmA;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YLzLX23g;
 	dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5K1r6gNDz30QS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 21:06:22 +1000 (AEST)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-b8f5121503eso8233228276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 04:06:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1682420779; x=1685012779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yxnh6Hi9HqlHGEwie6ZZICYaa0bP7KY/+WuMwYNYTmY=;
-        b=VdR3wwmAEjxfeujbEcL+VAXT+xd04RRZcqXvF6U5icWhnGsOEohwg7vARx9yoOTROC
-         hbiMXGNFSBxAXxwprIgOE8Xq0QItgGv02in+lMvVZuq8Klm4WI0CUFQ2Hrac/yWECqi4
-         md5KxCiyVN7a9X+oAjBZ3b9rrFEPZpDwnbm2U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682420779; x=1685012779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yxnh6Hi9HqlHGEwie6ZZICYaa0bP7KY/+WuMwYNYTmY=;
-        b=F7jSwPl6FuIagk7WDyft4zRDypLav94atdEUYRf54tsMeOQR11gmn3hpoGEMJl8BeF
-         xyPhowse+1jxDReCd+foTNevZas18oKBm/Z51Zi5i2f6Z8RDkG0S3gUl/KeIM/39Lw9U
-         XCU02TrWCHtDpLdKfOefTQrJd/gstAuFdnZ7knUSlWYG22rZnt99PVpqtrc6Zi+ZgMZY
-         l9RfWZwtmHA0ILsbaZgrBZxOxUrG5+4kiI6QF2XeMosdITx40M8ot+9I74pbiJEozNmV
-         68YGBLe1R30Q8q+TFM6UtPbFEs1UKFC9srUCEs1cebAR25GKCv+9SUvEO4MbN/IxD27H
-         OTtg==
-X-Gm-Message-State: AAQBX9fzxEV965e0pVPQdB7c8gKh0aORHLgEatjzuI47GiJfuYinNk6U
-	1bM+YLYfe+VHBRhy852H/ES7CpTiUndIyyojsLOe/w==
-X-Google-Smtp-Source: AKy350Z2MMGY9lUYIgZ/RTFuuaAQUwutf3WfAlP93ocKcWEfXzN5niDO7fXLYWQHI48oJKslRzKoaFZSHENDyb2u5I0=
-X-Received: by 2002:a81:5288:0:b0:54f:ba9d:c9c4 with SMTP id
- g130-20020a815288000000b0054fba9dc9c4mr9756341ywb.16.1682420779531; Tue, 25
- Apr 2023 04:06:19 -0700 (PDT)
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5L464W5Gz3c7Q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 21:53:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RuyX3d7D1azwsn4TOGYEeBa8zDHbPol4DtyJcZjYy1w=; b=YLzLX23gAqE/afcAhQhX/CCgMI
+	c94ZoDFe8oTJK2JSS/FuFGg8KUS5MYESVL9zKBUuFX7pze6a+rQ5PaTvvIeSr87dHaWiZmxJTRf4k
+	ZnYkaXPe9I8mpJ6ZFo6m4WPVvHZUc9bpUolM4kAQW5pfuUzoAT4BSZcvoCfBYgEp055GC/jb8VTv8
+	yBrlzwI/q0hZhcGAjBwsIg3GQ6498b4k6et/MqH9pyecJ+1MLldg1AIA1Viioh+zJ+jpg94WqSC4Y
+	zTgteBn+91FFU6o2Y2N8N4q4l0FvCaHhNqzrDnQH+jP5wtpEGUOET5GiAols0niV9kFXp6T89bCa6
+	n7YxfyQQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1prHER-001PFv-P0; Tue, 25 Apr 2023 11:53:15 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 968D5300380;
+	Tue, 25 Apr 2023 13:53:13 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 7990C241943F2; Tue, 25 Apr 2023 13:53:13 +0200 (CEST)
+Date: Tue, 25 Apr 2023 13:53:13 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Joel Fernandes <joel@joelfernandes.org>
+Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
+Message-ID: <20230425115313.GD1335080@hirez.programming.kicks-ass.net>
 References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
  <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
- <ZEXOMC2casTlobE1@boqun-archlinux> <87fs8pzalj.fsf@mail.concordia>
- <20230424151351.GP19790@gate.crashing.org> <ZEagN1jJwg+rUzX4@boqun-archlinux>
+ <ZEXOMC2casTlobE1@boqun-archlinux>
+ <87fs8pzalj.fsf@mail.concordia>
+ <20230424151351.GP19790@gate.crashing.org>
+ <ZEagN1jJwg+rUzX4@boqun-archlinux>
  <CAEXW_YRfetnhgCw5OgnwhgZF_U+UkHN=uy=L8ovGLqn1UCtfTg@mail.gmail.com>
- <20230425101324.GD1331236@hirez.programming.kicks-ass.net> <CAABZP2ypJ98T3XAqPnLrxxzrYckSQ6sn3woEmpigQ+cRRaw=Zw@mail.gmail.com>
-In-Reply-To: <CAABZP2ypJ98T3XAqPnLrxxzrYckSQ6sn3woEmpigQ+cRRaw=Zw@mail.gmail.com>
-From: Joel Fernandes <joel@joelfernandes.org>
-Date: Tue, 25 Apr 2023 07:06:08 -0400
-Message-ID: <CAEXW_YQEarLt7YGQZdwmcSyZcGRCGKf89ovxjQdXBO-TgXAk-w@mail.gmail.com>
-Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
-To: Zhouyi Zhou <zhouzhouyi@gmail.com>, Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20230425101324.GD1331236@hirez.programming.kicks-ass.net>
+ <CAEXW_YRFZ3zDc0gJRHjJPRuNaBtnmUc+9RxSAHH48jkFw_b34g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEXW_YRFZ3zDc0gJRHjJPRuNaBtnmUc+9RxSAHH48jkFw_b34g@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,96 +72,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, Zhouyi Zhou <zhouzhouyi@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 25, 2023 at 6:58=E2=80=AFAM Zhouyi Zhou <zhouzhouyi@gmail.com> =
-wrote:
->
-> hi
->
-> On Tue, Apr 25, 2023 at 6:13=E2=80=AFPM Peter Zijlstra <peterz@infradead.=
-org> wrote:
-> >
-> > On Mon, Apr 24, 2023 at 02:55:11PM -0400, Joel Fernandes wrote:
-> > > This is amazing debugging Boqun, like a boss! One comment below:
-> > >
-> > > > > > Or something simple I haven't thought of? :)
-> > > > >
-> > > > > At what points can r13 change?  Only when some particular functio=
-ns are
-> > > > > called?
-> > > > >
-> > > >
-> > > > r13 is the local paca:
-> > > >
-> > > >         register struct paca_struct *local_paca asm("r13");
-> > > >
-> > > > , which is a pointer to percpu data.
-> > > >
-> > > > So if a task schedule from one CPU to anotehr CPU, the value gets
-> > > > changed.
-> > >
-> > > It appears the whole issue, per your analysis, is that the stack
-> > > checking code in gcc should not cache or alias r13, and must read its
-> > > most up-to-date value during stack checking, as its value may have
-> > > changed during a migration to a new CPU.
-> > >
-> > > Did I get that right?
-> > >
-> > > IMO, even without a reproducer, gcc on PPC should just not do that,
-> > > that feels terribly broken for the kernel. I wonder what clang does,
-> > > I'll go poke around with compilerexplorer after lunch.
-> > >
-> > > Adding +Peter Zijlstra as well to join the party as I have a feeling
-> > > he'll be interested. ;-)
-> >
+On Tue, Apr 25, 2023 at 06:59:29AM -0400, Joel Fernandes wrote:
 > > I'm a little confused; the way I understand the whole stack protector
 > > thing to work is that we push a canary on the stack at call and on
-> > return check it is still valid. Since in general tasks randomly migrate=
-,
+> > return check it is still valid. Since in general tasks randomly migrate,
 > > the per-cpu validation canary should be the same on all CPUs.
-> >
-> > Additionally, the 'new' __srcu_read_{,un}lock_nmisafe() functions use
-> > raw_cpu_ptr() to get 'a' percpu sdp, preferably that of the local cpu,
-> > but no guarantees.
-> >
-> > Both cases use r13 (paca) in a racy manner, and in both cases it should
-> > be safe.
-> New test results today: both gcc build from git (git clone
-> git://gcc.gnu.org/git/gcc.git) and Ubuntu 22.04 gcc-12.1.0
-> are immune from the above issue. We can see the assembly code on
-> http://140.211.169.189/0425/srcu_gp_start_if_needed-gcc-12.txt
->
-> while
-> Both native gcc on PPC vm (gcc version 9.4.0), and gcc cross compiler
-> on my x86 laptop (gcc version 10.4.0) will reproduce the bug.
 
-Do you know what fixes the issue? I would not declare victory yet. My
-feeling is something changes in timing, or compiler codegen which
-hides the issue. So the issue is still there but it is just a matter
-of time before someone else reports it.
+> AFAICS, the canary is randomly chosen both in the kernel [1]. This
 
-Out of curiosity for PPC folks, why cannot 64-bit PPC use per-task
-canary? Michael, is this an optimization? Adding Christophe as well
-since it came in a few years ago via the following commit:
+Yes, at boot, once. But thereafter it should be the same for all CPUs.
 
-commit 06ec27aea9fc84d9c6d879eb64b5bcf28a8a1eb7
-Author: Christophe Leroy <christophe.leroy@c-s.fr>
-Date:   Thu Sep 27 07:05:55 2018 +0000
-
-    powerpc/64: add stack protector support
-
-    On PPC64, as register r13 points to the paca_struct at all time,
-    this patch adds a copy of the canary there, which is copied at
-    task_switch.
-    That new canary is then used by using the following GCC options:
-    -mstack-protector-guard=3Dtls
-    -mstack-protector-guard-reg=3Dr13
-    -mstack-protector-guard-offset=3Doffsetof(struct paca_struct, canary))
-
-    Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-
- - Joel
+> also appears to be the case in glibc. That makes sense because you
+> don't want the canary to be something that the attacker can easily
+> predict and store on the stack to bypass buffer overflow attacks:
+> 
+> [1] kernel :
+> /*
+>  * Initialize the stackprotector canary value.
+>  *
+>  * NOTE: this must only be called from functions that never return,
+>  * and it must always be inlined.
+>  */
+> static __always_inline void boot_init_stack_canary(void)
+> {
+>         unsigned long canary = get_random_canary();
+> 
+>         current->stack_canary = canary;
+> #ifdef CONFIG_PPC64
+>         get_paca()->canary = canary;
+> #endif
+> }
+> 
+> thanks,
+> 
+>  - Joel
