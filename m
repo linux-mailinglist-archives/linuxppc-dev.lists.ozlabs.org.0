@@ -2,86 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDA86EE420
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 16:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A916EE553
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 18:11:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5PqF6tSsz3ch6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 00:42:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5Rnr4YhZz3fBH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 02:11:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TY5CX6U1;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=BTMOhNKn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxtx.org (client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com; envelope-from=jmforbes@linuxtx.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TY5CX6U1;
+	dkim=pass (1024-bit key; secure) header.d=linuxtx.org header.i=@linuxtx.org header.a=rsa-sha256 header.s=google header.b=BTMOhNKn;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5PpK41Ncz30Kr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 00:41:45 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33PEdIE3019450;
-	Tue, 25 Apr 2023 14:41:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=vRPRtK8KjcRKyKQy/fRSw1fzRpw6Z/d8aTjxblAzL1E=;
- b=TY5CX6U1C2wytU3HZzFkrRifHR8Jy/mAbJlzPU28yYhikDTb4QYGrsgaTekuYXUuC3fn
- Kcw5BDtpbOwWhQpSVstty9/LiW9n2z86rKpduEkgf6sceH6XxTncywzMlU+BYX6vG/8g
- roUoR6h/kRK/SuUJ9kTxyT/WVpJpjMSvSz18Iu9P1azR1pTA6SpPaQU+pAgCacgyWWYm
- p3n1mQJF2YGdTgtzJYoItlehcV5lqua4C3KteFGnYBotg4VQ5OYXYbIWqXiSQCkZFL2q
- 8iObFtXwhDHE5XdQE/5jV4oC8fL0eseIm2KDJF29M3o64qDJTgXrpI5lSewkoWxzqLi6 0A== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q6gdr1e57-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Apr 2023 14:41:17 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33P9WuU1030934;
-	Tue, 25 Apr 2023 14:36:14 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3q47771gf8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Apr 2023 14:36:14 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33PEaCMp20120284
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Apr 2023 14:36:12 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A8B220040;
-	Tue, 25 Apr 2023 14:36:12 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D443920043;
-	Tue, 25 Apr 2023 14:36:11 +0000 (GMT)
-Received: from localhost (unknown [9.43.63.166])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Apr 2023 14:36:11 +0000 (GMT)
-Date: Tue, 25 Apr 2023 20:06:09 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/bpf: populate extable entries only during the
- last pass
-To: bpf@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>,
-        linuxppc-dev
-	<linuxppc-dev@lists.ozlabs.org>
-References: <20230425065829.18189-1-hbathini@linux.ibm.com>
-In-Reply-To: <20230425065829.18189-1-hbathini@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5Rmz0bW1z3cLT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 02:10:40 +1000 (AEST)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4efefbd2c5eso3191222e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 09:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1682439032; x=1685031032;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gzBCWhkUry18zVOWXW5QyNYiFJMq+EJv8KjCsvLzxVI=;
+        b=BTMOhNKncKkgEuXrkg4iVOUvlKOamBULDwD87gwAUY4uTD9Uj8fOtJ8gnRCGGD3Y1Y
+         EtcCG/CbuQPtv6M80WfxId3IXWcwWs9h5Lw0T8BF7gXn5EhdGbVOPoy+A21e0y6npPOT
+         fckBUd7/6mSyrUkCfa67U2Xyq6C+WOQMzpITU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682439032; x=1685031032;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gzBCWhkUry18zVOWXW5QyNYiFJMq+EJv8KjCsvLzxVI=;
+        b=D4VVVJhZmfhbHhkylC2PsbMhP6kh9sQzhIDthKnY9QDLTmC7e9W++wTQ8IQs8IovtP
+         D6GBsx0F/aOiufvxnsd2Zj9fs7MP/xMlN2qYLF4VJH0ytViqdAsb2UwJyxC1NyEEr+zo
+         72wFWvUOm4hBfGUdWc8dJCM5I10hkmuawoukI/HGrOipOI68RfZUV/IwN3ZXjsjOh/9Y
+         FERZVYSvNOqd6ktpNHPiE733e3UJoITP3t9G0U0K8kRqQpCltMAXzsGn2rgelNQpJMF8
+         ITSrG/J9i7PLH44ic1GmzWHO3VmYqU0KK/B8ZZhg2L4GfEq1HrDqbOrYdgHjGE7n9Z0j
+         0v3Q==
+X-Gm-Message-State: AAQBX9dsLv80hDt9CZO9tqhwvDzdy4HI4RVnG/IpABxb4yojOM0TWGxX
+	twSo24g3JKwwNigHs8dSdtKRJVcVkfb7W5R5qaGTJbDp
+X-Google-Smtp-Source: AKy350Yu2bRANlkKpWcXG4YfVSwdV3xdWx+joDk3cEjBD6XxuBH56HrU7DgUK8DELJfAdYxwq/Ypug==
+X-Received: by 2002:ac2:44d4:0:b0:4e1:8309:1db5 with SMTP id d20-20020ac244d4000000b004e183091db5mr4160057lfm.2.1682439031678;
+        Tue, 25 Apr 2023 09:10:31 -0700 (PDT)
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com. [209.85.208.174])
+        by smtp.gmail.com with ESMTPSA id c2-20020ac25302000000b004e8508899basm2133650lfh.86.2023.04.25.09.10.31
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Apr 2023 09:10:31 -0700 (PDT)
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2a8bca69e8bso56870501fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 09:10:31 -0700 (PDT)
+X-Received: by 2002:a05:6512:145:b0:4d7:44c9:9f4c with SMTP id
+ m5-20020a056512014500b004d744c99f4cmr4233943lfo.4.1682439010843; Tue, 25 Apr
+ 2023 09:10:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1682433035.4gm2n74mmz.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+ <ZCvQGJzdED+An8an@kernel.org> <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+ <ZDbp7LAHES3YFo30@arm.com> <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
+In-Reply-To: <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
+From: Justin Forbes <jforbes@fedoraproject.org>
+Date: Tue, 25 Apr 2023 11:09:58 -0500
+X-Gmail-Original-Message-ID: <CAFbkSA2hU+2V0i5OG0BBD-s3yNOAZwBmyGmxMLkbzoWZK6cxOQ@mail.gmail.com>
+Message-ID: <CAFbkSA2hU+2V0i5OG0BBD-s3yNOAZwBmyGmxMLkbzoWZK6cxOQ@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+To: Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rNAs5dQ3hLvbVosu1utqWW6RXjlOPqBL
-X-Proofpoint-GUID: rNAs5dQ3hLvbVosu1utqWW6RXjlOPqBL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-25_07,2023-04-25_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=962 spamscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 bulkscore=0
- suspectscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304250127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,50 +85,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Mike Rapoport <rppt@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hari Bathini wrote:
-> Since commit 85e031154c7c ("powerpc/bpf: Perform complete extra passes
-> to update addresses"), two additional passes are performed to avoid
-> space and CPU time wastage on powerpc. But these extra passes led to
-> WARN_ON_ONCE() hits in bpf_add_extable_entry() as extable entries are
-> populated again, during the extra pass, without resetting the index.
-> Fix it by resetting entry index before repopulating extable entries,
-> if and when there is an additional pass.
->=20
-> Fixes: 85e031154c7c ("powerpc/bpf: Perform complete extra passes to updat=
-e addresses")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/net/bpf_jit_comp.c | 2 ++
->  1 file changed, 2 insertions(+)
+On Tue, Apr 18, 2023 at 5:22=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Wed, 12 Apr 2023 18:27:08 +0100 Catalin Marinas <catalin.marinas@arm.c=
+om> wrote:
+>
+> > > It sounds nice in theory. In practice. EXPERT hides too much. When yo=
+u
+> > > flip expert, you expose over a 175ish new config options which are
+> > > hidden behind EXPERT.  You don't have to know what you are doing just
+> > > with the MAX_ORDER, but a whole bunch more as well.  If everyone were
+> > > already running 10, this might be less of a problem. At least Fedora
+> > > and RHEL are running 13 for 4K pages on aarch64. This was not some
+> > > accidental choice, we had to carry a patch to even allow it for a
+> > > while.  If this does go in as is, we will likely just carry a patch t=
+o
+> > > remove the "if EXPERT", but that is a bit of a disservice to users wh=
+o
+> > > might be trying to debug something else upstream, bisecting upstream
+> > > kernels or testing a patch.  In those cases, people tend to use
+> > > pristine upstream sources without distro patches to verify, and they
+> > > tend to use their existing configs. With this change, their MAX_ORDER
+> > > will drop to 10 from 13 silently.   That can look like a different
+> > > issue enough to ruin a bisect or have them give bad feedback on a
+> > > patch because it introduces a "regression" which is not a regression
+> > > at all, but a config change they couldn't see.
+> >
+> > If we remove EXPERT (as prior to this patch), I'd rather keep the range=
+s
+> > and avoid having to explain to people why some random MAX_ORDER doesn't
+> > build (keeping the range would also make sense for randconfig, not sure
+> > we got to any conclusion there).
+>
+> Well this doesn't seem to have got anywhere.  I think I'll send the
+> patchset into Linus for the next merge window as-is.  Please let's take
+> a look at this Kconfig presentation issue during the following -rc
+> cycle.
 
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Well, I am very sorry to see this going in as is.  It will silently
+change people building with oldconfig, and anyone not paying attention
+will not notice until an issue is hit where "it worked before, and my
+config hasn't changed".  If EXPERT is unset, there is no notification,
+just a changed behavior.  While it would be easy for me to carry a
+patch dropping the if EXPERT, it will not help any users building on
+upstream with our configs, whether for their own regular use, or while
+trying to debug other issues,  I expect it will result in a reasonable
+amount of frustration from users trying to do the right thing and
+bisect or test patches upstream.
 
-
-- Naveen
-
->=20
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_c=
-omp.c
-> index e93aefcfb83f..37043dfc1add 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -101,6 +101,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog =
-*fp)
->  		bpf_hdr =3D jit_data->header;
->  		proglen =3D jit_data->proglen;
->  		extra_pass =3D true;
-> +		/* During extra pass, ensure index is reset before repopulating extabl=
-e entries */
-> +		cgctx.exentry_idx =3D 0;
->  		goto skip_init_ctx;
->  	}
-> =20
-> --=20
-> 2.40.0
->=20
->=20
+Justin
