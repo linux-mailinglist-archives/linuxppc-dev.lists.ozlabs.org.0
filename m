@@ -2,58 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B46C6EE0C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 12:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A77B16EE0C6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 13:00:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5Jt76twCz3f89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 20:59:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5Jv447cgz3fCj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Apr 2023 21:00:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=NR2WE+Pg;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=xqweQ1xw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=joel@joelfernandes.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=NR2WE+Pg;
+	dkim=pass (1024-bit key; unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org header.a=rsa-sha256 header.s=google header.b=xqweQ1xw;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5JsK05bTz2yJT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 20:59:00 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-24986ade373so5092440a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 03:59:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5Jt73Zlxz3f7r
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 20:59:43 +1000 (AEST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-54fc6949475so62957127b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 03:59:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682420337; x=1685012337;
+        d=joelfernandes.org; s=google; t=1682420380; x=1685012380;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b0JHWtYitmYVTIJ2+ge4uzqOjTVMwrngSNO6Xtd2pjU=;
-        b=NR2WE+PgVRsWds0vo3wWvFtwGWABl8CrGItfKViXFhxsyUrBL04N2S1PfkqPdJ4LzQ
-         JMMcQhwSiJpZgUPGMTBbIefeNfDHW5eErS7Lns22Z58bi3BvLFRPO1Fs0oYJp/vjzZT7
-         l/aLkHxy0BV1OmBS3/ZugkuCMGUU6dSmaNG9DD3eN1sbDYCZfEhebaktBnf9xnX+J8ks
-         l94ijmRjnxW+X0k5/QT75NHMuWJxQ/Y1zSaRiBFHWzbpwd4AjdZu6e4vfwce4ApmhKpn
-         MAvbcqnrMtyJ42eG0Yr1klG/IXpJW6ouZK8m6oOpU8z9Pl0Xqt8Hg75CBu/MQVNAVEjH
-         smQQ==
+        bh=MUg+wNP5+RlGjx++pGYBiKCIld1zQdbRIXNqep4/CZY=;
+        b=xqweQ1xw0DS4HaLefbthJGpFnpdM1a5ar9XrlzaVPB2uYZ3keHM9+iJcpYs5jlGPYw
+         GlojP/aOOysoc7fsoOwDPVYqcusgLhlQ+94hs5NyHKPzvEvtT/OWe6E9WG8WrnuCm6QA
+         rK8TroW1KZrHvDEcrqTxBhiX+vahvoKpHXzX4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682420337; x=1685012337;
+        d=1e100.net; s=20221208; t=1682420380; x=1685012380;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b0JHWtYitmYVTIJ2+ge4uzqOjTVMwrngSNO6Xtd2pjU=;
-        b=BqFaJsiWp3Rt/4j5Uw06N5jSe5jBfLzcyaZGuv/AMLhoNkKBAORLyYe9xRGgjY35EP
-         ggOkGl/Lk7ifGSxoZGU62XPfoG57vB8l2uxUx68hdO8Qz7jF773D9HdUR9/qKFPweuRz
-         d+Nh9xnTGAf041FM0fnaxyTD0I8qxVU3QSq9DogBUgXTIN3CT25RIPDdfSZdA3OBcaOm
-         ntpcaNYBWDIFl8RMMbehfR5nO5ZruUfQidGByge6Ttja7oCdNpm96KUj8D0FX0aolb1s
-         G/qjOOcONuyoL8ozjDPg8tF1cSfuMWii/nCyxV70Coy3HHU5/ryZeXJcydO0h8fWWnat
-         oXMQ==
-X-Gm-Message-State: AAQBX9dYjOrjrObYiO/oyZW4VjaGaflitKWYYl5Q7G/HL1ckF+XdAlUm
-	FUhDZtssJbTCa7w1wCX7NJn3MW3+dS5+PXIJzUc=
-X-Google-Smtp-Source: AKy350b7YsHwI9f/5O7hIJgsJ7JJuWFqCPTNPXWlJ3/jyxBC4CZMH+4+sI+BWs8iKzjP1J9OdMb6AQjkhCoerfWOPJY=
-X-Received: by 2002:a17:90a:950e:b0:24b:2ef6:64d5 with SMTP id
- t14-20020a17090a950e00b0024b2ef664d5mr16225496pjo.47.1682420337231; Tue, 25
- Apr 2023 03:58:57 -0700 (PDT)
+        bh=MUg+wNP5+RlGjx++pGYBiKCIld1zQdbRIXNqep4/CZY=;
+        b=Btc7xSjEn6A9uVDkfTZs2LHizC+aIXTxlrki5csIZLe39Yq54FPVFqLUnNwLHnKhWZ
+         lgZPv5cOW5OrNoust2yGtEkmyDd/ycSxIeCsSyMlv7k4yq/k4fqbL0+q3pGNoMJREo3g
+         rGfd1rPV0eLp6u8/O6/juEZvngSeqOHJa3RKyBMfxJfWNOH17rgtiXis1fx5vzz+vQwc
+         nKvjoKFMHAT/boZNnzS2hwEu/Envhv1DweBQuorPs2KdzBurd5qM76gf37RWRxm4D9Fr
+         jqUU9zIbrGu70RjK1asp4JXhpwyNUxKdXwU8HZq22A0DuAJGantspvTS/4dd/6468MPv
+         QnFA==
+X-Gm-Message-State: AAQBX9fodMEBvpkfl/G5cH+zgqefXL3FYDeob4NZIIfIRHaKYnfvXzMx
+	tdAE7Jkqe+xQLGYMN7/7o28joEpZ8AEK6dOBM7DTWw==
+X-Google-Smtp-Source: AKy350YaQoIpYpar+yrvSSOL9ToYRuxOYpny2c9JespRM7apZgHDEAqlXF+tX74BhnaJumdsvGm5n6jRBV8nLU+7V/w=
+X-Received: by 2002:a81:8303:0:b0:54f:d233:d3b7 with SMTP id
+ t3-20020a818303000000b0054fd233d3b7mr8858195ywf.21.1682420380486; Tue, 25 Apr
+ 2023 03:59:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
  <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
@@ -61,9 +58,9 @@ References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
  <20230424151351.GP19790@gate.crashing.org> <ZEagN1jJwg+rUzX4@boqun-archlinux>
  <CAEXW_YRfetnhgCw5OgnwhgZF_U+UkHN=uy=L8ovGLqn1UCtfTg@mail.gmail.com> <20230425101324.GD1331236@hirez.programming.kicks-ass.net>
 In-Reply-To: <20230425101324.GD1331236@hirez.programming.kicks-ass.net>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Tue, 25 Apr 2023 18:58:46 +0800
-Message-ID: <CAABZP2ypJ98T3XAqPnLrxxzrYckSQ6sn3woEmpigQ+cRRaw=Zw@mail.gmail.com>
+From: Joel Fernandes <joel@joelfernandes.org>
+Date: Tue, 25 Apr 2023 06:59:29 -0400
+Message-ID: <CAEXW_YRFZ3zDc0gJRHjJPRuNaBtnmUc+9RxSAHH48jkFw_b34g@mail.gmail.com>
 Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
 To: Peter Zijlstra <peterz@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,13 +76,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, Joel Fernandes <joel@joelfernandes.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, Zhouyi Zhou <zhouzhouyi@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-hi
-
-On Tue, Apr 25, 2023 at 6:13=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+On Tue, Apr 25, 2023 at 6:13=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
 g> wrote:
 >
 > On Mon, Apr 24, 2023 at 02:55:11PM -0400, Joel Fernandes wrote:
@@ -132,11 +127,29 @@ g> wrote:
 >
 > Both cases use r13 (paca) in a racy manner, and in both cases it should
 > be safe.
-New test results today: both gcc build from git (git clone
-git://gcc.gnu.org/git/gcc.git) and Ubuntu 22.04 gcc-12.1.0
-are immune from the above issue. We can see the assembly code on
-http://140.211.169.189/0425/srcu_gp_start_if_needed-gcc-12.txt
 
-while
-Both native gcc on PPC vm (gcc version 9.4.0), and gcc cross compiler
-on my x86 laptop (gcc version 10.4.0) will reproduce the bug.
+AFAICS, the canary is randomly chosen both in the kernel [1]. This
+also appears to be the case in glibc. That makes sense because you
+don't want the canary to be something that the attacker can easily
+predict and store on the stack to bypass buffer overflow attacks:
+
+[1] kernel :
+/*
+ * Initialize the stackprotector canary value.
+ *
+ * NOTE: this must only be called from functions that never return,
+ * and it must always be inlined.
+ */
+static __always_inline void boot_init_stack_canary(void)
+{
+        unsigned long canary =3D get_random_canary();
+
+        current->stack_canary =3D canary;
+#ifdef CONFIG_PPC64
+        get_paca()->canary =3D canary;
+#endif
+}
+
+thanks,
+
+ - Joel
