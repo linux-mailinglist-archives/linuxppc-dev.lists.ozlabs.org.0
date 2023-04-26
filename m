@@ -2,75 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37966EF78E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 17:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E10416EF977
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 19:33:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q62Rd4kyvz3cd5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 01:12:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q65YQ61pfz3fBv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 03:32:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bwX4miFR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fX1xUvV2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::21; helo=out-33.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bwX4miFR;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fX1xUvV2;
 	dkim-atps=neutral
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+X-Greylist: delayed 591 seconds by postgrey-1.36 at boromir; Thu, 27 Apr 2023 03:32:10 AEST
+Received: from out-33.mta1.migadu.com (out-33.mta1.migadu.com [IPv6:2001:41d0:203:375::21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q62Qn5Q4Pz3cJn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Apr 2023 01:11:59 +1000 (AEST)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-50685f1b6e0so13308731a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 08:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1682521914; x=1685113914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BmC9nRWhCF4aaeCIyz66s4SOgTxfjI81zZTS4rdYWbY=;
-        b=bwX4miFRRprB+mJzIfVaJpTIH38OZzi9g/R51mJL4cAXkaHB4QMP5njOkchWUA7kcb
-         rTFbQdId0oqOhRilY0pc+3KT5LKUqFiI61kATr/w1D7/qhlyeiPxrQu6EKMx+esgLkkQ
-         Q8DR3XoKbQ4CzuSdbNcJ8VLqAq3I4RWK+24Fs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682521914; x=1685113914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BmC9nRWhCF4aaeCIyz66s4SOgTxfjI81zZTS4rdYWbY=;
-        b=JJaFtUvJOAdA1hF2o13TkCdrOmo7cSzXV5RkMlYQTKCX+hNOk6KL7bTBo30yoY1EuQ
-         AG+u3gnZEmrgEcEEx5BPPKUBYzzvCcZo6tk3viHuBuDmX0PaQ/1VCniRBBkPMzCD3u7b
-         5oxTj9iaVHliPypwYUPQ+zoX3esfi02d5zW3HG+e41ot8UUrZdR1uLOBysrb+T/dFTem
-         cTBCTOVedqw20VZu2Z++ipK5hKuHZ0sEgFgvUeXtPo6//F8jM8tsa23nB700ce0E4OQf
-         edMkRuz8JEq/0olG/aQ5fO4ofkbr90i5435sdIrzgFs+45mZMDb43oPpxVIfbgZWIDH4
-         Qanw==
-X-Gm-Message-State: AC+VfDxh6es31iRg+brr1KpUp2eSqooWzbFQdPc6mFSppPwhzomiuiI0
-	i0jXryIZd+0IKdCmFFc4ze8hKNg2cHyYgg09EMIyeg==
-X-Google-Smtp-Source: ACHHUZ5P6rM3ZmrfLz7UDtuKxroriY8TKkGeNhO/f9JTFfGIa/PGimBvwU+69kOga5UD8eAOMQBBkA==
-X-Received: by 2002:a17:906:94a:b0:95e:d448:477 with SMTP id j10-20020a170906094a00b0095ed4480477mr3432009ejd.33.1682521914312;
-        Wed, 26 Apr 2023 08:11:54 -0700 (PDT)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
-        by smtp.gmail.com with ESMTPSA id gx22-20020a1709068a5600b0094f4b7e2dc5sm8448058ejc.142.2023.04.26.08.11.53
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Apr 2023 08:11:53 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-508418b6d59so13304025a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 08:11:53 -0700 (PDT)
-X-Received: by 2002:a17:906:38c9:b0:906:3373:cfe9 with SMTP id
- r9-20020a17090638c900b009063373cfe9mr17150061ejd.10.1682521913403; Wed, 26
- Apr 2023 08:11:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q65XV37fWz3cMy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Apr 2023 03:32:10 +1000 (AEST)
+Date: Wed, 26 Apr 2023 17:21:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1682529725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLWhzFr0IaFOP7oGWZVxeoPyLpaGebSmTPqngfIpZG0=;
+	b=fX1xUvV2g81JM+0ABsdRcIjDsB/4E25/qjtfu0mosg0PvfMF9EHtEmDRZTz3iFWTYkK0dA
+	19FAfDwYGMolyePLVnuvhqZX1xWo1FbUgjHuNPt4/BF+tVLHSMDVjtXDd0o5kYB6/qHrji
+	BF94HvG+MfWGhmnvQOaFbIcWpIUF+yQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: David Matlack <dmatlack@google.com>
+Subject: Re: [PATCH v2 0/4] KVM: Refactor KVM stats macros and enable custom
+ stat names
+Message-ID: <ZEldtrUVBgmlrFOl@linux.dev>
+References: <20230306190156.434452-1-dmatlack@google.com>
 MIME-Version: 1.0
-References: <20230426055848.402993-1-npiggin@gmail.com> <20230426055848.402993-6-npiggin@gmail.com>
-In-Reply-To: <20230426055848.402993-6-npiggin@gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 26 Apr 2023 08:11:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjdYKfVrv_r1BNee+GvtaF0aRqbsv3Dw9SM5-+rUf8dpw@mail.gmail.com>
-Message-ID: <CAHk-=wjdYKfVrv_r1BNee+GvtaF0aRqbsv3Dw9SM5-+rUf8dpw@mail.gmail.com>
-Subject: Re: [PATCH 5/9] powerpc/boot: Separate BOOTCFLAGS from BOOTASFLAGS
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230306190156.434452-1-dmatlack@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,19 +56,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Zenghui Yu <yuzenghui@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Sathvika Vasireddy <sv@linux.ibm.com>, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Sean Christopherson <seanjc@google.com>, linux-mips@vger.kernel.org, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Paolo Bonzi
+ ni <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 25, 2023 at 10:59=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com=
-> wrote:
->
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+On Mon, Mar 06, 2023 at 11:01:52AM -0800, David Matlack wrote:
+> This series refactors the KVM stats macros to reduce duplication and
+> adds the support for choosing custom names for stats.
+> 
+> Custom name makes it possible to decouple the userspace-visible stat
+> names from their internal representation in C. This can allow future
+> commits to refactor the various stats structs without impacting
+> userspace tools that read KVM stats.
+> 
+> This also allows stats to be stored in data structures such as arrays,
+> without needing unions to access specific stats. Case in point, the last
+> patch in this series removes the pages_{4k,2m,1g} union, which is a
+> useful cleanup to prepare for sharing paging code across architectures
+> [1].
+> 
+> And for full transparency, another motivation for this series it that at
+> Google we have several out-of-tree stats that use arrays. Custom name
+> support is something we added internally and it reduces our technical
+> debt to get the support merged upstream.
 
-I was all "what is Nick talking about", and had to follow the link to
-remember that old discussion at all.
+For the series:
 
-Patch obviously looks fine to me, I'll presumably be getting it at
-some future point as part of a ppc pull request.
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
 
-              Linus
+-- 
+Thanks,
+Oliver
