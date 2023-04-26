@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C94F6EEDEE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 08:01:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EF16EEDEF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 08:02:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5pCS0LgZz3f4L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 16:01:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5pDV3XgLz3fQm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 16:02:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ItAx6qP7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=bswwayG2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ItAx6qP7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=bswwayG2;
 	dkim-atps=neutral
 Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8k68JYz3cF8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:59:02 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-63b35789313so4856786b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:59:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8n0Ysyz3cMT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:59:04 +1000 (AEST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-63f273b219eso3204114b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682488740; x=1685080740;
+        d=gmail.com; s=20221208; t=1682488743; x=1685080743;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fuyxNALPej8sJTQ1TenoUjVJzKsIrDxX3tSD5Kst8qU=;
-        b=ItAx6qP7J/79PAof4jDx4YFB1fd3cP3KxfZuvpV1U++3FjiZ+zEyvqPyjZmD8mRnsw
-         NuV8PKP26JW2lF4WduaDnmiWGUlsqovfgiey3taFqb80dHICqvK/p8v0XuU1xlc8IbHZ
-         PCdJhgi+ZfLF7RfBBOnCy0jyNHAWYSKA3E1v2L7VB+Zi4Ti212ZGSHwb5IB1AEhi9f5a
-         cbQKCGhl82Ui5A/ig1yPOOwTY3LZGGPHnGxOkgRgMQ5bIZwVZeC9nUuCJogMdtxTr9Dr
-         x5Ppy7hK94UKe5L5bJFYEw+D06H0HHyk6qMd1O7lVO7oq+dy9b9tjPyiKf5BUrDr1zlH
-         sE/A==
+        bh=7zo1/yjNOfcKqwxbQM0yUPB1HZeUxs37U5d31WFHyGc=;
+        b=bswwayG2Y/c38JHEuBRJx/I60bLI6llQuyH1paR0NYWW5qhPBw1JOND166Zqoi8jd/
+         e4Zzne3DCNZqzbd+tYE/xweokcPYBGXNier52TOsBoADKi2GpeBdJzfRMsylFJSRhF9f
+         g3wAD3VMofN3f1onqeLkNmi9XP9zBwO5BTfPYj+ud90tlTto8sqvfX77fC7KbSxW1kAE
+         g/TIYVL9R87SHUAwHiMYiuy/m45bciAM8njYFhSCuUQd6mhX2UVjSNauOf1PbhQ4T9le
+         1ZLPKcQUoVtpnicnRkFABr7aGM73TMoV1iJCfXZ0j2zzkkWZgojeHzpweXvA65UkM5wy
+         q/LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682488740; x=1685080740;
+        d=1e100.net; s=20221208; t=1682488743; x=1685080743;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fuyxNALPej8sJTQ1TenoUjVJzKsIrDxX3tSD5Kst8qU=;
-        b=FhuoPbdFjuEIAHOAJmMBbokP8VUIkZ/EK3+ytdnow0fWZ6hYVRZV6mFyk33yJBNFPW
-         MtYEfLEe3f4w6dBRdfl4N7IHcHVN9Xcl2KMooB5Qf3w10LOuu0kJo3OAHI2bPXFv+qkm
-         eF3JQtKFlYu0CLptUpb8135ZdKQrBZZ7fhjiiuLp+hYNfRVozEV0nrt1m77G/nVu/+DR
-         YpygxOVnFl9GrdYyH6HnFRDXUSrLc2W1VH9zTOMGzwnk6q+WcnvuApOTisnG91+9TWcP
-         kkmXU6cImFbxFQc739qzbPxwdEaYGf3JcUPee3RXdedpGtitxZ8dBRjEHR2fqvucau93
-         08QA==
-X-Gm-Message-State: AAQBX9eQYQTLD86EB1ryn8qiU0mYmhmXtMAVpbDdICc6Yly2CjgPWbdR
-	iIpOn2hpVRoN5aIg9vszoiLLkFmCexYC0w==
-X-Google-Smtp-Source: AKy350Z3m5OvWbGRs59ey6377RrOthRObuvCnFBxOX0Ujuve1SA6/42x1aHJbDEfYWOa8FREe+//Ug==
-X-Received: by 2002:a05:6a00:17a9:b0:63d:489c:971 with SMTP id s41-20020a056a0017a900b0063d489c0971mr28963240pfg.24.1682488740248;
-        Tue, 25 Apr 2023 22:59:00 -0700 (PDT)
+        bh=7zo1/yjNOfcKqwxbQM0yUPB1HZeUxs37U5d31WFHyGc=;
+        b=aX4q/E4fiTDO+jRdJw9/DkiwVPATqquh4osOrwkVe+31zcAYwWautG8x85Q/Wbz6AI
+         sI43SlyK+bdPn3TBklnLKnlVgFXuVwAQDomabg4cyQKYvyHWWJ4HYCrTv349FgGDlG3u
+         UBjxKUe4vA3cBHwQoIhxg5zS4JKBHc+NYNkQ0HwpizwOedFyWZmYajxG6NWUycqyLITL
+         5SbwyxBgDorCAhJzO5aIOfsDIqRGire+lAK4PqGOMtvmPtC3OcQAvG/C9daTZV6/hX8O
+         oUHWjW/VrtR1p7yds4/dn7pPAyqR0pvZz8R4QUpLurVIHJ0fQ4fV8NsAZxPZQFuJBzrp
+         O7bA==
+X-Gm-Message-State: AAQBX9c+wqJe5Q+K6hDW30sTnRvemlDUfhu25K0I+bypEQOHm1UDoFnr
+	4dH6HHnF2hA+vOgATLWJ0QLCTtj0XKzSDw==
+X-Google-Smtp-Source: AKy350YZrmWYhqyX3AY5HJBwwTNVekoApqk/ULJZ83OR4dQU1x8v9Gc8cloFDKCtRBwEmC5XmhH3Zw==
+X-Received: by 2002:a05:6a00:1408:b0:63d:3339:e967 with SMTP id l8-20020a056a00140800b0063d3339e967mr24343671pfu.19.1682488742704;
+        Tue, 25 Apr 2023 22:59:02 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.203.54])
-        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.58.58
+        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.59.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Apr 2023 22:58:59 -0700 (PDT)
+        Tue, 25 Apr 2023 22:59:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/9] powerpc/64s: Disable pcrel code model on Clang
-Date: Wed, 26 Apr 2023 15:58:39 +1000
-Message-Id: <20230426055848.402993-3-npiggin@gmail.com>
+Subject: [PATCH 3/9] powerpc/boot: Seperate target flags from BOOTCFLAGS
+Date: Wed, 26 Apr 2023 15:58:40 +1000
+Message-Id: <20230426055848.402993-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230426055848.402993-1-npiggin@gmail.com>
 References: <20230426055848.402993-1-npiggin@gmail.com>
@@ -82,34 +82,93 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang has a bug that casues the pcrel code model not to be used when any of
--msoft-float, -mno-altivec, or -mno-vsx are set. Leaving these off causes
-FP/vector instructions to be generated, causing crashes. So disable pcrel
-for clang for now.
+Add BOOTTARGETFLAGS variable with target / ABI options common to
+CFLAGS and AFLAGS.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/boot/Makefile | 40 ++++++++++++++++++++------------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 7a0f25a09759..261e9453b43c 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -8,7 +8,12 @@ config CC_HAS_PREFIXED
- 	def_bool PPC64 && $(cc-option, -mcpu=power10 -mprefixed)
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 85cde5bf04b7..84a5b630c739 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -41,36 +41,48 @@ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		 $(LINUXINCLUDE)
  
- config CC_HAS_PCREL
--	def_bool PPC64 && $(cc-option, -mcpu=power10 -mpcrel)
-+	# Clang has a bug (https://github.com/llvm/llvm-project/issues/62372)
-+	# where pcrel code is not generated if -msoft-float, -mno-altivec, or
-+	# -mno-vsx options are also given. Without these options, fp/vec
-+	# instructions are generated from regular kernel code. So Clang can't
-+	# do pcrel yet.
-+	def_bool PPC64 && CC_IS_GCC &&  $(cc-option, -mcpu=power10 -mpcrel)
+ ifdef CONFIG_PPC64_BOOT_WRAPPER
+-BOOTCFLAGS	+= -m64
++BOOTTARGETFLAGS	:= -m64
+ ifdef CONFIG_PPC64_ELF_ABI_V2
+-BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
++BOOTTARGETFLAGS	+= $(call cc-option,-mabi=elfv2)
+ endif
+ else
+-BOOTCFLAGS	+= -m32
++BOOTTARGETFLAGS	:= -m32
+ endif
  
- config 32BIT
- 	bool
+ ifdef CONFIG_TARGET_CPU_BOOL
+-BOOTCFLAGS	+= -mcpu=$(CONFIG_TARGET_CPU)
++BOOTTARGETFLAGS	+= -mcpu=$(CONFIG_TARGET_CPU)
+ else ifdef CONFIG_PPC64_BOOT_WRAPPER
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+-BOOTCFLAGS	+= -mcpu=powerpc64le
++BOOTTARGETFLAGS	+= -mcpu=powerpc64le
+ else
+-BOOTCFLAGS	+= -mcpu=powerpc64
++BOOTTARGETFLAGS	+= -mcpu=powerpc64
+ endif
+ endif
+ 
++$(obj)/4xx.o: BOOTTARGETFLAGS += -mcpu=405
++$(obj)/ebony.o: BOOTTARGETFLAGS += -mcpu=440
++$(obj)/cuboot-hotfoot.o: BOOTTARGETFLAGS += -mcpu=405
++$(obj)/cuboot-taishan.o: BOOTTARGETFLAGS += -mcpu=440
++$(obj)/cuboot-katmai.o: BOOTTARGETFLAGS += -mcpu=440
++$(obj)/cuboot-acadia.o: BOOTTARGETFLAGS += -mcpu=405
++$(obj)/treeboot-iss4xx.o: BOOTTARGETFLAGS += -mcpu=405
++$(obj)/treeboot-currituck.o: BOOTTARGETFLAGS += -mcpu=405
++$(obj)/treeboot-akebono.o: BOOTTARGETFLAGS += -mcpu=405
++
+ BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+ 
+ ifdef CONFIG_CPU_BIG_ENDIAN
+-BOOTCFLAGS	+= -mbig-endian
++BOOTTARGETFLAGS	+= -mbig-endian
+ else
+-BOOTCFLAGS	+= -mlittle-endian
++BOOTTARGETFLAGS	+= -mlittle-endian
+ endif
+ 
+-BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
++BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTTARGETFLAGS) $(BOOTCFLAGS) -nostdinc
+ 
+ BOOTARFLAGS	:= -crD
+ 
++BOOTCFLAGS	+= $(BOOTTARGETFLAGS)
++
+ ifdef CONFIG_CC_IS_CLANG
+ BOOTCFLAGS += $(CLANG_FLAGS)
+ BOOTAFLAGS += $(CLANG_FLAGS)
+@@ -89,16 +101,6 @@ BOOTCFLAGS	+= -I$(objtree)/$(obj) -I$(srctree)/$(obj)
+ 
+ DTC_FLAGS	?= -p 1024
+ 
+-$(obj)/4xx.o: BOOTCFLAGS += -mcpu=405
+-$(obj)/ebony.o: BOOTCFLAGS += -mcpu=440
+-$(obj)/cuboot-hotfoot.o: BOOTCFLAGS += -mcpu=405
+-$(obj)/cuboot-taishan.o: BOOTCFLAGS += -mcpu=440
+-$(obj)/cuboot-katmai.o: BOOTCFLAGS += -mcpu=440
+-$(obj)/cuboot-acadia.o: BOOTCFLAGS += -mcpu=405
+-$(obj)/treeboot-iss4xx.o: BOOTCFLAGS += -mcpu=405
+-$(obj)/treeboot-currituck.o: BOOTCFLAGS += -mcpu=405
+-$(obj)/treeboot-akebono.o: BOOTCFLAGS += -mcpu=405
+-
+ # The pre-boot decompressors pull in a lot of kernel headers and other source
+ # files. This creates a bit of a dependency headache since we need to copy
+ # these files into the build dir, fix up any includes and ensure that dependent
 -- 
 2.40.0
 
