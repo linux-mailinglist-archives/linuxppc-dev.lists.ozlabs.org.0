@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0F06EF408
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 14:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA726EF427
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 14:18:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5yPR0vBMz3fWh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 22:10:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5yZC59Q8z3glf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 22:18:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5yMP32Kfz3cJq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 22:08:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5yMb62bCz2xGq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 22:08:59 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q5yMJ2S2fz4xD5;
-	Wed, 26 Apr 2023 22:08:44 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q5yMb4s07z4xNH;
+	Wed, 26 Apr 2023 22:08:59 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Benjamin Gray <bgray@linux.ibm.com>
-In-Reply-To: <20230406043320.125138-1-bgray@linux.ibm.com>
-References: <20230406043320.125138-1-bgray@linux.ibm.com>
-Subject: Re: [PATCH v2 0/7] Update DSCR tests
-Message-Id: <168251050525.3973805.7399008940491158034.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Paul Gortmaker <paul.gortmaker@windriver.com>
+In-Reply-To: <20230224204959.17425-1-paul.gortmaker@windriver.com>
+References: <20230224204959.17425-1-paul.gortmaker@windriver.com>
+Subject: Re: [RFC PATCH 0/3] Remove some PQ2/MPC82xx evaluation platforms
+Message-Id: <168251050529.3973805.12435281184168188654.b4-ty@ellerman.id.au>
 Date: Wed, 26 Apr 2023 22:01:45 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,34 +42,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Li Yang <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 06 Apr 2023 14:33:13 +1000, Benjamin Gray wrote:
-> The randomness based DSCR tests currently have a low probability of doing
-> any writes to the DSCR, making them inefficient in uncovering bugs.
+On Fri, 24 Feb 2023 15:49:56 -0500, Paul Gortmaker wrote:
+> [This RFC is proposed for v6.4 and hence is based off linux-next.]
 > 
-> This series adds lockstep variants to these RNG tests, to ensure the happy
-> path is always tested, and improves the randomness and size of the RNG
-> tests.
+> This series removes support for two PowerQUICC II (MPC82xx) Freescale
+> processor family evaluation boards that were added to the kernel in
+> approximately the 2003 era.
+> 
+> I couldn't easily find a reference picture, but there are line art
+> sketches in the various manuals still available[1,2].  In any case,
+> we've got one system with 32MB RAM and the other with 64MB.  CPU speeds
+> are also what one would expect for twenty year old platforms.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/7] selftests/powerpc/dscr: Correct typos
-      https://git.kernel.org/powerpc/c/15f0c2601e141e3c01c8dc3368b81181bc1c9228
-[2/7] selftests/powerpc: Move bind_to_cpu() to utils.h
-      https://git.kernel.org/powerpc/c/c97b2fc6627e1c26a3a84633e135322918a1e592
-[3/7] selftests/powerpc: Allow bind_to_cpu() to automatically pick CPU
-      https://git.kernel.org/powerpc/c/6ff4dc25483f3f49d1db48af28d4c485fc77bd21
-[4/7] selftests/powerpc/dscr: Add lockstep test cases to DSCR explicit tests
-      https://git.kernel.org/powerpc/c/fda8158870063b99b88a0904bbb95188973b4297
-[5/7] selftests/powerpc/dscr: Improve DSCR explicit random test case
-      https://git.kernel.org/powerpc/c/3067b89ab62305c54ec15b00a2c4dbaf64809c59
-[6/7] selftests/powerpc/dscr: Speed up DSCR sysfs tests
-      https://git.kernel.org/powerpc/c/c14a9d0a79d4fb83c4e9e8cadc5cb094f41d01d0
-[7/7] selftests/powerpc/dscr: Restore timeout to DSCR selftests
-      https://git.kernel.org/powerpc/c/ae7312c09014fceb782a92cfb934e973f08b338f
+[1/3] powerpc: drop MPC8272_ADS platform support
+      https://git.kernel.org/powerpc/c/33777a4e9bb93f66ac2511d99ec66ab50f1a04bc
+[2/3] powerpc: drop PowerQUICC II Family ADS platform support
+      https://git.kernel.org/powerpc/c/859b21a008ebcc7fd876f50738f63750d46b5296
+[3/3] powerpc: drop MPC8272-ADS and PowerQUICC II FADS shared code.
+      https://git.kernel.org/powerpc/c/ad46ad2d853daf082f742c9654da84e3d2a46765
 
 cheers
