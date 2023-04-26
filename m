@@ -2,35 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B380A6EF42C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 14:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4796EF454
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 14:30:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5ybM4rv2z3ghd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 22:19:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5yrl4L5nz3fVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 22:30:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ezlHX53X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5ySb6tkWz3fkS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 22:13:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5yqs34F2z306Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 22:30:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ezlHX53X;
+	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q5ySb5TYfz4xD5;
-	Wed, 26 Apr 2023 22:13:19 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nathan Lynch <nathanl@linux.ibm.com>
-In-Reply-To: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
-References: <20230220-rtas-queue-for-6-4-v1-0-010e4416f13f@linux.ibm.com>
-Subject: Re: [PATCH 0/8] RTAS changes for 6.4
-Message-Id: <168251115562.3983444.8929118170063820811.b4-ty@ellerman.id.au>
-Date: Wed, 26 Apr 2023 22:12:35 +1000
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q5yqr2YHkz4xFd;
+	Wed, 26 Apr 2023 22:30:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1682512200;
+	bh=8LaY3/EdE4NVsF9YWnEonYJEbMaadgI0VtNBm8ceyN4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ezlHX53XcQh0cJTlV2sS3bQ0g2PN0QTR0hk5JRJFcOcLThfA8983vId1vYMvP+RCJ
+	 WrG0FLBABNmivnreMK5adZwpHqgw0Re4T72gvomty/kkIUY4uGRyCxA0ltLvkqI1ts
+	 RyCEFIFgnHc6B5xPUOHtHhFtDNC+EVLo6ia4OtWscKwFXgYS4nH9Vu8nYhcGEdJv6N
+	 YhNR3Uv8LHXcPLOX7UE49wjPPxBNBtdJYH+vC0Ta/MaycXJ30W9qENqHtO+VTovb20
+	 giHSyCC0cKz+xh82HBrU1OpLjhoSIaSOe6BJOXymMcev+qVhQy7kIZx3R2TD0t5a1w
+	 N5ukeAwPKWeew==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joel Fernandes <joel@joelfernandes.org>, Zhouyi Zhou
+ <zhouzhouyi@gmail.com>, Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
+In-Reply-To: <CAEXW_YQEarLt7YGQZdwmcSyZcGRCGKf89ovxjQdXBO-TgXAk-w@mail.gmail.com>
+References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
+ <CAEXW_YSSGYgqTpxqbYikCFS9t=2f+L-0phbU+gAAngB5z-FbyA@mail.gmail.com>
+ <ZEXOMC2casTlobE1@boqun-archlinux> <87fs8pzalj.fsf@mail.concordia>
+ <20230424151351.GP19790@gate.crashing.org>
+ <ZEagN1jJwg+rUzX4@boqun-archlinux>
+ <CAEXW_YRfetnhgCw5OgnwhgZF_U+UkHN=uy=L8ovGLqn1UCtfTg@mail.gmail.com>
+ <20230425101324.GD1331236@hirez.programming.kicks-ass.net>
+ <CAABZP2ypJ98T3XAqPnLrxxzrYckSQ6sn3woEmpigQ+cRRaw=Zw@mail.gmail.com>
+ <CAEXW_YQEarLt7YGQZdwmcSyZcGRCGKf89ovxjQdXBO-TgXAk-w@mail.gmail.com>
+Date: Wed, 26 Apr 2023 22:29:59 +1000
+Message-ID: <877ctyzv08.fsf@mail.concordia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,34 +67,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Paul E.
+ McKenney" <paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 06 Mar 2023 15:33:39 -0600, Nathan Lynch wrote:
-> Proposed changes for the RTAS subsystem and client code.
-> 
-> Fixes that are subject to backporting are at the front of the queue,
-> followed by documentation and cleanups, with enhancements at the end.
-> 
-> Noteworthy changes:
-> * Change sys_rtas() to consume -2/990x statuses instead of returning
->   them to user space.
-> * Lockdep annotations for invariants in rtas.c.
-> 
-> [...]
+Joel Fernandes <joel@joelfernandes.org> writes:
+> On Tue, Apr 25, 2023 at 6:58=E2=80=AFAM Zhouyi Zhou <zhouzhouyi@gmail.com=
+> wrote:
+...
+>
+> Out of curiosity for PPC folks, why cannot 64-bit PPC use per-task
+> canary? Michael, is this an optimization? Adding Christophe as well
+> since it came in a few years ago via the following commit:
 
-Patches 1-4, 6 applied to powerpc/next.
+I think Christophe also answered these in his reply.
 
-[1/8] powerpc/rtas: ensure 8-byte alignment for struct rtas_args
-      https://git.kernel.org/powerpc/c/f40b0f6c5c27de167fdd10e541e0a4b5f2bc772b
-[2/8] powerpc/rtas: use memmove for potentially overlapping buffer copy
-      https://git.kernel.org/powerpc/c/271208ee5e335cb1ad280d22784940daf7ddf820
-[3/8] powerpc/rtas: rtas_call_unlocked() kerneldoc
-      https://git.kernel.org/powerpc/c/1792e46ed0cfc1fa27c8c805f8098f806bcc5fc3
-[4/8] powerpc/rtas: fix miswording in rtas_function kerneldoc
-      https://git.kernel.org/powerpc/c/32740fce09f98d30f3c71a09ee4e9d90b3965427
-[6/8] powerpc/rtas: lockdep annotations
-      https://git.kernel.org/powerpc/c/af8bc68263b2184e63ee67ca70cecff4636f7901
+We do use a per-task canary, but because we don't have "current" in a
+register, we can't use the value in current for GCC.
+
+In one of my replies I said a possible solution would be to keep current
+in a register on 64-bit, but we'd need to do that in addition to the
+paca, so that would consume another GPR which we'd need to think hard
+about.
+
+There's another reason to have it in the paca, which is that the paca is
+always accessible, even when the MMU is off, whereas current isn't (in
+some situations).
+
+In general we don't want to use stack protector in code that runs with
+the MMU off, but if the canary wasn't in the paca then we'd have a hard
+requirement to not use stack protector in that code.
 
 cheers
