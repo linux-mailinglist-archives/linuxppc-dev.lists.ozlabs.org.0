@@ -2,66 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B313A6EEDDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 07:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B6B6EEDE8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 08:00:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5p9W1ZCxz3f6w
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 15:59:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5pBT1pMVz3cMj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 16:00:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=rF8VTzf6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=QPFVYq0D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=rF8VTzf6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=QPFVYq0D;
 	dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8g5L26z3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:58:58 +1000 (AEST)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-63b5c4c769aso8637032b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:58:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8h2wZ1z3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:59:00 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-63b67a26069so8666964b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682488735; x=1685080735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+Z1BrS2b9lOnMsjeDbq4LTbbJDxklrQUCc3qJS+/Hk=;
-        b=rF8VTzf6WZ7o50OlLVskwYwqOL7ymNkA1cPyImIuXWNkzzyyRpRCSRh4kycL2Xfqo9
-         1g4DkxXpqg5vGIENNDYa4m6Ff75oYEH/YYLEbwRRxwDXs6obvveokqdGt2Sz8G5dgByK
-         fTAg/uOp5CnvMi3rYfFSEpP2o9kgsyN1yITjUmKlWsEC3nQ4VdsKV33kljYozi5gSeW2
-         J5tq9J+tO+13E3zjc/WWjo++/JNz1P7VWC3Hr9dhaZwmdQHpgFY+wermtAjA2QDbA4zq
-         yUEAG0qiU2+moOqZaeKHfuOcVNfkoHESeblsFCQPkZdOoizPzbYtsfE5lTXDjIbsTjw5
-         ux/Q==
+        d=gmail.com; s=20221208; t=1682488738; x=1685080738;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WLtGq6eHOAM3DTVIPx6oJc5txbYmlmt0PPopdt1OT7Y=;
+        b=QPFVYq0DON6qSyY2pdAMxQz5T6anCV285ukvPmLVhUMh1f9aILmgrNVu7XSVb+mIqq
+         BYq31rZcOVENaqxmRzVZBxA0uU07tl/4Rx6z47JXEIKALSk7xEAIJgaJ9UtYw7RRmAV1
+         SnZT5wB4CCfdfZXAAg+CKC8iU6mXe2BRPCnjJxOftk6cSB2J03Jv60HSx8tN8aXXaKaY
+         F8+GBssrp1GSwKtehyk1WmzoBDIwfXjGE/w5OFOrkWWE/QT/+0rP9mHBPauZE1tiZpUU
+         QvUsZsxd333qBQRaaPpY8kdVFpDwF+gHU5wnMr0kZgTllAcQ4CiR7OYSUtiouEBKcwD9
+         xUTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682488735; x=1685080735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2+Z1BrS2b9lOnMsjeDbq4LTbbJDxklrQUCc3qJS+/Hk=;
-        b=cd3GEDL27Kxgo/1TGbIZeEiXmAF1oz9MheviA/btA95uhx8DLxTBGIcoG94si9N0rs
-         znRSYeKtbKZR1xtFpa0ODFsKoDGl1PJcH6nCkhrvRzheBJmSGnXzLpIeNWp8R4JnbQc2
-         bR9yKvADqErEysTntB8J5K/iuVR9LIA8//vQln1j0IDmqpdD9SsnaFo0sZF/wwxdm7Z6
-         xscoWZDAVtzxP60xS2733njJVSm8eEbgFslfwwSIzr3H1eyFZ4d4yU12VYv4WAwty6dY
-         7oV1LBAXmcqXzZOU1CEyZblwvA508vzA30waG3Uz8sVgY4Xw+LkttT/q5VOa6VzjFjmz
-         /pPw==
-X-Gm-Message-State: AAQBX9fE0EBOPDu2K6av/QqlVx9r+qcgilq82g9tEkfwhxaUVcz8gHuu
-	a/DPjjTZNhF9Pew64UtXO7d6yPkF2IFPww==
-X-Google-Smtp-Source: AKy350YLz9UEfv/AlSQWFGtMAocPmPi87CKLiuPmNIHiYzQA0bbA3HFV2USnxV5xbnnvDWD/agF1zQ==
-X-Received: by 2002:a05:6a00:1911:b0:63b:599b:a2e6 with SMTP id y17-20020a056a00191100b0063b599ba2e6mr27974734pfi.27.1682488735362;
-        Tue, 25 Apr 2023 22:58:55 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682488738; x=1685080738;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WLtGq6eHOAM3DTVIPx6oJc5txbYmlmt0PPopdt1OT7Y=;
+        b=dAhC/3FRNeDwDZGvxqNrYflSwtX75xdFrocHY4xMbd8ttMm9hqrntE87uYxGV6qYhC
+         8lDYtLJrj1xiKFgaQML0P+7s3bv/BTaaQtTYCwJwHbaS64bHTLN+J1urR8v2ez/VhrqY
+         /3DM9hiiFhC9NygCO91m7pHRWAQT5zqPN6sr2oIkUKCtB6tumZwEbzydXCrr8oZdZAzN
+         gVvKuaAhi0q0GlIrifJ/Ll98oKJttwsx6/7TbyXG/xUklRhByMvdpEujbMivboetj2I0
+         x2wsBHLRbJcwC9GZrEKXgKVAKRHOfLCo+mhBl/ySTDZZYomuOypo9bDZztmITlKnlp9D
+         fOyQ==
+X-Gm-Message-State: AAQBX9dAYEv19fHap9hnFr1yBqCpRBDzIVkZGn9eabVBh9NGiAl3sOeR
+	EZ5Bli5yilFpfwTgaukrQMJ/ScxdIvRxLQ==
+X-Google-Smtp-Source: AKy350Yq4iAGbjwcurKUmO1g1n/wx+i3li+ZxwH9UqjP0pzKJOkhPbvod3TXiTFcLKlYYNUNa/vCNQ==
+X-Received: by 2002:a05:6a00:cd3:b0:627:f1f1:a97d with SMTP id b19-20020a056a000cd300b00627f1f1a97dmr27307537pfv.24.1682488737867;
+        Tue, 25 Apr 2023 22:58:57 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.203.54])
-        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.58.52
+        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.58.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Apr 2023 22:58:54 -0700 (PDT)
+        Tue, 25 Apr 2023 22:58:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/9] powerpc: Build fixes
-Date: Wed, 26 Apr 2023 15:58:37 +1000
-Message-Id: <20230426055848.402993-1-npiggin@gmail.com>
+Subject: [PATCH 1/9] powerpc: Fix merge conflict between pcrel and copy_thread changes
+Date: Wed, 26 Apr 2023 15:58:38 +1000
+Message-Id: <20230426055848.402993-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230426055848.402993-1-npiggin@gmail.com>
+References: <20230426055848.402993-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,39 +82,28 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series is against powerpc next. The first two patches are
-independent build fixes for recent patches. Patches 3-5 separate
-boot Makefile BOOTCFLAGS and BOOTASFLAGS and stops passing some
-C code generation flags to the assembler which causes some
-warnings for llvm. Patches 6-9 are not fixes but a bunch of other
-improvements I noticed along the way.
+Fix a conflict between commit 4e991e3c16a35 ("powerpc: add CFUNC
+assembly label annotation") and commit b504b6aade040 ("powerpc:
+differentiate kthread from user kernel thread start").
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/interrupt_64.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Nicholas Piggin (9):
-  powerpc: Fix merge conflict between pcrel and copy_thread changes
-  powerpc/64s: Disable pcrel code model on Clang
-  powerpc/boot: Seperate target flags from BOOTCFLAGS
-  powerpc/boot: Seperate CPP flags from BOOTCFLAGS
-  powerpc/boot: Separate BOOTCFLAGS from BOOTASFLAGS
-  powerpc/boot: Clean up Makefile after cflags and asflags separation
-  powerpc/build: Remove -pipe from compilation flags
-  powerpc/64s: Permit d-form memops in asm when building with prefix on
-    clang
-  powerpc/64s: Work around llvm-as not recognising pla
-
- arch/powerpc/Kconfig               | 19 ++++++++-
- arch/powerpc/Makefile              |  2 +-
- arch/powerpc/boot/Makefile         | 62 +++++++++++++++---------------
- arch/powerpc/include/asm/atomic.h  |  8 ++--
- arch/powerpc/include/asm/io.h      |  2 +-
- arch/powerpc/include/asm/ppc_asm.h |  5 +++
- arch/powerpc/include/asm/uaccess.h |  4 +-
- arch/powerpc/kernel/interrupt_64.S |  2 +-
- arch/powerpc/kernel/vector.S       |  6 +++
- 9 files changed, 70 insertions(+), 40 deletions(-)
-
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index 6730d676284c..bd863702d812 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -756,7 +756,7 @@ _GLOBAL(ret_from_kernel_user_thread)
+ 	b	.Lsyscall_exit
+ 
+ _GLOBAL(start_kernel_thread)
+-	bl	schedule_tail
++	bl	CFUNC(schedule_tail)
+ 	mtctr	r14
+ 	mr	r3,r15
+ #ifdef CONFIG_PPC64_ELF_ABI_V2
 -- 
 2.40.0
 
