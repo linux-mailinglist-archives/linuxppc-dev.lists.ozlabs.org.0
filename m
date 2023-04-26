@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3506EEDF6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 08:04:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD68B6EEDF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 08:05:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5pHS5khHz3fbS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 16:04:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q5pJX6pHdz3fZx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Apr 2023 16:05:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IwsYIVak;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ljvzkog6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IwsYIVak;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ljvzkog6;
 	dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8w3qxlz3cV7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:59:12 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-63b620188aeso7970645b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:59:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q5p8z42hJz3cLx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Apr 2023 15:59:15 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-63b733fd00bso5357084b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Apr 2023 22:59:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682488750; x=1685080750;
+        d=gmail.com; s=20221208; t=1682488753; x=1685080753;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=TF2USIIBgsH0+cckxZfNEtqITyGwjtzqR/Gieyn3Mts=;
-        b=IwsYIVakKdfgGZMAsbDXLSsHz/o+E1kq7+rCGuNXma+L0oiCX89QPBeOMW5K0p2N/E
-         SSTeO1wq00LRnzHM/bQOddrHSkCbbIe7wYVItlkeHg/3Baf5eomgTRlAw6RO5TN6ycoc
-         KksJyVpA66gtzP6OaYxRVomKRld1XLGZIMmhslXatD8WGvfkGoAOrrEQB0YIukGk7cxq
-         dFLJKT6al53GurKjScus3mMeKRUctOly9kx60g8qmTEYUGEdI476A1lJ4LZhHW7bAJZJ
-         s0BaoSLQ14cRSmPk+aF/c2ZLNxjVzDaML7Kd74ke5smd9TDbQc7eo1ZJhJDXkXqRmiIX
-         ghJA==
+        b=ljvzkog6HfFMRVlEhuHE0pxbq0JyqL6sOVgBwE1UvMjH/sTukdi1WgiSb69+kNTt56
+         gEkwYkx1QuglOuTwmCXG1a9CkJINP8wzBTC7kZW60xTSqxzj3YQQpb2dsB/0MVmRouWa
+         j5M+bpQ2rYTqLk14YsFZ67kcqrrLT/0DvQWekH0yRQcHBSBawuEQFSE07nHYayRdPamS
+         5eepRiRI1RQQtrOvBbDyuZXBUm25/yW9lmyUFHSdkH8X7dVwU/RKnAFiyofCioNFPFKB
+         H1dib/VEF14yqaXAnUZXMGskJI5DZMSw2A6oi2d/iDCveSRxTEHCQBndMiStxG8txoaP
+         09cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682488750; x=1685080750;
+        d=1e100.net; s=20221208; t=1682488753; x=1685080753;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=TF2USIIBgsH0+cckxZfNEtqITyGwjtzqR/Gieyn3Mts=;
-        b=LSvm7wDU7poaL/2VFfNcqqezTQxMiDpfU7sLjPY92zz4/U9kdOtChSskMNoYWY56OR
-         RMuAEzBjeGREOFnVtEzA0PJeoru1m+FJDJqGhew4W+vS1IQKawn0iJXqYU2mowzCDJq9
-         qXH3s9heN6KYViTE0il+XuwskXgEus/pDphKzQuP639d3HVUoyu+LKcbwC16LV9bSfMT
-         JzM2BQDt0lDzsWsChMocEwYsNLmiUe6txvCfwCqxbrYAOzugJi390H63FbMJKNB9LTQi
-         TfvVBDUkhJHEHoirhV43dbNxARCCD3At4Km4Bac+05P0h8aPxVcIOMCiBHrH7nkg1wIj
-         i47Q==
-X-Gm-Message-State: AAQBX9e2TYAiXxIoEk//ZX7XR8WpbfYzWFur07y1fblIlX3pnROuHDkL
-	ihnwb3A1Qgj/Qxo1dZ3FDPJSprvpYq31dg==
-X-Google-Smtp-Source: AKy350b4NtjHL7ejTYgkVOySM3QPlGsMK9xBxM60u7Fsx+szLY+nN8TRZXJNpdJJ6qjWb3mmM9kYhQ==
-X-Received: by 2002:a05:6a00:23d2:b0:62a:c1fa:b253 with SMTP id g18-20020a056a0023d200b0062ac1fab253mr26718432pfc.31.1682488750361;
-        Tue, 25 Apr 2023 22:59:10 -0700 (PDT)
+        b=Wb+2KldPlUHqwjWKRoRtgC+K26bJdbgoa6XtN99/YmGJQX5Oil/Fn7f/eDOj0F7JnF
+         C305y8vV5mTBNMug+hiGGcNi2nIRFhB1JZZEVy9d5uqw7cUGCwfQiO+5imupw+469yG9
+         l+cbXZW/OQnWiP9BPgXAFV8mG5gTMIdX3/aXEzQybnrK4okDCJZ3BJzc8g9nO0XktLv+
+         UBWXzR7Wy8+lK1UGQxArRQXhlREBB49IegCxateKX0JR72XqL2LdZtmBJE/jlxzZI80W
+         ga8FUPIpp+cj3s/FE9JmPDt/IEK8IJ83pz9Om2J5eMc7y7Ap+KqIsvxWGZYYOoNTmyLV
+         bgAw==
+X-Gm-Message-State: AAQBX9c8Vk3s/QpcQuFsQnR8fJLkZePVUJMNwg22PwC0UlbGJO8w+ZgS
+	sGWDcEG2QN95mACkOH5mFf2DSk7Ozbd10w==
+X-Google-Smtp-Source: AKy350Z1o64d2L7cy5DV2UrQ+OTHqmsnuFex1KIl4tJGvI78az0umzkn+a3p/pTXDXataa1mHlxqyQ==
+X-Received: by 2002:a05:6a00:13aa:b0:637:f447:9916 with SMTP id t42-20020a056a0013aa00b00637f4479916mr28343888pfg.16.1682488752595;
+        Tue, 25 Apr 2023 22:59:12 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.203.54])
-        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.59.08
+        by smtp.gmail.com with ESMTPSA id f25-20020aa782d9000000b0063a1e7d7439sm10300479pfn.69.2023.04.25.22.59.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Apr 2023 22:59:09 -0700 (PDT)
+        Tue, 25 Apr 2023 22:59:12 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 6/9] powerpc/boot: Clean up Makefile after cflags and asflags separation
-Date: Wed, 26 Apr 2023 15:58:43 +1000
-Message-Id: <20230426055848.402993-7-npiggin@gmail.com>
+Subject: [PATCH 6/9] powerpc/boot: clean up Makefile flags
+Date: Wed, 26 Apr 2023 15:58:44 +1000
+Message-Id: <20230426055848.402993-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230426055848.402993-1-npiggin@gmail.com>
 References: <20230426055848.402993-1-npiggin@gmail.com>
