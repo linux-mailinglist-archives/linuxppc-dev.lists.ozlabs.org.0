@@ -1,46 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8D26F06CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 15:40:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4E16F070E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 16:14:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q6cMF2pQFz3cLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 23:40:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q6d5N1HcXz3fBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Apr 2023 00:14:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rxAoUoti;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q6cLh5ntQz3cGV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Apr 2023 23:40:28 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q6d4S4MCDz3cT4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 00:13:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rxAoUoti;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D2E7A6195F;
-	Thu, 27 Apr 2023 13:40:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF907C433EF;
-	Thu, 27 Apr 2023 13:40:19 +0000 (UTC)
-Date: Thu, 27 Apr 2023 14:40:16 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Justin Forbes <jforbes@fedoraproject.org>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
- ARCH_FORCE_MAX_ORDER
-Message-ID: <ZEp7QCZx27MuFYUb@arm.com>
-References: <20230325060828.2662773-1-rppt@kernel.org>
- <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
- <ZCvQGJzdED+An8an@kernel.org>
- <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
- <ZDbp7LAHES3YFo30@arm.com>
- <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
- <CAFbkSA2hU+2V0i5OG0BBD-s3yNOAZwBmyGmxMLkbzoWZK6cxOQ@mail.gmail.com>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q6d4S2KKRz4x5Q;
+	Fri, 28 Apr 2023 00:13:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1682604792;
+	bh=q8JlyF1aNHES3h7STLRujrhXXNku8XOt2DBhyeyLDsM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rxAoUotiaSZ0B2MNtNhK5O54ewKr2Y2p8GBh/uVfcRd9tG/U0VHYrTnPf3mNaz4dd
+	 Mp/8hZCTKlweQnYjAb5Sj4Ov9JxcltPWKZE+x6DL3LxxrqN8TkChjPV1uF7qKM9SRT
+	 hpgr0tQrXlRUty6wErrsWaImciH/uMlV/GDOrgokOcwaRK4cZyJlLQ3pWZFtJBgmtz
+	 hT+B4HcnXs2kv+o+mBSWBYMTuBNVPyJKRqdfJl8AKMV//sefay3ZAt3ejWCkbtPb5c
+	 zzEaWFUCwGojRWKmFYMstmPzw9jIxB5TLmOh/WySVKQFx+X0sl3RU/5fnAxo0tBayW
+	 s6r1DNjDfs4iQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
+In-Reply-To: <CAABZP2z=xu+07-y5fqFLidZz1VpSgrSwXa1mFHPb=b3Ezr3OtA@mail.gmail.com>
+References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
+ <87cz3tylwx.fsf@mail.concordia>
+ <CAABZP2zr=jypD7w_o18o95QEj1nkFugLcNH5sbuSAY-caBQoeQ@mail.gmail.com>
+ <CAABZP2xVCQhizytn4H9Co7OU3UCSb_qNJaOszOawUFpeo=qpWQ@mail.gmail.com>
+ <87v8hixbql.fsf@mail.concordia>
+ <CAABZP2z=xu+07-y5fqFLidZz1VpSgrSwXa1mFHPb=b3Ezr3OtA@mail.gmail.com>
+Date: Fri, 28 Apr 2023 00:13:11 +1000
+Message-ID: <87wn1xquq0.fsf@mail.concordia>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFbkSA2hU+2V0i5OG0BBD-s3yNOAZwBmyGmxMLkbzoWZK6cxOQ@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,60 +63,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Zi Yan <ziy@nvidia.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>, "Paul E.
+ McKenney" <paulmck@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 25, 2023 at 11:09:58AM -0500, Justin Forbes wrote:
-> On Tue, Apr 18, 2023 at 5:22 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> > On Wed, 12 Apr 2023 18:27:08 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > > > It sounds nice in theory. In practice. EXPERT hides too much. When you
-> > > > flip expert, you expose over a 175ish new config options which are
-> > > > hidden behind EXPERT.  You don't have to know what you are doing just
-> > > > with the MAX_ORDER, but a whole bunch more as well.  If everyone were
-> > > > already running 10, this might be less of a problem. At least Fedora
-> > > > and RHEL are running 13 for 4K pages on aarch64. This was not some
-> > > > accidental choice, we had to carry a patch to even allow it for a
-> > > > while.  If this does go in as is, we will likely just carry a patch to
-> > > > remove the "if EXPERT", but that is a bit of a disservice to users who
-> > > > might be trying to debug something else upstream, bisecting upstream
-> > > > kernels or testing a patch.  In those cases, people tend to use
-> > > > pristine upstream sources without distro patches to verify, and they
-> > > > tend to use their existing configs. With this change, their MAX_ORDER
-> > > > will drop to 10 from 13 silently.   That can look like a different
-> > > > issue enough to ruin a bisect or have them give bad feedback on a
-> > > > patch because it introduces a "regression" which is not a regression
-> > > > at all, but a config change they couldn't see.
-> > >
-> > > If we remove EXPERT (as prior to this patch), I'd rather keep the ranges
-> > > and avoid having to explain to people why some random MAX_ORDER doesn't
-> > > build (keeping the range would also make sense for randconfig, not sure
-> > > we got to any conclusion there).
-> >
-> > Well this doesn't seem to have got anywhere.  I think I'll send the
-> > patchset into Linus for the next merge window as-is.  Please let's take
-> > a look at this Kconfig presentation issue during the following -rc
-> > cycle.
-> 
-> Well, I am very sorry to see this going in as is.  It will silently
-> change people building with oldconfig, and anyone not paying attention
-> will not notice until an issue is hit where "it worked before, and my
-> config hasn't changed".  If EXPERT is unset, there is no notification,
-> just a changed behavior.  While it would be easy for me to carry a
-> patch dropping the if EXPERT, it will not help any users building on
-> upstream with our configs, whether for their own regular use, or while
-> trying to debug other issues,  I expect it will result in a reasonable
-> amount of frustration from users trying to do the right thing and
-> bisect or test patches upstream.
+Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
+> On Thu, Apr 27, 2023 at 11:09=E2=80=AFAM Michael Ellerman <mpe@ellerman.i=
+d.au> wrote:
+>>
+>> Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
+>> > On Tue, Apr 25, 2023 at 2:01=E2=80=AFPM Zhouyi Zhou <zhouzhouyi@gmail.=
+com> wrote:
+>> >> On Tue, Apr 25, 2023 at 6:07=E2=80=AFAM Michael Ellerman <mpe@ellerma=
+n.id.au> wrote:
+>> ...
+>> >> >
+>> >> > There's 12.2.0 here:
+>> >> >   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86=
+_64/12.2.0/
+>> >> >   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/ppc=
+64le/12.2.0/
+>>
+>> > powerpc64le-linux-gnu-gcc-12 cross compiler on my Ubuntu 22.04 does
+>> > not seem to have that issue as gcc-10 does
+>>
+>> OK. So so far it's only that GCC 10 that shows the problem.
+>>
+>> If you have time, you could use some of the other versions to narrow
+>> down which versions show the bug:
+>>
+>>   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/ppc64le/
+>>
+>> There's an 11.0, 11.1 and 11.3 there, as well as 9.5 and so on.
+> GCC test results (Tested on PPC VM of Open Source Lab of Oregon State
+> University)
+> gcc 9.4 (ubuntu native):          positive, show bug
+> gcc 9.5 (download form [1]):   positive, show bug
+> gcc 10.1 (download from [1]): positive, show bug
+> gcc 10.3 (download from [1]): positive, show bug
+> gcc 10.4 (download from [1]): positive, show bug
+>
+> gcc 11.0 (download from [1]): negative, no bug
+> gcc 11.1 (download from [1]): negative, no bug
+> gcc 11.3 (download from [1]): negative, no bug
+> gcc 12.1 (download from [1]): negative, no bug
+> gcc 12.2 (download from [1]): negative, no bug
 
-As I said in a previous reply, I'm fine with reverting this commit if it
-breaks existing configs. It's only that Andrew had already queued it in
-his tree but we have time until the final 6.4 kernel is released.
+Awesome work.
 
-That said, would you mind sending a patch reverting it (if removing
-EXPERT, I'd like to keep the ranges)? ;)
+How are you testing for presence/absence of the bug? By running your
+test and seeing if it crashes, or by looking at the generated code?
 
-Thanks.
-
--- 
-Catalin
+cheers
