@@ -2,72 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B190E6F0770
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 16:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBA96F0CA2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Apr 2023 21:36:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q6dST3tWkz3fQW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Apr 2023 00:30:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q6mDy3LrNz3fDd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Apr 2023 05:36:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=cXRvpI9L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XierVmVd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=cXRvpI9L;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XierVmVd;
 	dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q6dRb5kTLz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 00:29:46 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-24782fdb652so6147309a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Apr 2023 07:29:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682605784; x=1685197784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xrjVe+GZ/aYuuygp5YMWvVf8Vcfas6AR9IpieFbpkS0=;
-        b=cXRvpI9LxCPwg+kylqNX0WHyH+4TIOKTAwHF9DnkYXVQDJ+8rprEmQMiul2qCbscAf
-         Af80Tm+ly+BXlUbPXkTb5WYgYcNee2xf2YA9hlvx2sVbOQ5Bi4PCoiNkayUKmRCMMxAG
-         c3VISC2KkbS2OsOFIwc3gKPTlfuXT2bzNxBX0ikUxwOVeiFlYzk9QfiQ3bvWgQOWFiCn
-         rOVSzP8H/ulCf9x+r3O+awGtcqihKr2UsvANh9XkfZf5pW1lS1ptgwNpiXTOomHl7xcM
-         sOYGT3vz+MyFbCTcwu1O/1PnqNM+GaF+a8Ab/p7OgKcSGjm2njHVeRIyN7Qy2tWc1TAJ
-         dzSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682605784; x=1685197784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xrjVe+GZ/aYuuygp5YMWvVf8Vcfas6AR9IpieFbpkS0=;
-        b=T0mDleQHX1eQjKmdFSQa+nE3pcBwFy3QnQNwik0IBsLnvLVcBsQ+vf81l+n7hycTtf
-         GhQZuuJXGCeM5NdU/hr+BgBIuxUn9/Yh/PHYTkvHPKnGBhIoATK2AtWHgKKe140tOBkj
-         0wrbeWlLfX82sr+5ycDPCcDrrhKY3WDUogh/igDh1zAaeSMYwyKfmMtjFESA/vrk9GI0
-         KWARhn/+ItGTUwBg93J5WfJTszS8bKToODtvw25pSZ6xhZp0qcQ4ogDZJ09QS8M/BiP6
-         xf3RERpHtAtSvo4o1iDYNELYBWetLuKjMIZqcVKbqkVbCaiX66U1nfOkmJEby2DJw1Yb
-         Y7MA==
-X-Gm-Message-State: AC+VfDztej++lcGiB9IJc8tq09MozAZsaFTBKi8Ih19ASAAVI9yQyjGl
-	D4T51xVPGUEx0DVqw5aH7B1pZSX3EFddDrblqOk=
-X-Google-Smtp-Source: ACHHUZ6hdTNgQQwv2t44avCCrWR8mbrKKdu0cTf/4gXM14sjtPsKe8xWmsE4xn4ram6UUVNxmfMLcyEIXG1GWQzLnlA=
-X-Received: by 2002:a17:90a:d513:b0:247:6edf:e934 with SMTP id
- t19-20020a17090ad51300b002476edfe934mr1886414pju.42.1682605783915; Thu, 27
- Apr 2023 07:29:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q6mD44nhzz3cjG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 05:35:16 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D06F463D7D;
+	Thu, 27 Apr 2023 19:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24230C4339B;
+	Thu, 27 Apr 2023 19:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1682624111;
+	bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
+	h=From:Date:Subject:To:Cc:From;
+	b=XierVmVdpa9Cp39YuWLeh+yshOeehlTOz9gNsgUitHVikKGFTxIiAKZkigJbZrsrg
+	 vgQa+Q3Ck2JIRvcGCVf3wpvIWrAypEQdMXGq1d1TO+aixd+IJz/1+t1VFZyja6lkkM
+	 MyoDXHe54cW6Tg9mh9XJ060LVRxv1g7MZMunUP5XiW6dIOZNp7+H4dBL9gwCtU6h+/
+	 Qg3IGXNqxWg5xgmmNvPpl+LSW9OUfesBRR/jjrB2ZTx7ori0yCkmb3fldCh/4J2gPe
+	 Ai+yXz746miKIZ6kO6lUawp5qy9F5179DlH2rfO5zvywSC/rpSwUudk3SS1HDoSanB
+	 wr23RJp6sCcPQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 27 Apr 2023 12:34:53 -0700
+Subject: [PATCH] powerpc/boot: Disable power10 features after BOOTAFLAGS
+ assignment
 MIME-Version: 1.0
-References: <CAABZP2xJRGhPmfB-PrfesQKzP7fsuZsj+3TewAiLLW8u=YK4dg@mail.gmail.com>
- <87cz3tylwx.fsf@mail.concordia> <CAABZP2zr=jypD7w_o18o95QEj1nkFugLcNH5sbuSAY-caBQoeQ@mail.gmail.com>
- <CAABZP2xVCQhizytn4H9Co7OU3UCSb_qNJaOszOawUFpeo=qpWQ@mail.gmail.com>
- <87v8hixbql.fsf@mail.concordia> <CAABZP2z=xu+07-y5fqFLidZz1VpSgrSwXa1mFHPb=b3Ezr3OtA@mail.gmail.com>
- <87wn1xquq0.fsf@mail.concordia>
-In-Reply-To: <87wn1xquq0.fsf@mail.concordia>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Thu, 27 Apr 2023 22:29:32 +0800
-Message-ID: <CAABZP2yS5=ZUwEZQ7iHkV0wDm_HgO8K-TeAhyJrZhavzKDa44Q@mail.gmail.com>
-Subject: Re: BUG : PowerPC RCU: torture test failed with __stack_chk_fail
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230427-remove-power10-args-from-boot-aflags-clang-v1-1-9107f7c943bc@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFzOSmQC/x2OwQqDMBBEf0Vy7kKM0kp/pfSwSTcaMFnZFS2I/
+ 97Y45thHnMYJUmk5tkcRmhLmrhUaG+NCROWkSB9KhtnXWd79wChzBvBwjtJawFlVIjCGTzzChh
+ nrEGY6xTcfQh9R0NoYzBV6FEJvGAJ06XMqCvJVSxCMX3/L17v8/wBDfVlOJUAAAA=
+To: mpe@ellerman.id.au
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2693; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDCle5/I47l3VVrhda/xi+qvzUqkHPLpLjyWoL7h32nDxZ
+ 0XFY7urOkpZGMQ4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEUl8z/OF2N5n/qTdontgL
+ j/9b712ou3PowoKTqg/552x/apAX9DCekeF31rJjPwrXT1okOJnber27/ht53bCIeqOQgo7b8Wv
+ 3TuQDAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,69 +70,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>
+Cc: trix@redhat.com, llvm@lists.linux.dev, ndesaulniers@google.com, patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, npiggin@gmail.com, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 27, 2023 at 10:13=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.=
-au> wrote:
->
-> Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
-> > On Thu, Apr 27, 2023 at 11:09=E2=80=AFAM Michael Ellerman <mpe@ellerman=
-.id.au> wrote:
-> >>
-> >> Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
-> >> > On Tue, Apr 25, 2023 at 2:01=E2=80=AFPM Zhouyi Zhou <zhouzhouyi@gmai=
-l.com> wrote:
-> >> >> On Tue, Apr 25, 2023 at 6:07=E2=80=AFAM Michael Ellerman <mpe@eller=
-man.id.au> wrote:
-> >> ...
-> >> >> >
-> >> >> > There's 12.2.0 here:
-> >> >> >   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x=
-86_64/12.2.0/
-> >> >> >   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/p=
-pc64le/12.2.0/
-> >>
-> >> > powerpc64le-linux-gnu-gcc-12 cross compiler on my Ubuntu 22.04 does
-> >> > not seem to have that issue as gcc-10 does
-> >>
-> >> OK. So so far it's only that GCC 10 that shows the problem.
-> >>
-> >> If you have time, you could use some of the other versions to narrow
-> >> down which versions show the bug:
-> >>
-> >>   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/ppc64l=
-e/
-> >>
-> >> There's an 11.0, 11.1 and 11.3 there, as well as 9.5 and so on.
-> > GCC test results (Tested on PPC VM of Open Source Lab of Oregon State
-> > University)
-> > gcc 9.4 (ubuntu native):          positive, show bug
-> > gcc 9.5 (download form [1]):   positive, show bug
-> > gcc 10.1 (download from [1]): positive, show bug
-> > gcc 10.3 (download from [1]): positive, show bug
-> > gcc 10.4 (download from [1]): positive, show bug
-> >
-> > gcc 11.0 (download from [1]): negative, no bug
-> > gcc 11.1 (download from [1]): negative, no bug
-> > gcc 11.3 (download from [1]): negative, no bug
-> > gcc 12.1 (download from [1]): negative, no bug
-> > gcc 12.2 (download from [1]): negative, no bug
->
-> Awesome work.
-Thank you for your encouragement ;-) ;-)
->
-> How are you testing for presence/absence of the bug? By running your
-> test and seeing if it crashes, or by looking at the generated code?
-Both
-I use gdb ./vmlinux; gdb)disassemble srcu_gp_start_if_needed to look
-up the generated assembly code
-and
-I use [1] to see if it crashes, if there is a bug, it always crashes
-very quickly (within 3 minutes)
-[1] http://140.211.169.189/0425/whilebash.sh
+When building the boot wrapper assembly files with clang after
+commit 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation
+with CONFIG_POWER10_CPU"), the following warnings appear for each file
+built:
 
-Cheers
->
-> cheers
+  '-prefixed' is not a recognized feature for this target (ignoring feature)
+  '-pcrel' is not a recognized feature for this target (ignoring feature)
+
+While it is questionable whether or not LLVM should be emitting a
+warning when passed negative versions of code generation flags when
+building assembly files (since it does not emit a warning for the
+altivec and vsx flags), it is easy enough to work around this by just
+moving the disabled flags to BOOTCFLAGS after the assignment of
+BOOTAFLAGS, so that they are not added when building assembly files.
+Do so to silence the warnings.
+
+Cc: stable@vger.kernel.org
+Fixes: 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation with CONFIG_POWER10_CPU")
+Link: https://github.com/ClangBuiltLinux/linux/issues/1839
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+I do not think that 648a1783fe25 is truly to blame for this but the
+Fixes tag will help the stable team ensure that this change gets
+backported with 648a1783fe25. This is the minimal fix for the problem
+but the true fix is separating AFLAGS and CFLAGS, which should be done
+by this in-flight series by Nick:
+
+https://lore.kernel.org/20230426055848.402993-1-npiggin@gmail.com/
+---
+ arch/powerpc/boot/Makefile | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 85cde5bf04b7..771b79423bbc 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -34,8 +34,6 @@ endif
+ 
+ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
+-		 $(call cc-option,-mno-prefixed) $(call cc-option,-mno-pcrel) \
+-		 $(call cc-option,-mno-mma) \
+ 		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
+ 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+ 		 $(LINUXINCLUDE)
+@@ -71,6 +69,10 @@ BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+ 
+ BOOTARFLAGS	:= -crD
+ 
++BOOTCFLAGS	+= $(call cc-option,-mno-prefixed) \
++		   $(call cc-option,-mno-pcrel) \
++		   $(call cc-option,-mno-mma)
++
+ ifdef CONFIG_CC_IS_CLANG
+ BOOTCFLAGS += $(CLANG_FLAGS)
+ BOOTAFLAGS += $(CLANG_FLAGS)
+
+---
+base-commit: 169f8997968ab620d750d9a45e15c5288d498356
+change-id: 20230427-remove-power10-args-from-boot-aflags-clang-268c43e8c1fc
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
