@@ -1,92 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6284E6F20BB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 00:13:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091056F2132
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 01:36:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7RhN1Xpmz3fRT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 08:13:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7TWM6tzzz3fBV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 09:35:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IETAsgpW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EsFu/1f9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=B0VSON09;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=trix@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IETAsgpW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EsFu/1f9;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=B0VSON09;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7RgR3jr3z30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 08:12:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1682719965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4SoSIPzR5rKJuvsqRvAsre6hhkg4OyDHoRlHAIoohdY=;
-	b=IETAsgpWt902qgl4MEjuSFWKoFnSn1mQTbiooLFPsOQijzcO7nB7Kh/7C+wZDygCoo17ge
-	pCg5AYecnnitlXkrgtD27wdomLNVmTUHPIOKSnjMK+8cwYoztCGihY83vyiAcH/0m3X2IP
-	jCMym4ShFPHS4v22Aja/g6LSthGFK/I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1682719966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4SoSIPzR5rKJuvsqRvAsre6hhkg4OyDHoRlHAIoohdY=;
-	b=EsFu/1f9QJrsTemTaej5xC/ru95P4z4c6vjhwBWRVD7L0LKrY3GLA7PJM4pVmJvvWuKAlS
-	C/7uDrysMjOOGQCo2LLmFjxm+SzgSKu4Rjg+GyzzCCw4yMQ8rPgzzRU0wMdkLf51B0+8jk
-	8+m5ZrmUu2fwSNJzKJdQiRv4cZyLRqU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-h401uzWkNrisT7x64W65RA-1; Fri, 28 Apr 2023 18:12:44 -0400
-X-MC-Unique: h401uzWkNrisT7x64W65RA-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-5efd8b1643bso6635696d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 15:12:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7TVS3r9bz3bdV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 09:35:10 +1000 (AEST)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-506bf4cbecbso413714a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 16:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1682724905; x=1685316905;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nC3lDy6oF9TSUP8W2/TITo5d6aWrWCjfITyVQ/L7zgs=;
+        b=B0VSON09q68IX0X4fxgCMfNEPdIuVtVfm5uZkWzqrLl5+9Y49omu1CarH2yxxantgk
+         Z4heCJ44zsZtQMwVjx8fIWhROPdA69IAAkykA+UQtwKUfZBzrl0YxQyf67PDt68wYlAo
+         aKwAsZd0lHwcwwMcnKdUIHXdot8ZQ0QVleBQE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682719963; x=1685311963;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4SoSIPzR5rKJuvsqRvAsre6hhkg4OyDHoRlHAIoohdY=;
-        b=WmXPpXv3x+i9i1AV9PBqZC1Qmqx8jMNzHJvAJfdTfPhHGujNRX3xdYpoDJodv3iJ1D
-         XPCbTWxNdSYeGBJRKfhR0JnUnanNBU8DS6FcZzuQX0+bXc4aYuzj4ZyY61U4xfGq88Si
-         JEgQ80Ka0tVGRyFRacgwiInQ0K0sFF8iko/BHYOY0GjoS7SLZbp2ORkYgfcaSo2/7o3Z
-         DjISVFNnxC56HhGv1choWOb4eeXGUJvYR5VQiUITn9YfL5oDFSRSQ7vNYlMEVQ3jA6Bo
-         g46REMug+RaihPP8TaTD9+EHh0tD308lWLnCNZmOUyhyyzqQ0xb0GMN1MARw5lDdZGH9
-         fXFA==
-X-Gm-Message-State: AC+VfDyQcmLEqHleHAxXNEvVxPJwWFfIL9RoSzxK+CHYnvlpURaMy2bh
-	vhSkyhiob7FX+rZIuOBYkVb698MbA3a9nfpFqtYvixf4tZ/qWdv09QdWTD8BNxCaO7GUSMhTZ5r
-	zFS5l6RD6h3psSmYwzW0LKEibXg==
-X-Received: by 2002:a05:6214:5015:b0:5f1:5cf1:b4c0 with SMTP id jo21-20020a056214501500b005f15cf1b4c0mr11992740qvb.38.1682719963545;
-        Fri, 28 Apr 2023 15:12:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ68wQ60YLfWK41nYriImzutStd+XuFNGZ3TB+rrfiw7k7lQMX+A0ewHmTHgEP7TF2v1ef0Bwg==
-X-Received: by 2002:a05:6214:5015:b0:5f1:5cf1:b4c0 with SMTP id jo21-20020a056214501500b005f15cf1b4c0mr11992721qvb.38.1682719963287;
-        Fri, 28 Apr 2023 15:12:43 -0700 (PDT)
-Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id j13-20020a0cf50d000000b005eee5c22f30sm6731089qvm.139.2023.04.28.15.12.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Apr 2023 15:12:42 -0700 (PDT)
-From: Tom Rix <trix@redhat.com>
-To: arnd@arndb.de,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc: remove unneeded if-checks
-Date: Fri, 28 Apr 2023 18:12:40 -0400
-Message-Id: <20230428221240.2679194-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+        d=1e100.net; s=20221208; t=1682724905; x=1685316905;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nC3lDy6oF9TSUP8W2/TITo5d6aWrWCjfITyVQ/L7zgs=;
+        b=SzqC5XN80ruYcW5EIorTpOGMzAezA5gxGEbRAtDBN1RoBX9JFD8SDDB/dazPrDb4/n
+         9Ze5FWJn+sjovIzFxc9R64zItm/hkuYV41/9iaAn9eEN3McIPfY4KkX+E+fHtFK5LQ2+
+         Kl7bkVJfSpf5ohcavLjx5NJRHMwu3kyMai7YDoLoCyvdX+Os4HNB2MUS7ZfE+h+XraiR
+         ubP7It0PMzybP2AXEur2h3Itc2tnL8QSGebhgxXM2ilIGC238MZb2Z3CnDnJQZuwQNfw
+         JC5KffdU5Eu/2X4yrw6eepJ8ijZNEq525yiroG8GOEu6BXpZqWHkOfygpbTeXHoRnWHH
+         H4Jg==
+X-Gm-Message-State: AC+VfDx6tq4sTFeTN0jl5cw7HK2jmbTI144gqK7o+RQqn33Anz/O0fJX
+	LygdMHfz5MZFkcE9gUaMoC1JOcTBvDdx3qa933wktLSh
+X-Google-Smtp-Source: ACHHUZ5daE2RuXVUYr+8MJg3uCbZIXVngejE4NDA51otrJPftLckH8FauZ3Drkufzj9u6gBD2JMU2Q==
+X-Received: by 2002:aa7:d04c:0:b0:506:b211:489 with SMTP id n12-20020aa7d04c000000b00506b2110489mr365469edo.35.1682724905368;
+        Fri, 28 Apr 2023 16:35:05 -0700 (PDT)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id y21-20020a17090614d500b0094b87711c9fsm11845143ejc.99.2023.04.28.16.35.04
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Apr 2023 16:35:04 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-506bf4cbecbso413671a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Apr 2023 16:35:04 -0700 (PDT)
+X-Received: by 2002:a17:907:6e90:b0:94f:5079:ade2 with SMTP id
+ sh16-20020a1709076e9000b0094f5079ade2mr8278173ejc.62.1682724903906; Fri, 28
+ Apr 2023 16:35:03 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+References: <87fs8k734t.fsf@mail.concordia>
+In-Reply-To: <87fs8k734t.fsf@mail.concordia>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 28 Apr 2023 16:34:46 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgY8_-BvS5mFR+UtCwbLrOVikYfHi_m9OFxE2D43B+=8g@mail.gmail.com>
+Message-ID: <CAHk-=wgY8_-BvS5mFR+UtCwbLrOVikYfHi_m9OFxE2D43B+=8g@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.4-1 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,44 +82,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: arkamar@atlas.cz, aik@ozlabs.ru, paul.gortmaker@windriver.com, bgray@linux.ibm.com, ira.weiny@intel.com, robh@kernel.org, mikey@neuling.org, windhl@126.com, tpearson@raptorengineering.com, nicholas@linux.ibm.com, joel@jms.id.au, liubo03@inspur.com, kconsul@linux.vnet.ibm.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, nathan@kernel.org, alex.williamson@redhat.com, pali@kernel.org, rdunlap@infradead.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, mcgrof@kernel.org, nysal@linux.ibm.com, seanjc@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For ppc64, gcc with W=1 reports
-arch/powerpc/platforms/cell/spu_base.c:330:17: error:
-  suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-  330 |                 ;
-      |                 ^
-arch/powerpc/platforms/cell/spu_base.c:333:17: error:
-  suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-  333 |                 ;
-      |                 ^
+On Fri, Apr 28, 2023 at 2:44=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.a=
+u> wrote:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/=
+powerpc-6.4-1
 
-These if-checks do not do anything so remove them.
+Odd. Your shortlog has this:
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- arch/powerpc/platforms/cell/spu_base.c | 6 ------
- 1 file changed, 6 deletions(-)
+> Michael Ellerman (46):
+>       powerpc/configs: Make pseries_defconfig an alias for ppc64le_guest
 
-diff --git a/arch/powerpc/platforms/cell/spu_base.c b/arch/powerpc/platforms/cell/spu_base.c
-index 7bd0b563e163..dea6f0f25897 100644
---- a/arch/powerpc/platforms/cell/spu_base.c
-+++ b/arch/powerpc/platforms/cell/spu_base.c
-@@ -326,12 +326,6 @@ spu_irq_class_1(int irq, void *data)
- 	if (stat & CLASS1_STORAGE_FAULT_INTR)
- 		__spu_trap_data_map(spu, dar, dsisr);
- 
--	if (stat & CLASS1_LS_COMPARE_SUSPEND_ON_GET_INTR)
--		;
--
--	if (stat & CLASS1_LS_COMPARE_SUSPEND_ON_PUT_INTR)
--		;
--
- 	spu->class_1_dsisr = 0;
- 	spu->class_1_dar = 0;
- 
--- 
-2.27.0
+that removed the 'pseries_defconfig' file, but then your diffstat
 
+>  arch/powerpc/configs/pq2fads_defconfig                                  =
+             |  80 ----
+>  arch/powerpc/include/asm/atomic.h                                       =
+             |  53 +-
+
+doesn't have it, resulting in the summary not matching what I get:
+
+> 278 files changed, 2672 insertions(+), 9188 deletions(-)
+
+versus my
+
+ 279 files changed, 2690 insertions(+), 9528 deletions(-)
+
+and I see no obvious reason for it.
+
+I wonder if your test-merge just didn't remove the file (it did have a
+conflict due to the IXGB driver removal), and that's why.
+
+Anyway, I'm not entirely sure about the mismatch of the end result,
+but it seems to be due to that one defconfig file, and I think my
+merge is fine. But please double-check.
+
+                   Linus
