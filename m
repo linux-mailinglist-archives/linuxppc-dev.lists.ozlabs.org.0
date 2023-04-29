@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3894E6F25DE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 20:26:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172656F25DD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 20:25:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7ybp13bkz3cj9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 04:26:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7yZs6QCQz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 04:25:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=osIreuhF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=l+H0JwRF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=osIreuhF;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=l+H0JwRF;
 	dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7yYz1gFZz3bhx
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 04:24:53 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-64115e652eeso19274884b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 11:24:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7yYz1j15z3bmH
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 04:24:54 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1a6762fd23cso9040485ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 11:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682792690; x=1685384690;
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682792692; x=1685384692;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HCZIXMPhuJUf80scSK3agzn9QDDKa0LblR7ePMqe91Q=;
-        b=osIreuhFqrOaZAAl/27+IK5Hi1AB1StDT3MQB4UJdmyvLv00XqfYnZDOR5DEup+Zbc
-         EMMhztAPOHm+IIUb2Jko/Ql1Qxequoi14q5q6ioXxwV6ONNbTHbCpppQsquBotBv7NZA
-         0xsoGYgWKOy6+E6yOM0QJd1lS7m7Gz/d+GxIdfE4O363XFxvr58OuzUA8yahfjRkgl76
-         daFFl6DyngHfFxsVeUlgdYpwovv5SK9w21aq217ZLhFo3Y8jm5Njv+T6oNvGK4lJj/ES
-         nDCkxSdKHcKkITKghp2NRdG/dKj2tCryrSlZDF5O3eK56lzP0kExP10+gizADZGE0dho
-         uu6w==
+        bh=KGl5HMSK57VmBSwKSnwgm3VXr902jH6XBJlNczgIzTY=;
+        b=l+H0JwRFKwAD4TzkKtg69sq/SE0iMjDe/NX6Txlv16Ba4kBdBRnOLJE9cuEp/EtowJ
+         pvTfeswVQQvBqhKyncNpPdAR29BMkNe6LB9ZMzoVyBV5Q9aGwXPM1Fc+6Qr50SDIiKsJ
+         q9xyHClsPNOcAaBRr9fQ8UfCjonz6jsBwXrYvJjTpLiOgKgKgvN8uwk1fTPbl8XK+035
+         m3QY80DvBeDJf799u5hnhHuLgfMpPNb4a9jtTjDBw2OzLziw75OHG2J322CH+dAw1HCw
+         HsmmVI7grjIDtuj7uBS5rk+EMADzgTEglzedbNWVOsorwBluoILEBWp5M0RLFiHKNfCf
+         2+Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682792690; x=1685384690;
+        d=1e100.net; s=20221208; t=1682792692; x=1685384692;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HCZIXMPhuJUf80scSK3agzn9QDDKa0LblR7ePMqe91Q=;
-        b=CarA9LBLzroLdD+Dm6LTey5wW+7FjHiEypdGQFfxF1gbxyuTMjWaAH83qCNCy5NehH
-         K/L446Mjy/BBn2O8M/qiwEuzp6XgaRExB3leXJw3eAnI2VpCUFajfmWc1EOS/T0BDu64
-         61WmhFPiixyC6gMGGt5p5P5Truz0nHptnEpGBJ/4djnq36cn/qAYJ1mQFkIZeglZf/T3
-         Ayzl9ijG9DeKHKwjJCDAyrVQaL6XI6Y2ArDIfGMUMENIrk+1OCuMOoZl56MaXVgO2dJ/
-         eD3nfjuXz5ol0Qe/pV6O5Nam9a57DIUVVw8Oam7JwmYbC0s1WTIhlpLEFo7xvGR+pSfs
-         DZ0Q==
-X-Gm-Message-State: AC+VfDxTbBERNN0SM4skxEd76dJa0kcmw0+5SCHETPwKYf/k66EjxJ2g
-	6Jl1XtEiaqr1IYRTbEilF3LhyA==
-X-Google-Smtp-Source: ACHHUZ56+SNdXMph8Hdac6/dfoFg0Vhv/AYaUOOmwxyPYiHuY8kgDpOram8U+gPi6EA5PyHcO2u8+w==
-X-Received: by 2002:a17:903:41cf:b0:1a6:d0a8:c70f with SMTP id u15-20020a17090341cf00b001a6d0a8c70fmr11307108ple.5.1682792690325;
-        Sat, 29 Apr 2023 11:24:50 -0700 (PDT)
+        bh=KGl5HMSK57VmBSwKSnwgm3VXr902jH6XBJlNczgIzTY=;
+        b=cM6eA5NUZPPJ4tjMvziHwSsJAKzzZ91PXwofPMcXCRbVFZ7XJ7FaZjNWmI34KBHk/x
+         suEJnmeCykPurjMMS/G+PeXf/Xn9SRRigIrdHs5IZ5NIzQLYl4mmYhcOCzfEAhiG83Nd
+         bPxAp+gXUCTGsxdcAetCuRU68g37/8mGw+jo7Qeylvjq0GQv6SvAJWIDazEn/z+nX2mF
+         h3SvsojEaJ+7cjShrN5dCZCjYlCQzaO3VGB31ZtDx1791izpGmDQdhRy6F2eErsUZVto
+         BX86lnL1tqD/6fZOa5hxXWfrRAkTUTjxTXAJkiQM1JUwXGz9bzMZ89MmIz06QdJDfFtU
+         t06A==
+X-Gm-Message-State: AC+VfDyrca9n5Uzmrt6+oSI+CEzDpxoQgGxsnL/zT1HxsuYHg+xFObHO
+	Big1FwphcOb+512Dqbg6p1IT7Q==
+X-Google-Smtp-Source: ACHHUZ6ZiLzN9eR+ckFMqg7tN3D4bPpq4geojnHO1Jqz7HXa46oxZHVvxREPvQQtQygRvSqX/lxFkg==
+X-Received: by 2002:a17:903:124b:b0:1a2:8c7e:f315 with SMTP id u11-20020a170903124b00b001a28c7ef315mr10630845plh.21.1682792692014;
+        Sat, 29 Apr 2023 11:24:52 -0700 (PDT)
 Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id l4-20020a170902eb0400b001960706141fsm15126026plb.149.2023.04.29.11.24.48
+        by smtp.gmail.com with ESMTPSA id z2-20020a170902708200b001a19196af48sm15137375plk.64.2023.04.29.11.24.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Apr 2023 11:24:49 -0700 (PDT)
-Date: Sat, 29 Apr 2023 11:24:49 -0700 (PDT)
-X-Google-Original-Date: Sat, 29 Apr 2023 11:24:22 PDT (-0700)
-Subject: Re: [PATCH 08/19] riscv: Add explicit include for cpu.h
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-8-581e2605fe47@kernel.org>
+        Sat, 29 Apr 2023 11:24:51 -0700 (PDT)
+Date: Sat, 29 Apr 2023 11:24:51 -0700 (PDT)
+X-Google-Original-Date: Sat, 29 Apr 2023 11:24:33 PDT (-0700)
+Subject: Re: [PATCH 09/19] riscv: cacheinfo: Adjust includes to remove of_device.h
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-9-581e2605fe47@kernel.org>
 From: Palmer Dabbelt <palmer@dabbelt.com>
 To: robh@kernel.org
-Message-ID: <mhng-3fdcd7ba-9d00-4521-a55f-367cf53f5f12@palmer-ri-x1c9a>
+Message-ID: <mhng-8827afbb-9f5f-4a6d-b528-4b79b1a32f8a@palmer-ri-x1c9a>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -83,41 +83,31 @@ Cc: nm@ti.com, chenhuacai@kernel.org, rafael@kernel.org, tiny.windzz@gmail.com, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 29 Mar 2023 08:52:05 PDT (-0700), robh@kernel.org wrote:
-> Removing the include of cpu.h from of_device.h (included by
-> of_platform.h) causes an error in setup.c:
->
-> arch/riscv/kernel/setup.c:313:22: error: arithmetic on a pointer to an incomplete type 'typeof(struct cpu)' (aka 'struct cpu')
->
-> The of_platform.h header is not necessary either, so it can be dropped.
+On Wed, 29 Mar 2023 08:52:06 PDT (-0700), robh@kernel.org wrote:
+> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
+> implicitly including other includes, and is no longer needed. Adjust the
+> include files with what was implicitly included by of_device.h (cpu.h and
+> of.h) and drop including of_device.h.
 >
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
 > Please ack and I will take the series via the DT tree.
 > ---
->  arch/riscv/kernel/setup.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/riscv/kernel/cacheinfo.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index 376d2827e736..dcfa4b6fa4b1 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -8,6 +8,7 @@
->   *  Nick Kossifidis <mick@ics.forth.gr>
->   */
+> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+> index 3a13113f1b29..e3829d2de5d9 100644
+> --- a/arch/riscv/kernel/cacheinfo.c
+> +++ b/arch/riscv/kernel/cacheinfo.c
+> @@ -5,7 +5,6 @@
 >
-> +#include <linux/cpu.h>
->  #include <linux/init.h>
->  #include <linux/mm.h>
->  #include <linux/memblock.h>
-> @@ -15,7 +16,6 @@
->  #include <linux/console.h>
->  #include <linux/screen_info.h>
->  #include <linux/of_fdt.h>
-> -#include <linux/of_platform.h>
->  #include <linux/sched/task.h>
->  #include <linux/smp.h>
->  #include <linux/efi.h>
+>  #include <linux/cpu.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <asm/cacheinfo.h>
+>
+>  static struct riscv_cacheinfo_ops *rv_cache_ops;
 
 Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
 Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
