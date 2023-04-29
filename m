@@ -2,59 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F5E6F2137
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 01:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF1D6F22BB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 05:42:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7TY11F5Qz3fQW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 09:37:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7ZzX32wtz3fCk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 13:42:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z09KZHaX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DMN6Hrma;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7Zyf2yDbz3c8V
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 13:41:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z09KZHaX;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DMN6Hrma;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7TX74rytz3c4w
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 09:36:39 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C5E1060B45;
-	Fri, 28 Apr 2023 23:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29A93C433EF;
-	Fri, 28 Apr 2023 23:36:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1682724996;
-	bh=XurUeSlKNZhVDNCbTUd5IhHGXcISaZBPu0X6iMHWDyU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Z09KZHaXYwwXqLnSU87OqwCRhZX8tkXeIx2cFI6m7gwbhOQ0MvQ9MMq6aNs7wMxmd
-	 rOLzypJN3YFkxZVtSbjy3xwshJfzVtdNypi6GQ0aILJ0sQ4GGJQWTcvwOj6LuXAfyR
-	 lCj0ZbUO+N0lvHYNd8/9SXTr215wOYreFrrlLTFEePhRN2syPHPzAIcEzOM7o5qhHK
-	 3sTBgrs3en/ow9XJQ42LZoEai4eeLn/K8U3Sq+6Bn4d24Cq0pn/JR4f0yqx7bAXsSO
-	 RTEFuOj6es/t46B9rQkKcJfBEVdd465nlhesrzDhsdvCrPFEUzn68TLAYu6iCQWUao
-	 u4ihpsFQYvIVg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 13E55C41677;
-	Fri, 28 Apr 2023 23:36:36 +0000 (UTC)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Q7ZyR3r4nz4xDH;
+	Sat, 29 Apr 2023 13:41:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1682739686;
+	bh=ekrUI3+8BrR0nHkWhYZH1OoQichJoAnJM3+aShy0lg0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DMN6HrmakjqW9uKPK1tW24ZW4779qPY6K7IeQkEZiZaf0luHkL9dTZb5vzYNZaslY
+	 TIrDK1Vne+EcqG+R+zgVTIONZu92d9nHia9Ltneb/Rm2afD4ENPM/e3MlRXH9/Nrwf
+	 1/AE8Qu8OC30on7wWHOJK1kWsrRcCQCPfGB4pD788HlENoahSmfxajD6i+CgQlhsKV
+	 smCK/g9sgfKX7E1e2iRWPigaU9/UiZBeGYBAVFxLg7yWHYXTDUslhbDNQmspT4kYm3
+	 ttMdWip7Z2BTI2oZcIpTa9hrD3YOAo+PQWtpfHdlUtDqnFTleigO8lAdkFleftt12Q
+	 1Q2f2TOCC1pBA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.4-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87fs8k734t.fsf@mail.concordia>
+In-Reply-To: <CAHk-=wgY8_-BvS5mFR+UtCwbLrOVikYfHi_m9OFxE2D43B+=8g@mail.gmail.com>
 References: <87fs8k734t.fsf@mail.concordia>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87fs8k734t.fsf@mail.concordia>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.4-1
-X-PR-Tracked-Commit-Id: 169f8997968ab620d750d9a45e15c5288d498356
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 70cc1b5307e8ee3076fdf2ecbeb89eb973aa0ff7
-Message-Id: <168272499607.24865.5167458035940101849.pr-tracker-bot@kernel.org>
-Date: Fri, 28 Apr 2023 23:36:36 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ <CAHk-=wgY8_-BvS5mFR+UtCwbLrOVikYfHi_m9OFxE2D43B+=8g@mail.gmail.com>
+Date: Sat, 29 Apr 2023 13:41:18 +1000
+Message-ID: <87wn1v2w4h.fsf@mail.concordia>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +59,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arkamar@atlas.cz, aik@ozlabs.ru, paul.gortmaker@windriver.com, bgray@linux.ibm.com, ira.weiny@intel.com, robh@kernel.org, mikey@neuling.org, windhl@126.com, mcgrof@kernel.org, nicholas@linux.ibm.com, joel@jms.id.au, liubo03@inspur.com, kconsul@linux.vnet.ibm.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, nathan@kernel.org, alex.williamson@redhat.com, Linus Torvalds <torvalds@linux-foundation.org>, rdunlap@infradead.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, tpearson@raptorengineering.com, nysal@linux.ibm.com, seanjc@google.com, pali@kernel.org
+Cc: arkamar@atlas.cz, aik@ozlabs.ru, paul.gortmaker@windriver.com, bgray@linux.ibm.com, ira.weiny@intel.com, robh@kernel.org, mikey@neuling.org, windhl@126.com, tpearson@raptorengineering.com, nicholas@linux.ibm.com, joel@jms.id.au, liubo03@inspur.com, kconsul@linux.vnet.ibm.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, nathan@kernel.org, alex.williamson@redhat.com, pali@kernel.org, rdunlap@infradead.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, mcgrof@kernel.org, nysal@linux.ibm.com, seanjc@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Fri, 28 Apr 2023 19:44:02 +1000:
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Fri, Apr 28, 2023 at 2:44=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>>
+>>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags=
+/powerpc-6.4-1
+>
+> Odd. Your shortlog has this:
+>
+>> Michael Ellerman (46):
+>>       powerpc/configs: Make pseries_defconfig an alias for ppc64le_guest
+>
+> that removed the 'pseries_defconfig' file, but then your diffstat
+>
+>>  arch/powerpc/configs/pq2fads_defconfig                                 =
+              |  80 ----
+>>  arch/powerpc/include/asm/atomic.h                                      =
+              |  53 +-
+>
+> doesn't have it, resulting in the summary not matching what I get:
+>
+>> 278 files changed, 2672 insertions(+), 9188 deletions(-)
+>
+> versus my
+>
+>  279 files changed, 2690 insertions(+), 9528 deletions(-)
+>
+> and I see no obvious reason for it.
+>
+> I wonder if your test-merge just didn't remove the file (it did have a
+> conflict due to the IXGB driver removal), and that's why.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.4-1
+Yeah my fault, looks like I edited the conflict in powernv_defconfig and
+then did 'git add arch/powerpc/configs/*' which added back the pseries
+one.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/70cc1b5307e8ee3076fdf2ecbeb89eb973aa0ff7
+> Anyway, I'm not entirely sure about the mismatch of the end result,
+> but it seems to be due to that one defconfig file, and I think my
+> merge is fine. But please double-check.
 
-Thank you!
+Yep looks fine, thanks.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+cheers
