@@ -1,88 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883036F2506
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 16:25:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EB36F254A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 17:54:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7sGC2Q6pz3f5W
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 00:25:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7vDh6Bpzz3f8Q
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 01:54:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=TP+xxB5X;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=PSYVGaqH;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LRNlNK7T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.27; helo=out3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=TP+xxB5X;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=PSYVGaqH;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LRNlNK7T;
 	dkim-atps=neutral
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7sFB4KYMz2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 00:25:01 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id 8947A5C017D;
-	Sat, 29 Apr 2023 10:24:55 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 29 Apr 2023 10:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1682778295; x=1682864695; bh=GZ
-	1r8chqJu9O8N9mQjNNJZHcqb8s0kPL+Id1lipx7Gg=; b=TP+xxB5Xv5L5XaMTCz
-	JvKdo4SJevmykIap/mU0DRhRvX8IKLEIEiABHua2KzggZII0h5vEkR01aPwrk6+a
-	ktd5fTqHkoHNzkkKr6JIDw7Duq1uTjut1PWJo8z4/zWkMnbFuxPHeUlUwN6IxlAD
-	UyeVjxmZqFoo4fZPlyr3/0/ZJFJLhkfqX+Cq2CRBSD+qFW3MnT8/avTtc/dc+lzv
-	AXOEKvaD035j5HGJmogUyit0/Q1EUzr2XZKyTtAvSVdldYhWuN5ZUMDUnbUG21pL
-	P+syKL3IXrxUaFkDzV6hFIvEaUi4vWcBY/xoxik4lUOsetsxohqW1rC9mM+HSomS
-	P5HQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1682778295; x=1682864695; bh=GZ1r8chqJu9O8
-	N9mQjNNJZHcqb8s0kPL+Id1lipx7Gg=; b=PSYVGaqH2TMG9Qz8xtbHPZ3E0/VdM
-	zY0EIRGX18ZjLWbg2e84R56Xs0V9jNL6RsPV2EOZ9ciLBe4SZw9uSZ6POLWHnwKv
-	MRZIXNDK9EdQ9SWH77Fxnm1WQrOXw7JqG4B6W1vDL/icfnSxFvxN3hS/fpBpmw7O
-	vXH7pQDQ7FMFNyqH1ZZxx+gxdJrH29xgN4fHsMlhEQU0RwrAXQuIML13FqWzVFcC
-	gP6xBdqbqGp5LJalhbnarXHTh79HuoRL2G50/V+evjB8sBY2uH1d2yPDGNeKN4en
-	YcGjCuAWQJpcfssKXFKsdKwXxznPZFefBECQNQa9gWx17glf9mm4GhBvQ==
-X-ME-Sender: <xms:tihNZKYaIr_sjTODQ7UfLb3tU-b7xuIhkicP95XOSC0DgkaV3u_pxA>
-    <xme:tihNZNaYdNLN4ZKvfax6GcsTPJ4xyeBCFt1cx_069sEOnA-vX5EZV0V2dXaSnuRtT
-    geXi-C2OQnZ9KQ4y6c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedvtddghedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:tyhNZE-vnc2QB43LdT2ApCTFpb24ozGpuTnMjZ6ZmR-IyUVP3uEmeg>
-    <xmx:tyhNZMoKXJsO4ymrI6AVDqKC8Jh8CLdlVN4RsvcEhe8ZiwSELIUiog>
-    <xmx:tyhNZFrYXTJ6eYrIf--A24qeaN-JGZM67BR7lOyWRf3UOjGbQVLsSA>
-    <xmx:tyhNZMWssznlhbNCF18liP_e7byjQNvVRLXwSmNfeECIB5xTwK2sOA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id E3C5CB60086; Sat, 29 Apr 2023 10:24:54 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-374-g72c94f7a42-fm-20230417.001-g72c94f7a
-Mime-Version: 1.0
-Message-Id: <edb707c2-2abb-4260-9c41-c60b5efed2a3@app.fastmail.com>
-In-Reply-To: <20230428221240.2679194-1-trix@redhat.com>
-References: <20230428221240.2679194-1-trix@redhat.com>
-Date: Sat, 29 Apr 2023 16:24:34 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Tom Rix" <trix@redhat.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: remove unneeded if-checks
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7vCm71SJz3bgv
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 01:53:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=vgnEmcsn/vdxwW+Wgs9nj2+PsYmZXDs2hNecCx7a6R8=; b=LRNlNK7TBM7nikpM4NT1V834vb
+	uitrEU2b6gtBZOvfg8VdXsElpxbhD+bTxtVcHL5+xJl2RjbGabz8En4H3lt9xbqJmonyGgTb3sdHD
+	3vvuSn98FPaXvCaMnWrYNiugZUaG2uTEs4tJRVR0n/d+rRNUEg45vCum7sLgV6MVG1DFztQOHFIu/
+	G/EVRs/LHa/jSudPnVV1/3c4HgalePQiyBy6gqvG5+4KcvsoSm0+qR+C99ihRHfyqlOOCCS+waEQ9
+	3o42FpiTfoakZAwoqsxGoSiK09kGBSpFLv2xDY/HB9bWmvoGuuETZW74vZDIeX+7YdAvDv01Umnwb
+	S1wUBBgA==;
+Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1psmtO-00Crzv-1H;
+	Sat, 29 Apr 2023 15:53:46 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ASoC: fsl MPC52xx drivers require PPC_BESTCOMM
+Date: Sat, 29 Apr 2023 08:53:45 -0700
+Message-Id: <20230429155345.14370-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,27 +55,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Grant Likely <grant.likely@secretlab.ca>, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 29, 2023, at 00:12, Tom Rix wrote:
-> For ppc64, gcc with W=1 reports
-> arch/powerpc/platforms/cell/spu_base.c:330:17: error:
->   suggest braces around empty body in an 'if' statement [-Werror=empty-body]
->   330 |                 ;
->       |                 ^
-> arch/powerpc/platforms/cell/spu_base.c:333:17: error:
->   suggest braces around empty body in an 'if' statement [-Werror=empty-body]
->   333 |                 ;
->       |                 ^
->
-> These if-checks do not do anything so remove them.
->
-> Signed-off-by: Tom Rix <trix@redhat.com>
+Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
+SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
+so the 2 former symbols should also depend on PPC_BESTCOMM since
+"select" does not follow any dependency chains.
 
-The original intention was to document that there are other
-flags that could be handled here, but clearly nobody is adding
-code to spufs, so there is no point in keeping that.
+This prevents a kconfig warning and build errors:
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+WARNING: unmet direct dependencies detected for SND_SOC_MPC5200_AC97
+  Depends on [n]: SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC52xx [=y] && PPC_BESTCOMM [=n]
+  Selected by [m]:
+  - SND_MPC52xx_SOC_PCM030 [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC5200_SIMPLE [=y]
+  - SND_MPC52xx_SOC_EFIKA [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_EFIKA [=y]
+
+ERROR: modpost: "mpc5200_audio_dma_destroy" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
+ERROR: modpost: "mpc5200_audio_dma_create" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
+
+Fixes: 40d9ec14e7e1 ("ASoC: remove BROKEN from Efika and pcm030 fabric drivers")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+Cc: alsa-devel@alsa-project.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+---
+v2: use correct email address for Mark Brown.
+
+ sound/soc/fsl/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff -- a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -243,7 +243,7 @@ config SND_SOC_MPC5200_AC97
+ 
+ config SND_MPC52xx_SOC_PCM030
+ 	tristate "SoC AC97 Audio support for Phytec pcm030 and WM9712"
+-	depends on PPC_MPC5200_SIMPLE
++	depends on PPC_MPC5200_SIMPLE && PPC_BESTCOMM
+ 	select SND_SOC_MPC5200_AC97
+ 	select SND_SOC_WM9712
+ 	help
+@@ -252,7 +252,7 @@ config SND_MPC52xx_SOC_PCM030
+ 
+ config SND_MPC52xx_SOC_EFIKA
+ 	tristate "SoC AC97 Audio support for bbplan Efika and STAC9766"
+-	depends on PPC_EFIKA
++	depends on PPC_EFIKA && PPC_BESTCOMM
+ 	select SND_SOC_MPC5200_AC97
+ 	select SND_SOC_STAC9766
+ 	help
