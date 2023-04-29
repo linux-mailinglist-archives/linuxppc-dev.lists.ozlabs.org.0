@@ -2,120 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB12A6F2574
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 19:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3894E6F25DE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 20:26:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7xFg5CWcz3f72
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 03:25:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7ybp13bkz3cj9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 04:26:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Bkg3Qs+u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=osIreuhF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe1e::622; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Bkg3Qs+u;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=osIreuhF;
 	dkim-atps=neutral
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on0622.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe1e::622])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7xDk6wGvz3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 03:24:53 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n7rUas3oF7n9+Umxtkq91ZN6v2iWnfShTbhTwe1jh9Bc045GhtWMjFZ2ZONiEFwimFaFGyH9OBAR6Ob+WE3sswYPTe3xzVIy3eOXdh2ramGEMUPcB94YDx/AwjXB5vd3BcRrINhDVuVS8iJCMCFtosWneAcab9hP5vzXYCQstjdrwynsC3zAW+wPzLMsuzY9ayc6gWnf8zyPEUWJokmWlNoAtlgx1cesw1KKPIjVC2QeFHHBjVJaKNS92unQ3VJ8XJA4pgRqZspcV/w7WzkJhQ4GFx6PLgHtu1Gp9mYN8BB3i6cmU5Zk3eU6EwkETc4Til4q37YvHglfwDKAnKVvWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ndSbYzNodTYkKaX4YSKtyI5CMPNCIJNwjVnYTMb0wkw=;
- b=D8Pom4mE3KhlDEGCFMFM5RHGXZugokJAUUSMvVWW+XHS1e1G+HqGyqEm7zOfwn/Jgf02zklB0hDtgGmODzvzQIpWhHb2dZpQGCFmZw+dYZ+ovmFcb3rLFfIS8Eb68qE6OnQzMj8aXIJfvI07pQ0ACBZSaAvPB85STgDvI8lZpYjL4y4N1zPI8lYqMqd83IIdjSuf7+sCd7SjPMhxFjr09utSpHw/zESGqFMCUhobAxpn+Hzkjb3VPQX+d30bUHq/XEPlx/SQeMT1svt/doJHEK2nzuL7s8kxePB49C8GjTv+1Hre0VdAkT3zjG38Wxfl9rCqCJ5j3dpIZxJ6FNOGgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ndSbYzNodTYkKaX4YSKtyI5CMPNCIJNwjVnYTMb0wkw=;
- b=Bkg3Qs+ux88YQFe0tCD7C/IcV99RTd4z5ivHUucf9rdzQ9t4ySkcp4+t0QumF/YLGkHBDV2paN+ixDufF6v9izYEKKG4Tws3jbiVFBSO4ftq/Z82o3wEvAxiUko5z16YO3gi3htWck+x232xtDF+qOBiFvWuDMkaq1AHPnYJTbY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
- by VI1PR04MB7184.eurprd04.prod.outlook.com (2603:10a6:800:125::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.27; Sat, 29 Apr
- 2023 17:24:27 +0000
-Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
- ([fe80::245a:9272:b30a:a21c]) by AM0PR04MB6452.eurprd04.prod.outlook.com
- ([fe80::245a:9272:b30a:a21c%3]) with mapi id 15.20.6340.025; Sat, 29 Apr 2023
- 17:24:26 +0000
-Date: Sat, 29 Apr 2023 20:24:22 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
-Message-ID: <20230429172422.vc35tnwkekfieoru@skbuf>
-References: <20230425195002.fls5cmwolyrslpad@skbuf>
- <b7779674-c3ac-e0ab-3ca8-db1ec5953a97@seco.com>
- <20230426105140.t4yqv6irtjcwptm5@skbuf>
- <20230425195002.fls5cmwolyrslpad@skbuf>
- <b7779674-c3ac-e0ab-3ca8-db1ec5953a97@seco.com>
- <20230426105140.t4yqv6irtjcwptm5@skbuf>
- <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
- <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
- <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
-X-ClientProxiedBy: VE1PR03CA0015.eurprd03.prod.outlook.com
- (2603:10a6:802:a0::27) To AM0PR04MB6452.eurprd04.prod.outlook.com
- (2603:10a6:208:16d::21)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|VI1PR04MB7184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94f0f769-9fb5-47da-8e9c-08db48d69501
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:  E5aZWncaXsgygy356pERVhy6wTS39jGzuH06AFsCuT5s28dFT8DNOEPN0qz4XdaaAl639yy2zSJloCdd04me1FKSdU36MZkAyx0zNS+qyJGPCsW6G2joWOVs8/gqfN6O0YkJoTyOF3pP5ewLeH95wFtbGzTe9LNOVAYC23Kmt+vBQdv5SRV+Gjgwo00JY59LN1Ad8upJw3mYeUcWDi8S9gb29P3NveL3CwqPcF15az6LZRfuc4ri8m7puYnwsTDRrTMLVkTcruuuzqJ++9719Ax8ZP1rM6tKLj3bf5UUgA0dLJOGIZQVlGvdo0IM0DZf3znIFvLo+IM36yYEDbYllMnNBoYxr78qXnyYfHztXCCdtB/rwB4+SWrr85LGNilhSgxTiLMmFFnVZnRldcNxDTcTp8eeDIJmzu2u6oDff0MhQ16C8kYqfJ1eLmkXDfm3djkuzhefozID6KsAGmFcm0/21FQt8n+BP2QD1za+N8G2zAIwfD4k6ie5ZsAHzGszPc+wi/hYb8h2LAhEtUjHWkKhrwT7oBfNXaYHlhkvS7XveHxvHJ1pQ0VuN0LXBwv2
-X-Forefront-Antispam-Report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(376002)(39850400004)(396003)(366004)(136003)(346002)(451199021)(33716001)(316002)(4326008)(9686003)(6512007)(6506007)(186003)(1076003)(41300700001)(83380400001)(26005)(478600001)(66946007)(54906003)(6916009)(6486002)(6666004)(66476007)(66556008)(38100700002)(2906002)(86362001)(8936002)(8676002)(7416002)(44832011)(5660300002)(66899021);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:  =?us-ascii?Q?VKfvHVUrBADhmr5uEXY9a+0ELdviCvG4bWkZqPNPfKhEixN96qv3ve2tFMXx?=
- =?us-ascii?Q?GhYl1GyqaR1QWL+e02+ZLxOe69VaLwYbg/mkjGj3duKCBEiPBFPwfayVRS8J?=
- =?us-ascii?Q?nLDkt2bJc9eMnOrmEldb2AF4XpbVbqG/xG1rZEfQ786tpQHtja4kKJHMKunP?=
- =?us-ascii?Q?RrNbiKDbVbKBJXoEmatQMEs9GmviQKFHQb17htuH6Dio17ba/9zgf/LVLIpD?=
- =?us-ascii?Q?To7oz+b8hHJNqKG2X+bqXuGixupm+Ek5BzHhz4v5U+KIjhwj3J5U8xeT3U5K?=
- =?us-ascii?Q?TLusdP2hcmNX9Y4fZgOKG5srb8904Fklcwn+TvBvgK/UneZPhtpXzOYZsOm7?=
- =?us-ascii?Q?PIp1cApySA5+Y+I6UDs3M3+9XFryLDzGxUwbMjA+qGlQTk7HZZ7MZIeqLS+k?=
- =?us-ascii?Q?7aGUyrMkOMxFGdNpo3G1BbRMrIXiyHMhJA9gOBPRdiR+ULhNDnMj6xDDLoC+?=
- =?us-ascii?Q?VkCPtUNlGQQLhorkmS3/5zGW4YftkxXjjBfd64P/sqccjJKryoD5Xk/hJcf2?=
- =?us-ascii?Q?GTDNWYOQtcOJRAvijrlJEGe2Lv7iLNPscV7SNjxpwsSBXGtW5e6qMXip1we4?=
- =?us-ascii?Q?e0mm39YEeU0HR3Xy2FAe2/nZ+/JeyCfsREyKVXnMtC2hPapv3G5FosTljTDJ?=
- =?us-ascii?Q?UIPHXoiKErjIlX1XXJsJ+0na+jYi6q3xg79cGRIAAmpjIgpWwdF08boqLU9F?=
- =?us-ascii?Q?M7rZRl9R++UvKbPMiZsxtrYLrjhqCEHCVt8/ZRhzA35jRwyaWF84iC9/NkM7?=
- =?us-ascii?Q?qBESYAdz6LY88V83pqOtGWp5rHwiakQiLffr9LSo5yaSKsmznfnKzPYQi7TR?=
- =?us-ascii?Q?yjgVBu3DSLvapuRI/TyESjP4vTk/wiFKNPSAEMLwvv5sb0LqWuHsdHt+EUf4?=
- =?us-ascii?Q?MJeNpqZI/jBljMbeldrl5xWiTsxd7gU9eojvlIpwQgU4ehxWRscv5MYSvIU6?=
- =?us-ascii?Q?DHboRK8WJ8k92QkfRe07Hy6O+k/rKd1EoikKy7lZVQNO5KhZPlrzDx2Q6QA8?=
- =?us-ascii?Q?U+ptlgIaTOd0Pqe07R4G8p2EZVntghxszAiSew6SbFWEuMartWEu0KcfWpcN?=
- =?us-ascii?Q?FTzfPUmBEjS653hTKW9+2Zoyks4i/yO79jRSACGIBo2qapPzvQ8ZQDG+7X0a?=
- =?us-ascii?Q?Ch7yejRwyMK31E9xLN2242K/TvgARUC1A8gzTY4+nrTSr7UoFS5D+rcwnLGt?=
- =?us-ascii?Q?EdaoN6Zwr54m7Phd4oZJG2JVYlk3uIrBlyeQfe1tZUfbldWKXCRLT2Jhzr5Y?=
- =?us-ascii?Q?wfziGanYLJHMpYo/GCtomqwFrchIQcCMCjhGzaPciePIWUhSQNJEOne+70/I?=
- =?us-ascii?Q?2CRq8KzPHCejV9m8hJ/wC26OO7dOXn2XqYdDenWx8wltbDOZxutt/GI6/+Ap?=
- =?us-ascii?Q?UxLP5tgPoP8EqexhuzW5Tvkq3EaLMIx5ZxnWVv8/hjpnLVwEbqK3I2kHsre5?=
- =?us-ascii?Q?0H3rVrPBgjQxvZGebPfhh/FmK/+1V0AU+nJ1/daKFI8AF0ht2OYfLnXVmGZS?=
- =?us-ascii?Q?s9/t2791j8OnjhYfr5q/cgVn1TecoMx3SNqmjhSK03aG5UuE2o8TWjcv+6vz?=
- =?us-ascii?Q?hrt9yIcAnM0QEspnUa5SDiF7xwphvJhKe7yFuv7OyaiyS0RddOToxtpDrh39?=
- =?us-ascii?Q?xQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94f0f769-9fb5-47da-8e9c-08db48d69501
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2023 17:24:26.6041
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 38ASD5X7MPyUL4krgQNgZ03/VM1G7YUyWTXoX/8LxfYcsyY5EO4I9le/Ekx8Q/wDW2O4ir+i5OS8lplyQqkxLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7184
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7yYz1gFZz3bhx
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 04:24:53 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-64115e652eeso19274884b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 11:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682792690; x=1685384690;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HCZIXMPhuJUf80scSK3agzn9QDDKa0LblR7ePMqe91Q=;
+        b=osIreuhFqrOaZAAl/27+IK5Hi1AB1StDT3MQB4UJdmyvLv00XqfYnZDOR5DEup+Zbc
+         EMMhztAPOHm+IIUb2Jko/Ql1Qxequoi14q5q6ioXxwV6ONNbTHbCpppQsquBotBv7NZA
+         0xsoGYgWKOy6+E6yOM0QJd1lS7m7Gz/d+GxIdfE4O363XFxvr58OuzUA8yahfjRkgl76
+         daFFl6DyngHfFxsVeUlgdYpwovv5SK9w21aq217ZLhFo3Y8jm5Njv+T6oNvGK4lJj/ES
+         nDCkxSdKHcKkITKghp2NRdG/dKj2tCryrSlZDF5O3eK56lzP0kExP10+gizADZGE0dho
+         uu6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682792690; x=1685384690;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HCZIXMPhuJUf80scSK3agzn9QDDKa0LblR7ePMqe91Q=;
+        b=CarA9LBLzroLdD+Dm6LTey5wW+7FjHiEypdGQFfxF1gbxyuTMjWaAH83qCNCy5NehH
+         K/L446Mjy/BBn2O8M/qiwEuzp6XgaRExB3leXJw3eAnI2VpCUFajfmWc1EOS/T0BDu64
+         61WmhFPiixyC6gMGGt5p5P5Truz0nHptnEpGBJ/4djnq36cn/qAYJ1mQFkIZeglZf/T3
+         Ayzl9ijG9DeKHKwjJCDAyrVQaL6XI6Y2ArDIfGMUMENIrk+1OCuMOoZl56MaXVgO2dJ/
+         eD3nfjuXz5ol0Qe/pV6O5Nam9a57DIUVVw8Oam7JwmYbC0s1WTIhlpLEFo7xvGR+pSfs
+         DZ0Q==
+X-Gm-Message-State: AC+VfDxTbBERNN0SM4skxEd76dJa0kcmw0+5SCHETPwKYf/k66EjxJ2g
+	6Jl1XtEiaqr1IYRTbEilF3LhyA==
+X-Google-Smtp-Source: ACHHUZ56+SNdXMph8Hdac6/dfoFg0Vhv/AYaUOOmwxyPYiHuY8kgDpOram8U+gPi6EA5PyHcO2u8+w==
+X-Received: by 2002:a17:903:41cf:b0:1a6:d0a8:c70f with SMTP id u15-20020a17090341cf00b001a6d0a8c70fmr11307108ple.5.1682792690325;
+        Sat, 29 Apr 2023 11:24:50 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id l4-20020a170902eb0400b001960706141fsm15126026plb.149.2023.04.29.11.24.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Apr 2023 11:24:49 -0700 (PDT)
+Date: Sat, 29 Apr 2023 11:24:49 -0700 (PDT)
+X-Google-Original-Date: Sat, 29 Apr 2023 11:24:22 PDT (-0700)
+Subject: Re: [PATCH 08/19] riscv: Add explicit include for cpu.h
+In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-8-581e2605fe47@kernel.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: robh@kernel.org
+Message-ID: <mhng-3fdcd7ba-9d00-4521-a55f-367cf53f5f12@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,55 +78,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?utf-8?B?RmVybuKUnMOtbmRleg==?= Rojas <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: nm@ti.com, chenhuacai@kernel.org, rafael@kernel.org, tiny.windzz@gmail.com, viresh.kumar@linaro.org, lpieralisi@kernel.org, amitk@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, thierry.reding@gmail.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, frowand.list@gmail.com, vireshk@kernel.org, andersson@kernel.org, Marc Zyngier <maz@kernel.org>, samuel@sholland.org, daniel.lezcano@linaro.org, linux@armlinux.org.uk, jernej.skrabec@gmail.com, jonathanh@nvidia.com, wens@csie.org, agross@kernel.org, anup@brainfault.org, rui.zhang@intel.com, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, aou@eecs.berkeley.edu, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, npiggin@gmail.com, robh+dt@kernel.org, linux-mediatek@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, matthias.bgg@gmail.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, sboyd@kernel.o
+ rg, Greg KH <gregkh@linuxfoundation.org>, amit.kachhap@gmail.com, linux-kernel@vger.kernel.org, konrad.dybcio@linaro.org, sudeep.holla@arm.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, lukasz.luba@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 26, 2023 at 10:50:17AM -0400, Sean Anderson wrote:
-> > I need to catch up with 14 rounds of patches from you and with the
-> > discussions that took place on each version, and understand how you
-> > responded to feedback like "don't remove PHY interrupts without finding
-> > out why they don't work"
-> 
-> All I can say is that
-> 
-> - It doesn't work on my board
-> - The traces are on the bottom of the PCB
-> - The signal goes through an FPGA which (unlike the LS1046ARDB) is closed-source
+On Wed, 29 Mar 2023 08:52:05 PDT (-0700), robh@kernel.org wrote:
+> Removing the include of cpu.h from of_device.h (included by
+> of_platform.h) causes an error in setup.c:
+>
+> arch/riscv/kernel/setup.c:313:22: error: arithmetic on a pointer to an incomplete type 'typeof(struct cpu)' (aka 'struct cpu')
+>
+> The of_platform.h header is not necessary either, so it can be dropped.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Please ack and I will take the series via the DT tree.
+> ---
+>  arch/riscv/kernel/setup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> index 376d2827e736..dcfa4b6fa4b1 100644
+> --- a/arch/riscv/kernel/setup.c
+> +++ b/arch/riscv/kernel/setup.c
+> @@ -8,6 +8,7 @@
+>   *  Nick Kossifidis <mick@ics.forth.gr>
+>   */
+>
+> +#include <linux/cpu.h>
+>  #include <linux/init.h>
+>  #include <linux/mm.h>
+>  #include <linux/memblock.h>
+> @@ -15,7 +16,6 @@
+>  #include <linux/console.h>
+>  #include <linux/screen_info.h>
+>  #include <linux/of_fdt.h>
+> -#include <linux/of_platform.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/smp.h>
+>  #include <linux/efi.h>
 
-I don't understand the distinction you are making here. Are the sources
-for QIXIS bit streams public for any Layerscape board?
-
-> - The alternative is polling once a second (not terribly intensive)
-
-It makes a difference to performance (forwarded packets per second), believe it or not.
-
-> 
-> I think it's very reasonable to make this change. Anyway, it's in a separate
-> patch so that it can be applied independently.
-
-Perhaps better phrased: "discussed separately"...
-
-> > Even if the SERDES and PLL drivers "work for you" in the current form,
-> > I doubt the usefulness of a PLL driver if you have to disconnect the
-> > SoC's reset request signal on the board to not be stuck in a reboot loop.
-> 
-> I would like to emphasize that this has *nothing to do with this driver*.
-> This behavior is part of the boot ROM (or something like it) and occurs before
-> any user code has ever executed. The problem of course is that certain RCWs
-> expect the reference clocks to be in certain (incompatible) configurations,
-> and will fail the boot without a lock. I think this is rather silly (since
-> you only need PLL lock when you actually want to use the serdes), but that's
-> how it is. And of course, this is only necessary because I was unable to get
-> major reconfiguration to work. In an ideal world, you could always boot with
-> the same RCW (with PLL config matching the board) and choose the major protocol
-> at runtime.
-
-Could you please tell me what are the reference clock frequencies that
-your board provides at boot time to the 2 PLLs, and which SERDES
-protocol out of those 2 (1133 and 3333) boots correctly (no RESET_REQ
-hacks necessary) with those refclks? I will try to get a LS1046A-QDS
-where I boot from the same refclk + SERDES protocol configuration as
-you, and use PBI commands in the RCW to reconfigure the lanes (PLL
-selection and protocol registers) for the other mode, while keeping the
-FRATE_SEL of the PLLs unmodified.
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
