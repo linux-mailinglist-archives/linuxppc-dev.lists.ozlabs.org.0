@@ -1,96 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E256D6F3116
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 14:43:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D9C6F3123
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 14:45:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q92tX5prBz3fKB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 22:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q92x86v88z3fDb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 22:45:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hODYeDeY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=cwwHyIgX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=ribalda@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hODYeDeY;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=cwwHyIgX;
 	dkim-atps=neutral
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q92p13Tv3z2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 May 2023 22:39:05 +1000 (AEST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-50bc4d96e14so8630210a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 05:39:05 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q92wK1F5hz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 May 2023 22:44:31 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-63b70ca0a84so2906583b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 05:44:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1682944742; x=1685536742;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682945067; x=1685537067;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vsOOlRTCOjL3abNi/3ZUSQqB4+vgvV69cdyU9ee1C48=;
-        b=hODYeDeYg6APhZAviVEDv24zkkV5PSyD9YF80bCIKMgiHcDDsd8y08C3drl6nvnGJD
-         IlJxYRT/wEBGX7nbEciydDBBtR5sxWJSS+Q1JOTL+EYkrNHQvWMsz4+2JhTAsCU5cMFe
-         Ea+MOxsYngr/dEQhvm3KkMoPZiJyiwADd2JrY=
+        bh=U+/m/Q8rJDfBtNlvA5MoeSZihLHMU+hMCap0lrbB/rs=;
+        b=cwwHyIgX4KWvvBvY8nSBkLAFNRsKMYzp6WW1Di0i93YYJQgPlYiPsZZCu6Q8jvx894
+         ycO1ma38TjwwxCTgtSZueTlcY4Th+uxr3S4GZBnOqQEH/2pBTsxgbr9pWx/8L3JZczbj
+         MnpoznAqXqI5UK+Sm37GsXne1PqltuZm1m4Xu8tVG+/im46OIrq2m1j0tSR/GAxO8Bh4
+         VdlXDlQkolJTQQTRdSXDTZdb4WP2mQUEn80kYCVF+/O11w7FZ444LzumBUmo4iRb4nVZ
+         uU5vUU+SbF4ykTZ8FxZUOcJJPtSPqDIpmNPWpIGo5upiSDMbV64yvLxaou3JoJtoNA5f
+         aYLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682944742; x=1685536742;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vsOOlRTCOjL3abNi/3ZUSQqB4+vgvV69cdyU9ee1C48=;
-        b=cp23S4FE9lEKsinPtns3NJHIFEPIiOAaJ4G9J0UTmBlZXc6dOdGpFSzl4G9yTy4/o7
-         CRnWArCBGqmtxmWD9rmI8tD71ubtZypPydPEoZoIQ0zEwkP+G5GLy0kvPUdD9HgMSnNZ
-         z1lXYYSbSiELRMNxqPNgdPR6WKkLXg1Ok8ythggofXnHvETNbtO/VU7FYEx2ctQR9e9A
-         GZs8nhLE23GrghMZIjoWofQxi7ctj6SvCfqn/3CMQwJzaauUBW7XVvdZBKAhtts+4p00
-         r4YHP6+pP46C2YijmYzxTma1UNXgkPOIQyrxU9OVJc0wT3LnW1mPxM1gbSNjZ4Ks4zSO
-         n0eA==
-X-Gm-Message-State: AC+VfDz47hXhhexLaLojy9VUrsaHdEkB82k5xuP9yhIBh+6OkC6qtIh8
-	PkcGyDUVlbI3xEVwpFr7WiVDAw==
-X-Google-Smtp-Source: ACHHUZ4EUorB+1FZYBv1RP6+ov+r8A+Pc1H1dxULnrAhwBqWHXQ9LjOP3Ez/dznJWtTpBeBKUxYLqg==
-X-Received: by 2002:a05:6402:27c8:b0:504:77ed:5a33 with SMTP id c8-20020a05640227c800b0050477ed5a33mr5864584ede.8.1682944742259;
-        Mon, 01 May 2023 05:39:02 -0700 (PDT)
-Received: from alco.roam.corp.google.com ([2620:0:1059:10:c573:159e:712e:688b])
-        by smtp.gmail.com with ESMTPSA id c8-20020aa7c988000000b0050bcbb5708asm146772edt.35.2023.05.01.05.39.00
+        d=1e100.net; s=20221208; t=1682945067; x=1685537067;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U+/m/Q8rJDfBtNlvA5MoeSZihLHMU+hMCap0lrbB/rs=;
+        b=LOWUiQoJsJrd5sDNbN+gC0f06i52E9IhEnD3nlSzvnQxCAZYEkEx/ZjtHfE77/X/rU
+         44mcFEN/Btyqz9iDVvTthRUSG5w4dKNtt/sYLcjSV/Gaxl6wCiPgpaJFBipqqIafWD51
+         ga4C74p2c8LFiH69u/QcCe5J2zEFNlMulkCkpafUspccc+dCkyx2gRAuV03iQB+vosQ8
+         BRs36S43oU5FNkC64062bFdoZ/y2RFwfHVqcqS/3e2Yo2eCRItjiHpGILUA41Ps0TDVx
+         WEce77d1/6IfbUOBcY5MeOcl+4F9l2IRDjeIdC4EezmXNyaM/0cPAcHYZpCVHLeFjlh8
+         Ho0g==
+X-Gm-Message-State: AC+VfDzBJTprMtzOHNf3YBbcgMmEsJSfm1ouS9zXRJ0Xk/6SnWaXi95l
+	obn58cRVoqOJTPIt8T3WRYZ6hw==
+X-Google-Smtp-Source: ACHHUZ7UwoeVcV7NcPNRh+PYPFK4S9ad6FQ4bVggkB4CDQoyhbAx7EDtp4SCD00iu4lmGkebBwMNsA==
+X-Received: by 2002:a05:6a20:6f03:b0:f8:b39b:b24e with SMTP id gt3-20020a056a206f0300b000f8b39bb24emr14578405pzb.11.1682945067231;
+        Mon, 01 May 2023 05:44:27 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id v17-20020a62c311000000b005a8bf239f5csm19690294pfg.193.2023.05.01.05.44.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 May 2023 05:39:02 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 01 May 2023 14:38:22 +0200
-Subject: [PATCH v6 4/4] risc/purgatory: Add linker script
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
-References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
-In-Reply-To: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
-To: Eric Biederman <ebiederm@xmission.com>, 
- Philipp Rudo <prudo@linux.vnet.ibm.com>, Dave Young <dyoung@redhat.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1219; i=ribalda@chromium.org;
- h=from:subject:message-id; bh=ECbK3ORJb/ox8qpp2VcGabf7Ou2PzFFDokGI84nq/PQ=;
- b=owEBbQKS/ZANAwAKAdE30T7POsSIAcsmYgBkT7Lc5MTx2hMC4Re9phVjZPNed9BIxos1Pxii0
- 61fGiCxDbqJAjMEAAEKAB0WIQREDzjr+/4oCDLSsx7RN9E+zzrEiAUCZE+y3AAKCRDRN9E+zzrE
- iJuYD/9j2b1eDvjy+uQCumtGC2Jn+H/Md0JWPsxPb46aNyMDJJYtpnBOkQyLCIR1Ro6iTpnQQLM
- +8uN/ou0X4CF9cfN+g6f5JwkPoQfQcP+jYNP8HE3vvJyaw+gY8gFKrsolGYojIu5+7EZscjeM+x
- 7hCRkxslbxzkKo8bCXJPNM5bL+TS+8voKLtJw5vxmDtH71krf0z6Gp38OUM1qbruri9kSi75MmP
- pPIc503fFiicjySfDDJ804XtSoK2FjXUVn96C+XtJdu8JE5WpzayNi5G1CCxtOHmymMyPL11Nyb
- +Y3kXDpLRgX+07NcFuZOiO/0ThN8bGM98On1cBYfS5PV2bqYo2Cv6+KOCjnObJd8T8zLrIWY31E
- dkIZGehfJGieHtPMQYd0Up0Q7UFloD9EOCUk3YXQjbVL5YW62U0ajBT0UqSNiyO8Fk5AdOGQnDv
- M1oDH7eB6zhw04nOc8MvRcEL1vb70bgueckn6cp6u0ViYD7VRwHLkKiDx9y2wl93EfhhVpu9EpQ
- 108x63OJbcTsVjOEtHREb8lzuERyPHJsPH5o49C5N+yZd7HKY8dMY7vi4/kdo4rqsrCdLSOYIRN
- nVm4G0/Z6eWsohGrZwA5weUUpMcYwEHd+mCMobjyQ8WPRg/nBapyYtxdaEgYMK3As9R4j0j3G0s
- Q5pwBDSsFyR/N1Q==
-X-Developer-Key: i=ribalda@chromium.org; a=openpgp;
- fpr=9EC3BB66E2FC129A6F90B39556A0D81F9F782DA9
+        Mon, 01 May 2023 05:44:26 -0700 (PDT)
+Date: Mon, 01 May 2023 05:44:26 -0700 (PDT)
+X-Google-Original-Date: Mon, 01 May 2023 05:44:09 PDT (-0700)
+Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
+In-Reply-To: <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: ribalda@chromium.org
+Message-ID: <mhng-6809e805-0a92-401b-af74-fef93eeda1ae@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,37 +78,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, Baoquan He <bhe@redhat.com>, Philipp Rudo <prudo@redhat.com>, llvm@lists.linux.dev, Ross Zwisler <zwisler@google.com>, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org, Simon Horman <horms@kernel.org>, Ricardo Ribalda <ribalda@chromium.org>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org
+Cc: trix@redhat.com, dave.hansen@linux.intel.com, llvm@lists.linux.dev, hpa@zytor.com, linux-riscv@lists.infradead.org, prudo@linux.vnet.ibm.com, bhe@redhat.com, x86@kernel.org, mingo@redhat.com, dyoung@redhat.com, aou@eecs.berkeley.edu, zwisler@google.com, npiggin@gmail.com, nathan@kernel.org, bp@alien8.de, rostedt@goodmis.org, Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de, ndesaulniers@google.com, prudo@redhat.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, ebiederm@xmission.com, horms@kernel.org, ribalda@chromium.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If PGO is enabled, the purgatory ends up with multiple .text sections.
-This is not supported by kexec and crashes the system.
+On Mon, 01 May 2023 05:38:22 PDT (-0700), ribalda@chromium.org wrote:
+> If PGO is enabled, the purgatory ends up with multiple .text sections.
+> This is not supported by kexec and crashes the system.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  arch/riscv/purgatory/Makefile | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+> index 5730797a6b40..cf3a44121a90 100644
+> --- a/arch/riscv/purgatory/Makefile
+> +++ b/arch/riscv/purgatory/Makefile
+> @@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+>  CFLAGS_string.o := -D__DISABLE_EXPORTS
+>  CFLAGS_ctype.o := -D__DISABLE_EXPORTS
+>
+> +# When profile optimization is enabled, llvm emits two different overlapping
+> +# text sections, which is not supported by kexec. Remove profile optimization
+> +# flags.
+> +KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
+> +
+>  # When linking purgatory.ro with -r unresolved symbols are not checked,
+>  # also link a purgatory.chk binary without -r to check for unresolved symbols.
+>  PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
 
-Cc: stable@vger.kernel.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- arch/riscv/purgatory/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-index 5730797a6b40..cf3a44121a90 100644
---- a/arch/riscv/purgatory/Makefile
-+++ b/arch/riscv/purgatory/Makefile
-@@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- CFLAGS_string.o := -D__DISABLE_EXPORTS
- CFLAGS_ctype.o := -D__DISABLE_EXPORTS
- 
-+# When profile optimization is enabled, llvm emits two different overlapping
-+# text sections, which is not supported by kexec. Remove profile optimization
-+# flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
-
--- 
-2.40.1.495.gc816e09b53d-goog
-
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
