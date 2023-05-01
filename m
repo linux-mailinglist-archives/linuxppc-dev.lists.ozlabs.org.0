@@ -2,71 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172656F25DD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Apr 2023 20:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C66156F3103
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 14:40:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q7yZs6QCQz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Apr 2023 04:25:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q92qm3rL4z3cdM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 22:40:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=l+H0JwRF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oKFN/r8u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=ribalda@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=l+H0JwRF;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oKFN/r8u;
 	dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q7yYz1j15z3bmH
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Apr 2023 04:24:54 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1a6762fd23cso9040485ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Apr 2023 11:24:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q92nz0PjHz2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 May 2023 22:39:01 +1000 (AEST)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-50bc4d96e14so8629461a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 05:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682792692; x=1685384692;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KGl5HMSK57VmBSwKSnwgm3VXr902jH6XBJlNczgIzTY=;
-        b=l+H0JwRFKwAD4TzkKtg69sq/SE0iMjDe/NX6Txlv16Ba4kBdBRnOLJE9cuEp/EtowJ
-         pvTfeswVQQvBqhKyncNpPdAR29BMkNe6LB9ZMzoVyBV5Q9aGwXPM1Fc+6Qr50SDIiKsJ
-         q9xyHClsPNOcAaBRr9fQ8UfCjonz6jsBwXrYvJjTpLiOgKgKgvN8uwk1fTPbl8XK+035
-         m3QY80DvBeDJf799u5hnhHuLgfMpPNb4a9jtTjDBw2OzLziw75OHG2J322CH+dAw1HCw
-         HsmmVI7grjIDtuj7uBS5rk+EMADzgTEglzedbNWVOsorwBluoILEBWp5M0RLFiHKNfCf
-         2+Mg==
+        d=chromium.org; s=google; t=1682944735; x=1685536735;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJc/FIv16Z5bKlEeMjq3JH7jrMiztUQ6tRChXDQSURU=;
+        b=oKFN/r8uKGx9Dr4DETHEAj7XJds+1Bkl9Cqn4Z6CQQSxDowYbUKPXMMW3MeG+X8FYo
+         fBbtsDIE6lZ/2kRnHPaVvNFwGmN5R+12wlVOtMs22XZvF4DeqmQ7ZLHPROSNR6NOEBIy
+         hQHlXVgw1kAmIgV931djagKU+oBuvB30KXM04=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682792692; x=1685384692;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KGl5HMSK57VmBSwKSnwgm3VXr902jH6XBJlNczgIzTY=;
-        b=cM6eA5NUZPPJ4tjMvziHwSsJAKzzZ91PXwofPMcXCRbVFZ7XJ7FaZjNWmI34KBHk/x
-         suEJnmeCykPurjMMS/G+PeXf/Xn9SRRigIrdHs5IZ5NIzQLYl4mmYhcOCzfEAhiG83Nd
-         bPxAp+gXUCTGsxdcAetCuRU68g37/8mGw+jo7Qeylvjq0GQv6SvAJWIDazEn/z+nX2mF
-         h3SvsojEaJ+7cjShrN5dCZCjYlCQzaO3VGB31ZtDx1791izpGmDQdhRy6F2eErsUZVto
-         BX86lnL1tqD/6fZOa5hxXWfrRAkTUTjxTXAJkiQM1JUwXGz9bzMZ89MmIz06QdJDfFtU
-         t06A==
-X-Gm-Message-State: AC+VfDyrca9n5Uzmrt6+oSI+CEzDpxoQgGxsnL/zT1HxsuYHg+xFObHO
-	Big1FwphcOb+512Dqbg6p1IT7Q==
-X-Google-Smtp-Source: ACHHUZ6ZiLzN9eR+ckFMqg7tN3D4bPpq4geojnHO1Jqz7HXa46oxZHVvxREPvQQtQygRvSqX/lxFkg==
-X-Received: by 2002:a17:903:124b:b0:1a2:8c7e:f315 with SMTP id u11-20020a170903124b00b001a28c7ef315mr10630845plh.21.1682792692014;
-        Sat, 29 Apr 2023 11:24:52 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id z2-20020a170902708200b001a19196af48sm15137375plk.64.2023.04.29.11.24.51
+        d=1e100.net; s=20221208; t=1682944735; x=1685536735;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xJc/FIv16Z5bKlEeMjq3JH7jrMiztUQ6tRChXDQSURU=;
+        b=Kg7LPfh6Hu9QrAuxRK6UUq7PGURW85excnDG6GIAuBBYXqYnmHLjTTY6YZqF6AUxze
+         FIf7pwMhWcp7n7HlN7p0pGg3skITNkNQQL4Niq361lwHQ07OmbT3dHXXFKKGKTQQWCEb
+         gtVWnnlSepU6uL/OmEEnHwkXIKRZXq95WlGh/eIL7b49h+XZynm3MiuPNGNPwoArr9iq
+         6I9uWT+CV5eBpwmEVK0QAZtq8VTxNh6hk/WuSpB2eLEHRKez3x4RNkm6xjepn95oWssm
+         Gi/GLadfWqWuhLD1F5N+WAaYVOoPGqvNEys8FWsmNtpaIQKcOikjSY7YlJw/K5/LyH7C
+         kCiA==
+X-Gm-Message-State: AC+VfDwubCtI+5WOYsAUBASs3ilri7MoDC8GNM6tNj2nI5LVdKm/THiz
+	q+ZNuhmwV2jW2mNA/xJQ+PjCwg==
+X-Google-Smtp-Source: ACHHUZ5dy1t28pTgAv9ZewhiQXtL5zGnuRNOu5Z+CKjak1xPicSHjkyOJ9snAkywki500Fps2M3Y7g==
+X-Received: by 2002:a05:6402:4413:b0:4af:7bdc:188e with SMTP id y19-20020a056402441300b004af7bdc188emr6406640eda.16.1682944735175;
+        Mon, 01 May 2023 05:38:55 -0700 (PDT)
+Received: from alco.roam.corp.google.com ([2620:0:1059:10:c573:159e:712e:688b])
+        by smtp.gmail.com with ESMTPSA id c8-20020aa7c988000000b0050bcbb5708asm146772edt.35.2023.05.01.05.38.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Apr 2023 11:24:51 -0700 (PDT)
-Date: Sat, 29 Apr 2023 11:24:51 -0700 (PDT)
-X-Google-Original-Date: Sat, 29 Apr 2023 11:24:33 PDT (-0700)
-Subject: Re: [PATCH 09/19] riscv: cacheinfo: Adjust includes to remove of_device.h
-In-Reply-To: <20230329-dt-cpu-header-cleanups-v1-9-581e2605fe47@kernel.org>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: robh@kernel.org
-Message-ID: <mhng-8827afbb-9f5f-4a6d-b528-4b79b1a32f8a@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Mon, 01 May 2023 05:38:54 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v6 0/4] kexec: Fix kexec_file_load for llvm16 with PGO
+Date: Mon, 01 May 2023 14:38:18 +0200
+Message-Id: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALqyT2QC/33QzWrDMAwA4FcpPs/F8n922nuMMhJZaczSBOw1d
+ JS8e9UeR5aTkIQ+Cd1FpZKpivfDXRRacs3zxIl/Owgc2ulMMifOhVbaKKNBftON8AtH7oGX1oF
+ CbRLoBgXPdG0l2ZV2woGnpus4cnHI9Wcuv68dC3D4/I9bQCrZBh971BjQpg8cynzJ18txLmdxY
+ mzRu4BmIIEilxyE6JsNwOwChgHXK/AYk6IYNgC7C1gGwFjlIPZNpK0L3C7gnhc4b7qePwDB/AH
+ WdX0Ax4+WyLYBAAA=
+To: Eric Biederman <ebiederm@xmission.com>, 
+ Philipp Rudo <prudo@linux.vnet.ibm.com>, Dave Young <dyoung@redhat.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1858; i=ribalda@chromium.org;
+ h=from:subject:message-id; bh=GVJi+03Xz3YcKIs9vohmPUDUq2YTUUxMRlFdBxq2C24=;
+ b=owEBbQKS/ZANAwAKAdE30T7POsSIAcsmYgBkT7LAFLlAuOy2Pigaz4i/nocmi0AaG2bDBwCis
+ 1EE/BR48JCJAjMEAAEKAB0WIQREDzjr+/4oCDLSsx7RN9E+zzrEiAUCZE+ywAAKCRDRN9E+zzrE
+ iBVJD/0bvdaJk33Kto6cW3Qh7bkAyMST0SlVrSVNNRzCcHkU8OMpa7+OaBEM6aylG0KK+gBpSC+
+ 9M/aU99yVviz/wK8tmypnptMZYvvfeVNiQeO93KdPzYmUZTepOB54/pajMpWdXzgXYnQD+5fVJj
+ XS1Mg4dxUrfaWd9jTaMg6bMPcw4hnduHVIUToP1960WZux+4iyt66qBkHDTUhEe+4aLJdIPu8y0
+ TXEFshDvlVqy/6h7WqW2Wn9X038Lecaf2Cb+vKG/dtcFncw1BsXiCUe+Ny7zQhFXCb+9f3XeamD
+ VVWQ8RhWqq+IsHt/LUVH0SWBcwegONn8/OA3jHsAfFQY9s2iYABKgoBbDzq7QuVR4DeXsS/B8kd
+ Je8L101yFCiVa6aM7T/iN025l2Pr0M6mSxPsEZbwbXYUnADYf4FjlVcsvSiBCQghUXRcE7yb0zE
+ 9s1uOFvgW1Tmn9KJTK5e91CRxAKAz5AUF/fiqJYtGJuXhPypDbO7xrVcHx2XV/9/KFsCVAWCFli
+ izkP0mT4SSvRRjga1EF091s9YDLMxKe287MF0LcOdNASLL8QmYbIG4Nk2KJcqLUx7RR/UAzd6LI
+ mzp4oKuDvSVn1XPWMnSidoCM4GInDmiQ20x5trgZ1hUVyat2PHBgU0I5SdzrjK2gYZDAo/Q8/4q
+ 9iNvZ9J8J2WbZpw==
+X-Developer-Key: i=ribalda@chromium.org; a=openpgp;
+ fpr=9EC3BB66E2FC129A6F90B39556A0D81F9F782DA9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,36 +104,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nm@ti.com, chenhuacai@kernel.org, rafael@kernel.org, tiny.windzz@gmail.com, viresh.kumar@linaro.org, lpieralisi@kernel.org, amitk@kernel.org, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org, thierry.reding@gmail.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, frowand.list@gmail.com, vireshk@kernel.org, andersson@kernel.org, Marc Zyngier <maz@kernel.org>, samuel@sholland.org, daniel.lezcano@linaro.org, linux@armlinux.org.uk, jernej.skrabec@gmail.com, jonathanh@nvidia.com, wens@csie.org, agross@kernel.org, anup@brainfault.org, rui.zhang@intel.com, linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, aou@eecs.berkeley.edu, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, npiggin@gmail.com, robh+dt@kernel.org, linux-mediatek@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, matthias.bgg@gmail.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, sboyd@kernel.o
- rg, Greg KH <gregkh@linuxfoundation.org>, amit.kachhap@gmail.com, linux-kernel@vger.kernel.org, konrad.dybcio@linaro.org, sudeep.holla@arm.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, lukasz.luba@arm.com
+Cc: Nick Desaulniers <ndesaulniers@google.com>, Baoquan He <bhe@redhat.com>, Philipp Rudo <prudo@redhat.com>, llvm@lists.linux.dev, Ross Zwisler <zwisler@google.com>, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org, Simon Horman <horms@kernel.org>, Ricardo Ribalda <ribalda@chromium.org>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 29 Mar 2023 08:52:06 PDT (-0700), robh@kernel.org wrote:
-> Now that of_cpu_device_node_get() is defined in of.h, of_device.h is just
-> implicitly including other includes, and is no longer needed. Adjust the
-> include files with what was implicitly included by of_device.h (cpu.h and
-> of.h) and drop including of_device.h.
->
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Please ack and I will take the series via the DT tree.
-> ---
->  arch/riscv/kernel/cacheinfo.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-> index 3a13113f1b29..e3829d2de5d9 100644
-> --- a/arch/riscv/kernel/cacheinfo.c
-> +++ b/arch/riscv/kernel/cacheinfo.c
-> @@ -5,7 +5,6 @@
->
->  #include <linux/cpu.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <asm/cacheinfo.h>
->
->  static struct riscv_cacheinfo_ops *rv_cache_ops;
+When upreving llvm I realised that kexec stopped working on my test
+platform.
 
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+The reason seems to be that due to PGO there are multiple .text sections
+on the purgatory, and kexec does not supports that.
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v6:
+- Replace linker script with Makefile rule. Thanks Nick
+- Link to v5: https://lore.kernel.org/r/20230321-kexec_clang16-v5-0-5563bf7c4173@chromium.org
+
+Changes in v5:
+- Add warning when multiple text sections are found. Thanks Simon!
+- Add Fixes tag.
+- Link to v4: https://lore.kernel.org/r/20230321-kexec_clang16-v4-0-1340518f98e9@chromium.org
+
+Changes in v4:
+- Add Cc: stable
+- Add linker script for x86
+- Add a warning when the kernel image has overlapping sections.
+- Link to v3: https://lore.kernel.org/r/20230321-kexec_clang16-v3-0-5f016c8d0e87@chromium.org
+
+Changes in v3:
+- Fix initial value. Thanks Ross!
+- Link to v2: https://lore.kernel.org/r/20230321-kexec_clang16-v2-0-d10e5d517869@chromium.org
+
+Changes in v2:
+- Fix if condition. Thanks Steven!.
+- Update Philipp email. Thanks Baoquan.
+- Link to v1: https://lore.kernel.org/r/20230321-kexec_clang16-v1-0-a768fc2c7c4d@chromium.org
+
+---
+Ricardo Ribalda (4):
+      kexec: Support purgatories with .text.hot sections
+      x86/purgatory: Remove profile optimization flags
+      powerpc/purgatory: Remove profile optimization flags
+      risc/purgatory: Add linker script
+
+ arch/powerpc/purgatory/Makefile |  5 +++++
+ arch/riscv/purgatory/Makefile   |  5 +++++
+ arch/x86/purgatory/Makefile     |  5 +++++
+ kernel/kexec_file.c             | 14 +++++++++++++-
+ 4 files changed, 28 insertions(+), 1 deletion(-)
+---
+base-commit: 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+change-id: 20230321-kexec_clang16-4510c23d129c
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
