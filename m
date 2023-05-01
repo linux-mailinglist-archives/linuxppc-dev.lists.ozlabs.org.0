@@ -2,77 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC06F351B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 19:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2C86F3520
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 19:41:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q99Qt1Y6pz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 May 2023 03:37:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q99WP5TKkz3bkb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 May 2023 03:41:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SGPtOfZh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ghv0PKPS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2001:4860:4864:20::29; helo=mail-oa1-x29.google.com; envelope-from=ribalda@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SGPtOfZh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ghv0PKPS;
 	dkim-atps=neutral
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q99Q06cHlz3bY0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 May 2023 03:37:10 +1000 (AEST)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-192798cf019so252340fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 10:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1682962621; x=1685554621;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+RNUTojqcUPndVpyqWpOuSnVDmC59OYTbJVhd//Jx0=;
-        b=SGPtOfZhdGUU+ZHCjhpogENmGlqcrIFsO6IC4j1rJnJx+z+oeXxEkSakgTSWTyah4V
-         qY+luQRpB0/HVcObyTBRx9o9YUZtdL6aqGVdZnDhnyQgGderOLZh0bq1Kk7hJfj0QIT7
-         s8Uur9IZEoJfpREXxKL+8POpgmqyWL4HXPmLg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682962621; x=1685554621;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m+RNUTojqcUPndVpyqWpOuSnVDmC59OYTbJVhd//Jx0=;
-        b=OnVConaQK80BfL0ZKqgmnXN61iC8mcst3iuxKc/MvdEVvI+CmGpbCsu3OznZbDZnxl
-         gXsVVZCK5oUfcW/sg9GDeUv5xS90Id5aoOG1JBgaF+Xyejglu1LhdNPgILQ/N8TOH2Wp
-         GFpZLe38Md8o6ferJjcl7l7RKt7/63A+vr9wKipo7eF8tAdb5iKhYSvGu2a2BKpOC0cM
-         rluSJf7BJ/gI6EgZRSf8mYbL/jBgGigY+VKErirhQuDigHb/KXtgpsXTd2LCPRtEXAJK
-         j5mBoRdsL/adHfy3/H8s9StG6XuSnAeoRu4RwiiIBRLs7meGumKwTxHKfo1vLYG1VAdy
-         f75A==
-X-Gm-Message-State: AC+VfDz+Cbj08UqppdjkWwvQKc6C+NdEgRixsESCLKYiyV3RNeBPyBxp
-	sFVZv8XupsGMHL9QF5LfdyP7OQrgu+/YYPhOfIThSw==
-X-Google-Smtp-Source: ACHHUZ5XzcsgAa8GRXX68+uk50EPEHzWzbahgcaCtdc/PGcv5jrhheXxLvqaLlUQRPt9BEfvzskSXw==
-X-Received: by 2002:a05:6870:a403:b0:187:9236:5ac9 with SMTP id m3-20020a056870a40300b0018792365ac9mr7781137oal.8.1682962621523;
-        Mon, 01 May 2023 10:37:01 -0700 (PDT)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com. [209.85.167.175])
-        by smtp.gmail.com with ESMTPSA id a3-20020a056870618300b001723f29f6e2sm10624235oah.37.2023.05.01.10.37.01
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 May 2023 10:37:01 -0700 (PDT)
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-38e7ce73ca0so1713724b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 10:37:01 -0700 (PDT)
-X-Received: by 2002:a17:90a:1543:b0:24b:2f97:9208 with SMTP id
- y3-20020a17090a154300b0024b2f979208mr14865070pja.0.1682962600487; Mon, 01 May
- 2023 10:36:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
- <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org> <CAKwvOd=9RMivtkKX27nDDsagH5yCWjpAOvpE2uaW38KYC57vtg@mail.gmail.com>
- <CANiDSCtDfPffUQTuH3JiPWC+87FBtpog7kT954PSoiTbB_fmJQ@mail.gmail.com> <20230501-griminess-defiling-73b367bb2e47@spud>
-In-Reply-To: <20230501-griminess-defiling-73b367bb2e47@spud>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 1 May 2023 19:36:29 +0200
-X-Gmail-Original-Message-ID: <CANiDSCsKKh7pSbYRu6=EbF4PL5UXk5gYpDTk3KzjzW9ni5Hc2g@mail.gmail.com>
-Message-ID: <CANiDSCsKKh7pSbYRu6=EbF4PL5UXk5gYpDTk3KzjzW9ni5Hc2g@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q99VW6rnCz2yPY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 May 2023 03:41:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F01F561E6C;
+	Mon,  1 May 2023 17:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E2EC433D2;
+	Mon,  1 May 2023 17:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1682962864;
+	bh=81z/8+VNCOs2KfOTGMvYGJr78DCfPa8M7ZOzDNUfnCY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ghv0PKPSEF/qiYfWNIgVqzcxiV94CKnm+WiWCSyBxEUEJUm8nsJSuKOqtmJA871/J
+	 ajyg3xFZJvtCjWeS5XL4b4A6p8W8Eh4h5g7M6hUgv55S5cuvquU2/FPaVa5zMKrCwl
+	 p80tb777MSmmUOy4bAcn4YGjMwqaK97HS/0AXg1GmQZpUeeLgggQKhUGaoUJaJStfa
+	 60Dn1OZ5gbzQA/kDtxoEWTYgtega7R78ZTGPMTGp8mczgGW/rre5vijVDFKcWvkkOr
+	 osLrwqrSAODauKYj4W7bSX2Zm4Wj/8RL9xM/EboyvOZepXnzmaugABHmtdX2GOg6Wj
+	 4b93L3bPQNt+Q==
+Date: Mon, 1 May 2023 18:40:56 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Ricardo Ribalda <ribalda@chromium.org>
 Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
-To: Conor Dooley <conor@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <20230501-cottage-overjoyed-1aeb9d72d309@spud>
+References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
+ <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fl35W8zTCu+OA5lB"
+Content-Disposition: inline
+In-Reply-To: <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,103 +65,73 @@ Cc: Tom Rix <trix@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, llvm@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Conor
 
-Fixed on my branch
-https://git.kernel.org/pub/scm/linux/kernel/git/ribalda/linux.git/commit/?h=
-=3Db4/kexec_clang16&id=3D1e9cda9fa638cc72581986f60b490cc069a38f75
+--fl35W8zTCu+OA5lB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hey Ricardo,
 
-Will submit a new version after a while :)
+On Mon, May 01, 2023 at 02:38:22PM +0200, Ricardo Ribalda wrote:
+> If PGO is enabled, the purgatory ends up with multiple .text sections.
+> This is not supported by kexec and crashes the system.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory=
+")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  arch/riscv/purgatory/Makefile | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+> index 5730797a6b40..cf3a44121a90 100644
+> --- a/arch/riscv/purgatory/Makefile
+> +++ b/arch/riscv/purgatory/Makefile
+> @@ -35,6 +35,11 @@ CFLAGS_sha256.o :=3D -D__DISABLE_EXPORTS
+>  CFLAGS_string.o :=3D -D__DISABLE_EXPORTS
+>  CFLAGS_ctype.o :=3D -D__DISABLE_EXPORTS
+> =20
+> +# When profile optimization is enabled, llvm emits two different overlap=
+ping
+> +# text sections, which is not supported by kexec. Remove profile optimiz=
+ation
+> +# flags.
+> +KBUILD_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D% -fprofile-use=
+=3D%,$(KBUILD_CFLAGS))
 
-Thanks!
+With the caveat of not being au fait with the workings of either PGO or
+of purgatory, how come you modify KBUILD_CFLAGS here rather than the
+purgatory specific PURGATORY_CFLAGS that are used later in the file?
 
-On Mon, 1 May 2023 at 19:28, Conor Dooley <conor@kernel.org> wrote:
->
-> On Mon, May 01, 2023 at 07:18:12PM +0200, Ricardo Ribalda wrote:
-> > On Mon, 1 May 2023 at 18:19, Nick Desaulniers <ndesaulniers@google.com>=
- wrote:
-> > >
-> > > On Mon, May 1, 2023 at 5:39=E2=80=AFAM Ricardo Ribalda <ribalda@chrom=
-ium.org> wrote:
-> > > >
-> > > > If PGO is enabled, the purgatory ends up with multiple .text sectio=
-ns.
-> > > > This is not supported by kexec and crashes the system.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_pu=
-ragory")
-> > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > >
-> > > Hi Ricardo,
-> > > Thanks for the series.  Does this patch 4/4 need a new online commit
-> > > description? It's not adding a linker script (maybe an earlier versio=
-n
-> > > was).
->
-> > Thanks for catching this. It should have said
-> >
-> > risc/purgatory: Remove profile optimization flags
->      ^^
-> Perhaps with the omitted v added too?
->
-> Also while playing the $subject nitpicking game, is it not called
-> "profile**-guided** optimisation" (and ditto in the comments)?
->
-> Cheers,
-> Conor.
->
-> > Will fix it on my local branch in case there is a next version of the
-> > series. Otherwise, please the maintainer fix the subject.
->
-> > > > ---
-> > > >  arch/riscv/purgatory/Makefile | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/M=
-akefile
-> > > > index 5730797a6b40..cf3a44121a90 100644
-> > > > --- a/arch/riscv/purgatory/Makefile
-> > > > +++ b/arch/riscv/purgatory/Makefile
-> > > > @@ -35,6 +35,11 @@ CFLAGS_sha256.o :=3D -D__DISABLE_EXPORTS
-> > > >  CFLAGS_string.o :=3D -D__DISABLE_EXPORTS
-> > > >  CFLAGS_ctype.o :=3D -D__DISABLE_EXPORTS
-> > > >
-> > > > +# When profile optimization is enabled, llvm emits two different o=
-verlapping
-> > > > +# text sections, which is not supported by kexec. Remove profile o=
-ptimization
-> > > > +# flags.
-> > > > +KBUILD_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D% -fprofile=
--use=3D%,$(KBUILD_CFLAGS))
-> > > > +
-> > > >  # When linking purgatory.ro with -r unresolved symbols are not che=
-cked,
-> > > >  # also link a purgatory.chk binary without -r to check for unresol=
-ved symbols.
-> > > >  PURGATORY_LDFLAGS :=3D -e purgatory_start -z nodefaultlib
-> > > >
-> > > > --
-> > > > 2.40.1.495.gc816e09b53d-goog
-> > > >
-> > >
-> > >
-> > > --
-> > > Thanks,
-> > > ~Nick Desaulniers
-> >
-> >
-> >
-> > --
-> > Ricardo Ribalda
-> >
-> > _______________________________________________
-> > linux-riscv mailing list
-> > linux-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+Cheers,
+Conor.
 
+> +
+>  # When linking purgatory.ro with -r unresolved symbols are not checked,
+>  # also link a purgatory.chk binary without -r to check for unresolved sy=
+mbols.
+>  PURGATORY_LDFLAGS :=3D -e purgatory_start -z nodefaultlib
+>=20
+> --=20
+> 2.40.1.495.gc816e09b53d-goog
+>=20
+>=20
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
+--fl35W8zTCu+OA5lB
+Content-Type: application/pgp-signature; name="signature.asc"
 
---=20
-Ricardo Ribalda
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZE/5qAAKCRB4tDGHoIJi
+0tO7AQDCFxxBDCm6m1lRjliaYENcoYHVqFHrLwGzbHGrXVn/VQD/aKUuG6nnmBC9
+4JdlDj98flb/kiL3Z25m/1+UmBAjSAk=
+=uz5+
+-----END PGP SIGNATURE-----
+
+--fl35W8zTCu+OA5lB--
