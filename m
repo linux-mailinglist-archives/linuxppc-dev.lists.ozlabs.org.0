@@ -2,74 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D136F38D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 21:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 250CB6F3985
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 May 2023 23:00:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Q9DY841rDz3gSq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 May 2023 05:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Q9FwJ71L1z3cLr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 May 2023 07:00:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=G7onDcpy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=dhuoKYDm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1133; helo=mail-yw1-x1133.google.com; envelope-from=ribalda@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=G7onDcpy;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=dhuoKYDm;
 	dkim-atps=neutral
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q9DTR1j57z3fsd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 May 2023 05:55:21 +1000 (AEST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-54fb6ac1e44so40616317b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 12:55:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Q9FvQ0QFCz3bmL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 May 2023 06:59:27 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-63b5fca48bcso2242519b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 13:59:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1682970918; x=1685562918;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=A6/Qwr73DpjqVyRdRECBbxXjLLTahq/uJGnivC6mAq8=;
-        b=G7onDcpyXcqUI/mu+qhC79oQd91jmplumgj2sKmwGPkmsG53sqc1pXfMyEsTQbTH1G
-         qLv3tMcitSHVBxdBDbCfhE6uvwh53gpJnierLgA6fkvSkM7jjZOdjOWFDDEQ9ax5gI1V
-         SFZrThOJy3MXk2qBsiNrOl5PjLYrDQLMQao1E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682970918; x=1685562918;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682974766; x=1685566766;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=A6/Qwr73DpjqVyRdRECBbxXjLLTahq/uJGnivC6mAq8=;
-        b=WUVZLwHAuVXYBqL5KZbpxMDIJpDIpp4pLvpQWfSRUwpuTL+erV5tBXqOS5n0yo3yvl
-         Tw2N8bDz46zQ6uPhL6F7H442LbowdjOQ7UPJS7430eKDzXPrDdP+hDrXhRMMpYof65LH
-         GDRPJr1RIOV3tc4DhmpK4t9dcceDpuNWadFlcRtRlrOR/N+MllX02QRAUfLePn7fPwYT
-         FMIvpvUtfy0AlE6CY9vvE46C5KqNCEix1qpGmuaNm3cGW3YHUwugddntrq8apFroeD1M
-         9Nuc/6SrawoMKW/yh497pBN5ZaHkIFOcfza2f/PBEAQW2pHp6V3fKDSSF/CYJIMdL5wJ
-         TUuw==
-X-Gm-Message-State: AC+VfDyBRdHWezSvVMwpEuOct2D6IJ9X7Pw/xItc0HQxQZPDY5fqaaBC
-	2ykH7zUZ2tZHVlWFy26juGwZmTpV/CGFbvP+D5S8rw==
-X-Google-Smtp-Source: ACHHUZ4jntbB32OBLaqVLIwbnJOw8pRVEE6K3NnOGIf6KhAonqmEUOxurt2Q499JNBxUWNPeATFWNw==
-X-Received: by 2002:a81:4947:0:b0:55a:8038:2656 with SMTP id w68-20020a814947000000b0055a80382656mr2274622ywa.39.1682970917692;
-        Mon, 01 May 2023 12:55:17 -0700 (PDT)
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
-        by smtp.gmail.com with ESMTPSA id u9-20020a816009000000b00559d3586ab9sm1958267ywb.10.2023.05.01.12.55.17
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 May 2023 12:55:17 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-b9e66ce80acso7594276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 May 2023 12:55:17 -0700 (PDT)
-X-Received: by 2002:a05:6a20:a28a:b0:e6:f7e8:1e4d with SMTP id
- a10-20020a056a20a28a00b000e6f7e81e4dmr13625249pzl.33.1682970895325; Mon, 01
- May 2023 12:54:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
- <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org> <20230501-cottage-overjoyed-1aeb9d72d309@spud>
-In-Reply-To: <20230501-cottage-overjoyed-1aeb9d72d309@spud>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 1 May 2023 21:54:43 +0200
-X-Gmail-Original-Message-ID: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
-Message-ID: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
-Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
-To: Conor Dooley <conor@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        bh=56zwdsQPzBA4Fq57F7zZq8xm3cbpRSpnOmcnA0Dh+zY=;
+        b=dhuoKYDmXvVL9rcvID9l7RqV772Z8lTC+U0WXQUi0tYJbLE9a48GrmSzQs7bEghGbC
+         JAz8rXoL1w4B9KKuEwX7POjH3Ox3r6V4zpIxvsvZpSsylQJD8ptmZ7+Vz+V8jAHJj04w
+         T6FV37TSFDDCD7el69cwAEuuEXi6g8EgNvIcALlfkGBQgAio2kQ2a6bJAUGpYJRLsZzz
+         ZNQyL545JSX++O1LCUyCJsybjwMgrDioUAedrjXfVSqEM2lGIt3XAkC5ujMjWrYDbKAU
+         lx6fFu18ULaY/km5rliSpJC6ISEyi513He8uKlna726VX+0Zf3a2zrJJ6SJgvgEWorgq
+         velw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682974766; x=1685566766;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=56zwdsQPzBA4Fq57F7zZq8xm3cbpRSpnOmcnA0Dh+zY=;
+        b=Zf1fIgcejRI8pImSSmj4T7CxVOUP/958HRL/Y8vYz9mdJNAkVd4Z/oy095CPjVv5KG
+         4uHnvBjZLPYjylvyQzvv9Re1cUmRjsNqa51/kHY5PLHATbvrns7tWDHchw9l7qEoRP5B
+         KXVQo661kAiTuhjuyHlhwWLNgdpmv+kLvbEoJbPTeFxRQsHKIZJba/9ivqyTT0A4rgFz
+         Z7po9G752qVlMPyeqYG3s2FLBYxedFUHLAO8Ts1ia6rYQxDgZnQbLybXj9fmdjD3/tix
+         +QOVCRSonEs3UmWkTNwi9FH+XEqVMApSBPOHFNtC81uaKEuCECVVuMuDogZUS0IOtTgK
+         yPJw==
+X-Gm-Message-State: AC+VfDzd3pbxC1Zf6bZpIT86rXYS/SGvR86Xy5eld1nj2FqkIYA2svXQ
+	d2I6ByXgAoGyRidAUudc2yJrcQ==
+X-Google-Smtp-Source: ACHHUZ7NRh0XptQx7EX4B/2U8oMa1VyQthNvjC4nK5qetnlZ9yiAEbyNISqPVXEejwWKpBkEgu1KUQ==
+X-Received: by 2002:a05:6a00:1301:b0:63d:27a1:d578 with SMTP id j1-20020a056a00130100b0063d27a1d578mr19620776pfu.20.1682974765524;
+        Mon, 01 May 2023 13:59:25 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id x3-20020a628603000000b0063d666566d1sm20322681pfd.72.2023.05.01.13.59.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 May 2023 13:59:24 -0700 (PDT)
+Date: Mon, 01 May 2023 13:59:24 -0700 (PDT)
+X-Google-Original-Date: Mon, 01 May 2023 13:59:09 PDT (-0700)
+Subject: Re: [PATCH v2 29/34] riscv: Convert alloc_{pmd, pte}_late() to use ptdescs
+In-Reply-To: <20230501192829.17086-30-vishal.moola@gmail.com>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: vishal.moola@gmail.com
+Message-ID: <mhng-e6f12727-9abe-4a93-a361-15a6cd333f51@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,80 +78,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Rix <trix@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, llvm@lists.linux.dev, "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, Philipp Rudo <prudo@linux.vnet.ibm.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Dave Young <dyoung@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Ross Zwisler <zwisler@google.com>, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Nick Desaulniers <ndesaulniers@google.com>, Philipp Rudo <prudo@redhat.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Eric Biederman <ebiederm@xmission.com>, Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, vishal.moola@gmail.com, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, willy@infradead.org, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Conor
-
-On Mon, 1 May 2023 at 19:41, Conor Dooley <conor@kernel.org> wrote:
+On Mon, 01 May 2023 12:28:24 PDT (-0700), vishal.moola@gmail.com wrote:
+> As part of the conversions to replace pgtable constructor/destructors with
+> ptdesc equivalents, convert various page table functions to use ptdescs.
 >
-> Hey Ricardo,
+> Some of the functions use the *get*page*() helper functions. Convert
+> these to use ptdesc_alloc() and ptdesc_address() instead to help
+> standardize page tables further.
 >
-> On Mon, May 01, 2023 at 02:38:22PM +0200, Ricardo Ribalda wrote:
-> > If PGO is enabled, the purgatory ends up with multiple .text sections.
-> > This is not supported by kexec and crashes the system.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  arch/riscv/purgatory/Makefile | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-> > index 5730797a6b40..cf3a44121a90 100644
-> > --- a/arch/riscv/purgatory/Makefile
-> > +++ b/arch/riscv/purgatory/Makefile
-> > @@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
-> >  CFLAGS_string.o := -D__DISABLE_EXPORTS
-> >  CFLAGS_ctype.o := -D__DISABLE_EXPORTS
-> >
-> > +# When profile optimization is enabled, llvm emits two different overlapping
-> > +# text sections, which is not supported by kexec. Remove profile optimization
-> > +# flags.
-> > +KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> ---
+>  arch/riscv/include/asm/pgalloc.h |  8 ++++----
+>  arch/riscv/mm/init.c             | 16 ++++++----------
+>  2 files changed, 10 insertions(+), 14 deletions(-)
 >
-> With the caveat of not being au fait with the workings of either PGO or
-> of purgatory, how come you modify KBUILD_CFLAGS here rather than the
-> purgatory specific PURGATORY_CFLAGS that are used later in the file?
-
-Definitely, not a Makefile expert here, but when I tried this:
-
-@@ -35,6 +40,7 @@ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
- PURGATORY_CFLAGS := -mcmodel=large -ffreestanding
--fno-zero-initialized-in-bss -g0
- PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
- PURGATORY_CFLAGS += -fno-stack-protector
-+PURGATORY_CFLAGS := $(filter-out -fprofile-sample-use=%
--fprofile-use=%,$(KBUILD_CFLAGS))
-
-It did not work.
-
-Fixes: bde971a83bbf ("KVM: arm64: nvhe: Fix build with profile optimization")
-
-does this approach, so this is what I tried and worked.
-
-Thanks!
+> diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
+> index 59dc12b5b7e8..cb5536403bd8 100644
+> --- a/arch/riscv/include/asm/pgalloc.h
+> +++ b/arch/riscv/include/asm/pgalloc.h
+> @@ -153,10 +153,10 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
 >
-> Cheers,
-> Conor.
+>  #endif /* __PAGETABLE_PMD_FOLDED */
 >
-> > +
-> >  # When linking purgatory.ro with -r unresolved symbols are not checked,
-> >  # also link a purgatory.chk binary without -r to check for unresolved symbols.
-> >  PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
-> >
-> > --
-> > 2.40.1.495.gc816e09b53d-goog
-> >
-> >
-> > _______________________________________________
-> > linux-riscv mailing list
-> > linux-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+> -#define __pte_free_tlb(tlb, pte, buf)   \
+> -do {                                    \
+> -	pgtable_pte_page_dtor(pte);     \
+> -	tlb_remove_page((tlb), pte);    \
+> +#define __pte_free_tlb(tlb, pte, buf)			\
+> +do {							\
+> +	ptdesc_pte_dtor(page_ptdesc(pte));		\
+> +	tlb_remove_page_ptdesc((tlb), page_ptdesc(pte));\
+>  } while (0)
+>  #endif /* CONFIG_MMU */
+>
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index eb8173a91ce3..8f1982664687 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -353,12 +353,10 @@ static inline phys_addr_t __init alloc_pte_fixmap(uintptr_t va)
+>
+>  static phys_addr_t __init alloc_pte_late(uintptr_t va)
+>  {
+> -	unsigned long vaddr;
+> -
+> -	vaddr = __get_free_page(GFP_KERNEL);
+> -	BUG_ON(!vaddr || !pgtable_pte_page_ctor(virt_to_page(vaddr)));
+> +	struct ptdesc *ptdesc = ptdesc_alloc(GFP_KERNEL, 0);
+>
+> -	return __pa(vaddr);
+> +	BUG_ON(!ptdesc || !ptdesc_pte_ctor(ptdesc));
+> +	return __pa((pte_t *)ptdesc_address(ptdesc));
+>  }
+>
+>  static void __init create_pte_mapping(pte_t *ptep,
+> @@ -436,12 +434,10 @@ static phys_addr_t __init alloc_pmd_fixmap(uintptr_t va)
+>
+>  static phys_addr_t __init alloc_pmd_late(uintptr_t va)
+>  {
+> -	unsigned long vaddr;
+> -
+> -	vaddr = __get_free_page(GFP_KERNEL);
+> -	BUG_ON(!vaddr || !pgtable_pmd_page_ctor(virt_to_page(vaddr)));
+> +	struct ptdesc *ptdesc = ptdesc_alloc(GFP_KERNEL, 0);
+>
+> -	return __pa(vaddr);
+> +	BUG_ON(!ptdesc || !ptdesc_pmd_ctor(ptdesc));
+> +	return __pa((pmd_t *)ptdesc_address(ptdesc));
+>  }
+>
+>  static void __init create_pmd_mapping(pmd_t *pmdp,
 
-
-
--- 
-Ricardo Ribalda
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
