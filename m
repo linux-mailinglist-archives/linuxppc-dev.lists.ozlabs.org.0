@@ -1,65 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10E26F5C40
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 18:52:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC5C6F5D09
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 19:29:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QBNK75zdnz3cdj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 May 2023 02:52:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QBP8505gfz3fDP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 May 2023 03:29:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AO0C4SNo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Y2OudcoH;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=tm2WLOsa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AO0C4SNo;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Y2OudcoH;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=tm2WLOsa;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QBNJC6mJ2z2xdw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 May 2023 02:51:23 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2E2A5629CC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 May 2023 16:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90740C4339B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 May 2023 16:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683132680;
-	bh=bQNDzf+GFVEGlhcokubtvQUs4W+6eXzGORjfjoZib/Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AO0C4SNovMLwUvp1ofjEutpCdQhJ0wr0he18a0CraRys/nPxwm3HrxJlJ7q8uWVLK
-	 TmwEUwBBu1AwBxAzESET8ZpB1SNSvpXma0mQA5qoD5nNX0vi6oMS5TwYbNefSDIrto
-	 hHzuUPpw9+iOLnA0qB1wGxh2MyclWEnPhTtesKKb6uxB9z8ZC5GjZLFBURGHefcpzM
-	 gb1vwSAnJiG6Cy1D7kaE/0l270Wjr335W/+FALBy9t+uOqn5i51JTwoHAooG3O/i6k
-	 orlcIllP87RUU2Gux21mNPRZMCZZaCsq3LaFwhXBeY0Sv+VoQd9j+H+Uwt4HNbB6IX
-	 No8N/a7IC7nwg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ac733b813fso11509841fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 May 2023 09:51:20 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwoH4F3Gp0GuVH7lsTCSMLngKwUbbrlE56VJsSWL23YTnLsVfjk
-	XEL/FMBy7tXiik6m/waWaX0j193U+RyBQWD2Ng==
-X-Google-Smtp-Source: ACHHUZ6c3K8r3ypRhvI2ll4kOd1r9J69xD3kghVJZQ6YZDME21fNdkSWvlJ55GrAailLHQoCpMp+J28QCx/5BA02Wwc=
-X-Received: by 2002:a2e:920c:0:b0:2a1:ab4a:153d with SMTP id
- k12-20020a2e920c000000b002a1ab4a153dmr164012ljg.29.1683132678617; Wed, 03 May
- 2023 09:51:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <301595ad-0edf-2113-b55f-f5b8051ed24c@xenosoft.de>
- <87ednz6q0i.fsf@mail.lhotse> <3fa42c8c-09bd-d0f0-401b-315b484f4bb0@xenosoft.de>
- <df17df39-304b-d638-9aaa-6194b1ac4d47@csgroup.eu>
-In-Reply-To: <df17df39-304b-d638-9aaa-6194b1ac4d47@csgroup.eu>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 3 May 2023 11:51:06 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLZhWZqS7mcyvAEu=m_TmkoZ5V4h54Jh25+Ms0J1_z9Fw@mail.gmail.com>
-Message-ID: <CAL_JsqLZhWZqS7mcyvAEu=m_TmkoZ5V4h54Jh25+Ms0J1_z9Fw@mail.gmail.com>
-Subject: Re: [PASEMI NEMO] Boot issue with the PowerPC updates 6.4-1
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Christian Zigotzky <chzigotzky@xenosoft.de>, Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QBP7B4S0tz3bg3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 May 2023 03:28:36 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1683134908; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=gC/hRnQ1p09jsAmcVMtfir2oUav2STeektaJq2yUu12LQO7hZvfsd3K1Akz1WKPWar
+    Ll0PtLhnOGe84hncHEGoDJ9sjyaLlHhLiS7IAvOOxkGr9+PLX0Knkf7Z8OouqBIg3g62
+    UWTBimRMd/A1voHBBHtfEVPqnU25Hq4SHgm932IbA/V+Lb2TAEvfnCxdAe6Mcl3mlF+u
+    vfIr0cQr9bi+xhW9JfZogtyWSUGSloQdnyCcb5cLjR0/LZ73jxzqHybLw6k8adRCiQSS
+    AaVAk4CoVLPWSv+dbHr3Rg2I0F9+F1t78gNHCtvjrDXHP5BckVYzvLzfQ8IlTAqEHYl5
+    8gKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1683134908;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=Hg6PglwMqq/DratcSuzvpAfJiqitDcI6fpgGS3vXcNk=;
+    b=E/Eph6xq1i13t4VzQGuSqyQtsam2eaf4BBN1PnfvqBVxDFog1OxHBaeIXwibMM+wjJ
+    FYsSnEenwdyLo99g7ck69rf23BzaarsjZHL90tANKZ+ffO/RwY7Ot7x1+3W6BSPxb7Rt
+    VwGHa7jsDybgRp7bAXmJgY7THVmkUnuBjv53mK3IAiiMDro7HGujYPTioaSfC1SdA8pa
+    brWc07/ivGcJlf9f7dN+CGzWEyC8hSi8zk/5RJAYrE1upjIGFAiqO1yJciZrybDmvTsk
+    fbnScykjkBgQL2pebT/IWjQ9JMHkpkOwL6f5P2YbN3NnGa8nKK7gxD6eLS/+Zea6OvfY
+    1PvA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1683134908;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=Hg6PglwMqq/DratcSuzvpAfJiqitDcI6fpgGS3vXcNk=;
+    b=Y2OudcoH/iwNS15fXN2WGVtKRkEbrJ1n/+hP1dQZ8IL8ESZh9YCv5LdVhq/g1jPp9F
+    Yv3G8E3d8Me3HWRn1fTlOEXhhTnvQdoL3zMa5NplalvzrkxSLMuO07cWMg3XwTVDhBs7
+    qFzzEiB8/lzSupL86l+R1cRN0SzbiLs1fO3uPyc6MqSSBLl913Y8Dy3ONtulnW5hcVS2
+    OeHF0qcYhM273ab8EUA7t8N6EEiDZt8xtYpx5GseEvzYPzxlxQKn8i0Gdcq4LoDrj7EJ
+    LISYAL2rZW263o8xSV2DRCDdAezx++MFQHDbCbt4HfCYLxDtrofbMmrLuXpoIJk4z/pN
+    3BIg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1683134908;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=Hg6PglwMqq/DratcSuzvpAfJiqitDcI6fpgGS3vXcNk=;
+    b=tm2WLOsahrYXOXEom4e+Qv6YR37Mx0emMRvHM4dQAwlZmOHk5wvfJ1QKNkVwgY/YcB
+    p9dyPN4Jh0jQ/gvIZhCQ==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2dy2rpszH/2dGwexNKSEZ7snWI3viyNB0RBiPjt"
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 49.4.0 AUTH)
+    with ESMTPSA id w2b3aez43HSQOYl
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 3 May 2023 19:28:26 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PASEMI NEMO] Boot issue with the PowerPC updates 6.4-1
+Date: Wed, 3 May 2023 19:28:15 +0200
+Message-Id: <77078121-46E6-48D6-9D73-0C6D586FE410@xenosoft.de>
+References: <CAL_JsqLZhWZqS7mcyvAEu=m_TmkoZ5V4h54Jh25+Ms0J1_z9Fw@mail.gmail.com>
+In-Reply-To: <CAL_JsqLZhWZqS7mcyvAEu=m_TmkoZ5V4h54Jh25+Ms0J1_z9Fw@mail.gmail.com>
+To: Rob Herring <robh@kernel.org>
+X-Mailer: iPhone Mail (20E252)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,57 +94,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Olof Johansson <olof@lixom.net>, Darren Stevens <darren@stevens-zone.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Olof Johansson <olof@lixom.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 3, 2023 at 11:27=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
-> +Rob as he's the commit's Author.
->
-> Le 03/05/2023 =C3=A0 17:46, Christian Zigotzky a =C3=A9crit :
-> > On 02 May 2023 at 11:28 am, Michael Ellerman wrote:
-> >> Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> >>> Hello,
-> >>>
-> >>> Our PASEMI Nemo board [1] doesn't boot with the PowerPC updates 6.4-1
-> >>> [2].
-> >>>
-> >>> The kernel hangs right after the booting Linux via __start() @
-> >>> 0x0000000000000000 ...
-> >>>
-> >>> I was able to revert the PowerPC updates 6.4-1 [2] with the following
-> >>> command: git revert 70cc1b5307e8ee3076fdf2ecbeb89eb973aa0ff7 -m 1
-> >>>
-> >>> After a re-compiling, the kernel boots without any problems without t=
-he
-> >>> PowerPC updates 6.4-1 [2].
-> >>>
-> >>> Could you please explain me, what you have done in the boot area?
-> >> There's a few possibilities, but nothing obvious.
-> >>
-> >> To begin with can you please test the following commits?
-> >>
-> >> 77e69ee7ce07
-> >> e4ab08be5b49
-> >> eeac8ede1755
-> >>
-> >> cheers
-> > git revert e4ab08be5b4902e5b350b0e1e1a3c25eb21d76d4
-> >
-> > [master 0086e2cbbec0] Revert "powerpc/isa-bridge: Remove open coded
-> > "ranges" parsing"
-> >   1 file changed, 129 insertions(+), 37 deletions(-)
-> >
-> > After a recompiling it boots without any problems.
-> >
-> > e4ab08be5b49 -- powerpc/isa-bridge: Remove open coded "ranges" parsing
-> > is the bad commit.
 
-Could I get a DT file for this board?
 
-In the meantime, just revert this commit. I don't think I'll be able
-to fix it before I'm out on sabbatical.
+> On 3. May 2023, at 18:51, Rob Herring <robh@kernel.org> wrote:
+>=20
+> =EF=BB=BFOn Wed, May 3, 2023 at 11:27=E2=80=AFAM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>=20
+>> +Rob as he's the commit's Author.
+>>=20
+>>> Le 03/05/2023 =C3=A0 17:46, Christian Zigotzky a =C3=A9crit :
+>>> On 02 May 2023 at 11:28 am, Michael Ellerman wrote:
+>>>> Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+>>>>> Hello,
+>>>>>=20
+>>>>> Our PASEMI Nemo board [1] doesn't boot with the PowerPC updates 6.4-1
+>>>>> [2].
+>>>>>=20
+>>>>> The kernel hangs right after the booting Linux via __start() @
+>>>>> 0x0000000000000000 ...
+>>>>>=20
+>>>>> I was able to revert the PowerPC updates 6.4-1 [2] with the following
+>>>>> command: git revert 70cc1b5307e8ee3076fdf2ecbeb89eb973aa0ff7 -m 1
+>>>>>=20
+>>>>> After a re-compiling, the kernel boots without any problems without th=
+e
+>>>>> PowerPC updates 6.4-1 [2].
+>>>>>=20
+>>>>> Could you please explain me, what you have done in the boot area?
+>>>> There's a few possibilities, but nothing obvious.
+>>>>=20
+>>>> To begin with can you please test the following commits?
+>>>>=20
+>>>> 77e69ee7ce07
+>>>> e4ab08be5b49
+>>>> eeac8ede1755
+>>>>=20
+>>>> cheers
+>>> git revert e4ab08be5b4902e5b350b0e1e1a3c25eb21d76d4
+>>>=20
+>>> [master 0086e2cbbec0] Revert "powerpc/isa-bridge: Remove open coded
+>>> "ranges" parsing"
+>>>  1 file changed, 129 insertions(+), 37 deletions(-)
+>>>=20
+>>> After a recompiling it boots without any problems.
+>>>=20
+>>> e4ab08be5b49 -- powerpc/isa-bridge: Remove open coded "ranges" parsing
+>>> is the bad commit.
+>=20
+> Could I get a DT file for this board?
+>=20
+> In the meantime, just revert this commit. I don't think I'll be able
+> to fix it before I'm out on sabbatical.
+>=20
+> Rob
 
-Rob
+FYI:
+
+Darren Stevens wrote:
+
+The dtb passed by the CFE firmware has a number of issues, which up till
+now have been fixed by use of patches applied to the mainline kernel.
+This occasionally causes problems with changes made to mainline.
+
+Patching the firmware to correct the dtb is not an option for the=20
+following reasons:
+
+It was modified by a 3rd party, and we don't have a copy of the source.
+
+All versions of CFE used on the X1000 export the same dtb.
+
+At least one machine suffered damage during a firmware upgrade attempt,
+many people will be unwilling to reflash their system if an upgrade is
+produced.
+
+
+
