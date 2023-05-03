@@ -1,90 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DAC6F4F23
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 05:26:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EAC6F51A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 09:33:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QB2RW0hZGz3cKv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 13:26:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QB7wY5MVbz3f6r
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 May 2023 17:33:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hW5O+cye;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ld7X1/eO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=linus.walleij@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hW5O+cye;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ld7X1/eO;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QB2Qd4V9Vz3bf7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 May 2023 13:25:45 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3433N9NX011340;
-	Wed, 3 May 2023 03:25:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : from : to : cc : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=z/x5QrB+1EbcKmDREI2Ls8Of+RbBZjQ42dWgId+S7Ao=;
- b=hW5O+cyeeD4/B6Eoh3Q+8b1JZas1s4eNLxL56TBgh7ztSc3ey4xOgh985AduBJNriRJN
- QFDSSEKbKU2J1D17S75t/GsI4mvUDRUOlj1tODLAjAsNG0bHFVc4r32DBoWf+xTGMvpA
- qzV1RcmudEZmbOEHKoox+warvtJrpMTo3K8n/UYoLIE2eokrSR4mZ/ioScF8GGe3UYia
- 82JqPnJQ/Mxy+SoAtL+Yj2vYbCNMlyn8gImzqmpp5/mLsLorQou9l0bj2t+ClZcMVS6s
- kxwiKqQjYiAsy5fibkVpRSPn3LKS+SZvKSKs6I6sIWDeerTc19x8eAm+/R3hFsQY8A29 og== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qbfgc08by-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 May 2023 03:25:38 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3431UjLV026693;
-	Wed, 3 May 2023 03:25:37 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3q8tv976en-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 May 2023 03:25:37 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3433PZAB38994440
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 May 2023 03:25:36 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D61D85805A;
-	Wed,  3 May 2023 03:25:35 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 47FB558051;
-	Wed,  3 May 2023 03:25:35 +0000 (GMT)
-Received: from [9.160.36.80] (unknown [9.160.36.80])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  3 May 2023 03:25:35 +0000 (GMT)
-Message-ID: <9b60469b-a8f4-bc69-ef1b-9b15d0836e25@linux.vnet.ibm.com>
-Date: Tue, 2 May 2023 22:25:34 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.1
-Subject: Re: [PATCH v2] powerpc/iommu: DMA address offset is incorrectly
- calculated with 2MB TCEs
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-To: aik@ozlabs.ru
-References: <20230419152623.26439-1-gbatra@linux.vnet.ibm.com>
- <87leimfuk0.fsf@mail.concordia>
- <1ce16c05-b492-fed8-06af-0bbba9de9053@linux.vnet.ibm.com>
-Content-Language: en-US
-In-Reply-To: <1ce16c05-b492-fed8-06af-0bbba9de9053@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: G0wk9Zx6es5fkSZqxhD8dxHUfe-sRL9s
-X-Proofpoint-GUID: G0wk9Zx6es5fkSZqxhD8dxHUfe-sRL9s
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QB7vh365Yz3bdm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 May 2023 17:32:45 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-b996127ec71so7074739276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 May 2023 00:32:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683099161; x=1685691161;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uy5PpAsKGu7ciMA0KH8W435+ovkPrJCw8/GzBOIehDY=;
+        b=ld7X1/eOQn3jw3nscqDgK6ddNhZLhCbJd9fPsanB0OgdXTNVkQ6EYUUqBqyPM/a4vY
+         CbHtyASiJA418MX0oSjMiiVC6FiPHw14WLUdEeW4Umr+YbCrJrLf7Hu5eVK7mdrvS4DL
+         9OmWoG7mWW8rmfaib9lGQ1oMZzSYCCqUfliHLErQsjuMdJcbCt3LcNup8fzoyt0Y/8GR
+         akHy/Cg/e08JrY/cBm35hsRfsCSXWjiae/OD5Dh8cA2PThcAjwbY7B/39CO37V9omWgv
+         O4OooSmTvvfZDRD1Nt5OUOhrDwbp6u/SmztihR1xLy5JcdwnB1lQkg/5xvUiJBgW8awI
+         T2mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683099161; x=1685691161;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Uy5PpAsKGu7ciMA0KH8W435+ovkPrJCw8/GzBOIehDY=;
+        b=hx7n8xLG3dq5sLhKCVEiCU6UXQ+qLSbjmBOjvVquKuiIzT3WUY9Ry9Yicxv6JfGR9G
+         UsXmRCJ+/WaZXcTqs/umcKJ2/w0Wypt9JoEfq2CdUlIu9ssKe7vWBEVXlvcsE7m8CUJ0
+         Qi9x7LeXN9HwkzK4sLL8F+1sbvVYjmHNJEw5O/Cp3I35lhpvFCRxbDh+Hrjz0W5Ri4AQ
+         L+I8bZMK3GAFZkBHpbngz6JvaME1tJA5+jXjRZfK/X0VGIi2wyn5Iyoe8AsMXmeilE1J
+         su8AwpftNO5hTruvaAT3S61lzCeLdLZpbeZ71lZgQ12Pm+yu1GDauozZ6VqHlhrGL39Y
+         1Uig==
+X-Gm-Message-State: AC+VfDz99Fk6sT0Qzy7ScwYz8KQQ6IdllVsl26ILTdZvklxfL179UUcL
+	7hX3f764AJx+HDW9io1RNOGYfx0cGLEGVtG9Bj6TqQ==
+X-Google-Smtp-Source: ACHHUZ73FCxNpyBPivD8TlcnhveCdt/a/J/xcLCbn8/+GFgeEvve0a+EDCSbzNvVgcIQCyONugRorkzlO9zyElssW9s=
+X-Received: by 2002:a25:4c84:0:b0:b9e:5006:42af with SMTP id
+ z126-20020a254c84000000b00b9e500642afmr5598495yba.58.1683099161569; Wed, 03
+ May 2023 00:32:41 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-02_14,2023-04-27_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- adultscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- impostorscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1011 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305030024
+References: <168155718437.13678.714141668943813263.stgit@skinsburskii.localdomain>
+In-Reply-To: <168155718437.13678.714141668943813263.stgit@skinsburskii.localdomain>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 3 May 2023 09:32:30 +0200
+Message-ID: <CACRpkdYCZ0rya3hE+BRrHwP=fASjkpp_Y=BiC=WY-_z0yyRNEg@mail.gmail.com>
+Subject: Re: [PATCH 0/7] Expect immutable pointer in virt_to_phys/isa_virt_to_bus
+ prototypes
+To: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,129 +76,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Cc: linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Omar Sandoval <osandov@fb.com>, linux-arch@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Chris Down <chris@chrisdown.name>, linux-kernel@vger.kernel.org, linux-hexagon@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, A
+ ndrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Alexey,
+On Thu, Apr 27, 2023 at 7:41=E2=80=AFPM Stanislav Kinsburskii
+<skinsburskii@linux.microsoft.com> wrote:
 
-I recently joined IOMMU team. There was a bug reported by test team 
-where Mellanox driver was timing out during configuration. I proposed a 
-fix for the same, which is below in the email.
+> This series is aimed to address compilation warnings when a constant poin=
+ter
+> is passed to virt_to_phys and isa_virt_to_bus functions:
+>
+>   warning: passing argument 1 of =E2=80=98virt_to_phys=E2=80=99 discards =
+=E2=80=98const=E2=80=99 qualifier from pointer target type
+>   warning: passing argument 1 of =E2=80=98isa_virt_to_bus=E2=80=99 discar=
+ds =E2=80=98const=E2=80=99 qualifier from pointer target type
+>
+> The change(s) is the same for all architectures, but it's split into a se=
+ries on
+> per-arch basis to simplify applying and testing on the maintainers side.
+>
+> The following series implements...
 
-You suggested a fix for Srikar's reported problem. Basically, both these 
-fixes will resolve Srikar and Mellanox driver issues. The problem is 
-with 2MB DDW.
+This is nice.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Since you have extensive knowledge of IOMMU design and code, in your 
-opinion, which patch should we adopt?
+I am working with an adjacent task, which is to make virt_to_pfn() and
+pfn_to_virt() into static inlines. I might need to rebase my work on top
+of this but it should be doable, I am currently stressing the buildbots
+with this with the idea to propose it to Arnd once v6.4-rc1 is out:
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
+/log/?h=3Db4/virt-to-pfn-v6-4-rc1
 
-Thanks a lot
-
-Gaurav
-
-On 4/20/23 2:45 PM, Gaurav Batra wrote:
-> Hello Michael,
->
-> I was looking into the Bug: 199106 
-> (https://bugzilla.linux.ibm.com/show_bug.cgi?id=199106).
->
-> In the Bug, Mellanox driver was timing out when enabling SRIOV device.
->
-> I tested, Alexey's patch and it fixes the issue with Mellanox driver. 
-> The down side
->
-> to Alexey's fix is that even a small memory request by the driver will 
-> be aligned up
->
-> to 2MB. In my test, the Mellanox driver is issuing multiple requests 
-> of 64K size.
->
-> All these will get aligned up to 2MB, which is quite a waste of 
-> resources.
->
->
-> In any case, both the patches work. Let me know which approach you 
-> prefer. In case
->
-> we decide to go with my patch, I just realized that I need to fix 
-> nio_pages in
->
-> iommu_free_coherent() as well.
->
->
-> Thanks,
->
-> Gaurav
->
-> On 4/20/23 10:21 AM, Michael Ellerman wrote:
->> Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
->>> When DMA window is backed by 2MB TCEs, the DMA address for the mapped
->>> page should be the offset of the page relative to the 2MB TCE. The code
->>> was incorrectly setting the DMA address to the beginning of the TCE
->>> range.
->>>
->>> Mellanox driver is reporting timeout trying to ENABLE_HCA for an SR-IOV
->>> ethernet port, when DMA window is backed by 2MB TCEs.
->> I assume this is similar or related to the bug Srikar reported?
->>
->> https://lore.kernel.org/linuxppc-dev/20230323095333.GI1005120@linux.vnet.ibm.com/
->>
->> In that thread Alexey suggested a patch, have you tried his patch? He
->> suggested rounding up the allocation size, rather than adjusting the
->> dma_handle.
->>
->>> Fixes: 3872731187141d5d0a5c4fb30007b8b9ec36a44d
->> That's not the right syntax, it's described in the documentation how to
->> generate it.
->>
->> It should be:
->>
->>    Fixes: 387273118714 ("powerps/pseries/dma: Add support for 2M 
->> IOMMU page size")
->>
->> cheers
->>
->>> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
->>> index ee95937bdaf1..ca57526ce47a 100644
->>> --- a/arch/powerpc/kernel/iommu.c
->>> +++ b/arch/powerpc/kernel/iommu.c
->>> @@ -517,7 +517,7 @@ int ppc_iommu_map_sg(struct device *dev, struct 
->>> iommu_table *tbl,
->>>           /* Convert entry to a dma_addr_t */
->>>           entry += tbl->it_offset;
->>>           dma_addr = entry << tbl->it_page_shift;
->>> -        dma_addr |= (s->offset & ~IOMMU_PAGE_MASK(tbl));
->>> +        dma_addr |= (vaddr & ~IOMMU_PAGE_MASK(tbl));
->>>             DBG("  - %lu pages, entry: %lx, dma_addr: %lx\n",
->>>                   npages, entry, dma_addr);
->>> @@ -904,6 +904,7 @@ void *iommu_alloc_coherent(struct device *dev, 
->>> struct iommu_table *tbl,
->>>       unsigned int order;
->>>       unsigned int nio_pages, io_order;
->>>       struct page *page;
->>> +    int tcesize = (1 << tbl->it_page_shift);
->>>         size = PAGE_ALIGN(size);
->>>       order = get_order(size);
->>> @@ -930,7 +931,8 @@ void *iommu_alloc_coherent(struct device *dev, 
->>> struct iommu_table *tbl,
->>>       memset(ret, 0, size);
->>>         /* Set up tces to cover the allocated range */
->>> -    nio_pages = size >> tbl->it_page_shift;
->>> +    nio_pages = IOMMU_PAGE_ALIGN(size, tbl) >> tbl->it_page_shift;
->>> +
->>>       io_order = get_iommu_order(size, tbl);
->>>       mapping = iommu_alloc(dev, tbl, ret, nio_pages, 
->>> DMA_BIDIRECTIONAL,
->>>                     mask >> tbl->it_page_shift, io_order, 0);
->>> @@ -938,7 +940,8 @@ void *iommu_alloc_coherent(struct device *dev, 
->>> struct iommu_table *tbl,
->>>           free_pages((unsigned long)ret, order);
->>>           return NULL;
->>>       }
->>> -    *dma_handle = mapping;
->>> +
->>> +    *dma_handle = mapping | ((u64)ret & (tcesize - 1));
->>>       return ret;
->>>   }
->>>   --
+Yours,
+Linus Walleij
