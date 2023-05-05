@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E846F86FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 18:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5620E6F876F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 19:20:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCc6133N3z3fKl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 02:46:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UzXA/OQu;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCcs22Dqlz3fN5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 03:20:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::12d; helo=mail-il1-x12d.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UzXA/OQu;
-	dkim-atps=neutral
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.46; helo=mail-ot1-f46.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCc584681z3bgv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 02:46:02 +1000 (AEST)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-3314ddef780so4840635ab.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:46:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1683305158; x=1685897158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hFdQlmBZsVXpMFRWa31Nf9CH5lKcpqbN0ffO9NCLDqk=;
-        b=UzXA/OQu44+Be4ajBQzyWDRJ5gzypkk3DPS8vgCkBm5s86T/D2yWZHa49mMa7ahsQC
-         0me0LGhxZ+opWQzWiHWbv+B8I+JQDsljOFbjhF4LCj4jBhnQWVYFaRWP01pfP4eYGg/p
-         wOtKaA2GjFgXgPJCZy0RIZ+V1I0coDThi5GHE=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCcrT6kQMz3cM6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 03:20:08 +1000 (AEST)
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6a604259983so1545546a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 10:20:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683305158; x=1685897158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hFdQlmBZsVXpMFRWa31Nf9CH5lKcpqbN0ffO9NCLDqk=;
-        b=AXCnbPUmdfipaXywN1hKwKIroTE0a9taMeKj4sCptgyQ6RCZxyYMbhXVnrrDeUF1ZR
-         A1kE8TYw7M6s7GXzAxHbFOZb4y0LLKxecGe4EWVd66FsVUCLEqbEMm7mkwGxfN9DtIog
-         Xnzac9SN5iu7611sT0a2ljlo/rpPz8OBHwq5kL5Urp4/gzZosb44SChKfT7THCibtPc7
-         5WFxIJ2aivsiiXDZiX+5P1eBe1SpDz3nn6FLXskwg9meB70BAhL/WqcaH66FUTenxm0f
-         25xUFL3WMEnA2g3RPlm5vVA1HFyMdhz+6KY2O43wn2S8s7Tr/B0iV1Q5YZzQqJDYA6eZ
-         5/GQ==
-X-Gm-Message-State: AC+VfDwN94aqsGOHd3bbIB2PVhUynqooh0oWH57Dl4cHRfvD+BGlk4kI
-	pgxbxfQfJnpPWu6YN9M1zeT1sY89ulAErnXp0vk=
-X-Google-Smtp-Source: ACHHUZ7ljymJX2G+S6qkuAwfpuEeGfaHlZBSn5G1Z610ySrgFgjPdAz1/SNUFgi0tmhKLmywsjdiIg==
-X-Received: by 2002:a92:c007:0:b0:32b:12ee:3f0b with SMTP id q7-20020a92c007000000b0032b12ee3f0bmr1186789ild.9.1683305158619;
-        Fri, 05 May 2023 09:45:58 -0700 (PDT)
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com. [209.85.166.179])
-        by smtp.gmail.com with ESMTPSA id s3-20020a025103000000b0039deb26853csm73084jaa.10.2023.05.05.09.45.58
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 May 2023 09:45:58 -0700 (PDT)
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-33164ec77ccso601775ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:45:58 -0700 (PDT)
-X-Received: by 2002:ac8:5a8e:0:b0:3ef:3361:75d5 with SMTP id
- c14-20020ac85a8e000000b003ef336175d5mr266034qtc.11.1683304721570; Fri, 05 May
- 2023 09:38:41 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683307203; x=1685899203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Qa9OZAQgfgrF0AORp9COWiiNHbXv3g/2zjtQ3FLsEs=;
+        b=il5xeR0yAi27cF91KtrDdZVUQhzlbCtdQm6uOKJFo6pNPrzcnwwE0pJ69SIsGGGBzp
+         F9mWWWPebbTMeCIgICCY8uq/4YrAeuHJED5aQTYQhOvzDK5o61cxFRyJ2hhEo+YKQlOC
+         CTs07m4L5z/Eqs7ECDpy+jM3srIic9v3n+mW3UKuFdxuH52g3p+6NYbMW3zTKWSmcc+J
+         X8syB2DKJ1q933k+HgnQt93nnaCLxfl3c8ZZra9E8TTNx8Z0oRaVtpURT2lfGnKZhxJ1
+         uZEWpYJtj8kmwg0HuGMIXSxQJoqXxU/EMUZrkvMjZ1rx19v/srT4oyVP5HVWWPXLPlWN
+         6Pkw==
+X-Gm-Message-State: AC+VfDxFcs7H9m0H1dOGUSgX1HpG0Phq72u6qjSNMaiNfGt/MUcPo8yp
+	z1gkvAHf6h8KEIJXNXcNpQ==
+X-Google-Smtp-Source: ACHHUZ5pvS/Z3eL7BWB4DTJuNRmLTdwPq58YMXwTrxcSm1Eyh05yc4HP4ULsyM94dkn9IPv5BmWjag==
+X-Received: by 2002:a05:6808:5d9:b0:390:7f21:5dd6 with SMTP id d25-20020a05680805d900b003907f215dd6mr898107oij.32.1683307203565;
+        Fri, 05 May 2023 10:20:03 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id b5-20020aca2205000000b0038c06ae307asm2904706oic.52.2023.05.05.10.20.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 May 2023 10:20:02 -0700 (PDT)
+Received: (nullmailer pid 3178151 invoked by uid 1000);
+	Fri, 05 May 2023 17:20:02 -0000
+From: Rob Herring <robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
+Date: Fri,  5 May 2023 12:18:17 -0500
+Message-Id: <20230505171816.3175865-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.11.I91f7277bab4bf8c0cb238732ed92e7ce7bbd71a6@changeid> <CSE0GBQQDUAY.1QAJIC3D3OBVU@wheely>
-In-Reply-To: <CSE0GBQQDUAY.1QAJIC3D3OBVU@wheely>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 5 May 2023 09:38:27 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VVhPpTLPv1fmavGz-iwW1xA2P7_Uu_=GKZ-Ofu=vReZw@mail.gmail.com>
-Message-ID: <CAD=FV=VVhPpTLPv1fmavGz-iwW1xA2P7_Uu_=GKZ-Ofu=vReZw@mail.gmail.com>
-Subject: Re: [PATCH v4 11/17] watchdog/hardlockup: Rename some "NMI watchdog" constants/function
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,28 +60,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, ravi.v.shankar@intel.com, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, Petr Mladek <pmladek@suse.com>, Tzung-Bi Shih <tzungbi@chromium.org>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, davem@da
- vemloft.net
+Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
+parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
+range was not getting mapped as the logic to handle no "ranges" was
+inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
+to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
+when looking for a non-PCI ISA region.
 
-On Thu, May 4, 2023 at 8:07=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com> =
-wrote:
->
-> On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> > Do a search and replace of:
-> > - NMI_WATCHDOG_ENABLED =3D> HARD_WATCHDOG_ENABLED
-> > - watchdog_nmi_ =3D> watchdog_hardlockup_
->
-> These are just making prefixes inconsistent again.
->
-> If you really want to do a prefix, I would call it hardlockup which
-> probably best matches existing code and sysctl / boot stuff, and
-> concentrate on non-static symbols.
+Fixes: e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges" parsing")
+Link: https://lore.kernel.org/all/301595ad-0edf-2113-b55f-f5b8051ed24c@xenosoft.de/
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Untested, but I think this should fix the issue.
 
-As with other similar patches, I'm happy to drop this and am doing it
-at Petr's request.
+ arch/powerpc/kernel/isa-bridge.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-[1] https://lore.kernel.org/r/ZFErmshcrcikrSU1@alley
+diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
+index 85bdd7d3652f..48e0eaf1ad61 100644
+--- a/arch/powerpc/kernel/isa-bridge.c
++++ b/arch/powerpc/kernel/isa-bridge.c
+@@ -93,11 +93,12 @@ static int process_ISA_OF_ranges(struct device_node *isa_node,
+ 	}
+ 
+ inval_range:
+-	if (!phb_io_base_phys) {
++	if (phb_io_base_phys) {
+ 		pr_err("no ISA IO ranges or unexpected isa range, mapping 64k\n");
+ 		remap_isa_base(phb_io_base_phys, 0x10000);
++		return 0;
+ 	}
+-	return 0;
++	return -EINVAL;
+ }
+ 
+ 
+-- 
+2.39.2
+
