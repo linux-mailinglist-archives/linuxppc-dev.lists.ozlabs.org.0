@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DAE36F7B2E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 04:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCE46F7B3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 04:52:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCFRs3Kyyz3fFY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 12:46:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCFZy7062z3fDh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 12:52:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WY+pVFDr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ktqHNk5l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WY+pVFDr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ktqHNk5l;
 	dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCFR16fBHz2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 May 2023 12:45:17 +1000 (AEST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1ab0c697c2bso11375355ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 May 2023 19:45:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCFZ752ksz2xGq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 May 2023 12:51:26 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64115e652eeso16804068b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 May 2023 19:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683254715; x=1685846715;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20221208; t=1683255084; x=1685847084;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VPayZxQXhn5fHUUTNLTNfbsixo+tOxhKRUmk7oh5a/w=;
-        b=WY+pVFDrtbMq8x5EimKII2bW9WUx1lTIueOxBuy+296TzJv/lBCs2CVAl95G11oi+6
-         OZNsCVJXRYwNOUePuVJ0+7z9G92HLzFZEMU/ej0a0B82cu11Q9UTbuSiZAbzM14CvYQr
-         vSBwEP/zedkJKPWlTT86wxJPoMzMwlMsssbc0ETJDwX1uinKmleFDpH+izvPPzVQ2LlX
-         GBO/I7GPjSznEYiBLpenS8d5vQj8J9utS5crxpbEVjZ/mmpFvTw1bfgpr3vdS/SdWaXC
-         fm0hYT4RrH3rTkpnTHaFTuS8OW6QdYF/oypQk9UEjTZoOxeIHIMj1e8JUXXQYGHF51Uc
-         39eQ==
+        bh=gVzHKIeVTs5o2uUKP+mQkds3ksDwFVvhqkKafztg4+4=;
+        b=ktqHNk5loLtU/KCwR//Z7tYcVQSm8JM7u7EDXu2OxKQQsBws43LRUPjwNVbUHAGJBj
+         gc3DxpQtC1/OOyHW26dX3MwFbgdfWwpOVxdtbuQThRVEzgfI1BNUZ5OhrxthomwTTvW9
+         KuWgSVznYjqLHRiyHmWJk+LT2L2s0ufFsPGG+IURgPieshXMcNyyDt/Kzo+DCv0xKjZe
+         DyDKfQZeNNs/8VMonmfGERnmO5tTqr0eHZh+Y875AJRCzvNs9yxUih9l0rhqWFmBJrRo
+         cV/9lUiVQ0pbHb4cFF5mCXAHtl60nbslHtAtfWdEsj03EbDyIlSOcirz6VnmjBK9H4/J
+         ow4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683254715; x=1685846715;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20221208; t=1683255084; x=1685847084;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=VPayZxQXhn5fHUUTNLTNfbsixo+tOxhKRUmk7oh5a/w=;
-        b=Kiw4GR77giJm2hNdG1KtcLCvLEV91aR2gZTPHrNfXzn4iARgMLYzngfCWRPQrqVdCM
-         Klp/rDpNZpviZcWNOEQepj7riRzAJwd1B0GGwbjXVGSyZlNbj0qu+fxMdKQLauDiWl+n
-         n2iciPu55hCYH+qOulaZXA8jT9U8LRnkXwCecZszEeeOvX6zJ3GYaxPly0MrLz7tfruB
-         YOW84amHfik5omaIjCRwQ6FJ4KvqUkVj8q9TsvDzM8tYLHf4UCLi8Koh2sTxsTpX8awg
-         rsuA8+x2KAz0Mz2p4uQPXI5lsv99ZVj2C+SM7v/Czw1GaUK0m+j4HZ+U1Y1nv+/Q/LmA
-         vj1w==
-X-Gm-Message-State: AC+VfDx0XzB6dEqEB5OuROgAcrBaAsIRnJaacaoHyrqjhb1pKyPaOcZ8
-	jwyqoHo1gMJc0c8NXhKVpO4=
-X-Google-Smtp-Source: ACHHUZ7idBWKbQjk10tpmFWDhGOiQRpg+CYPjBMjjCmko/Hu86hwsF4Jk+5iuKMKBjLrW41Iwy8Stg==
-X-Received: by 2002:a17:902:d315:b0:1ab:13bd:5f96 with SMTP id b21-20020a170902d31500b001ab13bd5f96mr5830962plc.4.1683254714963;
-        Thu, 04 May 2023 19:45:14 -0700 (PDT)
+        bh=gVzHKIeVTs5o2uUKP+mQkds3ksDwFVvhqkKafztg4+4=;
+        b=N+qSUxkyA9PtRbPGjOQliD+sl85yj/Asr8JU5nuFw4lbKHk8s4ffzqqTh/7pnuOFiT
+         Z5bhTYmuUCosbqurbm0WZZ5nm5Cb/cb2i3ZhaTHK/R4dXgEePaKP+TmeBMtFaTu9psDe
+         jbgnlzXbCJXUB+fQZhLicv+CcfVV8ICCX8kIPdSXY6mTkr3JNd+3Jjr4RGhdjwbkFCbX
+         YRBHJ8e0dXIWRBAYZJpqsDpz9U42AJEfY1bqqGR2YSA+LAyF8qZr/QPyYznSE0r4R8at
+         UtkJJOc8m0rA0BfgaCHysLeZTVg2NaMcAPnepP9zs0Ann5X13gDRK3CDw9ICHoJrlcUj
+         B5fg==
+X-Gm-Message-State: AC+VfDxSkGA2gnWnQH3mONvS3PdVTjb+u053ZVKhvH//vnFhzsilZ9Pc
+	2YP0oslKhp+ljsXR6LhqRy0=
+X-Google-Smtp-Source: ACHHUZ5BRoOs+9WXOczfgGoXbf4YZMUc/Uu5++G5XcOuyogjStZoqiKceepZC/RfSwAcQqdM6F1UUg==
+X-Received: by 2002:a17:902:d48e:b0:1a9:68d2:e4ae with SMTP id c14-20020a170902d48e00b001a968d2e4aemr6701878plg.2.1683255083704;
+        Thu, 04 May 2023 19:51:23 -0700 (PDT)
 Received: from localhost ([203.59.190.92])
-        by smtp.gmail.com with ESMTPSA id o5-20020a1709026b0500b001a6cd1e4205sm320934plk.279.2023.05.04.19.45.03
+        by smtp.gmail.com with ESMTPSA id t4-20020a170902bc4400b001ab29e002fbsm367141plz.17.2023.05.04.19.51.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 May 2023 19:45:14 -0700 (PDT)
+        Thu, 04 May 2023 19:51:23 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 May 2023 12:45:00 +1000
-Message-Id: <CSDZZQEL28W8.1WE80JHITRBKA@wheely>
-Subject: Re: [PATCH v4 03/17] watchdog/hardlockup: change
- watchdog_nmi_enable() to void
+Date: Fri, 05 May 2023 12:51:06 +1000
+Message-Id: <CSE04EI159N2.2TSXHBN2QLFCM@wheely>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Douglas Anderson" <dianders@chromium.org>, "Petr Mladek"
  <pmladek@suse.com>, "Andrew Morton" <akpm@linux-foundation.org>
+Subject: Re: [PATCH v4 05/17] watchdog/hardlockup: Rename
+ touch_nmi_watchdog() to touch_hardlockup_watchdog()
 X-Mailer: aerc 0.14.0
 References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.3.Ic3a19b592eb1ac4c6f6eade44ffd943e8637b6e5@changeid>
-In-Reply-To: <20230504151100.v4.3.Ic3a19b592eb1ac4c6f6eade44ffd943e8637b6e5@changeid>
+ <20230504151100.v4.5.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid>
+In-Reply-To: <20230504151100.v4.5.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,99 +91,83 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> From: Lecopzer Chen <lecopzer.chen@mediatek.com>
->
-> Nobody cares about the return value of watchdog_nmi_enable(),
-> changing its prototype to void.
->
+> In preparation for the buddy hardlockup detector, rename
+> touch_nmi_watchdog() to touch_hardlockup_watchdog() to make it clear
+> that it will touch whatever hardlockup detector is configured. We'll
+> add a #define for the old name (touch_nmi_watchdog) so that we don't
+> have to touch every piece of code referring to the old name.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Is this really helpful? Now it's got two names Could just leave it.
+If you insist then it'd be better just to rename everything in one
+go at the end of a merge window IMO. Conflicts would be trivial.
 
-> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-> Signed-off-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-> Reviewed-by: Petr Mladek <pmladek@suse.com>
+> Ideally this change would also rename the arch_touch_nmi_watchdog(),
+> but that is harder since arch_touch_nmi_watchdog() is exported with
+> EXPORT_SYMBOL() and thus is ABI. Add a comment next to the call to
+> hopefully alleviate some of the confusion here.
+
+We don't keep ABI fixed upstream.
+
+Thanks,
+Nick
+
+>
 > Signed-off-by: Douglas Anderson <dianders@chromium.org>
 > ---
-> I yanked this patch from the mailing lists [1] into my series just to
-> make it easier to avoid conflicts between my series and the one adding
-> the arm64 perf hardlockup detector, in case someone wanted to test
-> them both together. This is a nice cleanup and could land together
-> with the rest of my series if that makes sense.
->
-> I changed the patch prefix to match others in my series.
->
-> [1] https://lore.kernel.org/r/20220903093415.15850-3-lecopzer.chen@mediat=
-ek.com/
 >
 > Changes in v4:
-> - Pulled ("change watchdog_nmi_enable() to void") into my series for v4.
+> - ("Rename touch_nmi_watchdog() to ...") new for v4.
 >
->  arch/sparc/kernel/nmi.c | 8 +++-----
->  include/linux/nmi.h     | 2 +-
->  kernel/watchdog.c       | 3 +--
->  3 files changed, 5 insertions(+), 8 deletions(-)
+>  include/linux/nmi.h | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
 >
-> diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
-> index 060fff95a305..5dcf31f7e81f 100644
-> --- a/arch/sparc/kernel/nmi.c
-> +++ b/arch/sparc/kernel/nmi.c
-> @@ -282,11 +282,11 @@ __setup("nmi_watchdog=3D", setup_nmi_watchdog);
->   * sparc specific NMI watchdog enable function.
->   * Enables watchdog if it is not enabled already.
->   */
-> -int watchdog_nmi_enable(unsigned int cpu)
-> +void watchdog_nmi_enable(unsigned int cpu)
->  {
->  	if (atomic_read(&nmi_active) =3D=3D -1) {
->  		pr_warn("NMI watchdog cannot be enabled or disabled\n");
-> -		return -1;
-> +		return;
->  	}
-> =20
->  	/*
-> @@ -295,11 +295,9 @@ int watchdog_nmi_enable(unsigned int cpu)
->  	 * process first.
->  	 */
->  	if (!nmi_init_done)
-> -		return 0;
-> +		return;
-> =20
->  	smp_call_function_single(cpu, start_nmi_watchdog, NULL, 1);
-> -
-> -	return 0;
->  }
->  /*
->   * sparc specific NMI watchdog disable function.
 > diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-> index 771d77b62bc1..454fe99c4874 100644
+> index 454fe99c4874..35d09d70f394 100644
 > --- a/include/linux/nmi.h
 > +++ b/include/linux/nmi.h
-> @@ -119,7 +119,7 @@ static inline int hardlockup_detector_perf_init(void)=
- { return 0; }
->  void watchdog_nmi_stop(void);
->  void watchdog_nmi_start(void);
->  int watchdog_nmi_probe(void);
-> -int watchdog_nmi_enable(unsigned int cpu);
-> +void watchdog_nmi_enable(unsigned int cpu);
->  void watchdog_nmi_disable(unsigned int cpu);
-> =20
+> @@ -125,18 +125,35 @@ void watchdog_nmi_disable(unsigned int cpu);
 >  void lockup_detector_reconfigure(void);
-> diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-> index 582d572e1379..c705a18b26bf 100644
-> --- a/kernel/watchdog.c
-> +++ b/kernel/watchdog.c
-> @@ -93,10 +93,9 @@ __setup("nmi_watchdog=3D", hardlockup_panic_setup);
->   * softlockup watchdog start and stop. The arch must select the
->   * SOFTLOCKUP_DETECTOR Kconfig.
+> =20
+>  /**
+> - * touch_nmi_watchdog - restart NMI watchdog timeout.
+> + * touch_hardlockup_watchdog - manually pet the hardlockup watchdog.
+>   *
+> - * If the architecture supports the NMI watchdog, touch_nmi_watchdog()
+> - * may be used to reset the timeout - for code which intentionally
+> - * disables interrupts for a long time. This call is stateless.
+> + * If we support detecting hardlockups, touch_hardlockup_watchdog() may =
+be
+> + * used to pet the watchdog (reset the timeout) - for code which
+> + * intentionally disables interrupts for a long time. This call is state=
+less.
 >   */
-> -int __weak watchdog_nmi_enable(unsigned int cpu)
-> +void __weak watchdog_nmi_enable(unsigned int cpu)
+> -static inline void touch_nmi_watchdog(void)
+> +static inline void touch_hardlockup_watchdog(void)
 >  {
->  	hardlockup_detector_perf_enable();
-> -	return 0;
+> +	/*
+> +	 * Pass on to the hardlockup detector selected via CONFIG_. Note that
+> +	 * the hardlockup detector may not be arch-specific nor using NMIs,
+> +	 * but arch_touch_nmi_watchdog() is exported with EXPORT_SYMBOL() and
+> +	 * is thus ABI.
+> +	 */
+>  	arch_touch_nmi_watchdog();
+> +
+> +	/*
+> +	 * Touching the hardlock detector implcitily pets the
+> +	 * softlockup detector too
+> +	 */
+>  	touch_softlockup_watchdog();
 >  }
 > =20
->  void __weak watchdog_nmi_disable(unsigned int cpu)
+> +/*
+> + * It's encouraged for code to refer to the new name, but allow the old
+> + * name as well.
+> + */
+> +#define touch_nmi_watchdog	touch_hardlockup_watchdog
+> +
+>  /*
+>   * Create trigger_all_cpu_backtrace() out of the arch-provided
+>   * base function. Return whether such support was available,
 > --=20
 > 2.40.1.521.gf1e218fcd8-goog
 
