@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E57B6F86E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 18:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB25C6F86EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 18:39:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCbx31M1jz3fKl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 02:39:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCby041NWz3fHh
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 02:39:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZOpEQsos;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=m8VqoR7X;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZOpEQsos;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=m8VqoR7X;
 	dkim-atps=neutral
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCbw86rxHz3bTJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 02:38:16 +1000 (AEST)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-333eb36e453so1082935ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCbwN22Ckz3fFD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 02:38:28 +1000 (AEST)
+Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-769036b48b0so147366239f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1683304692; x=1685896692;
+        d=chromium.org; s=google; t=1683304704; x=1685896704;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+yj1n8SZYpHx6GcDEfBZNc+Nz+lwlz9tugCt27cvkK8=;
-        b=ZOpEQsosTbUmst8Ienf3nWALr0I43tuU6QG5nC9malggLvjl9COYLJOwf+H0XsKvTn
-         l5ggtBESitzNF1+b1OZCsXuHMIB0MST6OOsXxIX0FaXAxgTqaf48l9nLSmwaLV5vDoqG
-         GJdteCFXtZG4TrybH3jjPxNFm2oVJtQqUj2Xc=
+        bh=aPJ3eJX3Wd0Hq9EHdr00dwY2jAtHzFmYEuKOc8G/h4A=;
+        b=m8VqoR7Xhst2NQkNpb9oCGD3xK1RHyPSo8l4yL8rBppQCklEIgppNHBgBRfYgqSvF9
+         NFH0BubfU9iR25tFs2VCstf3B3EtzxBOFABdQDQe+1/YnVyY/B4v2lL8+DZN4Qp2NMeE
+         tXWpQ1JYH26pcOtOJyPEkCRR8xkseZspQkQHo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683304692; x=1685896692;
+        d=1e100.net; s=20221208; t=1683304704; x=1685896704;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+yj1n8SZYpHx6GcDEfBZNc+Nz+lwlz9tugCt27cvkK8=;
-        b=g/SQ0NvafqGSHPDPJ0zEvip1f1eDV6N0lgnpTH2Gwpa6dQBCuJgqxa8lSu0aJ38Hjt
-         9QqJzJvVh7sJck05coH7rInWQiZmzKGkR+bRKqAwxS0vUjblEO3wx8JsFLjKHOrLlrO2
-         vD+go1y70tRzRKOygUcOvlo7hEnQwpvhyLR1YlVfu9C6k1ynCk5OfB8gE0EG54Cc+aCr
-         OkZN4SI9uIvCm25Bn4k6aNZPbTXlRJeQiw+I0B5cj/72B/BvYV/fmMiKUNYb/jxnssu/
-         EPjueryNq3suWeSnDk7N4UuAetJqpQuqYBPoqu/upVEJkfslBPFKvjYFyPIfHLKm3UOv
-         fY0g==
-X-Gm-Message-State: AC+VfDx7ae1njcJ85QNkTrohPvNGkKm3yUK1MVcQ44qqaz2nuGInrPGZ
-	UDXVvcywzS6eNsOjEF/9bt29Mv/gHFnXs1xvPmI=
-X-Google-Smtp-Source: ACHHUZ7w8yWC7yqpTX4QQzd/MQmXoB6vaVJE4jN4mi6OxyPRPbsp71wbFyhbdmQDsfrbtuaTzyw5fg==
-X-Received: by 2002:a05:6e02:54b:b0:322:f878:abcc with SMTP id i11-20020a056e02054b00b00322f878abccmr1242754ils.24.1683304691953;
-        Fri, 05 May 2023 09:38:11 -0700 (PDT)
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com. [209.85.166.170])
-        by smtp.gmail.com with ESMTPSA id o9-20020a92dac9000000b0031595ea003asm539378ilq.85.2023.05.05.09.38.09
+        bh=aPJ3eJX3Wd0Hq9EHdr00dwY2jAtHzFmYEuKOc8G/h4A=;
+        b=F3VvSmgu7Hs4SEz3xWTe6kOTMPpjtdTKzAGbyztovCoYnTY1m+1HweKX3VJPtfvV/V
+         JeSdxSlNh7/DDVJUiFAzHYQjtf6fLNzhLVrgGViStSXzylDavXW0/IXtPLdbrj6n3zIS
+         fEJiQ2k/MU1IwG8SJ4U+TC8tDu9cUvVyN4TlDOhpeB7hcncSlUG1C0ezuOHxs0KTqP78
+         HZEKRZi7xZ/e4BnStSKZIU6lzN660XXHSG7Ydh6V0hDhvQpBbbY3cLiLXiYSSbfyzU8U
+         HCQCAcKBjpVjbx/PyrLLffBeqKG6BPk6HrYLM5KfSdfn+w0femXmjInciNZghIpwxA2l
+         Qdzg==
+X-Gm-Message-State: AC+VfDyt3kYL1dCDukhG1b3nhhsfo/VkYaOddrkof5T5fEH/abhc2j83
+	ybzaHgGF2jL69iT+ZahUgWbQbBXsCX2pTvy0Qqo=
+X-Google-Smtp-Source: ACHHUZ6rBRbaejEuTh5nB/eCuwK2O1hhuSnrOhc8zyncnnb52DAMr22e0bVcxKyJH8tcuPXShOIDhg==
+X-Received: by 2002:a05:6602:54:b0:753:568:358e with SMTP id z20-20020a056602005400b007530568358emr1216032ioz.20.1683304704701;
+        Fri, 05 May 2023 09:38:24 -0700 (PDT)
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com. [209.85.166.173])
+        by smtp.gmail.com with ESMTPSA id v14-20020a02b08e000000b0041633985a45sm43023jah.172.2023.05.05.09.38.24
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 May 2023 09:38:11 -0700 (PDT)
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-330ec047d3bso798875ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:09 -0700 (PDT)
-X-Received: by 2002:a05:622a:206:b0:3db:1c01:9d95 with SMTP id
- b6-20020a05622a020600b003db1c019d95mr335755qtx.4.1683304668543; Fri, 05 May
- 2023 09:37:48 -0700 (PDT)
+        Fri, 05 May 2023 09:38:24 -0700 (PDT)
+Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-330ec047d3bso798925ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:24 -0700 (PDT)
+X-Received: by 2002:ac8:5716:0:b0:3ef:330c:8f9e with SMTP id
+ 22-20020ac85716000000b003ef330c8f9emr343597qtw.10.1683304683433; Fri, 05 May
+ 2023 09:38:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.5.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid> <CSE04EI159N2.2TSXHBN2QLFCM@wheely>
-In-Reply-To: <CSE04EI159N2.2TSXHBN2QLFCM@wheely>
+ <20230504151100.v4.7.Id4133d3183e798122dc3b6205e7852601f289071@changeid> <CSE09YL4X0XY.1GAQWAFOOEK42@wheely>
+In-Reply-To: <CSE09YL4X0XY.1GAQWAFOOEK42@wheely>
 From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 5 May 2023 09:37:35 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
-Message-ID: <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
-Subject: Re: [PATCH v4 05/17] watchdog/hardlockup: Rename touch_nmi_watchdog()
- to touch_hardlockup_watchdog()
+Date: Fri, 5 May 2023 09:37:50 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
+Message-ID: <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
+Subject: Re: [PATCH v4 07/17] watchdog/hardlockup: Move perf hardlockup
+ checking/panic to common watchdog.c
 To: Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -91,63 +91,34 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi,
 
-On Thu, May 4, 2023 at 7:51=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com> =
+On Thu, May 4, 2023 at 7:58=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com> =
 wrote:
 >
 > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> > In preparation for the buddy hardlockup detector, rename
-> > touch_nmi_watchdog() to touch_hardlockup_watchdog() to make it clear
-> > that it will touch whatever hardlockup detector is configured. We'll
-> > add a #define for the old name (touch_nmi_watchdog) so that we don't
-> > have to touch every piece of code referring to the old name.
+> > The perf hardlockup detector works by looking at interrupt counts and
+> > seeing if they change from run to run. The interrupt counts are
+> > managed by the common watchdog code via its watchdog_timer_fn().
+> >
+> > Currently the API between the perf detector and the common code is a
+> > function: is_hardlockup(). When the hard lockup detector sees that
+> > function return true then it handles printing out debug info and
+> > inducing a panic if necessary.
+> >
+> > Let's change the API a little bit in preparation for the buddy
+> > hardlockup detector. The buddy hardlockup detector wants to print
 >
-> Is this really helpful? Now it's got two names Could just leave it.
-> If you insist then it'd be better just to rename everything in one
-> go at the end of a merge window IMO. Conflicts would be trivial.
-
-I'm not picky here. I changed the name since Petr requested names to
-be changed for any code I was touching [1] and so I threw this out as
-a proposal. I agree that having two names can be confusing, but in
-this case it didn't feel too terrible to me.
-
-I'd love to hear Petr's opinion on this name change. I'm happy with:
-
-a) This patch as it is.
-
-b) Dropping this patch (or perhaps just changing it to add comments).
-
-c) Changing this patch to rename all 70 uses of the old name. Assuming
-this will go through Andrew Morton's tree, I'd be interested in
-whether he's OK w/ this.
-
-d) Dropping this patch from this series but putting it on the
-backburner to try to do later (so that the rename can happen at a time
-when it's least disruptive).
-
-
-> > Ideally this change would also rename the arch_touch_nmi_watchdog(),
-> > but that is harder since arch_touch_nmi_watchdog() is exported with
-> > EXPORT_SYMBOL() and thus is ABI. Add a comment next to the call to
-> > hopefully alleviate some of the confusion here.
+> I think the name change is a gratuitous. Especially since it's now
+> static.
 >
-> We don't keep ABI fixed upstream.
+> watchdog_hardlockup_ is a pretty long prefix too, hardlockup_
+> should be enough?
+>
+> Seems okay otherwise though.
 
-I'm happy to be corrected, but my understanding was that kernel devs
-made an effort not to mess with things exported via "EXPORT_SYMBOL",
-but things exported via "EXPORT_SYMBOL_GPL" were fair game.
-
-I guess maybe my patch calling it "ABI" is a stronger statement than
-that, though. Doing a little more research, nobody wants to say that
-things exported with "EXPORT_SYMBOL" are ABI, they just want to say
-that we make an effort to have them be more stable.
-
-So certainly I should adjust my patch series not to call it ABI, but
-I'm still on the fence about whether I should rename this or not. I'd
-love to hear other opinions. This rename actually would be a lot
-easier than the touch_nmi_watchdog() one since the code referencing
-the name "arch_touch_nmi_watchdog" isn't spread so broadly through the
-kernel.
+I went back and forth on names far too much when constructing this
+patch series. Mostly I was trying to balance what looked good to me
+and what Petr suggested [1]. I'm not super picky about the names and
+I'm happy to change them all to a "hardlockup_" prefix. I'd love to
+hear Petr's opinion.
 
 [1] https://lore.kernel.org/r/ZFErmshcrcikrSU1@alley
-
--Doug
