@@ -2,66 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2476F7DA8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 09:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795866F7DAA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 09:20:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCMWm4vvgz3fFm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 17:19:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCMXj1hQtz3cNJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 17:20:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SeFpwzWz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IUAHmtjf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SeFpwzWz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IUAHmtjf;
 	dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCMVt4dLzz3c6H
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 May 2023 17:19:02 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6436e075166so1123717b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 00:19:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCMVy0M1Hz3c6H
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 May 2023 17:19:05 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6439df6c268so326137b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 00:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683271140; x=1685863140;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=36Xmxg1WYSQ/MSuUvJxDzsHOMeHtkjW8yCnvfo0ekI8=;
-        b=SeFpwzWzcu749OjWs+4bpINgZzXt/059vGxsGMQEnOYeTVxqZZHGZgByCRFqsHPlMy
-         dnFGiTsqfKdEajx6a1ErmBAIe71JeLnJj6gCI/LKzdd2JNUlyxOLL4fZYeWyUmpSXll2
-         IGl3EVhGf2muHK0t+5//LmBZ9Eiws1NjwMhwk8GW3/DTf3oc4PUsME43n41i8k55vWVt
-         fnjQAGbOPm+yZEzTzAyMEfGzlDDyLlbOVd3z5Z4EHdux32TvuJMcAXN07zsbb4WQhA48
-         7Gb9iSoOKq0gsaL9HQeduHRYNURxUZlz7deS6c8poZr4w+RyGaPL7jbi4fF4qnIFboQh
-         YJFw==
+        d=gmail.com; s=20221208; t=1683271143; x=1685863143;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=07Y2VAMLZfkfk2PerNNUHNU7F7KB4NjdI7LTkxpUBug=;
+        b=IUAHmtjfN70TdhCAIG94eKiuFCPZHWBXM0l+1Tq/s8xQJ48y8UpCoTV/qCsLKMYvyy
+         +UnAOkrhjKVT+ITJOkM63dEXHmtQAA2BYxC0WeNCNW37yn05wkN+S254UQZTXas1NPSh
+         K3/OtZ2j7uXbEQUTLQfMChmSVE4t8RyjwI2hzdz9ZmBkK3/GUZFTOIvitgRAOnSrIZmF
+         YywRNNLPHGdykhcihedT0tkuoG4WDF7xK4KFXITCkCcXPlx/MN8HWsd604dSGfe03hFq
+         XTNsbP5yN/M3bVG7ujBJvTcT0J0qXYvmrXdQ3uB61PmzFJMcejJbLQgAEloaR83xCpGP
+         CoFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683271140; x=1685863140;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=36Xmxg1WYSQ/MSuUvJxDzsHOMeHtkjW8yCnvfo0ekI8=;
-        b=eub/Bnsywe070o7gB5hUPcmx4O28tyWDrSPpoi5S+TABp4RIiOGRAI/O7bvTjEAtpZ
-         I3YE1bTHZ6Nm3nzD5H6P16lJFjtM7NdfOW97/Voy5DE0iP5GVZ2AZ4KQlcL6Z1bV31cd
-         WP6YjVbsy6BEENZvk9sBtQ3UQxrA4sjjGngUjkCt91LkUs8aByRDgFLWaDNeC4olVQ5S
-         vB5LbCs2WiArgssYxRxOIRF0KITxbQWZQv/LBFgHNNePuyU33lE0ywHECOLQLvURHVSw
-         /u8EYdG3BNCHrAKCizA1JsUmVn8rzKRHiDhb/yFgUOlKSF36Lpc0qTHa/x289qmKfjdB
-         kzzA==
-X-Gm-Message-State: AC+VfDxLVMZxQ512ecqc0EldHfxe+iwkmTNKJr9m0XvTB19diloB/Prx
-	PDOzb7TgKpvUKMXFnjGcQnn1brVwwxE=
-X-Google-Smtp-Source: ACHHUZ6Bac6VbPK/v8279U9cNe7ZddkqLShFStKRhxY92T953WeSEIIUnW5+f08GReIrm+CYy5Ayzw==
-X-Received: by 2002:a05:6a00:15ca:b0:63b:19e5:a9ec with SMTP id o10-20020a056a0015ca00b0063b19e5a9ecmr1165829pfu.33.1683271139891;
-        Fri, 05 May 2023 00:18:59 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683271143; x=1685863143;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=07Y2VAMLZfkfk2PerNNUHNU7F7KB4NjdI7LTkxpUBug=;
+        b=Q28BelKRr4HO0sEoPs8wio/ojaOEAyHU5ywuGimUi1X1qT0EmNfRnIwk2stRWG7W00
+         bbCZKWLYcGtfRVLNt/9mwCXuj9jxQ8p+HAB0CCGgWXkXWVD1/h/deyO6rIYBIznpNEhe
+         gCljvupHJfV/rfnph4NlzF8TBEPRmCL7ujczT7aw8k6W1ZEijgnL/mtsHOJhYlHYBRdo
+         qRWXc1Mfo/HTeGFz8pJ5Os9xPkUBRZuaY1KPSfvs0NWHdilLAraR+cxGVoTG745IYnXj
+         KBS9XS2toEGOr/2EvmWew0T4lsJhVkTwZa6qdiQF+eQBw6RUMieZ81GrkwSN8dIjOXz2
+         Gd2Q==
+X-Gm-Message-State: AC+VfDz9mE7B3PRf8i/J0B2tVDYT1Qsg3TFU/Ht6mqbnpXLjZ9syUJbe
+	9oh0Kds98xXvdYoIVul3u2xaHeSSvkc=
+X-Google-Smtp-Source: ACHHUZ7uaP9yIZDK7G4RbChMCDFIs07TseMK85R+GOm8bb84OEdNMz3PlgSuc04M2uirAYQXfEGvTA==
+X-Received: by 2002:a05:6a00:8cf:b0:640:e12a:3a20 with SMTP id s15-20020a056a0008cf00b00640e12a3a20mr1322451pfu.1.1683271143539;
+        Fri, 05 May 2023 00:19:03 -0700 (PDT)
 Received: from wheely.local0.net ([203.59.190.92])
-        by smtp.gmail.com with ESMTPSA id i10-20020aa78d8a000000b00625d84a0194sm915384pfr.107.2023.05.05.00.18.57
+        by smtp.gmail.com with ESMTPSA id i10-20020aa78d8a000000b00625d84a0194sm915384pfr.107.2023.05.05.00.19.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 00:18:59 -0700 (PDT)
+        Fri, 05 May 2023 00:19:03 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/4] powerpc/64: ELFv2 conversion
-Date: Fri,  5 May 2023 17:18:46 +1000
-Message-Id: <20230505071850.228734-1-npiggin@gmail.com>
+Subject: [PATCH 1/4] powerpc/64: Force ELFv2 when building with LLVM linker
+Date: Fri,  5 May 2023 17:18:47 +1000
+Message-Id: <20230505071850.228734-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230505071850.228734-1-npiggin@gmail.com>
+References: <20230505071850.228734-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,63 +78,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series has the steps to remove ELFv1 from the kernel build.
-Patch 1 is a build fix, 2 defaults everything to ELFv2, 3 is
-really a separate issue that concerns userspace. 4 removes v1
-support.
+The LLVM linker does not support ELFv1 at all, so BE kernels must be
+built with ELFv2. The LLD version check was added to be conservative,
+but previous LLD versions would simply fail to link ELFv1 entirely. The
+only would be to require LLD >= 15 for BE builds, but let's instead
+remove that restriction until proven otherwise (LLD 14.0 links a booting
+ELFv2 BE vmlinux for me).
 
-Would like to try getting patch 1 in as a fix, then 2,3 merged in
-the next merge window.
+The minimum binutils has increased such that ELFv2 is always supported,
+so remove that check while we're here.
 
-Thanks,
-Nick
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/Kconfig | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Nicholas Piggin (4):
-  powerpc/64: Force ELFv2 when building with LLVM linker
-  powerpc/64: Make ELFv2 the default for big-endian builds
-  powerpc/64s: Remove support for ELFv1 little endian userspace
-  powerpc/64: Remove support for kernel's built with ELFv1 ABI
-
- arch/powerpc/Kconfig                     | 21 ------
- arch/powerpc/Makefile                    | 15 +----
- arch/powerpc/boot/Makefile               |  4 +-
- arch/powerpc/include/asm/code-patching.h | 36 ++--------
- arch/powerpc/include/asm/elf.h           |  6 ++
- arch/powerpc/include/asm/kfence.h        |  4 --
- arch/powerpc/include/asm/linkage.h       |  9 ---
- arch/powerpc/include/asm/module.h        |  3 -
- arch/powerpc/include/asm/ppc_asm.h       | 38 +----------
- arch/powerpc/include/asm/ptrace.h        | 17 +----
- arch/powerpc/include/asm/sections.h      |  4 --
- arch/powerpc/include/asm/thread_info.h   |  6 +-
- arch/powerpc/kernel/exceptions-64s.S     |  2 +-
- arch/powerpc/kernel/fadump.c             |  6 +-
- arch/powerpc/kernel/head_64.S            |  5 +-
- arch/powerpc/kernel/interrupt_64.S       |  4 --
- arch/powerpc/kernel/kprobes.c            | 39 +----------
- arch/powerpc/kernel/misc_64.S            |  4 --
- arch/powerpc/kernel/module.c             |  8 ---
- arch/powerpc/kernel/module_64.c          | 84 ++++--------------------
- arch/powerpc/kernel/trace/ftrace.c       | 10 ---
- arch/powerpc/kernel/vdso/Makefile        |  2 +-
- arch/powerpc/kernel/vdso/gettimeofday.S  |  2 +-
- arch/powerpc/kernel/vmlinux.lds.S        |  8 ---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S  | 36 +++++-----
- arch/powerpc/kvm/book3s_interrupts.S     | 14 ++--
- arch/powerpc/kvm/book3s_rmhandlers.S     | 12 +---
- arch/powerpc/net/bpf_jit.h               |  6 --
- arch/powerpc/net/bpf_jit_comp.c          | 14 ++--
- arch/powerpc/net/bpf_jit_comp64.c        | 13 ++--
- arch/powerpc/platforms/Kconfig.cputype   |  6 --
- drivers/crypto/vmx/Makefile              |  4 --
- kernel/extable.c                         |  2 +-
- kernel/trace/ftrace.c                    | 12 ----
- 34 files changed, 79 insertions(+), 377 deletions(-)
-
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index acffffbd5d77..e5d81645c902 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -624,10 +624,11 @@ config ARCH_HAS_KEXEC_PURGATORY
+ 	def_bool KEXEC_FILE
+ 
+ config PPC64_BIG_ENDIAN_ELF_ABI_V2
+-	bool "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)"
++	prompt "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)" if LD_IS_BFD
++	bool
++	default y if LD_IS_LLD
+ 	depends on PPC64 && CPU_BIG_ENDIAN
+ 	depends on CC_HAS_ELFV2
+-	depends on LD_VERSION >= 22400 || LLD_VERSION >= 150000
+ 	help
+ 	  This builds the kernel image using the "Power Architecture 64-Bit ELF
+ 	  V2 ABI Specification", which has a reduced stack overhead and faster
+@@ -638,8 +639,6 @@ config PPC64_BIG_ENDIAN_ELF_ABI_V2
+ 	  it is less well tested by kernel and toolchain. However some distros
+ 	  build userspace this way, and it can produce a functioning kernel.
+ 
+-	  This requires GCC and binutils 2.24 or newer.
+-
+ config RELOCATABLE
+ 	bool "Build a relocatable kernel"
+ 	depends on PPC64 || (FLATMEM && (44x || PPC_85xx))
 -- 
 2.40.1
 
