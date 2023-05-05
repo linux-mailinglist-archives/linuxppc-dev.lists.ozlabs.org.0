@@ -2,52 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5620E6F876F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 19:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4E36F8795
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 19:29:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCcs22Dqlz3fN5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 03:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCd362vtnz3fJf
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 03:29:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKchHdRK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.46; helo=mail-ot1-f46.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKchHdRK;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCcrT6kQMz3cM6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 03:20:08 +1000 (AEST)
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6a604259983so1545546a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 10:20:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683307203; x=1685899203;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Qa9OZAQgfgrF0AORp9COWiiNHbXv3g/2zjtQ3FLsEs=;
-        b=il5xeR0yAi27cF91KtrDdZVUQhzlbCtdQm6uOKJFo6pNPrzcnwwE0pJ69SIsGGGBzp
-         F9mWWWPebbTMeCIgICCY8uq/4YrAeuHJED5aQTYQhOvzDK5o61cxFRyJ2hhEo+YKQlOC
-         CTs07m4L5z/Eqs7ECDpy+jM3srIic9v3n+mW3UKuFdxuH52g3p+6NYbMW3zTKWSmcc+J
-         X8syB2DKJ1q933k+HgnQt93nnaCLxfl3c8ZZra9E8TTNx8Z0oRaVtpURT2lfGnKZhxJ1
-         uZEWpYJtj8kmwg0HuGMIXSxQJoqXxU/EMUZrkvMjZ1rx19v/srT4oyVP5HVWWPXLPlWN
-         6Pkw==
-X-Gm-Message-State: AC+VfDxFcs7H9m0H1dOGUSgX1HpG0Phq72u6qjSNMaiNfGt/MUcPo8yp
-	z1gkvAHf6h8KEIJXNXcNpQ==
-X-Google-Smtp-Source: ACHHUZ5pvS/Z3eL7BWB4DTJuNRmLTdwPq58YMXwTrxcSm1Eyh05yc4HP4ULsyM94dkn9IPv5BmWjag==
-X-Received: by 2002:a05:6808:5d9:b0:390:7f21:5dd6 with SMTP id d25-20020a05680805d900b003907f215dd6mr898107oij.32.1683307203565;
-        Fri, 05 May 2023 10:20:03 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id b5-20020aca2205000000b0038c06ae307asm2904706oic.52.2023.05.05.10.20.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 10:20:02 -0700 (PDT)
-Received: (nullmailer pid 3178151 invoked by uid 1000);
-	Fri, 05 May 2023 17:20:02 -0000
-From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
-Date: Fri,  5 May 2023 12:18:17 -0500
-Message-Id: <20230505171816.3175865-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCd2G3Snyz3chj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 03:28:38 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E0D2C6093C;
+	Fri,  5 May 2023 17:28:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F0C433EF;
+	Fri,  5 May 2023 17:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683307714;
+	bh=ZZZssVkukDLIDsJIbLhzlAV9wIa7x483A/+hV7if/8w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SKchHdRKXKjNe4nbZQvow3jQfiujk9jCcCaMMHuohbF43NQWTEpVlBLuQA1tqL7CA
+	 4z2EZRuOwdYj38jcVonQyVha/pVVr3xb9It43NfCMSl7Fx6MGUoOqa2oHQG/qvmJne
+	 2J817/cLLEEVu/rlOKcinrmHXzEawnmkXILm/CrgwHbZG6jAzk4qndbZGLm+csWmKM
+	 qJm7F9pPN7X7Msvn9Rli4EvHM36UJoOmUZPoTji2MmEH9HciFjxaWTATfQRb2/rOIg
+	 peMaKs06L/QwP+HLY7FCd7qnQjY/lDffaqjDKUpiyKCgXsEMo61BhFxwkLTQAjqYSE
+	 WH5Z1N6ED9Jrw==
+Received: by pali.im (Postfix)
+	id 3669DA47; Fri,  5 May 2023 19:28:31 +0200 (CEST)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: dts: turris1x.dts: Fix PCIe MEM size for pci2 node
+Date: Fri,  5 May 2023 19:28:18 +0200
+Message-Id: <20230505172818.18416-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,46 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
-parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
-range was not getting mapped as the logic to handle no "ranges" was
-inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
-to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
-when looking for a non-PCI ISA region.
+Freescale PCIe controllers on their PCIe Root Ports do not have any
+mappable PCI BAR allocate from PCIe MEM.
 
-Fixes: e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges" parsing")
-Link: https://lore.kernel.org/all/301595ad-0edf-2113-b55f-f5b8051ed24c@xenosoft.de/
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Signed-off-by: Rob Herring <robh@kernel.org>
+Information about 1MB window on BAR0 of PCIe Root Port was misleading
+because Freescale PCIe controllers have at BAR0 position different register
+PEXCSRBAR, and kernel correctly skipts BAR0 for these Freescale PCIe Root
+Ports.
+
+So update comment about P2020 PCIe Root Port and decrease PCIe MEM size
+required for PCIe controller (pci2 node) on which is on-board xHCI
+controller.
+
+lspci confirms that on P2020 PCIe Root Port is no PCI BAR and /proc/iomem
+sees that only c0000000-c000ffff and c0010000-c0011fff ranges are used.
+
+Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
+Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
-Untested, but I think this should fix the issue.
+ arch/powerpc/boot/dts/turris1x.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- arch/powerpc/kernel/isa-bridge.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
-index 85bdd7d3652f..48e0eaf1ad61 100644
---- a/arch/powerpc/kernel/isa-bridge.c
-+++ b/arch/powerpc/kernel/isa-bridge.c
-@@ -93,11 +93,12 @@ static int process_ISA_OF_ranges(struct device_node *isa_node,
- 	}
+diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+index 6612160c19d5..dff1ea074d9d 100644
+--- a/arch/powerpc/boot/dts/turris1x.dts
++++ b/arch/powerpc/boot/dts/turris1x.dts
+@@ -476,12 +476,12 @@
+ 		 * channel 1 (but only USB 2.0 subset) to USB 2.0 pins on mPCIe
+ 		 * slot 1 (CN5), channels 2 and 3 to connector P600.
+ 		 *
+-		 * P2020 PCIe Root Port uses 1MB of PCIe MEM and xHCI controller
++		 * P2020 PCIe Root Port does not use PCIe MEM and xHCI controller
+ 		 * uses 64kB + 8kB of PCIe MEM. No PCIe IO is used or required.
+-		 * So allocate 2MB of PCIe MEM for this PCIe bus.
++		 * So allocate 128kB of PCIe MEM for this PCIe bus.
+ 		 */
+ 		reg = <0 0xffe08000 0 0x1000>;
+-		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00200000>, /* MEM */
++		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00020000>, /* MEM */
+ 			 <0x01000000 0x0 0x00000000 0 0xffc20000 0x0 0x00010000>; /* IO */
  
- inval_range:
--	if (!phb_io_base_phys) {
-+	if (phb_io_base_phys) {
- 		pr_err("no ISA IO ranges or unexpected isa range, mapping 64k\n");
- 		remap_isa_base(phb_io_base_phys, 0x10000);
-+		return 0;
- 	}
--	return 0;
-+	return -EINVAL;
- }
- 
- 
+ 		pcie@0 {
 -- 
-2.39.2
+2.20.1
 
