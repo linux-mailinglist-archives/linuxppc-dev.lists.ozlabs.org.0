@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB25C6F86EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 18:39:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A276F86EB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 May 2023 18:40:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QCby041NWz3fHh
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 02:39:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QCbyx3bbZz3fPH
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 02:40:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=m8VqoR7X;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kMGWInL9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::f2f; helo=mail-qv1-xf2f.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=m8VqoR7X;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kMGWInL9;
 	dkim-atps=neutral
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCbwN22Ckz3fFD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 02:38:28 +1000 (AEST)
-Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-769036b48b0so147366239f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QCbwr6vzzz3cjK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 02:38:52 +1000 (AEST)
+Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-619ca08c166so9430176d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1683304704; x=1685896704;
+        d=chromium.org; s=google; t=1683304729; x=1685896729;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aPJ3eJX3Wd0Hq9EHdr00dwY2jAtHzFmYEuKOc8G/h4A=;
-        b=m8VqoR7Xhst2NQkNpb9oCGD3xK1RHyPSo8l4yL8rBppQCklEIgppNHBgBRfYgqSvF9
-         NFH0BubfU9iR25tFs2VCstf3B3EtzxBOFABdQDQe+1/YnVyY/B4v2lL8+DZN4Qp2NMeE
-         tXWpQ1JYH26pcOtOJyPEkCRR8xkseZspQkQHo=
+        bh=hx/Z1QGIGo513DGFRHbMqQT6fmsKMlQd8/3rs/cumNc=;
+        b=kMGWInL9mq877PQUgVdTlcAsfTo3/vVVk6M2dqVjnzfZq9pPWNLk+bFRQvxEA8fnuw
+         Shu6jbkmq2GRdad3Au7t4JniYbulyG9cOWtXN07an2Lvdnnu5EUjXVgmlYMpPW/nOr0D
+         vo4AF82D8H6gb2wOvTdDvphNSJHq2KKXqKFQ0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683304704; x=1685896704;
+        d=1e100.net; s=20221208; t=1683304729; x=1685896729;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aPJ3eJX3Wd0Hq9EHdr00dwY2jAtHzFmYEuKOc8G/h4A=;
-        b=F3VvSmgu7Hs4SEz3xWTe6kOTMPpjtdTKzAGbyztovCoYnTY1m+1HweKX3VJPtfvV/V
-         JeSdxSlNh7/DDVJUiFAzHYQjtf6fLNzhLVrgGViStSXzylDavXW0/IXtPLdbrj6n3zIS
-         fEJiQ2k/MU1IwG8SJ4U+TC8tDu9cUvVyN4TlDOhpeB7hcncSlUG1C0ezuOHxs0KTqP78
-         HZEKRZi7xZ/e4BnStSKZIU6lzN660XXHSG7Ydh6V0hDhvQpBbbY3cLiLXiYSSbfyzU8U
-         HCQCAcKBjpVjbx/PyrLLffBeqKG6BPk6HrYLM5KfSdfn+w0femXmjInciNZghIpwxA2l
-         Qdzg==
-X-Gm-Message-State: AC+VfDyt3kYL1dCDukhG1b3nhhsfo/VkYaOddrkof5T5fEH/abhc2j83
-	ybzaHgGF2jL69iT+ZahUgWbQbBXsCX2pTvy0Qqo=
-X-Google-Smtp-Source: ACHHUZ6rBRbaejEuTh5nB/eCuwK2O1hhuSnrOhc8zyncnnb52DAMr22e0bVcxKyJH8tcuPXShOIDhg==
-X-Received: by 2002:a05:6602:54:b0:753:568:358e with SMTP id z20-20020a056602005400b007530568358emr1216032ioz.20.1683304704701;
-        Fri, 05 May 2023 09:38:24 -0700 (PDT)
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com. [209.85.166.173])
-        by smtp.gmail.com with ESMTPSA id v14-20020a02b08e000000b0041633985a45sm43023jah.172.2023.05.05.09.38.24
+        bh=hx/Z1QGIGo513DGFRHbMqQT6fmsKMlQd8/3rs/cumNc=;
+        b=MXoS6BEQckF03tlWM2O5/PoyMjeh/SsZc6R8YNumh6AxksvcKv11VHSTiqMZqSOibE
+         Mkic9a44jvRNhuB3N4p/RbBsWpo9RA9o4ReTPA30lQLaTKQQpqZPu4PC8Ri4TGdmpkut
+         wYAgL5+UbZ+G4w9jZsVPUVcvjHprnGrL/QxpySZnrhM2lP5qevGICcUBAo102y2iLlq1
+         ONnQEPoJoLJb43vQGZk3H7/GVklZXOoMiHWQcyAWdE57mzYOz5AFXY3C52NcS+Fgm4m3
+         NjV0gZ8Ohe/vwSp/ga96Hgk2xEf4js9fWloYBAjUVQP/m57s5sBEQBJgw2LvcNGJTDue
+         aa2A==
+X-Gm-Message-State: AC+VfDyINHQiqE5AT1TW5sdIIhYa6lynw2VRxRFQ7VFZfxxA3+S6pEwa
+	tCt42VPiHN7OSJudvy/kcnI5T50j2DuES+iDaCw=
+X-Google-Smtp-Source: ACHHUZ4P5+F18kb0mRhflgltEU68lptW/GrtDWTQegYUkKI6U+fmr3SMvATmLdmc5Jjugec6VSaZgQ==
+X-Received: by 2002:a05:6214:485:b0:5ee:2789:160e with SMTP id pt5-20020a056214048500b005ee2789160emr3461101qvb.52.1683304729134;
+        Fri, 05 May 2023 09:38:49 -0700 (PDT)
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com. [209.85.160.182])
+        by smtp.gmail.com with ESMTPSA id o16-20020a0ce410000000b005dd8b93459esm714237qvl.54.2023.05.05.09.38.48
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 May 2023 09:38:24 -0700 (PDT)
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-330ec047d3bso798925ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:24 -0700 (PDT)
-X-Received: by 2002:ac8:5716:0:b0:3ef:330c:8f9e with SMTP id
- 22-20020ac85716000000b003ef330c8f9emr343597qtw.10.1683304683433; Fri, 05 May
- 2023 09:38:03 -0700 (PDT)
+        Fri, 05 May 2023 09:38:48 -0700 (PDT)
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-3ef31924c64so1113841cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 May 2023 09:38:48 -0700 (PDT)
+X-Received: by 2002:a05:622a:1898:b0:3ef:31a5:13c with SMTP id
+ v24-20020a05622a189800b003ef31a5013cmr206117qtc.3.1683304708084; Fri, 05 May
+ 2023 09:38:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.7.Id4133d3183e798122dc3b6205e7852601f289071@changeid> <CSE09YL4X0XY.1GAQWAFOOEK42@wheely>
-In-Reply-To: <CSE09YL4X0XY.1GAQWAFOOEK42@wheely>
+ <20230504151100.v4.8.I818492c326b632560b09f20d2608455ecf9d3650@changeid> <CSE0CI3TFK72.2I4E5TJIRHDGM@wheely>
+In-Reply-To: <CSE0CI3TFK72.2I4E5TJIRHDGM@wheely>
 From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 5 May 2023 09:37:50 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
-Message-ID: <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/17] watchdog/hardlockup: Move perf hardlockup
- checking/panic to common watchdog.c
+Date: Fri, 5 May 2023 09:38:14 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
+Message-ID: <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/17] watchdog/hardlockup: Style changes to
+ watchdog_hardlockup_check() / ..._is_lockedup()
 To: Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -91,34 +91,32 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi,
 
-On Thu, May 4, 2023 at 7:58=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com> =
+On Thu, May 4, 2023 at 8:02=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com> =
 wrote:
 >
 > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> > The perf hardlockup detector works by looking at interrupt counts and
-> > seeing if they change from run to run. The interrupt counts are
-> > managed by the common watchdog code via its watchdog_timer_fn().
-> >
-> > Currently the API between the perf detector and the common code is a
-> > function: is_hardlockup(). When the hard lockup detector sees that
-> > function return true then it handles printing out debug info and
-> > inducing a panic if necessary.
-> >
-> > Let's change the API a little bit in preparation for the buddy
-> > hardlockup detector. The buddy hardlockup detector wants to print
+> > These are tiny style changes:
+> > - Add a blank line before a "return".
+> > - Renames two globals to use the "watchdog_hld" prefix.
 >
-> I think the name change is a gratuitous. Especially since it's now
-> static.
->
-> watchdog_hardlockup_ is a pretty long prefix too, hardlockup_
-> should be enough?
->
-> Seems okay otherwise though.
+> Particularly static ones don't really need the namespace prefixes.
 
-I went back and forth on names far too much when constructing this
-patch series. Mostly I was trying to balance what looked good to me
-and what Petr suggested [1]. I'm not super picky about the names and
-I'm happy to change them all to a "hardlockup_" prefix. I'd love to
-hear Petr's opinion.
+Renames are mostly at Petr's request. If I've misunderstood what he
+wants here that I'm happy to remove them.
+
+
+> Not sure if processed is better than warn.
+
+I can undo this one if you want. It felt like we were doing more than
+just warning, but if people think "warn" is a better way to describe
+it then that's fine with me.
+
+
+> allcpu_dumped is better
+> than dumped_stacks though because the all-CPUs-dump is a particular
+> thing.
+
+OK, I can undo this and leave it as "allcpu_dumped".
+
 
 [1] https://lore.kernel.org/r/ZFErmshcrcikrSU1@alley
