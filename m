@@ -2,48 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04D36F9199
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 13:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37A86F97FC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 May 2023 11:25:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QD59x0WZYz3fJP
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 May 2023 21:36:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QDfCt3jQyz3cDG
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 May 2023 19:25:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=K92uH6At;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=RyGwuNbx;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=K92uH6At;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=RyGwuNbx;
+	dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QD59P0D3gz305g
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 May 2023 21:36:23 +1000 (AEST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pvGCa-002hVY-AY; Sat, 06 May 2023 13:35:48 +0200
-Received: from p57bd9cee.dip0.t-ipconnect.de ([87.189.156.238] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pvGCZ-000Sf9-Vs; Sat, 06 May 2023 13:35:48 +0200
-Message-ID: <c0677d21a4b6caa2e5018af000294a974121d9e8.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v2 30/34] sh: Convert pte_free_tlb() to use ptdescs
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, Andrew Morton
-	 <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>
-Date: Sat, 06 May 2023 13:35:46 +0200
-In-Reply-To: <20230501192829.17086-31-vishal.moola@gmail.com>
-References: <20230501192829.17086-1-vishal.moola@gmail.com>
-	 <20230501192829.17086-31-vishal.moola@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QDfBy14vNz30NN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 May 2023 19:24:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1683451465; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=WPB39i+Pzfc102z7n4oaQgZKljJEXRaQdM1TztlQVauQYzS42OmvQTGLr1Q0tN5JN8
+    ClSe/G6E0cT5sAbq9L9lEBsZ5GHun7xxh6L3JhAkNhWhsLwYsADcdweGzIBRAjght0jc
+    aVwFCH7f1SqX877ya7uEzv1tH2x9MWLsSkkcTHLUNoajAMfg78KN7IOSWMRYaNGn5ELI
+    HDMHLZkR1kIYfCxnKKbrX2/gOk57OaH6Ns0ES49+xqPsJL4yv+Da8ITfP1DY3PwmB81H
+    NIVUzf1lammF+3cDgRvJWOATcQNd3n+p/qSaJGrMRLghyV1itInHiC4gsz8ULc6TwMw6
+    hZxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1683451465;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=WhzhEPW3IuSAbhMuYgA0QH0NqDdyN/a5WuPdo7pOvWQ=;
+    b=ZnWtpIn5wv+8tsObH22QNOKHgdnurIAzYqlqKOc486Lc03zL7pGj/TP4ncI/V7+Ek1
+    FrdgnL0wSb8lEZiCd9SxJ66EJMVqnX8BHtntJ/7uWW4ummUb/gOtOpWrRgU9N5THm8Jz
+    VuYVkLteIYXrTYzg6hq0wlD/v/FDVP30lYW/1rbQoIA4zD6kY1DOMyoxYl6i4A7wDajB
+    UVjT38v69/d0TN3Zi6cPhtPvnXP3HDl4WxyzwP/+h0zQyRyJEkTPhoqK+j3AfHphF/M8
+    8QiiQkoxt+Uevaq+KdZ/JB9FSc5gnS81AkFoD2Mc+eWg7Cn5sMFBMmLIoXrxNMLGPObN
+    BkiQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1683451465;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=WhzhEPW3IuSAbhMuYgA0QH0NqDdyN/a5WuPdo7pOvWQ=;
+    b=K92uH6AtiM3p0+WoyoJj2HHWCEReRvnIgjQzJjR1kIPM/PFP/on18xoxSKNYxzGNmS
+    NtPINN8icjKfe12PACPBbbgAZBPokWjd5VI9UvyTYqegeGEvgrw16uFjW3f561yCy9/0
+    D8q/v2sXRXXx/6OkVhqhl44ajKNUPXmcMVD8nrrFfUi8BWDvi+o3ito9V7BHKTAYxLky
+    kGwJGrtYYMOC9V98wMKtR9a1H3YMwinEqDhuWCKbuwMCsEsuSQABpX7PWXh2330M+GKO
+    QctS0CmDPeWeYNMSNi+xVO7yEAYxx5vapT4OTgwPI1b5tc7k10hKfd1NVRioekzJQQI2
+    Nn6A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1683451465;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=WhzhEPW3IuSAbhMuYgA0QH0NqDdyN/a5WuPdo7pOvWQ=;
+    b=RyGwuNbxXKaAmCdsEN/385LI1bt3W6E9Y3rXVTV+aAFOuo30lvkl1swTUI79Nqo9Up
+    e/T19gqFHc3o1kzG9PCw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiAuo0nkh/QkTJY0F5KivYZg6rg"
+Received: from [IPV6:2a02:8109:8980:4474:ec95:ca11:b696:829]
+    by smtp.strato.de (RZmta 49.4.0 AUTH)
+    with ESMTPSA id w2b3aez479ONXom
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sun, 7 May 2023 11:24:23 +0200 (CEST)
+Message-ID: <3cbe9734-265e-d9f0-fcf8-433ef306a46f@xenosoft.de>
+Date: Sun, 7 May 2023 11:24:23 +0200
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.156.238
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.1
+Subject: Re: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is
+ not present
+To: Rob Herring <robh@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20230505171816.3175865-1-robh@kernel.org>
+Content-Language: de-DE
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <20230505171816.3175865-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,69 +99,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal!
-
-On Mon, 2023-05-01 at 12:28 -0700, Vishal Moola (Oracle) wrote:
-> Part of the conversions to replace pgtable constructor/destructors with
-> ptdesc equivalents. Also cleans up some spacing issues.
->=20
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+On 05 May 2023 at 07:18 pm, Rob Herring wrote:
+> Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
+> parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
+> range was not getting mapped as the logic to handle no "ranges" was
+> inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
+> to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
+> when looking for a non-PCI ISA region.
+>
+> Fixes: e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges" parsing")
+> Link: https://lore.kernel.org/all/301595ad-0edf-2113-b55f-f5b8051ed24c@xenosoft.de/
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->  arch/sh/include/asm/pgalloc.h | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/sh/include/asm/pgalloc.h b/arch/sh/include/asm/pgalloc.=
-h
-> index a9e98233c4d4..ce2ba99dbd84 100644
-> --- a/arch/sh/include/asm/pgalloc.h
-> +++ b/arch/sh/include/asm/pgalloc.h
-> @@ -2,6 +2,7 @@
->  #ifndef __ASM_SH_PGALLOC_H
->  #define __ASM_SH_PGALLOC_H
-> =20
-> +#include <linux/mm.h>
->  #include <asm/page.h>
-> =20
->  #define __HAVE_ARCH_PMD_ALLOC_ONE
-> @@ -31,10 +32,10 @@ static inline void pmd_populate(struct mm_struct *mm,=
- pmd_t *pmd,
->  	set_pmd(pmd, __pmd((unsigned long)page_address(pte)));
->  }
-> =20
-> -#define __pte_free_tlb(tlb,pte,addr)			\
-> -do {							\
-> -	pgtable_pte_page_dtor(pte);			\
-> -	tlb_remove_page((tlb), (pte));			\
-> +#define __pte_free_tlb(tlb, pte, addr)				\
-> +do {								\
-> +	ptdesc_pte_dtor(page_ptdesc(pte));			\
-> +	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
->  } while (0)
-> =20
->  #endif /* __ASM_SH_PGALLOC_H */
+> Untested, but I think this should fix the issue.
+>
+>   arch/powerpc/kernel/isa-bridge.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
+> index 85bdd7d3652f..48e0eaf1ad61 100644
+> --- a/arch/powerpc/kernel/isa-bridge.c
+> +++ b/arch/powerpc/kernel/isa-bridge.c
+> @@ -93,11 +93,12 @@ static int process_ISA_OF_ranges(struct device_node *isa_node,
+>   	}
+>   
+>   inval_range:
+> -	if (!phb_io_base_phys) {
+> +	if (phb_io_base_phys) {
+>   		pr_err("no ISA IO ranges or unexpected isa range, mapping 64k\n");
+>   		remap_isa_base(phb_io_base_phys, 0x10000);
+> +		return 0;
+>   	}
+> -	return 0;
+> +	return -EINVAL;
+>   }
+>   
+>   
+The Nemo board boots with this patch. Thanks a lot for your help!
 
-Looking at the patch which introduces tlb_remove_page_ptdesc() [1], it seem=
-s that
-tlb_remove_page_ptdesc() already calls tlb_remove_page() with ptdesc_page(p=
-t), so
-I'm not sure whether the above tlb_remove_page_ptdesc((tlb), (page_ptdesc(p=
-te)))
-is correct.
-
-Shouldn't it just be tlb_remove_page_ptdesc((tlb), (pte))?
-
-Thanks,
-Adrian
-
-> [1] https://lore.kernel.org/linux-mm/20230417205048.15870-5-vishal.moola@=
-gmail.com/
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
