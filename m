@@ -2,90 +2,146 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575FA6FBBDE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 02:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E816FBBDF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 02:13:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFdsK2Bmyz3fJQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:12:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDFShBRE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFdsv2PJNz3fPh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:13:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDFShBRE;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFQbZ6M0jz3c8f
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 01:45:14 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 348FcZ8K028665;
-	Mon, 8 May 2023 15:45:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=9ZWvMKkAhoPIsLUusebE3XgGXiyxBIOTyrQIHON9VcA=;
- b=dDFShBREKPq3d/BbJ7eBJn5JXCjSRUNz4R6ypuoK2rQDor/5CgeF0wub+6V9BGsyUMNN
- 1h5LV/s93f6BjBaEVKcw+yV6ZK6xLyROpE1/lVn7T4X9LhpxlCj8DJdxi5xeqIS/6q7j
- ulrTvYKe4bShvJWdhIAKJ2HMrHKUb332LH9Fei0yyHgMz+IPSseWYXEgMe6JrTDKI7TS
- IBubpdXyzTzft/jjAT7UeQSgbSrKk6Dd7JDQwGzghIhxNIJ3rln+BkwrO42quml4ZDME
- 32a+5iXqiMjRJJJPPYLf3r94xRDnnbGWVuHmlz/GpjC5Rx4WyA7CyZ70kKO8CIdcz+X9 Qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qf3qmrd74-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 15:45:08 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 348FcgV0029086;
-	Mon, 8 May 2023 15:45:08 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qf3qmrd63-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 15:45:08 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 347NpdjA026559;
-	Mon, 8 May 2023 15:45:06 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qdeh6gyyu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 15:45:05 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 348Fj3MK41288294
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 May 2023 15:45:03 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 63DFE2004B;
-	Mon,  8 May 2023 15:45:03 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D4B7C20043;
-	Mon,  8 May 2023 15:45:01 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.43.115.95])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  8 May 2023 15:45:01 +0000 (GMT)
-Date: Mon, 8 May 2023 21:14:43 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Rohan McLure <rmclure@linux.ibm.com>
-Subject: Re: [PATCH 4/12] asm-generic/mmiowb: Mark accesses to fix KCSAN
- warnings
-Message-ID: <ZFkY6z2uyie6wVrp@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
-References: <20230508020120.218494-1-rmclure@linux.ibm.com>
- <20230508020120.218494-5-rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFYT45s3wz3fMh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 06:55:04 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pw7rP-000307-J4; Mon, 08 May 2023 22:53:31 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pw7r4-0024p2-9D; Mon, 08 May 2023 22:53:10 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pw7r2-002YUk-Pw; Mon, 08 May 2023 22:53:08 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Thor Thayer <thor.thayer@linux.intel.com>,
+	Elie Morisse <syniurge@gmail.com>,
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	ye xingchen <ye.xingchen@zte.com.cn>,
+	Krzysztof Adamski <krzysztof.adamski@nokia.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Allison Randal <allison@lohutok.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Kamal Dasu <kdasu.kdev@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jochen Friedrich <jochen@scram.de>,
+	Benson Leung <bleung@chromium.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Jean-Marie Verdun <verdun@hpe.com>,
+	Nick Hawkins <nick.hawkins@hpe.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Oleksij Rempel <linux@rempel-privat.de>,
+	Jean Delvare <jdelvare@suse.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Chris Pringle <chris.pringle@phabrix.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Michael Shych <michaelsh@nvidia.com>,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>,
+	Qii Wang <qii.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Stefan Roese <sr@denx.de>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Stefan Wahren <stefan.wahren@i2se.com>,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Robert Richter <rric@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Hector Martin <marcan@marcan.st>,
+	Sven Peter <sven@svenpeter.dev>,
+	Rob Herring <robh@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chris Brandt <chris.brandt@renesas.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Phil Edworthy <phil.edworthy@renesas.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jim Cromie <jim.cromie@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wei Chen <harperchen1110@gmail.com>,
+	George Cherian <gcherian@marvell.com>,
+	Peter Rosin <peda@axentia.se>,
+	Peter Korsgaard <peter.korsgaard@barco.com>
+Subject: [PATCH 00/89] i2c: Convert to platform remove callback returning void
+Date: Mon,  8 May 2023 22:51:37 +0200
+Message-Id: <20230508205306.1474415-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230508020120.218494-5-rmclure@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7byqPY_tylbywoPSDUOpakZaY-fskqtX
-X-Proofpoint-ORIG-GUID: O3_sJsMWTdcaQgxBWdnTWbpJZbAPae86
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-08_11,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 clxscore=1011
- mlxlogscore=999 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305080103
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12259; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=CUiyRkHedGuUngm1XVS44bTPkh5X8UNxtDmuuxmkXfI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkWWA/sUJy//6LnoJE8pZ1jpYWJb4ReEOteWEqx nBbdvdRxiaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZFlgPwAKCRCPgPtYfRL+ TrMyB/47jd7Ku/xKY+yn8Pz8lCxZfeQrwdKR0Ava+mmos9tRoEvf3C/fjgZ6JdPMn2xAOuFj5L0 ChlkHdf+cjgqrDShJg+TdHgusB/fqdoi2SilcdhEg4do3/OuaNy0bmP1lx97NUPi74d38/N8hO4 Wjf9h6QZucyKU5j9n9VuRVgPMcA35GhgWZ+Ga+hU+dlTINCOxdJu/al05N7Ex74ppPtfxjCBTQO f0LzVF+aO+5Q9Uyx/0Q1RBhNY2vAtr4I1t+5bybE+u1pqJ9AZNAgk+NuN67I1nNSjBRl0BtYaE3 u5cZFNC9MgmA4TtzZbTz14vLP4QKcyyxwruCQNqDFAK21Isv
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Approved-At: Tue, 09 May 2023 10:11:53 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,91 +154,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, arnd@arndb.de, Gautam Menghani <gautammenghani201@gmail.com>
+Cc: linux-aspeed@lists.ozlabs.org, Jan Dabros <jsd@semihalf.com>, Alim Akhtar <alim.akhtar@samsung.com>, Guenter Roeck <groeck@chromium.org>, linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Jerome Brunet <jbrunet@baylibre.com>, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, Benjamin Fair <benjaminfair@google.com>, linux-rockchip@lists.infradead.org, openbmc@lists.ozlabs.org, Nancy Yuen <yuenn@google.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, linux-sunxi@lists.linux.dev, Joel Stanley <joel@jms.id.au>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, linux-amlogic@list
+ s.infradead.org, linux-omap@vger.kernel.org, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew Jeffery <andrew@aj.id.au>, Patrick Venture <venture@google.com>, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Dmitry Osipenko <digetx@gmail.com>, asahi@lists.linux.dev, kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 08, 2023 at 12:01:12PM +1000, Rohan McLure wrote:
-> Prior to this patch, data races are detectable by KCSAN of the following
-> forms:
-> 
-> [1] Asynchronous calls to mmiowb_set_pending() from an interrupt context
->     or otherwise outside of a critical section
-> [2] Interrupted critical sections, where the interrupt will itself
->     acquire a lock
-> 
-> In case [1], calling context does not need an mmiowb() call to be
-> issued, otherwise it would do so itself. Such calls to
-> mmiowb_set_pending() are either idempotent or no-ops.
-> 
-> In case [2], irrespective of when the interrupt occurs, the interrupt
-> will acquire and release its locks prior to its return, nesting_count
-> will continue balanced. In the worst case, the interrupted critical
-> section during a mmiowb_spin_unlock() call observes an mmiowb to be
-> pending and afterward is interrupted, leading to an extraneous call to
-> mmiowb(). This data race is clearly innocuous.
-> 
-> Mark all potentially asynchronous memory accesses with READ_ONCE or
-> WRITE_ONCE, including increments and decrements to nesting_count. This
-> has the effect of removing KCSAN warnings at consumer's callsites.
-> 
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-> Reported-by: Gautam Menghani <gautammenghani201@gmail.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  include/asm-generic/mmiowb.h | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/asm-generic/mmiowb.h b/include/asm-generic/mmiowb.h
-> index 5698fca3bf56..0b8b794150db 100644
-> --- a/include/asm-generic/mmiowb.h
-> +++ b/include/asm-generic/mmiowb.h
-> @@ -35,27 +35,32 @@ DECLARE_PER_CPU(struct mmiowb_state, __mmiowb_state);
->  static inline void mmiowb_set_pending(void)
->  {
->  	struct mmiowb_state *ms = __mmiowb_state();
-> +	u16 nesting_count = READ_ONCE(ms->nesting_count);
->  
-> -	if (likely(ms->nesting_count))
-> -		ms->mmiowb_pending = ms->nesting_count;
-> +	if (likely(nesting_count))
-> +		WRITE_ONCE(ms->mmiowb_pending, nesting_count);
->  }
->  
->  static inline void mmiowb_spin_lock(void)
->  {
->  	struct mmiowb_state *ms = __mmiowb_state();
-> -	ms->nesting_count++;
-> +
-> +	/* Increment need not be atomic. Nestedness is balanced over interrupts. */
-> +	WRITE_ONCE(ms->nesting_count, READ_ONCE(ms->nesting_count) + 1);
->  }
->  
->  static inline void mmiowb_spin_unlock(void)
->  {
->  	struct mmiowb_state *ms = __mmiowb_state();
-> +	u16 pending = READ_ONCE(ms->mmiowb_pending);
->  
-> -	if (unlikely(ms->mmiowb_pending)) {
-> -		ms->mmiowb_pending = 0;
-> +	WRITE_ONCE(ms->mmiowb_pending, 0);
-> +	if (unlikely(pending)) {
->  		mmiowb();
->  	}
->  
-> -	ms->nesting_count--;
-> +	/* Decrement need not be atomic. Nestedness is balanced over interrupts. */
-> +	WRITE_ONCE(ms->nesting_count, READ_ONCE(ms->nesting_count) - 1);
->  }
->  #else
->  #define mmiowb_set_pending()		do { } while (0)
-> 
-> -- 
-> 2.37.2
-> 
+Hello,
 
+this series convers the drivers below drivers/i2c to the .remove_new()
+callback of struct platform_driver(). The motivation is to make the
+remove callback less prone for errors and wrong assumptions. See commit
+5c5a7680e67b ("platform: Provide a remove callback that returns no
+value") for a more detailed rationale.
 
-Successfully tested for changes in include/asm-generic/mmiowb.h 
+All but one driver already returned zero unconditionally in their
+.remove() callback, so converting them to .remove_new() is trivial.
+i2c-davinci has two patches in this series, first the error path is
+improved to not return an error code, then it's converted as the others
+drivers are.
 
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+The two davinci patches are also the only interdependency in this
+series. I was unsure if I should split the series in two, the busses and
+the mux changes; if convenient these can be applied independent of each
+other.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (89):
+  i2c: altera: Convert to platform remove callback returning void
+  i2c: amd-mp2-plat: Convert to platform remove callback returning void
+  i2c: aspeed: Convert to platform remove callback returning void
+  i2c: at91-core: Convert to platform remove callback returning void
+  i2c: au1550: Convert to platform remove callback returning void
+  i2c: axxia: Convert to platform remove callback returning void
+  i2c: bcm-iproc: Convert to platform remove callback returning void
+  i2c: bcm-kona: Convert to platform remove callback returning void
+  i2c: bcm2835: Convert to platform remove callback returning void
+  i2c: brcmstb: Convert to platform remove callback returning void
+  i2c: cadence: Convert to platform remove callback returning void
+  i2c: cbus-gpio: Convert to platform remove callback returning void
+  i2c: cht-wc: Convert to platform remove callback returning void
+  i2c: cpm: Convert to platform remove callback returning void
+  i2c: cros-ec-tunnel: Convert to platform remove callback returning
+    void
+  i2c: davinci: Improve error reporting for problems during .remove()
+  i2c: davinci: Convert to platform remove callback returning void
+  i2c: designware-platdrv: Convert to platform remove callback returning
+    void
+  i2c: digicolor: Convert to platform remove callback returning void
+  i2c: dln2: Convert to platform remove callback returning void
+  i2c: emev2: Convert to platform remove callback returning void
+  i2c: exynos5: Convert to platform remove callback returning void
+  i2c: gpio: Convert to platform remove callback returning void
+  i2c: gxp: Convert to platform remove callback returning void
+  i2c: highlander: Convert to platform remove callback returning void
+  i2c: hix5hd2: Convert to platform remove callback returning void
+  i2c: ibm_iic: Convert to platform remove callback returning void
+  i2c: img-scb: Convert to platform remove callback returning void
+  i2c: imx-lpi2c: Convert to platform remove callback returning void
+  i2c: imx: Convert to platform remove callback returning void
+  i2c: iop3xx: Convert to platform remove callback returning void
+  i2c: isch: Convert to platform remove callback returning void
+  i2c: jz4780: Convert to platform remove callback returning void
+  i2c: kempld: Convert to platform remove callback returning void
+  i2c: lpc2k: Convert to platform remove callback returning void
+  i2c: meson: Convert to platform remove callback returning void
+  i2c: microchip-corei2c: Convert to platform remove callback returning
+    void
+  i2c: mlxbf: Convert to platform remove callback returning void
+  i2c: mlxcpld: Convert to platform remove callback returning void
+  i2c: mpc: Convert to platform remove callback returning void
+  i2c: mt65xx: Convert to platform remove callback returning void
+  i2c: mt7621: Convert to platform remove callback returning void
+  i2c: mv64xxx: Convert to platform remove callback returning void
+  i2c: mxs: Convert to platform remove callback returning void
+  i2c: npcm7xx: Convert to platform remove callback returning void
+  i2c: ocores: Convert to platform remove callback returning void
+  i2c: octeon-platdrv: Convert to platform remove callback returning
+    void
+  i2c: omap: Convert to platform remove callback returning void
+  i2c: opal: Convert to platform remove callback returning void
+  i2c: pasemi-platform: Convert to platform remove callback returning
+    void
+  i2c: pca-platform: Convert to platform remove callback returning void
+  i2c: pnx: Convert to platform remove callback returning void
+  i2c: powermac: Convert to platform remove callback returning void
+  i2c: pxa: Convert to platform remove callback returning void
+  i2c: qcom-cci: Convert to platform remove callback returning void
+  i2c: qcom-geni: Convert to platform remove callback returning void
+  i2c: qup: Convert to platform remove callback returning void
+  i2c: rcar: Convert to platform remove callback returning void
+  i2c: riic: Convert to platform remove callback returning void
+  i2c: rk3x: Convert to platform remove callback returning void
+  i2c: rzv2m: Convert to platform remove callback returning void
+  i2c: s3c2410: Convert to platform remove callback returning void
+  i2c: scmi: Convert to platform remove callback returning void
+  i2c: scx200_acb: Convert to platform remove callback returning void
+  i2c: sh7760: Convert to platform remove callback returning void
+  i2c: sh_mobile: Convert to platform remove callback returning void
+  i2c: simtec: Convert to platform remove callback returning void
+  i2c: st: Convert to platform remove callback returning void
+  i2c: stm32f4: Convert to platform remove callback returning void
+  i2c: stm32f7: Convert to platform remove callback returning void
+  i2c: sun6i-p2wi: Convert to platform remove callback returning void
+  i2c: synquacer: Convert to platform remove callback returning void
+  i2c: tegra-bpmp: Convert to platform remove callback returning void
+  i2c: tegra: Convert to platform remove callback returning void
+  i2c: uniphier-f: Convert to platform remove callback returning void
+  i2c: uniphier: Convert to platform remove callback returning void
+  i2c: versatile: Convert to platform remove callback returning void
+  i2c: viperboard: Convert to platform remove callback returning void
+  i2c: wmt: Convert to platform remove callback returning void
+  i2c: xgene-slimpro: Convert to platform remove callback returning void
+  i2c: xiic: Convert to platform remove callback returning void
+  i2c: xlp9xx: Convert to platform remove callback returning void
+  i2c: mux: arb-gpio-challenge: Convert to platform remove callback
+    returning void
+  i2c: mux: demux-pinctrl: Convert to platform remove callback returning
+    void
+  i2c: mux: gpio: Convert to platform remove callback returning void
+  i2c: mux: gpmux: Convert to platform remove callback returning void
+  i2c: mux: mlxcpld: Convert to platform remove callback returning void
+  i2c: mux: pinctrl: Convert to platform remove callback returning void
+  i2c: mux: reg: Convert to platform remove callback returning void
+
+ drivers/i2c/busses/i2c-altera.c             |  6 ++----
+ drivers/i2c/busses/i2c-amd-mp2-plat.c       |  5 ++---
+ drivers/i2c/busses/i2c-aspeed.c             |  6 ++----
+ drivers/i2c/busses/i2c-at91-core.c          |  6 ++----
+ drivers/i2c/busses/i2c-au1550.c             |  5 ++---
+ drivers/i2c/busses/i2c-axxia.c              |  6 ++----
+ drivers/i2c/busses/i2c-bcm-iproc.c          |  6 ++----
+ drivers/i2c/busses/i2c-bcm-kona.c           |  6 ++----
+ drivers/i2c/busses/i2c-bcm2835.c            |  6 ++----
+ drivers/i2c/busses/i2c-brcmstb.c            |  5 ++---
+ drivers/i2c/busses/i2c-cadence.c            |  6 ++----
+ drivers/i2c/busses/i2c-cbus-gpio.c          |  6 ++----
+ drivers/i2c/busses/i2c-cht-wc.c             |  6 ++----
+ drivers/i2c/busses/i2c-cpm.c                |  6 ++----
+ drivers/i2c/busses/i2c-cros-ec-tunnel.c     |  6 ++----
+ drivers/i2c/busses/i2c-davinci.c            | 14 ++++++--------
+ drivers/i2c/busses/i2c-designware-platdrv.c |  6 ++----
+ drivers/i2c/busses/i2c-digicolor.c          |  6 ++----
+ drivers/i2c/busses/i2c-dln2.c               |  6 ++----
+ drivers/i2c/busses/i2c-emev2.c              |  6 ++----
+ drivers/i2c/busses/i2c-exynos5.c            |  6 ++----
+ drivers/i2c/busses/i2c-gpio.c               |  6 ++----
+ drivers/i2c/busses/i2c-gxp.c                |  6 ++----
+ drivers/i2c/busses/i2c-highlander.c         |  6 ++----
+ drivers/i2c/busses/i2c-hix5hd2.c            |  6 ++----
+ drivers/i2c/busses/i2c-ibm_iic.c            |  6 ++----
+ drivers/i2c/busses/i2c-img-scb.c            |  6 ++----
+ drivers/i2c/busses/i2c-imx-lpi2c.c          |  6 ++----
+ drivers/i2c/busses/i2c-imx.c                |  6 ++----
+ drivers/i2c/busses/i2c-iop3xx.c             |  6 ++----
+ drivers/i2c/busses/i2c-isch.c               |  6 ++----
+ drivers/i2c/busses/i2c-jz4780.c             |  5 ++---
+ drivers/i2c/busses/i2c-kempld.c             |  6 ++----
+ drivers/i2c/busses/i2c-lpc2k.c              |  6 ++----
+ drivers/i2c/busses/i2c-meson.c              |  6 ++----
+ drivers/i2c/busses/i2c-microchip-corei2c.c  |  6 ++----
+ drivers/i2c/busses/i2c-mlxbf.c              |  6 ++----
+ drivers/i2c/busses/i2c-mlxcpld.c            |  6 ++----
+ drivers/i2c/busses/i2c-mpc.c                |  6 ++----
+ drivers/i2c/busses/i2c-mt65xx.c             |  6 ++----
+ drivers/i2c/busses/i2c-mt7621.c             |  6 ++----
+ drivers/i2c/busses/i2c-mv64xxx.c            |  6 ++----
+ drivers/i2c/busses/i2c-mxs.c                |  6 ++----
+ drivers/i2c/busses/i2c-npcm7xx.c            |  5 ++---
+ drivers/i2c/busses/i2c-ocores.c             |  6 ++----
+ drivers/i2c/busses/i2c-octeon-platdrv.c     |  5 ++---
+ drivers/i2c/busses/i2c-omap.c               |  6 ++----
+ drivers/i2c/busses/i2c-opal.c               |  6 ++----
+ drivers/i2c/busses/i2c-pasemi-platform.c    |  5 ++---
+ drivers/i2c/busses/i2c-pca-platform.c       |  6 ++----
+ drivers/i2c/busses/i2c-pnx.c                |  6 ++----
+ drivers/i2c/busses/i2c-powermac.c           |  6 ++----
+ drivers/i2c/busses/i2c-pxa.c                |  6 ++----
+ drivers/i2c/busses/i2c-qcom-cci.c           |  6 ++----
+ drivers/i2c/busses/i2c-qcom-geni.c          |  5 ++---
+ drivers/i2c/busses/i2c-qup.c                |  5 ++---
+ drivers/i2c/busses/i2c-rcar.c               |  6 ++----
+ drivers/i2c/busses/i2c-riic.c               |  6 ++----
+ drivers/i2c/busses/i2c-rk3x.c               |  6 ++----
+ drivers/i2c/busses/i2c-rzv2m.c              |  6 ++----
+ drivers/i2c/busses/i2c-s3c2410.c            |  6 ++----
+ drivers/i2c/busses/i2c-scmi.c               |  6 ++----
+ drivers/i2c/busses/i2c-sh7760.c             |  6 ++----
+ drivers/i2c/busses/i2c-sh_mobile.c          |  5 ++---
+ drivers/i2c/busses/i2c-simtec.c             |  6 ++----
+ drivers/i2c/busses/i2c-st.c                 |  6 ++----
+ drivers/i2c/busses/i2c-stm32f4.c            |  6 ++----
+ drivers/i2c/busses/i2c-stm32f7.c            |  6 ++----
+ drivers/i2c/busses/i2c-sun6i-p2wi.c         |  6 ++----
+ drivers/i2c/busses/i2c-synquacer.c          |  6 ++----
+ drivers/i2c/busses/i2c-tegra-bpmp.c         |  6 ++----
+ drivers/i2c/busses/i2c-tegra.c              |  6 ++----
+ drivers/i2c/busses/i2c-uniphier-f.c         |  6 ++----
+ drivers/i2c/busses/i2c-uniphier.c           |  6 ++----
+ drivers/i2c/busses/i2c-versatile.c          |  5 ++---
+ drivers/i2c/busses/i2c-viperboard.c         |  6 ++----
+ drivers/i2c/busses/i2c-wmt.c                |  6 ++----
+ drivers/i2c/busses/i2c-xgene-slimpro.c      |  6 ++----
+ drivers/i2c/busses/i2c-xiic.c               |  6 ++----
+ drivers/i2c/busses/i2c-xlp9xx.c             |  6 ++----
+ drivers/i2c/busses/scx200_acb.c             |  6 ++----
+ drivers/i2c/muxes/i2c-arb-gpio-challenge.c  |  5 ++---
+ drivers/i2c/muxes/i2c-demux-pinctrl.c       |  6 ++----
+ drivers/i2c/muxes/i2c-mux-gpio.c            |  6 ++----
+ drivers/i2c/muxes/i2c-mux-gpmux.c           |  6 ++----
+ drivers/i2c/muxes/i2c-mux-mlxcpld.c         |  5 ++---
+ drivers/i2c/muxes/i2c-mux-pinctrl.c         |  6 ++----
+ drivers/i2c/muxes/i2c-mux-reg.c             |  6 ++----
+ 88 files changed, 180 insertions(+), 343 deletions(-)
+
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
+-- 
+2.39.2
+
