@@ -1,126 +1,120 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF296FBA32
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 23:47:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEC06FBA4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 23:54:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFZdB3lR2z3fKH
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 07:47:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFZn253GWz3f8D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 07:53:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Kwl5tOsF;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=eTx9w+If;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1b::61f; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0d::600; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Kwl5tOsF;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=eTx9w+If;
 	dkim-atps=neutral
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2061f.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::61f])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on0600.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFZcH0zGWz2x9d
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 07:46:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFZm95mbXz3bnr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 07:53:12 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oVEvUn3GAMxItSQhdfk3NCk+TNskRYvhJlLUGHUpdN6CWsx1Ugy0Jygr0r3Zj4UNknb+IOtvVUrAtX56jXzAvYCxJaJbYig2Z9U3Xfvo7C2CSqRlWD3jZlIduP0aqHPcWUKIWBxnaHP98VyN2Np4DWMVvOD5EqJ+kNpa7bo69wGbF98MGkyXq9jOVuJh/3u9o+tQaV6kCUCJwc3gGkZxrvJQCGQ6KSjvA519KaYe66laUn2jMNkJQ0cqV7CjUY13bI4R55wtWqxUx3iAQOBNEMQ7kcQdXQFv/rdFvINJsYBlpTymevWTQ1d/NZdUNG0RMLiAIMABAr+M24LVYX7w+Q==
+ b=N1LNal4wTx/Tc0xdkNR6OBbR/oLkkgkLtVx65OxUIiCM9w+KCoiwDFerba4aAm15NZ+SGOyx754/vgNG78s+Stj+my/IWOP37yEabOeF+EhG/6C4vYohOXYSc+5X/C8yz31k0wZFSPIBZI9N1WbGY9ZpeS8a4UBN+ut/+2Hfl3WEYOdQWezYWeHJtlII0G9ySdPNDJrif5h6EQ7T4tpq1qHTu6BHZZcm+p86alc7NJCwDzFhkjhqYILpXPR681/h7Bz4ygIimNAY3FFk5+T7nxOKuhukZTqARiSo7ALcogvlJ8XkCr00LPPMFA3rnY3OSkYz2kDO7XW/23T/vNlI0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5FHUT6Enjqbt018itD9DESGccKkKpI22E1iOEr9S44w=;
- b=fqcUojvHYUV9W4U3h4yAkeQ43DlVBxeyl22NgyJYOKb5a2y6BG3KmcGGfCDJJC+bQIZqbfAYROcz7U1d86FxBhH5L2DRn6W6JtLEl+kx/MLltn+v6IWEbvzZ+RtPi4FoDC5NNJlT6mKxV0RqZNZ8XjdIdMJBFec//gFM4uDbEMKUHY0NxUlp2aHUvIcftgf6B0WpZKcETuaifib7uWyFUrwLIj7Gu1qDZxiDFfl/VMgr5NOXZJ8l+pQCYGbgsceCHZVRh3m/d1xihGGVEBoLSZBK7GOmMG2Yp0elwAw/6KZkDwDM+iKAIo/v3UNxsVixlMxMIIqvrx9Q+brLnnQpoQ==
+ bh=y4qZYxl+LgAGFwIEgrMn7JTkJdlFkYk8bwwrX0ndO3Q=;
+ b=DUSglFnRF/HMPOty1tFq5wEE4DE0M/dYQCn1oNbC0FVTlBLOfa2wMNvrVAm5FL5bOWNXruWobDJTVZiHEAMkJH5m/7+hbj/E3QG2fNiT1dSXaKdSpfpDXr2oI42s5oPacgFrEC/TkATq1cQL+lej0HJkwXzukMGjHFrnmOP3JHwJfyHnnrus+wH49nSJcWNI9BKIg/TbtewpEp4mryx9rrmEmwQ7FkxJ7s2cnQr52r7jmR/Jgcg6wI9IR2aRW4SObx0WmrL5UIcfdNK09d1l1mSn6haPk+uJi0VoeNikmxjvO6t+e5qaNZMo8Og6OqA8NLxKEgtUDXtQLGmtZnBlwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5FHUT6Enjqbt018itD9DESGccKkKpI22E1iOEr9S44w=;
- b=Kwl5tOsF9kPIjMntFhsEJEQHwuSB9N3I1iT+8vpHCxrHerUqKo+jW7xjIMvWGLmXK8G/f+wC2rvhJ+mPLGrckLnmKrVnF8oZdGuKb8R/axkDX61SrIReHCXDgRWKzbVQxLS0KTWhSG8ul64pupc0/FAj5tU8F0r3VbFj2U49ZM8=
+ bh=y4qZYxl+LgAGFwIEgrMn7JTkJdlFkYk8bwwrX0ndO3Q=;
+ b=eTx9w+Ifm1yz07YwY7CXnmWdolmNg1SwGtQYJbbd5KzyLDAV6/Zd+QU9Ta8YNxvEi17p9WYhDIS3NWWcseIskhrNdptiKu/MLEUtIOU6ExUFGEVgHGdDKjjg/c0FVg+6dyBjgSgJPONkXfEdqtMHiy+cLHOsIl2CxVtJNhTeUzM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM0PR04MB7074.eurprd04.prod.outlook.com (2603:10a6:208:196::13) with
+ by AM7PR04MB6983.eurprd04.prod.outlook.com (2603:10a6:20b:102::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.33; Mon, 8 May
- 2023 21:46:00 +0000
+ 2023 21:52:53 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::bcdd:75c9:176c:39ed]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::bcdd:75c9:176c:39ed%4]) with mapi id 15.20.6363.032; Mon, 8 May 2023
- 21:46:00 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: RE: [EXT] Re: [PATCH v2 1/1] PCI: layerscape: Add the endpoint linkup
- notifier support
-Thread-Topic: [EXT] Re: [PATCH v2 1/1] PCI: layerscape: Add the endpoint
- linkup notifier support
-Thread-Index: AQHZfDv8xjmOGp+sGECsmQvElFijLa9M6KiAgAOBOzCAAIZwAIAAA3BA
-Date: Mon, 8 May 2023 21:45:59 +0000
-Message-ID:  <AM6PR04MB4838C21F4C2F0689B13B05A988719@AM6PR04MB4838.eurprd04.prod.outlook.com>
-References:  <AM6PR04MB4838D92748AD426DA1661C0C88719@AM6PR04MB4838.eurprd04.prod.outlook.com>
- <20230508213106.GA1192065@bhelgaas>
-In-Reply-To: <20230508213106.GA1192065@bhelgaas>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB4838:EE_|AM0PR04MB7074:EE_
-x-ms-office365-filtering-correlation-id: fff1abe0-23df-4bea-f367-08db500d9ccf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  Z251enCRIcqbwoVyMQ29HtEH5vZ6H4D1t3NCX6+3OokUyn4mKwQZ28CP6ryYXo+vqbC3IZDIZBGOzrq1y5DY96aynhD24vcGrZ8JyzIelawfsinwbc+Doxk54LrRF3AXt7VVZEHUQqOlg7qWvbYJiTpN/YE/uonywgYknCP1IbgaGuKHXLlb664uGnoBtO44p799qrjqjPkWdDvTNuQXHmkpxNRf6Fy3QvbUO+8EiHRol/ODSNAllJD0R0BDmGJj20RpHVbBiXRs7nhzR1li89w9grXcYas62ixErYnRTLcVFF7HsRkSC1uJ+5wGfOVkhgsTLKW83OsGcy5ZVMV+EpvIUR+BXY+aQZb90+2x7qHGyD95/SEUvb5gY0rHkWvpSaTstrLsuPjrEXA3xSxzXlXOcaY10JQIOdMuY6H1MY66DGhG6t+mJxGRCEtqH8QL1xNoXuybzQFvky2s/7JwHqBNZDeoRVmK6Hlae8OTe0tA8R/S8zN5wrUcJENtx7wjyjJ/FRrZ6LurlOudYKqKsE5UVJ8W5PLuvqVxIB87+DDnIViezcTnGTj5fLSnWZKFRAexivOqCzu97GwHWDV6doXhesyLGeRg1mrVcna+VOmt7RNhYlvIkPwryBav8b9a
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199021)(2906002)(38100700002)(26005)(9686003)(6506007)(55236004)(33656002)(186003)(55016003)(122000001)(316002)(41300700001)(6916009)(4326008)(64756008)(76116006)(66556008)(66946007)(66446008)(7696005)(66476007)(71200400001)(38070700005)(54906003)(86362001)(478600001)(52536014)(5660300002)(8676002)(7416002)(44832011)(8936002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UGw2SEl2TVlZODJKNjBPNWtQOElwc3JWL25Gb1FzMlhxY0QzOVB3eDhDbXg3?=
- =?utf-8?B?bzJEa0MzRTVWSVk1M29iVmJFUHZPTU1pS1pDdUxrb1o1Qm5ZdzZVbEZjallr?=
- =?utf-8?B?VWk3Y1lBd25PRDhCMjJnMThSRFhVNDFIL1QwY0ZpSzBqSFovL2RxMnJVNGND?=
- =?utf-8?B?UVRFckZtV0IvbnNheFpRRDJHeUJiT3E1aStYdlE0RzdoMXFZNkhBUXRJVE1p?=
- =?utf-8?B?eWNsTVpvQ1BwbWNLQ0tlWlMreWp2cVpLSUdFOG5HM3c1elpIWjhwRjBGVW1O?=
- =?utf-8?B?T3dqM2FIdE80eWlKa3JiTnkrUWdUbm5uZnY0MTFVcWdHZWkwNHhzVDN6UkFE?=
- =?utf-8?B?cCtDeHIzWGV6czhwMDIyemtLV2hXaG81K2FkRkNZcTBBdWp3dTIveDI1ZmVs?=
- =?utf-8?B?OTRjSEgxQXVxL3RIcFdodlh1YjJFN1ErbGkwdTZLU2RlVmlKZFcyemZIaUtZ?=
- =?utf-8?B?RWQ3SW9pNFREdlhDUTdEZkN0UFA1dlBlaktWWi9ROHVmdHp0b0VMdWFZV2Rs?=
- =?utf-8?B?RXlwaFVsOWpFZUpuNEJieVVwbk0vcUtWenVObVFPRW1DTG0vSFF2ai9JU3pP?=
- =?utf-8?B?RVVjaHpaR09tUmRVTjFJMk1CZEdPN1BiYmRrYWhXMHU1WHF2ZXRaZlR0SzNV?=
- =?utf-8?B?N0FuNGZDakMrNDdlL0l6bXc4ZTdEZ3ltQjlqWTh1ZkdOeDhjZ2xIQiszSllX?=
- =?utf-8?B?dDFvU0NqYWFZVjZFVzVGRDc5NVlnMVFhcFJaNUNaNXlkQTk5Y1d2bTU3amxs?=
- =?utf-8?B?Z0JOSGlGTEFYWEUwU3BrTnYxSS83cSt3NlNQalBRbVpCSmpNZ1pyaGhhVUJk?=
- =?utf-8?B?UVZ6eHdkODU2aGZ3dmlVN1RsRnNWVEhUbHJ2K2wrcUVoWm1ySE1Id3pnZ3pH?=
- =?utf-8?B?TUNoZExwNVZsSnVvUUhDUWFIUFo0SERLWmZidVNEcjA5RGNHcGthRzdnbysr?=
- =?utf-8?B?K3F0YkFYWk9IQ1B2ZXJUQ0k2Z2lZRzNFWUVpazhnalVaYnhpMFhKTjU5OFpu?=
- =?utf-8?B?aEUza1BscnBPRGpwb01FYzZ0RmcvQmNXNDk1bkN4YVRlYUt5R1J6d3IvQ1FG?=
- =?utf-8?B?d2Q0OStCTW85NWNRYURoV1B2KzBWQVJIMHhYRHJOTlYrMGZER1hxUEtreTd1?=
- =?utf-8?B?cEtZM0lQYXMzdUZPQ0hRUHhZSEdXVDVnL1lOMUZXSWVsMExiNVhxOEo0L3BX?=
- =?utf-8?B?d2J1bmJJaXY3Y1JnWmltdUFBQ3RBcHlpblZSd0ZINDFXMXJnWDdIdDl4RXZB?=
- =?utf-8?B?TWtXUFNmSTFVeGljTGRZMi90UlRoWjR5dGZRVHZYbVBsYjE0S3A2S29UYjZu?=
- =?utf-8?B?aUhCSnBaMWFnRm1qNXA4TjdlTzBwd0tucUVwVWs0WUVUSDhFWm5lUmxnZGVj?=
- =?utf-8?B?Y093VEdRNWhKY2VUU1ZLL2xqbkFXc1JsUUZWMjJpeHpXWVBid2w2ekl0ekpU?=
- =?utf-8?B?bTh2OEFUSGdBZlA3ejZrSUJTZjRkVGlqWXpXNThLTkJTTXZCSE5jMktDdW56?=
- =?utf-8?B?c0kzT0JJYlpjS1hsZE9WYXdJaEtYeEg5MUhBV2w0dG9vVXJickZmbnV0NUpJ?=
- =?utf-8?B?ZkxraEZCMTdFNmhzeitUT3h5bnUvZXpIVEtZRDB5cXI5WUR0d2xWNjF3eUJO?=
- =?utf-8?B?OXlKbzlvWExVUnBZRFMxOWFvOEpDS0RnOVJuRWErcG4yNWRYM0RvRzBUTnIw?=
- =?utf-8?B?TjRDZDV4MUZWdUE1R2M5Mk92OCt2Y2MzOWhyM3VOV0VKcHVDcWt3c2puMVhh?=
- =?utf-8?B?N2tBUjlUbUFQY3JrMEFiTHkyY1NQWGExYjNnVTdTN09EWVUvcVNLVGtQMkRM?=
- =?utf-8?B?TDNYYS9GOUp6aU8zbkpmWmV1bDRoNFQ2US82emFWUUg3Qk02WWw0YnM2bEpC?=
- =?utf-8?B?ZDBMVXIrTWU3L0l3dnFVM290Z3hGUjljZGR2MFo1ZkVRYXVYaDFlcTYxMzV4?=
- =?utf-8?B?cmtkd2lWYjZ3MlJoOGZXMEpXT1pkRDJOZGV2aE0yTThGSHo4S3Z2cTFKZnZV?=
- =?utf-8?B?TDNwbXhKZ3A4YSthSEhKaVJ4K1RZV0RlalhObVBxNU1Ma1F6ZlBIbm9FeE0v?=
- =?utf-8?B?T0NGYlFvRUVIL1gvNVQxT1JoS0NXWi9zd2R1YUw4RzR4Z1lUSVk5T25INExM?=
- =?utf-8?Q?EXkg=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 21:52:53 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v3 1/1] PCI: layerscape: Add the endpoint linkup notifier support
+Date: Mon,  8 May 2023 17:52:35 -0400
+Message-Id: <20230508215235.1994348-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0058.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::33) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM7PR04MB6983:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20b37225-fa76-48c4-23fc-08db500e9353
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	iXjd9aN3zriVvn7rzGDXLcKIS7KmpEjtdUWvWYDVlDBNlOpU5croPXJLNmU0T9G9cQamkFy1u5lU+/6OzRrT7TzBH6eiIB66JIrkyP3uwfr+TeH3ab9B8rArpUyOqrnDOTVnXhkJK4PWjmcJjcWSHfI0hSon4+NAE5/naz33/112RJhyynCKBWES2iIVphOD+8K/LCTbe2Z8parYW0Iyar6IWpcTMKoQAVDV8aIzt21PNcIV7DgvUkSpSYDCtQ9jRKS+62mXCYKMosGmHhb4ACSojZG4nMFAYDEBhxlXYKI48TOOWtwlqYYdZUfXvso5YQEIzHN1lMXFOx2DJj8czrRATdK5qQwfQofW3EQzuzrWOHMIGUYEi1gGMi1fQpFYok9L0XJE9IXnVCz9Wyo0cD7q7wTtXJPJMxaTxrxsm7Zij34DVuue7itlG91VCqEnbZ+VnkudQXhtEaQTgRLPGB5Lq2ufAR490nj/ylpf0zrsde9I5Q1aWSn2tmorxu8ZrqmHA/2lPTJVnOhxvrxzQpmOMeapm3H7jQlMFJjyqL5a+ljQGmfUcIiMAPLaCm09vKwv56AFgxfILndKOaNKFDd7CQesQmUtu6u3LEbLuhBOy398L7H48fHdtYVubMbvLRiYKHMKsPdKuXmlEvsgVA==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(376002)(396003)(346002)(39860400002)(451199021)(83380400001)(316002)(66946007)(4326008)(66476007)(66556008)(478600001)(6486002)(6666004)(2616005)(52116002)(186003)(6512007)(6506007)(1076003)(26005)(110136005)(86362001)(2906002)(36756003)(41300700001)(921005)(5660300002)(8676002)(8936002)(38350700002)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ukELYIx6zBhpNHFWknftDhvt6l9cHKQVM11suUYMHlLMqIYfqfqso9/o6rJg?=
+ =?us-ascii?Q?CoN67BywPOhANNxWj7GoCgKxTQ5zE7Q+6JlZx+m4lI/F++c1L4uzk1LVAsNU?=
+ =?us-ascii?Q?DA1j/gex67lT9PUZ3BxH7LT30dgOSONPMo9IGzf+TqLc2lmq9lA0GWWEfvHm?=
+ =?us-ascii?Q?+gvcq4RRyomFgTvF+r2kNM7NEHihB54M9kiyG2Hr+9HATtcRAmvn2LpXPvL1?=
+ =?us-ascii?Q?833xncf1+gsX5p4ubX/LYRmd7BHx747ousaCByBjiDGCf8VvM0q9WJuBpqcs?=
+ =?us-ascii?Q?g8nt/cW1TF5kD0LDeaksZYDQL8x24P6l/1vs8HpFSwQvczpYFWXdpnnQereg?=
+ =?us-ascii?Q?wAl+DLzlxeedyf9eRyrKjflElbwAnpYsLb8v88MhqYmNaeM8gJfL80DetW0q?=
+ =?us-ascii?Q?s+2Ud5Bc1yKAm6jb37HILHgbklJeIgl8ySb963c8XADIwxSDP3NbkXw0ALYT?=
+ =?us-ascii?Q?6BzXp9PeYXwcKmbjee2w+PvB6HF3bTTQGW1PO+aAqzkvMQjqbpHI8vLcP22w?=
+ =?us-ascii?Q?cLkTdzmzVXShV1sQgZ1iS8vUNU+gAgcuJLX19Gx3A3vz0I7/Faxju8n9RLQk?=
+ =?us-ascii?Q?2RArPl6DrVx77fi3DzGJaXYNCXtJkyJBpZJsa0bnmOpO0iN7fTnWi+d4Hp0S?=
+ =?us-ascii?Q?n9da6uITD8HLS7v2R/JxI4dIQKhZs2e6r1xi62UlrvePbsDe8uAjZtsGx2eq?=
+ =?us-ascii?Q?dJNeeawdjWwi4RLuW+rB/aXA5AnrVc6doFfqvpRIi6PjzM2dSaY5ilPMUf0r?=
+ =?us-ascii?Q?M8Msx8//sYk8p/+QRiPlIuMWklWVrmrHZwsUxHTl/KO9qI0WOJBnAMWA9SZt?=
+ =?us-ascii?Q?p0svBFBVXzXn7BkGC1GZiAMIbDIIfKLFDOlNv5Gs3XBmxOcBE8VzIvYpp1WF?=
+ =?us-ascii?Q?xDmYhLaNgKai3dlyd6Pv79rTPX1NhC3B1lS3kZKF2T5XCyCDF7W2YRHe+wEZ?=
+ =?us-ascii?Q?sl0UbBL9IqYScdzrSyobg+w4g10GP0u8hJpsbcldtOGCDrt2oGSQ3kw6R+LY?=
+ =?us-ascii?Q?MdShqX9x3lzjyvkMpfBykOh0CiM9X/QLtVvfGLrCY+oN0DJOH2xjWILLVani?=
+ =?us-ascii?Q?2Xq5DvWhKLTVZUruO3qHPy9fLi3ThFqNiKn0oChmWDieWuzjMBa7DN1D3N8N?=
+ =?us-ascii?Q?93uUfRQjanRWTgoMeGQhA64n6cNxhPZvTc/ebJSSaoNDBAnqsgNjwbuuvzcf?=
+ =?us-ascii?Q?ywFLPtLVS6AqmOpo4DqqSRjY2x1Aih+eIb7fT0z/eB0IVIMrfy7N5kOQ4q73?=
+ =?us-ascii?Q?8S4kcS2rSqloBlkOVFruq/PW/1TPnpKTHfzGzP3cdzj8Qxp178IAEG6FAmIH?=
+ =?us-ascii?Q?kJ2nB8MA9+X4mpaXNUf2vmTLpABlDGdClwRtAvSAcy5NCnf+5x+UukAiiu9A?=
+ =?us-ascii?Q?kVJZP4DVuziM06GGikv59MXhrOesVFvyOxaTlBCnbCDiuBrAblyp4ShwjSCe?=
+ =?us-ascii?Q?DqTuW2rrGF/KuKGUnbvF++S7UlQNKdiirhpHAjPk1/oLjjFIadnKAXZvDqX4?=
+ =?us-ascii?Q?gA7x2AWxGwmdMP/OsdPNhGSmJKf+cvb6OYL7XG6LQ48fRV4CvcM64Hq0Bi7r?=
+ =?us-ascii?Q?FXxgTe6s7TWGEYReo7Q=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20b37225-fa76-48c4-23fc-08db500e9353
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fff1abe0-23df-4bea-f367-08db500d9ccf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 May 2023 21:45:59.8724
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 21:52:53.6576
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6Ml/CGorJusCAjJnaBYiAZ3a0IFTcDpwZiLh3vp9m6Qed5X2zr8fhixi5J/DViY2tOT0UdxKK/gausjdrWIAsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7074
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1/8smuSQXbRaXHkO1DATLMFh5zRsnlN2GlVBk1KxBQPYJ1cAlp1iClch84A7L8svu7bA0FAL1ifbkZbTcOYkdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6983
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,28 +126,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?utf-8?B?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kw@linux.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, "M.H. Lian" <minghuan.lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Bjorn Helgaas <bhelgaas@google.com>, Roy Zang <roy.zang@nxp.com>, "open list:PCI DRIVER FOR FREESCALE
- LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Rob Herring <robh@kernel.org>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PiA+ID4gU3ViamVjdDogW0VYVF0gUmU6IFtQQVRDSCB2MiAxLzFdIFBDSTogbGF5ZXJzY2FwZTog
-QWRkIHRoZSBlbmRwb2ludA0KPiBsaW5rdXANCj4gPiA+IG5vdGlmaWVyIHN1cHBvcnQNCj4gDQo+
-IEFsbCB0aGVzZSBxdW90ZWQgaGVhZGVycyBhcmUgcmVkdW5kYW50IGNsdXR0ZXIgc2luY2Ugd2Un
-dmUgYWxyZWFkeQ0KPiBzZWVuIHRoZW0gd2hlbiBNYW5pdmFubmFuIHNlbnQgaGlzIGNvbW1lbnRz
-LiAgSXQgd291bGQgYmUgbmljZSBpZiB5b3VyDQo+IG1haWxlciBjb3VsZCBiZSBjb25maWd1cmVk
-IHRvIG9taXQgdGhlbS4NCg0KT3VyIGVtYWlsIGNsaWVudCBxdWl0ZSBzdHVwaWQuIA0KDQo+IA0K
-PiA+ID4gPiArc3RhdGljIGludCBsc19wY2llX2VwX2ludGVycnVwdF9pbml0KHN0cnVjdCBsc19w
-Y2llX2VwICpwY2llLA0KPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ID4gPiA+ICt7DQo+ID4gPiA+ICsgICAg
-IHUzMiB2YWw7DQo+ID4gPiA+ICsgICAgIGludCByZXQ7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKyAg
-ICAgcGNpZS0+aXJxID0gcGxhdGZvcm1fZ2V0X2lycV9ieW5hbWUocGRldiwgInBtZSIpOw0KPiA+
-ID4gPiArICAgICBpZiAocGNpZS0+aXJxIDwgMCkgew0KPiA+ID4gPiArICAgICAgICAgICAgIGRl
-dl9lcnIoJnBkZXYtPmRldiwgIkNhbid0IGdldCAncG1lJyBJUlFcbiIpOw0KPiA+ID4NCj4gPiA+
-IFBNRQ0KPiA+DQo+ID4gSGVyZSBzaG91bGQgYmUgZHRzIHByb3BlcnR5IGBwbWVgLCBzdXBwb3Nl
-IHNob3VsZCBtYXRjaA0KPiA+IHBsYXRmb3JtX2dldF9pcnFfYnluYW1lKHBkZXYsICJwbWUiKTsN
-Cj4gDQo+IFlvdSBjYW4gYWxzbyBlZGl0IG91dCBhbGwgdGhlIG90aGVyIGNvbnRleHQgYW5kIHF1
-ZXN0aW9ucyBpZiB5b3UncmUNCj4gbm90IHJlc3BvbmRpbmcgdG8gdGhlbS4NCj4gDQo+IFRoZXJl
-IHdlcmUgYSBsb3Qgb2Ygb3RoZXIgY29tbWVudHMgdGhhdCB3ZXJlIHVzZWZ1bCBidXQgYXJlIG5v
-dA0KPiByZWxldmFudCB0byB0aGlzIHJlcGx5Lg0KDQpPa2F5LCBJIGZvdW5kIEkgbWVzcyB1cCBw
-YXRjaCB2ZXJzaW9uIG51bWJlci4NCiANCj4gDQo+IEJqb3JuDQo=
+Layerscape has PME interrupt, which can be used as linkup notifier.
+Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
+when linkup detected.
+
+Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v2 to v3
+ - align 80 column
+ - clear irq firstly
+ - dev_info to dev_dbg
+ - remove double space
+ - update commit message
+
+Change from v1 to v2
+- pme -> PME
+- irq -> IRQ
+- update dev_info message according to Bjorn's suggestion
+- remove '.' at error message
+
+ .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
+ 1 file changed, 101 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index c640db60edc6..1a431a9be91e 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -18,6 +18,20 @@
+ 
+ #include "pcie-designware.h"
+ 
++#define PEX_PF0_CONFIG			0xC0014
++#define PEX_PF0_CFG_READY		BIT(0)
++
++/* PEX PFa PCIE PME and message interrupt registers*/
++#define PEX_PF0_PME_MES_DR		0xC0020
++#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
++#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
++#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
++
++#define PEX_PF0_PME_MES_IER		0xC0028
++#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
++#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
++#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
++
+ #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
+ 
+ struct ls_pcie_ep_drvdata {
+@@ -30,8 +44,86 @@ struct ls_pcie_ep {
+ 	struct dw_pcie			*pci;
+ 	struct pci_epc_features		*ls_epc;
+ 	const struct ls_pcie_ep_drvdata *drvdata;
++	bool				big_endian;
++	int				irq;
+ };
+ 
++static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
++{
++	struct dw_pcie *pci = pcie->pci;
++
++	if (pcie->big_endian)
++		return ioread32be(pci->dbi_base + offset);
++	else
++		return ioread32(pci->dbi_base + offset);
++}
++
++static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
++{
++	struct dw_pcie *pci = pcie->pci;
++
++	if (pcie->big_endian)
++		iowrite32be(value, pci->dbi_base + offset);
++	else
++		iowrite32(value, pci->dbi_base + offset);
++}
++
++static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
++{
++	struct ls_pcie_ep *pcie = dev_id;
++	struct dw_pcie *pci = pcie->pci;
++	u32 val, cfg;
++
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
++
++	if (!val)
++		return IRQ_NONE;
++
++	if (val & PEX_PF0_PME_MES_DR_LUD) {
++		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
++		cfg |= PEX_PF0_CFG_READY;
++		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
++		dw_pcie_ep_linkup(&pci->ep);
++
++		dev_dbg(pci->dev, "Link up\n");
++	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
++		dev_dbg(pci->dev, "Link down\n");
++	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
++		dev_dbg(pci->dev, "Hot reset\n");
++	}
++
++	return IRQ_HANDLED;
++}
++
++static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
++				     struct platform_device *pdev)
++{
++	u32 val;
++	int ret;
++
++	pcie->irq = platform_get_irq_byname(pdev, "pme");
++	if (pcie->irq < 0) {
++		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
++		return pcie->irq;
++	}
++
++	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
++			       IRQF_SHARED, pdev->name, pcie);
++	if (ret) {
++		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
++		return ret;
++	}
++
++	/* Enable interrupts */
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
++	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
++		PEX_PF0_PME_MES_IER_LUDIE;
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
++
++	return 0;
++}
++
+ static const struct pci_epc_features*
+ ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+ {
+@@ -125,6 +217,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	struct ls_pcie_ep *pcie;
+ 	struct pci_epc_features *ls_epc;
+ 	struct resource *dbi_base;
++	int ret;
+ 
+ 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+ 	if (!pcie)
+@@ -144,6 +237,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	pci->ops = pcie->drvdata->dw_pcie_ops;
+ 
+ 	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
++	ls_epc->linkup_notifier = true;
+ 
+ 	pcie->pci = pci;
+ 	pcie->ls_epc = ls_epc;
+@@ -155,9 +249,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pci->ep.ops = &ls_pcie_ep_ops;
+ 
++	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+-	return dw_pcie_ep_init(&pci->ep);
++	ret = dw_pcie_ep_init(&pci->ep);
++	if (ret)
++		return ret;
++
++	return ls_pcie_ep_interrupt_init(pcie, pdev);
+ }
+ 
+ static struct platform_driver ls_pcie_ep_driver = {
+-- 
+2.34.1
+
