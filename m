@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A596F9EAF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 06:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4126F9EBB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 06:41:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QF7hQ0z9Pz3fKq
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 14:33:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QF7sD4bkbz3cfh
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 14:41:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=I03FL3X3;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NSzIMn1C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=cRW+vK/H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=f+kGW6nL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=I03FL3X3;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NSzIMn1C;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=cRW+vK/H;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=f+kGW6nL;
 	dkim-atps=neutral
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF7gZ4vpdz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 14:32:42 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.west.internal (Postfix) with ESMTP id 7E98632007E8;
-	Mon,  8 May 2023 00:32:40 -0400 (EDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF7rH1Dvvz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 14:40:14 +1000 (AEST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id 5B3823200911;
+	Mon,  8 May 2023 00:40:11 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 08 May 2023 00:32:40 -0400
+  by compute3.internal (MEProxy); Mon, 08 May 2023 00:40:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-	1683520360; x=1683606760; bh=rjREs6nAALf9hWeNcfkBf/IGI9wFDxPxZ/4
-	iS2hO5Fw=; b=I03FL3X3WPPSzLQUOGwIPFpdJoQ7tfniSfWpbRyHBzi3/70kOLy
-	n9ia4Kbkv6nmCjxXQUAJ4m8tCKWt+DMPm3gFEx3AWxYstjurZbgfwEHokT1JNAWc
-	TrN5PixUivE1nd4bRFrQeANr8KIRZ46CWZyVL79JmcGyVJVRq//LlAM1nS717VvL
-	u4Vpm7Amc8tVfOM9SyqlqDCD8C8amb1tNvXzXfcQLtxQAScD1iJluPk87quw1n6p
-	IZ1X4hJJlQIRRtCSPI9JJYVMjMvlfT0QF9xlfAKv7v7/A66fDdkPbGcYoX/4BGfC
-	dtVd7PCPsO77bmwW2UI0R9jlhHdoA1hC6NQ==
+	1683520810; x=1683607210; bh=oyg9naAwIBEToLlOwyVpLlxblG8aD1owKXC
+	Wac/pXAM=; b=cRW+vK/H/+F2PdsNBHiRBcK+FuCEwHgAfWPAoeB9yRSH1AOy0qA
+	iqm2Fl9FhxlYsMtOf9lXmCHMYsMKb30nmZYwJ5R4Fvgo4JwBlorFui1ABXdTa2iM
+	BGuCSqZuA+ZYWcugUn5bQ/LppFYEAkjc6JVMKUeDzW1eCUgXpwLZo/ZEw/PmjKCV
+	/vdVac9nicl9TIWBb1wXYVT4cC82IOrzUCSiq1vxS4pSEGXWdNgNEGFazsUrx8e+
+	zSrjMDz5a9v/EcjfdPL6z5PzkARExDSXAdi3k0i+/tDAAKzJrYqii4QlhEHDAjyB
+	RTh6k6x2wklSi0vQ+NlBzP/Jxr1fZG+RNWA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
 	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1683520360; x=1683606760; bh=rjREs6nAALf9hWeNcfkBf/IGI9wFDxPxZ/4
-	iS2hO5Fw=; b=NSzIMn1CbmrEO6yG+J1gOd3zfLuHfobSva6cCnONTws077KrnwW
-	XsDP70A9WBd837lhPMTupNRRv058cdDYu8aSgPuytaACJIK9x2jB2kHUEA9VT4WH
-	qu8zrUVzVxp7seaRrH/v30ARLUPSZRdw1tVKRhr27jKR5164TlRUAyw0CUkxV+yt
-	V3YEML9x/WKEJcIA4DCJjb4CVVL9TLlL7O/spDOo3UCdlngBbaltxoNzAo34O8sR
-	W0P20GX+IVIu8hUO3lOxYOtIsCbd2wvyTR2P36DkOG0j+em6NMY9Ha2KIDgHh6H1
-	hXnZ4Ky8c/uwI7Nu5sfwoD3OtLb+KLxJfaA==
-X-ME-Sender: <xms:Z3tYZAtHRXV2iLoCAH_wVPSBigc7NRTMag3fCCR0ptmK0z5Rh_dw7w>
-    <xme:Z3tYZNc9bXwh_XaTgYnPNJzvKMhh1485mIF0zCmpB9GBzMlIWIHMz0Ryl6pFQ0xPj
-    CgPK9_aLi95oJhcIg>
-X-ME-Received: <xmr:Z3tYZLzWpotw0eruI7PuL078kWtjwo5l_5KKpCIOzbU3_JbPiXBHpJwH8Go5urj48rMtCuEDUPxcSS7y22f2j0hA7YIIg1HN_DOMobagLvBlFw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgkeejucetufdoteggodetrfdotf
+	1683520810; x=1683607210; bh=oyg9naAwIBEToLlOwyVpLlxblG8aD1owKXC
+	Wac/pXAM=; b=f+kGW6nLTMm7LrYdzcncV+PDttKwLfq6xTWhf+7JJYxztvQm3d4
+	4EGiQGFgmEHgNF7pFDby/WRgl0HISOzpIZlvWNv7yUIWnBh3VCSKXtTcoATMAGl/
+	9Xm+ZJKzFl2CLwlVSy6Jp2uyXCjsP+UzU11s9pRBWL/NNAmFDdVadGH/Kcl/Eg4A
+	gztHTogK4G0tSRZPrQzBHVxbebWaMNYjjdV9V1UxStckXlgmzR5o++kSeTNTUfAb
+	/VFZair8ESkxF9yrBHqf4gCeZtr+7GtOPxcKol1EJwin6NWj6/SooeZ/D1kYTWtS
+	ibhoPzZlDwRI47Z/Em1i6JU3322TTMxm/iA==
+X-ME-Sender: <xms:Kn1YZNeb--tur9xqfnBqyCzpYMVGXf26mrzmNhdAYMnibPXA0R3dNQ>
+    <xme:Kn1YZLOgTuwlw_soZvl4Nl4qMhVKYR4fFOqHq1wY7XQ0pJ4JJSCl3Vi6xP2redSGZ
+    iDSPprRMTEWFTT8Dw>
+X-ME-Received: <xmr:Kn1YZGiWP5hO7BiYd5O-653dWPBcKUerscI8z-e4QuQbMOY9qgfwpfsUr_mf8hZ9XtqLO4YgKRrjFdpara5nCc2emc_TfygbnjsXkPgdYDmw7w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgkeekucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredt
@@ -65,22 +65,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgkeejucetufdoteggod
     hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheptefgieelhfeufeevvdekheeifeej
     gfefgeehtedukeeigfduuddtueekteevleelnecuvehluhhsthgvrhfuihiivgeptdenuc
     frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:aHtYZDPCKZ0kAyJlN72L2UtUfVB5O8qz8Dle5_p4MCtf3PrxZc-4yg>
-    <xmx:aHtYZA9GieyaLlrbhbwXrCe29IQcJ9RvnD6n8NX0kFb2srbbKgNHVw>
-    <xmx:aHtYZLXqHiTTWor-wqFlG_sqbLbyeRK4v8DW2H9Iddn5lGqLBBowFA>
-    <xmx:aHtYZOnAtQv3vRh16F62Zg5WjhLgNY-MMLS_r7LXS71YUhQQ4Up79g>
+X-ME-Proxy: <xmx:Kn1YZG_m9xBTvwRr83dSt6C5FBXfqCsvkh83f6c9BLPOfYoR6n8Qgg>
+    <xmx:Kn1YZJubLN9TjRTjVSlkZqfWyc6P8gcCgMsirC5MogwvPgQjJfhJ0g>
+    <xmx:Kn1YZFEflnflk7JlIOAk54hTx7Xlh9zJfcpOeE3WihAnsZZuDiQrwg>
+    <xmx:Kn1YZKWwdYKmt9_r3HlZ2vzmNGu6UKUKXOpayV2PweBMRgo6ce69lQ>
 Feedback-ID: i4421424f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 May 2023 00:32:38 -0400 (EDT)
-Message-ID: <9aec74cceccb016effceecc01f3ce2bd1744e2cb.camel@russell.cc>
-Subject: Re: [PATCH v2 08/12] powerpc/ptrace: Expose HASHKEYR register to
- ptrace
+ 8 May 2023 00:40:09 -0400 (EDT)
+Message-ID: <34efe87ede1b6d25cfc43abeb016bf084696cbad.camel@russell.cc>
+Subject: Re: [PATCH v2 09/12] Documentation: Document PowerPC kernel DEXCR
+ interface
 From: Russell Currey <ruscur@russell.cc>
 To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 08 May 2023 14:32:36 +1000
-In-Reply-To: <20230330055040.434133-9-bgray@linux.ibm.com>
+Date: Mon, 08 May 2023 14:40:07 +1000
+In-Reply-To: <20230330055040.434133-10-bgray@linux.ibm.com>
 References: <20230330055040.434133-1-bgray@linux.ibm.com>
-	 <20230330055040.434133-9-bgray@linux.ibm.com>
+	 <20230330055040.434133-10-bgray@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
@@ -101,36 +101,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, 2023-03-30 at 16:50 +1100, Benjamin Gray wrote:
-> The HASHKEYR register contains a secret per-process key to enable
-> unique
-> hashes per process. In general it should not be exposed to userspace
-> at all and a regular process has no need to know its key.
->=20
-> However, checkpoint restore in userspace (CRIU) functionality
-> requires
-> that a process be able to set the HASHKEYR of another process,
-> otherwise
-> existing hashes on the stack would be invalidated by a new random
-> key.
->=20
-> Exposing HASHKEYR in this way also makes it appear in core dumps,
-> which
-> is a security concern. Multiple threads may share a key, for example
-> just after a fork() call, where the kernel cannot know if the child
-> is
-> going to return back along the parent's stack. If such a thread is
-> coerced into making a core dump, then the HASHKEYR value will be
-> readable and able to be used against all other threads sharing that
-> key,
-> effectively undoing any protection offered by hashst/hashchk.
->=20
-> Therefore we expose HASHKEYR to ptrace when CONFIG_CHECKPOINT_RESTORE
-> is
-> enabled, providing a choice of increased security or migratable ROP
-> protected processes. This is similar to how ARM exposes its PAC keys.
+> Describe the DEXCR and document how to configure it.
 >=20
 > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-
-Seems sensible
+>=20
+> ---
+> v2:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* Document coredump & ptrace support
+> v1:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* Remove the dynamic control docs, descr=
+ibe the static config
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 option
+>=20
+> This documentation is a little bare for now, but will be expanded on
+> when dynamic DEXCR control is added.
 
 Reviewed-by: Russell Currey <ruscur@russell.cc>
