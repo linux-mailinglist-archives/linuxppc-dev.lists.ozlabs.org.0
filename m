@@ -2,91 +2,125 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29746FB3AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 17:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B5D6FB3CF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 17:29:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFQ3w4Fljz3fc1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 01:21:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFQFd5FBqz3fDb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 01:29:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=geiO8142;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HW30ukvG;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HW30ukvG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jpn@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=2a01:111:f400:7e1b::316; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=geiO8142;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HW30ukvG;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HW30ukvG;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05hn20316.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::316])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFCVM2JdPz3bxY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 17:24:59 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3486ahNZ010697;
-	Mon, 8 May 2023 07:24:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=5J1yE8FzGr52EEPCYHMRTi17jeiUlClCZPiLdnttlVI=;
- b=geiO8142oqNWB7/0YdaY+31KKFGnkKulXR6LlJbvecFzmF74+vt8RFpJ/H8dAf8UMRpZ
- OPbnsMqqzF5HqVjxN0IblC0F0Rg1edYeEMDCaQcnEIh7vmseK7T1dPrPLRq9yVnecd1c
- 3dfj+EZIfRmZVfmPUjUwmhVZk7WFRPed2w8Ss/R/xENJfMALgaS1tiHUpvuoEF6gznn6
- Bq/wz0ZJl1zTkOLOW9JpDbW7LCfJKViy0Z/cvqewOejdY6a5sh8t6nRV4ubFrkRQLpAI
- gHLGuSDhQXYkWhceJJP4jYHR52e0Lu+5X2Jy6kmcFMQQxbbFpywEuBIImEA2PjVmOPY6 Rg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qetchk7mm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 07:24:55 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34874O5o011818;
-	Mon, 8 May 2023 07:24:55 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qetchk7kf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 07:24:54 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3485ZZKZ003881;
-	Mon, 8 May 2023 07:24:52 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qdeh6gsch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 May 2023 07:24:51 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3487Olos3080862
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 May 2023 07:24:47 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1594A2004B;
-	Mon,  8 May 2023 07:24:47 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D46AA20040;
-	Mon,  8 May 2023 07:24:41 +0000 (GMT)
-Received: from pwon.ibmuc.com (unknown [9.177.74.71])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 May 2023 07:24:41 +0000 (GMT)
-From: Jordan Niethe <jpn@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v1 5/5] KVM: PPC: Add support for nested PAPR guests
-Date: Mon,  8 May 2023 17:23:32 +1000
-Message-Id: <20230508072332.2937883-6-jpn@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230508072332.2937883-1-jpn@linux.vnet.ibm.com>
-References: <20230508072332.2937883-1-jpn@linux.vnet.ibm.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFQDg1FJPz30hw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 01:28:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gvooMpyVkIt1vdA3nOkABy7DjJH4TvVKt3APGnKzzZk=;
+ b=HW30ukvGd/vIh9Wr/PQX+v6ATo8jj+AZ/2+97EeJjdk3AoNn+3bu81N64jW7Dcu4LyiiLi84BwG/fTBqb3oxh9WldAe/NhPI8smVRx8PAcg2AjWs+PGjj3YL1Vhssw5wXPNlPaUNWgyjA726nKGBgDLmKDCUO4X27SJ6kfTNgRy4D5FcOXPpMn2kw7L8RVxpD9KE64/t0Nle+dZOo66DBuNzld7tL6yNxl9/KqG6VFFC9UuqWGCZ83M4qNcvY92cak38hcb0XwSCcR8r1TdG+k/PpikhfjRh2NPgaRe5p+j+F47a5r07dPczl5XZy1/w8EDFQvze7DNrvA6SoT+Cvg==
+Received: from AM6P194CA0093.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:8f::34)
+ by DB9PR03MB8823.eurprd03.prod.outlook.com (2603:10a6:10:3c4::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
+ 2023 15:28:30 +0000
+Received: from VI1EUR05FT032.eop-eur05.prod.protection.outlook.com
+ (2603:10a6:209:8f:cafe::10) by AM6P194CA0093.outlook.office365.com
+ (2603:10a6:209:8f::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32 via Frontend
+ Transport; Mon, 8 May 2023 15:28:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.87)
+ smtp.mailfrom=seco.com; dkim=pass (signature was verified)
+ header.d=seco.com;dmarc=pass action=none header.from=seco.com;
+Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
+ 20.160.56.87 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.87; helo=inpost-eu.tmcas.trendmicro.com; pr=C
+Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.87) by
+ VI1EUR05FT032.mail.protection.outlook.com (10.233.243.41) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6387.18 via Frontend Transport; Mon, 8 May 2023 15:28:29 +0000
+Received: from outmta (unknown [192.168.82.140])
+	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 24F0B2008008B;
+	Mon,  8 May 2023 15:28:29 +0000 (UTC)
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (unknown [104.47.14.59])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 13FB620080074;
+	Mon,  8 May 2023 15:28:46 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JzD5ByhVKpV3cT17uxwYnDTbJQ7gBRPmvLvtnRxUk5EYBf17q3qB//Hy2w9xSgrk26aJejeQqlwyvzduAK0xajORpNjvEwriJYqwdlX2HRWfK9WCY0JmlOVoqML61I0dIvoAZk1pY57Z54ymOla4w9Thtj14inrC8IoT1A5qJzYJdx2xgNBa52QhYeGPDfl+6yb6rf05nPhs8UsafCB9+bXqYlCcYUfQW/n4sOux6w5euVUycXgiz/5ynEyAUJyxVbHFilTXpncK0TkNBBNkXEdgsDDLYXYSdmT9uz+9t8hbxOToNHolb6+1ovXTAEF5ahxJqH8kA1ZxYMkJ8RII9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gvooMpyVkIt1vdA3nOkABy7DjJH4TvVKt3APGnKzzZk=;
+ b=ClWf4ojstGhdLbIrrfm6kROLRNqFT3j2oQMPno7DlIDHTRTDEMjSC+T58HYfs5ROhaUNwyPSXx9mQQcKdbgBBz35JcZB1OPzR+x37QgLj6pIqbT2StlLJ5clTXwU896llm/x1e8EgL7Fkf3uZ8q2i2yKUGagFHjDff8pbgdCZ0SS6xJDUjdgE7YRZBstjgiEo5p5yKhcpQPJBogCRh5a6UM3YF0QOsSuiXGtn4RP+vM/OtRLx0lmtoiUGaqPaNpfCBE2d2NtqU6+oz2+kcNffMCC1vHnwU8BEuWrDRCrimDSbOhSfbQ9CBT3mbmNTmvJtkHUc0qdAxxCoC7rQeB4Yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gvooMpyVkIt1vdA3nOkABy7DjJH4TvVKt3APGnKzzZk=;
+ b=HW30ukvGd/vIh9Wr/PQX+v6ATo8jj+AZ/2+97EeJjdk3AoNn+3bu81N64jW7Dcu4LyiiLi84BwG/fTBqb3oxh9WldAe/NhPI8smVRx8PAcg2AjWs+PGjj3YL1Vhssw5wXPNlPaUNWgyjA726nKGBgDLmKDCUO4X27SJ6kfTNgRy4D5FcOXPpMn2kw7L8RVxpD9KE64/t0Nle+dZOo66DBuNzld7tL6yNxl9/KqG6VFFC9UuqWGCZ83M4qNcvY92cak38hcb0XwSCcR8r1TdG+k/PpikhfjRh2NPgaRe5p+j+F47a5r07dPczl5XZy1/w8EDFQvze7DNrvA6SoT+Cvg==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
+ by AS8PR03MB7045.eurprd03.prod.outlook.com (2603:10a6:20b:292::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
+ 2023 15:28:19 +0000
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::d632:8122:75f7:7b0e]) by DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::d632:8122:75f7:7b0e%3]) with mapi id 15.20.6363.026; Mon, 8 May 2023
+ 15:28:19 +0000
+Message-ID: <957a6bb4-f07b-f511-72c9-da4199dc8616@seco.com>
+Date: Mon, 8 May 2023 11:28:14 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH v14 07/15] phy: fsl: Add Lynx 10G SerDes driver
+Content-Language: en-US
+To: Vinod Koul <vkoul@kernel.org>
+References: <20230413160607.4128315-1-sean.anderson@seco.com>
+ <20230413160607.4128315-8-sean.anderson@seco.com> <ZFi/Y7wcad4hrAMe@matsya>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <ZFi/Y7wcad4hrAMe@matsya>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Y7bdz8zKd7mFVNulZmiIKDj8ywLxdmQV
-X-Proofpoint-GUID: P5tCZ0wDqHdfwbZRlsYZF8qUKTBHkDRd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-08_04,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- impostorscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305080049
-X-Mailman-Approved-At: Tue, 09 May 2023 01:16:28 +1000
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL0PR05CA0015.namprd05.prod.outlook.com
+ (2603:10b6:208:91::25) To DB9PR03MB8847.eurprd03.prod.outlook.com
+ (2603:10a6:10:3dd::13)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|AS8PR03MB7045:EE_|VI1EUR05FT032:EE_|DB9PR03MB8823:EE_
+X-MS-Office365-Filtering-Correlation-Id: 588018a5-4272-4083-098a-08db4fd8e049
+X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:  ecaEGGj/h4XWXaDWtq/QcuJXkSoYpSSifHMIe6XJMdvjuOHTuUgsduUchw1K2KNzeK8NvIqrUF4l6zjryHGVQbZMPTE3dsY40nSGTAcCglDV/5s9tOv3Vt54Gm/sLTDUAK+7BlkezhOhdmfT4ijF36CTg2wJKtlx98T9spwhz2+Ix2rr5Ht7Oboy/GFrGVWcfLGXVS9Ocy1zvyXFlUCGhaMzJxMtodaPXnknxRO5efPIzwH0aJYD92bc7jX6s45V/4T0gn6wyVitDEGw9YCeeK/ytoOhWSIW7rCy4KXMH30M7Ievq2l14rFUe0Qm3xoPsQgC6QuY5uiNE1ajKBtb0PPY4qXs1Ufn11WMuIVAIxQFC7NDf/vo31C0HTNaFLlUdqKKHAgbtj9Sag51BMfZhtQHXRw/76pq0Yf2XJYij3cXxWk74DGkO2n+9uH/mq22ZAtwO22aMnPU0RF+ctbm1Od5fQ6Y03IhfrrwwMzjgv5VNNnXzMHiE7GSOkLzLgGow2vmehyzCp5scDblMXtgqXPb51FfMJQuAoJudpvAgahZKe6TQpJ95O3WM3jz+ZIAopxU58jP0G71e3reoiSDjd2Zo/4Unpom5V4FWQx5Old1+bL9CYQGbnNl07wY7IvqE0Grj1kT24K2eAseeke1YdsyN+m7V9GTRkJzE7zt9oRSIn7ZhS6a6eugWvOoasc4
+X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(396003)(39850400004)(136003)(376002)(451199021)(6506007)(6512007)(26005)(53546011)(52116002)(6486002)(966005)(83380400001)(36756003)(2616005)(38100700002)(38350700002)(86362001)(31696002)(186003)(6916009)(5660300002)(4326008)(66476007)(54906003)(66946007)(30864003)(2906002)(478600001)(8676002)(8936002)(66556008)(31686004)(44832011)(7416002)(41300700001)(6666004)(316002)(21314003)(43740500002)(45980500001)(579004)(559001);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB7045
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:  VI1EUR05FT032.eop-eur05.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 	79f18d57-5ee3-4246-6862-08db4fd8d9f0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	/CeZC6959jy8+e/TpkCkNhy7+FgcjArnQ69puKuF/gOkbO89bO5RFq2S+vUNBqcHGdrVg3aa56mlRqdhg3JUqEZYr7RK99taoYC2VuSEzqA6e5mTU2JJYCYaLfArkyWBm32zdp4X8AJxydqeAu6siWEQ4R5N+X5s+bMRk1QjQ/w3N5XsGfvsggiDkn0Mp7vrwdLk+SOhPKzF4QVb8EZ4t94XGUNBr3i5Dxnk1NUvTrczKs/izCtNnkuzXni3BOyBV7fdEUZSVQPi9VcbLUwZPvijbOQ90Za4B2O0NsJZgKXy3EjCrcUlvzUXaiH1IwgsH96eOMIBpE+3m/fLn495RKCsUFox8CaNzW3G1uDTAkhcw3gsJEStZFz038s6QPbrhHk4/e4RV6F2PVhTrqQWQvqr5E5em2ZgKA9qjJJcOJc5+5TlZpO2+tCQwOSuEzq6fz8dFHzCeBhaI3wMst/1EwRCl+yfqJ/Dj2PrRLNLBNTsIOh5CuMaQqDb70kViW2r+BOxDq4bvxfvou6SFE1GyjyKwEnFjDhNWhpQGNrkPzPbnMiaQqvN6CbJlbbDA/SeOyUsQwCCTassuf7aIU8eyaM1K+hJsd5601Z+kyYtNx3R3tbb8+Ua77Je9UAy/YH1JshHloQXQIzX5F6iVDZQbhpYv8VFuVfSIXQk9lO6MJepXELkr4HSi7DKtnrZeG+3sGzZHsTsbhiXiMTXQGRqBqErpiPgFH4+cwX/j77sQnAnP4jdCBuzKJaZJM1br4sIxmyNravI1JXfAmRtD+U1FBUVfEl4kbeHXa+zvK7ntApFSb5ju9r4ngZgcEo5NjTR
+X-Forefront-Antispam-Report: 	CIP:20.160.56.87;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230028)(39850400004)(396003)(346002)(376002)(136003)(5400799015)(451199021)(40470700004)(46966006)(36840700001)(6506007)(6512007)(53546011)(6486002)(26005)(966005)(83380400001)(336012)(40480700001)(36860700001)(36756003)(2616005)(7636003)(356005)(86362001)(31696002)(82310400005)(7596003)(34020700004)(82740400003)(186003)(40460700003)(47076005)(4326008)(6916009)(70586007)(5660300002)(54906003)(70206006)(2906002)(30864003)(8936002)(478600001)(8676002)(31686004)(44832011)(7416002)(41300700001)(6666004)(316002)(21314003)(43740500002)(12100799030)(559001)(579004);DIR:OUT;SFP:1501;
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 15:28:29.6532
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 588018a5-4272-4083-098a-08db4fd8e049
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.87];Helo=[inpost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	VI1EUR05FT032.eop-eur05.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR03MB8823
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,3041 +132,1545 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jpn@linux.vnet.ibm.com>, mikey@neuling.org, sbhat@linux.ibm.com, kautuk.consul.1980@gmail.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org, vaibhav@linux.ibm.com
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A series of hcalls have been added to the PAPR which allow a regular
-guest partition to create and manage guest partitions of its own. Add
-support to KVM to utilize these hcalls to enable running nested guests.
+On 5/8/23 05:22, Vinod Koul wrote:
+> On 13-04-23, 12:05, Sean Anderson wrote:
+>> This adds support for the Lynx 10G "SerDes" devices found on various NXP
+>> QorIQ SoCs. There may be up to four SerDes devices on each SoC, each
+>> supporting up to eight lanes. Protocol support for each SerDes is highly
+>> heterogeneous, with each SoC typically having a totally different
+>> selection of supported protocols for each lane. Additionally, the SerDes
+>> devices on each SoC also have differing support. One SerDes will
+>> typically support Ethernet on most lanes, while the other will typically
+>> support PCIe on most lanes.
+>> 
+>> There is wide hardware support for this SerDes. It is present on QorIQ
+>> T-Series and Layerscape processors. Because each SoC typically has
+>> specific instructions and exceptions for its SerDes, I have limited the
+>> initial scope of this module to just the LS1046A and LS1088A.
+>> Additionally, I have only added support for Ethernet protocols. There is
+>> not a great need for dynamic reconfiguration for other protocols (except
+>> perhaps for M.2 cards), so support for them may never be added.
+>> 
+>> Nevertheless, I have tried to provide an obvious path for adding support
+>> for other SoCs as well as other protocols. SATA just needs support for
+>> configuring LNmSSCR0. PCIe may need to configure the equalization
+>> registers. It also uses multiple lanes. I have tried to write the driver
+>> with multi-lane support in mind, so there should not need to be any
+>> large changes. Although there are 6 protocols supported, I have only
+>> tested SGMII and XFI. The rest have been implemented as described in
+>> the datasheet. Most of these protocols should work "as-is", but
+>> 10GBASE-KR will need PCS support for link training.
+>> 
+>> Unlike some other phys where e.g. PCIe x4 will use 4 separate phys all
+>> configured for PCIe, this driver uses one phy configured to use 4 lanes.
+>> This is because while the individual lanes may be configured
+>> individually, the protocol selection acts on all lanes at once.
+>> Additionally, the order which lanes should be configured in is specified
+>> by the datasheet. To coordinate this, lanes are reserved in phy_init,
+>> and released in phy_exit.
+>> 
+>> This driver was written with reference to the LS1046A reference manual.
+>> However, it was informed by reference manuals for all processors with
+>> mEMACs, especially the T4240 (which appears to have a "maxed-out"
+>> configuration). The earlier P-series processors appear to be similar, but
+>> have a different overall register layout (using "banks" instead of
+>> separate SerDes). Perhaps this those use a "5G Lynx SerDes."
+>> 
+>> Note that while I have used FIELD_GET/FIELD_PREP where possible, these
+>> macros require const values for the field. This is incompatible with
+>> dynamicly-generated fields, such as when the field is determined by a
+>> variable. In these cases, I have used traditional shift/mask techniques.
+>> 
+>> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+>> ---
+>> 
+>> Changes in v14:
+>> - Add note about (lack of) use of FIELD_GET/PREP
+>> 
+>> Changes in v10:
+>> - Fix debugging print with incorrect error variable
+>> 
+>> Changes in v9:
+>> - Split off clock "driver" into its own patch to allow for better
+>>   review.
+>> - Add ability to defer lane initialization to phy_init. This allows
+>>   for easier transitioning between firmware-managed serdes and Linux-
+>>   managed serdes, as the consumer (such as dpaa2, which knows what the
+>>   firmware is doing) has the last say on who gets control.
+>> - phy-type -> fsl,phy
+>> 
+>> Changes in v8:
+>> - Remove unused variable from lynx_ls_mode_init
+>> 
+>> Changes in v7:
+>> - Break out call order into generic documentation
+>> - Refuse to switch "major" protocols
+>> - Update Kconfig to reflect restrictions
+>> - Remove set/clear of "pcs reset" bit, since it doesn't seem to fix
+>>   anything.
+>> 
+>> Changes in v6:
+>> - Update MAINTAINERS to include new files
+>> - Include bitfield.h and slab.h to allow compilation on non-arm64
+>>   arches.
+>> - Depend on COMMON_CLK and either layerscape/ppc
+>> 
+>> Changes in v5:
+>> - Remove references to PHY_INTERFACE_MODE_1000BASEKX to allow this
+>>   series to be applied directly to linux/master.
+>> - Add fsl,lynx-10g.h to MAINTAINERS
+>> 
+>> Changes in v4:
+>> - Rework all debug statements to remove use of __func__. Additional
+>>   information has been provided as necessary.
+>> - Consider alternative parent rates in round_rate and not in set_rate.
+>>   Trying to modify out parent's rate in set_rate will deadlock.
+>> - Explicitly perform a stop/reset sequence in set_rate. This way we
+>>   always ensure that the PLL is properly stopped.
+>> - Set the power-down bit when disabling the PLL. We can do this now that
+>>   enable/disable aren't abused during the set rate sequence.
+>> - Fix typos in QSGMII_OFFSET and XFI_OFFSET
+>> - Rename LNmTECR0_TEQ_TYPE_PRE to LNmTECR0_TEQ_TYPE_POST to better
+>>   reflect its function (adding post-cursor equalization).
+>> - Use of_clk_hw_onecell_get instead of a custom function.
+>> - Return struct clks from lynx_clks_init instead of embedding lynx_clk
+>>   in lynx_priv.
+>> - Rework PCCR helper functions; T-series SoCs differ from Layerscape SoCs
+>>   primarily in the layout and offset of the PCCRs. This will help bring a
+>>   cleaner abstraction layer. The caps have been removed, since this handles the
+>>   only current usage.
+>> - Convert to use new binding format. As a result of this, we no longer need to
+>>   have protocols for PCIe or SATA. Additionally, modes now live in lynx_group
+>>   instead of lynx_priv.
+>> - Remove teq from lynx_proto_params, since it can be determined from
+>>   preq_ratio/postq_ratio.
+>> - Fix an early return from lynx_set_mode not releasing serdes->lock.
+>> - Rename lynx_priv.conf to .cfg, since I kept mistyping it.
+>> 
+>> Changes in v3:
+>> - Rename remaining references to QorIQ SerDes to Lynx 10G
+>> - Fix PLL enable sequence by waiting for our reset request to be cleared
+>>   before continuing. Do the same for the lock, even though it isn't as
+>>   critical. Because we will delay for 1.5ms on average, use prepare
+>>   instead of enable so we can sleep.
+>> - Document the status of each protocol
+>> - Fix offset of several bitfields in RECR0
+>> - Take into account PLLRST_B, SDRST_B, and SDEN when considering whether
+>>   a PLL is "enabled."
+>> - Only power off unused lanes.
+>> - Split mode lane mask into first/last lane (like group)
+>> - Read modes from device tree
+>> - Use caps to determine whether KX/KR are supported
+>> - Move modes to lynx_priv
+>> - Ensure that the protocol controller is not already in-use when we try
+>>   to configure a new mode. This should only occur if the device tree is
+>>   misconfigured (e.g. when QSGMII is selected on two lanes but there is
+>>   only one QSGMII controller).
+>> - Split PLL drivers off into their own file
+>> - Add clock for "ext_dly" instead of writing the bit directly (and
+>>   racing with any clock code).
+>> - Use kasprintf instead of open-coding the snprintf dance
+>> - Support 1000BASE-KX in lynx_lookup_proto. This still requires PCS
+>>   support, so nothing is truly "enabled" yet.
+>> 
+>> Changes in v2:
+>> - Rename driver to Lynx 10G (etc.)
+>> - Fix not clearing group->pll after disabling it
+>> - Support 1 and 2 phy-cells
+>> - Power off lanes during probe
+>> - Clear SGMIIaCR1_PCS_EN during probe
+>> - Rename LYNX_PROTO_UNKNOWN to LYNX_PROTO_NONE
+>> - Handle 1000BASE-KX in lynx_proto_mode_prep
+>> 
+>>  Documentation/driver-api/phy/index.rst    |    1 +
+>>  Documentation/driver-api/phy/lynx_10g.rst |   58 +
+>>  MAINTAINERS                               |    2 +
+>>  drivers/phy/freescale/Kconfig             |   18 +-
+>>  drivers/phy/freescale/Makefile            |    1 +
+>>  drivers/phy/freescale/phy-fsl-lynx-10g.c  | 1224 +++++++++++++++++++++
+>>  6 files changed, 1303 insertions(+), 1 deletion(-)
+>>  create mode 100644 Documentation/driver-api/phy/lynx_10g.rst
+>>  create mode 100644 drivers/phy/freescale/phy-fsl-lynx-10g.c
+>> 
+>> diff --git a/Documentation/driver-api/phy/index.rst b/Documentation/driver-api/phy/index.rst
+>> index 69ba1216de72..c9b7a4698dab 100644
+>> --- a/Documentation/driver-api/phy/index.rst
+>> +++ b/Documentation/driver-api/phy/index.rst
+>> @@ -7,6 +7,7 @@ Generic PHY Framework
+>>  .. toctree::
+>>  
+>>     phy
+>> +   lynx_10g
+>>     samsung-usb2
+>>  
+>>  .. only::  subproject and html
+>> diff --git a/Documentation/driver-api/phy/lynx_10g.rst b/Documentation/driver-api/phy/lynx_10g.rst
+>> new file mode 100644
+>> index 000000000000..17f9a9580e24
+>> --- /dev/null
+>> +++ b/Documentation/driver-api/phy/lynx_10g.rst
+>> @@ -0,0 +1,58 @@
+>> +.. SPDX-License-Identifier: GPL-2.0
+>> +
+>> +===========================
+>> +Lynx 10G Phy (QorIQ SerDes)
+>> +===========================
+>> +
+>> +Using this phy
+>> +--------------
+>> +
+>> +:c:func:`phy_get` just gets (or creates) a new :c:type:`phy` with the lanes
+>> +described in the phandle. :c:func:`phy_init` is what actually reserves the
+>> +lanes for use. Unlike some other drivers, when the phy is created, there is no
+>> +default protocol. :c:func:`phy_set_mode <phy_set_mode_ext>` must be called in
+>> +order to set the protocol.
+>> +
+>> +Supporting SoCs
+>> +---------------
+>> +
+>> +Each new SoC needs a :c:type:`struct lynx_conf <lynx_conf>`, containing the
+>> +number of lanes in each device, the endianness of the device, and the helper
+>> +functions to use when selecting protocol controllers. For example, the
+>> +configuration for the LS1046A is::
+>> +
+>> +    static const struct lynx_cfg ls1046a_cfg = {
+>> +        .lanes = 4,
+>> +        .endian = REGMAP_ENDIAN_BIG,
+>> +        .mode_conflict = lynx_ls_mode_conflict,
+>> +        .mode_apply = lynx_ls_mode_apply,
+>> +        .mode_init = lynx_ls_mode_init,
+>> +    };
+>> +
+>> +The ``mode_`` functions will generally be common to all SoCs in a series (e.g.
+>> +all Layerscape SoCs or all T-series SoCs).
+>> +
+>> +In addition, you will need to add a device node as documented in
+>> +``Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml``. This lets the
+>> +driver know which lanes are available to configure.
+>> +
+>> +Supporting Protocols
+>> +--------------------
+>> +
+>> +Each protocol is a combination of values which must be programmed into the lane
+>> +registers. To add a new protocol, first add it to :c:type:`enum lynx_protocol
+>> +<lynx_protocol>`. Add a new entry to ``lynx_proto_params``, and populate the
+>> +appropriate fields. Modify ``lynx_lookup_proto`` to map the :c:type:`enum
+>> +phy_mode <phy_mode>` to :c:type:`enum lynx_protocol <lynx_protocol>`. Finally,
+>> +update the ``mode_conflict``, ``mode_apply``, and ``mode_init`` helpers to
+>> +support your protocol.
+>> +
+>> +You may need to modify :c:func:`lynx_set_mode` in order to support your
+>> +protocol. This can happen when you have added members to :c:type:`struct
+>> +lynx_proto_params <lynx_proto_params>`. It can also happen if you have specific
+>> +clocking requirements, or protocol-specific registers to program.
+>> +
+>> +Internal API Reference
+>> +----------------------
+>> +
+>> +.. kernel-doc:: drivers/phy/freescale/phy-fsl-lynx-10g.c
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 8da893681de6..870014ab14aa 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -12198,7 +12198,9 @@ T:	git https://cas5-0-urlprotect.trendmicro.com:443/wis/clicktime/v1/query?url=https%3a%2f%2fgithub.com%2flinux%2dtest%2dproject%2fltp.git&umid=394d3091-283e-42bc-ac1a-f7e4ac9ff0b7&auth=d807158c60b7d2502abde8a2fc01f40662980862-97fd27a257b9136870bfe8eda3b1eecd6052c43a
+>>  LYNX 10G SERDES DRIVER
+>>  M:	Sean Anderson <sean.anderson@seco.com>
+>>  S:	Maintained
+>> +F:	Documentation/driver-api/phy/lynx_10g.rst
+>>  F:	drivers/clk/clk-fsl-lynx-10g.c
+>> +F:	drivers/phy/freescale/phy-fsl-lynx-10g.c
+>>  F:	include/dt-bindings/clock/fsl,lynx-10g.h
+>>  F:	include/linux/phy/lynx-10g.h
+>>  
+>> diff --git a/drivers/phy/freescale/Kconfig b/drivers/phy/freescale/Kconfig
+>> index 5d461232276f..6bebe00f5889 100644
+>> --- a/drivers/phy/freescale/Kconfig
+>> +++ b/drivers/phy/freescale/Kconfig
+>> @@ -49,7 +49,23 @@ config PHY_FSL_LYNX_28G
+>>  	  Only useful for a restricted set of Ethernet protocols.
+>>  
+>>  config PHY_FSL_LYNX_10G
+>> -	tristate
+>> +	tristate "Freescale QorIQ Lynx 10G SerDes support"
+>>  	depends on COMMON_CLK
+>>  	depends on ARCH_LAYERSCAPE || PPC || COMPILE_TEST
+>> +	select GENERIC_PHY
+>>  	select REGMAP_MMIO
+>> +	help
+>> +	  This adds support for the Lynx "SerDes" devices found on various QorIQ
+>> +	  SoCs. There may be up to four SerDes devices on each SoC, and each
+>> +	  device supports up to eight lanes. The SerDes is configured by
+>> +	  default by the RCW, but this module is necessary in order to support
+>> +	  some modes (such as 2.5G SGMII or 1000BASE-KX), or clock setups (as
+>> +	  only as subset of clock configurations are supported by the RCW).
+>> +	  The hardware supports a variety of protocols, including Ethernet,
+>> +	  SATA, PCIe, and more exotic links such as Interlaken and Aurora. This
+>> +	  driver only supports Ethernet, but it will try not to touch lanes
+>> +	  configured for other protocols.
+>> +
+>> +	  If you have a QorIQ processor and want to dynamically reconfigure your
+>> +	  SerDes, say Y. If this driver is compiled as a module, it will be
+>> +	  named phy-fsl-lynx-10g and clk-fsl-lynx-10g.
+>> diff --git a/drivers/phy/freescale/Makefile b/drivers/phy/freescale/Makefile
+>> index cedb328bc4d2..32ad795be7c6 100644
+>> --- a/drivers/phy/freescale/Makefile
+>> +++ b/drivers/phy/freescale/Makefile
+>> @@ -3,4 +3,5 @@ obj-$(CONFIG_PHY_FSL_IMX8MQ_USB)	+= phy-fsl-imx8mq-usb.o
+>>  obj-$(CONFIG_PHY_MIXEL_LVDS_PHY)	+= phy-fsl-imx8qm-lvds-phy.o
+>>  obj-$(CONFIG_PHY_MIXEL_MIPI_DPHY)	+= phy-fsl-imx8-mipi-dphy.o
+>>  obj-$(CONFIG_PHY_FSL_IMX8M_PCIE)	+= phy-fsl-imx8m-pcie.o
+>> +obj-$(CONFIG_PHY_FSL_LYNX_10G)		+= phy-fsl-lynx-10g.o
+>>  obj-$(CONFIG_PHY_FSL_LYNX_28G)		+= phy-fsl-lynx-28g.o
+>> diff --git a/drivers/phy/freescale/phy-fsl-lynx-10g.c b/drivers/phy/freescale/phy-fsl-lynx-10g.c
+>> new file mode 100644
+>> index 000000000000..880f718b387f
+>> --- /dev/null
+>> +++ b/drivers/phy/freescale/phy-fsl-lynx-10g.c
+>> @@ -0,0 +1,1224 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2022 Sean Anderson <sean.anderson@seco.com>
+>> + *
+>> + * This driver is for the Lynx 10G phys found on many QorIQ devices, including
+>> + * the Layerscape series.
+>> + */
+>> +
+>> +#include <dt-bindings/phy/phy.h>
+>> +#include <linux/clk.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/phy.h>
+>> +#include <linux/phy/lynx-10g.h>
+>> +#include <linux/phy/phy.h>
+>> +#include <linux/regmap.h>
+>> +
+>> +#define TCALCR		0x90
+>> +#define TCALCR1		0x94
+>> +#define RCALCR		0xa0
+>> +#define RCALCR1		0xa4
+>> +
+>> +#define CALCR_CALRST_B	BIT(27)
+>> +
+>> +#define LS_PCCR_BASE	0x200
+>> +#define PCCR_STRIDE	0x4
+>> +
+>> +#define LS_PCCRa(a)	(LS_PCCR_BASE + (a) * PCCR_STRIDE)
+>> +
+>> +#define PCCR8_SGMIIa_KX		BIT(3)
+>> +#define PCCR8_SGMIIa_MASK	GENMASK(3, 0)
+>> +#define PCCR8_SGMIIa_SHIFT(a)	(28 - (a) * 4)
+>> +
+>> +#define PCCR9_QSGMIIa_MASK	GENMASK(2, 0)
+>> +#define PCCR9_QSGMIIa_SHIFT(a)	(28 - (a) * 4)
+>> +
+>> +#define PCCRB_XFIa_MASK		GENMASK(2, 0)
+>> +#define PCCRB_XFIa_SHIFT(a)	(28 - (a) * 4)
+>> +
+>> +#define LANE_BASE	0x800
+>> +#define LANE_STRIDE	0x40
+>> +#define LNm(m, off)	(LANE_BASE + (m) * LANE_STRIDE + (off))
+>> +#define LNmGCR0(m)	LNm(m, 0x00)
+>> +#define LNmGCR1(m)	LNm(m, 0x04)
+>> +#define LNmSSCR0(m)	LNm(m, 0x0C)
+>> +#define LNmRECR0(m)	LNm(m, 0x10)
+>> +#define LNmRECR1(m)	LNm(m, 0x14)
+>> +#define LNmTECR0(m)	LNm(m, 0x18)
+>> +#define LNmSSCR1(m)	LNm(m, 0x1C)
+>> +#define LNmTTLCR0(m)	LNm(m, 0x20)
+>> +
+>> +#define LNmGCR0_RPLL_LES	BIT(31)
+>> +#define LNmGCR0_RRAT_SEL	GENMASK(29, 28)
+>> +#define LNmGCR0_TPLL_LES	BIT(27)
+>> +#define LNmGCR0_TRAT_SEL	GENMASK(25, 24)
+>> +#define LNmGCR0_RRST_B		BIT(22)
+>> +#define LNmGCR0_TRST_B		BIT(21)
+>> +#define LNmGCR0_RX_PD		BIT(20)
+>> +#define LNmGCR0_TX_PD		BIT(19)
+>> +#define LNmGCR0_IF20BIT_EN	BIT(18)
+>> +#define LNmGCR0_FIRST_LANE	BIT(16)
+>> +#define LNmGCR0_TTRM_VM_SEL	GENMASK(13, 12)
+>> +#define LNmGCR0_PROTS		GENMASK(11, 7)
+>> +
+>> +#define LNmGCR0_RAT_SEL_SAME		0b00
+>> +#define LNmGCR0_RAT_SEL_HALF		0b01
+>> +#define LNmGCR0_RAT_SEL_QUARTER		0b10
+>> +#define LNmGCR0_RAT_SEL_DOUBLE		0b11
+>> +
+>> +#define LNmGCR0_PROTS_PCIE		0b00000
+>> +#define LNmGCR0_PROTS_SGMII		0b00001
+>> +#define LNmGCR0_PROTS_SATA		0b00010
+>> +#define LNmGCR0_PROTS_XFI		0b01010
+>> +
+>> +#define LNmGCR1_RDAT_INV	BIT(31)
+>> +#define LNmGCR1_TDAT_INV	BIT(30)
+>> +#define LNmGCR1_OPAD_CTL	BIT(26)
+>> +#define LNmGCR1_REIDL_TH	GENMASK(22, 20)
+>> +#define LNmGCR1_REIDL_EX_SEL	GENMASK(19, 18)
+>> +#define LNmGCR1_REIDL_ET_SEL	GENMASK(17, 16)
+>> +#define LNmGCR1_REIDL_EX_MSB	BIT(15)
+>> +#define LNmGCR1_REIDL_ET_MSB	BIT(14)
+>> +#define LNmGCR1_REQ_CTL_SNP	BIT(13)
+>> +#define LNmGCR1_REQ_CDR_SNP	BIT(12)
+>> +#define LNmGCR1_TRSTDIR		BIT(7)
+>> +#define LNmGCR1_REQ_BIN_SNP	BIT(6)
+>> +#define LNmGCR1_ISLEW_RCTL	GENMASK(5, 4)
+>> +#define LNmGCR1_OSLEW_RCTL	GENMASK(1, 0)
+>> +
+>> +#define LNmRECR0_RXEQ_BST	BIT(28)
+>> +#define LNmRECR0_GK2OVD		GENMASK(27, 24)
+>> +#define LNmRECR0_GK3OVD		GENMASK(19, 16)
+>> +#define LNmRECR0_GK2OVD_EN	BIT(15)
+>> +#define LNmRECR0_GK3OVD_EN	BIT(14)
+>> +#define LNmRECR0_OSETOVD_EN	BIT(13)
+>> +#define LNmRECR0_BASE_WAND	GENMASK(11, 10)
+>> +#define LNmRECR0_OSETOVD	GENMASK(6, 0)
+>> +
+>> +#define LNmRECR0_BASE_WAND_OFF		0b00
+>> +#define LNmRECR0_BASE_WAND_DEFAULT	0b01
+>> +#define LNmRECR0_BASE_WAND_ALTERNATE	0b10
+>> +#define LNmRECR0_BASE_WAND_OSETOVD	0b11
+>> +
+>> +#define LNmTECR0_TEQ_TYPE	GENMASK(29, 28)
+>> +#define LNmTECR0_SGN_PREQ	BIT(26)
+>> +#define LNmTECR0_RATIO_PREQ	GENMASK(25, 22)
+>> +#define LNmTECR0_SGN_POST1Q	BIT(21)
+>> +#define LNmTECR0_RATIO_PST1Q	GENMASK(20, 16)
+>> +#define LNmTECR0_ADPT_EQ	GENMASK(13, 8)
+>> +#define LNmTECR0_AMP_RED	GENMASK(5, 0)
+>> +
+>> +#define LNmTECR0_TEQ_TYPE_NONE		0b00
+>> +#define LNmTECR0_TEQ_TYPE_POST		0b01
+>> +#define LNmTECR0_TEQ_TYPE_BOTH		0b10
+>> +
+>> +#define LNmTTLCR0_FLT_SEL	GENMASK(29, 24)
+>> +
+>> +#define LS_SGMII_BASE	0x1800
+>> +#define LS_QSGMII_BASE	0x1880
+>> +#define LS_XFI_BASE	0x1980
+>> +
+>> +#define PCS_STRIDE	0x10
+>> +#define CR_STRIDE	0x4
+>> +#define PCSa(a, base, cr)	(base + (a) * PCS_STRIDE + (cr) * CR_STRIDE)
+>> +
+>> +#define PCSaCR1_MDEV_PORT	GENMASK(31, 27)
+>> +
+>> +#define LS_SGMIIaCR1(a)		PCSa(a, LS_SGMII_BASE, 1)
+>> +#define SGMIIaCR1_SGPCS_EN	BIT(11)
+>> +
+>> +enum lynx_protocol {
+>> +	LYNX_PROTO_NONE = 0,
+>> +	LYNX_PROTO_SGMII,
+>> +	LYNX_PROTO_SGMII25, /* Not tested */
+>> +	LYNX_PROTO_1000BASEKX, /* Not tested */
+>> +	LYNX_PROTO_QSGMII, /* Not tested */
+>> +	LYNX_PROTO_XFI,
+>> +	LYNX_PROTO_10GKR, /* Link training unimplemented */
+>> +	LYNX_PROTO_LAST,
+>> +};
+>> +
+>> +static const char lynx_proto_str[][16] = {
+>> +	[LYNX_PROTO_NONE] = "unknown",
+>> +	[LYNX_PROTO_SGMII] = "SGMII",
+>> +	[LYNX_PROTO_SGMII25] = "2.5G SGMII",
+>> +	[LYNX_PROTO_1000BASEKX] = "1000BASE-KX",
+>> +	[LYNX_PROTO_QSGMII] = "QSGMII",
+>> +	[LYNX_PROTO_XFI] = "XFI",
+>> +	[LYNX_PROTO_10GKR] = "10GBASE-KR",
+>> +};
+>> +
+>> +#define PROTO_MASK(proto) BIT(LYNX_PROTO_##proto)
+>> +
+>> +/**
+>> + * struct lynx_proto_params - Parameters for configuring a protocol
+>> + * @frate_khz: The PLL rate, in kHz
+>> + * @rat_sel: The divider to get the line rate
+>> + * @if20bit: Whether the proto is 20 bits or 10 bits
+>> + * @prots: Lane protocol select
+>> + * @reidl_th: Receiver electrical idle detection threshold
+>> + * @reidl_ex: Exit electrical idle filter
+>> + * @reidl_et: Enter idle filter
+>> + * @slew: Slew control
+>> + * @baseline_wander: Enable baseline wander correction
+>> + * @gain: Adaptive equalization gain override
+>> + * @offset_override: Adaptive equalization offset override
+>> + * @preq_ratio: Ratio of full swing transition bit to pre-cursor
+>> + * @postq_ratio: Ratio of full swing transition bit to first post-cursor.
+>> + * @adpt_eq: Transmitter Adjustments for 8G/10G
+>> + * @amp_red: Overall TX Amplitude Reduction
+>> + * @flt_sel: TTL configuration selector
+>> + */
+>> +struct lynx_proto_params {
+>> +	u32 frate_khz;
+>> +	u8 rat_sel;
+>> +	u8 prots;
+>> +	u8 reidl_th;
+>> +	u8 reidl_ex;
+>> +	u8 reidl_et;
+>> +	u8 slew;
+>> +	u8 gain;
+>> +	u8 baseline_wander;
+>> +	u8 offset_override;
+>> +	u8 preq_ratio;
+>> +	u8 postq_ratio;
+>> +	u8 adpt_eq;
+>> +	u8 amp_red;
+>> +	u8 flt_sel;
+>> +	bool if20bit;
+>> +};
+>> +
+>> +static const struct lynx_proto_params lynx_proto_params[] = {
+>> +	[LYNX_PROTO_SGMII] = {
+>> +		.frate_khz = 5000000,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_QUARTER,
+>> +		.if20bit = false,
+>> +		.prots = LNmGCR0_PROTS_SGMII,
+>> +		.reidl_th = 0b001,
+>> +		.reidl_ex = 0b011,
+>> +		.reidl_et = 0b100,
+>> +		.slew = 0b01,
+>> +		.gain = 0b1111,
+>> +		.offset_override = 0b0011111,
+>> +		.adpt_eq = 0b110000,
+>> +		.amp_red = 0b000110,
+>> +		.flt_sel = 0b111001,
+>> +	},
+>> +	[LYNX_PROTO_1000BASEKX] = {
+>> +		.frate_khz = 5000000,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_QUARTER,
+>> +		.if20bit = false,
+>> +		.prots = LNmGCR0_PROTS_SGMII,
+>> +		.slew = 0b01,
+>> +		.gain = 0b1111,
+>> +		.offset_override = 0b0011111,
+>> +		.adpt_eq = 0b110000,
+>> +		.flt_sel = 0b111001,
+>> +	},
+>> +	[LYNX_PROTO_SGMII25] = {
+>> +		.frate_khz = 3125000,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_SAME,
+>> +		.if20bit = false,
+>> +		.prots = LNmGCR0_PROTS_SGMII,
+>> +		.slew = 0b10,
+>> +		.offset_override = 0b0011111,
+>> +		.postq_ratio = 0b00110,
+>> +		.adpt_eq = 0b110000,
+>> +	},
+>> +	[LYNX_PROTO_QSGMII] = {
+>> +		.frate_khz = 5000000,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_SAME,
+>> +		.if20bit = true,
+>> +		.prots = LNmGCR0_PROTS_SGMII,
+>> +		.slew = 0b01,
+>> +		.offset_override = 0b0011111,
+>> +		.postq_ratio = 0b00110,
+>> +		.adpt_eq = 0b110000,
+>> +		.amp_red = 0b000010,
+>> +	},
+>> +	[LYNX_PROTO_XFI] = {
+>> +		.frate_khz = 5156250,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_DOUBLE,
+>> +		.if20bit = true,
+>> +		.prots = LNmGCR0_PROTS_XFI,
+>> +		.slew = 0b01,
+>> +		.baseline_wander = LNmRECR0_BASE_WAND_DEFAULT,
+>> +		.offset_override = 0b1011111,
+>> +		.postq_ratio = 0b00011,
+>> +		.adpt_eq = 0b110000,
+>> +		.amp_red = 0b000111,
+>> +	},
+>> +	[LYNX_PROTO_10GKR] = {
+>> +		.frate_khz = 5156250,
+>> +		.rat_sel = LNmGCR0_RAT_SEL_DOUBLE,
+>> +		.if20bit = true,
+>> +		.prots = LNmGCR0_PROTS_XFI,
+>> +		.slew = 0b01,
+>> +		.baseline_wander = LNmRECR0_BASE_WAND_DEFAULT,
+>> +		.offset_override = 0b1011111,
+>> +		.preq_ratio = 0b0011,
+>> +		.postq_ratio = 0b01100,
+>> +		.adpt_eq = 0b110000,
+>> +	},
+>> +};
+>> +
+>> +/**
+>> + * struct lynx_mode - A single configuration of a protocol controller
+>> + * @protos: A bitmask of the &enum lynx_protocol this mode supports
+>> + * @pccr: The number of the PCCR which contains this mode
+>> + * @idx: The index of the protocol controller. For example, SGMIIB would have
+>> + *       index 1.
+>> + * @cfg: The value to program into the controller to select this mode
+>> + *
+>> + * The serdes has multiple protocol controllers which can be each be selected
+>> + * independently. Depending on their configuration, they may use multiple lanes
+>> + * at once (e.g. AUI or PCIe x4). Additionally, multiple protocols may be
+>> + * supported by a single mode (XFI and 10GKR differ only in their protocol
+>> + * parameters).
+>> + */
+>> +struct lynx_mode {
+>> +	u16 protos;
+>> +	u8 pccr;
+>> +	u8 idx;
+>> +	u8 cfg;
+>> +};
+>> +
+>> +static_assert(LYNX_PROTO_LAST - 1 <=
+>> +	      sizeof_field(struct lynx_mode, protos) * BITS_PER_BYTE);
+>> +
+>> +struct lynx_priv;
+>> +
+>> +/**
+>> + * struct lynx_cfg - Configuration for a particular serdes
+>> + * @lanes: Number of lanes
+>> + * @endian: Endianness of the registers
+>> + * @mode_conflict: Determine whether a protocol controller is already in use
+>> + *                 (by another group).
+>> + * @mode_apply: Apply a given protocol. This includes programming the
+>> + *              appropriate config into the PCCR, as well as enabling/disabling
+>> + *              any other registers (such as the enabling MDIO access).
+>> + *              %LYNX_PROTO_NONE may be used to clear any associated registers.
+>> + * @mode_init: Finish initializing a mode. All fields are filled in except for
+>> + *             protos. Type is one of PHY_TYPE_*. mode->protos should be filled
+>> + *             in, and the other fields should be sanity-checked.
+>> + */
+>> +struct lynx_cfg {
+>> +	unsigned int lanes;
+>> +	enum regmap_endian endian;
+>> +	bool (*mode_conflict)(struct lynx_priv *serdes,
+>> +			      const struct lynx_mode *mode);
+>> +	void (*mode_apply)(struct lynx_priv *serdes,
+>> +			   const struct lynx_mode *mode,
+>> +			   enum lynx_protocol proto);
+>> +	int (*mode_init)(struct lynx_priv *serdes, struct lynx_mode *mode,
+>> +			 int type);
+>> +};
+>> +
+>> +/**
+>> + * struct lynx_group - Driver data for a group of lanes
+>> + * @serdes: The parent serdes
+>> + * @pll: The currently-used pll
+>> + * @ex_dly: The ex_dly clock, if used
+>> + * @modes: Valid protocol controller configurations
+>> + * @mode_count: Number of modes in @modes
+>> + * @first_lane: The first lane in the group
+>> + * @last_lane: The last lane in the group
+>> + * @proto: The currently-configured protocol
+>> + * @initialized: Whether the complete state of @modes has been set
+>> + * @prots: The protocol set up by the RCW
+>> + */
+>> +struct lynx_group {
+>> +	struct lynx_priv *serdes;
+>> +	struct clk *pll, *ex_dly;
+>> +	const struct lynx_mode *modes;
+>> +	size_t mode_count;
+>> +	unsigned int first_lane;
+>> +	unsigned int last_lane;
+>> +	enum lynx_protocol proto;
+>> +	bool initialized;
+>> +	u8 prots;
+>> +};
+>> +
+>> +/**
+>> + * struct lynx_priv - Driver data for the serdes
+>> + * @lock: A lock protecting "common" registers in @regmap, as well as the
+>> + *        members of this struct. Lane-specific registers are protected by the
+>> + *        phy's lock. PLL registers are protected by the clock's lock.
+>> + * @dev: The serdes device
+>> + * @regmap: The backing regmap
+>> + * @cfg: SoC-specific configuration
+>> + * @plls: The PLLs
+>> + * @ex_dlys: The "ex_dly" clocks
+>> + * @groups: Groups in the serdes
+>> + * @group_count: Number of groups in @groups
+>> + * @used_lanes: Bitmap of the lanes currently used by phys
+>> + */
+>> +struct lynx_priv {
+>> +	struct mutex lock;
+>> +	struct device *dev;
+>> +	struct regmap *regmap;
+>> +	const struct lynx_cfg *cfg;
+>> +	struct clk *plls[2], *ex_dlys[2];
+>> +	struct lynx_group *groups;
+>> +	unsigned int group_count;
+>> +	unsigned int used_lanes;
+>> +};
+>> +
+>> +static u32 lynx_read(struct lynx_priv *serdes, u32 reg)
+>> +{
+>> +	unsigned int ret = 0;
+>> +
+>> +	WARN_ON_ONCE(regmap_read(serdes->regmap, reg, &ret));
+>> +	dev_vdbg(serdes->dev, "%.8x <= %.8x\n", ret, reg);
+>> +	return ret;
+>> +}
+>> +
+>> +static void lynx_write(struct lynx_priv *serdes, u32 val, u32 reg)
+>> +{
+>> +	dev_vdbg(serdes->dev, "%.8x => %.8x\n", val, reg);
+>> +	WARN_ON_ONCE(regmap_write(serdes->regmap, reg, val));
+>> +}
+>> +
+>> +/*
+>> + * This is tricky. If first_lane=1 and last_lane=0, the condition will see 2,
+>> + * 1, 0. But the loop body will see 1, 0. We do this to avoid underflow. We
+>> + * can't pull the same trick when incrementing, because then we might have to
+>> + * start at -1 if (e.g.) first_lane = 0.
+>> + */
+>> +#define for_range(val, start, end) \
+>> +	for (val = start < end ? start : start + 1; \
+>> +	     start < end ? val <= end : val-- > end; \
+>> +	     start < end ? val++ : 0)
+>> +#define for_each_lane(lane, group) \
+>> +	for_range(lane, group->first_lane, group->last_lane)
+>> +#define for_each_lane_reverse(lane, group) \
+>> +	for_range(lane, group->last_lane, group->first_lane)
+>> +
+>> +static int lynx_power_on(struct phy *phy)
+>> +{
+>> +	int i;
+>> +	struct lynx_group *group = phy_get_drvdata(phy);
+>> +	u32 gcr0;
+>> +
+>> +	for_each_lane(i, group) {
+>> +		gcr0 = lynx_read(group->serdes, LNmGCR0(i));
+>> +		gcr0 &= ~(LNmGCR0_RX_PD | LNmGCR0_TX_PD);
+>> +		lynx_write(group->serdes, gcr0, LNmGCR0(i));
+>> +
+>> +		usleep_range(15, 30);
+>> +		gcr0 |= LNmGCR0_RRST_B | LNmGCR0_TRST_B;
+>> +		lynx_write(group->serdes, gcr0, LNmGCR0(i));
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void lynx_power_off_group(struct lynx_group *group)
+>> +{
+>> +	int i;
+>> +
+>> +	for_each_lane_reverse(i, group) {
+>> +		u32 gcr0 = lynx_read(group->serdes, LNmGCR0(i));
+>> +
+>> +		gcr0 |= LNmGCR0_RX_PD | LNmGCR0_TX_PD;
+>> +		gcr0 &= ~(LNmGCR0_RRST_B | LNmGCR0_TRST_B);
+>> +		lynx_write(group->serdes, gcr0, LNmGCR0(i));
+>> +	}
+>> +}
+>> +
+>> +static int lynx_power_off(struct phy *phy)
+>> +{
+>> +	lynx_power_off_group(phy_get_drvdata(phy));
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * lynx_lane_bitmap() - Get a bitmap for a group of lanes
+>> + * @group: The group of lanes
+>> + *
+>> + * Return: A mask containing all bits between @group->first and @group->last
+>> + */
+>> +static unsigned int lynx_lane_bitmap(struct lynx_group *group)
+>> +{
+>> +	if (group->first_lane > group->last_lane)
+>> +		return GENMASK(group->first_lane, group->last_lane);
+>> +	else
+>> +		return GENMASK(group->last_lane, group->first_lane);
+>> +}
+>> +
+>> +/**
+>> + * lynx_lookup_mode() - Get the mode for a group/protocol combination
+>> + * @group: The group of lanes to use
+>> + * @proto: The protocol to use
+>> + *
+>> + * Return: An appropriate mode to use, or %NULL if none match.
+>> + */
+>> +static const struct lynx_mode *lynx_lookup_mode(struct lynx_group *group,
+>> +						enum lynx_protocol proto)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < group->mode_count; i++) {
+>> +		const struct lynx_mode *mode = &group->modes[i];
+>> +
+>> +		if (BIT(proto) & mode->protos)
+>> +			return mode;
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>> +/**
+>> + * lynx_init_late() - Initialize group modes after probe()
+>> + * @group: The group of lanes to initialize
+>> + *
+>> + * Disable all modes for a group, taking care not to disable other groups'
+>> + * current modes. This ensures that whenever we select a mode, nothing else is
+>> + * interfering. Then, turn off the group.
+>> + *
+>> + * Return: 0 on success, or -%ENOMEM
+>> + */
+>> +static int lynx_init_late(struct lynx_group *group)
+>> +{
+>> +	int i, j;
+>> +	struct lynx_priv *serdes = group->serdes;
+>> +	const struct lynx_mode **modes;
+>> +
+>> +	modes = kcalloc(serdes->group_count, sizeof(*modes), GFP_KERNEL);
+>> +	if (!modes)
+>> +		return -ENOMEM;
+>> +
+>> +	for (i = 0; i < serdes->group_count; i++)
+>> +		modes[i] = lynx_lookup_mode(&serdes->groups[i],
+>> +					    serdes->groups[i].proto);
+>> +
+>> +	for (i = 0; i < group->mode_count; i++) {
+>> +		for (j = 0; j < serdes->group_count; j++) {
+>> +			if (!modes[j])
+>> +				continue;
+>> +
+>> +			if (group->modes[i].pccr == modes[j]->pccr &&
+>> +			    group->modes[i].idx == modes[j]->idx)
+>> +				goto skip;
+>> +		}
+>> +
+>> +		serdes->cfg->mode_apply(serdes, &group->modes[i],
+>> +					LYNX_PROTO_NONE);
+>> +skip:		;
+>> +	}
+>> +
+>> +	kfree(modes);
+>> +	lynx_power_off_group(group);
+>> +	group->initialized = true;
+>> +	return 0;
+>> +}
+>> +
+>> +static int lynx_init(struct phy *phy)
+>> +{
+>> +	int ret = 0;
+>> +	struct lynx_group *group = phy_get_drvdata(phy);
+>> +	struct lynx_priv *serdes = group->serdes;
+>> +	unsigned int lane_mask = lynx_lane_bitmap(group);
+>> +
+>> +	mutex_lock(&serdes->lock);
+>> +	if (serdes->used_lanes & lane_mask) {
+>> +		ret = -EBUSY;
+>> +	} else {
+>> +		if (!group->initialized)
+>> +			ret = lynx_init_late(group);
+>> +
+>> +		if (!ret)
+>> +			serdes->used_lanes |= lane_mask;
+>> +	}
+>> +	mutex_unlock(&serdes->lock);
+>> +	return ret;
+>> +}
+>> +
+>> +static int lynx_exit(struct phy *phy)
+>> +{
+>> +	struct lynx_group *group = phy_get_drvdata(phy);
+>> +	struct lynx_priv *serdes = group->serdes;
+>> +
+>> +	clk_disable_unprepare(group->ex_dly);
+>> +	group->ex_dly = NULL;
+>> +
+>> +	clk_disable_unprepare(group->pll);
+>> +	clk_rate_exclusive_put(group->pll);
+>> +	group->pll = NULL;
+>> +
+>> +	mutex_lock(&serdes->lock);
+>> +	serdes->used_lanes &= ~lynx_lane_bitmap(group);
+>> +	mutex_unlock(&serdes->lock);
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * lynx_lookup_proto() - Convert a phy-subsystem mode to a protocol
+>> + * @mode: The mode to convert
+>> + * @submode: The submode of @mode
+>> + *
+>> + * Return: A corresponding serdes-specific mode
+>> + */
+>> +static enum lynx_protocol lynx_lookup_proto(enum phy_mode mode, int submode)
+>> +{
+>> +	switch (mode) {
+>> +	case PHY_MODE_ETHERNET:
+>> +		switch (submode) {
+>> +		case PHY_INTERFACE_MODE_SGMII:
+>> +		case PHY_INTERFACE_MODE_1000BASEX:
+>> +			return LYNX_PROTO_SGMII;
+>> +		case PHY_INTERFACE_MODE_2500BASEX:
+>> +			return LYNX_PROTO_SGMII25;
+>> +		case PHY_INTERFACE_MODE_QSGMII:
+>> +			return LYNX_PROTO_QSGMII;
+>> +		case PHY_INTERFACE_MODE_XGMII:
+>> +		case PHY_INTERFACE_MODE_10GBASER:
+>> +			return LYNX_PROTO_XFI;
+>> +		case PHY_INTERFACE_MODE_10GKR:
+>> +			return LYNX_PROTO_10GKR;
+>> +		default:
+>> +			return LYNX_PROTO_NONE;
+>> +		}
+>> +	default:
+>> +		return LYNX_PROTO_NONE;
+>> +	}
+>> +}
+>> +
+>> +static int lynx_validate(struct phy *phy, enum phy_mode phy_mode, int submode,
+>> +			 union phy_configure_opts *opts)
+>> +{
+>> +	enum lynx_protocol proto;
+>> +	struct lynx_group *group = phy_get_drvdata(phy);
+>> +	const struct lynx_mode *mode;
+>> +
+>> +	proto = lynx_lookup_proto(phy_mode, submode);
+>> +	if (proto == LYNX_PROTO_NONE)
+>> +		return -EINVAL;
+>> +
+>> +	/* Nothing to do */
+>> +	if (proto == group->proto)
+>> +		return 0;
+>> +
+>> +	/*
+>> +	 * FIXME: At the moment we don't support switching between major
+>> +	 * protocols. From what I can tell, the serdes is working fine, but
+>> +	 * something goes wrong in the PCS.
+>> +	 */
+>> +	if (lynx_proto_params[proto].prots != group->prots)
+>> +		return -EINVAL;
+>> +
+>> +	mode = lynx_lookup_mode(group, proto);
+>> +	if (!mode)
+>> +		return -EINVAL;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +#define abs_diff(a, b) ({ \
+>> +	typeof(a) _a = (a); \
+>> +	typeof(b) _b = (b); \
+>> +	_a > _b ? _a - _b : _b - _a; \
+>> +})
+>> +
+>> +static int lynx_set_mode(struct phy *phy, enum phy_mode phy_mode, int submode)
+>> +{
+>> +	enum lynx_protocol proto;
+>> +	const struct lynx_proto_params *params;
+>> +	const struct lynx_mode *old_mode = NULL, *new_mode;
+>> +	int i, pll, ret;
+>> +	struct lynx_group *group = phy_get_drvdata(phy);
+>> +	struct lynx_priv *serdes = group->serdes;
+>> +	u32 tmp, teq;
+>> +	u32 gcr0 = 0, gcr1 = 0, recr0 = 0, tecr0 = 0;
+>> +	u32 gcr0_mask = 0, gcr1_mask = 0, recr0_mask = 0, tecr0_mask = 0;
+>> +
+>> +	proto = lynx_lookup_proto(phy_mode, submode);
+>> +	if (proto == LYNX_PROTO_NONE) {
+>> +		dev_dbg(&phy->dev, "unknown mode/submode %d/%d\n",
+>> +			phy_mode, submode);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* Nothing to do */
+>> +	if (proto == group->proto)
+>> +		return 0;
+>> +
+>> +	new_mode = lynx_lookup_mode(group, proto);
+>> +	if (!new_mode) {
+>> +		dev_dbg(&phy->dev, "could not find mode for %s on lanes %u to %u\n",
+>> +			lynx_proto_str[proto], group->first_lane,
+>> +			group->last_lane);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	if (group->proto != LYNX_PROTO_NONE) {
+>> +		old_mode = lynx_lookup_mode(group, group->proto);
+>> +		if (!old_mode) {
+>> +			dev_err(&phy->dev, "could not find mode for %s\n",
+>> +				lynx_proto_str[group->proto]);
+>> +			return -EBUSY;
+>> +		}
+>> +	}
+>> +
+>> +	mutex_lock(&serdes->lock);
+>> +	if (serdes->cfg->mode_conflict(serdes, new_mode)) {
+>> +		dev_dbg(&phy->dev, "%s%c already in use\n",
+>> +			lynx_proto_str[__ffs(new_mode->protos)],
+>> +			'A' + new_mode->idx);
+>> +		ret = -EBUSY;
+>> +		goto out;
+>> +	}
+> 
+> what are the cases that you envision to have a mode_conflict?
 
-Overview of the new hcall usage:
+On the B4860, SGMIIa can be used by either MAC1 or MAC5, depending on the value
+of SGMIIA_CFG. Similarly for SGMIIb.
 
-- L1 and L0 negotiate capabilities with
-  H_GUEST_{G,S}ET_CAPABILITIES()
+>> +
+>> +	clk_disable_unprepare(group->ex_dly);
+>> +	group->ex_dly = NULL;
+>> +
+>> +	clk_disable_unprepare(group->pll);
+>> +	clk_rate_exclusive_put(group->pll);
+>> +	group->pll = NULL;
+>> +
+>> +	/* First, try to use a PLL which already has the correct rate */
+>> +	params = &lynx_proto_params[proto];
+>> +	for (pll = 0; pll < ARRAY_SIZE(serdes->plls); pll++) {
+>> +		struct clk *clk = serdes->plls[pll];
+>> +		unsigned long rate = clk_get_rate(clk);
+>> +		unsigned long error = abs_diff(rate, params->frate_khz);
+>> +
+>> +		dev_dbg(&phy->dev, "pll%d has rate %lu (error=%lu)\n", pll,
+>> +			rate, error);
+>> +		/* Accept up to 100ppm deviation */
+>> +		if (error && params->frate_khz / error < 10000)
+>> +			continue;
+>> +
+>> +		if (!clk_set_rate_exclusive(clk, rate))
+>> +			goto got_pll;
+>> +		/*
+>> +		 * Someone else got a different rate first (or there was some
+>> +		 * other error)
+>> +		 */
+>> +	}
+>> +
+>> +	/* If neither PLL has the right rate, try setting it */
+>> +	for (pll = 0; pll < 2; pll++) {
+>> +		ret = clk_set_rate_exclusive(serdes->plls[pll],
+>> +					     params->frate_khz);
+>> +		if (!ret)
+>> +			goto got_pll;
+>> +	}
+>> +
+>> +	dev_dbg(&phy->dev, "could not get a pll at %ukHz\n",
+>> +		params->frate_khz);
+>> +	goto out;
+>> +
+>> +got_pll:
+>> +	group->pll = serdes->plls[pll];
+>> +	ret = clk_prepare_enable(group->pll);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	gcr0_mask |= LNmGCR0_RRAT_SEL | LNmGCR0_TRAT_SEL;
+>> +	gcr0_mask |= LNmGCR0_RPLL_LES | LNmGCR0_TPLL_LES;
+>> +	gcr0_mask |= LNmGCR0_RRST_B | LNmGCR0_TRST_B;
+>> +	gcr0_mask |= LNmGCR0_RX_PD | LNmGCR0_TX_PD;
+>> +	gcr0_mask |= LNmGCR0_IF20BIT_EN | LNmGCR0_PROTS;
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_RPLL_LES, !pll);
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_TPLL_LES, !pll);
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_RRAT_SEL, params->rat_sel);
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_TRAT_SEL, params->rat_sel);
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_IF20BIT_EN, params->if20bit);
+>> +	gcr0 |= FIELD_PREP(LNmGCR0_PROTS, params->prots);
+>> +
+>> +	gcr1_mask |= LNmGCR1_RDAT_INV | LNmGCR1_TDAT_INV;
+>> +	gcr1_mask |= LNmGCR1_OPAD_CTL | LNmGCR1_REIDL_TH;
+>> +	gcr1_mask |= LNmGCR1_REIDL_EX_SEL | LNmGCR1_REIDL_ET_SEL;
+>> +	gcr1_mask |= LNmGCR1_REIDL_EX_MSB | LNmGCR1_REIDL_ET_MSB;
+>> +	gcr1_mask |= LNmGCR1_REQ_CTL_SNP | LNmGCR1_REQ_CDR_SNP;
+>> +	gcr1_mask |= LNmGCR1_TRSTDIR | LNmGCR1_REQ_BIN_SNP;
+>> +	gcr1_mask |= LNmGCR1_ISLEW_RCTL | LNmGCR1_OSLEW_RCTL;
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_REIDL_TH, params->reidl_th);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_REIDL_EX_SEL, params->reidl_ex & 3);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_REIDL_ET_SEL, params->reidl_et & 3);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_REIDL_EX_MSB, params->reidl_ex >> 2);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_REIDL_ET_MSB, params->reidl_et >> 2);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_TRSTDIR,
+>> +			   group->first_lane > group->last_lane);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_ISLEW_RCTL, params->slew);
+>> +	gcr1 |= FIELD_PREP(LNmGCR1_OSLEW_RCTL, params->slew);
+>> +
+>> +	recr0_mask |= LNmRECR0_RXEQ_BST | LNmRECR0_BASE_WAND;
+>> +	recr0_mask |= LNmRECR0_GK2OVD | LNmRECR0_GK3OVD;
+>> +	recr0_mask |= LNmRECR0_GK2OVD_EN | LNmRECR0_GK3OVD_EN;
+>> +	recr0_mask |= LNmRECR0_OSETOVD_EN | LNmRECR0_OSETOVD;
+>> +	if (params->gain) {
+>> +		recr0 |= FIELD_PREP(LNmRECR0_GK2OVD, params->gain);
+>> +		recr0 |= FIELD_PREP(LNmRECR0_GK3OVD, params->gain);
+>> +		recr0 |= LNmRECR0_GK2OVD_EN | LNmRECR0_GK3OVD_EN;
+>> +	}
+>> +	recr0 |= FIELD_PREP(LNmRECR0_BASE_WAND, params->baseline_wander);
+>> +	recr0 |= FIELD_PREP(LNmRECR0_OSETOVD, params->offset_override);
+>> +
+>> +	tecr0_mask |= LNmTECR0_TEQ_TYPE;
+>> +	tecr0_mask |= LNmTECR0_SGN_PREQ | LNmTECR0_RATIO_PREQ;
+>> +	tecr0_mask |= LNmTECR0_SGN_POST1Q | LNmTECR0_RATIO_PST1Q;
+>> +	tecr0_mask |= LNmTECR0_ADPT_EQ | LNmTECR0_AMP_RED;
+>> +	teq = LNmTECR0_TEQ_TYPE_NONE;
+>> +	if (params->postq_ratio) {
+>> +		teq = LNmTECR0_TEQ_TYPE_POST;
+>> +		tecr0 |= FIELD_PREP(LNmTECR0_SGN_POST1Q, 1);
+>> +		tecr0 |= FIELD_PREP(LNmTECR0_RATIO_PST1Q, params->postq_ratio);
+>> +	}
+>> +	if (params->preq_ratio) {
+>> +		teq = LNmTECR0_TEQ_TYPE_BOTH;
+>> +		tecr0 |= FIELD_PREP(LNmTECR0_SGN_PREQ, 1);
+>> +		tecr0 |= FIELD_PREP(LNmTECR0_RATIO_PREQ, params->preq_ratio);
+>> +	}
+>> +	tecr0 |= FIELD_PREP(LNmTECR0_TEQ_TYPE, teq);
+>> +	tecr0 |= FIELD_PREP(LNmTECR0_ADPT_EQ, params->adpt_eq);
+>> +	tecr0 |= FIELD_PREP(LNmTECR0_AMP_RED, params->amp_red);
+>> +
+>> +	for_each_lane(i, group) {
+>> +		tmp = lynx_read(serdes, LNmGCR0(i));
+>> +		tmp &= ~(LNmGCR0_RRST_B | LNmGCR0_TRST_B);
+>> +		lynx_write(serdes, tmp, LNmGCR0(i));
+>> +	}
+>> +
+>> +	ndelay(50);
+>> +
+>> +	/* Disable the old controller */
+>> +	if (old_mode)
+>> +		serdes->cfg->mode_apply(serdes, old_mode, LYNX_PROTO_NONE);
+>> +
+>> +	for_each_lane(i, group) {
+>> +		tmp = lynx_read(serdes, LNmGCR0(i));
+>> +		tmp &= ~gcr0_mask;
+>> +		tmp |= gcr0;
+>> +		tmp |= FIELD_PREP(LNmGCR0_FIRST_LANE, i == group->first_lane);
+>> +		lynx_write(serdes, tmp, LNmGCR0(i));
+>> +
+>> +		tmp = lynx_read(serdes, LNmGCR1(i));
+>> +		tmp &= ~gcr1_mask;
+>> +		tmp |= gcr1;
+>> +		lynx_write(serdes, tmp, LNmGCR1(i));
+>> +
+>> +		tmp = lynx_read(serdes, LNmRECR0(i));
+>> +		tmp &= ~recr0_mask;
+>> +		tmp |= recr0;
+>> +		lynx_write(serdes, tmp, LNmRECR0(i));
+>> +
+>> +		tmp = lynx_read(serdes, LNmTECR0(i));
+>> +		tmp &= ~tecr0_mask;
+>> +		tmp |= tecr0;
+>> +		lynx_write(serdes, tmp, LNmTECR0(i));
+>> +
+>> +		tmp = lynx_read(serdes, LNmTTLCR0(i));
+>> +		tmp &= ~LNmTTLCR0_FLT_SEL;
+>> +		tmp |= FIELD_PREP(LNmTTLCR0_FLT_SEL, params->flt_sel);
+>> +		lynx_write(serdes, tmp, LNmTTLCR0(i));
+>> +	}
+>> +
+>> +	ndelay(120);
+>> +
+>> +	for_each_lane_reverse(i, group) {
+>> +		tmp = lynx_read(serdes, LNmGCR0(i));
+>> +		tmp |= LNmGCR0_RRST_B | LNmGCR0_TRST_B;
+>> +		lynx_write(serdes, tmp, LNmGCR0(i));
+>> +	}
+>> +
+>> +	/* Enable the new controller */
+>> +	serdes->cfg->mode_apply(serdes, new_mode, proto);
+>> +	if (proto == LYNX_PROTO_1000BASEKX) {
+>> +		group->ex_dly = serdes->ex_dlys[pll];
+>> +		/* This should never fail since it's from our internal driver */
+>> +		WARN_ON_ONCE(clk_prepare_enable(group->ex_dly));
+>> +	}
+>> +	group->proto = proto;
+>> +
+>> +	dev_dbg(&phy->dev, "set mode to %s on lanes %u to %u\n",
+>> +		lynx_proto_str[proto], group->first_lane, group->last_lane);
+>> +
+>> +out:
+>> +	mutex_unlock(&serdes->lock);
+>> +	return ret;
+>> +}
+>> +
+>> +static const struct phy_ops lynx_phy_ops = {
+>> +	.init = lynx_init,
+>> +	.exit = lynx_exit,
+>> +	.power_on = lynx_power_on,
+>> +	.power_off = lynx_power_off,
+>> +	.set_mode = lynx_set_mode,
+>> +	.validate = lynx_validate,
+>> +	.owner = THIS_MODULE,
+>> +};
+>> +
+>> +static int lynx_read_u32(struct device *dev, struct fwnode_handle *fwnode,
+>> +			 const char *prop, u32 *val)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = fwnode_property_read_u32(fwnode, prop, val);
+>> +	if (ret)
+>> +		dev_err(dev, "could not read %s from %pfwP: %d\n", prop,
+>> +			fwnode, ret);
+>> +	return ret;
+>> +}
+>> +
+>> +static int lynx_probe_group(struct lynx_priv *serdes, struct lynx_group *group,
+>> +			    struct fwnode_handle *fwnode, bool initialize)
+>> +{
+>> +	int i, lane_count, ret;
+>> +	struct device *dev = serdes->dev;
+>> +	struct fwnode_handle *mode_node;
+>> +	struct lynx_mode *modes;
+>> +	struct phy *phy;
+>> +	u32 *lanes = NULL;
+>> +
+>> +	group->serdes = serdes;
+>> +
+>> +	lane_count = fwnode_property_count_u32(fwnode, "reg");
+>> +	if (lane_count < 0) {
+>> +		dev_err(dev, "could not read %s from %pfwP: %d\n",
+>> +			"reg", fwnode, lane_count);
+>> +		return lane_count;
+>> +	}
+>> +
+>> +	lanes = kcalloc(lane_count, sizeof(*lanes), GFP_KERNEL);
+>> +	if (!lanes)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = fwnode_property_read_u32_array(fwnode, "reg", lanes, lane_count);
+>> +	if (ret) {
+>> +		dev_err(dev, "could not read %s from %pfwP: %d\n",
+>> +			"reg", fwnode, ret);
+>> +		goto out;
+>> +	}
+>> +
+>> +	group->first_lane = lanes[0];
+>> +	group->last_lane = lanes[lane_count - 1];
+>> +	for (i = 0; i < lane_count; i++) {
+>> +		u32 prots, gcr0;
+>> +
+>> +		if (lanes[i] > serdes->cfg->lanes) {
+>> +			ret = -EINVAL;
+>> +			dev_err(dev, "lane %d not in range 0 to %u\n",
+>> +				i, serdes->cfg->lanes);
+>> +			goto out;
+>> +		}
+>> +
+>> +		if (lanes[i] != group->first_lane +
+>> +				i * !!(group->last_lane - group->first_lane)) {
+>> +			ret = -EINVAL;
+>> +			dev_err(dev, "lane %d is not monotonic\n", i);
+>> +			goto out;
+>> +		}
+>> +
+>> +		gcr0 = lynx_read(serdes, LNmGCR0(lanes[i]));
+>> +		prots = FIELD_GET(LNmGCR0_PROTS, gcr0);
+>> +		if (i && group->prots != prots) {
+>> +			ret = -EIO;
+>> +			dev_err(dev, "lane %d protocol does not match lane 0\n",
+>> +				lanes[i]);
+>> +			goto out;
+>> +		}
+>> +		group->prots = prots;
+>> +	}
+>> +
+>> +	fwnode_for_each_child_node(fwnode, mode_node)
+>> +		group->mode_count++;
+>> +
+>> +	modes = devm_kcalloc(dev, group->mode_count, sizeof(*group->modes),
+>> +			     GFP_KERNEL);
+>> +	if (!modes) {
+>> +		ret = -ENOMEM;
+>> +		goto out;
+>> +	}
+>> +
+>> +	i = 0;
+>> +	fwnode_for_each_child_node(fwnode, mode_node) {
+>> +		struct lynx_mode *mode = &modes[i++];
+>> +		u32 val;
+>> +
+>> +		ret = lynx_read_u32(dev, mode_node, "fsl,pccr", &val);
+>> +		if (ret)
+>> +			goto out;
+>> +		mode->pccr = val;
+>> +
+>> +		ret = lynx_read_u32(dev, mode_node, "fsl,index", &val);
+>> +		if (ret)
+>> +			goto out;
+>> +		mode->idx = val;
+>> +
+>> +		ret = lynx_read_u32(dev, mode_node, "fsl,cfg", &val);
+>> +		if (ret)
+>> +			goto out;
+>> +		mode->cfg = val;
+>> +
+>> +		ret = lynx_read_u32(dev, mode_node, "fsl,type", &val);
+>> +		if (ret)
+>> +			goto out;
+>> +
+>> +		ret = serdes->cfg->mode_init(serdes, mode, val);
+>> +		if (ret)
+>> +			goto out;
+>> +
+>> +		dev_dbg(dev, "mode PCCR%X.%s%c_CFG=%x on lanes %u to %u\n",
+>> +			mode->pccr, lynx_proto_str[__ffs(mode->protos)],
+>> +			'A' + mode->idx, mode->cfg, group->first_lane,
+>> +			group->last_lane);
+>> +	}
+>> +
+>> +	WARN_ON(i != group->mode_count);
+>> +	group->modes = modes;
+>> +
+>> +	if (initialize) {
+>> +		/* Deselect anything configured by the RCW/bootloader */
+>> +		for (i = 0; i < group->mode_count; i++)
+>> +			serdes->cfg->mode_apply(serdes, &group->modes[i],
+>> +						LYNX_PROTO_NONE);
+>> +
+>> +		/* Disable the lanes for now */
+>> +		lynx_power_off_group(group);
+>> +		group->initialized = true;
+>> +	}
+>> +
+>> +	phy = devm_phy_create(dev, to_of_node(fwnode), &lynx_phy_ops);
+>> +	ret = PTR_ERR_OR_ZERO(phy);
+>> +	if (ret)
+>> +		dev_err_probe(dev, ret, "could not create phy\n");
+>> +	else
+>> +		phy_set_drvdata(phy, group);
+>> +
+>> +out:
+>> +	kfree(lanes);
+>> +	return ret;
+>> +}
+>> +
+>> +static int lynx_probe(struct platform_device *pdev)
+>> +{
+>> +	bool compat;
+>> +	int ret, i = 0;
+>> +	struct device *dev = &pdev->dev;
+>> +	struct fwnode_handle *group_node;
+>> +	struct lynx_priv *serdes;
+>> +	struct phy_provider *provider;
+>> +	struct regmap_config regmap_config = {
+>> +		.reg_bits = 32,
+>> +		.reg_stride = 4,
+>> +		.val_bits = 32,
+>> +		.disable_locking = true,
+>> +	};
+>> +	struct resource *res;
+>> +	void __iomem *base;
+>> +
+>> +	serdes = devm_kzalloc(dev, sizeof(*serdes), GFP_KERNEL);
+>> +	if (!serdes)
+>> +		return -ENOMEM;
+>> +
+>> +	serdes->dev = dev;
+>> +	platform_set_drvdata(pdev, serdes);
+>> +	mutex_init(&serdes->lock);
+>> +	serdes->cfg = device_get_match_data(dev);
+>> +
+>> +	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+>> +	if (IS_ERR(base)) {
+>> +		ret = PTR_ERR(base);
+>> +		dev_err_probe(dev, ret, "could not get/map registers\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	regmap_config.val_format_endian = serdes->cfg->endian;
+>> +	regmap_config.max_register = res->end - res->start;
+>> +	serdes->regmap = devm_regmap_init_mmio(dev, base, &regmap_config);
+>> +	if (IS_ERR(serdes->regmap)) {
+>> +		ret = PTR_ERR(serdes->regmap);
+>> +		dev_err_probe(dev, ret, "could not create regmap\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	compat = device_property_present(dev, "fsl,unused-lanes-reserved");
+>> +	ret = lynx_clks_init(dev, serdes->regmap, serdes->plls,
+>> +			     serdes->ex_dlys, compat);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	serdes->group_count = device_get_child_node_count(dev);
+>> +	serdes->groups = devm_kcalloc(dev, serdes->group_count,
+>> +				      sizeof(*serdes->groups), GFP_KERNEL);
+>> +	if (!serdes->groups)
+>> +		return -ENOMEM;
+>> +
+>> +	device_for_each_child_node(dev, group_node) {
+>> +		ret = lynx_probe_group(serdes, &serdes->groups[i++],
+>> +				       group_node, !compat);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +	WARN_ON(i != serdes->group_count);
+>> +
+>> +	provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+>> +	ret = PTR_ERR_OR_ZERO(provider);
+>> +	if (ret)
+>> +		dev_err_probe(dev, ret, "could not register phy provider\n");
+>> +	else
+>> +		dev_info(dev, "probed with %u lanes and %u groups\n",
+>> +			 serdes->cfg->lanes, serdes->group_count);
+>> +	return ret;
+>> +}
+>> +
+>> +/*
+>> + * These are common helpers for the PCCRs found on (most) Layerscape SoCs.
+>> + * There is an earlier layout used on most T-series SoCs, as well as the
+>> + * LS1020A/21A/22A.
+>> + */
+>> +
+>> +static int lynx_ls_pccr_params(const struct lynx_mode *mode, u32 *off,
+>> +			       u32 *shift, u32 *mask)
+>> +{
+>> +	if (mode->protos & PROTO_MASK(SGMII)) {
+>> +		*off = LS_PCCRa(0x8);
+>> +		*mask = PCCR8_SGMIIa_MASK;
+>> +		*shift = PCCR8_SGMIIa_SHIFT(mode->idx);
+>> +	} else if (mode->protos & PROTO_MASK(QSGMII)) {
+>> +		*off = LS_PCCRa(0x9);
+>> +		*mask = PCCR9_QSGMIIa_MASK;
+>> +		*shift = PCCR9_QSGMIIa_SHIFT(mode->idx);
+>> +	} else if (mode->protos & PROTO_MASK(XFI)) {
+>> +		*off = LS_PCCRa(0xB);
+>> +		*mask = PCCRB_XFIa_MASK;
+>> +		*shift = PCCRB_XFIa_SHIFT(mode->idx);
+>> +	} else {
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static bool lynx_ls_mode_conflict(struct lynx_priv *serdes,
+>> +				  const struct lynx_mode *mode)
+>> +{
+>> +	u32 off, shift, mask;
+>> +
+>> +	if (WARN_ON_ONCE(lynx_ls_pccr_params(mode, &off, &shift, &mask)))
+>> +		return true;
+>> +
+>> +	return (lynx_read(serdes, off) >> shift) & mask;
+>> +}
+>> +
+>> +static void lynx_ls_mode_apply(struct lynx_priv *serdes,
+>> +			       const struct lynx_mode *mode,
+>> +			       enum lynx_protocol proto)
+>> +{
+>> +	u32 pccr, off, shift, mask;
+>> +
+>> +	if (WARN_ON_ONCE(proto != LYNX_PROTO_NONE &&
+>> +			 !(mode->protos & BIT(proto))))
+>> +		return;
+>> +	if (WARN_ON_ONCE(lynx_ls_pccr_params(mode, &off, &shift, &mask)))
+>> +		return;
+>> +
+>> +	dev_dbg(serdes->dev, "applying %s to PCCR%X.%s%c_CFG\n",
+>> +		lynx_proto_str[proto], mode->pccr,
+>> +		lynx_proto_str[__ffs(mode->protos)], 'A' + mode->idx);
+>> +
+>> +	pccr = lynx_read(serdes, off);
+>> +	pccr &= ~(mask << shift);
+>> +	if (proto != LYNX_PROTO_NONE)
+>> +		pccr |= mode->cfg << shift;
+>> +
+>> +	if (proto == LYNX_PROTO_1000BASEKX)
+>> +		pccr |= PCCR8_SGMIIa_KX << shift;
+>> +	lynx_write(serdes, pccr, off);
+>> +
+>> +	if (mode->protos & PROTO_MASK(SGMII)) {
+>> +		u32 cr1 = lynx_read(serdes, LS_SGMIIaCR1(mode->idx));
+>> +
+>> +		cr1 &= ~SGMIIaCR1_SGPCS_EN;
+>> +		cr1 |= proto == LYNX_PROTO_NONE ? 0 : SGMIIaCR1_SGPCS_EN;
+>> +		lynx_write(serdes, cr1, LS_SGMIIaCR1(mode->idx));
+>> +	}
+>> +}
+>> +
+>> +static int lynx_ls_mode_init(struct lynx_priv *serdes, struct lynx_mode *mode,
+>> +			     int type)
+>> +{
+>> +	u32 max = 0, off, shift, mask;
+>> +
+>> +	if (mode->pccr >= 0x10) {
+>> +		dev_err(serdes->dev, "PCCR index %u too large\n", mode->pccr);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	switch (type) {
+>> +	case PHY_TYPE_2500BASEX:
+>> +		mode->protos = PROTO_MASK(SGMII25);
+>> +		fallthrough;
+>> +	case PHY_TYPE_SGMII:
+>> +		max = 8;
+>> +		mode->protos |= PROTO_MASK(SGMII) | PROTO_MASK(1000BASEKX);
+>> +		break;
+>> +	case PHY_TYPE_QSGMII:
+>> +		max = 4;
+>> +		mode->protos = PROTO_MASK(QSGMII);
+>> +		break;
+>> +	case PHY_TYPE_10GBASER:
+>> +		max = 8;
+>> +		mode->protos = PROTO_MASK(XFI) | PROTO_MASK(10GKR);
+>> +		break;
+>> +	default:
+>> +		dev_err(serdes->dev, "unknown mode type %d\n", type);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	if (mode->idx >= max) {
+>> +		dev_err(serdes->dev, "%s index %u too large\n",
+>> +			lynx_proto_str[__ffs(mode->protos)], mode->idx);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	if (WARN_ON_ONCE(lynx_ls_pccr_params(mode, &off, &shift, &mask)))
+>> +		return -EINVAL;
+>> +
+>> +	if (!mode->cfg || mode->cfg & ~mask) {
+>> +		dev_err(serdes->dev, "bad value %x for %s%c_CFG\n",
+>> +			mode->cfg, lynx_proto_str[__ffs(mode->protos)],
+>> +			'A' + mode->idx);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static const struct lynx_cfg ls1046a_cfg = {
+>> +	.lanes = 4,
+>> +	.endian = REGMAP_ENDIAN_BIG,
+>> +	.mode_conflict = lynx_ls_mode_conflict,
+>> +	.mode_apply = lynx_ls_mode_apply,
+>> +	.mode_init = lynx_ls_mode_init,
+>> +};
+>> +
+>> +static const struct lynx_cfg ls1088a_cfg = {
+>> +	.lanes = 4,
+>> +	.endian = REGMAP_ENDIAN_LITTLE,
+>> +	.mode_conflict = lynx_ls_mode_conflict,
+>> +	.mode_apply = lynx_ls_mode_apply,
+>> +	.mode_init = lynx_ls_mode_init,
+> 
+> So you have cfg with mode_xxx pointing to same functions for both of the
+> versions you support... so question is why do this and not call the
+> functions directly?
 
-- L1 requests the L0 create a L2 with
-  H_GUEST_CREATE() and receives a handle to use in future hcalls
+The intention is to make it easy to add support for T-series processors,
+which have a different PCCR layout.
 
-- L1 requests the L0 create a L2 vCPU with
-  H_GUEST_CREATE_VCPU()
+>> +};
+>> +
+>> +static const struct of_device_id lynx_of_match[] = {
+>> +	{ .compatible = "fsl,ls1046a-serdes", .data = &ls1046a_cfg },
+>> +	{ .compatible = "fsl,ls1088a-serdes", .data = &ls1088a_cfg },
+>> +	{ },
+>> +};
+>> +MODULE_DEVICE_TABLE(of, lynx_of_match);
+>> +
+>> +static struct platform_driver lynx_driver = {
+>> +	.probe = lynx_probe,
+>> +	.driver = {
+>> +		.name = "lynx_10g",
+>> +		.of_match_table = lynx_of_match,
+>> +	},
+>> +};
+>> +module_platform_driver(lynx_driver);
+>> +
+>> +MODULE_AUTHOR("Sean Anderson <sean.anderson@seco.com>");
+>> +MODULE_DESCRIPTION("Lynx 10G SerDes driver");
+>> +MODULE_LICENSE("GPL");
+>> -- 
+>> 2.35.1.1320.gc452695387.dirty
+> 
 
-- L1 sets up the L2 using H_GUEST_SET and the
-  H_GUEST_VCPU_RUN input buffer
-
-- L1 requests the L0 runs the L2 vCPU using H_GUEST_VCPU_RUN()
-
-- L2 returns to L1 with an exit reason and L1 reads the
-  H_GUEST_VCPU_RUN output buffer populated by the L0
-
-- L1 handles the exit using H_GET_STATE if necessary
-
-- L1 reruns L2 vCPU with H_GUEST_VCPU_RUN
-
-- L1 frees the L2 in the L0 with H_GUEST_DELETE()
-
-Support for the new API is determined by trying
-H_GUEST_GET_CAPABILITIES. On a successful return, the new API will then
-be used.
-
-Use the vcpu register state setters for tracking modified guest state
-elements and copy the thread wide values into the H_GUEST_VCPU_RUN input
-buffer immediately before running a L2. The guest wide
-elements can not be added to the input buffer so send them with a
-seperate H_GUEST_SET call if necessary.
-
-Make the vcpu register getter load the corresponding value from the real
-host with H_GUEST_GET. To avoid unnecessarily calling H_GUEST_GET, track
-which values have already been loaded between H_GUEST_VCPU_RUN calls. If
-an element is present in the H_GUEST_VCPU_RUN output buffer it also does
-not need to be loaded again.
-
-There is existing support for running nested guests on KVM
-with powernv. However the interface used for this is not supported by
-other PAPR hosts. This existing API is still supported.
-
-Signed-off-by: Jordan Niethe <jpn@linux.vnet.ibm.com>
----
- Documentation/powerpc/index.rst               |   1 +
- Documentation/powerpc/kvm-nested.rst          | 636 ++++++++++++
- arch/powerpc/include/asm/guest-state-buffer.h | 150 ++-
- arch/powerpc/include/asm/hvcall.h             |  30 +
- arch/powerpc/include/asm/kvm_book3s.h         | 122 ++-
- arch/powerpc/include/asm/kvm_book3s_64.h      |   6 +
- arch/powerpc/include/asm/kvm_host.h           |  21 +
- arch/powerpc/include/asm/kvm_ppc.h            |  64 +-
- arch/powerpc/include/asm/plpar_wrappers.h     | 198 ++++
- arch/powerpc/kvm/Makefile                     |   1 +
- arch/powerpc/kvm/book3s_hv.c                  | 118 ++-
- arch/powerpc/kvm/book3s_hv.h                  |  75 +-
- arch/powerpc/kvm/book3s_hv_nested.c           |  34 +-
- arch/powerpc/kvm/book3s_hv_papr.c             | 947 ++++++++++++++++++
- arch/powerpc/kvm/emulate_loadstore.c          |   4 +-
- 15 files changed, 2314 insertions(+), 93 deletions(-)
- create mode 100644 Documentation/powerpc/kvm-nested.rst
- create mode 100644 arch/powerpc/kvm/book3s_hv_papr.c
-
-diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
-index 85e80e30160b..5a15dc6389ab 100644
---- a/Documentation/powerpc/index.rst
-+++ b/Documentation/powerpc/index.rst
-@@ -25,6 +25,7 @@ powerpc
-     isa-versions
-     kaslr-booke32
-     mpc52xx
-+    kvm-nested
-     papr_hcalls
-     pci_iov_resource_on_powernv
-     pmu-ebb
-diff --git a/Documentation/powerpc/kvm-nested.rst b/Documentation/powerpc/kvm-nested.rst
-new file mode 100644
-index 000000000000..942f422d61a9
---- /dev/null
-+++ b/Documentation/powerpc/kvm-nested.rst
-@@ -0,0 +1,636 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================================
-+Nested KVM on POWER
-+====================================
-+
-+Introduction
-+============
-+
-+This document explains how a guest operating system can act as a
-+hypervisor and run nested guests through the use of hypercalls, if the
-+hypervisor has implemented them. The terms L0, L1, and L2 are used to
-+refer to different software entities. L0 is the hypervisor mode entity
-+that would normally be called the "host" or "hypervisor". L1 is a
-+guest virtual machine that is directly run under L0 and is initiated
-+and controlled by L0. L2 is a guest virtual machine that is initiated
-+and controlled by L1 acting as a hypervisor.
-+
-+Existing API
-+============
-+
-+Linux/KVM has had support for Nesting as an L0 or L1 since 2018
-+
-+The L0 code was added::
-+
-+   commit 8e3f5fc1045dc49fd175b978c5457f5f51e7a2ce
-+   Author: Paul Mackerras <paulus@ozlabs.org>
-+   Date:   Mon Oct 8 16:31:03 2018 +1100
-+   KVM: PPC: Book3S HV: Framework and hcall stubs for nested virtualization
-+
-+The L1 code was added::
-+
-+   commit 360cae313702cdd0b90f82c261a8302fecef030a
-+   Author: Paul Mackerras <paulus@ozlabs.org>
-+   Date:   Mon Oct 8 16:31:04 2018 +1100
-+   KVM: PPC: Book3S HV: Nested guest entry via hypercall
-+
-+This API works primarily using a single hcall h_enter_nested(). This
-+call made by the L1 to tell the L0 to start an L2 vCPU with the given
-+state. The L0 then starts this L2 and runs until an L2 exit condition
-+is reached. Once the L2 exits, the state of the L2 is given back to
-+the L1 by the L0. The full L2 vCPU state is always transferred from
-+and to L1 when the L2 is run. The L0 doesn't keep any state on the L2
-+vCPU (except in the short sequence in the L0 on L1 -> L2 entry and L2
-+-> L1 exit).
-+
-+The only state kept by the L0 is the partition table. The L1 registers
-+it's partition table using the h_set_partition_table() hcall. All
-+other state held by the L0 about the L2s is cached state (such as
-+shadow page tables).
-+
-+The L1 may run any L2 or vCPU without first informing the L0. It
-+simply starts the vCPU using h_enter_nested(). The creation of L2s and
-+vCPUs is done implicitly whenever h_enter_nested() is called.
-+
-+In this document, we call this existing API the v1 API.
-+
-+New PAPR API
-+===============
-+
-+The new PAPR API changes from the v1 API such that the creating L2 and
-+associated vCPUs is explicit. In this document, we call this the v2
-+API.
-+
-+h_enter_nested() is replaced with H_GUEST_VCPU_RUN().  Before this can
-+be called the L1 must explicitly create the L2 using h_guest_create()
-+and any associated vCPUs() created with h_guest_create_vCPU(). Getting
-+and setting vCPU state can also be performed using h_guest_{g|s}et
-+hcall.
-+
-+The basic execution flow is for an L1 to create an L2, run it, and
-+delete it is:
-+
-+- L1 and L0 negotiate capabilities with H_GUEST_{G,S}ET_CAPABILITIES()
-+  (normally at L1 boot time).
-+
-+- L1 requests the L0 create an L2 with H_GUEST_CREATE() and receives a token
-+
-+- L1 requests the L0 create an L2 vCPU with H_GUEST_CREATE_VCPU()
-+
-+- L1 and L0 communicate the vCPU state using the H_GUEST_{G,S}ET() hcall
-+
-+- L1 requests the L0 runs the vCPU running H_GUEST_VCPU_RUN() hcall
-+
-+- L1 deletes L2 with H_GUEST_DELETE()
-+
-+More details of the individual hcalls follows:
-+
-+HCALL Details
-+=============
-+
-+This documentation is provided to give an overall understating of the
-+API. It doesn't aim to provide all the details required to implement
-+an L1 or L0. Latest version of PAPR can be referred for more details.
-+
-+All these HCALLs are made by the L1 to the L0.
-+
-+H_GUEST_GET_CAPABILITIES()
-+--------------------------
-+
-+This is called to get the capabilities of the L0 nested
-+hypervisor. This includes capabilities such the CPU versions (eg
-+POWER9, POWER10) that are supported as L2s::
-+
-+  H_GUEST_GET_CAPABILITIES(uint64 flags)
-+
-+  Parameters:
-+    Input:
-+      flags: Reserved
-+    Output:
-+      R3: Return code
-+      R4: Hypervisor Supported Capabilities bitmap 1
-+
-+H_GUEST_SET_CAPABILITIES()
-+--------------------------
-+
-+This is called to inform the L0 of the capabilities of the L1
-+hypervisor. The set of flags passed here are the same as
-+H_GUEST_GET_CAPABILITIES()
-+
-+Typically, GET will be called first and then SET will be called with a
-+subset of the flags returned from GET. This process allows the L0 and
-+L1 to negotiate an agreed set of capabilities::
-+
-+  H_GUEST_SET_CAPABILITIES(uint64 flags,
-+                           uint64 capabilitiesBitmap1)
-+  Parameters:
-+    Input:
-+      flags: Reserved
-+      capabilitiesBitmap1: Only capabilities advertised through
-+                           H_GUEST_GET_CAPABILITIES
-+    Output:
-+      R3: Return code
-+      R4: If R3 = H_P2: The number of invalid bitmaps
-+      R5: If R3 = H_P2: The index of first invalid bitmap
-+
-+H_GUEST_CREATE()
-+----------------
-+
-+This is called to create an L2. A unique ID of the L2 created
-+(similar to an LPID) is returned, which can be used on subsequent HCALLs to
-+identify the L2::
-+
-+  H_GUEST_CREATE(uint64 flags,
-+                 uint64 continueToken);
-+  Parameters:
-+    Input:
-+      flags: Reserved
-+      continueToken: Initial call set to -1. Subsequent calls,
-+                     after H_Busy or H_LongBusyOrder has been
-+                     returned, value that was returned in R4.
-+    Output:
-+      R3: Return code. Notable:
-+        H_Not_Enough_Resources: Unable to create Guest VCPU due to not
-+        enough Hypervisor memory. See H_GUEST_CREATE_GET_STATE(flags =
-+        takeOwnershipOfVcpuState)
-+      R4: If R3 = H_Busy or_H_LongBusyOrder -> continueToken
-+
-+H_GUEST_CREATE_VCPU()
-+---------------------
-+
-+This is called to create a vCPU associated with an L2. The L2 id
-+(returned from H_GUEST_CREATE()) should be passed it. Also passed in
-+is a unique (for this L2) vCPUid. This vCPUid is allocated by the
-+L1::
-+
-+  H_GUEST_CREATE_VCPU(uint64 flags,
-+                      uint64 guestId,
-+                      uint64 vcpuId);
-+  Parameters:
-+    Input:
-+      flags: Reserved
-+      guestId: ID obtained from H_GUEST_CREATE
-+      vcpuId: ID of the vCPU to be created. This must be within the
-+              range of 0 to 2047
-+    Output:
-+      R3: Return code. Notable:
-+        H_Not_Enough_Resources: Unable to create Guest VCPU due to not
-+        enough Hypervisor memory. See H_GUEST_CREATE_GET_STATE(flags =
-+        takeOwnershipOfVcpuState)
-+
-+H_GUEST_GET_STATE()
-+-------------------
-+
-+This is called to get state associated with an L2 (Guest-wide or vCPU specific).
-+This info is passed via the Guest State Buffer (GSB), a standard format as
-+explained later in this doc, necessary details below:
-+
-+This can set either L2 wide or vcpu specific information. Examples of
-+L2 wide is the timebase offset or process scoped page table
-+info. Examples of vCPU wide are GPRs or VSRs. A bit in the flags
-+parameter specifies if this call is L2 wide or vCPU specific and the
-+IDs in the GSB must match this.
-+
-+The L1 provides a pointer to the GSB as a parameter to this call. Also
-+provided is the L2 and vCPU IDs associated with the state to set.
-+
-+The L1 writes only the IDs and sizes in the GSB.  L0 writes the
-+associated values for each ID in the GSB::
-+
-+  H_GUEST_GET_STATE(uint64 flags,
-+                           uint64 guestId,
-+                           uint64 vcpuId,
-+                           uint64 dataBuffer,
-+                           uint64 dataBufferSizeInBytes);
-+  Parameters:
-+    Input:
-+      flags:
-+         Bit 0: getGuestWideState: Request state of the Guest instead
-+           of an individual VCPU.
-+         Bit 1: takeOwnershipOfVcpuState Indicate the L1 is taking
-+           over ownership of the VCPU state and that the L0 can free
-+           the storage holding the state. The VCPU state will need to
-+           be returned to the Hypervisor via H_GUEST_SET_STATE prior
-+           to H_GUEST_RUN_VCPU being called for this VCPU. The data
-+           returned in the dataBuffer is in a Hypervisor internal
-+           format.
-+         Bits 2-63: Reserved
-+      guestId: ID obtained from H_GUEST_CREATE
-+      vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
-+      dataBuffer: A L1 real address of the GSB.
-+        If takeOwnershipOfVcpuState, size must be at least the size
-+        returned by ID=0x0001
-+      dataBufferSizeInBytes: Size of dataBuffer
-+    Output:
-+      R3: Return code
-+      R4: If R3 = H_Invalid_Element_Id: The array index of the bad
-+            element ID.
-+          If R3 = H_Invalid_Element_Size: The array index of the bad
-+             element size.
-+          If R3 = H_Invalid_Element_Value: The array index of the bad
-+             element value.
-+
-+H_GUEST_SET_STATE()
-+-------------------
-+
-+This is called to set L2 wide or vCPU specific L2 state. This info is
-+passed via the Guest State Buffer (GSB), necessary details below:
-+
-+This can set either L2 wide or vcpu specific information. Examples of
-+L2 wide is the timebase offset or process scoped page table
-+info. Examples of vCPU wide are GPRs or VSRs. A bit in the flags
-+parameter specifies if this call is L2 wide or vCPU specific and the
-+IDs in the GSB must match this.
-+
-+The L1 provides a pointer to the GSB as a parameter to this call. Also
-+provided is the L2 and vCPU IDs associated with the state to set.
-+
-+The L1 writes all values in the GSB and the L0 only reads the GSB for
-+this call::
-+
-+  H_GUEST_SET_STATE(uint64 flags,
-+                    uint64 guestId,
-+                    uint64 vcpuId,
-+                    uint64 dataBuffer,
-+                    uint64 dataBufferSizeInBytes);
-+  Parameters:
-+    Input:
-+      flags:
-+         Bit 0: getGuestWideState: Request state of the Guest instead
-+           of an individual VCPU.
-+         Bit 1: returnOwnershipOfVcpuState Return Guest VCPU state. See
-+           GET_STATE takeOwnershipOfVcpuState
-+         Bits 2-63: Reserved
-+      guestId: ID obtained from H_GUEST_CREATE
-+      vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
-+      dataBuffer: A L1 real address of the GSB.
-+        If takeOwnershipOfVcpuState, size must be at least the size
-+        returned by ID=0x0001
-+      dataBufferSizeInBytes: Size of dataBuffer
-+    Output:
-+      R3: Return code
-+      R4: If R3 = H_Invalid_Element_Id: The array index of the bad
-+            element ID.
-+          If R3 = H_Invalid_Element_Size: The array index of the bad
-+             element size.
-+          If R3 = H_Invalid_Element_Value: The array index of the bad
-+             element value.
-+
-+H_GUEST_RUN_VCPU()
-+------------------
-+
-+This is called to run an L2 vCPU. The L2 and vCPU IDs are passed in as
-+parameters. The vCPU run with the state set previously using
-+H_GUEST_SET_STATE(). When the L2 exits, the L1 will resume from this
-+hcall.
-+
-+This hcall also has associated input and output GSBs. Unlike
-+H_GUEST_{S,G}ET_STATE(), these GSB pointers are not passed in as
-+parameters to the hcall (This was done in the interest of
-+performance). The locations of these GSBs must be preregistered using
-+the H_GUEST_SET_STATE() call with ID 0x0c00 and 0x0c01 (see table
-+below).
-+
-+The input GSB may contain only VCPU wide elements to be set. This GSB
-+may also contain zero elements (ie 0 in the first 4 bytes of the GSB)
-+if nothing needs to be set.
-+
-+On exit from the hcall, the output buffer is filled with elements
-+determined by the L0. The reason for the exit is contained in GPR4 (ie
-+NIP is put in GPR4).  The elements returned depend on the exit
-+type. For example, if the exit reason is the L2 doing a hcall (GPR4 =
-+0xc00), then GPR3-12 are provided in the output GSB as this is the
-+state likely needed to service the hcall. If additional state is
-+needed, H_GUEST_GET_STATE() may be called by the L1.
-+
-+To synthesize interrupts in the L2, when calling H_GUEST_RUN_VCPU()
-+the L1 may set a flag (as a hcall parameter) and the L0 will
-+synthesize the interrupt in the L2. Alternatively, the L1 may
-+synthesize the interrupt itself using H_GUEST_SET_STATE() or the
-+H_GUEST_RUN_VCPU() input GSB to set the state appropriately::
-+
-+  H_GUEST_RUN_VCPU(uint64 flags,
-+                   uint64 guestId,
-+                   uint64 vcpuId,
-+                   uint64 dataBuffer,
-+                   uint64 dataBufferSizeInBytes);
-+  Parameters:
-+    Input:
-+      flags:
-+         Bit 0: generateExternalInterrupt: Generate an external interrupt
-+         Bit 1: generatePrivilegedDoorbell: Generate a Privileged Doorbell
-+         Bit 2: sendToSystemReset”: Generate a System Reset Interrupt
-+         Bits 3-63: Reserved
-+      guestId: ID obtained from H_GUEST_CREATE
-+      vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
-+    Output:
-+      R3: Return code
-+      R4: If R3 = H_Success: The reason L1 VCPU exited (ie. NIA)
-+            0x000: The VCPU stopped running for an unspecified reason. An
-+              example of this is the Hypervisor stopping a VCPU running
-+              due to an outstanding interrupt for the Host Partition.
-+            0x980: HDEC
-+            0xC00: HCALL
-+            0xE00: HDSI
-+            0xE20: HISI
-+            0xE40: HEA
-+            0xF80: HV Fac Unavail
-+          If R3 = H_Invalid_Element_Id, H_Invalid_Element_Size, or
-+            H_Invalid_Element_Value: R4 is offset of the invalid element
-+            in the input buffer.
-+
-+H_GUEST_DELETE()
-+----------------
-+
-+This is called to delete an L2. All associated vCPUs are also
-+deleted. No specific vCPU delete call is provided.
-+
-+A flag may be provided to delete all guests. This is used to reset the
-+L0 in the case of kdump/kexec::
-+
-+  H_GUEST_DELETE(uint64 flags,
-+                 uint64 guestId)
-+  Parameters:
-+    Input:
-+      flags:
-+         Bit 0: deleteAllGuests: deletes all guests
-+         Bits 1-63: Reserved
-+      guestId: ID obtained from H_GUEST_CREATE
-+    Output:
-+      R3: Return code
-+
-+Guest State Buffer
-+==================
-+
-+The Guest State Buffer (GSB) is the main method of communicating state
-+about the L2 between the L1 and L0 via H_GUEST_{G,S}ET() and
-+H_GUEST_VCPU_RUN() calls.
-+
-+State may be associated with a whole L2 (eg timebase offset) or a
-+specific L2 vCPU (eg. GPR state). Only L2 VCPU state maybe be set by
-+H_GUEST_VCPU_RUN(). 
-+
-+All data in the GSB is big endian (as is standard in PAPR)
-+
-+The Guest state buffer has a header which gives the number of
-+elements, followed by the GSB elements themselves.
-+
-+GSB header:
-+
-++----------+----------+-------------------------------------------+
-+|  Offset  |  Size    |  Purpose                                  |
-+|  Bytes   |  Bytes   |                                           |
-++==========+==========+===========================================+
-+|    0     |    4     |  Number of elements                       |
-++----------+----------+-------------------------------------------+
-+|    4     |          |  Guest state buffer elements              |
-++----------+----------+-------------------------------------------+
-+
-+GSB element:
-+
-++----------+----------+-------------------------------------------+
-+|  Offset  |  Size    |  Purpose                                  |
-+|  Bytes   |  Bytes   |                                           |
-++==========+==========+===========================================+
-+|    0     |    2     |  ID                                       |
-++----------+----------+-------------------------------------------+
-+|    2     |    2     |  Size of Value                            |
-++----------+----------+-------------------------------------------+
-+|    4     | As above |  Value                                    |
-++----------+----------+-------------------------------------------+
-+
-+The ID in the GSB element specifies what is to be set. This includes
-+archtected state like GPRs, VSRs, SPRs, plus also some meta data about
-+the partition like the timebase offset and partition scoped page
-+table information.
-+
-++--------+-------+----+--------+----------------------------------+
-+|   ID   | Size  | RW | Thread | Details                          |
-+|        | Bytes |    | Guest  |                                  |
-+|        |       |    | Scope  |                                  |
-++========+=======+====+========+==================================+
-+| 0x0000 |       | RW |   TG   | NOP element                      |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0001 | 0x08  | R  |   G    | Size of L0 vCPU state. See:      |
-+|        |       |    |        | H_GUEST_GET_STATE:               |
-+|        |       |    |        | flags = takeOwnershipOfVcpuState |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0002 | 0x08  | R  |   G    | Size Run vCPU out buffer         |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0003 | 0x04  | RW |   G    | Logical PVR                      |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0004 | 0x08  | RW |   G    | TB Offset (L1 relative)          |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0005 | 0x18  | RW |   G    |Partition scoped page tbl info:   |
-+|        |       |    |        |                                  |
-+|        |       |    |        |- 0x00 Addr part scope table      |
-+|        |       |    |        |- 0x08 Num addr bits              |
-+|        |       |    |        |- 0x10 Size root dir              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0006 | 0x10  | RW |   G    |Process Table Information:        |
-+|        |       |    |        |                                  |
-+|        |       |    |        |- 0x0 Addr proc scope table       |
-+|        |       |    |        |- 0x8 Table size.                 |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0007-|       |    |        | Reserved                         |
-+| 0x0BFF |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0C00 | 0x10  | RW |   T    |Run vCPU Input Buffer:            |
-+|        |       |    |        |                                  |
-+|        |       |    |        |- 0x0 Addr of buffer              |
-+|        |       |    |        |- 0x8 Buffer Size.                |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0C01 | 0x10  | RW |   T    |Run vCPU Output Buffer:           |
-+|        |       |    |        |                                  |
-+|        |       |    |        |- 0x0 Addr of buffer              |
-+|        |       |    |        |- 0x8 Buffer Size.                |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0C02 | 0x08  | RW |   T    | vCPU VPA Address                 |
-++--------+-------+----+--------+----------------------------------+
-+| 0x0C03-|       |    |        | Reserved                         |
-+| 0x0FFF |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1000-| 0x08  | RW |   T    | GPR 0-31                         |
-+| 0x101F |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1020 |  0x08 | T  |   T    | HDEC expiry TB                   |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1021 | 0x08  | RW |   T    | NIA                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1022 | 0x08  | RW |   T    | MSR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1023 | 0x08  | RW |   T    | LR                               |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1024 | 0x08  | RW |   T    | XER                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1025 | 0x08  | RW |   T    | CTR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1026 | 0x08  | RW |   T    | CFAR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1027 | 0x08  | RW |   T    | SRR0                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1028 | 0x08  | RW |   T    | SRR1                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1029 | 0x08  | RW |   T    | DAR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102A | 0x08  | RW |   T    | DEC expiry TB                    |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102B | 0x08  | RW |   T    | VTB                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102C | 0x08  | RW |   T    | LPCR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102D | 0x08  | RW |   T    | HFSCR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102E | 0x08  | RW |   T    | FSCR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x102F | 0x08  | RW |   T    | FPSCR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1030 | 0x08  | RW |   T    | DAWR0                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1031 | 0x08  | RW |   T    | DAWR1                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1032 | 0x08  | RW |   T    | CIABR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1033 | 0x08  | RW |   T    | PURR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1034 | 0x08  | RW |   T    | SPURR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1035 | 0x08  | RW |   T    | IC                               |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1036-| 0x08  | RW |   T    | SPRG 0-3                         |
-+| 0x1039 |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x103A | 0x08  | W  |   T    | PPR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x103B | 0x08  | RW |   T    | MMCR 0-3                         |
-+| 0x103E |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x103F | 0x08  | RW |   T    | MMCRA                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1040 | 0x08  | RW |   T    | SIER                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1041 | 0x08  | RW |   T    | SIER 2                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1042 | 0x08  | RW |   T    | SIER 3                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1043 | 0x08  | RW |   T    | BESCR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1044 | 0x08  | RW |   T    | EBBHR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1045 | 0x08  | RW |   T    | EBBRR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1046 | 0x08  | RW |   T    | AMR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1047 | 0x08  | RW |   T    | IAMR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1048 | 0x08  | RW |   T    | AMOR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1049 | 0x08  | RW |   T    | UAMOR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104A | 0x08  | RW |   T    | SDAR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104B | 0x08  | RW |   T    | SIAR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104C | 0x08  | RW |   T    | DSCR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104D | 0x08  | RW |   T    | TAR                              |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104E | 0x08  | RW |   T    | DEXCR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x104F | 0x08  | RW |   T    | HDEXCR                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1050 | 0x08  | RW |   T    | HASHKEYR                         |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1051 | 0x08  | RW |   T    | HASHPKEYR                        |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1052 | 0x08  | RW |   T    | CTRL                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1053-|       |    |        | Reserved                         |
-+| 0x1FFF |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2000 | 0x04  | RW |   T    | CR                               |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2001 | 0x04  | RW |   T    | PIDR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2002 | 0x04  | RW |   T    | DSISR                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2003 | 0x04  | RW |   T    | VSCR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2004 | 0x04  | RW |   T    | VRSAVE                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2005 | 0x04  | RW |   T    | DAWRX0                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2006 | 0x04  | RW |   T    | DAWRX1                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0x2007-| 0x04  | RW |   T    | PMC 1-6                          |
-+| 0x200c |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x200D | 0x04  | RW |   T    | WORT                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x200E | 0x04  | RW |   T    | PSPB                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0x200F-|       |    |        | Reserved                         |
-+| 0x2FFF |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x3000-| 0x10  | RW |   T    | VSR 0-63                         |
-+| 0x303F |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0x3040-|       |    |        | Reserved                         |
-+| 0xEFFF |       |    |        |                                  |
-++--------+-------+----+--------+----------------------------------+
-+| 0xF000 | 0x08  | R  |   T    | HDAR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0xF001 | 0x04  | R  |   T    | HDSISR                           |
-++--------+-------+----+--------+----------------------------------+
-+| 0xF002 | 0x04  | R  |   T    | HEIR                             |
-++--------+-------+----+--------+----------------------------------+
-+| 0xF003 | 0x08  | R  |   T    | ASDR                             |
-++--------+-------+----+--------+----------------------------------+
-+
-+
-+Miscellaneous info
-+==================
-+
-+State not in ptregs/hvregs
-+--------------------------
-+
-+In the v1 API, some state is not in the ptregs/hvstate. This includes
-+the vector register and some SPRs. For the L1 to set this state for
-+the L2, the L1 loads up these hardware registers before the
-+h_enter_nested() call and the L0 ensures they end up as the L2 state
-+(by not touching them).
-+
-+The v2 API removes this and explicitly sets this state via the GSB.
-+
-+L1 Implementation details: Caching state
-+----------------------------------------
-+
-+In the v1 API, all state is sent from the L1 to the L0 and vice versa
-+on every h_enter_nested() hcall. If the L0 is not currently running
-+any L2s, the L0 has no state information about them. The only
-+exception to this is the location of the partition table, registered
-+via h_set_partition_table().
-+
-+The v2 API changes this so that the L0 retains the L2 state even when
-+it's vCPUs are no longer running. This means that the L1 only needs to
-+communicate with the L0 about L2 state when it needs to modify the L2
-+state, or when it's value is out of date. This provides an opportunity
-+for performance optimisation.
-+
-+When a vCPU exits from a H_GUEST_RUN_VCPU() call, the L1 internally
-+marks all L2 state as invalid. This means that if the L1 wants to know
-+the L2 state (say via a kvm_get_one_reg() call), it needs call
-+H_GUEST_GET_STATE() to get that state. Once it's read, it's marked as
-+valid in L1 until the L2 is run again.
-+
-+Also, when an L1 modifies L2 vcpu state, it doesn't need to write it
-+to the L0 until that L2 vcpu runs again. Hence when the L1 updates
-+state (say via a kvm_set_one_reg() call), it writes to an internal L1
-+copy and only flushes this copy to the L0 when the L2 runs again via
-+the H_GUEST_VCPU_RUN() input buffer.
-+
-+This lazy updating of state by the L1 avoids unnecessary
-+H_GUEST_{G|S}ET_STATE() calls.
-+
-+
-diff --git a/arch/powerpc/include/asm/guest-state-buffer.h b/arch/powerpc/include/asm/guest-state-buffer.h
-index 332669302a0b..0ac1e4374630 100644
---- a/arch/powerpc/include/asm/guest-state-buffer.h
-+++ b/arch/powerpc/include/asm/guest-state-buffer.h
-@@ -5,6 +5,7 @@
- #ifndef _ASM_POWERPC_GUEST_STATE_BUFFER_H
- #define _ASM_POWERPC_GUEST_STATE_BUFFER_H
- 
-+#include "asm/hvcall.h"
- #include <linux/gfp.h>
- #include <linux/bitmap.h>
- #include <asm/plpar_wrappers.h>
-@@ -14,16 +15,16 @@
-  **************************************************************************/
- #define GSID_BLANK			0x0000
- 
--#define GSID_HOST_STATE_SIZE		0x0001 /* Size of Hypervisor Internal Format VCPU state */
--#define GSID_RUN_OUTPUT_MIN_SIZE	0x0002 /* Minimum size of the Run VCPU output buffer */
--#define GSID_LOGICAL_PVR		0x0003 /* Logical PVR */
--#define GSID_TB_OFFSET			0x0004 /* Timebase Offset */
--#define GSID_PARTITION_TABLE		0x0005 /* Partition Scoped Page Table */
--#define GSID_PROCESS_TABLE		0x0006 /* Process Table */
-+#define GSID_HOST_STATE_SIZE		0x0001
-+#define GSID_RUN_OUTPUT_MIN_SIZE	0x0002
-+#define GSID_LOGICAL_PVR		0x0003
-+#define GSID_TB_OFFSET			0x0004
-+#define GSID_PARTITION_TABLE		0x0005
-+#define GSID_PROCESS_TABLE		0x0006
- 
--#define GSID_RUN_INPUT			0x0C00 /* Run VCPU Input Buffer */
--#define GSID_RUN_OUTPUT			0x0C01 /* Run VCPU Out Buffer */
--#define GSID_VPA			0x0C02 /* HRA to Guest VCPU VPA */
-+#define GSID_RUN_INPUT			0x0C00
-+#define GSID_RUN_OUTPUT			0x0C01
-+#define GSID_VPA			0x0C02
- 
- #define GSID_GPR0	0x1000
- #define GSID_GPR1	0x1001
-@@ -998,4 +999,135 @@ static inline void gsm_reset(struct gs_msg *gsm)
- 	gsbm_zero(&gsm->bitmap);
- }
- 
-+/**
-+ * gsb_recv - request all elements in the buffer have their value updated.
-+ * @gsb: guest state buffer
-+ * @flags: guest wide or thread wide
-+ *
-+ * Performs the H_GUEST_GET_STATE hcall for the guest state buffer.
-+ * After returning from the hcall the guest state elements that were
-+ * present in the buffer will have updated values from the hypervisor.
-+ */
-+static inline int gsb_recv(struct gs_buff *gsb, unsigned long flags)
-+{
-+	unsigned long hflags = 0;
-+	unsigned long i;
-+	int rc;
-+
-+	if (flags & GS_FLAGS_WIDE)
-+		hflags |= H_GUEST_FLAGS_WIDE;
-+
-+	rc = plpar_guest_get_state(hflags, gsb->guest_id, gsb->vcpu_id,
-+				   __pa(gsb->hdr), gsb->capacity, &i);
-+	return rc;
-+}
-+
-+/**
-+ * gsb_receive_data - flexibly update values from a guest state buffer
-+ * @gsb: guest state buffer
-+ * @gsm: guest state message
-+ *
-+ * Requests updated values for the guest state values included in the guest
-+ * state message. The guest state message will then deserialize the guest state
-+ * buffer.
-+ */
-+static inline int gsb_receive_data(struct gs_buff *gsb, struct gs_msg *gsm)
-+{
-+	int rc;
-+
-+	rc = gsm_fill_info(gsm, gsb);
-+	if (rc < 0)
-+		return rc;
-+
-+	rc = gsb_recv(gsb, gsm->flags);
-+	if (rc < 0)
-+		return rc;
-+
-+	rc = gsm_refresh_info(gsm, gsb);
-+	if (rc < 0)
-+		return rc;
-+	return 0;
-+}
-+
-+/**
-+ * gsb_recv - receive a single guest state ID
-+ * @gsb: guest state buffer
-+ * @gsm: guest state message
-+ * @iden: guest state identity
-+ */
-+static inline int gsb_receive_datum(struct gs_buff *gsb, struct gs_msg *gsm,
-+				    u16 iden)
-+{
-+	int rc;
-+
-+	gsm_include(gsm, iden);
-+	rc = gsb_receive_data(gsb, gsm);
-+	if (rc < 0)
-+		return rc;
-+	gsm_reset(gsm);
-+	return 0;
-+}
-+
-+/**
-+ * gsb_send - send all elements in the buffer to the hypervisor.
-+ * @gsb: guest state buffer
-+ * @flags: guest wide or thread wide
-+ *
-+ * Performs the H_GUEST_SET_STATE hcall for the guest state buffer.
-+ */
-+static inline int gsb_send(struct gs_buff *gsb, unsigned long flags)
-+{
-+	unsigned long hflags = 0;
-+	unsigned long i;
-+	int rc;
-+
-+	if (gsb_nelems(gsb) == 0)
-+		return 0;
-+
-+	if (flags & GS_FLAGS_WIDE)
-+		hflags |= H_GUEST_FLAGS_WIDE;
-+
-+	rc = plpar_guest_set_state(hflags, gsb->guest_id, gsb->vcpu_id,
-+				   __pa(gsb->hdr), gsb->capacity, &i);
-+	return rc;
-+}
-+
-+/**
-+ * gsb_send_data - flexibly send values from a guest state buffer
-+ * @gsb: guest state buffer
-+ * @gsm: guest state message
-+ *
-+ * Sends the guest state values included in the guest state message.
-+ */
-+static inline int gsb_send_data(struct gs_buff *gsb, struct gs_msg *gsm)
-+{
-+	int rc;
-+
-+	rc = gsm_fill_info(gsm, gsb);
-+	if (rc < 0)
-+		return rc;
-+	rc = gsb_send(gsb, gsm->flags);
-+
-+	return rc;
-+}
-+
-+/**
-+ * gsb_recv - send a single guest state ID
-+ * @gsb: guest state buffer
-+ * @gsm: guest state message
-+ * @iden: guest state identity
-+ */
-+static inline int gsb_send_datum(struct gs_buff *gsb, struct gs_msg *gsm,
-+				 u16 iden)
-+{
-+	int rc;
-+
-+	gsm_include(gsm, iden);
-+	rc = gsb_send_data(gsb, gsm);
-+	if (rc < 0)
-+		return rc;
-+	gsm_reset(gsm);
-+	return 0;
-+}
-+
- #endif /* _ASM_POWERPC_GUEST_STATE_BUFFER_H */
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index c099780385dd..ddb99e982917 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -100,6 +100,18 @@
- #define H_COP_HW	-74
- #define H_STATE		-75
- #define H_IN_USE	-77
-+
-+#define H_INVALID_ELEMENT_ID			-79
-+#define H_INVALID_ELEMENT_SIZE			-80
-+#define H_INVALID_ELEMENT_VALUE			-81
-+#define H_INPUT_BUFFER_NOT_DEFINED		-82
-+#define H_INPUT_BUFFER_TOO_SMALL		-83
-+#define H_OUTPUT_BUFFER_NOT_DEFINED		-84
-+#define H_OUTPUT_BUFFER_TOO_SMALL		-85
-+#define H_PARTITION_PAGE_TABLE_NOT_DEFINED	-86
-+#define H_GUEST_VCPU_STATE_NOT_HV_OWNED		-87
-+
-+
- #define H_UNSUPPORTED_FLAG_START	-256
- #define H_UNSUPPORTED_FLAG_END		-511
- #define H_MULTI_THREADS_ACTIVE	-9005
-@@ -381,6 +393,15 @@
- #define H_ENTER_NESTED		0xF804
- #define H_TLB_INVALIDATE	0xF808
- #define H_COPY_TOFROM_GUEST	0xF80C
-+#define H_GUEST_GET_CAPABILITIES 0x460
-+#define H_GUEST_SET_CAPABILITIES 0x464
-+#define H_GUEST_CREATE		0x470
-+#define H_GUEST_CREATE_VCPU	0x474
-+#define H_GUEST_GET_STATE	0x478
-+#define H_GUEST_SET_STATE	0x47C
-+#define H_GUEST_RUN_VCPU	0x480
-+#define H_GUEST_COPY_MEMORY	0x484
-+#define H_GUEST_DELETE		0x488
- 
- /* Flags for H_SVM_PAGE_IN */
- #define H_PAGE_IN_SHARED        0x1
-@@ -467,6 +488,15 @@
- #define H_RPTI_PAGE_1G	0x08
- #define H_RPTI_PAGE_ALL (-1UL)
- 
-+/* Flags for H_GUEST_{S,G}_STATE */
-+#define H_GUEST_FLAGS_WIDE     (1UL<<(63-0))
-+
-+/* Flag values used for H_{S,G}SET_GUEST_CAPABILITIES */
-+#define H_GUEST_CAP_COPY_MEM	(1UL<<(63-0))
-+#define H_GUEST_CAP_POWER9	(1UL<<(63-1))
-+#define H_GUEST_CAP_POWER10	(1UL<<(63-2))
-+#define H_GUEST_CAP_BITMAP2	(1UL<<(63-63))
-+
- #ifndef __ASSEMBLY__
- #include <linux/types.h>
- 
-diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
-index 77653c5b356b..65ad34c13aa0 100644
---- a/arch/powerpc/include/asm/kvm_book3s.h
-+++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -12,6 +12,7 @@
- #include <linux/types.h>
- #include <linux/kvm_host.h>
- #include <asm/kvm_book3s_asm.h>
-+#include <asm/guest-state-buffer.h>
- 
- struct kvmppc_bat {
- 	u64 raw;
-@@ -316,6 +317,57 @@ long int kvmhv_nested_page_fault(struct kvm_vcpu *vcpu);
- 
- void kvmppc_giveup_fac(struct kvm_vcpu *vcpu, ulong fac);
- 
-+
-+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-+
-+extern bool __kvmhv_on_papr;
-+
-+static inline bool kvmhv_on_papr(void)
-+{
-+	return __kvmhv_on_papr;
-+}
-+
-+#else
-+
-+static inline bool kvmhv_on_papr(void)
-+{
-+	return false;
-+}
-+
-+#endif
-+
-+int __kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs);
-+int __kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs);
-+int __kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden);
-+int __kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden);
-+
-+static inline int kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	if (kvmhv_on_papr())
-+		return __kvmhv_papr_reload_ptregs(vcpu, regs);
-+	return 0;
-+}
-+static inline int kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	if (kvmhv_on_papr())
-+		return __kvmhv_papr_mark_dirty_ptregs(vcpu, regs);
-+	return 0;
-+}
-+
-+static inline int kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	if (kvmhv_on_papr())
-+		return __kvmhv_papr_mark_dirty(vcpu, iden);
-+	return 0;
-+}
-+
-+static inline int kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	if (kvmhv_on_papr())
-+		return __kvmhv_papr_cached_reload(vcpu, iden);
-+	return 0;
-+}
-+
- extern int kvm_irq_bypass;
- 
- static inline struct kvmppc_vcpu_book3s *to_book3s(struct kvm_vcpu *vcpu)
-@@ -335,70 +387,84 @@ static inline struct kvmppc_vcpu_book3s *to_book3s(struct kvm_vcpu *vcpu)
- static inline void kvmppc_set_gpr(struct kvm_vcpu *vcpu, int num, ulong val)
- {
- 	vcpu->arch.regs.gpr[num] = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_GPR0 + num);
- }
- 
- static inline ulong kvmppc_get_gpr(struct kvm_vcpu *vcpu, int num)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_GPR0 + num);
- 	return vcpu->arch.regs.gpr[num];
- }
- 
- static inline void kvmppc_set_cr(struct kvm_vcpu *vcpu, u32 val)
- {
- 	vcpu->arch.regs.ccr = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_CR);
- }
- 
- static inline u32 kvmppc_get_cr(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_CR);
- 	return vcpu->arch.regs.ccr;
- }
- 
- static inline void kvmppc_set_xer(struct kvm_vcpu *vcpu, ulong val)
- {
- 	vcpu->arch.regs.xer = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_XER);
- }
- 
- static inline ulong kvmppc_get_xer(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_XER);
- 	return vcpu->arch.regs.xer;
- }
- 
- static inline void kvmppc_set_ctr(struct kvm_vcpu *vcpu, ulong val)
- {
- 	vcpu->arch.regs.ctr = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_CTR);
- }
- 
- static inline ulong kvmppc_get_ctr(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_CTR);
- 	return vcpu->arch.regs.ctr;
- }
- 
- static inline void kvmppc_set_lr(struct kvm_vcpu *vcpu, ulong val)
- {
- 	vcpu->arch.regs.link = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_LR);
- }
- 
- static inline ulong kvmppc_get_lr(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_LR);
- 	return vcpu->arch.regs.link;
- }
- 
- static inline void kvmppc_set_pc(struct kvm_vcpu *vcpu, ulong val)
- {
- 	vcpu->arch.regs.nip = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_NIA);
- }
- 
- static inline ulong kvmppc_get_pc(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_NIA);
- 	return vcpu->arch.regs.nip;
- }
- 
- static inline void kvmppc_set_pid(struct kvm_vcpu *vcpu, u32 val)
- {
- 	vcpu->arch.pid = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_PIDR);
- }
- 
- static inline u32 kvmppc_get_pid(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_PIDR);
- 	return vcpu->arch.pid;
- }
- 
-@@ -415,109 +481,127 @@ static inline ulong kvmppc_get_fault_dar(struct kvm_vcpu *vcpu)
- 
- static inline u64 kvmppc_get_fpr(struct kvm_vcpu *vcpu, int i)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_VSRS0 + i);
- 	return vcpu->arch.fp.fpr[i][TS_FPROFFSET];
- }
- 
- static inline void kvmppc_set_fpr(struct kvm_vcpu *vcpu, int i, u64 val)
- {
- 	vcpu->arch.fp.fpr[i][TS_FPROFFSET] = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS0 + i);
- }
- 
- static inline u64 kvmppc_get_fpscr(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_FPSCR);
- 	return vcpu->arch.fp.fpscr;
- }
- 
- static inline void kvmppc_set_fpscr(struct kvm_vcpu *vcpu, u64 val)
- {
- 	vcpu->arch.fp.fpscr = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_FPSCR);
- }
- 
- 
- static inline u64 kvmppc_get_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_VSRS0 + i);
- 	return vcpu->arch.fp.fpr[i][j];
- }
- 
- static inline void kvmppc_set_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j, u64 val)
- {
- 	vcpu->arch.fp.fpr[i][j] = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS0 + i);
- }
- 
- static inline vector128 kvmppc_get_vsx_vr(struct kvm_vcpu *vcpu, int i)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_VSRS32 + i);
- 	return vcpu->arch.vr.vr[i];
- }
- 
- static inline void kvmppc_set_vsx_vr(struct kvm_vcpu *vcpu, int i, vector128 val)
- {
- 	vcpu->arch.vr.vr[i] = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS32 + i);
- }
- 
- static inline u32 kvmppc_get_vscr(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_VSCR);
- 	return vcpu->arch.vr.vscr.u[3];
- }
- 
- static inline void kvmppc_set_vscr(struct kvm_vcpu *vcpu, u32 val)
- {
- 	vcpu->arch.vr.vscr.u[3] = val;
-+	kvmhv_papr_mark_dirty(vcpu, GSID_VSCR);
- }
- 
--#define BOOK3S_WRAPPER_SET(reg, size)					\
-+#define BOOK3S_WRAPPER_SET(reg, size, iden)				\
- static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
- {									\
- 									\
- 	vcpu->arch.reg = val;						\
-+	kvmhv_papr_mark_dirty(vcpu, iden);				\
- }
- 
--#define BOOK3S_WRAPPER_GET(reg, size)					\
-+#define BOOK3S_WRAPPER_GET(reg, size, iden)				\
- static inline u##size kvmppc_get_##reg(struct kvm_vcpu *vcpu)		\
- {									\
-+	kvmhv_papr_cached_reload(vcpu, iden);				\
- 	return vcpu->arch.reg;						\
- }
- 
--#define BOOK3S_WRAPPER(reg, size)					\
--	BOOK3S_WRAPPER_SET(reg, size)					\
--	BOOK3S_WRAPPER_GET(reg, size)					\
-+#define BOOK3S_WRAPPER(reg, size, iden)					\
-+	BOOK3S_WRAPPER_SET(reg, size, iden)				\
-+	BOOK3S_WRAPPER_GET(reg, size, iden)				\
- 
--BOOK3S_WRAPPER(tar, 64)
--BOOK3S_WRAPPER(ebbhr, 64)
--BOOK3S_WRAPPER(ebbrr, 64)
--BOOK3S_WRAPPER(bescr, 64)
--BOOK3S_WRAPPER(ic, 64)
--BOOK3S_WRAPPER(vrsave, 64)
-+BOOK3S_WRAPPER(tar, 64, GSID_TAR)
-+BOOK3S_WRAPPER(ebbhr, 64, GSID_EBBHR)
-+BOOK3S_WRAPPER(ebbrr, 64, GSID_EBBRR)
-+BOOK3S_WRAPPER(bescr, 64, GSID_BESCR)
-+BOOK3S_WRAPPER(ic, 64, GSID_IC)
-+BOOK3S_WRAPPER(vrsave, 64, GSID_VRSAVE)
- 
- 
--#define VCORE_WRAPPER_SET(reg, size)					\
-+#define VCORE_WRAPPER_SET(reg, size, iden)				\
- static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, u##size val)	\
- {									\
- 	vcpu->arch.vcore->reg = val;					\
-+	kvmhv_papr_mark_dirty(vcpu, iden);				\
- }
- 
--#define VCORE_WRAPPER_GET(reg, size)					\
-+#define VCORE_WRAPPER_GET(reg, size, iden)				\
- static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu)	\
- {									\
-+	kvmhv_papr_cached_reload(vcpu, iden);				\
- 	return vcpu->arch.vcore->reg;					\
- }
- 
--#define VCORE_WRAPPER(reg, size)					\
--	VCORE_WRAPPER_SET(reg, size)					\
--	VCORE_WRAPPER_GET(reg, size)					\
-+#define VCORE_WRAPPER(reg, size, iden)					\
-+	VCORE_WRAPPER_SET(reg, size, iden)				\
-+	VCORE_WRAPPER_GET(reg, size, iden)				\
- 
- 
--VCORE_WRAPPER(vtb, 64)
--VCORE_WRAPPER(tb_offset, 64)
--VCORE_WRAPPER(lpcr, 64)
-+VCORE_WRAPPER(vtb, 64, GSID_VTB)
-+VCORE_WRAPPER(tb_offset, 64, GSID_TB_OFFSET)
-+VCORE_WRAPPER(lpcr, 64, GSID_LPCR)
- 
- static inline u64 kvmppc_get_dec_expires(struct kvm_vcpu *vcpu)
- {
-+	kvmhv_papr_cached_reload(vcpu, GSID_TB_OFFSET);
-+	kvmhv_papr_cached_reload(vcpu, GSID_DEC_EXPIRY_TB);
- 	return vcpu->arch.dec_expires;
- }
- 
- static inline void kvmppc_set_dec_expires(struct kvm_vcpu *vcpu, u64 val)
- {
- 	vcpu->arch.dec_expires = val;
-+	kvmhv_papr_cached_reload(vcpu, GSID_TB_OFFSET);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_DEC_EXPIRY_TB);
- }
- 
- /* Expiry time of vcpu DEC relative to host TB */
-diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
-index d49065af08e9..689e14284127 100644
---- a/arch/powerpc/include/asm/kvm_book3s_64.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_64.h
-@@ -677,6 +677,12 @@ static inline pte_t *find_kvm_host_pte(struct kvm *kvm, unsigned long mmu_seq,
- extern pte_t *find_kvm_nested_guest_pte(struct kvm *kvm, unsigned long lpid,
- 					unsigned long ea, unsigned *hshift);
- 
-+int kvmhv_papr_vcpu_create(struct kvm_vcpu *vcpu, struct kvmhv_papr_host *nested_state);
-+void kvmhv_papr_vcpu_free(struct kvm_vcpu *vcpu, struct kvmhv_papr_host *nested_state);
-+int kvmhv_papr_flush_vcpu(struct kvm_vcpu *vcpu, u64 time_limit);
-+int kvmhv_papr_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
-+int kvmhv_papr_parse_output(struct kvm_vcpu *vcpu);
-+
- #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
- 
- #endif /* __ASM_KVM_BOOK3S_64_H__ */
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 959f566a455c..26b252fe0d4e 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -25,6 +25,7 @@
- #include <asm/cacheflush.h>
- #include <asm/hvcall.h>
- #include <asm/mce.h>
-+#include <asm/guest-state-buffer.h>
- 
- #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
- 
-@@ -509,6 +510,23 @@ union xive_tma_w01 {
- 	__be64 w01;
- };
- 
-+ /* Nested PAPR host H_GUEST_RUN_VCPU configuration */
-+struct kvmhv_papr_config {
-+	struct gs_buff_info vcpu_run_output_cfg;
-+	struct gs_buff_info vcpu_run_input_cfg;
-+	u64 vcpu_run_output_size;
-+};
-+
-+ /* Nested PAPR host state */
-+struct kvmhv_papr_host {
-+	struct kvmhv_papr_config cfg;
-+	struct gs_buff *vcpu_run_output;
-+	struct gs_buff *vcpu_run_input;
-+	struct gs_msg *vcpu_message;
-+	struct gs_msg *vcore_message;
-+	struct gs_bitmap valids;
-+};
-+
- struct kvm_vcpu_arch {
- 	ulong host_stack;
- 	u32 host_pid;
-@@ -575,6 +593,7 @@ struct kvm_vcpu_arch {
- 	ulong dscr;
- 	ulong amr;
- 	ulong uamor;
-+	ulong amor;
- 	ulong iamr;
- 	u32 ctrl;
- 	u32 dabrx;
-@@ -829,6 +848,8 @@ struct kvm_vcpu_arch {
- 	u64 nested_hfscr;	/* HFSCR that the L1 requested for the nested guest */
- 	u32 nested_vcpu_id;
- 	gpa_t nested_io_gpr;
-+	/* For nested APIv2 guests*/
-+	struct kvmhv_papr_host papr_host;
- #endif
- 
- #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 5656d09383fc..0af34cda4da9 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -589,6 +589,35 @@ static inline bool kvmhv_on_pseries(void)
- {
- 	return false;
- }
-+
-+#endif
-+
-+#ifndef CONFIG_PPC_BOOK3S
-+
-+static inline bool kvmhv_on_papr(void)
-+{
-+	return false;
-+}
-+
-+static inline int kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	return 0;
-+}
-+static inline int kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	return 0;
-+}
-+
-+static inline int kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	return 0;
-+}
-+
-+static inline int kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	return 0;
-+}
-+
- #endif
- 
- #ifdef CONFIG_KVM_XICS
-@@ -931,31 +960,33 @@ static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
- 	       vcpu->arch.shared->reg = cpu_to_le##size(val);		\
- }									\
- 
--#define SHARED_CACHE_WRAPPER_GET(reg, size)				\
-+#define SHARED_CACHE_WRAPPER_GET(reg, size, iden)			\
- static inline u##size kvmppc_get_##reg(struct kvm_vcpu *vcpu)		\
- {									\
-+	kvmhv_papr_cached_reload(vcpu, iden);				\
- 	if (kvmppc_shared_big_endian(vcpu))				\
- 	       return be##size##_to_cpu(vcpu->arch.shared->reg);	\
- 	else								\
- 	       return le##size##_to_cpu(vcpu->arch.shared->reg);	\
- }									\
- 
--#define SHARED_CACHE_WRAPPER_SET(reg, size)				\
-+#define SHARED_CACHE_WRAPPER_SET(reg, size, iden)			\
- static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
- {									\
- 	if (kvmppc_shared_big_endian(vcpu))				\
- 	       vcpu->arch.shared->reg = cpu_to_be##size(val);		\
- 	else								\
- 	       vcpu->arch.shared->reg = cpu_to_le##size(val);		\
-+	kvmhv_papr_mark_dirty(vcpu, iden);				\
- }									\
- 
- #define SHARED_WRAPPER(reg, size)					\
- 	SHARED_WRAPPER_GET(reg, size)					\
- 	SHARED_WRAPPER_SET(reg, size)					\
- 
--#define SHARED_CACHE_WRAPPER(reg, size)					\
--	SHARED_CACHE_WRAPPER_GET(reg, size)				\
--	SHARED_CACHE_WRAPPER_SET(reg, size)				\
-+#define SHARED_CACHE_WRAPPER(reg, size, iden)				\
-+	SHARED_CACHE_WRAPPER_GET(reg, size, iden)			\
-+	SHARED_CACHE_WRAPPER_SET(reg, size, iden)			\
- 
- #define SPRNG_WRAPPER(reg, bookehv_spr)					\
- 	SPRNG_WRAPPER_GET(reg, bookehv_spr)				\
-@@ -974,29 +1005,30 @@ static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
- #define SHARED_SPRNG_WRAPPER(reg, size, bookehv_spr)			\
- 	SHARED_WRAPPER(reg, size)					\
- 
--#define SHARED_SPRNG_CACHE_WRAPPER(reg, size, bookehv_spr)		\
--	SHARED_CACHE_WRAPPER(reg, size)					\
-+#define SHARED_SPRNG_CACHE_WRAPPER(reg, size, bookehv_spr, iden)	\
-+	SHARED_CACHE_WRAPPER(reg, size, iden)				\
- 
- #endif
- 
- SHARED_WRAPPER(critical, 64)
--SHARED_SPRNG_CACHE_WRAPPER(sprg0, 64, SPRN_GSPRG0)
--SHARED_SPRNG_CACHE_WRAPPER(sprg1, 64, SPRN_GSPRG1)
--SHARED_SPRNG_CACHE_WRAPPER(sprg2, 64, SPRN_GSPRG2)
--SHARED_SPRNG_CACHE_WRAPPER(sprg3, 64, SPRN_GSPRG3)
--SHARED_SPRNG_CACHE_WRAPPER(srr0, 64, SPRN_GSRR0)
--SHARED_SPRNG_CACHE_WRAPPER(srr1, 64, SPRN_GSRR1)
--SHARED_SPRNG_CACHE_WRAPPER(dar, 64, SPRN_GDEAR)
-+SHARED_SPRNG_CACHE_WRAPPER(sprg0, 64, SPRN_GSPRG0, GSID_SPRG0)
-+SHARED_SPRNG_CACHE_WRAPPER(sprg1, 64, SPRN_GSPRG1, GSID_SPRG1)
-+SHARED_SPRNG_CACHE_WRAPPER(sprg2, 64, SPRN_GSPRG2, GSID_SPRG2)
-+SHARED_SPRNG_CACHE_WRAPPER(sprg3, 64, SPRN_GSPRG3, GSID_SPRG3)
-+SHARED_SPRNG_CACHE_WRAPPER(srr0, 64, SPRN_GSRR0, GSID_SRR0)
-+SHARED_SPRNG_CACHE_WRAPPER(srr1, 64, SPRN_GSRR1, GSID_SRR1)
-+SHARED_SPRNG_CACHE_WRAPPER(dar, 64, SPRN_GDEAR, GSID_DAR)
- SHARED_SPRNG_WRAPPER(esr, 64, SPRN_GESR)
--SHARED_CACHE_WRAPPER_GET(msr, 64)
-+SHARED_CACHE_WRAPPER_GET(msr, 64, GSID_MSR)
- static inline void kvmppc_set_msr_fast(struct kvm_vcpu *vcpu, u64 val)
- {
- 	if (kvmppc_shared_big_endian(vcpu))
- 	       vcpu->arch.shared->msr = cpu_to_be64(val);
- 	else
- 	       vcpu->arch.shared->msr = cpu_to_le64(val);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_MSR);
- }
--SHARED_CACHE_WRAPPER(dsisr, 32)
-+SHARED_CACHE_WRAPPER(dsisr, 32, GSID_DSISR)
- SHARED_WRAPPER(int_pending, 32)
- SHARED_WRAPPER(sprg4, 64)
- SHARED_WRAPPER(sprg5, 64)
-diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
-index 8239c0af5eb2..b48f90884522 100644
---- a/arch/powerpc/include/asm/plpar_wrappers.h
-+++ b/arch/powerpc/include/asm/plpar_wrappers.h
-@@ -6,6 +6,7 @@
- 
- #include <linux/string.h>
- #include <linux/irqflags.h>
-+#include <linux/delay.h>
- 
- #include <asm/hvcall.h>
- #include <asm/paca.h>
-@@ -342,6 +343,203 @@ static inline long plpar_get_cpu_characteristics(struct h_cpu_char_result *p)
- 	return rc;
- }
- 
-+static inline long plpar_guest_create(unsigned long flags, unsigned long *guest_id)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	unsigned long token;
-+	long rc;
-+
-+	token = -1UL;
-+	while (true) {
-+		rc = plpar_hcall(H_GUEST_CREATE, retbuf, flags, token);
-+		if (rc == H_SUCCESS) {
-+			*guest_id = retbuf[0];
-+			break;
-+		}
-+
-+		if (rc == H_BUSY) {
-+			token = retbuf[0];
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		if (H_IS_LONG_BUSY(rc)) {
-+			token = retbuf[0];
-+			mdelay(get_longbusy_msecs(rc));
-+			continue;
-+		}
-+
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_create_vcpu(unsigned long flags,
-+					   unsigned long guest_id,
-+					   unsigned long vcpu_id)
-+{
-+	long rc;
-+
-+	while (true) {
-+		rc = plpar_hcall_norets(H_GUEST_CREATE_VCPU, 0, guest_id, vcpu_id);
-+
-+		if (rc == H_BUSY) {
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		if (H_IS_LONG_BUSY(rc)) {
-+			mdelay(get_longbusy_msecs(rc));
-+			continue;
-+		}
-+
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_set_state(unsigned long flags,
-+					 unsigned long guest_id,
-+					 unsigned long vcpu_id,
-+					 unsigned long data_buffer,
-+					 unsigned long data_size,
-+					 unsigned long *failed_index)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	long rc;
-+
-+	while (true) {
-+		rc = plpar_hcall(H_GUEST_SET_STATE, retbuf, flags, guest_id,
-+				 vcpu_id, data_buffer, data_size);
-+
-+		if (rc == H_BUSY) {
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		if (H_IS_LONG_BUSY(rc)) {
-+			mdelay(get_longbusy_msecs(rc));
-+			continue;
-+		}
-+
-+		if (rc == H_INVALID_ELEMENT_ID)
-+			*failed_index = retbuf[0];
-+		else if (rc == H_INVALID_ELEMENT_SIZE)
-+			*failed_index = retbuf[0];
-+		else if (rc == H_INVALID_ELEMENT_VALUE)
-+			*failed_index = retbuf[0];
-+
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_get_state(unsigned long flags,
-+					 unsigned long guest_id,
-+					 unsigned long vcpu_id,
-+					 unsigned long data_buffer,
-+					 unsigned long data_size,
-+					 unsigned long *failed_index)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	long rc;
-+
-+	while (true) {
-+		rc = plpar_hcall(H_GUEST_GET_STATE, retbuf, flags, guest_id,
-+				 vcpu_id, data_buffer, data_size);
-+
-+		if (rc == H_BUSY) {
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		if (H_IS_LONG_BUSY(rc)) {
-+			mdelay(get_longbusy_msecs(rc));
-+			continue;
-+		}
-+
-+		if (rc == H_INVALID_ELEMENT_ID)
-+			*failed_index = retbuf[0];
-+		else if (rc == H_INVALID_ELEMENT_SIZE)
-+			*failed_index = retbuf[0];
-+		else if (rc == H_INVALID_ELEMENT_VALUE)
-+			*failed_index = retbuf[0];
-+
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_run_vcpu(unsigned long flags, unsigned long guest_id,
-+					unsigned long vcpu_id, int *trap,
-+					unsigned long *failed_index)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	long rc;
-+
-+	rc = plpar_hcall(H_GUEST_RUN_VCPU, retbuf, flags, guest_id, vcpu_id);
-+	if (rc == H_SUCCESS)
-+		*trap = retbuf[0];
-+	else if (rc == H_INVALID_ELEMENT_ID)
-+		*failed_index = retbuf[0];
-+	else if (rc == H_INVALID_ELEMENT_SIZE)
-+		*failed_index = retbuf[0];
-+	else if (rc == H_INVALID_ELEMENT_VALUE)
-+		*failed_index = retbuf[0];
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_delete(unsigned long flags, u64 guest_id)
-+{
-+	long rc;
-+
-+	while (true) {
-+		rc = plpar_hcall_norets(H_GUEST_DELETE, flags, guest_id);
-+		if (rc == H_BUSY) {
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		if (H_IS_LONG_BUSY(rc)) {
-+			mdelay(get_longbusy_msecs(rc));
-+			continue;
-+		}
-+
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_set_capabilities(unsigned long flags,
-+						unsigned long capabilities)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	long rc;
-+
-+	rc = plpar_hcall(H_GUEST_SET_CAPABILITIES, retbuf, flags, capabilities);
-+
-+	return rc;
-+}
-+
-+static inline long plpar_guest_get_capabilities(unsigned long flags,
-+						unsigned long *capabilities)
-+{
-+	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-+	long rc;
-+
-+	rc = plpar_hcall(H_GUEST_GET_CAPABILITIES, retbuf, flags);
-+	if (rc == H_SUCCESS)
-+		*capabilities = retbuf[0];
-+
-+	return rc;
-+}
-+
- /*
-  * Wrapper to H_RPT_INVALIDATE hcall that handles return values appropriately
-  *
-diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
-index 5319d889b184..3d2ca9b16930 100644
---- a/arch/powerpc/kvm/Makefile
-+++ b/arch/powerpc/kvm/Makefile
-@@ -87,6 +87,7 @@ kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
- 	book3s_hv_ras.o \
- 	book3s_hv_builtin.o \
- 	book3s_hv_p9_perf.o \
-+	book3s_hv_papr.o \
- 	$(kvm-book3s_64-builtin-tm-objs-y) \
- 	$(kvm-book3s_64-builtin-xics-objs-y)
- endif
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 2e01ccb97ed6..1b00a815fbb9 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2906,14 +2906,21 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 	vcpu->arch.shared_big_endian = false;
- #endif
- #endif
--	kvmppc_set_mmcr_hv(vcpu, 0, MMCR0_FC);
- 
-+	if (kvmhv_on_papr()) {
-+		err = kvmhv_papr_vcpu_create(vcpu, &vcpu->arch.papr_host);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	kvmppc_set_mmcr_hv(vcpu, 0, MMCR0_FC);
- 	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
- 		kvmppc_set_mmcr_hv(vcpu, 0, kvmppc_get_mmcr_hv(vcpu, 0) | MMCR0_PMCCEXT);
- 		kvmppc_set_mmcra_hv(vcpu, MMCRA_BHRB_DISABLE);
- 	}
- 
- 	kvmppc_set_ctrl_hv(vcpu, CTRL_RUNLATCH);
-+	kvmppc_set_amor_hv(vcpu, ~0);
- 	/* default to host PVR, since we can't spoof it */
- 	kvmppc_set_pvr_hv(vcpu, mfspr(SPRN_PVR));
- 	spin_lock_init(&vcpu->arch.vpa_update_lock);
-@@ -2987,6 +2994,8 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 			kvm->arch.vcores[core] = vcore;
- 			kvm->arch.online_vcores++;
- 			mutex_unlock(&kvm->arch.mmu_setup_lock);
-+			if (kvmhv_on_papr())
-+				kvmppc_set_lpcr_hv(vcpu, vcpu->arch.vcore->lpcr);
- 		}
- 	}
- 	mutex_unlock(&kvm->lock);
-@@ -3059,6 +3068,8 @@ static void kvmppc_core_vcpu_free_hv(struct kvm_vcpu *vcpu)
- 	unpin_vpa(vcpu->kvm, &vcpu->arch.slb_shadow);
- 	unpin_vpa(vcpu->kvm, &vcpu->arch.vpa);
- 	spin_unlock(&vcpu->arch.vpa_update_lock);
-+	if (kvmhv_on_papr())
-+		kvmhv_papr_vcpu_free(vcpu, &vcpu->arch.papr_host);
- }
- 
- static int kvmppc_core_check_requests_hv(struct kvm_vcpu *vcpu)
-@@ -4023,6 +4034,50 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
- 	}
- }
- 
-+static int kvmhv_vcpu_entry_papr(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpcr, u64 *tb)
-+{
-+	struct kvmhv_papr_host *ph;
-+	unsigned long msr, i;
-+	int trap;
-+	long rc;
-+
-+	ph = &vcpu->arch.papr_host;
-+
-+	msr = mfmsr();
-+	kvmppc_msr_hard_disable_set_facilities(vcpu, msr);
-+	if (lazy_irq_pending())
-+		return 0;
-+
-+	kvmhv_papr_flush_vcpu(vcpu, time_limit);
-+
-+	accumulate_time(vcpu, &vcpu->arch.in_guest);
-+	rc = plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
-+				  &trap, &i);
-+
-+	if (rc != H_SUCCESS) {
-+		pr_err("KVM Guest Run VCPU hcall failed\n");
-+		if (rc == H_INVALID_ELEMENT_ID)
-+			pr_err("KVM: Guest Run VCPU invalid element id at %ld\n", i);
-+		else if (rc == H_INVALID_ELEMENT_SIZE)
-+			pr_err("KVM: Guest Run VCPU invalid element size at %ld\n", i);
-+		else if (rc == H_INVALID_ELEMENT_VALUE)
-+			pr_err("KVM: Guest Run VCPU invalid element value at %ld\n", i);
-+		return 0;
-+	}
-+	accumulate_time(vcpu, &vcpu->arch.guest_exit);
-+
-+	*tb = mftb();
-+	gsm_reset(ph->vcpu_message);
-+	gsm_reset(ph->vcore_message);
-+	gsbm_zero(&ph->valids);
-+
-+	kvmhv_papr_parse_output(vcpu);
-+
-+	timer_rearm_host_dec(*tb);
-+
-+	return trap;
-+}
-+
- /* call our hypervisor to load up HV regs and go */
- static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpcr, u64 *tb)
- {
-@@ -4140,7 +4195,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	vcpu_vpa_increment_dispatch(vcpu);
- 
- 	if (kvmhv_on_pseries()) {
--		trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
-+		if (!kvmhv_on_papr())
-+			trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
-+		else
-+			trap = kvmhv_vcpu_entry_papr(vcpu, time_limit, lpcr, tb);
- 
- 		/* H_CEDE has to be handled now, not later */
- 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !nested &&
-@@ -5100,6 +5158,7 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
-  */
- void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
- {
-+	struct kvm_vcpu *vcpu;
- 	long int i;
- 	u32 cores_done = 0;
- 
-@@ -5120,6 +5179,12 @@ void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
- 		if (++cores_done >= kvm->arch.online_vcores)
- 			break;
- 	}
-+
-+	if (kvmhv_on_papr()) {
-+		kvm_for_each_vcpu(i, vcpu, kvm) {
-+			kvmppc_set_lpcr_hv(vcpu, vcpu->arch.vcore->lpcr);
-+		}
-+	}
- }
- 
- void kvmppc_setup_partition_table(struct kvm *kvm)
-@@ -5386,15 +5451,43 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
- 
- 	/* Allocate the guest's logical partition ID */
- 
--	lpid = kvmppc_alloc_lpid();
--	if ((long)lpid < 0)
--		return -ENOMEM;
--	kvm->arch.lpid = lpid;
-+	if (!kvmhv_on_papr()) {
-+		lpid = kvmppc_alloc_lpid();
-+		if ((long)lpid < 0)
-+			return -ENOMEM;
-+		kvm->arch.lpid = lpid;
-+	}
- 
- 	kvmppc_alloc_host_rm_ops();
- 
- 	kvmhv_vm_nested_init(kvm);
- 
-+	if (kvmhv_on_papr()) {
-+		long rc;
-+		unsigned long guest_id;
-+
-+		rc = plpar_guest_create(0, &guest_id);
-+
-+		if (rc != H_SUCCESS)
-+			pr_err("KVM: Create Guest hcall failed, rc=%ld\n", rc);
-+
-+		switch (rc) {
-+		case H_PARAMETER:
-+		case H_FUNCTION:
-+		case H_STATE:
-+			return -EINVAL;
-+		case H_NOT_ENOUGH_RESOURCES:
-+		case H_ABORTED:
-+			return -ENOMEM;
-+		case H_AUTHORITY:
-+			return -EPERM;
-+		case H_NOT_AVAILABLE:
-+			return -EBUSY;
-+		}
-+		kvm->arch.lpid = guest_id;
-+	}
-+
-+
- 	/*
- 	 * Since we don't flush the TLB when tearing down a VM,
- 	 * and this lpid might have previously been used,
-@@ -5464,7 +5557,10 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
- 			lpcr |= LPCR_HAIL;
- 		ret = kvmppc_init_vm_radix(kvm);
- 		if (ret) {
--			kvmppc_free_lpid(kvm->arch.lpid);
-+			if (kvmhv_on_papr())
-+				plpar_guest_delete(0, kvm->arch.lpid);
-+			else
-+				kvmppc_free_lpid(kvm->arch.lpid);
- 			return ret;
- 		}
- 		kvmppc_setup_partition_table(kvm);
-@@ -5554,10 +5650,14 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
- 		kvm->arch.process_table = 0;
- 		if (kvm->arch.secure_guest)
- 			uv_svm_terminate(kvm->arch.lpid);
--		kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
-+		if (!kvmhv_on_papr())
-+			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
- 	}
- 
--	kvmppc_free_lpid(kvm->arch.lpid);
-+	if (kvmhv_on_papr())
-+		plpar_guest_delete(0, kvm->arch.lpid);
-+	else
-+		kvmppc_free_lpid(kvm->arch.lpid);
- 
- 	kvmppc_free_pimap(kvm);
- }
-diff --git a/arch/powerpc/kvm/book3s_hv.h b/arch/powerpc/kvm/book3s_hv.h
-index 7a7005189ab1..94a69f105f7c 100644
---- a/arch/powerpc/kvm/book3s_hv.h
-+++ b/arch/powerpc/kvm/book3s_hv.h
-@@ -3,6 +3,8 @@
- /*
-  * Privileged (non-hypervisor) host registers to save.
-  */
-+#include "asm/guest-state-buffer.h"
-+
- struct p9_host_os_sprs {
- 	unsigned long iamr;
- 	unsigned long amr;
-@@ -51,61 +53,66 @@ void accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next);
- #define end_timing(vcpu) do {} while (0)
- #endif
- 
--#define HV_WRAPPER_SET(reg, size)					\
-+#define HV_WRAPPER_SET(reg, size, iden)					\
- static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, u##size val)	\
- {									\
- 	vcpu->arch.reg = val;						\
-+	kvmhv_papr_mark_dirty(vcpu, iden);				\
- }
- 
--#define HV_WRAPPER_GET(reg, size)					\
-+#define HV_WRAPPER_GET(reg, size, iden)					\
- static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu)	\
- {									\
-+	kvmhv_papr_cached_reload(vcpu, iden);				\
- 	return vcpu->arch.reg;						\
- }
- 
--#define HV_WRAPPER(reg, size)						\
--	HV_WRAPPER_SET(reg, size)					\
--	HV_WRAPPER_GET(reg, size)					\
-+#define HV_WRAPPER(reg, size, iden)					\
-+	HV_WRAPPER_SET(reg, size, iden)					\
-+	HV_WRAPPER_GET(reg, size, iden)					\
- 
--#define HV_ARRAY_WRAPPER_SET(reg, size)					\
-+#define HV_ARRAY_WRAPPER_SET(reg, size, iden)				\
- static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, int i, u##size val)	\
- {									\
- 	vcpu->arch.reg[i] = val;					\
-+	kvmhv_papr_mark_dirty(vcpu, iden + i);				\
- }
- 
--#define HV_ARRAY_WRAPPER_GET(reg, size)					\
-+#define HV_ARRAY_WRAPPER_GET(reg, size, iden)				\
- static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu, int i)	\
- {									\
-+	kvmhv_papr_cached_reload(vcpu, iden + i);			\
- 	return vcpu->arch.reg[i];					\
- }
- 
--#define HV_ARRAY_WRAPPER(reg, size)					\
--	HV_ARRAY_WRAPPER_SET(reg, size)					\
--	HV_ARRAY_WRAPPER_GET(reg, size)					\
-+#define HV_ARRAY_WRAPPER(reg, size, iden)				\
-+	HV_ARRAY_WRAPPER_SET(reg, size, iden)				\
-+	HV_ARRAY_WRAPPER_GET(reg, size, iden)				\
- 
--HV_WRAPPER(mmcra, 64)
--HV_WRAPPER(hfscr, 64)
--HV_WRAPPER(fscr, 64)
--HV_WRAPPER(dscr, 64)
--HV_WRAPPER(purr, 64)
--HV_WRAPPER(spurr, 64)
--HV_WRAPPER(amr, 64)
--HV_WRAPPER(uamor, 64)
--HV_WRAPPER(siar, 64)
--HV_WRAPPER(sdar, 64)
--HV_WRAPPER(iamr, 64)
--HV_WRAPPER(dawr0, 64)
--HV_WRAPPER(dawr1, 64)
--HV_WRAPPER(dawrx0, 64)
--HV_WRAPPER(dawrx1, 64)
--HV_WRAPPER(ciabr, 64)
--HV_WRAPPER(wort, 64)
--HV_WRAPPER(ppr, 64)
--HV_WRAPPER(ctrl, 64)
-+HV_WRAPPER(mmcra, 64, GSID_MMCRA)
-+HV_WRAPPER(hfscr, 64, GSID_HFSCR)
-+HV_WRAPPER(fscr, 64, GSID_FSCR)
-+HV_WRAPPER(dscr, 64, GSID_DSCR)
-+HV_WRAPPER(purr, 64, GSID_PURR)
-+HV_WRAPPER(spurr, 64, GSID_SPURR)
-+HV_WRAPPER(amr, 64, GSID_AMR)
-+HV_WRAPPER(uamor, 64, GSID_UAMOR)
-+HV_WRAPPER(siar, 64, GSID_SIAR)
-+HV_WRAPPER(sdar, 64, GSID_SDAR)
-+HV_WRAPPER(iamr, 64, GSID_IAMR)
-+HV_WRAPPER(dawr0, 64, GSID_DAWR0)
-+HV_WRAPPER(dawr1, 64, GSID_DAWR1)
-+HV_WRAPPER(dawrx0, 64, GSID_DAWRX0)
-+HV_WRAPPER(dawrx1, 64, GSID_DAWRX1)
-+HV_WRAPPER(ciabr, 64, GSID_CIABR)
-+HV_WRAPPER(wort, 64, GSID_WORT)
-+HV_WRAPPER(ppr, 64, GSID_PPR)
-+HV_WRAPPER(ctrl, 64, GSID_CTRL);
-+HV_WRAPPER(amor, 64, GSID_AMOR)
- 
--HV_ARRAY_WRAPPER(mmcr, 64)
--HV_ARRAY_WRAPPER(sier, 64)
--HV_ARRAY_WRAPPER(pmc, 32)
-+HV_ARRAY_WRAPPER(mmcr, 64, GSID_MMCR0)
-+HV_ARRAY_WRAPPER(sier, 64, GSID_SIER)
-+HV_ARRAY_WRAPPER(pmc, 32, GSID_PMC1)
- 
--HV_WRAPPER(pvr, 32)
--HV_WRAPPER(pspb, 32)
-+HV_WRAPPER(pvr, 32, GSID_LOGICAL_PVR)
-+HV_WRAPPER(pspb, 32, GSID_PSPB)
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 5a64a1341e6f..7736ec18278c 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -428,10 +428,12 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
- 	return vcpu->arch.trap;
- }
- 
-+static unsigned long nested_capabilities;
-+
- long kvmhv_nested_init(void)
- {
- 	long int ptb_order;
--	unsigned long ptcr;
-+	unsigned long ptcr, host_capabilities;
- 	long rc;
- 
- 	if (!kvmhv_on_pseries())
-@@ -439,6 +441,23 @@ long kvmhv_nested_init(void)
- 	if (!radix_enabled())
- 		return -ENODEV;
- 
-+	rc = plpar_guest_get_capabilities(0, &host_capabilities);
-+	if (rc == H_SUCCESS) {
-+		unsigned long capabilities;
-+
-+		capabilities = H_GUEST_CAP_POWER9 | H_GUEST_CAP_POWER10;
-+
-+		nested_capabilities = capabilities & host_capabilities;
-+		rc = plpar_guest_set_capabilities(0, nested_capabilities);
-+		if (rc != H_SUCCESS) {
-+			pr_err("kvm-hv: Could not set parent hypervisor capabilities (rc=%ld)\n", rc);
-+			return -ENODEV;
-+		}
-+
-+		__kvmhv_on_papr = true;
-+		return 0;
-+	}
-+
- 	/* Partition table entry is 1<<4 bytes in size, hence the 4. */
- 	ptb_order = KVM_MAX_NESTED_GUESTS_SHIFT + 4;
- 	/* Minimum partition table size is 1<<12 bytes */
-@@ -507,10 +526,15 @@ void kvmhv_set_ptbl_entry(unsigned int lpid, u64 dw0, u64 dw1)
- 		return;
- 	}
- 
--	pseries_partition_tb[lpid].patb0 = cpu_to_be64(dw0);
--	pseries_partition_tb[lpid].patb1 = cpu_to_be64(dw1);
--	/* L0 will do the necessary barriers */
--	kvmhv_flush_lpid(lpid);
-+	if (!kvmhv_on_papr()) {
-+		pseries_partition_tb[lpid].patb0 = cpu_to_be64(dw0);
-+		pseries_partition_tb[lpid].patb1 = cpu_to_be64(dw1);
-+		/* L0 will do the necessary barriers */
-+		kvmhv_flush_lpid(lpid);
-+	}
-+
-+	if (kvmhv_on_papr())
-+		kvmhv_papr_set_ptbl_entry(lpid, dw0, dw1);
- }
- 
- static void kvmhv_set_nested_ptbl(struct kvm_nested_guest *gp)
-diff --git a/arch/powerpc/kvm/book3s_hv_papr.c b/arch/powerpc/kvm/book3s_hv_papr.c
-new file mode 100644
-index 000000000000..d0569e784dcd
---- /dev/null
-+++ b/arch/powerpc/kvm/book3s_hv_papr.c
-@@ -0,0 +1,947 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2023 Jordan Niethe, IBM Corp. <jniethe5@gmail.com>
-+ *
-+ * Authors:
-+ *    Jordan Niethe <jniethe5@gmail.com>
-+ *
-+ * Description: KVM functions specific to running on Book 3S
-+ * processors as a PAPR guest.
-+ *
-+ */
-+
-+#include "linux/blk-mq.h"
-+#include "linux/console.h"
-+#include "linux/gfp_types.h"
-+#include "linux/signal.h"
-+#include <linux/kernel.h>
-+#include <linux/kvm_host.h>
-+#include <linux/pgtable.h>
-+
-+#include <asm/kvm_ppc.h>
-+#include <asm/kvm_book3s.h>
-+#include <asm/hvcall.h>
-+#include <asm/pgalloc.h>
-+#include <asm/reg.h>
-+#include <asm/plpar_wrappers.h>
-+#include <asm/guest-state-buffer.h>
-+#include "trace_hv.h"
-+
-+bool __kvmhv_on_papr __read_mostly;
-+EXPORT_SYMBOL_GPL(__kvmhv_on_papr);
-+
-+
-+static size_t gs_msg_ops_kvmhv_papr_config_get_size(struct gs_msg *gsm)
-+{
-+	u16 ids[] = {
-+		GSID_RUN_OUTPUT_MIN_SIZE,
-+		GSID_RUN_INPUT,
-+		GSID_RUN_OUTPUT,
-+
-+	};
-+	size_t size = 0;
-+
-+	for (int i = 0; i < ARRAY_SIZE(ids); i++)
-+		size += gse_total_size(gsid_size(ids[i]));
-+	return size;
-+}
-+
-+static int gs_msg_ops_kvmhv_papr_config_fill_info(struct gs_buff *gsb,
-+						  struct gs_msg *gsm)
-+{
-+	struct kvmhv_papr_config *cfg;
-+	int rc;
-+
-+	cfg = gsm->data;
-+
-+	if (gsm_includes(gsm, GSID_RUN_OUTPUT_MIN_SIZE)) {
-+		rc = gse_put(gsb, GSID_RUN_OUTPUT_MIN_SIZE,
-+			     cfg->vcpu_run_output_size);
-+		if (rc < 0)
-+			return rc;
-+	}
-+
-+	if (gsm_includes(gsm, GSID_RUN_INPUT)) {
-+		rc = gse_put(gsb, GSID_RUN_INPUT, cfg->vcpu_run_input_cfg);
-+		if (rc < 0)
-+			return rc;
-+	}
-+
-+	if (gsm_includes(gsm, GSID_RUN_OUTPUT)) {
-+		gse_put(gsb, GSID_RUN_OUTPUT, cfg->vcpu_run_output_cfg);
-+		if (rc < 0)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
-+static int gs_msg_ops_kvmhv_papr_config_refresh_info(struct gs_msg *gsm,
-+						     struct gs_buff *gsb)
-+{
-+	struct kvmhv_papr_config *cfg;
-+	struct gs_parser gsp = { 0 };
-+	struct gs_elem *gse;
-+	int rc;
-+
-+	cfg = gsm->data;
-+
-+	rc = gse_parse(&gsp, gsb);
-+	if (rc < 0)
-+		return rc;
-+
-+	gse = gsp_lookup(&gsp, GSID_RUN_OUTPUT_MIN_SIZE);
-+	if (gse)
-+		gse_get(gse, &cfg->vcpu_run_output_size);
-+	return 0;
-+}
-+
-+struct gs_msg_ops config_msg_ops = {
-+	.get_size = gs_msg_ops_kvmhv_papr_config_get_size,
-+	.fill_info = gs_msg_ops_kvmhv_papr_config_fill_info,
-+	.refresh_info = gs_msg_ops_kvmhv_papr_config_refresh_info,
-+};
-+
-+static size_t gs_msg_ops_vcpu_get_size(struct gs_msg *gsm)
-+{
-+	struct gs_bitmap gsbm = { 0 };
-+	size_t size = 0;
-+	u16 iden;
-+
-+	gsbm_fill(&gsbm);
-+	gsbm_for_each(&gsbm, iden) {
-+		switch (iden) {
-+		case GSID_HOST_STATE_SIZE:
-+		case GSID_RUN_OUTPUT_MIN_SIZE:
-+		case GSID_PARTITION_TABLE:
-+		case GSID_PROCESS_TABLE:
-+		case GSID_RUN_INPUT:
-+		case GSID_RUN_OUTPUT:
-+			break;
-+		default:
-+			size += gse_total_size(gsid_size(iden));
-+		}
-+	}
-+	return size;
-+}
-+
-+static int gs_msg_ops_vcpu_fill_info(struct gs_buff *gsb, struct gs_msg *gsm)
-+{
-+	struct kvm_vcpu *vcpu;
-+	vector128 v;
-+	int rc, i;
-+	u16 iden;
-+
-+	vcpu = gsm->data;
-+
-+	gsm_for_each(gsm, iden)
-+	{
-+		rc = 0;
-+
-+		if ((gsm->flags & GS_FLAGS_WIDE) !=
-+		    (gsid_flags(iden) & GS_FLAGS_WIDE))
-+			continue;
-+
-+		switch (iden) {
-+		case GSID_DSCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.dscr);
-+			break;
-+		case GSID_MMCRA:
-+			rc = gse_put(gsb, iden, vcpu->arch.mmcra);
-+			break;
-+		case GSID_HFSCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.hfscr);
-+			break;
-+		case GSID_PURR:
-+			rc = gse_put(gsb, iden, vcpu->arch.purr);
-+			break;
-+		case GSID_SPURR:
-+			rc = gse_put(gsb, iden, vcpu->arch.spurr);
-+			break;
-+		case GSID_AMR:
-+			rc = gse_put(gsb, iden, vcpu->arch.amr);
-+			break;
-+		case GSID_UAMOR:
-+			rc = gse_put(gsb, iden, vcpu->arch.uamor);
-+			break;
-+		case GSID_SIAR:
-+			rc = gse_put(gsb, iden, vcpu->arch.siar);
-+			break;
-+		case GSID_SDAR:
-+			rc = gse_put(gsb, iden, vcpu->arch.sdar);
-+			break;
-+		case GSID_IAMR:
-+			rc = gse_put(gsb, iden, vcpu->arch.iamr);
-+			break;
-+		case GSID_DAWR0:
-+			rc = gse_put(gsb, iden, vcpu->arch.dawr0);
-+			break;
-+		case GSID_DAWR1:
-+			rc = gse_put(gsb, iden, vcpu->arch.dawr1);
-+			break;
-+		case GSID_DAWRX0:
-+			rc = gse_put(gsb, iden, vcpu->arch.dawrx0);
-+			break;
-+		case GSID_DAWRX1:
-+			rc = gse_put(gsb, iden, vcpu->arch.dawrx1);
-+			break;
-+		case GSID_CIABR:
-+			rc = gse_put(gsb, iden, vcpu->arch.ciabr);
-+			break;
-+		case GSID_WORT:
-+			rc = gse_put(gsb, iden, vcpu->arch.wort);
-+			break;
-+		case GSID_PPR:
-+			rc = gse_put(gsb, iden, vcpu->arch.ppr);
-+			break;
-+		case GSID_PSPB:
-+			rc = gse_put(gsb, iden, vcpu->arch.pspb);
-+			break;
-+		case GSID_TAR:
-+			rc = gse_put(gsb, iden, vcpu->arch.tar);
-+			break;
-+		case GSID_FSCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.fscr);
-+			break;
-+		case GSID_EBBHR:
-+			rc = gse_put(gsb, iden, vcpu->arch.ebbhr);
-+			break;
-+		case GSID_EBBRR:
-+			rc = gse_put(gsb, iden, vcpu->arch.ebbrr);
-+			break;
-+		case GSID_BESCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.bescr);
-+			break;
-+		case GSID_IC:
-+			rc = gse_put(gsb, iden, vcpu->arch.ic);
-+			break;
-+		case GSID_CTRL:
-+			rc = gse_put(gsb, iden, vcpu->arch.ctrl);
-+			break;
-+		case GSID_PIDR:
-+			rc = gse_put(gsb, iden, vcpu->arch.pid);
-+			break;
-+		case GSID_AMOR:
-+			rc = gse_put(gsb, iden, vcpu->arch.amor);
-+			break;
-+		case GSID_VRSAVE:
-+			rc = gse_put(gsb, iden, vcpu->arch.vrsave);
-+			break;
-+		case GSID_MMCR0 ... GSID_MMCR3:
-+			i = iden - GSID_MMCR0;
-+			rc = gse_put(gsb, iden, vcpu->arch.mmcr[i]);
-+			break;
-+		case GSID_SIER ... GSID_SIER3:
-+			i = iden - GSID_SIER;
-+			rc = gse_put(gsb, iden, vcpu->arch.sier[i]);
-+			break;
-+		case GSID_PMC1 ... GSID_PMC6:
-+			i = iden - GSID_PMC1;
-+			rc = gse_put(gsb, iden, vcpu->arch.pmc[i]);
-+			break;
-+		case GSID_GPR0 ... GSID_GPR31:
-+			i = iden - GSID_GPR0;
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.gpr[i]);
-+			break;
-+		case GSID_CR:
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.ccr);
-+			break;
-+		case GSID_XER:
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.xer);
-+			break;
-+		case GSID_CTR:
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.ctr);
-+			break;
-+		case GSID_LR:
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.link);
-+			break;
-+		case GSID_NIA:
-+			rc = gse_put(gsb, iden, vcpu->arch.regs.nip);
-+			break;
-+		case GSID_SRR0:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.srr0);
-+			break;
-+		case GSID_SRR1:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.srr1);
-+			break;
-+		case GSID_SPRG0:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg0);
-+			break;
-+		case GSID_SPRG1:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg1);
-+			break;
-+		case GSID_SPRG2:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg2);
-+			break;
-+		case GSID_SPRG3:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg3);
-+			break;
-+		case GSID_DAR:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.dar);
-+			break;
-+		case GSID_DSISR:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.dsisr);
-+			break;
-+		case GSID_MSR:
-+			rc = gse_put(gsb, iden, vcpu->arch.shregs.msr);
-+			break;
-+		case GSID_VTB:
-+			rc = gse_put(gsb, iden, vcpu->arch.vcore->vtb);
-+			break;
-+		case GSID_LPCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.vcore->lpcr);
-+			break;
-+		case GSID_TB_OFFSET:
-+			rc = gse_put(gsb, iden, vcpu->arch.vcore->tb_offset);
-+			break;
-+		case GSID_LOGICAL_PVR:
-+			rc = gse_put(gsb, iden, vcpu->arch.pvr);
-+			break;
-+		case GSID_FPSCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.fp.fpscr);
-+			break;
-+		case GSID_VSRS0 ... GSID_VSRS31:
-+			i = iden - GSID_VSRS0;
-+			memcpy(&v, &vcpu->arch.fp.fpr[i],
-+			       sizeof(vcpu->arch.fp.fpr[i]));
-+			rc = gse_put(gsb, iden, v);
-+			break;
-+#ifdef CONFIG_VSX
-+		case GSID_VSCR:
-+			rc = gse_put(gsb, iden, vcpu->arch.vr.vscr.u[3]);
-+			break;
-+		case GSID_VSRS32 ... GSID_VSRS63:
-+			i = iden - GSID_VSRS32;
-+			rc = gse_put(gsb, iden, vcpu->arch.vr.vr[i]);
-+			break;
-+#endif
-+		case GSID_DEC_EXPIRY_TB:
-+			u64 dw;
-+
-+			dw = vcpu->arch.dec_expires -
-+			     vcpu->arch.vcore->tb_offset;
-+			rc = gse_put(gsb, iden, dw);
-+			break;
-+		}
-+
-+		if (rc < 0)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
-+static int gs_msg_ops_vcpu_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb)
-+{
-+	struct gs_parser gsp = { 0 };
-+	struct kvmhv_papr_host *ph;
-+	struct gs_bitmap *valids;
-+	struct kvm_vcpu *vcpu;
-+	struct gs_elem *gse;
-+	vector128 v;
-+	int rc, i;
-+	u16 iden;
-+
-+	vcpu = gsm->data;
-+
-+	rc = gse_parse(&gsp, gsb);
-+	if (rc < 0)
-+		return rc;
-+
-+	ph = &vcpu->arch.papr_host;
-+	valids = &ph->valids;
-+
-+	gsp_for_each(&gsp, iden, gse)
-+	{
-+		switch (iden) {
-+		case GSID_DSCR:
-+			gse_get(gse, &vcpu->arch.dscr);
-+			break;
-+		case GSID_MMCRA:
-+			gse_get(gse, &vcpu->arch.mmcra);
-+			break;
-+		case GSID_HFSCR:
-+			gse_get(gse, &vcpu->arch.hfscr);
-+			break;
-+		case GSID_PURR:
-+			gse_get(gse, &vcpu->arch.purr);
-+			break;
-+		case GSID_SPURR:
-+			gse_get(gse, &vcpu->arch.spurr);
-+			break;
-+		case GSID_AMR:
-+			gse_get(gse, &vcpu->arch.amr);
-+			break;
-+		case GSID_UAMOR:
-+			gse_get(gse, &vcpu->arch.uamor);
-+			break;
-+		case GSID_SIAR:
-+			gse_get(gse, &vcpu->arch.siar);
-+			break;
-+		case GSID_SDAR:
-+			gse_get(gse, &vcpu->arch.sdar);
-+			break;
-+		case GSID_IAMR:
-+			gse_get(gse, &vcpu->arch.iamr);
-+			break;
-+		case GSID_DAWR0:
-+			gse_get(gse, &vcpu->arch.dawr0);
-+			break;
-+		case GSID_DAWR1:
-+			gse_get(gse, &vcpu->arch.dawr1);
-+			break;
-+		case GSID_DAWRX0:
-+			gse_get(gse, &vcpu->arch.dawrx0);
-+			break;
-+		case GSID_DAWRX1:
-+			gse_get(gse, &vcpu->arch.dawrx1);
-+			break;
-+		case GSID_CIABR:
-+			gse_get(gse, &vcpu->arch.ciabr);
-+			break;
-+		case GSID_WORT:
-+			gse_get(gse, &vcpu->arch.wort);
-+			break;
-+		case GSID_PPR:
-+			gse_get(gse, &vcpu->arch.ppr);
-+			break;
-+		case GSID_PSPB:
-+			gse_get(gse, &vcpu->arch.pspb);
-+			break;
-+		case GSID_TAR:
-+			gse_get(gse, &vcpu->arch.tar);
-+			break;
-+		case GSID_FSCR:
-+			gse_get(gse, &vcpu->arch.fscr);
-+			break;
-+		case GSID_EBBHR:
-+			gse_get(gse, &vcpu->arch.ebbhr);
-+			break;
-+		case GSID_EBBRR:
-+			gse_get(gse, &vcpu->arch.ebbrr);
-+			break;
-+		case GSID_BESCR:
-+			gse_get(gse, &vcpu->arch.bescr);
-+			break;
-+		case GSID_IC:
-+			gse_get(gse, &vcpu->arch.ic);
-+			break;
-+		case GSID_CTRL:
-+			gse_get(gse, &vcpu->arch.ctrl);
-+			break;
-+		case GSID_PIDR:
-+			gse_get(gse, &vcpu->arch.pid);
-+			break;
-+		case GSID_AMOR:
-+			gse_get(gse, &vcpu->arch.amor);
-+			break;
-+		case GSID_VRSAVE:
-+			gse_get(gse, &vcpu->arch.vrsave);
-+			break;
-+		case GSID_MMCR0 ... GSID_MMCR3:
-+			i = iden - GSID_MMCR0;
-+			gse_get(gse, &vcpu->arch.mmcr[i]);
-+			break;
-+		case GSID_SIER ... GSID_SIER3:
-+			i = iden - GSID_SIER;
-+			gse_get(gse, &vcpu->arch.sier[i]);
-+			break;
-+		case GSID_PMC1 ... GSID_PMC6:
-+			i = iden - GSID_PMC1;
-+			gse_get(gse, &vcpu->arch.pmc[i]);
-+			break;
-+		case GSID_GPR0 ... GSID_GPR31:
-+			i = iden - GSID_GPR0;
-+			gse_get(gse, &vcpu->arch.regs.gpr[i]);
-+			break;
-+		case GSID_CR:
-+			gse_get(gse, &vcpu->arch.regs.ccr);
-+			break;
-+		case GSID_XER:
-+			gse_get(gse, &vcpu->arch.regs.xer);
-+			break;
-+		case GSID_CTR:
-+			gse_get(gse, &vcpu->arch.regs.ctr);
-+			break;
-+		case GSID_LR:
-+			gse_get(gse, &vcpu->arch.regs.link);
-+			break;
-+		case GSID_NIA:
-+			gse_get(gse, &vcpu->arch.regs.nip);
-+			break;
-+		case GSID_SRR0:
-+			gse_get(gse, &vcpu->arch.shregs.srr0);
-+			break;
-+		case GSID_SRR1:
-+			gse_get(gse, &vcpu->arch.shregs.srr1);
-+			break;
-+		case GSID_SPRG0:
-+			gse_get(gse, &vcpu->arch.shregs.sprg0);
-+			break;
-+		case GSID_SPRG1:
-+			gse_get(gse, &vcpu->arch.shregs.sprg1);
-+			break;
-+		case GSID_SPRG2:
-+			gse_get(gse, &vcpu->arch.shregs.sprg2);
-+			break;
-+		case GSID_SPRG3:
-+			gse_get(gse, &vcpu->arch.shregs.sprg3);
-+			break;
-+		case GSID_DAR:
-+			gse_get(gse, &vcpu->arch.shregs.dar);
-+			break;
-+		case GSID_DSISR:
-+			gse_get(gse, &vcpu->arch.shregs.dsisr);
-+			break;
-+		case GSID_MSR:
-+			gse_get(gse, &vcpu->arch.shregs.msr);
-+			break;
-+		case GSID_VTB:
-+			gse_get(gse, &vcpu->arch.vcore->vtb);
-+			break;
-+		case GSID_LPCR:
-+			gse_get(gse, &vcpu->arch.vcore->lpcr);
-+			break;
-+		case GSID_TB_OFFSET:
-+			gse_get(gse, &vcpu->arch.vcore->tb_offset);
-+			break;
-+		case GSID_LOGICAL_PVR:
-+			gse_get(gse, &vcpu->arch.pvr);
-+			break;
-+		case GSID_FPSCR:
-+			gse_get(gse, &vcpu->arch.fp.fpscr);
-+			break;
-+		case GSID_VSRS0 ... GSID_VSRS31:
-+			gse_get(gse, &v);
-+			i = iden - GSID_VSRS0;
-+			memcpy(&vcpu->arch.fp.fpr[i], &v,
-+			       sizeof(vcpu->arch.fp.fpr[i]));
-+			break;
-+#ifdef CONFIG_VSX
-+		case GSID_VSCR:
-+			gse_get(gse, &vcpu->arch.vr.vscr.u[3]);
-+			break;
-+		case GSID_VSRS32 ... GSID_VSRS63:
-+			i = iden - GSID_VSRS32;
-+			gse_get(gse, &vcpu->arch.vr.vr[i]);
-+			break;
-+#endif
-+		case GSID_HDAR:
-+			gse_get(gse, &vcpu->arch.fault_dar);
-+			break;
-+		case GSID_HDSISR:
-+			gse_get(gse, &vcpu->arch.fault_dsisr);
-+			break;
-+		case GSID_ASDR:
-+			gse_get(gse, &vcpu->arch.fault_gpa);
-+			break;
-+		case GSID_HEIR:
-+			u32 inst;
-+
-+			gse_get(gse, &inst);
-+			vcpu->arch.emul_inst = inst;
-+			break;
-+		case GSID_DEC_EXPIRY_TB:
-+			u64 dw;
-+
-+			gse_get(gse, &dw);
-+			vcpu->arch.dec_expires =
-+				dw + vcpu->arch.vcore->tb_offset;
-+			break;
-+		default:
-+			continue;
-+		}
-+		gsbm_set(valids, iden);
-+	}
-+
-+	return 0;
-+}
-+
-+struct gs_msg_ops vcpu_message_ops = {
-+	.get_size = gs_msg_ops_vcpu_get_size,
-+	.fill_info = gs_msg_ops_vcpu_fill_info,
-+	.refresh_info = gs_msg_ops_vcpu_refresh_info,
-+};
-+
-+static int kvmhv_papr_host_create(struct kvm_vcpu *vcpu,
-+				  struct kvmhv_papr_host *ph)
-+{
-+	struct kvmhv_papr_config *cfg;
-+	struct gs_buff *gsb, *vcpu_run_output, *vcpu_run_input;
-+	unsigned long guest_id, vcpu_id;
-+	struct gs_msg *gsm, *vcpu_message, *vcore_message;
-+	int rc;
-+
-+	cfg = &ph->cfg;
-+	guest_id = vcpu->kvm->arch.lpid;
-+	vcpu_id = vcpu->vcpu_id;
-+
-+	gsm = gsm_new(&config_msg_ops, cfg, GS_FLAGS_WIDE, GFP_KERNEL);
-+	if (!gsm) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	gsb = gsb_new(gsm_size(gsm), guest_id, vcpu_id, GFP_KERNEL);
-+	if (!gsb) {
-+		rc = -ENOMEM;
-+		goto free_gsm;
-+	}
-+
-+	rc = gsb_receive_datum(gsb, gsm, GSID_RUN_OUTPUT_MIN_SIZE);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't get vcpu run output buffer minimum size\n");
-+		goto free_gsb;
-+	}
-+
-+	vcpu_run_output = gsb_new(cfg->vcpu_run_output_size, guest_id, vcpu_id, GFP_KERNEL);
-+	if (!vcpu_run_output) {
-+		rc = -ENOMEM;
-+		goto free_gsb;
-+	}
-+
-+	cfg->vcpu_run_output_cfg.address = gsb_paddress(vcpu_run_output);
-+	cfg->vcpu_run_output_cfg.size = gsb_capacity(vcpu_run_output);
-+	ph->vcpu_run_output = vcpu_run_output;
-+
-+	gsm->flags = 0;
-+	rc = gsb_send_datum(gsb, gsm, GSID_RUN_OUTPUT);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't set vcpu run output buffer\n");
-+		goto free_gs_out;
-+	}
-+
-+	vcpu_message = gsm_new(&vcpu_message_ops, vcpu, 0, GFP_KERNEL);
-+	if (!vcpu_message) {
-+		rc = -ENOMEM;
-+		goto free_gs_out;
-+	}
-+	gsm_include_all(vcpu_message);
-+
-+	ph->vcpu_message = vcpu_message;
-+
-+	vcpu_run_input = gsb_new(gsm_size(vcpu_message), guest_id, vcpu_id, GFP_KERNEL);
-+	if (!vcpu_run_input) {
-+		rc = -ENOMEM;
-+		goto free_vcpu_message;
-+	}
-+
-+	ph->vcpu_run_input = vcpu_run_input;
-+	cfg->vcpu_run_input_cfg.address = gsb_paddress(vcpu_run_input);
-+	cfg->vcpu_run_input_cfg.size = gsb_capacity(vcpu_run_input);
-+	rc = gsb_send_datum(gsb, gsm, GSID_RUN_INPUT);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't set vcpu run input buffer\n");
-+		goto free_vcpu_run_input;
-+	}
-+
-+	vcore_message =
-+		gsm_new(&vcpu_message_ops, vcpu, GS_FLAGS_WIDE, GFP_KERNEL);
-+	if (!vcore_message) {
-+		rc = -ENOMEM;
-+		goto free_vcpu_run_input;
-+	}
-+
-+	gsm_include_all(vcore_message);
-+	ph->vcore_message = vcore_message;
-+
-+	gsbm_fill(&ph->valids);
-+	gsm_free(gsm);
-+	gsb_free(gsb);
-+	return 0;
-+
-+free_vcpu_run_input:
-+	gsb_free(vcpu_run_input);
-+free_vcpu_message:
-+	gsm_free(vcpu_message);
-+free_gs_out:
-+	gsb_free(vcpu_run_output);
-+free_gsb:
-+	gsb_free(gsb);
-+free_gsm:
-+	gsm_free(gsm);
-+err:
-+	return rc;
-+}
-+
-+/**
-+ * __kvmhv_papr_mark_dirty() - mark a Guest State ID to be sent to the host
-+ * @vcpu: vcpu
-+ * @iden: guest state ID
-+ *
-+ * Mark a guest state ID as having been changed by the L1 host and thus
-+ * the new value must be sent to the L0 hypervisor. See kvmhv_papr_flush_vcpu()
-+ */
-+int __kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	struct kvmhv_papr_host *ph;
-+	struct gs_bitmap *valids;
-+	struct gs_msg *gsm;
-+
-+	if (!iden)
-+		return 0;
-+
-+	ph = &vcpu->arch.papr_host;
-+	valids = &ph->valids;
-+	gsm = ph->vcpu_message;
-+	gsm_include(gsm, iden);
-+	gsm = ph->vcore_message;
-+	gsm_include(gsm, iden);
-+	gsbm_set(valids, iden);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__kvmhv_papr_mark_dirty);
-+
-+/**
-+ * __kvmhv_papr_cached_reload() - reload a Guest State ID from the host
-+ * @vcpu: vcpu
-+ * @iden: guest state ID
-+ *
-+ * Reload the value for the guest state ID from the L0 host into the L1 host.
-+ * This is cached so that going out to the L0 host only happens if neccessary.
-+ */
-+int __kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
-+{
-+	struct kvmhv_papr_host *ph;
-+	struct gs_bitmap *valids;
-+	struct gs_buff *gsb;
-+	struct gs_msg gsm;
-+	int rc;
-+
-+	if (!iden)
-+		return 0;
-+
-+	ph = &vcpu->arch.papr_host;
-+	valids = &ph->valids;
-+	if (gsbm_test(valids, iden))
-+		return 0;
-+
-+	gsb = ph->vcpu_run_input;
-+	gsm_init(&gsm, &vcpu_message_ops, vcpu, gsid_flags(iden));
-+	rc = gsb_receive_datum(gsb, &gsm, iden);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't get GSID: 0x%x\n", iden);
-+		return rc;
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__kvmhv_papr_cached_reload);
-+
-+/**
-+ * kvmhv_papr_flush_vcpu() - send modified Guest State IDs to the host
-+ * @vcpu: vcpu
-+ * @time_limit: hdec expiry tb
-+ *
-+ * Send the values marked by __kvmhv_papr_mark_dirty() to the L0 host. Thread
-+ * wide values are copied to the H_GUEST_RUN_VCPU input buffer. Guest wide
-+ * values need to be sent with H_GUEST_SET first.
-+ *
-+ * The hdec tb offset is always sent to L0 host.
-+ */
-+int kvmhv_papr_flush_vcpu(struct kvm_vcpu *vcpu, u64 time_limit)
-+{
-+	struct kvmhv_papr_host *ph;
-+	struct gs_buff *gsb;
-+	struct gs_msg *gsm;
-+	int rc;
-+
-+	ph = &vcpu->arch.papr_host;
-+	gsb = ph->vcpu_run_input;
-+	gsm = ph->vcore_message;
-+	rc = gsb_send_data(gsb, gsm);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't set guest wide elements\n");
-+		return rc;
-+	}
-+
-+	gsm = ph->vcpu_message;
-+	rc = gsm_fill_info(gsm, gsb);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't fill vcpu run input buffer\n");
-+		return rc;
-+	}
-+
-+	rc = gse_put(gsb, GSID_HDEC_EXPIRY_TB, time_limit);
-+	if (rc < 0)
-+		return rc;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(kvmhv_papr_flush_vcpu);
-+
-+
-+/**
-+ * kvmhv_papr_set_ptbl_entry() - send partition and process table state to L0 host
-+ * @lpid: guest id
-+ * @dw0: partition table double word
-+ * @dw1: process table double word
-+ */
-+int kvmhv_papr_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1)
-+{
-+	struct gs_part_table patbl;
-+	struct gs_proc_table prtbl;
-+	struct gs_buff *gsb;
-+	size_t size;
-+	int rc;
-+
-+	size = gse_total_size(gsid_size(GSID_PARTITION_TABLE)) +
-+	       gse_total_size(gsid_size(GSID_PROCESS_TABLE)) +
-+	       sizeof(struct gs_header);
-+	gsb = gsb_new(size, lpid, 0, GFP_KERNEL);
-+	if (!gsb)
-+		return -ENOMEM;
-+
-+	patbl.address = dw0 & RPDB_MASK;
-+	patbl.ea_bits = ((((dw0 & RTS1_MASK) >> (RTS1_SHIFT - 3)) |
-+			  ((dw0 & RTS2_MASK) >> RTS2_SHIFT)) +
-+			 31);
-+	patbl.gpd_size = 1ul << ((dw0 & RPDS_MASK) + 3);
-+	rc = gse_put(gsb, GSID_PARTITION_TABLE, patbl);
-+	if (rc < 0)
-+		goto free_gsb;
-+
-+	prtbl.address = dw1 & PRTB_MASK;
-+	prtbl.gpd_size = 1ul << ((dw1 & PRTS_MASK) + 12);
-+	rc = gse_put(gsb, GSID_PROCESS_TABLE, prtbl);
-+	if (rc < 0)
-+		goto free_gsb;
-+
-+	rc = gsb_send(gsb, GS_FLAGS_WIDE);
-+	if (rc < 0) {
-+		pr_err("KVM-PAPR: couldn't set the PATE\n");
-+		goto free_gsb;
-+	}
-+
-+	gsb_free(gsb);
-+	return 0;
-+
-+free_gsb:
-+	gsb_free(gsb);
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(kvmhv_papr_set_ptbl_entry);
-+
-+/**
-+ * kvmhv_papr_parse_output() - receive values from H_GUEST_RUN_VCPU output
-+ * @vcpu: vcpu
-+ *
-+ * Parse the output buffer from H_GUEST_RUN_VCPU to update vcpu.
-+ */
-+int kvmhv_papr_parse_output(struct kvm_vcpu *vcpu)
-+{
-+	struct kvmhv_papr_host *ph;
-+	struct gs_buff *gsb;
-+	struct gs_msg gsm;
-+
-+	ph = &vcpu->arch.papr_host;
-+	gsb = ph->vcpu_run_output;
-+
-+	vcpu->arch.fault_dar = 0;
-+	vcpu->arch.fault_dsisr = 0;
-+	vcpu->arch.fault_gpa = 0;
-+	vcpu->arch.emul_inst = 0;
-+
-+	gsm_init(&gsm, &vcpu_message_ops, vcpu, 0);
-+	gsm_refresh_info(&gsm, gsb);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(kvmhv_papr_parse_output);
-+
-+static void kvmhv_papr_host_free(struct kvm_vcpu *vcpu,
-+				 struct kvmhv_papr_host *ph)
-+{
-+	gsm_free(ph->vcpu_message);
-+	gsm_free(ph->vcore_message);
-+	gsb_free(ph->vcpu_run_input);
-+	gsb_free(ph->vcpu_run_output);
-+}
-+
-+int __kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	int rc;
-+
-+	for (int i = 0; i < 32; i++) {
-+		rc = kvmhv_papr_cached_reload(vcpu, GSID_GPR0 + i);
-+		if (rc < 0)
-+			return rc;
-+	}
-+
-+	rc = kvmhv_papr_cached_reload(vcpu, GSID_CR);
-+	if (rc < 0)
-+		return rc;
-+	rc = kvmhv_papr_cached_reload(vcpu, GSID_XER);
-+	if (rc < 0)
-+		return rc;
-+	rc = kvmhv_papr_cached_reload(vcpu, GSID_CTR);
-+	if (rc < 0)
-+		return rc;
-+	rc = kvmhv_papr_cached_reload(vcpu, GSID_LR);
-+	if (rc < 0)
-+		return rc;
-+	rc = kvmhv_papr_cached_reload(vcpu, GSID_NIA);
-+	if (rc < 0)
-+		return rc;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__kvmhv_papr_reload_ptregs);
-+
-+int __kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
-+{
-+	for (int i = 0; i < 32; i++)
-+		kvmhv_papr_mark_dirty(vcpu, GSID_GPR0 + i);
-+
-+	kvmhv_papr_mark_dirty(vcpu, GSID_CR);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_XER);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_CTR);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_LR);
-+	kvmhv_papr_mark_dirty(vcpu, GSID_NIA);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__kvmhv_papr_mark_dirty_ptregs);
-+
-+/**
-+ * kvmhv_papr_vcpu_create() - create nested vcpu for the PAPR API
-+ * @vcpu: vcpu
-+ * @ph: PAPR nested host state
-+ *
-+ * Parse the output buffer from H_GUEST_RUN_VCPU to update vcpu.
-+ */
-+int kvmhv_papr_vcpu_create(struct kvm_vcpu *vcpu,
-+			   struct kvmhv_papr_host *ph)
-+{
-+	long rc;
-+
-+	rc = plpar_guest_create_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id);
-+
-+	if (rc != H_SUCCESS) {
-+		pr_err("KVM: Create Guest vcpu hcall failed, rc=%ld\n", rc);
-+		switch (rc) {
-+		case H_NOT_ENOUGH_RESOURCES:
-+		case H_ABORTED:
-+			return -ENOMEM;
-+		case H_AUTHORITY:
-+			return -EPERM;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	rc = kvmhv_papr_host_create(vcpu, ph);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(kvmhv_papr_vcpu_create);
-+
-+/**
-+ * kvmhv_papr_vcpu_free() - free the PAPR host state
-+ * @vcpu: vcpu
-+ * @ph: PAPR nested host state
-+ */
-+void kvmhv_papr_vcpu_free(struct kvm_vcpu *vcpu,
-+			  struct kvmhv_papr_host *ph)
-+{
-+	kvmhv_papr_host_free(vcpu, ph);
-+}
-+EXPORT_SYMBOL_GPL(kvmhv_papr_vcpu_free);
-diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emulate_loadstore.c
-index 6458ede28b65..2c40a693cd77 100644
---- a/arch/powerpc/kvm/emulate_loadstore.c
-+++ b/arch/powerpc/kvm/emulate_loadstore.c
-@@ -92,7 +92,8 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mmio_host_swabbed = 0;
- 
- 	emulated = EMULATE_FAIL;
--	vcpu->arch.regs.msr = vcpu->arch.shared->msr;
-+	vcpu->arch.regs.msr = kvmppc_get_msr(vcpu);
-+	kvmhv_papr_reload_ptregs(vcpu, &vcpu->arch.regs);
- 	if (analyse_instr(&op, &vcpu->arch.regs, ppc_inst(inst)) == 0) {
- 		int type = op.type & INSTR_TYPE_MASK;
- 		int size = GETSIZE(op.type);
-@@ -356,6 +357,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 		}
- 	}
- 
-+	kvmhv_papr_mark_dirty_ptregs(vcpu, &vcpu->arch.regs);
- 	trace_kvm_ppc_instr(inst, kvmppc_get_pc(vcpu), emulated);
- 
- 	/* Advance past emulated instruction. */
--- 
-2.31.1
-
+--Sean
