@@ -1,63 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C356F9E60
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 05:46:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7266F9E4B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 05:40:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QF6fS3xSdz3cJG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 13:46:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QF6Wm4NfLz3fCY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 13:40:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sKT5b9Pi;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WsQXHezk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=abgHvwb5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=LZRt1LDN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sKT5b9Pi;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WsQXHezk;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=abgHvwb5;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=LZRt1LDN;
 	dkim-atps=neutral
+X-Greylist: delayed 192 seconds by postgrey-1.36 at boromir; Mon, 08 May 2023 13:40:03 AEST
 Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF6dY6WCRz30QS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 13:45:53 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id BA0763200913;
-	Sun,  7 May 2023 23:36:42 -0400 (EDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF6Vq0jpsz30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 13:40:03 +1000 (AEST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.west.internal (Postfix) with ESMTP id D19743200906;
+	Sun,  7 May 2023 23:40:00 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Sun, 07 May 2023 23:36:43 -0400
+  by compute1.internal (MEProxy); Sun, 07 May 2023 23:40:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-	1683517002; x=1683603402; bh=vwogukTrBUphYUT11x4lv0tsM1CKNr0H6jl
-	9qFUGAk4=; b=sKT5b9Pi7k5FinKQG5vGU+L4+OFiPL6Oftk6LG/iebaVCWlfMBs
-	LQh+9RL2V5EzSquLQdX+SFBO85ZE3ToNYXotZGVj1C3KhaE1tlmKkhUtHW8rSOJk
-	I7tR9DurqNfXzaPstfjKeaYmQTv8Ye2ZnO0gdqeFi8IA4DTQOenPp1BOMhajjxM9
-	58co30Y4h+0Sm2Rd7T2uVyQDdkfijUJZcv8Afy0QaeM9T5cYFP1qMZUZc7kqDjGL
-	g0trKYmlqQgUQJG/4Ho6BQUe1yhac0q67SL6ml45rGSi4lHnC9wNDpYCtBctz6DW
-	t0yqLCQ7KyNDaErVviTT8Sbgj1hINv+vPHw==
+	1683517200; x=1683603600; bh=vj/C0EaqIaqhCvzJu9B9s1SCNHEKuWPHs+m
+	LQ9/UBq4=; b=abgHvwb59tnOwN9kxLAqg+/Y6cLYDIXL3ZyZlum3HUszr7mkz1Y
+	bUCl8cHFdaoRd801/AXTxG1QklXkrvVmF/8G9rTGAvOFK/fvFz979+aoFT+tV2d4
+	cS3J70LIk0JOt9B+zSFsBusCpEWdHyw9vzWMInJ4KbkQqVjY5mr18i7ilhzU25wL
+	LdqRtDYtmamY3K9b9yt/IwB1YlYrWNl8B/F6Z1eqEyWyFKL872DM70oJ8/Dv7UZh
+	pmx8e/kNeidTkjKTL6gd4aBeYLZMDvT4S57erzr3gMSo4z5911U2wF4nTTTGdtue
+	r80ljyExYPTOgiLSPoF6V0gDueCZDG+KYCQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
 	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1683517002; x=1683603402; bh=vwogukTrBUphYUT11x4lv0tsM1CKNr0H6jl
-	9qFUGAk4=; b=WsQXHezkbl0WcxrWTGQHzpJCCB31DLGm/s9Y64Vtkxg7tcZuW/T
-	01pLFCJz1bF/7aSKamYV/zR3ZzBydUIvuzgFNx63uzmQmzmTgEFyiKC3DpvjpN/l
-	h9XFy6Uz6vn7re5lu8bTHHmj7Vg4mHv5HMHGtBtpvvJF7S5WOolL55Sjfl+4Ptag
-	Otla4XllD9vgsFyD1n7qxKRr1bUro6CayDbsSK3RzaFa/l/UBGayFeMjzXlEn1vK
-	U9hQ1YJjq9+syVuC5kX0b7wZoGNCWOUxTmvvsgA127zcCo9NEISnVvUxndK1AQJK
-	y0RNoy8jxxFbaluzJJR2+tyC2B+bpOrHt5Q==
-X-ME-Sender: <xms:Sm5YZNm3u3WkomTd52K20g-jJtFHUaHKLHiJ0D4ADg_fqNGvkJihXA>
-    <xme:Sm5YZI1ZHLrCElKFW8sxOdwbFlVXpae7H60yD61jlrvAvz89iOHtkXViIssCIfMxK
-    f3UPUINy5aQKbNIwA>
-X-ME-Received: <xmr:Sm5YZDon44G8TShRS8jgNoVWC1aySY5D0bWWrrpaTqOvvw7DI6o663BZVnyklqRc8I7reA8dqi0A55Zpn-vkjt2Ug-k-lLPa1d383iFrn7NjlA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgjeegucetufdoteggodetrfdotf
+	1683517200; x=1683603600; bh=vj/C0EaqIaqhCvzJu9B9s1SCNHEKuWPHs+m
+	LQ9/UBq4=; b=LZRt1LDNxaAk0aHvUSzlbdE2ZSMr0+LmBtII5QILlvNB5gwoUe6
+	Bs44GsAkW+jcNENRoXMq+sWS3JcBx85y10On5SOh9de1fQpgzw2AhXQVBPNoKKeJ
+	fx7fOlMJL/eyuISdV57q+AZAT8bD1EFy6TB3KuzN14OxScAa4j+ZXgMAMpuHq159
+	/4iqD17HWiZidTUTYtf1RqqSpaxuuavaotrWX2K7onuPwPKrFzzdHd1wBiGXz74T
+	+I0as7hD11p0E/sqTVrhPfZXT/3yymMa0UtpO5t9350iLyJrNFAHd6lJBHu/JJba
+	i6AdvvIiHbWtXVXS1q6a7Y1/tBmtiK/JrVQ==
+X-ME-Sender: <xms:EG9YZJxv-BiWs4k5vqeBVoO1paqt74zxTXphMXCdMSLyI72Q5Grm9w>
+    <xme:EG9YZJTJ00m6f_01NhU10Wq9ThuZpaqFrBsuEWEQYD4iCUaAg8e-DzDERxCkkTOT4
+    wWiXmUerNa_A9D41w>
+X-ME-Received: <xmr:EG9YZDUkGNoErDfK8KLRwzJvgbgRCupW8pXnH8F_OYTOclTEjMn-dzvpQ8wPHVny6qwnSwstHx0IF9uP15IQGXyPaEGVbLbH3iF1XjdIYRSe3Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgjeeiucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredt
@@ -65,22 +66,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgjeegucetufdoteggod
     hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheptefgieelhfeufeevvdekheeifeej
     gfefgeehtedukeeigfduuddtueekteevleelnecuvehluhhsthgvrhfuihiivgeptdenuc
     frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:Sm5YZNk7UR3VJLdCOcUW1SUgo3PUQNwSHALdJSuUs8-c71ivXefDNA>
-    <xmx:Sm5YZL01qw26gble7d9yLkew4HFKJ2gJ83IpGpmdHy9GzseXn9xDkw>
-    <xmx:Sm5YZMtLUJWNZp_qkpLi0AiVi3VdyRTyDAkbudT1YjiCxpGOr6jb9g>
-    <xmx:Sm5YZE-JWMSE3H4J_RYdwf9Bnrlq1OUP86n2AxdH63r1M_fV0Cdf-g>
+X-ME-Proxy: <xmx:EG9YZLh0jihFmkTsWU8TOEQ7cu6_0jKrHkGSgpwWAaq-FYmO3wIqaw>
+    <xmx:EG9YZLDGaKcbAFBuW5qv6B1VL7ayQoMkfOSj1dahTy3ZQYlSGxXz0g>
+    <xmx:EG9YZEJVRbUB0fq_9tpEK11dW3DIYI9wYH4mPaoJFncRy5nDaIdqYA>
+    <xmx:EG9YZA5fyvYpR5TjSO3qxtkV3wQsWpNYRwzhXAQ6NTp0hd0mi0Z2TQ>
 Feedback-ID: i4421424f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 7 May 2023 23:36:40 -0400 (EDT)
-Message-ID: <f242e2118d3da54413ab5456bb6647dbfb0789ed.camel@russell.cc>
-Subject: Re: [PATCH v2 01/12] powerpc/book3s: Add missing <linux/sched.h>
+ 7 May 2023 23:39:58 -0400 (EDT)
+Message-ID: <fdb67f021886118cac76e655b68553d4b3ad4aee.camel@russell.cc>
+Subject: Re: [PATCH v2 02/12] powerpc/ptrace: Add missing <linux/regset.h>
  include
 From: Russell Currey <ruscur@russell.cc>
 To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 08 May 2023 13:36:36 +1000
-In-Reply-To: <20230330055040.434133-2-bgray@linux.ibm.com>
+Date: Mon, 08 May 2023 13:39:56 +1000
+In-Reply-To: <20230330055040.434133-3-bgray@linux.ibm.com>
 References: <20230330055040.434133-1-bgray@linux.ibm.com>
-	 <20230330055040.434133-2-bgray@linux.ibm.com>
+	 <20230330055040.434133-3-bgray@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
@@ -101,15 +102,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, 2023-03-30 at 16:50 +1100, Benjamin Gray wrote:
-> The functions here use struct thread_struct fields, so need to import
-> the full definition from <linux/sched.h>. The <asm/current.h> header
-> that defines current only forward declares struct thread_struct.
->=20
-> Failing to include this <linux/sched.h> header leads to a compilation
-> error when a translation unit does not also include <linux/sched.h>
-> indirectly.
+> ptrace-decl.h uses user_regset_get2_fn (among other things) from
+> regset.h. While all current users of ptrace-decl.h include regset.h
+> before it anyway, it adds an implicit ordering dependency and breaks
+> source tooling that tries to inspect ptrace-decl.h by itself.
 >=20
 > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 Reviewed-by: Russell Currey <ruscur@russell.cc>
+
