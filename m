@@ -2,79 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCC96F9E25
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 05:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C356F9E60
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 05:46:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QF63g0H4Lz3cF0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 13:19:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QF6fS3xSdz3cJG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 May 2023 13:46:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ovOzvT28;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sKT5b9Pi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WsQXHezk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=albertedavies@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ovOzvT28;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=sKT5b9Pi;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WsQXHezk;
 	dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF61w3KYXz3c8r
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 13:18:27 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1ab267e3528so27683675ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 May 2023 20:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683515904; x=1686107904;
-        h=mime-version:content-language:accept-language:message-id:date
-         :thread-index:thread-topic:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n4ldLtDPNZTjKDl/+zxcZOaAgsV9GXeQJZVM2F+Ol9M=;
-        b=ovOzvT28zbiuWAYUQYcnmEJd3QanPebOqKi0NsgU1pudZ3GQoK6Ci32zh/wgBh0l8W
-         BocnWppPXpebVV1pr5YseEDu3d7x+tCYZXZksIS3d/vNJTIthwwsWS4Wif9/IkpPhzHV
-         Jqm8c8ZRStC1UZSR/YW3HQnDW7kSBvkV5mXOZsZ4EOgFeg5yXBRxxZfQXZcuZzW6Scvn
-         06+At9TDspXRefEr8qAjwcLOGvK/YZDB1y1pfjNnpXpW2Og7jDFSqkchIhyr2P9aihKn
-         XdmsHqGgil+RHfIeBJQmSeBTw2roDHE89m7HKqIln7DQ9mit7vlqEFz00a49R7xWhnx4
-         FzJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683515904; x=1686107904;
-        h=mime-version:content-language:accept-language:message-id:date
-         :thread-index:thread-topic:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n4ldLtDPNZTjKDl/+zxcZOaAgsV9GXeQJZVM2F+Ol9M=;
-        b=chlZGdylsfA+0l0+b6w65KinitErV1fx0ljp1aDvQ1bn0b8PL7WziKvzEIxg8PMtqe
-         HPefwDDXZvQl2BDt7emLOSJJy6NKvhx1OBV/TOSdtF9jeyIcWOzy2HDyVTj9BxP5ioaF
-         M7/JQxdkX6yFN6QJuimvpsIldx6mZ+00kJMW5H7/6gyVDKmgh7iPgBmVimbQSKQCDenp
-         Xo6c1yZ7yOvjF5PovExOO2MP5rh93RMeZlru84XpDi6rabBZMJfod0lva7DeSMUZEQru
-         EurHVaVm/bFB8ZDnSmG7ErTUdlNjLT8rYIq4JyCodbBH/rbdZ5Yl0//3s7vOWLdg7/ZN
-         twTQ==
-X-Gm-Message-State: AC+VfDyungltjLUniPvvWtxoPbBc4HpPbRkQwdoCDNwWsxmtKSdw/CD/
-	rgUlEQw5yk6BcaAcewOde5k=
-X-Google-Smtp-Source: ACHHUZ6mD3BKzq17YJyvUJd7rPp/dXdROmLp9b7APn66A08RZeXS/fWKB3+3ZbAJBpfngwCLXboXLA==
-X-Received: by 2002:a17:902:ba86:b0:1aa:86a4:37ed with SMTP id k6-20020a170902ba8600b001aa86a437edmr8026027pls.55.1683515904208;
-        Sun, 07 May 2023 20:18:24 -0700 (PDT)
-Received: from SJ0PR03MB6240.namprd03.prod.outlook.com ([2603:1036:307:492e::5])
-        by smtp.gmail.com with ESMTPSA id j4-20020a170902da8400b001ab05eef2ddsm5943190plx.32.2023.05.07.20.18.22
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 May 2023 20:18:23 -0700 (PDT)
-From: "Albert E. Davies" <albertedavies@gmail.com>
-To: "tony.luck@intel.com" <tony.luck@intel.com>
-Subject: Re: [PATCH v4 0/2] Copy-on-write poison recovery
-Thread-Topic: [PATCH v4 0/2] Copy-on-write poison recovery
-Thread-Index: AQHZgVufCUXyCxFMiUqapNFJHLacoQ==
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Mon, 8 May 2023 03:18:22 +0000
-Message-ID: 	<SJ0PR03MB6240434535E7B560E1407C88FE719@SJ0PR03MB6240.namprd03.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: multipart/alternative;
-	boundary="_000_SJ0PR03MB6240434535E7B560E1407C88FE719SJ0PR03MB6240namp_"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QF6dY6WCRz30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 May 2023 13:45:53 +1000 (AEST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id BA0763200913;
+	Sun,  7 May 2023 23:36:42 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Sun, 07 May 2023 23:36:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+	1683517002; x=1683603402; bh=vwogukTrBUphYUT11x4lv0tsM1CKNr0H6jl
+	9qFUGAk4=; b=sKT5b9Pi7k5FinKQG5vGU+L4+OFiPL6Oftk6LG/iebaVCWlfMBs
+	LQh+9RL2V5EzSquLQdX+SFBO85ZE3ToNYXotZGVj1C3KhaE1tlmKkhUtHW8rSOJk
+	I7tR9DurqNfXzaPstfjKeaYmQTv8Ye2ZnO0gdqeFi8IA4DTQOenPp1BOMhajjxM9
+	58co30Y4h+0Sm2Rd7T2uVyQDdkfijUJZcv8Afy0QaeM9T5cYFP1qMZUZc7kqDjGL
+	g0trKYmlqQgUQJG/4Ho6BQUe1yhac0q67SL6ml45rGSi4lHnC9wNDpYCtBctz6DW
+	t0yqLCQ7KyNDaErVviTT8Sbgj1hINv+vPHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1683517002; x=1683603402; bh=vwogukTrBUphYUT11x4lv0tsM1CKNr0H6jl
+	9qFUGAk4=; b=WsQXHezkbl0WcxrWTGQHzpJCCB31DLGm/s9Y64Vtkxg7tcZuW/T
+	01pLFCJz1bF/7aSKamYV/zR3ZzBydUIvuzgFNx63uzmQmzmTgEFyiKC3DpvjpN/l
+	h9XFy6Uz6vn7re5lu8bTHHmj7Vg4mHv5HMHGtBtpvvJF7S5WOolL55Sjfl+4Ptag
+	Otla4XllD9vgsFyD1n7qxKRr1bUro6CayDbsSK3RzaFa/l/UBGayFeMjzXlEn1vK
+	U9hQ1YJjq9+syVuC5kX0b7wZoGNCWOUxTmvvsgA127zcCo9NEISnVvUxndK1AQJK
+	y0RNoy8jxxFbaluzJJR2+tyC2B+bpOrHt5Q==
+X-ME-Sender: <xms:Sm5YZNm3u3WkomTd52K20g-jJtFHUaHKLHiJ0D4ADg_fqNGvkJihXA>
+    <xme:Sm5YZI1ZHLrCElKFW8sxOdwbFlVXpae7H60yD61jlrvAvz89iOHtkXViIssCIfMxK
+    f3UPUINy5aQKbNIwA>
+X-ME-Received: <xmr:Sm5YZDon44G8TShRS8jgNoVWC1aySY5D0bWWrrpaTqOvvw7DI6o663BZVnyklqRc8I7reA8dqi0A55Zpn-vkjt2Ug-k-lLPa1d383iFrn7NjlA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefjedgjeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredt
+    tderjeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruh
+    hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheptefgieelhfeufeevvdekheeifeej
+    gfefgeehtedukeeigfduuddtueekteevleelnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:Sm5YZNk7UR3VJLdCOcUW1SUgo3PUQNwSHALdJSuUs8-c71ivXefDNA>
+    <xmx:Sm5YZL01qw26gble7d9yLkew4HFKJ2gJ83IpGpmdHy9GzseXn9xDkw>
+    <xmx:Sm5YZMtLUJWNZp_qkpLi0AiVi3VdyRTyDAkbudT1YjiCxpGOr6jb9g>
+    <xmx:Sm5YZE-JWMSE3H4J_RYdwf9Bnrlq1OUP86n2AxdH63r1M_fV0Cdf-g>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 7 May 2023 23:36:40 -0400 (EDT)
+Message-ID: <f242e2118d3da54413ab5456bb6647dbfb0789ed.camel@russell.cc>
+Subject: Re: [PATCH v2 01/12] powerpc/book3s: Add missing <linux/sched.h>
+ include
+From: Russell Currey <ruscur@russell.cc>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 08 May 2023 13:36:36 +1000
+In-Reply-To: <20230330055040.434133-2-bgray@linux.ibm.com>
+References: <20230330055040.434133-1-bgray@linux.ibm.com>
+	 <20230330055040.434133-2-bgray@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
 MIME-Version: 1.0
-X-Mailman-Approved-At: Mon, 08 May 2023 13:19:17 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,41 +96,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linmiaohe@huawei.com" <linmiaohe@huawei.com>, "willy@infradead.org" <willy@infradead.org>, "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "glider@google.com" <glider@google.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>, "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---_000_SJ0PR03MB6240434535E7B560E1407C88FE719SJ0PR03MB6240namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+On Thu, 2023-03-30 at 16:50 +1100, Benjamin Gray wrote:
+> The functions here use struct thread_struct fields, so need to import
+> the full definition from <linux/sched.h>. The <asm/current.h> header
+> that defines current only forward declares struct thread_struct.
+>=20
+> Failing to include this <linux/sched.h> header leads to a compilation
+> error when a translation unit does not also include <linux/sched.h>
+> indirectly.
+>=20
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-
-
-
-Get Outlook for Android<https://aka.ms/AAb9ysg>
-
---_000_SJ0PR03MB6240434535E7B560E1407C88FE719SJ0PR03MB6240namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-</head>
-<body>
-<div style=3D"color: rgb(33, 33, 33); background-color: rgb(255, 255, 255);=
-"><br>
-</div>
-<div style=3D"color: rgb(33, 33, 33); background-color: rgb(255, 255, 255);=
-" dir=3D"auto">
-<br>
-</div>
-<div id=3D"ms-outlook-mobile-signature" dir=3D"auto">
-<div><br>
-</div>
-Get <a href=3D"https://aka.ms/AAb9ysg">Outlook for Android</a></div>
-</body>
-</html>
-
---_000_SJ0PR03MB6240434535E7B560E1407C88FE719SJ0PR03MB6240namp_--
+Reviewed-by: Russell Currey <ruscur@russell.cc>
