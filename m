@@ -2,50 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCDE6FC19B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A57D6FC1B6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFrkQ6f6zz3fN9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 18:22:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFrpX2vyvz3fJx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 18:26:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=aodDrRl9;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=aodDrRl9;
+	dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFrjt5CMvz3cM6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 18:22:10 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pwIbe-0005j4-4k; Tue, 09 May 2023 10:21:58 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pwIba-002BuQ-Oe; Tue, 09 May 2023 10:21:54 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pwIba-002iPP-3L; Tue, 09 May 2023 10:21:54 +0200
-Date: Tue, 9 May 2023 10:21:53 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Drop MPC5200 LocalPlus bus FIFO driver
-Message-ID: <20230509082153.jcy2qpvyd44bjaee@pengutronix.de>
-References: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de>
- <20230412150524.ojsvukh47hing6db@pengutronix.de>
- <87zg7cabf6.fsf@mpe.ellerman.id.au>
- <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jz6b5qpi3ldmi55y"
-Content-Disposition: inline
-In-Reply-To: <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFrng29sJz3cDt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 18:25:26 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-64115eef620so40601695b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 01:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683620723; x=1686212723;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U6DsCGsUXGDhkChqurMX8resBz4nqk/3+owk5MpxCY8=;
+        b=aodDrRl9/povbI6maFSBUZOdHabsyscKmYa5aFKvArg36KOLJEZQISSlK3+YBEmxlL
+         0li0iBgKbjaqviGHXyi2DuNJhbFCvyCiLKMPAmDn1OTHojdw3NAQfwUGyFbwXHeJnf55
+         YTgmZIWe2sKw8yI8hd+CYgZU+bK1fufAEDN6vbNmedSZJEJC3no2N00y5YNdy49lEjqB
+         uRCGz9heyfCwd4wW+tyrgm6FgXJm6bp6/gmKGli1fbtavxk1aVJtZ2oi8CFnsmYJRLdr
+         MPF7k2V30xOgI7vKRdAvuM49hG38kioYczqrVLE8fOUcgfcjHN2vVu7RvJwYbTZfKH+p
+         wvfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683620723; x=1686212723;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=U6DsCGsUXGDhkChqurMX8resBz4nqk/3+owk5MpxCY8=;
+        b=Qgc8SFS7mBXtn7PtUuYE+WPhbdZEIMDYZ9Xn5Kb7dqC3SMVBjs5jUvpanC6roYEdMI
+         KuGQpA/KkRi3QxgA/y51v4C0ujWsntkcXA2zfPlnDB0PlqNZpbS7HmSldu8YRej9qxTg
+         cej3oMSgi+WnGFfTvUjAwRPN/P8+y8sM+YcYdMHCgwuaHMfalmeaUivjXCqM6bbKYYBe
+         MZw09U41vqm3p1EQOUm4MakcJF11twV/o5qJfkOJmlFq1tyCW6Gqn25EsFAhjhPnSStn
+         sE0n1Ff2tb5Ti9BIERHvxTTZsxgbYI3LseARC5C99lyVx5LapPnwIIYmsIJT0VoL0PJt
+         mWUA==
+X-Gm-Message-State: AC+VfDwBdrQ5jRAvBBNEftaY/NXDDYdlQ4hfGzxs74wMaNJ7ZKEbSz4N
+	gXn+9YDY0GhO0lpixx7O3PI=
+X-Google-Smtp-Source: ACHHUZ6wggyA3oDYwIzdEIZZvFPdYzZjwctxKgmvGnlueptXtM/T5P++XryLk2oO2yQd3yPt4vWcGA==
+X-Received: by 2002:a17:902:d50c:b0:1ab:f74:a118 with SMTP id b12-20020a170902d50c00b001ab0f74a118mr16439827plg.19.1683620723330;
+        Tue, 09 May 2023 01:25:23 -0700 (PDT)
+Received: from localhost ([118.208.131.108])
+        by smtp.gmail.com with ESMTPSA id x5-20020a170902b40500b0019a6cce2060sm925111plr.57.2023.05.09.01.25.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 01:25:22 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 09 May 2023 18:25:18 +1000
+Message-Id: <CSHLQGQA5FL9.2Y9YRT25EOJ0W@wheely>
+Subject: Re: [RFC PATCH 4/4] powerpc/64: Remove support for kernel's built
+ with ELFv1 ABI
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.14.0
+References: <20230505071850.228734-1-npiggin@gmail.com>
+ <20230505071850.228734-5-npiggin@gmail.com>
+ <28e90ac6-ae84-b0cd-1c3d-d5d93701b8cc@csgroup.eu>
+In-Reply-To: <28e90ac6-ae84-b0cd-1c3d-d5d93701b8cc@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,85 +83,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anatolij Gustschin <agust@denx.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---jz6b5qpi3ldmi55y
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-
-On Thu, Apr 13, 2023 at 08:16:42AM +0200, Uwe Kleine-K=F6nig wrote:
-> While mpc5200b.dtsi contains a device that this driver can bind to, the
-> only purpose of a bound device is to be used by the four exported functio=
-ns
-> mpc52xx_lpbfifo_submit(), mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll()
-> and mpc52xx_lpbfifo_start_xfer(). However there are no callers to this
-> function and so the driver is effectively superfluous and can be deleted.
-> Also drop some defines and a struct from <asm/mpc52xx.h> that are unused
-> now together with the declarations of the four mentioned functions.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello Michael,
->=20
-> On Thu, Apr 13, 2023 at 10:11:25AM +1000, Michael Ellerman wrote:
-> > Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> writes:
-> > > On Wed, Dec 28, 2022 at 03:51:29PM +0100, Uwe Kleine-K=F6nig wrote:
-> > >> The four exported functions mpc52xx_lpbfifo_submit(),
-> > >> mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll(), and
-> > >> mpc52xx_lpbfifo_start_xfer() are not used. So they can be dropped an=
-d the
-> > >> definitions needed to call them can be moved into the driver file.
-> > >>=20
-> > >> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > >
-> > > I never got feedback about this driver and it has not appeared in next
-> > > up to now. Did it fell through the cracks?
+On Fri May 5, 2023 at 6:49 PM AEST, Christophe Leroy wrote:
+>
+>
+> Le 05/05/2023 =C3=A0 09:18, Nicholas Piggin a =C3=A9crit=C2=A0:
+> > User code must still support ELFv1, e.g., see is_elf2_task().
 > >=20
-> > Yeah. I was hoping someone would explain what's going on with the
-> > driver.
-> >=20
-> > Presumably there are some out-of-tree drivers that use the routines
-> > provided by this driver?
->=20
-> I googled for the function names but the only related hits were
-> references to this thread :-)
->=20
-> > I think rather than merging this patch, which keeps the code but makes
-> > it completely useless, do you mind sending a patch to remove the whole
-> > driver? Maybe that will get someone's attention.
->=20
-> fair enough, here it is.
+> > This one should wait a while until ELFv2 fallout settles, so
+> > just posting it out of interest.
+>
+> Can't ELFv1 user code run on an ELFv2 kernel ?
 
-What is your thought about this patch? If you (also) think getting it
-into next soon after a merge window closed, around now would be a good
-opportunity to do so ..
+Yes it can and that's what ELFv2 BE kernels do because most BE userspace
+is ELFv1 (although some are using ELFv2 BE).
 
-Best regards
-Uwe
+By ELFv2 fallout I mean bugs and toolchain problems that might get
+discovered after we flip the default. I think it would be good to keep
+the ELFv1 option around for a few releases to help testing such issues,
+the revert will probably pick up conflicts. Maybe that's being too
+paranoid.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---jz6b5qpi3ldmi55y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRaAqEACgkQj4D7WH0S
-/k785Qf/ZliZLWmy9GKR+VccrZYE0nfkRJGLWHhQZhFn0In1A9R+uO+Gszh5rRZX
-mH8vWixRKyYIW694+5Bcyg7SjXZzxDZQZzkDLi213lKZ60sbrxLKIgdhfjthEUoP
-mKk4/I4WTPXn2RKcNGLHS828fi2cSk32bU9+WTQtWO4uKJxrv6ctW9pCWwHXQ/mj
-8cGalx5YDNy38mSCtJ9se5pKES4NOSYcvPdD/xLIju5ZKyz4HIC5FZiNyNPDzh+f
-F6U6VaSAME8hznCuZAEva2zZMdcEyc1WGGG38JmSKbXRFv+DiKrglvqcryzW4RsK
-kRaqpzZJxx7GccK2FIsvaEJhi7SHXg==
-=mgE1
------END PGP SIGNATURE-----
-
---jz6b5qpi3ldmi55y--
+Thanks,
+Nick
