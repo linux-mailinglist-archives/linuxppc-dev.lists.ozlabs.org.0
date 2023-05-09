@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2976FBE16
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 06:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C386FBE25
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 06:19:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFkwD21Vzz3ffj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 14:00:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFlKw5pgNz3fLh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 14:19:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u87NvmzV;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OeLw5Y49;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u87NvmzV;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OeLw5Y49;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFkqD3VTsz3fKR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 13:56:24 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CE55164408;
-	Tue,  9 May 2023 03:56:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218E2C433AA;
-	Tue,  9 May 2023 03:56:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683604582;
-	bh=7cXJeGa9L60sslKWQNgFOhVcQcwL/gbLCz39lyzO+II=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u87NvmzV0A3g/UXZvz5+iijNu5IeKf3yYmQQ+7gQjgOKgEb6yDVYY2BGzEajy/F+P
-	 yZ3LR/W3yNtk685Zfnnq54AeX4BQC1jYoKbcpAdFcX1cL7D74nOBE1XmhDwud7Vd7V
-	 3YtQuQYWbfvm6queGCSp+Zf2vnzvFqOw3uSav5GTae20swrP+HMOZh10antSHrR+my
-	 koctGxFj+gzGEhxJmj0qbdJPo1OFG8dxwGVH82rm1ozUjxKvXG3xAxcCsFCu6DQQY2
-	 U9nL+fRjhrY+FrzNTV+sDXtui7TS3+t3ueYZBpJgiYPHTrq+h0IFtY6XATydkPSv2T
-	 QQSK1BJ/o7ewA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/3] powerpc/fsl_uli1575: Allow to disable FSL_ULI1575 support
-Date: Mon,  8 May 2023 23:56:10 -0400
-Message-Id: <20230509035616.60683-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230509035616.60683-1-sashal@kernel.org>
-References: <20230509035616.60683-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFlK06ZMnz3chV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 14:18:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=hAweX2f1hu6oBbHEW7rwfHxKnrqr1h9EowLzMonuLeA=; b=OeLw5Y496lChWTtHlDSw3IgCq3
+	awDnMHCY3st2vb0Sd+sZ0wMUD3UPIWoG5GQGFbvddOOL6CF1qUEq2KWqBF0DZmx14t45iElFrc555
+	SBZGDTZgM7To8DJxR8cI8kKnlShBMFFpk2Vt0/CcEhZNoIkiFBerruiP8KpDDU+yqJdVADmoUyuQb
+	TJdFP/qvtox7VOtoufdpNunEr5tqLZ6FUdnhKCMywQ094Ul6xlHi1u9QXSDTYNcuPRptQ01EdlXOK
+	Ov8pwSmKxIWsZoTVBeAjpfsFgKYrt04EhG8eiYb/8HxSEyIQ0NXOUxQYzCJiCdu8lGx1KZz3TSxvO
+	MwTRWAhg==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1pwEo5-002EtN-0K;
+	Tue, 09 May 2023 04:18:33 +0000
+Message-ID: <62539831-1f8c-d908-bd7c-2a926702fa7f@infradead.org>
+Date: Mon, 8 May 2023 21:18:32 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH AUTOSEL 6.3 6/7] powerpc/fsl_uli1575: Allow to disable
+ FSL_ULI1575 support
+Content-Language: en-US
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20230509035455.59524-1-sashal@kernel.org>
+ <20230509035455.59524-6-sashal@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230509035455.59524-6-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,43 +63,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, arnd@arndb.de, linus.walleij@linaro.org, linuxppc-dev@lists.ozlabs.org, andriy.shevchenko@linux.intel.com, =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Cc: arnd@arndb.de, linus.walleij@linaro.org, linuxppc-dev@lists.ozlabs.org, andriy.shevchenko@linux.intel.com, =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Pali Rohár <pali@kernel.org>
+Hi--
 
-[ Upstream commit 22fdf79171e8509db54599fd2c05ef0022ee83f5 ]
+Just a heads up. This patch can cause build errors.
+I sent a patch for these on 2023-APR-28:
+  https://lore.kernel.org/linuxppc-dev/20230429043519.19807-1-rdunlap@infradead.org/
 
-ULI1575 PCIe south bridge exists only on some Freescale boards. Allow to
-disable CONFIG_FSL_ULI1575 symbol when it is not explicitly selected and
-only implied. This is achieved by marking symbol as visible by providing
-short description. Also adds dependency for this symbol to prevent enabling
-it on platforms on which driver does not compile.
+Michael, I think this is your area if I'm not mistaken.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230409000812.18904-7-pali@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/Kconfig | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index 18792a5b003a0..d239667ea72f6 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -269,7 +269,9 @@ config CPM2
- 	  on it (826x, 827x, 8560).
- 
- config FSL_ULI1575
--	bool
-+	bool "ULI1575 PCIe south bridge support"
-+	depends on FSL_SOC_BOOKE || PPC_86xx
-+	select FSL_PCI
- 	select GENERIC_ISA_DMA
- 	help
- 	  Supports for the ULI1575 PCIe south bridge that exists on some
+On 5/8/23 20:54, Sasha Levin wrote:
+> From: Pali Rohár <pali@kernel.org>
+> 
+> [ Upstream commit 22fdf79171e8509db54599fd2c05ef0022ee83f5 ]
+> 
+> ULI1575 PCIe south bridge exists only on some Freescale boards. Allow to
+> disable CONFIG_FSL_ULI1575 symbol when it is not explicitly selected and
+> only implied. This is achieved by marking symbol as visible by providing
+> short description. Also adds dependency for this symbol to prevent enabling
+> it on platforms on which driver does not compile.
+> 
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Link: https://msgid.link/20230409000812.18904-7-pali@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/powerpc/platforms/Kconfig | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
+> index d41dad227de84..608ac0290e3aa 100644
+> --- a/arch/powerpc/platforms/Kconfig
+> +++ b/arch/powerpc/platforms/Kconfig
+> @@ -261,7 +261,9 @@ config CPM2
+>  	  on it (826x, 827x, 8560).
+>  
+>  config FSL_ULI1575
+> -	bool
+> +	bool "ULI1575 PCIe south bridge support"
+> +	depends on FSL_SOC_BOOKE || PPC_86xx
+> +	select FSL_PCI
+>  	select GENERIC_ISA_DMA
+>  	help
+>  	  Supports for the ULI1575 PCIe south bridge that exists on some
+
 -- 
-2.39.2
-
+~Randy
