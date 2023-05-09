@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BBF6FCDAB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 20:22:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312216FCE59
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 21:14:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QG62J2Dbyz3fPW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 04:22:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eWEhqVAD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QG7BB0VZbz3fQK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 05:14:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eWEhqVAD;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net; envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 342 seconds by postgrey-1.36 at boromir; Wed, 10 May 2023 05:13:44 AEST
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QG61P0RRJz3bkM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 04:21:28 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QG79h4d3Yz3fLj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 05:13:44 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4QG72v0NH2z1r2sF;
+	Tue,  9 May 2023 21:07:51 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+	by mail.m-online.net (Postfix) with ESMTP id 4QG72t5sZZz1qqlS;
+	Tue,  9 May 2023 21:07:50 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+	with ESMTP id yso-XuuckmCF; Tue,  9 May 2023 21:07:49 +0200 (CEST)
+X-Auth-Info: w4NQfO3soUsw8RkOB5e7u4hvvdQvUWQgRbXNQVjJq0PodgIkJvk8KeWFGS7X8Z2g
+Received: from igel.home (aftr-62-216-205-77.dynamic.mnet-online.de [62.216.205.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D050064791;
-	Tue,  9 May 2023 18:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE77FC433EF;
-	Tue,  9 May 2023 18:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683656484;
-	bh=wTrGWZ/prXac+ksuuHC0df7jUrXSG9zBg0tuZm4eZAk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=eWEhqVADxc/GqJSwXnOQ3JLmV9EVm67GRKXU/8kCH+e7bYAn4tbjZ8OZRHVaX3ZcO
-	 S0xv0AhCQd5NINM++YJU/lVWNxRqARJ2JdTZgkf8DKQ/aBVDAb43Y4DpvrsggmiDhc
-	 VLuK4RypC1++gIMHtYJwDcVU3u+My56Q4IZYK0at1LgOku1qb8yZmqculMrILZXTXZ
-	 neG8vnzAeERR8/VCvqWmCzd1JtSknWdohvz8yYije8I6fBKpAtZuUigoK/yqxiyRiQ
-	 4E280Lp7b1rI5aQ6wbmUv7nAdHleWjJ8JY7/fVD00VEW304Ke/w4PCv+lqMsKKDnXi
-	 XzOdVIUpJ2dRg==
-Date: Tue, 9 May 2023 13:21:22 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <20230509182122.GA1259567@bhelgaas>
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Tue,  9 May 2023 21:07:49 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 463252C1D3C; Tue,  9 May 2023 21:07:49 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
+In-Reply-To: <20230215143626.453491-2-alexghiti@rivosinc.com> (Alexandre
+	Ghiti's message of "Wed, 15 Feb 2023 15:36:24 +0100")
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+	<20230215143626.453491-2-alexghiti@rivosinc.com>
+X-Yow: I want EARS!  I want two ROUND BLACK EARS to make me feel warm 'n
+ secure!!
+Date: Tue, 09 May 2023 21:07:49 +0200
+Message-ID: <87wn1h5nne.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230404161101.GA3554747@bhelgaas>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,48 +60,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-kernel@vger.kernel.org, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian
-  Glaubitz <glaubitz@physik.fu-berlin.de>, Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
-> On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> > Provide two new helper macros to iterate over PCI device resources and
-> > convert users.
+That does not work with UEFI booting:
 
-> Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
+Loading Linux 6.4.0-rc1-1.g668187d-default ...
+Loading initial ramdisk ...
+Unhandled exception: Instruction access fault
+EPC: ffffffff80016d56 RA: 000000008020334e TVAL: 0000007f80016d56
+EPC: ffffffff002d1d56 RA: 00000000004be34e reloc adjusted
+Unhandled exception: Load access fault
+EPC: 00000000fff462d4 RA: 00000000fff462d0 TVAL: ffffffff80016d56
+EPC: 00000000802012d4 RA: 00000000802012d0 reloc adjusted
 
-This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-upstream now.
+Code: c825 8e0d 05b3 40b4 d0ef 0636 7493 ffe4 (d783 0004)
+UEFI image [0x00000000fe65e000:0x00000000fe6e3fff] '/efi\boot\bootriscv64.efi'
+UEFI image [0x00000000daa82000:0x00000000dcc2afff]
 
-Coverity complains about each use, sample below from
-drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
-false positive; just FYI.
-
-	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
-  556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
-  557                base |= (u64)screen_info.ext_lfb_base << 32;
-  558
-  559        limit = base + size;
-  560
-  561        /* Does firmware framebuffer belong to us? */
-	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
-	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-	  11. incr: Incrementing __b. The value of __b may now be up to 17.
-	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
-	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-  562        pci_dev_for_each_resource(pdev, r) {
-	  4. Condition resource_type(r) != 512, taking true branch.
-	  9. Condition resource_type(r) != 512, taking true branch.
-
-  CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
-  15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
-  563                if (resource_type(r) != IORESOURCE_MEM)
-	  5. Continuing loop.
-	  10. Continuing loop.
-  564                        continue;
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
