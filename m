@@ -2,59 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434E96FBEE3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 07:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CC06FBF5E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 08:39:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFnM20WMWz3fNp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 15:50:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFpRb4Ybcz3fKj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 16:39:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WyJUZ6A8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SzwPwe1q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WyJUZ6A8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SzwPwe1q;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFnKK0kV5z3brd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 15:49:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683611349; x=1715147349;
-  h=date:from:to:cc:subject:message-id;
-  bh=odeQfIyyoKJZScjFPKK3fmnxKVIqzPxDX4uOB02DCbo=;
-  b=WyJUZ6A8BhCZPhkm3Xf2a/6cvLIqpXX10smuN7S8ryJGhSfBhVEQUvEv
-   e7oLigchtCG4LaiL9a+oVyYE+sDYoMu8+sCRd5IoP7hSJgPsm5rZ1msSG
-   /UeNpU6TUqG/jzQCjMA/pNItPo4c6L1KFqD9jOTyCqcGQxjmm+QCZ7gyM
-   1Lyjv7dmptus0BJopy5AZcFaZQ/ymVDUMX80VKtmsNaFmmvsFZahLEOO2
-   9pOKIheLUWhU/wOfw3EhCe3SiCAghq3lVOGsXgGJcabZqwAA+Phxa/uRl
-   0cdn8FMm3Vl3kKu9QPb51BQBQvSWPWJElG1jgNfaEyRrDQ9gBrYwfpuTO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="352875379"
-X-IronPort-AV: E=Sophos;i="5.99,261,1677571200"; 
-   d="scan'208";a="352875379"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 22:49:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="698757902"
-X-IronPort-AV: E=Sophos;i="5.99,261,1677571200"; 
-   d="scan'208";a="698757902"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 08 May 2023 22:49:02 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pwGDe-0001nP-1r;
-	Tue, 09 May 2023 05:49:02 +0000
-Date: Tue, 09 May 2023 13:49:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 3af77224c09d79e03e34e7412f88692483054fed
-Message-ID: <20230509054900.EHQRv%lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFpQl5BL7z306l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 16:38:55 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A8EF161011;
+	Tue,  9 May 2023 06:38:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F92CC433EF;
+	Tue,  9 May 2023 06:38:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683614332;
+	bh=5qWLa6CWjjjsCeBM3UJ2nY7uwlPNtQ93pmOVp0ZbX4c=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=SzwPwe1qcAbipOpmCte6/VE8rNsE8VnJhMbfS9uMyH5J9y4y5J7l7HNbCr0pTgsLw
+	 zhH7ffANAOD9Opco+cPYl2Q9nigpqg+tvjHsOeZK7/ukw0I8cKiGalwJOA6WGQcI+G
+	 6Dv7gnwqD3zbbpL+oMLkfZNLf6CvkIiB2e3v5G2SuUDY+rWd/1BuBW2m/dWjT+o/Ui
+	 oWyanyN6r0ryyJdtOKVkqHFfrU9nztyoWCcolsXELR2de1U7KKzaQjN4Zltm7wm3wQ
+	 f2UBEZ0hhcP5jdEGHT76Z/oi1d03h5Wgn6mHqypyHC5jYtx3ciXrkiQNrHgX1oKUIM
+	 bvgnF81NP4Byg==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1683273322-2525-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1683273322-2525-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: MCLK bind with TX/RX enable bit
+Message-Id: <168361432593.303059.2652847583267849734.b4-ty@kernel.org>
+Date: Tue, 09 May 2023 15:38:45 +0900
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bfdf5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,25 +63,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 3af77224c09d79e03e34e7412f88692483054fed  powerpc/spufs: remove unneeded if-checks
+On Fri, 05 May 2023 15:55:22 +0800, Shengjiu Wang wrote:
+> On i.MX8MP, the sai MCLK is bound with TX/RX enable bit,
+> which means the TX/RE enable bit need to be enabled then
+> MCLK can be output on PAD.
+> 
+> Some codec (for example: WM8962) needs the MCLK output
+> earlier, otherwise there will be issue for codec
+> configuration.
+> 
+> [...]
 
-elapsed time: 731m
+Applied to
 
-configs tested: 2
-configs skipped: 145
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks!
 
-tested configs:
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
+[1/1] ASoC: fsl_sai: MCLK bind with TX/RX enable bit
+      commit: 3e4a826129980fed0e3e746a7822f2f204dfc24a
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
