@@ -1,58 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED756FC056
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 09:21:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCDE6FC19B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:22:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFqMz4hvWz3fJx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:21:35 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gywRbWdS;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFrkQ6f6zz3fN9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 18:22:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFqM76N5cz3ccn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 17:20:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gywRbWdS;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QFqM52DdNz4x3g;
-	Tue,  9 May 2023 17:20:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1683616851;
-	bh=2wjmKTbt/z5/1Lgzb67uZ1KsoxbcTNd7BEGnUaPkJ+A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gywRbWdSmUgbLXjnspObVrUv7pOsxsVhSbXU+zEQv1KxI3iQgbMLGV1sgY9TK3HlP
-	 mxau4GAW14GS7xLkEVVGt6TSUjDdnI5gQ/yqzOjt4UCnnZWSLHcIgVNj68ChxG08lD
-	 vRtFnnM842n16stuYmzmQHCXsKAqPyWp2WWJvsx+jRTLU9LsG8XgXgmPcL/RXmpXPi
-	 oQLUh6oCZ+H+Syx+bRcmjd7Wh6fDNKVW4OIOcI6c8JL50e0arVtLxUfpndCjg58KQP
-	 Nb4QsloFLe6SCwbo8J9T15yZrdQuazh7lwYNglnE2FlJrSPA1dTdzlh4JYwTc8ZYnb
-	 FZOpgLXwBHWlg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Li Yang <leoyang.li@nxp.com>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
- <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 0/6] bus: fsl-mc: Make remove function return void
-In-Reply-To: <CADRPPNQ0QiLzzKhHon62haPJCanDoN=B4QsWCxunJTc4wXwMaA@mail.gmail.com>
-References: <20230310224128.2638078-1-u.kleine-koenig@pengutronix.de>
- <20230412171056.xcluewbuyytm77yp@pengutronix.de>
- <AM0PR04MB6289BB9BA4BC0B398F2989108F9B9@AM0PR04MB6289.eurprd04.prod.outlook.com>
- <20230413060004.t55sqmfxqtnejvkc@pengutronix.de>
- <20230508134300.s36d6k4e25f6ubg4@pengutronix.de>
- <CADRPPNQ0QiLzzKhHon62haPJCanDoN=B4QsWCxunJTc4wXwMaA@mail.gmail.com>
-Date: Tue, 09 May 2023 17:20:48 +1000
-Message-ID: <87ednqx967.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFrjt5CMvz3cM6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 18:22:10 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pwIbe-0005j4-4k; Tue, 09 May 2023 10:21:58 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pwIba-002BuQ-Oe; Tue, 09 May 2023 10:21:54 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1pwIba-002iPP-3L; Tue, 09 May 2023 10:21:54 +0200
+Date: Tue, 9 May 2023 10:21:53 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Drop MPC5200 LocalPlus bus FIFO driver
+Message-ID: <20230509082153.jcy2qpvyd44bjaee@pengutronix.de>
+References: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de>
+ <20230412150524.ojsvukh47hing6db@pengutronix.de>
+ <87zg7cabf6.fsf@mpe.ellerman.id.au>
+ <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jz6b5qpi3ldmi55y"
+Content-Disposition: inline
+In-Reply-To: <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,70 +57,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stuart Yoder <stuyoder@gmail.com>, Gaurav Jain <gaurav.jain@nxp.com>, Roy Pledge <roy.pledge@nxp.com>, "Diana
- Madalina Craciun \(OSS\)" <diana.craciun@oss.nxp.com>, Eric Dumazet <edumazet@google.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Horia Geanta <horia.geanta@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Richard Cochran <richardcochran@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>, Alex Williamson <alex.williamson@redhat.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Herbert Xu <herbert@gondor.apana.org.au>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "Y.B. Lu" <yangbo.lu@nxp.com>, "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller"
-  <davem@davemloft.net>
+Cc: Anatolij Gustschin <agust@denx.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Li Yang <leoyang.li@nxp.com> writes:
-> On Mon, May 8, 2023 at 8:44=E2=80=AFAM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
->>
->> Hello Leo,
->>
->> On Thu, Apr 13, 2023 at 08:00:04AM +0200, Uwe Kleine-K=C3=B6nig wrote:
->> > On Wed, Apr 12, 2023 at 09:30:05PM +0000, Leo Li wrote:
->> > > > On Fri, Mar 10, 2023 at 11:41:22PM +0100, Uwe Kleine-K=C3=B6nig wr=
-ote:
->> > > > > Hello,
->> > > > >
->> > > > > many bus remove functions return an integer which is a historic
->> > > > > misdesign that makes driver authors assume that there is some ki=
-nd of
->> > > > > error handling in the upper layers. This is wrong however and
->> > > > > returning and error code only yields an error message.
->> > > > >
->> > > > > This series improves the fsl-mc bus by changing the remove callb=
-ack to
->> > > > > return no value instead. As a preparation all drivers are change=
-d to
->> > > > > return zero before so that they don't trigger the error message.
->> > > >
->> > > > Who is supposed to pick up this patch series (or point out a good =
-reason for
->> > > > not taking it)?
->> > >
->> > > Previously Greg KH picked up MC bus patches.
->> > >
->> > > If no one is picking up them this time, I probably can take it throu=
-gh
->> > > the fsl soc tree.
->> >
->> > I guess Greg won't pick up this series as he didn't get a copy of it :=
--)
->> >
->> > Browsing through the history of drivers/bus/fsl-mc there is no
->> > consistent maintainer to see. So if you can take it, that's very
->> > appreciated.
->>
->> My mail was meant encouraging, maybe it was too subtile? I'll try again:
->>
->> Yes, please apply, that would be wonderful!
->
-> Sorry for missing your previous email.  I will do that.  Thanks.
 
-Does MAINTAINERS need updating?
+--jz6b5qpi3ldmi55y
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It says:
+Hello,
 
-QORIQ DPAA2 FSL-MC BUS DRIVER
-M:	Stuart Yoder <stuyoder@gmail.com>
-M:	Laurentiu Tudor <laurentiu.tudor@nxp.com>
-L:	linux-kernel@vger.kernel.org
-S:	Maintained
-...
-F:	drivers/bus/fsl-mc/
+On Thu, Apr 13, 2023 at 08:16:42AM +0200, Uwe Kleine-K=F6nig wrote:
+> While mpc5200b.dtsi contains a device that this driver can bind to, the
+> only purpose of a bound device is to be used by the four exported functio=
+ns
+> mpc52xx_lpbfifo_submit(), mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll()
+> and mpc52xx_lpbfifo_start_xfer(). However there are no callers to this
+> function and so the driver is effectively superfluous and can be deleted.
+> Also drop some defines and a struct from <asm/mpc52xx.h> that are unused
+> now together with the declarations of the four mentioned functions.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello Michael,
+>=20
+> On Thu, Apr 13, 2023 at 10:11:25AM +1000, Michael Ellerman wrote:
+> > Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> writes:
+> > > On Wed, Dec 28, 2022 at 03:51:29PM +0100, Uwe Kleine-K=F6nig wrote:
+> > >> The four exported functions mpc52xx_lpbfifo_submit(),
+> > >> mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll(), and
+> > >> mpc52xx_lpbfifo_start_xfer() are not used. So they can be dropped an=
+d the
+> > >> definitions needed to call them can be moved into the driver file.
+> > >>=20
+> > >> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > >
+> > > I never got feedback about this driver and it has not appeared in next
+> > > up to now. Did it fell through the cracks?
+> >=20
+> > Yeah. I was hoping someone would explain what's going on with the
+> > driver.
+> >=20
+> > Presumably there are some out-of-tree drivers that use the routines
+> > provided by this driver?
+>=20
+> I googled for the function names but the only related hits were
+> references to this thread :-)
+>=20
+> > I think rather than merging this patch, which keeps the code but makes
+> > it completely useless, do you mind sending a patch to remove the whole
+> > driver? Maybe that will get someone's attention.
+>=20
+> fair enough, here it is.
 
+What is your thought about this patch? If you (also) think getting it
+into next soon after a merge window closed, around now would be a good
+opportunity to do so ..
 
-cheers
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--jz6b5qpi3ldmi55y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRaAqEACgkQj4D7WH0S
+/k785Qf/ZliZLWmy9GKR+VccrZYE0nfkRJGLWHhQZhFn0In1A9R+uO+Gszh5rRZX
+mH8vWixRKyYIW694+5Bcyg7SjXZzxDZQZzkDLi213lKZ60sbrxLKIgdhfjthEUoP
+mKk4/I4WTPXn2RKcNGLHS828fi2cSk32bU9+WTQtWO4uKJxrv6ctW9pCWwHXQ/mj
+8cGalx5YDNy38mSCtJ9se5pKES4NOSYcvPdD/xLIju5ZKyz4HIC5FZiNyNPDzh+f
+F6U6VaSAME8hznCuZAEva2zZMdcEyc1WGGG38JmSKbXRFv+DiKrglvqcryzW4RsK
+kRaqpzZJxx7GccK2FIsvaEJhi7SHXg==
+=mgE1
+-----END PGP SIGNATURE-----
+
+--jz6b5qpi3ldmi55y--
