@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8106FBE07
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 05:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8166FBE12
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 05:59:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFktB5TNwz3fPJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 13:58:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFkvG0SSdz3fZK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 13:59:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IifzypG3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T98HpLJl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IifzypG3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T98HpLJl;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFkpj3yVPz3fMR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 13:55:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFkpx68sSz3fLK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 13:56:09 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 388076313B;
-	Tue,  9 May 2023 03:55:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE32C433EF;
-	Tue,  9 May 2023 03:55:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 1C74B643F9;
+	Tue,  9 May 2023 03:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC25C433D2;
+	Tue,  9 May 2023 03:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683604553;
-	bh=mIjQBhxG6i2wxGw1vHwrcMvS3YQ+xXe2NdmeJhIKslU=;
+	s=k20201202; t=1683604567;
+	bh=3awfLUxgFh+sXJD7N4I6ldRMx6yhH/b34e6kdYaeaZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IifzypG3yMrIo/+e3qZ1rJ6gfXYskVgOMOdJV67UT5Rs1sX2opD1dPAegTRSilQBd
-	 hjc4/TFOS1o3jUigMXDo72dtEREhP/LP6MEBB2B2J9srZ40guasV+qoX+rcna/TDld
-	 5TtaokGfMRa44waMNuFndPdjAo/RcnlLNsGKpn0RP7GqaXsX/ns6PH85mUi4Ct1F2l
-	 qF8WcKj1BDbQ/FZ+o1C+cwoD1Uv4/nWkjsWqvC90VBuIJ4jyAIFnD1gSWohuMzDi7n
-	 OKrxAL04ZDjsmlkjST8I4Tfrg8NDIs2T5jChx3+YAeYParzf9QwX/3gQ/N/7jOuLCj
-	 dN+t5vtjhfYJg==
+	b=T98HpLJldDKAc2k7qnkJpCsfPw7I99V2b8S6RLRsqKKBncWoXikL1UY2u8de5Y750
+	 oXLgahRCG74EoNNE+fZyRV7a0yLxvtiJ9kKrwy1yZ9mNXMBx3wykgm1WKEJ/xLmaKw
+	 45kgpx2T1yv8j34KQQJR4FVzKgGt7dWugJzJlAc5x0GiHpT3IhrgO93Lmm5S+EEUi0
+	 AFvK/SGFPb+h4kztOWhdbc2Wc8/GLa6YsQxT0Q+d/YMKycMCjKznqZPV9yRrr8JXrA
+	 SCXPn3VBgHM+em4Ziw3fM+VTZgjpiGdKCT4G6z+Dvz9rT3v+BVe3WRpW4w/0TW7VbX
+	 MGqYfGT8Cz36Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 3/4] powerpc/fsl_uli1575: Allow to disable FSL_ULI1575 support
-Date: Mon,  8 May 2023 23:55:42 -0400
-Message-Id: <20230509035548.60458-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 2/3] powerpc/fsl_uli1575: Allow to disable FSL_ULI1575 support
+Date: Mon,  8 May 2023 23:55:57 -0400
+Message-Id: <20230509035602.60613-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230509035548.60458-1-sashal@kernel.org>
-References: <20230509035548.60458-1-sashal@kernel.org>
+In-Reply-To: <20230509035602.60613-1-sashal@kernel.org>
+References: <20230509035602.60613-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index e02d29a9d12ff..ec8b6b855b8de 100644
+index 7a5e8f4541e3f..6fb71f00a3ea3 100644
 --- a/arch/powerpc/platforms/Kconfig
 +++ b/arch/powerpc/platforms/Kconfig
-@@ -261,7 +261,9 @@ config CPM2
+@@ -258,7 +258,9 @@ config CPM2
  	  on it (826x, 827x, 8560).
  
  config FSL_ULI1575
