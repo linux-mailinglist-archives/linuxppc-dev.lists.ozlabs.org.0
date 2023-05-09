@@ -1,61 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028236FC050
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 09:19:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED756FC056
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 09:21:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFqKS5mXfz3fMS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:19:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFqMz4hvWz3fJx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:21:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e4NzMKx3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gywRbWdS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFqM76N5cz3ccn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 17:20:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e4NzMKx3;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gywRbWdS;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFqJd1PR7z3ccn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 17:18:41 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 18059617F3;
-	Tue,  9 May 2023 07:18:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED0C433D2;
-	Tue,  9 May 2023 07:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683616718;
-	bh=8QQ/TWzUc3gS4jlPeHQgsKdVbG+aX+ZMQAWZ/cm0O6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e4NzMKx3tLVybcg+6uQj0VRxQXy+OLypPq+PxwnJpQGfMz/i6PIZOpYVrjZGNbVaF
-	 xzwTof73+FXb0A86M5fSPYwb+2dDP1igHEVjBoxopn05V8Z/b81pi+jwKdkkW3iNAJ
-	 rc1EojlxIc1q/6coWp/NucH9h8toDQ/3tkFBvT6HNr8+dcAINE49k6mbytvTPZ5LR1
-	 CSgw9qCWYRCUobtcW8oIhfgM4elaAyDfVcPQySnaBU+QoY82UTF7YEN1mIjthoo8Xu
-	 yx+XXP2f7CCx/oDzMWyIUtPEZ8bi3YF8+yABVI7I3coz3wbAzYhtZDHSzRqW8YU7ed
-	 rtkcwiXzKlKkg==
-Received: by pali.im (Postfix)
-	id 435EB95D; Tue,  9 May 2023 09:18:35 +0200 (CEST)
-Date: Tue, 9 May 2023 09:18:35 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH AUTOSEL 6.3 6/7] powerpc/fsl_uli1575: Allow to disable
- FSL_ULI1575 support
-Message-ID: <20230509071835.rrfefrhwtwsxlngy@pali>
-References: <20230509035455.59524-1-sashal@kernel.org>
- <20230509035455.59524-6-sashal@kernel.org>
- <62539831-1f8c-d908-bd7c-2a926702fa7f@infradead.org>
- <87jzxix9g7.fsf@mail.lhotse>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QFqM52DdNz4x3g;
+	Tue,  9 May 2023 17:20:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1683616851;
+	bh=2wjmKTbt/z5/1Lgzb67uZ1KsoxbcTNd7BEGnUaPkJ+A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gywRbWdSmUgbLXjnspObVrUv7pOsxsVhSbXU+zEQv1KxI3iQgbMLGV1sgY9TK3HlP
+	 mxau4GAW14GS7xLkEVVGt6TSUjDdnI5gQ/yqzOjt4UCnnZWSLHcIgVNj68ChxG08lD
+	 vRtFnnM842n16stuYmzmQHCXsKAqPyWp2WWJvsx+jRTLU9LsG8XgXgmPcL/RXmpXPi
+	 oQLUh6oCZ+H+Syx+bRcmjd7Wh6fDNKVW4OIOcI6c8JL50e0arVtLxUfpndCjg58KQP
+	 Nb4QsloFLe6SCwbo8J9T15yZrdQuazh7lwYNglnE2FlJrSPA1dTdzlh4JYwTc8ZYnb
+	 FZOpgLXwBHWlg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Li Yang <leoyang.li@nxp.com>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
+ <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 0/6] bus: fsl-mc: Make remove function return void
+In-Reply-To: <CADRPPNQ0QiLzzKhHon62haPJCanDoN=B4QsWCxunJTc4wXwMaA@mail.gmail.com>
+References: <20230310224128.2638078-1-u.kleine-koenig@pengutronix.de>
+ <20230412171056.xcluewbuyytm77yp@pengutronix.de>
+ <AM0PR04MB6289BB9BA4BC0B398F2989108F9B9@AM0PR04MB6289.eurprd04.prod.outlook.com>
+ <20230413060004.t55sqmfxqtnejvkc@pengutronix.de>
+ <20230508134300.s36d6k4e25f6ubg4@pengutronix.de>
+ <CADRPPNQ0QiLzzKhHon62haPJCanDoN=B4QsWCxunJTc4wXwMaA@mail.gmail.com>
+Date: Tue, 09 May 2023 17:20:48 +1000
+Message-ID: <87ednqx967.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87jzxix9g7.fsf@mail.lhotse>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,67 +64,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, arnd@arndb.de, linus.walleij@linaro.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org
+Cc: Stuart Yoder <stuyoder@gmail.com>, Gaurav Jain <gaurav.jain@nxp.com>, Roy Pledge <roy.pledge@nxp.com>, "Diana
+ Madalina Craciun \(OSS\)" <diana.craciun@oss.nxp.com>, Eric Dumazet <edumazet@google.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Horia Geanta <horia.geanta@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Richard Cochran <richardcochran@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>, Alex Williamson <alex.williamson@redhat.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Herbert Xu <herbert@gondor.apana.org.au>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "Y.B. Lu" <yangbo.lu@nxp.com>, "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller"
+  <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday 09 May 2023 17:14:48 Michael Ellerman wrote:
-> Randy Dunlap <rdunlap@infradead.org> writes:
-> > Hi--
-> >
-> > Just a heads up. This patch can cause build errors.
-> > I sent a patch for these on 2023-APR-28:
-> >   https://lore.kernel.org/linuxppc-dev/20230429043519.19807-1-rdunlap@infradead.org/
-> >
-> > Michael, I think this is your area if I'm not mistaken.
-> 
-> Yes. The fix is in my fixes branch as:
->   536d948a8dee ("powerpc/fsl_uli1575: fix kconfig warnings and build errors")
-> 
-> But I don't think this commit (22fdf79171e8) really warrants going to
-> stable, it's a nice-to-have but doesn't fix any pressing bugs.
+Li Yang <leoyang.li@nxp.com> writes:
+> On Mon, May 8, 2023 at 8:44=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+>>
+>> Hello Leo,
+>>
+>> On Thu, Apr 13, 2023 at 08:00:04AM +0200, Uwe Kleine-K=C3=B6nig wrote:
+>> > On Wed, Apr 12, 2023 at 09:30:05PM +0000, Leo Li wrote:
+>> > > > On Fri, Mar 10, 2023 at 11:41:22PM +0100, Uwe Kleine-K=C3=B6nig wr=
+ote:
+>> > > > > Hello,
+>> > > > >
+>> > > > > many bus remove functions return an integer which is a historic
+>> > > > > misdesign that makes driver authors assume that there is some ki=
+nd of
+>> > > > > error handling in the upper layers. This is wrong however and
+>> > > > > returning and error code only yields an error message.
+>> > > > >
+>> > > > > This series improves the fsl-mc bus by changing the remove callb=
+ack to
+>> > > > > return no value instead. As a preparation all drivers are change=
+d to
+>> > > > > return zero before so that they don't trigger the error message.
+>> > > >
+>> > > > Who is supposed to pick up this patch series (or point out a good =
+reason for
+>> > > > not taking it)?
+>> > >
+>> > > Previously Greg KH picked up MC bus patches.
+>> > >
+>> > > If no one is picking up them this time, I probably can take it throu=
+gh
+>> > > the fsl soc tree.
+>> >
+>> > I guess Greg won't pick up this series as he didn't get a copy of it :=
+-)
+>> >
+>> > Browsing through the history of drivers/bus/fsl-mc there is no
+>> > consistent maintainer to see. So if you can take it, that's very
+>> > appreciated.
+>>
+>> My mail was meant encouraging, maybe it was too subtile? I'll try again:
+>>
+>> Yes, please apply, that would be wonderful!
+>
+> Sorry for missing your previous email.  I will do that.  Thanks.
 
-Exactly. And also this patch alone without 1/8 would not work as in 1/8
-https://lore.kernel.org/all/20230409000812.18904-2-pali@kernel.org/ was
-added static inline variant of function which is used when ULI is
-disabled.
+Does MAINTAINERS need updating?
 
-> cheers
-> 
-> > On 5/8/23 20:54, Sasha Levin wrote:
-> >> From: Pali Rohár <pali@kernel.org>
-> >> 
-> >> [ Upstream commit 22fdf79171e8509db54599fd2c05ef0022ee83f5 ]
-> >> 
-> >> ULI1575 PCIe south bridge exists only on some Freescale boards. Allow to
-> >> disable CONFIG_FSL_ULI1575 symbol when it is not explicitly selected and
-> >> only implied. This is achieved by marking symbol as visible by providing
-> >> short description. Also adds dependency for this symbol to prevent enabling
-> >> it on platforms on which driver does not compile.
-> >> 
-> >> Signed-off-by: Pali Rohár <pali@kernel.org>
-> >> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> >> Link: https://msgid.link/20230409000812.18904-7-pali@kernel.org
-> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >> ---
-> >>  arch/powerpc/platforms/Kconfig | 4 +++-
-> >>  1 file changed, 3 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-> >> index d41dad227de84..608ac0290e3aa 100644
-> >> --- a/arch/powerpc/platforms/Kconfig
-> >> +++ b/arch/powerpc/platforms/Kconfig
-> >> @@ -261,7 +261,9 @@ config CPM2
-> >>  	  on it (826x, 827x, 8560).
-> >>  
-> >>  config FSL_ULI1575
-> >> -	bool
-> >> +	bool "ULI1575 PCIe south bridge support"
-> >> +	depends on FSL_SOC_BOOKE || PPC_86xx
-> >> +	select FSL_PCI
-> >>  	select GENERIC_ISA_DMA
-> >>  	help
-> >>  	  Supports for the ULI1575 PCIe south bridge that exists on some
-> >
-> > -- 
-> > ~Randy
+It says:
+
+QORIQ DPAA2 FSL-MC BUS DRIVER
+M:	Stuart Yoder <stuyoder@gmail.com>
+M:	Laurentiu Tudor <laurentiu.tudor@nxp.com>
+L:	linux-kernel@vger.kernel.org
+S:	Maintained
+...
+F:	drivers/bus/fsl-mc/
+
+
+cheers
