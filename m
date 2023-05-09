@@ -1,148 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E816FBBDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 02:13:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AB16FBCD1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 04:02:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFdsv2PJNz3fPh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 10:13:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFhHv1VJtz3fNg
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 12:02:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Z1Us0E4V;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Z1Us0E4V;
+	dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFYT45s3wz3fMh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 06:55:04 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pw7rP-000307-J4; Mon, 08 May 2023 22:53:31 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pw7r4-0024p2-9D; Mon, 08 May 2023 22:53:10 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pw7r2-002YUk-Pw; Mon, 08 May 2023 22:53:08 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Thor Thayer <thor.thayer@linux.intel.com>,
-	Elie Morisse <syniurge@gmail.com>,
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Krzysztof Adamski <krzysztof.adamski@nokia.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Allison Randal <allison@lohutok.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jochen Friedrich <jochen@scram.de>,
-	Benson Leung <bleung@chromium.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Jean-Marie Verdun <verdun@hpe.com>,
-	Nick Hawkins <nick.hawkins@hpe.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Oleksij Rempel <linux@rempel-privat.de>,
-	Jean Delvare <jdelvare@suse.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Chris Pringle <chris.pringle@phabrix.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	Qii Wang <qii.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Stefan Roese <sr@denx.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Robert Richter <rric@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Hector Martin <marcan@marcan.st>,
-	Sven Peter <sven@svenpeter.dev>,
-	Rob Herring <robh@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Phil Edworthy <phil.edworthy@renesas.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jim Cromie <jim.cromie@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wei Chen <harperchen1110@gmail.com>,
-	George Cherian <gcherian@marvell.com>,
-	Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>
-Subject: [PATCH 00/89] i2c: Convert to platform remove callback returning void
-Date: Mon,  8 May 2023 22:51:37 +0200
-Message-Id: <20230508205306.1474415-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFhH10hzRz30Qg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 12:01:46 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-5144a9c11c7so4962387a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 May 2023 19:01:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683597704; x=1686189704;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZMal9qMmlmz+4Ta3/kSEeyBhxY5YcPJzzn4GGqRIQc4=;
+        b=Z1Us0E4Vj2VW2k3ErtigDOZjWuIga/J7oQ9oqPScONRjRDbLhdJ7kwQcDggRtMRPWs
+         htXs25NGS/JYXTLq6RWiwJliQegiOp8zmF+ssjnx/DetzDY3NjPgG76ZZqaS8RZw0izu
+         93V+XLaFkCRXeCWUPlUgy/GY6ktZgw7F+2rGdJZ25H4OtSSmrPdf7G49NkoARdi/ISQ2
+         ttGgEeIUFtA4E7g4egDFH/6IL3dCW8od5ZRxEiz5rbFHy1PKuP0hHC0ycO8PC210NJcD
+         3mq9/I9qFh43t7/mF/OTrOCaX3dNRW85D9cMA9OQDIbeLtGqLoNYGoQWbl/hFbjGhiP0
+         iPFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683597704; x=1686189704;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZMal9qMmlmz+4Ta3/kSEeyBhxY5YcPJzzn4GGqRIQc4=;
+        b=OtxgU6hSDjzP16zQctREQz86eN0oxrlp5jWvrXiElK2ZsEax6O0oehHHwdYb1q7df0
+         tRS7vbIxettj555aII7jzwc490GbhIBuW5jvGHQU+ZFUDG32VXfxUarBa4FGUp8hVthG
+         Kqqo9UMygj4fEIHZ4h+rJhSENUCvDmhWHWxf+4a73CXn2q+tQfFag4H4KJ5Q0iMpq/oI
+         /0uwP0yGtB6H/NMMWdBBouGdUKlYkosFK+PCN2/0aGg/0+hEu/A7odufen6yw5Maiu74
+         RSHbii6SwBtUrfppHsicqIBX9QhZpW6pILLwaAymwSykhdFSkDEHXnUZ3ggZ4XgwLEA9
+         W8ug==
+X-Gm-Message-State: AC+VfDxzK1fB8P3MpybC6JZIcPN1sh56pY4zVWmJ6LuFR3g3kMMtaTEO
+	P6UK9V4dheEXebMenISX0Rc=
+X-Google-Smtp-Source: ACHHUZ5I6DHHKS6mWD9rg61SuTx3veymRYZgNpiy02tw4zkyqK77DsJBobnSjbScGu5soN6msHiOvQ==
+X-Received: by 2002:a05:6a21:6317:b0:eb:6e43:8e1b with SMTP id wu23-20020a056a21631700b000eb6e438e1bmr12951056pzb.30.1683597704044;
+        Mon, 08 May 2023 19:01:44 -0700 (PDT)
+Received: from localhost (58-6-235-78.tpgi.com.au. [58.6.235.78])
+        by smtp.gmail.com with ESMTPSA id p15-20020a63fe0f000000b00514256c05c2sm167661pgh.7.2023.05.08.19.01.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 May 2023 19:01:42 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12259; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=CUiyRkHedGuUngm1XVS44bTPkh5X8UNxtDmuuxmkXfI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkWWA/sUJy//6LnoJE8pZ1jpYWJb4ReEOteWEqx nBbdvdRxiaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZFlgPwAKCRCPgPtYfRL+ TrMyB/47jd7Ku/xKY+yn8Pz8lCxZfeQrwdKR0Ava+mmos9tRoEvf3C/fjgZ6JdPMn2xAOuFj5L0 ChlkHdf+cjgqrDShJg+TdHgusB/fqdoi2SilcdhEg4do3/OuaNy0bmP1lx97NUPi74d38/N8hO4 Wjf9h6QZucyKU5j9n9VuRVgPMcA35GhgWZ+Ga+hU+dlTINCOxdJu/al05N7Ex74ppPtfxjCBTQO f0LzVF+aO+5Q9Uyx/0Q1RBhNY2vAtr4I1t+5bybE+u1pqJ9AZNAgk+NuN67I1nNSjBRl0BtYaE3 u5cZFNC9MgmA4TtzZbTz14vLP4QKcyyxwruCQNqDFAK21Isv
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Tue, 09 May 2023 10:11:53 +1000
+Date: Tue, 09 May 2023 12:01:37 +1000
+Message-Id: <CSHDKOPMRIG3.11WU7D9VOFHWE@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 01/12] powerpc: qspinlock: Fix qnode->locked value
+ interpretation
+X-Mailer: aerc 0.14.0
+References: <20230508020120.218494-1-rmclure@linux.ibm.com>
+ <20230508020120.218494-2-rmclure@linux.ibm.com>
+In-Reply-To: <20230508020120.218494-2-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,222 +81,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aspeed@lists.ozlabs.org, Jan Dabros <jsd@semihalf.com>, Alim Akhtar <alim.akhtar@samsung.com>, Guenter Roeck <groeck@chromium.org>, linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Jerome Brunet <jbrunet@baylibre.com>, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, Benjamin Fair <benjaminfair@google.com>, linux-rockchip@lists.infradead.org, openbmc@lists.ozlabs.org, Nancy Yuen <yuenn@google.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, linux-sunxi@lists.linux.dev, Joel Stanley <joel@jms.id.au>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, linux-amlogic@list
- s.infradead.org, linux-omap@vger.kernel.org, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew Jeffery <andrew@aj.id.au>, Patrick Venture <venture@google.com>, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Dmitry Osipenko <digetx@gmail.com>, asahi@lists.linux.dev, kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
+Cc: arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Mon May 8, 2023 at 12:01 PM AEST, Rohan McLure wrote:
+> A comment accompanying the locked attribute of a qnode assigns a value
+> of 1 to mean that the lock has been acquired. The usages of this
+> variable however assume opposite semantics. Update usages so that the
+> assertions of this comment are reflected in this file.
 
-this series convers the drivers below drivers/i2c to the .remove_new()
-callback of struct platform_driver(). The motivation is to make the
-remove callback less prone for errors and wrong assumptions. See commit
-5c5a7680e67b ("platform: Provide a remove callback that returns no
-value") for a more detailed rationale.
+1 actually means if the lock is acquired for this waiter. The
+previous owner sets it to 1 which means we now have the lock.
+It's slightly confusing but that's how generic qspinlock calls
+it too.
 
-All but one driver already returned zero unconditionally in their
-.remove() callback, so converting them to .remove_new() is trivial.
-i2c-davinci has two patches in this series, first the error path is
-improved to not return an error code, then it's converted as the others
-drivers are.
+It actually doesn't even really mean we have acquired the lock
+though, it means we got through the MCS queue. "Waiting" or
+"released" or something like that might be a better name.
 
-The two davinci patches are also the only interdependency in this
-series. I was unsure if I should split the series in two, the busses and
-the mux changes; if convenient these can be applied independent of each
-other.
+Could change the name or comment to make that a bit clearer, but
+while it'the same as kernel/locking/qspinlock.c then better
+keep polarity the same.
 
-Best regards
-Uwe
+Thanks,
+Nick
 
-Uwe Kleine-König (89):
-  i2c: altera: Convert to platform remove callback returning void
-  i2c: amd-mp2-plat: Convert to platform remove callback returning void
-  i2c: aspeed: Convert to platform remove callback returning void
-  i2c: at91-core: Convert to platform remove callback returning void
-  i2c: au1550: Convert to platform remove callback returning void
-  i2c: axxia: Convert to platform remove callback returning void
-  i2c: bcm-iproc: Convert to platform remove callback returning void
-  i2c: bcm-kona: Convert to platform remove callback returning void
-  i2c: bcm2835: Convert to platform remove callback returning void
-  i2c: brcmstb: Convert to platform remove callback returning void
-  i2c: cadence: Convert to platform remove callback returning void
-  i2c: cbus-gpio: Convert to platform remove callback returning void
-  i2c: cht-wc: Convert to platform remove callback returning void
-  i2c: cpm: Convert to platform remove callback returning void
-  i2c: cros-ec-tunnel: Convert to platform remove callback returning
-    void
-  i2c: davinci: Improve error reporting for problems during .remove()
-  i2c: davinci: Convert to platform remove callback returning void
-  i2c: designware-platdrv: Convert to platform remove callback returning
-    void
-  i2c: digicolor: Convert to platform remove callback returning void
-  i2c: dln2: Convert to platform remove callback returning void
-  i2c: emev2: Convert to platform remove callback returning void
-  i2c: exynos5: Convert to platform remove callback returning void
-  i2c: gpio: Convert to platform remove callback returning void
-  i2c: gxp: Convert to platform remove callback returning void
-  i2c: highlander: Convert to platform remove callback returning void
-  i2c: hix5hd2: Convert to platform remove callback returning void
-  i2c: ibm_iic: Convert to platform remove callback returning void
-  i2c: img-scb: Convert to platform remove callback returning void
-  i2c: imx-lpi2c: Convert to platform remove callback returning void
-  i2c: imx: Convert to platform remove callback returning void
-  i2c: iop3xx: Convert to platform remove callback returning void
-  i2c: isch: Convert to platform remove callback returning void
-  i2c: jz4780: Convert to platform remove callback returning void
-  i2c: kempld: Convert to platform remove callback returning void
-  i2c: lpc2k: Convert to platform remove callback returning void
-  i2c: meson: Convert to platform remove callback returning void
-  i2c: microchip-corei2c: Convert to platform remove callback returning
-    void
-  i2c: mlxbf: Convert to platform remove callback returning void
-  i2c: mlxcpld: Convert to platform remove callback returning void
-  i2c: mpc: Convert to platform remove callback returning void
-  i2c: mt65xx: Convert to platform remove callback returning void
-  i2c: mt7621: Convert to platform remove callback returning void
-  i2c: mv64xxx: Convert to platform remove callback returning void
-  i2c: mxs: Convert to platform remove callback returning void
-  i2c: npcm7xx: Convert to platform remove callback returning void
-  i2c: ocores: Convert to platform remove callback returning void
-  i2c: octeon-platdrv: Convert to platform remove callback returning
-    void
-  i2c: omap: Convert to platform remove callback returning void
-  i2c: opal: Convert to platform remove callback returning void
-  i2c: pasemi-platform: Convert to platform remove callback returning
-    void
-  i2c: pca-platform: Convert to platform remove callback returning void
-  i2c: pnx: Convert to platform remove callback returning void
-  i2c: powermac: Convert to platform remove callback returning void
-  i2c: pxa: Convert to platform remove callback returning void
-  i2c: qcom-cci: Convert to platform remove callback returning void
-  i2c: qcom-geni: Convert to platform remove callback returning void
-  i2c: qup: Convert to platform remove callback returning void
-  i2c: rcar: Convert to platform remove callback returning void
-  i2c: riic: Convert to platform remove callback returning void
-  i2c: rk3x: Convert to platform remove callback returning void
-  i2c: rzv2m: Convert to platform remove callback returning void
-  i2c: s3c2410: Convert to platform remove callback returning void
-  i2c: scmi: Convert to platform remove callback returning void
-  i2c: scx200_acb: Convert to platform remove callback returning void
-  i2c: sh7760: Convert to platform remove callback returning void
-  i2c: sh_mobile: Convert to platform remove callback returning void
-  i2c: simtec: Convert to platform remove callback returning void
-  i2c: st: Convert to platform remove callback returning void
-  i2c: stm32f4: Convert to platform remove callback returning void
-  i2c: stm32f7: Convert to platform remove callback returning void
-  i2c: sun6i-p2wi: Convert to platform remove callback returning void
-  i2c: synquacer: Convert to platform remove callback returning void
-  i2c: tegra-bpmp: Convert to platform remove callback returning void
-  i2c: tegra: Convert to platform remove callback returning void
-  i2c: uniphier-f: Convert to platform remove callback returning void
-  i2c: uniphier: Convert to platform remove callback returning void
-  i2c: versatile: Convert to platform remove callback returning void
-  i2c: viperboard: Convert to platform remove callback returning void
-  i2c: wmt: Convert to platform remove callback returning void
-  i2c: xgene-slimpro: Convert to platform remove callback returning void
-  i2c: xiic: Convert to platform remove callback returning void
-  i2c: xlp9xx: Convert to platform remove callback returning void
-  i2c: mux: arb-gpio-challenge: Convert to platform remove callback
-    returning void
-  i2c: mux: demux-pinctrl: Convert to platform remove callback returning
-    void
-  i2c: mux: gpio: Convert to platform remove callback returning void
-  i2c: mux: gpmux: Convert to platform remove callback returning void
-  i2c: mux: mlxcpld: Convert to platform remove callback returning void
-  i2c: mux: pinctrl: Convert to platform remove callback returning void
-  i2c: mux: reg: Convert to platform remove callback returning void
-
- drivers/i2c/busses/i2c-altera.c             |  6 ++----
- drivers/i2c/busses/i2c-amd-mp2-plat.c       |  5 ++---
- drivers/i2c/busses/i2c-aspeed.c             |  6 ++----
- drivers/i2c/busses/i2c-at91-core.c          |  6 ++----
- drivers/i2c/busses/i2c-au1550.c             |  5 ++---
- drivers/i2c/busses/i2c-axxia.c              |  6 ++----
- drivers/i2c/busses/i2c-bcm-iproc.c          |  6 ++----
- drivers/i2c/busses/i2c-bcm-kona.c           |  6 ++----
- drivers/i2c/busses/i2c-bcm2835.c            |  6 ++----
- drivers/i2c/busses/i2c-brcmstb.c            |  5 ++---
- drivers/i2c/busses/i2c-cadence.c            |  6 ++----
- drivers/i2c/busses/i2c-cbus-gpio.c          |  6 ++----
- drivers/i2c/busses/i2c-cht-wc.c             |  6 ++----
- drivers/i2c/busses/i2c-cpm.c                |  6 ++----
- drivers/i2c/busses/i2c-cros-ec-tunnel.c     |  6 ++----
- drivers/i2c/busses/i2c-davinci.c            | 14 ++++++--------
- drivers/i2c/busses/i2c-designware-platdrv.c |  6 ++----
- drivers/i2c/busses/i2c-digicolor.c          |  6 ++----
- drivers/i2c/busses/i2c-dln2.c               |  6 ++----
- drivers/i2c/busses/i2c-emev2.c              |  6 ++----
- drivers/i2c/busses/i2c-exynos5.c            |  6 ++----
- drivers/i2c/busses/i2c-gpio.c               |  6 ++----
- drivers/i2c/busses/i2c-gxp.c                |  6 ++----
- drivers/i2c/busses/i2c-highlander.c         |  6 ++----
- drivers/i2c/busses/i2c-hix5hd2.c            |  6 ++----
- drivers/i2c/busses/i2c-ibm_iic.c            |  6 ++----
- drivers/i2c/busses/i2c-img-scb.c            |  6 ++----
- drivers/i2c/busses/i2c-imx-lpi2c.c          |  6 ++----
- drivers/i2c/busses/i2c-imx.c                |  6 ++----
- drivers/i2c/busses/i2c-iop3xx.c             |  6 ++----
- drivers/i2c/busses/i2c-isch.c               |  6 ++----
- drivers/i2c/busses/i2c-jz4780.c             |  5 ++---
- drivers/i2c/busses/i2c-kempld.c             |  6 ++----
- drivers/i2c/busses/i2c-lpc2k.c              |  6 ++----
- drivers/i2c/busses/i2c-meson.c              |  6 ++----
- drivers/i2c/busses/i2c-microchip-corei2c.c  |  6 ++----
- drivers/i2c/busses/i2c-mlxbf.c              |  6 ++----
- drivers/i2c/busses/i2c-mlxcpld.c            |  6 ++----
- drivers/i2c/busses/i2c-mpc.c                |  6 ++----
- drivers/i2c/busses/i2c-mt65xx.c             |  6 ++----
- drivers/i2c/busses/i2c-mt7621.c             |  6 ++----
- drivers/i2c/busses/i2c-mv64xxx.c            |  6 ++----
- drivers/i2c/busses/i2c-mxs.c                |  6 ++----
- drivers/i2c/busses/i2c-npcm7xx.c            |  5 ++---
- drivers/i2c/busses/i2c-ocores.c             |  6 ++----
- drivers/i2c/busses/i2c-octeon-platdrv.c     |  5 ++---
- drivers/i2c/busses/i2c-omap.c               |  6 ++----
- drivers/i2c/busses/i2c-opal.c               |  6 ++----
- drivers/i2c/busses/i2c-pasemi-platform.c    |  5 ++---
- drivers/i2c/busses/i2c-pca-platform.c       |  6 ++----
- drivers/i2c/busses/i2c-pnx.c                |  6 ++----
- drivers/i2c/busses/i2c-powermac.c           |  6 ++----
- drivers/i2c/busses/i2c-pxa.c                |  6 ++----
- drivers/i2c/busses/i2c-qcom-cci.c           |  6 ++----
- drivers/i2c/busses/i2c-qcom-geni.c          |  5 ++---
- drivers/i2c/busses/i2c-qup.c                |  5 ++---
- drivers/i2c/busses/i2c-rcar.c               |  6 ++----
- drivers/i2c/busses/i2c-riic.c               |  6 ++----
- drivers/i2c/busses/i2c-rk3x.c               |  6 ++----
- drivers/i2c/busses/i2c-rzv2m.c              |  6 ++----
- drivers/i2c/busses/i2c-s3c2410.c            |  6 ++----
- drivers/i2c/busses/i2c-scmi.c               |  6 ++----
- drivers/i2c/busses/i2c-sh7760.c             |  6 ++----
- drivers/i2c/busses/i2c-sh_mobile.c          |  5 ++---
- drivers/i2c/busses/i2c-simtec.c             |  6 ++----
- drivers/i2c/busses/i2c-st.c                 |  6 ++----
- drivers/i2c/busses/i2c-stm32f4.c            |  6 ++----
- drivers/i2c/busses/i2c-stm32f7.c            |  6 ++----
- drivers/i2c/busses/i2c-sun6i-p2wi.c         |  6 ++----
- drivers/i2c/busses/i2c-synquacer.c          |  6 ++----
- drivers/i2c/busses/i2c-tegra-bpmp.c         |  6 ++----
- drivers/i2c/busses/i2c-tegra.c              |  6 ++----
- drivers/i2c/busses/i2c-uniphier-f.c         |  6 ++----
- drivers/i2c/busses/i2c-uniphier.c           |  6 ++----
- drivers/i2c/busses/i2c-versatile.c          |  5 ++---
- drivers/i2c/busses/i2c-viperboard.c         |  6 ++----
- drivers/i2c/busses/i2c-wmt.c                |  6 ++----
- drivers/i2c/busses/i2c-xgene-slimpro.c      |  6 ++----
- drivers/i2c/busses/i2c-xiic.c               |  6 ++----
- drivers/i2c/busses/i2c-xlp9xx.c             |  6 ++----
- drivers/i2c/busses/scx200_acb.c             |  6 ++----
- drivers/i2c/muxes/i2c-arb-gpio-challenge.c  |  5 ++---
- drivers/i2c/muxes/i2c-demux-pinctrl.c       |  6 ++----
- drivers/i2c/muxes/i2c-mux-gpio.c            |  6 ++----
- drivers/i2c/muxes/i2c-mux-gpmux.c           |  6 ++----
- drivers/i2c/muxes/i2c-mux-mlxcpld.c         |  5 ++---
- drivers/i2c/muxes/i2c-mux-pinctrl.c         |  6 ++----
- drivers/i2c/muxes/i2c-mux-reg.c             |  6 ++----
- 88 files changed, 180 insertions(+), 343 deletions(-)
-
-base-commit: ac9a78681b921877518763ba0e89202254349d1b
--- 
-2.39.2
+>
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+> ---
+>  arch/powerpc/lib/qspinlock.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
+> index e4bd145255d0..9cf93963772b 100644
+> --- a/arch/powerpc/lib/qspinlock.c
+> +++ b/arch/powerpc/lib/qspinlock.c
+> @@ -435,7 +435,7 @@ static __always_inline bool yield_to_prev(struct qspi=
+nlock *lock, struct qnode *
+> =20
+>  	smp_rmb(); /* See __yield_to_locked_owner comment */
+> =20
+> -	if (!node->locked) {
+> +	if (node->locked) {
+>  		yield_to_preempted(prev_cpu, yield_count);
+>  		spin_begin();
+>  		return preempted;
+> @@ -566,7 +566,7 @@ static __always_inline void queued_spin_lock_mcs_queu=
+e(struct qspinlock *lock, b
+>  	node->lock =3D lock;
+>  	node->cpu =3D smp_processor_id();
+>  	node->yield_cpu =3D -1;
+> -	node->locked =3D 0;
+> +	node->locked =3D 1;
+> =20
+>  	tail =3D encode_tail_cpu(node->cpu);
+> =20
+> @@ -584,7 +584,7 @@ static __always_inline void queued_spin_lock_mcs_queu=
+e(struct qspinlock *lock, b
+> =20
+>  		/* Wait for mcs node lock to be released */
+>  		spin_begin();
+> -		while (!node->locked) {
+> +		while (node->locked) {
+>  			spec_barrier();
+> =20
+>  			if (yield_to_prev(lock, node, old, paravirt))
+> @@ -693,13 +693,13 @@ static __always_inline void queued_spin_lock_mcs_qu=
+eue(struct qspinlock *lock, b
+>  	 */
+>  	if (paravirt && pv_prod_head) {
+>  		int next_cpu =3D next->cpu;
+> -		WRITE_ONCE(next->locked, 1);
+> +		WRITE_ONCE(next->locked, 0);
+>  		if (_Q_SPIN_MISO)
+>  			asm volatile("miso" ::: "memory");
+>  		if (vcpu_is_preempted(next_cpu))
+>  			prod_cpu(next_cpu);
+>  	} else {
+> -		WRITE_ONCE(next->locked, 1);
+> +		WRITE_ONCE(next->locked, 0);
+>  		if (_Q_SPIN_MISO)
+>  			asm volatile("miso" ::: "memory");
+>  	}
+> --=20
+> 2.37.2
 
