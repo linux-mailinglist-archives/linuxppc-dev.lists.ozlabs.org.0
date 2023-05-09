@@ -2,94 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEA06FC01B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 09:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E4F6FC02D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 09:10:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QFq3g4YRzz3bkk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:07:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QFq7K6HTdz3fWn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:10:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20221208.gappssmtp.com header.i=@rivosinc-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=fZP2GHn4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IybDFoZY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=alexghiti@rivosinc.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20221208.gappssmtp.com header.i=@rivosinc-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=fZP2GHn4;
-	dkim-atps=neutral
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFq2q14Qsz3bbP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 17:06:41 +1000 (AEST)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-30771c68a9eso4722816f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 00:06:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1683615995; x=1686207995;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=useBAoxrYFwGHlGULbrUpovVaQLb6iywksro7xdg1q0=;
-        b=fZP2GHn4DPbtLB9U9ddJiVCa5mTnlQNHnfLoeLLIICTFhTP6H3OheMCsLlesKdlSjE
-         oxU7n/iEvpzCiIYBayhdlJx0vjcsF5ikFN4zXIwD296y1TGVXwz9lO9zjYppSVQl+nN0
-         xgd6JUvZ32UxidXxTPFEPDuxgQ/X2ydDOHmPHO9scxbna8W/NFSPeDJtdXIHo3ymexpI
-         ep52vrhEvlYwUgGOx/cdDvX1kJfm5x5sc2koohyYVOeWf/Q5Mxww/sb06tbAL+q/sPNa
-         0eFClRmYTi0tn/TtP8PBkUEdMFbpiX+WXktTpdlFF9cnNJVnyawqlUi+NQlMXW1WKr0u
-         tKSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683615995; x=1686207995;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=useBAoxrYFwGHlGULbrUpovVaQLb6iywksro7xdg1q0=;
-        b=S8YJke2u78vRUjH8Xc+R18F6yfnqA6I/8Ffs9Zekk0s/OztOAjNdeN3mWOU0i7kvN/
-         njdow0g+zqWpKkh+uGfdKFSl4CcnMxIkt+KTcD3nyTZw49dSPYwh9OptcEn2uJj0XZ6+
-         m1nbya8zc1fijkmMsSDXZkZfcqe2OE/jrEXVFjkR8QirRdd8hnDsPFbRK9lqQ4bj0X80
-         MqkUoMQ7uKuLaZ9Qvbq/o1BnLm5QvPl/qmfsAmSlihYFXug0Y6vvEjBBJoV4PcIIsWVl
-         QHDRS0y/y5s9WyEVOqtB6SM19nGcPuvgXb9rK0Hk0jlsn6h5YXVX4RuHy+j3x7iZOGBT
-         dhdg==
-X-Gm-Message-State: AC+VfDzpfB+ueaYcYnBO3VJZemWNv16kEJdDARzH0DC8kAG77K4boKPv
-	bJDS16QMeHv8r6asjhvqc6Q9VK90AAk54E2POzsHvQ==
-X-Google-Smtp-Source: ACHHUZ48BETwgkFEHm8YnNvXMQpcpYVDJsRZesFXjLdWUvDZRdq9TUHfydeR5bG1gLliOkfOUxpETfIXCAorTp5K1Pw=
-X-Received: by 2002:a5d:6a47:0:b0:306:2d16:9b4f with SMTP id
- t7-20020a5d6a47000000b003062d169b4fmr9470428wrw.9.1683615995449; Tue, 09 May
- 2023 00:06:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QFq6T0pGrz2yfg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 May 2023 17:09:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IybDFoZY;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QFq6N3JvFz4x3d;
+	Tue,  9 May 2023 17:09:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1683616189;
+	bh=c8H4G/Dv234HYjr+KJ10w7TX5wPsTcnHJLfz2R+M/U4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IybDFoZYRCA04a+HfRdbR5lqAQfh2/gLTIZuGwqb1gG1NN/C/GU+vQq7V0pdxysgy
+	 85ewwIr+8dZ4wfuYcfyzEH2jKNqTOir08D6PlYg3NfZ+ptA1Ti+vz01L3uA0ioOMOv
+	 4ve7RrFfqbB2GvW+JqZoZa4N4VA+wvwErCbVuNQ1vvH+V7/Xy7gmuRx4q37j2KcmWM
+	 pLAKpjbChoEiG1Hpaon4ZKRKna8gEtV5q0JeW50u8XhmlwDnw+/VlXLggCS/aExLYW
+	 N9+b4UcGRm0HePsomadDMDMmvO58JMK7toMhdJ7+XFbh6fbSoSPU+HM9uUmvJSXAW9
+	 1o9F5FIQ7miWQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>, Tejun Heo <tj@kernel.org>
+Subject: Re: linux-next: boot warning
+In-Reply-To: <20230509122440.418068cb@canb.auug.org.au>
+References: <20230509122440.418068cb@canb.auug.org.au>
+Date: Tue, 09 May 2023 17:09:43 +1000
+Message-ID: <87mt2ex9oo.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <20230306100508.1171812-1-alexghiti@rivosinc.com>
-In-Reply-To: <20230306100508.1171812-1-alexghiti@rivosinc.com>
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Tue, 9 May 2023 09:06:23 +0200
-Message-ID: <CAHVXubjRtto_omfz_NsLcKkJniciX0ShNxcX5vBqnGFQLpB4ug@mail.gmail.com>
-Subject: Re: [PATCH v5 00/26] Remove COMMAND_LINE_SIZE from uapi
-To: Greg KH <gregkh@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, "David S . Miller" <davem@davemloft.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org, 
-	linux-arch@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,160 +58,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnd,
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
+>
+> Today's qemu test boot (powerpc pseries_le_defconfig) produced this
+> warning:
+>
+> [    2.048588][    T1] ipr: IBM Power RAID SCSI Device Driver version: 2.6.4 (March 14, 2017)
+> [    2.051560][    T1] ------------[ cut here ]------------
+> [    2.052297][    T1] WARNING: CPU: 0 PID: 1 at kernel/workqueue.c:5925 workqueue_sysfs_register+0x20/0x1f0
 
-On Mon, Mar 6, 2023 at 11:05=E2=80=AFAM Alexandre Ghiti <alexghiti@rivosinc=
-.com> wrote:
->
-> This all came up in the context of increasing COMMAND_LINE_SIZE in the
-> RISC-V port.  In theory that's a UABI break, as COMMAND_LINE_SIZE is the
-> maximum length of /proc/cmdline and userspace could staticly rely on
-> that to be correct.
->
-> Usually I wouldn't mess around with changing this sort of thing, but
-> PowerPC increased it with a5980d064fe2 ("powerpc: Bump COMMAND_LINE_SIZE
-> to 2048").  There are also a handful of examples of COMMAND_LINE_SIZE
-> increasing, but they're from before the UAPI split so I'm not quite sure
-> what that means: e5a6a1c90948 ("powerpc: derive COMMAND_LINE_SIZE from
-> asm-generic"), 684d2fd48e71 ("[S390] kernel: Append scpdata to kernel
-> boot command line"), 22242681cff5 ("MIPS: Extend COMMAND_LINE_SIZE"),
-> and 2b74b85693c7 ("sh: Derive COMMAND_LINE_SIZE from
-> asm-generic/setup.h.").
->
-> It seems to me like COMMAND_LINE_SIZE really just shouldn't have been
-> part of the uapi to begin with, and userspace should be able to handle
-> /proc/cmdline of whatever length it turns out to be.  I don't see any
-> references to COMMAND_LINE_SIZE anywhere but Linux via a quick Google
-> search, but that's not really enough to consider it unused on my end.
->
-> This issue was already considered in s390 and they reached the same
-> conclusion in commit 622021cd6c56 ("s390: make command line
-> configurable").
->
-> The feedback on the v1 seemed to indicate that COMMAND_LINE_SIZE really
-> shouldn't be part of uapi, so this now touches all the ports.  I've
-> tried to split this all out and leave it bisectable, but I haven't
-> tested it all that aggressively.
->
-> Changes since v4 <https://lore.kernel.org/all/20230302093539.372962-1-ale=
-xghiti@rivosinc.com/>:
-> * Add my own SoB as suggested by Geert
-> * Add riscv patches as suggested by Bj=C3=B6rn
-> * Remove "WITH Linux-syscall-note" from new setup.h not in uapi/, as
->   suggested by Greg KH, his quoted answer below:
->
-> "The "syscall note" makes no sense at all for any files not in the uapi/
-> directory, so you can remove it just fine as that WITH doesn't mean
-> anything _UNLESS_ the file is in the uapi directory."
->
-> Changes since v3 <https://lore.kernel.org/all/20230214074925.228106-1-ale=
-xghiti@rivosinc.com/>:
-> * Added RB/AB
-> * Added a mention to commit 622021cd6c56 ("s390: make command line
->   configurable") in the cover letter
->
-> Changes since v2 <https://lore.kernel.org/all/20221211061358.28035-1-palm=
-er@rivosinc.com/>:
-> * Fix sh, csky and ia64 builds, as reported by kernel test robot
->
-> Changes since v1 <https://lore.kernel.org/all/20210423025545.313965-1-pal=
-mer@dabbelt.com/>:
-> * Touches every arch.
->
-> base-commit-tag: next-20230207
->
-> Alexandre Ghiti (2):
->   riscv: Remove COMMAND_LINE_SIZE from uapi
->   riscv: Remove empty <uapi/asm/setup.h>
->
-> Palmer Dabbelt (24):
->   alpha: Remove COMMAND_LINE_SIZE from uapi
->   arm64: Remove COMMAND_LINE_SIZE from uapi
->   arm: Remove COMMAND_LINE_SIZE from uapi
->   ia64: Remove COMMAND_LINE_SIZE from uapi
->   m68k: Remove COMMAND_LINE_SIZE from uapi
->   microblaze: Remove COMMAND_LINE_SIZE from uapi
->   mips: Remove COMMAND_LINE_SIZE from uapi
->   parisc: Remove COMMAND_LINE_SIZE from uapi
->   powerpc: Remove COMMAND_LINE_SIZE from uapi
->   sparc: Remove COMMAND_LINE_SIZE from uapi
->   xtensa: Remove COMMAND_LINE_SIZE from uapi
->   asm-generic: Remove COMMAND_LINE_SIZE from uapi
->   alpha: Remove empty <uapi/asm/setup.h>
->   arc: Remove empty <uapi/asm/setup.h>
->   m68k: Remove empty <uapi/asm/setup.h>
->   arm64: Remove empty <uapi/asm/setup.h>
->   microblaze: Remove empty <uapi/asm/setup.h>
->   sparc: Remove empty <uapi/asm/setup.h>
->   parisc: Remove empty <uapi/asm/setup.h>
->   x86: Remove empty <uapi/asm/setup.h>
->   xtensa: Remove empty <uapi/asm/setup.h>
->   powerpc: Remove empty <uapi/asm/setup.h>
->   mips: Remove empty <uapi/asm/setup.h>
->   s390: Remove empty <uapi/asm/setup.h>
->
->  .../admin-guide/kernel-parameters.rst         |  2 +-
->  arch/alpha/include/asm/setup.h                |  4 +--
->  arch/alpha/include/uapi/asm/setup.h           |  7 -----
->  arch/arc/include/asm/setup.h                  |  1 -
->  arch/arc/include/uapi/asm/setup.h             |  6 -----
->  arch/arm/include/asm/setup.h                  |  1 +
->  arch/arm/include/uapi/asm/setup.h             |  2 --
->  arch/arm64/include/asm/setup.h                |  3 ++-
->  arch/arm64/include/uapi/asm/setup.h           | 27 -------------------
->  arch/ia64/include/asm/setup.h                 | 10 +++++++
->  arch/ia64/include/uapi/asm/setup.h            |  6 ++---
->  arch/loongarch/include/asm/setup.h            |  2 +-
->  arch/m68k/include/asm/setup.h                 |  3 +--
->  arch/m68k/include/uapi/asm/setup.h            | 17 ------------
->  arch/microblaze/include/asm/setup.h           |  2 +-
->  arch/microblaze/include/uapi/asm/setup.h      | 20 --------------
->  arch/mips/include/asm/setup.h                 |  3 ++-
->  arch/mips/include/uapi/asm/setup.h            |  8 ------
->  arch/parisc/include/{uapi =3D> }/asm/setup.h    |  2 +-
->  arch/powerpc/include/asm/setup.h              |  2 +-
->  arch/powerpc/include/uapi/asm/setup.h         |  7 -----
->  arch/riscv/include/asm/setup.h                |  7 +++++
->  arch/riscv/include/uapi/asm/setup.h           |  8 ------
->  arch/s390/include/asm/setup.h                 |  1 -
->  arch/s390/include/uapi/asm/setup.h            |  1 -
->  arch/sh/include/asm/setup.h                   |  2 +-
->  arch/sparc/include/asm/setup.h                |  6 ++++-
->  arch/sparc/include/uapi/asm/setup.h           | 16 -----------
->  arch/x86/include/asm/setup.h                  |  2 --
->  arch/x86/include/uapi/asm/setup.h             |  1 -
->  arch/xtensa/include/{uapi =3D> }/asm/setup.h    |  2 +-
->  include/asm-generic/Kbuild                    |  1 +
->  include/{uapi =3D> }/asm-generic/setup.h        |  0
->  include/uapi/asm-generic/Kbuild               |  1 -
->  34 files changed, 40 insertions(+), 143 deletions(-)
->  delete mode 100644 arch/alpha/include/uapi/asm/setup.h
->  delete mode 100644 arch/arc/include/uapi/asm/setup.h
->  delete mode 100644 arch/arm64/include/uapi/asm/setup.h
->  create mode 100644 arch/ia64/include/asm/setup.h
->  delete mode 100644 arch/m68k/include/uapi/asm/setup.h
->  delete mode 100644 arch/microblaze/include/uapi/asm/setup.h
->  delete mode 100644 arch/mips/include/uapi/asm/setup.h
->  rename arch/parisc/include/{uapi =3D> }/asm/setup.h (63%)
->  delete mode 100644 arch/powerpc/include/uapi/asm/setup.h
->  create mode 100644 arch/riscv/include/asm/setup.h
->  delete mode 100644 arch/riscv/include/uapi/asm/setup.h
->  delete mode 100644 arch/s390/include/uapi/asm/setup.h
->  delete mode 100644 arch/sparc/include/uapi/asm/setup.h
->  delete mode 100644 arch/x86/include/uapi/asm/setup.h
->  rename arch/xtensa/include/{uapi =3D> }/asm/setup.h (84%)
->  rename include/{uapi =3D> }/asm-generic/setup.h (100%)
->
-> --
-> 2.37.2
->
+Caused by 59709bb84c22 scsi: Use alloc_ordered_workqueue() to create ordered workqueues.
 
-I don't see this series in 6.4-rc1, I don't mean to bother you, I just
-want to make sure it did not get lost :)
+cheers
 
-Thanks,
-
-Alex
+> [    2.053294][    T1] Modules linked in:
+> [    2.053678][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.4.0-rc1-01511-g91b79de175e1 #1
+> [    2.053899][    T1] Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 0x4d0200 0xf000004 of:SLOF,HEAD pSeries
+> [    2.054099][    T1] NIP:  c000000000181d40 LR: c000000000182164 CTR: c0000000001b71e0
+> [    2.054171][    T1] REGS: c0000000047632c0 TRAP: 0700   Not tainted  (6.4.0-rc1-01511-g91b79de175e1)
+> [    2.054279][    T1] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 48000284  XER: 00000000
+> [    2.054608][    T1] CFAR: c000000000182160 IRQMASK: 0 
+> [    2.054608][    T1] GPR00: c000000000182164 c000000004763560 c000000001558c00 c000000004d18600 
+> [    2.054608][    T1] GPR04: 0000000000000000 0000000000000000 c0000000028eccd8 0000000000000000 
+> [    2.054608][    T1] GPR08: 0000000000000000 0000000000080000 0000000000000000 0000000048000288 
+> [    2.054608][    T1] GPR12: 0000000000000000 c000000002ad0000 c000000000013788 0000000000000000 
+> [    2.054608][    T1] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.054608][    T1] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.054608][    T1] GPR24: 0000000000000000 c000000004d186b8 c000000004d18610 c000000004d18620 
+> [    2.054608][    T1] GPR28: 0000000000000000 c00000000299b310 0000000000000000 c000000004d18600 
+> [    2.055488][    T1] NIP [c000000000181d40] workqueue_sysfs_register+0x20/0x1f0
+> [    2.055564][    T1] LR [c000000000182164] alloc_workqueue+0x254/0x584
+> [    2.055858][    T1] Call Trace:
+> [    2.055989][    T1] [c000000004763560] [c0000000047635f0] 0xc0000000047635f0 (unreliable)
+> [    2.056509][    T1] [c0000000047635f0] [c0000000001823a8] alloc_workqueue+0x498/0x584
+> [    2.056605][    T1] [c0000000047636a0] [c000000000ba016c] scsi_host_alloc+0x2fc/0x500
+> [    2.056678][    T1] [c000000004763730] [c000000000bdf7ec] ibmvscsi_probe+0x6c/0xaf8
+> [    2.056746][    T1] [c000000004763820] [c000000000105d4c] vio_bus_probe+0x9c/0x4a0
+> [    2.056816][    T1] [c0000000047638e0] [c000000000b1c274] really_probe+0x104/0x410
+> [    2.056885][    T1] [c000000004763970] [c000000000b1c630] __driver_probe_device+0xb0/0x1e0
+> [    2.056956][    T1] [c0000000047639f0] [c000000000b1c7b4] driver_probe_device+0x54/0x130
+> [    2.057025][    T1] [c000000004763a30] [c000000000b1cac8] __driver_attach+0xd8/0x200
+> [    2.057092][    T1] [c000000004763a70] [c000000000b18cd4] bus_for_each_dev+0xb4/0x140
+> [    2.057158][    T1] [c000000004763ad0] [c000000000b1b824] driver_attach+0x34/0x50
+> [    2.057226][    T1] [c000000004763af0] [c000000000b1ac1c] bus_add_driver+0x13c/0x2d0
+> [    2.057292][    T1] [c000000004763b80] [c000000000b1e3c4] driver_register+0xa4/0x1b0
+> [    2.057360][    T1] [c000000004763bf0] [c000000000108054] __vio_register_driver+0x74/0x9c
+> [    2.057428][    T1] [c000000004763c10] [c000000002063690] ibmvscsi_module_init+0x98/0xd4
+> [    2.057500][    T1] [c000000004763c40] [c0000000000131a0] do_one_initcall+0x80/0x320
+> [    2.057583][    T1] [c000000004763d20] [c0000000020049b4] kernel_init_freeable+0x304/0x3ac
+> [    2.057657][    T1] [c000000004763df0] [c0000000000137b0] kernel_init+0x30/0x1a0
+> [    2.057723][    T1] [c000000004763e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
+> [    2.057807][    T1] --- interrupt: 0 at 0x0
+> [    2.057858][    T1] NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
+> [    2.057909][    T1] REGS: c000000004763e80 TRAP: 0000   Not tainted  (6.4.0-rc1-01511-g91b79de175e1)
+> [    2.057964][    T1] MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
+> [    2.058031][    T1] CFAR: 0000000000000000 IRQMASK: 0 
+> [    2.058031][    T1] GPR00: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR12: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058031][    T1] GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [    2.058682][    T1] NIP [0000000000000000] 0x0
+> [    2.058728][    T1] LR [0000000000000000] 0x0
+> [    2.058782][    T1] --- interrupt: 0
+> [    2.058965][    T1] Code: 60000000 60000000 60000000 60420000 3c4c013d 38426ee0 7c0802a6 60000000 fb61ffd8 f821ff71 81230100 55290318 <0b090000> 3d22fff0 7c0802a6 fb810070 
+> [    2.059420][    T1] ---[ end trace 0000000000000000 ]---
+> [    2.065968][   T46] scsi_tmf_0 (46) used greatest stack depth: 15200 bytes left
+> [    2.067252][    T1] scsi host0: failed to create tmf workq
+> [    2.092458][   T45] scsi_eh_0 (45) used greatest stack depth: 14240 bytes left
+> [    2.092852][    T1] ibmvscsi 71000003: couldn't allocate host data
+> [    2.093005][    T1] ibmvscsi: probe of 71000003 failed with error -1
+>
+>
+> I have no idea what has caused this.
+>
+> -- 
+> Cheers,
+> Stephen Rothwell
