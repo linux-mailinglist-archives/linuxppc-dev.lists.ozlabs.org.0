@@ -1,70 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD826FD04B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 22:53:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848E66FD210
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 00:07:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QG9NB24rqz3fMn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 06:52:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGC1S2p8Fz3bxY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 08:06:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=rVJW9XdH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tXWL/1L+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e35; helo=mail-vs1-xe35.google.com; envelope-from=dmatlack@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=rVJW9XdH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tXWL/1L+;
 	dkim-atps=neutral
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QG9MK0rFnz3cd2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 06:52:11 +1000 (AEST)
-Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-43483520faaso3471285137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 13:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683665528; x=1686257528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1ek4N4zhVnFp0OjD2e91cJw6qEMFFDQc5/FTgmHiGak=;
-        b=rVJW9XdHV4bhVBpENigqqik2I2pCncaz794aO5r0GaFD6EOogLB5GsTpjkOXXFk1cl
-         BLaajyFwcHYbDsMksrmy46rkJ8Xg5XgSiPcKIeqTk5sc4i6ByJVNSNE661bfq0lTqdr5
-         15qPLPCf/jWgZf76j7FinTn4I6xu8cSDiM5g9kSu8JtTXKgSM8OwYPMKVaG7suYL8InA
-         DMrcHjABRjgiApDllMJEgP/iLFCOFcqlwydZH35zZAE5dGhLWBf35Ag5dGmDJHpUzL+l
-         I6D5uZx78KFyGlmPQFh+q8W5REGbWvTcrIRfpmnEKUzBt+OarAE0cEQNLkGT/+HDIP0z
-         HuDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683665528; x=1686257528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1ek4N4zhVnFp0OjD2e91cJw6qEMFFDQc5/FTgmHiGak=;
-        b=YSz+GTdL5TGy9bjPTLfObf4Uh1ta6vOnhjxFMZoTPXxBIRaAnImbeqISh5Ul+2MbQ6
-         qRn858nFmxmK40LlR1a+4Jt3sMDf782b7QBQYsnXXH+OqTOogjjL/8q1w6qmnyNWd/IS
-         FFozWC/lWOZcEmybPld6LTNGKZFCNfEreeWVomOE2Q3XHQoRqd4g86839nM8D+OnDiDK
-         YM9G+6fDFt2UFla998L+znLBc7Ex8B8AWLjJM2zlnzJiTv9zdK8cyncj/sywOQzfdtOl
-         gnVaGNAjDkDSBNs2k1V0Yj7VXIbb+w+0d+w1rZwxd2K3HTqbUjk3rxKVzMTkGH+TJZjv
-         GbIw==
-X-Gm-Message-State: AC+VfDygKPwjY+0nFA7X9KuYYPBNo5C5eKQFoKM5zc3eLP/WPQiN3h3q
-	NtxNaIYeFmicZcbJBwif0RyGGVoINAay5ww8AIqU1w==
-X-Google-Smtp-Source: ACHHUZ5qUtibgquXG1CHXn5rsYEnNugGuamTPmXoGAjYsiSltyM3mefeFrXCpD+c8boXnApqrdpstv0ZlJ4ZhdJ1iOQ=
-X-Received: by 2002:a67:f291:0:b0:42e:6748:13dc with SMTP id
- m17-20020a67f291000000b0042e674813dcmr5348659vsk.0.1683665528538; Tue, 09 May
- 2023 13:52:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGC0V41HGz3bbD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 08:06:01 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 349M3p0a010232;
+	Tue, 9 May 2023 22:05:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=QiLgcaGzMG6e3bA12KNRIQS/nr3016/UVkBIRIJEDU8=;
+ b=tXWL/1L+TfCJlmWg0943uqdtHzKg+6o2Sb29kt65pYDA3ZR16zXy/DJ0OY7z3WXVVsH8
+ vS2ArF5BxvsMs3+cAuxkPFDJL1MAvcmfjxyd3iLwzyo99WpfgYMgZPQAZj0oUbO7SPYe
+ jpUT/NHI92QVflK6IAJoDCh+t4IlpwbqKfmoKbgCsI/eTOlnkLCPE40cTyP7jw66ba7/
+ 28BqnnntakgyjyoSKO/10hfQa8A5bHf9y8a+TkEuLi0t46BXqEZEMNytLy7x9fukryN5
+ SK8SACvmaC61U2E5IJd7PleVvQ0UQyOUxUpXjoQky4UMFosXn+VIw6oG0b1w9eKAlGpu 6w== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qfwn1hj1v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 May 2023 22:05:54 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 349LkM5U012290;
+	Tue, 9 May 2023 22:05:53 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3qf7wdy2bw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 May 2023 22:05:53 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 349M5p5524248808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 May 2023 22:05:51 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 874D258062;
+	Tue,  9 May 2023 22:05:51 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D5B5458061;
+	Tue,  9 May 2023 22:05:50 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.160.114.206])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  9 May 2023 22:05:50 +0000 (GMT)
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/iommu: limit number of TCEs to 512 for H_STUFF_TCE hcall
+Date: Tue,  9 May 2023 17:05:49 -0500
+Message-Id: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-References: <20230306190156.434452-1-dmatlack@google.com>
-In-Reply-To: <20230306190156.434452-1-dmatlack@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 9 May 2023 13:51:42 -0700
-Message-ID: <CALzav=fZFpzw57hNmg2fqYG-0ddtvQd9+=7cw8tzuOGbZW1A1A@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] KVM: Refactor KVM stats macros and enable custom
- stat names
-To: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: R8YkovmWmlA2jgwYcCfmoqFINN_1LS6s
+X-Proofpoint-GUID: R8YkovmWmlA2jgwYcCfmoqFINN_1LS6s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-09_14,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305090180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,18 +86,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Zenghui Yu <yuzenghui@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Sathvika Vasireddy <sv@linux.ibm.com>, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, Sean Christopherson <seanjc@google.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm
- -riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, Gaurav Batra <gbatra@linux.vnet.ibm.com>, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 6, 2023 at 11:01=E2=80=AFAM David Matlack <dmatlack@google.com>=
- wrote:
->
-> This series refactors the KVM stats macros to reduce duplication and
-> adds the support for choosing custom names for stats.
+As of now, in tce_freemulti_pSeriesLP(), there is no limit on how many TCEs
+are passed to H_STUFF_TCE hcall. PAPR is enforcing this to be limited to
+512 TCEs.
 
-Hi Paolo,
+Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-I just wanted to double-check if this series is on your radar
-(probably for 6.5)?
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index c74b71d4733d..1b134b1b795a 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -306,13 +306,21 @@ static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
+ {
+ 	u64 rc;
++	long limit, rpages = npages;
+ 
+ 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
+ 		return tce_free_pSeriesLP(tbl->it_index, tcenum,
+ 					  tbl->it_page_shift, npages);
+ 
+-	rc = plpar_tce_stuff((u64)tbl->it_index,
+-			     (u64)tcenum << tbl->it_page_shift, 0, npages);
++	do {
++		limit = min_t(long, rpages, 512);
++
++		rc = plpar_tce_stuff((u64)tbl->it_index,
++			     	(u64)tcenum << tbl->it_page_shift, 0, limit);
++
++		rpages -= limit;
++		tcenum += limit;
++	} while (rpages > 0 && !rc);
+ 
+ 	if (rc && printk_ratelimit()) {
+ 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
+-- 
+
