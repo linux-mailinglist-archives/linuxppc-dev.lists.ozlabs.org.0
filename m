@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7434D6FCA4F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 17:33:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BBF6FCDAB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 May 2023 20:22:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QG2J21twgz3fQ8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 01:33:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QG62J2Dbyz3fPW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 04:22:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=FMLxTBr+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eWEhqVAD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=htejun@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=FMLxTBr+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eWEhqVAD;
 	dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QG2H76ZLNz3fKx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 01:33:07 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6438d95f447so4178539b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 08:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683646385; x=1686238385;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i7WJkpzGGE6V0xVNeJVOJY0t5blLhcdTlZlbB7BS+gc=;
-        b=FMLxTBr+wd5rAK2nIKeykMToZJkUULXyulEWPfS6JYiK1UgR5o2h3w26z+Yp5/E1dr
-         bDqh6NUr1VibilmFjm0izLQlHS7O3u2QFaPLG8TDdue+dxViTl4cFiDPcodggspN4syC
-         0Jm5BWCsqs8t8xiPv8URVb3gGxjyDJE1h8qhQgkRNUUk5CFvN/6jMHeYjjnf+R5yfbCy
-         v1/v7D3FsFSTef9YGbO+6gzivSoPl9Osoj5hd77kSs5lZbAUkusRsi+f3KewpSPOUIWl
-         54LKKqInJG5+r4xX4y4CRd2skQp449TLmyTxz3UyHCpou2UndeaOOtJ1PVDJuQ/b9ImG
-         H1wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683646385; x=1686238385;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i7WJkpzGGE6V0xVNeJVOJY0t5blLhcdTlZlbB7BS+gc=;
-        b=jBKXrndJqwl7QjHvksBjNUvWdJeG1FDxe25gZsUTwY1U2224OQt1vyEssJ+vmd0/f7
-         q3TiRazu/bVfS8Lsoq2k74rYIEYlg2hTJ5cXJPbEGLalMKmpXqnmcnnMX8cIi0QytRdb
-         +QdskP6TP/Oxy8QwiZx5vKiyNljN+V5Ws4451xH70HQFtzME5xBAnmN9vB3nDTWK2c0Z
-         dwfJJAr0qHBGssg3ix/OVMVkTn9dI5h62GBswcGZ1TksZa9gHscgaiT/bxZ1heMK8oNv
-         RMCBDtuS8po/mKx1Ij0VNpjipG/MFyXYv0CJgDq5gexuppLfkGWz0Gp5gDEAKhHuTjMx
-         YXvA==
-X-Gm-Message-State: AC+VfDxTsnjex7tm8B+75i04AzQrRNvPlYP1Zvis6xf3HpO6V0NtdOJC
-	B5UqlB9o46w/1Ij1zbJVSjQ=
-X-Google-Smtp-Source: ACHHUZ74rXgHLVMBYI8vEBAiCwf0n8BlFeTay98rF3Y8zTkmdIFPU6Z4y3sKE+ysJMc+3elFYvlBmA==
-X-Received: by 2002:a05:6a00:9a7:b0:638:7c22:6fd with SMTP id u39-20020a056a0009a700b006387c2206fdmr21606404pfg.1.1683646384720;
-        Tue, 09 May 2023 08:33:04 -0700 (PDT)
-Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
-        by smtp.gmail.com with ESMTPSA id p24-20020a62ab18000000b0063b5776b073sm1908446pff.117.2023.05.09.08.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 08:33:04 -0700 (PDT)
-Date: Tue, 9 May 2023 05:33:02 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: linux-next: boot warning
-Message-ID: <ZFpnroBw-tJnyDbF@slm.duckdns.org>
-References: <20230509122440.418068cb@canb.auug.org.au>
- <87mt2ex9oo.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QG61P0RRJz3bkM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 04:21:28 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D050064791;
+	Tue,  9 May 2023 18:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE77FC433EF;
+	Tue,  9 May 2023 18:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683656484;
+	bh=wTrGWZ/prXac+ksuuHC0df7jUrXSG9zBg0tuZm4eZAk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=eWEhqVADxc/GqJSwXnOQ3JLmV9EVm67GRKXU/8kCH+e7bYAn4tbjZ8OZRHVaX3ZcO
+	 S0xv0AhCQd5NINM++YJU/lVWNxRqARJ2JdTZgkf8DKQ/aBVDAb43Y4DpvrsggmiDhc
+	 VLuK4RypC1++gIMHtYJwDcVU3u+My56Q4IZYK0at1LgOku1qb8yZmqculMrILZXTXZ
+	 neG8vnzAeERR8/VCvqWmCzd1JtSknWdohvz8yYije8I6fBKpAtZuUigoK/yqxiyRiQ
+	 4E280Lp7b1rI5aQ6wbmUv7nAdHleWjJ8JY7/fVD00VEW304Ke/w4PCv+lqMsKKDnXi
+	 XzOdVIUpJ2dRg==
+Date: Tue, 9 May 2023 13:21:22 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <20230509182122.GA1259567@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87mt2ex9oo.fsf@mail.lhotse>
+In-Reply-To: <20230404161101.GA3554747@bhelgaas>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +59,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, "Martin K. Petersen" <martin.petersen@oracle.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, James Bottomley <James.Bottomley@hansenpartnership.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-kernel@vger.kernel.org, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian
+  Glaubitz <glaubitz@physik.fu-berlin.de>, Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 09, 2023 at 05:09:43PM +1000, Michael Ellerman wrote:
-> Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> > Hi all,
-> >
-> > Today's qemu test boot (powerpc pseries_le_defconfig) produced this
-> > warning:
-> >
-> > [    2.048588][    T1] ipr: IBM Power RAID SCSI Device Driver version: 2.6.4 (March 14, 2017)
-> > [    2.051560][    T1] ------------[ cut here ]------------
-> > [    2.052297][    T1] WARNING: CPU: 0 PID: 1 at kernel/workqueue.c:5925 workqueue_sysfs_register+0x20/0x1f0
-> 
-> Caused by 59709bb84c22 scsi: Use alloc_ordered_workqueue() to create ordered workqueues.
+On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
+> On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
+> > Provide two new helper macros to iterate over PCI device resources and
+> > convert users.
 
-The patch is already dropped. It was applied only for a short window
-yesterday. Should be okay now.
+> Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
 
-Thanks.
+This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+upstream now.
 
--- 
-tejun
+Coverity complains about each use, sample below from
+drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
+false positive; just FYI.
+
+	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
+  556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+  557                base |= (u64)screen_info.ext_lfb_base << 32;
+  558
+  559        limit = base + size;
+  560
+  561        /* Does firmware framebuffer belong to us? */
+	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
+	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  11. incr: Incrementing __b. The value of __b may now be up to 17.
+	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
+	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+  562        pci_dev_for_each_resource(pdev, r) {
+	  4. Condition resource_type(r) != 512, taking true branch.
+	  9. Condition resource_type(r) != 512, taking true branch.
+
+  CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
+  15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
+  563                if (resource_type(r) != IORESOURCE_MEM)
+	  5. Continuing loop.
+	  10. Continuing loop.
+  564                        continue;
