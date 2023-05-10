@@ -2,94 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5FA6FD47D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 05:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 022596FD521
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 06:40:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QGLQv3FVfz3fpg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 13:40:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGMlV6T7nz3fLZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 14:40:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h2YdbDd8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=cNF0lopR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h2YdbDd8;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=cNF0lopR;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGLLB4dmKz3fb2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 13:36:50 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34A3DIQK014822;
-	Wed, 10 May 2023 03:36:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=NmoEctYeO4hNoppfRVp6jiifp/p1Vufu1rW2DGdAkAQ=;
- b=h2YdbDd8MeT9mBPPGEyn9jwv4cPTogOgwa33zHuD6ad3djMyi7vld6bjdIx3uAqVuDd1
- gNrziwLj9TjX6gQgyJXH4PwkWAEERZhbUXD6pheHLUHhfZ/slwyjYrs/LgtjgcTR7msn
- OdmwFtFCIq+m+61ykv+98PKozO+SlPZBrURgkq1JKrOZK2S81TMPUFYWwc3ttj4boJxV
- GXialZjZbSGHi8d7m81W2g4+39m4k1hyl1u9SiHTUl2fNV/QZyeXs+LlhIIg/p0o5cIU
- eaKXIPBeDwLM/hgs1DM+AtefHiJoDTKdAzjerITonpKiuGrxovnv3eA5Yygpux3jKjeZ Gw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qg35urdkb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 May 2023 03:36:41 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34A3aIcW009341;
-	Wed, 10 May 2023 03:36:40 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qg35urdhy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 May 2023 03:36:40 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34A0aEPm015736;
-	Wed, 10 May 2023 03:31:38 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qf896rs0s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 May 2023 03:31:38 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34A3Va0G25428698
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 May 2023 03:31:36 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 520122004B;
-	Wed, 10 May 2023 03:31:36 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B8B120043;
-	Wed, 10 May 2023 03:31:35 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 10 May 2023 03:31:35 +0000 (GMT)
-Received: from civic.. (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 26A946060A;
-	Wed, 10 May 2023 13:31:30 +1000 (AEST)
-From: Rohan McLure <rmclure@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 11/11] powerpc: Mark asynchronous accesses to irq_data
-Date: Wed, 10 May 2023 13:31:17 +1000
-Message-Id: <20230510033117.1395895-12-rmclure@linux.ibm.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230510033117.1395895-1-rmclure@linux.ibm.com>
-References: <20230510033117.1395895-1-rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGMkZ1fKjz3brd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 14:39:32 +1000 (AEST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-55a83e80262so100332607b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 21:39:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683693566; x=1686285566;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pNtnMqwecxgAyJiNrU/av2u9SKsTTnkqGeLPsFfUGRY=;
+        b=cNF0lopRgs5z+paNDd47dgtG8TBjwZyJSBqFjK6ksHmrX2HqmLMYrrKsDdWDE4galp
+         I1RIa58CxJ4eWJPHfaXHtCDPLpNhfN/aCMBSDVyVUdoFoZEKW8H5uRAddSBQuOjqxl6G
+         cijgVp5qOvAn/BuT5Kj3i7X1ZHy6xq4kMM1JJiMLi60Voi2WzpeuiP4d77oQFZQJJTpA
+         DHkrQmjDtXwQxtNqUbLbFtn/koUU8sha9n5T/jPfXiKq7pKvhvnWuqWej7kSJ3OgTY5v
+         znwXH+YUrN8s6GiaQCUoDOK5c9Mq29M3c3H1/3qfehC4bHIrJ+vibMAeHVK8iG01ICVy
+         zeRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683693566; x=1686285566;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pNtnMqwecxgAyJiNrU/av2u9SKsTTnkqGeLPsFfUGRY=;
+        b=KPMxBaYam1dSi3PQvgJNZGEXryjwy03r6TogxVxAmn6mWfgXkPp9iQf6KJfrqkH9M0
+         awG+5OQ38km7FHbIIR0N5DR3gxLPes+W35yUmQpE4hsZKPwqs4FkKdhUYEI6ejWdYDOb
+         kdGqdPGJ7UnMrqt2t6zjsItD1QC+Q31rIJPlnrzGm1rwYi012bbd9N8v/37oA/4lnHsi
+         Pr3FLWWf/oeTouw2bWjNilA1UtOa2nwmMhnTPGJ7HQ3YIrsylcLGvSa5P2HiyWaHH3jW
+         DtM3e9O6tehF1MttJnJqcSz6t6JCgXnE0c6PLh6P+TzxaweERRsaO54P4bHCeK+d5Som
+         zL4g==
+X-Gm-Message-State: AC+VfDwcOxC7wMuD38gh9qeNVQyvuGJX7+JDIzcS8ZE4/jjE0K1zKhwg
+	rQJsZFvaqNb4i+E/bMb0KkLWqA==
+X-Google-Smtp-Source: ACHHUZ4tMEgG7AqlQIxMPNzAEIonGfK8+PPQUmJOyuPgdF6IMlPRJRM0QpGl7CYyO+0nNXPmO2L3jg==
+X-Received: by 2002:a0d:cc0b:0:b0:55a:9b56:acee with SMTP id o11-20020a0dcc0b000000b0055a9b56aceemr18605566ywd.38.1683693565918;
+        Tue, 09 May 2023 21:39:25 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id i185-20020a816dc2000000b0055d5c626be5sm3775822ywc.26.2023.05.09.21.39.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 21:39:25 -0700 (PDT)
+Date: Tue, 9 May 2023 21:39:13 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 00/23] arch: allow pte_offset_map[_lock]() to fail
+Message-ID: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: f6O1dQTRu5ZrJpjBWBcuaHbtqBrfJPFv
-X-Proofpoint-GUID: Un7r928Lh3L8uKuePAj1y770H9_gzRgF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-09_16,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 adultscore=0
- mlxlogscore=999 spamscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305100026
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,120 +74,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, gautam@linux.ibm.com, npiggin@gmail.com, Rohan McLure <rmclure@linux.ibm.com>
+Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <mons
+ tr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KCSAN revealed that while irq_data entries are written to either from
-behind a mutex, or otherwise atomically, accesses to irq_data->hwirq can
-occur asynchronously, without volatile annotation. Mark these accesses
-with READ_ONCE to avoid unfortunate compiler reorderings and remove
-KCSAN warnings.
+Here is a series of patches to various architectures, based on v6.4-rc1:
+preparing for changes expected to follow in mm, affecting pte_offset_map()
+and pte_offset_map_lock().
 
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
----
- arch/powerpc/kernel/irq.c                 |  2 +-
- arch/powerpc/platforms/powernv/pci-ioda.c | 12 ++++++------
- include/linux/irq.h                       |  2 +-
- kernel/irq/irqdomain.c                    |  4 ++--
- 4 files changed, 10 insertions(+), 10 deletions(-)
+In a week or two, I intend to post a separate series, of equivalent
+preparations in mm.  These two series are "independent": neither depends
+for build or correctness on the other, and the arch patches can be merged
+separately via arch trees (stragglers picked up by akpm?); but both series
+have to be in before a third series is added to make the effective changes
+(and that will add a just a little more in powerpc, s390 and sparc).
 
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 6f7d4edaa0bc..4ac192755510 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -353,7 +353,7 @@ void do_softirq_own_stack(void)
- irq_hw_number_t virq_to_hw(unsigned int virq)
- {
- 	struct irq_data *irq_data = irq_get_irq_data(virq);
--	return WARN_ON(!irq_data) ? 0 : irq_data->hwirq;
-+	return WARN_ON(!irq_data) ? 0 : READ_ONCE(irq_data->hwirq);
- }
- EXPORT_SYMBOL_GPL(virq_to_hw);
- 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index f851f4983423..141491e86bba 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1986,7 +1986,7 @@ int64_t pnv_opal_pci_msi_eoi(struct irq_data *d)
- 	struct pci_controller *hose = irq_data_get_irq_chip_data(d->parent_data);
- 	struct pnv_phb *phb = hose->private_data;
- 
--	return opal_pci_msi_eoi(phb->opal_id, d->parent_data->hwirq);
-+	return opal_pci_msi_eoi(phb->opal_id, READ_ONCE(d->parent_data->hwirq));
- }
- 
- /*
-@@ -2162,11 +2162,11 @@ static void pnv_msi_compose_msg(struct irq_data *d, struct msi_msg *msg)
- 	struct pnv_phb *phb = hose->private_data;
- 	int rc;
- 
--	rc = __pnv_pci_ioda_msi_setup(phb, pdev, d->hwirq,
-+	rc = __pnv_pci_ioda_msi_setup(phb, pdev, READ_ONCE(d->hwirq),
- 				      entry->pci.msi_attrib.is_64, msg);
- 	if (rc)
- 		dev_err(&pdev->dev, "Failed to setup %s-bit MSI #%ld : %d\n",
--			entry->pci.msi_attrib.is_64 ? "64" : "32", d->hwirq, rc);
-+			entry->pci.msi_attrib.is_64 ? "64" : "32", data_race(d->hwirq), rc);
- }
- 
- /*
-@@ -2184,7 +2184,7 @@ static void pnv_msi_eoi(struct irq_data *d)
- 		 * since it is translated into a vector number in
- 		 * OPAL, use that directly.
- 		 */
--		WARN_ON_ONCE(opal_pci_msi_eoi(phb->opal_id, d->hwirq));
-+		WARN_ON_ONCE(opal_pci_msi_eoi(phb->opal_id, READ_ONCE(d->hwirq)));
- 	}
- 
- 	irq_chip_eoi_parent(d);
-@@ -2263,9 +2263,9 @@ static void pnv_irq_domain_free(struct irq_domain *domain, unsigned int virq,
- 	struct pnv_phb *phb = hose->private_data;
- 
- 	pr_debug("%s bridge %pOF %d/%lx #%d\n", __func__, hose->dn,
--		 virq, d->hwirq, nr_irqs);
-+		 virq, data_race(d->hwirq), nr_irqs);
- 
--	msi_bitmap_free_hwirqs(&phb->msi_bmp, d->hwirq, nr_irqs);
-+	msi_bitmap_free_hwirqs(&phb->msi_bmp, READ_ONCE(d->hwirq), nr_irqs);
- 	/* XIVE domain is cleared through ->msi_free() */
- }
- 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index b1b28affb32a..a6888bcb3c5b 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -452,7 +452,7 @@ static inline bool irqd_affinity_on_activate(struct irq_data *d)
- 
- static inline irq_hw_number_t irqd_to_hwirq(struct irq_data *d)
- {
--	return d->hwirq;
-+	return READ_ONCE(d->hwirq);
- }
- 
- /**
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index f34760a1e222..dd9054494f84 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -549,7 +549,7 @@ static void irq_domain_disassociate(struct irq_domain *domain, unsigned int irq)
- 		 "virq%i doesn't exist; cannot disassociate\n", irq))
- 		return;
- 
--	hwirq = irq_data->hwirq;
-+	hwirq = READ_ONCE(irq_data->hwirq);
- 
- 	mutex_lock(&domain->root->mutex);
- 
-@@ -948,7 +948,7 @@ struct irq_desc *__irq_resolve_mapping(struct irq_domain *domain,
- 	if (irq_domain_is_nomap(domain)) {
- 		if (hwirq < domain->hwirq_max) {
- 			data = irq_domain_get_irq_data(domain, hwirq);
--			if (data && data->hwirq == hwirq)
-+			if (data && READ_ONCE(data->hwirq) == hwirq)
- 				desc = irq_data_to_desc(data);
- 			if (irq && desc)
- 				*irq = hwirq;
--- 
-2.37.2
+What is it all about?  Some mmap_lock avoidance i.e. latency reduction.
+Initially just for the case of collapsing shmem or file pages to THPs;
+but likely to be relied upon later in other contexts e.g. freeing of
+empty page tables (but that's not work I'm doing).  mmap_write_lock
+avoidance when collapsing to anon THPs?  Perhaps, but again that's not
+work I've done: a quick and easy attempt looked like it was going to
+shift the load from mmap rwsem to pmd spinlock - not an improvement.
 
+I would much prefer not to have to make these small but wide-ranging
+changes for such a niche case; but failed to find another way, and
+have heard that shmem MADV_COLLAPSE's usefulness is being limited by
+that mmap_write_lock it currently requires.
+
+These changes (though of course not these exact patches, and not all
+of these architectures!) have been in Google's data centre kernel for
+three years now: we do rely upon them.
+
+What are the per-arch changes about?  Generally, two things.
+
+One: the current mmap locking may not be enough to guard against that
+tricky transition between pmd entry pointing to page table, and empty
+pmd entry, and pmd entry pointing to huge page: pte_offset_map() will
+have to validate the pmd entry for itself, returning NULL if no page
+table is there.  What to do about that varies: often the nearby error
+handling indicates just to skip it; but in some cases a "goto again"
+looks appropriate (and if that risks an infinite loop, then there
+must have been an oops, or pfn 0 mistaken for page table, before).
+
+Deeper study of each site might show that 90% of them here in arch
+code could only fail if there's corruption e.g. a transition to THP
+would be surprising on an arch without HAVE_ARCH_TRANSPARENT_HUGEPAGE.
+But given the likely extension to freeing empty page tables, I have
+not limited this set of changes to THP; and it has been easier, and
+sets a better example, if each site is given appropriate handling.
+
+Two: pte_offset_map() will need to do an rcu_read_lock(), with the
+corresponding rcu_read_unlock() in pte_unmap().  But most architectures
+never supported CONFIG_HIGHPTE, so some don't always call pte_unmap()
+after pte_offset_map(), or have used userspace pte_offset_map() where
+pte_offset_kernel() is more correct.  No problem in the current tree,
+but a problem once an rcu_read_unlock() will be needed to keep balance.
+
+A common special case of that comes in arch/*/mm/hugetlbpage.c, if
+the architecture supports hugetlb pages down at the lowest PTE level.
+huge_pte_alloc() uses pte_alloc_map(), but generic hugetlb code does
+no corresponding pte_unmap(); similarly for huge_pte_offset().
+Thanks to Mike Kravetz and Andrew Morton, v6.4-rc1 already provides
+pte_alloc_huge() and pte_offset_huge() to help fix up those cases.
+
+01/23 arm: allow pte_offset_map[_lock]() to fail
+02/23 arm64: allow pte_offset_map() to fail
+03/23 arm64/hugetlb: pte_alloc_huge() pte_offset_huge()
+04/23 ia64/hugetlb: pte_alloc_huge() pte_offset_huge()
+05/23 m68k: allow pte_offset_map[_lock]() to fail
+06/23 microblaze: allow pte_offset_map() to fail
+07/23 mips: update_mmu_cache() can replace __update_tlb()
+08/23 parisc: add pte_unmap() to balance get_ptep()
+09/23 parisc: unmap_uncached_pte() use pte_offset_kernel()
+10/23 parisc/hugetlb: pte_alloc_huge() pte_offset_huge()
+11/23 powerpc: kvmppc_unmap_free_pmd() pte_offset_kernel()
+12/23 powerpc: allow pte_offset_map[_lock]() to fail
+13/23 powerpc/hugetlb: pte_alloc_huge()
+14/23 riscv/hugetlb: pte_alloc_huge() pte_offset_huge()
+15/23 s390: allow pte_offset_map_lock() to fail
+16/23 s390: gmap use pte_unmap_unlock() not spin_unlock()
+17/23 sh/hugetlb: pte_alloc_huge() pte_offset_huge()
+18/23 sparc/hugetlb: pte_alloc_huge() pte_offset_huge()
+19/23 sparc: allow pte_offset_map() to fail
+20/23 sparc: iounit and iommu use pte_offset_kernel()
+21/23 x86: Allow get_locked_pte() to fail
+22/23 x86: sme_populate_pgd() use pte_offset_kernel()
+23/23 xtensa: add pte_unmap() to balance pte_offset_map()
+
+ arch/arm/lib/uaccess_with_memcpy.c      |  3 ++
+ arch/arm/mm/fault-armv.c                |  5 ++-
+ arch/arm/mm/fault.c                     |  3 ++
+ arch/arm64/mm/fault.c                   |  3 ++
+ arch/arm64/mm/hugetlbpage.c             | 11 ++----
+ arch/ia64/mm/hugetlbpage.c              |  4 +--
+ arch/m68k/include/asm/mmu_context.h     |  6 ++--
+ arch/m68k/kernel/sys_m68k.c             |  2 ++
+ arch/m68k/mm/mcfmmu.c                   | 52 +++++++++++----------------
+ arch/microblaze/kernel/signal.c         |  5 +--
+ arch/mips/include/asm/pgtable.h         | 15 ++------
+ arch/mips/mm/tlb-r3k.c                  |  5 +--
+ arch/mips/mm/tlb-r4k.c                  |  9 ++---
+ arch/parisc/kernel/cache.c              | 26 +++++++++++---
+ arch/parisc/kernel/pci-dma.c            |  2 +-
+ arch/parisc/mm/hugetlbpage.c            |  4 +--
+ arch/powerpc/kvm/book3s_64_mmu_radix.c  |  2 +-
+ arch/powerpc/mm/book3s64/hash_tlb.c     |  4 +++
+ arch/powerpc/mm/book3s64/subpage_prot.c |  2 ++
+ arch/powerpc/mm/hugetlbpage.c           |  2 +-
+ arch/powerpc/xmon/xmon.c                |  5 ++-
+ arch/riscv/mm/hugetlbpage.c             |  4 +--
+ arch/s390/kernel/uv.c                   |  2 ++
+ arch/s390/mm/gmap.c                     | 24 +++++++------
+ arch/s390/mm/pgtable.c                  | 12 +++++--
+ arch/sh/mm/hugetlbpage.c                |  4 +--
+ arch/sparc/kernel/signal32.c            |  2 ++
+ arch/sparc/mm/fault_64.c                |  3 ++
+ arch/sparc/mm/hugetlbpage.c             |  4 +--
+ arch/sparc/mm/io-unit.c                 |  2 +-
+ arch/sparc/mm/iommu.c                   |  2 +-
+ arch/sparc/mm/tlb.c                     |  2 ++
+ arch/x86/kernel/ldt.c                   |  6 ++--
+ arch/x86/mm/mem_encrypt_identity.c      |  2 +-
+ arch/xtensa/mm/tlb.c                    |  5 ++-
+ 35 files changed, 140 insertions(+), 104 deletions(-)
+
+Hugh
