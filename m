@@ -2,59 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4716FD91D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 10:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0EE6FDEB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 15:37:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QGShF0Dywz3fKJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 18:22:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGbgB3MdYz3fY9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 23:37:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=CzmDvf3r;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U+M1RC0G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=CzmDvf3r;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U+M1RC0G;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGSgK6Xwsz3cLr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 18:22:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1WZCLagr9yk4Cbp+6qSxxsSMmqvOctxqT3bVkNGFhnY=; b=CzmDvf3rqlZoWLTgd3FVOKNA13
-	am3KRsvw5dx0zZtORpSkeQixmHm2I0T/j68VXo57hz3B2sKfsZlkzT6mcIfsGM8QExy3tEBmFQg15
-	5knvERiYGPZKMBkmsOAK/iQ/5rtOFvAqMTYH7nFMXqdqWWfvmHjqNDYraw79BjtqAXxEKvC5IXPLi
-	v4WkUXSf6SdYO2DxNqGoNj/9jzwXI/RVqLwvIK8H89K9xhFYfEkKkPofOod7rLsPcDYQd4FB4I+bb
-	ncPfZdYjPCu8FZ1ut2ZqCkZjLMrUhqEHRkvEROX3xUgFItRMwb3mnY6amim7reKFoxZZ2cjlGh5hD
-	cm+pskqQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pwf2E-007PM8-2r;
-	Wed, 10 May 2023 08:20:55 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4DA20300338;
-	Wed, 10 May 2023 10:18:48 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2369E20B04BA2; Wed, 10 May 2023 10:18:48 +0200 (CEST)
-Date: Wed, 10 May 2023 10:18:48 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH 21/23] x86: Allow get_locked_pte() to fail
-Message-ID: <20230510081848.GD83892@hirez.programming.kicks-ass.net>
-References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
- <eba2b72f-2180-498b-c8bd-ce8f717fc78a@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGbfK48Kfz3cj8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 23:36:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D36996130A
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 13:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47A77C4339B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 13:36:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683725798;
+	bh=H5c9lSFYvTWxvEoRrB3thxE/C6SUNADpr/c3mKfneW8=;
+	h=From:To:Subject:Date:From;
+	b=U+M1RC0Gr5Rz28xrmmmA9PyEHCdy0e/N1sidBiTiRSfTRFnbhjNqyqIqpjpaRIn6+
+	 7ApkOLN21zT/kCHAWEMgvvgd4HWs3FjU+rk8QZblz21ZWh+4JPIk60dlXyI4u25VOv
+	 5FAP4GjB+sK3+UjDwsE16QkpyLxyY4RN6tyL070B/VOw829gmKBZslfsHggEQbcTB6
+	 X3isZ/cvyHQKF3HawnVeAAd5sN0GFIGdOeQIipp3h4ESyMrSvtBYn39q0gPl//qemc
+	 aCSztAdNtMf13OxyP9MjS2cGndSBb5tEbIZdeYgXyfFXOlmcoYTgaxcOFxb3K2I/W7
+	 u+ah2O4hq2Jfg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 2CFF1C43142; Wed, 10 May 2023 13:36:38 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 217427] New: Linux 6.3.1 + AMD RX 570 on ppc64le 4K: Kernel
+ attempted to read user page (1128) - exploit attempt? (uid: 0)
+Date: Wed, 10 May 2023 13:36:37 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: darkbasic@linuxsystems.it
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
+ op_sys bug_status bug_severity priority component assigned_to reporter
+ cf_regression
+Message-ID: <bug-217427-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eba2b72f-2180-498b-c8bd-ce8f717fc78a@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,52 +79,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <mons
- tr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 09, 2023 at 10:08:37PM -0700, Hugh Dickins wrote:
-> In rare transient cases, not yet made possible, pte_offset_map() and
-> pte_offset_map_lock() may not find a page table: handle appropriately.
-> 
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->  arch/x86/kernel/ldt.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
-> index 525876e7b9f4..eb844549cd83 100644
-> --- a/arch/x86/kernel/ldt.c
-> +++ b/arch/x86/kernel/ldt.c
-> @@ -367,8 +367,10 @@ static void unmap_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt)
->  
->  		va = (unsigned long)ldt_slot_va(ldt->slot) + offset;
->  		ptep = get_locked_pte(mm, va, &ptl);
-> -		pte_clear(mm, va, ptep);
-> -		pte_unmap_unlock(ptep, ptl);
-> +		if (ptep) {
-> +			pte_clear(mm, va, ptep);
-> +			pte_unmap_unlock(ptep, ptl);
-> +		}
->  	}
+https://bugzilla.kernel.org/show_bug.cgi?id=3D217427
 
-Ow geez, now I have to go remember how the whole PTI/LDT crud worked :/
+            Bug ID: 217427
+           Summary: Linux 6.3.1 + AMD RX 570 on ppc64le 4K: Kernel
+                    attempted to read user page (1128) - exploit attempt?
+                    (uid: 0)
+           Product: Platform Specific/Hardware
+           Version: 2.5
+          Hardware: All
+                OS: Linux
+            Status: NEW
+          Severity: normal
+          Priority: P3
+         Component: PPC-64
+          Assignee: platform_ppc-64@kernel-bugs.osdl.org
+          Reporter: darkbasic@linuxsystems.it
+        Regression: No
 
-At first glance this seems wrong; we can't just not unmap the LDT if we
-can't find it in a hurry. Also, IIRC this isn't in fact a regular user
-mapping, so it should not be subject to THP induced seizures.
+I'm using Gentoo Linux on a Raptor CS Talos 2 ppc64le, GPU is an AMD RX 570=
+. So
+far the past dozen of kernels (up to 6.2.14) worked flawlessly, but with 6.=
+3.1
+I don't get any video output and I get the following in journalctl:
 
-... memory bubbles back ... for PTI kernels we need to map this in the
-user and kernel page-tables because obviously userspace needs to be able
-to have access to the LDT. But it is not directly acessible by
-userspace. It lives in the cpu_entry_area as a virtual map of the real
-kernel allocation, and this virtual address is used for LLDT.
-Modification is done through sys_modify_ldt().
+May 10 15:09:01 talos2 kernel: Kernel attempted to read user page (1128) -
+exploit attempt? (uid: 0)
+May 10 15:09:01 talos2 kernel: BUG: Unable to handle kernel data access on =
+read
+at 0x00001128
+May 10 15:09:01 talos2 kernel: Faulting instruction address: 0xc00800000d1a=
+805c
+May 10 15:09:01 talos2 kernel: Oops: Kernel access of bad area, sig: 11 [#1]
+May 10 15:09:01 talos2 kernel: LE PAGE_SIZE=3D4K MMU=3DRadix SMP NR_CPUS=3D=
+512 NUMA
+PowerNV
+May 10 15:09:01 talos2 kernel: Modules linked in: rfkill(+) 8021q garp mrp =
+stp
+llc binfmt_misc amdgpu uvcvideo uvc videobuf2_vmalloc videobuf2_memops
+gpu_sched snd_hda_codec_hdmi i2c_algo_bit at24(+) videobuf2_v4l2 drm_ttm_he=
+lper
+regmap_i2c videobuf2_common ttm snd_usb_audio drm_di>
+May 10 15:09:01 talos2 kernel: CPU: 0 PID: 188 Comm: kworker/0:3 Not tainted
+6.3.1-gentoo-dist #1
+May 10 15:09:01 talos2 kernel: Hardware name: T2P9S01 REV 1.01 POWER9 0x4e1=
+202
+opal:skiboot-9858186 PowerNV
+May 10 15:09:01 talos2 kernel: Workqueue: events_long
+drm_dp_check_and_send_link_address [drm_display_helper]
+May 10 15:09:01 talos2 kernel: NIP:  c00800000d1a805c LR: c00800000d1a8018 =
+CTR:
+c000000000c87900
+May 10 15:09:01 talos2 kernel: REGS: c00000000beb3370 TRAP: 0300   Not tain=
+ted=20
+(6.3.1-gentoo-dist)
+May 10 15:09:01 talos2 kernel: MSR:  900000000280b033
+<SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 88048223  XER: 0000005a
+May 10 15:09:01 talos2 kernel: CFAR: c000000000c87980 DAR: 0000000000001128
+DSISR: 40000000 IRQMASK: 0=20
+                               GPR00: c00800000d1a8018 c00000000beb3610
+c00800000d690f00 0000000000000000=20
+                               GPR04: 0000000000000002 c00800000d6297c0
+0000000000000000 c00000002a00b740=20
+                               GPR08: 0000000000000000 0000000000001124
+0000000000000000 c00800000d431560=20
+                               GPR12: c000000000c87900 c000000002a6b000
+c000000000170ad8 c00000001a460310=20
+                               GPR16: 0000000000000045 c000000022858388
+c000000026000340 0000000000000001=20
+                               GPR20: 0000000000000000 0000000000000001
+c0000000260001a0 0000000000004000=20
+                               GPR24: 0000000000004000 c000000026000010
+c0000000228580b8 fffffffffffffffd=20
+                               GPR28: 0000000000000000 c0000000228580a0
+c000000022856000 c000000022858000=20
+May 10 15:09:01 talos2 kernel: NIP [c00800000d1a805c]
+is_synaptics_cascaded_panamera+0x244/0x600 [amdgpu]
+May 10 15:09:01 talos2 kernel: LR [c00800000d1a8018]
+is_synaptics_cascaded_panamera+0x200/0x600 [amdgpu]
+May 10 15:09:01 talos2 kernel: Call Trace:
+May 10 15:09:01 talos2 kernel: [c00000000beb3610] [c00800000d1a8018]
+is_synaptics_cascaded_panamera+0x200/0x600 [amdgpu] (unreliable)
+May 10 15:09:01 talos2 kernel: [c00000000beb36d0] [c00800000b7c2b18]
+drm_helper_probe_single_connector_modes+0x230/0x698 [drm_kms_helper]
+May 10 15:09:01 talos2 kernel: [c00000000beb3810] [c000000000c57174]
+drm_client_modeset_probe+0x2b4/0x16c0
+May 10 15:09:01 talos2 kernel: [c00000000beb3a10] [c00800000b7c7a30]
+__drm_fb_helper_initial_config_and_unlock+0x68/0x640 [drm_kms_helper]
+May 10 15:09:01 talos2 kernel: [c00000000beb3af0] [c00800000b7c5b08]
+drm_fbdev_client_hotplug+0x40/0x1d0 [drm_kms_helper]
+May 10 15:09:01 talos2 kernel: [c00000000beb3b70] [c000000000c55480]
+drm_client_dev_hotplug+0x120/0x1b0
+May 10 15:09:01 talos2 kernel: [c00000000beb3c00] [c00800000b7c1130]
+drm_kms_helper_hotplug_event+0x58/0x80 [drm_kms_helper]
+May 10 15:09:01 talos2 kernel: [c00000000beb3c30] [c00800000b80b298]
+drm_dp_check_and_send_link_address+0x330/0x3a0 [drm_display_helper]
+May 10 15:09:01 talos2 kernel: [c00000000beb3cd0] [c000000000162d84]
+process_one_work+0x2f4/0x580
+May 10 15:09:01 talos2 kernel: [c00000000beb3d70] [c0000000001630b8]
+worker_thread+0xa8/0x600
+May 10 15:09:01 talos2 kernel: [c00000000beb3e00] [c000000000170bf4]
+kthread+0x124/0x130
+May 10 15:09:01 talos2 kernel: [c00000000beb3e50] [c00000000000dd14]
+ret_from_kernel_thread+0x5c/0x64
+May 10 15:09:01 talos2 kernel: --- interrupt: 0 at 0x0
+May 10 15:09:01 talos2 kernel: NIP:  0000000000000000 LR: 0000000000000000 =
+CTR:
+0000000000000000
+May 10 15:09:01 talos2 kernel: REGS: c00000000beb3e80 TRAP: 0000   Not tain=
+ted=20
+(6.3.1-gentoo-dist)
+May 10 15:09:01 talos2 kernel: MSR:  0000000000000000 <>  CR: 00000000  XER:
+00000000
+May 10 15:09:01 talos2 kernel: CFAR: 0000000000000000 IRQMASK: 0=20
+                               GPR00: 0000000000000000 c00000000beb4000
+0000000000000000 0000000000000000=20
+                               GPR04: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+                               GPR08: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+                               GPR12: 0000000000000000 0000000000000000
+c000000000170ad8 c00000000a8fb240=20
+                               GPR16: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+                               GPR20: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+                               GPR24: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+                               GPR28: 0000000000000000 0000000000000000
+0000000000000000 0000000000000000=20
+May 10 15:09:01 talos2 kernel: NIP [0000000000000000] 0x0
+May 10 15:09:01 talos2 kernel: LR [0000000000000000] 0x0
+May 10 15:09:01 talos2 kernel: --- interrupt: 0
+May 10 15:09:01 talos2 kernel: Code: 41820094 e91f0568 e95f0000 813f0088
+81080030 3d4a0001 39290444 e94a7ca0 79291764 1d0811f0 7d4a4214 7d2a4a14
+<81290004> 91270074 813f0088 39290424=20
+May 10 15:09:01 talos2 kernel: ---[ end trace 0000000000000000 ]---
+May 10 15:09:01 talos2 kernel: at24 4-0054: supply vcc not found, using dum=
+my
+regulator
 
-I think I would feel much better if this were something like:
+--=20
+You may reply to this email to add a comment.
 
-	if (!WARN_ON_ONCE(!ptep))
-
-This really shouldn't fail and if it does, simply skipping it isn't the
-right thing either.
+You are receiving this mail because:
+You are watching the assignee of the bug.=
