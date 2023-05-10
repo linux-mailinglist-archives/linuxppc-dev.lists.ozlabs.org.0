@@ -1,72 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9AF6FDF77
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 16:02:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08906FE03F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 16:30:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QGcDR0Y08z3fWn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 00:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGcqq5HRnz3fN2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 00:29:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=xm7Lt7K+;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=J+4jUhNT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=xm7Lt7K+;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=J+4jUhNT;
 	dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGcCX3P9cz3cj8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 00:01:58 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-64115eef620so50339840b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 07:01:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1683727315; x=1686319315;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8O+Xva6SSKUOzu8cD6VykU+fN8y+E0NtB9pirvzzQ9U=;
-        b=xm7Lt7K+fM4a6fbPP7MIva3KYIsdEH2pn6NhTnqMZWDxfwMmfjfuC2iA7TIUgSp9X7
-         iapnslzabTi/3hpYysj/Y+Qpo/U+trS4YUbBrAymZCbRPQc2GdzYMvfSXRt75xnkQ7HH
-         9YmGcBzN1XGEnBnDnk4hqc6szvJ0vnbRYHR7DYbbDIfxitLJRxJHVDjlkZx/sb2Dalmd
-         NMN9fv1UEU3MEvWMv2OyK363gty+uPi7R5tqnoKyXja1AZDDzs7OuMx+xXPfQOPl3EBu
-         5ahAyXiN9ZWDD9X3LQrrN5sPj7Sd7WcMwJ/uvJSD2iG4PimTEA2R4mrq6SpEbr7//1lB
-         gm+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683727315; x=1686319315;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8O+Xva6SSKUOzu8cD6VykU+fN8y+E0NtB9pirvzzQ9U=;
-        b=OyGT47y9CHAtX0a2bC1VkDP3at9AFLQNl9pPvTb+Vo8qSARjHOlOTksLcxIu2uFMDk
-         tECw3M0omuCBXNeGtO7Oy2DuQhUB7qRNlDQTOU+Wyl1jng+seEKNybZJTrAz8U2ut0oY
-         O/ifrIIJtJWXQLfC2aaZLk9EtvpurNi95ZDF8Izm/MLTeBIvr6ZQ1GmWsZhQLwHG4nUS
-         3iMWL25QS0pv0xl/x+2fnQOXi7EsbDy7j/+FRn/5gbLj/ERJPTgCWbAZc8F0ER4Q6Cx5
-         sTwwUBh6Eiu3CnR91pstUY+lmcaE53bd4ul/mFqPu4WNr5dCaz2Kii+fJ8nvjewOHu0x
-         5h2w==
-X-Gm-Message-State: AC+VfDySOfM1O3jaZF6jefjekafgiLG4xkLimELrvpyv4GNRPoqn3yHl
-	c2ReqVm84rKv/DV2I/vMoKuL3g==
-X-Google-Smtp-Source: ACHHUZ5DO6A5G9Iwzn4Bquam+4PsWMq7WswXOCHPFyT+gtbX2VPfleyC7b8WGb0kQumaiIfRAr9lsw==
-X-Received: by 2002:a17:902:9a03:b0:1ad:1be7:2a76 with SMTP id v3-20020a1709029a0300b001ad1be72a76mr1572089plp.10.1683727315241;
-        Wed, 10 May 2023 07:01:55 -0700 (PDT)
-Received: from localhost ([135.180.227.0])
-        by smtp.gmail.com with ESMTPSA id q6-20020a170902dac600b001ac55a5e5eesm3819212plx.121.2023.05.10.07.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 07:01:54 -0700 (PDT)
-Date: Wed, 10 May 2023 07:01:54 -0700 (PDT)
-X-Google-Original-Date: Wed, 10 May 2023 07:01:48 PDT (-0700)
-Subject: Re: [PATCH 14/23] riscv/hugetlb: pte_alloc_huge() pte_offset_huge()
-In-Reply-To: <d1e54510-9ea2-edf-3851-fa7635ce1e5e@google.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: hughd@google.com
-Message-ID: <mhng-fa58638c-1b42-4264-8bf1-55d4bc42a5e2@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGcpv5Js2z3ccg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 00:29:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0EAFzv3D+ig/t/nW/DBfVu2XVoT+oGbKuJj55OeG29M=; b=J+4jUhNTtkgBR910a6YalNIyQ+
+	tt7U4hJdy6/bMnMRbFwUw4R4BOb9+0Ff7LBDou+Og9xKtj0LUO5AFBoRSCgVZj6V+4qtI9NyO+aLD
+	J+qjeNazYGOp2poJgBAbE4T+zzFcK94zyBMyR8CEKCOWF6cZAD/ckf9pamcyX2TCx2Ds1nYIcgMv4
+	YwsUAYvAhR/VyVizekBBVt5RjwAmWL6n6bn9uhJBLmsIUjhW9TzXC+zhdjEhoglla7XqgWkvmQMCI
+	U8Nml81DpOIGaOe2vCw/lngSxUt99AwWBsoMpyB54WFVQZj7RLyKtPpikab//45hM66bSiwHTonbF
+	W1J90mZw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pwknd-00GM7E-9H; Wed, 10 May 2023 14:28:13 +0000
+Date: Wed, 10 May 2023 15:28:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH 01/23] arm: allow pte_offset_map[_lock]() to fail
+Message-ID: <ZFup/fG50MPFF979@casper.infradead.org>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
+ <5011977-d876-6a24-a3fc-c7e6a02877b8@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5011977-d876-6a24-a3fc-c7e6a02877b8@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,41 +56,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, david@redhat.com, Catalin Marinas <catalin.marinas@arm.com>, zhengqi.arch@bytedance.com, linux-kernel@vger.kernel.org, jcmvbkbc@gmail.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, imbrenda@linux.ibm.com, Will Deacon <will@kernel.org>, gerg@linux-m68k.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, willy@infradead.org, geert@linux-m68k.org, borntraeger@linux.ibm.com, alexghiti@rivosinc.com, hca@linux.ibm.com, linux-m68k@lists.linux-m68k.org, glaubitz@physik.fu-berlin.de, dave.anglin@bell.net, surenb@google.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, kirill.shutemov@linux.intel.com, aneesh.kumar@linux.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, rppt@kernel.org, mike.kravetz@oracle.com
+Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <ts
+ bogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 09 May 2023 21:59:57 PDT (-0700), hughd@google.com wrote:
-> pte_alloc_map() expects to be followed by pte_unmap(), but hugetlb omits
-> that: to keep balance in future, use the recently added pte_alloc_huge()
-> instead; with pte_offset_huge() a better name for pte_offset_kernel().
->
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->  arch/riscv/mm/hugetlbpage.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-> index a163a3e0f0d4..80926946759f 100644
-> --- a/arch/riscv/mm/hugetlbpage.c
-> +++ b/arch/riscv/mm/hugetlbpage.c
-> @@ -43,7 +43,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
->
->  	for_each_napot_order(order) {
->  		if (napot_cont_size(order) == sz) {
-> -			pte = pte_alloc_map(mm, pmd, addr & napot_cont_mask(order));
-> +			pte = pte_alloc_huge(mm, pmd, addr & napot_cont_mask(order));
->  			break;
->  		}
->  	}
-> @@ -90,7 +90,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
->
->  	for_each_napot_order(order) {
->  		if (napot_cont_size(order) == sz) {
-> -			pte = pte_offset_kernel(pmd, addr & napot_cont_mask(order));
-> +			pte = pte_offset_huge(pmd, addr & napot_cont_mask(order));
->  			break;
->  		}
->  	}
+On Tue, May 09, 2023 at 09:42:44PM -0700, Hugh Dickins wrote:
+> diff --git a/arch/arm/lib/uaccess_with_memcpy.c b/arch/arm/lib/uaccess_with_memcpy.c
+> index e4c2677cc1e9..2f6163f05e93 100644
+> --- a/arch/arm/lib/uaccess_with_memcpy.c
+> +++ b/arch/arm/lib/uaccess_with_memcpy.c
+> @@ -74,6 +74,9 @@ pin_page_for_write(const void __user *_addr, pte_t **ptep, spinlock_t **ptlp)
+>  		return 0;
+>  
+>  	pte = pte_offset_map_lock(current->mm, pmd, addr, &ptl);
+> +	if (unlikely(!pte))
+> +		return 0;
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Failing seems like the wrong thig to do if we transitioned from a PTE
+to PMD here?  Looks to me like we should goto a new label right after
+the 'pmd = pmd_offset(pud, addr);', no?
+
