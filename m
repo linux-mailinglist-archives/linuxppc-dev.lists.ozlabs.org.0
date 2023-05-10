@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145896FD59C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 06:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CD76FD5A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 06:59:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QGN8S6FG3z3fNw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 14:58:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGN9l2c9Xz3fLL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 May 2023 14:59:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=i6tseWUg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=P9kK3Ha7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=i6tseWUg;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=P9kK3Ha7;
 	dkim-atps=neutral
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGN7f75Rlz30hh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 14:57:50 +1000 (AEST)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-b9246a5f3feso10163592276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 21:57:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGN8w0WWjz30hh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 May 2023 14:58:55 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-b983027d0faso8696089276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 May 2023 21:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683694668; x=1686286668;
+        d=google.com; s=20221208; t=1683694732; x=1686286732;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SgMoVTm6P3R+1xCqI0Wv3sobczW81YJURPfTY0JVMk=;
-        b=i6tseWUgvEolfXZtL5Oh35hld4r7UV7sxfAxp1Wi6J/AehneZgxtbpNMAbNVTBMmUI
-         qj7UvqeEgFSQZ2qZW0AaYuuFH6wgQTMaPrP4VLoxCobR28SZjACKnu9c6qIW0PnqI4Hr
-         Cld1tJ0wYqRvaAQ5bpmGPde8cyPQwKjxVNuL2CFu9bbXCawQw2nI4D6D+XCv12mgx2PV
-         ij2tQ1g5xq9+W7BXEvJIwPrFkB6RWDWF/jzluSASWAsWg+TJDk0nuDAAmqQM+N4N23X5
-         wmyc1MG831sFfWvE1Fo8gZjKKd7Tp0yVdZJzwu/TKEXh0IxxU0wZHa09QO6ZhQjWluyJ
-         QdrQ==
+        bh=i7vs80eeAHoowuGiB3IXr1R0pQ52ZVhylKFRPge1iSc=;
+        b=P9kK3Ha7kM6a70P/N9uB2lWXrssqQgUHBWNV/ZpJwPmg2mPzx8gUi6+Y5U3HPMDHz9
+         0fAlFOi/bTART9baPPENUGYRX+MazYzuiDcAIMOosxi9lXkJsm3mNsaLjOWtnLwgcry5
+         sP0r/lFyFBNCqz3voFtKwARlNZyj767HfljqLFdQYp3UaORt42cJzHdk0VN4kJ5NQH/7
+         DWlXvI97puE4OaBtmUgMd/qH5Lin+XJ2aRjT13gN8vWtWVfPYNVNo8e918/mLGqALa1y
+         O7U3+kDK92dAzqxBb57AmVgMsRrk/0cmMw+aKo8waotZHzpB3mgtMwAgWyIj42FB5uoU
+         5erQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683694668; x=1686286668;
+        d=1e100.net; s=20221208; t=1683694732; x=1686286732;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SgMoVTm6P3R+1xCqI0Wv3sobczW81YJURPfTY0JVMk=;
-        b=DCnL666eWB6iNOzHcIYjd1xyRnGJb+3Abws6po+BhHxpBKBdF5aifpPxuLucaP3Jw+
-         n6O+AOFEyMy3Yx3O5X+/oyngh7bs7FxlWpMHpI78mOnQlSAwE+KoNTOID+A2TJojMx/M
-         DeoUDnISeHJ9riDjioQKggF+wvHknZRyw1AhUNnThc7OqjXUa/SXao0SP087OelEMW46
-         vUpOAFcGTN7nEiO+8agozr25JmUH4zDI2zHLdyQroetx7tVqkKdkZJc8v+eNKJAtWg5F
-         Y+H6YlZUtmatSoDdWUvjpffJ9vb6+m3UUXyK6bJszUZF1ppSpo1Zhc6hL5oj/nOf6KmO
-         PiRA==
-X-Gm-Message-State: AC+VfDyHhfXdHGYi2OkZZxG3CDCDjcb0XBM1LpRc+8Zjq8fd0gNAbh8c
-	ofj6O6BH7le2TeHL7rJNiulbFg==
-X-Google-Smtp-Source: ACHHUZ65a43Tqu6pm6F2C+WJXeNuyd8nzb4UZ4DSWVXhBJktpHLfzKFfcKlkmv0fFRrnRgtDBOnq8Q==
-X-Received: by 2002:a25:4d87:0:b0:b9d:5691:3ef6 with SMTP id a129-20020a254d87000000b00b9d56913ef6mr14812915ybb.27.1683694668013;
-        Tue, 09 May 2023 21:57:48 -0700 (PDT)
+        bh=i7vs80eeAHoowuGiB3IXr1R0pQ52ZVhylKFRPge1iSc=;
+        b=KK3dUOYRNPzTdy5zFhXDIZZErFXlKq+k9vPt4amFtbIIdxUxJyX8Omxb7VXfQivkNL
+         9vHZjkRquvfc138ot950bprDH+vCbNpChC6D2itiqRtC3+wZpOzpXKe9w5nv7PujqMNY
+         Q9yykJDIWGsC1iTabmqUhyynFZOOab5a1vlnV0Vs4dwLjpsn2H4hwlxtAa4hNnv4aPaL
+         qCAsfSeAxCOEeOtPCmbu7QgBlSglRkQC24C8USsvUoet7aav6fBtFrnBk8CVnNUlEfJN
+         HNl8AZ2E4GyC+TmtfCtZ38KD9hXMd35t6wYktXfouOVMMxAwy968P9mMRqA9PF75kJ0V
+         eewQ==
+X-Gm-Message-State: AC+VfDwv9FCLm5hx5CQoHYu3godJxzgruL2beaBl45bahnPextwoLGpC
+	xELHLYWCnKNkGZASkWZ4xB7EEw==
+X-Google-Smtp-Source: ACHHUZ6HrZAnm+aaG2sOhULY3F7mb+ht2GRzSsBKsJ/KT5tYwkiRpQQy7lJKEHctJdijcfVx9gaq3w==
+X-Received: by 2002:a25:d352:0:b0:ba2:16b6:b11e with SMTP id e79-20020a25d352000000b00ba216b6b11emr16144172ybf.0.1683694732647;
+        Tue, 09 May 2023 21:58:52 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 23-20020a250d17000000b00b9e4a9b91b9sm3508848ybn.30.2023.05.09.21.57.44
+        by smtp.gmail.com with ESMTPSA id h66-20020a252145000000b00b9550fcb12fsm3461906ybh.64.2023.05.09.21.58.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 21:57:47 -0700 (PDT)
-Date: Tue, 9 May 2023 21:57:44 -0700 (PDT)
+        Tue, 09 May 2023 21:58:52 -0700 (PDT)
+Date: Tue, 9 May 2023 21:58:48 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 12/23] powerpc: allow pte_offset_map[_lock]() to fail
+Subject: [PATCH 13/23] powerpc/hugetlb: pte_alloc_huge()
 In-Reply-To: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
-Message-ID: <b384fc5-c2d-2a20-4025-ac748e3fb9@google.com>
+Message-ID: <1a3ee4d4-a829-35d4-d94e-885d5d4d6a8a@google.com>
 References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -81,72 +81,29 @@ Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Ma
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In rare transient cases, not yet made possible, pte_offset_map() and
-pte_offset_map_lock() may not find a page table: handle appropriately.
-Balance successful pte_offset_map() with pte_unmap() where omitted.
+pte_alloc_map() expects to be followed by pte_unmap(), but hugetlb omits
+that: to keep balance in future, use the recently added pte_alloc_huge()
+instead.  huge_pte_offset() is using __find_linux_pte(), which is using
+pte_offset_kernel() - don't rename that to _huge, it's more complicated.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/powerpc/mm/book3s64/hash_tlb.c     | 4 ++++
- arch/powerpc/mm/book3s64/subpage_prot.c | 2 ++
- arch/powerpc/xmon/xmon.c                | 5 ++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/hugetlbpage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_tlb.c b/arch/powerpc/mm/book3s64/hash_tlb.c
-index a64ea0a7ef96..21fcad97ae80 100644
---- a/arch/powerpc/mm/book3s64/hash_tlb.c
-+++ b/arch/powerpc/mm/book3s64/hash_tlb.c
-@@ -239,12 +239,16 @@ void flush_hash_table_pmd_range(struct mm_struct *mm, pmd_t *pmd, unsigned long
- 	local_irq_save(flags);
- 	arch_enter_lazy_mmu_mode();
- 	start_pte = pte_offset_map(pmd, addr);
-+	if (!start_pte)
-+		goto out;
- 	for (pte = start_pte; pte < start_pte + PTRS_PER_PTE; pte++) {
- 		unsigned long pteval = pte_val(*pte);
- 		if (pteval & H_PAGE_HASHPTE)
- 			hpte_need_flush(mm, addr, pte, pteval, 0);
- 		addr += PAGE_SIZE;
- 	}
-+	pte_unmap(start_pte);
-+out:
- 	arch_leave_lazy_mmu_mode();
- 	local_irq_restore(flags);
- }
-diff --git a/arch/powerpc/mm/book3s64/subpage_prot.c b/arch/powerpc/mm/book3s64/subpage_prot.c
-index b75a9fb99599..0dc85556dec5 100644
---- a/arch/powerpc/mm/book3s64/subpage_prot.c
-+++ b/arch/powerpc/mm/book3s64/subpage_prot.c
-@@ -71,6 +71,8 @@ static void hpte_flush_range(struct mm_struct *mm, unsigned long addr,
- 	if (pmd_none(*pmd))
- 		return;
- 	pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
-+	if (!pte)
-+		return;
- 	arch_enter_lazy_mmu_mode();
- 	for (; npages > 0; --npages) {
- 		pte_update(mm, addr, pte, 0, 0, 0);
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 728d3c257e4a..69447bdf0bcf 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -3376,12 +3376,15 @@ static void show_pte(unsigned long addr)
- 	printf("pmdp @ 0x%px = 0x%016lx\n", pmdp, pmd_val(*pmdp));
+diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+index b900933507da..f7c683b672c1 100644
+--- a/arch/powerpc/mm/hugetlbpage.c
++++ b/arch/powerpc/mm/hugetlbpage.c
+@@ -183,7 +183,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		return NULL;
  
- 	ptep = pte_offset_map(pmdp, addr);
--	if (pte_none(*ptep)) {
-+	if (!ptep || pte_none(*ptep)) {
-+		if (ptep)
-+			pte_unmap(ptep);
- 		printf("no valid PTE\n");
- 		return;
- 	}
+ 	if (IS_ENABLED(CONFIG_PPC_8xx) && pshift < PMD_SHIFT)
+-		return pte_alloc_map(mm, (pmd_t *)hpdp, addr);
++		return pte_alloc_huge(mm, (pmd_t *)hpdp, addr);
  
- 	format_pte(ptep, pte_val(*ptep));
-+	pte_unmap(ptep);
+ 	BUG_ON(!hugepd_none(*hpdp) && !hugepd_ok(*hpdp));
  
- 	sync();
- 	__delay(200);
 -- 
 2.35.3
 
