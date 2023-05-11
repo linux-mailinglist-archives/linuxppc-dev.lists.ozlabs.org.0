@@ -1,69 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237C86FEE8E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:19:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3846FEEBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:25:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH5vH70Bdz3fRB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:19:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH61y2H42z3fPc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:25:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bgdev-pl.20221208.gappssmtp.com header.i=@bgdev-pl.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=IJ2xCqIT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=f/46rLYe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2607:f8b0:4864:20::931; helo=mail-ua1-x931.google.com; envelope-from=brgl@bgdev.pl; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20221208.gappssmtp.com header.i=@bgdev-pl.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=IJ2xCqIT;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=f/46rLYe;
 	dkim-atps=neutral
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH5tP0xmCz3cd4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:18:51 +1000 (AEST)
-Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-77d0419750eso2219733241.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 02:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1683796727; x=1686388727;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mCpJk3R8UEUc900fWaZ36e4XkCAv/PqWqpOGayqH3do=;
-        b=IJ2xCqITqQxYd2j21guIc8CZ8a3qzOQddlNmBPpwRr3wVfJWaXyJI/ZKssRhmcOTgA
-         ilyj2rg2fCrteFz+fjY/juhlucDO3hu6UGVP/mhHZ/5db2Ph3NG2SEHP5q6avENqPQEw
-         vd7GdnA5jMAlyOsQA09qOdBp7bqPEQ/s8ZXp8QFwSB7RC/I3DqQbtiDdGq6uemVS2Ld0
-         x0bGAOvDLv5PbDm8I88MTMA4AP3yIQlfKTU+4zyo27lkONLtPWZOXMYYdHg9qekj+JYY
-         lSKV46S0nCXogvNJCBGFhU8sEupT0DaXqxj9jwiG6qCwOmNnPzyk2uadn5QFM2mO4lxW
-         LegQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683796727; x=1686388727;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mCpJk3R8UEUc900fWaZ36e4XkCAv/PqWqpOGayqH3do=;
-        b=gMotgtQii7502jj6TTRzqCjm2o5Mz4TdR+wWPSERABeiqUs56iKmKBCP02ie4QLmv1
-         Z3wtAFzkWWX4TyTFHQgrT0Epe2+jV38NOLVV/UH5H86My1yWCRwCWuLhTv7BSkcGopYZ
-         roIVPiXz+O5E4/S2dbVsd+W6n7Vn80tsjlSS2Qf5gBFAi0bSnbvp1dGsh9/9zjOoX97K
-         IL9V5+pQEIUrlcO2UJHkyK6Q9dj52LbYSRX07w80FA97Brk2oqFYc3HrPcMDmc/WEVeq
-         6weI42JgE6OSyoqxDV8TVZU0q+SmR3W19n7XMsfZ2bI4EAFBHuDLNQmIojlpvxYwoeiI
-         s76Q==
-X-Gm-Message-State: AC+VfDyxiXp9s3GoB01507YHxKrIbcB9uBzq7Giati4CAMncjCQrtlf3
-	QLGjZk/DdoqiK15bdHOmGDcpYbfRCxErPGOYZUnHng==
-X-Google-Smtp-Source: ACHHUZ7PfcbhhIISYu9xCWNbAAg7XKAZcsN35LL5BB55uAZP1vndrSeFKFLrjV9j0Mzf8/9C95DuBCkC6LahVX2mBwE=
-X-Received: by 2002:a05:6102:2857:b0:436:158:cf6c with SMTP id
- az23-20020a056102285700b004360158cf6cmr4794491vsb.6.1683796727674; Thu, 11
- May 2023 02:18:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH6161QJfz3bcT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:24:42 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 0BD4A219EB;
+	Thu, 11 May 2023 09:24:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1683797072; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3x+A1oAvkOFARznkC50c0SLUXNmMY3RdCi2ozgXXvgw=;
+	b=f/46rLYe7nyx5+kH1sYpIAw20pQoZZ4k+Ask8EvmsmiWBbtNmUShXHyprr6FXGe31OW383
+	tKjPbpzXi9nwMp5HsjAkNXfozdukoqdCei/XT/10RlTfaTVyada91hl3TnVvYiIg9PrxY7
+	ZOTKjflhV/IQZ/2lqefV+OAZ6FjZ7Dg=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 9D6172C141;
+	Thu, 11 May 2023 09:24:30 +0000 (UTC)
+Date: Thu, 11 May 2023 11:24:29 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v4 05/17] watchdog/hardlockup: Rename
+ touch_nmi_watchdog() to touch_hardlockup_watchdog()
+Message-ID: <ZFy0TX1tfhlH8gxj@alley>
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.5.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid>
+ <CSE04EI159N2.2TSXHBN2QLFCM@wheely>
+ <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230413160607.4128315-1-sean.anderson@seco.com> <20230413160607.4128315-4-sean.anderson@seco.com>
-In-Reply-To: <20230413160607.4128315-4-sean.anderson@seco.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 11 May 2023 11:18:36 +0200
-Message-ID: <CAMRc=Mft9a3PNo78jiSGfKaZDhAkpPTrcTfarcr=tSmLWzj-Qw@mail.gmail.com>
-Subject: Re: [PATCH v14 03/15] dt-bindings: Convert gpio-mmio to yaml
-To: Sean Anderson <sean.anderson@seco.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,30 +65,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, =?UTF-8?Q?Fern=C3=A1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, dav
+ em@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 13, 2023 at 6:06=E2=80=AFPM Sean Anderson <sean.anderson@seco.c=
-om> wrote:
->
-> This is a generic binding for simple MMIO GPIO controllers. Although we
-> have a single driver for these controllers, they were previously spread
-> over several files. Consolidate them. The register descriptions are
-> adapted from the comments in the source. There is no set order for the
-> registers, and some registers may be omitted. Because of this, reg-names
-> is mandatory, and no order is specified.
->
-> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
-> has moved.
->
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Linus or Bartosz, feel free to pick this up as the rest of this series
-> may not be merged any time soon.
->
+On Fri 2023-05-05 09:37:35, Doug Anderson wrote:
+> Hi,
+> 
+> On Thu, May 4, 2023 at 7:51 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
+> > > In preparation for the buddy hardlockup detector, rename
+> > > touch_nmi_watchdog() to touch_hardlockup_watchdog() to make it clear
+> > > that it will touch whatever hardlockup detector is configured. We'll
+> > > add a #define for the old name (touch_nmi_watchdog) so that we don't
+> > > have to touch every piece of code referring to the old name.
+> >
+> > Is this really helpful? Now it's got two names Could just leave it.
+> > If you insist then it'd be better just to rename everything in one
+> > go at the end of a merge window IMO. Conflicts would be trivial.
+> 
+> I'm not picky here. I changed the name since Petr requested names to
+> be changed for any code I was touching [1] and so I threw this out as
+> a proposal. I agree that having two names can be confusing, but in
+> this case it didn't feel too terrible to me.
 
-Applied, thanks!
+IMHO, it is worth renaming to make the code easier to follow.
+Especially after adding the buddy hardlockup detector that is
+not using NMI context.
 
-Bart
+And I agree that that we should rename all callers as well.
+Otherwise, it might be seen just as an extra churn.
+
+> I'd love to hear Petr's opinion on this name change. I'm happy with:
+> 
+> a) This patch as it is.
+> 
+> b) Dropping this patch (or perhaps just changing it to add comments).
+> 
+> c) Changing this patch to rename all 70 uses of the old name. Assuming
+> this will go through Andrew Morton's tree, I'd be interested in
+> whether he's OK w/ this.
+> 
+> d) Dropping this patch from this series but putting it on the
+> backburner to try to do later (so that the rename can happen at a time
+> when it's least disruptive).
+
+d) sounds reasonable given that there is about 70 callers.
+
+> 
+> > > Ideally this change would also rename the arch_touch_nmi_watchdog(),
+> > > but that is harder since arch_touch_nmi_watchdog() is exported with
+> > > EXPORT_SYMBOL() and thus is ABI. Add a comment next to the call to
+> > > hopefully alleviate some of the confusion here.
+> >
+> > We don't keep ABI fixed upstream.
+> 
+> I'm happy to be corrected, but my understanding was that kernel devs
+> made an effort not to mess with things exported via "EXPORT_SYMBOL",
+> but things exported via "EXPORT_SYMBOL_GPL" were fair game.
+
+My understanding is that kernel guarantees ABI compatibility only for
+the userspace (do-not-break-userspace rule). But the kernel ABI
+is not guaranteed [*]
+
+It actually has even a positive side effect because it motivates
+module developers to upstream the code.
+
+Of course, there should be a good reason for the change. And I think
+that we have a good reason.
+
+[*] This is valid for upstream. Another story is with linux
+    distributions. They usually maintain the kernel KABI
+    stability to some degree when backporting upstream changes.
+
+Best Regards,
+Petr
