@@ -1,59 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972DC6FF1C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 14:46:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421646FF1CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 14:49:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHBVB3p6Hz3fX3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 22:46:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHBY40YjSz3fQR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 22:49:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=XHA7oE6m;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=nMlylJqE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=XHA7oE6m;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=nMlylJqE;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHBTG5Xj3z3f4w
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 22:45:53 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id E882D1FE81;
-	Thu, 11 May 2023 12:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1683809149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9QB/4NQfxs6MWzEb4+Nqls4LUd5AWkLgrCPKn/rdQXM=;
-	b=XHA7oE6mmCQVIyRFnHnwTxvsSvoMrqGwBeCZ1Y/UJ/YR+kR0CRB7zHy4Ed8vNjlnVuzLG3
-	eFY8NJqs6DJA8SwBXvMchJIC0fvt24EmFidUVZ4kKuCrZxZjAMKJm1OxKXot92GupgIZsm
-	bPTlKL8UJUfRozLbl/SROqJsU8Tfifs=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHBX91Krcz3bT7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 22:48:24 +1000 (AEST)
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id A80F82C141;
-	Thu, 11 May 2023 12:45:48 +0000 (UTC)
-Date: Thu, 11 May 2023 14:45:48 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v4 08/17] watchdog/hardlockup: Style changes to
- watchdog_hardlockup_check() / ..._is_lockedup()
-Message-ID: <ZFzjfK3QGCCTB-Pw@alley>
-References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.8.I818492c326b632560b09f20d2608455ecf9d3650@changeid>
- <CSE0CI3TFK72.2I4E5TJIRHDGM@wheely>
- <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id DCEB43F54D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 12:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1683809298;
+	bh=ZkSgjZyo9xVh4gblsVQOCDmnEdqEfK/tJWBgTKA7lTY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=nMlylJqE+NjtauI/vFU5ePvu8CCkAgsYY7a6PfeZeygWICEGHJkMxHcetKqdFyAzX
+	 +IBVFEbNIjonmBaZLfzYd6uTIHe+8QizOz/qNSMx+9Ti+7YdkX33/SA36OlScTatRP
+	 apxOZJOR8rcZABcFo8f6VQ9+wFOJJijGAexH/pEXY9uH2CDbfS9JFOjokv0cTcRHMh
+	 yGzF5aVNuvdGaThgn+SmHEvqxrT7BDnsYWjryDXQUMdWWjNhq0/U+mJU1wlpma4xCS
+	 yaRaqE5lDFpJnHrKrlPZ10NBL2ae7vnTaCSASZhMY1snWwk3viY8sHATijQrGiHbs1
+	 efw0EUAHnVi+w==
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-64389a4487fso5076728b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 05:48:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683809297; x=1686401297;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZkSgjZyo9xVh4gblsVQOCDmnEdqEfK/tJWBgTKA7lTY=;
+        b=TYFDhdWPcx0OFyeoZg/nhX2O6UIE6KWCWFA7PLn51EJvxxBebFOzaU4Y22BMHVZs9B
+         NowjLRKDHEYvqh121C/z9dDPBwM6qtW4cLBYSb7np/jDVWxvVQpUuhHEuvnLytHt2K6h
+         aj5Iq4TZS68yLeSdBcR/1PPswp3kwmqkxWBERScFS8jQeGPwFofo3AoejB658EWrUpys
+         GiqL1dtStGssWZov8+jLfrjUl5qNrjd2Ydi0OY51LlAwvOjtW+H1YW7Gj5GKjZnMiezT
+         KbBGjZE8/6ooRDsjTEWcbWGOlQIYnatMM3SHXtVn2JuMJ57DcvISM8YcCqIXI8rIexm+
+         lc8g==
+X-Gm-Message-State: AC+VfDyXH2g/wpC2FKaWfbkKrW+KdzU/rc0tUj/TyYn6NQCVUvtGyZOt
+	ja+1mrgFgjcTTE8Fbg0XoA+/59zDVNl9WkhDG5flsxw8HcyeJWcoYQ/tYPlKDmkhh2s3+kWxckT
+	o0z+pUpTBPtHl/4SEJDLS4sC3YTK10ctaxcHQy3KASyXede11mhEvQCdlrvk=
+X-Received: by 2002:a05:6a20:3d84:b0:103:ce90:f3d2 with SMTP id s4-20020a056a203d8400b00103ce90f3d2mr2897378pzi.9.1683809297248;
+        Thu, 11 May 2023 05:48:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7a5HjvgwmUzaFJhBxIy+pEBXHv6RWgm6O2IL/k7CBCtcM/768F9wF5Jd+uvw8d2kAoRH3ALgS/uKmLbD05/78=
+X-Received: by 2002:a05:6a20:3d84:b0:103:ce90:f3d2 with SMTP id
+ s4-20020a056a203d8400b00103ce90f3d2mr2897350pzi.9.1683809296857; Thu, 11 May
+ 2023 05:48:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
+References: <20230424055249.460381-1-kai.heng.feng@canonical.com> <20230505163714.000003a9@Huawei.com>
+In-Reply-To: <20230505163714.000003a9@Huawei.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Thu, 11 May 2023 20:48:05 +0800
+Message-ID: <CAAd53p63TspntTfVUq5cxNQUVnw_owvwn=Y1RJq67LSUDvxH8w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] PCI/AER: Factor out interrupt toggling into helpers
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,54 +83,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, dav
- em@davemloft.net
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, bhelgaas@google.com, mika.westerberg@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2023-05-05 09:38:14, Doug Anderson wrote:
-> Hi,
-> 
-> On Thu, May 4, 2023 at 8:02 PM Nicholas Piggin <npiggin@gmail.com> wrote:
-> >
-> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> > > These are tiny style changes:
-> > > - Add a blank line before a "return".
-> > > - Renames two globals to use the "watchdog_hld" prefix.
-> >
-> > Particularly static ones don't really need the namespace prefixes.
-> 
-> Renames are mostly at Petr's request. If I've misunderstood what he
-> wants here that I'm happy to remove them.
-
-IMHO, the namespace prefix makes sense here to distinguish hardlockup
-and softlockup specific code. The original names did this as well
-but they were another variants of the naming scheme mess.
-
-IMHO, even longer prefix is better than a mess.
-
-> > Not sure if processed is better than warn.
-> 
-> I can undo this one if you want. It felt like we were doing more than
-> just warning, but if people think "warn" is a better way to describe
-> it then that's fine with me.
-
-The code seems to only print the warning and dump a lot of debug
-information. Both _warned or _processed look good to me.
-
-> > allcpu_dumped is better
-> > than dumped_stacks though because the all-CPUs-dump is a particular
-> > thing.
+On Fri, May 5, 2023 at 11:37=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> OK, I can undo this and leave it as "allcpu_dumped".
+> On Mon, 24 Apr 2023 13:52:47 +0800
+> Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+>
+> > There are many places that enable and disable AER interrput, so move
+>
+> interrupt
 
-I do not have strong opinion. Well, "allcpu" is another inconsistency
-vs. "all_cpu" in sysctl_hardlockup_all_cpu_backtrace. So, it should
-be "all_cpu_dumped".
+Thanks, will correct that in next revision.
 
-Feel free to use:
+Kai-Heng
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-
-Best Regards,
-Petr
+>
+> > them into helpers.
+>
+> Otherwise looks like a good clean up to me.
+> FWIW
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> >
+> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@lin=
+ux.intel.com>
+> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > ---
+> >  drivers/pci/pcie/aer.c | 45 +++++++++++++++++++++++++-----------------
+> >  1 file changed, 27 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > index f6c24ded134c..1420e1f27105 100644
+> > --- a/drivers/pci/pcie/aer.c
+> > +++ b/drivers/pci/pcie/aer.c
+> > @@ -1227,6 +1227,28 @@ static irqreturn_t aer_irq(int irq, void *contex=
+t)
+> >       return IRQ_WAKE_THREAD;
+> >  }
+> >
+> > +static void aer_enable_irq(struct pci_dev *pdev)
+> > +{
+> > +     int aer =3D pdev->aer_cap;
+> > +     u32 reg32;
+> > +
+> > +     /* Enable Root Port's interrupt in response to error messages */
+> > +     pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+> > +     reg32 |=3D ROOT_PORT_INTR_ON_MESG_MASK;
+> > +     pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+> > +}
+> > +
+> > +static void aer_disable_irq(struct pci_dev *pdev)
+> > +{
+> > +     int aer =3D pdev->aer_cap;
+> > +     u32 reg32;
+> > +
+> > +     /* Disable Root's interrupt in response to error messages */
+> > +     pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+> > +     reg32 &=3D ~ROOT_PORT_INTR_ON_MESG_MASK;
+> > +     pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+> > +}
+> > +
+> >  /**
+> >   * aer_enable_rootport - enable Root Port's interrupts when receiving =
+messages
+> >   * @rpc: pointer to a Root Port data structure
+> > @@ -1256,10 +1278,7 @@ static void aer_enable_rootport(struct aer_rpc *=
+rpc)
+> >       pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
+> >       pci_write_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, reg32);
+> >
+> > -     /* Enable Root Port's interrupt in response to error messages */
+> > -     pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+> > -     reg32 |=3D ROOT_PORT_INTR_ON_MESG_MASK;
+> > -     pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+> > +     aer_enable_irq(pdev);
+> >  }
+> >
+> >  /**
+> > @@ -1274,10 +1293,7 @@ static void aer_disable_rootport(struct aer_rpc =
+*rpc)
+> >       int aer =3D pdev->aer_cap;
+> >       u32 reg32;
+> >
+> > -     /* Disable Root's interrupt in response to error messages */
+> > -     pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+> > -     reg32 &=3D ~ROOT_PORT_INTR_ON_MESG_MASK;
+> > -     pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+> > +     aer_disable_irq(pdev);
+> >
+> >       /* Clear Root's error status reg */
+> >       pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
+> > @@ -1372,12 +1388,8 @@ static pci_ers_result_t aer_root_reset(struct pc=
+i_dev *dev)
+> >        */
+> >       aer =3D root ? root->aer_cap : 0;
+> >
+> > -     if ((host->native_aer || pcie_ports_native) && aer) {
+> > -             /* Disable Root's interrupt in response to error messages=
+ */
+> > -             pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &=
+reg32);
+> > -             reg32 &=3D ~ROOT_PORT_INTR_ON_MESG_MASK;
+> > -             pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, =
+reg32);
+> > -     }
+> > +     if ((host->native_aer || pcie_ports_native) && aer)
+> > +             aer_disable_irq(root);
+> >
+> >       if (type =3D=3D PCI_EXP_TYPE_RC_EC || type =3D=3D PCI_EXP_TYPE_RC=
+_END) {
+> >               rc =3D pcie_reset_flr(dev, PCI_RESET_DO_RESET);
+> > @@ -1396,10 +1408,7 @@ static pci_ers_result_t aer_root_reset(struct pc=
+i_dev *dev)
+> >               pci_read_config_dword(root, aer + PCI_ERR_ROOT_STATUS, &r=
+eg32);
+> >               pci_write_config_dword(root, aer + PCI_ERR_ROOT_STATUS, r=
+eg32);
+> >
+> > -             /* Enable Root Port's interrupt in response to error mess=
+ages */
+> > -             pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &=
+reg32);
+> > -             reg32 |=3D ROOT_PORT_INTR_ON_MESG_MASK;
+> > -             pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, =
+reg32);
+> > +             aer_enable_irq(root);
+> >       }
+> >
+> >       return rc ? PCI_ERS_RESULT_DISCONNECT : PCI_ERS_RESULT_RECOVERED;
+>
