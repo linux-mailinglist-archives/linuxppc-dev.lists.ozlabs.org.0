@@ -1,52 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D2F6FF164
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 14:17:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972DC6FF1C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 14:46:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH9rl5fRvz3fWf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 22:17:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHBVB3p6Hz3fX3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 22:46:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Dnnz4ZrI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=XHA7oE6m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH9qv4ZmHz3bjY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 22:16:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Dnnz4ZrI;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=XHA7oE6m;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QH9qv3KDKz4x4V;
-	Thu, 11 May 2023 22:16:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1683807419;
-	bh=KQWCV9FmJH5CqzWvqzks5FSok5ibmu2vlrQSNtsRn/c=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=Dnnz4ZrICZyFD2i+dGe19uBY2xMo+ASbmj7O0G7XbCdxspqP7O4KixfnTZ3bvRvcn
-	 HJoDq3+wJrmxr79EgEKIbrJw1t+GEfrF8FxY8pvoWWljfAez8hFDTbqpEuaHwoeAFr
-	 wMpIg2RppfCNDgNz/U0iKQElNoD7+t7OVuHIIPfEn02/t2zd3ch7bdrm7oEs//vIpd
-	 N3oaOT49e0ODkzY+UF8fzd3O/p9ZImkUzJEryAiMkme8kqC/syGuBuQBvVTC0iFwBt
-	 xi5G8kZT4ufZmYX8pDe4kNGKp0eT63gqli4pQwQ/Ul3aMddBP5bVQPDPcyjkMKKuVU
-	 XW4cn+1DuOyrA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dan =?utf-8?Q?Hor=C3=A1k?= <dan@danny.cz>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: a possible issue with radix MMU on P9
-In-Reply-To: <20230511095558.56663a50f86bdc4cd97700b7@danny.cz>
-References: <20230511095558.56663a50f86bdc4cd97700b7@danny.cz>
-Date: Thu, 11 May 2023 22:16:51 +1000
-Message-ID: <87bkirkqq4.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHBTG5Xj3z3f4w
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 22:45:53 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id E882D1FE81;
+	Thu, 11 May 2023 12:45:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1683809149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9QB/4NQfxs6MWzEb4+Nqls4LUd5AWkLgrCPKn/rdQXM=;
+	b=XHA7oE6mmCQVIyRFnHnwTxvsSvoMrqGwBeCZ1Y/UJ/YR+kR0CRB7zHy4Ed8vNjlnVuzLG3
+	eFY8NJqs6DJA8SwBXvMchJIC0fvt24EmFidUVZ4kKuCrZxZjAMKJm1OxKXot92GupgIZsm
+	bPTlKL8UJUfRozLbl/SROqJsU8Tfifs=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id A80F82C141;
+	Thu, 11 May 2023 12:45:48 +0000 (UTC)
+Date: Thu, 11 May 2023 14:45:48 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v4 08/17] watchdog/hardlockup: Style changes to
+ watchdog_hardlockup_check() / ..._is_lockedup()
+Message-ID: <ZFzjfK3QGCCTB-Pw@alley>
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.8.I818492c326b632560b09f20d2608455ecf9d3650@changeid>
+ <CSE0CI3TFK72.2I4E5TJIRHDGM@wheely>
+ <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=Vuad+gxrUirhyx8aFuLbh2M1hMnoY5NUVBxdycd8kFiQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,30 +65,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, dav
+ em@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dan Hor=C3=A1k <dan@danny.cz> writes:
-> Hi all,
+On Fri 2023-05-05 09:38:14, Doug Anderson wrote:
+> Hi,
+> 
+> On Thu, May 4, 2023 at 8:02 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
+> > > These are tiny style changes:
+> > > - Add a blank line before a "return".
+> > > - Renames two globals to use the "watchdog_hld" prefix.
+> >
+> > Particularly static ones don't really need the namespace prefixes.
+> 
+> Renames are mostly at Petr's request. If I've misunderstood what he
+> wants here that I'm happy to remove them.
+
+IMHO, the namespace prefix makes sense here to distinguish hardlockup
+and softlockup specific code. The original names did this as well
+but they were another variants of the naming scheme mess.
+
+IMHO, even longer prefix is better than a mess.
+
+> > Not sure if processed is better than warn.
+> 
+> I can undo this one if you want. It felt like we were doing more than
+> just warning, but if people think "warn" is a better way to describe
+> it then that's fine with me.
+
+The code seems to only print the warning and dump a lot of debug
+information. Both _warned or _processed look good to me.
+
+> > allcpu_dumped is better
+> > than dumped_stacks though because the all-CPUs-dump is a particular
+> > thing.
 >
-> we have been struggling with an issue in the bdwgc project (garbage
-> collector) on P9 systems for a while [1]. There were some test failing
-> on P9, but not on P8 or other platforms (x86, s390x, aarch64). Recently
-> the upstream developer has found out there is likely a problem in the
-> kernel memory mgmt [2], there is a reproduction scenario included. I
-> have rechecked the original code on P9 with hash MMU and it worked. Thus
-> I believe there is a problem in the radix MMU code on Power, where it
-> behaves differently. My testing was using Fedora, which means recent
-> kernels up to 6.4-rc1.
->
-> [1] https://github.com/ivmai/bdwgc/issues/479
-> [2] https://github.com/ivmai/bdwgc/issues/479#issuecomment-1535274481
+> OK, I can undo this and leave it as "allcpu_dumped".
 
-Thanks Dan.
+I do not have strong opinion. Well, "allcpu" is another inconsistency
+vs. "all_cpu" in sysctl_hardlockup_all_cpu_backtrace. So, it should
+be "all_cpu_dumped".
 
-Fix patch here: https://lore.kernel.org/linuxppc-dev/20230511114224.977423-=
-1-mpe@ellerman.id.au/
+Feel free to use:
 
-I tested that it fixes the bdwgc failures (with their workaround reverted).
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-cheers
+Best Regards,
+Petr
