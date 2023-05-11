@@ -1,61 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD706FEC31
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 09:02:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F145C6FEC49
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 09:06:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH2rq205qz3fNd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 17:02:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH2x85WVMz3fWd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 17:06:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=VWXFys/0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WQV9C5RA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.43; helo=mail-oa1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.224; helo=new2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=VWXFys/0;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=WQV9C5RA;
+	dkim-atps=neutral
+Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH2rK1lYkz2yPY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 17:01:52 +1000 (AEST)
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1929818d7faso49208524fac.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 00:01:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683788510; x=1686380510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gv6cvH2UY+DsSAH/1SoTqLLUBTfL/OySbHO2647mvDo=;
-        b=TTsQaOfQZMQFo2BbVMCeDY5KKtLuDJ2+cd3MLwztuvwav33+Wtk34zU387fP3rI+nI
-         J/mHLoOcmqqgIPAONvHCVEKu50fNiIYloO1jzFbdrg/syVcuXKRKQUMkK8D9SyAVFx14
-         4EIxsi3q1hH9Gg0BDfzinKB9gsYoQuYQG6AtFLY5tPITqKcPXsAJSSfCLfqgsGvdQwft
-         EXGb+h7ZWe228CTKzRMrNNX+Zve2kOeuO1fDTFbweVcLjqCaYJcbEMlc1IunW3CV9JGd
-         HCD45rNAyhqwmPm9Qvyqk722r8KwmHYQ3pE4LGYAa4emEXYN+kCk0185rc61+NE1EDfM
-         +ypQ==
-X-Gm-Message-State: AC+VfDy+s6gAC7dc0p5UWBvAaS5sDxmr5y523Gr40a/QztdMnbEkvfzy
-	4DJvSApnkpRzAEEnLSnQUjiSugzXBkRv3w==
-X-Google-Smtp-Source: ACHHUZ7XAzfyr1+uUcwAgyxLsfqOsT/lpcfNMcQUQWhlsb2ET9w9tGnD2lrGZyP8TGycKJ7nXnNFdQ==
-X-Received: by 2002:a05:6870:b494:b0:196:4a09:a6f3 with SMTP id y20-20020a056870b49400b001964a09a6f3mr3342090oap.2.1683788509892;
-        Thu, 11 May 2023 00:01:49 -0700 (PDT)
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com. [209.85.160.44])
-        by smtp.gmail.com with ESMTPSA id v44-20020a056870956c00b00184591ae6d0sm7766421oal.26.2023.05.11.00.01.49
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 00:01:49 -0700 (PDT)
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-18f4a6d2822so49097036fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 00:01:49 -0700 (PDT)
-X-Received: by 2002:a25:1342:0:b0:b25:a1e1:5b65 with SMTP id
- 63-20020a251342000000b00b25a1e15b65mr22072246ybt.5.1683788488909; Thu, 11 May
- 2023 00:01:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230510195806.2902878-1-nphamcs@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH2w208L7z3bNj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 17:05:05 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.nyi.internal (Postfix) with ESMTP id BAB925802DF;
+	Thu, 11 May 2023 03:04:59 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 11 May 2023 03:04:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1683788699; x=1683795899; bh=jq
+	n9+i6S4uqktD4A+W4DhCnytpnr+GsOBOt4qhEN0dg=; b=VWXFys/0BV6m5RpZl2
+	THPKXeF4YwHBhmXGHtHdIdnvjgDSIkVaQiJODFgiAPc6l5ALQz6E1fsfw32O/PsQ
+	Bjk+gtazbYhFvNTmKslA+aFPzOW+HvaQwWgGV7Na81W2yU1L9NnA2fg3WeMXz5GE
+	seZASc3hhKXbYSxv6BT00t4r5/jFufhxtUqnoyoM5fYQyu+iVj8XHbFVJX64byjq
+	X8M78d5TZi4FoEjvjWM2+Yjxc5p1KvKkvnFT5I+nby5e/OvMn0j3dy5hHF6jwP1B
+	WL9/ZS/4j9Evjonx35W4rZQP3CZS0VRTQE9LK5pSVKPmpajZqYawAxnBGYZJcaow
+	rlyQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1683788699; x=1683795899; bh=jqn9+i6S4uqkt
+	D4A+W4DhCnytpnr+GsOBOt4qhEN0dg=; b=WQV9C5RAcekZyjyo8xQuUDMSKPBcY
+	lnbfOsB99ZwjDrX/avO6/64hJ07wRRy8asTMoAKht5Urd8CwUSv01sBXRoYk1YkO
+	hJ9L5X9LWOshcTwUqt1dAKQGXHQ/VIUZaBvXt4uYksyjKQhGEL1UnmoQYxwNZTXE
+	AcpPd+6kgB+AsxEpB3TMneh9RB90w1AwzVNkf4uNd+/sn/PKZus8T8lb55Cba6iX
+	v0pISulFuCDCHfbzIbQAd7FrOIOh2QwFWiSbA6qGO84EVcbXRHj5m3P5yvClkjOw
+	jsNeUuXoCisohtsWIuNct7oH+Ek6wgaiB9J4sCYoLQH1FK2GhWVigTe6g==
+X-ME-Sender: <xms:mZNcZMUVOPS4KvcrRFNAUSa7IhpzQkn3-W3hyAEcPGpjW6pJ8ZQctQ>
+    <xme:mZNcZAlfAo8XRJjQBaLVMGz0HL8UQpYnJl5dNRBxac6llOmbhPzHdgXWj6mjLJvW4
+    KxSpT7vo52hd1yTgto>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeegjedgudduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeu
+    feehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:mZNcZAblEGdGOum33TRaQz934Sm_cmG_AI3VZKduIfaYNrprT_rPsw>
+    <xmx:mZNcZLVTYKpBRbcCBg5nj9ItxXjR4zYy3HG8RCbl6-xzXtwc279zkw>
+    <xmx:mZNcZGkGWHPsPEaCdU8I9oPufVmlwrerXOSIA-mLSRWqjLYl3av57Q>
+    <xmx:m5NcZAtSj8fgu7jGjAdf6t_duFJ2eK_SSZv24q6pAyzIgRcskr8CYQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 9F8D1B60086; Thu, 11 May 2023 03:04:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-415-gf2b17fe6c3-fm-20230503.001-gf2b17fe6
+Mime-Version: 1.0
+Message-Id: <0d8e2503-5d4f-4b60-84ff-01a23bcf557f@app.fastmail.com>
 In-Reply-To: <20230510195806.2902878-1-nphamcs@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 11 May 2023 09:01:17 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV=PNCb1VYfUkEb9rPwGVB=1tkwvm-XBqECyhHR4SNGKg@mail.gmail.com>
-Message-ID: <CAMuHMdV=PNCb1VYfUkEb9rPwGVB=1tkwvm-XBqECyhHR4SNGKg@mail.gmail.com>
+References: <20230510195806.2902878-1-nphamcs@gmail.com>
+Date: Thu, 11 May 2023 09:04:36 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nhat Pham" <nphamcs@gmail.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>
 Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
-To: Nhat Pham <nphamcs@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,14 +93,12 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, linux-mm@kvack.org, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, linux@armlinux.org.uk, mattst88@gmail.com, borntraeger@linux.ibm.com, linux-alpha@vger.kernel.org, gor@linux.ibm.com, hca@linux.ibm.com, kernel-team@meta.com, richard.henderson@linaro.org, npiggin@gmail.com, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, glaubitz@physik.fu-berlin.de, linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jcmvbkbc@gmail.com, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>, borntraeger@linux.ibm.com, linux-alpha@vger.kernel.org, gor@linux.ibm.com, Heiko Carstens <hca@linux.ibm.com>, kernel-team@meta.com, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, chris@zankel.net, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer
+  <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nat,
-
-On Wed, May 10, 2023 at 9:58=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
-:
+On Wed, May 10, 2023, at 21:58, Nhat Pham wrote:
 > cachestat is previously only wired in for x86 (and architectures using
 > the generic unistd.h table):
 >
@@ -83,42 +107,11 @@ On Wed, May 10, 2023 at 9:58=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
 > This patch wires cachestat in for all the other architectures.
 >
 > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
->  arch/arm/tools/syscall.tbl                  | 1 +
 
-Looking at the last addition of a syscall (commit 21b084fdf2a49ca1
-("mm/mempolicy: wire up syscall set_mempolicy_home_node"), it looks
-like you forgot to update arm64 in compat mode? Or is that not needed?
+The changes you did here look good, but you missed one
+file that has never been converted to the syscall.tbl format:
+arch/arm64/include/asm/unistd32.h along with the __NR_compat_syscalls
+definition in arch/arm64/include/asm/unistd.h, please add those
+as well, and then
 
->  arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
->  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
-
-For m68k:
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
->  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
->  arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
->  arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
->  arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
->  arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
->  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
->  arch/s390/kernel/syscalls/syscall.tbl       | 1 +
->  arch/sh/kernel/syscalls/syscall.tbl         | 1 +
->  arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
->  arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
->  14 files changed, 14 insertions(+)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
