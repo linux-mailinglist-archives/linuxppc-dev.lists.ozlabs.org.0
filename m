@@ -2,60 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A030C6FF5AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 17:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EA26FF666
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 17:47:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHFsC3X4mz3fXt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 01:18:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHGVc23Hgz3fNL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 01:47:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Zq7AfBNF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.47; helo=mail-lf1-f47.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Zq7AfBNF;
+	dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHFrj4xtHz3cd4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 01:17:57 +1000 (AEST)
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-4eff4ea8e39so9871422e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 08:17:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683818269; x=1686410269;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LeLJUnaY4RpSv7Fr2RyuafyTEGCbWOy7/KdXYyNynDE=;
-        b=B9ATYCbuRHPu/c9e3WZMjWLJqFj7FX+hPjxdfHlpQx3LjSNma3WB20B8BFEsegz5p/
-         efDtqVWNgK6qrHBvaReT7kUSDWlHMexNZCBYEQyGoabok8tjWxbnFbq9wVYoOAujz/nU
-         90GTYftUBMbNCz8dDSC9/i87Vk0UJAQWrfmb15BstghCtLQrbc09KwZSok9CtBtRPdcW
-         YTafAxM89gAK91dudA3OpLNsS3pJYFfu/u5RQWNF/CxcgerMAIiPEk1AKJf+7mu7fhZo
-         p9P+izIH98TKFqIWcHwaD7sDd9hzXHOMc7BmlBXhkARNqwIFkiX7ClkYky/Rty96pmgP
-         At2g==
-X-Gm-Message-State: AC+VfDwYK/jNrfgVoUH8QjNxiuYr9To5eauGHBdZSxdrSuTEaAs7Bzkp
-	+jTbdvH/dUrupSu4Y6I94vrz9896J+9Rjqfp
-X-Google-Smtp-Source: ACHHUZ6KzFlBJJ2BWhIVBpcrooP1jSlbqmAboV3bX6vvyONgjzyErDcP+S+IW0LxkHX4xMW4O1cUrw==
-X-Received: by 2002:ac2:4255:0:b0:4f1:26f5:77fb with SMTP id m21-20020ac24255000000b004f126f577fbmr2398583lfl.28.1683818269759;
-        Thu, 11 May 2023 08:17:49 -0700 (PDT)
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com. [209.85.167.44])
-        by smtp.gmail.com with ESMTPSA id a1-20020a056512374100b004eb3b6da6f5sm1146292lfs.228.2023.05.11.08.17.46
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 08:17:47 -0700 (PDT)
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-4f13bfe257aso9857497e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 08:17:46 -0700 (PDT)
-X-Received: by 2002:ac2:4c13:0:b0:4f2:22bf:fe98 with SMTP id
- t19-20020ac24c13000000b004f222bffe98mr2776652lfq.37.1683818265953; Thu, 11
- May 2023 08:17:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHGTj5nL6z3bbP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 01:46:32 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 8888221DF6;
+	Thu, 11 May 2023 15:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1683819988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O+WNLGZ1q9D+gmD3l0BETAfuL1MeSiB7Zp5Utl633Ws=;
+	b=Zq7AfBNF97Xrqxden+m2xxxrVOT7WIdxT4zaU0B11ZzrDPPF4umix8ROjZsj1Yqduhj2K4
+	wGM3tgBLn5jPechHV8jYrk1e745lz7lAaGx8uE8MrE1r6njfUsjcmkhOBF6Rp/hp5Ezzds
+	PDX4wIbB8mhF/MQqunXnk9vf5g/lR4s=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 50A782C145;
+	Thu, 11 May 2023 15:46:24 +0000 (UTC)
+Date: Thu, 11 May 2023 17:46:21 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v4 10/17] watchdog/hardlockup: Move perf hardlockup
+ watchdog petting to watchdog.c
+Message-ID: <ZF0NzSCRCapqDbC4@alley>
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.10.I00dfd6386ee00da25bf26d140559a41339b53e57@changeid>
 MIME-Version: 1.0
-References: <20230511150802.737477-1-cgzones@googlemail.com>
-In-Reply-To: <20230511150802.737477-1-cgzones@googlemail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 11 May 2023 17:17:29 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVa69s3g0z6qgayzNx=jT6Ko2RNeZehru0SbzYH8VwkfQ@mail.gmail.com>
-Message-ID: <CAMuHMdVa69s3g0z6qgayzNx=jT6Ko2RNeZehru0SbzYH8VwkfQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] fs/xattr: add *at family syscalls
-To: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230504151100.v4.10.I00dfd6386ee00da25bf26d140559a41339b53e57@changeid>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,60 +61,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, audit@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, selinux@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, Nhat Pham <nphamcs@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christian,
+On Thu 2023-05-04 15:13:42, Douglas Anderson wrote:
+> In preparation for the buddy hardlockup detector, which wants the same
+> petting logic as the current perf hardlockup detector, move the code
+> to watchdog.c. While doing this, rename the global variable to match
+> others nearby. The arch_touch_nmi_watchdog() function is not renamed
+> since that is exported with "EXPORT_SYMBOL" and is thus ABI.
+> 
+> Currently the code in watchdog.c is guarded by
+> CONFIG_HARDLOCKUP_DETECTOR_PERF, which makes this change seem
+> silly. However, a future patch will change this.
+> 
+> NOTE: there is a slight side effect to this change, though from code
+> analysis I believe it to be a beneficial one. Specifically the perf
+> hardlockup detector will now do check the "timestamp" before clearing
+> any watchdog pets. Previously the order was reversed. With the old
+> order if the watchdog perf event was firing super fast then it would
+> also be clearing existing watchdog pets super fast. The new behavior
+> of handling super-fast perf before clearing watchdog pets seems
+> better.
 
-On Thu, May 11, 2023 at 5:10=E2=80=AFPM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
-> Add the four syscalls setxattrat(), getxattrat(), listxattrat() and
-> removexattrat().  Those can be used to operate on extended attributes,
-> especially security related ones, either relative to a pinned directory
-> or on a file descriptor without read access, avoiding a
-> /proc/<pid>/fd/<fd> detour, requiring a mounted procfs.
->
-> One use case will be setfiles(8) setting SELinux file contexts
-> ("security.selinux") without race conditions.
->
-> Add XATTR flags to the private namespace of AT_* flags.
->
-> Use the do_{name}at() pattern from fs/open.c.
->
-> Use a single flag parameter for extended attribute flags (currently
-> XATTR_CREATE and XATTR_REPLACE) and *at() flags to not exceed six
-> syscall arguments in setxattrat().
->
-> Previous approach ("f*xattr: allow O_PATH descriptors"): https://lore.ker=
-nel.org/all/20220607153139.35588-1-cgzones@googlemail.com/
-> v1 discussion: https://lore.kernel.org/all/20220830152858.14866-2-cgzones=
-@googlemail.com/
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+Ah, I think that this was actually pretty serious bug in the perf
+detector. But I think that it should work another way, see below.
 
-Thanks for your patch!
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> ---
+> 
+> --- a/kernel/watchdog.c
+> +++ b/kernel/watchdog.c
+> @@ -111,6 +125,11 @@ static void watchdog_hardlockup_interrupt_count(void)
+>  
+>  void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs)
+>  {
+> +	if (__this_cpu_read(watchdog_hardlockup_touch)) {
+> +		__this_cpu_write(watchdog_hardlockup_touch, false);
+> +		return;
+> +	}
 
-The syscall numbers conflict with those used in "[PATCH] cachestat:
-wire up cachestat for other architectures", so this needs some
-synchronization.
-https://lore.kernel.org/linux-sh/20230510195806.2902878-1-nphamcs@gmail.com
+If we clear watchdog_hardlockup_touch() here then
+watchdog_hardlockup_check() won't be called yet another
+watchdog_hrtimer_sample_threshold perior.
 
->  arch/m68k/kernel/syscalls/syscall.tbl       |   4 +
+It means that any touch will cause ignoring one full period.
+The is_hardlockup() check will be done after full two periods.
 
-For m68k:
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+It is not ideal, see below.
 
-Gr{oetje,eeting}s,
+> +
+>  	/*
+>  	 * Check for a hardlockup by making sure the CPU's timer
+>  	 * interrupt is incrementing. The timer interrupt should have
+> diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
+> index 9be90b2a2ea7..547917ebd5d3 100644
+> --- a/kernel/watchdog_perf.c
+> +++ b/kernel/watchdog_perf.c
+> @@ -112,11 +98,6 @@ static void watchdog_overflow_callback(struct perf_event *event,
+>  	/* Ensure the watchdog never gets throttled */
+>  	event->hw.interrupts = 0;
+>  
+> -	if (__this_cpu_read(watchdog_nmi_touch) == true) {
+> -		__this_cpu_write(watchdog_nmi_touch, false);
+> -		return;
+> -	}
 
-                        Geert
+The original code looks wrong. arch_touch_nmi_watchdog() caused
+skipping only one period of the perf event.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+I would expect that it caused restarting the period,
+something like:
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+	if (__this_cpu_read(watchdog_nmi_touch) == true) {
+		/*
+		 * Restart the period after which the interrupt
+		 * counter is checked.
+		 */
+		__this_cpu_write(nmi_rearmed, 0);
+		__this_cpu_write(last_timestamp, now);
+		__this_cpu_write(watchdog_nmi_touch, false);
+		return;
+	}
+
+By other words, we should restart the period in the very next perf
+event after the watchdog was touched.
+
+That said, the new code looks better than the original.
+IMHO, the original code was prone to false positives.
+
+Best Regards,
+Petr
+
+PS: It might be worth fixing this problem in a separate patch at the
+    beginning of this patchset. It might be a candidate for stable
+    backports.
+
+> -
+>  	if (!watchdog_check_timestamp())
+>  		return;
+>  
