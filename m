@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095A46FEFA9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 12:10:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673396FF0A1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 13:43:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH71l5v1Sz3fQH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 20:10:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH95G2Wvrz3fPg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 21:43:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=VAUBVXxc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UWCQbaUk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=VAUBVXxc;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH70s2sKxz3bnV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 20:09:31 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 0B8EF21A7A;
-	Thu, 11 May 2023 10:09:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1683799768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SbrhlAxTy12DuOMU4fjS/AymAGt4r/nQ5uvoi576oXM=;
-	b=VAUBVXxcOYrdWYrOPvR6B8qg753tmtNfI5oh7SL8GWP9gCw0aTtROJHDE8kWmh+b1nFuKu
-	C6IZngtzdwZjZhkrt4EyTwF+Z+vfmDTwEWo5LzOjQE1ptpqObMqhXokJERk5TNsjOb/xyc
-	9Erw3Fcbne9jc8AZ14Njgrl3nfmsYoE=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH94M5qfQz3cMj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 21:42:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UWCQbaUk;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id CCAF52C141;
-	Thu, 11 May 2023 10:09:25 +0000 (UTC)
-Date: Thu, 11 May 2023 12:09:24 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v4 06/17] watchdog/perf: Rename watchdog_hld.c to
- watchdog_perf.c
-Message-ID: <ZFy-1Mv_od3Fu--y@alley>
-References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.6.Ice803cb078d0e15fb2cbf49132f096ee2bd4199d@changeid>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QH94C4P2rz4x4N;
+	Thu, 11 May 2023 21:42:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1683805356;
+	bh=RV3P4xIa1KW4Cd/eChkOkHzb+5sl2d1xyMZVAnBdBJI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UWCQbaUknKo8LRT5GH1AKoAez+feAWMcx0tA9zGwe1gO4D+8rZ7GGNsNMgCPfFYyq
+	 sdzPp0M1C9d7g17aN7O9IESVgsAZ+3AvBKYrvsbRmLdSxEXlMREh+E2gw3N2PFHABl
+	 nz2h+un60N9+l5I9O3iXqTnLbrMFP9zSwsj6Rn8LjZUx/QFBHesEt0nbj6enC4JBtp
+	 ijBdW5GHbBH0psrQM1uYqR3p/zM6Ozkg01niLSANFgobT41jt6D6nMIvxiEU+6Dvse
+	 m+SDY6gU0DHvq0PW+10iIj3Bxy/FF0IJx/8K/Ir/gmZn6K3IOT6dn/DpL+TpcoC1Df
+	 ub66KbMRGIslA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64s/radix: Fix soft dirty tracking
+Date: Thu, 11 May 2023 21:42:24 +1000
+Message-Id: <20230511114224.977423-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230504151100.v4.6.Ice803cb078d0e15fb2cbf49132f096ee2bd4199d@changeid>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,27 +57,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: dan@danny.cz, aneesh.kumar@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2023-05-04 15:13:38, Douglas Anderson wrote:
-> The code currently in "watchdog_hld.c" is for detecting hardlockups
-> using perf, as evidenced by the line in the Makefile that only
-> compiles this file if CONFIG_HARDLOCKUP_DETECTOR_PERF is
-> defined. Rename the file to prepare for the buddy hardlockup detector,
-> which doesn't use perf.
-> 
-> It could be argued that the new name makes it less obvious that this
-> is a hardlockup detector. While true, it's not hard to remember that
-> the "perf" detector is always a hardlockup detector and it's nice not
-> to have names that are too convoluted.
-> 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+It was reported that soft dirty tracking doesn't work when using the
+Radix MMU.
 
-Looks good:
+The tracking is supposed to work by clearing the soft dirty bit for a
+mapping and then write protecting the PTE. If/when the page is written
+to, a page fault occurs and the soft dirty bit is added back via
+pte_mkdirty(). For example in wp_page_reuse():
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+		update_mmu_cache(vma, vmf->address, vmf->pte);
 
-Best Regards,
-Petr
+Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
+radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
+meaning the soft dirty bit is not set even though the page has been
+written to.
+
+Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
+changed in radix__ptep_set_access_flags().
+
+Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
+Cc: stable@vger.kernel.org # v4.7+
+Reported-by: Dan Horák <dan@danny.cz>
+Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 26245aaf12b8..2297aa764ecd 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
+ 				  pte_t entry, unsigned long address, int psize)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
+-					      _PAGE_RW | _PAGE_EXEC);
++	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
++					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
+ 
+ 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
+ 	/*
+-- 
+2.40.1
+
