@@ -2,50 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673396FF0A1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 13:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851BB6FF105
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 14:04:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH95G2Wvrz3fPg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 21:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH9YC37mQz3fYS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 22:04:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UWCQbaUk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=g9sUnPfO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=g9sUnPfO;
+	dkim-atps=neutral
+X-Greylist: delayed 9528 seconds by postgrey-1.36 at boromir; Thu, 11 May 2023 22:03:28 AEST
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH94M5qfQz3cMj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 21:42:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UWCQbaUk;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH9XJ0Z3lz3c4w
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 22:03:26 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id D62961FE4F;
+	Thu, 11 May 2023 12:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1683806598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YGmP0u0OFjbVyESVuzglMRxquKrNFdNgsdI3jgZKbt0=;
+	b=g9sUnPfOIY8lwxWdiiWc/xnL7HCVL9aggbspPeONqRftNaW6qY3P89Jgww7yxDbnrlvevV
+	Uo0u1si4QYQaBK2mS23fDev9ZvfnecluMX3ytVJmRVyfXpbcJwaaJ0t1xCWpu1iCrGJW8X
+	t5wOiT1q7D9yde/8RgZQtfeGxu5jj3k=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QH94C4P2rz4x4N;
-	Thu, 11 May 2023 21:42:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1683805356;
-	bh=RV3P4xIa1KW4Cd/eChkOkHzb+5sl2d1xyMZVAnBdBJI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UWCQbaUknKo8LRT5GH1AKoAez+feAWMcx0tA9zGwe1gO4D+8rZ7GGNsNMgCPfFYyq
-	 sdzPp0M1C9d7g17aN7O9IESVgsAZ+3AvBKYrvsbRmLdSxEXlMREh+E2gw3N2PFHABl
-	 nz2h+un60N9+l5I9O3iXqTnLbrMFP9zSwsj6Rn8LjZUx/QFBHesEt0nbj6enC4JBtp
-	 ijBdW5GHbBH0psrQM1uYqR3p/zM6Ozkg01niLSANFgobT41jt6D6nMIvxiEU+6Dvse
-	 m+SDY6gU0DHvq0PW+10iIj3Bxy/FF0IJx/8K/Ir/gmZn6K3IOT6dn/DpL+TpcoC1Df
-	 ub66KbMRGIslA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/64s/radix: Fix soft dirty tracking
-Date: Thu, 11 May 2023 21:42:24 +1000
-Message-Id: <20230511114224.977423-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.40.1
+	by relay2.suse.de (Postfix) with ESMTPS id 4C8CA2C141;
+	Thu, 11 May 2023 12:03:15 +0000 (UTC)
+Date: Thu, 11 May 2023 14:03:12 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v4 07/17] watchdog/hardlockup: Move perf hardlockup
+ checking/panic to common watchdog.c
+Message-ID: <ZFzZgPBkhJokN1QJ@alley>
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.7.Id4133d3183e798122dc3b6205e7852601f289071@changeid>
+ <CSE09YL4X0XY.1GAQWAFOOEK42@wheely>
+ <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=Vom15dOxnp=x5RFsk7ZCXGVwUjjrA4z1js-cCB=PDLFg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,54 +66,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dan@danny.cz, aneesh.kumar@linux.ibm.com, npiggin@gmail.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, dav
+ em@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It was reported that soft dirty tracking doesn't work when using the
-Radix MMU.
+On Fri 2023-05-05 09:37:50, Doug Anderson wrote:
+> Hi,
+> 
+> On Thu, May 4, 2023 at 7:58 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
+> > > The perf hardlockup detector works by looking at interrupt counts and
+> > > seeing if they change from run to run. The interrupt counts are
+> > > managed by the common watchdog code via its watchdog_timer_fn().
+> > >
+> > > Currently the API between the perf detector and the common code is a
+> > > function: is_hardlockup(). When the hard lockup detector sees that
+> > > function return true then it handles printing out debug info and
+> > > inducing a panic if necessary.
+> > >
+> > > Let's change the API a little bit in preparation for the buddy
+> > > hardlockup detector. The buddy hardlockup detector wants to print
+> >
+> > I think the name change is a gratuitous. Especially since it's now
+> > static.
+> >
+> > watchdog_hardlockup_ is a pretty long prefix too, hardlockup_
+> > should be enough?
+> >
+> > Seems okay otherwise though.
+> 
+> I went back and forth on names far too much when constructing this
+> patch series. Mostly I was trying to balance what looked good to me
+> and what Petr suggested [1]. I'm not super picky about the names and
+> I'm happy to change them all to a "hardlockup_" prefix. I'd love to
+> hear Petr's opinion.
 
-The tracking is supposed to work by clearing the soft dirty bit for a
-mapping and then write protecting the PTE. If/when the page is written
-to, a page fault occurs and the soft dirty bit is added back via
-pte_mkdirty(). For example in wp_page_reuse():
+Sigh, the original code was a real mess of naming schemes. It is hard
+to say how to move forward.
 
-	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
-		update_mmu_cache(vma, vmf->address, vmf->pte);
+My opinion:
 
-Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
-radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
-meaning the soft dirty bit is not set even though the page has been
-written to.
+  + watchdog_hardlockup_check(): looks fine. It is consistent with
+	watchdog_hardlockup_enable()/disable().
 
-Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
-changed in radix__ptep_set_access_flags().
+  + watchdog_hardlockup_is_lockedup() is really overly complicated.
+	I would personally keep is_hardlockup(). It is static.
+	And it will be consitent with is_softlockup().
 
-Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
-Cc: stable@vger.kernel.org # v4.7+
-Reported-by: Dan Horák <dan@danny.cz>
-Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+  + watchdog_hardlockup_interrupt_count() looks better then
+	the original. It clearly shows that it makes sense only
+	for the hardlockup detector ("bug" fixed by this patch).
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 26245aaf12b8..2297aa764ecd 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
- 				  pte_t entry, unsigned long address, int psize)
- {
- 	struct mm_struct *mm = vma->vm_mm;
--	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
--					      _PAGE_RW | _PAGE_EXEC);
-+	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
-+					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
- 
- 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
- 	/*
--- 
-2.40.1
+	Well, I would personally call it watchdog_hardlockup_kick()
+	and remove the comment.
 
+
+That said, I could live with this patch. It is better than the
+original.
+
+Best Regards,
+Petr
