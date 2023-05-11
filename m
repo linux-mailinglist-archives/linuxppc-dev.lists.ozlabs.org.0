@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D2A6FEE40
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:02:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237C86FEE8E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:19:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH5Wg1BmRz3fXV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:02:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH5vH70Bdz3fRB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:19:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LiA5aCTh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bgdev-pl.20221208.gappssmtp.com header.i=@bgdev-pl.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=IJ2xCqIT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=nphamcs@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2607:f8b0:4864:20::931; helo=mail-ua1-x931.google.com; envelope-from=brgl@bgdev.pl; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LiA5aCTh;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20221208.gappssmtp.com header.i=@bgdev-pl.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=IJ2xCqIT;
 	dkim-atps=neutral
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH5Vp2Hbtz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:01:52 +1000 (AEST)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-7577a91cfd6so243673285a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 02:01:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH5tP0xmCz3cd4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:18:51 +1000 (AEST)
+Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-77d0419750eso2219733241.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 02:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683795709; x=1686387709;
+        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1683796727; x=1686388727;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KATKL5c9hHw7borFknSpolyvbkYiWwqKIKb81BIcugs=;
-        b=LiA5aCThzGnNp7E+Ta+DAvVEwiclZpF791zLAUwx+Als8erWN8Yl7PpwtloKY7vfA7
-         +VTsnl2KSlBmbyAImxRU3lG+IUT2Wqb5hUFCcAsZyEs/D1k9iAGqD79kt7aecJ/Cxj9r
-         eR6nzEnIzjucsN/6A+1hNPz8FvRo+Kuj2ketbPBiwSj1JqzajAiKbzNVkW/c2RJBCR3k
-         MZC8rrsOEhbdZrX91ntkakGdeHJHeYwEVqGe6cUOqDaw42N8TysvScbiMKu+APTP9eCY
-         3fchxaSfDDqrX5GvKxMc/O6qbvizbF/orFqeAlT1EFH85PiOL82QGmIN8EQXMGf+kfzf
-         4sBA==
+        bh=mCpJk3R8UEUc900fWaZ36e4XkCAv/PqWqpOGayqH3do=;
+        b=IJ2xCqITqQxYd2j21guIc8CZ8a3qzOQddlNmBPpwRr3wVfJWaXyJI/ZKssRhmcOTgA
+         ilyj2rg2fCrteFz+fjY/juhlucDO3hu6UGVP/mhHZ/5db2Ph3NG2SEHP5q6avENqPQEw
+         vd7GdnA5jMAlyOsQA09qOdBp7bqPEQ/s8ZXp8QFwSB7RC/I3DqQbtiDdGq6uemVS2Ld0
+         x0bGAOvDLv5PbDm8I88MTMA4AP3yIQlfKTU+4zyo27lkONLtPWZOXMYYdHg9qekj+JYY
+         lSKV46S0nCXogvNJCBGFhU8sEupT0DaXqxj9jwiG6qCwOmNnPzyk2uadn5QFM2mO4lxW
+         LegQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683795709; x=1686387709;
+        d=1e100.net; s=20221208; t=1683796727; x=1686388727;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KATKL5c9hHw7borFknSpolyvbkYiWwqKIKb81BIcugs=;
-        b=BXiu6p/2Q7M4XCddIZode9IGW1t2gEKC8g4FRAdCqHVygMv5G4r1z4wF2XUpQu3wn6
-         SsE3ypWsU8m+59q6ZijIMU3x+ZEK9KeA4tqpQsGYNfeJde4XNLTzNwwSDnkSPnNrU2r6
-         U4xSGWH2GaCEuQI7iu0ig0oGnv4TN1I41+G4oZDM30Qg/rvE8PpgZm9CsFmdWu8X0KG3
-         2eX/fw8kFJMwW0rPrLEm2tE3H3UsoKJOvsBFJL+MB4eP3vPchzSM50tkFYDMIzJ7fE3/
-         iAfhFXgQ5wVjJUnvThMlzWOudlrTEIgPabS4I3iGe3gUzYqlNxxO+s2OdrvxlQMNP4yX
-         k8hA==
-X-Gm-Message-State: AC+VfDwP8qIfRi4r5KSxHsmYDQKQxbu62fGM+be/CCEnKfJ6Bl3Sjrev
-	fpnvTbcpa1QrG6mvnQYI2d+R6vQmz9hffsRHOzE=
-X-Google-Smtp-Source: ACHHUZ5zRYnTHqc+5jEp+WommdN4iUlzGKKD+R//mFSlux2Z635gESR+gw4QOQ+7Eia9GPcOqFZAyzIfjtGm1Vv4yks=
-X-Received: by 2002:a05:6214:4018:b0:5ef:3b9a:b01d with SMTP id
- kd24-20020a056214401800b005ef3b9ab01dmr25843220qvb.1.1683795708608; Thu, 11
- May 2023 02:01:48 -0700 (PDT)
+        bh=mCpJk3R8UEUc900fWaZ36e4XkCAv/PqWqpOGayqH3do=;
+        b=gMotgtQii7502jj6TTRzqCjm2o5Mz4TdR+wWPSERABeiqUs56iKmKBCP02ie4QLmv1
+         Z3wtAFzkWWX4TyTFHQgrT0Epe2+jV38NOLVV/UH5H86My1yWCRwCWuLhTv7BSkcGopYZ
+         roIVPiXz+O5E4/S2dbVsd+W6n7Vn80tsjlSS2Qf5gBFAi0bSnbvp1dGsh9/9zjOoX97K
+         IL9V5+pQEIUrlcO2UJHkyK6Q9dj52LbYSRX07w80FA97Brk2oqFYc3HrPcMDmc/WEVeq
+         6weI42JgE6OSyoqxDV8TVZU0q+SmR3W19n7XMsfZ2bI4EAFBHuDLNQmIojlpvxYwoeiI
+         s76Q==
+X-Gm-Message-State: AC+VfDyxiXp9s3GoB01507YHxKrIbcB9uBzq7Giati4CAMncjCQrtlf3
+	QLGjZk/DdoqiK15bdHOmGDcpYbfRCxErPGOYZUnHng==
+X-Google-Smtp-Source: ACHHUZ7PfcbhhIISYu9xCWNbAAg7XKAZcsN35LL5BB55uAZP1vndrSeFKFLrjV9j0Mzf8/9C95DuBCkC6LahVX2mBwE=
+X-Received: by 2002:a05:6102:2857:b0:436:158:cf6c with SMTP id
+ az23-20020a056102285700b004360158cf6cmr4794491vsb.6.1683796727674; Thu, 11
+ May 2023 02:18:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230510195806.2902878-1-nphamcs@gmail.com> <CAMuHMdV=PNCb1VYfUkEb9rPwGVB=1tkwvm-XBqECyhHR4SNGKg@mail.gmail.com>
-In-Reply-To: <CAMuHMdV=PNCb1VYfUkEb9rPwGVB=1tkwvm-XBqECyhHR4SNGKg@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 11 May 2023 02:01:37 -0700
-Message-ID: <CAKEwX=Pty0V0m+_00F1uWR1EXt8Gt35PYh-yUZEd-LQRSKgfGQ@mail.gmail.com>
-Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230413160607.4128315-1-sean.anderson@seco.com> <20230413160607.4128315-4-sean.anderson@seco.com>
+In-Reply-To: <20230413160607.4128315-4-sean.anderson@seco.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 11 May 2023 11:18:36 +0200
+Message-ID: <CAMRc=Mft9a3PNo78jiSGfKaZDhAkpPTrcTfarcr=tSmLWzj-Qw@mail.gmail.com>
+Subject: Re: [PATCH v14 03/15] dt-bindings: Convert gpio-mmio to yaml
+To: Sean Anderson <sean.anderson@seco.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,70 +75,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, linux-mm@kvack.org, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, linux@armlinux.org.uk, mattst88@gmail.com, borntraeger@linux.ibm.com, linux-alpha@vger.kernel.org, gor@linux.ibm.com, hca@linux.ibm.com, kernel-team@meta.com, richard.henderson@linaro.org, npiggin@gmail.com, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, glaubitz@physik.fu-berlin.de, linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jcmvbkbc@gmail.com, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, =?UTF-8?Q?Fern=C3=A1ndez_Rojas?= <noltari@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-gpio@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 11, 2023 at 12:01=E2=80=AFAM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+On Thu, Apr 13, 2023 at 6:06=E2=80=AFPM Sean Anderson <sean.anderson@seco.c=
+om> wrote:
 >
-> Hi Nat,
+> This is a generic binding for simple MMIO GPIO controllers. Although we
+> have a single driver for these controllers, they were previously spread
+> over several files. Consolidate them. The register descriptions are
+> adapted from the comments in the source. There is no set order for the
+> registers, and some registers may be omitted. Because of this, reg-names
+> is mandatory, and no order is specified.
 >
-> On Wed, May 10, 2023 at 9:58=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> > cachestat is previously only wired in for x86 (and architectures using
-> > the generic unistd.h table):
-> >
-> > https://lore.kernel.org/lkml/20230503013608.2431726-1-nphamcs@gmail.com=
-/
-> >
-> > This patch wires cachestat in for all the other architectures.
-> >
-> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> > ---
-> >  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
-> >  arch/arm/tools/syscall.tbl                  | 1 +
+> Rename brcm,bcm6345-gpio to brcm,bcm63xx-gpio to reflect that bcm6345
+> has moved.
 >
-> Looking at the last addition of a syscall (commit 21b084fdf2a49ca1
-> ("mm/mempolicy: wire up syscall set_mempolicy_home_node"), it looks
-> like you forgot to update arm64 in compat mode? Or is that not needed?
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Linus or Bartosz, feel free to pick this up as the rest of this series
+> may not be merged any time soon.
+>
 
-It does look like I missed that! Thanks for the reminder. I'll send a fixle=
-t
-shortly...
+Applied, thanks!
 
-Best,
-Nhat
-
->
-> >  arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
-> >  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
->
-> For m68k:
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> >  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
-> >  arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
-> >  arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
-> >  arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
-> >  arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
-> >  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
-> >  arch/s390/kernel/syscalls/syscall.tbl       | 1 +
-> >  arch/sh/kernel/syscalls/syscall.tbl         | 1 +
-> >  arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
-> >  arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
-> >  14 files changed, 14 insertions(+)
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
-8k.org
->
-> In personal conversations with technical people, I call myself a hacker. =
-But
-> when I'm talking to journalists I just say "programmer" or something like=
- that.
->                                 -- Linus Torvalds
+Bart
