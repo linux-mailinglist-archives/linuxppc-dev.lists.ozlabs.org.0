@@ -2,54 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EA26FF666
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 17:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC546FF969
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 20:19:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHGVc23Hgz3fNL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 01:47:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Zq7AfBNF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHKsr4GjCz3fZF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 04:19:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Zq7AfBNF;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net; envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHKsJ6ZHLz3fCs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 04:18:44 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4QHKrx3P72z1s95F;
+	Thu, 11 May 2023 20:18:25 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+	by mail.m-online.net (Postfix) with ESMTP id 4QHKrw5kCfz1qqlb;
+	Thu, 11 May 2023 20:18:24 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+	with ESMTP id IerpHNoGBzfN; Thu, 11 May 2023 20:18:23 +0200 (CEST)
+X-Auth-Info: i/Xv+IcJhW0kfDb3RFbFK0/YgUTT+UjCzPxmdmooeKeqEWINPY1r+0B4+hi7eI4b
+Received: from igel.home (aftr-62-216-205-189.dynamic.mnet-online.de [62.216.205.189])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHGTj5nL6z3bbP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 01:46:32 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 8888221DF6;
-	Thu, 11 May 2023 15:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1683819988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O+WNLGZ1q9D+gmD3l0BETAfuL1MeSiB7Zp5Utl633Ws=;
-	b=Zq7AfBNF97Xrqxden+m2xxxrVOT7WIdxT4zaU0B11ZzrDPPF4umix8ROjZsj1Yqduhj2K4
-	wGM3tgBLn5jPechHV8jYrk1e745lz7lAaGx8uE8MrE1r6njfUsjcmkhOBF6Rp/hp5Ezzds
-	PDX4wIbB8mhF/MQqunXnk9vf5g/lR4s=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 50A782C145;
-	Thu, 11 May 2023 15:46:24 +0000 (UTC)
-Date: Thu, 11 May 2023 17:46:21 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v4 10/17] watchdog/hardlockup: Move perf hardlockup
- watchdog petting to watchdog.c
-Message-ID: <ZF0NzSCRCapqDbC4@alley>
-References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.10.I00dfd6386ee00da25bf26d140559a41339b53e57@changeid>
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Thu, 11 May 2023 20:18:23 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 21B822C1D1B; Thu, 11 May 2023 20:18:23 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
+In-Reply-To: <4adb27d2-325d-3ce0-23b1-ec69a973b4bf@ghiti.fr> (Alexandre
+	Ghiti's message of "Tue, 9 May 2023 21:55:53 +0200")
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+	<20230215143626.453491-2-alexghiti@rivosinc.com>
+	<87wn1h5nne.fsf@igel.home>
+	<4adb27d2-325d-3ce0-23b1-ec69a973b4bf@ghiti.fr>
+X-Yow: BELA LUGOSI is my co-pilot..
+Date: Thu, 11 May 2023 20:18:23 +0200
+Message-ID: <87ttwi91g0.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230504151100.v4.10.I00dfd6386ee00da25bf26d140559a41339b53e57@changeid>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,104 +60,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2023-05-04 15:13:42, Douglas Anderson wrote:
-> In preparation for the buddy hardlockup detector, which wants the same
-> petting logic as the current perf hardlockup detector, move the code
-> to watchdog.c. While doing this, rename the global variable to match
-> others nearby. The arch_touch_nmi_watchdog() function is not renamed
-> since that is exported with "EXPORT_SYMBOL" and is thus ABI.
-> 
-> Currently the code in watchdog.c is guarded by
-> CONFIG_HARDLOCKUP_DETECTOR_PERF, which makes this change seem
-> silly. However, a future patch will change this.
-> 
-> NOTE: there is a slight side effect to this change, though from code
-> analysis I believe it to be a beneficial one. Specifically the perf
-> hardlockup detector will now do check the "timestamp" before clearing
-> any watchdog pets. Previously the order was reversed. With the old
-> order if the watchdog perf event was firing super fast then it would
-> also be clearing existing watchdog pets super fast. The new behavior
-> of handling super-fast perf before clearing watchdog pets seems
-> better.
+On Mai 09 2023, Alexandre Ghiti wrote:
 
-Ah, I think that this was actually pretty serious bug in the perf
-detector. But I think that it should work another way, see below.
+> On 5/9/23 21:07, Andreas Schwab wrote:
+>> That does not work with UEFI booting:
+>>
+>> Loading Linux 6.4.0-rc1-1.g668187d-default ...
+>> Loading initial ramdisk ...
+>> Unhandled exception: Instruction access fault
+>> EPC: ffffffff80016d56 RA: 000000008020334e TVAL: 0000007f80016d56
+>> EPC: ffffffff002d1d56 RA: 00000000004be34e reloc adjusted
+>> Unhandled exception: Load access fault
+>> EPC: 00000000fff462d4 RA: 00000000fff462d0 TVAL: ffffffff80016d56
+>> EPC: 00000000802012d4 RA: 00000000802012d0 reloc adjusted
+>>
+>> Code: c825 8e0d 05b3 40b4 d0ef 0636 7493 ffe4 (d783 0004)
+>> UEFI image [0x00000000fe65e000:0x00000000fe6e3fff] '/efi\boot\bootriscv64.efi'
+>> UEFI image [0x00000000daa82000:0x00000000dcc2afff]
+>>
+>
+> I need more details please, as I have a UEFI bootflow and it works great
+> (KASLR is based on a relocatable kernel and works fine in UEFI too).
 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> 
-> --- a/kernel/watchdog.c
-> +++ b/kernel/watchdog.c
-> @@ -111,6 +125,11 @@ static void watchdog_hardlockup_interrupt_count(void)
->  
->  void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs)
->  {
-> +	if (__this_cpu_read(watchdog_hardlockup_touch)) {
-> +		__this_cpu_write(watchdog_hardlockup_touch, false);
-> +		return;
-> +	}
+It also crashes without UEFI.  Disabling CONFIG_RELOCATABLE fixes that.
+This was tested on the HiFive Unmatched board.
+The kernel image I tested is available from
+<https://download.opensuse.org/repositories/Kernel:/HEAD/RISCV/>.  The
+same kernel with CONFIG_RELOCATABLE disabled is available from
+<https://download.opensuse.org/repositories/home:/Andreas_Schwab:/riscv:/kernel/standard/>.
 
-If we clear watchdog_hardlockup_touch() here then
-watchdog_hardlockup_check() won't be called yet another
-watchdog_hrtimer_sample_threshold perior.
-
-It means that any touch will cause ignoring one full period.
-The is_hardlockup() check will be done after full two periods.
-
-It is not ideal, see below.
-
-> +
->  	/*
->  	 * Check for a hardlockup by making sure the CPU's timer
->  	 * interrupt is incrementing. The timer interrupt should have
-> diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
-> index 9be90b2a2ea7..547917ebd5d3 100644
-> --- a/kernel/watchdog_perf.c
-> +++ b/kernel/watchdog_perf.c
-> @@ -112,11 +98,6 @@ static void watchdog_overflow_callback(struct perf_event *event,
->  	/* Ensure the watchdog never gets throttled */
->  	event->hw.interrupts = 0;
->  
-> -	if (__this_cpu_read(watchdog_nmi_touch) == true) {
-> -		__this_cpu_write(watchdog_nmi_touch, false);
-> -		return;
-> -	}
-
-The original code looks wrong. arch_touch_nmi_watchdog() caused
-skipping only one period of the perf event.
-
-I would expect that it caused restarting the period,
-something like:
-
-	if (__this_cpu_read(watchdog_nmi_touch) == true) {
-		/*
-		 * Restart the period after which the interrupt
-		 * counter is checked.
-		 */
-		__this_cpu_write(nmi_rearmed, 0);
-		__this_cpu_write(last_timestamp, now);
-		__this_cpu_write(watchdog_nmi_touch, false);
-		return;
-	}
-
-By other words, we should restart the period in the very next perf
-event after the watchdog was touched.
-
-That said, the new code looks better than the original.
-IMHO, the original code was prone to false positives.
-
-Best Regards,
-Petr
-
-PS: It might be worth fixing this problem in a separate patch at the
-    beginning of this patchset. It might be a candidate for stable
-    backports.
-
-> -
->  	if (!watchdog_check_timestamp())
->  		return;
->  
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
