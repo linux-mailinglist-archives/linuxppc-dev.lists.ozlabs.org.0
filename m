@@ -2,63 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB53B6FFC90
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 00:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1CF6FFCB9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 00:38:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHQyn4MKFz3fYy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 08:08:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHRcf4z1Pz3fWj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 08:38:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EgIt2plO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=leqASNj4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1133; helo=mail-yw1-x1133.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EgIt2plO;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=leqASNj4;
 	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHQxt3sLQz3c1K
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 08:08:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683842882; x=1715378882;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dcivrtBNBKYrwhHCG20eFak+R1jORc9y5Sw1snBi2S4=;
-  b=EgIt2plOkBZR9sTE2YnOL3k8sn6nIm3jt6PtP624D6F5FcosZaaEivPl
-   kZIBgId2SWhY+yAWMW/bRo5lKvxNESxGCYc2qFoGqhBfWK0AffGvFUt0v
-   AsxTrqOGfKU3ENM1+hT7IOIWXMsa7xL1omQRhsmzfH1mT2dlTcWp96mDM
-   7USmdiQgnuS5kLawJfC/oRl+HaHQE1ZH9MwywgJhItU1/ERg0hqAPaFIn
-   ct6SD0RM1HUAwtQF7tDDmh9mf+UnxYTVUPVXz0BMzq8kzWWfrFymM94UQ
-   q5ajH1uVqfOja+LTZNLS7Kf8JPkLwKj3lIuAWfKUPxv0X+oh5M6Ut+IWC
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="378780015"
-X-IronPort-AV: E=Sophos;i="5.99,268,1677571200"; 
-   d="scan'208";a="378780015"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 15:07:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="824138929"
-X-IronPort-AV: E=Sophos;i="5.99,268,1677571200"; 
-   d="scan'208";a="824138929"
-Received: from swalker-mobl1.amr.corp.intel.com (HELO [10.209.63.194]) ([10.209.63.194])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 15:07:23 -0700
-Message-ID: <35b33699-227d-d1f5-285a-e18ef8e91e57@linux.intel.com>
-Date: Thu, 11 May 2023 15:07:22 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHRbl2lszz3cMj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 08:37:22 +1000 (AEST)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-55a64f0053fso138501737b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 15:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683844637; x=1686436637;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7hKTTTuYzAS0vkkDuN/hWvEkav8P49YQtcFz2W5wMI=;
+        b=leqASNj4yXDwWkS3XyfGWIhxAw4SXxeg+extgQ/D3LGDyC8VCP1/fZdCDvzoBwFKI4
+         QsCpGgSaYJ3A6Zsn21DOX95W5x878ZXSFyOvGdFILF6cniMlbGpQ7kGstvh8Z0S2dYcr
+         KAZan2e+K8+hIYGfwKwpNjm5N5qCVBq6paKd8Ge6TYCsDubNG0nFnc28YyshVIf+H1TB
+         XtjHozhI9s8vKDiN1ralH7fr2aSIYGrsjfbuSUekrZzkfIqSGnPlfgmSzyftn9ttXqkA
+         wtISLC6kLw6VjZt4HnbIKNxY1VCI8P1bODtk830M8QQedX+j6RlN/KsBHhJiNcIqK0oT
+         5pFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683844637; x=1686436637;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7hKTTTuYzAS0vkkDuN/hWvEkav8P49YQtcFz2W5wMI=;
+        b=jvOZUiirljYFyT0+PfGvS9yr/Np+bbbUE5HhWqhsc/AShqwxGHfyjhnrkCwB9A9thp
+         YmIU5mnwcB7cJ5CObzXCQA0IfFaekSo0XOCxEXLqQxVDnKLwiKr8HhXz+bluTOOlXqFr
+         j/yo7p0Nlms76MOx902spQsHcQP9ErFNJB9MJMQ5754KBKBPD64fa9ZJPd4Jlw30zQ0M
+         udGOyPnCwpL9f0J2+Ox5WmX/P+KyggmL8cVe2St14Z/jii3N1fadwMk/3FLeOk21YGg/
+         5ggaXo+/upwd1sx0j9lSbr5CokTMJIVdLZjnASp1cCPzyDgk2prWwIuWn0YobPA1qcOP
+         eMDw==
+X-Gm-Message-State: AC+VfDzKUJc5aaB730zvCi+bplVMbBM8GILA9B0+dmmisyfBPpTpdHqz
+	y25ljsaTAvCgw0M0okPEgSTndQ==
+X-Google-Smtp-Source: ACHHUZ5ulkW3cY83+IL8attIxR7bTyRhvIioTTYSGrJhrY5IS/y6LwBFwFzMwChvIicQOTRvegivGA==
+X-Received: by 2002:a0d:d993:0:b0:559:d294:1c48 with SMTP id b141-20020a0dd993000000b00559d2941c48mr22473279ywe.24.1683844637583;
+        Thu, 11 May 2023 15:37:17 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id k189-20020a0dfac6000000b0054fa5f6c0cdsm5262641ywf.53.2023.05.11.15.37.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 May 2023 15:37:17 -0700 (PDT)
+Date: Thu, 11 May 2023 15:37:06 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 00/23] arch: allow pte_offset_map[_lock]() to fail
+In-Reply-To: <ZFz1j1slZHCQmwMJ@casper.infradead.org>
+Message-ID: <5f1dd6f-1e75-8d98-3083-e1bd2163dcc6@google.com>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com> <ZFs0k2rrLPH9A/UU@casper.infradead.org> <d7f3c7b2-25b8-ef66-98a8-43d68f4499f@google.com> <ZFz1j1slZHCQmwMJ@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.10.0
-Subject: Re: [PATCH v5 2/3] PCI/AER: Disable AER interrupt on suspend
-Content-Language: en-US
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
-References: <20230511133610.99759-1-kai.heng.feng@canonical.com>
- <20230511133610.99759-2-kai.heng.feng@canonical.com>
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20230511133610.99759-2-kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,104 +76,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mika.westerberg@linux.intel.com, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Michel Lespinasse <michel@lespinasse.org>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-ke
+ rnel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 5/11/23 6:36 AM, Kai-Heng Feng wrote:
-> PCIe service that shares IRQ with PME may cause spurious wakeup on
-> system suspend.
+On Thu, 11 May 2023, Matthew Wilcox wrote:
 > 
-> This is very similar to previous attempts to suspend AER and DPC [1],
-> but this time disabling AER IRQ is to prevent immediate PME wakeup when
-> AER shares the same IRQ line with PME.
+> I was thinking that removing CONFIG_HIGHPTE might simplify the page
+> fault handling path a little, but now I've looked at it some more, and
+> I'm not sure there's any simplification to be had.  It should probably
+> use kmap_local instead of kmap_atomic(), though.
 
-IMHO, you don't need to mention the previous submission reason.
+Re kmap_local, yes, one of the patches in the next series does make
+that change.
 
 > 
-> It's okay to disable AER because PCIe Base Spec 5.0, section 5.2 "Link
-> State Power Management" states that TLP and DLLP transmission is
-> disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold with aux power)
-> and L3 (D3cold), hence we don't lose much here to disable AER IRQ during
-> system suspend.
+> I infer that what you need is a pte_access_start() and a
+> pte_access_end() which look like they can be plausibly rcu_read_lock()
+> and rcu_read_unlock(), but might need to be local_irq_save() and
+> local_irq_restore() in some configurations?
 
-May be something like below?
+Yes, except that the local_irq_restore() in PAE-like configurations
+(if we need it at all) is not delayed until the pte_access_end() or
+pte_unmap() - it's internal to the pte_access_start() or pte_offset_map():
+interrupts only disabled across the getting of a consistent pmd entry.
 
-PCIe services that share an IRQ with PME, such as AER or DPC, may cause a
-spurious wakeup on system suspend. To prevent this, disable the AER
-interrupt notification during the system suspend process.
-
-As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power Management",
-TLP and DLLP transmission are disabled for a Link in L2/L3 Ready (D3hot), L2
-(D3cold with aux power) and L3 (D3cold) states. So disabling the AER notification
-during suspend and re-enabling them during the resume process should not affect
-the basic functionality.
+Over-generalizing a little, any user of pte_offset_map() (as opposed to
+pte_offset_map_lock()) has to be prepared for the ptes to change under
+them: but we do need to give them something that is or was recently the
+relevant page table, rather than a random page mishmashed from mismatched
+pmd_low and pmd_high.
 
 > 
-> [1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-> 
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v5:
->  - Wording.
-> 
-> v4:
-> v3:
->  - No change.
-> 
-> v2:
->  - Only disable AER IRQ.
->  - No more check on PME IRQ#.
->  - Use helper.
-> 
->  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 1420e1f27105..9c07fdbeb52d 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
->  	return 0;
->  }
->  
-> +static int aer_suspend(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +	struct pci_dev *pdev = rpc->rpd;
-> +
-> +	aer_disable_irq(pdev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int aer_resume(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +	struct pci_dev *pdev = rpc->rpd;
-> +
-> +	aer_enable_irq(pdev);
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
->   * @dev: pointer to Root Port, RCEC, or RCiEP
-> @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver = {
->  	.service	= PCIE_PORT_SERVICE_AER,
->  
->  	.probe		= aer_probe,
-> +	.suspend	= aer_suspend,
-> +	.resume		= aer_resume,
->  	.remove		= aer_remove,
->  };
->  
+> We also talked about moving x86 to always RCU-free page tables in
+> order to make accessing /proc/$pid/smaps lockless.  I believe Michel
+> is going to take a swing at this project.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+(And /proc/$pid/numa_maps, I hope: that's even worse in some way, IIRC.)
+
+That might be orthogonal to what I'm doing: many non-x86 architectures
+already do RCU-freeing of page tables via the TLB route, but that doesn't
+cover a pte_free() from retract_page_tables() or collapse_and_free_pmd().
+
+Hugh
