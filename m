@@ -1,59 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3846FEEBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:25:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AC66FEEE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 11:32:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QH61y2H42z3fPc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:25:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QH69W012Bz3fXk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 19:31:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=f/46rLYe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BDA3XAW6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732; helo=mail-qk1-x732.google.com; envelope-from=nphamcs@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=f/46rLYe;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BDA3XAW6;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH6161QJfz3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:24:42 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 0BD4A219EB;
-	Thu, 11 May 2023 09:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1683797072; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3x+A1oAvkOFARznkC50c0SLUXNmMY3RdCi2ozgXXvgw=;
-	b=f/46rLYe7nyx5+kH1sYpIAw20pQoZZ4k+Ask8EvmsmiWBbtNmUShXHyprr6FXGe31OW383
-	tKjPbpzXi9nwMp5HsjAkNXfozdukoqdCei/XT/10RlTfaTVyada91hl3TnVvYiIg9PrxY7
-	ZOTKjflhV/IQZ/2lqefV+OAZ6FjZ7Dg=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 9D6172C141;
-	Thu, 11 May 2023 09:24:30 +0000 (UTC)
-Date: Thu, 11 May 2023 11:24:29 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v4 05/17] watchdog/hardlockup: Rename
- touch_nmi_watchdog() to touch_hardlockup_watchdog()
-Message-ID: <ZFy0TX1tfhlH8gxj@alley>
-References: <20230504221349.1535669-1-dianders@chromium.org>
- <20230504151100.v4.5.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid>
- <CSE04EI159N2.2TSXHBN2QLFCM@wheely>
- <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QH68b1LX0z3cCW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 19:31:09 +1000 (AEST)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-75785057afeso423316385a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 02:31:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683797466; x=1686389466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=44LgLHJDIULJkMBem069KICIq3uxO214CaUgM8dXQT8=;
+        b=BDA3XAW6HVHBBCTylbjq0CrSvwep3z/RKHIin6eHkOxIgxSvF9oCpp4JdMxjhKCg8a
+         t6De61RAZB8nwhqVhhnd+GwGOl5A9f6x8ta1mhnXQNHIA8XVVWTsZ3z2sLNVKJGzzpnv
+         pVJ84YIgNXNe3zzg0Bt2DTwq5JDGQGStI/fGod4pqnCGfyQ7QKofa8hYUqI7j01kYIh5
+         pdBpovGUxFwqp+4kZG7VlWddqhNwbB9KXu5x5m7XiaxjuDvLIgeFm1gLHxbutaTsEe0t
+         4R0BYZnEDMzRXc8veBcbo5PxiVrNC+0sZriJIWCU7Z1JN7IWfsEaHn66MIjE5tmEuP4w
+         GExw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683797466; x=1686389466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=44LgLHJDIULJkMBem069KICIq3uxO214CaUgM8dXQT8=;
+        b=GQvz0vQ+6TQ5hC5lXFA8fhkVn8gzTG1EQCG6Uo89uR3U01EtORCZUHcAN3qNCeJQWF
+         862dslxCJClxHoCTlxeeQrtdWAJgFU6YnmVw1P3e4T/JrJuZaKASYe/1ZOAB4DPPl4/a
+         lpNrn6LRyv6rwHpu9Pk9MuLn9GHhRbP44TKWLbOqWL1HwIOcLthptek8omH1QXoaRqE9
+         Jp6Pbxt9kfo5sylsZIJf6glisUoBGyMw0H5LZcyjiK1uaJ4HnMXxbrLOZt7ukvT+20sP
+         zphLEt2xFBwrDN914ZB0oUsDAMMn7dSmRClvB3uYerVsBbkj6SUhUCgMSByagX0KPpOu
+         Qc1Q==
+X-Gm-Message-State: AC+VfDykwn8nDa7xG5+tOAz1hQZP0nMiqhiuRvoqbMXIdavGYqiqMeA6
+	fzm5qaNOK1gfwTj5NK6d+nJJq0fwUcVNauhEuEM=
+X-Google-Smtp-Source: ACHHUZ4gCIyUNhd/+bbAhcP9wNcKpLhKmfok0Ws6ilq/cfwGVAdfDhZw6m7PSHSI2kufFJi8oJq2AHQm2PPca7W1ngo=
+X-Received: by 2002:ad4:5961:0:b0:621:4551:c6dc with SMTP id
+ eq1-20020ad45961000000b006214551c6dcmr7378789qvb.39.1683797465598; Thu, 11
+ May 2023 02:31:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=XXzo3m2dqwtNST+uXGQz6NW_e-B6-tWkJMrHoCTZBT9Q@mail.gmail.com>
+References: <20230510195806.2902878-1-nphamcs@gmail.com> <0d8e2503-5d4f-4b60-84ff-01a23bcf557f@app.fastmail.com>
+In-Reply-To: <0d8e2503-5d4f-4b60-84ff-01a23bcf557f@app.fastmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 11 May 2023 02:30:54 -0700
+Message-ID: <CAKEwX=OFVkc2GL3jmoC-qAuwZvzxfs7v__aWY=8bLY3MeMq9hA@mail.gmail.com>
+Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,80 +75,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, dav
- em@davemloft.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>, borntraeger@linux.ibm.com, linux-alpha@vger.kernel.org, gor@linux.ibm.com, Heiko Carstens <hca@linux.ibm.com>, kernel-team@meta.com, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, chris@zankel.net, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer
+  <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2023-05-05 09:37:35, Doug Anderson wrote:
-> Hi,
-> 
-> On Thu, May 4, 2023 at 7:51 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+On Thu, May 11, 2023 at 12:05=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
+e:
+>
+> On Wed, May 10, 2023, at 21:58, Nhat Pham wrote:
+> > cachestat is previously only wired in for x86 (and architectures using
+> > the generic unistd.h table):
 > >
-> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
-> > > In preparation for the buddy hardlockup detector, rename
-> > > touch_nmi_watchdog() to touch_hardlockup_watchdog() to make it clear
-> > > that it will touch whatever hardlockup detector is configured. We'll
-> > > add a #define for the old name (touch_nmi_watchdog) so that we don't
-> > > have to touch every piece of code referring to the old name.
+> > https://lore.kernel.org/lkml/20230503013608.2431726-1-nphamcs@gmail.com=
+/
 > >
-> > Is this really helpful? Now it's got two names Could just leave it.
-> > If you insist then it'd be better just to rename everything in one
-> > go at the end of a merge window IMO. Conflicts would be trivial.
-> 
-> I'm not picky here. I changed the name since Petr requested names to
-> be changed for any code I was touching [1] and so I threw this out as
-> a proposal. I agree that having two names can be confusing, but in
-> this case it didn't feel too terrible to me.
-
-IMHO, it is worth renaming to make the code easier to follow.
-Especially after adding the buddy hardlockup detector that is
-not using NMI context.
-
-And I agree that that we should rename all callers as well.
-Otherwise, it might be seen just as an extra churn.
-
-> I'd love to hear Petr's opinion on this name change. I'm happy with:
-> 
-> a) This patch as it is.
-> 
-> b) Dropping this patch (or perhaps just changing it to add comments).
-> 
-> c) Changing this patch to rename all 70 uses of the old name. Assuming
-> this will go through Andrew Morton's tree, I'd be interested in
-> whether he's OK w/ this.
-> 
-> d) Dropping this patch from this series but putting it on the
-> backburner to try to do later (so that the rename can happen at a time
-> when it's least disruptive).
-
-d) sounds reasonable given that there is about 70 callers.
-
-> 
-> > > Ideally this change would also rename the arch_touch_nmi_watchdog(),
-> > > but that is harder since arch_touch_nmi_watchdog() is exported with
-> > > EXPORT_SYMBOL() and thus is ABI. Add a comment next to the call to
-> > > hopefully alleviate some of the confusion here.
+> > This patch wires cachestat in for all the other architectures.
 > >
-> > We don't keep ABI fixed upstream.
-> 
-> I'm happy to be corrected, but my understanding was that kernel devs
-> made an effort not to mess with things exported via "EXPORT_SYMBOL",
-> but things exported via "EXPORT_SYMBOL_GPL" were fair game.
+> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+>
+> The changes you did here look good, but you missed one
+> file that has never been converted to the syscall.tbl format:
+> arch/arm64/include/asm/unistd32.h along with the __NR_compat_syscalls
+> definition in arch/arm64/include/asm/unistd.h, please add those
+> as well, and then
+>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-My understanding is that kernel guarantees ABI compatibility only for
-the userspace (do-not-break-userspace rule). But the kernel ABI
-is not guaranteed [*]
+Just sent a follow-up fixlet for this:
 
-It actually has even a positive side effect because it motivates
-module developers to upstream the code.
+https://lore.kernel.org/linux-mm/20230511092843.3896327-1-nphamcs@gmail.com=
+/T/#u
 
-Of course, there should be a good reason for the change. And I think
-that we have a good reason.
-
-[*] This is valid for upstream. Another story is with linux
-    distributions. They usually maintain the kernel KABI
-    stability to some degree when backporting upstream changes.
-
-Best Regards,
-Petr
+Thanks for the suggestion!
