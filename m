@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7396FEA21
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 05:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72816FEA30
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 05:24:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QGxz42Ttrz3fPn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 13:22:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QGy103sj6z3fKR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 May 2023 13:24:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NJNN2mxn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mpN6WZbs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGxy94DpGz3bhx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 13:21:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QGy090rQSz3bcT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 May 2023 13:23:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NJNN2mxn;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mpN6WZbs;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QGxy40qx8z4x2c;
-	Thu, 11 May 2023 13:21:32 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QGy012TVHz4x4X;
+	Thu, 11 May 2023 13:23:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1683775292;
-	bh=9VphvYDUUTpJa6Y51rDbdnX2+VZhjxsrx/SPIlypOzg=;
+	s=201909; t=1683775400;
+	bh=segvorBuGekPc5jSCLXtWJe7pAKDaM/2mPQxUa2lvTw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NJNN2mxnfu/5QYe7146XafzWTY72GFa0FBjWrl2NLrxKyugO0NAVfnvefKNqSd6pa
-	 yQzeAxhIemK5n1/e0B8WFeiOUkigosZGcXEkcK8l8kQ1qQNk/OQ+4+PdoZoVutNUq9
-	 mFkl2ewnLvfRjTL9efoWJN5c14AkgYpUrfyPElVTvbpr1OCax+7l8CPQkZUET5fBE4
-	 F488/tp145G5ISsXEhhYnOw7qJ/ZbGXVDqj45X75FmW0Ifq6CcdC0EH4JPwMlatPi1
-	 COCqhjngty6kkF+aWLnfOykGPX2ig66VE9Wvld7fRyrnldUEGBEihtrS6EaG3QRXWi
-	 7BQRutfI41uWQ==
+	b=mpN6WZbs8ze5YaIng5ERyTBY3chApO1uFrN1U1lTsRVA9HI18/rgyaG/eZmexoGi4
+	 xyNRjwovMhVVlZljbfexsALAQ/VC7SXFkLQXhGs4Bb0CKdQ9ZE7uWK8mAGQpR/wXnj
+	 Wj/Kq9bEbYeNfiJORTh/qbHavius2OrvxO8nKOQelnsk3QR4A3TJ4hsLhIW2fK+19D
+	 90D5YoD3X1p3CFTX+0ixP4wpazzRWLy7HTHBpgR9OBJW3WUEJ01CMuFyOW/rNQ/1o1
+	 jq40YmakA31zDnqwNmvC6KPPEIJRM2z/UjkLs2qgYubScN3CGu05cVDjwVg/DFcNT6
+	 LL1PDlPViTPUQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org
-Subject: Re: [PATCH v13 3/3] selftests: Add selftests for cachestat
-In-Reply-To: <20230503013608.2431726-4-nphamcs@gmail.com>
-References: <20230503013608.2431726-1-nphamcs@gmail.com>
- <20230503013608.2431726-4-nphamcs@gmail.com>
-Date: Thu, 11 May 2023 13:21:28 +1000
-Message-ID: <877ctfa6yv.fsf@mail.lhotse>
+Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
+In-Reply-To: <20230510195806.2902878-1-nphamcs@gmail.com>
+References: <20230510195806.2902878-1-nphamcs@gmail.com>
+Date: Thu, 11 May 2023 13:23:12 +1000
+Message-ID: <874joja6vz.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,159 +57,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-api@vger.kernel.org, bfoster@redhat.com, kernel-team@meta.com, linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org, hannes@cmpxchg.org, linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com, linux-mm@kvack.org, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, linux@armlinux.org.uk, geert@linux-m68k.org, mattst88@gmail.com, borntraeger@linux.ibm.com, linux-alpha@vger.kernel.org, gor@linux.ibm.com, hca@linux.ibm.com, kernel-team@meta.com, richard.henderson@linaro.org, npiggin@gmail.com, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, glaubitz@physik.fu-berlin.de, linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jcmvbkbc@gmail.com, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com, hannes@cmpxchg.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Nhat Pham <nphamcs@gmail.com> writes:
-> Test cachestat on a newly created file, /dev/ files, and /proc/ files.
-> Also test on a shmem file (which can also be tested with huge pages
-> since tmpfs supports huge pages).
+> cachestat is previously only wired in for x86 (and architectures using
+> the generic unistd.h table):
+>
+> https://lore.kernel.org/lkml/20230503013608.2431726-1-nphamcs@gmail.com/
+>
+> This patch wires cachestat in for all the other architectures.
 >
 > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-...
-> diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-> new file mode 100644
-> index 000000000000..c3823b809c25
-> --- /dev/null
-> +++ b/tools/testing/selftests/cachestat/test_cachestat.c
-> @@ -0,0 +1,258 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#define _GNU_SOURCE
-> +
-> +#include <stdio.h>
-> +#include <stdbool.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mman.h>
-> +#include <sys/mman.h>
-> +#include <sys/shm.h>
-> +#include <sys/syscall.h>
-> +#include <unistd.h>
-> +#include <string.h>
-> +#include <fcntl.h>
-> +#include <errno.h>
-> +
-> +#include "../kselftest.h"
-> +
-> +static const char * const dev_files[] = {
-> +	"/dev/zero", "/dev/null", "/dev/urandom",
-> +	"/proc/version", "/proc"
-> +};
-> +static const int cachestat_nr = 451;
-> +
-> +void print_cachestat(struct cachestat *cs)
-> +{
-> +	ksft_print_msg(
-> +	"Using cachestat: Cached: %lu, Dirty: %lu, Writeback: %lu, Evicted: %lu, Recently Evicted: %lu\n",
-> +	cs->nr_cache, cs->nr_dirty, cs->nr_writeback,
-> +	cs->nr_evicted, cs->nr_recently_evicted);
-> +}
-> +
-> +bool write_exactly(int fd, size_t filesize)
-> +{
-> +	char data[filesize];
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+>  arch/arm/tools/syscall.tbl                  | 1 +
+>  arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+>  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+>  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+>  arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
+>  arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
+>  arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
+>  arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
+>  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
 
-On kernels with 64K pages (powerpc at least), this tries to allocate
-64MB on the stack which segfaults.
+With the change to the selftest (see my other mail), I tested this on
+powerpc and all tests pass.
 
-Allocating data with malloc avoids the problem and allows the test to
-pass.
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Looks like this commit is still in mm-unstable, so maybe Andrew can
-squash the incremental diff below in, if it looks OK to you. The diff is
-a bit big because I unindented the body of the function.
 
 cheers
-
-
-diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-index 9be2262e5c17..54d09b820ed4 100644
---- a/tools/testing/selftests/cachestat/test_cachestat.c
-+++ b/tools/testing/selftests/cachestat/test_cachestat.c
-@@ -31,48 +31,59 @@ void print_cachestat(struct cachestat *cs)
- 
- bool write_exactly(int fd, size_t filesize)
- {
--	char data[filesize];
--	bool ret = true;
- 	int random_fd = open("/dev/urandom", O_RDONLY);
-+	char *cursor, *data;
-+	int remained;
-+	bool ret;
- 
- 	if (random_fd < 0) {
- 		ksft_print_msg("Unable to access urandom.\n");
- 		ret = false;
- 		goto out;
--	} else {
--		int remained = filesize;
--		char *cursor = data;
-+	}
- 
--		while (remained) {
--			ssize_t read_len = read(random_fd, cursor, remained);
-+	data = malloc(filesize);
-+	if (!data) {
-+		ksft_print_msg("Unable to allocate data.\n");
-+		ret = false;
-+		goto close_random_fd;
-+	}
- 
--			if (read_len <= 0) {
--				ksft_print_msg("Unable to read from urandom.\n");
--				ret = false;
--				goto close_random_fd;
--			}
-+	remained = filesize;
-+	cursor = data;
- 
--			remained -= read_len;
--			cursor += read_len;
-+	while (remained) {
-+		ssize_t read_len = read(random_fd, cursor, remained);
-+
-+		if (read_len <= 0) {
-+			ksft_print_msg("Unable to read from urandom.\n");
-+			ret = false;
-+			goto out_free_data;
- 		}
- 
--		/* write random data to fd */
--		remained = filesize;
--		cursor = data;
--		while (remained) {
--			ssize_t write_len = write(fd, cursor, remained);
-+		remained -= read_len;
-+		cursor += read_len;
-+	}
- 
--			if (write_len <= 0) {
--				ksft_print_msg("Unable write random data to file.\n");
--				ret = false;
--				goto close_random_fd;
--			}
-+	/* write random data to fd */
-+	remained = filesize;
-+	cursor = data;
-+	while (remained) {
-+		ssize_t write_len = write(fd, cursor, remained);
- 
--			remained -= write_len;
--			cursor += write_len;
-+		if (write_len <= 0) {
-+			ksft_print_msg("Unable write random data to file.\n");
-+			ret = false;
-+			goto out_free_data;
- 		}
-+
-+		remained -= write_len;
-+		cursor += write_len;
- 	}
- 
-+	ret = true;
-+out_free_data:
-+	free(data);
- close_random_fd:
- 	close(random_fd);
- out:
-
