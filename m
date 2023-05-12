@@ -2,67 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8F670061F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 12:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA1870069D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 13:22:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHm3146XRz3fX4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 20:58:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHmZb5m6Cz3fWF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 21:22:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g4BrRDZ2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=KpIW+Hu8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g4BrRDZ2;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=KpIW+Hu8;
 	dkim-atps=neutral
-X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir; Fri, 12 May 2023 20:57:53 AEST
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHmYk5T03z2xYL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 21:21:45 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id AA27E228E0;
+	Fri, 12 May 2023 11:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1683890501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Mll1DAMbLGCFXSubtx4QEn03KKOCJspxVpDzXoQOQ4=;
+	b=KpIW+Hu8ySVymSB28TiB64CYpeKVwXlVWvacchzaLtI9q7FObkmBCPO2LZ7HOgvYh0awWb
+	Vu/XmXFI2k4C5E7HKbYqv+kv7F2CMc4cHuQv9iabvQkMtDDbD2aVX1La9fkct2gRNR0/Iu
+	dWM7bdtfBmqRCNU9EtJIGZIfqdvJIxc=
+Received: from suse.cz (pmladek.tcp.ovpn2.prg.suse.de [10.100.208.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHm290lx9z3bxC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 20:57:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683889073; x=1715425073;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aTme5qDkFV7Mcp0uaOboKBbeV5ze/dqrLO9cBA/tElE=;
-  b=g4BrRDZ26SRO3RPeMPtYnW28fyTalpC6MNLSxqO2S3AwyV1LP3PIekYQ
-   +WfTsS0/yBfl5eh1rMt05RyEMGjFEFKh/rYWcGBdtB0ThbarlNNw4uJ+g
-   nh3W/rd2Kx9MrS09fXFEPZPm0TrFEEwNcXDgfgO9Qs6g004vyuFS3mt/L
-   mPeloXQJbPpw+e3LzwnAaOQm6i3K0r71den818DHoAURSQ7ynQdB8qmDa
-   Ju9OL1hLoZ/qDXczLs5p/drnEZGPBhDeX+NhRUwQSHZN8zu5F0W9PtwV3
-   EuCcbRBghyS0b+/sRRC7sbBswz+Gj4GZZDLM7FAEtfxPYbelXtxtknr2R
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="414132462"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="414132462"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 03:56:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="812041055"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="812041055"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 12 May 2023 03:56:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1pxQRq-0004Zv-0i;
-	Fri, 12 May 2023 13:56:30 +0300
-Date: Fri, 12 May 2023 13:56:29 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <ZF4bXaz2r75dlA5g@smile.fi.intel.com>
-References: <20230404161101.GA3554747@bhelgaas>
- <20230509182122.GA1259567@bhelgaas>
+	by relay2.suse.de (Postfix) with ESMTPS id A80022C152;
+	Fri, 12 May 2023 11:21:37 +0000 (UTC)
+Date: Fri, 12 May 2023 13:21:34 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 11/17] watchdog/hardlockup: Rename some "NMI watchdog"
+ constants/function
+Message-ID: <ZF4hPiEjvr4_ditV@alley>
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.11.I91f7277bab4bf8c0cb238732ed92e7ce7bbd71a6@changeid>
+ <CSE0GBQQDUAY.1QAJIC3D3OBVU@wheely>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230509182122.GA1259567@bhelgaas>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CSE0GBQQDUAY.1QAJIC3D3OBVU@wheely>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,61 +62,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-kernel@vger.kernel.org, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian
-  Glaubitz <glaubitz@physik.fu-berlin.de>, Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Randy Dunlap <rdunlap@infradead.org>, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, ito-yuichi@fujitsu.com, Douglas Anderson <dianders@chromium.org>, linux-perf-users@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+ , davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
-> On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
-> > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> > > Provide two new helper macros to iterate over PCI device resources and
-> > > convert users.
+On Fri 2023-05-05 13:06:41, Nicholas Piggin wrote:
+> On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
+> > Do a search and replace of:
+> > - NMI_WATCHDOG_ENABLED => HARD_WATCHDOG_ENABLED
+> > - watchdog_nmi_ => watchdog_hardlockup_
 > 
-> > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
-> 
-> This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-> upstream now.
-> 
-> Coverity complains about each use,
+> These are just making prefixes inconsistent again.
 
-It needs more clarification here. Use of reduced variant of the macro or all of
-them? If the former one, then I can speculate that Coverity (famous for false
-positives) simply doesn't understand `for (type var; var ...)` code.
+Yeah, HARD_WATCHDOG_ENABLED does not fit in. I would personally
+rename:
 
->	sample below from
-> drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
-> false positive; just FYI.
-> 
-> 	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
->   556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
->   557                base |= (u64)screen_info.ext_lfb_base << 32;
->   558
->   559        limit = base + size;
->   560
->   561        /* Does firmware framebuffer belong to us? */
-> 	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> 	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
-> 	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> 	  11. incr: Incrementing __b. The value of __b may now be up to 17.
-> 	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
-> 	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
->   562        pci_dev_for_each_resource(pdev, r) {
-> 	  4. Condition resource_type(r) != 512, taking true branch.
-> 	  9. Condition resource_type(r) != 512, taking true branch.
-> 
->   CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
->   15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
->   563                if (resource_type(r) != IORESOURCE_MEM)
-> 	  5. Continuing loop.
-> 	  10. Continuing loop.
->   564                        continue;
+  - NMI_WATCHDOG_ENABLED => WATCHDOG_HARDLOCKUP_ENABLED
+  - SOFT_WATCHDOG_ENABLED => WATCHDOG_SOFTOCKUP_ENABLED
 
--- 
-With Best Regards,
-Andy Shevchenko
+to follow the new name space.
+
+> If you really want to do a prefix, I would call it hardlockup which
+
+I wish, we found a good short prefix. My problem with hardlockup_
+is that for example "hardlockup_enable() looks ugly.
+
+Also some stuff is common for both softlockup and hardlockup
+detectors. And some stuff will be common for both perf and
+buddy hardlockup detectors.
+
+Possible alternatives:
+
+   a) watchdog_, watchdog_sl_ and watchdog_hl_, watchdog_hl_buddy_
+   b) wd_, wd_hardlockup_, wd_softlockup_, wd_hardlockup_buddy_
+   c) wd_, wd_hl_, wd_sl_, wd_hl_buddy_
+   d_ wd_, wdhl_, wdsl_, wdhl_buddy_
+
+If you want something shorter then c) looks the best to me.
+
+The wd_ prefix seems to be already used in:
+
+   + arch/powerpc/kernel/watchdog.c
+   + kernel/time/clocksource.c
+
+, but it is not used in the core watchdog code at all so it
+would require renaming almost everything.
 
 
+> probably best matches existing code and sysctl / boot stuff, and
+> concentrate on non-static symbols.
+
+Yeah, we could hardly change the sysctl interface visible to
+userspace. But we could change at least the internal code.
+
+And if we are changing the API anyway because of the
+nmi/perf/buddy/hardlockup/hard mess then lets choose
+something that will help to distinguish the common watchdog
+vs. softlockup/hardlockup/buddy/perf-specific watchdog code.
+
+And I would change it to the watchdog_hardlockup_ as it is
+done in this patchset:
+
+   + the names were mostly long even before
+   + the code mostly stayed within the 80-chars per-line limit
+   + the patches are ready
+
+
+> No problem with minor things like this that touch arch/powerpc
+> going through Andrew's tree though. I'm sure sparc maintainers
+> wouldn't mind either.
+
+Good to know.
+
+Best Regards,
+Petr
