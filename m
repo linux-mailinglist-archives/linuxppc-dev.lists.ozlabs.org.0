@@ -1,52 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21686FFEFB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 04:35:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE9A6FFF07
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 04:43:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QHXv03zdtz3fSJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 12:35:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QHY3k12Tjz3fX8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 May 2023 12:43:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XG5MpC2Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dIps/oqn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHXt73J6Wz30Ky
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 12:35:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QHY2w2MVsz3bhC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 May 2023 12:42:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XG5MpC2Y;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dIps/oqn;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QHXt2620vz4x1R;
-	Fri, 12 May 2023 12:35:06 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QHY2v2286z4x5R;
+	Fri, 12 May 2023 12:42:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1683858906;
-	bh=EkKpO2Lf6XrmEbhTcVWXc5G/4/3y6AtGBsRmT41WPgs=;
+	s=201909; t=1683859368;
+	bh=UHonVxCxl9tE/BE4saKmOTqDfW/Z+XH0atlSFKqQKFw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XG5MpC2YQuMorlJv0koV3gEbpnZDr/eEZ+aASkeVvD1ksGiOpIjPHWO9vxrD4sMZj
-	 Zkvh2pZLC/b0+5CfrS8D6sPmAbm0JHxZg/J1NX4iXGSrjunq9YPRVLXSerXRf5uYMP
-	 rLF8YdICIokazblkALyZ4/pPRbxtTD7or1lV7de6P1qEMa3zLk08RYe9tN6w6OSpXX
-	 Nzn+9fbf3KbxlIIg+jKpslnOeZWXbKHY3vEReh2W855Y1iw+RC9KucKb8dEX5iAqbd
-	 6KwSh8ytVi0oMeFcmQ/BsP+vDiTuiylsUbODjOLc9yxijZgGLyevQS3T8/JFpQDc5G
-	 u8EF/ohM8Zdcw==
+	b=dIps/oqn68QXS/wtfWcyekxrrBV800VlhYXyckk0yyHlNuAi/OANA1HtUmq/Dm9HY
+	 RCiAcMCb25X2GkBordupXcyG4V4fbQ21NRVicTRxpC+ul9+wr55ARw5deXskUIusKV
+	 A89LRqgyTf2iZog4EKY6eRpyMZI2Og/axtJ7SqtKHDnysjUjgr1MLwuvMgrcsChKxW
+	 Tn2qFReh+IIS6pyD5m3dl/jn19fXV3tTJtc0MPNh86ctlPKzO7xmR2cz77y5pDu1Lj
+	 MfpgFo/YdkymlLAJvrkNWgdTIxMES90GDKurKIxsqVbTZxQfmtWNicbivLkrkYQk0o
+	 7shnTEqgaAJpA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/iommu: limit number of TCEs to 512 for
- H_STUFF_TCE hcall
-In-Reply-To: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
-References: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
-Date: Fri, 12 May 2023 12:35:06 +1000
-Message-ID: <875y8yl1k5.fsf@mail.lhotse>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] powerpc: Drop MPC5200 LocalPlus bus FIFO driver
+In-Reply-To: <20230509082153.jcy2qpvyd44bjaee@pengutronix.de>
+References: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de>
+ <20230412150524.ojsvukh47hing6db@pengutronix.de>
+ <87zg7cabf6.fsf@mpe.ellerman.id.au>
+ <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
+ <20230509082153.jcy2qpvyd44bjaee@pengutronix.de>
+Date: Fri, 12 May 2023 12:42:46 +1000
+Message-ID: <873542l17d.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,60 +62,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, Gaurav Batra <gbatra@linux.vnet.ibm.com>, gjoyce@linux.vnet.ibm.com
+Cc: Anatolij Gustschin <agust@denx.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
-> As of now, in tce_freemulti_pSeriesLP(), there is no limit on how many TCEs
-> are passed to H_STUFF_TCE hcall. PAPR is enforcing this to be limited to
-> 512 TCEs.
-
-Did you actually hit a bug here, or just noticed via code inspection?
-
-Can you provide a Fixes: tag ?
-
-cheers
-
-> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/iommu.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
+> On Thu, Apr 13, 2023 at 08:16:42AM +0200, Uwe Kleine-K=C3=B6nig wrote:
+>> While mpc5200b.dtsi contains a device that this driver can bind to, the
+>> only purpose of a bound device is to be used by the four exported functi=
+ons
+>> mpc52xx_lpbfifo_submit(), mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll()
+>> and mpc52xx_lpbfifo_start_xfer(). However there are no callers to this
+>> function and so the driver is effectively superfluous and can be deleted.
+>> Also drop some defines and a struct from <asm/mpc52xx.h> that are unused
+>> now together with the declarations of the four mentioned functions.
+>>=20
+>> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+>> ---
+>> On Thu, Apr 13, 2023 at 10:11:25AM +1000, Michael Ellerman wrote:
+>> > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
+>> > > On Wed, Dec 28, 2022 at 03:51:29PM +0100, Uwe Kleine-K=C3=B6nig wrot=
+e:
+>> > >> The four exported functions mpc52xx_lpbfifo_submit(),
+>> > >> mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll(), and
+>> > >> mpc52xx_lpbfifo_start_xfer() are not used. So they can be dropped a=
+nd the
+>> > >> definitions needed to call them can be moved into the driver file.
+>> > >>=20
+>> > >> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.d=
+e>
+>> > >
+>> > > I never got feedback about this driver and it has not appeared in ne=
+xt
+>> > > up to now. Did it fell through the cracks?
+>> >=20
+>> > Yeah. I was hoping someone would explain what's going on with the
+>> > driver.
+>> >=20
+>> > Presumably there are some out-of-tree drivers that use the routines
+>> > provided by this driver?
+>>=20
+>> I googled for the function names but the only related hits were
+>> references to this thread :-)
+>>=20
+>> > I think rather than merging this patch, which keeps the code but makes
+>> > it completely useless, do you mind sending a patch to remove the whole
+>> > driver? Maybe that will get someone's attention.
+>>=20
+>> fair enough, here it is.
 >
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index c74b71d4733d..1b134b1b795a 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -306,13 +306,21 @@ static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
->  static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
->  {
->  	u64 rc;
-> +	long limit, rpages = npages;
-  
-I don't know why npages is signed, but we don't ever want limit to be
-negative, so it'd be better of as unsigned long wouldn't it?
+> What is your thought about this patch? If you (also) think getting it
+> into next soon after a merge window closed, around now would be a good
+> opportunity to do so ..
 
->  	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
->  		return tce_free_pSeriesLP(tbl->it_index, tcenum,
->  					  tbl->it_page_shift, npages);
->  
-> -	rc = plpar_tce_stuff((u64)tbl->it_index,
-> -			     (u64)tcenum << tbl->it_page_shift, 0, npages);
-> +	do {
-> +		limit = min_t(long, rpages, 512);
+I was hoping someone would explain why we have a driver that does
+nothing useful :) But I guess it's too old for anyone to remember/care.
 
-And here'd we'd use unsigned long.
+So yeah I'll take this, we can always put it back if someone needs it.
 
-> +		rc = plpar_tce_stuff((u64)tbl->it_index,
-> +			     	(u64)tcenum << tbl->it_page_shift, 0, limit);
-> +
-> +		rpages -= limit;
-> +		tcenum += limit;
-> +	} while (rpages > 0 && !rc);
->  
->  	if (rc && printk_ratelimit()) {
->  		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
-> -- 
+I base my next on rc2, so I'll pick this up next week.
 
 cheers
