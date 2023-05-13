@@ -1,73 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC0E70182A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 18:16:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7470701A1C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 23:45:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QJW3M6nb6z3fWs
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 May 2023 02:16:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QJfLk5Fscz3fLC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 May 2023 07:45:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UzeUzpMk;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=WWpjCRsg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c32; helo=mail-oo1-xc32.google.com; envelope-from=alexdeucher@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UzeUzpMk;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=WWpjCRsg;
 	dkim-atps=neutral
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+X-Greylist: delayed 388 seconds by postgrey-1.36 at boromir; Sun, 14 May 2023 07:44:31 AEST
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QJW2T0lFLz3bsS
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 02:15:44 +1000 (AEST)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-54fb3ef9c53so2103851eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 May 2023 09:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683994540; x=1686586540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dAwewp2kthWWSif09t8xwGEOcMXmK89hPwkmMo5Is8o=;
-        b=UzeUzpMkVve/6x5RUROzP/Pr5G/uJ2wpTGBpSqFq3m33qS0mqNnW7Cqftq97NZfHqV
-         DjMoLczD9/vL/YNfUpD9ThJ/dQv1asxhZByVhrnpJE1pCFmRlmCGgenZJrlzwP0Cr2LU
-         xYWsKzbWXUvm6ANZ4oTPEmAXH4Dhb3jL3cp4p1Ke/xjERpKxuHRbCCSdhyiUtvT9zNHl
-         +AIIGndzn2TXDGJmmHPjQBoK2OIpW6NRz6bSonKBZvZhhqhszU5T1Rzz+UI7nGcINhB2
-         yR6DFmoI3i69TgKNuSv7cBx/EsmB/litG19WXpII47sKjZYVMv5+kRy1z6PwQmdGVLXr
-         Wg4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683994540; x=1686586540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dAwewp2kthWWSif09t8xwGEOcMXmK89hPwkmMo5Is8o=;
-        b=llLcdMRa18TFejkxqfibRu0xpCYCDNYAjxcfrQPuCDfPsnfFt3ofYdl3VN6PlrTV+p
-         mB4QcnWKlL+pqR7ixIvvvMxHsoglRLUAmP7jYA0fj95EZMOOXpr10b0I0diJjy+GeK8k
-         Pqif+VbzBGV5Z65Puno/QES2IXBTTRQmp7J4zFCyZidwysKk1+lvHOWXyRT0e+wIBd35
-         Y6CK+uvK0xKcT9pvklizviuKLIZrmSDAIQHeaP3DHC/Zzoxqzrihrp4hb0ejMa7iy9Dg
-         N3OjJhL5QMxSixyFA28Dlvd7/121CxwBvxW4TXqIQlQnN6f5HIPdvNpRadAPCWjFImJB
-         ZC5A==
-X-Gm-Message-State: AC+VfDz2MXR9B7Hkk6xjisLxRIMadoQHEYv8eoFujmAKVtKlY0W0kS8p
-	ZlljZwM7JF5x8LeaSP/DbXrOOrpbgRHRaXOQkyM=
-X-Google-Smtp-Source: ACHHUZ4JwIaY02RrtBZwd7KHuPZBw7jqM0UkUh1Tb9GM7JscTzR1I4ronR9NBKH6BvNHjh5sREtms0J7+SCs4+C7Ido=
-X-Received: by 2002:a4a:d218:0:b0:546:bf26:49c7 with SMTP id
- c24-20020a4ad218000000b00546bf2649c7mr8214553oos.8.1683994538269; Sat, 13 May
- 2023 09:15:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QJfKq4Y28z3bxY
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 07:44:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1684014262; i=deller@gmx.de;
+	bh=yJRf6LHTP/Tqq0WjA9yc9VAdZA0puqTSbfj+iJUayOI=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WWpjCRsgoadPndEyDMBrDykIPaF53G1UCKLbF6Ehn7Sof3aFBSwW6D/JO3g3nRBiK
+	 6QLib4OyP44y2d+/8ysju5kRliyq1yZdGfil5gw5tBNzuaG20YfLWm85G9pRDKUKa3
+	 xoQ6YXU/VoH+Ur5qiLzoRrYBqvX2tMB7xzPzScF614h5bD7E5unH1A2wp/qREnUtcQ
+	 uvRunN2fI+m8qiXMXXu/hDegJto32RNy0mTDOo3bFLNkfSaH/7HWbmgVi/+6OyyI17
+	 MPR4HlqYY5qxIkr/2RJRzK28wNFjG+P0bX0aWXsW9x1ygvQvXaKtevKTMPJIJdhVWh
+	 hloepOolRWY7g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.158.250]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdvqW-1qYw4r4BZ0-00b73t; Sat, 13
+ May 2023 23:35:32 +0200
+Message-ID: <ca4ac780-42b0-4818-bd84-e1a4acbb28dd@gmx.de>
+Date: Sat, 13 May 2023 23:35:26 +0200
 MIME-Version: 1.0
-References: <588c1a66-9976-c96f-dcdd-beec8b7410f0@gmail.com>
- <3e5548e4-5a3e-9346-ec58-3617e1947186@gmail.com> <a50537d1f1af34104793218acb954a61@linuxsystems.it>
- <3383ba6e-e62b-cd9b-8a61-39b0de8af579@csgroup.eu> <57100be6-d379-0bc7-6d45-228cd46f9c81@csgroup.eu>
- <2023051353-epiphany-retorted-4ad1@gregkh>
-In-Reply-To: <2023051353-epiphany-retorted-4ad1@gregkh>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Sat, 13 May 2023 12:15:26 -0400
-Message-ID: <CADnq5_OqgEP1S25VfnuptWiOvicXyX3Waq8rq_62rQsqeJTXYQ@mail.gmail.com>
-Subject: Re: Fwd: Linux 6.3.1 + AMD RX 570 on ppc64le 4K: Kernel attempted to
- read user page (1128) - exploit attempt? (uid: 0)
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 08/23] parisc: add pte_unmap() to balance get_ptep()
+Content-Language: en-US
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
+ <44ebbf90-5fbb-2815-17c7-fcfe3c87d78e@google.com>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <44ebbf90-5fbb-2815-17c7-fcfe3c87d78e@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:02c5NpapKZ0yND7w0y40kUtQXH+Ybc0bQPzvspvwYlotAB99sF5
+ zFBBfNW47FR7ppsIv7ORzd5debot/2bSdnSyGIDtWWm1xzh1QppJDewIoqcOMGEOc5o3++E
+ GB7D5SsAuS01JsydFNYGrdMOwh1KtcLiZKmwzv4YnhFPj7aU+qawXM/A52PkJ99vIebL33s
+ O5IbJLN5O6SEa/1rmMz5g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:uDJb8IJ6VOs=;R+hj0fDdQeyjCARXhDgoid9Oajp
+ kHLrQjXW/Pxorhy5ogvNxgUlbzs/oW+WoQbYWuFqfo9M/8kiNX2ygi/U0C0cQNL5YdL2QDv9c
+ 3xfxjyIuDW+7lnrHOYCmgzV28x/Uo3sjcrC9mmmNBYFTDogcZbgBPg27+d6oXvjXftSUAWCtV
+ 2vD2+nKhodNgtFyzNJccSdn7g6np8nB3kEbVzeLyfApUPiLq2iI6A7JOx8IkesIEj+OkVpKVr
+ pMzhkZqY4Lz2DfmOFH6gG3bKc6MXttZmYmK8ZbFqW/A9sxL7B0dy+GPiISvptwTn6KfwZENQN
+ kHbyu0E9M/ngSXFWUPtgfVnDfhheB7PXPRA21i9LbU+zfBO6pJcQBDQ2c8o6tbNXTdD5mnFh0
+ WcRzilXOKIO5PRPf0MegCrD/1owVMfKRaXDPlfHw5NVSSzuCM1RZMehSwqdtt6AiUEIFrjLj5
+ ixGugk6tuic3MVq5/P4th9bt6w72rpFXDsBDgdYfjq78Nl1xM/q53rmYtmMwIIakLGm2B/Zsu
+ oMinswUMgtVUmR3AKFHdioT3H4Xq5KV7ARjHNhTZDECLowi+Zdz9M/VIpo0h0pmyo4bLfEnXz
+ 19gU/ii59qBFJcuYPACTpoq+T+Bcbp04CMPLNsCFU6XxpNS7X3+4bsFIz87WfR2ujfE62fqDf
+ 4RX0yHQePlodbnxG2ZhmJPKLIJdFYY3XXMmf1BYdFXuXym7z/ScsJCYHkolyJGqUNu5OKhTUp
+ xh71saaqgj0fMWYdonNDP9f8i5fMCExGZAV5kpr4iCKgglw2ArYmFg0J+2kuxWVRCM+n1CYsK
+ oY4qUU3t5lDdvOnU2yDpApWP5Sj6iaUyV/lbzbMAJQRz9Zv19kzqLwwHaQt0HVaJZoCf6OkfB
+ lJJymkFAihgERrNvdwz71SNXq931Bn1yKX+EvweH2Sr1AyNM5BxGyLVijYGFaz4CnYRCjRrGo
+ a7S6kw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,74 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Linux Regressions <regressions@lists.linux.dev>, Qingqing Zhuo <qingqing.zhuo@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Fangzhi Zuo <Jerry.Zuo@amd.com>, Hersen Wu <hersenxs.wu@amd.com>, Linux AMDGPU <amd-gfx@lists.freedesktop.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Alex Deucher <alexander.deucher@amd.com>, Linux for PowerPC <linuxppc-dev@lists.ozlabs.org>, =?UTF-8?Q?Niccol=C3=B2_Belli?= <darkbasic@linuxsystems.it>
+Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoe
+ rfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 13, 2023 at 12:11=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, May 12, 2023 at 03:25:47PM +0000, Christophe Leroy wrote:
-> >
-> >
-> > Le 12/05/2023 =C3=A0 17:16, Christophe Leroy a =C3=A9crit :
-> > >
-> > >
-> > > Le 11/05/2023 =C3=A0 19:25, Niccol=C3=B2 Belli a =C3=A9crit :
-> > >> [Vous ne recevez pas souvent de courriers de
-> > >> darkbasic@linuxsystems.it. D?couvrez pourquoi ceci est important ?
-> > >> https://aka.ms/LearnAboutSenderIdentification ]
-> > >>
-> > >> Il 2023-05-12 10:32 Bagas Sanjaya ha scritto:
-> > >>> #regzbot introduced: f4f3b7dedbe849
-> > >>> #regzbot link: https://gitlab.freedesktop.org/drm/amd/-/issues/2553
-> > >>
-> > >> It doesn't look like the aforementioned patch made its way into 6.3 =
-yet:
-> > >>
-> > >> niko@talos2 ~/devel/linux-stable $ git branch
-> > >> * linux-6.3.y
-> > >>    master
-> > >> niko@talos2 ~/devel/linux-stable $ git show f4f3b7dedbe8 | patch -p1
-> > >> patching file
-> > >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-> > >> Hunk #1 succeeded at 227 (offset 15 lines).
-> > >> Hunk #2 succeeded at 269 with fuzz 2 (offset 19 lines).
-> > >> patching file
-> > >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-> > >> Hunk #1 succeeded at 49 with fuzz 2 (offset 15 lines).
-> > >
-> > > As far as I can see that patch has no Fixes: tag, so it will unlikely=
- be
-> > > automatically merged into stable.
-> > >
-> > > Has anybody requested greg/sasha to get it into 6.3 ?
-> > >
-> >
-> > In fact, it seems that patch is already part of 6.3:
-> >
-> > $ git tag --contains f4f3b7dedbe8
-> > v6.3
-> > v6.3-rc5
-> > v6.3-rc6
-> > v6.3-rc7
-> > v6.3.1
-> > v6.3.2
-> > v6.4-rc1
->
-> And that commit is already in the following releases:
->         5.10.177 5.15.106 6.1.23 6.2.10 6.3
->
-> So what needs to be done here?
+Hi Hugh,
 
-Nothing needs to be done here.  We still don't know what the problem
-is.  We are working on the issue on:
-https://gitlab.freedesktop.org/drm/amd/-/issues/2553
-Let's just track it there.  This email thread is just causing confusion.
-
-Alex
-
+On 5/10/23 06:52, Hugh Dickins wrote:
+> To keep balance in future, remember to pte_unmap() after a successful
+> get_ptep().  And (we might as well) pretend that flush_cache_pages()
+> really needed a map there, to read the pfn before "unmapping".
 >
-> confused,
+> Signed-off-by: Hugh Dickins <hughd@google.com>
+> ---
+>   arch/parisc/kernel/cache.c | 26 +++++++++++++++++++++-----
+>   1 file changed, 21 insertions(+), 5 deletions(-)
 >
-> greg k-h
+> diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+> index 1d3b8bc8a623..b0c969b3a300 100644
+> --- a/arch/parisc/kernel/cache.c
+> +++ b/arch/parisc/kernel/cache.c
+> @@ -425,10 +425,15 @@ void flush_dcache_page(struct page *page)
+>   		offset =3D (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+>   		addr =3D mpnt->vm_start + offset;
+>   		if (parisc_requires_coherency()) {
+> +			bool needs_flush =3D false;
+>   			pte_t *ptep;
+>
+>   			ptep =3D get_ptep(mpnt->vm_mm, addr);
+> -			if (ptep && pte_needs_flush(*ptep))
+> +			if (ptep) {
+> +				needs_flush =3D pte_needs_flush(*ptep);
+> +				pte_unmap(ptep);
+> +			}
+> +			if (needs_flush)
+>   				flush_user_cache_page(mpnt, addr);
+>   		} else {
+>   			/*
+> @@ -560,14 +565,20 @@ EXPORT_SYMBOL(flush_kernel_dcache_page_addr);
+>   static void flush_cache_page_if_present(struct vm_area_struct *vma,
+>   	unsigned long vmaddr, unsigned long pfn)
+>   {
+> -	pte_t *ptep =3D get_ptep(vma->vm_mm, vmaddr);
+> +	bool needs_flush =3D false;
+> +	pte_t *ptep;
+>
+>   	/*
+>   	 * The pte check is racy and sometimes the flush will trigger
+>   	 * a non-access TLB miss. Hopefully, the page has already been
+>   	 * flushed.
+>   	 */
+> -	if (ptep && pte_needs_flush(*ptep))
+> +	ptep =3D get_ptep(vma->vm_mm, vmaddr);
+> +	if (ptep) {
+> +		needs_flush =3D pte_needs_flush(*ptep))
+
+^^^^^
+One ")" too much and lacks a trailing ";"
+Should be:
+		needs_flush =3D pte_needs_flush(*ptep);
+
+With that fixed the kernel compiles and boots sucessfully on parisc.
+
+Helge
