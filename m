@@ -1,56 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82A2701236
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 00:35:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58777701401
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 04:38:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QJ3W74qBMz3fZK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 08:35:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QJ8v31RSCz3fQF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 May 2023 12:38:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=oorJa7oU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=YNLxI+8p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=oorJa7oU;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QJ3VD4L0sz3bqv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 May 2023 08:34:43 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0481E63C85;
-	Fri, 12 May 2023 22:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10813C433D2;
-	Fri, 12 May 2023 22:34:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1683930879;
-	bh=C4/3tftPmfjnwOxJgXC4WqCyGzMl5SxDSvLNREcRE9M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oorJa7oUTKyw2EhCfdYhAIFDMoM4ghO+MDH8Gsb+nOziXzc0Oxf7uYS5n6T/nDThX
-	 JQedPLG3e+9PfjlaEW6IvPMP9XrOpylCEn1PCXGSu/DM57iFFLX7U7HxFEDb0jlz84
-	 lIyFCWq5nRQ7C68CMnuK+MideTCwqc0KQpUuExUE=
-Date: Sat, 13 May 2023 07:34:33 +0900
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Fwd: Linux 6.3.1 + AMD RX 570 on ppc64le 4K: Kernel attempted to
- read user page (1128) - exploit attempt? (uid: 0)
-Message-ID: <2023051353-epiphany-retorted-4ad1@gregkh>
-References: <588c1a66-9976-c96f-dcdd-beec8b7410f0@gmail.com>
- <3e5548e4-5a3e-9346-ec58-3617e1947186@gmail.com>
- <a50537d1f1af34104793218acb954a61@linuxsystems.it>
- <3383ba6e-e62b-cd9b-8a61-39b0de8af579@csgroup.eu>
- <57100be6-d379-0bc7-6d45-228cd46f9c81@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QJ8t45y0Nz3bfw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 May 2023 12:37:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=Wk+ym5kpqN+r2McL+81J+S8O6L6Yg4SLALm7z013ufw=; b=YNLxI+8pEZoIU8g8Iqkpm8l0sq
+	pxMwCe9lvQxlpIKUCdrZD4WC3Z5SkoopIjksgYIz0uo7XHHnYZFTmwVnzJJAuIdzoiyz6CnbG5ydB
+	0ONsqb4uPPZVt8Dv0XKYO1ogJMlHcacvmVpOwOJJJqJjMXxerx+mvW8NfBXc7vzEmT53WPGJO6sjx
+	0JgVSGoy6b6le+YRdnNWtWcp9cNiCleF2+BhzAlrRDlLI8fHZUOs4k5FNxvx9jjvw9afqGo0IYtOL
+	62Klht7dMYx1oX/WtCiWFrazXXFXNufpTOABdaafGYX/ljLzciVVxGdwzF9NlAAsVmGx94EtEDP2D
+	G9xZWRRw==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1pxf7m-00DXnw-1B;
+	Sat, 13 May 2023 02:36:46 +0000
+Message-ID: <e933e663-9bf6-dd20-c55a-17a88bc86201@infradead.org>
+Date: Fri, 12 May 2023 19:36:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <57100be6-d379-0bc7-6d45-228cd46f9c81@csgroup.eu>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2] soc/fsl/qe: fix usb.c build errors
+Content-Language: en-US
+To: linux-kernel@vger.kernel.org
+References: <20230410011254.25675-1-rdunlap@infradead.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230410011254.25675-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,61 +57,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Linux Regressions <regressions@lists.linux.dev>, Qingqing Zhuo <qingqing.zhuo@amd.com>, Fangzhi Zuo <Jerry.Zuo@amd.com>, Linux AMDGPU <amd-gfx@lists.freedesktop.org>, Daniel Wheeler <daniel.wheeler@amd.com>, =?iso-8859-1?Q?Niccol=F2?= Belli <darkbasic@linuxsystems.it>, Hersen Wu <hersenxs.wu@amd.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Alex Deucher <alexander.deucher@amd.com>, Linux for PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, Masahiro Yamada <masahiroy@kernel.org>, Kumar Gala <galak@kernel.crashing.org>, Leo Li <leoyang.li@nxp.com>, Qiang Zhao <qiang.zhao@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 12, 2023 at 03:25:47PM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 12/05/2023 à 17:16, Christophe Leroy a écrit :
-> > 
-> > 
-> > Le 11/05/2023 à 19:25, Niccolò Belli a écrit :
-> >> [Vous ne recevez pas souvent de courriers de 
-> >> darkbasic@linuxsystems.it. D?couvrez pourquoi ceci est important ? 
-> >> https://aka.ms/LearnAboutSenderIdentification ]
-> >>
-> >> Il 2023-05-12 10:32 Bagas Sanjaya ha scritto:
-> >>> #regzbot introduced: f4f3b7dedbe849
-> >>> #regzbot link: https://gitlab.freedesktop.org/drm/amd/-/issues/2553
-> >>
-> >> It doesn't look like the aforementioned patch made its way into 6.3 yet:
-> >>
-> >> niko@talos2 ~/devel/linux-stable $ git branch
-> >> * linux-6.3.y
-> >>    master
-> >> niko@talos2 ~/devel/linux-stable $ git show f4f3b7dedbe8 | patch -p1
-> >> patching file
-> >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-> >> Hunk #1 succeeded at 227 (offset 15 lines).
-> >> Hunk #2 succeeded at 269 with fuzz 2 (offset 19 lines).
-> >> patching file
-> >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-> >> Hunk #1 succeeded at 49 with fuzz 2 (offset 15 lines).
-> > 
-> > As far as I can see that patch has no Fixes: tag, so it will unlikely be 
-> > automatically merged into stable.
-> > 
-> > Has anybody requested greg/sasha to get it into 6.3 ?
-> > 
-> 
-> In fact, it seems that patch is already part of 6.3:
-> 
-> $ git tag --contains f4f3b7dedbe8
-> v6.3
-> v6.3-rc5
-> v6.3-rc6
-> v6.3-rc7
-> v6.3.1
-> v6.3.2
-> v6.4-rc1
+Any comments on this patch?
 
-And that commit is already in the following releases:
-	5.10.177 5.15.106 6.1.23 6.2.10 6.3
+I am still seeing this build error.
 
-So what needs to be done here?
+On 4/9/23 18:12, Randy Dunlap wrote:
+> Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+> This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+> When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+> being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+> causes build errors when QUICC_ENGINE is not set. Making
+> QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
+> 
+> Fixes these build errors:
+> 
+> drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+> usb.c:(.text+0x1e): undefined reference to `qe_immr'
+> powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+> powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+> powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+> powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+> 
+> Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Leo Li <leoyang.li@nxp.com>
+> Cc: Masahiro Yamada <masahiroy@kernel.org>
+> Cc: Nicolas Schier <nicolas@fjasle.eu>
+> Cc: Qiang Zhao <qiang.zhao@nxp.com>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Kumar Gala <galak@kernel.crashing.org>
+> ---
+> v2: drop Anton Vorontsov <avorontsov@ru.mvista.com>; rebase/resend
+> 
+>  drivers/soc/fsl/qe/Kconfig |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff -- a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+> --- a/drivers/soc/fsl/qe/Kconfig
+> +++ b/drivers/soc/fsl/qe/Kconfig
+> @@ -62,6 +62,7 @@ config QE_TDM
+>  
+>  config QE_USB
+>  	bool
+> +	depends on QUICC_ENGINE
+>  	default y if USB_FSL_QE
+>  	help
+>  	  QE USB Controller support
 
-confused,
-
-greg k-h
+-- 
+~Randy
