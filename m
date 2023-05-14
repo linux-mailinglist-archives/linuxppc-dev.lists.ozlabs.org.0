@@ -2,73 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08484701DA6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 May 2023 15:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 250F0701EED
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 May 2023 20:21:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QK3hr6nrhz3cf6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 May 2023 23:47:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QK9mz0V3nz3chj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 04:21:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zRRMijhx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=3hM1VI6N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b36; helo=mail-yb1-xb36.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zRRMijhx;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=3hM1VI6N;
 	dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QK3gx3Hhsz2xvL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 23:46:35 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1addac3de73so21706035ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 06:46:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QK9m42lwgz3bjd
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 04:20:35 +1000 (AEST)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-ba6d024a196so3093729276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 11:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684071992; x=1686663992;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Kcb2f4Ev9/MrkBRrwgPUZL/+4rEBt9/dH5HyrPeBpO4=;
-        b=zRRMijhxUqcZNdU5t3A7v0iTTy5sp9JnGXlF+tE6U62rA927JXkfzTcDVK+vQUPhIu
-         2fe42bQ+Vp9ycOqoOi+lm+jpoGCHJkgxHzZsXSX608PBcrSeJQl6d8Rl0MfjOwGtLYyI
-         Uzmt0aHUvNVO02oaFXpSdzGZO5jM/ZBm6VqnrGHvVxTeJ32DCnO29zKE/SGDlnRbgHm7
-         1jdCsAgzRtTP3K8mdfCelYfl3ZzHK/sYCmQCvSJAgChtV+Cy+VLaOKVUZNtuRIQQunSc
-         sWuiV81BZq3SpDsL3VDBGF43CQPwt7pmPZqnZSU32L6A7wZLV39jTGo/7+qXVuElYWt4
-         mC+Q==
+        d=google.com; s=20221208; t=1684088430; x=1686680430;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/w8Ik+B9LqquAVc24RATG4RXaBZs1t11jn/s3N/obhU=;
+        b=3hM1VI6NWGWu8nKjmz4E776n6/tfMkoFz07qqIrs1oaapPZVpFGqRfLcsrD2Q9+aIl
+         lVkR5CaBLhkLbvj6PetC97KquetslVNm4ewYDv3VlmeuHTS81B9LSL8mS5hv5NNIrJ5k
+         qfkEuu9pgy+dtpTd6GHTh0Gi0u67Y0T46ElzOPo7riZGmKUfHA7vSk0Zmd7HgvGJHxab
+         DqbZyXByDthzzyzxr91aGkpWgNkslpXmOPPlerkZVQyLnPVqgNtVTmJy+exwCn44tZ+/
+         VxkE3CJ7HkShwyo4XrVtp449lbAR3UPOjv88P7k+8G1RfjN7YRQ6k8XKtpgdfILs4FOB
+         5kcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684071992; x=1686663992;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kcb2f4Ev9/MrkBRrwgPUZL/+4rEBt9/dH5HyrPeBpO4=;
-        b=a6uTGjJ0CZP279KZwpw58nDlyXJ4YG7PqM82GY88ZHIhU8XDdmzFslxBnOOv927z40
-         Giee6/ZygIx2ecNDzrjR1B4XZo8+agjm6atCHqHgKXSs5tX2N82SRdn+pOv7vgwIpGb7
-         Oyop55oPivph4in+R0lkLW3tKk5JcLXcGdf1T70FzOzbPX5KoWXJqTPjJZqA2NlkMjU/
-         iJxvlPdF4nNaNoPiMBJV8z2oxV2L+92xVLfMujh0jPvMB8pDBtPPfBrHe68V9F4/fXMs
-         Vs52hnltG4/L3Bx4HafLHRxx6GeKwoGsdnrEBL8oxGMXmP1OER8hS638Zmx+1H7XW0Tx
-         dYtw==
-X-Gm-Message-State: AC+VfDxMf3AQJ5BroLuzONwJJ8pJCbhOOkjBUDYzYCx1TMr6JdQFaQIE
-	6KahdZlogDJC2Tudg7k5D6+Y
-X-Google-Smtp-Source: ACHHUZ4w5jCbkX6MzOxwLVijUmBV55zTb3NrD9AvLOeEjyB4nA4W4gawwMADr5WX8bC0T2xCDrg0YA==
-X-Received: by 2002:a17:902:b7cc:b0:1ac:3ddf:2299 with SMTP id v12-20020a170902b7cc00b001ac3ddf2299mr31094193plz.44.1684071992018;
-        Sun, 14 May 2023 06:46:32 -0700 (PDT)
-Received: from thinkpad ([120.138.12.96])
-        by smtp.gmail.com with ESMTPSA id w14-20020a170902e88e00b001ac591b0500sm4725357plg.134.2023.05.14.06.46.28
+        d=1e100.net; s=20221208; t=1684088430; x=1686680430;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/w8Ik+B9LqquAVc24RATG4RXaBZs1t11jn/s3N/obhU=;
+        b=OXx0OyPy1gEI84iFyNZJbKG5jiEx7FTAW9GVB1UisYJLDs7m+3WRRAB1zpk03xLqNU
+         iaOg3iKXJUe+q4JqaJPCEAfq/jhgq1z0GnTO95Brrse/hvjqN0bm0t5peU58TWs6p57q
+         H03clXFedVuX+GxyIxHdqoCBSlI+A76bbc3rU9lZkGJewxTxUw7ZCvGW4jEuMVraoCLS
+         1tNzbDdK3rS0g+0h1vyfblnK/0E5OWOqgP7GRPUPJ44yquyTAa0Qk1hJD90RUGy6MdTD
+         BbBbXuO3gfPFAvN+DpO83pfdh82XgBTnmz8eZGftuDp+jEcAO0sziDDb/knFFYlOVMdC
+         mSXg==
+X-Gm-Message-State: AC+VfDxvZguTcNN5tKsd8/uGcOU/kICstgpKVn79zwXcSI/lp9BFPnEN
+	ImABtbF/E6JSLFC1tVRJKFNDiA==
+X-Google-Smtp-Source: ACHHUZ4uC/iK9slyVYAwsZbskAJfVUMUdzJpIRbgKgSPhKsknTzzPntrNJG85XVm7SRutl/ig2uJ2g==
+X-Received: by 2002:a25:abe5:0:b0:ba1:b539:a39a with SMTP id v92-20020a25abe5000000b00ba1b539a39amr27412446ybi.6.1684088430350;
+        Sun, 14 May 2023 11:20:30 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 192-20020a2503c9000000b00ba73c26f0d6sm1520144ybd.15.2023.05.14.11.20.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 May 2023 06:46:31 -0700 (PDT)
-Date: Sun, 14 May 2023 19:16:25 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 1/1] PCI: layerscape: Add the endpoint linkup notifier
- support
-Message-ID: <20230514134625.GB116991@thinkpad>
-References: <20230508215235.1994348-1-Frank.Li@nxp.com>
+        Sun, 14 May 2023 11:20:28 -0700 (PDT)
+Date: Sun, 14 May 2023 11:20:16 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 08/23] parisc: add pte_unmap() to balance get_ptep()
+In-Reply-To: <ca4ac780-42b0-4818-bd84-e1a4acbb28dd@gmx.de>
+Message-ID: <6de39db5-d9aa-b35a-1652-8bdf90e7df72@google.com>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com> <44ebbf90-5fbb-2815-17c7-fcfe3c87d78e@google.com> <ca4ac780-42b0-4818-bd84-e1a4acbb28dd@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230508215235.1994348-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,192 +76,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <m
+ onstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 08, 2023 at 05:52:35PM -0400, Frank Li wrote:
-> Layerscape has PME interrupt, which can be used as linkup notifier.
-> Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
-> when linkup detected.
+On Sat, 13 May 2023, Helge Deller wrote:
+
+> Hi Hugh,
 > 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-One minor comment below. With that fixed,
-
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-> ---
-> Change from v2 to v3
->  - align 80 column
->  - clear irq firstly
->  - dev_info to dev_dbg
->  - remove double space
->  - update commit message
+> On 5/10/23 06:52, Hugh Dickins wrote:
+> > To keep balance in future, remember to pte_unmap() after a successful
+> > get_ptep().  And (we might as well) pretend that flush_cache_pages()
+> > really needed a map there, to read the pfn before "unmapping".
+> >
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > ---
+> >   arch/parisc/kernel/cache.c | 26 +++++++++++++++++++++-----
+> >   1 file changed, 21 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+> > index 1d3b8bc8a623..b0c969b3a300 100644
+> > --- a/arch/parisc/kernel/cache.c
+> > +++ b/arch/parisc/kernel/cache.c
+> > @@ -425,10 +425,15 @@ void flush_dcache_page(struct page *page)
+> >     offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+> >     addr = mpnt->vm_start + offset;
+> >     if (parisc_requires_coherency()) {
+> > +			bool needs_flush = false;
+> >      pte_t *ptep;
+> >
+> >   			ptep = get_ptep(mpnt->vm_mm, addr);
+> > -			if (ptep && pte_needs_flush(*ptep))
+> > +			if (ptep) {
+> > +				needs_flush = pte_needs_flush(*ptep);
+> > +				pte_unmap(ptep);
+> > +			}
+> > +			if (needs_flush)
+> >     		flush_user_cache_page(mpnt, addr);
+> >     } else {
+> >   			/*
+> > @@ -560,14 +565,20 @@ EXPORT_SYMBOL(flush_kernel_dcache_page_addr);
+> >   static void flush_cache_page_if_present(struct vm_area_struct *vma,
+> >   	unsigned long vmaddr, unsigned long pfn)
+> >   {
+> > -	pte_t *ptep = get_ptep(vma->vm_mm, vmaddr);
+> > +	bool needs_flush = false;
+> > +	pte_t *ptep;
+> >
+> >    /*
+> >     * The pte check is racy and sometimes the flush will trigger
+> >     * a non-access TLB miss. Hopefully, the page has already been
+> >     * flushed.
+> >     */
+> > -	if (ptep && pte_needs_flush(*ptep))
+> > +	ptep = get_ptep(vma->vm_mm, vmaddr);
+> > +	if (ptep) {
+> > +		needs_flush = pte_needs_flush(*ptep))
 > 
-> Change from v1 to v2
-> - pme -> PME
-> - irq -> IRQ
-> - update dev_info message according to Bjorn's suggestion
-> - remove '.' at error message
+> ^^^^^
+> One ")" too much and lacks a trailing ";"
+> Should be:
+> 		needs_flush = pte_needs_flush(*ptep);
 > 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
->  1 file changed, 101 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index c640db60edc6..1a431a9be91e 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -18,6 +18,20 @@
->  
->  #include "pcie-designware.h"
->  
-> +#define PEX_PF0_CONFIG			0xC0014
-> +#define PEX_PF0_CFG_READY		BIT(0)
-> +
-> +/* PEX PFa PCIE PME and message interrupt registers*/
-> +#define PEX_PF0_PME_MES_DR		0xC0020
-> +#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
-> +#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
-> +#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
-> +
-> +#define PEX_PF0_PME_MES_IER		0xC0028
-> +#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
-> +#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
-> +#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
-> +
->  #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
->  
->  struct ls_pcie_ep_drvdata {
-> @@ -30,8 +44,86 @@ struct ls_pcie_ep {
->  	struct dw_pcie			*pci;
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
-> +	bool				big_endian;
-> +	int				irq;
+> With that fixed the kernel compiles and boots sucessfully on parisc.
 
-Move bool to the end of struct to avoid holes.
+Urgh! Indeed, thanks a lot Helge: I'll fold that in.
 
-- Mani
-
->  };
->  
-> +static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-> +{
-> +	struct dw_pcie *pci = pcie->pci;
-> +
-> +	if (pcie->big_endian)
-> +		return ioread32be(pci->dbi_base + offset);
-> +	else
-> +		return ioread32(pci->dbi_base + offset);
-> +}
-> +
-> +static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
-> +{
-> +	struct dw_pcie *pci = pcie->pci;
-> +
-> +	if (pcie->big_endian)
-> +		iowrite32be(value, pci->dbi_base + offset);
-> +	else
-> +		iowrite32(value, pci->dbi_base + offset);
-> +}
-> +
-> +static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> +{
-> +	struct ls_pcie_ep *pcie = dev_id;
-> +	struct dw_pcie *pci = pcie->pci;
-> +	u32 val, cfg;
-> +
-> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> +
-> +	if (!val)
-> +		return IRQ_NONE;
-> +
-> +	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-> +		cfg |= PEX_PF0_CFG_READY;
-> +		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> +		dw_pcie_ep_linkup(&pci->ep);
-> +
-> +		dev_dbg(pci->dev, "Link up\n");
-> +	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-> +		dev_dbg(pci->dev, "Link down\n");
-> +	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-> +		dev_dbg(pci->dev, "Hot reset\n");
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
-> +				     struct platform_device *pdev)
-> +{
-> +	u32 val;
-> +	int ret;
-> +
-> +	pcie->irq = platform_get_irq_byname(pdev, "pme");
-> +	if (pcie->irq < 0) {
-> +		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
-> +		return pcie->irq;
-> +	}
-> +
-> +	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
-> +			       IRQF_SHARED, pdev->name, pcie);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Enable interrupts */
-> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-> +	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
-> +		PEX_PF0_PME_MES_IER_LUDIE;
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-> +
-> +	return 0;
-> +}
-> +
->  static const struct pci_epc_features*
->  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
->  {
-> @@ -125,6 +217,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
->  	if (!pcie)
-> @@ -144,6 +237,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	pci->ops = pcie->drvdata->dw_pcie_ops;
->  
->  	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
-> +	ls_epc->linkup_notifier = true;
->  
->  	pcie->pci = pci;
->  	pcie->ls_epc = ls_epc;
-> @@ -155,9 +249,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	pci->ep.ops = &ls_pcie_ep_ops;
->  
-> +	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
-> +
->  	platform_set_drvdata(pdev, pcie);
->  
-> -	return dw_pcie_ep_init(&pci->ep);
-> +	ret = dw_pcie_ep_init(&pci->ep);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ls_pcie_ep_interrupt_init(pcie, pdev);
->  }
->  
->  static struct platform_driver ls_pcie_ep_driver = {
-> -- 
-> 2.34.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Hugh
