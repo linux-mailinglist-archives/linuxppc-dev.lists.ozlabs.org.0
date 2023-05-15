@@ -2,34 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730EA702CFA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 14:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437C3702D0C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 14:48:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKfF72GK3z3fCq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 22:43:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKfLS0jB6z3f7Y
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 22:48:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FuUop0Vv;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=danny.cz (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=<UNKNOWN>)
-Received: from redcrew.org (redcrew.org [37.157.195.192])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKfDZ3XtPz3bZv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 22:43:24 +1000 (AEST)
-Received: from server.danny.cz (85-71-161-19.rce.o2.cz [85.71.161.19])
-	by redcrew.org (Postfix) with ESMTP id 118331B3C;
-	Mon, 15 May 2023 14:43:19 +0200 (CEST)
-Received: from talos.danny.cz (unknown [IPv6:2001:470:5c11:160:47df:83f6:718e:218])
-	by server.danny.cz (Postfix) with SMTP id 41E9711AAAB;
-	Mon, 15 May 2023 14:43:19 +0200 (CEST)
-Date: Mon, 15 May 2023 14:43:19 +0200
-From: Dan =?UTF-8?B?SG9yw6Fr?= <dan@danny.cz>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64s/radix: Fix soft dirty tracking
-Message-Id: <20230515144319.06c3dc2522798c86de4f93de@danny.cz>
-In-Reply-To: <20230511114224.977423-1-mpe@ellerman.id.au>
-References: <20230511114224.977423-1-mpe@ellerman.id.au>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; powerpc64le-redhat-linux-gnu)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKfKd0RKJz3bbP
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 22:47:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FuUop0Vv;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QKfKX3rbCz4x3m;
+	Mon, 15 May 2023 22:47:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1684154864;
+	bh=cqK44GGxZdyBfjMJKf6ex1FS3+3bFTQ4sP/FHOUrRLE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FuUop0VvSFHT9nQHS4s8aYiCh8CqHtGR9WFkK/KZ9gxMv37/inXcY8kQsTH1xqNiv
+	 KHc2ortNrTF/f620ZN8cRnbI5stIvJhZfWwP9PrHRHQ6TTToeW/Wzqx2VC16wWXJLS
+	 MifXLukJSchcRPS+90Oj2lM+Wc4gjAT9XMxV+s9278kQMXN9wLa0gpo8mOxvNnq/u0
+	 oeuYOs9Gsl/yXVu5z0I25qpsvS7/Urtwf9m1W8rXi8u7jlivkyMkS0kDFFaNzEx++z
+	 edQgEqCsMKKh3XK9l0Se4iajO1cnOG7v5O5wZwd82sP9Rnsa3ZL7A+hmxol409lRDq
+	 yj3+eInPRhIXg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/crypto: Fix aes-gcm-p10 build when VSX=n
+Date: Mon, 15 May 2023 22:47:31 +1000
+Message-Id: <20230515124731.122962-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -43,65 +57,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: dtsen@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 11 May 2023 21:42:24 +1000
-Michael Ellerman <mpe@ellerman.id.au> wrote:
+When VSX is disabled, eg. microwatt_defconfig, the build fails with:
 
-> It was reported that soft dirty tracking doesn't work when using the
-> Radix MMU.
-> 
-> The tracking is supposed to work by clearing the soft dirty bit for a
-> mapping and then write protecting the PTE. If/when the page is written
-> to, a page fault occurs and the soft dirty bit is added back via
-> pte_mkdirty(). For example in wp_page_reuse():
-> 
-> 	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> 	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
-> 		update_mmu_cache(vma, vmf->address, vmf->pte);
-> 
-> Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
-> radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
-> meaning the soft dirty bit is not set even though the page has been
-> written to.
-> 
-> Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
-> changed in radix__ptep_set_access_flags().
+  In function ‘enable_kernel_vsx’,
+      inlined from ‘vsx_begin’ at arch/powerpc/crypto/aes-gcm-p10-glue.c:68:2,
+      inlined from ‘p10_aes_gcm_crypt.constprop’ at arch/powerpc/crypto/aes-gcm-p10-glue.c:244:2:
+  ...
+  arch/powerpc/include/asm/switch_to.h:86:9: note: in expansion of macro ‘BUILD_BUG’
+     86 |         BUILD_BUG();
+        |         ^~~~~~~~~
 
-and it looks good, thanks
+Fix it by making the p10-aes-gcm code depend on VSX.
 
-Tested-by: Dan Horák <dan@danny.cz>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-		Dan
-
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 7113f9355165..ad1872518992 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -96,7 +96,7 @@ config CRYPTO_AES_PPC_SPE
  
-> Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
-> Cc: stable@vger.kernel.org # v4.7+
-> Reported-by: Dan Horák <dan@danny.cz>
-> Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index 26245aaf12b8..2297aa764ecd 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
->  				  pte_t entry, unsigned long address, int psize)
->  {
->  	struct mm_struct *mm = vma->vm_mm;
-> -	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
-> -					      _PAGE_RW | _PAGE_EXEC);
-> +	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
-> +					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
->  
->  	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
->  	/*
-> -- 
-> 2.40.1
-> 
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+-	depends on PPC64 && CPU_LITTLE_ENDIAN
++	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AEAD
+-- 
+2.40.1
+
