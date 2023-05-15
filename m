@@ -2,50 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437C3702D0C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 14:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A29D702DDE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 15:18:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKfLS0jB6z3f7Y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 22:48:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKg1661n6z3f6V
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 23:18:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FuUop0Vv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r6+1eHXq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r6+1eHXq;
+	dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKfKd0RKJz3bbP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 22:47:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FuUop0Vv;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QKfKX3rbCz4x3m;
-	Mon, 15 May 2023 22:47:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1684154864;
-	bh=cqK44GGxZdyBfjMJKf6ex1FS3+3bFTQ4sP/FHOUrRLE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FuUop0VvSFHT9nQHS4s8aYiCh8CqHtGR9WFkK/KZ9gxMv37/inXcY8kQsTH1xqNiv
-	 KHc2ortNrTF/f620ZN8cRnbI5stIvJhZfWwP9PrHRHQ6TTToeW/Wzqx2VC16wWXJLS
-	 MifXLukJSchcRPS+90Oj2lM+Wc4gjAT9XMxV+s9278kQMXN9wLa0gpo8mOxvNnq/u0
-	 oeuYOs9Gsl/yXVu5z0I25qpsvS7/Urtwf9m1W8rXi8u7jlivkyMkS0kDFFaNzEx++z
-	 edQgEqCsMKKh3XK9l0Se4iajO1cnOG7v5O5wZwd82sP9Rnsa3ZL7A+hmxol409lRDq
-	 yj3+eInPRhIXg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/crypto: Fix aes-gcm-p10 build when VSX=n
-Date: Mon, 15 May 2023 22:47:31 +1000
-Message-Id: <20230515124731.122962-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKg0D6ggjz3bkb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 23:17:48 +1000 (AEST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-643990c5319so9194035b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 06:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684156665; x=1686748665;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U0tJkuk31cCBlZvEOM+JrHqUgoWRc+pu5rHsHy4vtdM=;
+        b=r6+1eHXqlQ+IasIh4jpDRrEIQYRp3hgNi2grwCqYbmuNwyFZfNK75zQBUPzuNPXL1n
+         OyfSYEle0mHPWMe7voOHeNIvrkTxLb9J1GFEYWcvoBHvySXmWKB/GAezQtFDqn1SkC9J
+         VWMTZ8D6KzsiwTfJtbqcmGH2hsu88ZuEQ0sOg04FOSUjXSh4Po+stkCYTG2ysIUFRGLu
+         zvwW8oep593Vb3c+pgNjVE/sJdqGm/XFO9uvK9FGUO2hkjpcrBcyW2PuLZz0XsNpeqfc
+         pNLAv3WdTn0dEFIO3ouFTP+gv8QrD7toxRHCutJgn8tqXMVwgihPmeUKIlae8kbQJxl5
+         9VYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684156665; x=1686748665;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=U0tJkuk31cCBlZvEOM+JrHqUgoWRc+pu5rHsHy4vtdM=;
+        b=FZSeb4VTgXvQnLOX5LLDinocg/rxa7FqkQuMMiSTVipW+Tut7ew0MvfNEnhpyFJVwa
+         YO9Dh9R9dYxsR9i2OZmBocDOImOfqpah6uXxZHI06wh7wbaub1PRx3Idz1pP4M1F+WZA
+         UWkwYfbIfdiCRXVccn+GpL4YjEFylAGLaBFGgtHfggdqtdwXNg4sKYXiHMpMmF5EhowB
+         R7vJBAh5kmP3tuuICkNxf3BwiyW6caA0ew/17B0FmGWlQ3rlgJPN9wmyJwp0st0iyb8D
+         gdayod2JhU/Y3HhdqcGvklf0KBFiVtfPGTbgFKVWL6WwxkhPX2FKN+ZtUchSuvlaxh69
+         SXkA==
+X-Gm-Message-State: AC+VfDz4FIDGPcuR9rH0BHY4dk6/4FgR1DyH+CzhqtheP/YmOc59LC+i
+	nQ/Sjny7N61dWJqxfab+SYY=
+X-Google-Smtp-Source: ACHHUZ7weR1YIYVqrDmYRGph9/ygafe/djAvvBUv3jyOFXFKLe7jvOnzv2aWPmkqIsirjDSI2OpyIw==
+X-Received: by 2002:a05:6a00:189a:b0:646:7234:cbfc with SMTP id x26-20020a056a00189a00b006467234cbfcmr36493454pfh.27.1684156664979;
+        Mon, 15 May 2023 06:17:44 -0700 (PDT)
+Received: from localhost ([202.168.30.146])
+        by smtp.gmail.com with ESMTPSA id p24-20020a62ab18000000b0063b5776b073sm11801277pff.117.2023.05.15.06.17.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 May 2023 06:17:44 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Mon, 15 May 2023 23:17:39 +1000
+Message-Id: <CSMVPKLWONBY.2X37RTHC6OCNB@wheely>
+Subject: Re: [PATCH v2 6/6] powerpc/64: Rename entry_64.S to prom_entry_64.S
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.14.0
+References: <20230515044543.78903-1-npiggin@gmail.com>
+ <20230515044543.78903-7-npiggin@gmail.com>
+In-Reply-To: <20230515044543.78903-7-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,40 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When VSX is disabled, eg. microwatt_defconfig, the build fails with:
+On Mon May 15, 2023 at 2:45 PM AEST, Nicholas Piggin wrote:
+> This file contains only the enter_prom implementation now.
+> Trim includes and update header comment while we're here.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/Makefile                  |  8 +++--
+>  .../kernel/{entry_64.S =3D> prom_entry_64.S}    | 30 ++-----------------
+>  scripts/head-object-list.txt                  |  2 +-
+>  3 files changed, 9 insertions(+), 31 deletions(-)
+>  rename arch/powerpc/kernel/{entry_64.S =3D> prom_entry_64.S} (73%)
+>
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index ec70a1748506..f94c893e014d 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -209,10 +209,12 @@ CFLAGS_paca.o			+=3D -fno-stack-protector
+> =20
+>  obj-$(CONFIG_PPC_FPU)		+=3D fpu.o
+>  obj-$(CONFIG_ALTIVEC)		+=3D vector.o
+> -obj-$(CONFIG_PPC64)		+=3D entry_64.o
+> -obj-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)	+=3D prom_init.o
+> =20
+> -extra-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)	+=3D prom_init_check
+> +ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
+> +obj-y				+=3D prom_init.o
+> +obj64-y				+=3D prom_entry_64.o
+> +extra-y				+=3D prom_init_check
+> +endif
 
-  In function ‘enable_kernel_vsx’,
-      inlined from ‘vsx_begin’ at arch/powerpc/crypto/aes-gcm-p10-glue.c:68:2,
-      inlined from ‘p10_aes_gcm_crypt.constprop’ at arch/powerpc/crypto/aes-gcm-p10-glue.c:244:2:
-  ...
-  arch/powerpc/include/asm/switch_to.h:86:9: note: in expansion of macro ‘BUILD_BUG’
-     86 |         BUILD_BUG();
-        |         ^~~~~~~~~
+Oops that doesn't work, obj64-y is merged into obj-y before this. Need
+to move that merge down below here.
 
-Fix it by making the p10-aes-gcm code depend on VSX.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 7113f9355165..ad1872518992 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -96,7 +96,7 @@ config CRYPTO_AES_PPC_SPE
- 
- config CRYPTO_AES_GCM_P10
- 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
--	depends on PPC64 && CPU_LITTLE_ENDIAN
-+	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
- 	select CRYPTO_AEAD
--- 
-2.40.1
-
+Thanks,
+Nick
