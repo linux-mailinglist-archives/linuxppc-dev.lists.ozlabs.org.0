@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D40702F4A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 16:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100F2702F40
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 16:08:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKh7m6zxsz3f5y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 00:09:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKh6n04Ggz3fDJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 00:08:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKh6b1NPGz3fBb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 00:08:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKh6D3MvQz2xBF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 00:08:02 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4QKh671bhbz9sfT;
-	Mon, 15 May 2023 16:07:59 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4QKh652927z9sfK;
+	Mon, 15 May 2023 16:07:57 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id nsFmj3CNAqph; Mon, 15 May 2023 16:07:59 +0200 (CEST)
+	with ESMTP id TIq3ECWBFt4Z; Mon, 15 May 2023 16:07:57 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4QKh655PpNz9sfL;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4QKh650yV1z9sfH;
 	Mon, 15 May 2023 16:07:57 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A8E298B770;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EF2A8B770;
 	Mon, 15 May 2023 16:07:57 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 8Xl6TUU0YdU8; Mon, 15 May 2023 16:07:57 +0200 (CEST)
+	with ESMTP id DVnxLdnlrnuA; Mon, 15 May 2023 16:07:56 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.36])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 697CD8B763;
-	Mon, 15 May 2023 16:07:57 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C5EED8B763;
+	Mon, 15 May 2023 16:07:55 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 34FE7PJm583501
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 34FE7PGS583505
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Mon, 15 May 2023 16:07:25 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 34FE7Po1583500;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 34FE7P4L583504;
 	Mon, 15 May 2023 16:07:25 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH 2/3][For 4.19/4.14] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
-Date: Mon, 15 May 2023 16:07:14 +0200
-Message-Id: <e105f49ce5da21b48dc0450f5fb3644571ee9c1a.1684158520.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 3/3][For 4.19/4.14] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+Date: Mon, 15 May 2023 16:07:15 +0200
+Message-Id: <9363da33f54e9862b4b59c0ed97924ca7265f7a4.1684158520.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <674d9af640acf4aa04abd642cc81de926d3271ed.1684158520.git.christophe.leroy@csgroup.eu>
 References: <674d9af640acf4aa04abd642cc81de926d3271ed.1684158520.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1684159634; l=4014; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=hx7h1I+YEnCP3HczYbWaCBjvenpopKKrD57hpgFewfY=; b=DWdjwylIRwQxmu/KOehp0AezNhX2zHk0wasyuiVpThPz7AuGtCKF9YiMBWgMF6H5oD2yWuCSE ziueG7jLpx8AYHCE2n3YoL0qOKb9pc3+5ewbGJUmmXvMxOgboXf0Vxn
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1684159635; l=3126; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=l7gMBo+J9VneTb7HZST7+pC/HbETdxgOtrQIZaFHdik=; b=Q+cyRKRh9x9rIqyUk77SliaUcnE7JGKafPsMuKOhte+TWtTI/IvZ6MpVBCvlnBAip35wo7Y/5 8g0bvpE1SCsB8AbCr0TZN5mJfLL1MXw54ZPV2ETMxbVJPptxeCXlk4V
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,115 +71,96 @@ Cc: Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(backported from upstream 8a5299a1278eadf1e08a598a5345c376206f171e)
+(cherry picked from upstream fc96ec826bced75cc6b9c07a4ac44bbf651337ab)
 
-For different reasons, fsl-spi driver performs bits_per_word
-modifications for different reasons:
-- On CPU mode, to minimise amount of interrupts
-- On CPM/QE mode to work around controller byte order
+On CPM, the RISC core is a lot more efficiant when doing transfers
+in 16-bits chunks than in 8-bits chunks, but unfortunately the
+words need to be byte swapped as seen in a previous commit.
 
-For CPU mode that's done in fsl_spi_prepare_message() while
-for CPM mode that's done in fsl_spi_setup_transfer().
+So, for large tranfers with an even size, allocate a temporary tx
+buffer and byte-swap data before and after transfer.
 
-Reunify all of it in fsl_spi_prepare_message(), and catch
-impossible cases early through master's bits_per_word_mask
-instead of returning EINVAL later.
+This change allows setting higher speed for transfer. For instance
+on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
+that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
+at 25 MHz while a word transfer at the same speed uses 0.032%
+of CPM load. This means the speed can be 6 times higher in
+word mode for the same CPM load.
+
+For the time being, only do it on CPM1 as there must be a
+trade-off between the CPM load reduction and the CPU load required
+to byte swap the data.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 50 ++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
+ drivers/spi/spi-fsl-cpm.c | 23 +++++++++++++++++++++++
+ drivers/spi/spi-fsl-spi.c |  3 +++
+ 2 files changed, 26 insertions(+)
 
+diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+index 8f7b26ec181e..0485593dc2f5 100644
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -25,6 +25,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/types.h>
+ #include <linux/platform_device.h>
++#include <linux/byteorder/generic.h>
+ 
+ #include "spi-fsl-cpm.h"
+ #include "spi-fsl-lib.h"
+@@ -124,6 +125,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi *mspi,
+ 		mspi->rx_dma = mspi->dma_dummy_rx;
+ 		mspi->map_rx_dma = 0;
+ 	}
++	if (t->bits_per_word == 16 && t->tx_buf) {
++		const u16 *src = t->tx_buf;
++		u16 *dst;
++		int i;
++
++		dst = kmalloc(t->len, GFP_KERNEL);
++		if (!dst)
++			return -ENOMEM;
++
++		for (i = 0; i < t->len >> 1; i++)
++			dst[i] = cpu_to_le16p(src + i);
++
++		mspi->tx = dst;
++		mspi->map_tx_dma = 1;
++	}
+ 
+ 	if (mspi->map_tx_dma) {
+ 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
+@@ -177,6 +193,13 @@ void fsl_spi_cpm_bufs_complete(struct mpc8xxx_spi *mspi)
+ 	if (mspi->map_rx_dma)
+ 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
+ 	mspi->xfer_in_progress = NULL;
++
++	if (t->bits_per_word == 16 && t->rx_buf) {
++		int i;
++
++		for (i = 0; i < t->len; i += 2)
++			le16_to_cpus(t->rx_buf + i);
++	}
+ }
+ EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
+ 
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 946b417f2d1c..e08a11070c5c 100644
+index e08a11070c5c..5e49fed487f8 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -201,26 +201,6 @@ static int mspi_apply_cpu_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	return bits_per_word;
- }
- 
--static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
--				struct spi_device *spi,
--				int bits_per_word)
--{
--	/* CPM/QE uses Little Endian for words > 8
--	 * so transform 16 and 32 bits words into 8 bits
--	 * Unfortnatly that doesn't work for LSB so
--	 * reject these for now */
--	/* Note: 32 bits word, LSB works iff
--	 * tfcr/rfcr is set to CPMFCR_GBL */
--	if (spi->mode & SPI_LSB_FIRST &&
--	    bits_per_word > 8)
--		return -EINVAL;
--	if (bits_per_word <= 8)
--		return bits_per_word;
--	if (bits_per_word == 16 || bits_per_word == 32)
--		return 8; /* pretend its 8 bits */
--	return -EINVAL;
--}
--
- static int fsl_spi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
-@@ -248,9 +228,6 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else
--		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
--							  bits_per_word);
- 
- 	if (bits_per_word < 0)
- 		return bits_per_word;
-@@ -368,14 +345,27 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
- 	 * In CPU mode, optimize large byte transfers to use larger
- 	 * bits_per_word values to reduce number of interrupts taken.
- 	 */
--	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
--		list_for_each_entry(t, &m->transfers, transfer_list) {
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
- 			if (t->len < 256 || t->bits_per_word != 8)
- 				continue;
- 			if ((t->len & 3) == 0)
- 				t->bits_per_word = 32;
- 			else if ((t->len & 1) == 0)
- 				t->bits_per_word = 16;
-+		} else {
-+			/*
-+			 * CPM/QE uses Little Endian for words > 8
-+			 * so transform 16 and 32 bits words into 8 bits
-+			 * Unfortnatly that doesn't work for LSB so
-+			 * reject these for now
-+			 * Note: 32 bits word, LSB works iff
-+			 * tfcr/rfcr is set to CPMFCR_GBL
-+			 */
-+			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
-+				return -EINVAL;
-+			if (t->bits_per_word == 16 || t->bits_per_word == 32)
-+				t->bits_per_word = 8; /* pretend its 8 bits */
+@@ -366,6 +366,9 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 				return -EINVAL;
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
++			if (t->bits_per_word == 8 && t->len >= 256 &&
++			    (mpc8xxx_spi->flags & SPI_CPM1))
++				t->bits_per_word = 16;
  		}
  	}
  
-@@ -658,8 +648,14 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
- 		fsl_spi_grlib_probe(dev);
- 
--	master->bits_per_word_mask =
--		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
-+	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
-+	else
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
-+
-+	master->bits_per_word_mask &=
- 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
- 
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
 -- 
 2.40.1
 
