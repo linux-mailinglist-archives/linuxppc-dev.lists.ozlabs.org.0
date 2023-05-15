@@ -2,53 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A929702AA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 12:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BF6702C13
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 13:57:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKbN605brz3fCL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 20:34:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKdCx5vxfz3f7c
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 21:57:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E1Y6ZR0W;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AXMAwOnf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E1Y6ZR0W;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AXMAwOnf;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKbMD1S3Kz3bkb
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 20:34:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2547A616DA;
-	Mon, 15 May 2023 10:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1595CC433EF;
-	Mon, 15 May 2023 10:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684146836;
-	bh=5tmSZMTrH48otorY7sLrXC7yV0twLhRBW3UaH6lhA84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E1Y6ZR0WzHfeBpvPqw70ZdEnLQQpgWKdvoQLpVhX+5wJVudUhLnJbQKQ2L7d8drrx
-	 vaba6Sv7UUva6cY/90vupd2i0jeWyJImmPki/eVyWS/qSMa4zlGwG45Onyby+LYuxz
-	 t4v6jVxMQtxbDLB5kD152NTGCQXYVQ9LjsNZS98+cpJ/IHA1JmLip8tRBk9o0W7UFS
-	 +hXPahVEsUNYeokdYRgs4mMcHkNUFNQTsItXvcYkTMceYm84h1teCoroif0s3h9uPe
-	 sqWkX5W99uvKpXcxOHqVsL+ray+oaNU/T2ud44pu1HOLF41InFyVvhMR9XVkRjPq03
-	 36vFVPrZNiVOw==
-Date: Mon, 15 May 2023 12:33:47 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Christian =?utf-8?B?R8O2dHRzY2hl?= <cgzones@googlemail.com>
-Subject: Re: [RFC PATCH v2] fs/xattr: add *at family syscalls
-Message-ID: <20230515-kopfgeld-umkurven-f27be4b68a26@brauner>
-References: <20230511150802.737477-1-cgzones@googlemail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKcyj6Xh0z3bg3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 21:46:21 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34FBbsdi020591;
+	Mon, 15 May 2023 11:46:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=tlHLvQfS2Lw4oH6NbLNsIrYdEwhzwAdihNFnGyiErJ8=;
+ b=AXMAwOnfN+zQFkNi/DxJmPdiZfNknXmZmgqu07He/kJWsVkt0a+IiacCkya5zpYohpMA
+ MlkEcwoMv2/s9PB1Qv3SryztzSA+S11YibyzEeKDj/IyO2ZBfQEn3NjQ2nsFn4H3AtAK
+ 3EVaKkwD7NyBbu8th6TQ7nJ0Viplws1uyaoOkrpjxKJtn4EnDOsIOVM5W96nHRPQfMLC
+ RDeOSwxRADAGgsA7qYHIdyKjk2jN6BwKPkTYWqBpoJGRViXsvGbwGCvvKUoRYmhoKrGf
+ 789BTPcKX4Rr/TJO7HseLQO8dJNkthcHTh4rp8bP22ynOV2dUwd3XRhaqwANCauYXSje kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qkk9r1tp9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 11:46:09 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34FBbotv020160;
+	Mon, 15 May 2023 11:46:09 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qkk9r1tn4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 11:46:08 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34F9cB68011878;
+	Mon, 15 May 2023 11:46:05 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3qj264rv97-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 11:46:05 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34FBk33U21365154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 May 2023 11:46:03 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 290212004B;
+	Mon, 15 May 2023 11:46:03 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E29DC20040;
+	Mon, 15 May 2023 11:46:02 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.171.138.156])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 15 May 2023 11:46:02 +0000 (GMT)
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Subject: [RFC 0/1] sched/fair: Consider asymmetric scheduler groups in load balancer
+Date: Mon, 15 May 2023 13:46:00 +0200
+Message-Id: <20230515114601.12737-1-huschle@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230511150802.737477-1-cgzones@googlemail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: X6fKw2QlsyZYC5bDBABfUmopguXhi4Re
+X-Proofpoint-ORIG-GUID: QNgqIe5mT4XFrn3-NtQl1SQQj8dDGLG-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-15_09,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=736 bulkscore=0 mlxscore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305150100
+X-Mailman-Approved-At: Mon, 15 May 2023 21:57:07 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,108 +94,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, amir73il@gmail.com, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, Jan Kara <jack@suse.cz>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org, Arnd Bergmann <arnd@arndb.de>, selinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, cyphar@cyphar.com, linux-api@vger.kernel.org, jlayton@kernel.org, linux-kernel@vger.kernel.org, audit@vger.kernel.org, linux-security-module@vger.kernel.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 11, 2023 at 05:08:02PM +0200, Christian Göttsche wrote:
-> Add the four syscalls setxattrat(), getxattrat(), listxattrat() and
-> removexattrat().  Those can be used to operate on extended attributes,
-> especially security related ones, either relative to a pinned directory
-> or on a file descriptor without read access, avoiding a
-> /proc/<pid>/fd/<fd> detour, requiring a mounted procfs.
-> 
-> One use case will be setfiles(8) setting SELinux file contexts
-> ("security.selinux") without race conditions.
-> 
-> Add XATTR flags to the private namespace of AT_* flags.
-> 
-> Use the do_{name}at() pattern from fs/open.c.
-> 
-> Use a single flag parameter for extended attribute flags (currently
-> XATTR_CREATE and XATTR_REPLACE) and *at() flags to not exceed six
-> syscall arguments in setxattrat().
-> 
-> Previous approach ("f*xattr: allow O_PATH descriptors"): https://lore.kernel.org/all/20220607153139.35588-1-cgzones@googlemail.com/
-> v1 discussion: https://lore.kernel.org/all/20220830152858.14866-2-cgzones@googlemail.com/
-> 
-> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-> CC: x86@kernel.org
-> CC: linux-alpha@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> CC: linux-arm-kernel@lists.infradead.org
-> CC: linux-ia64@vger.kernel.org
-> CC: linux-m68k@lists.linux-m68k.org
-> CC: linux-mips@vger.kernel.org
-> CC: linux-parisc@vger.kernel.org
-> CC: linuxppc-dev@lists.ozlabs.org
-> CC: linux-s390@vger.kernel.org
-> CC: linux-sh@vger.kernel.org
-> CC: sparclinux@vger.kernel.org
-> CC: linux-fsdevel@vger.kernel.org
-> CC: audit@vger.kernel.org
-> CC: linux-arch@vger.kernel.org
-> CC: linux-api@vger.kernel.org
-> CC: linux-security-module@vger.kernel.org
-> CC: selinux@vger.kernel.org
-> ---
+The current load balancer implementation implies that scheduler groups,
+within the same scheduler domain, all host the same number of CPUs. 
 
-Fwiw, your header doesn't let me see who the mail was directly sent to
-so I'm only able to reply to lists which is a bit pointless...
+This appears to be valid for non-s390 architectures. Nevertheless, s390
+can actually have scheduler groups of unequal size.
+The current scheduler behavior causes some s390 configs to use SMT
+while some cores are still idle, leading to a performance degredation 
+under certain levels of workload.
 
-> v2:
->   - squash syscall introduction and wire up commits
->   - add AT_XATTR_CREATE and AT_XATTR_REPLACE constants
+Please refer to the patch's commit message for more details and an
+example. This patch is a proposal on how to integrate the size of
+scheduler groups into the decision process.
 
-> +#define AT_XATTR_CREATE	        0x1	/* setxattrat(2): set value, fail if attr already exists */
-> +#define AT_XATTR_REPLACE	0x2	/* setxattrat(2): set value, fail if attr does not exist */
+This patch is the most basic approach to address this issue and does 
+not claim to be perfect as-is.
 
-We really shouldn't waste any AT_* flags for this. Otherwise we'll run
-out of them rather quickly. Two weeks ago we added another AT_* flag
-which is up for merging for v6.5 iirc and I've glimpsed another AT_*
-flag proposal in one of the talks at last weeks Vancouver conference
-extravaganza.
+Other ideas that also proved to address the problem but are more 
+complex but also potentially more precise:
+  1. On scheduler group building, count the number of CPUs within each 
+     group that are first in their sibling mask. This represents the 
+     number of CPUs that can be used before running into SMT. This 
+     should be slightly more accurate than using the full group weight 
+     if the number of available SMT threads per core varies.
+  2. Introduce a new scheduler group classification (smt_busy) in
+     between of fully_busy and has_spare. This classification would  
+     indicate that a group still has spare capacity, but will run 
+     into SMT when using that capacity. This would make the load 
+     balancer prefer groups with fully idle CPUs over ones that are 
+     about to run into SMT.
 
-Even if we reuse 0x200 for AT_XATTR_CREATE (like we did for AT_EACCESS
-and AT_REMOVEDIR) we still need another bit for AT_XATTR_REPLACE.
+Feedback would be greatly appreciated.
 
-Plus, this is really ugly since AT_XATTR_{CREATE,REPLACE} really isn't
-in any way related to lookup and we're mixing it in with lookup
-modifying flags.
+Tobias Huschle (1):
+  sched/fair: Consider asymmetric scheduler groups in load balancer
 
-So my proposal for {g,s}etxattrat() would be:
+ kernel/sched/fair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-struct xattr_args {
-        __aligned_u64 value;
-        __u32 size;
-        __u32 cmd;
-};
+-- 
+2.34.1
 
-So everything's nicely 64bit aligned in the struct. Use the @cmd member
-to set either XATTR_REPLACE or XATTR_CREATE and treat it as a proper
-enum and not as a flag argument like the old calls did.
-
-So then we'd have:
-
-setxattrat(int dfd, const char *path, const char __user *name,
-           struct xattr_args __user *args, size_t size, unsigned int flags)
-getxattrat(int dfd, const char *path, const char __user *name,
-           struct xattr_args __user *args, size_t size, unsigned int flags)
-
-The current in-kernel struct xattr_ctx would be renamed to struct
-kernel_xattr_args and then we do the usual copy_struct_from_user()
-dance:
-
-struct xattr_args args;
-err = copy_struct_from_user(&args, sizeof(args), uargs, usize);
-
-and then go on to handle value/size for setxattrat()/getxattrat()
-accordingly.
-
-getxattr()/setxattr() aren't meaningfully filterable by seccomp already
-so there's not point in not using a struct.
-
-If that isn't very appealing then another option is to add a new flag
-namespace just for setxattrat() similar to fspick() and move_mount()
-duplicating the needed lookup modifying flags.
-Thoughts?
