@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE8D703390
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 18:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A9970344D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 18:46:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKlRx5zXpz3fBb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 02:38:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKldT0W2jz3f7b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 02:46:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=DTOEcrxa;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=JqTHmNed;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=DTOEcrxa;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=JqTHmNed;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKlR66LWFz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 02:37:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKlcf02TFz2ygG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 02:46:08 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id ED1B66283D;
-	Mon, 15 May 2023 16:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD8FC433D2;
-	Mon, 15 May 2023 16:37:49 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 1A57E62903;
+	Mon, 15 May 2023 16:46:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DE9C433EF;
+	Mon, 15 May 2023 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1684168670;
-	bh=CmgM/PIwsVAX6k9rEN88Wruqx4PIDenkBh/UWv7DCig=;
+	s=korg; t=1684169166;
+	bh=HbJ1+XyUzUEKfatXuPxWCn+ESfHt5skSLLvHFihRKMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTOEcrxaQzNMxkEwXDYFdXRCdkTVjQ6uz01UaI4RARBNQVaIhS6DE5v0/YDW4OJIJ
-	 iBJnroFAp4m1nUnIc1qAjBFJRTcUlUgMCSZO+2ixYRIVYa0GZt8dKy3yWQSK+eCuwd
-	 EveaYwpGlzWbdCcFyNjPCNwrkgLmCS7b7+EZ10tk=
+	b=JqTHmNedr4+cP+qzama27CgUQdRlcXI0xON0H/CYtCqigavkyW2/rISGuJJB0j67U
+	 SDGG/83Lb+4F39d9S240+acWQX7n79p/W7jgLNMgSelMXhrxHMAE+UxSxn1dvPcMer
+	 tRf3trKdMtHLC2cwJH6ciatOi4U0QZjMZWTX+7KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 4.14 094/116] perf vendor events power9: Remove UTF-8 characters from JSON files
-Date: Mon, 15 May 2023 18:26:31 +0200
-Message-Id: <20230515161701.376943982@linuxfoundation.org>
+Subject: [PATCH 4.19 164/191] perf vendor events power9: Remove UTF-8 characters from JSON files
+Date: Mon, 15 May 2023 18:26:41 +0200
+Message-Id: <20230515161713.393498528@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -128,10 +128,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 54cc3be00fc2d..0048c27d75f35 100644
+index 48cf4f920b3ff..064341c0df575 100644
 --- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
 +++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1452,7 +1452,7 @@
+@@ -1417,7 +1417,7 @@
    {,
      "EventCode": "0x45054",
      "EventName": "PM_FMA_CMPL",
@@ -139,8 +139,8 @@ index 54cc3be00fc2d..0048c27d75f35 100644
 +    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
    },
    {,
-     "EventCode": "0x5090",
-@@ -2067,7 +2067,7 @@
+     "EventCode": "0x201E8",
+@@ -2017,7 +2017,7 @@
    {,
      "EventCode": "0xC0BC",
      "EventName": "PM_LSU_FLUSH_OTHER",
@@ -150,10 +150,10 @@ index 54cc3be00fc2d..0048c27d75f35 100644
    {,
      "EventCode": "0x5094",
 diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index bc2db636dabf1..876292f69e1f6 100644
+index b4772f54a2718..e2f2ed0a35496 100644
 --- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
 +++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -462,7 +462,7 @@
+@@ -442,7 +442,7 @@
    {,
      "EventCode": "0x4D052",
      "EventName": "PM_2FLOP_CMPL",
