@@ -1,75 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3821C7023CA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 07:54:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC617023D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 07:55:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKT980ktJz3f4S
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 15:54:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKTB41S1Qz3f6j
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 15:55:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UouKyr2b;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b98jN5yp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UouKyr2b;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b98jN5yp;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKT871n6Tz3f6T
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 15:53:58 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-643912bca6fso9617766b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 22:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684130035; x=1686722035;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TSC+9W7DCz4lR9wWZ63D9yCHdH0WAkMn8SnHlRTFjMs=;
-        b=UouKyr2bWW4XQmdByUrQ3nfTJjxVB2aB7AipgCUD0Hw2MPsFfS1qY0EeAUoOT09EH5
-         P8wue1WYweq5AlbZe0iKGPUASMUc1quv7+l3I41Bg3wKezqwoMkh22ZfgED7QAcXbWPN
-         OsIiXvlRC6m3N8jeEx2yklr+Ba/2ffSOPE00UiLpgRTbmP5qY9nuZ5tP3JK7fGlID5Tc
-         SL4oVD+/9zDK2iVaXl7bqWQKM8Py6wTh7eUbUKj2utFv4IKLHFJMoGWdCPZNXkpv4Xn3
-         uZ6xG5P+zbSPIoNGyqSAa227VV562bBDZuA8Fb2lqb1C0m8118RFCZEnByYCgCdy6qqx
-         yaIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684130035; x=1686722035;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TSC+9W7DCz4lR9wWZ63D9yCHdH0WAkMn8SnHlRTFjMs=;
-        b=g+T3om2zdlN44QAYDpXzkrF9Cd7D5ELSfFO3n0fHwU4hvh7GCVbv6BaxOPxpLsUP+v
-         7omleDuZQeOHKtg8AONnmLVT4Afi+YpMH4Xbor1pRyswMUOM2LbrH5PS7YcXcCMFE2TQ
-         xb4N2ysCWeivTpbRLwa2RVhnEFTqlXO6juJ6f3192fJDe4910sSAOsJKOW+4m9bL1LWR
-         v6iO7+pYNvzWaB/8e1eun23ukax+BHSX3ez+I5uMF5FiyyzQil6S7J7F4iGBjk6ejGJW
-         PbUoEKmNzpC3bBWVNzxCdPwPL/2Lsg6Ou+XCsGedq+jDNNj3Co9ZP41MGk/txSs9gs1K
-         Bj9g==
-X-Gm-Message-State: AC+VfDxX7WEZyDm9AtY4ZZkVd5IGupKRzls9UecqwLnRz2ee0xZBapYq
-	GeraO17ZPwV14kCsjzM9K1NFAVEHl2cNBQ==
-X-Google-Smtp-Source: ACHHUZ5eANS8i29uWaVOGNluXP9j/Ops+Blo9QOA/rvz/uEU0Y7LIhB9bqNuZHRHdlqV+RAo+iDTYg==
-X-Received: by 2002:a05:6a00:1391:b0:643:ba77:f265 with SMTP id t17-20020a056a00139100b00643ba77f265mr41919527pfg.25.1684130035282;
-        Sun, 14 May 2023 22:53:55 -0700 (PDT)
-Received: from localhost ([1.146.119.84])
-        by smtp.gmail.com with ESMTPSA id k4-20020aa792c4000000b0063aa1763146sm11330075pfa.17.2023.05.14.22.53.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 May 2023 22:53:54 -0700 (PDT)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKT8r73NLz3fFh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 15:54:36 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34F5FMHt011001;
+	Mon, 15 May 2023 05:54:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=9RtHnblCI7UBu/c1/5fTC3c6+g4vBjyxX43t8vUwvUM=;
+ b=b98jN5ypiT4j83hCUpzNxixlpWRvR7pyMV320lZ8Bf+W2S9uMKEE4f63dvsDYQ2s1kfb
+ C2BEFTi1P6CwA2wMnjz4fiu4OCAx/DqXQg8h8q0Zb9Hnzit5NlXSs2wd2gjx6sj2zgOP
+ 1fZHnFh0Ag4Z0VorMowSH/4n05/On96U5BkzAk+vLeU4nOvyXw5V+q0vWJzj7mFAVv58
+ qCjGJmFzxR+ySsc7VLZGPk/jaXLm2mUZLDjWXkQyjO2lFpeofXZT/dkRWTJgmKmFjUGS
+ LTeTf1c099ZSjU7AOBsRvpyfmDoh7CRb+C10aYFPaHNttpyylcXmeEDvrETk1AISwweT IQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qk6p7taer-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 05:54:30 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34F5ma2I023860;
+	Mon, 15 May 2023 05:54:30 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qk6p7taeh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 05:54:30 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34F3c41w025392;
+	Mon, 15 May 2023 05:54:29 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3qj265m1d7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 May 2023 05:54:29 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34F5sRFR27132420
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 May 2023 05:54:27 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 70D8B58056;
+	Mon, 15 May 2023 05:54:27 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC86358060;
+	Mon, 15 May 2023 05:54:25 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.109.204.255])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 15 May 2023 05:54:25 +0000 (GMT)
+X-Mailer: emacs 29.0.60 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/64s/radix: Fix soft dirty tracking
+In-Reply-To: <20230511114224.977423-1-mpe@ellerman.id.au>
+References: <20230511114224.977423-1-mpe@ellerman.id.au>
+Date: Mon, 15 May 2023 11:24:23 +0530
+Message-ID: <87zg66dtrk.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rzX33nCbNPFeOMwYPUVMwjNHWUgbZUg0
+X-Proofpoint-ORIG-GUID: CllUFLHZaHPe65veMAx-xyXK3X9vdk0C
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 May 2023 15:53:49 +1000
-Message-Id: <CSMM9QLH8BRM.37WYXBTRCYB23@wheely>
-Subject: Re: [PATCH v2 08/11] powerpc: Mark writes registering ipi to host
- cpu through kvm and polling
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.14.0
-References: <20230510033117.1395895-1-rmclure@linux.ibm.com>
- <20230510033117.1395895-9-rmclure@linux.ibm.com>
-In-Reply-To: <20230510033117.1395895-9-rmclure@linux.ibm.com>
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-15_02,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0 phishscore=0
+ mlxlogscore=960 impostorscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305150048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,74 +98,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gautam@linux.ibm.com, arnd@arndb.de
+Cc: dan@danny.cz, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed May 10, 2023 at 1:31 PM AEST, Rohan McLure wrote:
-> Mark writes to hypervisor ipi state so that KCSAN recognises these
-> asynchronous issue of kvmppc_{set,clear}_host_ipi to be intended, with
-> atomic writes. Mark asynchronous polls to this variable in
-> kvm_ppc_read_one_intr().
+Michael Ellerman <mpe@ellerman.id.au> writes:
+
+> It was reported that soft dirty tracking doesn't work when using the
+> Radix MMU.
 >
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-
-What's the go with accesses in asm? Does it just assume you know
-what you're doing?
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-> ---
-> v2: Add read-side annotations to both polling locations in
-> kvm_ppc_read_one_intr().
-> ---
->  arch/powerpc/include/asm/kvm_ppc.h   | 4 ++--
->  arch/powerpc/kvm/book3s_hv_builtin.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+> The tracking is supposed to work by clearing the soft dirty bit for a
+> mapping and then write protecting the PTE. If/when the page is written
+> to, a page fault occurs and the soft dirty bit is added back via
+> pte_mkdirty(). For example in wp_page_reuse():
 >
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/as=
-m/kvm_ppc.h
-> index bc57d058ad5b..d701df006c08 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -548,12 +548,12 @@ static inline void kvmppc_set_host_ipi(int cpu)
->  	 * pairs with the barrier in kvmppc_clear_host_ipi()
->  	 */
->  	smp_mb();
-> -	paca_ptrs[cpu]->kvm_hstate.host_ipi =3D 1;
-> +	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 1);
->  }
-> =20
->  static inline void kvmppc_clear_host_ipi(int cpu)
+> 	entry =3D maybe_mkwrite(pte_mkdirty(entry), vma);
+> 	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+> 		update_mmu_cache(vma, vmf->address, vmf->pte);
+>
+> Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
+> radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
+> meaning the soft dirty bit is not set even though the page has been
+> written to.
+>
+> Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
+> changed in radix__ptep_set_access_flags().
+>
+
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+> Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
+> Cc: stable@vger.kernel.org # v4.7+
+> Reported-by: Dan Hor=C3=A1k <dan@danny.cz>
+> Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@d=
+anny.cz
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
+ook3s64/radix_pgtable.c
+> index 26245aaf12b8..2297aa764ecd 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct vm_area_st=
+ruct *vma, pte_t *ptep,
+>  				  pte_t entry, unsigned long address, int psize)
 >  {
-> -	paca_ptrs[cpu]->kvm_hstate.host_ipi =3D 0;
-> +	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 0);
+>  	struct mm_struct *mm =3D vma->vm_mm;
+> -	unsigned long set =3D pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
+> -					      _PAGE_RW | _PAGE_EXEC);
+> +	unsigned long set =3D pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
+> +					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
+>=20=20
+>  	unsigned long change =3D pte_val(entry) ^ pte_val(*ptep);
 >  	/*
->  	 * order clearing of host_ipi flag vs. processing of IPI messages
->  	 *
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book=
-3s_hv_builtin.c
-> index da85f046377a..0f5b021fa559 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -406,7 +406,7 @@ static long kvmppc_read_one_intr(bool *again)
->  		return 1;
-> =20
->  	/* see if a host IPI is pending */
-> -	host_ipi =3D local_paca->kvm_hstate.host_ipi;
-> +	host_ipi =3D READ_ONCE(local_paca->kvm_hstate.host_ipi);
->  	if (host_ipi)
->  		return 1;
-> =20
-> @@ -466,7 +466,7 @@ static long kvmppc_read_one_intr(bool *again)
->  		 * meantime. If it's clear, we bounce the interrupt to the
->  		 * guest
->  		 */
-> -		host_ipi =3D local_paca->kvm_hstate.host_ipi;
-> +		host_ipi =3D READ_ONCE(local_paca->kvm_hstate.host_ipi);
->  		if (unlikely(host_ipi !=3D 0)) {
->  			/* We raced with the host,
->  			 * we need to resend that IPI, bummer
 > --=20
-> 2.37.2
-
+> 2.40.1
