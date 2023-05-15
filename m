@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E762702379
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 07:49:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A1970238E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 07:51:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKT2P0H2fz3f66
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 15:49:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKT4j5s61z3cND
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 15:51:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Iy/Emt8j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=hg3Xo3Fl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Iy/Emt8j;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=hg3Xo3Fl;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKT1b3d5hz3bbD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 15:48:19 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-64ac461af60so3509687b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 22:48:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKT3v3btkz3bP1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 15:50:19 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-517bdc9e81dso6450578a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 May 2023 22:50:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684129696; x=1686721696;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=gmail.com; s=20221208; t=1684129817; x=1686721817;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1lKqp6WmHcJqq21uNLOFJBccUKu+cxU89IFAkkDJSno=;
-        b=Iy/Emt8jgOOmw5lxUhYXYXR8xuDttCDi6Tx70w/rb93Rz/d4QDp778B3VvxAZ4YMEb
-         P/ksMxGZRwZiRPfinoFClPmVTuajqZEvOHn7IPOmjzhT7KOMyODlHycWZKYkxbm9P8SG
-         ZVoVqGVUlfyFFTUhGTMB5j0p3yis2lcp8n3cLnI5gaZpklE5uY6JyNCTefCEjPVklI1p
-         Joie2wvEokW1khncPnWbN3CjAzG43JvnBKAxow0ig1Hm4Z04x9yAxBJQVIVqVaBwoEBb
-         JgQobqf0TIDm4x7qB4wrJPVHzNA4YfOKk5xts+S87viaafGD2MuSuFN1bzxU3ZEoxXOM
-         S4Bw==
+        bh=bMBDwhS9a31QvlVQIOBtYu2UDCJG7pWeuBhnEp9GO1c=;
+        b=hg3Xo3Fl6W2sCM0cbHrJ3KBEDXvC3f7h/BpouNDBi79rjPjAvEYqQEylcW0ZAk10UM
+         nqXasASyvCD4z/bLNPf7+8wqTKDnCnM2GpaMV0MVoCfzFoTPmbdaCuCgm10cDyqBmsw7
+         5sB/E6BcO8DPDVhRL4P8sw/nFskvj1DkD2PSOb7b9dtWXSWsheYZQsfY6ufG0Xq3/xf+
+         gTkaAlSnKLl33bf63YC2fnQufNtK7x4CJzcc6xo9ch7JvTuI6ADQXLvUrMFOyaK1aa0s
+         ZrTYhuksvAf1Ze1fq64NAm8RiDLX4Uy5HIJka+fKM6R9fHAx4fKUEo2ZodJwRMKNiLh4
+         ht8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684129696; x=1686721696;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=1e100.net; s=20221208; t=1684129817; x=1686721817;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=1lKqp6WmHcJqq21uNLOFJBccUKu+cxU89IFAkkDJSno=;
-        b=ZcYxM2+e46rqG/fV2K2smAZdpTVHFLuZId3UBg8cjLrIIOGHvhiPypbjU9GXDV9vMB
-         AknS30P7U6ksKFGVGiuhpyfPs6qb/ACbq9Jx3Fs4ShMNu5KSVRPa2ctbKpA2aPqThgWQ
-         76EnOwlooK9X/iv2WiuR7gBzubJUpPCPw6v5SQV1BoEEbcykZqSpRuFaXdFQXQq5ly0Z
-         2XbfyU/fZbZXMk6VgcyMSELC4Buh3D6QjBr4DJa2WHLi9KCUeJ/2ExU+eGPuOeciZ4Jg
-         0ceXJPLGhU8bBA9EloTZxRN1xCgyMHSDtAQZONJteY2fPPGV5L5CFSHPkKcOr7fCHNzZ
-         fidw==
-X-Gm-Message-State: AC+VfDx9++qwmo6KEcQ7u93mBTq3jDSH+qhL/Fvf8tTdCT5/bGqnuGvw
-	Tqwn22W+g9/ehGTdkAz71ts=
-X-Google-Smtp-Source: ACHHUZ5dFomFERvRfJfCCS3uMgpcZhbwcjyNDz55eYQwQe2+kd4XIe95UPYBslXwvCPasbtSk49TaQ==
-X-Received: by 2002:a05:6a00:21c9:b0:645:1081:98ec with SMTP id t9-20020a056a0021c900b00645108198ecmr36523772pfj.13.1684129696370;
-        Sun, 14 May 2023 22:48:16 -0700 (PDT)
+        bh=bMBDwhS9a31QvlVQIOBtYu2UDCJG7pWeuBhnEp9GO1c=;
+        b=KbdIPC0pLsXQzdC3u/q//g230jF+zBqcwqgy/F8ADmsPf/6wbBjOBJ8PF7EdNR1vlz
+         ArqCWR5zbVfZBjCVLZ30mcDuVgX8PDcNp0JGQdvzQ5N+ObExwcN6oqJ4Xy8I22G4xk+J
+         03Zfrn8wmI9Hn3CdtbgNluITrh+t+eqJBDlbDmmf2lC1CruONMuD9hfoGmzqp11v7oDN
+         +bSJXYbF2iOSfK5jA+A6o3dxleo+ugKKqVYUF6dF6AewxYwokim+VsaaFGPJ2BEOfUT5
+         sx4MkY44qyEP4DT08dFLgzLAZ8i6g6EeqGoLXBvgOMzaF1VMkDYzf/s+BH7ODniGugFm
+         lDzQ==
+X-Gm-Message-State: AC+VfDzp9be7v8WvmZc8q9mdc4eOwS5SsxUWA/zX70RIwHDZ+VoLORx+
+	P31WGFxam6alXJhglOE0iaoOkf2xRiY3Uw==
+X-Google-Smtp-Source: ACHHUZ7tT9H7Or7mgSUcLQHPy1t7T2ks+kHsVfFhN4AVZnYKmmc7AVqXQVmOdVl16xPCd/i2mGvcjA==
+X-Received: by 2002:a05:6a20:7f8a:b0:f5:c6e5:e65 with SMTP id d10-20020a056a207f8a00b000f5c6e50e65mr43583272pzj.7.1684129817431;
+        Sun, 14 May 2023 22:50:17 -0700 (PDT)
 Received: from localhost ([1.146.119.84])
-        by smtp.gmail.com with ESMTPSA id g13-20020aa7818d000000b0063afb08afeesm10952813pfi.67.2023.05.14.22.48.12
+        by smtp.gmail.com with ESMTPSA id y24-20020aa78558000000b00634a96493f7sm8556334pfn.128.2023.05.14.22.50.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 May 2023 22:48:15 -0700 (PDT)
+        Sun, 14 May 2023 22:50:16 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 May 2023 15:48:10 +1000
-Message-Id: <CSMM5EX700IU.1TPP0VCNERWLJ@wheely>
-To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v2 03/11] asm-generic/mmiowb: Mark accesses to fix KCSAN
- warnings
+Date: Mon, 15 May 2023 15:50:10 +1000
+Message-Id: <CSMM6YE0FGF9.SG52DCRHZ35E@wheely>
+Subject: Re: [PATCH v2 05/11] powerpc: Mark accesses to power_save callback
+ in arch_cpu_idle
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.14.0
 References: <20230510033117.1395895-1-rmclure@linux.ibm.com>
- <20230510033117.1395895-4-rmclure@linux.ibm.com>
-In-Reply-To: <20230510033117.1395895-4-rmclure@linux.ibm.com>
+ <20230510033117.1395895-6-rmclure@linux.ibm.com>
+In-Reply-To: <20230510033117.1395895-6-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,82 +86,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed May 10, 2023 at 1:31 PM AEST, Rohan McLure wrote:
-> Prior to this patch, data races are detectable by KCSAN of the following
-> forms:
+> The power_save callback can be overwritten by another core at boot time.
+> Specifically, null values will be replaced exactly once with the callback
+> suitable for the particular platform (PowerNV / pseries lpars), making
+> this value a good candidate for __ro_after_init.
 >
-> [1] Asynchronous calls to mmiowb_set_pending() from an interrupt context
->     or otherwise outside of a critical section
-> [2] Interrupted critical sections, where the interrupt will itself
->     acquire a lock
->
-> In case [1], calling context does not need an mmiowb() call to be
-> issued, otherwise it would do so itself. Such calls to
-> mmiowb_set_pending() are either idempotent or no-ops.
->
-> In case [2], irrespective of when the interrupt occurs, the interrupt
-> will acquire and release its locks prior to its return, nesting_count
-> will continue balanced. In the worst case, the interrupted critical
-> section during a mmiowb_spin_unlock() call observes an mmiowb to be
-> pending and afterward is interrupted, leading to an extraneous call to
-> mmiowb(). This data race is clearly innocuous.
->
-> Mark all potentially asynchronous memory accesses with READ_ONCE or
-> WRITE_ONCE, including increments and decrements to nesting_count. This
-> has the effect of removing KCSAN warnings at consumer's callsites.
+> Even with this the case, KCSAN sees unmarked reads to the callback
+> variable, and notices that unfortunate compiler reorderings could lead
+> to distinct function pointers being read. In reality this is impossible,
+> so don't instrument at this read.
 >
 > Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
-> Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> v2: Remove extraneous READ_ONCE in mmiowb_set_pending for nesting_count
+> v2: Mark instances at init where the callback is written to, and
+> data_race() read as there is no capacity for the value to change
+> underneath.
 > ---
->  include/asm-generic/mmiowb.h | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+>  arch/powerpc/kernel/idle.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 >
-> diff --git a/include/asm-generic/mmiowb.h b/include/asm-generic/mmiowb.h
-> index 5698fca3bf56..6dea28c8835b 100644
-> --- a/include/asm-generic/mmiowb.h
-> +++ b/include/asm-generic/mmiowb.h
-> @@ -37,25 +37,29 @@ static inline void mmiowb_set_pending(void)
->  	struct mmiowb_state *ms =3D __mmiowb_state();
+> diff --git a/arch/powerpc/kernel/idle.c b/arch/powerpc/kernel/idle.c
+> index b1c0418b25c8..43d96c0e3b96 100644
+> --- a/arch/powerpc/kernel/idle.c
+> +++ b/arch/powerpc/kernel/idle.c
+> @@ -35,7 +35,7 @@ EXPORT_SYMBOL(cpuidle_disable);
 > =20
->  	if (likely(ms->nesting_count))
-> -		ms->mmiowb_pending =3D ms->nesting_count;
-> +		WRITE_ONCE(ms->mmiowb_pending, ms->nesting_count);
->  }
-> =20
->  static inline void mmiowb_spin_lock(void)
+>  static int __init powersave_off(char *arg)
 >  {
->  	struct mmiowb_state *ms =3D __mmiowb_state();
-> -	ms->nesting_count++;
-> +
-> +	/* Increment need not be atomic. Nestedness is balanced over interrupts=
-. */
-> +	WRITE_ONCE(ms->nesting_count, READ_ONCE(ms->nesting_count) + 1);
+> -	ppc_md.power_save =3D NULL;
+> +	WRITE_ONCE(ppc_md.power_save, NULL);
+>  	cpuidle_disable =3D IDLE_POWERSAVE_OFF;
+>  	return 1;
 >  }
-> =20
->  static inline void mmiowb_spin_unlock(void)
->  {
->  	struct mmiowb_state *ms =3D __mmiowb_state();
-> +	u16 pending =3D READ_ONCE(ms->mmiowb_pending);
-> =20
-> -	if (unlikely(ms->mmiowb_pending)) {
-> -		ms->mmiowb_pending =3D 0;
-> +	WRITE_ONCE(ms->mmiowb_pending, 0);
-> +	if (unlikely(pending)) {
->  		mmiowb();
->  	}
-> =20
-> -	ms->nesting_count--;
-> +	/* Decrement need not be atomic. Nestedness is balanced over interrupts=
-. */
-> +	WRITE_ONCE(ms->nesting_count, READ_ONCE(ms->nesting_count) - 1);
 
-Still think the nesting_counts don't need WRITE_ONCE/READ_ONCE.
-data_race() maybe but I don't know if it's even classed as a data
-race. How does KCSAN handle/annotate preempt_count, for example?
+Shouldn't need the WRITE_ONCE if you don't need a READ_ONCE. Does
+data_race work here too? What about the other writers? Does
+KCSAN know it's single threaded in early boot so skips marking,
+but perhaps this comes later? Would be good to have a little
+comment if so.
 
 Thanks,
 Nick
+
+> @@ -43,10 +43,13 @@ __setup("powersave=3Doff", powersave_off);
+> =20
+>  void arch_cpu_idle(void)
+>  {
+> +	/* power_save callback assigned only at init so no data race */
+> +	void (*power_save)(void) =3D data_race(ppc_md.power_save);
+> +
+>  	ppc64_runlatch_off();
+> =20
+> -	if (ppc_md.power_save) {
+> -		ppc_md.power_save();
+> +	if (power_save) {
+> +		power_save();
+>  		/*
+>  		 * Some power_save functions return with
+>  		 * interrupts enabled, some don't.
+> --=20
+> 2.37.2
+
