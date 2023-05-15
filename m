@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9C270383F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 19:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8D1703A4C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 19:50:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKmc25cW7z3bxt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 03:30:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKn2s0jh2z3f7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 03:50:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Qf9F3WqU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0f7HTAQZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Qf9F3WqU;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0f7HTAQZ;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKmb94jv0z3bxL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 03:29:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKn1y6KVpz3f4H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 03:49:41 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 840EA62D23;
-	Mon, 15 May 2023 17:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D00FC433D2;
-	Mon, 15 May 2023 17:29:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8A40F62F1F;
+	Mon, 15 May 2023 17:49:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EFBC4339B;
+	Mon, 15 May 2023 17:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1684171794;
+	s=korg; t=1684172978;
 	bh=CQLT/bsvAJd2jCdkCfQb3EdAHZfQbieJuhsfPHb1y0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf9F3WqU761emn4JK5OlBHuprw7BmCA27BYVS/Qli2rRlQXLS535KqBAYTDID8NHV
-	 ItMhyCWw8ISoFMxXDza2caRAbfRtlEe57qymfy3rkvcH4ppDb85vOL8So6xTZzvDCp
-	 UmbIrKKwSAvX0MNLINCdBpz1VuVEtwCk5VmkB070=
+	b=0f7HTAQZkAqyqxUYdXxwdSlCoclCSHCY8j17koLM+Fi6PBQ1MpIm+LQJDu3ltmSxn
+	 gaO6c8Qes9whu8jyErN7uCKFZ7vDk6WxfIdjLuvm1q0Q24mwR9kzReW2j6oCFvJ7VT
+	 n3JYZanTiKg/X1NpmiL15ogIQmVB6hZjU27bmNpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.15 050/134] perf vendor events power9: Remove UTF-8 characters from JSON files
-Date: Mon, 15 May 2023 18:28:47 +0200
-Message-Id: <20230515161704.811283068@linuxfoundation.org>
+Subject: [PATCH 5.10 329/381] perf vendor events power9: Remove UTF-8 characters from JSON files
+Date: Mon, 15 May 2023 18:29:40 +0200
+Message-Id: <20230515161751.672234096@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
