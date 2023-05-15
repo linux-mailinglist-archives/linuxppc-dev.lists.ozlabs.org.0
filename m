@@ -1,52 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49606703BC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 20:06:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849D8703D68
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 May 2023 21:12:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QKnPf6XQxz3fBD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 04:06:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QKpsr3QBBz3f8P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 05:12:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wTnNHk/d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=W/Z9qzmB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2f; helo=mail-yb1-xb2f.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wTnNHk/d;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=W/Z9qzmB;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKnNl60Dkz3cgm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 04:05:58 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5ABB863075;
-	Mon, 15 May 2023 18:05:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E22EC4339B;
-	Mon, 15 May 2023 18:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1684173955;
-	bh=mVUym0D5AL9ryDDInEs0RxHSs4Baucb2nbWHGXZewlU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTnNHk/dRepcpdwUtF9yV+QGkv0DvKGjmJcwIDwbewGencefV2JOmpR0P6+gkWGcz
-	 fmFd8BkKPkXFFvQDVreCUY+LQidCdaeIAVd53LwUID08jNkRXPci4NwLQfQ6k4cou/
-	 bXfenRU55JZaWMdpmfFJ32rKm6QyiKulR2KcoP3U=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.4 236/282] perf vendor events power9: Remove UTF-8 characters from JSON files
-Date: Mon, 15 May 2023 18:30:14 +0200
-Message-Id: <20230515161729.295389844@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
-User-Agent: quilt/0.67
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QKprx2nbmz3cjW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 May 2023 05:12:00 +1000 (AEST)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-ba6d024a196so4251699276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 May 2023 12:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684177917; x=1686769917;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lEdsDznoeQ0wGPMJWBs10mMvCj7VphDqPqR+uizklHY=;
+        b=W/Z9qzmBUq3bCVhP8uewmPEIaZEVYfzpzeh9YTeAKrK3sWIwtOfql71JlvN0P+P5pK
+         YKy9cml02fk4SnFQ2DdWQ6w4JijHunpNA4zsiud1GYDMnfuy8RTxF/bEehOFA+aPeByE
+         DTSRG2bdMMqymbgvM1f+cbSlSYq+sQANl8uMoYLlmajJ3SyWJdGVyTNcYD0Ioakieviy
+         BESs3L0iPHTKfiNNq75aO8FTJdn/BYay+E8sIKUXSqB49RgAR5VB2xxzW+nwEEKofO5F
+         26ssX78nNr5JZdvfN8wyMBJyb6MRO06YlrKHWh/GpY8CaWKtewkcbGK5ZJkz6FL2Wiq9
+         dAhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684177917; x=1686769917;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lEdsDznoeQ0wGPMJWBs10mMvCj7VphDqPqR+uizklHY=;
+        b=dCclEfrw1StTdxdaE/j+PzTJzIp2nn1Jw1hQ4xUNI2m8YEj+E8Z1L71o5F1hx0hbpD
+         Z5TA6UauWgKI6/lDRj0yGh7iNJ87YN4ZNyfmjMGhqTtGngn/Y4MViwTRouMkFS1GDtqt
+         pEQJFaUAV9kDfw30RskgWlxq8+MReFpHGqyJWogBBi2FmIxV39CToHGTgtHo0B4Ttoj5
+         o9VHStbNTx3KzziuzLXQK4Z2FCEO5HT0N4zYWDdNsHfg+ZYDswsfizXkO/Y7my4AGosH
+         775jH8hFg3bp0/9tGd7rUPuYLzEb2C6ANRdYvfQCy5WG930THS6bn5QMhO9bQqgXWZSD
+         ge5g==
+X-Gm-Message-State: AC+VfDxVIvvBHOVOZEkpLwVpwWZqhlEFKF1owPbobjwHXYzsEM0AH27+
+	tIyLLLiZx5n2BeHXd9mEYV+3olx8cPaRs6ji8Po=
+X-Google-Smtp-Source: ACHHUZ5oDsw20tcH12/01C4i2nT6w5iAb2H6/okJg55EYYpqTgJ8h9iiRdXz2tD9egoOuSwMxk4Rmyquuvv7u/aep3U=
+X-Received: by 2002:a25:2586:0:b0:ba7:809c:50de with SMTP id
+ l128-20020a252586000000b00ba7809c50demr6158133ybl.38.1684177917068; Mon, 15
+ May 2023 12:11:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20230501192829.17086-1-vishal.moola@gmail.com>
+ <20230501192829.17086-31-vishal.moola@gmail.com> <c0677d21a4b6caa2e5018af000294a974121d9e8.camel@physik.fu-berlin.de>
+In-Reply-To: <c0677d21a4b6caa2e5018af000294a974121d9e8.camel@physik.fu-berlin.de>
+From: Vishal Moola <vishal.moola@gmail.com>
+Date: Mon, 15 May 2023 12:11:46 -0700
+Message-ID: <CAOzc2pz6y=gRcdfkQVgwRuzWeWf2Nx-UBtKnZBTs2qKJ+r7R0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 30/34] sh: Convert pte_free_tlb() to use ptdescs
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,112 +76,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+On Sat, May 6, 2023 at 4:35=E2=80=AFAM John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
+>
+> Hi Vishal!
+>
+> On Mon, 2023-05-01 at 12:28 -0700, Vishal Moola (Oracle) wrote:
+> > Part of the conversions to replace pgtable constructor/destructors with
+> > ptdesc equivalents. Also cleans up some spacing issues.
+> >
+> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > ---
+> >  arch/sh/include/asm/pgalloc.h | 9 +++++----
+> >  1 file changed, 5 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/sh/include/asm/pgalloc.h b/arch/sh/include/asm/pgallo=
+c.h
+> > index a9e98233c4d4..ce2ba99dbd84 100644
+> > --- a/arch/sh/include/asm/pgalloc.h
+> > +++ b/arch/sh/include/asm/pgalloc.h
+> > @@ -2,6 +2,7 @@
+> >  #ifndef __ASM_SH_PGALLOC_H
+> >  #define __ASM_SH_PGALLOC_H
+> >
+> > +#include <linux/mm.h>
+> >  #include <asm/page.h>
+> >
+> >  #define __HAVE_ARCH_PMD_ALLOC_ONE
+> > @@ -31,10 +32,10 @@ static inline void pmd_populate(struct mm_struct *m=
+m, pmd_t *pmd,
+> >       set_pmd(pmd, __pmd((unsigned long)page_address(pte)));
+> >  }
+> >
+> > -#define __pte_free_tlb(tlb,pte,addr)                 \
+> > -do {                                                 \
+> > -     pgtable_pte_page_dtor(pte);                     \
+> > -     tlb_remove_page((tlb), (pte));                  \
+> > +#define __pte_free_tlb(tlb, pte, addr)                               \
+> > +do {                                                         \
+> > +     ptdesc_pte_dtor(page_ptdesc(pte));                      \
+> > +     tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));      \
+> >  } while (0)
+> >
+> >  #endif /* __ASM_SH_PGALLOC_H */
+>
+> Looking at the patch which introduces tlb_remove_page_ptdesc() [1], it se=
+ems that
+> tlb_remove_page_ptdesc() already calls tlb_remove_page() with ptdesc_page=
+(pt), so
+> I'm not sure whether the above tlb_remove_page_ptdesc((tlb), (page_ptdesc=
+(pte)))
+> is correct.
+>
+> Shouldn't it just be tlb_remove_page_ptdesc((tlb), (pte))?
 
-[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
-
-Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
-events") added and updated power9 PMU JSON events. However some of the
-JSON events which are part of other.json and pipeline.json files,
-contains UTF-8 characters in their brief description.  Having UTF-8
-character could breaks the perf build on some distros.
-
-Fix this issue by removing the UTF-8 characters from other.json and
-pipeline.json files.
-
-Result without the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Result with the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
- tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 62b8642696237..ce75652e90516 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1417,7 +1417,7 @@
-   {,
-     "EventCode": "0x45054",
-     "EventName": "PM_FMA_CMPL",
--    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-+    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-   },
-   {,
-     "EventCode": "0x201E8",
-@@ -2017,7 +2017,7 @@
-   {,
-     "EventCode": "0xC0BC",
-     "EventName": "PM_LSU_FLUSH_OTHER",
--    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-+    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-   },
-   {,
-     "EventCode": "0x5094",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index b4772f54a2718..e2f2ed0a35496 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -442,7 +442,7 @@
-   {,
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
--    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-+    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-   },
-   {,
-     "EventCode": "0x1F142",
--- 
-2.39.2
-
-
-
+As of this patchset all implementations of __pte_free_tlb() take in a
+struct page. Eventually we'll want it to be tlb_remove_page_ptdesc(tlb, pte=
+),
+but for now the cast is necessary here.
