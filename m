@@ -1,38 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EFE705405
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 18:36:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D23705663
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 20:54:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLMLm3GkNz3fK2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 02:36:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLQQf6dDsz3f8L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 04:54:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jssn2VyK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLMLH4YXxz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 02:35:49 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2F071FB;
-	Tue, 16 May 2023 09:36:00 -0700 (PDT)
-Received: from [192.168.178.6] (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FED73F7BD;
-	Tue, 16 May 2023 09:35:14 -0700 (PDT)
-Message-ID: <26fe6dc1-33c5-b825-c019-b346e8bedc0a@arm.com>
-Date: Tue, 16 May 2023 18:35:12 +0200
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jssn2VyK;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLQPq2fQRz3cfB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 04:54:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 28A9A63617;
+	Tue, 16 May 2023 18:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B413C433D2;
+	Tue, 16 May 2023 18:54:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1684263243;
+	bh=Y29ciGsqbYK4aeA9R00cOYH1MS2t61zQJwlFBgifawk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jssn2VyKDq8zz69hFz2NfP+8chmdjxly5blQwS/tntPZ9RwClaVaC995/sMQSeCx8
+	 3m43c0bXxAJE+s9JxQ3Voj70RSGKPchFcJx21ZEbiFCVn9mGyeFTS5NveVXbsxftix
+	 mkL4+jw+jx4/ScXe/1q821JhDxTVCes+lZcd4GsKfsZnPHYLRKh4S0xv4fF6/6HATA
+	 iK0VCyIY63Sei//q2cV+0vojQc5uTomXokd87DNDxT8llhERXxJD59oWXCONw49Ljg
+	 8ey4WhM0+5A71CDFxQbXx6yKIxZiQoNQz2f77eaaaThwNeCgPpXlkxzW5BkhgVuDrl
+	 bjEwS6pAQiDhg==
+Received: by pali.im (Postfix)
+	id AEDEBA47; Tue, 16 May 2023 20:54:00 +0200 (CEST)
+Date: Tue, 16 May 2023 20:54:00 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
+Message-ID: <20230516185400.urjy6y3kh4grbagt@pali>
+References: <20230516152854.22465-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC 0/1] sched/fair: Consider asymmetric scheduler groups in
- load balancer
-Content-Language: en-US
-To: Tobias Huschle <huschle@linux.ibm.com>, linux-kernel@vger.kernel.org
-References: <20230515114601.12737-1-huschle@linux.ibm.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
-In-Reply-To: <20230515114601.12737-1-huschle@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230516152854.22465-1-rdunlap@infradead.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,89 +63,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, bristot@redhat.com
+Cc: linux-kernel@vger.kernel.org, Kumar Gala <galak@kernel.crashing.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/05/2023 13:46, Tobias Huschle wrote:
-> The current load balancer implementation implies that scheduler groups,
-> within the same scheduler domain, all host the same number of CPUs. 
+On Tuesday 16 May 2023 08:28:54 Randy Dunlap wrote:
+> In a randconfig with CONFIG_SERIAL_CPM=m and
+> CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
+> ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
 > 
-> This appears to be valid for non-s390 architectures. Nevertheless, s390
-> can actually have scheduler groups of unequal size.
-
-Arm (classical) big.Little had this for years before we switched to flat
-scheduling (only MC sched domain) over CPU capacity boundaries for Arm
-DynamIQ.
-
-Arm64 Juno platform in mainline:
-
-root@juno:~# cat /sys/devices/system/cpu/cpu*/topology/cluster_cpus_list
-0,3-5
-1-2
-1-2
-0,3-5
-0,3-5
-0,3-5
-
-root@juno:~# cat /proc/schedstat | grep ^domain | awk '{print $1, $2}'
-
-domain0 39 <--
-domain1 3f
-domain0 06 <--
-domain1 3f
-domain0 06
-domain1 3f
-domain0 39
-domain1 3f
-domain0 39
-domain1 3f
-domain0 39
-domain1 3f
-
-root@juno:~# cat /sys/kernel/debug/sched/domains/cpu0/domain*/name
-MC
-DIE
-
-But we don't have SMT on the mobile processors.
-
-It looks like you are only interested to get group_weight dependency
-into this 'prefer_sibling' condition of find_busiest_group()?
-
-We in (classical) big.LITTLE (sd flag SD_ASYM_CPUCAPACITY) remove
-SD_PREFER_SIBLING from sd->child so we don't run this condition.
-
-> The current scheduler behavior causes some s390 configs to use SMT
-> while some cores are still idle, leading to a performance degredation 
-> under certain levels of workload.
+> Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
+> SERIAL_CPM=y.
 > 
-> Please refer to the patch's commit message for more details and an
-> example. This patch is a proposal on how to integrate the size of
-> scheduler groups into the decision process.
-> 
-> This patch is the most basic approach to address this issue and does 
-> not claim to be perfect as-is.
-> 
-> Other ideas that also proved to address the problem but are more 
-> complex but also potentially more precise:
->   1. On scheduler group building, count the number of CPUs within each 
->      group that are first in their sibling mask. This represents the 
->      number of CPUs that can be used before running into SMT. This 
->      should be slightly more accurate than using the full group weight 
->      if the number of available SMT threads per core varies.
->   2. Introduce a new scheduler group classification (smt_busy) in
->      between of fully_busy and has_spare. This classification would  
->      indicate that a group still has spare capacity, but will run 
->      into SMT when using that capacity. This would make the load 
->      balancer prefer groups with fully idle CPUs over ones that are 
->      about to run into SMT.
-> 
-> Feedback would be greatly appreciated.
-> 
-> Tobias Huschle (1):
->   sched/fair: Consider asymmetric scheduler groups in load balancer
-> 
->  kernel/sched/fair.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
+> Fixes: c374e00e17f1 ("[POWERPC] Add early debug console for CPM serial ports.")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Scott Wood <scottwood@freescale.com>
+> Cc: Kumar Gala <galak@kernel.crashing.org>
+> Cc: "Pali Rohár" <pali@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linuxppc-dev@lists.ozlabs.org
 
+Looks good,
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+
+> ---
+>  arch/powerpc/Kconfig.debug |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff -- a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+> --- a/arch/powerpc/Kconfig.debug
+> +++ b/arch/powerpc/Kconfig.debug
+> @@ -240,7 +240,7 @@ config PPC_EARLY_DEBUG_40x
+>  
+>  config PPC_EARLY_DEBUG_CPM
+>  	bool "Early serial debugging for Freescale CPM-based serial ports"
+> -	depends on SERIAL_CPM
+> +	depends on SERIAL_CPM=y
+>  	help
+>  	  Select this to enable early debugging for Freescale chips
+>  	  using a CPM-based serial port.  This assumes that the bootwrapper
