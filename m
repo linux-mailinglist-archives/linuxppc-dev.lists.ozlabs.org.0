@@ -1,60 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F61A7053EB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 18:33:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EFE705405
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 May 2023 18:36:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLMHQ0TBrz3fGF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 02:33:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fKNjkRfh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLMLm3GkNz3fK2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 02:36:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fKNjkRfh;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLMGW1qvhz3f5V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 02:32:35 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3510860C92;
-	Tue, 16 May 2023 16:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40F7C433EF;
-	Tue, 16 May 2023 16:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684254751;
-	bh=Aks6nwZaqr/erbBLhafFwZ3Ao9Igx6TSOjyOocCTwx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fKNjkRfh2IVi0irTeZRo60pDLVfhgKSKiKNVfF+RjDoxU93FsClkrJbOFfjLbBSSD
-	 ygo100c/a33dEf2nLNK71x35ZLvsQtvbKBm60lk9ioQ1TXBhlW+r3Cjcc8KEBRqHdG
-	 MJXMeCRksIp3AnANmyHayxIKVOCShrP8Gq/0ov1SMm+9UVsG3SttBSWX0M/ygL+bLS
-	 frjkaXmI4j6R+gYrFju+Gej/Osl79LU8qyKIgVkW/Ij7H1yqw0459Iw51oo+MTKluV
-	 4WHzDsNZ1B8X45Z8bqmkaAqIjS2IBovcqn7q8dnQkvmvNm/+pRlbJewCaZVIbtMovn
-	 CjImkg1ExKgXA==
-Date: Tue, 16 May 2023 22:02:27 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v14 06/15] clk: Add Lynx 10G SerDes PLL driver
-Message-ID: <ZGOwGypfqeHsP6V0@matsya>
-References: <20230413160607.4128315-1-sean.anderson@seco.com>
- <20230413160607.4128315-7-sean.anderson@seco.com>
- <ZFi9t84UoIfUyHhi@matsya>
- <1012f955-180e-0013-cc13-1da10991b5f5@seco.com>
- <ZFpD4I2LK9YIQQat@matsya>
- <d230c641-7270-c768-fd48-9012c01621b2@seco.com>
- <ZGODpt7MARD47us7@matsya>
- <7ad1089f-106d-e355-5558-f06f8b428f34@seco.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLMLH4YXxz30QD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 02:35:49 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2F071FB;
+	Tue, 16 May 2023 09:36:00 -0700 (PDT)
+Received: from [192.168.178.6] (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FED73F7BD;
+	Tue, 16 May 2023 09:35:14 -0700 (PDT)
+Message-ID: <26fe6dc1-33c5-b825-c019-b346e8bedc0a@arm.com>
+Date: Tue, 16 May 2023 18:35:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ad1089f-106d-e355-5558-f06f8b428f34@seco.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC 0/1] sched/fair: Consider asymmetric scheduler groups in
+ load balancer
+Content-Language: en-US
+To: Tobias Huschle <huschle@linux.ibm.com>, linux-kernel@vger.kernel.org
+References: <20230515114601.12737-1-huschle@linux.ibm.com>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+In-Reply-To: <20230515114601.12737-1-huschle@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,57 +44,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, bristot@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16-05-23, 11:11, Sean Anderson wrote:
-> On 5/16/23 09:22, Vinod Koul wrote:
-> > On 09-05-23, 11:26, Sean Anderson wrote:
-> >> On 5/9/23 09:00, Vinod Koul wrote:
-> >> > On 08-05-23, 11:31, Sean Anderson wrote:
-> >> >> On 5/8/23 05:15, Vinod Koul wrote:
-> >> > 
-> >> >> >> +int lynx_clks_init(struct device *dev, struct regmap *regmap,
-> >> >> >> +		   struct clk *plls[2], struct clk *ex_dlys[2], bool compat);
-> >> >> > 
-> >> >> > so you have an exported symbol for clk driver init in phy driver header?
-> >> >> > can you please explain why..?
-> >> >> 
-> >> >> So that it can be called at the appropriate time during the phy's probe function.
-> >> >> 
-> >> >> This is really an integral part of the phy driver, but I was directed to split it
-> >> >> off and put it in another subsystem's directory.
-> >> > 
-> >> > That is right clock should be belong to clk driver. IIUC the hardware is
-> >> > phy along with clocks and you are doing the clk init. I think that may
-> >> > not be correct model, you should really have a device tree node to
-> >> > represent the clock and the phy node
-> >> > 
-> >> > 
-> >> > What stops this from being modelled as it is in the hardware?
-> >> 
-> >> It *is* modeled as it is in hardware. With just the serdes compatible,
-> >> we have all the information we need to create the clocks. So we do so.
-> >> There's no need for a separate device just to create four clocks.
-> >> 
-> >> These clocks cannot be used by any other device (except possibly by
-> >> putting a lane into test mode). So there is no benefit from making them
-> >> a separate device, except an increase in complexity due to ordering and
-> >> dynamic lookup. By doing things this way we know that either there was
-> >> an error or the clocks all exist, and the lifetime of the clocks matches
-> >> the serdes.
-> > 
-> > Okay that does makes sense.
-> > 
-> > In that case why should this not be in the phy driver itself. There are
-> > already few examples og phy drivers having inbuild clk where is makes
-> > sense. You register the clk_ops as part of phy driver
+On 15/05/2023 13:46, Tobias Huschle wrote:
+> The current load balancer implementation implies that scheduler groups,
+> within the same scheduler domain, all host the same number of CPUs. 
 > 
-> You told me to do it this way
+> This appears to be valid for non-s390 architectures. Nevertheless, s390
+> can actually have scheduler groups of unequal size.
 
-I agree that was not the right recommendation back then and your view
-was right
+Arm (classical) big.Little had this for years before we switched to flat
+scheduling (only MC sched domain) over CPU capacity boundaries for Arm
+DynamIQ.
 
--- 
-~Vinod
+Arm64 Juno platform in mainline:
+
+root@juno:~# cat /sys/devices/system/cpu/cpu*/topology/cluster_cpus_list
+0,3-5
+1-2
+1-2
+0,3-5
+0,3-5
+0,3-5
+
+root@juno:~# cat /proc/schedstat | grep ^domain | awk '{print $1, $2}'
+
+domain0 39 <--
+domain1 3f
+domain0 06 <--
+domain1 3f
+domain0 06
+domain1 3f
+domain0 39
+domain1 3f
+domain0 39
+domain1 3f
+domain0 39
+domain1 3f
+
+root@juno:~# cat /sys/kernel/debug/sched/domains/cpu0/domain*/name
+MC
+DIE
+
+But we don't have SMT on the mobile processors.
+
+It looks like you are only interested to get group_weight dependency
+into this 'prefer_sibling' condition of find_busiest_group()?
+
+We in (classical) big.LITTLE (sd flag SD_ASYM_CPUCAPACITY) remove
+SD_PREFER_SIBLING from sd->child so we don't run this condition.
+
+> The current scheduler behavior causes some s390 configs to use SMT
+> while some cores are still idle, leading to a performance degredation 
+> under certain levels of workload.
+> 
+> Please refer to the patch's commit message for more details and an
+> example. This patch is a proposal on how to integrate the size of
+> scheduler groups into the decision process.
+> 
+> This patch is the most basic approach to address this issue and does 
+> not claim to be perfect as-is.
+> 
+> Other ideas that also proved to address the problem but are more 
+> complex but also potentially more precise:
+>   1. On scheduler group building, count the number of CPUs within each 
+>      group that are first in their sibling mask. This represents the 
+>      number of CPUs that can be used before running into SMT. This 
+>      should be slightly more accurate than using the full group weight 
+>      if the number of available SMT threads per core varies.
+>   2. Introduce a new scheduler group classification (smt_busy) in
+>      between of fully_busy and has_spare. This classification would  
+>      indicate that a group still has spare capacity, but will run 
+>      into SMT when using that capacity. This would make the load 
+>      balancer prefer groups with fully idle CPUs over ones that are 
+>      about to run into SMT.
+> 
+> Feedback would be greatly appreciated.
+> 
+> Tobias Huschle (1):
+>   sched/fair: Consider asymmetric scheduler groups in load balancer
+> 
+>  kernel/sched/fair.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+
