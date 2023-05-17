@@ -2,53 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E04706D98
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 18:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FE97071BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 21:15:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLyb51Z65z3fXC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 02:04:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QM2qQ1GR3z3fF1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 05:14:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HRIrO/lv;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SUqO4jCC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HRIrO/lv;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SUqO4jCC;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLyYy1wvLz3fGC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 02:03:02 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C0C7A611D0;
-	Wed, 17 May 2023 16:02:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BEAC433D2;
-	Wed, 17 May 2023 16:02:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684339379;
-	bh=XEUGLjgsvQzAyDLKC/1cWemgrt9p4X70cKwfQqfNFVM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=HRIrO/lvsge46jtx3D/H5ni/QHrwKrq+SQbPcWG3gfZaAb0LI4MU0eeaPh8eGezoa
-	 eKMW44oZXF2MVrmMTK6JEhL9V9WW4TJSa/xrFVwyIeWkTky7xJAvm45RXgQ8Oe5KCr
-	 eOJZpp4wblXyIhuUksLv/Wp3yP0r5ixHunJzxn02L22Zx+1or1j1ZnFoOf4U9b9q6z
-	 GxpjHFiKPBj2eRjX0sHjDSdTTaaTQkRmlKCCwPWcTjmxupgYPiO7GtMnP4+HeJjdDP
-	 lJvPtuzxrv9ZvBtMMHGIj/uMqUhiFh1NyNdHJ2enAlodykiOMNBG2iGtYNPsIQ7QC+
-	 j4wcboCC7NIaA==
-Date: Wed, 17 May 2023 11:02:57 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Grant Grundler <grundler@chromium.org>
-Subject: Re: [PATCHv2 pci-next 2/2] PCI/AER: Rate limit the reporting of the
- correctable errors
-Message-ID: <ZGT6sTOtk+WY3aYt@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM2pW4xfCz30hw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 05:14:09 +1000 (AEST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-643a1fed360so833433b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 12:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1684350845; x=1686942845;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FOcRPuLGObm+Vg1R2GCaP1lmxZ7GfKsTU0IS+UkR3zs=;
+        b=SUqO4jCCzRBEgKPabZ2BR1iWXlDt2bJ4YSx2nTK+jnAsmW8ztUDPnxFpi2XNxv89H0
+         xkQ2xhTIBVlUIXd65WUWWEmzgGVJRq5XXv4dHzNMp9TnfYmVeRGoc5/iYDZuxhtKLl+X
+         R/owG4gwXqt6fPHMYaTSzJ+vYIB2PSQuBqtjw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684350845; x=1686942845;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FOcRPuLGObm+Vg1R2GCaP1lmxZ7GfKsTU0IS+UkR3zs=;
+        b=GVteftUqbwAVABGoKZFOpKpx2h/P11NMg0QKMx9yPw0AFn4ZWYwqBUohZKTzBUsjoX
+         +X+mxO1qBDj8S1Qx+eAWNA4sC9ot/4rRfq9WJHepn/EQi5atYyeodbr/FFQOjY7cg6fK
+         /FwDyUtSMjXE0QIYyiYLqNrTNCqJ8juK3VYVliQZ3Vwr15cCTQj2Ik6BAd9N51DUjHfJ
+         Sx78TCweosotRq8Zt5gcXE/+EuvtgNOuE1zVjLYmCDL1JwGee1JJiW1C5tTf89GmZDDW
+         oMU1r0uWj6wkOrcexLjrok9VgYl+M1WoMRGcuzc+1cBmSc5mdhFnAJBcr0rG8nxW2iZx
+         pZMw==
+X-Gm-Message-State: AC+VfDyigJTGtxDu/hxWnF8s5jgTqrArP/LeEuSV6WItBaxpqMTarwuc
+	RB/3DbzKcVyZ34BDvC6YlDgeAA==
+X-Google-Smtp-Source: ACHHUZ4LRkx/6YsdhklEs/2vurTILxouu44+3QT3dOA1O72v+gTZjxf++gH4zzIh+dIYs6Tt7TknXQ==
+X-Received: by 2002:a05:6a00:15c1:b0:64c:ae1c:3385 with SMTP id o1-20020a056a0015c100b0064cae1c3385mr866272pfu.32.1684350845462;
+        Wed, 17 May 2023 12:14:05 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id f13-20020aa782cd000000b0062e63cdfcb6sm16005552pfn.94.2023.05.17.12.14.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 May 2023 12:14:05 -0700 (PDT)
+Date: Wed, 17 May 2023 12:14:04 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Azeem Shaikh <azeemshaikh38@gmail.com>
+Subject: Re: [PATCH] scsi: ibmvscsi: Replace all non-returning strlcpy with
+ strscpy
+Message-ID: <202305171214.77A5A62DD@keescook>
+References: <20230517143409.1520298-1-azeemshaikh38@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANEJEGsE6KS484iSLkKV8hx2nNThZGfaaz+u+R-A3X5nRev6Gg@mail.gmail.com>
+In-Reply-To: <20230517143409.1520298-1-azeemshaikh38@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,68 +75,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Oliver O 'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 07, 2023 at 04:46:03PM -0700, Grant Grundler wrote:
-> On Fri, Apr 7, 2023 at 12:46 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, Apr 07, 2023 at 11:53:27AM -0700, Grant Grundler wrote:
-> > > On Thu, Apr 6, 2023 at 12:50 PM Bjorn Helgaas <helgaas@kernel.org>
-> > wrote:
-> > > > On Fri, Mar 17, 2023 at 10:51:09AM -0700, Grant Grundler wrote:
-> > > > > From: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-> > > > >
-> > > > > There are many instances where correctable errors tend to inundate
-> > > > > the message buffer. We observe such instances during thunderbolt PCIe
-> > > > > tunneling.
-> > > ...
-> >
-> > > > >               if (info->severity == AER_CORRECTABLE)
-> > > > > -                     pci_info(dev, "   [%2d] %-22s%s\n", i, errmsg,
-> > > > > -                             info->first_error == i ? " (First)" :
-> > "");
-> > > > > +                     pci_info_ratelimited(dev, "   [%2d]
-> > %-22s%s\n", i, errmsg,
-> > > > > +                                          info->first_error == i ?
-> > " (First)" : "");
-> > > >
-> > > > I don't think this is going to reliably work the way we want.  We have
-> > > > a bunch of pci_info_ratelimited() calls, and each caller has its own
-> > > > ratelimit_state data.  Unless we call pci_info_ratelimited() exactly
-> > > > the same number of times for each error, the ratelimit counters will
-> > > > get out of sync and we'll end up printing fragments from error A mixed
-> > > > with fragments from error B.
-> > >
-> > > Ok - what I'm reading between the lines here is the output should be
-> > > emitted in one step, not multiple pci_info_ratelimited() calls. if the
-> > > code built an output string (using sprintnf()), and then called
-> > > pci_info_ratelimited() exactly once at the bottom, would that be
-> > > sufficient?
-> > >
-> > > > I think we need to explicitly manage the ratelimiting ourselves,
-> > > > similar to print_hmi_event_info() or print_extlog_rcd().  Then we can
-> > > > have a *single* ratelimit_state, and we can check it once to determine
-> > > > whether to log this correctable error.
-> > >
-> > > Is the rate limiting per call location or per device? From above, I
-> > > understood rate limiting is "per call location".  If the code only
-> > > has one call location, it should achieve the same goal, right?
-> >
-> > Rate-limiting is per call location, so yes, if we only have one call
-> > location, that would solve it.  It would also have the nice property
-> > that all the output would be atomic so it wouldn't get mixed with
-> > other stuff, and it might encourage us to be a little less wordy in
-> > the output.
-> >
+On Wed, May 17, 2023 at 02:34:09PM +0000, Azeem Shaikh wrote:
+> strlcpy() reads the entire source buffer first.
+> This read may exceed the destination size limit.
+> This is both inefficient and can lead to linear read
+> overflows if a source string is not NUL-terminated [1].
+> In an effort to remove strlcpy() completely [2], replace
+> strlcpy() here with strscpy().
+> No return values were used, so direct replacement is safe.
 > 
-> +1 to all of those reasons. Especially reducing the number of lines output.
+> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+> [2] https://github.com/KSPP/linux/issues/89
 > 
-> I'm going to be out for the next week. If someone else (Rajat Kendalwal
-> maybe?) wants to rework this to use one call location it should be fairly
-> straight forward. If not, I'll tackle this when I'm back (in 2 weeks
-> essentially).
+> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-Ping?  Really hoping to merge this for v6.5.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Bjorn
+-- 
+Kees Cook
