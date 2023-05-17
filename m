@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A539C706983
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 15:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E232706987
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 15:18:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLttn3Jddz3fFy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLtvh73NXz3fDv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:18:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hhmQcB6W;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sXIvKHQg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hhmQcB6W;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sXIvKHQg;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLtn670GLz3fF5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 23:12:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLtnG43Wlz3fBC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 23:12:34 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5223764715;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E626564717;
+	Wed, 17 May 2023 13:12:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335BEC433EF;
 	Wed, 17 May 2023 13:12:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF66C4339C;
-	Wed, 17 May 2023 13:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684329144;
-	bh=gekqQcdwspAqcYmV4wkiul0gbNa5okADC3lRsox7SxY=;
+	s=k20201202; t=1684329152;
+	bh=wIpq6dQ3SrZ+OFpGPswN9m0xaTqULZnHSrUinkSrQZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhmQcB6Wb+ZcCRzLdjmx7/zFED4SNzs0NBaokc4G4Ef+SjGqplVRCUUlj8VOql7xc
-	 tVzUvC/YohY4HXanpHjF8gzBHtwkxcmoYXP+MIQ4qBiVNrFkbviwAVNhlQFEM5aG9z
-	 u0KG2wrGCIiO4fxkS7CsDg7SKssZvao8JQ1WexuQEtCpz47qaTuW3Z1bOQL/MmRcVt
-	 J43Gz9r687q17jYwvjwLN9fs0kn3xObEo5/anSq7dT5iAh0lVVtxnk6xLq54trRwvy
-	 bwp4gagapMiXtQeSik0KOYf0nVPAhKydrIyt2a5DIE7rfoyB8tfvUPUW3O+QL/VQu3
-	 AKt6l4x3F+ppA==
+	b=sXIvKHQgTrqznMJvGuTDhX84E9WFuYptr8V3Ek7xw2qzSKUVOylJd5AIRFHWD43cs
+	 rY9FXAfbijzhcRJ7xB3TlUNAPXZltMOT2Gu4HfBs6rSenBQe9xDB/DkigljyzJ5y0q
+	 NqniEOZEjINgmXRhB2DOJQVMCw6aB5m5fkNbmxq0hQ2kjVyy2Rz5uAkz1lxR6GK/pc
+	 kmDhZQgZnArP9xfDPRLQii+MbSH3WYm82+2YK1Gsm9qH0+4zeAr7ziGBnxhAtpe3t7
+	 S5c12dcl36AQVcUIP/lTS5gtzL2FAYQNXRSkp6OFpQMsIrlhIqSx17r+jWyW/eaEgJ
+	 v4/2vi76yp1wQ==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 06/14] locking: add lockevent_read() prototype
-Date: Wed, 17 May 2023 15:10:54 +0200
-Message-Id: <20230517131102.934196-7-arnd@kernel.org>
+Subject: [PATCH 07/14] panic: hide unused global functions
+Date: Wed, 17 May 2023 15:10:55 +0200
+Message-Id: <20230517131102.934196-8-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230517131102.934196-1-arnd@kernel.org>
 References: <20230517131102.934196-1-arnd@kernel.org>
@@ -66,33 +66,40 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-lockevent_read() has a __weak definition and the only caller in
-kernel/locking/lock_events.c, plus a strong definition in qspinlock_stat.h
-that overrides it, but no other declaration. This causes a W=1
-warning:
+Building with W=1 shows warnings about two functions that have
+no declaration or caller in certain configurations:
 
-kernel/locking/lock_events.c:61:16: error: no previous prototype for 'lockevent_read' [-Werror=missing-prototypes]
+kernel/panic.c:688:6: error: no previous prototype for 'warn_slowpath_fmt' [-Werror=missing-prototypes]
+kernel/panic.c:710:6: error: no previous prototype for '__warn_printk' [-Werror=missing-prototypes]
 
-Add shared prototype to avoid the warnings.
+Enclose the definition in the same #ifdef check as the declaration.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- kernel/locking/lock_events.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/panic.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/locking/lock_events.h b/kernel/locking/lock_events.h
-index 8c7e7d25f09c..a6016b91803d 100644
---- a/kernel/locking/lock_events.h
-+++ b/kernel/locking/lock_events.h
-@@ -57,4 +57,8 @@ static inline void __lockevent_add(enum lock_events event, int inc)
- #define lockevent_cond_inc(ev, c)
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 886d2ebd0a0d..10effe40a3fa 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -684,6 +684,7 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
+ 	add_taint(taint, LOCKDEP_STILL_OK);
+ }
  
- #endif /* CONFIG_LOCK_EVENT_COUNTS */
-+
-+ssize_t lockevent_read(struct file *file, char __user *user_buf,
-+		       size_t count, loff_t *ppos);
-+
- #endif /* __LOCKING_LOCK_EVENTS_H */
++#ifdef CONFIG_BUG
+ #ifndef __WARN_FLAGS
+ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
+ 		       const char *fmt, ...)
+@@ -722,8 +723,6 @@ void __warn_printk(const char *fmt, ...)
+ EXPORT_SYMBOL(__warn_printk);
+ #endif
+ 
+-#ifdef CONFIG_BUG
+-
+ /* Support resetting WARN*_ONCE state */
+ 
+ static int clear_warn_once_set(void *data, u64 val)
 -- 
 2.39.2
 
