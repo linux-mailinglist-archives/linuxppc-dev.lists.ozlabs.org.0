@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A0D70693A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 15:13:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4497F706955
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 15:14:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLtp45sSMz3f6h
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:13:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLtq00Vscz3fMx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:14:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fc6SUEmS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KeFwGIi3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fc6SUEmS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KeFwGIi3;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLtmP35l7z3f4m
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 23:11:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLtmX1zTYz3f4m
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 23:11:56 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EBCE1646FD;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9BFB364710;
+	Wed, 17 May 2023 13:11:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB3FC433A0;
 	Wed, 17 May 2023 13:11:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C17AC433A1;
-	Wed, 17 May 2023 13:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684329106;
-	bh=3mI163DMR4d+cuXu5u65rsW45kyqp2CKp+3eSlb6arE=;
+	s=k20201202; t=1684329114;
+	bh=9B5dm6uPcP99pu9DbgwVzUA/R+xqpwJ+x8zkV0/Vqc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fc6SUEmSZTQUkEUQjfQXj6txmruIJCzCuO4Ae3j0P53kfZPDs/OWZkdHVUzrtWv5M
-	 0rPrYmGV3lkc2LdVoiXnN0tesbaj+I+HdnU+5OYNZ19tKdQSCcQFdCfF7CIjRf43g3
-	 HHrOqIEp3ibRRhUsGRDH+Iul9ef7vI7xGy9SOg7wZXkSxKf5Bbrmmph902wZT+4dAO
-	 hkBdrDx6I/lx0He0nfCXC9E/60W8qZMraYv4eYeOaM6lvyD6ZDXWH5H+onPY0eEF1E
-	 Z4hxRtdg3qOggQ4VULZzLpo6PInRLslC9REuvbQ434IZjCDyjjo139W2Et9i6tb9pM
-	 t75TKQPb0GvKQ==
+	b=KeFwGIi38GKw31XBFip9DpSNaAPrSt+ly1tSHZlHJrUQWVYjO1Fj/sEgW+9BoVS0P
+	 1CrH3z3kj7gZ+Vr3uvhUt8V+7wc31EPrn9XE0ouppLIc4CVNNyDqrxV3hSyS0OYCcT
+	 l6bP27FiyG5vaBbcs1CEMoLgy4FK3NoP8/k/lHQ4NbbcS554m3wfxgTcIxR8LnL/1k
+	 w4FDAsAOVUKikEub9HmaUUnNVrFTBKOFClJ6tqzPc8F5THSvUHsl1wW7KSrODpL1Hc
+	 vIHWM9fXWcirhdtfcUUfuWVrVUe5drsdLKZft1YCHcGKupFyIGgZk3oWSTFEILf4s7
+	 1sLZ52Eo3Zk7g==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 01/14] mm: percpu: unhide pcpu_embed_first_chunk prototype
-Date: Wed, 17 May 2023 15:10:49 +0200
-Message-Id: <20230517131102.934196-2-arnd@kernel.org>
+Subject: [PATCH 02/14] mm: page_poison: always declare __kernel_map_pages() function
+Date: Wed, 17 May 2023 15:10:50 +0200
+Message-Id: <20230517131102.934196-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230517131102.934196-1-arnd@kernel.org>
 References: <20230517131102.934196-1-arnd@kernel.org>
@@ -66,37 +66,44 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-This function is called whenever CONFIG_NEED_PER_CPU_EMBED_FIRST_CHUNK
-or CONFIG_HAVE_SETUP_PER_CPU_AREA, but only declared when the
-former is set:
+The __kernel_map_pages() function is mainly used for
+CONFIG_DEBUG_PAGEALLOC, but has a number of architecture specific
+definitions that may also be used in other configurations, as well
+as a global fallback definition for architectures that do not support
+DEBUG_PAGEALLOC.
 
-mm/percpu.c:3055:12: error: no previous prototype for 'pcpu_embed_first_chunk' [-Werror=missing-prototypes]
+When the option is disabled, any definitions without the prototype
+cause a warning:
 
-There is no real point in hiding declarations, so just remove
-the #ifdef here.
+mm/page_poison.c:102:6: error: no previous prototype for '__kernel_map_pages' [-Werror=missing-prototypes]
+
+The function is a trivial nop here, so just declare it anyway
+to avoid the warning.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- include/linux/percpu.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/mm.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/percpu.h b/include/linux/percpu.h
-index 1338ea2aa720..42125cf9c506 100644
---- a/include/linux/percpu.h
-+++ b/include/linux/percpu.h
-@@ -103,12 +103,10 @@ extern void __init pcpu_free_alloc_info(struct pcpu_alloc_info *ai);
- extern void __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
- 					 void *base_addr);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 27ce77080c79..e95d7c575ea6 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3453,13 +3453,12 @@ static inline bool debug_pagealloc_enabled_static(void)
+ 	return static_branch_unlikely(&_debug_pagealloc_enabled);
+ }
  
--#ifdef CONFIG_NEED_PER_CPU_EMBED_FIRST_CHUNK
- extern int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
- 				size_t atom_size,
- 				pcpu_fc_cpu_distance_fn_t cpu_distance_fn,
- 				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
--#endif
- 
- #ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
- void __init pcpu_populate_pte(unsigned long addr);
+-#ifdef CONFIG_DEBUG_PAGEALLOC
+ /*
+  * To support DEBUG_PAGEALLOC architecture must ensure that
+  * __kernel_map_pages() never fails
+  */
+ extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+-
++#ifdef CONFIG_DEBUG_PAGEALLOC
+ static inline void debug_pagealloc_map_pages(struct page *page, int numpages)
+ {
+ 	if (debug_pagealloc_enabled_static())
 -- 
 2.39.2
 
