@@ -2,65 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79AD70759E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 00:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C29C8707597
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 00:43:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QM7YR5Pp0z3fDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 08:48:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QM7SW4DQ2z3fBG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 08:43:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=RDSSWi2c;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=EaO4Kw7y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=RDSSWi2c;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=EaO4Kw7y;
 	dkim-atps=neutral
+X-Greylist: delayed 72 seconds by postgrey-1.36 at boromir; Thu, 18 May 2023 08:43:07 AEST
 Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM7XZ1Lnpz30QS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 08:47:23 +1000 (AEST)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230517224139euoutp017c2d47e37f1d6482e683800375f99180~gD3806AQW3178231782euoutp01c;
-	Wed, 17 May 2023 22:41:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230517224139euoutp017c2d47e37f1d6482e683800375f99180~gD3806AQW3178231782euoutp01c
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM7Rb17D8z30QS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 08:43:07 +1000 (AEST)
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230517224257euoutp01a6b4694033a0b3119371221b095c0dbf~gD5Fbuhh81658316583euoutp01e;
+	Wed, 17 May 2023 22:42:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230517224257euoutp01a6b4694033a0b3119371221b095c0dbf~gD5Fbuhh81658316583euoutp01e
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1684363299;
-	bh=NcQzwCvCpxVNULTL4p4tvs+CN1+fBl+7JbHkAnqGlTc=;
+	s=mail20170921; t=1684363377;
+	bh=MM3+qPbAfH/ZKaZBejHniISc0eX5MmJZmSGjD/SXFpU=;
 	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=RDSSWi2cMlCnOeNEyFtWVBgQA74uILaYctFynXXm8LNuNdsyHqYyqBGBH6OUybVR6
-	 2/N0BmpmSu3CT/7c2rBeWsMuXWGsW4+mKhGK3gAyLC6UoFIuQ3zNfLkYEsBMJnnVch
-	 Je7+AexzTYHGxEnT+s2X61XNFIpwhXt2CyqK/YIw=
+	b=EaO4Kw7y8EDGUGR934cmeVvYPOc9m6NPooOO1Q5op9EOddITBuUMdWWEsm8uN5jK+
+	 zM0L672ET0zUAHhIFW7rHuYOTzv9MQiYtE44GhxZPlra5SjlF5r/+eXJw9yh+OuIyR
+	 UtUo+jivCQxUTox7rlLBXZNa6N1Z5snUdYQrOtLM=
 Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
 	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20230517224139eucas1p13e8fac5a51a7c41f26fe5910fe858f04~gD38j9syJ2454424544eucas1p19;
-	Wed, 17 May 2023 22:41:39 +0000 (GMT)
+	20230517224257eucas1p1ed1da7df9807315231c345b1ffee3827~gD5FMjpDX0327003270eucas1p1N;
+	Wed, 17 May 2023 22:42:57 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges1new.samsung.com (EUCPMTA) with SMTP id 2C.46.42423.32855646; Wed, 17
-	May 2023 23:41:39 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id DC.56.42423.17855646; Wed, 17
+	May 2023 23:42:57 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
 	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20230517224138eucas1p2a52b9287f18e642ab4f497f91c9401c6~gD38AuTqB0316203162eucas1p2B;
-	Wed, 17 May 2023 22:41:38 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20230517224138eusmtrp1993107c255367809d06826cce0c7d570~gD37-jRKD2285622856eusmtrp1Y;
-	Wed, 17 May 2023 22:41:38 +0000 (GMT)
-X-AuditID: cbfec7f2-a3bff7000002a5b7-cd-64655823fb28
+	20230517224256eucas1p25e3b58d492b58b440b1aa0fb467fa7bc~gD5EWfep60455704557eucas1p2V;
+	Wed, 17 May 2023 22:42:56 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20230517224256eusmtrp2671486061b7284c13c57d0967952a90c~gD5EUhWir3236532365eusmtrp23;
+	Wed, 17 May 2023 22:42:56 +0000 (GMT)
+X-AuditID: cbfec7f2-a51ff7000002a5b7-2c-646558715bcf
 Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id EC.23.14344.22855646; Wed, 17
-	May 2023 23:41:38 +0100 (BST)
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 8E.21.10549.07855646; Wed, 17
+	May 2023 23:42:56 +0100 (BST)
 Received: from [106.210.134.192] (unknown [106.210.134.192]) by
 	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20230517224136eusmtip17c0187406963fb821c57c5b9ba53893b~gD358V0mM1562815628eusmtip1h;
-	Wed, 17 May 2023 22:41:36 +0000 (GMT)
-Message-ID: <692ff1c1-47d2-815d-9e63-05d84eed283e@samsung.com>
-Date: Thu, 18 May 2023 00:41:36 +0200
+	20230517224254eusmtip187f238847c66c6e277e4d3e17211ade8~gD5CWtW0G2837028370eusmtip1Z;
+	Wed, 17 May 2023 22:42:54 +0000 (GMT)
+Message-ID: <584c65a9-305b-3174-a59b-93effc8a4c85@samsung.com>
+Date: Thu, 18 May 2023 00:42:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0)
 	Gecko/20100101 Thunderbird/102.10.1
-Subject: Re: [PATCH v2 10/25] iommu/exynos: Implement an IDENTITY domain
+Subject: Re: [PATCH v2 00/25] iommu: Make default_domain's mandatory
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>, Alim
 	Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson <andersson@kernel.org>,
@@ -85,57 +86,56 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>, Alim
 	<wens@csie.org>, Will Deacon <will@kernel.org>, Yong Wu
 	<yong.wu@mediatek.com>, Chunyan Zhang <zhang.lyra@gmail.com>
 From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <10-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <0-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta1BUZRjuO+fs2WVt6bDi8IWVM+ugFOMiZdPXSAw0asdxuoANak7BDpyA
-	uNmuZOVMEJeEzZEFU+BQiwLFTZC7uLML7UYQksvNVoQlNsCWiysgNIBbSyxHi3/P+zzP+z7v
-	+818AlyczfcUxCScZOQJsjgJKSSaO1aMu7YfZSJ3W+8JkXHcTiCLuplEzZn+qL8ColVdB0AN
-	OU0kMuda+ahqfhyg2bQP0OrYDA89XETIWlQD0C2HFqB0tphAWYW1fPS9rYmPMs9fI5BuZg3V
-	j5t4KKftJh8NpPUB9MCyiiPV5TQc5fe0YuibVg2JshZZEhku6ACyLzl4KDX9JVRbUoijxhQD
-	iXR3x0m0MjlIoLy5QoCsl5dxpJ+b4CHrWBaJ8lP/JNGX7bNrFo2aQMN2V3ROF4JWDD0YSje/
-	jEZzGwhUZtHwA6X0hF6N0VfUVwA9YOrD6ZaRUkD/dceI0bVjVTy6eCqFoK+zI3y6RDuF0fWV
-	WSRtNmlJ+vofr9Kq4h8Bre4KphtKk+nJhgLwjsd7Qv9IJi7mE0buGxAujO6tLQcnLko/1c7+
-	gqWAWi8lcBFAag803VDxlUAoEFPlAJo1JXynIKYWAbyf7s4JCwDm3qvgPe741bYMOKEMwArW
-	SHLFPIA9bBPpdImoAFhkmVofRVBecPD3eYLj3WBXwcQ63kIxsLKhD3fizRQNB1fYdR6nPODQ
-	RBHmHOpOKZ+E1e1nMU6YAtBUuMuJScoPKm3K9TAXaj/MNgzwOc82eM32Le5shlTVJni3TcXn
-	9t4Hh64WkBzeDKc7Gx/xz8Du82cJruEMgJfsoxhXqABMsQ4BzrUXmo0P17oFaxHPw6saX44O
-	gjUrHbiThpQrHLS5cUu4wtzmvEe0CGZ+JebcOyDbWfNfrL63H1cBCbvhXdgN97MbzmH/z70E
-	iErgwSQp4qMYhV8Cc0qqkMUrkhKipBGJ8fVg7c90OzoftIDvpuelBoAJgAFAAS5xFwWfi4gU
-	iyJln33OyBPD5ElxjMIAtgoIiYfI57WuCDEVJTvJxDLMCUb+WMUELp4pmCooozGU3foKXPLo
-	tPuOuDV5hR5M/Cjj7cKCN08ne33olqqKkZW84S3UPKGLrf5pZ4dnhvGwaYbyriG2hxPPxQUc
-	k9eZ6UPF2dVHRsJiZwK9fY/+vBpSP5o9d9u4/9h0F8/9uCMosI3tbm059+wo+FimFORk+OQ+
-	nXj7wj6z5PDp1wXNob1/R2vLSwmJa8TymS1Fw9Z3VQ77pOjGtoDhSTlv6cCLs+O17MXE3vCy
-	+7G9NnyP/ouvl+BefX+xf9/72NI/Pgcqg9+S16UqXTLvCOoKina3q0t/8LS3s0cO5Vt2lmL6
-	uZzfNj21I+ympSwv28JYpJap8uSF0FuOUwshx7UDEkIRLfN7AZcrZP8CfV4kW6IEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xbdRTH87v39rYlstzxCFfcnNaAj2hpgcIBAeeIepVkOsIfBp2zo9ey
-	DChpwceyKK8lUBkbBTYoWBjQzbEJlQJjrOVRJ4OJg8mssBXGAIHKeC04ViFgC5rw3+c8vud7
-	cnJ4uEc16cs7kpLGKlOkSQLSjfhl/cbIa4IPWZlIU+YPtyZWCRjTtZDQkhsBv12kYcPcjcBY
-	2EyCTTPNhUtLEwgWsj+BjfFZDvyzDDBdWY/gzroJQY62moC8cgMX9HPNXMgtukKAedZJjRNW
-	DhR2/MqFwezbCB6NbeBw+lw2DqX97RgUt7eRkLesJcFSYkawurLOgaycIDDUlOPQlGEhwfzn
-	BAmOmSECzi6WI5g+9wSHrsVJDkyP55FQmjVFQub1BWdLm46Ae6s7oMAcCw5LPwY5Ngnc1xgJ
-	uDDWxt0rZCa7dBhzWXcZMYPW2zjTOlKLmL+Hb2GMYfwSh6m2ZxDMVe0Il6kx2TGmsS6PZGxW
-	E8lcfRDGnK7uRIyu9wBjrP2GmTGWoQ984oURSkV6GvtcokKVFin4SAyBQnEYCAODw4TioNCD
-	4YESQUBUhIxNOvI5qwyI+lSYOGD4HqWeEX5pWujBMpDBT434PJoKpvvmniAXe1B6RBev7djK
-	76J7z2RwttiTXrOqSTVyc/YsIHr2xk3MVXCnoujKMTvXxQTlRw+NLhFb+Z10b9nkJntTLN2r
-	H9pkT4qhhxzaTcYpH/ruZCXmGupFaZ6iH1X1c10BTtkR3VCU/Z9dKaI7Zgo2LUhKTKvnXHvw
-	eXzqLfqUZZC7NSqEVjer0Rbvoa/MVeCnkYd22ybabY7abRLtNkkVIuqQF5uuSpYnqwKFKmmy
-	Kj1FLkxQJDci57O2dDuaWtHFv5aEFoTxkAXRPFzg5X6gIEHm4S6TfnWMVSoOKdOTWJUFSZzn
-	KMR9vRMUzm9PSTskDhFJxMEhYSJJWEiQwMf93dRcqQcll6axR1k2lVX+r8N4fN8MLMbBfeG7
-	IdtMtyDaZypogl+fu3OqqGCgRB75mLbvq1qPON76vGOt9o38xPMDK2PCE/hwys+qe6MsX/9H
-	aFZ8S6Y9Uee9Hx+OUzR1zEc2sxrPhH7T8WulJ+c15frOaDKGiO1cmZf1Le+eajwffnRB/eLd
-	XZLVEa7R+rIdroda0SnRj0JBe2V8uN/+H+pzR0U9++SKBzVZNiWn55l4TcvDikFbAK2RtB+8
-	050eJ/ti8Zh/7HufVSx9u+fZGP/8x1V1ysMnL7wjmvnp9RM3TW8OTF/DG+Tms11sjKHAuKjP
-	f6kk8PDX7yt6zbv3ZhY3uH38dN+rD38vjLbIO5PuVxS8HYeNCwhVolT8Cq5USf8F8R6m+zUE
-	AAA=
-X-CMS-MailID: 20230517224138eucas1p2a52b9287f18e642ab4f497f91c9401c6
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Te0wUVxTGe2dmZxYKOCwgt7Qo2QJqDQhVkmt4xIIJU20CNq1t7csVpkh4
+	78pDY3SRbQsbQwF5DvIQqVgQRZY3CwJayJawFqFE6Cpvl4dEoFYFGrYsgy3//c4538n3nZtc
+	IS76ibIThkaeYqWRknAxaUrUdS5pXWI+Z4PdhrLNkHZ8hUAjhXUkqkv2Qg9+gcjQ0gmQKr2W
+	RLoMPYUqFsYBepb0DTKMzQrQ8nOE9EU3AepfVQOk4EoIlJJfRaGf52oplHypnkAts2tUPT4g
+	QOl3eijUl9QL0OKIAUdpV5JwlHu/FUOZrU0kSnnOkagjqwWglZerAnRBsRdVXc3HUY28g0Qt
+	k+MkWpp6SKCc+XyA9Fde4ah9fkKA9GMpJMq98IREifeerUmaCgn054oFSm35GC113MeQQueB
+	hjNUBCobaaIOuDIT7YUYc6PwBmD6BnpxpuFRKWD+HtRiTNVYhYApmZYTTCP3iGKuqqcxpro8
+	hWR0A2qSaRzdz6SVtAGmUHOEUZWeZ6ZUeSDQ9pipVzAbHhrHSvf4HDc92Z3cTEW3+SZMaDKB
+	HGTuVQITIaT3wVzdDKYEpkIRfR3AvNUGii+eA5icrcb54i8AaxefYq9XqnIrSX5QBmBO/8SG
+	agHAkbKXpFFlTvvAP6b+ERiZoJ3gxWo1xvctoSZvgjCyDc3CclUvbmQr+iDsKXtBGRmnbeHQ
+	RNF6KGtaaQYr713E+ME0gAP5LkYmaXeonFOumQmFJmvLTU/EvGQ7rJ+7vB4I0qVvwvpmHcHH
+	PgjLFM0bbAVnumoont+BhkbeDNI/Ali8MrxRpAEo1w8BXuUJddrldTec3gVvNe3h2x/AqnSl
+	wNiGtAV8OGfJh7CAGXU5ON82h8k/iHi1M+S6bv5n2/77AzwNiLlNz8JtOp/bdA73v28xIMqB
+	LRsriwhhZe6RbLyrTBIhi40McQ2KiqgGa3+me7VrsQEUzCy4dgBMCDoAFOJia/MjqUHBIvNg
+	yekzrDTqW2lsOCvrAG8LCbGt+W5vTZCIDpGcYsNYNpqVvp5iQhM7ORZ6bUeqQrXrcJjXpKMN
+	58TVe/qWOdjn+pyNSxstIrS7+7dvKcGSCqjeu9479RX2Vp/Y6V/ZhNQKAxOKKzQH5EGJpw8N
+	z7g2HOscf1r8ZfaLwJm57HKPsNmqEsfSu+c8Hmca3La2OkltdsQl9bUuB5wwkxgs5/3Lp377
+	vnj564CoE6Ivstomvf1KB7ccHf3KXXMoTS/3jgovUOyfPetsFXXr0zMxH7bbXfbv2efZIxFt
+	07rb+3kWJ163/s5j1tTxuKPJ1se3ox3er8vgxvqDst5KsAnwjv4ofuf5SrN340fdPtPcOfyr
+	uNLhHDcILvm6+B29Vhjbzb7hpvaL0Tl32fjPr267XSMmZCcl7u/hUpnkXyCZbmOiBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH9+u9vS1ksEsp4SdxbqtbZhYsFCg7TGTL5ra7TRMQspHpdC3c
+	AOFpH4szMXZATOkIgsKAYipP3QQnofIQCkKzqawIOhiyCfJo5WV46kQewlpgCf99fr/z/X7P
+	ycnhE4JSyosfl6RiFUmyBBHlTFpWbw3sTolko31NZQLotC6TMGSoo6BOGwx//oJhrfkmAmNO
+	LQX9Z8d4UDlnRTCTdgTWRh5zYekpwNiFXxH0rJoQpOtLScgoquZBxVQtD7Tn6klofmynGmsv
+	F3Ju3OFBd9o9BPNDawRkl6QRUNDVwoHclkYKMp7qKTDnNSNYXljlQmq6P1SXFRFwTWOmoPmR
+	lYLF8T4S8meLEIyVPCegbdbGhbGRDAoKUkcp+OG3Gbuk0UDCg2VXyGo+CIvmLg6k90th8KyR
+	hEtDjbwPxIytzcBhqgxViOnuvUcwDQPliPn3704OUz1SyWVKJzQkc10/wGPKTBMcpuZyBsX0
+	95oo5vpwEJNd2ooYQ3sYYyw/xYwbC1Go59fiYEWyWsW+HpusVO0VHZKAn1gSBGK/gCCxxP/d
+	b97zk4p8QoKj2YS471iFT8i34liLtomX0vrhcVt7LtKgXH8dcuJjOgBXF1yhdMiZL6ArEG7o
+	6KE2Cttx+08a7ga745Ve3aZoBuH0knqOo+BCh+C/xlfWRST9Fs6sMW3+u+H2QhvpYA+axe0V
+	fevsTu/Ddy494zmYoD3xP7YLHEeokD77Mp4v7uI5HgQ9gfDVc2mb7fIRbqp6tG6haAnWTTnm
+	4POd7FGNo6KNpECsq9WhDX4N10+dJ7KRQL9lEP2WhvotFv0WSzEiLyMhq1YmxiQqJWKlLFGp
+	TooRRyUn1iD7sdbdXDQ2IMPknNiMOHxkRphPiIQuYVlR0QKXaNn3J1hF8lGFOoFVmpHUvo0c
+	wssjKtl+7Umqo5JAX6kkIDDIVxoU6C/ydPksRSsT0DEyFRvPsims4n8fh+/kpeF8kXPyZDpv
+	l8nno/iWEw+v7lx5sX3P3cgzth0/c/CPnZFLbdMdU3zZaWv3YM+1cMvd20dc+L+/r9123j31
+	iTq+p0UntLTuOIYtEVIh+wk5ThIHzKF5097y8Olhq9serwO+n1q0DIvnXRczX8odjnxxLGr0
+	0BWJrcPJ++IS5Ro2HTJYvve5fH/r8cp9t5yH6pryTrs1hC8fzsx4oJRUpo58XrjN+czYal6c
+	9/37s5n735BelM+t/KGatPr7ux8UvumhIZp2e76d5Mx75l78pbFvbvKGa37odIHHgFogly2x
+	6gin22rvrxS7FqANnvSkkfqFrIhXJB8f3vlQ/io9fkomk4tIZaxM8g6hUMr+A4UQ+lk1BAAA
+X-CMS-MailID: 20230517224256eucas1p25e3b58d492b58b440b1aa0fb467fa7bc
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230516000116eucas1p2afa079038cb38a53400b940cf84cd34d
+X-RootMTR: 20230516000132eucas1p2d20a1c49d4711fda942a3c3a842384e6
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20230516000116eucas1p2afa079038cb38a53400b940cf84cd34d
-References: <CGME20230516000116eucas1p2afa079038cb38a53400b940cf84cd34d@eucas1p2.samsung.com>
-	<10-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
+X-CMS-RootMailID: 20230516000132eucas1p2d20a1c49d4711fda942a3c3a842384e6
+References: <CGME20230516000132eucas1p2d20a1c49d4711fda942a3c3a842384e6@eucas1p2.samsung.com>
+	<0-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,172 +152,172 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16.05.2023 02:00, Jason Gunthorpe wrote:
-> What exynos calls exynos_iommu_detach_device is actually putting the iommu
-> into identity mode.
+> [ There was alot of unexpected complication after rc1 with this series,
+> several new patches were needed ]
 >
-> Move to the new core support for ARM_DMA_USE_IOMMU by defining
-> ops->identity_domain.
+> It has been a long time coming, this series completes the default_domain
+> transition and makes it so that the core IOMMU code will always have a
+> non-NULL default_domain for every driver on every
+> platform. set_platform_dma_ops() turned out to be a bad idea, and so
+> completely remove it.
 >
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> This is achieved by changing each driver to either:
+>
+> 1 - Convert the existing (or deleted) ops->detach_dev() into an
+>      op->attach_dev() of an IDENTITY domain.
+>
+>      This is based on the theory that the ARM32 HW is able to function when
+>      the iommu is turned off as so the turned off state is an IDENTITY
+>      translation.
+>
+> 2 - Use a new PLATFORM domain type. This is a hack to accommodate drivers
+>      that we don't really know WTF they do. S390 is legitimately using this
+>      to switch to it's platform dma_ops implementation, which is where the
+>      name comes from.
+>
+> 3 - Do #1 and force the default domain to be IDENTITY, this corrects
+>      the tegra-smmu case where even an ARM64 system would have a NULL
+>      default_domain.
+>
+> Using this we can apply the rules:
+>
+> a) ARM_DMA_USE_IOMMU mode always uses either the driver's
+>     ops->default_domain, ops->def_domain_type(), or an IDENTITY domain.
+>     All ARM32 drivers provide one of these three options.
+>
+> b) dma-iommu.c mode uses either the driver's ops->default_domain,
+>     ops->def_domain_type or the usual DMA API policy logic based on the
+>     command line/etc to pick IDENTITY/DMA domain types
+>
+> c) All other arch's (PPC/S390) use ops->default_domain always.
+>
+> See the patch "Require a default_domain for all iommu drivers" for a
+> per-driver breakdown.
+>
+> The conversion broadly teaches a bunch of ARM32 drivers that they can do
+> IDENTITY domains. There is some educated guessing involved that these are
+> actual IDENTITY domains. If this turns out to be wrong the driver can be
+> trivially changed to use a BLOCKING domain type instead. Further, the
+> domain type only matters for drivers using ARM64's dma-iommu.c mode as it
+> will select IDENTITY based on the command line and expect IDENTITY to
+> work. For ARM32 and other arch cases it is purely documentation.
+>
+> Finally, based on all the analysis in this series, we can purge
+> IOMMU_DOMAIN_UNMANAGED/DMA constants from most of the drivers. This
+> greatly simplifies understanding the driver contract to the core
+> code. IOMMU drivers should not be involved in policy for how the DMA API
+> works, that should be a core core decision.
+>
+> The main gain from this work is to remove alot of ARM_DMA_USE_IOMMU
+> specific code and behaviors from drivers. All that remains in iommu
+> drivers after this series is the calls to arm_iommu_create_mapping().
+>
+> This is a step toward removing ARM_DMA_USE_IOMMU.
+>
+> The IDENTITY domains added to the ARM64 supporting drivers can be tested
+> by booting in ARM64 mode and enabling CONFIG_IOMMU_DEFAULT_PASSTHROUGH. If
+> the system still boots then most likely the implementation is an IDENTITY
+> domain. If not we can trivially change it to BLOCKING or at worst PLATFORM
+> if there is no detail what is going on in the HW.
+>
+> I think this is pretty safe for the ARM32 drivers as they don't really
+> change, the code that was in detach_dev continues to be called in the same
+> places it was called before.
 
-Acked-by: Marek Szyprowski
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-> ---
->   drivers/iommu/exynos-iommu.c | 66 +++++++++++++++++-------------------
->   1 file changed, 32 insertions(+), 34 deletions(-)
+Works fine on ARM 32bit Exynos based boards.
+
+> This follows the prior series:
 >
-> diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
-> index c275fe71c4db32..5e12b85dfe8705 100644
-> --- a/drivers/iommu/exynos-iommu.c
-> +++ b/drivers/iommu/exynos-iommu.c
-> @@ -24,6 +24,7 @@
->   
->   typedef u32 sysmmu_iova_t;
->   typedef u32 sysmmu_pte_t;
-> +static struct iommu_domain exynos_identity_domain;
->   
->   /* We do not consider super section mapping (16MB) */
->   #define SECT_ORDER 20
-> @@ -829,7 +830,7 @@ static int __maybe_unused exynos_sysmmu_suspend(struct device *dev)
->   		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
-> -		if (data->domain) {
-> +		if (&data->domain->domain != &exynos_identity_domain) {
->   			dev_dbg(data->sysmmu, "saving state\n");
->   			__sysmmu_disable(data);
->   		}
-> @@ -847,7 +848,7 @@ static int __maybe_unused exynos_sysmmu_resume(struct device *dev)
->   		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
-> -		if (data->domain) {
-> +		if (&data->domain->domain != &exynos_identity_domain) {
->   			dev_dbg(data->sysmmu, "restoring state\n");
->   			__sysmmu_enable(data);
->   		}
-> @@ -980,17 +981,20 @@ static void exynos_iommu_domain_free(struct iommu_domain *iommu_domain)
->   	kfree(domain);
->   }
->   
-> -static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
-> -				    struct device *dev)
-> +static int exynos_iommu_identity_attach(struct iommu_domain *identity_domain,
-> +					struct device *dev)
->   {
-> -	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
->   	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
-> -	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
-> +	struct exynos_iommu_domain *domain;
-> +	phys_addr_t pagetable;
->   	struct sysmmu_drvdata *data, *next;
->   	unsigned long flags;
->   
-> -	if (!has_sysmmu(dev) || owner->domain != iommu_domain)
-> -		return;
-> +	if (owner->domain == identity_domain)
-> +		return 0;
-> +
-> +	domain = to_exynos_domain(owner->domain);
-> +	pagetable = virt_to_phys(domain->pgtable);
->   
->   	mutex_lock(&owner->rpm_lock);
->   
-> @@ -1009,15 +1013,25 @@ static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
->   		list_del_init(&data->domain_node);
->   		spin_unlock(&data->lock);
->   	}
-> -	owner->domain = NULL;
-> +	owner->domain = identity_domain;
->   	spin_unlock_irqrestore(&domain->lock, flags);
->   
->   	mutex_unlock(&owner->rpm_lock);
->   
-> -	dev_dbg(dev, "%s: Detached IOMMU with pgtable %pa\n", __func__,
-> -		&pagetable);
-> +	dev_dbg(dev, "%s: Restored IOMMU to IDENTITY from pgtable %pa\n",
-> +		__func__, &pagetable);
-> +	return 0;
->   }
->   
-> +static struct iommu_domain_ops exynos_identity_ops = {
-> +	.attach_dev = exynos_iommu_identity_attach,
-> +};
-> +
-> +static struct iommu_domain exynos_identity_domain = {
-> +	.type = IOMMU_DOMAIN_IDENTITY,
-> +	.ops = &exynos_identity_ops,
-> +};
-> +
->   static int exynos_iommu_attach_device(struct iommu_domain *iommu_domain,
->   				   struct device *dev)
->   {
-> @@ -1026,12 +1040,11 @@ static int exynos_iommu_attach_device(struct iommu_domain *iommu_domain,
->   	struct sysmmu_drvdata *data;
->   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
->   	unsigned long flags;
-> +	int err;
->   
-> -	if (!has_sysmmu(dev))
-> -		return -ENODEV;
-> -
-> -	if (owner->domain)
-> -		exynos_iommu_detach_device(owner->domain, dev);
-> +	err = exynos_iommu_identity_attach(&exynos_identity_domain, dev);
-> +	if (err)
-> +		return err;
->   
->   	mutex_lock(&owner->rpm_lock);
->   
-> @@ -1407,26 +1420,12 @@ static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
->   	return &data->iommu;
->   }
->   
-> -static void exynos_iommu_set_platform_dma(struct device *dev)
-> -{
-> -	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
-> -
-> -	if (owner->domain) {
-> -		struct iommu_group *group = iommu_group_get(dev);
-> -
-> -		if (group) {
-> -			exynos_iommu_detach_device(owner->domain, dev);
-> -			iommu_group_put(group);
-> -		}
-> -	}
-> -}
-> -
->   static void exynos_iommu_release_device(struct device *dev)
->   {
->   	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   
-> -	exynos_iommu_set_platform_dma(dev);
-> +	WARN_ON(exynos_iommu_identity_attach(&exynos_identity_domain, dev));
->   
->   	list_for_each_entry(data, &owner->controllers, owner_node)
->   		device_link_del(data->link);
-> @@ -1457,6 +1456,7 @@ static int exynos_iommu_of_xlate(struct device *dev,
->   
->   		INIT_LIST_HEAD(&owner->controllers);
->   		mutex_init(&owner->rpm_lock);
-> +		owner->domain = &exynos_identity_domain;
->   		dev_iommu_priv_set(dev, owner);
->   	}
->   
-> @@ -1471,11 +1471,9 @@ static int exynos_iommu_of_xlate(struct device *dev,
->   }
->   
->   static const struct iommu_ops exynos_iommu_ops = {
-> +	.identity_domain = &exynos_identity_domain,
->   	.domain_alloc = exynos_iommu_domain_alloc,
->   	.device_group = generic_device_group,
-> -#ifdef CONFIG_ARM
-> -	.set_platform_dma_ops = exynos_iommu_set_platform_dma,
-> -#endif
->   	.probe_device = exynos_iommu_probe_device,
->   	.release_device = exynos_iommu_release_device,
->   	.pgsize_bitmap = SECT_SIZE | LPAGE_SIZE | SPAGE_SIZE,
+> https://lore.kernel.org/r/0-v5-1b99ae392328+44574-iommu_err_unwind_jgg@nvidia.com
+>
+> This is on github: https://protect2.fireeye.com/v1/url?k=773809ed-1645e36e-773982a2-74fe48600158-bd3a7b89de1f2061&q=1&e=7f176af7-9cf3-429b-a0ce-8812c59dfb5c&u=https%3A%2F%2Fgithub.com%2Fjgunthorpe%2Flinux%2Fcommits%2Fiommu_all_defdom
+>
+> v2:
+>   - FSL is an IDENTITY domain
+>   - Delete terga-gart instead of trying to carry it
+>   - Use the policy determination from iommu_get_default_domain_type() to
+>     drive the arm_iommu mode
+>   - Reorganize and introduce new patches to do the above:
+>      * Split the ops->identity_domain to an independent earlier patch
+>      * Remove the UNMANAGED return from def_domain_type in mtk_v1 earlier
+>        so the new iommu_get_default_domain_type() can work
+>      * Make the driver's def_domain_type have higher policy priority than
+>        untrusted
+>      * Merge the set_platfom_dma_ops hunk from mtk_v1 along with rockchip
+>        into the patch that forced IDENTITY on ARM32
+>   - Revise sun50i to be cleaner and have a non-NULL internal domain
+>   - Reword logging in exynos
+>   - Remove the gdev from the group alloc path, instead add a new
+>     function __iommu_group_domain_alloc() that takes in the group
+>     and uses the first device. Split this to its own patch
+>   - New patch to make iommufd's mock selftest into a real driver
+>   - New patch to fix power's partial iommu driver
+> v1: https://lore.kernel.org/r/0-v1-21cc72fcfb22+a7a-iommu_all_defdom_jgg@nvidia.com
+>
+> Jason Gunthorpe (25):
+>    iommu: Add iommu_ops->identity_domain
+>    iommu: Add IOMMU_DOMAIN_PLATFORM
+>    powerpc/iommu: Setup a default domain and remove set_platform_dma_ops
+>    iommu: Add IOMMU_DOMAIN_PLATFORM for S390
+>    iommu/tegra-gart: Remove tegra-gart
+>    iommu/mtk_iommu_v1: Implement an IDENTITY domain
+>    iommu: Reorganize iommu_get_default_domain_type() to respect
+>      def_domain_type()
+>    iommu: Allow an IDENTITY domain as the default_domain in ARM32
+>    iommu/fsl_pamu: Implement an IDENTITY domain
+>    iommu/exynos: Implement an IDENTITY domain
+>    iommu/tegra-smmu: Implement an IDENTITY domain
+>    iommu/tegra-smmu: Support DMA domains in tegra
+>    iommu/omap: Implement an IDENTITY domain
+>    iommu/msm: Implement an IDENTITY domain
+>    iommufd/selftest: Make the mock iommu driver into a real driver
+>    iommu: Remove ops->set_platform_dma_ops()
+>    iommu/qcom_iommu: Add an IOMMU_IDENTITIY_DOMAIN
+>    iommu/ipmmu: Add an IOMMU_IDENTITIY_DOMAIN
+>    iommu/mtk_iommu: Add an IOMMU_IDENTITIY_DOMAIN
+>    iommu/sun50i: Add an IOMMU_IDENTITIY_DOMAIN
+>    iommu: Require a default_domain for all iommu drivers
+>    iommu: Add __iommu_group_domain_alloc()
+>    iommu: Add ops->domain_alloc_paging()
+>    iommu: Convert simple drivers with DOMAIN_DMA to domain_alloc_paging()
+>    iommu: Convert remaining simple drivers to domain_alloc_paging()
+>
+>   arch/arm/configs/multi_v7_defconfig     |   1 -
+>   arch/arm/configs/tegra_defconfig        |   1 -
+>   arch/powerpc/kernel/iommu.c             |  38 ++-
+>   drivers/iommu/Kconfig                   |  11 -
+>   drivers/iommu/Makefile                  |   1 -
+>   drivers/iommu/arm/arm-smmu/qcom_iommu.c |  45 ++-
+>   drivers/iommu/exynos-iommu.c            |  73 +++--
+>   drivers/iommu/fsl_pamu_domain.c         |  39 ++-
+>   drivers/iommu/iommu-priv.h              |  16 +
+>   drivers/iommu/iommu.c                   | 263 +++++++++++------
+>   drivers/iommu/iommufd/iommufd_private.h |   5 +-
+>   drivers/iommu/iommufd/main.c            |   8 +-
+>   drivers/iommu/iommufd/selftest.c        | 141 ++++-----
+>   drivers/iommu/ipmmu-vmsa.c              |  50 +++-
+>   drivers/iommu/msm_iommu.c               |  30 +-
+>   drivers/iommu/mtk_iommu.c               |  30 +-
+>   drivers/iommu/mtk_iommu_v1.c            |  28 +-
+>   drivers/iommu/omap-iommu.c              |  28 +-
+>   drivers/iommu/rockchip-iommu.c          |  26 +-
+>   drivers/iommu/s390-iommu.c              |  28 +-
+>   drivers/iommu/sprd-iommu.c              |   7 +-
+>   drivers/iommu/sun50i-iommu.c            |  35 ++-
+>   drivers/iommu/tegra-gart.c              | 371 ------------------------
+>   drivers/iommu/tegra-smmu.c              |  50 +++-
+>   drivers/memory/tegra/mc.c               |  34 ---
+>   drivers/memory/tegra/tegra20.c          |  28 --
+>   include/linux/iommu.h                   |  16 +-
+>   include/soc/tegra/mc.h                  |  26 --
+>   28 files changed, 622 insertions(+), 807 deletions(-)
+>   create mode 100644 drivers/iommu/iommu-priv.h
+>   delete mode 100644 drivers/iommu/tegra-gart.c
+>
+>
+> base-commit: 0b355ade2baf262f213da274411c0e05d8232a21
 
 Best regards
 -- 
