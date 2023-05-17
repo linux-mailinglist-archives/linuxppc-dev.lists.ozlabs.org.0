@@ -1,54 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA3A7067E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 14:20:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7780470682C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 14:31:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLsd409Cxz3fBQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 22:20:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLssv2kBVz3fFP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 22:31:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HhOSXK3l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FOMsJ12y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLscF3PSdz3bh0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 22:19:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLss13Y2cz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 22:30:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HhOSXK3l;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FOMsJ12y;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QLscF25mBz4x41;
-	Wed, 17 May 2023 22:19:41 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QLsrx0tWxz4x41;
+	Wed, 17 May 2023 22:30:41 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1684325981;
-	bh=reA2yTRbCZa5cBx4zwA3xw7gGraSBbw1ULKxkJZz4cE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=HhOSXK3lUJm6kcEU4hfcYysOCsQmW52JHS1NvsKKd560JNTF/HD0UeCnPqkLXPDWr
-	 EK423RagxR39BkHioUCbEEKXYL9mW7M7uT9+VLKtX+e7ADBFW1xDm9+Fty4dJwJgdR
-	 AlKMWAMS32A8ZFSllnGAlTA2mv0lp7WoCMazVBw/6j25z58eBdBSEoc9Rb7rbmr9jq
-	 E/WLgTD9fdmovVL3GoOZS7jhm+/w0CagzTYJGlWSvTtfeCptVKajRVbJPk9l7iTMtB
-	 DK+Ituc8bKiLjGluc4V2pj0JasLAbyTPKMWcLavFtSkXdVLsOw/tnYdGOG7HMS0Cie
-	 FHi6TlD1Sjoig==
+	s=201909; t=1684326641;
+	bh=Rhmhv0vLP07yzl1n/AQedp/eev/vmRMa3v8rjo92qzg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FOMsJ12yPKFPc10RSgN4uY0AaXtGmjF6uxdA1v3CHeRHEMowKLL5NduXp5VKTcRfw
+	 Rx3vzBJJ2rKmzE7XSiqTiDEY4PdIY6SsAb7tLHJFCLwqnAka6mlscRlNF04Df9cRgB
+	 GC2O6lhlZcePYB9gESPga6pyG3Aw5zv9pBDRf2N/S9UAQvkxrYaNf/aD/rU1v4QRv2
+	 0hvWmj4K61e6l0KUTujoqmv2f8s6BuDuR2FwwDqGow680G0mfDMTJZnetCjYljmkUC
+	 UeScyen+HqBMFTlFFFoSPZT+81BYQY8GLauFClF4ssupPmxier5oUL7/p07dhJhtxR
+	 7ZYlUh+4IvtZg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/iommu: limit number of TCEs to 512 for
- H_STUFF_TCE hcall
-In-Reply-To: <ad7517b3-02f2-436a-4c31-878031630c25@linux.vnet.ibm.com>
-References: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
- <875y8yl1k5.fsf@mail.lhotse>
- <ad7517b3-02f2-436a-4c31-878031630c25@linux.vnet.ibm.com>
-Date: Wed, 17 May 2023 22:19:40 +1000
-Message-ID: <87r0rfywtf.fsf@mail.lhotse>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64s: Fix native_hpte_remove() to be irq-safe
+Date: Wed, 17 May 2023 22:30:33 +1000
+Message-Id: <20230517123033.18430-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,30 +56,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
-> Hello Michael,
->
-> System test hit the crash. I believe, it was PHYP that resulted in it 
-> due to number of TCEs passed in to be >512.
+Lockdep warns that the use of the hpte_lock in native_hpte_remove() is
+not safe against an IRQ coming in:
 
-OK. It's always good to spell out in the change log whether it's a
-theoretical/unlikely bug, or one that's actually been hit in testing or
-the field.
+  ================================
+  WARNING: inconsistent lock state
+  6.4.0-rc2-g0c54f4d30ecc #1 Not tainted
+  --------------------------------
+  inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+  qemu-system-ppc/93865 [HC0[0]:SC0[0]:HE1:SE1] takes:
+  c0000000021f5180 (hpte_lock){+.?.}-{0:0}, at: native_lock_hpte+0x8/0xd0
+  {IN-SOFTIRQ-W} state was registered at:
+    lock_acquire+0x134/0x3f0
+    native_lock_hpte+0x44/0xd0
+    native_hpte_insert+0xd4/0x2a0
+    __hash_page_64K+0x218/0x4f0
+    hash_page_mm+0x464/0x840
+    do_hash_fault+0x11c/0x260
+    data_access_common_virt+0x210/0x220
+    __ip_select_ident+0x140/0x150
+    ...
+    net_rx_action+0x3bc/0x440
+    __do_softirq+0x180/0x534
+    ...
+    sys_sendmmsg+0x34/0x50
+    system_call_exception+0x128/0x320
+    system_call_common+0x160/0x2e4
+  ...
+   Possible unsafe locking scenario:
 
-> I was wondering about the Fixes tag as well. But, this interface, in 
-> it's current form, is there from the day the file was created. So, in 
-> this case, should I mention the first commit which created this source file?
+         CPU0
+         ----
+    lock(hpte_lock);
+    <Interrupt>
+      lock(hpte_lock);
 
-If it really goes back to the origin commit, then it's probably better
-to just say so and tag it for stable, rather than pointing to 1da177e4.
+   *** DEADLOCK ***
+  ...
+  Call Trace:
+    dump_stack_lvl+0x98/0xe0 (unreliable)
+    print_usage_bug.part.0+0x250/0x278
+    mark_lock+0xc9c/0xd30
+    __lock_acquire+0x440/0x1ca0
+    lock_acquire+0x134/0x3f0
+    native_lock_hpte+0x44/0xd0
+    native_hpte_remove+0xb0/0x190
+    kvmppc_mmu_map_page+0x650/0x698 [kvm_pr]
+    kvmppc_handle_pagefault+0x534/0x6e8 [kvm_pr]
+    kvmppc_handle_exit_pr+0x6d8/0xe90 [kvm_pr]
+    after_sprg3_load+0x80/0x90 [kvm_pr]
+    kvmppc_vcpu_run_pr+0x108/0x270 [kvm_pr]
+    kvmppc_vcpu_run+0x34/0x48 [kvm]
+    kvm_arch_vcpu_ioctl_run+0x340/0x470 [kvm]
+    kvm_vcpu_ioctl+0x338/0x8b8 [kvm]
+    sys_ioctl+0x7c4/0x13e0
+    system_call_exception+0x128/0x320
+    system_call_common+0x160/0x2e4
 
-I wonder though is there something else that changed that means this bug
-is now being hit but wasn't before? Or maybe it's just that we are
-testing on systems with large enough amounts of memory to hit this but
-which aren't using a direct mapping?
+I suspect kvm_pr is the only caller that doesn't already have IRQs
+disabled, which is why this hasn't been reported previously.
 
-cheers
+Fix it by disabling IRQs in native_hpte_remove().
+
+Fixes: 35159b5717fa ("powerpc/64s: make HPTE lock and native_tlbie_lock irq-safe")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/mm/book3s64/hash_native.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+index 9342e79870df..430d1d935a7c 100644
+--- a/arch/powerpc/mm/book3s64/hash_native.c
++++ b/arch/powerpc/mm/book3s64/hash_native.c
+@@ -328,10 +328,12 @@ static long native_hpte_insert(unsigned long hpte_group, unsigned long vpn,
+ 
+ static long native_hpte_remove(unsigned long hpte_group)
+ {
++	unsigned long hpte_v, flags;
+ 	struct hash_pte *hptep;
+ 	int i;
+ 	int slot_offset;
+-	unsigned long hpte_v;
++
++	local_irq_save(flags);
+ 
+ 	DBG_LOW("    remove(group=%lx)\n", hpte_group);
+ 
+@@ -356,13 +358,16 @@ static long native_hpte_remove(unsigned long hpte_group)
+ 		slot_offset &= 0x7;
+ 	}
+ 
+-	if (i == HPTES_PER_GROUP)
+-		return -1;
++	if (i == HPTES_PER_GROUP) {
++		i = -1;
++		goto out;
++	}
+ 
+ 	/* Invalidate the hpte. NOTE: this also unlocks it */
+ 	release_hpte_lock();
+ 	hptep->v = 0;
+-
++out:
++	local_irq_restore(flags);
+ 	return i;
+ }
+ 
+-- 
+2.40.1
+
