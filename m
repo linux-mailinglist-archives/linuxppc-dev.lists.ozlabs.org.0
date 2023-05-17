@@ -1,70 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC12707589
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 00:39:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C619707510
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 00:04:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QM7ML14w9z3fLZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 08:39:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QM6Zt6XyKz3fJj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 08:04:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=f7UYkofN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=IucBH8Nm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=pdYEFwlX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d34; helo=mail-io1-xd34.google.com; envelope-from=azeemshaikh38@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=f7UYkofN;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=IucBH8Nm;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=pdYEFwlX;
 	dkim-atps=neutral
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLwbc5Kbgz3fBx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 00:34:20 +1000 (AEST)
-Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-76c791e2d8dso63943739f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 07:34:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684334057; x=1686926057;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xg5+64VwYu4jgIPdssL1KkUeDoxI9Z+GcnNgZYWkm3Q=;
-        b=f7UYkofNs9JL4XDKdmmVxJ/FcOm5c66Vjo4sEzVNJyE+QNiDrsJAcOsggp0ry46ks5
-         pC0ZEl/aJVWXPMDYYIqTgRkVW0CTWqrQ+m47hPfjJD1sUHnOkYcjJwInI9r2Cas5bwyk
-         Aua+3xLxe0y93uSylEtAyy/SQCrXy3pu8EjWDQLqjDH9ZJfndfVuKp+AQ+2x+hmDX3CZ
-         UqukqOATp6ip9bYcd7D94O/5mcfgeoZikKSahbzqvqYo9ZVI9AXlQw01Vs9ecDPagjDm
-         ObObYN+/r8lDfrV7UZMd/9qWJEzIjlXTqJxInZK04mizR0Mt3KHXnwbWEZtG/Z7iSvnn
-         hyNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684334057; x=1686926057;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xg5+64VwYu4jgIPdssL1KkUeDoxI9Z+GcnNgZYWkm3Q=;
-        b=V/+lf3YmtuzwZo1nWQeoLuYHQ1BTWchZqLq+Cs31rRk65PkFEikUN65VINe/zazXTh
-         Zarxej41Mlunsu5LAMZCPSGeSap27Cdy+YxjGP5+mA2nOS3qr+FS/bRvXP/bamSR49Fn
-         bk/AekCZJWY+IT+dtT2wK3+vRoxqhF8NSOzsx+R+tYrqkd1NbVivlLOB6DOaGymC9vDB
-         aSBQt34SBVy2sZKIPJT70WMifz0Rgf7R2Zfav9wtd7RIvJV4pfgaucgW72kPvFG1g0ts
-         SJRtPKtqXygDktjAQZUOJJnaUkj/bw8LcSrFJCafqnVwopfeg1E1E6CLY46HCqGB+Ynd
-         ueng==
-X-Gm-Message-State: AC+VfDzMaSHy3znZkLOPzNdYZARID116h4aNieUpEy5U+MwL4NhEABfn
-	ttwlC5ehEBTOXWntbufhLu4=
-X-Google-Smtp-Source: ACHHUZ6/nzU7Vyvyb5FH1f/FdNchYPWuX2uGRdwnvozU3JU2C4g5sXFhidMNl8Ac9liRJBzkXOCIgg==
-X-Received: by 2002:a6b:e910:0:b0:763:5cf8:65eb with SMTP id u16-20020a6be910000000b007635cf865ebmr4854888iof.9.1684334057611;
-        Wed, 17 May 2023 07:34:17 -0700 (PDT)
-Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
-        by smtp.gmail.com with ESMTPSA id n16-20020a027150000000b0040fa0f43777sm8491190jaf.161.2023.05.17.07.34.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 07:34:17 -0700 (PDT)
-From: Azeem Shaikh <azeemshaikh38@gmail.com>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: [PATCH] scsi: ibmvscsi: Replace all non-returning strlcpy with strscpy
-Date: Wed, 17 May 2023 14:34:09 +0000
-Message-ID: <20230517143409.1520298-1-azeemshaikh38@gmail.com>
-X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM6Yy4bPmz3bjy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 08:03:32 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.west.internal (Postfix) with ESMTP id 01B1B3200933;
+	Wed, 17 May 2023 18:03:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Wed, 17 May 2023 18:03:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+	1684361008; x=1684447408; bh=OlHnVK1DUusxWV+wmyioDrwuWgbSdxRZ6Mc
+	R57h5ja0=; b=IucBH8NmwS7psEkwhWgXroQH7b02zaZuXFQ29gEAl4CYhfTaeS6
+	Iv6EpAIWQanX8easevSY/X0KFa2ECCdPMqh2cJAsvnE2ppqeRm9zm/h2TVWPYrZP
+	K5w+4WOTMn9H/Kcd4IParkWB2Zbkw43em6GuOeB7FrG64d/cCZVSbdaAe+Z8cZUf
+	eFRqZymWP3k7KaykHcna95ttyT6FFuy0mlDAYLkDPoqXT068uUq6ZTA02K++3UnI
+	Z7zMy/+XjWKny6fOPJ6SglqwXdt0ImvtTB5aQCwJLXts7S6IQLIknGBVH7mMhjNd
+	kLrckdw2KQDRNkLIo7QjGjEvkOA+3ssvb5g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1684361008; x=1684447408; bh=OlHnVK1DUusxWV+wmyioDrwuWgbSdxRZ6Mc
+	R57h5ja0=; b=pdYEFwlXFJPNMtT/WbW3GS4DrOJfI8g+W2c82uiWuskGo0esxK2
+	rppLsEe5cnXbp4pIz8sEYUhXwvzz8EL3jgafU8htKyJHwlRTeFsFJogo6TwbOG8B
+	BSHOaV83iWm5AzvDLxw4X6/QOQZQHoI+ZmszO3/gV7ksc3cxs+WUDApdHdID2463
+	k1JWRakm5Hm8Ms2wItlOrseiiwVCJQFYZ6fBcJ4762Z4V4Y9ZfVfmOPdBNnRGraZ
+	1g2VkVN027Rs0kVYvfVTNAiq1AAjC9ykE9nkaYERTE+DMigM6VPmFPogASFYhFkU
+	j7lA6Bld+l6wg5Y9CPKvwSsK0gS2axzzimg==
+X-ME-Sender: <xms:L09lZK8Efre11GV54o35INUgqnkiBrdaL-7CAq6hC-8uPDqq_PrZvw>
+    <xme:L09lZKtUJ7TtCH_ozO2Nmbmvf5YZ4tvgY6BbQ3B24JzTwnqbwVElHUNdbS4JOwWQ8
+    piWrbV0lPS_PgMDEA>
+X-ME-Received: <xmr:L09lZAAH1VmSk5qgwA29m-Lh5JRl4lAZ4iI1MvdNoyi-qEhKDDXiVqJi1l7g10gvuGXA4rKREmUpc5ORII_xyw5Q4n7020ZCWc1aJ48AyP7Zcg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeivddgtdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedmnecujfgurhepkffuhf
+    fvveffjghftgfgfgggsehtqhertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
+    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
+    etgfeilefhueefvedvkeehieefjefgfeegheetudekiefguddutdeukeetveelleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
+    esrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:L09lZCdn4VygZUX5T3pP1ytJ1cm9UaLYU0iZPRVTkDgswnUacaxlNQ>
+    <xmx:L09lZPO53TQdwKYkWAlMOiCCot0n4vqPs5ynWa5KNFkeoypO93UshA>
+    <xmx:L09lZMkaY15htDfuYJmmy7goIccUat1esZ8eDmrwlp6H8ZxMvTCKNw>
+    <xmx:ME9lZF2QGTVzI40x2NWWUmRYCWYn4zbmVPn-ve6LWkZbgFP2xuMuJg>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 May 2023 18:03:26 -0400 (EDT)
+Message-ID: <290087de21f20ea8d22db9fa0b8dfc7e2486ab28.camel@russell.cc>
+Subject: Re: [PATCH] powerpc/security: Fix Speculation_Store_Bypass
+ reporting on Power10
+From: Russell Currey <ruscur@russell.cc>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 18 May 2023 08:03:23 +1000
+In-Reply-To: <20230517074945.53188-1-mpe@ellerman.id.au>
+References: <20230517074945.53188-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 18 May 2023 08:37:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,52 +95,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Azeem Shaikh <azeemshaikh38@gmail.com>, linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
-No return values were used, so direct replacement is safe.
+On Wed, 2023-05-17 at 17:49 +1000, Michael Ellerman wrote:
+> Nageswara reported that /proc/self/status was showing "vulnerable"
+> for
+> the Speculation_Store_Bypass feature on Power10, eg:
+>=20
+> =C2=A0 $ grep Speculation_Store_Bypass: /proc/self/status
+> =C2=A0 Speculation_Store_Bypass:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vuln=
+erable
+>=20
+> But at the same time the sysfs files, and lscpu, were showing "Not
+> affected".
+>=20
+> This turns out to simply be a bug in the reporting of the
+> Speculation_Store_Bypass, aka. PR_SPEC_STORE_BYPASS, case.
+>=20
+> When SEC_FTR_STF_BARRIER was added, so that firmware could
+> communicate
+> the vulnerability was not present, the code in ssb_prctl_get() was
+> not
+> updated to check the new flag.
+>=20
+> So add the check for SEC_FTR_STF_BARRIER being disabled. Rather than
+> adding the new check to the existing if block and expanding the
+> comment
+> to cover both cases, rewrite the three cases to be separate so they
+> can
+> be commented separately for clarity.
+>=20
+> Fixes: 84ed26fd00c5 ("powerpc/security: Add a security feature for
+> STF barrier")
+> Cc: stable@vger.kernel.org=C2=A0# v5.14+
+> Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
-
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
----
- drivers/scsi/ibmvscsi/ibmvscsi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index 63f32f843e75..59599299615d 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -250,7 +250,7 @@ static void gather_partition_info(void)
- 
- 	ppartition_name = of_get_property(of_root, "ibm,partition-name", NULL);
- 	if (ppartition_name)
--		strlcpy(partition_name, ppartition_name,
-+		strscpy(partition_name, ppartition_name,
- 				sizeof(partition_name));
- 	p_number_ptr = of_get_property(of_root, "ibm,partition-no", NULL);
- 	if (p_number_ptr)
-@@ -1282,12 +1282,12 @@ static void send_mad_capabilities(struct ibmvscsi_host_data *hostdata)
- 	if (hostdata->client_migrated)
- 		hostdata->caps.flags |= cpu_to_be32(CLIENT_MIGRATED);
- 
--	strlcpy(hostdata->caps.name, dev_name(&hostdata->host->shost_gendev),
-+	strscpy(hostdata->caps.name, dev_name(&hostdata->host->shost_gendev),
- 		sizeof(hostdata->caps.name));
- 
- 	location = of_get_property(of_node, "ibm,loc-code", NULL);
- 	location = location ? location : dev_name(hostdata->dev);
--	strlcpy(hostdata->caps.loc, location, sizeof(hostdata->caps.loc));
-+	strscpy(hostdata->caps.loc, location, sizeof(hostdata->caps.loc));
- 
- 	req->common.type = cpu_to_be32(VIOSRP_CAPABILITIES_TYPE);
- 	req->buffer = cpu_to_be64(hostdata->caps_addr);
-
+Reviewed-by: Russell Currey <ruscur@russell.cc>
