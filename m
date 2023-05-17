@@ -2,94 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98C5707389
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A807D70737F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 23:03:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QM5Hr43jgz3fMp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 07:06:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QM5Dy3CsFz3drM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 07:03:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r9s+ikzK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=l0Vn+PJf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::136; helo=mail-il1-x136.google.com; envelope-from=grundler@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r9s+ikzK;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=l0Vn+PJf;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM5Gw17GHz3drM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 07:05:27 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34HKoIIP024587;
-	Wed, 17 May 2023 21:05:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=aGMKik4Rc3ffjarGbBT+eI3tE2LmH7lZlgAKxqb1dLM=;
- b=r9s+ikzK1ftLsDvteG5vGiZiUluWTpa/Xnb8ZXlJatN9mkLGu7+igvj1/dP8wrEFaKep
- lNSSLoLD0lfNm8BhaSdq+HOzKOs3JY97AMPZNrQHuC3a1EVqkYla5iOpMBNtiaTNU+ao
- lORRahEC7SGJ8/l9tO6lGaHgSjnDAKzFZMGq+gGcYwVUvK4IiKSYbPk6RqpjekieKaUZ
- WR878JIoj1XJr0cC1nGtPJw8QeZXZSjSVeR0XEqCMjGAkz42fXYUORK067WnYRncotcH
- COZsTTmS1gU+7lp5ZdSy/cdpJFJCCgg7gH6RdaWkDwXRCJo5F2rrkp4GthIStWEFUVHh 5A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qn4vctqky-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 May 2023 21:05:17 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34HKoUll025125;
-	Wed, 17 May 2023 21:05:05 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qn4vctp27-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 May 2023 21:05:03 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34HHwrbE007298;
-	Wed, 17 May 2023 21:01:59 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3qj2664y4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 May 2023 21:01:59 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34HL1vR532768328
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 May 2023 21:01:57 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD3EB58043;
-	Wed, 17 May 2023 21:01:57 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B57458053;
-	Wed, 17 May 2023 21:01:55 +0000 (GMT)
-Received: from [9.160.109.34] (unknown [9.160.109.34])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 May 2023 21:01:55 +0000 (GMT)
-Message-ID: <f99b3630-3b77-2dc3-6aa5-87b6cdedf493@linux.ibm.com>
-Date: Wed, 17 May 2023 14:01:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] scsi: ibmvscsi: Replace all non-returning strlcpy with
- strscpy
-To: Azeem Shaikh <azeemshaikh38@gmail.com>
-References: <20230517143409.1520298-1-azeemshaikh38@gmail.com>
-Content-Language: en-US
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20230517143409.1520298-1-azeemshaikh38@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S5Iizz3jwOMNXUXcc8mrCwTIdRGtRN22
-X-Proofpoint-ORIG-GUID: f-YOoGHo1FEIuF9ABWEGnKCrBVkrqQt6
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QM5D45Bhjz3cjW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 07:02:59 +1000 (AEST)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-338458a9304so15965ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 14:02:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1684357376; x=1686949376;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EcYeLGK9CKTywc7ALkojexG3Ujj8hio2Irffds26ng8=;
+        b=l0Vn+PJfSyVTO2gHeH3x4fH2JjOQEcj0rIJbOythNeDP8VOHqOEMK1yeOgpSD/YgQa
+         24ZpUrWjEzUM4pXro/9E4sUOxgdYWLDCMJNlprEjlntbOk8dUDiqJAImOM/WP7fr+J7h
+         ygKzUkbYhDr2QsQzMuthz/735hJm9iFqHkQm8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684357376; x=1686949376;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EcYeLGK9CKTywc7ALkojexG3Ujj8hio2Irffds26ng8=;
+        b=YO2DjL/X1ATlOWhI8em2n/vt8fM9YOm1LAmrjCpg7nL+mIwiSSz98hdDBOh6/NC485
+         BcvfIwvc9rUtJVfrR60rb/YLZ/a9IyFJ5i++b60QLpYmNKvIIMAQkexwpZlptCzmt2bY
+         HRMWyR1Vo5gcm3QN1Qiul2jheyEXe4MuhtqytSg3bs4Ee1YwVxehn4x5dXJyayamBgvN
+         OKyYOZkHgk6IW9UYagi5ljwNUlPVtLpomvWQ7d4265I+stRRpeOFcUYuIimegqBbA4vP
+         9WUFM9X0ZlEMrC/8YTT5uICfk33b+9/rTNlUCklb7W48uksh8m6mtAWbJMrHBhZ8sfgE
+         kS+A==
+X-Gm-Message-State: AC+VfDyIvkgSc+p3KMGC5RUGsPXv90KdGgmsn7pHft/l9NJI+UZJKevl
+	ZocwotT1kmVZ0XohQl2ikXZsdSDPRw+kT+xWZ1ZpbQ==
+X-Google-Smtp-Source: ACHHUZ4vFPBYoUxskd6+n2+JnBS0dUlSvPK2Mtatq/nB93/9CwNwWWAutpY/dJgCD8yIQwmHurziU/bYwTQXP8SuS7I=
+X-Received: by 2002:a92:c24e:0:b0:331:948c:86f3 with SMTP id
+ k14-20020a92c24e000000b00331948c86f3mr19472ilo.19.1684357375830; Wed, 17 May
+ 2023 14:02:55 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-17_04,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- mlxlogscore=806 mlxscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1011
- phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305170174
+References: <CANEJEGsE6KS484iSLkKV8hx2nNThZGfaaz+u+R-A3X5nRev6Gg@mail.gmail.com>
+ <ZGT6sTOtk+WY3aYt@bhelgaas>
+In-Reply-To: <ZGT6sTOtk+WY3aYt@bhelgaas>
+From: Grant Grundler <grundler@chromium.org>
+Date: Wed, 17 May 2023 14:02:43 -0700
+Message-ID: <CANEJEGv8yxcYmrn4dsc0GCrcMGSFJNoJ=-VUvTjPLCVug+X29w@mail.gmail.com>
+Subject: Re: [PATCHv2 pci-next 2/2] PCI/AER: Rate limit the reporting of the
+ correctable errors
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,23 +74,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org
+Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Oliver O 'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/17/23 07:34, Azeem Shaikh wrote:
-> strlcpy() reads the entire source buffer first.
-> This read may exceed the destination size limit.
-> This is both inefficient and can lead to linear read
-> overflows if a source string is not NUL-terminated [1].
-> In an effort to remove strlcpy() completely [2], replace
-> strlcpy() here with strscpy().
-> No return values were used, so direct replacement is safe.
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-> [2] https://github.com/KSPP/linux/issues/89
-> 
-> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+On Wed, May 17, 2023 at 9:03=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> =
+wrote:
+>
+> On Fri, Apr 07, 2023 at 04:46:03PM -0700, Grant Grundler wrote:
+> > On Fri, Apr 7, 2023 at 12:46=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.o=
+rg> wrote:
+> > > On Fri, Apr 07, 2023 at 11:53:27AM -0700, Grant Grundler wrote:
+> > > > On Thu, Apr 6, 2023 at 12:50=E2=80=AFPM Bjorn Helgaas <helgaas@kern=
+el.org>
+> > > wrote:
+> > > > > On Fri, Mar 17, 2023 at 10:51:09AM -0700, Grant Grundler wrote:
+> > > > > > From: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+> > > > > >
+> > > > > > There are many instances where correctable errors tend to inund=
+ate
+> > > > > > the message buffer. We observe such instances during thunderbol=
+t PCIe
+> > > > > > tunneling.
+> > > > ...
+> > >
+> > > > > >               if (info->severity =3D=3D AER_CORRECTABLE)
+> > > > > > -                     pci_info(dev, "   [%2d] %-22s%s\n", i, er=
+rmsg,
+> > > > > > -                             info->first_error =3D=3D i ? " (F=
+irst)" :
+> > > "");
+> > > > > > +                     pci_info_ratelimited(dev, "   [%2d]
+> > > %-22s%s\n", i, errmsg,
+> > > > > > +                                          info->first_error =
+=3D=3D i ?
+> > > " (First)" : "");
+> > > > >
+> > > > > I don't think this is going to reliably work the way we want.  We=
+ have
+> > > > > a bunch of pci_info_ratelimited() calls, and each caller has its =
+own
+> > > > > ratelimit_state data.  Unless we call pci_info_ratelimited() exac=
+tly
+> > > > > the same number of times for each error, the ratelimit counters w=
+ill
+> > > > > get out of sync and we'll end up printing fragments from error A =
+mixed
+> > > > > with fragments from error B.
+> > > >
+> > > > Ok - what I'm reading between the lines here is the output should b=
+e
+> > > > emitted in one step, not multiple pci_info_ratelimited() calls. if =
+the
+> > > > code built an output string (using sprintnf()), and then called
+> > > > pci_info_ratelimited() exactly once at the bottom, would that be
+> > > > sufficient?
+> > > >
+> > > > > I think we need to explicitly manage the ratelimiting ourselves,
+> > > > > similar to print_hmi_event_info() or print_extlog_rcd().  Then we=
+ can
+> > > > > have a *single* ratelimit_state, and we can check it once to dete=
+rmine
+> > > > > whether to log this correctable error.
+> > > >
+> > > > Is the rate limiting per call location or per device? From above, I
+> > > > understood rate limiting is "per call location".  If the code only
+> > > > has one call location, it should achieve the same goal, right?
+> > >
+> > > Rate-limiting is per call location, so yes, if we only have one call
+> > > location, that would solve it.  It would also have the nice property
+> > > that all the output would be atomic so it wouldn't get mixed with
+> > > other stuff, and it might encourage us to be a little less wordy in
+> > > the output.
+> > >
+> >
+> > +1 to all of those reasons. Especially reducing the number of lines out=
+put.
+> >
+> > I'm going to be out for the next week. If someone else (Rajat Kendalwal
+> > maybe?) wants to rework this to use one call location it should be fair=
+ly
+> > straight forward. If not, I'll tackle this when I'm back (in 2 weeks
+> > essentially).
+>
+> Ping?  Really hoping to merge this for v6.5.
 
-Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Sorry - I forgot about this... I'll take a shot at it. Should have
+something by this evening.
 
+cheers,
+grant
+
+>
+> Bjorn
