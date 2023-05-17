@@ -1,87 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E1E7062D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 10:29:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18EF706499
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 11:52:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QLmVL5xM8z3f7Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 18:29:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QLpLD49lMz3fDJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 May 2023 19:52:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k/16QzAq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=XlTGI1OJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=microchip.com (client-ip=68.232.154.123; helo=esa.microchip.iphmx.com; envelope-from=claudiu.beznea@microchip.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k/16QzAq;
+	dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=XlTGI1OJ;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir; Wed, 17 May 2023 19:51:34 AEST
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLmTT5Svlz3cNF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 18:28:29 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34H8RVAU030912;
-	Wed, 17 May 2023 08:28:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=5KQPeLmIpYphB2nxWSuQHICoK7UYpXRIVghCMin7svE=;
- b=k/16QzAq3tSLdUnRXim6Od/wCTbK6ZF2Ch2iBL4ldAa2WEb3Zo+lWxvfZw/W4wfIKicG
- MOSBhNef0P+fftB2lFHUnBu9KwP/e1jd7XmrSZyFZm0GJ/ozJGOnvM3CBa00qEGdjR7X
- xINh6OCkk3uPANESks+FLCh7xSnaX06Y6OdiRsCrYVmYliq0oBRmfaDW3OgCdmszkq+3
- ofkx+8IMvmt2G5n4uUNo7NUtB5ExQtkd/fubj5SX2WugABoWBDFW2K9m14NUVmOT+ivD
- vXLFGzuKkyZP0Igli9kPhDR58HXD/JnJYwjV8T9MoRS8p2I2JXuV3wU/TG7193cVCGdU vw== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qmtep24gt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 May 2023 08:28:21 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34H3JNFE025570;
-	Wed, 17 May 2023 08:28:18 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qj264t2mv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 May 2023 08:28:18 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34H8SG9642205906
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 May 2023 08:28:16 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 604E320040;
-	Wed, 17 May 2023 08:28:16 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5EA120043;
-	Wed, 17 May 2023 08:28:15 +0000 (GMT)
-Received: from [9.199.156.35] (unknown [9.199.156.35])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 17 May 2023 08:28:15 +0000 (GMT)
-Message-ID: <e2f0fd0a-f51e-e509-8827-72f1f05bbb5a@linux.ibm.com>
-Date: Wed, 17 May 2023 13:58:14 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QLpKL13ymz3bfw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 May 2023 19:51:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1684317094; x=1715853094;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Mtw2/tREMJ9jAsgNoVakn6fr09xbBwzqX6/cCqtFuL4=;
+  b=XlTGI1OJX5d6O2lUBcPTHWq/1t7RslewU1Z8X+PRiBpceKDed3pUafbD
+   CjAUsQvxroVrq1wzxavoQx2YAThFiPG3vzqXwIXMeCJU5rJGRfqUJbNeM
+   X1Uuqev2kXnbL4Q4LHMBMI/6l3wVBBVATbqyYsK+j8qoK5jpoIQjWStIl
+   z/o0HZDMT9vR+AKZiGOJcDprfu25M+EWwZHOo2dmLk3NKMhTDOdv7FZrI
+   2uZ6BdNY1sXtgapo7YqENDLYW/1FhfyWMxuUAANR8Z+K1rJGDLUpJSo+j
+   MoJ7DBtvaZ1wZC9jn/I/8RVmHoFMauHIgUfKWssiM+DHu2RwzIcYBrNMB
+   w==;
+X-IronPort-AV: E=Sophos;i="5.99,281,1677567600"; 
+   d="scan'208";a="215854634"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 17 May 2023 02:50:22 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 17 May 2023 02:50:19 -0700
+Received: from m18063-ThinkPad-T460p.mchp-main.com (10.10.115.15) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.21 via Frontend Transport; Wed, 17 May 2023 02:50:09 -0700
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+To: <perex@perex.cz>, <tiwai@suse.com>, <lgirdwood@gmail.com>,
+	<broonie@kernel.org>, <oder_chiou@realtek.com>, <shengjiu.wang@gmail.com>,
+	<Xiubo.Lee@gmail.com>, <festevam@gmail.com>, <nicoleotsuka@gmail.com>,
+	<shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+	<linux-imx@nxp.com>, <cezary.rojewski@intel.com>,
+	<pierre-louis.bossart@linux.intel.com>, <peter.ujfalusi@linux.intel.com>,
+	<yung-chuan.liao@linux.intel.com>, <ranjani.sridharan@linux.intel.com>,
+	<kai.vehmanen@linux.intel.com>, <matthias.bgg@gmail.com>,
+	<angelogioacchino.delregno@collabora.com>, <srinivas.kandagatla@linaro.org>,
+	<bgoswami@quicinc.com>, <vkoul@kernel.org>, <daniel.baluta@nxp.com>,
+	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+	<jarkko.nikula@bitmer.com>
+Subject: [PATCH v2 0/2] ASoC: do not include runtime_pm.h if not needed
+Date: Wed, 17 May 2023 12:49:01 +0300
+Message-ID: <20230517094903.2895238-1-claudiu.beznea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH] powerpc/security: Fix Speculation_Store_Bypass reporting
- on Power10
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20230517074945.53188-1-mpe@ellerman.id.au>
-From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20230517074945.53188-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4OWNyFNmrsaqRbC_z7VEVGf4XlAF94Tb
-X-Proofpoint-GUID: 4OWNyFNmrsaqRbC_z7VEVGf4XlAF94Tb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_14,2023-05-16_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- priorityscore=1501 phishscore=0 adultscore=0 lowpriorityscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305170065
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,111 +78,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ruscur@russell.cc
+Cc: alsa-devel@alsa-project.org, patches@opensource.cirrus.com, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@microchip.com>, linux-arm-kernel@lists.infradead.org, sound-open-firmware@alsa-project.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
+Series removes the pm_runtime.h inclusion in files where
+APIs exported though pm_runtime.h are not used. In case
+of files that make use of pm.h which comes form pm_runtime.h
+added patch 2/2.
 
-On 17/05/23 1:19 pm, Michael Ellerman wrote:
-> Nageswara reported that /proc/self/status was showing "vulnerable" for
-> the Speculation_Store_Bypass feature on Power10, eg:
-> 
->    $ grep Speculation_Store_Bypass: /proc/self/status
->    Speculation_Store_Bypass:       vulnerable
-> 
-> But at the same time the sysfs files, and lscpu, were showing "Not
-> affected".
-> 
-> This turns out to simply be a bug in the reporting of the
-> Speculation_Store_Bypass, aka. PR_SPEC_STORE_BYPASS, case.
-> 
-> When SEC_FTR_STF_BARRIER was added, so that firmware could communicate
-> the vulnerability was not present, the code in ssb_prctl_get() was not
-> updated to check the new flag.
-> 
-> So add the check for SEC_FTR_STF_BARRIER being disabled. Rather than
-> adding the new check to the existing if block and expanding the comment
-> to cover both cases, rewrite the three cases to be separate so they can
-> be commented separately for clarity.
-> 
-> Fixes: 84ed26fd00c5 ("powerpc/security: Add a security feature for STF barrier")
-> Cc: stable@vger.kernel.org # v5.14+
-> Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Changes were built with allmodconfig on ARM and x86_64 and checked
+all the changed files were built at least once.
 
-Thanks for the patch. Adding tested-by tag along with test results.
+Thank you,
+Claudiu Beznea
 
-With out patch:
-# grep Speculation_Store_Bypass: /proc/self/status
-Speculation_Store_Bypass:	vulnerable
-# uname -r
-6.4.0-rc2
+Changes in v2:
+- removed cs35l45 handling
+- changed a bit commit description
+- added patch 2/2
+- collected Jarkko Nikula's tag
 
-With patch:
-# grep Speculation_Store_Bypass: /proc/self/status
-Speculation_Store_Bypass:	not vulnerable
-# uname -r
-6.4.0-rc2
+Claudiu Beznea (2):
+  ASoC: do not include pm_runtime.h if not used
+  ASoC: use pm.h instead of runtime_pm.h
 
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-
-
-> ---
->   arch/powerpc/kernel/security.c | 37 +++++++++++++++++-----------------
->   1 file changed, 19 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-> index 206475e3e0b4..4856e1a5161c 100644
-> --- a/arch/powerpc/kernel/security.c
-> +++ b/arch/powerpc/kernel/security.c
-> @@ -364,26 +364,27 @@ ssize_t cpu_show_spec_store_bypass(struct device *dev, struct device_attribute *
->   
->   static int ssb_prctl_get(struct task_struct *task)
->   {
-> +	/*
-> +	 * The STF_BARRIER feature is on by default, so if it's off that means
-> +	 * firmware has explicitly said the CPU is not vulnerable via either
-> +	 * the hypercall or device tree.
-> +	 */
-> +	if (!security_ftr_enabled(SEC_FTR_STF_BARRIER))
-> +		return PR_SPEC_NOT_AFFECTED;
-> +
-> +	/*
-> +	 * If the system's CPU has no known barrier (see setup_stf_barrier())
-> +	 * then assume that the CPU is not vulnerable.
-> +	 */
->   	if (stf_enabled_flush_types == STF_BARRIER_NONE)
-> -		/*
-> -		 * We don't have an explicit signal from firmware that we're
-> -		 * vulnerable or not, we only have certain CPU revisions that
-> -		 * are known to be vulnerable.
-> -		 *
-> -		 * We assume that if we're on another CPU, where the barrier is
-> -		 * NONE, then we are not vulnerable.
-> -		 */
->   		return PR_SPEC_NOT_AFFECTED;
-> -	else
-> -		/*
-> -		 * If we do have a barrier type then we are vulnerable. The
-> -		 * barrier is not a global or per-process mitigation, so the
-> -		 * only value we can report here is PR_SPEC_ENABLE, which
-> -		 * appears as "vulnerable" in /proc.
-> -		 */
-> -		return PR_SPEC_ENABLE;
-> -
-> -	return -EINVAL;
-> +
-> +	/*
-> +	 * Otherwise the CPU is vulnerable. The barrier is not a global or
-> +	 * per-process mitigation, so the only value that can be reported here
-> +	 * is PR_SPEC_ENABLE, which appears as "vulnerable" in /proc.
-> +	 */
-> +	return PR_SPEC_ENABLE;
->   }
->   
->   int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
+ sound/hda/hdac_regmap.c                                   | 1 -
+ sound/pci/hda/hda_bind.c                                  | 1 -
+ sound/soc/amd/acp/acp-pci.c                               | 1 -
+ sound/soc/amd/acp/acp-platform.c                          | 1 -
+ sound/soc/codecs/max98090.c                               | 1 -
+ sound/soc/codecs/max98373-i2c.c                           | 2 +-
+ sound/soc/codecs/pcm186x.c                                | 1 -
+ sound/soc/codecs/rk3328_codec.c                           | 1 -
+ sound/soc/codecs/rt5682-i2c.c                             | 1 -
+ sound/soc/codecs/rt5682s.c                                | 1 -
+ sound/soc/codecs/tas2562.c                                | 1 -
+ sound/soc/codecs/tas5720.c                                | 1 -
+ sound/soc/codecs/tas6424.c                                | 1 -
+ sound/soc/codecs/wm_adsp.c                                | 1 -
+ sound/soc/fsl/imx-audmix.c                                | 1 -
+ sound/soc/intel/atom/sst/sst_acpi.c                       | 1 -
+ sound/soc/intel/atom/sst/sst_ipc.c                        | 1 -
+ sound/soc/intel/atom/sst/sst_loader.c                     | 1 -
+ sound/soc/intel/atom/sst/sst_pci.c                        | 1 -
+ sound/soc/intel/atom/sst/sst_stream.c                     | 1 -
+ sound/soc/mediatek/mt8186/mt8186-afe-control.c            | 1 -
+ sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c | 1 -
+ sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c  | 1 -
+ sound/soc/mediatek/mt8192/mt8192-afe-control.c            | 2 --
+ sound/soc/qcom/lpass-sc7180.c                             | 2 +-
+ sound/soc/qcom/lpass-sc7280.c                             | 2 +-
+ sound/soc/soc-compress.c                                  | 1 -
+ sound/soc/soc-pcm.c                                       | 1 -
+ sound/soc/sof/intel/hda-loader-skl.c                      | 1 -
+ sound/soc/sof/intel/hda-stream.c                          | 1 -
+ sound/soc/sof/intel/skl.c                                 | 1 -
+ sound/soc/sof/mediatek/mt8186/mt8186-clk.c                | 1 -
+ sound/soc/sof/mediatek/mt8195/mt8195-clk.c                | 1 -
+ sound/soc/tegra/tegra20_ac97.c                            | 1 -
+ sound/soc/ti/omap-mcbsp-st.c                              | 1 -
+ 35 files changed, 3 insertions(+), 36 deletions(-)
 
 -- 
-Thanks and Regards
-R.Nageswara Sastry
+2.34.1
+
