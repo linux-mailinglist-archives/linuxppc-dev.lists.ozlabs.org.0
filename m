@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7ED70776B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 03:27:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB2170776E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 03:28:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QMC5d6yJxz3fDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 11:27:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QMC6c45f0z3fF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 11:28:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DO+7VgGD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N43yeZfw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DO+7VgGD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N43yeZfw;
 	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QMC4n1MGhz3c9Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 11:26:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QMC5p0576z3f4G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 11:27:57 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684373225; x=1715909225;
+  t=1684373278; x=1715909278;
   h=date:from:to:cc:subject:message-id;
-  bh=hQsn0EdmFlc19CwX6JMfRVuxlZ/NnCFR2t3KUzBu444=;
-  b=DO+7VgGDX2rPbXsRrSQNJhMWmyQy4BQsc66RdMchHGdGV8b/6g/qcy/5
-   NVthhK0KNESJwjE8lAK5tgvrfzpwP/aYYUkMoRBl3Y2YOo1QQfmT1zUYI
-   hdbeeglQdC7etm0f/0hjPA43cHa1daA3hletXNRH49+PTalhh8/9/kzwl
-   Rp5B5tyNTKdENwS13QMqhD/Y2ZTXp29Vmf7miGQZV07dXHwMtOlB19poH
-   cvwT4+raf9Qa894VPtFw321Doc9cNyBzmscmoQ7m0O2chd9+UxE7jbr31
-   a5iec3QEHewawO6eDsdvfLQ9CxsaHJCrCwFs7lx13I5K9nCautxNDoODV
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="354239115"
+  bh=8FpHYK1trPo996kwOAZVFExOAYJYSISIYtQlp7UW4gQ=;
+  b=N43yeZfwr3+EhzqVA/q003Q+eYJJ1mary/RlXkawX7tjvSlQN90C+eC1
+   KinUO0d8GxaEmZwrEGT/HfrtTUNSLnL4hnqiwMl9WrUPLzNyaIAEeG3Uu
+   74T+ijutD6nVcKG5NP9BU2N1vAYD2MDTZDDKB0rg/228ZmwNZ493VObkZ
+   +M6qZV4co0p73n7ZA+nSi9XJazG0lE3s4iZr4Ub+i5enYZztD3N1A4p8F
+   pKQ/a4FIG06mnWwXa/2yedBvM/S6YiC9wmzmIjxjEFwD9csT5d33At9Pw
+   +vrwGyi2zl1ITkvg3ONwt0f2OaH2zOBUDyLcfcouTMx85qNqHm91mPGzd
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="355114293"
 X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; 
-   d="scan'208";a="354239115"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 18:26:54 -0700
+   d="scan'208";a="355114293"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 18:27:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="705022449"
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="814122273"
 X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; 
-   d="scan'208";a="705022449"
+   d="scan'208";a="814122273"
 Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 17 May 2023 18:26:53 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 17 May 2023 18:27:53 -0700
 Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1pzSPt-0009OI-0Z;
-	Thu, 18 May 2023 01:26:53 +0000
-Date: Thu, 18 May 2023 09:26:51 +0800
+	id 1pzSQr-0009Ol-1a;
+	Thu, 18 May 2023 01:27:53 +0000
+Date: Thu, 18 May 2023 09:27:19 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 211059f4d536f4322fc9ab5581870c8e26b43197
-Message-ID: <20230518012651.cXSxS%lkp@intel.com>
+Subject: [powerpc:fixes] BUILD SUCCESS
+ 1f7aacc5eb9ed2cc17be7a90da5cd559effb9d59
+Message-ID: <20230518012719.ge8qZ%lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,10 +71,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 tree/branch: INFO setup_repo_specs: /db/releases/20230517200055/lkp-src/repo/*/powerpc
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 211059f4d536f4322fc9ab5581870c8e26b43197  powerpc/iommu: limit number of TCEs to 512 for H_STUFF_TCE hcall
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+branch HEAD: 1f7aacc5eb9ed2cc17be7a90da5cd559effb9d59  powerpc/iommu: Incorrect DDW Table is referenced for SR-IOV device
 
-elapsed time: 723m
+elapsed time: 725m
 
 configs tested: 181
 configs skipped: 152
