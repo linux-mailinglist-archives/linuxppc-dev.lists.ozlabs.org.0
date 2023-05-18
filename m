@@ -1,63 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836D2707EA1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 12:57:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296237080E0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 14:12:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QMRlP2z7fz3fL7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 20:57:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QMTQ10dtZz3fCp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 May 2023 22:12:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=f1WIjix4;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QMRkv6ct3z3f7K
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 20:57:25 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ED4D1FB;
-	Thu, 18 May 2023 03:57:35 -0700 (PDT)
-Received: from [10.1.39.62] (e122027.cambridge.arm.com [10.1.39.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1B433F793;
-	Thu, 18 May 2023 03:56:43 -0700 (PDT)
-Message-ID: <527c0d87-d727-8b59-e980-0a4a94aa639d@arm.com>
-Date: Thu, 18 May 2023 11:56:41 +0100
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::f31; helo=mail-qv1-xf31.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=f1WIjix4;
+	dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QMTP903Cbz3f8d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 22:12:10 +1000 (AEST)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-623921866bfso2407266d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 May 2023 05:12:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1684411926; x=1687003926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b1LVde9eD9hiDa72aXFp01UeitZcx1XKK5VRIQwwJ4w=;
+        b=f1WIjix4LVO2qoUadyymiNEwWX8LVYnKjiZJmHZsA00vpgp8OzN7fLeOXwmxyAsNjQ
+         sHOCKYtaHjUeBnmA70xUS7m11Y8GXRs0HF7i7PVSFcwvUzQVx0yAXlGLYQrw7yq7y3KH
+         MBoMqwZGJTzwuItitFkcFv88cqBCrBWri+DUGp8Fc0eAqXpc1sD7lY1vf9Zu0c1UnHTi
+         g1NSzolGSvoeoheQrwHIwMvc3Rso4DvQpoRRtvFDk7J6iY3SLf6NCCF8S9IRrkOXhhUV
+         HRuCy/CUe+KQ4Lk9dlGX7GSjHNglFJk4MTFkm4joUr1QsJe7so9IrOlgfq/tmei89LyY
+         B2xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684411926; x=1687003926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b1LVde9eD9hiDa72aXFp01UeitZcx1XKK5VRIQwwJ4w=;
+        b=STJhosFCCzcgFVBKjsqR5VoN7o94us44estu80/4ct0piDMynOW4j932naQWYRSmXD
+         LCC0picJXhY7zmoI+rFVqGtpFz5XLi6Jb8XkjdhWg+hhfvVwLCzHsFj3PX0icSlGOZJl
+         dh7t/iKiVmqf7GN+hTAyvwRZ+L5rpvr9bsUjDB/Bxijk2rE5SlgOZJGROXcQhDUzwm9x
+         kTHy9TdL4+XwKJC9na4ZPo13+RBTOrtyI3rTLOjT6QzbV3+lQC0iu58YBkKOaLBuagFO
+         2kbqpQajCMpfqUDRP1wI0M8Y9hAJHQxPxA7kyBqSjlUEQLctDPAm+jl5ACm0zw4nIgFE
+         wJyg==
+X-Gm-Message-State: AC+VfDwCAgu8qPPVOZiAeOpdAm+1TXXLb8XdRM+VIB7pUvKVnlbT8nHP
+	tLfEOOxKnugY7OrSQ2GsvsA8ow==
+X-Google-Smtp-Source: ACHHUZ7wZ7lgCFFjWmWBQuc0tx+WGJVC/VREvoop6Vbqh2gPTjnAeer0zQN00cudqqAWi4mVPLtPKg==
+X-Received: by 2002:a05:6214:2486:b0:5fd:7701:88c5 with SMTP id gi6-20020a056214248600b005fd770188c5mr5974330qvb.6.1684411925806;
+        Thu, 18 May 2023 05:12:05 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id w8-20020a0562140b2800b006215c5bb2e9sm476635qvj.70.2023.05.18.05.12.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 05:12:05 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1pzcUG-0055VE-PF;
+	Thu, 18 May 2023 09:12:04 -0300
+Date: Thu, 18 May 2023 09:12:04 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: Re: [PATCH v2 00/34] Split ptdesc from struct page
+Message-ID: <ZGYWFIfyDtdpeWg1@ziepe.ca>
+References: <20230501192829.17086-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 00/25] iommu: Make default_domain's mandatory
-To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
- <andersson@kernel.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Stuebner <heiko@sntech.de>, iommu@lists.linux.dev,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- Kevin Tian <kevin.tian@intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linuxppc-dev@lists.ozlabs.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Orson Zhai <orsonzhai@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>, Samuel Holland <samuel@sholland.org>,
- Thierry Reding <thierry.reding@gmail.com>, Krishna Reddy
- <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
- Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-References: <0-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
-Content-Language: en-GB
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <0-v2-8d1dc464eac9+10f-iommu_all_defdom_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230501192829.17086-1-vishal.moola@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,18 +81,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thierry Reding <treding@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Nicolin Chen <nicolinc@nvidia.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org, Jonas Bonn <jonas@southpole.se>, Arnd Bergmann <arnd@arndb.de>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mm@kvack.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Richard Wei
+ nberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16/05/2023 01:00, Jason Gunthorpe wrote:
-> This is on github: https://github.com/jgunthorpe/linux/commits/iommu_all_defdom
+On Mon, May 01, 2023 at 12:27:55PM -0700, Vishal Moola (Oracle) wrote:
+> The MM subsystem is trying to shrink struct page. This patchset
+> introduces a memory descriptor for page table tracking - struct ptdesc.
+> 
+> This patchset introduces ptdesc, splits ptdesc from struct page, and
+> converts many callers of page table constructor/destructors to use ptdescs.
 
-Tested-by: Steven Price <steven.price@arm.com>
+Lightly related food for future thought - based on some discussions at
+LSF/MM it would be really nice if an end result of this was that a
+rcu_head was always available in the ptdesc so we don't need to
+allocate memory to free a page table.
 
-Works fine on my Firefly-RK3288.
-
-Thanks,
-
-Steve
-
+Jason
