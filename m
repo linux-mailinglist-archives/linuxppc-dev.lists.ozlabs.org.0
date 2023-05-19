@@ -1,95 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D0D708F2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 07:07:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E795708F3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 07:15:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QMvx11zzBz3fWy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 15:07:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QMw5K2vXFz3fNh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 15:15:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QrTAQvrY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RQrmE5/7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QMw4R0RC6z30hh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 15:14:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QrTAQvrY;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RQrmE5/7;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QMvqS2MWpz3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 15:03:00 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34J51eIp030786;
-	Fri, 19 May 2023 05:02:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=KPkuLQo4KIGWhUS1G9e0KBFCAN5cjPjF3mymAVGO9ac=;
- b=QrTAQvrY5d4w82xZD5trVWex71a1DMlsEIL74C7utdlr9O2I7LE+SHCr9dR0GKg561aB
- UB6VcqpPBQJkoLwzAG4ryRZY8ImWxzP4CWpAqoQlFQe7O4umOiIAsKk8u9hdm5v323Ul
- cFwYD1/qGfzo3a0idwFOw4dHwjlS7oUB39QHGuf0sW7cs50Bgp60Ncn8gUorPclFevJR
- lSVOSBECpxr0FUETUNIFqdz+Uk5IM8heac5bLywBLNtpgfUnFls41uw1bV/jqGbVsVAN
- E9QZwKJzAOizzWYX5f9KfArGn1zc8tGfNVhUXopGzrLu2aKbI6ZPqfB5NtrAfN9t4cz9 MQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qp0ke2sny-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 May 2023 05:02:57 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34J4ts6w012206;
-	Fri, 19 May 2023 05:02:57 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qp0ke2ske-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 May 2023 05:02:57 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34J4bTpT020197;
-	Fri, 19 May 2023 05:02:53 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qj264tfq2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 May 2023 05:02:53 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34J52pgv51052914
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 May 2023 05:02:51 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CBBA2004E;
-	Fri, 19 May 2023 05:02:51 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61DA520043;
-	Fri, 19 May 2023 05:02:50 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 19 May 2023 05:02:50 +0000 (GMT)
-Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9919460636;
-	Fri, 19 May 2023 15:02:45 +1000 (AEST)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 12/12] selftests/powerpc/dexcr: Add DEXCR status utility lsdexcr
-Date: Fri, 19 May 2023 15:02:36 +1000
-Message-Id: <20230519050236.144847-13-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230519050236.144847-1-bgray@linux.ibm.com>
-References: <20230519050236.144847-1-bgray@linux.ibm.com>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QMw4M0Km2z4x2j;
+	Fri, 19 May 2023 15:14:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1684473251;
+	bh=XtmiIOF/NA3HEuw+9jphgAkHCsadnEGKvOejGiS/vBI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RQrmE5/7IQ9bHGm6Pg5nzKRS/MrnD7O62plkaE4ISC71znarStIv1c+rqH2eD21Ay
+	 BoSVycIDYj6++q91gMxaMW8tzGjKmn+SvAyr1OTzL/FcJ36O6uFSlSjO6ZPcwy46CK
+	 V9IseUAeKcQzyanwocprzA2s51mzkrUD5ABcIT8OciKKvQNnsEU880OUUzVK34Htru
+	 u6aYBYybBkBP3b7teFgYlIwGLVHKsTDk0UBcHC5zheI0DFrGgbp8BVZ6lqSWQUnKpR
+	 MaQvJ7GxK0lGxJqjJszIHK7PI7DUNxOXr5WfircZfyz086GeBt2U1zKAGDhFX3U5YY
+	 JKj3OO3SKnwhA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andrew Morton <akpm@linux-foundation.org>, David Laight
+ <David.Laight@ACULAB.COM>
+Subject: Re: [PATCH] mm: kfence: Fix false positives on big endian
+In-Reply-To: <20230517152028.86b6d2d5afa4541b4269131b@linux-foundation.org>
+References: <20230505035127.195387-1-mpe@ellerman.id.au>
+ <826f836f41db41eeb0fc32061994ac39@AcuMS.aculab.com>
+ <20230517152028.86b6d2d5afa4541b4269131b@linux-foundation.org>
+Date: Fri, 19 May 2023 15:14:06 +1000
+Message-ID: <87o7mgzyw1.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bnIyJ5sw1mNtx6P-esbqUn0RlzrGsTc3
-X-Proofpoint-ORIG-GUID: 9oIZ3jZS5xcYsIILu5-8WkuirDPVPZm3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-19_02,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- spamscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305190038
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,208 +60,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>, ajd@linux.ibm.com, npiggin@gmail.com, ruscur@russell.cc
+Cc: "zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>, "elver@google.com" <elver@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "glider@google.com" <glider@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a utility 'lsdexcr' to print the current DEXCR status. Useful for
-quickly checking the status such as when debugging test failures or
-verifying the new default DEXCR does what you want (for userspace at
-least). Example output:
+Andrew Morton <akpm@linux-foundation.org> writes:
+> On Fri, 5 May 2023 16:02:17 +0000 David Laight <David.Laight@ACULAB.COM> wrote:
+>
+>> From: Michael Ellerman
+>> > Sent: 05 May 2023 04:51
+>> > 
+>> > Since commit 1ba3cbf3ec3b ("mm: kfence: improve the performance of
+>> > __kfence_alloc() and __kfence_free()"), kfence reports failures in
+>> > random places at boot on big endian machines.
+>> > 
+>> > The problem is that the new KFENCE_CANARY_PATTERN_U64 encodes the
+>> > address of each byte in its value, so it needs to be byte swapped on big
+>> > endian machines.
+>> > 
+>> > The compiler is smart enough to do the le64_to_cpu() at compile time, so
+>> > there is no runtime overhead.
+>> > 
+>> > Fixes: 1ba3cbf3ec3b ("mm: kfence: improve the performance of __kfence_alloc() and __kfence_free()")
+>> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> > ---
+>> >  mm/kfence/kfence.h | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> > 
+>> > diff --git a/mm/kfence/kfence.h b/mm/kfence/kfence.h
+>> > index 2aafc46a4aaf..392fb273e7bd 100644
+>> > --- a/mm/kfence/kfence.h
+>> > +++ b/mm/kfence/kfence.h
+>> > @@ -29,7 +29,7 @@
+>> >   * canary of every 8 bytes is the same. 64-bit memory can be filled and checked
+>> >   * at a time instead of byte by byte to improve performance.
+>> >   */
+>> > -#define KFENCE_CANARY_PATTERN_U64 ((u64)0xaaaaaaaaaaaaaaaa ^ (u64)(0x0706050403020100))
+>> > +#define KFENCE_CANARY_PATTERN_U64 ((u64)0xaaaaaaaaaaaaaaaa ^ (u64)(le64_to_cpu(0x0706050403020100)))
+>> 
+>> What at the (u64) casts for?
+>> The constants should probably have a ul (or ull) suffix.
+>> 
+>
+> I tried that, didn't fix the sparse warnings described at
+> https://lkml.kernel.org/r/202305132244.DwzBUcUd-lkp@intel.com.
+>
+> Michael, have you looked into this?
 
-    # ./lsdexcr
-       uDEXCR: 04000000 (NPHIE)
-       HDEXCR: 00000000
-    Effective: 04000000 (NPHIE)
+I haven't sorry, been chasing other bugs.
 
-            SBHE   (0): clear  	(Speculative branch hint enable)
-          IBRTPD   (3): clear  	(Indirect branch recurrent target ...)
-           SRAPD   (4): clear  	(Subroutine return address ...)
-           NPHIE * (5): set  	(Non-privileged hash instruction enable)
-            PHIE   (6): clear  	(Privileged hash instruction enable)
+> I'll merge it upstream - I guess we can live with the warnings for a while.
 
-    DEXCR[NPHIE] enabled: hashst/hashchk working
+Thanks, yeah spurious WARNs are more of a pain than some sparse warnings.
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Maybe using le64_to_cpu() is too fancy, could just do it with an ifdef? eg.
 
----
-
-v1:	* Report if hashst/hashchk actually does something
----
- .../selftests/powerpc/dexcr/.gitignore        |   1 +
- .../testing/selftests/powerpc/dexcr/Makefile  |   2 +
- .../testing/selftests/powerpc/dexcr/lsdexcr.c | 141 ++++++++++++++++++
- 3 files changed, 144 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/dexcr/lsdexcr.c
-
-diff --git a/tools/testing/selftests/powerpc/dexcr/.gitignore b/tools/testing/selftests/powerpc/dexcr/.gitignore
-index d12e4560aca9..b82f45dd46b9 100644
---- a/tools/testing/selftests/powerpc/dexcr/.gitignore
-+++ b/tools/testing/selftests/powerpc/dexcr/.gitignore
-@@ -1 +1,2 @@
- hashchk_test
-+lsdexcr
-diff --git a/tools/testing/selftests/powerpc/dexcr/Makefile b/tools/testing/selftests/powerpc/dexcr/Makefile
-index 16c8b489948a..76210f2bcec3 100644
---- a/tools/testing/selftests/powerpc/dexcr/Makefile
-+++ b/tools/testing/selftests/powerpc/dexcr/Makefile
-@@ -1,7 +1,9 @@
- TEST_GEN_PROGS := hashchk_test
-+TEST_GEN_FILES := lsdexcr
+diff --git a/mm/kfence/kfence.h b/mm/kfence/kfence.h
+index 392fb273e7bd..510355a5382b 100644
+--- a/mm/kfence/kfence.h
++++ b/mm/kfence/kfence.h
+@@ -29,7 +29,11 @@
+  * canary of every 8 bytes is the same. 64-bit memory can be filled and checked
+  * at a time instead of byte by byte to improve performance.
+  */
+-#define KFENCE_CANARY_PATTERN_U64 ((u64)0xaaaaaaaaaaaaaaaa ^ (u64)(le64_to_cpu(0x0706050403020100)))
++#ifdef __LITTLE_ENDIAN__
++#define KFENCE_CANARY_PATTERN_U64 (0xaaaaaaaaaaaaaaaaULL ^ 0x0706050403020100ULL)
++#else
++#define KFENCE_CANARY_PATTERN_U64 (0xaaaaaaaaaaaaaaaaULL ^ 0x0001020304050607ULL)
++#endif
  
- include ../../lib.mk
- 
- $(OUTPUT)/hashchk_test: CFLAGS += -fno-pie $(call cc-option,-mno-rop-protect)
- 
- $(TEST_GEN_PROGS): ../harness.c ../utils.c ./dexcr.c
-+$(TEST_GEN_FILES): ../utils.c ./dexcr.c
-diff --git a/tools/testing/selftests/powerpc/dexcr/lsdexcr.c b/tools/testing/selftests/powerpc/dexcr/lsdexcr.c
-new file mode 100644
-index 000000000000..94abbfcc389e
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/dexcr/lsdexcr.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <errno.h>
-+#include <stddef.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "dexcr.h"
-+#include "utils.h"
-+
-+static unsigned int dexcr;
-+static unsigned int hdexcr;
-+static unsigned int effective;
-+
-+struct dexcr_aspect {
-+	const char *name;
-+	const char *desc;
-+	unsigned int index;
-+};
-+
-+static const struct dexcr_aspect aspects[] = {
-+	{
-+		.name = "SBHE",
-+		.desc = "Speculative branch hint enable",
-+		.index = 0,
-+	},
-+	{
-+		.name = "IBRTPD",
-+		.desc = "Indirect branch recurrent target prediction disable",
-+		.index = 3,
-+	},
-+	{
-+		.name = "SRAPD",
-+		.desc = "Subroutine return address prediction disable",
-+		.index = 4,
-+	},
-+	{
-+		.name = "NPHIE",
-+		.desc = "Non-privileged hash instruction enable",
-+		.index = 5,
-+	},
-+	{
-+		.name = "PHIE",
-+		.desc = "Privileged hash instruction enable",
-+		.index = 6,
-+	},
-+};
-+
-+static void print_list(const char *list[], size_t len)
-+{
-+	for (size_t i = 0; i < len; i++) {
-+		printf("%s", list[i]);
-+		if (i + 1 < len)
-+			printf(", ");
-+	}
-+}
-+
-+static void print_dexcr(char *name, unsigned int bits)
-+{
-+	const char *enabled_aspects[ARRAY_SIZE(aspects) + 1] = {NULL};
-+	size_t j = 0;
-+
-+	printf("%s: %08x", name, bits);
-+
-+	if (bits == 0) {
-+		printf("\n");
-+		return;
-+	}
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(aspects); i++) {
-+		unsigned int mask = DEXCR_PR_BIT(aspects[i].index);
-+
-+		if (bits & mask) {
-+			enabled_aspects[j++] = aspects[i].name;
-+			bits &= ~mask;
-+		}
-+	}
-+
-+	if (bits)
-+		enabled_aspects[j++] = "unknown";
-+
-+	printf(" (");
-+	print_list(enabled_aspects, j);
-+	printf(")\n");
-+}
-+
-+static void print_aspect(const struct dexcr_aspect *aspect)
-+{
-+	const char *attributes[8] = {NULL};
-+	size_t j = 0;
-+	unsigned long mask;
-+
-+	mask = DEXCR_PR_BIT(aspect->index);
-+	if (dexcr & mask)
-+		attributes[j++] = "set";
-+	if (hdexcr & mask)
-+		attributes[j++] = "set (hypervisor)";
-+	if (!(effective & mask))
-+		attributes[j++] = "clear";
-+
-+	printf("%12s %c (%d): ", aspect->name, effective & mask ? '*' : ' ', aspect->index);
-+	print_list(attributes, j);
-+	printf("  \t(%s)\n", aspect->desc);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	if (!dexcr_exists()) {
-+		printf("DEXCR not detected on this hardware\n");
-+		return 1;
-+	}
-+
-+	dexcr = get_dexcr(DEXCR);
-+	hdexcr = get_dexcr(HDEXCR);
-+	effective = dexcr | hdexcr;
-+
-+	print_dexcr("    DEXCR", dexcr);
-+	print_dexcr("   HDEXCR", hdexcr);
-+	print_dexcr("Effective", effective);
-+	printf("\n");
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(aspects); i++)
-+		print_aspect(&aspects[i]);
-+	printf("\n");
-+
-+	if (effective & DEXCR_PR_NPHIE) {
-+		printf("DEXCR[NPHIE] enabled: hashst/hashchk ");
-+		if (hashchk_triggers())
-+			printf("working\n");
-+		else
-+			printf("failed to trigger\n");
-+	} else {
-+		printf("DEXCR[NPHIE] disabled: hashst/hashchk ");
-+		if (hashchk_triggers())
-+			printf("unexpectedly triggered\n");
-+		else
-+			printf("ignored\n");
-+	}
-+
-+	return 0;
-+}
--- 
-2.40.1
+ /* Maximum stack depth for reports. */
+ #define KFENCE_STACK_DEPTH 64
 
+
+cheers
