@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889FB709DF5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 19:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB67E709DF6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 19:26:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QNDJF3B4vz3flV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 03:25:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QNDK94Dpdz3fnC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 03:26:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=j+odxpth;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=A4Ce0mbu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=j+odxpth;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=A4Ce0mbu;
 	dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNDBt0k5Bz3fGf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 03:20:53 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-2533ed4f1dcso2484141a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 10:20:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNDBx0FHkz3fGL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 03:20:56 +1000 (AEST)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-25355609a04so2457259a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 10:20:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1684516852; x=1687108852;
+        d=chromium.org; s=google; t=1684516855; x=1687108855;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FtWewuf5QmwEoMrp2heDkMSCLJmOGom4IGUit5Qgo0E=;
-        b=j+odxpthVu1r88NdkoBBLHCCZHxAILIoHvQRbo0BYOGU+caYf7G5t8oS+/sutWAb06
-         0/3y15G9V4rAsqVAUplESKZYanhl/sYpq1QJSiIK9RoB3l+LfJCDMdhxu4jHA6BiwsiY
-         AK/xV8IKz/okxdjnmVpntud8VcNkXW2UnoYD8=
+        bh=/7nsegKilU8iY/CeHEQ2XMVIjaNVdBVM5JDOxat9ACo=;
+        b=A4Ce0mbuBc+hTbiZP49wHojvRrnbiIA8FPLkaarvKJXT1bV5KlwOIUViar61CbX4qM
+         xnKJrMF/2lsNyHtA607IBj6w8gOrCueK1n3T28DggYwgn3WWzNlnj/yUC1gqbWjZ/eif
+         4QU9hrt72WwEMojhcB6YxiHPFG2/iARvBWVoA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684516852; x=1687108852;
+        d=1e100.net; s=20221208; t=1684516855; x=1687108855;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FtWewuf5QmwEoMrp2heDkMSCLJmOGom4IGUit5Qgo0E=;
-        b=ExaumWHpvT44oM5piZ7vXTOSpN3asI5SBMdooT6ARa9dNSbmsJYKIIz0cxcWaKWnqu
-         MNsVwZEUq/uR5Dt0Umhztpwxqtf3qsyzssyNjCDZvDiR2Ubx49y+4Q74sDau79NXVAXb
-         vkcKvpQhjNB5nnfwwDmsaeEW6BCNouSuj+sGXfeGVeCKFgEclnyL/rmpO9TAFjlItfQf
-         q9kXvSng44C/uUkNkqHYoOUmCLSQ6fEg4Osgz521aDCHEVg59XblI3bqRZq4uOSRy8cm
-         zV2Zg4AoNKsltfLsgZ12/o4E+Gw+NutKOr4oKdA21pehZXfqAYFc8mckycb5ZGzgqxVr
-         DiOQ==
-X-Gm-Message-State: AC+VfDzMgd3wu0if6Ws4hlLenUrEFZGvRUtEK5C0qMlmlmlcte8/7P3T
-	0X2eKL3xyzL69cDs9cw4ycVX8w==
-X-Google-Smtp-Source: ACHHUZ7LqONQqbo1f32uROMOmBD1YwxsC0hUaPEyZAYzC5eD1qH0xMLrKy1PKFruL4ixUcNA0i2quA==
-X-Received: by 2002:a17:90a:8b0e:b0:253:8796:3322 with SMTP id y14-20020a17090a8b0e00b0025387963322mr1959543pjn.27.1684516851906;
-        Fri, 19 May 2023 10:20:51 -0700 (PDT)
+        bh=/7nsegKilU8iY/CeHEQ2XMVIjaNVdBVM5JDOxat9ACo=;
+        b=Rf2e9roxcLpAG0KS+zx4mjL22h5BukhUxIgk97nnbqgSknwQKdONipn1e2qx8uAw62
+         bZGerSjjT2WC+LFT3X9UIG8TE3rRmdncC6+gb1nhLxmVnfrmEBeddk3V76Pna+1xnUOH
+         G28LLIGDmM4gANL1dljV8W64775yMlRdLZne7N5BCDniY9OeVVgM7EnIoV1tIC3BDMmd
+         OSiZMkrPwBHS/hNEDHV/UzD4DfgPY9JvkXHx/AovnK7P6+UtyVc/iqdDRjd4BojkQK+F
+         RTQxDvep7efATLvXoR8OoxeogV9+ZEV7bu+ZpIL68/ao94rIPTBxt2sShPaEvmzCeBow
+         O86A==
+X-Gm-Message-State: AC+VfDwr2qfaJrS4e3FgGwYyOE6kB4oSky+ZCWTxNPK1Y0wD69+AXtFC
+	XRY+RPk/5uybYoNv1tHTgbLp1g==
+X-Google-Smtp-Source: ACHHUZ78KuQvgskyCDTAlOMExtVERg2yOkymJq8jyThLWiYxqXpls34rasoUDDbhLlKOIhF5z6rP+Q==
+X-Received: by 2002:a17:90a:8541:b0:250:d2d8:c179 with SMTP id a1-20020a17090a854100b00250d2d8c179mr2837454pjw.29.1684516854855;
+        Fri, 19 May 2023 10:20:54 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:9b89:2dd0:d160:429d])
-        by smtp.gmail.com with ESMTPSA id gj19-20020a17090b109300b0024e4f169931sm1763835pjb.2.2023.05.19.10.20.49
+        by smtp.gmail.com with ESMTPSA id gj19-20020a17090b109300b0024e4f169931sm1763835pjb.2.2023.05.19.10.20.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 10:20:51 -0700 (PDT)
+        Fri, 19 May 2023 10:20:54 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: Petr Mladek <pmladek@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 05/18] watchdog/perf: Ensure CPU-bound context when creating hardlockup detector event
-Date: Fri, 19 May 2023 10:18:29 -0700
-Message-ID: <20230519101840.v5.5.I654063e53782b11d53e736a8ad4897ffd207406a@changeid>
+Subject: [PATCH v5 06/18] watchdog/hardlockup: Add comments to touch_nmi_watchdog()
+Date: Fri, 19 May 2023 10:18:30 -0700
+Message-ID: <20230519101840.v5.6.I4e47cbfa1bb2ebbcdb5ca16817aa2887f15dc82c@changeid>
 X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
 In-Reply-To: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
 References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
@@ -81,62 +81,67 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Pingfan Liu <kernelfans@gmail.com>
+In preparation for the buddy hardlockup detector, add comments to
+touch_nmi_watchdog() to make it obvious that it touches the configured
+hardlockup detector regardless of whether it's backed by an NMI. Also
+note that arch_touch_nmi_watchdog() may not be architecture-specific.
 
-hardlockup_detector_event_create() should create perf_event on the
-current CPU. Preemption could not get disabled because
-perf_event_create_kernel_counter() allocates memory. Instead,
-the CPU locality is achieved by processing the code in a per-CPU
-bound kthread.
+Ideally, we'd like to rename these functions but that is a fairly
+disruptive change touching a lot of drivers. After discussion [1] the
+plan is to defer this until a good time.
 
-Add a check to prevent mistakes when calling the code in another
-code path.
+[1] https://lore.kernel.org/r/ZFy0TX1tfhlH8gxj@alley
 
-Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-Co-developed-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Signed-off-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
-I yanked this patch from the mailing lists [1] into my series just to
-make it easier to avoid conflicts between my series and the one adding
-the arm64 perf hardlockup detector, in case someone wanted to test
-them both together. This is a nice cleanup and could land together
-with the rest of my series if that makes sense.
 
-I changed the patch prefix to match others in my series.
-
-[1] https://lore.kernel.org/r/20220903093415.15850-4-lecopzer.chen@mediatek.com/
-
-(no changes since v4)
+Changes in v5:
+- No longer rename touch_nmi_watchdog(), just add comments.
 
 Changes in v4:
-- Pulled ("Ensure CPU-bound context when creating ...") into my series for v4.
+- ("Rename touch_nmi_watchdog() to ...") new for v4.
 
- kernel/watchdog_hld.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/nmi.h | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
-index 1e8a49dc956e..2125b09e09d7 100644
---- a/kernel/watchdog_hld.c
-+++ b/kernel/watchdog_hld.c
-@@ -165,10 +165,16 @@ static void watchdog_overflow_callback(struct perf_event *event,
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 454fe99c4874..fafab128f37e 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -125,15 +125,30 @@ void watchdog_nmi_disable(unsigned int cpu);
+ void lockup_detector_reconfigure(void);
  
- static int hardlockup_detector_event_create(void)
+ /**
+- * touch_nmi_watchdog - restart NMI watchdog timeout.
++ * touch_nmi_watchdog - manually pet the hardlockup watchdog.
+  *
+- * If the architecture supports the NMI watchdog, touch_nmi_watchdog()
+- * may be used to reset the timeout - for code which intentionally
+- * disables interrupts for a long time. This call is stateless.
++ * If we support detecting hardlockups, touch_nmi_watchdog() may be
++ * used to pet the watchdog (reset the timeout) - for code which
++ * intentionally disables interrupts for a long time. This call is stateless.
++ *
++ * Though this function has "nmi" in the name, the hardlockup watchdog might
++ * not be backed by NMIs. This function will likely be renamed to
++ * touch_hardlockup_watchdog() in the future.
+  */
+ static inline void touch_nmi_watchdog(void)
  {
--	unsigned int cpu = smp_processor_id();
-+	unsigned int cpu;
- 	struct perf_event_attr *wd_attr;
- 	struct perf_event *evt;
- 
 +	/*
-+	 * Preemption is not disabled because memory will be allocated.
-+	 * Ensure CPU-locality by calling this in per-CPU kthread.
++	 * Pass on to the hardlockup detector selected via CONFIG_. Note that
++	 * the hardlockup detector may not be arch-specific nor using NMIs
++	 * and the arch_touch_nmi_watchdog() function will likely be renamed
++	 * in the future.
 +	 */
-+	WARN_ON(!is_percpu_thread());
-+	cpu = raw_smp_processor_id();
- 	wd_attr = &wd_hw_attr;
- 	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
+ 	arch_touch_nmi_watchdog();
++
++	/*
++	 * Touching the hardlock detector implcitily pets the
++	 * softlockup detector too
++	 */
+ 	touch_softlockup_watchdog();
+ }
  
 -- 
 2.40.1.698.g37aff9b760-goog
