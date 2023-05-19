@@ -1,37 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AACA7095FA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 13:08:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A07096AC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 13:39:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QN3xZ1mStz3fPv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 21:08:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QN4dN39lBz3fG6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 21:39:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=T+46Tuva;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ghiti.fr (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QN3x42RSbz3fBg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 21:08:21 +1000 (AEST)
-Received: (Authenticated sender: alex@ghiti.fr)
-	by mail.gandi.net (Postfix) with ESMTPSA id CF7CAE000B;
-	Fri, 19 May 2023 11:08:12 +0000 (UTC)
-Message-ID: <6fc7f0e1-0dde-9b41-0d60-6b0bd65bb630@ghiti.fr>
-Date: Fri, 19 May 2023 13:08:12 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QN4cW1MZ9z3fD6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 21:39:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=T+46Tuva;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QN4cQ5kF5z4x2j;
+	Fri, 19 May 2023 21:39:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1684496342;
+	bh=NAc7Jbrbt9R2t5oRIRdebRV7rWGxeW4bzzaHTICvqRo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T+46TuvaC8gPkIyL1a+uFbUzvUJTbDFjUaTfV7lfc1K2daZowQL1sMickQ+C5XRUB
+	 JLL2ZKiS+lXEJ3eciijEpCYGARO/KgMregjkNawTg24UaQ6rhiBy6SExkZBWObpNUp
+	 87Z8imxLbc9cGggEH87s3dMY4UmwmrkXSkdO8fCM9mAwhPmjRNsmO11ngC5V5G2ry0
+	 O23aMInMrAJVijHNQFdZA1StI28zZH9bKWDUCnvI2rMvIQiROyWDqazW5yhHE7m+Ko
+	 EsbgHrO3Yv5ufaHtBcCOfM565q1ldgGG2LOPM6tyULRAbbsTG0oZaEioOizbKEqwTS
+	 QG0isTrbxlZHg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/mm: Reinstate ARCH_FORCE_MAX_ORDER ranges
+Date: Fri, 19 May 2023 21:38:06 +1000
+Message-Id: <20230519113806.370635-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
-Content-Language: en-US
-To: Andreas Schwab <schwab@linux-m68k.org>
-References: <20230215143626.453491-1-alexghiti@rivosinc.com>
- <20230215143626.453491-2-alexghiti@rivosinc.com> <87wn1h5nne.fsf@igel.home>
- <4adb27d2-325d-3ce0-23b1-ec69a973b4bf@ghiti.fr> <87ttwi91g0.fsf@igel.home>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <87ttwi91g0.fsf@igel.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -44,59 +56,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/11/23 20:18, Andreas Schwab wrote:
-> On Mai 09 2023, Alexandre Ghiti wrote:
->
->> On 5/9/23 21:07, Andreas Schwab wrote:
->>> That does not work with UEFI booting:
->>>
->>> Loading Linux 6.4.0-rc1-1.g668187d-default ...
->>> Loading initial ramdisk ...
->>> Unhandled exception: Instruction access fault
->>> EPC: ffffffff80016d56 RA: 000000008020334e TVAL: 0000007f80016d56
->>> EPC: ffffffff002d1d56 RA: 00000000004be34e reloc adjusted
->>> Unhandled exception: Load access fault
->>> EPC: 00000000fff462d4 RA: 00000000fff462d0 TVAL: ffffffff80016d56
->>> EPC: 00000000802012d4 RA: 00000000802012d0 reloc adjusted
->>>
->>> Code: c825 8e0d 05b3 40b4 d0ef 0636 7493 ffe4 (d783 0004)
->>> UEFI image [0x00000000fe65e000:0x00000000fe6e3fff] '/efi\boot\bootriscv64.efi'
->>> UEFI image [0x00000000daa82000:0x00000000dcc2afff]
->>>
->> I need more details please, as I have a UEFI bootflow and it works great
->> (KASLR is based on a relocatable kernel and works fine in UEFI too).
-> It also crashes without UEFI.  Disabling CONFIG_RELOCATABLE fixes that.
-> This was tested on the HiFive Unmatched board.
-> The kernel image I tested is available from
-> <https://download.opensuse.org/repositories/Kernel:/HEAD/RISCV/>.  The
-> same kernel with CONFIG_RELOCATABLE disabled is available from
-> <https://download.opensuse.org/repositories/home:/Andreas_Schwab:/riscv:/kernel/standard/>.
->
+Commit 1e8fed873e74 ("powerpc: drop ranges for definition of
+ARCH_FORCE_MAX_ORDER") removed the limits on the possible values for
+ARCH_FORCE_MAX_ORDER.
 
-I have tested the following patch successfully, can you give it a try 
-while I make sure this is the only place I forgot to add the -fno-pie flag?
+However removing the ranges entirely causes some common work flows to
+break. For example building a defconfig (which uses 64K pages), changing
+the page size to 4K, and rebuilding used to work, because
+ARCH_FORCE_MAX_ORDER would be clamped to 12 by the ranges.
 
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index fbdccc21418a..153864e4f399 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -23,6 +23,10 @@ ifdef CONFIG_FTRACE
-  CFLAGS_REMOVE_alternative.o = $(CC_FLAGS_FTRACE)
-  CFLAGS_REMOVE_cpufeature.o = $(CC_FLAGS_FTRACE)
-  endif
-+ifdef CONFIG_RELOCATABLE
-+CFLAGS_alternative.o += -fno-pie
-+CFLAGS_cpufeature.o += -fno-pie
-+endif
-  ifdef CONFIG_KASAN
-  KASAN_SANITIZE_alternative.o := n
-  KASAN_SANITIZE_cpufeature.o := n
+With the ranges removed it creates a kernel that builds but crashes at
+boot:
+  kernel BUG at mm/huge_memory.c:470!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  ...
+  NIP hugepage_init+0x9c/0x278
+  LR  do_one_initcall+0x80/0x320
+  Call Trace:
+    do_one_initcall+0x80/0x320
+    kernel_init_freeable+0x304/0x3ac
+    kernel_init+0x30/0x1a0
+    ret_from_kernel_user_thread+0x14/0x1c
 
-Thanks
+The reasoning for removing the ranges was that some of the values were
+too large. So take that into account and limit the maximums to 10 which
+is the default max, except for the 4K case which uses 12.
 
-Alex
+Fixes: 1e8fed873e74 ("powerpc: drop ranges for definition of ARCH_FORCE_MAX_ORDER")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+I plan to merge this via the powerpc fixes branch.
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 539d1f03ff42..bff5820b7cda 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -906,11 +906,17 @@ config DATA_SHIFT
+ 
+ config ARCH_FORCE_MAX_ORDER
+ 	int "Order of maximal physically contiguous allocations"
++	range 7 8 if PPC64 && PPC_64K_PAGES
+ 	default "8" if PPC64 && PPC_64K_PAGES
++	range 12 12 if PPC64 && !PPC_64K_PAGES
+ 	default "12" if PPC64 && !PPC_64K_PAGES
++	range 8 10 if PPC32 && PPC_16K_PAGES
+ 	default "8" if PPC32 && PPC_16K_PAGES
++	range 6 10 if PPC32 && PPC_64K_PAGES
+ 	default "6" if PPC32 && PPC_64K_PAGES
++	range 4 10 if PPC32 && PPC_256K_PAGES
+ 	default "4" if PPC32 && PPC_256K_PAGES
++	range 10 10
+ 	default "10"
+ 	help
+ 	  The kernel page allocator limits the size of maximal physically
+-- 
+2.40.1
 
