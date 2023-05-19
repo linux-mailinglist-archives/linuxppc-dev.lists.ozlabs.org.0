@@ -1,71 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F7E70A22B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 23:56:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3939970A2D6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 00:34:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QNLJf2Hkdz3fJr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 07:56:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QNM9B0GxCz3fPn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 08:34:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=qi8xAHod;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oW7jKK9d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=qi8xAHod;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oW7jKK9d;
 	dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNLHn3PM6z3cjL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 07:55:31 +1000 (AEST)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1ae763f9c0bso14988795ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 14:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1684533329; x=1687125329;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4uXFG3N07SM/6noHGA5ZD0BhWKs4fe06jSmLKiYiFpA=;
-        b=qi8xAHodXi1tTUlxkODdWEQyiAwma/a9BvGcwY/aQkz6Qrfgd/uYwIsQ3ftgzEUzB7
-         gQPnW4y98zBiQ1VJR1u1WmO0yXGgMdTnoKC4h1pdaN0elORWUcBRgyEH9K9ragANYapi
-         wvIqmSO9V822mFO1HA5NixmIP6q/D+Q5AwrBbbtETBnZBo3FeUikHs11UulsM7CkjzDJ
-         J8h6sS8sJhSFcDl/4uQ/P1JP35ibHi6+NnvdLdBO39EeIwkui0FYW8krsRQlEj+OcJaT
-         1EkX2USheSSzI+PFRacvW1yO7xokuC0lKYP8KIO4GPA1Hd/ORj085Er5URM/OrxF27lc
-         9Zbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684533329; x=1687125329;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uXFG3N07SM/6noHGA5ZD0BhWKs4fe06jSmLKiYiFpA=;
-        b=As6NP9rl2xcVmPmTYZyllAkaQqTIb82Nm5+1C5At0LM1DeLNiQ1QS7Mh8xRSJvz5oA
-         mOWK5SjNmkIASdlvLHTZ/oX4n/HuTtzEcHVNNghNEddlFKelgTBx32ODDWmbhGTaDCT7
-         4OKciEdrm2CLNnsg2hPdYBxGzAlSb5gt0IPzMrO90890cxr3+g3diOOo6BeBIin3StHv
-         iVpf/6mqEX8u8oqcVCkCEEkgcjYKMLtcV0q1ao+SCh9JVgGz/2ou6tgOo55lBL6zqQeJ
-         seqLAmal8iBdLhtlGFeW1hCpfoMjne+zdV875GBmGlEORKeKegXzYfdMh2sC73YWG+zU
-         bORw==
-X-Gm-Message-State: AC+VfDzyD+3U15/fh1nodgjBhxGHRySAOI0kUkY7imHaAE1rwYN6Xyq8
-	rIj+P55CG1e82iAe+wIGjGCefw==
-X-Google-Smtp-Source: ACHHUZ5/ROOeL9x3rAVEVvDuoSZzBU2MR5h4O3UXzZfGGu9m3CMVQZIexSY6expZXuqtDJrP1h/97g==
-X-Received: by 2002:a17:902:e746:b0:1aa:df9e:2d19 with SMTP id p6-20020a170902e74600b001aadf9e2d19mr4239865plf.54.1684533329317;
-        Fri, 19 May 2023 14:55:29 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id g23-20020a170902869700b001a98f844e60sm80031plo.263.2023.05.19.14.55.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 14:55:28 -0700 (PDT)
-Date: Fri, 19 May 2023 14:55:28 -0700 (PDT)
-X-Google-Original-Date: Fri, 19 May 2023 14:55:05 PDT (-0700)
-Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
-In-Reply-To: <87sfbsvvp0.fsf@igel.home>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: schwab@linux-m68k.org
-Message-ID: <mhng-d3720bcf-5eda-46da-b640-0606ef3a60e2@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNM8G6gFBz3f3k
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 08:34:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=dzkMn7jXhuW46G6N54fI9VSxhbfWQPb9eBen4fnyZMM=; b=oW7jKK9dD+JkZYQopHTtoZLdIf
+	ifss5k+Ba6BO4/frKHPmNl85tmAk4YqdDhEOMgQznNFvPHj5/8/7esRY7q4PBd2yDceO38esCsptk
+	Hq66dDEhvIakalnxaiNTw0uhYSLcrjsoO+8pcOYB6ic0Pzvfct4mOPU4Fs916n/IYmA30U+ogqdKC
+	yyZ86xBRVgHWTutdUkAzx0MTyB4ufBlb6QyDazHWnSuWZKR+NI4MnedIgreM7ElDZCoFkAHpT8E+h
+	lXzE29T9kkNXQpIzwfctQr8e82xBxy8b2XtqO3hwfpn8R1JkxyPdWbjWfegu8O45gKn5tmEUGa+er
+	LkAS18Tg==;
+Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1q08fJ-00HShm-0H;
+	Fri, 19 May 2023 22:33:37 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/crypto: fix build warnings when DEBUG_FS is not enabled
+Date: Fri, 19 May 2023 15:33:34 -0700
+Message-Id: <20230519223334.11992-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,33 +56,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, alexghiti@rivosinc.com, alex@ghiti.fr, linux-kernel@vger.kernel.org, npiggin@gmail.com, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Randy Dunlap <rdunlap@infradead.org>, Herbert Xu <herbert@gondor.apana.org.au>, Nayna Jain <nayna@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org, =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 19 May 2023 14:48:59 PDT (-0700), schwab@linux-m68k.org wrote:
-> On Mai 19 2023, Alexandre Ghiti wrote:
->
->> I have tested the following patch successfully, can you give it a try
->> while I make sure this is the only place I forgot to add the -fno-pie
->> flag?
->>
->> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
->> index fbdccc21418a..153864e4f399 100644
->> --- a/arch/riscv/kernel/Makefile
->> +++ b/arch/riscv/kernel/Makefile
->> @@ -23,6 +23,10 @@ ifdef CONFIG_FTRACE
->>  CFLAGS_REMOVE_alternative.o = $(CC_FLAGS_FTRACE)
->>  CFLAGS_REMOVE_cpufeature.o = $(CC_FLAGS_FTRACE)
->>  endif
->> +ifdef CONFIG_RELOCATABLE
->> +CFLAGS_alternative.o += -fno-pie
->> +CFLAGS_cpufeature.o += -fno-pie
->> +endif
->>  ifdef CONFIG_KASAN
->>  KASAN_SANITIZE_alternative.o := n
->>  KASAN_SANITIZE_cpufeature.o := n
->
-> I can confirm that this fixes the crash.
+Fix build warnings when DEBUG_FS is not enabled by using an empty
+do-while loop instead of a value:
 
-Thanks.  Alex: can you send a patch?
+In file included from ../drivers/crypto/nx/nx.c:27:
+../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+  173 | #define NX_DEBUGFS_INIT(drv)    (0)
+../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+  573 |         NX_DEBUGFS_INIT(&nx_driver);
+../drivers/crypto/nx/nx.c: In function 'nx_remove':
+../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+  174 | #define NX_DEBUGFS_FINI(drv)    (0)
+../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+  793 |                 NX_DEBUGFS_FINI(&nx_driver);
+
+Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+enabled, so change the Makefile to accommodate that.
+
+Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Breno Leitão <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/crypto/nx/Makefile |    2 +-
+ drivers/crypto/nx/nx.h     |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff -- a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
+--- a/drivers/crypto/nx/Makefile
++++ b/drivers/crypto/nx/Makefile
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
+ nx-crypto-objs := nx.o \
+-		  nx_debugfs.o \
+ 		  nx-aes-cbc.o \
+ 		  nx-aes-ecb.o \
+ 		  nx-aes-gcm.o \
+@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
+ 		  nx-sha256.o \
+ 		  nx-sha512.o
+ 
++nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
+ nx-compress-objs := nx-842.o
+diff -- a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -170,8 +170,8 @@ struct nx_sg *nx_walk_and_build(struct n
+ void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+-#define NX_DEBUGFS_INIT(drv)	(0)
+-#define NX_DEBUGFS_FINI(drv)	(0)
++#define NX_DEBUGFS_INIT(drv)	do {} while (0)
++#define NX_DEBUGFS_FINI(drv)	do {} while (0)
+ #endif
+ 
+ #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
