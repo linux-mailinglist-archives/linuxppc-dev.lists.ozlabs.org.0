@@ -2,72 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CB9709F60
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 20:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4D470A207
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 23:49:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QNG9T5Hj8z3fMQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 04:49:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OlnWK7BP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QNL914hTyz3fPg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 07:49:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OlnWK7BP;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net; envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNG8c2dhnz3fGl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 04:49:04 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNL8T4tQrz3cMH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 07:49:11 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4QNL8F1tK7z1sG8n;
+	Fri, 19 May 2023 23:49:01 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+	by mail.m-online.net (Postfix) with ESMTP id 4QNL8D5nw0z1qqlY;
+	Fri, 19 May 2023 23:49:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+	with ESMTP id XyLPMARxDKv3; Fri, 19 May 2023 23:48:59 +0200 (CEST)
+X-Auth-Info: UdoOlGJyC/tj1C8t/F+qwKRDlPRVzwm7sF3nVhFHfZv+Z8M1psgK2wdJJpzQJ6gi
+Received: from igel.home (aftr-62-216-205-130.dynamic.mnet-online.de [62.216.205.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 25D83653B5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 18:49:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B54FC4339B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 18:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684522140;
-	bh=VhF6llgOW6X2bVLhVYaMjaq6cNDAvwJGXMKh+/Hqqng=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=OlnWK7BPBrd0MTUfjrMMoK2PVzjODIqPEm9j31wcy+25VkwHwnay8emtmg8zCd+Fk
-	 6IqKOqWYUG+0D0Hs3lC2oHS7OM9OT4IxhK6OPP3B/8MuQBv3RXNvLhwW0++DvCyUGh
-	 6xc7339oLmQRlI/rw4pO+uB0BVbaKKed3JzSemSvCmtq58UOAYWJ32DcRMmSXmxV3O
-	 Qr2ExLCx2Htd1vEwOI6BbiFZT4plKPkiEx6AHfqpqNCzjMW2Dn6kWR5ExmEHqcOR8a
-	 HQs5NDFZ5Gtf0Hq/jlcmDtolIblhcl0jfN2iDX/yQb2X2gBtCD/EQoSEdB3aGfsfE9
-	 W45m1BPEzDekg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 7E461C43142; Fri, 19 May 2023 18:49:00 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216715] kernel 6.1-rc5 + KASAN_OUTLINE fails to boot at very
- early stage when DEBUG_PAGEALLOC_ENABLE_DEFAULT is enabled (PowerMac G4 3,6)
-Date: Fri, 19 May 2023 18:49:00 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@csgroup.eu
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-216715-206035-7yWJ794Ye1@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216715-206035@https.bugzilla.kernel.org/>
-References: <bug-216715-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Fri, 19 May 2023 23:48:59 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 79E822C1CCF; Fri, 19 May 2023 23:48:59 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Subject: Re: [PATCH v8 1/3] riscv: Introduce CONFIG_RELOCATABLE
+In-Reply-To: <6fc7f0e1-0dde-9b41-0d60-6b0bd65bb630@ghiti.fr> (Alexandre
+	Ghiti's message of "Fri, 19 May 2023 13:08:12 +0200")
+References: <20230215143626.453491-1-alexghiti@rivosinc.com>
+	<20230215143626.453491-2-alexghiti@rivosinc.com>
+	<87wn1h5nne.fsf@igel.home>
+	<4adb27d2-325d-3ce0-23b1-ec69a973b4bf@ghiti.fr>
+	<87ttwi91g0.fsf@igel.home>
+	<6fc7f0e1-0dde-9b41-0d60-6b0bd65bb630@ghiti.fr>
+X-Yow: YOW!!  Up ahead!  It's a DONUT HUT!!
+Date: Fri, 19 May 2023 23:48:59 +0200
+Message-ID: <87sfbsvvp0.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,19 +63,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216715
+On Mai 19 2023, Alexandre Ghiti wrote:
 
---- Comment #6 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-Would be nice to give it a new try with KCSAN enabled.
+> I have tested the following patch successfully, can you give it a try
+> while I make sure this is the only place I forgot to add the -fno-pie
+> flag?
+>
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index fbdccc21418a..153864e4f399 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -23,6 +23,10 @@ ifdef CONFIG_FTRACE
+>  CFLAGS_REMOVE_alternative.o = $(CC_FLAGS_FTRACE)
+>  CFLAGS_REMOVE_cpufeature.o = $(CC_FLAGS_FTRACE)
+>  endif
+> +ifdef CONFIG_RELOCATABLE
+> +CFLAGS_alternative.o += -fno-pie
+> +CFLAGS_cpufeature.o += -fno-pie
+> +endif
+>  ifdef CONFIG_KASAN
+>  KASAN_SANITIZE_alternative.o := n
+>  KASAN_SANITIZE_cpufeature.o := n
 
-To get KCSAN on powerpc/32, apply following series:
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D354731
+I can confirm that this fixes the crash.
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
