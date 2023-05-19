@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B0D709DED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 19:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A65709DF1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 May 2023 19:23:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QNDFL3ShCz3fGs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 03:23:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QNDGG1VnNz3fby
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 May 2023 03:23:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=F0UdKqH+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cx6hTxwo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=F0UdKqH+;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cx6hTxwo;
 	dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNDBh3QKfz3fBj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 03:20:44 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-51b4ef5378bso3252178a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 10:20:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QNDBl4DThz3fBq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 May 2023 03:20:47 +1000 (AEST)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-52c30fa5271so1911863a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 May 2023 10:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1684516842; x=1687108842;
+        d=chromium.org; s=google; t=1684516845; x=1687108845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dNeu6vyPdP07ZkKg14nXq7JlkRTws6KPwBPqf0mDzVI=;
-        b=F0UdKqH+AjU+/c5u/w0OpSe1apBaDBocMcnx/dT+OQZGwKzm4Yh/f+L4AQY/pQxCaa
-         b+2PUGSmX7OvnUkRsGY3c3qq61HcX6prh0T2an3zd+tZObtm8iEG4jSEsuXIyWo6kI/0
-         FGrouN3ev1v5DhmMiK3SUkA3/1lt8QFGvZam4=
+        bh=DMiz3to86FkP1q0hsF+Wqo3XfK/5ADGMUL6fQvRPMH0=;
+        b=Cx6hTxwoprK8nUSIr03lPivHKWjjrogjswRvDLx9AuLo18B3eXilhScKopQDoLt8fc
+         +q6ht7zyx2kXwb9NKPseHI6ovEC8lXOX8XuINlRUG9Or8F+YWU6HTqNhrvahAhe/CDpz
+         7qq4gMO1UU4e69rpklfI1U8z/wIJemk+nXOfQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684516842; x=1687108842;
+        d=1e100.net; s=20221208; t=1684516845; x=1687108845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dNeu6vyPdP07ZkKg14nXq7JlkRTws6KPwBPqf0mDzVI=;
-        b=R0yTlCXTLE8zHYyzrxwgJ6mhhhEGem11GefZ9JKdLRc7f8HzkZDCHOuKV9n64o5G3D
-         jJjmnrS8BVHDi0wculGd+v+eyJV0046O/WwiZ/ZSqnsXY5LtdPnETk4kEDl1Btk1xSKU
-         A+Ti5bUUPeqXp88txUixxNOqJKPTzfRvUUvbMN96qdW55a98yMJMrP7VgyN7DpxaS05A
-         KY2KP6Xrm6jS8JK+5JW6W94xhS2xQx+kvMw4xy8CRkKLDJSm5gV5UMCqV9JIN8GstbsW
-         OrBtYWZHRtakOExB1t4zEQA5x/UtGTGRAW+Qp46INQF1iNVQ4wfivSuGsa3IY8ZpbTAc
-         XVzA==
-X-Gm-Message-State: AC+VfDxMpn6j20zrni4P8ao8JFkzibdliYQsBmDBqKZNsyF2UMEGp/V1
-	5+Vq9zbeavWRHlTWBY6u9LUmWQ==
-X-Google-Smtp-Source: ACHHUZ56xIwu+OAsmj4ap7FEJYDEFDc65SEAcDRmxfPUsg25AN6kC4stY0LeDhYT4ZvsYWBDy+bC2g==
-X-Received: by 2002:a17:90b:1e49:b0:250:9aee:563c with SMTP id pi9-20020a17090b1e4900b002509aee563cmr2506737pjb.41.1684516842239;
-        Fri, 19 May 2023 10:20:42 -0700 (PDT)
+        bh=DMiz3to86FkP1q0hsF+Wqo3XfK/5ADGMUL6fQvRPMH0=;
+        b=Pa7FU7HUoLNUTtx4M8q5lIcItmr5h2798k+vMbTcmGVUjZk/QsqugzGsiJQShcYoyt
+         UNyMlvBA6ichc+r35GnXhoRj31wUQBUdoWiVC7xBcvE+tJZeDCpy+N90NBLWOg4difds
+         3/u9ZljxuGb/LPECL+CTXDA7S481yjWVFOsZlxoKiw2RdnKW/sRikHvacMY03ZLf8KDb
+         dFtrfSPZq6BAoqCfRRbB5eg4e5kjxvZcRoVgmL+k8VO5RmwZaiFALoS0Xy0HOJWA2rt7
+         7OwkCBaXtCGuMxiKqxmhekLl8YYo48A7PsSH0ApCQEuWeqL92HtY6a5p1E304sSplNR7
+         n5XA==
+X-Gm-Message-State: AC+VfDxTLtcROnQYMtQa+0181R9Ohawft0GQPvKdBG3dVXNde1xN7zs9
+	tfSkwJJvn/TrWntz3szhgnNCiw==
+X-Google-Smtp-Source: ACHHUZ4HcaPYNuvTP98WNkT/ggUfrWqySpDY3N2DHz7bGp2lSbc/FwZeje+nmx1Ot7R1VAg4t1jRIQ==
+X-Received: by 2002:a17:90a:d105:b0:23f:6d4e:72b3 with SMTP id l5-20020a17090ad10500b0023f6d4e72b3mr2809893pju.25.1684516845320;
+        Fri, 19 May 2023 10:20:45 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:9b89:2dd0:d160:429d])
-        by smtp.gmail.com with ESMTPSA id gj19-20020a17090b109300b0024e4f169931sm1763835pjb.2.2023.05.19.10.20.39
+        by smtp.gmail.com with ESMTPSA id gj19-20020a17090b109300b0024e4f169931sm1763835pjb.2.2023.05.19.10.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 10:20:41 -0700 (PDT)
+        Fri, 19 May 2023 10:20:44 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: Petr Mladek <pmladek@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 02/18] watchdog/perf: More properly prevent false positives with turbo modes
-Date: Fri, 19 May 2023 10:18:26 -0700
-Message-ID: <20230519101840.v5.2.I843b0d1de3e096ba111a179f3adb16d576bef5c7@changeid>
+Subject: [PATCH v5 03/18] watchdog: remove WATCHDOG_DEFAULT
+Date: Fri, 19 May 2023 10:18:27 -0700
+Message-ID: <20230519101840.v5.3.I6a729209a1320e0ad212176e250ff945b8f91b2a@changeid>
 X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
 In-Reply-To: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
 References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
@@ -81,53 +81,48 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, in the watchdog_overflow_callback() we first check to see
-if the watchdog had been touched and _then_ we handle the workaround
-for turbo mode. This order should be reversed.
+From: Lecopzer Chen <lecopzer.chen@mediatek.com>
 
-Specifically, "touching" the hardlockup detector's watchdog should
-avoid lockups being detected for one period that should be roughly the
-same regardless of whether we're running turbo or not. That means that
-we should do the extra accounting for turbo _before_ we look at (and
-clear) the global indicating that we've been touched.
+No reference to WATCHDOG_DEFAULT, remove it.
 
-NOTE: this fix is made based on code inspection. I am not aware of any
-reports where the old code would have generated false positives. That
-being said, this order seems more correct and also makes it easier
-down the line to share code with the "buddy" hardlockup detector.
-
-Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Signed-off-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
+I yanked this patch from the mailing lists [1] into my series just to
+make it easier to avoid conflicts between my series and the one adding
+the arm64 perf hardlockup detector, in case someone wanted to test
+them both together. This is a nice cleanup and could land together
+with the rest of my series if that makes sense.
 
-Changes in v5:
-- ("More properly prevent false ...") promoted to its own patch for v5.
+I changed the patch prefix to match others in my series.
 
- kernel/watchdog_hld.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+[1] https://lore.kernel.org/r/20220903093415.15850-2-lecopzer.chen@mediatek.com/
 
-diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
-index 247bf0b1582c..1e8a49dc956e 100644
---- a/kernel/watchdog_hld.c
-+++ b/kernel/watchdog_hld.c
-@@ -114,14 +114,14 @@ static void watchdog_overflow_callback(struct perf_event *event,
- 	/* Ensure the watchdog never gets throttled */
- 	event->hw.interrupts = 0;
+(no changes since v4)
+
+Changes in v4:
+- Pulled ("remove WATCHDOG_DEFAULT") into my series for v4.
+
+ kernel/watchdog.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index 8e61f21e7e33..582d572e1379 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -30,10 +30,8 @@
+ static DEFINE_MUTEX(watchdog_mutex);
  
-+	if (!watchdog_check_timestamp())
-+		return;
-+
- 	if (__this_cpu_read(watchdog_nmi_touch) == true) {
- 		__this_cpu_write(watchdog_nmi_touch, false);
- 		return;
- 	}
+ #if defined(CONFIG_HARDLOCKUP_DETECTOR) || defined(CONFIG_HAVE_NMI_WATCHDOG)
+-# define WATCHDOG_DEFAULT	(SOFT_WATCHDOG_ENABLED | NMI_WATCHDOG_ENABLED)
+ # define NMI_WATCHDOG_DEFAULT	1
+ #else
+-# define WATCHDOG_DEFAULT	(SOFT_WATCHDOG_ENABLED)
+ # define NMI_WATCHDOG_DEFAULT	0
+ #endif
  
--	if (!watchdog_check_timestamp())
--		return;
--
- 	/* check for a hardlockup
- 	 * This is done by making sure our timer interrupt
- 	 * is incrementing.  The timer interrupt should have
 -- 
 2.40.1.698.g37aff9b760-goog
 
